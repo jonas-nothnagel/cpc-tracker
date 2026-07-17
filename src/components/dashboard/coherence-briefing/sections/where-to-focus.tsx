@@ -12,6 +12,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { TourButton } from "../tour/tour-button";
 import type {
   TargetConcentration,
   TargetConcentrationEntry,
@@ -50,6 +51,11 @@ export function WhereToFocusSection({
       id={WHERE_TO_FOCUS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      tourButton={
+        hotspots.length > 0 ? (
+          <TourButton tourId="whereToFocus" scopeId={WHERE_TO_FOCUS_SECTION_ID} />
+        ) : undefined
+      }
       evidence={
         hotspots.length === 0 ? (
           <p className="text-body text-[var(--undp-gray)]">{t("empty")}</p>
@@ -62,7 +68,10 @@ export function WhereToFocusSection({
               countryConfig={countryConfig}
               onOpenTarget={onOpenTarget}
             />
-            <ul className="border-y border-gray-200 divide-y divide-gray-100">
+            <ul
+              className="border-y border-gray-200 divide-y divide-gray-100"
+              data-tour="hotspot-list"
+            >
               {visibleHotspots.map((h) => (
                 <HotspotRow
                   key={h.target.id}
@@ -244,7 +253,10 @@ function ConcentrationBar({
           {t("bar.totalPairs", { count: totalFlaggedPairs })}
         </p>
       </div>
-      <div className="flex h-7 w-full overflow-hidden rounded-sm bg-gray-100 gap-px">
+      <div
+        className="flex h-7 w-full overflow-hidden rounded-sm bg-gray-100 gap-px"
+        data-tour="concentration-bar"
+      >
         {topTargets.map((entry) => {
           const widthPct = (entry.marginalPairCount / totalFlaggedPairs) * 100;
           const docLabel = getDocMediumLabel(
@@ -289,7 +301,10 @@ function ConcentrationBar({
           />
         )}
       </div>
-      <p className="mt-2 text-caption text-[var(--undp-gray)]">
+      <p
+        className="mt-2 text-caption text-[var(--undp-gray)]"
+        data-tour="concentration-legend"
+      >
         {t("bar.legend", { count: topTargets.length, pct: sharePct })}
       </p>
     </div>

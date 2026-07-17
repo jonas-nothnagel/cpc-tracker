@@ -144,6 +144,224 @@
       "button": "Ampliar",
       "aria": "Ampliar el gráfico"
     },
+    "tour": {
+      "openAria": "Cómo leer este gráfico",
+      "controls": {
+        "next": "Siguiente",
+        "back": "Atrás",
+        "done": "Listo",
+        "close": "Cerrar la guía",
+        "progress": "Paso {current} de {total}"
+      },
+      "wheel": {
+        "steps": {
+          "arcs": {
+            "title": "Los arcos de colores son documentos de política",
+            "body": "Cada arco del borde exterior es un documento de política (o un sector, según la vista). Los arcos más largos contienen más objetivos."
+          },
+          "ribbons": {
+            "title": "Las cintas conectan documentos",
+            "body": "Cada cinta une dos documentos cuyos objetivos fueron comparados. El verde muestra pares que se apoyan mutuamente; la parte roja discontinua muestra pares señalados como posibles desalineaciones. Las cintas más anchas indican más pares comparados. Estos vínculos son estimaciones de IA para orientar la revisión, no veredictos."
+          },
+          "labels": {
+            "title": "Las etiquetas nombran cada documento",
+            "body": "Una línea fina conecta cada arco con su nombre. Al hacer clic en una etiqueta o en su arco, la rueda se centra en ese documento."
+          },
+          "docToggle": {
+            "title": "Elija qué documentos ver",
+            "body": "Esta clave de colores también es un filtro: haga clic en un documento para añadirlo o quitarlo de la imagen. Los colores coinciden con los arcos de la rueda."
+          }
+        }
+      },
+      "docMatrix": {
+        "steps": {
+          "grid": {
+            "title": "Una celda por par de documentos",
+            "body": "Cada celda compara los objetivos del documento de su fila con los del documento de su columna. Haga clic en una celda para abrir el detalle de ese par."
+          },
+          "diagonal": {
+            "title": "La diagonal queda en blanco",
+            "body": "Las celdas de la diagonal compararían un documento consigo mismo, por eso quedan vacías."
+          },
+          "colours": {
+            "title": "El verde y el rojo muestran el balance",
+            "body": "Las celdas más verdes tienen una mayor proporción de pares de objetivos que se apoyan mutuamente; las más rojas tienen una mayor proporción señalada como posible desalineación. Estas comparaciones son estimaciones de IA, puntos de partida para la revisión."
+          },
+          "intensity": {
+            "title": "Más color, más lejos de lo típico",
+            "body": "La intensidad del color muestra cuánto se aleja un par del nivel típico entre todos los documentos mostrados. Las celdas pálidas están cerca de lo típico; los colores intensos son los casos atípicos que merecen una mirada más detenida."
+          }
+        }
+      },
+      "financing": {
+        "steps": {
+          "source": {
+            "title": "Qué son estos datos presupuestarios",
+            "body": "Aquí se indica la revisión de gasto de la que provienen las cifras: el país, el período y las líneas presupuestarias que cubre. Abra la lista para inspeccionar cada línea presupuestaria."
+          },
+          "concentration": {
+            "title": "Dónde se concentra el dinero",
+            "body": "Este desglose muestra cómo se distribuye el gasto revisado entre las áreas, junto con cuántos objetivos de política hay en cada una. También se listan las áreas con objetivos pero sin presupuesto registrado."
+          },
+          "execution": {
+            "title": "Planificado frente a realmente gastado",
+            "body": "Esta barra compara el gasto planificado con lo realmente gastado, durante el período propio del programa, que puede ser más amplio que el período de la revisión anterior."
+          }
+        }
+      },
+      "deliveryRoster": {
+        "steps": {
+          "statusKey": {
+            "title": "Los puntos son acciones reportadas",
+            "body": "Cada punto es una acción del propio informe del país, coloreada según su estado reportado: desde planificada (hueco) hasta implementada (verde)."
+          },
+          "rows": {
+            "title": "Una fila por institución",
+            "body": "Cada fila muestra una institución nombrada en el informe, con sus acciones como puntos. Haga clic en una fila para leer esas acciones una por una."
+          },
+          "caveat": {
+            "title": "Lea los recuentos con cuidado",
+            "body": "Una acción que nombra a varias instituciones cuenta una vez para cada una, así que los números muestran participación — no partes del trabajo, y nunca una clasificación."
+          }
+        }
+      },
+      "institutionFlow": {
+        "steps": {
+          "institutions": {
+            "title": "Instituciones a la izquierda",
+            "body": "Cada barra de la izquierda es una institución que el informe del país nombra en acciones reportadas. Las barras más altas concentran más acciones."
+          },
+          "ribbons": {
+            "title": "Las cintas muestran dónde llega el esfuerzo",
+            "body": "Cada cinta conecta una institución con un documento de política relacionado con sus acciones reportadas. Las cintas más anchas indican más objetivos asociados. Estas asociaciones son estimaciones de IA destinadas a la revisión."
+          },
+          "documents": {
+            "title": "Documentos a la derecha",
+            "body": "Cada barra de la derecha es un documento de política, con el mismo color que tiene en el resto del informe."
+          },
+          "drilldown": {
+            "title": "Haga clic en una cinta para ver el detalle",
+            "body": "Al seleccionar una cinta se listan los objetivos concretos detrás de ella, y cada objetivo abre la explicación completa de la asociación."
+          }
+        }
+      },
+      "frictionTypes": {
+        "steps": {
+          "bar": {
+            "title": "Una barra, dividida por tipo de fricción",
+            "body": "La barra divide todos los pares de objetivos señalados según el tipo de fricción. El ancho de cada segmento es la proporción de ese tipo; haga clic en un segmento para ver dónde se manifiesta."
+          },
+          "mechanisms": {
+            "title": "Los tres tipos, explicados",
+            "body": "Cada columna nombra un tipo de fricción, con su proporción, su recuento y una breve descripción de lo que significa."
+          },
+          "total": {
+            "title": "El número detrás de la barra",
+            "body": "Es el número total de pares de objetivos señalados para revisión como posibles desalineaciones — los pares que la barra divide por tipo."
+          }
+        }
+      },
+      "directionThemes": {
+        "steps": {
+          "columns": {
+            "title": "Dos columnas de temas recurrentes",
+            "body": "La columna izquierda agrupa temas donde los documentos mayormente se apoyan entre sí; la derecha agrupa temas señalados como posibles desalineaciones. Los temas son agrupaciones de pares de objetivos relacionados, derivadas por IA."
+          },
+          "card": {
+            "title": "Cada tarjeta es un tema",
+            "body": "Una tarjeta muestra el nombre del tema, una breve descripción y cuántos pares de objetivos hay detrás según la selección actual. La barra fina compara ese número con los demás temas de su columna."
+          },
+          "interact": {
+            "title": "Explore un tema",
+            "body": "Haga clic en una tarjeta para abrir el detalle con los pares detrás del tema. En pantallas grandes, dejar el puntero sobre una tarjeta previsualiza los documentos del tema en la rueda de la derecha."
+          }
+        }
+      },
+      "docFocus": {
+        "steps": {
+          "switcher": {
+            "title": "Elija un documento para enfocar",
+            "body": "Estos botones cambian toda la diapositiva a un documento de política. El titular, el gráfico y la lista de abajo se actualizan a las relaciones de ese documento."
+          },
+          "chart": {
+            "title": "Qué tipo de fricción",
+            "body": "Esta barra divide los pares de objetivos señalados del documento enfocado según el tipo de fricción. El ancho de cada segmento es la proporción de ese tipo; haga clic en un segmento para ver el detalle."
+          },
+          "pairs": {
+            "title": "Los pares que conviene revisar",
+            "body": "Cada fila es un par de objetivos señalado como posible desalineación entre el documento enfocado y otro documento. Haga clic en una fila para la explicación completa. Estas señales son estimaciones de IA para orientar la revisión, no veredictos."
+          }
+        }
+      },
+      "docPairs": {
+        "steps": {
+          "list": {
+            "title": "Todos los pares de documentos, clasificados",
+            "body": "Cada fila es un par de documentos, ordenado según cuántos pares de objetivos se compararon entre ellos, con una breve nota escrita por IA sobre el patrón."
+          },
+          "balance": {
+            "title": "La barra de balance verde y roja",
+            "body": "La longitud total de la barra refleja cuántos pares de objetivos se compararon para ese par de documentos; el verde es la proporción que se apoya mutuamente, el rojo la proporción señalada como posible desalineación."
+          },
+          "sync": {
+            "title": "La lista y la matriz se mueven juntas",
+            "body": "En pantallas grandes, dejar el puntero sobre una fila ilumina la celda correspondiente en la matriz de coherencia de la derecha — y pasar sobre una celda ilumina su fila aquí. Haga clic en cualquiera para abrir el detalle del par."
+          }
+        }
+      },
+      "sectors": {
+        "steps": {
+          "lenses": {
+            "title": "Elija una agrupación",
+            "body": "Estos chips reencuadran la tabla: agrupe los objetivos por otra clasificación sectorial y elija si mostrar vínculos de apoyo, posibles desalineaciones o ambos."
+          },
+          "columns": {
+            "title": "Dos medidas por sector",
+            "body": "\"Objetivos\" cuenta cuántos objetivos caen en el sector; la proporción señalada es la parte de sus pares revisados marcada para revisión. Haga clic en cualquiera de los encabezados para ordenar por él."
+          },
+          "rows": {
+            "title": "Una fila por sector",
+            "body": "Cada fila es un sector con sus dos barras. Haga clic en una fila para abrir el detalle del sector; en pantallas grandes, pasar el puntero resalta el sector en la rueda de la derecha."
+          },
+          "flagShare": {
+            "title": "Cómo leer la barra de proporción señalada",
+            "body": "La barra roja muestra la proporción de pares de objetivos revisados señalados como posibles desalineaciones. La pequeña marca oscura indica el promedio de todos los sectores mostrados, para ver cuáles quedan por encima o por debajo."
+          }
+        }
+      },
+      "whereToFocus": {
+        "steps": {
+          "bar": {
+            "title": "La mayor parte de la fricción proviene de pocos objetivos",
+            "body": "Cada bloque de color es un objetivo, dimensionado según los pares señalados que concentra y coloreado según su documento de origen. La cola gris es el resto de los objetivos. Haga clic en un bloque para abrir el perfil de ese objetivo."
+          },
+          "legend": {
+            "title": "Qué significan los números",
+            "body": "Esta línea indica cuántos objetivos concentran qué proporción de todos los pares señalados, y qué representa el área gris."
+          },
+          "list": {
+            "title": "Los objetivos más disputados",
+            "body": "Cada fila es un objetivo con el número de pares señalados en los que aparece, mostrado como una barra escalada al objetivo principal. Haga clic en una fila para el perfil completo. Estos recuentos provienen de pares señalados por IA y son avisos de revisión, no conclusiones."
+          }
+        }
+      },
+      "implementationCoverage": {
+        "steps": {
+          "legend": {
+            "title": "Cómo leer los puntos",
+            "body": "Cada punto es un objetivo de un documento: relleno significa que al menos una acción reportada se asoció a él; hueco significa que ninguna. Estas asociaciones son estimaciones de IA."
+          },
+          "dots": {
+            "title": "Un mapa por documento",
+            "body": "Cada documento muestra sus objetivos como puntos en su propio color. Haga clic en un documento para expandirlo y leer las acciones asociadas, las brechas y los pares por revisar."
+          },
+          "review": {
+            "title": "El carril rojo de revisión",
+            "body": "Una barra roja y un número aparecen cuando acciones reportadas podrían ir en contra de algunos objetivos de este documento. Son avisos estimados por IA para la revisión, no conclusiones."
+          }
+        }
+      }
+    },
     "explorer": {
       "title": "Explorar los datos completos",
       "backToChat": "Volver al chat"

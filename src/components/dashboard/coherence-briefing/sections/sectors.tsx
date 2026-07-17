@@ -17,6 +17,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { TourButton } from "../tour/tour-button";
 import {
   type CoverageConcentrationStat,
   type SectorCoherenceShareSummary,
@@ -111,6 +112,11 @@ export function SectorsSection({
       id={SECTORS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      tourButton={
+        mergedRows.length > 0 ? (
+          <TourButton tourId="sectors" scopeId={SECTORS_SECTION_ID} />
+        ) : undefined
+      }
       controls={
         <LensChipRow
           availableLenses={availableLenses}
@@ -127,6 +133,7 @@ export function SectorsSection({
             <ul
               className="divide-y divide-gray-100"
               onMouseLeave={() => onHoverSector?.(null)}
+              data-tour="sector-rows"
             >
               {visibleRows.map((row) => (
                 <SectorRow
@@ -214,7 +221,7 @@ function LensChipRow({
   const activeLens = activeLensId ?? availableLenses[0]?.id;
   if (availableLenses.length === 0) return null;
   return (
-    <div className="flex items-center gap-2 flex-wrap">
+    <div className="flex items-center gap-2 flex-wrap" data-tour="sector-lenses">
       <span className="text-caption text-[var(--undp-gray)] mr-1">
         {t("groupBy")}
       </span>
@@ -297,6 +304,7 @@ function SectorColumnHeader({
   return (
     <div
       className={`${GRID} px-1 pb-1 mb-1 text-caption text-[var(--undp-gray)]`}
+      data-tour="sector-columns"
     >
       <span>{t("col.sector")}</span>
       <button
@@ -556,7 +564,8 @@ function FlagShareCell({
   const displayPct = share > 0 ? Math.max(fillPct, 4) : 0;
   const midPct = maxShare > 0 ? Math.min(100, (mid / maxShare) * 100) : 0;
   return (
-    <div className="flex flex-col items-start gap-1 w-full">
+    // Guided-tour anchor; the tour spotlights the first cell with a bar.
+    <div className="flex flex-col items-start gap-1 w-full" data-tour="sector-flag-share">
       <span
         aria-hidden="true"
         className="relative block h-1.5 w-full rounded-full overflow-hidden"

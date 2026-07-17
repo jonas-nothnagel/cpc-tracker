@@ -28,6 +28,7 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { TourButton } from "../tour/tour-button";
 import {
   nr7StatusByNbsapTarget,
   type ActionCoverageDoc,
@@ -83,6 +84,14 @@ export function ImplementationSection({
       id={IMPLEMENTATION_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      tourButton={
+        coverage.hasMeasureAlignment ? (
+          <TourButton
+            tourId="implementationCoverage"
+            scopeId={IMPLEMENTATION_SECTION_ID}
+          />
+        ) : undefined
+      }
       evidence={
         coverage.hasMeasureAlignment ? (
           <CoverageByDocument
@@ -191,7 +200,10 @@ function CoverageByDocument({
         ))}
       </ul>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-caption text-[var(--undp-gray)]">
+      <div
+        className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-caption text-[var(--undp-gray)]"
+        data-tour="coverage-legend"
+      >
         <span className="flex items-center gap-1.5">
           <span
             aria-hidden="true"
@@ -309,6 +321,7 @@ function DocCoverageRow({
                 <span
                   className="inline-flex items-center gap-1 ml-2"
                   title={t("legend.pull")}
+                  data-tour="coverage-review"
                 >
                   <span
                     aria-hidden="true"
@@ -324,8 +337,9 @@ function DocCoverageRow({
             </span>
           </div>
           {/* Dot-map: one uniform dot per target. Filled = has a strongly
-              aligned reported action; hollow = none. Binary on purpose. */}
-          <div className="flex flex-wrap gap-1">
+              aligned reported action; hollow = none. Binary on purpose.
+              data-tour: guided-tour anchor, first document's map wins. */}
+          <div className="flex flex-wrap gap-1" data-tour="coverage-dots">
             {doc.links.map((link) => (
               <span
                 key={link.targetId}

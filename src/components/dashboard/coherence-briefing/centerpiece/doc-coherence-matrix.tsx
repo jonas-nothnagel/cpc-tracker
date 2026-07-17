@@ -110,6 +110,7 @@ export function DocCoherenceMatrix({
       <div className="overflow-x-auto pb-1">
         <div
           className="inline-grid gap-1"
+          data-tour="matrix-grid"
           style={{
             gridTemplateColumns: `minmax(64px, auto) repeat(${n}, ${CELL}px)`,
           }}
@@ -160,6 +161,8 @@ export function DocCoherenceMatrix({
                   return (
                     <div
                       key={cellKey}
+                      // First diagonal cell anchors the guided-tour step.
+                      data-tour={ri === 0 && ci === 0 ? "matrix-diagonal" : undefined}
                       className="rounded-md border border-dashed border-gray-200"
                       style={{ height: CELL, backgroundColor: "#faf9f6", ...anim }}
                     />
@@ -221,21 +224,29 @@ export function DocCoherenceMatrix({
           intensity gradient (distance from the corpus norm). No boxes. */}
       <div className="mt-3 mx-auto max-w-[440px] text-caption text-[var(--undp-gray)]">
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-          <span className="inline-flex items-center gap-1.5">
-            <span
-              className="inline-block w-3 h-3 rounded-sm"
-              style={{ backgroundColor: `rgba(${ALIGNED_RGB.join(", ")}, 0.85)` }}
-            />
-            {t("aligned")}
+          <span
+            className="inline-flex items-center gap-x-3"
+            data-tour="matrix-legend-colours"
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <span
+                className="inline-block w-3 h-3 rounded-sm"
+                style={{ backgroundColor: `rgba(${ALIGNED_RGB.join(", ")}, 0.85)` }}
+              />
+              {t("aligned")}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span
+                className="inline-block w-3 h-3 rounded-sm"
+                style={{ backgroundColor: `rgba(${FLAGGED_RGB.join(", ")}, 0.85)` }}
+              />
+              {t("flagged")}
+            </span>
           </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span
-              className="inline-block w-3 h-3 rounded-sm"
-              style={{ backgroundColor: `rgba(${FLAGGED_RGB.join(", ")}, 0.85)` }}
-            />
-            {t("flagged")}
-          </span>
-          <span className="inline-flex items-center gap-x-2">
+          <span
+            className="inline-flex items-center gap-x-2"
+            data-tour="matrix-legend-intensity"
+          >
             <span
               aria-hidden="true"
               className="inline-block h-3 w-8 rounded-sm shrink-0"

@@ -23,6 +23,7 @@ export function SlideFrame({
   controls,
   evidence,
   disclosure,
+  tourButton,
 }: {
   id: string;
   headline: ReactNode;
@@ -30,6 +31,8 @@ export function SlideFrame({
   controls?: ReactNode;
   evidence?: ReactNode;
   disclosure?: ReactNode;
+  /** Guided-tour trigger for the slide's evidence, shown inline in the heading. */
+  tourButton?: ReactNode;
 }) {
   return (
     <section
@@ -42,6 +45,12 @@ export function SlideFrame({
         className="font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium mb-4"
       >
         {headline}
+        {/* Guided-tour trigger, inline in the heading like the InfoBox
+            convention elsewhere (the eyebrow row it used to live in was
+            removed in the density distill). */}
+        {tourButton && (
+          <span className="inline-flex align-middle ml-2.5">{tourButton}</span>
+        )}
       </h2>
       {body && (
         <p className="text-body text-[var(--undp-black)] max-w-prose mb-4">

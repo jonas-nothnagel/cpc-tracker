@@ -80,7 +80,10 @@ export function FrictionTypeChart({
         <p className="text-caption text-[var(--undp-gray)]">
           {resolvedCaption}
         </p>
-        <p className="text-caption text-[var(--undp-black)] tabular-nums font-medium">
+        <p
+          className="text-caption text-[var(--undp-black)] tabular-nums font-medium"
+          data-tour="friction-total"
+        >
           {t("pairCount", {
             count: totalFlagged,
             countLabel: totalFlagged.toLocaleString(),
@@ -90,6 +93,7 @@ export function FrictionTypeChart({
       <div
         className="relative h-7 rounded-sm overflow-hidden bg-gray-100"
         aria-hidden="true"
+        data-tour="friction-bar"
       >
         {segments.map(({ type, widthPct, leftPct, value }) => {
           const handleClick = onSegmentClick
@@ -124,7 +128,10 @@ export function FrictionTypeChart({
           );
         })}
       </div>
-      <div className="mt-2.5 grid grid-cols-3 gap-3 text-caption">
+      <div
+        className="mt-2.5 grid grid-cols-3 gap-3 text-caption"
+        data-tour="friction-mechanisms"
+      >
         {ORDER.map((type) => {
           const value = totals[type];
           const pct = totalFlagged > 0 ? Math.round((value / totalFlagged) * 100) : 0;
