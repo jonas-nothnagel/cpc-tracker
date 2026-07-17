@@ -234,7 +234,7 @@ export function FeedbackControl({
           : undefined
       }
       // Opaque bg so scrolled content disappears beneath the sticky bar.
-      style={variant === "bar" ? { backgroundColor: "#fbfaf7" } : undefined}
+      style={variant === "bar" ? { backgroundColor: "#ffffff" } : undefined}
     >
       <div
         role="group"

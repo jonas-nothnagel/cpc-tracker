@@ -45,18 +45,18 @@ export function ExtractReviewPanel({
     (item.sources ?? []).some((s) => s._quoteMatch === "not_found");
 
   return (
-    <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
+    <div className="border border-line rounded-xl bg-white overflow-hidden">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-line-soft flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-[var(--undp-black)]">
+          <h3 className="text-body font-semibold text-[var(--undp-black)]">
             {t("title")}
           </h3>
-          <p className="text-xs text-[var(--undp-gray)] mt-0.5">
+          <p className="text-caption text-[var(--undp-gray)] mt-0.5">
             {t("subtitle", { kept: keptCount, total: items.length, file: fileName })}
           </p>
           {hasTranslations && (
-            <p className="text-xs text-[var(--undp-gray)] mt-0.5">
+            <p className="text-caption text-[var(--undp-gray)] mt-0.5">
               {t("machineTranslationNote")}
             </p>
           )}
@@ -65,14 +65,14 @@ export function ExtractReviewPanel({
           <button
             type="button"
             onClick={onKeepAll}
-            className="px-3 py-1.5 text-xs border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-[var(--undp-black)]"
+            className="px-3 py-1.5 text-caption border border-line rounded-lg hover:border-line-strong transition-colors text-[var(--undp-black)]"
           >
             {t("keepAll")}
           </button>
           <button
             type="button"
             onClick={onRemoveAll}
-            className="px-3 py-1.5 text-xs border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-[var(--undp-black)]"
+            className="px-3 py-1.5 text-caption border border-line rounded-lg hover:border-line-strong transition-colors text-[var(--undp-black)]"
           >
             {t("removeAll")}
           </button>
@@ -80,7 +80,7 @@ export function ExtractReviewPanel({
       </div>
 
       {/* Items list */}
-      <div className="divide-y divide-gray-100">
+      <div className="divide-y divide-line-soft">
         {items.map((item, idx) => (
           <div
             key={`${item.sourceDocument}-${item.label}-${idx}`}
@@ -93,7 +93,7 @@ export function ExtractReviewPanel({
               height="14"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="shrink-0 mt-1 text-gray-300 cursor-grab select-none"
+              className="shrink-0 mt-1 text-line-strong cursor-grab select-none"
             >
               <circle cx="9" cy="6" r="1.5" />
               <circle cx="15" cy="6" r="1.5" />
@@ -110,19 +110,19 @@ export function ExtractReviewPanel({
                   value={item.label}
                   onChange={(e) => onUpdateItem(idx, { label: e.target.value })}
                   disabled={!item.accepted}
-                  className={`flex-1 text-sm font-semibold bg-transparent border-0 px-0 py-0 focus:outline-none focus:ring-0 ${
+                  className={`flex-1 text-body font-semibold bg-transparent border-0 px-0 py-0 focus:outline-none focus:ring-0 ${
                     item.accepted
                       ? "text-[var(--undp-black)]"
                       : "line-through text-gray-400"
                   }`}
                 />
                 {item.textCleanup === "synthesis" && (
-                  <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] font-medium">
+                  <span className="shrink-0 text-caption px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] font-medium">
                     {t("aiSummarised")}
                   </span>
                 )}
                 {item.pageNumbers && item.pageNumbers.length > 0 && item.pageNumbers[0] !== 0 && (
-                  <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] font-medium">
+                  <span className="shrink-0 text-caption px-1.5 py-0.5 rounded bg-gray-100 text-[var(--undp-gray)] font-medium">
                     {t("pagePrefix")}{" "}
                     {item.pageNumbers.length <= 3
                       ? item.pageNumbers.join(", ")
@@ -135,14 +135,14 @@ export function ExtractReviewPanel({
                 onChange={(e) => onUpdateItem(idx, { text: e.target.value })}
                 disabled={!item.accepted}
                 rows={2}
-                className={`mt-0.5 w-full text-sm bg-transparent border-0 px-0 py-0 resize-none focus:outline-none focus:ring-0 leading-snug ${
+                className={`mt-0.5 w-full text-body bg-transparent border-0 px-0 py-0 resize-none focus:outline-none focus:ring-0 leading-snug ${
                   item.accepted
                     ? "text-[var(--undp-gray)]"
                     : "line-through text-gray-400"
                 }`}
               />
               {item.textOriginal && item.language && item.language !== "en" && (
-                <p className="mt-1 text-xs text-[var(--undp-gray)]/80 italic">
+                <p className="mt-1 text-caption text-[var(--undp-gray)]/80 italic">
                   {t("originalText", {
                     lang: item.language.toUpperCase(),
                     text: item.textOriginal,
@@ -150,20 +150,20 @@ export function ExtractReviewPanel({
                 </p>
               )}
               {needsReview(item) && (
-                <p className="mt-1 text-xs text-amber-700">{t("needsReview")}</p>
+                <p className="mt-1 text-caption text-amber-700">{t("needsReview")}</p>
               )}
             </div>
 
             <div className="shrink-0 flex items-center gap-2 mt-0.5">
               {item.accepted ? (
                 <>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">
+                  <span className="text-caption px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">
                     {t("keep")}
                   </span>
                   <button
                     type="button"
                     onClick={() => onToggleItem(idx)}
-                    className="w-7 h-7 flex items-center justify-center border border-gray-200 rounded-lg hover:border-gray-300 text-green-600 transition-colors"
+                    className="w-7 h-7 flex items-center justify-center border border-line rounded-lg hover:border-line-strong text-green-600 transition-colors"
                     title={t("removeTitle")}
                   >
                     &#10003;
@@ -171,13 +171,13 @@ export function ExtractReviewPanel({
                 </>
               ) : (
                 <>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full text-red-500 font-medium">
+                  <span className="text-caption px-2 py-0.5 rounded-full text-red-500 font-medium">
                     {t("removed")}
                   </span>
                   <button
                     type="button"
                     onClick={() => onToggleItem(idx)}
-                    className="w-7 h-7 flex items-center justify-center border border-gray-200 rounded-lg hover:border-gray-300 text-gray-400 hover:text-[var(--undp-black)] transition-colors"
+                    className="w-7 h-7 flex items-center justify-center border border-line rounded-lg hover:border-line-strong text-gray-400 hover:text-[var(--undp-black)] transition-colors"
                     title={t("restoreTitle")}
                   >
                     &#8617;
@@ -190,8 +190,8 @@ export function ExtractReviewPanel({
       </div>
 
       {/* Manual add inline */}
-      <div className="px-4 py-3 border-t border-gray-100 bg-gray-50/40">
-        <p className="text-xs font-medium text-[var(--undp-gray)] mb-2">
+      <div className="px-4 py-3 border-t border-line-soft bg-gray-50/40">
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
           {t("addMissingPrompt")}
         </p>
         <textarea
@@ -202,7 +202,7 @@ export function ExtractReviewPanel({
           onKeyDown={(e) => {
             if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) onAddManual();
           }}
-          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:border-[var(--undp-blue)] focus:ring-1 focus:ring-[var(--undp-blue)]"
+          className="w-full px-3 py-2 text-body border border-line rounded-lg resize-none focus:outline-none focus:border-[var(--undp-blue)] focus:ring-1 focus:ring-[var(--undp-blue)]"
         />
         <div className="flex items-center justify-between mt-2">
           <input
@@ -210,13 +210,13 @@ export function ExtractReviewPanel({
             value={manualLabel}
             onChange={(e) => onManualLabelChange(e.target.value)}
             placeholder={t("manualLabelPlaceholder")}
-            className="w-44 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[var(--undp-blue)]"
+            className="w-44 px-2 py-1.5 text-body border border-line rounded-lg focus:outline-none focus:border-[var(--undp-blue)]"
           />
           <button
             type="button"
             onClick={onAddManual}
             disabled={!manualText.trim()}
-            className="px-3 py-1.5 text-sm bg-[var(--undp-blue)] text-white rounded-lg hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="px-3 py-1.5 text-body bg-[var(--undp-blue)] text-white rounded-lg hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {t("addBtn")}
           </button>
@@ -224,8 +224,8 @@ export function ExtractReviewPanel({
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t border-gray-200 bg-white flex items-center justify-between sticky bottom-0 rounded-b-xl">
-        <p className="text-sm text-[var(--undp-gray)]">
+      <div className="px-4 py-3 border-t border-line bg-white flex items-center justify-between sticky bottom-0 rounded-b-xl">
+        <p className="text-body text-[var(--undp-gray)]">
           {t.rich("footerStatus", {
             count: keptCount,
             strong: (chunks) => (
@@ -237,7 +237,7 @@ export function ExtractReviewPanel({
           <button
             type="button"
             onClick={onDiscard}
-            className="px-4 py-2 text-sm border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-[var(--undp-black)]"
+            className="px-4 py-2 text-body border border-line rounded-lg hover:border-line-strong transition-colors text-[var(--undp-black)]"
           >
             {t("discard")}
           </button>
@@ -245,7 +245,7 @@ export function ExtractReviewPanel({
             type="button"
             onClick={onAccept}
             disabled={keptCount === 0}
-            className="px-4 py-2 text-sm bg-[var(--undp-blue)] text-white rounded-lg hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-body bg-[var(--undp-blue)] text-white rounded-lg hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {t("acceptBtn", { count: keptCount })}
           </button>

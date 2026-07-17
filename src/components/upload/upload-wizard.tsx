@@ -388,7 +388,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
           <h1 className="text-2xl font-semibold text-[var(--undp-black)] mb-1">
             {t("title")}
           </h1>
-          <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
+          <p className="text-body text-[var(--undp-gray)] leading-relaxed max-w-2xl">
             {t("subtitle")}
           </p>
         </div>
@@ -533,8 +533,8 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100 mt-auto">
-        <div className="max-w-5xl mx-auto px-6 py-6 text-sm text-[var(--undp-gray)]">
+      <footer className="border-t border-line-soft mt-auto">
+        <div className="max-w-5xl mx-auto px-6 py-6 text-body text-[var(--undp-gray)]">
           {t("footer")}
         </div>
       </footer>

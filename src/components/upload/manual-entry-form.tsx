@@ -37,7 +37,7 @@ export function ManualEntryForm({
     <div className="bg-[var(--undp-light)] rounded-lg p-6 mb-6">
       <div className="grid md:grid-cols-3 gap-4 mb-4">
         <div>
-          <label className="block text-xs font-medium text-[var(--undp-gray)] mb-1">
+          <label className="block text-caption font-medium text-[var(--undp-gray)] mb-1">
             {t("sourceDocument")}
           </label>
           <select
@@ -46,7 +46,7 @@ export function ManualEntryForm({
               onDocChange(e.target.value as PolicyDocumentType);
               onCustomDocNameChange("");
             }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+            className="w-full px-3 py-2 border border-line-strong rounded-md text-body focus:outline-none focus:border-[var(--undp-blue)]"
           >
             {DOCUMENT_TYPES.map((d) => (
               <option key={d.value} value={d.value}>
@@ -57,7 +57,7 @@ export function ManualEntryForm({
         </div>
         {showCustomDocField && (
           <div>
-            <label className="block text-xs font-medium text-[var(--undp-gray)] mb-1">
+            <label className="block text-caption font-medium text-[var(--undp-gray)] mb-1">
               {t("documentName")}
             </label>
             <input
@@ -69,12 +69,12 @@ export function ManualEntryForm({
                   ? t("placeholderSectoral")
                   : t("placeholderOther")
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+              className="w-full px-3 py-2 border border-line-strong rounded-md text-body focus:outline-none focus:border-[var(--undp-blue)]"
             />
           </div>
         )}
         <div>
-          <label className="block text-xs font-medium text-[var(--undp-gray)] mb-1">
+          <label className="block text-caption font-medium text-[var(--undp-gray)] mb-1">
             {t("labelOptional")}
           </label>
           <input
@@ -82,12 +82,12 @@ export function ManualEntryForm({
             value={currentLabel}
             onChange={(e) => onLabelChange(e.target.value)}
             placeholder={t("labelPlaceholder")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+            className="w-full px-3 py-2 border border-line-strong rounded-md text-body focus:outline-none focus:border-[var(--undp-blue)]"
           />
         </div>
       </div>
       <div className="mb-4">
-        <label className="block text-xs font-medium text-[var(--undp-gray)] mb-1">
+        <label className="block text-caption font-medium text-[var(--undp-gray)] mb-1">
           {t("targetText")}
         </label>
         <textarea
@@ -95,18 +95,18 @@ export function ManualEntryForm({
           onChange={(e) => onTextChange(e.target.value)}
           placeholder={t("targetTextPlaceholder")}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[var(--undp-blue)] resize-y"
+          className="w-full px-3 py-2 border border-line-strong rounded-md text-body focus:outline-none focus:border-[var(--undp-blue)] resize-y"
         />
       </div>
       <button
         onClick={onAddTarget}
         disabled={!currentText.trim() || targetCount >= MAX_TARGETS}
-        className="px-4 py-2 bg-[var(--undp-blue)] text-white text-sm rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="px-4 py-2 bg-[var(--undp-blue)] text-white text-body rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {t("addTarget")}
       </button>
       {targetCount >= MAX_TARGETS && (
-        <span className="ml-3 text-xs text-[var(--undp-red)]">
+        <span className="ml-3 text-caption text-[var(--undp-red)]">
           {t("maxReached", { max: MAX_TARGETS })}
         </span>
       )}

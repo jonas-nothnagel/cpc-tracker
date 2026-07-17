@@ -9,6 +9,7 @@
  * attention first. Each row opens that target's FlagProfileDrawer.
  */
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { TourButton } from "../tour/tour-button";
@@ -17,14 +18,17 @@ import type {
   TargetConcentrationEntry,
   TargetFriction,
 } from "@/lib/coherence-briefing";
-import { getDocColor, getDocMediumLabel } from "@/lib/utils";
+import { FLAGGED_COLOR, getDocColor, getDocMediumLabel } from "@/lib/utils";
 import type { CountryConfig, Target } from "@/types";
 
 export const WHERE_TO_FOCUS_SECTION_ID = "where-to-focus";
 
-const FRICTION_BAR = "#dc2626";
-const BAR_TRACK = "#e5e7eb";
-const OTHERS_FILL = "#e2e8f0";
+/** How many contested targets the face lists before the "Show all" expander. */
+const VISIBLE_CAP = 5;
+
+const FRICTION_BAR = FLAGGED_COLOR;
+const BAR_TRACK = "var(--color-line)";
+const OTHERS_FILL = "var(--color-line)";
 
 export function WhereToFocusSection({
   hotspots,
@@ -38,8 +42,10 @@ export function WhereToFocusSection({
   onOpenTarget: (target: Target) => void;
 }) {
   const t = useTranslations("briefing.whereToFocus");
+  const [showAll, setShowAll] = useState(false);
   const sentence = composeFocusSentence(concentration, t);
   const maxCount = hotspots[0]?.flaggedPairCount ?? 0;
+  const visibleHotspots = showAll ? hotspots : hotspots.slice(0, VISIBLE_CAP);
   return (
     <SlideFrame
       id={WHERE_TO_FOCUS_SECTION_ID}
@@ -52,9 +58,7 @@ export function WhereToFocusSection({
       }
       evidence={
         hotspots.length === 0 ? (
-          <p className="text-sm italic text-[var(--undp-gray)]">
-            {t("empty")}
-          </p>
+          <p className="text-body text-[var(--undp-gray)]">{t("empty")}</p>
         ) : (
           <>
             <ConcentrationBar
@@ -64,14 +68,11 @@ export function WhereToFocusSection({
               countryConfig={countryConfig}
               onOpenTarget={onOpenTarget}
             />
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-              {t("mostContested")}
-            </p>
             <ul
               className="border-y border-gray-200 divide-y divide-gray-100"
               data-tour="hotspot-list"
             >
-              {hotspots.map((h) => (
+              {visibleHotspots.map((h) => (
                 <HotspotRow
                   key={h.target.id}
                   hotspot={h}
@@ -81,6 +82,17 @@ export function WhereToFocusSection({
                 />
               ))}
             </ul>
+            {hotspots.length > VISIBLE_CAP && (
+              <button
+                type="button"
+                onClick={() => setShowAll((v) => !v)}
+                className="mt-2 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums"
+              >
+                {showAll
+                  ? t("showFewer")
+                  : t("showAll", { count: hotspots.length })}
+              </button>
+            )}
           </>
         )
       }
@@ -175,12 +187,12 @@ function HotspotRow({
               className="inline-block w-2 h-2 rounded-full shrink-0"
               style={{ backgroundColor: color }}
             />
-            <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
+            <span className="text-caption text-[var(--undp-gray)]">
               {docLabel} {target.sourceLabel}
             </span>
           </div>
           <p
-            className="text-[13px] text-[var(--undp-black)] leading-snug truncate"
+            className="text-data text-[var(--undp-black)] leading-snug truncate"
             title={target.text}
           >
             {target.text}
@@ -197,7 +209,7 @@ function HotspotRow({
               style={{ width: `${fillPct}%`, backgroundColor: FRICTION_BAR }}
             />
           </span>
-          <span className="text-[11px] tabular-nums text-[var(--undp-black)] font-medium">
+          <span className="text-caption tabular-nums text-[var(--undp-black)] font-medium">
             {flaggedPairCount.toLocaleString()}{" "}
             <span className="text-[var(--undp-gray)] font-normal">{t("pairsSuffix")}</span>
           </span>
@@ -236,10 +248,8 @@ function ConcentrationBar({
   return (
     <div className="mb-7">
       <div className="flex items-baseline justify-between mb-1.5">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
-          {t("bar.title")}
-        </p>
-        <p className="text-[11px] tabular-nums text-[var(--undp-black)] font-medium">
+        <p className="text-caption text-[var(--undp-gray)]">{t("bar.title")}</p>
+        <p className="text-caption tabular-nums text-[var(--undp-black)] font-medium">
           {t("bar.totalPairs", { count: totalFlaggedPairs })}
         </p>
       </div>
@@ -291,28 +301,12 @@ function ConcentrationBar({
           />
         )}
       </div>
-      <div
-        className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)]"
+      <p
+        className="mt-2 text-caption text-[var(--undp-gray)]"
         data-tour="concentration-legend"
       >
-        <span className="text-[var(--undp-black)]">
-          <span className="font-medium">
-            {t("bar.targetCount", { count: topTargets.length })}
-          </span>{" "}
-          {t("bar.carryShare", { pct: sharePct })}
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span
-            aria-hidden="true"
-            className="inline-block w-2.5 h-2.5 rounded-sm"
-            style={{ backgroundColor: OTHERS_FILL }}
-          />
-          {t("bar.otherTargets", { count: othersCount })}
-        </span>
-        <span className="text-[var(--undp-gray)]/70">
-          {t("bar.legendHint")}
-        </span>
-      </div>
+        {t("bar.legend", { count: topTargets.length, pct: sharePct })}
+      </p>
     </div>
   );
 }

@@ -171,7 +171,7 @@ export function TourOverlay({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-sm font-semibold text-[var(--undp-black)] leading-snug">
+          <h3 className="text-body font-semibold text-[var(--undp-black)] leading-snug">
             {t(`${tourId}.steps.${current.step.id}.title`)}
           </h3>
           <button
@@ -190,11 +190,11 @@ export function TourOverlay({
             </svg>
           </button>
         </div>
-        <p className="mt-1.5 text-sm text-[var(--undp-black)] leading-relaxed">
+        <p className="mt-1.5 text-body text-[var(--undp-black)] leading-relaxed">
           {t(`${tourId}.steps.${current.step.id}.body`)}
         </p>
         <div className="mt-3 flex items-center justify-between">
-          <span aria-live="polite" className="text-[11px] text-[var(--undp-gray)]">
+          <span aria-live="polite" className="text-caption text-[var(--undp-gray)]">
             {t("controls.progress", { current: stepIndex + 1, total: steps.length })}
           </span>
           <div className="flex items-center gap-2">
@@ -202,7 +202,7 @@ export function TourOverlay({
               <button
                 type="button"
                 onClick={onBack}
-                className="text-xs px-3 py-1.5 rounded-full border border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400 transition-colors"
+                className="text-data px-3 py-1.5 rounded-full border border-line-strong text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400 transition-colors"
               >
                 {t("controls.back")}
               </button>
@@ -211,7 +211,7 @@ export function TourOverlay({
               ref={nextButtonRef}
               type="button"
               onClick={onNext}
-              className="text-xs px-3 py-1.5 rounded-full bg-[var(--undp-blue)] text-white hover:opacity-90 transition-opacity"
+              className="text-data px-3 py-1.5 rounded-full bg-[var(--undp-blue)] text-white hover:opacity-90 transition-opacity"
             >
               {isLast ? t("controls.done") : t("controls.next")}
             </button>

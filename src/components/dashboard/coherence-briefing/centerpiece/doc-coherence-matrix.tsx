@@ -16,7 +16,12 @@
 import { Fragment, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { buildDocCoherenceGraph, getDocPairKey } from "@/lib/coherence-briefing";
-import { getDocLabel, getDocMediumLabel } from "@/lib/utils";
+import {
+  ALIGNED_RGB,
+  FLAGGED_RGB,
+  getDocLabel,
+  getDocMediumLabel,
+} from "@/lib/utils";
 import type {
   AlignmentResult,
   CountryConfig,
@@ -41,11 +46,11 @@ function clamp01(x: number): number {
 export function cellColor(share: number, mid: number, maxShare: number): string {
   if (share <= mid) {
     const k = mid > 0 ? clamp01((mid - share) / mid) : 0; // 1 at 0, 0 at the norm
-    return `rgba(25, 97, 39, ${(0.1 + 0.55 * k).toFixed(3)})`; // #196127
+    return `rgba(${ALIGNED_RGB.join(", ")}, ${(0.1 + 0.55 * k).toFixed(3)})`;
   }
   const span = maxShare - mid;
   const k = span > 0 ? clamp01((share - mid) / span) : 1; // 0 at norm, 1 at worst
-  return `rgba(220, 38, 38, ${(0.1 + 0.6 * k).toFixed(3)})`; // #dc2626
+  return `rgba(${FLAGGED_RGB.join(", ")}, ${(0.1 + 0.6 * k).toFixed(3)})`;
 }
 
 export function DocCoherenceMatrix({
@@ -121,7 +126,7 @@ export function DocCoherenceMatrix({
                 style={{ height: HEADER_HEIGHT }}
               >
                 <span
-                  className="text-[11px] leading-tight text-center text-[var(--undp-gray)]"
+                  className="text-caption leading-tight text-center text-[var(--undp-gray)]"
                   style={{ wordSpacing: "-1px" }}
                   title={getDocMediumLabel(countryConfig, d.docType)}
                 >
@@ -140,7 +145,7 @@ export function DocCoherenceMatrix({
           {ordered.map((rowDoc, ri) => (
             <Fragment key={`r-${rowDoc.docType}`}>
               <div
-                className="flex items-center justify-end pr-2 text-[11px] text-[var(--undp-gray)] truncate"
+                className="flex items-center justify-end pr-2 text-caption text-[var(--undp-gray)] truncate"
                 style={{ maxWidth: 140 }}
                 title={getDocMediumLabel(countryConfig, rowDoc.docType)}
               >
@@ -215,39 +220,31 @@ export function DocCoherenceMatrix({
         </div>
       </div>
 
-      {/* Legend: grouped, quiet labels — colours (alignment meaning) and
-          intensity (distance from the corpus norm). No boxes. */}
-      <div className="mt-3 mx-auto max-w-[440px] text-[11px] text-[var(--undp-gray)]">
-        {/* 2-col grid: the label column auto-sizes to the widest label across
-            locales, so a longer label can't overflow into the text. */}
-        <div className="grid grid-cols-[auto_1fr] items-baseline gap-x-3 gap-y-1.5">
-          <span className="uppercase tracking-wider text-[11px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
-            {t("groupColours")}
-          </span>
-          <div
-            className="flex flex-wrap items-center gap-x-3 gap-y-0.5"
+      {/* Legend: one quiet caption line — the two alignment swatches plus the
+          intensity gradient (distance from the corpus norm). No boxes. */}
+      <div className="mt-3 mx-auto max-w-[440px] text-caption text-[var(--undp-gray)]">
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+          <span
+            className="inline-flex items-center gap-x-3"
             data-tour="matrix-legend-colours"
           >
             <span className="inline-flex items-center gap-1.5">
               <span
                 className="inline-block w-3 h-3 rounded-sm"
-                style={{ backgroundColor: "rgba(25, 97, 39, 0.85)" }}
+                style={{ backgroundColor: `rgba(${ALIGNED_RGB.join(", ")}, 0.85)` }}
               />
               {t("aligned")}
             </span>
             <span className="inline-flex items-center gap-1.5">
               <span
                 className="inline-block w-3 h-3 rounded-sm"
-                style={{ backgroundColor: "rgba(220, 38, 38, 0.85)" }}
+                style={{ backgroundColor: `rgba(${FLAGGED_RGB.join(", ")}, 0.85)` }}
               />
               {t("flagged")}
             </span>
-          </div>
-          <span className="uppercase tracking-wider text-[11px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
-            {t("groupIntensity")}
           </span>
-          <div
-            className="flex flex-wrap items-center gap-x-2 gap-y-0.5"
+          <span
+            className="inline-flex items-center gap-x-2"
             data-tour="matrix-legend-intensity"
           >
             <span
@@ -261,9 +258,9 @@ export function DocCoherenceMatrix({
               }}
             />
             <span className="text-[var(--undp-gray)]/80">{t("legendHint")}</span>
-          </div>
+          </span>
         </div>
-        <p className="text-[11px] text-[var(--undp-gray)]/60 text-center mt-1">
+        <p className="text-caption text-[var(--undp-gray)]/60 text-center mt-1">
           ({t("clickHint")})
         </p>
       </div>

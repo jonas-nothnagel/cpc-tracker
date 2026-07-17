@@ -82,17 +82,17 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
         <h2 className="text-lg font-semibold text-[var(--undp-black)] mb-1.5">
           {t("title")}
         </h2>
-        <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
+        <p className="text-body text-[var(--undp-gray)] leading-relaxed max-w-2xl">
           {t("subtitle")}
         </p>
       </div>
 
       {/* ── CATEGORIES (shown first) ── */}
       <div className="mb-8">
-        <h3 className="text-xs font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-1">
+        <h3 className="text-caption font-medium text-[var(--undp-gray)] mb-1">
           {t("categoriesHeading")}
         </h3>
-        <p className="text-xs text-[var(--undp-gray)] mb-3">
+        <p className="text-caption text-[var(--undp-gray)] mb-3">
           {categorySummary}
         </p>
 
@@ -118,16 +118,16 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
       {/* ── TARGETS ── */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-semibold text-[var(--undp-gray)] uppercase tracking-wider flex items-center gap-2">
+          <h3 className="text-caption font-medium text-[var(--undp-gray)] flex items-center gap-2">
             {t("targetsHeading")}
             {props.targets.length > 0 && (
-              <span className="px-2 py-0.5 bg-[var(--undp-blue)] text-white rounded-full text-[10px] font-bold">
+              <span className="px-2 py-0.5 bg-[var(--undp-blue)] text-white rounded-full text-caption font-bold">
                 {props.targets.length}
               </span>
             )}
           </h3>
           <button type="button" onClick={() => setShowManualAdd(!showManualAdd)}
-            className="text-xs text-[var(--undp-blue)] hover:underline font-medium">
+            className="text-caption text-[var(--undp-blue)] hover:underline font-medium">
             {showManualAdd ? t("hideManual") : t("addTarget")}
           </button>
         </div>
@@ -143,15 +143,15 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
         )}
 
         {props.targets.length > 0 && (
-          <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+          <div className="border border-line rounded-xl overflow-hidden divide-y divide-line-soft">
             {props.targetsByDocument.map(({ docType, targets: docTargets }) => (
               <div key={docType}>
                 <button type="button"
                   onClick={() => setExpandedDoc(expandedDoc === docType ? null : docType)}
                   className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors">
                   <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: getDocColor(null, docType) }} />
-                  <span className="text-sm font-medium text-[var(--undp-black)]">{docType}</span>
-                  <span className="text-sm text-[var(--undp-gray)] ml-auto tabular-nums">
+                  <span className="text-body font-medium text-[var(--undp-black)]">{docType}</span>
+                  <span className="text-body text-[var(--undp-gray)] ml-auto tabular-nums">
                     {t("targetCount", { count: docTargets.length })}
                   </span>
                   <svg className={`w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ${expandedDoc === docType ? "rotate-180" : ""}`}
@@ -160,13 +160,13 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
                   </svg>
                 </button>
                 {expandedDoc === docType && (
-                  <div className="border-t border-gray-100 bg-gray-50/50 max-h-64 overflow-y-auto">
+                  <div className="border-t border-line-soft bg-gray-50/50 max-h-64 overflow-y-auto">
                     {docTargets.map(({ t: tg, idx }) => (
-                      <div key={idx} className="px-4 py-2.5 flex items-start gap-3 border-b border-gray-100 last:border-0 group">
-                        <span className="text-[10px] font-medium text-[var(--undp-gray)] bg-gray-200 rounded px-1.5 py-0.5 mt-0.5 flex-shrink-0">
+                      <div key={idx} className="px-4 py-2.5 flex items-start gap-3 border-b border-line-soft last:border-0 group">
+                        <span className="text-caption font-medium text-[var(--undp-gray)] bg-gray-200 rounded px-1.5 py-0.5 mt-0.5 flex-shrink-0">
                           {tg.sourceLabel}
                         </span>
-                        <p className="text-xs text-[var(--undp-black)] leading-relaxed flex-1 min-w-0">{tg.text}</p>
+                        <p className="text-data text-[var(--undp-black)] leading-relaxed flex-1 min-w-0">{tg.text}</p>
                         <button type="button" onClick={() => props.onRemoveTarget(idx)}
                           className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5" title={t("removeTarget")}>
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -183,9 +183,9 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
         )}
 
         {props.targets.length === 0 && !props.editingManualTargets && (
-          <div className="text-center py-10 border-2 border-dashed border-gray-200 rounded-xl">
-            <p className="text-sm text-[var(--undp-gray)]">{t("noTargets")}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{t("noTargetsHint")}</p>
+          <div className="text-center py-10 border-2 border-dashed border-line rounded-xl">
+            <p className="text-body text-[var(--undp-gray)]">{t("noTargets")}</p>
+            <p className="text-caption text-gray-400 mt-0.5">{t("noTargetsHint")}</p>
           </div>
         )}
 

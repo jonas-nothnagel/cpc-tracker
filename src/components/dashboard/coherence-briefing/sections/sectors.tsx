@@ -23,7 +23,7 @@ import {
   type SectorCoherenceShareSummary,
   type SectorTension,
 } from "@/lib/coherence-briefing";
-import type { SectorSynthesis } from "@/types";
+import { FLAGGED_COLOR } from "@/lib/utils";
 import type { LensId, LensOption } from "../lens";
 import type { WheelFilter } from "../centerpiece/wheel";
 
@@ -31,43 +31,35 @@ export const SECTORS_SECTION_ID = "sectors";
 
 type SectorSortMode = "coverage" | "flagShare";
 
-const VISIBLE_ROWS_DEFAULT = 8;
+const VISIBLE_ROWS_DEFAULT = 6;
 
-// Neutral slate for the coverage magnitude (a count, not a verdict); red for the
-// possible-misalignment share; light track behind both bars.
-const BAR_COVERAGE = "#4b5563";
-const BAR_FLAG = "#dc2626";
-const BAR_TRACK = "#e5e7eb";
-const MID_TICK = "#1f2937";
+// Neutral gray for the coverage magnitude (a count, not a verdict); the
+// alignment-axis red for the possible-misalignment share; line track behind both.
+const BAR_COVERAGE = "var(--undp-gray)";
+const BAR_FLAG = FLAGGED_COLOR;
+const BAR_TRACK = "var(--color-line)";
+const MID_TICK = "var(--undp-black)";
 
 const GRID = "grid grid-cols-[1fr_5rem_5rem] items-center gap-3";
 
 export function SectorsSection({
   sectorRows,
   sectorShares,
-  sectorSyntheses,
   taxonomyType,
   coverageConcentration,
-  lensLabel,
   availableLenses,
   activeLensId,
   onLensChange,
-  filter,
-  onFilterChange,
   onOpenSector,
   onHoverSector,
 }: {
   sectorRows: SectorTension[];
   sectorShares: SectorCoherenceShareSummary | null;
-  sectorSyntheses: Map<string, SectorSynthesis>;
   coverageConcentration: CoverageConcentrationStat;
-  lensLabel: string | null;
   taxonomyType: string;
   availableLenses: LensOption[];
   activeLensId: LensId | null;
   onLensChange: (id: LensId) => void;
-  filter: WheelFilter;
-  onFilterChange: (f: WheelFilter) => void;
   onOpenSector: (s: {
     categoryId: string;
     categoryName: string;
@@ -86,8 +78,6 @@ export function SectorsSection({
   const mergedRows = useMemo<MergedSectorRow[]>(() => {
     const rows: MergedSectorRow[] = sectorRows.map((row) => {
       const share = shareByCategory?.get(row.categoryId) ?? null;
-      const synth = sectorSyntheses.get(`${taxonomyType}:${row.categoryId}`);
-      const pool = synth?.pool_composition ?? null;
       return {
         categoryId: row.categoryId,
         categoryName: row.categoryName,
@@ -95,18 +85,16 @@ export function SectorsSection({
         flaggedShare: share?.flaggedShare ?? null,
         flaggedPairs: share?.flaggedPairs ?? 0,
         reviewedPairs: share?.reviewedPairs ?? 0,
-        relevantOnlyCount: pool?.relevant_only_count ?? null,
       };
     });
     rows.sort((a, b) => sortRows(a, b, sortMode));
     return rows;
-  }, [sectorRows, shareByCategory, sectorSyntheses, taxonomyType, sortMode]);
+  }, [sectorRows, shareByCategory, sortMode]);
 
   const sentence = composeCoverageSentence({
     coverageConcentration,
     mergedRows,
     midShare,
-    lensLabel,
     taxonomyType,
     t,
   });
@@ -134,15 +122,11 @@ export function SectorsSection({
           availableLenses={availableLenses}
           activeLensId={activeLensId}
           onLensChange={onLensChange}
-          filter={filter}
-          onFilterChange={onFilterChange}
         />
       }
       evidence={
         mergedRows.length === 0 ? (
-          <p className="text-sm italic text-[var(--undp-gray)]">
-            {t("noTaxonomy")}
-          </p>
+          <p className="text-body text-[var(--undp-gray)]">{t("noTaxonomy")}</p>
         ) : (
           <div className="border-y border-gray-200 py-3">
             <SectorColumnHeader sortMode={sortMode} onSort={setSortMode} />
@@ -173,7 +157,7 @@ export function SectorsSection({
               <button
                 type="button"
                 onClick={() => setShowAll(true)}
-                className="mt-3 text-[11px] text-[var(--undp-black)] hover:text-[var(--undp-black)] underline underline-offset-2"
+                className="mt-3 text-caption text-[var(--undp-black)] hover:text-[var(--undp-black)] underline underline-offset-2"
               >
                 {t("showAll", { count: mergedRows.length })}
               </button>
@@ -182,7 +166,7 @@ export function SectorsSection({
               <button
                 type="button"
                 onClick={() => setShowAll(false)}
-                className="mt-3 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2"
+                className="mt-3 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2"
               >
                 {t("collapseToTop", { count: VISIBLE_ROWS_DEFAULT })}
               </button>
@@ -203,7 +187,6 @@ interface MergedSectorRow {
   flaggedShare: number | null;
   flaggedPairs: number;
   reviewedPairs: number;
-  relevantOnlyCount: number | null;
 }
 
 /** Coverage-first by default; nulls (no reviewed pairs) always sort last on flag share. */
@@ -229,73 +212,83 @@ function LensChipRow({
   availableLenses,
   activeLensId,
   onLensChange,
-  filter,
-  onFilterChange,
 }: {
   availableLenses: LensOption[];
   activeLensId: LensId | null;
   onLensChange: (id: LensId) => void;
+}) {
+  const t = useTranslations("briefing.sectors");
+  const activeLens = activeLensId ?? availableLenses[0]?.id;
+  if (availableLenses.length === 0) return null;
+  return (
+    <div className="flex items-center gap-2 flex-wrap" data-tour="sector-lenses">
+      <span className="text-caption text-[var(--undp-gray)] mr-1">
+        {t("groupBy")}
+      </span>
+      {availableLenses.map((opt) => {
+        const active = activeLens === opt.id;
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => onLensChange(opt.id)}
+            aria-pressed={active}
+            title={opt.tooltip}
+            className={`text-caption px-2.5 py-1 rounded-full border transition-colors ${
+              active
+                ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
+                : "border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400"
+            }`}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * The aligned/misaligned/both ribbon filter. It drives the WHEEL (WheelState),
+ * not the sector table, so the briefing renders it in the sticky aside next to
+ * the wheel while this section is active.
+ */
+export function SectorWheelFilter({
+  filter,
+  onFilterChange,
+}: {
   filter: WheelFilter;
   onFilterChange: (f: WheelFilter) => void;
 }) {
   const t = useTranslations("briefing.sectors");
-  const activeLens = activeLensId ?? availableLenses[0]?.id;
   const FILTER_OPTIONS: ReadonlyArray<{ value: WheelFilter; label: string }> = [
     { value: "tensions", label: t("filter.misaligned") },
     { value: "alignments", label: t("filter.aligned") },
     { value: "all", label: t("filter.both") },
   ];
   return (
-    <div className="flex flex-col gap-3" data-tour="sector-lenses">
-      {availableLenses.length > 0 && (
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
-            {t("groupBy")}
-          </span>
-          {availableLenses.map((opt) => {
-            const active = activeLens === opt.id;
-            return (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => onLensChange(opt.id)}
-                aria-pressed={active}
-                title={opt.tooltip}
-                className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
-                  active
-                    ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
-                    : "border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400"
-                }`}
-              >
-                {opt.label}
-              </button>
-            );
-          })}
-        </div>
-      )}
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mr-1">
-          {t("show")}
-        </span>
-        {FILTER_OPTIONS.map((opt) => {
-          const active = filter === opt.value;
-          return (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => onFilterChange(opt.value)}
-              aria-pressed={active}
-              className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
-                active
-                  ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
-                  : "border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400"
-              }`}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
+    <div className="mb-2 flex items-center justify-center gap-2 flex-wrap">
+      <span className="text-caption text-[var(--undp-gray)] mr-1">
+        {t("show")}
+      </span>
+      {FILTER_OPTIONS.map((opt) => {
+        const active = filter === opt.value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onFilterChange(opt.value)}
+            aria-pressed={active}
+            className={`text-caption px-2.5 py-1 rounded-full border transition-colors ${
+              active
+                ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
+                : "border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400"
+            }`}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -310,7 +303,7 @@ function SectorColumnHeader({
   const t = useTranslations("briefing.sectors");
   return (
     <div
-      className={`${GRID} px-1 pb-1 mb-1 text-[11px] uppercase tracking-wider text-[var(--undp-gray)]`}
+      className={`${GRID} px-1 pb-1 mb-1 text-caption text-[var(--undp-gray)]`}
       data-tour="sector-columns"
     >
       <span>{t("col.sector")}</span>
@@ -349,14 +342,12 @@ function composeCoverageSentence({
   coverageConcentration,
   mergedRows,
   midShare,
-  lensLabel,
   taxonomyType,
   t,
 }: {
   coverageConcentration: CoverageConcentrationStat;
   mergedRows: MergedSectorRow[];
   midShare: number;
-  lensLabel: string | null;
   taxonomyType: string;
   t: ReturnType<typeof useTranslations<"briefing.sectors">>;
 }): CoverageSentence {
@@ -365,7 +356,7 @@ function composeCoverageSentence({
   const nounStyle =
     taxonomyType === "gga"
       ? "theme"
-      : lensLabel === "GLOBE"
+      : taxonomyType === "globe"
         ? "category"
         : "sector";
   const noun = t(`noun.${nounStyle}.singular`);
@@ -474,7 +465,6 @@ function SectorRow({
 }) {
   const t = useTranslations("briefing.sectors");
   const isMuted = row.targetCount === 0;
-  const hasPool = row.relevantOnlyCount !== null;
   const sharePct =
     row.flaggedShare !== null ? Math.round(row.flaggedShare * 100) : null;
   const flagAria =
@@ -495,7 +485,7 @@ function SectorRow({
       >
         <div className="min-w-0">
           <p
-            className={`text-sm leading-snug truncate ${
+            className={`text-body leading-snug truncate ${
               isMuted
                 ? "text-[var(--undp-gray)]/70"
                 : "text-[var(--undp-black)] font-medium"
@@ -504,11 +494,8 @@ function SectorRow({
           >
             {row.categoryName}
           </p>
-          <p className="text-[11px] text-[var(--undp-gray)] tabular-nums leading-tight mt-0.5">
+          <p className="text-caption text-[var(--undp-gray)] tabular-nums leading-tight mt-0.5">
             {t("primaryCount", { count: row.targetCount })}
-            {hasPool && row.relevantOnlyCount !== null
-              ? " · " + t("relevantCount", { count: row.relevantOnlyCount })
-              : ""}
           </p>
         </div>
         <CoverageBar count={row.targetCount} max={maxTargetCount} />
@@ -537,7 +524,7 @@ function CoverageBar({ count, max }: { count: number; max: number }) {
           }}
         />
       </span>
-      <span className="text-[11px] tabular-nums leading-none text-[var(--undp-black)] font-medium">
+      <span className="text-caption tabular-nums leading-none text-[var(--undp-black)] font-medium">
         {count.toLocaleString()}
       </span>
     </div>
@@ -566,7 +553,7 @@ function FlagShareCell({
           className="block h-1.5 w-full rounded-full"
           style={{ backgroundColor: BAR_TRACK }}
         />
-        <span className="text-[11px] tabular-nums leading-none text-[var(--undp-gray)]/60">
+        <span className="text-caption tabular-nums leading-none text-[var(--undp-gray)]/60">
           —
         </span>
       </div>
@@ -599,7 +586,7 @@ function FlagShareCell({
         )}
       </span>
       <span
-        className={`text-[11px] tabular-nums leading-none ${
+        className={`text-caption tabular-nums leading-none ${
           share > 0
             ? "text-[var(--undp-black)] font-medium"
             : "text-[var(--undp-gray)]/60"

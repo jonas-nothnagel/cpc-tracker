@@ -47,9 +47,7 @@ export function FrictionTypeChart({
   const { total: totalFlagged } = totals;
   if (totalFlagged === 0) {
     return (
-      <p className="text-sm italic text-[var(--undp-gray)]">
-        {t("empty")}
-      </p>
+      <p className="text-caption text-[var(--undp-gray)]">{t("empty")}</p>
     );
   }
 
@@ -79,11 +77,11 @@ export function FrictionTypeChart({
   return (
     <div className="border-y border-gray-200 py-5">
       <div className="mb-3 flex items-baseline justify-between gap-3 flex-wrap">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+        <p className="text-caption text-[var(--undp-gray)]">
           {resolvedCaption}
         </p>
         <p
-          className="text-[11px] text-[var(--undp-black)] tabular-nums font-medium"
+          className="text-caption text-[var(--undp-black)] tabular-nums font-medium"
           data-tour="friction-total"
         >
           {t("pairCount", {
@@ -131,7 +129,7 @@ export function FrictionTypeChart({
         })}
       </div>
       <div
-        className="mt-2.5 grid grid-cols-3 gap-3 text-[11px]"
+        className="mt-2.5 grid grid-cols-3 gap-3 text-caption"
         data-tour="friction-mechanisms"
       >
         {ORDER.map((type) => {
@@ -168,7 +166,7 @@ function SegmentTotal({
   return (
     <div>
       <p
-        className="text-[11px] uppercase tracking-wider font-semibold inline-flex items-center gap-1.5"
+        className="text-caption font-semibold inline-flex items-center gap-1.5"
         style={{ color }}
       >
         <span
@@ -178,13 +176,16 @@ function SegmentTotal({
         />
         {labels[type]}
       </p>
-      <p className="text-[15px] text-[var(--undp-black)] font-medium tabular-nums mt-0.5">
+      <p className="text-body text-[var(--undp-black)] font-medium tabular-nums mt-0.5">
         {pct}%
-        <span className="text-[11px] text-[var(--undp-gray)] font-normal ml-1">
+        <span className="text-caption text-[var(--undp-gray)] font-normal ml-1">
           ({value.toLocaleString()})
         </span>
       </p>
-      <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-1">
+      <p
+        className="text-caption text-[var(--undp-gray)] mt-1 truncate"
+        title={descriptions[type]}
+      >
         {descriptions[type]}
       </p>
     </div>

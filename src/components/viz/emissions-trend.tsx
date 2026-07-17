@@ -229,17 +229,17 @@ export function EmissionsTrend({ btrData }: EmissionsTrendProps) {
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
           <XAxis
             dataKey="year"
-            tick={{ fontSize: 11, fill: "#64748b" }}
+            tick={{ fontSize: 12, fill: "var(--undp-gray)" }}
             interval="preserveStartEnd"
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "#64748b" }}
+            tick={{ fontSize: 12, fill: "var(--undp-gray)" }}
             tickFormatter={(v: number) => `${(v / 1000).toFixed(0)}k`}
             label={{
               value: t("yAxisUnit"),
               angle: -90,
               position: "insideLeft",
-              style: { fontSize: 10, fill: "#94a3b8" },
+              style: { fontSize: 12, fill: "var(--undp-gray)" },
             }}
           />
           <Tooltip

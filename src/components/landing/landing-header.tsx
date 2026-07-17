@@ -28,7 +28,7 @@ export function LandingHeader() {
     <header
       className={`fixed inset-x-0 top-0 z-30 transition-colors duration-300 ${
         scrolled
-          ? "border-b border-gray-100 bg-white/95 backdrop-blur"
+          ? "border-b border-line-soft bg-white/95 backdrop-blur"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -45,14 +45,14 @@ export function LandingHeader() {
             className="h-11 w-auto"
           />
           <span
-            className={`hidden text-sm font-medium tracking-wide transition-colors duration-300 sm:block ${
+            className={`hidden text-body font-medium transition-colors duration-300 sm:block ${
               scrolled ? "text-[var(--undp-black)]" : "text-white"
             }`}
           >
             {t("brand")}
           </span>
         </Link>
-        <nav className="flex items-center gap-8 text-sm">
+        <nav className="flex items-center gap-8 text-body">
           <Link
             href="/methodology"
             className={`transition-colors duration-300 ${

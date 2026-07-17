@@ -444,7 +444,6 @@ function DetailPanel({
     return order[a.alignment] - order[b.alignment];
   });
 
-  const hasNr7InConns = nr7ProgressMap && connections.some((c) => nr7ProgressMap.has(c.otherTarget.id));
 
   // Distribution across the full alignment spectrum (DIST_ORDER, module
   // scope) so the bar only reflects real signal.
@@ -469,13 +468,13 @@ function DetailPanel({
   const [targetTextExpanded, setTargetTextExpanded] = useState(!isTargetLong);
 
   return (
-    <div className="border border-gray-100 rounded-lg bg-white overflow-hidden flex flex-col h-full">
-      {/* Header: citation-style minimal typography. Small-caps doc line on
+    <div className="border border-line-soft rounded-lg bg-white overflow-hidden flex flex-col h-full">
+      {/* Header: citation-style minimal typography. Quiet doc line on
           top, bold wrapping title below, target text as a paragraph. No
           chip/dot chrome; keeps the focus on the language itself. */}
-      <div className="px-4 pt-4 pb-3 shrink-0 border-b border-gray-100">
+      <div className="px-4 pt-4 pb-3 shrink-0 border-b border-line-soft">
         <div className="flex items-start justify-between gap-3">
-          <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] leading-snug">
+          <p className="text-caption font-medium text-[var(--undp-gray)] leading-snug">
             <span style={{ color: getDocColor(countryConfig, node.target.sourceDocument) }}>●</span>{" "}
             {docShort}
             {targetCode ? ` · ${targetCode}` : ""}
@@ -504,7 +503,7 @@ function DetailPanel({
           below) instead of two competing scrollbars. */}
       <div className="px-4 py-3 shrink-0">
         <p
-          className={`text-xs text-[var(--undp-black)] leading-relaxed ${
+          className={`text-data text-[var(--undp-black)] leading-relaxed ${
             isTargetLong && !targetTextExpanded ? "line-clamp-5" : ""
           }`}
         >
@@ -514,7 +513,7 @@ function DetailPanel({
           <button
             type="button"
             onClick={() => setTargetTextExpanded((p) => !p)}
-            className="mt-1 text-[11px] text-[var(--undp-blue)] hover:underline"
+            className="mt-1 text-caption text-[var(--undp-blue)] hover:underline"
           >
             {targetTextExpanded ? t("showLess") : t("readFull")}
           </button>
@@ -539,7 +538,7 @@ function DetailPanel({
               />
             ))}
           </div>
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-caption">
             {distSegments.map((s) => (
               <span key={s.lvl}>
                 <span className="font-semibold" style={{ color: ALIGNMENT_COLORS[s.lvl] }}>
@@ -555,29 +554,29 @@ function DetailPanel({
       )}
 
       {nr7Item && (
-        <div className="px-4 py-3 border-t border-gray-100 shrink-0">
+        <div className="px-4 py-3 border-t border-line-soft shrink-0">
           <div className="flex items-center gap-2 mb-2">
             <span
               className="w-2.5 h-2.5 rounded-full shrink-0"
               style={{ backgroundColor: NR7_BADGE_COLORS[nr7Item.progressStatus] ?? "#9ca3af" }}
             />
-            <span className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+            <span className="text-caption font-medium text-[var(--undp-gray)]">
               {t("nr7Progress", { label: nr7BadgeLabels[(nr7Item.progressStatus as Nr7Status)] ?? nr7BadgeLabels.unknown })}
             </span>
           </div>
           {nr7Item.progressSummary && (
-            <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mb-1.5">
+            <p className="text-caption text-[var(--undp-black)] leading-relaxed mb-1.5">
               {nr7Item.progressSummary.length > 300
                 ? nr7Item.progressSummary.slice(0, 300) + "..."
                 : nr7Item.progressSummary}
             </p>
           )}
           {nr7Item.challenges && (
-            <details className="text-[11px]">
+            <details className="text-caption">
               <summary className="text-[var(--undp-gray)] cursor-pointer hover:text-[var(--undp-blue)]">
                 {t("keyChallenges")}
               </summary>
-              <p className="text-[var(--undp-black)] leading-relaxed mt-1 pl-2 border-l-2 border-gray-200">
+              <p className="text-[var(--undp-black)] leading-relaxed mt-1 pl-2 border-l border-line-strong">
                 {nr7Item.challenges.length > 300
                   ? nr7Item.challenges.slice(0, 300) + "..."
                   : nr7Item.challenges}
@@ -591,33 +590,17 @@ function DetailPanel({
           preview (line-clamped). Clicking anywhere on a row opens the
           pair-comparison modal; that's the drill-in for full rationale
           + side-by-side targets. No per-row expand/collapse. */}
-      <div className="flex-1 overflow-y-auto min-h-0 border-t border-gray-100">
-        <div className="flex items-baseline justify-between px-4 pt-3 pb-2 shrink-0">
-          <p className="text-[11px] text-[var(--undp-gray)]">
+      <div className="flex-1 overflow-y-auto min-h-0 border-t border-line-soft">
+        <div className="px-4 pt-3 pb-2 shrink-0">
+          <p className="text-caption text-[var(--undp-gray)]">
             {connections.length === 1
               ? t("connectionsSingular", { count: connections.length })
               : t("connectionsPlural", { count: connections.length })}
+            {" · "}
+            {t("sortedBySeverity")}
           </p>
-          <p className="text-[11px] text-[var(--undp-gray)]">{t("sortedBySeverity")}</p>
         </div>
-        {hasNr7InConns && (
-          <div className="flex items-center gap-3 px-4 pb-2 text-[11px] text-[var(--undp-gray)]">
-            <span>{t("nr7Heading")}</span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.on_track }} />
-              {t("nr7OnTrack")}
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.limited }} />
-              {t("nr7Limited")}
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: NR7_BADGE_COLORS.no_progress }} />
-              {t("nr7None")}
-            </span>
-          </div>
-        )}
-        <ul className="divide-y divide-gray-100">
+        <ul className="divide-y divide-line-soft">
           {sorted.map((conn) => {
             const nr7Status = nr7ProgressMap?.get(conn.otherTarget.id);
             return (
@@ -632,10 +615,10 @@ function DetailPanel({
                       className="w-1.5 h-1.5 rounded-full shrink-0 translate-y-[-1px]"
                       style={{ backgroundColor: getDocColor(countryConfig, conn.otherTarget.sourceDocument) }}
                     />
-                    <span className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] shrink-0">
+                    <span className="text-caption font-medium text-[var(--undp-gray)] shrink-0">
                       {getDocLabel(countryConfig, conn.otherTarget.sourceDocument)}
                     </span>
-                    <span className="text-xs font-semibold text-[var(--undp-black)] flex-1 min-w-0">
+                    <span className="text-data font-semibold text-[var(--undp-black)] flex-1 min-w-0">
                       {conn.otherTarget.sourceLabel}
                     </span>
                     {nr7Status && (
@@ -646,14 +629,14 @@ function DetailPanel({
                       />
                     )}
                     <span
-                      className="text-[11px] font-medium shrink-0"
+                      className="text-caption font-medium shrink-0"
                       style={{ color: ALIGNMENT_COLORS[conn.alignment] }}
                     >
                       {alignmentLabels[conn.alignment]}
                     </span>
                   </div>
                   {conn.description && (
-                    <p className="mt-1.5 ml-3.5 text-[11px] leading-relaxed text-[var(--undp-gray)] line-clamp-3">
+                    <p className="mt-1.5 ml-3.5 text-caption leading-relaxed text-[var(--undp-gray)] line-clamp-3">
                       {conn.description}
                     </p>
                   )}
@@ -682,23 +665,20 @@ function TargetCard({
   const docColor = getDocColor(countryConfig, target.sourceDocument);
 
   return (
-    <div
-      className="rounded-lg border border-gray-100 bg-white p-3 flex flex-col min-w-0"
-      style={{ borderLeftWidth: 3, borderLeftColor: docColor }}
-    >
+    <div className="rounded-lg border border-line-soft bg-white p-3 flex flex-col min-w-0">
       <div className="flex items-center gap-1.5 mb-1.5 min-w-0">
         <span
           className="w-2 h-2 rounded-full shrink-0"
           style={{ backgroundColor: docColor }}
         />
-        <span className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] truncate min-w-0">
+        <span className="text-caption font-medium text-[var(--undp-gray)] truncate min-w-0">
           {getDocLabel(countryConfig, target.sourceDocument)} · {target.sourceLabel}
         </span>
         <ActionTypeBadge actionType={target.actionType} />
         <OriginalLanguageChip target={target} />
       </div>
       <p
-        className={`text-xs leading-relaxed text-[var(--undp-black)] ${
+        className={`text-data leading-relaxed text-[var(--undp-black)] ${
           isLong && !expanded ? "line-clamp-3" : ""
         }`}
       >
@@ -708,7 +688,7 @@ function TargetCard({
         <button
           type="button"
           onClick={() => setExpanded((p) => !p)}
-          className="mt-1.5 self-start text-[11px] text-[var(--undp-blue)] hover:underline"
+          className="mt-1.5 self-start text-caption text-[var(--undp-blue)] hover:underline"
         >
           {expanded ? t("showLess") : t("readFull")}
         </button>
@@ -766,11 +746,11 @@ function PairDetailModal({
               className="w-2.5 h-2.5 rounded-full shrink-0"
               style={{ backgroundColor: tint }}
             />
-            <span className="text-xs font-semibold uppercase tracking-wide text-[var(--undp-black)]">
+            <span className="text-caption font-medium text-[var(--undp-black)]">
               {alignmentLabels[result.alignment]}
             </span>
             {result.mechanism && (
-              <span className="ml-auto text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/80 text-[var(--undp-black)] border border-gray-200">
+              <span className="ml-auto text-caption font-medium px-2 py-0.5 rounded-full bg-white/80 text-[var(--undp-black)] border border-line">
                 {contradictionLabels[result.mechanism]}
                 {result.manageability === "fundamental" && (
                   <span className="ml-1 text-[var(--undp-gray)]">{t("fundamentalSuffix")}</span>
@@ -779,11 +759,11 @@ function PairDetailModal({
             )}
           </div>
           {result.description ? (
-            <p className="text-sm leading-relaxed text-[var(--undp-black)]">
+            <p className="text-body leading-relaxed text-[var(--undp-black)]">
               {result.description}
             </p>
           ) : (
-            <p className="text-sm leading-relaxed text-[var(--undp-gray)] italic">
+            <p className="text-caption leading-relaxed text-[var(--undp-gray)]">
               {t("noRationale")}
             </p>
           )}
@@ -837,7 +817,7 @@ function Stat({
   void accent;
   const valueClass = `text-2xl font-semibold tabular-nums leading-none text-[var(--undp-black)]`;
   const labelClass =
-    "text-[10px] text-[var(--undp-gray)] uppercase tracking-wider mt-1.5";
+    "text-caption text-[var(--undp-gray)] mt-1.5";
   if (!onClick) {
     return (
       <div>
@@ -854,8 +834,8 @@ function Stat({
       aria-pressed={active}
       className={`text-left -mx-1 px-1.5 py-1 rounded-md transition-colors group ${
         active
-          ? "bg-gray-100 ring-1 ring-gray-200"
-          : "ring-1 ring-transparent hover:bg-gray-50 hover:ring-gray-200"
+          ? "bg-gray-100 ring-1 ring-line"
+          : "ring-1 ring-transparent hover:bg-gray-50 hover:ring-line"
       }`}
     >
       <p
@@ -885,7 +865,7 @@ function Section({
 }) {
   return (
     <section>
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
         {title}
       </p>
       {children}
@@ -915,7 +895,7 @@ function StatListSection({
   return (
     <section>
       <div className="flex items-center justify-between mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+        <p className="text-caption font-medium text-[var(--undp-gray)]">
           {title}
         </p>
         <button
@@ -928,7 +908,7 @@ function StatListSection({
         </button>
       </div>
       {isEmpty ? (
-        <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+        <p className="text-caption text-[var(--undp-gray)] leading-snug">
           {empty}
         </p>
       ) : (
@@ -975,7 +955,7 @@ function BarRow({
   const redFill = "bg-red-50 group-hover:bg-red-100";
   const fillBg = tone === "red" ? redFill : "bg-gray-100 group-hover:bg-gray-200";
   const borderAccent = tone === "red" && severity === "flagged"
-    ? "border-l-2 border-red-400"
+    ? "border-l border-line-strong"
     : "";
   const countColor = "text-[var(--undp-black)]";
   return (
@@ -998,18 +978,18 @@ function BarRow({
             ),
           }}
         />
-        <span className="relative text-[10px] font-semibold tracking-wide text-[var(--undp-gray)] shrink-0">
+        <span className="relative text-caption font-medium text-[var(--undp-gray)] shrink-0">
           {getDocLabel(countryConfig, target.sourceDocument)}
         </span>
-        <span className="relative text-[11px] text-[var(--undp-black)] truncate flex-1">
+        <span className="relative text-caption text-[var(--undp-black)] truncate flex-1">
           {target.sourceLabel}
         </span>
         <span
-          className={`relative text-[11px] tabular-nums shrink-0 font-semibold ${countColor}`}
+          className={`relative text-caption tabular-nums shrink-0 font-semibold ${countColor}`}
         >
           {count}
           {unit && (
-            <span className="text-[9px] uppercase tracking-wider font-medium text-[var(--undp-gray)] ml-1">
+            <span className="text-caption font-medium text-[var(--undp-gray)] ml-1">
               {unit}
             </span>
           )}
@@ -1086,7 +1066,7 @@ function PairRow({
           className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
           style={{ backgroundColor: ALIGNMENT_COLORS[level] }}
         />
-        <div className="min-w-0 flex-1 text-[11px] leading-snug">
+        <div className="min-w-0 flex-1 text-caption leading-snug">
           <div className="text-[var(--undp-black)] truncate">
             <span className="text-[var(--undp-gray)] font-medium">
               {getDocLabel(countryConfig, a.sourceDocument)}
@@ -1310,17 +1290,17 @@ function revealDocsForFocalTaxonomyCategory(args: {
  *   own accent color carries the CTA emphasis.
  */
 const CHIP_BASE =
-  "text-[11px] leading-snug rounded-full px-2.5 py-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+  "text-caption leading-snug rounded-full px-2.5 py-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 const CHIP_SURPRISE = `${CHIP_BASE} text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100 hover:border-amber-300`;
-const CHIP_SUGGESTION = `${CHIP_BASE} text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)]`;
+const CHIP_SUGGESTION = `${CHIP_BASE} text-[var(--undp-gray)] border border-line hover:bg-gray-50 hover:border-line-strong hover:text-[var(--undp-black)]`;
 const EXAMPLE_ROW =
-  "w-full text-left text-[11.5px] leading-snug rounded-md px-3 py-2 text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+  "w-full text-left text-caption leading-snug rounded-md px-3 py-2 text-[var(--undp-gray)] border border-line hover:bg-gray-50 hover:border-line-strong hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 // Workbench variant of the example starters: small pills under the prominent
 // chat input, so they stay visibly secondary to the chat itself.
 const EXAMPLE_CHIP =
-  "text-left text-[11px] leading-snug rounded-full px-2.5 py-1 text-[var(--undp-gray)] border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+  "text-left text-caption leading-snug rounded-full px-2.5 py-1 text-[var(--undp-gray)] border border-line hover:bg-gray-50 hover:border-line-strong hover:text-[var(--undp-black)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 const SHOW_ME_LINK_BASE =
-  "text-[11.5px] font-semibold inline-flex items-center gap-1 transition-colors disabled:opacity-30 disabled:cursor-not-allowed";
+  "text-caption font-semibold inline-flex items-center gap-1 transition-colors disabled:opacity-30 disabled:cursor-not-allowed";
 const SHOW_ME_LINK_AMBER = `${SHOW_ME_LINK_BASE} text-amber-800 hover:text-amber-900 hover:underline`;
 const SHOW_ME_LINK_BLUE = `${SHOW_ME_LINK_BASE} text-[var(--undp-blue)] hover:underline`;
 
@@ -1435,18 +1415,18 @@ function ChatOutput({
   return (
     <>
       {showInsight && currentInsight && (
-        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
+        <div className="text-data text-[var(--undp-black)] leading-relaxed bg-amber-50/70 border border-amber-100 rounded-lg px-3.5 py-2.5">
           <p className="flex items-baseline gap-2">
-            <span className="text-[9.5px] font-semibold uppercase tracking-wider text-amber-700 shrink-0">
+            <span className="text-caption font-medium text-amber-700 shrink-0">
               {t("insight")}
             </span>
             <span className="flex-1">{localizeInsight("callout")}</span>
           </p>
           {currentInsight.pathway && (
-            <p className="mt-1.5 text-[11px] italic text-amber-900/65 leading-snug pl-[60px]">
+            <p className="mt-1.5 text-caption text-amber-900/65 leading-snug pl-[60px]">
               <span
                 aria-hidden="true"
-                className="mr-1.5 not-italic text-amber-700/70"
+                className="mr-1.5 text-amber-700/70"
               >
                 ↪
               </span>
@@ -1468,7 +1448,7 @@ function ChatOutput({
         </div>
       )}
       {showReply && (
-        <div className="text-[12px] text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-gray-100 rounded-lg px-3.5 py-2.5">
+        <div className="text-data text-[var(--undp-black)] leading-relaxed bg-gray-50 border border-line-soft rounded-lg px-3.5 py-2.5">
           <div>
             <ReplyText
               typed={typedReply}
@@ -1492,7 +1472,7 @@ function ChatOutput({
         </div>
       )}
       {showError && (
-        <div className="text-[12px] text-red-700 leading-relaxed bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5">
+        <div className="text-data text-red-700 leading-relaxed bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5">
           {chat.error}
         </div>
       )}
@@ -1588,11 +1568,11 @@ function ChatBar({
         {prominent ? (
           // Explorer B dock: a single embedded bar — lead label, search input,
           // filled Ask button — so the chat reads as part of the canvas.
-          <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm">
-            <span className="hidden max-w-[54px] shrink-0 text-[10px] font-semibold uppercase leading-[1.15] tracking-wider text-[var(--undp-gray)] sm:block">
+          <div className="flex items-center gap-3 rounded-2xl border border-line bg-white px-3.5 py-2.5 shadow-sm">
+            <span className="hidden max-w-[54px] shrink-0 text-caption font-medium leading-[1.15] text-[var(--undp-gray)] sm:block">
               {t("askPoliciesLabel")}
             </span>
-            <span aria-hidden="true" className="text-[15px] text-gray-300">
+            <span aria-hidden="true" className="text-body text-gray-300">
               ⌕
             </span>
             <input
@@ -1601,32 +1581,32 @@ function ChatBar({
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
               disabled={chat.loading}
-              className="min-w-0 flex-1 bg-transparent text-[13px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none disabled:opacity-50"
+              className="min-w-0 flex-1 bg-transparent text-data text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none disabled:opacity-50"
               aria-label={t("askAriaProminent")}
             />
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
-              className="shrink-0 rounded-full bg-[var(--undp-blue)] px-5 py-2 text-[13px] font-semibold text-white transition-colors disabled:opacity-40"
+              className="shrink-0 rounded-full bg-[var(--undp-blue)] px-5 py-2 text-data font-semibold text-white transition-colors disabled:opacity-40"
             >
               {chat.loading ? t("loading") : t("askProminent")}
             </button>
           </div>
         ) : (
-          <div className="flex items-center gap-2 border border-gray-200 rounded-md px-3 py-2 focus-within:border-gray-400 transition-colors">
+          <div className="flex items-center gap-2 border border-line rounded-md px-3 py-2 focus-within:border-gray-400 transition-colors">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
               disabled={chat.loading}
-              className="flex-1 min-w-0 text-[12.5px] text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
+              className="flex-1 min-w-0 text-data text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] bg-transparent focus:outline-none disabled:opacity-50"
               aria-label={t("askAria")}
             />
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
-              className="text-[11px] font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
+              className="text-caption font-medium text-[var(--undp-blue)] hover:underline disabled:opacity-30 disabled:no-underline shrink-0"
             >
               {chat.loading ? t("loading") : t("ask")}
             </button>
@@ -1635,13 +1615,16 @@ function ChatBar({
       </form>
 
       {/* Disclosure for the chat-query ledger (removable usage analytics:
-          see src/lib/analytics/README.md). */}
-      <p className="px-1 text-[10px] text-[var(--undp-gray)]/80">
-        {t("storageNotice")}
-      </p>
+          see src/lib/analytics/README.md). The workbench dock (prominent) folds
+          this sentence into the stage's footer caveat instead. */}
+      {!prominent && (
+        <p className="px-1 text-caption text-[var(--undp-gray)]/80">
+          {t("storageNotice")}
+        </p>
+      )}
 
       {chat.loading && (
-        <div className="text-[11px] text-[var(--undp-gray)] italic px-1">
+        <div className="text-caption text-[var(--undp-gray)] px-1">
           {t("thinking")}
         </div>
       )}
@@ -1999,10 +1982,10 @@ function StatBrowseView({
                     className="w-2 h-2 rounded-full shrink-0"
                     style={{ backgroundColor: color }}
                   />
-                  <span className="text-[11px] font-semibold text-[var(--undp-black)]">
+                  <span className="text-caption font-semibold text-[var(--undp-black)]">
                     {label}
                   </span>
-                  <span className="text-[10px] text-[var(--undp-gray)] tabular-nums">
+                  <span className="text-caption text-[var(--undp-gray)] tabular-nums">
                     {t("docTargetCount", { count: items.length })}
                   </span>
                 </summary>
@@ -2193,10 +2176,10 @@ function EmptyPanel({
   const tensMax = tensRanks[0]?.count ?? 1;
 
   return (
-    <div className={`flex flex-col h-full overflow-hidden ${embed ? "bg-white/55 border border-gray-200/70 rounded-2xl" : "bg-white border border-gray-100 rounded-lg"}`}>
+    <div className={`flex flex-col h-full overflow-hidden ${embed ? "bg-white/55 border border-line/70 rounded-2xl" : "bg-white border border-line-soft rounded-lg"}`}>
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+          <p className="text-caption font-medium text-[var(--undp-gray)] mb-3">
             {t("atAGlance")}
           </p>
           <div className="grid grid-cols-3 gap-4">
@@ -2244,7 +2227,7 @@ function EmptyPanel({
                   ))}
                 </ul>
               ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                <p className="text-caption text-[var(--undp-gray)] leading-snug">
                   {t("noStrongAlignments")}
                 </p>
               )}
@@ -2266,7 +2249,7 @@ function EmptyPanel({
                   ))}
                 </ul>
               ) : (
-                <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                <p className="text-caption text-[var(--undp-gray)] leading-snug">
                   {t("noTensions")}
                 </p>
               )}
@@ -2454,9 +2437,9 @@ function CategoryPanel({
   );
 
   return (
-    <div className="bg-white border border-gray-100 rounded-lg flex flex-col h-full overflow-hidden">
+    <div className="bg-white border border-line-soft rounded-lg flex flex-col h-full overflow-hidden">
       {/* Pinned header with stats so the body owns the scroll. */}
-      <div className="p-5 pb-4 shrink-0 border-b border-gray-100">
+      <div className="p-5 pb-4 shrink-0 border-b border-line-soft">
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-2 min-w-0">
             <span
@@ -2477,7 +2460,7 @@ function CategoryPanel({
           </button>
         </div>
         {budget && (
-          <div className="text-[11px] text-[var(--undp-black)] leading-snug mb-3 space-y-0.5">
+          <div className="text-caption text-[var(--undp-black)] leading-snug mb-3 space-y-0.5">
             <div className="flex items-baseline gap-2">
               <span className="text-[var(--undp-gray)] w-32 shrink-0">
                 {t("taggedBerSpend")}
@@ -2515,7 +2498,7 @@ function CategoryPanel({
                 <button
                   type="button"
                   onClick={() => setProgrammesOpen((v) => !v)}
-                  className="inline-flex items-center gap-1 text-[11px] text-[var(--undp-black)] hover:text-[var(--undp-blue)] transition-colors"
+                  className="inline-flex items-center gap-1 text-caption text-[var(--undp-black)] hover:text-[var(--undp-blue)] transition-colors"
                   aria-expanded={programmesOpen}
                 >
                   <span aria-hidden="true" className="text-[var(--undp-gray)]">
@@ -2548,7 +2531,7 @@ function CategoryPanel({
                             key={p.code}
                             title={t("programmeTooltip", { id: p.subcategoryId, name: p.subcategoryName })}
                           >
-                            <div className="flex items-baseline gap-2 text-[11px]">
+                            <div className="flex items-baseline gap-2 text-caption">
                               <span className="text-[var(--undp-gray)] tabular-nums shrink-0">
                                 {p.code}
                               </span>
@@ -2628,7 +2611,7 @@ function CategoryPanel({
                           type="button"
                           onClick={() => onSelectCategory(arc.id)}
                           title={arc.label}
-                          className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
+                          className="w-full flex items-center gap-2 text-caption py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
                         >
                           <span
                             className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -2645,7 +2628,7 @@ function CategoryPanel({
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  <p className="text-caption text-[var(--undp-gray)] leading-snug">
                     {t("noTensionsOther")}
                   </p>
                 )}
@@ -2661,7 +2644,7 @@ function CategoryPanel({
                           type="button"
                           onClick={() => onSelectCategory(arc.id)}
                           title={arc.label}
-                          className="w-full flex items-center gap-2 text-[11px] py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
+                          className="w-full flex items-center gap-2 text-caption py-0.5 px-1 -mx-1 rounded hover:bg-gray-50 transition-colors text-left"
                         >
                           <span
                             className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -2678,7 +2661,7 @@ function CategoryPanel({
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  <p className="text-caption text-[var(--undp-gray)] leading-snug">
                     {t("noAlignsOther")}
                   </p>
                 )}
@@ -2695,7 +2678,7 @@ function CategoryPanel({
                 {contradictionPairs.length > 0 ? (
                   <>
                     <ul className="space-y-0.5">
-                      {contradictionPairs.slice(0, 6).map((p) => {
+                      {contradictionPairs.slice(0, 5).map((p) => {
                         const tA = nodeMap.get(p.targetAId)?.target;
                         const tB = nodeMap.get(p.targetBId)?.target;
                         if (!tA || !tB) return null;
@@ -2713,20 +2696,20 @@ function CategoryPanel({
                         );
                       })}
                     </ul>
-                    {contradictionPairs.length > 6 && (
+                    {contradictionPairs.length > 5 && (
                       <button
                         type="button"
                         onClick={() =>
                           toggleStatView("tensions", "contradictions")
                         }
-                        className="text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
+                        className="text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
                       >
-                        {t("moreCount", { count: contradictionPairs.length - 6 })}
+                        {t("moreCount", { count: contradictionPairs.length - 5 })}
                       </button>
                     )}
                   </>
                 ) : (
-                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  <p className="text-caption text-[var(--undp-gray)] leading-snug">
                     {t("noConflicts")}
                   </p>
                 )}
@@ -2743,7 +2726,7 @@ function CategoryPanel({
                 {alignmentPairs.length > 0 ? (
                   <>
                     <ul className="space-y-0.5">
-                      {alignmentPairs.slice(0, 6).map((p) => {
+                      {alignmentPairs.slice(0, 5).map((p) => {
                         const tA = nodeMap.get(p.targetAId)?.target;
                         const tB = nodeMap.get(p.targetBId)?.target;
                         if (!tA || !tB) return null;
@@ -2761,18 +2744,18 @@ function CategoryPanel({
                         );
                       })}
                     </ul>
-                    {alignmentPairs.length > 6 && (
+                    {alignmentPairs.length > 5 && (
                       <button
                         type="button"
                         onClick={() => toggleStatView("alignments", "high")}
-                        className="text-[10px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
+                        className="text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] mt-1.5 px-1.5 underline decoration-dotted underline-offset-2"
                       >
-                        {t("moreCount", { count: alignmentPairs.length - 6 })}
+                        {t("moreCount", { count: alignmentPairs.length - 5 })}
                       </button>
                     )}
                   </>
                 ) : (
-                  <p className="text-[11px] text-[var(--undp-gray)] leading-snug">
+                  <p className="text-caption text-[var(--undp-gray)] leading-snug">
                     {t("noStrongAlignments")}
                   </p>
                 )}
@@ -2862,13 +2845,13 @@ export function PolicyCoherenceExplorer({
   // Embed mode adopts the briefing's lighter chrome: pill-shaped controls and a
   // softer card, so the re-hosted explorer reads as part of the new design.
   const controlCls = isEmbed
-    ? "rounded-full border border-gray-300 bg-white px-3.5 py-1.5 text-xs text-[var(--undp-black)] hover:border-[var(--undp-black)] focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/20 transition-colors"
-    : "border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30";
+    ? "rounded-full border border-line-strong bg-white px-3.5 py-1.5 text-data text-[var(--undp-black)] hover:border-[var(--undp-black)] focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/20 transition-colors"
+    : "border border-line rounded-md px-2.5 py-1.5 text-data text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30";
   // Embed sits directly on the briefing's cream page — no white card, so the
   // wheel reads as part of the new design rather than a pasted-in panel.
   const wheelCardCls = isEmbed
     ? "h-full relative"
-    : "bg-white border border-gray-100 rounded-lg p-4 h-full relative";
+    : "bg-white border border-line-soft rounded-lg p-4 h-full relative";
   // Embed thickens the rim arcs outward for the bolder, banded look of the new
   // design. Node and leader-label radii are unchanged, so the layout stays put.
   const arcOuterR = isEmbed ? 230 : OUTER_R;
@@ -2918,7 +2901,6 @@ export function PolicyCoherenceExplorer({
   // the page width with the chat as a bar on top, and the side rail only
   // appears when a target or category is selected (its stats). Toggling this
   // off brings the chat + insights + at-a-glance panel in beside the wheel.
-  const [wheelExpanded, setWheelExpanded] = useState(false);
 
   // Explorer B answers drawer. Collapsed by default so the wheel reads as the
   // clean hero; opens when a question is answered, a target / category is
@@ -3940,14 +3922,10 @@ export function PolicyCoherenceExplorer({
   // Workbench keeps the rail open at all times so the persistent chat header is
   // always visible; otherwise the panel opens on demand (At a glance, or a
   // selected target / category).
-  const panelOpen =
-    isWorkbench || showAtAGlance || selectedNode != null || focalGroup != null;
-  // Workbench default is the big-picture wheel (rail hidden). The rail appears
-  // when a target / category is selected (its stats), or when the user toggles
-  // the chat + insights + at-a-glance panel in. Other variants reuse panelOpen.
-  const railVisible = isWorkbench
-    ? !wheelExpanded || selectedNode != null || focalGroup != null
-    : panelOpen;
+  // The workbench variant returns its own stage layout before this fall-through
+  // layout renders, so the rail visibility only serves the standalone variants.
+  const railVisible =
+    showAtAGlance || selectedNode != null || focalGroup != null;
 
   // Group focus drives the dim treatment on the wheel only when no target is
   // active. Active target takes visual priority and reuses the existing
@@ -3985,8 +3963,9 @@ export function PolicyCoherenceExplorer({
   // active/connected rings (r + 5 / r + 3) and the group indicator dot stable.
   const NODE_RADIUS = 4.5;
 
-  // Target search, extracted so the workbench can place it in the top controls
-  // row (a primary control) while the standalone variants keep it in Row 2.
+  // Target search for the standalone/embed variants (rendered in Row 2 of the
+  // controls). The workbench variant returns its own layout before this and does
+  // not surface search.
   const targetSearch = (
     <div className="relative">
       <input
@@ -4014,7 +3993,7 @@ export function PolicyCoherenceExplorer({
           .slice(0, 8);
         if (matches.length === 0) return null;
         return (
-          <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 max-h-60 overflow-y-auto">
+          <div className="absolute top-full left-0 mt-1 w-72 bg-white border border-line rounded-lg shadow-lg z-50 py-1 max-h-60 overflow-y-auto">
             {matches.map((t) => (
               <button
                 key={t.id}
@@ -4032,7 +4011,7 @@ export function PolicyCoherenceExplorer({
                     backgroundColor: getDocColor(countryConfig, t.sourceDocument),
                   }}
                 />
-                <span className="text-xs text-[var(--undp-black)] truncate">
+                <span className="text-data text-[var(--undp-black)] truncate">
                   <span className="font-medium text-[var(--undp-gray)]">
                     {getDocLabel(countryConfig, t.sourceDocument)}
                   </span>{" "}
@@ -4771,7 +4750,7 @@ export function PolicyCoherenceExplorer({
                 fill={isEmbed ? "var(--undp-black)" : "#1e293b"}
                 style={
                   isEmbed
-                    ? { fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif" }
+                    ? { fontFamily: "var(--font-display)" }
                     : undefined
                 }
                 className="select-none pointer-events-none"
@@ -4905,9 +4884,6 @@ export function PolicyCoherenceExplorer({
   // to the original layout below, so /prototypes is unchanged.
   if (isWorkbench) {
     const countryName = targets[0]?.country ?? t("wheel.countryFallback");
-    const strongCount = visibleAlignment.filter(
-      (a) => a.alignment === "high",
-    ).length;
     const financeView = view === "finance";
     const statLine = financeView
       ? t("workbench.statFinance", {
@@ -4915,8 +4891,6 @@ export function PolicyCoherenceExplorer({
           targets: targets.length,
         })
       : t("workbench.statCoherence", {
-          strong: strongCount,
-          potential: totalContra,
           country: countryName,
           targets: targets.length,
         });
@@ -5002,7 +4976,7 @@ export function PolicyCoherenceExplorer({
             </InfoBox>
           </h2>
           )}
-          <p className="text-sm text-[var(--undp-gray)] mt-0.5">
+          <p className="text-body text-[var(--undp-gray)] mt-0.5">
             {(() => {
               const groupLabel = ({
                 document: [t("groupLabel.documentSingular"), t("groupLabel.documentPlural")],
@@ -5114,10 +5088,10 @@ export function PolicyCoherenceExplorer({
                     onClick={() => handleGroupChange(mode)}
                     aria-pressed={groupMode === mode}
                     title={title}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                    className={`px-3.5 py-1.5 rounded-full text-data font-medium border transition-colors ${
                       groupMode === mode
                         ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-                        : "bg-white border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                        : "bg-white border-line-strong text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
                     }`}
                   >
                     {label}
@@ -5153,17 +5127,14 @@ export function PolicyCoherenceExplorer({
                 onClick={() => setShowAtAGlance((v) => !v)}
                 aria-pressed={showAtAGlance}
                 title={t("controls.atAGlanceTitle")}
-                className={`ml-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                className={`ml-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-data font-medium border transition-colors ${
                   showAtAGlance
                     ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-                    : "bg-white border-gray-200 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                    : "bg-white border-line text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
                 }`}
               >
                 {t("controls.atAGlance")}
               </button>
-            )}
-            {isWorkbench && (
-              <div className="ml-auto flex items-center gap-2">{targetSearch}</div>
             )}
           </div>
           {/* Row 2: per-document toggles + abbreviation key + target search.
@@ -5198,7 +5169,7 @@ export function PolicyCoherenceExplorer({
                 <button
                   type="button"
                   onClick={() => toggleDoc(doc)}
-                  className={`inline-flex items-center gap-1.5 px-1 py-1 text-xs font-medium transition-colors ${
+                  className={`inline-flex items-center gap-1.5 px-1 py-1 text-data font-medium transition-colors ${
                     active
                       ? "text-[var(--undp-black)]"
                       : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
@@ -5220,7 +5191,7 @@ export function PolicyCoherenceExplorer({
                     <button
                       type="button"
                       onClick={() => togglePill("mitigation")}
-                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
+                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-caption font-medium transition-colors ${
                         mitActive
                           ? "text-[var(--undp-black)]"
                           : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
@@ -5240,7 +5211,7 @@ export function PolicyCoherenceExplorer({
                     <button
                       type="button"
                       onClick={() => togglePill("adaptation")}
-                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-[10px] font-medium transition-colors ${
+                      className={`inline-flex items-center gap-1.5 px-1 py-0.5 text-caption font-medium transition-colors ${
                         adpActive
                           ? "text-[var(--undp-black)]"
                           : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
@@ -5299,15 +5270,7 @@ export function PolicyCoherenceExplorer({
         />
       )}
 
-      {/* Workbench "expand wheel": the chat moves to a full-width bar on top so
-          the wheel below can take the whole page width for inspection. */}
-      {isWorkbench && wheelExpanded && (
-        <div className="mb-4 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
-          {workbenchChat(true)}
-        </div>
-      )}
-
-      {/* Main content: wheel + context panel. Side-by-side by default; in
+{/* Main content: wheel + context panel. Side-by-side by default; in
           expanded mode the wheel spans full width and any open detail stacks
           below it. */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -5318,35 +5281,6 @@ export function PolicyCoherenceExplorer({
           }`}
         >
           <div className={wheelCardCls}>
-            {/* Top-right "Big wheel" toggle, anchored to the wheel itself so the
-                expand affordance reads as belonging to the wheel. Sits above the
-                ribbons via z-10; the white state gets a soft backdrop so it stays
-                legible. Different corner from the budget overlay, so no clash. */}
-            {isWorkbench && (
-              <button
-                type="button"
-                onClick={() => setWheelExpanded((v) => !v)}
-                aria-pressed={!wheelExpanded}
-                title={
-                  wheelExpanded
-                    ? "Bring the chat, insights and at-a-glance in beside the wheel"
-                    : "Return to the full-width big-picture wheel"
-                }
-                className={`absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border shadow-sm transition-colors ${
-                  !wheelExpanded
-                    ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
-                    : "bg-white/90 backdrop-blur border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-                }`}
-              >
-                {wheelExpanded ? (
-                  "Chat & stats"
-                ) : (
-                  <>
-                    <span aria-hidden="true">⤢</span> Big wheel
-                  </>
-                )}
-              </button>
-            )}
             {/* Top-left budget overlay control. Only rendered when the country
                 has BER data classified to GLOBE subcategories. Clicking ON
                 snaps groupMode to "globe" so the shading actually paints;
@@ -5360,10 +5294,10 @@ export function PolicyCoherenceExplorer({
                     setBudgetOverlay(next);
                     if (next && groupMode !== "globe") setGroupMode("globe");
                   }}
-                  className={`self-start inline-flex items-center gap-2 px-3 py-1.5 ${isEmbed ? "rounded-full" : "rounded-md"} text-xs font-medium border transition-colors ${
+                  className={`self-start inline-flex items-center gap-2 px-3 py-1.5 ${isEmbed ? "rounded-full" : "rounded-md"} text-data font-medium border transition-colors ${
                     budgetShadingActive
                       ? "bg-[var(--undp-blue)]/10 border-[var(--undp-blue)]/40 text-[var(--undp-black)]"
-                      : "bg-white border-gray-200 text-[var(--undp-black)] hover:border-gray-300"
+                      : "bg-white border-line text-[var(--undp-black)] hover:border-line-strong"
                   }`}
                   title={
                     budgetShadingActive
@@ -5377,13 +5311,13 @@ export function PolicyCoherenceExplorer({
                     className={`w-2.5 h-2.5 rounded-sm shrink-0 ${
                       budgetShadingActive
                         ? "bg-[var(--undp-blue)]"
-                        : "border border-gray-300 bg-white"
+                        : "border border-line-strong bg-white"
                     }`}
                   />
                   {t("budget.label")}
                 </button>
                 {budgetShadingActive && (
-                  <p className="text-[10.5px] text-[var(--undp-gray)] leading-snug">
+                  <p className="text-caption text-[var(--undp-gray)] leading-snug">
                     {t("budget.mongoliaNote", {
                       start: budgetSummary.period.start,
                       end: budgetSummary.period.end,
@@ -5395,10 +5329,10 @@ export function PolicyCoherenceExplorer({
             {wheelSvg}
 
             {/* Legend — structured grid */}
-            <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-[auto_auto] gap-x-8 gap-y-1 text-[11px] justify-start">
+            <div className="mt-4 pt-3 border-t border-line-soft grid grid-cols-[auto_auto] gap-x-8 gap-y-1 text-caption justify-start">
               {/* Document column */}
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
                   {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : t("wheel.legendSector")}
                 </p>
                 <div className="flex flex-col gap-1">
@@ -5414,7 +5348,7 @@ export function PolicyCoherenceExplorer({
               </div>
               {/* Connection strength column */}
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">{t("wheel.legendConnectionStrength")}</p>
+                <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">{t("wheel.legendConnectionStrength")}</p>
                 <div className="flex flex-col gap-1">
                   {([
                     ["high", t("wheel.legendHigh")],
@@ -5438,17 +5372,10 @@ export function PolicyCoherenceExplorer({
           </div>
         </div>
 
-        {/* Right column. In the workbench a persistent, prominent chat header
-            sits above the on-demand context panel (target detail / category /
-            at-a-glance), so the chat survives selection. In the standalone
-            variants the chat instead lives inside EmptyPanel's idle state. */}
+        {/* Right column: the on-demand context panel (target detail / category /
+            at-a-glance). The chat lives inside EmptyPanel's idle state. */}
         {railVisible && (
         <div className="min-w-0 lg:col-span-4 flex flex-col gap-4">
-          {isWorkbench && !wheelExpanded && (
-            <div className="shrink-0 rounded-2xl border border-gray-200/70 bg-white/55 p-4">
-              {workbenchChat()}
-            </div>
-          )}
           <div className="flex-1 min-h-0">
           {railPanel}
           </div>

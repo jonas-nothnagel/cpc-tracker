@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-13T00:00:00Z",
+  "title": "Design System: Policy Coherence Analyzer",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "UNDP Blue",
+        "canonical": "#0468b1",
+        "tonalRamp": [
+          "#021f35",
+          "#043a62",
+          "#04528e",
+          "#0468b1",
+          "#2a86c9",
+          "#5aa4da",
+          "#97c6e9",
+          "#d3e6f6"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#232e3d",
+        "tonalRamp": [
+          "#0d1219",
+          "#151d27",
+          "#1c2632",
+          "#232e3d",
+          "#4a5568",
+          "#7a8598",
+          "#adb5c1",
+          "#dde1e7"
+        ]
+      },
+      "chart-nbt": {
+        "role": "secondary",
+        "displayName": "NBT Teal",
+        "canonical": "#0d9488",
+        "tonalRamp": [
+          "#04302c",
+          "#06534c",
+          "#0a7469",
+          "#0d9488",
+          "#2eb0a4",
+          "#63c6bd",
+          "#9fdcd6",
+          "#d5f0ec"
+        ]
+      },
+      "chart-nap": {
+        "role": "secondary",
+        "displayName": "NAP Amber",
+        "canonical": "#b45309",
+        "tonalRamp": [
+          "#331705",
+          "#5c2a06",
+          "#8a3f07",
+          "#b45309",
+          "#d17a2e",
+          "#e0a061",
+          "#eec79c",
+          "#f6e6d2"
+        ]
+      },
+      "chart-alignment": {
+        "role": "secondary",
+        "displayName": "Alignment Green",
+        "canonical": "#196127",
+        "tonalRamp": [
+          "#06180a",
+          "#0c3113",
+          "#124a1d",
+          "#196127",
+          "#2f8a41",
+          "#5aab6a",
+          "#96cba1",
+          "#d1e8d6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing hero and the briefing country headline; Source Serif 4, the only place type gets large (~56px ceiling)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Serif section headlines that state the finding in plain words; 28px, 32px from sm. Drawer titles use the same voice at a reduced 1.25rem sub-size."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text, short insight copy, controls, primary row lines; cap prose at 65-75ch."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Dense evidence rows and tables, secondary lines, chart ticks, compact controls; tabular-nums for figures."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Legends, meta, footnotes, AI-provenance notes; sentence case, 12px floor, never a tracked eyebrow."
+      }
+    },
+    "shadows": [
+      {
+        "name": "popover",
+        "value": "0 10px 15px -3px rgba(0,0,0,0.10), 0 4px 6px -4px rgba(0,0,0,0.10)",
+        "purpose": "Info popovers and small floating panels anchored to a trigger."
+      },
+      {
+        "name": "overlay-deep",
+        "value": "0 18px 40px -12px rgba(15,22,30,0.45)",
+        "purpose": "Larger disclosure menus that must read as a lifted layer over imagery."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "ease",
+        "purpose": "Default easing for color/state transitions on interactive elements."
+      },
+      {
+        "name": "duration-fast",
+        "value": "200ms",
+        "purpose": "Standard transition-colors and small affordance transitions (e.g. chevron rotate)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single primary action per view. Square-cornered UNDP Blue — the one place the system does not round.",
+      "html": "<a href=\"#\" class=\"ds-btn-primary\">Analyse your policies</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; background: var(--undp-blue, #0468b1); color: #fff; padding: 12px 24px; font-size: 1rem; font-weight: 600; text-decoration: none; border: none; border-radius: 0; cursor: pointer; transition: background-color 200ms ease; } .ds-btn-primary:hover { background: var(--undp-blue-dark, #035293); } .ds-btn-primary:focus-visible { outline: 2px solid var(--undp-blue, #0468b1); outline-offset: 2px; }"
+    },
+    {
+      "name": "Quiet Link Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Low-emphasis / disclosure action beside the primary. Underlined text, no fill.",
+      "html": "<button type=\"button\" class=\"ds-btn-quiet\">Explore a pilot country<svg class=\"ds-chevron\" viewBox=\"0 0 12 12\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2.5 4.5 6 8l3.5-3.5\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn-quiet { display: inline-flex; align-items: center; gap: 8px; background: none; border: none; padding: 0; font-size: 1rem; font-weight: 500; color: var(--undp-black, #232e3d); text-decoration: underline; text-decoration-color: rgba(35,46,61,0.4); text-underline-offset: 4px; cursor: pointer; transition: text-decoration-color 200ms ease; } .ds-btn-quiet:hover { text-decoration-color: currentColor; } .ds-btn-quiet:focus-visible { outline: 2px solid var(--undp-blue, #0468b1); outline-offset: 2px; } .ds-chevron { width: 12px; height: 12px; }"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Small meta/status pill. Rounded-full, hairline border, uppercase muted label. Use sparingly.",
+      "html": "<span class=\"ds-chip\">Coming soon</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; border: 1px solid #d1d5db; border-radius: 9999px; padding: 2px 8px; font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--undp-gray, #55606e); background: #fff; }"
+    },
+    {
+      "name": "Info Badge",
+      "kind": "custom",
+      "refersTo": "info-badge",
+      "description": "The signature (i) affordance — depth-on-request at the word level. Grey at rest, UNDP Blue when active; opens a bordered explainer popover.",
+      "html": "<span class=\"ds-info-badge\" role=\"button\" tabindex=\"0\" aria-label=\"More information\">i</span>",
+      "css": ".ds-info-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 9999px; font-size: 11px; font-weight: 600; background: #e5e7eb; color: var(--undp-gray, #55606e); cursor: pointer; user-select: none; transition: background-color 200ms ease, color 200ms ease; } .ds-info-badge:hover { background: rgba(4,104,177,0.1); color: var(--undp-blue, #0468b1); } .ds-info-badge:focus-visible { outline: 2px solid var(--undp-blue, #0468b1); outline-offset: 2px; } .ds-info-badge[aria-pressed=\"true\"] { background: var(--undp-blue, #0468b1); color: #fff; }"
+    },
+    {
+      "name": "Disclosure Menu",
+      "kind": "nav",
+      "refersTo": "menu",
+      "description": "Floating disclosure of navigation links. Rounded-lg white panel on the overlay-deep shadow; items highlight on Surface Light.",
+      "html": "<div class=\"ds-menu\"><p class=\"ds-menu-head\">Pilot countries</p><a href=\"#\" class=\"ds-menu-item\">Mongolia</a><a href=\"#\" class=\"ds-menu-item\">Panama</a><a href=\"#\" class=\"ds-menu-item\">Sri Lanka</a></div>",
+      "css": ".ds-menu { width: 18rem; background: #fff; border-radius: 8px; padding: 6px; box-shadow: 0 18px 40px -12px rgba(15,22,30,0.45); } .ds-menu-head { margin: 0; padding: 8px 12px 6px; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--undp-gray, #55606e); } .ds-menu-item { display: block; padding: 10px 12px; border-radius: 6px; font-size: 0.875rem; font-weight: 500; color: var(--undp-black, #232e3d); text-decoration: none; transition: background-color 200ms ease; } .ds-menu-item:hover { background: var(--undp-light, #f7f7f7); } .ds-menu-item:focus-visible { outline: none; background: var(--undp-light, #f7f7f7); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Public Atlas",
+    "overview": "The Public Atlas is what a serious public institution would build if it set out to map a country's nature-climate policy terrain and hand it to the people who govern it. It is an atlas first: evidence you can navigate, a landscape of instruments and targets that rewards exploration and guides the eye rather than dumping a table. It is public second: it speaks in the generous, quietly beautiful register of a national broadcaster or a museum wall text, legible to a minister and a junior analyst alike, never a specialist's console. And it is uncluttered throughout: every surface leads with one clear finding and holds its depth in reserve, one click away. The register is calm institutional authority carried by craft, not decoration: serif headlines give the institution a voice, a plain working sans carries the analysis, motion makes a finding land, and colour is rationed so the one blue that means 'act here' still means something.",
+    "keyCharacteristics": [
+      "Evidence-led and navigable: the interface maps, it does not lecture.",
+      "One finding on the face, depth on request: never a wall of prose or a dense grid at rest.",
+      "Serif voice, sans working text: gravity where it speaks, clarity where it works.",
+      "Rationed colour: UNDP Blue means 'act' and 'here', nothing else.",
+      "Neutral by construction: opportunity for stronger alignment, never fault.",
+      "Quietly beautiful: craft is felt, not announced."
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "UNDP Blue (#0468b1) appears only on primary actions, links, and current selection; under ~10% of any screen. Its rarity is the signal.",
+        "section": "colors"
+      },
+      {
+        "name": "The Legible-Axis Rule",
+        "body": "Red/green is allowed as the intuitive encoding for the alignment axis in data viz (wheel ribbons, share bars, matrices, status dots): green reinforcing, red a possible misalignment worth a second look. Two conditions: colour is never the sole channel (pair with a pattern or text label so it survives colour-blindness), and the no-blame line lives in neutral language, never a whole-surface alert wash or a fault signal. Outside data viz, red stays conventional error status. Supersedes the earlier no-red-for-flagged rule.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper-Is-For-Editorial Rule",
+        "body": "Editorial Paper (#faf8f4) is confined to landing / editorial bands. Product surfaces default to White or Surface Light. Warm cream never becomes the ambient background of the tool.",
+        "section": "colors"
+      },
+      {
+        "name": "The Headline-Is-The-Finding Rule",
+        "body": "A section headline states the conclusion in plain language, not a topic label. The serif carries the finding; the body elaborates in <=35 words with the rest behind a disclosure.",
+        "section": "typography"
+      },
+      {
+        "name": "The Serif-For-Voice-Only Rule",
+        "body": "The serif is for display and headlines only. Buttons, labels, table cells, controls, and data readouts are always the sans.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are flat at rest. A drop shadow means the element genuinely floats (menu, popover, drawer). A resting card with a shadow is wrong; group it with a border or Surface Light.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do lead every surface with one clear finding in plain words, and hold detail in a drawer, popover, or disclosure.",
+      "Do keep UNDP Blue for primary actions, links, and current selection only; under ~10% of any screen.",
+      "Do frame flagged pairs and gaps as neutral opportunities for stronger alignment, with an AI-generated + confidence caveat where content is model-derived. Red/green may encode the alignment axis; keep the no-blame line in the words.",
+      "Do pair any red/green alignment encoding with a second channel (pattern, dashed vs solid, or a text label) so it reads for colour-blind users; colour is never the only signal.",
+      "Do keep the primary CTA square-cornered; round the surfaces and pills around it, not the button.",
+      "Do expand every abbreviation on first use or attach an InfoBox; no bare acronyms.",
+      "Do keep body text at Ink (#232e3d) or Muted Slate (#55606e); if contrast is even close, move toward Ink.",
+      "Do honour prefers-reduced-motion; every animation has a static fallback and reveals enhance already-visible content.",
+      "Do reserve Editorial Paper (#faf8f4) for landing / editorial bands; product surfaces default to White or Surface Light."
+    ],
+    "donts": [
+      "Don't ship auto-generated consultancy-dashboard output: no extended AI-written narrative, no gradient hero-metric templates, no generative filler.",
+      "Don't use alarmist or blame framing: no whole-surface red alert washes, no colour or language that reads as fault. Red/green as a data encoding is fine; a red-alert dashboard is not.",
+      "Don't fall into generic SaaS-analytics grammar: no identical card grids, no decorative charts, and no uppercase tracked eyebrow above every section (the SlideFrame per-slide eyebrow is legacy, not a pattern to replicate).",
+      "Don't produce dense, jargon-heavy academic output; if a non-technical policymaker can't grasp it at a glance, it belongs behind a disclosure.",
+      "Don't let it feel templated or vibe-coded: standard affordances yes, unconsidered defaults no.",
+      "Don't use a border-left/border-right colored stripe (>1px) on cards, callouts, or list items.",
+      "Don't use gradient text (background-clip: text) or glassmorphism/decorative blur as a default.",
+      "Don't put a drop shadow on a resting surface, a serif in a control, or a second competing primary action in one view."
+    ]
+  }
+}

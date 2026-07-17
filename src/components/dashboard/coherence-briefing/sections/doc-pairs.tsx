@@ -1,20 +1,19 @@
 "use client";
 
 /**
- * Document pairs — answers "how do specific documents relate?" by listing
- * EVERY scored document pairing (ranked by signal), each with its
- * synthesised storyline, a reinforce/clash excerpt, a balance bar, and
- * counts. The matrix in the sticky right column is the at-a-glance view of
- * the same set; the ranked list is the detail. The two are synced: hovering
- * a row highlights its matrix cell and vice versa (via the shared
- * hoveredKey), and clicking either opens the same pair drawer.
+ * Document pairs — answers "how do specific documents relate?" with a ranked
+ * list of scored document pairings: storyline name, balance bar, and counts
+ * per row (the reinforce/clash excerpts live in the pair drawer). The matrix
+ * in the sticky right column is the at-a-glance view of the same set; the two
+ * are synced: hovering a row highlights its matrix cell and vice versa (via
+ * the shared hoveredKey), and clicking either opens the same pair drawer.
  *
- * Earlier this slide capped at the top 4 cards, which hid every lower-ranked
- * pairing behind the matrix. The full ranked list (revived from the round-2
- * relationships view) brings them all back.
+ * The list shows the top rows and expands on request ("Show all N pairings"):
+ * Panama ships 36 pairings, and the full wall on the face outweighed its
+ * value. A ribbon handover that targets a hidden row expands the list first.
  */
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { TourButton } from "../tour/tour-button";
@@ -28,11 +27,9 @@ import type {
 
 export const DOC_PAIRS_SECTION_ID = "doc-pairs";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
 const HIGHLIGHT_MS = 2400;
-/** Lead the row excerpt with the clash once flagged climbs past this share of aligned. */
-const CLASH_EXCERPT_RATIO = 0.25;
+/** How many ranked pairings the face shows before the "Show all" expander. */
+const VISIBLE_CAP = 5;
 
 export function DocPairsSection({
   docPairSyntheses,
@@ -87,9 +84,21 @@ export function DocPairsSection({
     : null;
   const rowRefs = useRef(new Map<string, HTMLLIElement>());
 
-  // Side effect only: scroll the focused row into view, then ask the host
-  // to clear its pending state after the highlight window so the ring fades
-  // on the next render.
+  const [showAll, setShowAll] = useState(false);
+  const focusedIdx = focusedKey
+    ? ranked.findIndex(
+        (dp) => getDocPairKey(dp.doc_a, dp.doc_b) === focusedKey,
+      )
+    : -1;
+  // A handed-over row ranked below the cap force-expands the list for as long as
+  // it stays focused. Deriving this (rather than setting showAll from the effect)
+  // keeps the scroll effect free of setState, so it never cascades renders or
+  // fights the user's "Show fewer" click during the highlight window.
+  const expanded = showAll || focusedIdx >= VISIBLE_CAP;
+  const visible = expanded ? ranked : ranked.slice(0, VISIBLE_CAP);
+
+  // Side effect only: scroll the handed-over row into view, then ask the host to
+  // clear its pending state after the highlight window so the ring fades.
   useEffect(() => {
     if (!focusedKey) return;
     const el = rowRefs.current.get(focusedKey);
@@ -114,12 +123,13 @@ export function DocPairsSection({
       }
       evidence={
         ranked.length === 0 ? (
-          <p className="text-sm italic text-[var(--undp-gray)]">
-            {t("empty")}
-          </p>
+          <p className="text-body text-[var(--undp-gray)]">{t("empty")}</p>
         ) : (
           <DocPairRanking
-            docPairs={ranked}
+            docPairs={visible}
+            totalCount={ranked.length}
+            showAll={expanded}
+            onToggleShowAll={() => setShowAll((v) => !v)}
             maxTotal={maxTotal}
             countryConfig={countryConfig}
             onOpen={onOpenDocPair}
@@ -175,6 +185,9 @@ function docLabel(
 
 function DocPairRanking({
   docPairs,
+  totalCount,
+  showAll,
+  onToggleShowAll,
   maxTotal,
   countryConfig,
   onOpen,
@@ -184,6 +197,9 @@ function DocPairRanking({
   registerRowRef,
 }: {
   docPairs: DocPairSynthesis[];
+  totalCount: number;
+  showAll: boolean;
+  onToggleShowAll: () => void;
   maxTotal: number;
   countryConfig: CountryConfig | null;
   onOpen: (dp: DocPairSynthesis) => void;
@@ -195,9 +211,6 @@ function DocPairRanking({
   const t = useTranslations("briefing.docPairs");
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-        {t("allPairings", { count: docPairs.length })}
-      </p>
       <ol
         className="divide-y divide-gray-200 border-y border-gray-200"
         data-tour="pair-list"
@@ -219,7 +232,16 @@ function DocPairRanking({
           );
         })}
       </ol>
-      <p className="mt-3 text-[11px] text-[var(--undp-gray)] leading-relaxed">
+      {totalCount > VISIBLE_CAP && (
+        <button
+          type="button"
+          onClick={onToggleShowAll}
+          className="mt-2 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums"
+        >
+          {showAll ? t("showFewer") : t("showAll", { count: totalCount })}
+        </button>
+      )}
+      <p className="mt-3 text-caption text-[var(--undp-gray)] leading-relaxed">
         {t("aiDisclaimer")}
       </p>
     </div>
@@ -252,25 +274,12 @@ function DocPairRow({
   const totalWidthPct = maxTotal > 0 ? (balance.total / maxTotal) * 100 : 0;
   const hoverKey = getDocPairKey(dp.doc_a, dp.doc_b);
   const failed = dp.synthesis_error !== null;
-  // Pick the excerpt side: lead with the clash once friction is meaningfully
-  // present (flagged past CLASH_EXCERPT_RATIO of aligned), else reinforce.
-  const showClash =
-    !failed && dp.flagged_count > dp.aligned_count * CLASH_EXCERPT_RATIO;
-  const excerptText = failed
-    ? null
-    : showClash
-      ? dp.synthesis.clash
-      : dp.synthesis.reinforce;
-  const excerptPrefix = showClash ? t("excerpt.flagged") : t("excerpt.aligned");
-  const excerptColor = showClash
-    ? ALIGNMENT_COLORS.flagged
-    : ALIGNMENT_COLORS.high;
   return (
     <li
       ref={registerRef}
       className={
         pulsing
-          ? "ring-2 ring-[var(--undp-black)] ring-offset-2 ring-offset-[#fbfaf7] rounded transition-all"
+          ? "ring-2 ring-[var(--undp-blue)] ring-offset-2 ring-offset-[#ffffff] rounded transition-all"
           : undefined
       }
     >
@@ -287,38 +296,14 @@ function DocPairRow({
       >
         <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1.5">
           <div className="flex items-baseline gap-2 min-w-0">
-            <span
-              className="text-[13px] font-medium text-[var(--undp-black)] shrink-0"
-              style={{ fontFamily: HEADLINE_SERIF }}
-            >
+            <span className="text-data font-medium text-[var(--undp-black)] shrink-0">
               {labelA} ↔ {labelB}
             </span>
-            <span
-              className="text-[12px] text-[var(--undp-gray)] leading-snug truncate"
-              style={{ fontFamily: HEADLINE_SERIF }}
-            >
+            <span className="text-caption text-[var(--undp-gray)] leading-snug truncate">
               {failed ? t("synthesisFailed") : dp.synthesis.storyline_name}
             </span>
           </div>
         </div>
-        {excerptText && (
-          <p
-            className="text-[11.5px] italic text-[var(--undp-gray)] leading-snug mb-2 max-w-prose overflow-hidden"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-            }}
-          >
-            <span
-              className="not-italic font-semibold uppercase tracking-wider text-[11px] mr-1.5"
-              style={{ color: excerptColor }}
-            >
-              {excerptPrefix} ·
-            </span>
-            {excerptText}
-          </p>
-        )}
         {/* Every row carries the anchor; the tour spotlights the first match. */}
         <div
           className="grid grid-cols-[1fr_auto] items-center gap-3"
@@ -347,7 +332,7 @@ function DocPairRow({
               }}
             />
           </div>
-          <p className="text-[12px] text-[var(--undp-black)] tabular-nums font-medium whitespace-nowrap">
+          <p className="text-data text-[var(--undp-black)] tabular-nums font-medium whitespace-nowrap">
             <span style={{ color: ALIGNMENT_COLORS.high }}>
               {t("countAligned", { count: dp.aligned_count })}
             </span>

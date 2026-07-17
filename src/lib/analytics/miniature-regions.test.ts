@@ -83,7 +83,7 @@ describe("MINIATURE_REGIONS structure", () => {
     // explore
     expect(regionForLabel("explore", "Ask the assistant about the policy documents")).toBe("chat");
     expect(regionForLabel("explore", "Answers · 3")).toBe("answers");
-    expect(regionForLabel("explore", "GLOBE biodiversity")).toBe("controls");
+    expect(regionForLabel("explore", "Biodiversity")).toBe("controls");
     // direction
     expect(regionForLabel("direction", "Show an example of strong alignment")).toBe("term-buttons");
     expect(regionForLabel("direction", "How the pipeline built this view")).toBe("pipeline-note");
@@ -130,9 +130,9 @@ describe("locale lock against messages/*.json", () => {
     ["whereToFocus.bar.segmentTitle", (m) => m.briefing.whereToFocus.bar.segmentTitle,
       ["click to open", "pulse para abrir", "нээхийн тулд дарна уу"]],
     ["lens.ipcc", (m) => m.briefing.lens.ipcc,
-      ["IPCC sectors", "Sectores IPCC", "IPCC салбарууд"]],
+      ["Mitigation sectors", "Sectores de mitigación", "Бууруулах салбарууд"]],
     ["lens.gga", (m) => m.briefing.lens.gga,
-      ["Climate resilience (GGA)", "Resiliencia climática (GGA)", "Уур амьсгалын тэсвэрлэлт (GGA)"]],
+      ["Climate adaptation", "Adaptación climática", "Уур амьсгалын дасан зохицол"]],
     ["sectors.filter.misaligned", (m) => m.briefing.sectors.filter.misaligned,
       ["Misaligned", "Desalineados", "Үл нийцсэн"]],
     ["sectors.col.flaggedShare", (m) => m.briefing.sectors.col.flaggedShare,
@@ -152,13 +152,13 @@ describe("locale lock against messages/*.json", () => {
     ["implementationCenter.flow.toggleFlow", (m) => m.briefing.implementationCenter.flow.toggleFlow,
       ["Where it lands", "Dónde incide", "Хаана тусдаг"]],
     ["explorer.controls.groupGlobe", (m) => m.explorer.controls.groupGlobe,
-      ["GLOBE biodiversity", "Biodiversidad GLOBE", "GLOBE биологийн төрөл зүйл"]],
+      ["Biodiversity", "Biodiversidad", "Биологийн төрөл зүйл"]],
     ["explorer.workbench.viewFinance", (m) => m.explorer.workbench.viewFinance,
       ["Finance · BER", "Finanzas · BER", "Санхүү · BER"]],
     ["explorer.chat.askAriaProminent", (m) => m.explorer.chat.askAriaProminent,
       ["Ask the assistant", "Pregunte al asistente", "туслахаас асуух"]],
     ["explorer.chat.surpriseMe", (m) => m.explorer.chat.surpriseMe,
-      ["Surprise me", "Sorpréndame", "Гайхуулаач"]],
+      ["Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах"]],
     ["explorer.workbench.answersHandle", (m) => m.explorer.workbench.answersHandle,
       ["Answers", "Respuestas", "Хариултууд"]],
     ["explorer.workbench.answersClose", (m) => m.explorer.workbench.answersClose,

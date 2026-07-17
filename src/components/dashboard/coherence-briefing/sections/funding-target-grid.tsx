@@ -78,10 +78,10 @@ function DocRow({
   return (
     <div className="grid grid-cols-[180px_1fr] gap-3 items-center py-2 border-b border-gray-100 last:border-b-0">
       <div>
-        <p className="text-[12px] text-[var(--undp-black)] font-medium truncate" title={docLabel}>
+        <p className="text-data text-[var(--undp-black)] font-medium truncate" title={docLabel}>
           {docLabel}
         </p>
-        <p className="text-[11px] tabular-nums text-[var(--undp-gray)]">
+        <p className="text-caption tabular-nums text-[var(--undp-gray)]">
           {rows.length} · {fmt(docSpend)}
         </p>
       </div>
@@ -135,8 +135,8 @@ function YearlySpark({
   return (
     <div className="mt-2">
       <div className="flex items-baseline justify-between mb-1">
-        <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)]">{label}</p>
-        <p className="text-[11px] text-[var(--undp-gray)]">
+        <p className="text-caption text-[var(--undp-gray)]">{label}</p>
+        <p className="text-caption text-[var(--undp-gray)]">
           {series[0].year}–{series[series.length - 1].year}
         </p>
       </div>
@@ -195,7 +195,7 @@ function DetailPanel({
   }, [row?.targetId]);
   if (!row) {
     return (
-      <div className="bg-[var(--undp-paper)] border border-gray-100 rounded-lg p-4 text-[12px] leading-relaxed text-[var(--undp-gray)]">
+      <div className="bg-[var(--undp-paper)] border border-gray-100 rounded-lg p-4 text-data leading-relaxed text-[var(--undp-gray)]">
         {t("detail.placeholder")}
       </div>
     );
@@ -211,10 +211,10 @@ function DetailPanel({
     <div className="bg-white border border-gray-100 rounded-lg p-4">
       <div className="flex items-baseline justify-between gap-2 mb-2">
         <div className="flex items-baseline gap-2 min-w-0">
-          <span className="font-mono text-[11px] text-[var(--undp-gray)] truncate">
+          <span className="font-mono text-caption text-[var(--undp-gray)] truncate">
             {row.targetId.replace(/^panama_|^mongolia_/, "")}
           </span>
-          <span className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] truncate">
+          <span className="text-caption text-[var(--undp-gray)] truncate">
             {row.docLabel}
           </span>
         </div>
@@ -222,28 +222,28 @@ function DetailPanel({
           type="button"
           onClick={onClose}
           aria-label={t("detail.close")}
-          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-sm leading-none px-1 shrink-0"
+          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-body leading-none px-1 shrink-0"
         >
           ✕
         </button>
       </div>
       <span
-        className="inline-block text-[11px] uppercase tracking-wide font-medium px-1.5 py-0.5 rounded mb-2.5"
+        className="inline-block text-caption font-medium px-1.5 py-0.5 rounded mb-2.5"
         style={{ backgroundColor: TIER_COLOR[row.tier] + "1f", color: TIER_COLOR[row.tier] }}
       >
         {tierLabel(row.tier)}
       </span>
-      <p className="text-[12px] leading-relaxed text-[var(--undp-black)]">{displayedText}</p>
+      <p className="text-data leading-relaxed text-[var(--undp-black)]">{displayedText}</p>
       {needsTruncation && (
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1 text-[11px] text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline"
+          className="mt-1 text-caption text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline"
         >
           {expanded ? t("detail.showLess") : t("detail.readMore")}
         </button>
       )}
-      <div className="mt-3 border-t border-gray-100 pt-2.5 text-[12px]">
+      <div className="mt-3 border-t border-gray-100 pt-2.5 text-data">
         <div className="flex items-baseline justify-between mb-1">
           <span className="text-[var(--undp-gray)]">{t("detail.alignedSpend")}</span>
           <span className="tabular-nums font-medium text-[var(--undp-black)]">
@@ -259,12 +259,12 @@ function DetailPanel({
         <YearlySpark series={row.yearlySpend} fmt={fmt} label={t("detail.spendPerYear")} />
         {top.length > 0 ? (
           <div className="mt-3">
-            <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+            <p className="text-caption text-[var(--undp-gray)] mb-1.5">
               {t("detail.topContributing")}
             </p>
             <ul className="space-y-1.5">
               {top.map((c: FundingTargetContributor) => (
-                <li key={c.code} className="flex items-start gap-2 text-[11px]">
+                <li key={c.code} className="flex items-start gap-2 text-caption">
                   <span
                     className="inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
                     style={{ backgroundColor: LEVEL_COLOR[c.level] }}
@@ -276,13 +276,13 @@ function DetailPanel({
               ))}
             </ul>
             {rest > 0 && (
-              <p className="mt-1.5 text-[11px] text-[var(--undp-gray)]">
+              <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
                 {t("detail.moreProgrammes", { count: rest })}
               </p>
             )}
           </div>
         ) : (
-          <p className="mt-2 text-[11px] italic text-[var(--undp-gray)]">
+          <p className="mt-2 text-caption text-[var(--undp-gray)]">
             {t("detail.noContributors")}
           </p>
         )}
@@ -336,7 +336,7 @@ function ContributorRow({
         aria-expanded={expanded}
         aria-controls={`prog-${c.code}-detail`}
         className={
-          "w-full flex items-start gap-2 text-left text-[11px] py-1 rounded transition-colors " +
+          "w-full flex items-start gap-2 text-left text-caption py-1 rounded transition-colors " +
           (expanded
             ? "bg-[var(--undp-paper)]"
             : "hover:bg-[var(--undp-paper)]/60 focus:bg-[var(--undp-paper)]/60")
@@ -362,9 +362,9 @@ function ContributorRow({
       {expanded && (
         <div
           id={`prog-${c.code}-detail`}
-          className="mt-1 mb-2 ml-3.5 pl-2 border-l-2 border-gray-100 text-[11px] leading-relaxed text-[var(--undp-black)] space-y-1.5"
+          className="mt-1 mb-2 ml-3.5 pl-2 border-l border-line-soft text-caption leading-relaxed text-[var(--undp-black)] space-y-1.5"
         >
-          <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
+          <div className="flex flex-wrap gap-x-3 gap-y-1 text-caption">
             <span className="text-[var(--undp-gray)]">
               {t("detail.programmeCode")}:{" "}
               <span className="font-mono text-[var(--undp-black)]">{c.code}</span>
@@ -372,7 +372,7 @@ function ContributorRow({
             <span className="text-[var(--undp-gray)]">
               {t("detail.programmeAlignment")}:{" "}
               <span
-                className="inline-block px-1 rounded uppercase font-medium"
+                className="inline-block px-1 rounded font-medium"
                 style={{ backgroundColor: LEVEL_COLOR[c.level] + "1f", color: LEVEL_COLOR[c.level] }}
               >
                 {c.level}
@@ -380,13 +380,13 @@ function ContributorRow({
             </span>
           </div>
           {c.institution && (
-            <div className="text-[11px]">
+            <div className="text-caption">
               <span className="text-[var(--undp-gray)]">{t("detail.programmeInstitution")}: </span>
               <span className="text-[var(--undp-black)]">{c.institution}</span>
             </div>
           )}
           {c.description && (
-            <p className="text-[11px] text-[var(--undp-black)]">{c.description}</p>
+            <p className="text-caption text-[var(--undp-black)]">{c.description}</p>
           )}
           {c.yearlySpend && c.yearlySpend.length > 0 && (
             <YearlySpark
@@ -461,15 +461,15 @@ function DetailDrawer({
         <header className="sticky top-0 z-10 px-5 py-4 border-b border-gray-100 flex items-start justify-between gap-3 bg-white/95 backdrop-blur">
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="font-mono text-[11px] text-[var(--undp-gray)]">
+              <span className="font-mono text-caption text-[var(--undp-gray)]">
                 {row.targetId.replace(/^panama_|^mongolia_/, "")}
               </span>
-              <span className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] truncate">
+              <span className="text-caption text-[var(--undp-gray)] truncate">
                 {row.docLabel}
               </span>
             </div>
             <span
-              className="inline-block text-[11px] uppercase tracking-wide font-medium px-1.5 py-0.5 rounded"
+              className="inline-block text-caption font-medium px-1.5 py-0.5 rounded"
               style={{ backgroundColor: TIER_COLOR[row.tier] + "1f", color: TIER_COLOR[row.tier] }}
             >
               {tierLabel(row.tier)}
@@ -490,12 +490,12 @@ function DetailDrawer({
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
-              className="mt-1 text-[11px] text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline"
+              className="mt-1 text-caption text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline"
             >
               {expanded ? t("detail.showLess") : t("detail.readMore")}
             </button>
           )}
-          <div className="mt-4 border-t border-gray-100 pt-3 text-[12px]">
+          <div className="mt-4 border-t border-gray-100 pt-3 text-data">
             <div className="flex items-baseline justify-between mb-1">
               <span className="text-[var(--undp-gray)]">{t("detail.alignedSpend")}</span>
               <span className="tabular-nums font-medium text-[var(--undp-black)]">
@@ -511,7 +511,7 @@ function DetailDrawer({
             <YearlySpark series={row.yearlySpend} fmt={fmt} label={t("detail.spendPerYear")} />
             {row.contributors.length > 0 ? (
               <div className="mt-4">
-                <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)] mb-1.5">
+                <p className="text-caption text-[var(--undp-gray)] mb-1.5">
                   {t("detail.topContributing")}
                 </p>
                 {!showAllContribs ? (
@@ -535,7 +535,7 @@ function DetailDrawer({
                           setShowAllContribs(true);
                           setExpandedProgrammeCode(null);
                         }}
-                        className="mt-2 text-[11px] text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline text-left"
+                        className="mt-2 text-caption text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline text-left"
                       >
                         {t("detail.showAllProgrammes", { count: row.contributors.length })}
                       </button>
@@ -547,10 +547,10 @@ function DetailDrawer({
                       {groups.map((g) => (
                         <div key={g.institution}>
                           <div className="flex items-baseline justify-between gap-2 border-b border-gray-100 pb-1 mb-1">
-                            <p className="text-[11px] font-medium text-[var(--undp-black)] leading-snug">
+                            <p className="text-caption font-medium text-[var(--undp-black)] leading-snug">
                               {g.institution}
                             </p>
-                            <p className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
+                            <p className="text-caption tabular-nums text-[var(--undp-gray)] shrink-0">
                               {t("detail.institutionSubtotal", {
                                 count: g.programmes.length,
                                 money: fmt(g.subtotal),
@@ -578,7 +578,7 @@ function DetailDrawer({
                         setShowAllContribs(false);
                         setExpandedProgrammeCode(null);
                       }}
-                      className="mt-3 text-[11px] text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline text-left"
+                      className="mt-3 text-caption text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline text-left"
                     >
                       {t("detail.showTopProgrammes")}
                     </button>
@@ -586,7 +586,7 @@ function DetailDrawer({
                 )}
               </div>
             ) : (
-              <p className="mt-2 text-[11px] italic text-[var(--undp-gray)]">
+              <p className="mt-2 text-caption text-[var(--undp-gray)]">
                 {t("detail.noContributors")}
               </p>
             )}
@@ -604,7 +604,7 @@ function ColorLegend({
 }) {
   const tiers: FundingTier[] = ["well-funded", "normal", "under-funded", "unfunded"];
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 px-1 text-[11px] text-[var(--undp-gray)]">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 px-1 text-caption text-[var(--undp-gray)]">
       {tiers.map((tier) => (
         <span key={tier} className="flex items-center gap-1.5">
           <span
@@ -658,7 +658,7 @@ export function FundingTargetGrid({
     <div>
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-[11px] uppercase tracking-wide text-[var(--undp-gray)]">
+          <p className="text-caption text-[var(--undp-gray)]">
             {t("kpi.reviewed")}
           </p>
           <p className="text-2xl font-semibold tabular-nums text-[var(--undp-black)]">
@@ -666,31 +666,31 @@ export function FundingTargetGrid({
           </p>
         </div>
         <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-[11px] uppercase tracking-wide" style={{ color: "var(--undp-green)" }}>
+          <p className="text-caption font-medium" style={{ color: "var(--undp-green)" }}>
             {t("kpi.wellFunded")}
           </p>
           <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-green)" }}>
             {totals.wellFunded}
           </p>
-          <p className="text-[11px] text-[var(--undp-gray)] mt-1">{t("kpi.wellFundedCaption")}</p>
+          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.wellFundedCaption")}</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-[11px] uppercase tracking-wide" style={{ color: "var(--undp-yellow)" }}>
+          <p className="text-caption font-medium" style={{ color: "var(--undp-yellow)" }}>
             {t("kpi.underFunded")}
           </p>
           <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-yellow)" }}>
             {totals.underFunded}
           </p>
-          <p className="text-[11px] text-[var(--undp-gray)] mt-1">{t("kpi.underFundedCaption")}</p>
+          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.underFundedCaption")}</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-[11px] uppercase tracking-wide" style={{ color: "var(--undp-red)" }}>
+          <p className="text-caption font-medium" style={{ color: "var(--undp-red)" }}>
             {t("kpi.unfunded")}
           </p>
           <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-red)" }}>
             {totals.unfunded}
           </p>
-          <p className="text-[11px] text-[var(--undp-gray)] mt-1">{t("kpi.unfundedCaption")}</p>
+          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.unfundedCaption")}</p>
         </div>
       </section>
 

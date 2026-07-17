@@ -22,7 +22,9 @@ import { useEffect, useMemo, useState, type RefObject } from "react";
 import { useTranslations } from "next-intl";
 import { useFocusTrap } from "@/components/ui/use-focus-trap";
 import {
+  ALIGNED_COLOR,
   ALIGNMENT_COLORS,
+  FLAGGED_COLOR,
   MECHANISM_COLORS,
   getDocFullLabel,
   getDocMediumLabel,
@@ -56,10 +58,7 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-const ALIGNED_DOT_COLOR = "#196127";
-const FRICTION_DOT_COLOR = "#dc2626";
+const HEADLINE_SERIF = "var(--font-display)";
 
 const SEVERITY_RANK: Record<AlignmentLevel, number> = {
   flagged: 0,
@@ -238,7 +237,7 @@ export function ThemeDrawer({
   if (!theme || !profile) return null;
 
   const isReinforce = theme.type === "reinforcement";
-  const dotColor = isReinforce ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
+  const dotColor = isReinforce ? ALIGNED_COLOR : FLAGGED_COLOR;
   const totalRecords = groups.reduce((s, g) => s + g.records.length, 0);
   const themeAnchor = slugifyAnchorId(theme.name);
 
@@ -256,9 +255,9 @@ export function ThemeDrawer({
         aria-modal="true"
         aria-label={t("dialogAria", { name: theme.name })}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#fbfaf7" }}
+        style={{ backgroundColor: "#ffffff" }}
       >
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
+        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-2">
               <span
@@ -270,7 +269,7 @@ export function ThemeDrawer({
                     : { boxShadow: `inset 0 0 0 1.5px ${dotColor}` }
                 }
               />
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">
+              <p className="text-caption font-medium text-[var(--undp-gray)]">
                 {isReinforce
                   ? t("eyebrow.reinforce")
                   : t("eyebrow.friction")}
@@ -282,7 +281,7 @@ export function ThemeDrawer({
             >
               {theme.name}
             </h3>
-            <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
+            <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
               {t(isReinforce ? "summary.reinforce" : "summary.friction", {
                 docs: profile.byDoc.length,
                 records: profile.liveCount,
@@ -300,26 +299,26 @@ export function ThemeDrawer({
         </header>
 
         <div className="px-6 py-6 space-y-6">
-          <p className="text-[14px] text-[var(--undp-black)] leading-relaxed">
+          <p className="text-body text-[var(--undp-black)] leading-relaxed">
             {theme.description}
           </p>
 
           {theme.pathway && (
-            <section className="flex gap-2.5 border-l-2 border-[#94a3b8] pl-3">
+            <section className="flex gap-2.5 border-l border-line-strong pl-3">
               <span
                 aria-hidden="true"
-                className="mt-px text-[15px] leading-none text-[var(--undp-gray)]"
+                className="mt-px text-body leading-none text-[var(--undp-gray)]"
               >
                 ↳
               </span>
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-1.5">
+                <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
                   {t("pathwayHeading")}
                 </p>
-                <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
+                <p className="text-data text-[var(--undp-black)] leading-relaxed">
                   {theme.pathway}
                 </p>
-                <p className="mt-1.5 text-[11px] text-[var(--undp-gray)] leading-relaxed">
+                <p className="mt-1.5 text-caption text-[var(--undp-gray)] leading-relaxed">
                   {t("pathwayCaveat")}
                 </p>
               </div>
@@ -328,7 +327,7 @@ export function ThemeDrawer({
 
           {profile.byDoc.length > 0 && (
             <section>
-              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
                 {t("drivingDocs", {
                   docs: profile.byDoc.length,
                   total: totalDocCount,
@@ -339,12 +338,12 @@ export function ThemeDrawer({
                   <li key={d.doc}>
                     <div className="flex items-baseline justify-between gap-2">
                       <span
-                        className="text-[11.5px] text-[var(--undp-black)] truncate"
+                        className="text-caption text-[var(--undp-black)] truncate"
                         title={getDocFullLabel(countryConfig, d.doc)}
                       >
                         {getDocMediumLabel(countryConfig, d.doc)}
                       </span>
-                      <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
+                      <span className="text-caption tabular-nums text-[var(--undp-gray)] shrink-0">
                         {d.count.toLocaleString()} ({Math.round(d.share * 100)}%)
                       </span>
                     </div>
@@ -368,24 +367,24 @@ export function ThemeDrawer({
 
           {profile.topTargets.length > 0 && (
             <section>
-              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
                 {t("topTargets")}
               </p>
-              <ol className="divide-y divide-gray-200 border-y border-gray-200">
+              <ol className="divide-y divide-line border-y border-line">
                 {profile.topTargets.map(({ target, count }) => {
                   const inner = (
                     <>
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-[11px] text-[var(--undp-gray)]">
+                        <span className="text-caption text-[var(--undp-gray)]">
                           {getDocMediumLabel(countryConfig, target.sourceDocument)}{" "}
                           {target.sourceLabel}
                         </span>
-                        <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
+                        <span className="text-caption tabular-nums text-[var(--undp-gray)] shrink-0">
                           {t("topTargetCount", { count })}
                         </span>
                       </div>
                       <p
-                        className="text-[12px] text-[var(--undp-black)] leading-snug overflow-hidden"
+                        className="text-data text-[var(--undp-black)] leading-snug overflow-hidden"
                         style={{
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
@@ -418,14 +417,14 @@ export function ThemeDrawer({
 
           {profile.byTheme.length > 0 && (
             <section>
-              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
                 {t("sectorsTouched")}
               </p>
               <ul className="flex flex-wrap gap-1.5">
                 {profile.byTheme.map((c) => (
                   <li
                     key={c.categoryId}
-                    className="text-[11px] px-2 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] tabular-nums"
+                    className="text-caption px-2 py-0.5 rounded-full border border-line-strong bg-white text-[var(--undp-gray)] tabular-nums"
                   >
                     {c.categoryName}{" "}
                     <span className="text-[var(--undp-gray)]/70">
@@ -438,11 +437,11 @@ export function ThemeDrawer({
           )}
 
           <section>
-            <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+            <p className="text-caption font-medium text-[var(--undp-gray)] mb-3">
               {t("pairsInTheme")}
             </p>
             {groups.length === 0 || totalRecords === 0 ? (
-              <p className="text-sm italic text-[var(--undp-gray)]">
+              <p className="text-body text-[var(--undp-gray)]">
                 {t("noConcretePairs")}
               </p>
             ) : (
@@ -460,7 +459,7 @@ export function ThemeDrawer({
             )}
           </section>
 
-          <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
+          <p className="text-caption text-[var(--undp-gray)] leading-relaxed">
             {t("aiDisclaimer")}
           </p>
         </div>
@@ -524,17 +523,16 @@ function DocPairGroupBlock({
     <div>
       <div className="mb-2 flex items-baseline justify-between gap-2 flex-wrap">
         <p
-          className="text-[13px] text-[var(--undp-black)] font-medium"
-          style={{ fontFamily: HEADLINE_SERIF }}
+          className="text-data text-[var(--undp-black)] font-medium"
           title={`${fullA} ↔ ${fullB}`}
         >
           {labelA} ↔ {labelB}
         </p>
-        <p className="text-[11px] text-[var(--undp-gray)] tabular-nums">
+        <p className="text-caption text-[var(--undp-gray)] tabular-nums">
           {t("recordsCount", { count: group.records.length })}
         </p>
       </div>
-      <ol className="divide-y divide-gray-200 border-y border-gray-200">
+      <ol className="divide-y divide-line border-y border-line">
         {visible.map((p) => {
           const tA = targetsById.get(p.targetAId);
           const tB = targetsById.get(p.targetBId);
@@ -555,7 +553,7 @@ function DocPairGroupBlock({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-2 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+          className="mt-2 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums"
         >
           {expanded
             ? t("showFewer")
@@ -593,7 +591,7 @@ function ExampleRow({
       >
         <div className="flex items-center gap-2 mb-1 flex-wrap">
           <span
-            className="text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="text-caption font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -605,13 +603,13 @@ function ExampleRow({
           {isFlagged && pair.mechanism && (
             <SubFieldChip variant="mechanism" value={pair.mechanism} />
           )}
-          <span className="text-[11px] text-[var(--undp-gray)]">
+          <span className="text-caption text-[var(--undp-gray)]">
             {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
           </span>
         </div>
         {pair.description && (
           <p
-            className="text-[12px] text-[var(--undp-black)] leading-snug italic overflow-hidden"
+            className="text-caption text-[var(--undp-black)] leading-snug overflow-hidden"
             style={{
               display: "-webkit-box",
               WebkitLineClamp: 2,
@@ -649,7 +647,7 @@ export function SubFieldChip({
     const c = MECHANISM_COLORS[value as AlignmentMechanism];
     return (
       <span
-        className="text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full border"
+        className="text-caption font-semibold px-1.5 py-0.5 rounded-full border"
         style={{
           color: c,
           borderColor: `${c}55`,
@@ -666,7 +664,7 @@ export function SubFieldChip({
     // the old red "fundamental" treatment would re-introduce the judgy tone.
     return (
       <span
-        className="text-[11px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded-full border"
+        className="text-caption font-medium px-1.5 py-0.5 rounded-full border"
         style={{
           color: "#475569",
           borderColor: "#cbd5e1",
@@ -681,7 +679,7 @@ export function SubFieldChip({
   const low = value === "low";
   return (
     <span
-      className="text-[11px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded-full"
+      className="text-caption font-medium px-1.5 py-0.5 rounded-full"
       style={{
         color: low ? "#92400e" : "#475569",
         backgroundColor: low ? "#fffbeb" : "#f1f5f9",
@@ -715,10 +713,9 @@ export function frictionDimensionLabel(
 }
 
 /**
- * Quiet, normal-case chip for the friction dimension. Deliberately neutral
- * (no severity colour) and distinct from the uppercase mechanism/manageability
- * chips: it carries content (a resource or place) the analyst rationale named,
- * not a category verdict.
+ * Quiet, neutral chip for the friction dimension. Deliberately colourless
+ * next to the mechanism/manageability chips: it carries content (a resource
+ * or place) the analyst rationale named, not a category verdict.
  */
 export function FrictionDimensionChip({
   mechanism,
@@ -733,7 +730,7 @@ export function FrictionDimensionChip({
   if (!label) return null;
   return (
     <span
-      className="text-[11px] px-1.5 py-0.5 rounded-full border border-gray-300 bg-white text-[var(--undp-gray)] whitespace-nowrap"
+      className="text-caption px-1.5 py-0.5 rounded-full border border-line-strong bg-white text-[var(--undp-gray)] whitespace-nowrap"
       title={label}
     >
       {label}
@@ -814,11 +811,11 @@ function AllStorylinesView({
         aria-modal="true"
         aria-label={t("all.dialogAria")}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#fbfaf7" }}
+        style={{ backgroundColor: "#ffffff" }}
       >
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
+        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
           <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1.5">
+            <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
               {t("all.eyebrow")}
             </p>
             <h3
@@ -827,7 +824,7 @@ function AllStorylinesView({
             >
               {t("all.heading", { count: storylines.length })}
             </h3>
-            <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
+            <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
               {t("all.subtitle", {
                 aligned: reinforce.length,
                 flagged: friction.length,
@@ -863,7 +860,7 @@ function AllStorylinesView({
               onPick={onPick}
             />
           )}
-          <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
+          <p className="text-caption text-[var(--undp-gray)] leading-relaxed">
             {t("aiDisclaimer")}
           </p>
         </div>
@@ -886,7 +883,7 @@ function StorylineGroup({
   onPick: (s: CorpusStoryline) => void;
 }) {
   const t = useTranslations("briefing.drawer.theme");
-  const dotColor = tone === "reinforce" ? ALIGNED_DOT_COLOR : FRICTION_DOT_COLOR;
+  const dotColor = tone === "reinforce" ? ALIGNED_COLOR : FLAGGED_COLOR;
   // Shared ordering source: confidence rank, then live count, then name.
   const sorted = rankStorylines(
     storylines,
@@ -895,7 +892,7 @@ function StorylineGroup({
   );
   return (
     <section>
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
         {label}
       </p>
       <ul className="space-y-2">
@@ -904,7 +901,7 @@ function StorylineGroup({
             <button
               type="button"
               onClick={() => onPick(s)}
-              className="w-full text-left rounded border border-gray-200 bg-white px-3 py-2.5 hover:border-gray-400 transition-colors"
+              className="w-full text-left rounded border border-line bg-white px-3 py-2.5 hover:border-line-strong transition-colors"
             >
               <div className="flex items-start gap-2">
                 <span
@@ -917,13 +914,10 @@ function StorylineGroup({
                   }
                 />
                 <div className="flex-1 min-w-0">
-                  <p
-                    className="text-[13px] text-[var(--undp-black)] leading-snug"
-                    style={{ fontFamily: HEADLINE_SERIF }}
-                  >
+                  <p className="text-data font-medium text-[var(--undp-black)] leading-snug">
                     {s.name}
                   </p>
-                  <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
+                  <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
                     {t("storylineMeta", {
                       docs: s.spans_documents.length,
                       pairs: liveCountOf(s),
@@ -933,7 +927,7 @@ function StorylineGroup({
                 </div>
                 <span
                   aria-hidden="true"
-                  className="text-[var(--undp-gray)] text-[12px] mt-0.5"
+                  className="text-[var(--undp-gray)] text-caption mt-0.5"
                 >
                   →
                 </span>

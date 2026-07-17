@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { InfoBox } from "@/components/ui/info-box";
@@ -153,12 +154,13 @@ function ClassificationSection({
   globeCategories: GlobeCategory[];
   countryConfig: CountryConfig | null;
 }) {
+  const t = useTranslations("prototypes.classification");
   const viewOptions: { value: ClassificationView; label: string }[] = [
     ...(sectors.length > 0
-      ? [{ value: "sector" as const, label: `Climate Mitigation Taxonomy (${sectors.length})` }]
+      ? [{ value: "sector" as const, label: t("viewOption.sector", { count: sectors.length }) }]
       : []),
     ...(globeCategories.length > 0
-      ? [{ value: "globe" as const, label: `Biodiversity Taxonomy (${globeCategories.length})` }]
+      ? [{ value: "globe" as const, label: t("viewOption.globe", { count: globeCategories.length }) }]
       : []),
   ];
 
@@ -173,20 +175,34 @@ function ClassificationSection({
   // primary classification, normally 100% for sector, can be lower for globe).
   const coverageByView: Record<ClassificationView, { primary: string; secondary: string; label: string }> = {
     sector: {
-      primary: `${sectorCategoriesUsed} of ${sectors.length}`,
-      secondary: `categories with policy targets · ${pct(targetsWithSectors)}% of policy targets classified`,
-      label: `Climate Mitigation category coverage`,
+      primary: t("countOfTotal", { used: sectorCategoriesUsed, available: sectors.length }),
+      secondary: t("coverageSecondary", { pct: pct(targetsWithSectors) }),
+      label: t("coverageLabel.sector"),
     },
     globe: {
-      primary: `${globeCategoriesUsed} of ${globeCategories.length}`,
-      secondary: `categories with policy targets · ${pct(targetsWithGlobe)}% of policy targets classified`,
-      label: `Biodiversity category coverage`,
+      primary: t("countOfTotal", { used: globeCategoriesUsed, available: globeCategories.length }),
+      secondary: t("coverageSecondary", { pct: pct(targetsWithGlobe) }),
+      label: t("coverageLabel.globe"),
     },
   };
 
   const viewSubtitles: Record<ClassificationView, string> = {
-    sector: `${targetsWithSectors} of ${policyCount} policy targets (${pct(targetsWithSectors)}%) classified into ${sectorCategoriesUsed} of ${sectors.length} Climate Mitigation categories.`,
-    globe: `${targetsWithGlobe} of ${policyCount} policy targets (${pct(targetsWithGlobe)}%) classified into ${globeCategoriesUsed} of ${globeCategories.length} Biodiversity categories.`,
+    sector: t("subtitle", {
+      classified: targetsWithSectors,
+      total: policyCount,
+      pct: pct(targetsWithSectors),
+      used: sectorCategoriesUsed,
+      available: sectors.length,
+      noun: t("noun.sector"),
+    }),
+    globe: t("subtitle", {
+      classified: targetsWithGlobe,
+      total: policyCount,
+      pct: pct(targetsWithGlobe),
+      used: globeCategoriesUsed,
+      available: globeCategories.length,
+      noun: t("noun.globe"),
+    }),
   };
 
   const provenanceSources: ProvenanceSource[] = Array.from(
@@ -197,33 +213,25 @@ function ClassificationSection({
   }));
 
   const taxonomyLabel: Record<ClassificationView, string> = {
-    sector: "IPCC Climate Mitigation taxonomy",
-    globe: "BIOFIN GLOBE biodiversity expenditure taxonomy",
+    sector: t("taxonomy.sector"),
+    globe: t("taxonomy.globe"),
   };
 
   return (
     <section className="mb-10">
       <div className="mb-3 flex items-center justify-between flex-wrap gap-3">
         <h2 className="text-lg font-semibold text-[var(--undp-black)] flex items-center flex-wrap gap-y-1">
-          Thematic Classification
+          {t("heading")}
           <InfoBox>
-            Each policy target is classified against established taxonomies using AI.{" "}
-            <strong>Climate Mitigation Taxonomy</strong> maps targets to standard IPCC emissions categories.{" "}
-            <strong>Biodiversity Taxonomy</strong> uses BIOFIN&apos;s GLOBE expenditure taxonomy to enable cross-level analysis.{" "}
-            Targets may appear in multiple categories if they span several domains.
+            {t.rich("infoBox", {
+              strong: (chunks) => <strong>{chunks}</strong>,
+            })}
           </InfoBox>
           <DataProvenance
             origin="mixed"
             sources={provenanceSources}
-            method={
-              <>
-                Each target is scored by an LLM against every category in the
-                active taxonomy ({taxonomyLabel[view]}). The chart shows
-                primary-category counts; targets above the relevance threshold
-                in additional categories are surfaced in click-through views.
-              </>
-            }
-            caveat="Counts depend on which categories the model judged primary. Click a segment and inspect a few targets before treating shares as exhaustive — the model may split similar targets across adjacent categories."
+            method={t("provenanceMethod", { taxonomy: taxonomyLabel[view] })}
+            caveat={t("provenanceCaveat")}
           />
         </h2>
         <div className="flex gap-1.5 text-xs">
@@ -245,7 +253,7 @@ function ClassificationSection({
       </div>
 
       <p className="text-sm text-[var(--undp-gray)] mb-4">
-        {viewSubtitles[view]} Click a segment to see which targets.
+        {viewSubtitles[view]} {t("clickHint")}
       </p>
 
       <OutcomeStats

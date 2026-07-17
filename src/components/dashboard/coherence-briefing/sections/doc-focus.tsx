@@ -29,10 +29,9 @@
  * naming a "winner" the absolute counts don't actually support.
  */
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
-import { FrictionTypeChart } from "../centerpiece/friction-type-chart";
 import { DocInfoPopover } from "../doc-meta-card";
 import { TourButton } from "../tour/tour-button";
 import {
@@ -61,10 +60,8 @@ import type {
 
 export const DOC_FOCUS_SECTION_ID = "doc-focus";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-/** How many flagged pairs to list before collapsing into a "+N more" note. */
-const FLAGGED_CAP = 6;
+/** How many flagged pairs to list before the "Show all" expander. */
+const FLAGGED_CAP = 5;
 
 export function DocFocusSection({
   targets,
@@ -232,7 +229,7 @@ function DocSwitcher({
       className="flex flex-wrap items-center gap-1.5"
       data-tour="doc-switcher"
     >
-      <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mr-2">
+      <span className="text-caption text-[var(--undp-gray)] mr-2">
         {t("focusOn")}
       </span>
       {ordered.map((d) => {
@@ -244,9 +241,9 @@ function DocSwitcher({
             onClick={() => onSelect(d)}
             aria-pressed={isActive}
             title={getDocFullLabel(countryConfig, d)}
-            className={`px-2.5 py-1 rounded text-[12px] font-medium transition-colors ${
+            className={`px-2.5 py-1 rounded text-data font-medium transition-colors ${
               isActive
-                ? "bg-[var(--undp-black)] text-white"
+                ? "bg-[var(--undp-blue)] text-white"
                 : "border border-gray-200 text-[var(--undp-gray)] hover:border-gray-400 hover:text-[var(--undp-black)]"
             }`}
           >
@@ -280,69 +277,81 @@ function DocFocusEvidence({
   onOpenType: (mechanism: AlignmentMechanism) => void;
 }) {
   const t = useTranslations("briefing.docFocus");
+  const contradictionLabels = useContradictionTypeLabels();
+  const [showAll, setShowAll] = useState(false);
   const { flaggedPairs, frictionTotals } = frictions;
-  const shown = flaggedPairs.slice(0, FLAGGED_CAP);
-  const remainder = flaggedPairs.length - shown.length;
+  const shown = showAll ? flaggedPairs : flaggedPairs.slice(0, FLAGGED_CAP);
+  const remainder = flaggedPairs.length - FLAGGED_CAP;
+  const dominant = frictionTotals.dominantType;
   return (
     <div className="space-y-5">
-      <div>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
-          {t("fullTitle")}
-        </p>
-        <DocInfoPopover
-          meta={meta}
-          color={getDocColor(countryConfig, focusedDoc)}
-          deadlineCoverage={deadlineCoverage}
-        >
-          <span className="text-[14px] text-[var(--undp-black)] leading-snug group-hover:underline underline-offset-2 decoration-1">
-            {fullTitle}
-          </span>
-        </DocInfoPopover>
-      </div>
+      <DocInfoPopover
+        meta={meta}
+        color={getDocColor(countryConfig, focusedDoc)}
+        deadlineCoverage={deadlineCoverage}
+      >
+        <span className="text-caption text-[var(--undp-gray)] leading-snug group-hover:underline underline-offset-2 decoration-1">
+          {fullTitle}
+        </span>
+      </DocInfoPopover>
 
       {flaggedPairs.length === 0 ? (
-        <p className="text-[12px] italic text-[var(--undp-gray)]">
+        <p className="text-caption text-[var(--undp-gray)]">
           {t("noMisalignment", { label })}
         </p>
       ) : (
-        <>
-          {frictionTotals.total > 0 && (
-            <FrictionTypeChart
-              totals={frictionTotals}
-              caption={t("breakdownCaption", { label })}
-              onSegmentClick={onOpenType}
-            />
-          )}
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">
-              {t("whereShowsMisalignment", { label })}
-            </p>
-            <ul
-              className="divide-y divide-gray-200 border-y border-gray-200"
-              data-tour="flagged-pairs"
+        <div>
+          <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
+            {t("whereShowsMisalignment", { label })}
+          </p>
+          <ul
+            className="divide-y divide-gray-200 border-y border-gray-200"
+            data-tour="flagged-pairs"
+          >
+            {shown.map((line) => (
+              <FlaggedPairRow
+                key={`${line.pair.targetAId}__${line.pair.targetBId}`}
+                line={line}
+                focusedDoc={focusedDoc}
+                countryConfig={countryConfig}
+                onOpen={() =>
+                  onOpenPair(line.pair.targetAId, line.pair.targetBId)
+                }
+              />
+            ))}
+          </ul>
+          {remainder > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              className="mt-2 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums"
             >
-              {shown.map((line) => (
-                <FlaggedPairRow
-                  key={`${line.pair.targetAId}__${line.pair.targetBId}`}
-                  line={line}
-                  focusedDoc={focusedDoc}
-                  countryConfig={countryConfig}
-                  onOpen={() =>
-                    onOpenPair(line.pair.targetAId, line.pair.targetBId)
-                  }
-                />
-              ))}
-            </ul>
-            {remainder > 0 && (
-              <p className="mt-2 text-[11px] text-[var(--undp-gray)] tabular-nums">
-                {t("morePairs", { count: remainder, label })}
-              </p>
-            )}
-            <p className="mt-3 text-[11px] text-[var(--undp-gray)] leading-relaxed">
-              {t("notSettledFindings")}
+              {showAll
+                ? t("showFewer")
+                : t("showAll", { count: flaggedPairs.length })}
+            </button>
+          )}
+          {/* The per-mechanism breakdown chart lives once, on the friction-types
+              slide; here one sentence names the dominant kind and links the
+              doc-scoped decomposition drawer. */}
+          {frictionTotals.total > 0 && dominant && (
+            <p className="mt-3">
+              <button
+                type="button"
+                onClick={() => onOpenType(dominant)}
+                className="text-left text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 decoration-1"
+              >
+                {t("dominantMechanism", {
+                  label,
+                  mechanism: contradictionLabels[dominant].toLowerCase(),
+                })}
+              </button>
             </p>
-          </div>
-        </>
+          )}
+          <p className="mt-3 text-caption text-[var(--undp-gray)] leading-relaxed">
+            {t("notSettledFindings")}
+          </p>
+        </div>
       )}
     </div>
   );
@@ -361,15 +370,13 @@ function FlaggedPairRow({
 }) {
   const t = useTranslations("briefing.docFocus");
   const contradictionLabels = useContradictionTypeLabels();
-  // The serif text is the focused document's own target (the thing being
-  // flagged); name it explicitly as "<focused doc> target" so it's never
-  // ambiguous whose target the reader is looking at. The peer side supplies the
-  // "vs <doc> target" counterpart line.
+  // The list header names the focused document; each row shows that document's
+  // own target text, with the peer document and the friction mechanism on one
+  // quiet counterpart line.
   const focused =
     line.targetA.sourceDocument === focusedDoc ? line.targetA : line.targetB;
   const peer =
     line.targetA.sourceDocument === focusedDoc ? line.targetB : line.targetA;
-  const focusedDocLabel = getDocMediumLabel(countryConfig, focusedDoc);
   const peerDocLabel = getDocMediumLabel(
     countryConfig,
     peer.sourceDocument as PolicyDocumentType,
@@ -382,23 +389,9 @@ function FlaggedPairRow({
         onClick={onOpen}
         className="w-full text-left py-2.5 px-1 rounded hover:bg-gray-50 transition-colors"
       >
-        <div className="flex items-center justify-between gap-2 mb-1">
-          <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
-            {t("targetSide", { doc: focusedDocLabel })}
-          </span>
-          {mechanism && (
-            <span
-              className="text-[11px] uppercase tracking-wider font-semibold shrink-0"
-              style={{ color: MECHANISM_COLORS[mechanism] }}
-            >
-              {contradictionLabels[mechanism]}
-            </span>
-          )}
-        </div>
         <p
-          className="text-[12px] text-[var(--undp-black)] leading-snug overflow-hidden"
+          className="text-data text-[var(--undp-black)] leading-snug overflow-hidden"
           style={{
-            fontFamily: HEADLINE_SERIF,
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
@@ -406,8 +399,16 @@ function FlaggedPairRow({
         >
           {focused.text}
         </p>
-        <p className="mt-1.5 text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
-          {t("peerSide", { doc: peerDocLabel })}
+        <p className="mt-1 flex items-baseline justify-between gap-2 text-caption text-[var(--undp-gray)]">
+          <span>{t("peerSide", { doc: peerDocLabel })}</span>
+          {mechanism && (
+            <span
+              className="shrink-0 font-medium"
+              style={{ color: MECHANISM_COLORS[mechanism] }}
+            >
+              {contradictionLabels[mechanism]}
+            </span>
+          )}
         </p>
       </button>
     </li>

@@ -154,10 +154,6 @@ function DocumentCoverage({
   const t = useTranslations("briefing.financing");
   return (
     <div>
-      <p className="text-[12px] leading-relaxed text-[var(--undp-gray)] mb-2.5 max-w-prose">
-        {t("dotMap.intro")}
-      </p>
-
       <ul className="space-y-3">
         {coverage.byDocument.map((d) => (
           <DocCoverageRow
@@ -169,7 +165,7 @@ function DocumentCoverage({
         ))}
       </ul>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[11px] text-[var(--undp-gray)]">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-caption text-[var(--undp-gray)]">
         <span className="flex items-center gap-1.5">
           <span
             aria-hidden="true"
@@ -186,7 +182,7 @@ function DocumentCoverage({
         </span>
       </div>
 
-      <p className="mt-3 text-[11px] italic text-[var(--undp-gray)] max-w-prose">
+      <p className="mt-3 text-caption text-[var(--undp-gray)] max-w-prose">
         {t("dotMap.disclaimer")}
       </p>
     </div>
@@ -216,17 +212,17 @@ function DocCoverageRow({
                 className="inline-block w-2 h-2 rounded-full shrink-0"
                 style={{ backgroundColor: color }}
               />
-              <span className="text-[13px] text-[var(--undp-black)] truncate">
+              <span className="text-data text-[var(--undp-black)] truncate">
                 {label}
               </span>
               <span
                 aria-hidden="true"
-                className="text-[var(--undp-gray)]/50 text-[11px]"
+                className="text-[var(--undp-gray)]/50 text-caption"
               >
                 +
               </span>
             </span>
-            <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0 text-right">
+            <span className="text-caption tabular-nums text-[var(--undp-gray)] shrink-0 text-right">
               {t.rich("matchedCount", {
                 reached: doc.reached,
                 total: doc.total,
@@ -262,10 +258,10 @@ function DocCoverageRow({
         <div className="mt-2.5 ml-3.5 space-y-3">
           {doc.links.length > 0 && (
             <div>
-              <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
                 {t("matchedHeading")}
               </p>
-              <ul className="space-y-1 max-h-72 overflow-y-auto pr-1">
+              <ul className="space-y-1 max-h-72 overflow-y-auto pr-1 -ml-1.5">
                 {doc.links.map((link) => (
                   <li key={link.targetId}>
                     <button
@@ -274,14 +270,20 @@ function DocCoverageRow({
                         onOpenBudgetPair(link.programBerId, link.targetId)
                       }
                       title={link.targetText}
-                      className="w-full text-left border-l-2 pl-2.5 pr-1 py-1 rounded-r hover:bg-black/[0.04] cursor-pointer flex items-start gap-2"
-                      style={{ borderColor: color }}
+                      className="w-full text-left flex items-start gap-2 rounded px-1.5 py-1 hover:bg-black/[0.04] cursor-pointer"
                     >
+                      <span className="mt-[5px]">
+                        <span
+                          aria-hidden="true"
+                          className="inline-block w-2 h-2 rounded-full shrink-0"
+                          style={{ backgroundColor: color }}
+                        />
+                      </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block text-[12px] font-medium text-[var(--undp-black)] leading-snug truncate">
+                        <span className="block text-data font-medium text-[var(--undp-black)] leading-snug truncate">
                           {link.targetLabel}
                         </span>
-                        <span className="block text-[11px] text-[var(--undp-gray)] leading-snug truncate">
+                        <span className="block text-caption text-[var(--undp-gray)] leading-snug truncate">
                           <span className="text-[var(--undp-gray)]/70">
                             {t("budgetLineLabel")}
                           </span>{" "}
@@ -290,7 +292,7 @@ function DocCoverageRow({
                       </span>
                       <span
                         aria-hidden="true"
-                        className="shrink-0 self-center text-[var(--undp-gray)]/50 text-[12px]"
+                        className="shrink-0 self-center text-[var(--undp-gray)]/50 text-data"
                       >
                         ›
                       </span>
@@ -302,30 +304,36 @@ function DocCoverageRow({
           )}
           {doc.uncovered.length > 0 ? (
             <div>
-              <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--undp-gray)] mb-1.5">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
                 {t("unmatchedHeading")}
               </p>
-              <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              <ul className="space-y-2 max-h-72 overflow-y-auto pr-1 -ml-1.5">
                 {doc.uncovered.map((a) => (
-                  <li
-                    key={a.targetId}
-                    className="border-l-2 border-[var(--undp-gray)]/30 pl-2.5"
-                  >
-                    <p
-                      className="text-[12px] font-medium text-[var(--undp-black)] leading-snug"
-                      title={a.targetText}
-                    >
-                      {a.targetLabel}
-                    </p>
-                    <p className="text-[11px] text-[var(--undp-gray)] leading-snug mt-0.5 line-clamp-3">
-                      {a.targetText}
-                    </p>
+                  <li key={a.targetId} className="flex items-start gap-2 px-1.5">
+                    <span className="mt-[5px]">
+                      <span
+                        aria-hidden="true"
+                        className="inline-block w-2 h-2 rounded-full border shrink-0"
+                        style={{ borderColor: color }}
+                      />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <p
+                        className="text-data font-medium text-[var(--undp-black)] leading-snug"
+                        title={a.targetText}
+                      >
+                        {a.targetLabel}
+                      </p>
+                      <p className="text-caption text-[var(--undp-gray)] leading-snug mt-0.5 line-clamp-3">
+                        {a.targetText}
+                      </p>
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
           ) : (
-            <p className="text-[11px] italic text-[var(--undp-gray)]">
+            <p className="text-caption text-[var(--undp-gray)]">
               {t("allMatched")}
             </p>
           )}

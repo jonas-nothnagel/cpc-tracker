@@ -131,7 +131,7 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
                   type="button"
                   onClick={() => setSelected(c.id)}
                   aria-pressed={isActive}
-                  className={`rounded-full border px-3.5 py-1 text-xs font-medium transition-colors ${
+                  className={`rounded-full border px-3.5 py-1 text-caption font-medium transition-colors ${
                     isActive
                       ? "border-[var(--undp-black)] bg-[var(--undp-black)] text-white"
                       : "border-gray-300 bg-white/70 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
@@ -147,10 +147,10 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
         <div className="grid items-start gap-12 md:grid-cols-[4fr_5fr] md:gap-16">
           {/* Left column: copy, legend, disclaimer, CTA */}
           <div>
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.18em] text-[var(--undp-blue)]">
+            <p className="mb-4 text-data font-medium text-[var(--undp-gray)]">
               {t("eyebrow")}
             </p>
-            <h2 className="font-display mb-5 text-3xl font-semibold leading-tight text-[var(--undp-black)] md:text-4xl">
+            <h2 className="font-display mb-5 text-headline font-semibold leading-tight text-[var(--undp-black)] md:text-headline-lg">
               {t("title")}
             </h2>
             <p className="mb-6 max-w-md text-base leading-relaxed text-[var(--undp-gray)] md:text-lg">
@@ -159,7 +159,7 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
 
             <WheelLegend justify="start" />
 
-            <p className="mt-6 max-w-sm text-xs leading-relaxed text-[var(--undp-gray)]/70">
+            <p className="mt-6 max-w-sm text-caption leading-relaxed text-[var(--undp-gray)]/70">
               {t("disclaimer")}
             </p>
 
@@ -167,7 +167,7 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
               <div className="mt-8">
                 <Link
                   href={`/dashboard?country=${selected}`}
-                  className="inline-flex items-center gap-2 text-sm font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
+                  className="inline-flex items-center gap-2 text-body font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
                 >
                   {selectedName
                     ? t("preview.openDashboardWithCountry", { name: selectedName })

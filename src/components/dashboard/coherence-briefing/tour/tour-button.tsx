@@ -41,7 +41,7 @@ export function TourButton({ tourId, scopeRef, scopeId, className = "" }: TourBu
         }
         aria-label={t("openAria")}
         title={t("openAria")}
-        className={`w-5 h-5 rounded-full text-[11px] font-semibold inline-flex items-center justify-center transition-colors cursor-pointer select-none ${
+        className={`w-5 h-5 rounded-full text-caption font-semibold inline-flex items-center justify-center transition-colors cursor-pointer select-none ${
           tour.active
             ? "bg-[var(--undp-blue)] text-white"
             : "bg-gray-200 text-[var(--undp-gray)] hover:bg-[var(--undp-blue)]/10 hover:text-[var(--undp-blue)]"

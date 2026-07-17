@@ -20,14 +20,12 @@
 
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { ALIGNED_COLOR, FLAGGED_COLOR } from "@/lib/utils";
 import type { StorylineLiveStats } from "@/lib/coherence-briefing";
 import type { CorpusStoryline } from "@/types";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-
-const ALIGNED_BAR_COLOR = "#196127";
-const FRICTION_BAR_COLOR = "#dc2626";
+const ALIGNED_BAR_COLOR = ALIGNED_COLOR;
+const FRICTION_BAR_COLOR = FLAGGED_COLOR;
 
 /** Hover-intent delay before the wheel spotlight engages. */
 const SPOTLIGHT_DELAY_MS = 140;
@@ -92,12 +90,11 @@ export function ThemeBox({
       onMouseLeave={hide}
       onFocus={show}
       onBlur={hide}
-      className="flex h-full w-full flex-col text-left rounded border border-gray-200 bg-white px-3.5 py-3 hover:border-gray-400 transition-colors"
+      className="flex h-full w-full flex-col text-left rounded-md border border-gray-200 bg-white px-4 py-3.5 hover:border-gray-400 transition-colors"
     >
       <p
-        className="min-h-[2.75em] text-[13px] text-[var(--undp-black)] leading-snug overflow-hidden"
+        className="min-h-[2.75em] text-data font-medium text-[var(--undp-black)] leading-snug overflow-hidden"
         style={{
-          fontFamily: HEADLINE_SERIF,
           display: "-webkit-box",
           WebkitLineClamp: 2,
           WebkitBoxOrient: "vertical",
@@ -107,7 +104,7 @@ export function ThemeBox({
         {storyline.name}
       </p>
       <p
-        className="mt-1.5 min-h-[2.75em] text-[11.5px] text-[var(--undp-gray)] leading-snug overflow-hidden"
+        className="mt-1.5 min-h-[2.75em] text-caption text-[var(--undp-gray)] leading-snug overflow-hidden"
         style={{
           display: "-webkit-box",
           WebkitLineClamp: 2,
@@ -117,10 +114,10 @@ export function ThemeBox({
         {storyline.description}
       </p>
       <p className="mt-auto flex items-baseline gap-1.5 overflow-hidden whitespace-nowrap pt-2.5">
-        <span className="text-[15px] font-semibold tabular-nums text-[var(--undp-black)]">
+        <span className="text-body font-semibold tabular-nums text-[var(--undp-black)]">
           {stats.liveCount.toLocaleString()}
         </span>
-        <span className="truncate text-[11px] text-[var(--undp-gray)]">
+        <span className="truncate text-caption text-[var(--undp-gray)]">
           {isReinforce
             ? t("boxAlignedLabel", { count: stats.liveCount })
             : t("boxMisalignedLabel", { count: stats.liveCount })}

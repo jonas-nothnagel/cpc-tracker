@@ -95,7 +95,7 @@ function DocToggleItem({
         meta.url,
     );
     return (
-      <div className="flex flex-col gap-1 text-[13px]">
+      <div className="flex flex-col gap-1 text-data">
         {toggle}
         {hasMeta && (
           <div className={`pl-3.5 ${included ? "" : "opacity-50"}`}>
@@ -159,7 +159,7 @@ export function DocFilterControl({
   if (allDocs.length === 0) return null;
 
   return (
-    <div className="mt-3 text-[11px] text-[var(--undp-gray)]">
+    <div className="mt-3 text-caption text-[var(--undp-gray)]">
       <p className="leading-relaxed">
         <span>
           {t("included", { visible: visibleCount, total: allDocs.length })}
@@ -198,7 +198,7 @@ export function DocFilterControl({
             <button
               type="button"
               onClick={onReset}
-              className="mt-4 text-[11px] text-[var(--undp-gray)] underline underline-offset-2 hover:text-[var(--undp-black)]"
+              className="mt-4 text-caption text-[var(--undp-gray)] underline underline-offset-2 hover:text-[var(--undp-black)]"
             >
               {t("resetToDefault")}
             </button>
@@ -221,11 +221,10 @@ export function DocToggleLegend({
   countryConfig,
   onToggle,
 }: DocControlBaseProps) {
-  const t = useTranslations("briefing.docFilter");
   if (allDocs.length === 0) return null;
   return (
     <div className="mb-3">
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[11px]">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-caption">
         {allDocs.map((doc) => (
           <DocToggleItem
             key={doc}
@@ -236,9 +235,6 @@ export function DocToggleLegend({
           />
         ))}
       </div>
-      <p className="mt-1.5 text-center text-[11px] uppercase tracking-wider text-[var(--undp-gray)]/70">
-        {t("toggle.clickToAddRemove")}
-      </p>
     </div>
   );
 }

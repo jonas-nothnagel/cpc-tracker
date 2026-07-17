@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { getDocColor, getDocFriendlyName, getDocFullLabel } from "@/lib/utils";
 import {
@@ -20,7 +19,7 @@ type ViewMode = "coherence" | "finance";
 type ScaleMode = "targets" | "spend";
 
 const EYEBROW =
-  "text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--undp-gray)]";
+  "text-caption font-medium text-[var(--undp-gray)]";
 
 /**
  * Floating left "lens" pane for the Explorer B workbench. Carries the
@@ -46,7 +45,6 @@ export function LensPane({
   onToggleDoc,
   countryConfig,
   hasGga,
-  targetSearch,
 }: {
   view: ViewMode;
   onViewChange: (view: ViewMode) => void;
@@ -65,7 +63,6 @@ export function LensPane({
   /** Whether the data carries any primary GGA (climate-resilience) classification.
    *  Gates the fourth group-by option so it only appears where it has content. */
   hasGga?: boolean;
-  targetSearch?: ReactNode;
 }) {
   const t = useTranslations("explorer");
   const shown = availableDocs.filter((d) => !hiddenDocs.has(d)).length;
@@ -73,19 +70,19 @@ export function LensPane({
     budgetSummary?.entries.filter((e) => e.totalBudget > 0).length ?? 0;
 
   const seg =
-    "flex-1 whitespace-nowrap rounded-md py-1.5 text-[11.5px] font-medium transition-colors";
+    "flex-1 whitespace-nowrap rounded-md py-1.5 text-caption font-medium transition-colors";
 
   return (
-    <div className="rounded-xl border border-gray-200/80 bg-white/95 p-4 shadow-[0_6px_24px_rgba(0,0,0,0.06)] backdrop-blur">
+    <div className="rounded-xl border border-line/80 bg-white/95 p-4 shadow-[0_6px_24px_rgba(0,0,0,0.06)] backdrop-blur">
       {showViewSwitch && (
         <>
           <div className={`${EYEBROW} mb-2`}>{t("workbench.viewLabel")}</div>
-          <div className="mb-4 flex w-full gap-1 rounded-full border border-gray-300 p-[3px]">
+          <div className="mb-4 flex w-full gap-1 rounded-full border border-line-strong p-[3px]">
             <button
               type="button"
               onClick={() => onViewChange("coherence")}
               aria-pressed={view === "coherence"}
-              className={`flex-1 whitespace-nowrap rounded-full py-1.5 text-[12.5px] font-medium transition-colors ${
+              className={`flex-1 whitespace-nowrap rounded-full py-1.5 text-data font-medium transition-colors ${
                 view === "coherence"
                   ? "bg-[var(--undp-black)] text-white"
                   : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
@@ -97,7 +94,7 @@ export function LensPane({
               type="button"
               onClick={() => onViewChange("finance")}
               aria-pressed={view === "finance"}
-              className={`flex-1 whitespace-nowrap rounded-full py-1.5 text-[12.5px] font-medium transition-colors ${
+              className={`flex-1 whitespace-nowrap rounded-full py-1.5 text-data font-medium transition-colors ${
                 view === "finance"
                   ? "bg-[#0e7490] text-white"
                   : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
@@ -106,7 +103,7 @@ export function LensPane({
               {t("workbench.viewFinance")}
             </button>
           </div>
-          <div className="-mx-4 mb-4 h-px bg-gray-100" />
+          <div className="-mx-4 mb-4 h-px bg-line-soft" />
         </>
       )}
 
@@ -129,10 +126,10 @@ export function LensPane({
             onClick={() => onGroupChange(mode)}
             aria-pressed={groupMode === mode}
             title={title}
-            className={`rounded-lg border px-3 py-1.5 text-center text-[11.5px] font-medium leading-tight transition-colors ${
+            className={`rounded-lg border px-3 py-1.5 text-center text-caption font-medium leading-tight transition-colors ${
               groupMode === mode
                 ? "border-[var(--undp-black)] bg-[var(--undp-black)] text-white"
-                : "border-gray-300 bg-white text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                : "border-line-strong bg-white text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
             }`}
           >
             {label}
@@ -148,7 +145,7 @@ export function LensPane({
           <select
             value={filter}
             onChange={(e) => onFilter(e.target.value as AlignFilter)}
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-[11.5px] text-[var(--undp-black)] focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/20"
+            className="w-full rounded-lg border border-line-strong bg-white px-3 py-2 text-caption text-[var(--undp-black)] focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/20"
           >
             <option value="high_contra">{t("controls.filterHighContra")}</option>
             <option value="high">{t("controls.filterHigh")}</option>
@@ -162,32 +159,32 @@ export function LensPane({
           <div className={`${EYEBROW} mb-2`}>
             {t("workbench.finance.budgetLabel")}
           </div>
-          <div className="mb-2 rounded-lg border border-gray-300 px-3 py-2 text-[11.5px] text-[var(--undp-black)]">
+          <div className="mb-2 rounded-lg border border-line-strong px-3 py-2 text-caption text-[var(--undp-black)]">
             {t("workbench.finance.periodLabel", {
               start: budgetSummary.period.start,
               end: budgetSummary.period.end,
             })}
           </div>
           <div className="flex gap-2">
-            <div className="flex-1 rounded-lg border border-gray-200 bg-[var(--undp-paper-alt,#fbfaf7)] px-2.5 py-2">
-              <div className="text-[15px] font-semibold tabular-nums text-[#0e7490]">
+            <div className="flex-1 rounded-lg border border-line bg-[var(--undp-paper-alt,#fbfaf7)] px-2.5 py-2">
+              <div className="text-body font-semibold tabular-nums text-[#0e7490]">
                 {formatBudgetValue(
                   budgetSummary.totalBudget,
                   budgetSummary.currency,
                 )}
               </div>
-              <div className="mt-0.5 text-[8.5px] uppercase tracking-[0.1em] text-[var(--undp-gray)]">
+              <div className="mt-0.5 text-caption text-[var(--undp-gray)]">
                 {t("workbench.finance.tileTaggedSpend")}
               </div>
             </div>
-            <div className="flex-1 rounded-lg border border-gray-200 bg-[var(--undp-paper-alt,#fbfaf7)] px-2.5 py-2">
-              <div className="text-[15px] font-semibold tabular-nums text-[#0e7490]">
+            <div className="flex-1 rounded-lg border border-line bg-[var(--undp-paper-alt,#fbfaf7)] px-2.5 py-2">
+              <div className="text-body font-semibold tabular-nums text-[#0e7490]">
                 {t("workbench.finance.tileFundedValue", {
                   funded: fundedCount,
                   total: budgetSummary.entries.length,
                 })}
               </div>
-              <div className="mt-0.5 text-[8.5px] uppercase tracking-[0.1em] text-[var(--undp-gray)]">
+              <div className="mt-0.5 text-caption text-[var(--undp-gray)]">
                 {t("workbench.finance.tileFundedCategories")}
               </div>
             </div>
@@ -199,7 +196,7 @@ export function LensPane({
               <div className={`${EYEBROW} mb-2`}>
                 {t("workbench.finance.scaleLabel")}
               </div>
-              <div className="flex w-full gap-1 rounded-lg border border-gray-300 p-[2px]">
+              <div className="flex w-full gap-1 rounded-lg border border-line-strong p-[2px]">
                 {(
                   [
                     ["targets", t("workbench.finance.scaleByTargets")],
@@ -229,7 +226,7 @@ export function LensPane({
       {/* Documents legend — toggleable. */}
       <div className="mb-2 flex items-center justify-between">
         <span className={EYEBROW}>{t("workbench.documentsLabel")}</span>
-        <span className="text-[9.5px] text-[var(--undp-gray)]">
+        <span className="text-caption text-[var(--undp-gray)]">
           {t("workbench.documentsShown", {
             shown,
             total: availableDocs.length,
@@ -246,7 +243,7 @@ export function LensPane({
               type="button"
               onClick={() => onToggleDoc(doc)}
               title={getDocFullLabel(countryConfig, doc)}
-              className={`flex items-center gap-1.5 text-left text-[11.5px] transition-colors ${
+              className={`flex items-center gap-1.5 text-left text-caption transition-colors ${
                 active
                   ? "text-[var(--undp-black)]"
                   : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
@@ -271,7 +268,6 @@ export function LensPane({
         })}
       </div>
 
-      {targetSearch && <div className="mt-4">{targetSearch}</div>}
     </div>
   );
 }

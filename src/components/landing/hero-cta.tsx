@@ -154,7 +154,7 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
           >
             <p
               id={labelId}
-              className="px-3 pb-1.5 pt-2 text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-[var(--undp-gray)]"
+              className="px-3 pb-1.5 pt-2 text-caption font-medium text-[var(--undp-gray)]"
             >
               {t("hero.pilotCountriesHeader")}
             </p>
@@ -164,7 +164,7 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
                   <Link
                     href={`/dashboard?country=${c.id}`}
                     onClick={() => setOpen(false)}
-                    className="block rounded-md px-3 py-2.5 text-sm font-medium text-[var(--undp-black)] transition-colors hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)] focus:outline-none"
+                    className="block rounded-md px-3 py-2.5 text-body font-medium text-[var(--undp-black)] transition-colors hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)] focus:outline-none"
                   >
                     {c.name}
                   </Link>
@@ -179,10 +179,10 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
                   {comingSoon.map((c) => (
                     <li
                       key={c.name}
-                      className="flex items-center justify-between gap-2.5 px-3 py-2.5 text-sm font-medium text-gray-400"
+                      className="flex items-center justify-between gap-2.5 px-3 py-2.5 text-body font-medium text-gray-400"
                     >
                       <span>{c.name}</span>
-                      <span className="rounded-full border border-gray-300 px-2 py-0.5 text-[0.625rem] font-medium uppercase tracking-wider text-gray-400">
+                      <span className="rounded-full border border-gray-300 px-2 py-0.5 text-caption font-medium text-gray-400">
                         {t("hero.comingSoonTag")}
                       </span>
                     </li>

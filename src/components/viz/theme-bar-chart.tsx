@@ -75,7 +75,7 @@ function TruncatedYTick({ x, y, payload, onLabelClick }: { x?: number; y?: numbe
       style={{ cursor: onLabelClick ? "pointer" : "default" }}
     >
       <title>{label}</title>
-      <text x={0} y={0} dy={4} textAnchor="end" fill="#64748b" fontSize={11} className="hover:fill-[#0468b1]">
+      <text x={0} y={0} dy={4} textAnchor="end" fill="var(--undp-gray)" fontSize={12} className="hover:fill-[#0468b1]">
         {display}
       </text>
     </g>
@@ -192,7 +192,7 @@ export function ThemeBarChart({
           margin={{ top: 5, right: 40, left: 10, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
-          <XAxis type="number" tick={{ fontSize: 12, fill: "#64748b" }} />
+          <XAxis type="number" tick={{ fontSize: 12, fill: "var(--undp-gray)" }} />
           <YAxis
             dataKey="name"
             type="category"

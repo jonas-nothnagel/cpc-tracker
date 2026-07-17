@@ -154,7 +154,7 @@ export function StepReferenceData({
         <h2 className="text-lg font-semibold text-[var(--undp-black)] mb-1.5">
           {t("title")}
         </h2>
-        <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
+        <p className="text-body text-[var(--undp-gray)] leading-relaxed max-w-2xl">
           {refData ? t("hasRefBody", { country }) : t("noRefBody")}
         </p>
       </div>
@@ -162,10 +162,10 @@ export function StepReferenceData({
       {/* Progress summary */}
       {targetCount > 0 && (
         <div className="mb-6 px-4 py-3 bg-gray-50 rounded-xl flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[var(--undp-blue)] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
+          <div className="w-9 h-9 rounded-full bg-[var(--undp-blue)] text-white flex items-center justify-center text-body font-bold flex-shrink-0">
             {targetCount}
           </div>
-          <p className="text-sm text-[var(--undp-black)]">
+          <p className="text-body text-[var(--undp-black)]">
             {t("progressSummary", {
               targets: targetCount,
               docTypes: documentTypeCount,
@@ -177,10 +177,10 @@ export function StepReferenceData({
       {/* Loading skeleton while fetching reference data */}
       {refLoading && (
         <div className="mb-8" aria-busy="true">
-          <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
+          <h3 className="text-caption font-medium text-[var(--undp-gray)] mb-3">
             {t("policyTargetsHeading", { country })}
           </h3>
-          <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+          <div className="border border-line rounded-xl overflow-hidden divide-y divide-line-soft">
             {[1, 2, 3].map((i) => (
               <div key={i} className="px-4 py-3 flex items-center gap-3 h-14">
                 <div className="w-9 h-9 rounded-lg bg-gray-100 animate-pulse flex-shrink-0" />
@@ -198,10 +198,10 @@ export function StepReferenceData({
       {/* Reference targets */}
       {!refLoading && refData && refGroups.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
+          <h3 className="text-caption font-medium text-[var(--undp-gray)] mb-3">
             {t("policyTargetsHeading", { country })}
           </h3>
-          <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+          <div className="border border-line rounded-xl overflow-hidden divide-y divide-line-soft">
             {refGroups.map(({ docType, count, targets }) => {
               const isAdded = addedReferenceDocs.has(docType);
               return (
@@ -212,14 +212,14 @@ export function StepReferenceData({
                       style={{ backgroundColor: `${getDocColor(null, docType)}18` }}
                     >
                       <span
-                        className="text-[10px] font-bold"
+                        className="text-caption font-bold"
                         style={{ color: getDocColor(null, docType) }}
                       >
                         {docType.length > 4 ? docType.slice(0, 3) : docType}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[var(--undp-black)]">
+                      <p className="text-body font-medium text-[var(--undp-black)]">
                         {docType}
                         {(() => {
                           // Only append a descriptive suffix when the helper
@@ -235,7 +235,7 @@ export function StepReferenceData({
                           ) : null;
                         })()}
                       </p>
-                      <p className="text-xs text-[var(--undp-gray)]">
+                      <p className="text-caption text-[var(--undp-gray)]">
                         {t("targetCount", { count })}
                       </p>
                     </div>
@@ -244,14 +244,14 @@ export function StepReferenceData({
                       onClick={() =>
                         setExpandedDoc(expandedDoc === docType ? null : docType)
                       }
-                      className="px-2.5 py-1 text-xs rounded-md border border-gray-200 text-[var(--undp-gray)] hover:bg-gray-50"
+                      className="px-2.5 py-1 text-caption rounded-md border border-line text-[var(--undp-gray)] hover:bg-gray-50"
                     >
                       {expandedDoc === docType ? t("hide") : t("preview")}
                     </button>
                     <button
                       type="button"
                       onClick={() => handleToggleDocTargets(docType, targets)}
-                      className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-all flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 text-caption rounded-lg font-medium transition-all flex items-center gap-1.5 ${
                         isAdded
                           ? "bg-emerald-100 text-emerald-700 hover:bg-red-50 hover:text-red-600"
                           : "bg-[var(--undp-blue)] text-white hover:bg-[var(--undp-blue)]/90"
@@ -270,16 +270,16 @@ export function StepReferenceData({
                     </button>
                   </div>
                   {expandedDoc === docType && (
-                    <div className="border-t border-gray-100 bg-gray-50/50 px-4 py-3 max-h-40 overflow-y-auto">
+                    <div className="border-t border-line-soft bg-gray-50/50 px-4 py-3 max-h-40 overflow-y-auto">
                       <div className="space-y-1.5">
                         {targets.slice(0, 8).map((tg) => (
-                          <p key={tg.id} className="text-xs text-[var(--undp-gray)] leading-relaxed">
+                          <p key={tg.id} className="text-data text-[var(--undp-gray)] leading-relaxed">
                             <span className="font-medium text-[var(--undp-black)]">{tg.sourceLabel}:</span>{" "}
                             {tg.text.length > 140 ? tg.text.slice(0, 140) + "..." : tg.text}
                           </p>
                         ))}
                         {targets.length > 8 && (
-                          <p className="text-xs text-gray-400 italic">
+                          <p className="text-caption text-gray-400">
                             {t("moreCount", { count: targets.length - 8 })}
                           </p>
                         )}
@@ -296,28 +296,28 @@ export function StepReferenceData({
       {/* BTR + NR7 as cards with Add/Remove */}
       {(refData?.hasBtr || refData?.hasNr7 || (btrParsedData && btrDocs.length > 0)) && (
         <div className="mb-8">
-          <h3 className="text-xs font-semibold text-[var(--undp-gray)] mb-3 uppercase tracking-wider">
+          <h3 className="text-caption font-medium text-[var(--undp-gray)] mb-3">
             {t("additionalSources")}
           </h3>
-          <div className="border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+          <div className="border border-line rounded-xl overflow-hidden divide-y divide-line-soft">
             {/* BTR */}
             {(refData?.hasBtr || (btrParsedData && btrDocs.length > 0)) && (
               <div className="px-4 py-3 flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[10px] font-bold text-violet-600">BTR</span>
+                  <span className="text-caption font-bold text-violet-600">BTR</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[var(--undp-black)]">
+                  <p className="text-body font-medium text-[var(--undp-black)]">
                     {t("btr.title")}
                   </p>
-                  <p className="text-xs text-[var(--undp-gray)]">
+                  <p className="text-caption text-[var(--undp-gray)]">
                     {t("btr.description")}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={onToggleBtr}
-                  className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-caption rounded-lg font-medium transition-all flex items-center gap-1.5 ${
                     includeBtr
                       ? "bg-violet-100 text-violet-700 hover:bg-red-50 hover:text-red-600"
                       : "bg-[var(--undp-blue)] text-white hover:bg-[var(--undp-blue)]/90"
@@ -340,20 +340,20 @@ export function StepReferenceData({
             {refData?.hasNr7 && (
               <div className="px-4 py-3 flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[10px] font-bold text-emerald-600">NR7</span>
+                  <span className="text-caption font-bold text-emerald-600">NR7</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[var(--undp-black)]">
+                  <p className="text-body font-medium text-[var(--undp-black)]">
                     {t("nr7.title")}
                   </p>
-                  <p className="text-xs text-[var(--undp-gray)]">
+                  <p className="text-caption text-[var(--undp-gray)]">
                     {t("nr7.description")}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={onToggleNr7}
-                  className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-caption rounded-lg font-medium transition-all flex items-center gap-1.5 ${
                     includeNr7
                       ? "bg-emerald-100 text-emerald-700 hover:bg-red-50 hover:text-red-600"
                       : "bg-[var(--undp-blue)] text-white hover:bg-[var(--undp-blue)]/90"
@@ -378,11 +378,11 @@ export function StepReferenceData({
 
       {/* No reference data */}
       {!refLoading && !refData && !btrParsedData && targetCount === 0 && (
-        <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
-          <p className="text-sm text-[var(--undp-gray)] mb-1">
+        <div className="p-6 bg-gray-50 rounded-xl border border-line text-center">
+          <p className="text-body text-[var(--undp-gray)] mb-1">
             {t("noRefData.title")}
           </p>
-          <p className="text-xs text-gray-400">
+          <p className="text-caption text-gray-400">
             {t("noRefData.hint")}
           </p>
         </div>

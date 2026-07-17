@@ -43,7 +43,12 @@ import {
 } from "../primer-card";
 import { ThemeBox, type ThemeSpotlight } from "../storyline-card";
 import { TourButton } from "../tour/tour-button";
-import { ALIGNMENT_COLORS, getDocFullLabel } from "@/lib/utils";
+import {
+  ALIGNED_COLOR,
+  ALIGNMENT_COLORS,
+  FLAGGED_COLOR,
+  getDocFullLabel,
+} from "@/lib/utils";
 import {
   computeStorylineLiveStats,
   concentrationDocAttribution,
@@ -65,8 +70,8 @@ export const DIRECTION_SECTION_ID = "direction";
 
 const PRIMER_STORAGE_KEY = "cpc.briefing.primer-collapsed";
 const BOXES_PER_COLUMN = 3;
-const ALIGNED_HEADER_COLOR = "#196127";
-const FRICTION_HEADER_COLOR = "#dc2626";
+const ALIGNED_HEADER_COLOR = ALIGNED_COLOR;
+const FRICTION_HEADER_COLOR = FLAGGED_COLOR;
 
 export function DirectionSection({
   countryName,
@@ -198,8 +203,11 @@ function RecurringThemesBlock({
   const aligns = byCount("reinforcement");
   const review = byCount("friction");
   return (
-    <div className="space-y-3">
-      <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2" data-tour="themes-columns">
+    <div className="space-y-4">
+      <div
+        className="grid gap-x-8 gap-y-6 sm:grid-cols-2"
+        data-tour="themes-columns"
+      >
         <ThemeColumn
           tone="aligns"
           storylines={aligns}
@@ -215,11 +223,8 @@ function RecurringThemesBlock({
           onSpotlightTheme={onSpotlightTheme}
         />
       </div>
-      <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
-        {t("groups.countsLegend")}
-      </p>
       {hiddenThemeCount > 0 && (
-        <p className="text-[11px] italic text-[var(--undp-gray)]">
+        <p className="text-caption text-[var(--undp-gray)]">
           {t("groups.hiddenForSelection", { count: hiddenThemeCount })}
         </p>
       )}
@@ -255,7 +260,7 @@ function ThemeColumn({
   return (
     <div>
       <p
-        className="mb-2 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.18em] font-semibold"
+        className="mb-3 inline-flex items-center gap-2 text-data font-semibold"
         style={{ color: headerColor }}
       >
         <span
@@ -272,12 +277,12 @@ function ThemeColumn({
         })}
       </p>
       {storylines.length === 0 ? (
-        <p className="text-[11.5px] italic text-[var(--undp-gray)]">
+        <p className="text-caption text-[var(--undp-gray)]">
           {t(isAligns ? "groups.emptyAligns" : "groups.emptyReview")}
         </p>
       ) : (
         <>
-          <ul className="space-y-2">
+          <ul className="space-y-2.5">
             {visible.map((s) => (
               <li key={`${s.type}-${s.name}`}>
                 <ThemeBox
@@ -296,7 +301,7 @@ function ThemeColumn({
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
-              className="mt-1.5 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+              className="mt-1.5 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
             >
               {expanded
                 ? t("groups.showFewer")
@@ -489,7 +494,7 @@ function AlignmentTermPopover({
             className="fixed z-50 w-[320px] -translate-x-1/2 rounded-md border border-gray-200 bg-white p-4 shadow-xl"
             style={{ top: coords.top, left: coords.left, pointerEvents: "none" }}
           >
-            <p className="text-[11px] leading-relaxed text-[var(--undp-gray)] mb-3">
+            <p className="text-caption leading-relaxed text-[var(--undp-gray)] mb-3">
               {definition}
             </p>
             <PrimerCardBody
@@ -497,7 +502,7 @@ function AlignmentTermPopover({
               line={example}
               countryConfig={countryConfig}
             />
-            <p className="mt-3 text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
+            <p className="mt-3 text-caption text-[var(--undp-gray)]">
               {t("clickToOpenPair")}
             </p>
           </div>,
@@ -546,7 +551,7 @@ function PrimerDisclosure({
       <button
         type="button"
         onClick={toggle}
-        className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
+        className="flex items-center gap-2 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
         aria-expanded={!collapsed}
         aria-controls={id}
       >
@@ -568,10 +573,10 @@ function PrimerDisclosure({
       </button>
       {!collapsed && (
         <div id={id} className="mt-3 space-y-3">
-          <p className="text-[12px] leading-relaxed text-[var(--undp-gray)] max-w-prose">
+          <p className="text-caption leading-relaxed text-[var(--undp-gray)] max-w-prose">
             {t("derivationNote")}
           </p>
-          <p className="text-[12px] leading-relaxed text-[var(--undp-gray)] max-w-prose">
+          <p className="text-caption leading-relaxed text-[var(--undp-gray)] max-w-prose">
             {t("onePairFromEnd")}
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -594,7 +599,7 @@ function PrimerDisclosure({
               />
             )}
             {!primer.aligned && !primer.tension && (
-              <p className="text-xs italic text-[var(--undp-gray)] sm:col-span-2">
+              <p className="text-caption text-[var(--undp-gray)] sm:col-span-2">
                 {t("notEnoughPairs")}
               </p>
             )}

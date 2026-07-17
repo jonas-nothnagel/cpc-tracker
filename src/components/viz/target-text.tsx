@@ -7,7 +7,7 @@ import type { TargetRow } from "@/lib/csv-parser";
 
 /**
  * Map of ISO-639-1 language codes to chip display (code + full name).
- * Keep entries lowercase keyed; the chip uppercases the code.
+ * Keep entries lowercase keyed; code values are stored capitalized for display.
  */
 const LANGUAGE_REGISTRY: Record<string, { code: string; name: string }> = {
   es: { code: "ES", name: "Spanish" },
@@ -116,7 +116,7 @@ export function OriginalLanguageChip({
         aria-expanded={open}
         aria-label={t("chip.ariaLabel", { language: displayName })}
         title={t("chip.title", { language: displayName })}
-        className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-[9px] font-semibold uppercase tracking-wide hover:bg-amber-100 transition-colors cursor-pointer"
+        className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-caption font-semibold hover:bg-amber-100 transition-colors cursor-pointer"
       >
         {resolved.code}
       </span>
@@ -124,11 +124,11 @@ export function OriginalLanguageChip({
         <span
           role="dialog"
           aria-label={t("panel.ariaLabel", { language: displayName })}
-          className="absolute left-0 top-full mt-1.5 z-50 w-[420px] max-w-[90vw] bg-white border border-gray-200 rounded-lg shadow-lg p-3.5 text-[11px] text-[var(--undp-black)] leading-relaxed cursor-default"
+          className="absolute left-0 top-full mt-1.5 z-50 w-[420px] max-w-[90vw] bg-white border border-line rounded-lg shadow-lg p-3.5 text-caption text-[var(--undp-black)] leading-relaxed cursor-default"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start justify-between mb-2 gap-2">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+            <span className="text-caption font-medium text-amber-700">
               {t("panel.translatedFrom", { language: displayName })}
             </span>
             <button
@@ -142,7 +142,7 @@ export function OriginalLanguageChip({
           </div>
           <div className="space-y-2.5">
             <div>
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-0.5">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-0.5">
                 {t("panel.original", { language: displayName })}
               </p>
               {target.sourceLabelOriginal && (
@@ -152,8 +152,8 @@ export function OriginalLanguageChip({
               )}
               <p className="italic text-[var(--undp-black)]">{target.textOriginal}</p>
             </div>
-            <div className="border-t border-gray-100 pt-2">
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--undp-gray)] mb-0.5">
+            <div className="border-t border-line-soft pt-2">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-0.5">
                 {t("panel.translationEnglish")}
               </p>
               {target.sourceLabel && (
@@ -214,8 +214,7 @@ export function MeasureLanguageChip({
  * adaptation uses fuchsia to avoid clashing with NBSAP teal elsewhere in the
  * palette. Text is the contract — color is decorative.
  */
-export const BTR_MITIGATION_COLOR = "#7c3aed"; // violet / BTR doc color
-export const BTR_ADAPTATION_COLOR = "#c026d3"; // fuchsia-600
+export { BTR_MITIGATION_COLOR, BTR_ADAPTATION_COLOR } from "@/lib/utils";
 
 export function ActionTypeBadge({ actionType }: { actionType?: BTRActionType }) {
   const t = useTranslations("viz.targetText");
@@ -233,7 +232,7 @@ export function ActionTypeBadge({ actionType }: { actionType?: BTRActionType }) 
   const border = isAdaptation ? "border-fuchsia-200" : "border-purple-200";
   return (
     <span
-      className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wide border ${bg} ${fg} ${border}`}
+      className={`inline-flex items-center px-1.5 py-0.5 rounded text-caption font-semibold border ${bg} ${fg} ${border}`}
       title={title}
     >
       {label}
@@ -323,7 +322,7 @@ export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="text-[10px] text-[var(--undp-blue)] hover:underline flex items-center gap-1"
+        className="text-caption text-[var(--undp-blue)] hover:underline flex items-center gap-1"
       >
         <span className="inline-block transition-transform" style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>
           &#9654;
@@ -331,23 +330,23 @@ export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
         {t("activitiesActions.toggle", { count })}
       </button>
       {open && (
-        <div className="mt-1 space-y-1.5 pl-2 border-l-2 border-[var(--undp-blue)]/20">
+        <div className="mt-1 space-y-1.5 pl-2 border-l border-line-strong">
           {activities && (
             <div>
-              <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+              <span className="text-caption font-medium text-[var(--undp-gray)]">
                 {t("activitiesActions.activities")}
               </span>
-              <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mt-0.5">
+              <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">
                 {activities}
               </p>
             </div>
           )}
           {actions && (
             <div>
-              <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+              <span className="text-caption font-medium text-[var(--undp-gray)]">
                 {t("activitiesActions.actions")}
               </span>
-              <p className="text-[11px] text-[var(--undp-black)] leading-relaxed mt-0.5">
+              <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">
                 {actions}
               </p>
             </div>

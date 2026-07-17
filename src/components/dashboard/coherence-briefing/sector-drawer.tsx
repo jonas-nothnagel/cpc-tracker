@@ -21,7 +21,12 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useFocusTrap } from "@/components/ui/use-focus-trap";
 import { track } from "@/lib/analytics/client";
-import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
+import {
+  ALIGNED_COLOR,
+  ALIGNMENT_COLORS,
+  FLAGGED_COLOR,
+  getDocMediumLabel,
+} from "@/lib/utils";
 import {
   useAlignmentLabels,
   useContradictionTypeLabels,
@@ -35,10 +40,7 @@ import type {
   Target,
 } from "@/types";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-const ALIGNED_DOT_COLOR = "#196127";
-const FRICTION_DOT_COLOR = "#dc2626";
+const HEADLINE_SERIF = "var(--font-display)";
 const EXAMPLES_DEFAULT_COUNT = 3;
 
 export function SectorDrawer({
@@ -118,12 +120,12 @@ export function SectorDrawer({
         aria-modal="true"
         aria-label={t("dialogAria", { name: briefing.categoryName })}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] bg-white shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#fbfaf7" }}
+        style={{ backgroundColor: "#ffffff" }}
       >
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 bg-white/90 backdrop-blur">
+        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line bg-white/90 backdrop-blur">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
                 {t("eyebrow")}
               </p>
               <h3
@@ -132,16 +134,16 @@ export function SectorDrawer({
               >
                 {briefing.categoryName}
               </h3>
-              <p className="mt-1 text-xs text-[var(--undp-gray)]">
+              <p className="mt-1 text-caption text-[var(--undp-gray)]">
                 {t("headerCounts", { targets: briefing.targetCount, pairs: briefing.signalCount })}
               </p>
-              <p className="mt-3 text-[13px] leading-snug text-[var(--undp-black)]">
+              <p className="mt-3 text-data leading-snug text-[var(--undp-black)]">
                 {synthesisSentence}
               </p>
               {briefing.recurringHub &&
                 briefing.recurringHub.flaggedPairCount >= 2 && (
-                  <p className="mt-2 text-[11px] text-[var(--undp-gray)] line-clamp-3">
-                    <span className="uppercase tracking-wider text-[11px] font-semibold mr-1">
+                  <p className="mt-2 text-caption text-[var(--undp-gray)] line-clamp-3">
+                    <span className="text-caption font-semibold mr-1">
                       {t("recursLabel")}
                     </span>
                     {briefing.recurringHub.target.sourceLabel} ·{" "}
@@ -215,8 +217,8 @@ function SectorSynthesisBlock({
   const contradictionLabels = useContradictionTypeLabels();
   if (synthesis.synthesis_error !== null) {
     return (
-      <section className="rounded-md border border-gray-200 bg-white p-4">
-        <p className="text-xs italic text-[var(--undp-gray)]">
+      <section className="rounded-md border border-line bg-white p-4">
+        <p className="text-caption text-[var(--undp-gray)]">
           {t("synthesisFailed")}
         </p>
         <div className="mt-4 space-y-6">
@@ -246,22 +248,19 @@ function SectorSynthesisBlock({
   const subtypeParts = renderContradictionSubtypes(synthesis, contradictionLabels);
   return (
     <section className="space-y-5">
-      <p
-        className="text-[15px] text-[var(--undp-black)] leading-snug"
-        style={{ fontFamily: HEADLINE_SERIF }}
-      >
+      <p className="text-body font-medium text-[var(--undp-black)] leading-snug">
         {storyline_name}
       </p>
       {/* Storylines are the headline content — each keeps its own box. */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <StorylinePanel
           label={t("panel.aligned")}
-          dotColor={ALIGNED_DOT_COLOR}
+          dotColor={ALIGNED_COLOR}
           body={reinforce}
         />
         <StorylinePanel
           label={t("panel.flagged")}
-          dotColor={FRICTION_DOT_COLOR}
+          dotColor={FLAGGED_COLOR}
           dashed
           body={clash}
         />
@@ -284,20 +283,20 @@ function SectorSynthesisBlock({
         />
       </div>
       {coordination_hint && (
-        <div className="border-l-2 border-gray-300 pl-3">
-          <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
+        <div className="border-l border-line-strong pl-3">
+          <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
             {t("coordinationPathway")}
           </p>
-          <p className="text-[13px] text-[var(--undp-black)] leading-relaxed italic">
+          <p className="text-data text-[var(--undp-black)] leading-relaxed">
             {coordination_hint}
           </p>
         </div>
       )}
-      <div className="border-t border-gray-200 pt-4">
-        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <div className="border-t border-line pt-4">
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
           {t("poolComposition")}
         </p>
-        <p className="text-[14px] text-[var(--undp-black)] tabular-nums font-medium">
+        <p className="text-body text-[var(--undp-black)] tabular-nums font-medium">
           <span style={{ color: ALIGNMENT_COLORS.high }}>
             {t("alignedCount", { count: synthesis.aligned_count })}
           </span>
@@ -306,7 +305,7 @@ function SectorSynthesisBlock({
             {t("flaggedCount", { count: synthesis.flagged_count })}
           </span>
         </p>
-        <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
+        <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
           {t("synthesisedFrom", {
             count: total,
             primary: synthesis.pool_composition.primary_count,
@@ -314,12 +313,12 @@ function SectorSynthesisBlock({
           })}
         </p>
         {subtypeParts.length > 0 && (
-          <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
+          <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
             {t("misalignmentTypes", { list: subtypeParts.join(", ") })}
           </p>
         )}
       </div>
-      <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
+      <p className="text-caption text-[var(--undp-gray)] leading-relaxed">
         {t("aiDisclaimer")}
       </p>
     </section>
@@ -372,7 +371,7 @@ function StorylinePanel({
   body: string;
 }) {
   return (
-    <div className="rounded-md border border-gray-200 bg-white p-3">
+    <div className="rounded-md border border-line bg-white p-3">
       <div className="flex items-center gap-2 mb-2">
         <span
           aria-hidden="true"
@@ -383,11 +382,11 @@ function StorylinePanel({
               : { backgroundColor: dotColor }
           }
         />
-        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
+        <p className="text-caption font-medium text-[var(--undp-black)]">
           {label}
         </p>
       </div>
-      <p className="text-[12px] text-[var(--undp-black)] leading-relaxed">
+      <p className="text-data text-[var(--undp-black)] leading-relaxed">
         {body}
       </p>
     </div>
@@ -419,17 +418,17 @@ function ExamplesColumn({
   const remaining = examples.length - EXAMPLES_DEFAULT_COUNT;
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2.5">
         {variant === "flagged"
           ? t("examples.flagged")
           : t("examples.aligned")}
       </p>
       {visible.length === 0 ? (
-        <p className="text-[11px] italic text-[var(--undp-gray)]">
+        <p className="text-caption text-[var(--undp-gray)]">
           {emptyText}
         </p>
       ) : (
-        <ol className="divide-y divide-gray-200">
+        <ol className="divide-y divide-line">
           {visible.map((line) => (
             <ExampleRow
               key={`${line.pair.targetAId}__${line.pair.targetBId}`}
@@ -449,7 +448,7 @@ function ExamplesColumn({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-2 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+          className="mt-2 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums"
         >
           {expanded ? t("showFewer") : t("showMore", { count: remaining })}
         </button>
@@ -497,7 +496,7 @@ function ExampleRow({
       >
         <div className="mb-1">
           <span
-            className="inline-block text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="inline-block text-caption font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -507,17 +506,17 @@ function ExampleRow({
             {alignmentLabels[pair.alignment]}
           </span>
           {facets.length > 0 && (
-            <p className="mt-1 text-[11px] text-[var(--undp-gray)] leading-tight">
+            <p className="mt-1 text-caption text-[var(--undp-gray)] leading-tight">
               {facets.join(" · ")}
             </p>
           )}
         </div>
-        <p className="text-[11px] text-[var(--undp-gray)] mb-1">
+        <p className="text-caption text-[var(--undp-gray)] mb-1">
           {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
         </p>
         {pair.description && (
           <p
-            className="text-[11.5px] text-[var(--undp-black)] leading-snug italic overflow-hidden"
+            className="text-caption text-[var(--undp-black)] leading-snug overflow-hidden"
             style={{
               display: "-webkit-box",
               WebkitLineClamp: 2,
@@ -551,11 +550,11 @@ function LegacyDrawerList({
 }) {
   return (
     <section>
-      <h4 className="text-sm font-medium text-[var(--undp-black)] mb-3">
+      <h4 className="text-body font-medium text-[var(--undp-black)] mb-3">
         {heading}
       </h4>
       {entries.length === 0 ? (
-        <p className="text-xs text-[var(--undp-gray)] italic">{empty}</p>
+        <p className="text-caption text-[var(--undp-gray)]">{empty}</p>
       ) : (
         <ol className="space-y-2">
           {entries.map((line) => (
