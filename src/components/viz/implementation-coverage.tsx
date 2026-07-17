@@ -693,17 +693,17 @@ function MitigationDetail({ row, countryConfig }: { row: MitigationRow; countryC
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis
                 dataKey="year"
-                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tick={{ fontSize: 12, fill: "var(--undp-gray)" }}
                 interval="preserveStartEnd"
               />
               <YAxis
-                tick={{ fontSize: 10, fill: "#94a3b8" }}
+                tick={{ fontSize: 12, fill: "var(--undp-gray)" }}
                 tickFormatter={(v: number) =>
                   Math.abs(v) >= 1000 ? `${(v / 1000).toFixed(0)}k` : String(v)
                 }
               />
               <Tooltip
-                contentStyle={{ fontSize: 11, borderRadius: 6, border: "1px solid #e2e8f0" }}
+                contentStyle={{ fontSize: 12, borderRadius: 6, border: "1px solid #e2e8f0" }}
                 formatter={(value) => [
                   t("chart.ktValue", { value: Math.round(Number(value)) }),
                   "",

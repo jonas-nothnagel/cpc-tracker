@@ -59,6 +59,20 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body style={{ margin: 0, minHeight: "100vh" }}>
+        <link
+          rel="preload"
+          href="/fonts/source-serif-4-latin-wght-normal.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/source-sans-3-latin-wght-normal.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <NextIntlClientProvider>
           {children}
           <FootprintChip />

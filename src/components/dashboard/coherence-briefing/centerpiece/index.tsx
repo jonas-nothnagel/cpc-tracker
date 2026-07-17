@@ -17,12 +17,15 @@ import {
   type WheelState,
 } from "./wheel";
 import { ConstellationCenterpiece } from "./constellation";
+import { WheelLegend } from "./wheel-legend";
 import type {
   AlignmentResult,
   CountryConfig,
   Target,
   ThematicClassification,
 } from "@/types";
+
+export { WheelLegend } from "./wheel-legend";
 
 export type CenterpieceVariant = "wheel" | "constellation";
 type Variant = CenterpieceVariant;
@@ -107,9 +110,9 @@ function VariantPicker({
             type="button"
             onClick={() => onChange(v)}
             aria-pressed={isActive}
-            className={`px-3 py-1 rounded-full text-[11px] font-medium border transition-colors ${
+            className={`px-3 py-1 rounded-full text-caption font-medium border transition-colors ${
               isActive
-                ? "bg-[var(--undp-black)] border-[var(--undp-black)] text-white"
+                ? "bg-[var(--undp-blue)] border-[var(--undp-blue)] text-white"
                 : "bg-white/70 border-gray-300 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
             }`}
           >
@@ -121,51 +124,3 @@ function VariantPicker({
   );
 }
 
-export function WheelLegend({
-  justify = "center",
-}: {
-  /** Horizontal alignment of the legend items. Defaults to centered (under the
-   * wheel); the landing left column passes "start" to left-align it. */
-  justify?: "center" | "start";
-}) {
-  const t = useTranslations("briefing.centerLegend");
-  return (
-    <div
-      className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[var(--undp-gray)] ${
-        justify === "start" ? "justify-start" : "justify-center"
-      }`}
-    >
-      <LegendDot color="#196127" label={t("legend.aligned")} />
-      <LegendDot color="#dc2626" label={t("legend.potentialMis")} dashed />
-      <span className="text-[11px] text-[var(--undp-gray)]/70">
-        {t("legend.ribbonWidth")}
-      </span>
-    </div>
-  );
-}
-
-function LegendDot({
-  color,
-  label,
-  dashed,
-}: {
-  color: string;
-  label: string;
-  dashed?: boolean;
-}) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span
-        aria-hidden="true"
-        className="inline-block w-4 h-[3px] rounded-full"
-        style={{
-          background: dashed
-            ? // 6/4 dash rhythm, matching the flagged ribbon core in wheel.tsx
-              `repeating-linear-gradient(90deg, ${color} 0 6px, transparent 6px 10px)`
-            : color,
-        }}
-      />
-      {label}
-    </span>
-  );
-}

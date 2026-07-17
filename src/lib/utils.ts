@@ -230,6 +230,18 @@ export const MECHANISM_COLORS: Record<ContradictionType, string> = {
   delivery_friction: "#d97706", // amber — operational / procedural
 };
 
+/** Canonical hexes for the two ends of the alignment axis (aliases into ALIGNMENT_COLORS). */
+export const ALIGNED_COLOR = ALIGNMENT_COLORS.high;
+export const FLAGGED_COLOR = ALIGNMENT_COLORS.flagged;
+
+/** The same two hexes as RGB triples, for rgba() shading (e.g. the doc matrix). */
+export const ALIGNED_RGB: [number, number, number] = [25, 97, 39];
+export const FLAGGED_RGB: [number, number, number] = [220, 38, 38];
+
+/** Reserved BTR document colors, shared by badges that split mitigation/adaptation. */
+export const BTR_MITIGATION_COLOR = RESERVED_DOC_TYPES.BTR.color;
+export const BTR_ADAPTATION_COLOR = RESERVED_DOC_TYPES.BTR_ADP.color;
+
 // Display labels for AlignmentLevel / ContradictionType / AlignmentManageability /
 // AlignmentConfidence are translation-driven now. Import the locale-aware hooks
 // from `src/lib/labels.ts` instead (e.g. `useAlignmentLabels()`).

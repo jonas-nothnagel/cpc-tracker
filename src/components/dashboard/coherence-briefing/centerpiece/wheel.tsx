@@ -1149,7 +1149,7 @@ export function WheelCenterpiece({
                   fontSize={15}
                   fontWeight={700}
                   fill="var(--undp-black)"
-                  stroke="#fbfaf7"
+                  stroke="#ffffff"
                   strokeWidth={3.5}
                   paintOrder="stroke"
                   strokeLinejoin="round"
@@ -1162,7 +1162,7 @@ export function WheelCenterpiece({
                   textAnchor="middle"
                   fontSize={12}
                   fontWeight={600}
-                  stroke="#fbfaf7"
+                  stroke="#ffffff"
                   strokeWidth={3}
                   paintOrder="stroke"
                   strokeLinejoin="round"
@@ -1177,9 +1177,9 @@ export function WheelCenterpiece({
                   x={0}
                   y={28}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fill="var(--undp-gray)"
-                  stroke="#fbfaf7"
+                  stroke="#ffffff"
                   strokeWidth={2.5}
                   paintOrder="stroke"
                   strokeLinejoin="round"
@@ -1197,9 +1197,9 @@ export function WheelCenterpiece({
                   x={0}
                   y={42}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fill="var(--undp-gray)"
-                  stroke="#fbfaf7"
+                  stroke="#ffffff"
                   strokeWidth={2.5}
                   paintOrder="stroke"
                   strokeLinejoin="round"

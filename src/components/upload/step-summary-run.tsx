@@ -62,22 +62,22 @@ export function StepSummaryRun({
         <h2 className="text-lg font-semibold text-[var(--undp-black)] mb-1.5">
           {t("title")}
         </h2>
-        <p className="text-sm text-[var(--undp-gray)] leading-relaxed max-w-2xl">
+        <p className="text-body text-[var(--undp-gray)] leading-relaxed max-w-2xl">
           {t("subtitle")}
         </p>
       </div>
 
       {/* Overview grid */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="p-4 border border-gray-200 rounded-xl">
-          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">{t("countryLabel")}</p>
+        <div className="p-4 border border-line rounded-xl">
+          <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">{t("countryLabel")}</p>
           <p className="text-lg font-semibold text-[var(--undp-black)]">{country || t("notSpecified")}</p>
         </div>
-        <div className="p-4 border border-gray-200 rounded-xl">
-          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">{t("targetsLabel")}</p>
+        <div className="p-4 border border-line rounded-xl">
+          <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">{t("targetsLabel")}</p>
           <p className="text-lg font-semibold text-[var(--undp-black)]">
             {targets.length}
-            <span className="text-sm font-normal text-[var(--undp-gray)] ml-1.5">
+            <span className="text-body font-normal text-[var(--undp-gray)] ml-1.5">
               {t("acrossDocs", { count: targetsByDocument.length })}
             </span>
           </p>
@@ -85,18 +85,18 @@ export function StepSummaryRun({
       </div>
 
       {/* Per-document breakdown */}
-      <div className="mb-6 border border-gray-200 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
-          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider">{t("targetBreakdown")}</p>
+      <div className="mb-6 border border-line rounded-xl overflow-hidden">
+        <div className="px-4 py-3 bg-gray-50 border-b border-line-soft">
+          <p className="text-caption font-medium text-[var(--undp-gray)]">{t("targetBreakdown")}</p>
         </div>
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-line-soft">
           {targetsByDocument.map(({ docType, targets: docTargets }) => (
             <div key={docType}>
               <button type="button" onClick={() => setExpandedDoc(expandedDoc === docType ? null : docType)}
                 className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors">
                 <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: getDocColor(null, docType) }} />
-                <span className="text-sm font-medium text-[var(--undp-black)] flex-1 text-left">{docType}</span>
-                <span className="text-sm text-[var(--undp-gray)] tabular-nums">{docTargets.length}</span>
+                <span className="text-body font-medium text-[var(--undp-black)] flex-1 text-left">{docType}</span>
+                <span className="text-body text-[var(--undp-gray)] tabular-nums">{docTargets.length}</span>
                 <svg className={`w-4 h-4 text-gray-400 transition-transform ${expandedDoc === docType ? "rotate-180" : ""}`}
                   fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -105,7 +105,7 @@ export function StepSummaryRun({
               {expandedDoc === docType && (
                 <div className="px-4 pb-3 ml-6 space-y-1.5 max-h-48 overflow-y-auto">
                   {docTargets.map(({ t: tg, idx }) => (
-                    <p key={idx} className="text-xs text-[var(--undp-gray)] leading-relaxed">
+                    <p key={idx} className="text-data text-[var(--undp-gray)] leading-relaxed">
                       <span className="font-medium text-[var(--undp-black)]">{tg.sourceLabel}:</span>{" "}
                       {tg.text.length > 120 ? tg.text.slice(0, 120) + "..." : tg.text}
                     </p>
@@ -122,9 +122,9 @@ export function StepSummaryRun({
         {groups.map((g) => {
           const active = g.items.filter((c) => c.enabled).length;
           return (
-            <div key={g.id} className="p-3 border border-gray-200 rounded-xl">
+            <div key={g.id} className="p-3 border border-line rounded-xl">
               <p className="text-xl font-bold text-[var(--undp-black)]">{active}</p>
-              <p className="text-xs text-[var(--undp-gray)] mt-0.5">{g.name}</p>
+              <p className="text-caption text-[var(--undp-gray)] mt-0.5">{g.name}</p>
             </div>
           );
         })}
@@ -134,36 +134,36 @@ export function StepSummaryRun({
       {hasBtrData && (
         <div className="mb-6 p-4 border border-violet-200 rounded-xl bg-violet-50/30 flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-bold text-violet-600">BTR</span>
+            <span className="text-caption font-bold text-violet-600">BTR</span>
           </div>
           <div>
-            <p className="text-sm font-medium text-[var(--undp-black)]">{t("btr.title")}</p>
-            <p className="text-xs text-[var(--undp-gray)]">{t("btr.description")}</p>
+            <p className="text-body font-medium text-[var(--undp-black)]">{t("btr.title")}</p>
+            <p className="text-caption text-[var(--undp-gray)]">{t("btr.description")}</p>
           </div>
         </div>
       )}
 
       {extractionFootprint && extractionFootprint.call_count > 0 && (
-        <div className="mb-4 p-4 border border-gray-200 rounded-xl bg-gray-50/60">
-          <p className="text-[10px] font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-2">
+        <div className="mb-4 p-4 border border-line rounded-xl bg-gray-50/60">
+          <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
             {t("footprint.heading")}
           </p>
           <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-            <span className="text-sm">
+            <span className="text-body">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.energy_wh)}
               </strong>{" "}
               {t("footprint.energy")}
             </span>
-            <span className="text-gray-300">·</span>
-            <span className="text-sm">
+            <span className="text-line-strong">·</span>
+            <span className="text-body">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.water_ml)}
               </strong>{" "}
               {t("footprint.water")}
             </span>
-            <span className="text-gray-300">·</span>
-            <span className="text-sm">
+            <span className="text-line-strong">·</span>
+            <span className="text-body">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.co2_geq)}
               </strong>{" "}
@@ -171,15 +171,15 @@ export function StepSummaryRun({
                 sub: (chunks) => <sub>{chunks}</sub>,
               })}
             </span>
-            <span className="text-gray-300">·</span>
-            <span className="text-sm">
+            <span className="text-line-strong">·</span>
+            <span className="text-body">
               <strong className="text-[var(--undp-black)]">
                 {formatFootprintValue(extractionFootprint.minerals_ugsbeq)}
               </strong>{" "}
               {t("footprint.minerals")}
             </span>
           </div>
-          <p className="text-[11px] text-[var(--undp-gray)] mt-2 leading-snug">
+          <p className="text-caption text-[var(--undp-gray)] mt-2 leading-snug">
             {t("footprint.summary", { count: extractionFootprint.call_count })}
           </p>
         </div>
@@ -187,7 +187,7 @@ export function StepSummaryRun({
 
       {submitError && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-          <p className="text-sm text-red-700">{submitError}</p>
+          <p className="text-body text-red-700">{submitError}</p>
         </div>
       )}
 

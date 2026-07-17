@@ -7,7 +7,7 @@ import type { TaxonomyGroup } from "@/hooks/useCategories";
 const COLOR_MAP = {
   blue: { border: "border-blue-200", bg: "bg-blue-50", accent: "text-[var(--undp-blue)]" },
   amber: { border: "border-amber-200", bg: "bg-amber-50", accent: "text-amber-600" },
-  gray: { border: "border-gray-200", bg: "bg-gray-50", accent: "text-gray-600" },
+  gray: { border: "border-line", bg: "bg-gray-50", accent: "text-gray-600" },
   emerald: { border: "border-emerald-200", bg: "bg-emerald-50", accent: "text-emerald-600" },
   violet: { border: "border-violet-200", bg: "bg-violet-50", accent: "text-violet-600" },
 };
@@ -64,7 +64,7 @@ export function CategoryConfig({
     <div>
       <button
         onClick={onToggleShow}
-        className="flex items-center gap-2 text-sm font-medium text-[var(--undp-black)] mb-3 hover:text-[var(--undp-blue)] transition-colors w-full py-2"
+        className="flex items-center gap-2 text-body font-medium text-[var(--undp-black)] mb-3 hover:text-[var(--undp-blue)] transition-colors w-full py-2"
       >
         <span className="flex-1 text-left">
           {showCategories ? t("hide") : t("edit")}
@@ -98,44 +98,44 @@ export function CategoryConfig({
           {/* Add new taxonomy group */}
           {addingGroup ? (
             <div className="border-2 border-dashed border-violet-300 rounded-xl p-4 space-y-3">
-              <p className="text-sm font-medium text-[var(--undp-black)]">{t("newGroup.title")}</p>
+              <p className="text-body font-medium text-[var(--undp-black)]">{t("newGroup.title")}</p>
               <input
                 type="text"
                 value={newGroupName}
                 onChange={(e) => setNewGroupName(e.target.value)}
                 placeholder={t("newGroup.namePlaceholder")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg text-body focus:outline-none focus:border-[var(--undp-blue)]"
               />
               <input
                 type="text"
                 value={newGroupDesc}
                 onChange={(e) => setNewGroupDesc(e.target.value)}
                 placeholder={t("newGroup.descPlaceholder")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+                className="w-full px-3 py-2 border border-line-strong rounded-lg text-body focus:outline-none focus:border-[var(--undp-blue)]"
               />
               <div className="flex gap-2">
                 <button
                   onClick={handleAddGroup}
                   disabled={!newGroupName.trim()}
-                  className="px-4 py-1.5 bg-[var(--undp-blue)] text-white text-sm rounded-lg disabled:opacity-40"
+                  className="px-4 py-1.5 bg-[var(--undp-blue)] text-white text-body rounded-lg disabled:opacity-40"
                 >
                   {t("newGroup.create")}
                 </button>
                 <button
                   onClick={() => { setAddingGroup(false); setNewGroupName(""); setNewGroupDesc(""); }}
-                  className="px-4 py-1.5 text-sm text-[var(--undp-gray)]"
+                  className="px-4 py-1.5 text-body text-[var(--undp-gray)]"
                 >
                   {t("newGroup.cancel")}
                 </button>
               </div>
-              <p className="text-[11px] text-[var(--undp-gray)]">
+              <p className="text-caption text-[var(--undp-gray)]">
                 {t("newGroup.hint")}
               </p>
             </div>
           ) : (
             <button
               onClick={() => setAddingGroup(true)}
-              className="w-full border-2 border-dashed border-gray-300 rounded-xl p-4 text-sm text-[var(--undp-gray)] hover:border-[var(--undp-blue)] hover:text-[var(--undp-blue)] transition-colors"
+              className="w-full border-2 border-dashed border-line-strong rounded-xl p-4 text-body text-[var(--undp-gray)] hover:border-[var(--undp-blue)] hover:text-[var(--undp-blue)] transition-colors"
             >
               {t("addGroup")}
             </button>
@@ -180,13 +180,13 @@ function GroupCard({
   const colors = COLOR_MAP[group.color];
 
   return (
-    <div className={`border rounded-xl overflow-hidden ${activeCount === 0 ? "border-gray-200 opacity-60" : colors.border}`}>
+    <div className={`border rounded-xl overflow-hidden ${activeCount === 0 ? "border-line opacity-60" : colors.border}`}>
       {/* Header */}
       <div className={`px-4 py-3 ${activeCount > 0 ? colors.bg : "bg-gray-50"}`}>
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-[var(--undp-black)]">{group.name}</p>
-            <p className="text-xs text-[var(--undp-gray)] mt-0.5">
+            <p className="text-body font-medium text-[var(--undp-black)]">{group.name}</p>
+            <p className="text-caption text-[var(--undp-gray)] mt-0.5">
               {group.items.length > 0
                 ? t("group.enabledRatio", { active: activeCount, total: group.items.length })
                 : t("group.empty")}
@@ -197,7 +197,7 @@ function GroupCard({
               <button
                 type="button"
                 onClick={() => toggleAllInGroup(group.id, !allEnabled)}
-                className="px-2.5 py-1 text-[10px] font-medium rounded border border-gray-300 text-[var(--undp-gray)] hover:bg-white"
+                className="px-2.5 py-1 text-caption font-medium rounded border border-line-strong text-[var(--undp-gray)] hover:bg-white"
               >
                 {allEnabled ? t("group.disableAll") : t("group.enableAll")}
               </button>
@@ -205,7 +205,7 @@ function GroupCard({
             <button
               type="button"
               onClick={() => setExpanded(!expanded)}
-              className="px-2.5 py-1 text-[10px] font-medium rounded border border-gray-300 text-[var(--undp-gray)] hover:bg-white"
+              className="px-2.5 py-1 text-caption font-medium rounded border border-line-strong text-[var(--undp-gray)] hover:bg-white"
             >
               {expanded ? t("group.collapse") : t("group.editBtn")}
             </button>
@@ -213,7 +213,7 @@ function GroupCard({
               <button
                 type="button"
                 onClick={() => onRemoveGroup(group.id)}
-                className="px-2 py-1 text-[10px] text-gray-400 hover:text-red-500"
+                className="px-2 py-1 text-caption text-gray-400 hover:text-red-500"
                 title={t("group.removeTitle")}
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,7 +224,7 @@ function GroupCard({
           </div>
         </div>
         {group.description && (
-          <p className="text-[11px] text-[var(--undp-gray)] mt-1.5 leading-snug">
+          <p className="text-caption text-[var(--undp-gray)] mt-1.5 leading-snug">
             {group.description}
           </p>
         )}
@@ -232,31 +232,31 @@ function GroupCard({
 
       {/* Expanded category list */}
       {expanded && (
-        <div className="border-t border-gray-100 divide-y divide-gray-50">
+        <div className="border-t border-line-soft divide-y divide-line-soft">
           {group.items.map((cat) => (
             <label
               key={cat.id}
-              className="flex items-start gap-3 px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-50 transition-colors"
+              className="flex items-start gap-3 px-4 py-2.5 text-body cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <input
                 type="checkbox"
                 checked={cat.enabled}
                 onChange={() => toggleCategory(group.id, cat.id)}
-                className="mt-0.5 rounded border-gray-300 text-[var(--undp-blue)] focus:ring-[var(--undp-blue)]"
+                className="mt-0.5 rounded border-line-strong text-[var(--undp-blue)] focus:ring-[var(--undp-blue)]"
               />
               <div className="flex-1 min-w-0">
                 <span className={cat.enabled ? "text-[var(--undp-black)]" : "text-gray-400 line-through"}>
                   {cat.name}
                 </span>
                 {cat.description && (
-                  <p className="text-[11px] text-[var(--undp-gray)] mt-0.5 leading-snug">
+                  <p className="text-caption text-[var(--undp-gray)] mt-0.5 leading-snug">
                     {cat.description}
                   </p>
                 )}
                 {cat.isCustom && (
                   <button
                     onClick={(e) => { e.preventDefault(); removeCategory(group.id, cat.id); }}
-                    className="text-[10px] text-gray-400 hover:text-red-500 mt-0.5"
+                    className="text-caption text-gray-400 hover:text-red-500 mt-0.5"
                   >
                     {t("item.remove")}
                   </button>
@@ -271,19 +271,19 @@ function GroupCard({
               <div className="flex gap-2 items-end">
                 <div className="flex-1">
                   <input type="text" value={newCatName} onChange={(e) => onNewCatNameChange(e.target.value)}
-                    placeholder={t("newItem.namePlaceholder")} className="w-full px-2.5 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-[var(--undp-blue)]" />
+                    placeholder={t("newItem.namePlaceholder")} className="w-full px-2.5 py-1.5 border border-line-strong rounded text-body focus:outline-none focus:border-[var(--undp-blue)]" />
                 </div>
                 <div className="flex-1">
                   <input type="text" value={newCatDesc} onChange={(e) => onNewCatDescChange(e.target.value)}
-                    placeholder={t("newItem.descPlaceholder")} className="w-full px-2.5 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-[var(--undp-blue)]" />
+                    placeholder={t("newItem.descPlaceholder")} className="w-full px-2.5 py-1.5 border border-line-strong rounded text-body focus:outline-none focus:border-[var(--undp-blue)]" />
                 </div>
                 <button onClick={onAddCustomCategory} disabled={!newCatName.trim()}
-                  className="px-3 py-1.5 bg-[var(--undp-blue)] text-white text-xs rounded disabled:opacity-40">{t("newItem.add")}</button>
+                  className="px-3 py-1.5 bg-[var(--undp-blue)] text-white text-caption rounded disabled:opacity-40">{t("newItem.add")}</button>
                 <button onClick={() => { onSetAddingTo(null); onNewCatNameChange(""); onNewCatDescChange(""); }}
-                  className="px-2 py-1.5 text-xs text-[var(--undp-gray)]">{t("newItem.cancel")}</button>
+                  className="px-2 py-1.5 text-caption text-[var(--undp-gray)]">{t("newItem.cancel")}</button>
               </div>
             ) : (
-              <button onClick={() => onSetAddingTo(group.id)} className="text-xs text-[var(--undp-blue)] hover:underline">
+              <button onClick={() => onSetAddingTo(group.id)} className="text-caption text-[var(--undp-blue)] hover:underline">
                 {t("newItem.addBtn")}
               </button>
             )}

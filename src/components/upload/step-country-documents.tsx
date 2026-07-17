@@ -141,18 +141,18 @@ export function StepCountryDocuments({
   return (
     <div>
       {/* Compact intro */}
-      <p className="text-sm text-[var(--undp-gray)] mb-6">
+      <p className="text-body text-[var(--undp-gray)] mb-6">
         {t("intro")}
       </p>
 
       {/* Country + doc type — inline row */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="sm:w-52 flex-shrink-0" ref={dropdownRef}>
-          <label className="block text-xs font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-1.5">
+          <label className="block text-caption font-medium text-[var(--undp-gray)] mb-1.5">
             {t("countryLabel")}
           </label>
           {countryLocked ? (
-            <div className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-[var(--undp-black)]">
+            <div className="px-3 py-2 border border-line rounded-lg text-body bg-gray-50 text-[var(--undp-black)]">
               {country}
             </div>
           ) : (
@@ -163,13 +163,13 @@ export function StepCountryDocuments({
               onChange={(e) => { onCountryChange(e.target.value); setShowDropdown(true); }}
               onFocus={() => setShowDropdown(true)}
               placeholder={t("countryPlaceholder")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)] focus:ring-1 focus:ring-[var(--undp-blue)] pr-8"
+              className="w-full px-3 py-2 border border-line-strong rounded-lg text-body focus:outline-none focus:border-[var(--undp-blue)] focus:ring-1 focus:ring-[var(--undp-blue)] pr-8"
             />
             <button type="button" onClick={() => setShowDropdown(!showDropdown)} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {showDropdown && (
-              <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+              <div className="absolute z-10 mt-1 w-full bg-white border border-line rounded-lg shadow-lg overflow-hidden">
                 {visibleCountries
                   .filter(
                     (c) =>
@@ -184,11 +184,11 @@ export function StepCountryDocuments({
                         onCountryChange(c.name);
                         setShowDropdown(false);
                       }}
-                      className="w-full px-3 py-2 text-left text-sm hover:bg-blue-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 text-left text-body hover:bg-blue-50 flex items-center justify-between"
                     >
                       <span className="font-medium">{c.name}</span>
                       {c.has.coherence && (
-                        <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">
+                        <span className="text-caption text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">
                           {t("referenceBadge")}
                         </span>
                       )}
@@ -199,7 +199,7 @@ export function StepCountryDocuments({
           </div>
           )}
           {knownCountry && knownCountry.has.coherence && (
-            <p className="mt-1 text-[10px] text-emerald-600 flex items-center gap-1">
+            <p className="mt-1 text-caption text-emerald-600 flex items-center gap-1">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               {t("referenceNext")}
             </p>
@@ -207,13 +207,13 @@ export function StepCountryDocuments({
         </div>
 
         <div className="sm:w-44 flex-shrink-0">
-          <label className="block text-xs font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-1.5">
+          <label className="block text-caption font-medium text-[var(--undp-gray)] mb-1.5">
             {t("docTypeLabel")}
           </label>
           <select
             value={extractDocType}
             onChange={(e) => onExtractDocTypeChange(e.target.value as PolicyDocumentType)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)] bg-white"
+            className="w-full px-3 py-2 border border-line-strong rounded-lg text-body focus:outline-none focus:border-[var(--undp-blue)] bg-white"
           >
             {DOCUMENT_TYPES.map((d) => (
               <option key={d.value} value={d.value}>{td(d.value)}</option>
@@ -223,7 +223,7 @@ export function StepCountryDocuments({
 
         {needsCustomName && (
           <div className="sm:w-44 flex-shrink-0">
-            <label className="block text-xs font-semibold text-[var(--undp-gray)] uppercase tracking-wider mb-1.5">
+            <label className="block text-caption font-medium text-[var(--undp-gray)] mb-1.5">
               {t("labelPrefixLabel")}
             </label>
             <input
@@ -231,7 +231,7 @@ export function StepCountryDocuments({
               value={extractDocLabel}
               onChange={(e) => onExtractDocLabelChange(e.target.value)}
               placeholder={t("labelPrefixPlaceholder")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--undp-blue)]"
+              className="w-full px-3 py-2 border border-line-strong rounded-lg text-body focus:outline-none focus:border-[var(--undp-blue)]"
             />
           </div>
         )}
@@ -245,17 +245,17 @@ export function StepCountryDocuments({
         className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-colors mb-4 ${
           dragging
             ? "border-[var(--undp-blue)] bg-blue-50"
-            : "border-gray-300 hover:border-gray-400"
+            : "border-line-strong hover:border-gray-400"
         }`}
       >
         {extracting ? (
           <div className="flex flex-col items-center gap-2">
             <div className="w-8 h-8 border-2 border-[var(--undp-blue)] border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-[var(--undp-blue)] font-medium">
+            <p className="text-body text-[var(--undp-blue)] font-medium">
               {t("extractingFrom", { name: extractFileName })}
             </p>
             {extractionQueueLength > 0 && (
-              <p className="text-xs text-[var(--undp-gray)]">
+              <p className="text-caption text-[var(--undp-gray)]">
                 {t("queueRemaining", { count: extractionQueueLength })}
               </p>
             )}
@@ -265,13 +265,13 @@ export function StepCountryDocuments({
             <svg className="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
-            <p className="text-sm text-[var(--undp-black)]">
+            <p className="text-body text-[var(--undp-black)]">
               {t("dropPrompt")}{" "}
               <button type="button" onClick={() => fileInputRef.current?.click()} className="text-[var(--undp-blue)] underline">
                 {t("browse")}
               </button>
             </p>
-            <p className="text-xs text-[var(--undp-gray)] mt-1">
+            <p className="text-caption text-[var(--undp-gray)] mt-1">
               {t("supportedFormats")}
             </p>
           </>
@@ -289,7 +289,7 @@ export function StepCountryDocuments({
       {/* Error */}
       {extractError && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-xl mb-4">
-          <p className="text-sm text-red-700">{extractError}</p>
+          <p className="text-body text-red-700">{extractError}</p>
         </div>
       )}
 
@@ -306,7 +306,7 @@ export function StepCountryDocuments({
             {extractWarnings
               .filter((w) => w.code === "PARTIAL_TEXT_LAYER")
               .map((w, i) => (
-                <p key={i} className="text-sm text-amber-800">
+                <p key={i} className="text-body text-amber-800">
                   {t("partialTextLayer", {
                     empty: w.emptyPages ?? 0,
                     total: w.pages ?? 0,
@@ -318,8 +318,8 @@ export function StepCountryDocuments({
 
       {/* Extraction succeeded but found nothing: a valid outcome, stated plainly */}
       {!extracting && !extractError && extractEmptyFile && (
-        <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl mb-4">
-          <p className="text-sm text-[var(--undp-gray)]">
+        <div className="p-3 bg-gray-50 border border-line rounded-xl mb-4">
+          <p className="text-body text-[var(--undp-gray)]">
             {t("extractEmpty", { name: extractEmptyFile })}
           </p>
         </div>
@@ -333,7 +333,7 @@ export function StepCountryDocuments({
         <button
           type="button"
           onClick={() => onModeChange(mode === "manual" ? "upload" : "manual")}
-          className="text-xs text-[var(--undp-blue)] hover:underline font-medium"
+          className="text-caption text-[var(--undp-blue)] hover:underline font-medium"
         >
           {mode === "manual" ? t("hideManual") : t("showManual")}
         </button>
@@ -360,9 +360,9 @@ export function StepCountryDocuments({
       {targetCount > 0 && (
         <div className="px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-bold text-emerald-700">{targetCount}</span>
+            <span className="text-caption font-bold text-emerald-700">{targetCount}</span>
           </div>
-          <p className="text-sm text-emerald-700">
+          <p className="text-body text-emerald-700">
             {t.rich("targetsAddedHint", {
               count: targetCount,
               strong: (chunks) => <strong>{chunks}</strong>,
@@ -375,12 +375,12 @@ export function StepCountryDocuments({
       {showExtractionModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto">
-            <div className="p-5 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white rounded-t-2xl z-10">
+            <div className="p-5 border-b border-line-soft flex items-center justify-between sticky top-0 bg-white rounded-t-2xl z-10">
               <div>
                 <h3 className="text-base font-semibold text-[var(--undp-black)]">
                   {t("reviewModal.title")}
                 </h3>
-                <p className="text-xs text-[var(--undp-gray)]">
+                <p className="text-caption text-[var(--undp-gray)]">
                   {t("reviewModal.subtitle", {
                     selected: extractedItems.filter((i) => i.accepted).length,
                     total: extractedItems.length,
@@ -404,7 +404,7 @@ export function StepCountryDocuments({
                   {extractWarnings
                     .filter((w) => w.code === "PARTIAL_TEXT_LAYER")
                     .map((w, i) => (
-                      <p key={i} className="text-sm text-amber-800">
+                      <p key={i} className="text-body text-amber-800">
                         {t("partialTextLayer", {
                           empty: w.emptyPages ?? 0,
                           total: w.pages ?? 0,

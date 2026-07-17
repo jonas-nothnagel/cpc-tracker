@@ -25,13 +25,13 @@ export function ManualTargetEditor({
   return (
     <div className="mb-8 rounded-lg border-2 border-[var(--undp-blue)]/30 bg-blue-50/20 p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-[var(--undp-black)]">
+        <h3 className="text-body font-semibold text-[var(--undp-black)]">
           {t("title", { docType })}
         </h3>
         <button
           type="button"
           onClick={onSave}
-          className="px-3 py-1.5 text-sm bg-[var(--undp-blue)] text-white rounded hover:bg-[var(--undp-blue-dark)] transition-colors"
+          className="px-3 py-1.5 text-body bg-[var(--undp-blue)] text-white rounded hover:bg-[var(--undp-blue-dark)] transition-colors"
         >
           {t("done")}
         </button>
@@ -40,7 +40,7 @@ export function ManualTargetEditor({
         {targets.map((tg, idx) => (
           <div
             key={`${tg.sourceDocument}-${tg.sourceLabel}-${idx}`}
-            className="py-2 px-3 rounded border border-gray-200 bg-white"
+            className="py-2 px-3 rounded border border-line bg-white"
           >
             <div className="flex items-center gap-2">
               <input
@@ -48,19 +48,19 @@ export function ManualTargetEditor({
                 value={tg.sourceLabel}
                 onChange={(e) => onUpdate(idx, { sourceLabel: e.target.value })}
                 placeholder={t("labelPlaceholder")}
-                className="w-28 shrink-0 px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:border-[var(--undp-blue)]"
+                className="w-28 shrink-0 px-2 py-1 text-body border border-line rounded focus:outline-none focus:border-[var(--undp-blue)]"
               />
               <textarea
                 value={tg.text}
                 onChange={(e) => onUpdate(idx, { text: e.target.value })}
                 placeholder={t("targetPlaceholder")}
                 rows={2}
-                className="flex-1 min-w-0 px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
+                className="flex-1 min-w-0 px-2 py-1 text-body border border-line rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
               />
               <button
                 type="button"
                 onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
-                className="shrink-0 w-6 h-6 flex items-center justify-center text-[var(--undp-gray)] hover:text-[var(--undp-blue)] rounded transition-colors text-xs"
+                className="shrink-0 w-6 h-6 flex items-center justify-center text-[var(--undp-gray)] hover:text-[var(--undp-blue)] rounded transition-colors text-caption"
                 title={t("toggleDetails")}
               >
                 {expandedIdx === idx ? "−" : "+"}
@@ -76,7 +76,7 @@ export function ManualTargetEditor({
             {expandedIdx === idx && (
               <div className="mt-2 pl-[7.5rem] space-y-1.5">
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+                  <label className="text-caption font-medium text-[var(--undp-gray)]">
                     {t("activities")}
                   </label>
                   <textarea
@@ -84,11 +84,11 @@ export function ManualTargetEditor({
                     onChange={(e) => onUpdate(idx, { activities: e.target.value || undefined })}
                     placeholder={t("activitiesPlaceholder")}
                     rows={2}
-                    className="w-full px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
+                    className="w-full px-2 py-1 text-body border border-line rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-wide text-[var(--undp-gray)]">
+                  <label className="text-caption font-medium text-[var(--undp-gray)]">
                     {t("actions")}
                   </label>
                   <textarea
@@ -96,7 +96,7 @@ export function ManualTargetEditor({
                     onChange={(e) => onUpdate(idx, { actions: e.target.value || undefined })}
                     placeholder={t("actionsPlaceholder")}
                     rows={2}
-                    className="w-full px-2 py-1 text-sm border border-gray-200 rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
+                    className="w-full px-2 py-1 text-body border border-line rounded resize-y focus:outline-none focus:border-[var(--undp-blue)]"
                   />
                 </div>
               </div>

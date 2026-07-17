@@ -38,7 +38,7 @@ export function AnalysisEstimate({
     <div className="bg-[var(--undp-light)] rounded-lg p-5 mb-8">
       <div className="flex items-start justify-between gap-6">
         <div className="flex-1 min-w-0">
-          <ul className="space-y-1 text-sm text-[var(--undp-gray)] mb-3">
+          <ul className="space-y-1 text-body text-[var(--undp-gray)] mb-3">
             <li>&middot; {t("quantitative", { count: targetCount })}</li>
             <li>&middot; {t("classification", { count: classCalls })}</li>
             <li>&middot; {t("decomposition", { count: targetCount })}</li>
@@ -51,10 +51,10 @@ export function AnalysisEstimate({
             {hasBtrData && <li>&middot; {t("btrIntegration")}</li>}
           </ul>
           {(estimate?.docTypes ?? 0) < 2 && (
-            <p className="text-amber-600 text-xs">{t("addSecondDoc")}</p>
+            <p className="text-amber-600 text-caption">{t("addSecondDoc")}</p>
           )}
           {estimate && (
-            <p className="text-xs text-[var(--undp-gray)]">
+            <p className="text-caption text-[var(--undp-gray)]">
               {t.rich("totalCost", {
                 calls: estimate.totalCalls,
                 cost: estimate.estCost.toFixed(2),
@@ -67,7 +67,7 @@ export function AnalysisEstimate({
           <button
             onClick={onRunAnalysis}
             disabled={submitting}
-            className="px-6 py-2.5 bg-[var(--undp-blue)] text-white text-sm font-medium rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+            className="px-6 py-2.5 bg-[var(--undp-blue)] text-white text-body font-medium rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
           >
             {submitting ? t("starting") : t("runAnalysis")}
           </button>

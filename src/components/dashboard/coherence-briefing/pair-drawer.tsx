@@ -17,7 +17,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
+  ALIGNED_COLOR,
   ALIGNMENT_COLORS,
+  FLAGGED_COLOR,
   getDocColor,
   getDocMediumLabel,
   getDocFullLabel,
@@ -44,10 +46,7 @@ import type {
 
 const EXAMPLES_DEFAULT_COUNT = 3;
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-const ALIGNED_DOT_COLOR = "#196127";
-const FRICTION_DOT_COLOR = "#dc2626";
+const HEADLINE_SERIF = "var(--font-display)";
 
 const SEVERITY_RANK: Record<AlignmentLevel, number> = {
   flagged: 0,
@@ -154,7 +153,7 @@ export function PairDrawer({
             : t("targetPairDialogAria")
         }
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#fbfaf7" }}
+        style={{ backgroundColor: "#ffffff" }}
       >
         {canGoBack && <DrawerBackButton onBack={goBack} label={backLabel} />}
         {renderData.mode === "target-pair" ? (
@@ -206,9 +205,9 @@ function TargetPairBody({
   const contra = isContradiction(pair.alignment);
   return (
     <>
-      <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
+      <header className="sticky top-0 z-10 px-6 py-4 border-b border-line flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+          <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
             {t("eyebrow.target")}
           </p>
           <h3
@@ -217,7 +216,7 @@ function TargetPairBody({
           >
             {alignmentLabels[pair.alignment]}
             {pair.mechanism && (
-              <span className="block text-xs font-normal text-[var(--undp-gray)] mt-1">
+              <span className="block text-data font-sans font-normal text-[var(--undp-gray)] mt-1">
                 {contradictionLabels[pair.mechanism]}
               </span>
             )}
@@ -248,7 +247,7 @@ function TargetPairBody({
             }}
           />
           <span
-            className="text-[11px] uppercase tracking-wider font-medium"
+            className="text-caption font-medium"
             style={{ color }}
           >
             {contra ? t("connector.flagged") : t("connector.aligned")}
@@ -268,9 +267,9 @@ function TargetPairBody({
         />
 
         {pair.description && (
-          <section className="border-t border-gray-200 pt-4">
+          <section className="border-t border-line pt-4">
             <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
-              <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
+              <p className="text-caption font-medium text-[var(--undp-gray)]">
                 {t("aiRationaleLabel")}
               </p>
               <FrictionDimensionChip
@@ -279,10 +278,10 @@ function TargetPairBody({
                 sharedContext={pair.sharedContext}
               />
             </div>
-            <p className="text-sm text-[var(--undp-black)] leading-relaxed italic">
+            <p className="text-body text-[var(--undp-black)] leading-relaxed">
               {pair.description}
             </p>
-            <p className="mt-3 text-[11px] text-[var(--undp-gray)] leading-relaxed">
+            <p className="mt-3 text-caption text-[var(--undp-gray)] leading-relaxed">
               {t("aiRationaleDisclaimer")}
             </p>
           </section>
@@ -359,20 +358,20 @@ function TargetCard({
               borderColor: `${standInColor}55`,
               backgroundColor: `${standInColor}0D`,
             }
-          : { borderColor: "#e5e7eb", backgroundColor: "#ffffff" }
+          : { borderColor: "var(--color-line)", backgroundColor: "#ffffff" }
       }
     >
       <p
-        className="text-[11px] uppercase tracking-wider font-medium mb-2"
+        className="text-caption font-medium mb-2"
         style={{ color: isStandIn ? standInColor : color }}
       >
         {tagLine}
       </p>
-      <p className="text-sm text-[var(--undp-black)] leading-relaxed">
+      <p className="text-body text-[var(--undp-black)] leading-relaxed">
         {target.text}
       </p>
       {(target.isQuantitative || target.isTimeBound) && (
-        <p className="mt-2 text-[11px] text-[var(--undp-gray)] uppercase tracking-wider">
+        <p className="mt-2 text-caption font-medium text-[var(--undp-gray)]">
           {[
             target.isQuantitative ? t("badge.quantitative") : null,
             target.isTimeBound ? t("badge.timeBound") : null,
@@ -381,7 +380,7 @@ function TargetCard({
             .join(" · ")}
         </p>
       )}
-      <p className="mt-2 text-[11px] text-[var(--undp-gray)]">
+      <p className="mt-2 text-caption text-[var(--undp-gray)]">
         {t("sourceLabel", { name: docFull })}
       </p>
     </div>
@@ -438,10 +437,10 @@ function DocPairBody({
 
   return (
     <>
-      <header className="sticky top-0 z-10 px-6 py-4 bg-white/90 backdrop-blur border-b border-gray-200">
+      <header className="sticky top-0 z-10 px-6 py-4 bg-white/90 backdrop-blur border-b border-line">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+            <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
               {t("eyebrow.doc")}
             </p>
             <h3
@@ -451,10 +450,7 @@ function DocPairBody({
               {labelAFull} ↔ {labelBFull}
             </h3>
             {!failed && (
-              <p
-                className="mt-1 text-[13px] text-[var(--undp-gray)] leading-snug"
-                style={{ fontFamily: HEADLINE_SERIF }}
-              >
+              <p className="mt-1 text-data text-[var(--undp-gray)] leading-snug">
                 {docPair.synthesis.storyline_name}
               </p>
             )}
@@ -477,12 +473,12 @@ function DocPairBody({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <StorylinePanel
                 label={t("panel.aligned")}
-                dotColor={ALIGNED_DOT_COLOR}
+                dotColor={ALIGNED_COLOR}
                 body={docPair.synthesis.reinforce}
               />
               <StorylinePanel
                 label={t("panel.flagged")}
-                dotColor={FRICTION_DOT_COLOR}
+                dotColor={FLAGGED_COLOR}
                 dashed
                 body={docPair.synthesis.clash}
               />
@@ -511,17 +507,17 @@ function DocPairBody({
           </>
         )}
         {!failed && docPair.synthesis.coordination_hint && (
-          <div className="border-l-2 border-gray-300 pl-3">
-            <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-1">
+          <div className="border-l border-line-strong pl-3">
+            <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
               {t("coordinationPathway")}
             </p>
-            <p className="text-[13px] text-[var(--undp-black)] leading-relaxed italic">
+            <p className="text-data text-[var(--undp-black)] leading-relaxed">
               {docPair.synthesis.coordination_hint}
             </p>
           </div>
         )}
         <CountsStrip docPair={docPair} />
-        <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
+        <p className="text-caption text-[var(--undp-gray)] leading-relaxed">
           {t("aiDisclaimer")}
         </p>
         {failed && (
@@ -599,7 +595,7 @@ function StorylinePanel({
   body: string;
 }) {
   return (
-    <div className="rounded-md border border-gray-200 bg-white p-4">
+    <div className="rounded-md border border-line bg-white p-4">
       <div className="flex items-center gap-2 mb-2">
         <span
           aria-hidden="true"
@@ -610,11 +606,11 @@ function StorylinePanel({
               : { backgroundColor: dotColor }
           }
         />
-        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-black)] font-medium">
+        <p className="text-caption font-medium text-[var(--undp-black)]">
           {label}
         </p>
       </div>
-      <p className="text-[13px] text-[var(--undp-black)] leading-relaxed">
+      <p className="text-data text-[var(--undp-black)] leading-relaxed">
         {body}
       </p>
     </div>
@@ -659,15 +655,15 @@ function ExamplesColumn({
       : t("examples.aligned", { count: examples.length });
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2.5">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2.5">
         {exampleHeader}
       </p>
       {visible.length === 0 ? (
-        <p className="text-[11px] italic text-[var(--undp-gray)]">
+        <p className="text-caption text-[var(--undp-gray)]">
           {emptyText}
         </p>
       ) : (
-        <ol className="divide-y divide-gray-200">
+        <ol className="divide-y divide-line">
           {visible.map((p) => {
             const tA = targetsById.get(p.targetAId);
             const tB = targetsById.get(p.targetBId);
@@ -689,7 +685,7 @@ function ExamplesColumn({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-2 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+          className="mt-2 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums"
         >
           {expanded ? t("showFewer") : t("showMore", { count: remaining })}
         </button>
@@ -731,11 +727,11 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
     );
   }
   return (
-    <div className="border-t border-gray-200 pt-4">
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+    <div className="border-t border-line pt-4">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
         {t("poolComposition")}
       </p>
-      <p className="text-[15px] text-[var(--undp-black)] tabular-nums font-medium">
+      <p className="text-body text-[var(--undp-black)] tabular-nums font-medium">
         <span style={{ color: ALIGNMENT_COLORS.high }}>
           {t("alignedCount", { count: docPair.aligned_count })}
         </span>
@@ -745,7 +741,7 @@ function CountsStrip({ docPair }: { docPair: DocPairSynthesis }) {
         </span>
       </p>
       {parts.length > 0 && (
-        <p className="mt-1 text-[11px] text-[var(--undp-gray)] tabular-nums">
+        <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
           {t("misalignmentTypes", { list: parts.join(", ") })}
         </p>
       )}
@@ -776,9 +772,9 @@ function FallbackTargetPairList({
     ? [...flaggedPairs, ...alignedPairs]
     : flaggedPairs;
   return (
-    <section className="border-t border-gray-200 pt-4">
+    <section className="border-t border-line pt-4">
       <div className="flex items-baseline justify-between mb-3 flex-wrap gap-2">
-        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
+        <p className="text-caption font-medium text-[var(--undp-gray)]">
           {showAligned
             ? t("fallback.allPairs", {
                 count: flaggedPairs.length + alignedPairs.length,
@@ -789,7 +785,7 @@ function FallbackTargetPairList({
           <button
             type="button"
             onClick={() => setShowAligned((v) => !v)}
-            className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline"
+            className="text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums"
           >
             {showAligned
               ? t("fallback.showMisalignedOnly")
@@ -798,11 +794,11 @@ function FallbackTargetPairList({
         )}
       </div>
       {visible.length === 0 ? (
-        <p className="text-sm italic text-[var(--undp-gray)]">
+        <p className="text-body text-[var(--undp-gray)]">
           {t("fallback.empty")}
         </p>
       ) : (
-        <ol className="divide-y divide-gray-200 border-y border-gray-200">
+        <ol className="divide-y divide-line border-y border-line">
           {visible.map((p) => {
             const tA = targetsById.get(p.targetAId);
             const tB = targetsById.get(p.targetBId);
@@ -851,7 +847,7 @@ function TargetPairRow({
       >
         <div className="flex items-center gap-1.5 mb-1 flex-wrap">
           <span
-            className="text-[11px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full"
+            className="text-caption font-semibold px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: `${color}20`,
               color,
@@ -869,12 +865,12 @@ function TargetPairRow({
             sharedContext={pair.sharedContext}
           />
         </div>
-        <p className="text-[11px] text-[var(--undp-gray)] mb-0.5">
+        <p className="text-caption text-[var(--undp-gray)] mb-0.5">
           {docA} {targetA.sourceLabel} ↔ {docB} {targetB.sourceLabel}
         </p>
         {pair.description && (
           <p
-            className="text-[12px] text-[var(--undp-black)] leading-snug italic overflow-hidden"
+            className="text-caption text-[var(--undp-black)] leading-snug overflow-hidden"
             style={{
               display: "-webkit-box",
               WebkitLineClamp: 2,

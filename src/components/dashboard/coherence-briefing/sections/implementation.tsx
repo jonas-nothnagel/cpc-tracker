@@ -36,13 +36,13 @@ import {
   type TargetMisalignmentLink,
 } from "@/lib/implementation-coherence";
 import { useNr7BadgeLabels } from "@/lib/labels";
-import { getDocColor, getDocMediumLabel } from "@/lib/utils";
+import { FLAGGED_COLOR, getDocColor, getDocMediumLabel } from "@/lib/utils";
 import type { CountryConfig, Nr7Data } from "@/types";
 
 export const IMPLEMENTATION_SECTION_ID = "implementation";
 
 // Canonical potential-misalignment red (matches the wheel / matrix encoding).
-const FLAG_RED = "#dc2626";
+const FLAG_RED = FLAGGED_COLOR;
 
 // Country self-assessment statuses (NR7), the country's own judgement colours.
 const NR7_COLORS: Record<string, string> = {
@@ -96,12 +96,12 @@ export function ImplementationSection({
       }
       disclosure={
         <div className="space-y-1.5">
-          <p className="text-[11px] italic text-[var(--undp-gray)] max-w-prose">
+          <p className="text-caption text-[var(--undp-gray)] max-w-prose">
             {hasNr7
               ? t("footer.sourcesWithNr7", { country: countryName })
               : t("footer.sources", { country: countryName })}
           </p>
-          <p className="text-[11px] italic text-[var(--undp-gray)] max-w-prose">
+          <p className="text-caption text-[var(--undp-gray)] max-w-prose">
             {t("footer.notIncluded")}
           </p>
         </div>
@@ -179,10 +179,6 @@ function CoverageByDocument({
   const hasFlags = summary.totalFlaggedPairs > 0;
   return (
     <div>
-      <p className="text-[12px] leading-relaxed text-[var(--undp-gray)] mb-2.5 max-w-prose">
-        {t("dotMap.intro")}
-      </p>
-
       <ul className="space-y-3">
         {coverage.byDocument.map((d) => (
           <DocCoverageRow
@@ -195,7 +191,7 @@ function CoverageByDocument({
         ))}
       </ul>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[11px] text-[var(--undp-gray)]">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-caption text-[var(--undp-gray)]">
         <span className="flex items-center gap-1.5">
           <span
             aria-hidden="true"
@@ -226,7 +222,7 @@ function CoverageByDocument({
           documents carry a red "to review" count; the detail sits inside
           each document, top of the list. */}
       {hasFlags && (
-        <p className="mt-3 text-[13px] leading-relaxed text-[var(--undp-black)] max-w-prose">
+        <p className="mt-3 text-data leading-relaxed text-[var(--undp-black)] max-w-prose">
           {t("misalignment.lead", {
             actions: summary.actionsWithPotentialMisalignment,
             commitments: summary.flaggedCommitments,
@@ -235,7 +231,7 @@ function CoverageByDocument({
         </p>
       )}
 
-      <p className="mt-3 text-[11px] italic text-[var(--undp-gray)] max-w-prose">
+      <p className="mt-3 text-caption text-[var(--undp-gray)] max-w-prose">
         {t("dotMap.disclaimer")}
       </p>
     </div>
@@ -285,17 +281,17 @@ function DocCoverageRow({
                 className="inline-block w-2 h-2 rounded-full shrink-0"
                 style={{ backgroundColor: color }}
               />
-              <span className="text-[13px] text-[var(--undp-black)] truncate">
+              <span className="text-data text-[var(--undp-black)] truncate">
                 {label}
               </span>
               <span
                 aria-hidden="true"
-                className="text-[var(--undp-gray)]/50 text-[11px]"
+                className="text-[var(--undp-gray)]/50 text-caption"
               >
                 +
               </span>
             </span>
-            <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0 text-right inline-flex items-baseline gap-1">
+            <span className="text-caption tabular-nums text-[var(--undp-gray)] shrink-0 text-right inline-flex items-baseline gap-1">
               {t.rich("matchedCount", {
                 reached: doc.reached,
                 total: doc.total,
@@ -449,7 +445,7 @@ function TargetGroup({
   return (
     <div>
       <p
-        className="text-[11px] uppercase tracking-[0.14em] mb-1"
+        className="text-caption font-medium mb-1"
         style={{ color: headingColor ?? "var(--undp-gray)" }}
       >
         {heading} <span className="text-[var(--undp-gray)]/60">· {count}</span>
@@ -481,10 +477,10 @@ function TargetRow({
     <>
       <span className="mt-[5px]">{marker}</span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[12px] text-[var(--undp-black)] leading-snug truncate">
+        <span className="block text-data text-[var(--undp-black)] leading-snug truncate">
           {label}
         </span>
-        <span className="block text-[11px] text-[var(--undp-gray)] leading-snug truncate">
+        <span className="block text-caption text-[var(--undp-gray)] leading-snug truncate">
           {secondary}
         </span>
       </span>
@@ -492,7 +488,7 @@ function TargetRow({
       {onClick && (
         <span
           aria-hidden="true"
-          className="shrink-0 self-center text-[var(--undp-gray)]/50 text-[12px]"
+          className="shrink-0 self-center text-[var(--undp-gray)]/50 text-data"
         >
           ›
         </span>
@@ -584,7 +580,7 @@ function Nr7Note({
   const label = badgeLabels[status as keyof typeof badgeLabels] ?? status;
   return (
     <span
-      className="shrink-0 self-center text-[11px] leading-none"
+      className="shrink-0 self-center text-caption leading-none"
       style={{ color }}
       title={`${t("nr7.selfAssessment")} ${label}`}
     >

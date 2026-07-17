@@ -27,7 +27,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
 } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -37,6 +36,7 @@ import { Modal } from "@/components/ui/modal";
 import {
   SECTORS_SECTION_ID,
   SectorsSection,
+  SectorWheelFilter,
 } from "./sections/sectors";
 import {
   DIRECTION_SECTION_ID,
@@ -69,6 +69,7 @@ import {
   ImplementationSection,
 } from "./sections/implementation";
 import { WheelCenterpiece } from "./centerpiece/wheel";
+import { WheelLegend } from "./centerpiece/wheel-legend";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
 import { DeliveryRoster } from "./centerpiece/delivery-roster";
 import { InstitutionFlow } from "./centerpiece/institution-flow";
@@ -87,7 +88,6 @@ import { DocFilterControl, DocToggleLegend } from "./doc-filter-control";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
 import { getDocTypeOrder } from "@/lib/utils";
-import { PrototypeBadge } from "@/components/ui/prototype-badge";
 import {
   buildSectorBriefing,
   buildSectorCoherenceShare,
@@ -155,8 +155,7 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
+const HEADLINE_SERIF = "var(--font-display)";
 
 type SectionId =
   | typeof DIRECTION_SECTION_ID
@@ -1363,9 +1362,9 @@ export function CoherenceBriefing({
                 type="button"
                 onClick={() => setImplCenterView(v)}
                 aria-pressed={implCenterView === v}
-                className={`text-[11px] px-2.5 py-0.5 rounded-full border transition-colors ${
+                className={`text-caption px-2.5 py-0.5 rounded-full border transition-colors ${
                   implCenterView === v
-                    ? "bg-[var(--undp-black)] text-white border-[var(--undp-black)]"
+                    ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
                     : "text-[var(--undp-gray)] border-gray-300 hover:text-[var(--undp-black)]"
                 }`}
               >
@@ -1420,10 +1419,16 @@ export function CoherenceBriefing({
                 : undefined
           }
         />
-        <WheelLegend showArcNote={wheelState.frictionArcs === true} />
       </>
     );
   };
+
+  // True while the sticky graphic is the wheel itself (not the matrix,
+  // financing, or reported-snapshot centerpiece): gates the shared legend.
+  const wheelIsActiveCenterpiece =
+    activeSection !== DOC_PAIRS_SECTION_ID &&
+    !(activeSection === FINANCING_SECTION_ID && financing) &&
+    !(activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster);
 
   // ── Render ─────────────────────────────────────────────────────
   return (
@@ -1442,14 +1447,14 @@ export function CoherenceBriefing({
           onReset={resetHiddenDocs}
         />
         {storylineCaveat && (
-          <p className="mt-1.5 text-[11px] italic text-[var(--undp-gray)]">
+          <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
             {storylineCaveat}
           </p>
         )}
 
         {availableDocs.length === 0 ? (
           <div className="mt-10 border-y border-gray-200 py-16 text-center">
-            <p className="text-sm text-[var(--undp-gray)]">
+            <p className="text-body text-[var(--undp-gray)]">
               {t("emptyState.allDocsHidden")}
             </p>
           </div>
@@ -1550,15 +1555,11 @@ export function CoherenceBriefing({
               <SectorsSection
                 sectorRows={sectorRows}
                 sectorShares={sectorShares}
-                sectorSyntheses={sectorSynthesesIndex}
                 coverageConcentration={coverageConcentration}
-                lensLabel={lens?.label ?? null}
                 taxonomyType={lensTaxonomyType}
                 availableLenses={availableLenses}
                 activeLensId={lens?.id ?? null}
                 onLensChange={handleLensChange}
-                filter={sectorFilter}
-                onFilterChange={setSectorFilter}
                 onOpenSector={openSectorDrawer}
                 onHoverSector={setSectorHoverId}
               />
@@ -1645,7 +1646,7 @@ export function CoherenceBriefing({
                   onClick={() => setExpanded(true)}
                   aria-label={t("expand.aria")}
                   title={t("expand.aria")}
-                  className="inline-flex items-center gap-1 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
+                  className="inline-flex items-center gap-1 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
                 >
                   <svg
                     width="11"
@@ -1665,7 +1666,18 @@ export function CoherenceBriefing({
                   <span>{t("expand.button")}</span>
                 </button>
               </div>
+              {/* The ribbon filter controls the wheel, so it sits with the
+                  wheel while the Sectors slide is active. */}
+              {activeSection === SECTORS_SECTION_ID && (
+                <SectorWheelFilter
+                  filter={sectorFilter}
+                  onFilterChange={setSectorFilter}
+                />
+              )}
               {renderActiveCenterpiece(false)}
+              {wheelIsActiveCenterpiece && (
+                <WheelLegend showArcNote={wheelState.frictionArcs === true} />
+              )}
             </div>
           </aside>
             </div>
@@ -1739,7 +1751,6 @@ export function CoherenceBriefing({
         classifications={visibleClassifications}
         categories={sectorCategories}
         taxonomyType={lensTaxonomyType}
-        lensLabel={lens?.label ?? null}
         totalFlagged={frictionTotals.total}
         countryConfig={countryConfig}
         onClose={() => setFlagProfile(null)}
@@ -1762,8 +1773,14 @@ export function CoherenceBriefing({
         title={sectionLabels[activeSection]}
         maxWidth="max-w-5xl"
       >
-        <div className="p-6 flex justify-center" data-section-id={activeSection}>
+        <div
+          className="p-6 flex flex-col items-center"
+          data-section-id={activeSection}
+        >
           {expanded ? renderActiveCenterpiece(true) : null}
+          {expanded && wheelIsActiveCenterpiece && (
+            <WheelLegend showArcNote={wheelState.frictionArcs === true} />
+          )}
         </div>
       </Modal>
       <FooterLink countryId={countryId} />
@@ -1783,19 +1800,13 @@ function BriefingHeader({
   const t = useTranslations("briefing.header");
   return (
     <header className="pt-10 pb-2">
-      <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-2">
-        <p className="text-[11px] uppercase tracking-[0.24em] text-[var(--undp-gray)]">
-          {t("eyebrow")}
-        </p>
-        <PrototypeBadge tone="light" />
-      </div>
       <h1
-        className="text-[36px] sm:text-[44px] leading-[1.1] text-[var(--undp-black)] font-medium"
+        className="text-display tracking-[-0.02em] text-[var(--undp-black)] font-semibold"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
         {countryName}.
       </h1>
-      <p className="mt-2 text-sm text-[var(--undp-gray)]">
+      <p className="mt-2 text-body text-[var(--undp-gray)]">
         {t("subtitle", { count: documentCount })}
       </p>
     </header>
@@ -1811,7 +1822,7 @@ function JumpNav({
 }) {
   const sectionLabels = useSectionLabels();
   return (
-    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#fbfaf7]/85 backdrop-blur border-b border-gray-200/70">
+    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
       <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
         {order.map((id, i) => {
           const isActive = active === id;
@@ -1820,109 +1831,22 @@ function JumpNav({
               <a
                 href={`#${id}`}
                 aria-current={isActive ? "true" : undefined}
-                className={`px-2.5 py-1 rounded text-[12px] font-medium transition-colors ${
+                className={`px-2.5 py-1 rounded text-data font-medium transition-colors ${
                   isActive
-                    ? "bg-[var(--undp-black)] text-white"
+                    ? "bg-[var(--undp-blue)] text-white"
                     : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
                 }`}
               >
-                <span className="text-[11px] tabular-nums opacity-60 mr-1.5">
+                <span className="text-caption tabular-nums opacity-60 mr-1.5">
                   0{i + 1}
                 </span>
                 {sectionLabels[id]}
               </a>
-              {i < order.length - 1 && (
-                <span
-                  aria-hidden="true"
-                  className="text-[var(--undp-gray)]/40 px-1"
-                >
-                  ·
-                </span>
-              )}
             </li>
           );
         })}
       </ul>
     </nav>
-  );
-}
-
-function WheelLegend({ showArcNote }: { showArcNote?: boolean }) {
-  const t = useTranslations("briefing.legend");
-  return (
-    <div className="mt-3 mx-auto max-w-[440px] grid grid-cols-[auto_1fr] items-baseline gap-x-3 gap-y-1.5 text-[11px] text-[var(--undp-gray)]">
-      <LegendRow label={t("groupColours")}>
-        <LegendDot color="#196127" label={t("aligned")} />
-        <LegendDot color="#dc2626" label={t("flagged")} dashed />
-      </LegendRow>
-      <LegendRow label={t("groupRelations")}>
-        <span className="text-[var(--undp-gray)]/80">{t("ribbonMeaning")}</span>
-      </LegendRow>
-      <LegendRow label={t("groupStrength")}>
-        <span className="text-[var(--undp-gray)]/80">{t("ribbonWidth")}</span>
-        <span className="text-[var(--undp-gray)]/70">{t("redShareHint")}</span>
-        {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
-      </LegendRow>
-    </div>
-  );
-}
-
-/** One legend group: a quiet uppercase label + its swatches/text. Emits two grid
- *  items (label, content) so the shared parent grid auto-sizes the label column
- *  to the widest label across locales (no fixed width to overflow). No boxes. */
-function LegendRow({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <>
-      <span className="uppercase tracking-wider text-[11px] leading-relaxed text-[var(--undp-gray)]/55 whitespace-nowrap">
-        {label}
-      </span>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
-        {children}
-      </div>
-    </>
-  );
-}
-
-function LegendDot({
-  color,
-  label,
-  dashed,
-}: {
-  color: string;
-  label: string;
-  dashed?: boolean;
-}) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span
-        aria-hidden="true"
-        className="inline-block w-4 h-[3px] rounded-full"
-        style={{
-          background: dashed
-            ? `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 7px)`
-            : color,
-        }}
-      />
-      {label}
-    </span>
-  );
-}
-
-function LegendGradient({ label }: { label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span
-        aria-hidden="true"
-        className="inline-block h-2 w-8 rounded-full"
-        style={{
-          // Mirrors the rim arc scale (doc-coherence-matrix cellColor): green
-          // below the corpus norm, pale near it, terracotta above.
-          background:
-            "linear-gradient(90deg, rgba(25,97,39,0.55), rgba(25,97,39,0.10) 45%, rgba(220,38,38,0.12) 55%, rgba(220,38,38,0.60))",
-        }}
-      />
-      {label}
-    </span>
   );
 }
 
@@ -1933,7 +1857,7 @@ function FooterLink({ countryId }: { countryId?: string }) {
     ? `/prototypes?country=${encodeURIComponent(countryId)}`
     : "/";
   return (
-    <div className="fixed bottom-3 left-6 z-10 text-[11px] text-[var(--undp-gray)]">
+    <div className="fixed bottom-3 left-6 z-10 text-caption text-[var(--undp-gray)]">
       <Link
         href={dashboardHref}
         className="hover:text-[var(--undp-black)] hover:underline"

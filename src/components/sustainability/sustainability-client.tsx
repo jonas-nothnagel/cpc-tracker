@@ -357,7 +357,7 @@ export function SustainabilityClient() {
         </button>
         <h1
           className="text-3xl sm:text-4xl text-[var(--undp-black)]"
-          style={{ fontFamily: "ui-serif, Georgia, Cambria, serif" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           {t("page.title")}
         </h1>

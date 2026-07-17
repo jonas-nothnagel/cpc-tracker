@@ -29,8 +29,7 @@ import {
 } from "@/lib/utils";
 import type { CountryConfig, PolicyDocumentType } from "@/types";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
+const HEADLINE_SERIF = "var(--font-display)";
 
 export function DocMetaCard({
   meta,
@@ -60,14 +59,14 @@ export function DocMetaCard({
     <div className="space-y-1.5">
       {fullTitle && (
         <p
-          className="text-[13px] font-semibold text-[var(--undp-black)] leading-snug"
+          className="text-data font-semibold text-[var(--undp-black)] leading-snug"
           style={{ fontFamily: HEADLINE_SERIF }}
         >
           {fullTitle}
         </p>
       )}
       {meta.docKind && (
-        <p className="flex items-start gap-1.5 text-[12px] font-medium text-[var(--undp-black)] leading-snug">
+        <p className="flex items-start gap-1.5 text-caption font-medium text-[var(--undp-black)] leading-snug">
           {!hideDot && (
             <span
               aria-hidden="true"
@@ -79,13 +78,13 @@ export function DocMetaCard({
         </p>
       )}
       {factLine && (
-        <p className="text-[12px] text-[var(--undp-gray)] leading-snug">
+        <p className="text-caption text-[var(--undp-gray)] leading-snug">
           {factLine}
         </p>
       )}
       {meta.objective && (
         <p
-          className="text-[12px] italic text-[var(--undp-black)] leading-snug"
+          className="text-caption italic text-[var(--undp-black)] leading-snug"
           style={{ fontFamily: HEADLINE_SERIF }}
         >
           {meta.objective}
@@ -96,7 +95,7 @@ export function DocMetaCard({
           href={meta.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-[12px] font-medium text-[var(--undp-blue)] hover:underline"
+          className="inline-flex items-center gap-1 text-caption font-medium text-[var(--undp-blue)] hover:underline"
         >
           {t("viewDocument")}
           <span aria-hidden="true">↗</span>
@@ -113,7 +112,7 @@ export function DocMetaCard({
               style={{ width: `${pct}%`, backgroundColor: color }}
             />
           </span>
-          <span className="text-[11px] text-[var(--undp-gray)] leading-snug">
+          <span className="text-caption text-[var(--undp-gray)] leading-snug">
             {t("deadlineCoverage", {
               timeBound: deadlineCoverage.timeBound,
               total: deadlineCoverage.total,
@@ -196,7 +195,7 @@ export function DocHoverCard({
               if (closeTimer.current) clearTimeout(closeTimer.current);
             }}
             onMouseLeave={scheduleClose}
-            className="fixed z-50 w-[300px] rounded-md border border-gray-200 bg-white p-3.5 shadow-xl"
+            className="fixed z-50 w-[300px] rounded-md border border-line bg-white p-3.5 shadow-xl"
             style={{ top: coords.top, left: coords.left }}
           >
             <DocMetaCard meta={meta} color={color} fullTitle={fullTitle} />
@@ -301,7 +300,7 @@ export function DocInfoPopover({
             ref={cardRef}
             role="dialog"
             aria-label={meta.docKind ?? t("documentDetails")}
-            className="fixed z-50 w-[340px] rounded-md border border-gray-200 bg-white p-4 shadow-xl"
+            className="fixed z-50 w-[340px] rounded-md border border-line bg-white p-4 shadow-xl"
             style={{ top: coords.top, left: coords.left }}
           >
             <DocMetaCard

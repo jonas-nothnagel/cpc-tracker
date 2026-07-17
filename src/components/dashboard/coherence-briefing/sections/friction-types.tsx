@@ -32,7 +32,8 @@ export function FrictionTypesSection({
   if (totals.total === 0) {
     return (
       <SlideFrame
-        id={FRICTION_TYPES_SECTION_ID}        headline={t("emptyHeadline")}
+        id={FRICTION_TYPES_SECTION_ID}
+        headline={t("emptyHeadline")}
         body={t("emptyBody")}
       />
     );

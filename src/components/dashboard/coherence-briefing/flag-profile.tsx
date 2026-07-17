@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
+  ALIGNED_COLOR,
   getDocColor,
   getDocMediumLabel,
   MECHANISM_COLORS,
@@ -38,8 +39,7 @@ import type {
   ThematicClassification,
 } from "@/types";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
+const HEADLINE_SERIF = "var(--font-display)";
 const EXAMPLE_CAP = 6;
 const BAR_NEUTRAL = "#94a3b8";
 const BAR_TRACK = "#e5e7eb";
@@ -70,7 +70,6 @@ export function FlagProfileDrawer({
   classifications,
   categories,
   taxonomyType,
-  lensLabel,
   totalFlagged,
   countryConfig,
   onClose,
@@ -82,7 +81,6 @@ export function FlagProfileDrawer({
   classifications: ThematicClassification[];
   categories: { id: string; name: string }[];
   taxonomyType: string;
-  lensLabel: string | null;
   totalFlagged: number;
   countryConfig: CountryConfig | null;
   onClose: () => void;
@@ -243,7 +241,7 @@ export function FlagProfileDrawer({
     subject.kind === "friction-type"
       ? contradictionLabels[subject.mechanism]
       : subject.target.sourceLabel;
-  const themeNoun = lensLabel === "GLOBE" ? t("themeNoun.globe") : t("themeNoun.sectors");
+  const themeNoun = taxonomyType === "globe" ? t("themeNoun.globe") : t("themeNoun.sectors");
 
   return (
     <div className="fixed inset-0 z-30 flex justify-end">
@@ -259,13 +257,13 @@ export function FlagProfileDrawer({
         aria-modal="true"
         aria-label={t("dialogAria", { name: headerTitle })}
         className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#fbfaf7" }}
+        style={{ backgroundColor: "#ffffff" }}
       >
         {canGoBack && <DrawerBackButton onBack={goBack} />}
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-gray-200 bg-white/90 backdrop-blur">
+        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line bg-white/90 backdrop-blur">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-1">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
                 {subject.kind === "friction-type"
                   ? t("eyebrow.friction")
                   : t("eyebrow.target")}
@@ -283,16 +281,16 @@ export function FlagProfileDrawer({
                 {headerTitle}
               </h3>
               {docScopeLabel && (
-                <p className="mt-1 text-[12px] text-[var(--undp-gray)] leading-snug">
+                <p className="mt-1 text-caption text-[var(--undp-gray)] leading-snug">
                   {t("withinDoc", { doc: docScopeLabel })}
                 </p>
               )}
               {subject.kind === "target" && (
-                <p className="mt-1 text-[12px] text-[var(--undp-gray)] leading-snug line-clamp-3">
+                <p className="mt-1 text-data text-[var(--undp-gray)] leading-snug line-clamp-3">
                   {subject.target.text}
                 </p>
               )}
-              <p className="mt-2 text-xs text-[var(--undp-gray)] tabular-nums">
+              <p className="mt-2 text-caption text-[var(--undp-gray)] tabular-nums">
                 {t("pairCount", { count: total })}
                 {shareDenom > 0 &&
                   " · " +
@@ -316,7 +314,7 @@ export function FlagProfileDrawer({
 
         <div className="px-6 py-6 space-y-7">
           {total === 0 ? (
-            <p className="text-sm italic text-[var(--undp-gray)]">
+            <p className="text-body text-[var(--undp-gray)]">
               {t("empty")}
             </p>
           ) : (
@@ -347,7 +345,7 @@ export function FlagProfileDrawer({
                   subjectKind={subject.kind}
                 />
               )}
-              <p className="text-[11px] text-[var(--undp-gray)] leading-relaxed">
+              <p className="text-caption text-[var(--undp-gray)] leading-relaxed">
                 {t("aiDisclaimer")}
               </p>
             </>
@@ -372,7 +370,7 @@ function DocBadge({
         className="inline-block w-2 h-2 rounded-full"
         style={{ backgroundColor: getDocColor(countryConfig, docType) }}
       />
-      <span className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
+      <span className="text-caption font-medium text-[var(--undp-gray)]">
         {getDocMediumLabel(countryConfig, docType)}
       </span>
     </span>
@@ -455,11 +453,11 @@ function CompositionColumn({
   const max = rows[0]?.count ?? 0;
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
         {title}
       </p>
       {rows.length === 0 ? (
-        <p className="text-[11px] italic text-[var(--undp-gray)]/70">
+        <p className="text-caption text-[var(--undp-gray)]/70">
           {emptyText ?? t("composition.none")}
         </p>
       ) : (
@@ -469,12 +467,12 @@ function CompositionColumn({
               <>
                 <div className="flex items-baseline justify-between gap-2">
                   <span
-                    className="text-[11.5px] text-[var(--undp-black)] truncate"
+                    className="text-caption text-[var(--undp-black)] truncate"
                     title={r.label}
                   >
                     {r.label}
                   </span>
-                  <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
+                  <span className="text-caption tabular-nums text-[var(--undp-gray)] shrink-0">
                     {r.count.toLocaleString()}
                   </span>
                 </div>
@@ -530,7 +528,7 @@ function ManageabilityBar({
   const fPct = Math.round((fundamental / total) * 100);
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
         {t("manageability.title")}
       </p>
       <div
@@ -540,7 +538,7 @@ function ManageabilityBar({
         <span
           style={{
             width: `${(manageable / total) * 100}%`,
-            backgroundColor: "#196127",
+            backgroundColor: ALIGNED_COLOR,
           }}
         />
         <span
@@ -550,7 +548,7 @@ function ManageabilityBar({
           }}
         />
       </div>
-      <p className="mt-1.5 text-[11.5px] text-[var(--undp-black)] leading-snug">
+      <p className="mt-1.5 text-caption text-[var(--undp-black)] leading-snug">
         {t("manageability.summary", {
           mPct,
           fPct,
@@ -574,8 +572,8 @@ function RepresentativePairs({
 }) {
   const t = useTranslations("briefing.drawer.flagProfile");
   return (
-    <div className="border-t border-gray-200 pt-4">
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-2">
+    <div className="border-t border-line pt-4">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
         {subjectKind === "target"
           ? t("examples.target")
           : t("examples.representative")}
@@ -604,7 +602,7 @@ function RepresentativePairs({
                   sharedContext={pair.sharedContext}
                 />
               </div>
-              <p className="text-[11px] text-[var(--undp-gray)] mb-1">
+              <p className="text-caption text-[var(--undp-gray)] mb-1">
                 {getDocMediumLabel(countryConfig, a.sourceDocument)}{" "}
                 {a.sourceLabel} ↔{" "}
                 {getDocMediumLabel(countryConfig, b.sourceDocument)}{" "}
@@ -612,7 +610,7 @@ function RepresentativePairs({
               </p>
               {pair.description && (
                 <p
-                  className="text-[11.5px] text-[var(--undp-black)] leading-snug italic overflow-hidden"
+                  className="text-caption text-[var(--undp-black)] leading-snug overflow-hidden"
                   style={{
                     display: "-webkit-box",
                     WebkitLineClamp: 2,
@@ -652,8 +650,8 @@ function TargetFrictionTreeView({
   const t = useTranslations("briefing.drawer.flagProfile");
   if (tree.byMechanism.length === 0) return null;
   return (
-    <div className="border-t border-gray-200 pt-4">
-      <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)] mb-3">
+    <div className="border-t border-line pt-4">
+      <p className="text-caption font-medium text-[var(--undp-gray)] mb-3">
         {t("tree.heading")}
       </p>
       <div className="space-y-4">
@@ -700,20 +698,20 @@ function MechanismBranch({
           style={{ backgroundColor: color }}
         />
         <span
-          className="text-[12px] font-semibold uppercase tracking-wider"
+          className="text-data font-semibold"
           style={{ color }}
         >
           {label}
         </span>
-        <span className="text-[11px] tabular-nums text-[var(--undp-gray)]">
+        <span className="text-caption tabular-nums text-[var(--undp-gray)]">
           {group.count.toLocaleString()}
         </span>
       </div>
       {/* L2 — peer document, L3 — counterpart target */}
-      <div className="mt-1.5 ml-[0.3rem] border-l border-gray-200 pl-3.5 space-y-2.5">
+      <div className="mt-1.5 ml-[0.3rem] border-l border-line pl-3.5 space-y-2.5">
         {group.byDoc.map((doc) => (
           <div key={doc.peerDoc}>
-            <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
+            <p className="text-caption font-medium text-[var(--undp-gray)]">
               {doc.peerDoc === focalDoc ? "within" : "vs"}{" "}
               {getDocMediumLabel(countryConfig, doc.peerDoc)}
               <span className="ml-1.5 tabular-nums">
@@ -729,11 +727,11 @@ function MechanismBranch({
                     className="w-full text-left rounded -mx-1 px-1 py-0.5 hover:bg-gray-50 transition-colors"
                     title={`Open ${counterpart.sourceLabel}`}
                   >
-                    <span className="text-[11.5px] text-[var(--undp-black)] font-medium">
+                    <span className="text-caption text-[var(--undp-black)] font-medium">
                       {counterpart.sourceLabel}
                     </span>
                     <span
-                      className="block text-[11px] text-[var(--undp-gray)] leading-snug overflow-hidden"
+                      className="block text-caption text-[var(--undp-gray)] leading-snug overflow-hidden"
                       style={{
                         display: "-webkit-box",
                         WebkitLineClamp: 1,

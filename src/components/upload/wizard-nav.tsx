@@ -45,7 +45,7 @@ export function WizardNav({
                   ? "border-[var(--undp-blue)] bg-blue-50 shadow-sm"
                   : isComplete
                     ? "border-emerald-200 bg-emerald-50/50 cursor-pointer hover:border-emerald-300"
-                    : "border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed"
+                    : "border-line-soft bg-gray-50 opacity-50 cursor-not-allowed"
               }`}
             >
               {/* Top bar indicator */}
@@ -80,7 +80,7 @@ export function WizardNav({
                 </div>
                 <div className="min-w-0">
                   <p
-                    className={`text-xs font-medium truncate ${
+                    className={`text-caption font-medium truncate ${
                       isActive
                         ? "text-[var(--undp-blue)]"
                         : isComplete
@@ -90,7 +90,7 @@ export function WizardNav({
                   >
                     {label}
                   </p>
-                  <p className="text-[10px] text-gray-400">
+                  <p className="text-caption text-gray-400">
                     {t("stepCount", { n: i + 1 })}
                   </p>
                 </div>
@@ -110,10 +110,10 @@ export function WizardNav({
           type="button"
           onClick={() => onStepChange(currentStep - 1)}
           disabled={currentStep === 0}
-          className={`px-4 py-2 text-sm rounded-lg border transition-colors flex items-center gap-1.5 ${
+          className={`px-4 py-2 text-body rounded-lg border transition-colors flex items-center gap-1.5 ${
             currentStep === 0
-              ? "border-gray-100 text-gray-300 cursor-not-allowed"
-              : "border-gray-300 text-[var(--undp-gray)] hover:border-gray-400 hover:text-[var(--undp-black)]"
+              ? "border-line-soft text-gray-300 cursor-not-allowed"
+              : "border-line-strong text-[var(--undp-gray)] hover:border-gray-400 hover:text-[var(--undp-black)]"
           }`}
         >
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,7 +127,7 @@ export function WizardNav({
             type="button"
             onClick={() => onStepChange(currentStep + 1)}
             disabled={!canProceed}
-            className={`px-5 py-2 text-sm rounded-lg transition-colors flex items-center gap-1.5 font-medium ${
+            className={`px-5 py-2 text-body rounded-lg transition-colors flex items-center gap-1.5 font-medium ${
               canProceed
                 ? "bg-[var(--undp-blue)] text-white hover:bg-[var(--undp-blue)]/90 shadow-sm"
                 : "bg-gray-200 text-gray-400 cursor-not-allowed"

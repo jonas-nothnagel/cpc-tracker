@@ -16,9 +16,6 @@ import { useTranslations } from "next-intl";
 
 export const EXPLORE_SECTION_ID = "explore";
 
-const HEADLINE_SERIF =
-  "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-
 export function ExploreSection({ children }: { children: ReactNode }) {
   const t = useTranslations("briefing.explore");
   return (
@@ -29,12 +26,11 @@ export function ExploreSection({ children }: { children: ReactNode }) {
     >
       <h2
         id={`${EXPLORE_SECTION_ID}-heading`}
-        className="text-[28px] sm:text-[32px] leading-[1.15] text-[var(--undp-black)] font-medium mb-3"
-        style={{ fontFamily: HEADLINE_SERIF }}
+        className="font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium mb-3"
       >
         {t("heading")}
       </h2>
-      <p className="text-[14px] leading-relaxed text-[var(--undp-black)] max-w-prose mb-6">
+      <p className="text-body text-[var(--undp-black)] max-w-prose mb-6">
         {t("body")}
       </p>
       {children}

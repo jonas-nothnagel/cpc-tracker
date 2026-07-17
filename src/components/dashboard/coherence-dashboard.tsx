@@ -268,7 +268,7 @@ export function CoherenceDashboard({
 
   if (!data) {
     return (
-      <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#fbfaf7" }}>
+      <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#ffffff" }}>
         <Header subtitle={t("loading.subtitle")} basePath={basePath} />
         <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
           <div className="h-8 w-72 bg-gray-100 rounded animate-pulse mb-3" />
@@ -304,7 +304,7 @@ export function CoherenceDashboard({
   );
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#fbfaf7" }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#ffffff" }}>
       <Header
         subtitle={displayCountry}
         currentCountryId={country}

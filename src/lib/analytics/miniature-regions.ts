@@ -191,10 +191,10 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
       name: '"Group by" tabs',
       // briefing.lens.*
       match: exact(
-        "GLOBE",
-        "IPCC sectors", "Sectores IPCC", "IPCC салбарууд",
+        "Biodiversity", "Biodiversidad", "Биологийн төрөл зүйл",
+        "Mitigation sectors", "Sectores de mitigación", "Бууруулах салбарууд",
         "Country sectors", "Sectores del país", "Улсын салбарууд",
-        "Climate resilience (GGA)", "Resiliencia climática (GGA)", "Уур амьсгалын тэсвэрлэлт (GGA)",
+        "Climate adaptation", "Adaptación climática", "Уур амьсгалын дасан зохицол",
       ),
     },
     {
@@ -289,17 +289,16 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
     {
       id: "controls",
       name: "View & grouping controls",
-      // explorer.controls.group* + workbench view/scale + hardcoded toggles
+      // explorer.controls.group* + workbench view/scale
       match: exact(
         "Documents", "Documentos", "Баримт бичгүүд",
-        "GLOBE biodiversity", "Biodiversidad GLOBE", "GLOBE биологийн төрөл зүйл",
-        "IPCC sectors", "Sectores IPCC", "IPCC салбарууд",
-        "GGA resilience", "Resiliencia GGA", "GGA тэсвэрлэлт",
+        "Biodiversity", "Biodiversidad", "Биологийн төрөл зүйл",
+        "Mitigation sectors", "Sectores de mitigación", "Бууруулах салбарууд",
+        "Climate adaptation", "Adaptación climática", "Уур амьсгалын дасан зохицол",
         "Coherence", "Coherencia", "Уялдаа",
         "Finance · BER", "Finanzas · BER", "Санхүү · BER",
         "Targets", "Metas", "Зорилт",
         "Spend", "Gasto", "Зарлага",
-        "Big wheel", "Chat & stats",
       ),
     },
     {
@@ -310,8 +309,8 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
         frag("Ask the assistant", "Pregunte al asistente", "туслахаас асуух"),
         exact(
           "Ask →", "Preguntar →", "Асуух →",
-          "Surprise me", "Sorpréndame", "Гайхуулаач",
-          "Show me", "Muéstreme", "Надад харуул",
+          "Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах",
+          "Show on the wheel", "Mostrar en la rueda", "Хүрд дээр харуулах",
         ),
       ),
     },
