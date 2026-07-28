@@ -307,15 +307,48 @@ export function TargetTextWithHighlights({ target }: { target: Target }) {
 /**
  * Collapsible display of activities and actions/measures for a target.
  * Shows nothing if both fields are empty.
+ *
+ * Both fields arrive as one newline-separated string per target (the pipeline
+ * and the country ingests join the source document's own lines). A target can
+ * carry a dozen of them, so they are listed rather than run together, and the
+ * toggle counts the lines a reader will actually see.
  */
+function splitLines(value?: string): string[] {
+  if (!value) return [];
+  return value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function LineList({ label, lines }: { label: string; lines: string[] }) {
+  return (
+    <div>
+      <span className="text-caption font-medium text-[var(--undp-gray)]">{label}</span>
+      {lines.length === 1 ? (
+        <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">
+          {lines[0]}
+        </p>
+      ) : (
+        <ul className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5 list-disc pl-4 space-y-1">
+          {lines.map((line, i) => (
+            <li key={i}>{line}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
   const t = useTranslations("viz.targetText");
   const [open, setOpen] = useState(false);
-  const { activities, actions } = target;
+  const activityLines = splitLines(target.activities);
+  const actionLines = splitLines(target.actions);
 
-  if (!activities && !actions) return null;
+  if (!activityLines.length && !actionLines.length) return null;
 
-  const count = (activities ? 1 : 0) + (actions ? 1 : 0);
+  const count = activityLines.length + actionLines.length;
 
   return (
     <div className="mt-1.5">
@@ -331,25 +364,11 @@ export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
       </button>
       {open && (
         <div className="mt-1 space-y-1.5 pl-2 border-l border-line-strong">
-          {activities && (
-            <div>
-              <span className="text-caption font-medium text-[var(--undp-gray)]">
-                {t("activitiesActions.activities")}
-              </span>
-              <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">
-                {activities}
-              </p>
-            </div>
+          {activityLines.length > 0 && (
+            <LineList label={t("activitiesActions.activities")} lines={activityLines} />
           )}
-          {actions && (
-            <div>
-              <span className="text-caption font-medium text-[var(--undp-gray)]">
-                {t("activitiesActions.actions")}
-              </span>
-              <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">
-                {actions}
-              </p>
-            </div>
+          {actionLines.length > 0 && (
+            <LineList label={t("activitiesActions.actions")} lines={actionLines} />
           )}
         </div>
       )}
