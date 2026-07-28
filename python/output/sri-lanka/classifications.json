@@ -259,74 +259,73 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.28
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "sector_lulucf",
-    "taxonomyType": "sector",
-    "isRelevant": true,
-    "isPrimary": true,
-    "score": 0.92,
-    "reasoning": "The target centers on biodiversity, nature-based approaches, and spatial planning, which strongly aligns with land use, ecosystems, forests, wetlands, and settlements."
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "sector_waste",
-    "taxonomyType": "sector",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "sector_other",
-    "taxonomyType": "sector",
-    "isRelevant": true,
-    "isPrimary": false,
-    "score": 0.88,
-    "reasoning": "It explicitly calls for integrating biodiversity into national policies and plans, making it a broad cross-cutting governance and planning measure."
-  },
-  {
-    "targetId": "NBSAP_2",
-    "categoryId": "sector_energy",
-    "taxonomyType": "sector",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
-  },
-  {
-    "targetId": "NBSAP_2",
-    "categoryId": "sector_transport",
-    "taxonomyType": "sector",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
-  },
-  {
-    "targetId": "NBSAP_2",
-    "categoryId": "sector_ippu",
-    "taxonomyType": "sector",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
-  },
-  {
-    "targetId": "NBSAP_2",
-    "categoryId": "sector_agriculture",
-    "taxonomyType": "sector",
-    "isRelevant": false,
-    "isPrimary": false,
     "score": 0.18
   },
   {
-    "targetId": "NBSAP_2",
+    "targetId": "NBSAP_1",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.97,
-    "reasoning": "Restoring terrestrial, freshwater, marine and coastal ecosystems is primarily about land, wetlands, and ecosystem carbon stocks covered by LULUCF."
+    "reasoning": "Restoring terrestrial, freshwater, marine and coastal ecosystems is primarily about land, wetlands and ecosystem carbon stocks covered by LULUCF."
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "sector_waste",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "sector_other",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.42
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "sector_energy",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.08
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "sector_transport",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.12
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "sector_ippu",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "sector_agriculture",
+    "taxonomyType": "sector",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "sector_lulucf",
+    "taxonomyType": "sector",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.82,
+    "reasoning": "The target directly concerns biodiversity conservation, nature-based approaches, and spatial planning over land and ecosystems."
   },
   {
     "targetId": "NBSAP_2",
@@ -341,9 +340,9 @@
     "categoryId": "sector_other",
     "taxonomyType": "sector",
     "isRelevant": true,
-    "isPrimary": false,
-    "score": 0.58,
-    "reasoning": "The target is broadly ecosystem-based and cross-cutting, spanning multiple ecosystem types and nature benefits beyond a single emissions sector."
+    "isPrimary": true,
+    "score": 0.95,
+    "reasoning": "This is a cross-cutting biodiversity mainstreaming and planning measure spanning national policy, decision-making, and urban planning."
   },
   {
     "targetId": "NBSAP_3",
@@ -375,7 +374,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.15
   },
   {
     "targetId": "NBSAP_3",
@@ -384,7 +383,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.95,
-    "reasoning": "The target is primarily about conserving land, waters, coastal and marine areas, which directly relates to land use and managed wetlands ecosystems."
+    "reasoning": "The target is primarily about conserving land, inland waters, coastal and marine areas, which directly aligns with land use and managed wetlands ecosystems."
   },
   {
     "targetId": "NBSAP_3",
@@ -401,7 +400,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.55,
-    "reasoning": "It includes mainstreaming OECMs and national approaches, indicating a broader cross-cutting conservation policy framework beyond a single IPCC sector."
+    "reasoning": "The reference to mainstreaming OECMs and other national approaches indicates a broader cross-cutting conservation policy framework beyond a single emissions sector."
   },
   {
     "targetId": "NBSAP_4",
@@ -491,16 +490,16 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.18
+    "score": 0.22
   },
   {
     "targetId": "NBSAP_5",
     "categoryId": "sector_lulucf",
     "taxonomyType": "sector",
     "isRelevant": true,
-    "isPrimary": false,
-    "score": 0.52,
-    "reasoning": "Wild species management is closely linked to forests, wetlands, and other managed ecosystems covered under land use and forestry."
+    "isPrimary": true,
+    "score": 0.88,
+    "reasoning": "Managing wild species sustainably and legally is strongly tied to forests, wetlands, and other managed ecosystems within land use and forestry."
   },
   {
     "targetId": "NBSAP_5",
@@ -515,9 +514,9 @@
     "categoryId": "sector_other",
     "taxonomyType": "sector",
     "isRelevant": true,
-    "isPrimary": true,
-    "score": 0.88,
-    "reasoning": "This is a broad biodiversity and wildlife governance target focused on sustainable, safe, and legal management and trade rather than a single IPCC sector."
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "The target is a broad biodiversity and governance objective spanning sustainable use, safety, legality, and human benefits rather than a single emissions sector."
   },
   {
     "targetId": "NBSAP_6",
@@ -550,7 +549,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.58,
-    "reasoning": "Biosecurity against invasive species is materially relevant to crops, pests and agricultural production systems."
+    "reasoning": "IAS control is relevant to agriculture because invasive pests, weeds and pathogens threaten crops, livestock systems and farm biosecurity."
   },
   {
     "targetId": "NBSAP_6",
@@ -559,7 +558,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.72,
-    "reasoning": "Invasive alien species strongly affect forests, wetlands and other managed lands, making this clearly relevant to land use and forestry."
+    "reasoning": "Invasive alien species directly affect forests, wetlands and other managed lands, making this strongly relevant to land use and forestry."
   },
   {
     "targetId": "NBSAP_6",
@@ -576,7 +575,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.88,
-    "reasoning": "Biosecurity-focused prevention and control of invasive alien species is primarily a cross-cutting environmental governance measure rather than a direct IPCC emissions sector policy."
+    "reasoning": "Biosecurity-focused prevention and control of invasive alien species is primarily a cross-cutting environmental governance measure rather than a single IPCC emissions sector policy."
   },
   {
     "targetId": "NBSAP_7",
@@ -584,7 +583,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.16
+    "score": 0.14
   },
   {
     "targetId": "NBSAP_7",
@@ -592,7 +591,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.12
+    "score": 0.11
   },
   {
     "targetId": "NBSAP_7",
@@ -608,7 +607,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.28
+    "score": 0.27
   },
   {
     "targetId": "NBSAP_7",
@@ -616,8 +615,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.62,
-    "reasoning": "It directly concerns biodiversity and ecosystem functions and services, which are closely tied to land, forests, wetlands, and other ecosystems."
+    "score": 0.58,
+    "reasoning": "It is strongly linked to protecting ecosystems and biodiversity, which are closely tied to land use, forests, and other managed lands."
   },
   {
     "targetId": "NBSAP_7",
@@ -633,8 +632,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.88,
-    "reasoning": "The target is a broad cross-cutting pollution reduction goal framed around biodiversity and ecosystem protection rather than one specific emitting sector."
+    "score": 0.92,
+    "reasoning": "The target is a broad cross-cutting pollution reduction goal focused on biodiversity and ecosystem services rather than one specific emitting sector."
   },
   {
     "targetId": "NBSAP_8",
@@ -674,8 +673,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.95,
-    "reasoning": "Biodiversity protection and resilience to climate change are strongly tied to ecosystems, forests, wetlands, and land-use management."
+    "score": 0.93,
+    "reasoning": "Biodiversity resilience is most directly tied to ecosystems, habitats, forests, wetlands, and land-use management covered by LULUCF."
   },
   {
     "targetId": "NBSAP_8",
@@ -692,7 +691,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.72,
-    "reasoning": "The target is broad and adaptation-oriented, cutting across biodiversity and resilience rather than a single emissions sector."
+    "reasoning": "The target is broad adaptation-focused language on climate change and biodiversity rather than a single emissions sector."
   },
   {
     "targetId": "NBSAP_9",
@@ -700,7 +699,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.14
+    "score": 0.12
   },
   {
     "targetId": "NBSAP_9",
@@ -708,7 +707,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.09
+    "score": 0.08
   },
   {
     "targetId": "NBSAP_9",
@@ -732,7 +731,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.07
+    "score": 0.14
   },
   {
     "targetId": "NBSAP_9",
@@ -740,8 +739,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.82,
-    "reasoning": "The target explicitly aims to reduce waste, making the waste sector a major and direct focus."
+    "score": 0.78,
+    "reasoning": "The target explicitly aims to reduce waste, making the waste sector a major direct relevance."
   },
   {
     "targetId": "NBSAP_9",
@@ -749,8 +748,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.88,
-    "reasoning": "Sustainable consumption choices are a broad cross-cutting behavioral and policy theme rather than a single IPCC sector measure."
+    "score": 0.92,
+    "reasoning": "Sustainable consumption and reducing overconsumption are broad behavioral and cross-sector policy themes rather than a single IPCC sector."
   },
   {
     "targetId": "NBSAP_10",
@@ -782,8 +781,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.88,
-    "reasoning": "Agriculture is explicitly named as a primary area for enhancing sustainability."
+    "score": 0.9,
+    "reasoning": "Agriculture is explicitly named as a primary area for enhancing sustainability through biodiversity use."
   },
   {
     "targetId": "NBSAP_10",
@@ -791,7 +790,7 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.82,
+    "score": 0.88,
     "reasoning": "Forestry is explicitly included and biodiversity-wise use strongly relates to land use and forest management."
   },
   {
@@ -809,7 +808,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.95,
-    "reasoning": "The target explicitly spans multiple sectors including agriculture, fisheries, forestry and tourism through a broad biodiversity-based sustainability approach."
+    "reasoning": "The target explicitly spans multiple sectors and is framed as a cross-cutting biodiversity-based sustainability objective."
   },
   {
     "targetId": "NBSAP_11",
@@ -850,7 +849,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.72,
-    "reasoning": "Biodiversity risks and impacts are strongly tied to land use, forests, wetlands, and ecosystem management covered under LULUCF."
+    "reasoning": "Biodiversity risks and impacts are strongly tied to land use, ecosystems, forests and habitat management."
   },
   {
     "targetId": "NBSAP_11",
@@ -891,7 +890,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.28
+    "score": 0.2
   },
   {
     "targetId": "NBSAP_12",
@@ -899,7 +898,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.42
+    "score": 0.4
   },
   {
     "targetId": "NBSAP_12",
@@ -907,7 +906,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.16
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_12",
@@ -915,7 +914,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.08
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_12",
@@ -923,8 +922,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.92,
-    "reasoning": "Biosafety and biotechnology are broad governance and innovation issues that cut across multiple sectors rather than fitting one IPCC emissions sector."
+    "score": 0.9,
+    "reasoning": "Biosafety and biotechnology are broad cross-cutting governance issues that do not map cleanly to a single IPCC emissions sector."
   },
   {
     "targetId": "NBSAP_13",
@@ -981,7 +980,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.95,
-    "reasoning": "Benefit-sharing for biological resources, digital sequence information, and traditional knowledge is a cross-cutting biodiversity and governance framework rather than an IPCC emissions sector policy."
+    "reasoning": "Benefit-sharing for biological resources, digital sequence information, and traditional knowledge is a cross-cutting biodiversity and governance measure rather than an IPCC emissions-sector policy."
   },
   {
     "targetId": "NBSAP_14",
@@ -1013,7 +1012,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.18
+    "score": 0.2
   },
   {
     "targetId": "NBSAP_14",
@@ -1021,7 +1020,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.42
+    "score": 0.45
   },
   {
     "targetId": "NBSAP_14",
@@ -1070,7 +1069,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.18
+    "score": 0.12
   },
   {
     "targetId": "NBSAP_15",
@@ -1078,7 +1077,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.42
+    "score": 0.28
   },
   {
     "targetId": "NBSAP_15",
@@ -1095,7 +1094,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.97,
-    "reasoning": "The target is primarily a cross-cutting finance and capacity-building measure for implementing a national biodiversity strategy across sectors."
+    "reasoning": "This target is primarily about cross-cutting finance mobilization and institutional capacity for implementing a national biodiversity strategy across sectors."
   },
   {
     "targetId": "NBSAP_16",
@@ -1127,7 +1126,7 @@
     "taxonomyType": "sector",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.22
+    "score": 0.18
   },
   {
     "targetId": "NBSAP_16",
@@ -1135,8 +1134,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.72,
-    "reasoning": "Biodiversity conservation, management and sustainable use are strongly linked to forests, wetlands and other land-use ecosystems covered under LULUCF."
+    "score": 0.62,
+    "reasoning": "Biodiversity conservation, management and sustainable use are strongly linked to forests, wetlands and other land-use systems covered under LULUCF."
   },
   {
     "targetId": "NBSAP_16",
@@ -1152,8 +1151,8 @@
     "taxonomyType": "sector",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.96,
-    "reasoning": "This is primarily a cross-cutting gender mainstreaming objective applied across biodiversity policy rather than a single emissions sector."
+    "score": 0.97,
+    "reasoning": "This is primarily a cross-cutting gender mainstreaming measure for biodiversity governance rather than a single emissions sector."
   },
   {
     "targetId": "NDC_1",
@@ -23497,7 +23496,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.12
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_1",
@@ -23511,19 +23510,17 @@
     "targetId": "NBSAP_1",
     "categoryId": "globe_4",
     "taxonomyType": "globe",
-    "isRelevant": true,
+    "isRelevant": false,
     "isPrimary": false,
-    "score": 0.62,
-    "reasoning": "Nature-based approaches in spatial and urban planning strongly relate to sustainable urban areas and improving human well-being within a green economy framing."
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_1",
     "categoryId": "globe_5",
     "taxonomyType": "globe",
-    "isRelevant": true,
-    "isPrimary": true,
-    "score": 0.98,
-    "reasoning": "The target is explicitly about integrating biodiversity into national policies, plans, and spatial and urban planning, which squarely fits biodiversity planning and policy coherence."
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
   },
   {
     "targetId": "NBSAP_1",
@@ -23539,15 +23536,16 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.28
+    "score": 0.4
   },
   {
     "targetId": "NBSAP_1",
     "categoryId": "globe_8",
     "taxonomyType": "globe",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.22
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 1.0,
+    "reasoning": "The target explicitly focuses on restoring degraded terrestrial, freshwater, marine and coastal ecosystems."
   },
   {
     "targetId": "NBSAP_1",
@@ -23555,7 +23553,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.3
   },
   {
     "targetId": "NBSAP_2",
@@ -23571,7 +23569,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.18
   },
   {
     "targetId": "NBSAP_2",
@@ -23585,17 +23583,19 @@
     "targetId": "NBSAP_2",
     "categoryId": "globe_4",
     "taxonomyType": "globe",
-    "isRelevant": false,
+    "isRelevant": true,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.62,
+    "reasoning": "It directly mentions integrating nature-based approaches into spatial and urban planning, which aligns with sustainable urban areas."
   },
   {
     "targetId": "NBSAP_2",
     "categoryId": "globe_5",
     "taxonomyType": "globe",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target is explicitly about mainstreaming biodiversity into national policies, plans, decision-making, and spatial planning."
   },
   {
     "targetId": "NBSAP_2",
@@ -23611,16 +23611,15 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.4
+    "score": 0.1
   },
   {
     "targetId": "NBSAP_2",
     "categoryId": "globe_8",
     "taxonomyType": "globe",
-    "isRelevant": true,
-    "isPrimary": true,
-    "score": 1.0,
-    "reasoning": "The target explicitly centers on restoring degraded terrestrial, freshwater, marine and coastal ecosystems."
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.14
   },
   {
     "targetId": "NBSAP_2",
@@ -23628,7 +23627,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.3
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_3",
@@ -23686,7 +23685,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.98,
-    "reasoning": "The target is explicitly about conserving land, waters, coastal and marine areas through protected areas and OECMs."
+    "reasoning": "The target is explicitly about conserving land, inland waters, coastal and marine areas through protected areas and OECMs."
   },
   {
     "targetId": "NBSAP_3",
@@ -23702,7 +23701,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.28
+    "score": 0.22
   },
   {
     "targetId": "NBSAP_4",
@@ -23808,16 +23807,15 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.34
+    "score": 0.28
   },
   {
     "targetId": "NBSAP_5",
     "categoryId": "globe_5",
     "taxonomyType": "globe",
-    "isRelevant": true,
+    "isRelevant": false,
     "isPrimary": false,
-    "score": 0.72,
-    "reasoning": "The emphasis on legal trade and management strongly relates to biodiversity laws, enforcement, and implementation of agreements such as CITES."
+    "score": 0.48
   },
   {
     "targetId": "NBSAP_5",
@@ -23833,8 +23831,8 @@
     "taxonomyType": "globe",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.58,
-    "reasoning": "Managing wild species sustainably and legally overlaps with species conservation, especially reducing threats from trade and overuse."
+    "score": 0.62,
+    "reasoning": "Managing wild species sustainably and legally strongly relates to species conservation, especially reducing threats from trade and overuse."
   },
   {
     "targetId": "NBSAP_5",
@@ -23867,7 +23865,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.2
+    "score": 0.1
   },
   {
     "targetId": "NBSAP_6",
@@ -23893,7 +23891,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.5,
-    "reasoning": "Enhanced biosecurity often involves cross-cutting policy, regulation, coordination, and enforcement measures relevant to biodiversity planning."
+    "reasoning": "Enhanced biosecurity often involves cross-cutting policy, regulation, coordination, and enforcement measures relevant to biodiversity planning and finance."
   },
   {
     "targetId": "NBSAP_6",
@@ -23957,7 +23955,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.07
   },
   {
     "targetId": "NBSAP_7",
@@ -23965,7 +23963,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.2
+    "score": 0.18
   },
   {
     "targetId": "NBSAP_7",
@@ -23973,7 +23971,7 @@
     "taxonomyType": "globe",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 1.0,
+    "score": 0.98,
     "reasoning": "The target explicitly focuses on reducing pollution to levels that do not harm biodiversity and ecosystem functions."
   },
   {
@@ -23990,7 +23988,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.1
+    "score": 0.12
   },
   {
     "targetId": "NBSAP_7",
@@ -23998,7 +23996,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.1
+    "score": 0.08
   },
   {
     "targetId": "NBSAP_8",
@@ -24014,7 +24012,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.14
   },
   {
     "targetId": "NBSAP_8",
@@ -24030,16 +24028,16 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.2
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_8",
     "categoryId": "globe_5",
     "taxonomyType": "globe",
     "isRelevant": true,
-    "isPrimary": false,
-    "score": 0.5,
-    "reasoning": "Addressing climate impacts on biodiversity often requires cross-cutting biodiversity planning, policy, and coordination."
+    "isPrimary": true,
+    "score": 0.78,
+    "reasoning": "Building resilience to climate change impacts on biodiversity strongly implies cross-cutting biodiversity planning, policy, coordination, and integration with climate frameworks."
   },
   {
     "targetId": "NBSAP_8",
@@ -24047,16 +24045,16 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.4
+    "score": 0.42
   },
   {
     "targetId": "NBSAP_8",
     "categoryId": "globe_7",
     "taxonomyType": "globe",
     "isRelevant": true,
-    "isPrimary": true,
-    "score": 0.9,
-    "reasoning": "The target explicitly aims to reduce climate change impacts on biodiversity and strengthen ecological resilience, a core conservation objective."
+    "isPrimary": false,
+    "score": 0.72,
+    "reasoning": "Minimizing climate change impacts on biodiversity is a major conservation objective often addressed through protected areas and species conservation measures."
   },
   {
     "targetId": "NBSAP_8",
@@ -24064,8 +24062,8 @@
     "taxonomyType": "globe",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.8,
-    "reasoning": "Building resilience to climate change commonly involves restoring degraded ecosystems and ecosystem functions."
+    "score": 0.58,
+    "reasoning": "Resilience-building for biodiversity commonly includes ecosystem restoration to recover functions and adapt to climate stress."
   },
   {
     "targetId": "NBSAP_8",
@@ -24073,7 +24071,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.3
+    "score": 0.24
   },
   {
     "targetId": "NBSAP_9",
@@ -24114,7 +24112,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.18
+    "score": 0.14
   },
   {
     "targetId": "NBSAP_9",
@@ -24123,7 +24121,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.58,
-    "reasoning": "Reducing waste directly relates to waste management and pollution prevention, though pollution is not the main framing."
+    "reasoning": "Reducing waste directly relates to waste management and pollution prevention."
   },
   {
     "targetId": "NBSAP_9",
@@ -24131,7 +24129,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.12
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_9",
@@ -24180,7 +24178,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.72,
-    "reasoning": "It is clearly relevant because sustainable tourism and sustainability across productive sectors align with green economy objectives."
+    "reasoning": "Sustainable tourism is explicitly named, which aligns strongly with green economy objectives."
   },
   {
     "targetId": "NBSAP_10",
@@ -24188,7 +24186,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.34
+    "score": 0.22
   },
   {
     "targetId": "NBSAP_10",
@@ -24221,7 +24219,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.98,
-    "reasoning": "The target explicitly focuses on sustainable use of biodiversity across agriculture, aquaculture, fisheries, forestry and tourism sectors."
+    "reasoning": "The target explicitly focuses on sustainable use of biodiversity across agriculture, aquaculture, fisheries and forestry."
   },
   {
     "targetId": "NBSAP_11",
@@ -24237,7 +24235,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.42
+    "score": 0.38
   },
   {
     "targetId": "NBSAP_11",
@@ -24253,8 +24251,8 @@
     "taxonomyType": "globe",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.84,
-    "reasoning": "It directly promotes biodiversity-aligned business practices, risk management, and incentive reform consistent with a green economy approach."
+    "score": 0.82,
+    "reasoning": "It strongly relates to greening business practices and aligning economic incentives with biodiversity-positive outcomes."
   },
   {
     "targetId": "NBSAP_11",
@@ -24263,7 +24261,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.95,
-    "reasoning": "The target centers on business disclosure, mitigation, incentives, and mainstreaming biodiversity into corporate decision-making, which strongly fits biodiversity policy and finance frameworks."
+    "reasoning": "The target centers on business disclosure, risk mitigation, and incentive reform, which are core biodiversity policy and finance mainstreaming actions."
   },
   {
     "targetId": "NBSAP_11",
@@ -24295,7 +24293,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.28
+    "score": 0.24
   },
   {
     "targetId": "NBSAP_12",
@@ -24311,7 +24309,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.1
+    "score": 0.18
   },
   {
     "targetId": "NBSAP_12",
@@ -24319,7 +24317,7 @@
     "taxonomyType": "globe",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 1.0,
+    "score": 0.98,
     "reasoning": "The target explicitly centers on biosafety in relation to biotechnology and its benefits."
   },
   {
@@ -24336,7 +24334,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.2
+    "score": 0.34
   },
   {
     "targetId": "NBSAP_12",
@@ -24376,8 +24374,8 @@
     "taxonomyType": "globe",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 1.0,
-    "reasoning": "The target explicitly focuses on fair and equitable benefit-sharing from biological resources, digital sequence information, and traditional knowledge, which is the core of access and benefit sharing."
+    "score": 0.99,
+    "reasoning": "The target explicitly focuses on fair benefit-sharing from biological resources, digital sequence information, and traditional knowledge, which is the core of access and benefit sharing."
   },
   {
     "targetId": "NBSAP_13",
@@ -24385,8 +24383,8 @@
     "taxonomyType": "globe",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.6,
-    "reasoning": "Traditional knowledge and digital sequence information directly relate to biodiversity knowledge generation, protection, and use."
+    "score": 0.56,
+    "reasoning": "Traditional knowledge and digital sequence information connect to biodiversity knowledge generation, protection, and use, though benefit-sharing is the main emphasis."
   },
   {
     "targetId": "NBSAP_13",
@@ -24410,7 +24408,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.4
+    "score": 0.42
   },
   {
     "targetId": "NBSAP_13",
@@ -24442,7 +24440,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.18
   },
   {
     "targetId": "NBSAP_14",
@@ -24459,7 +24457,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.72,
-    "reasoning": "The emphasis on best available data and information relating to biodiversity strongly connects to biodiversity knowledge generation, access, and use in decision-making."
+    "reasoning": "It explicitly emphasizes best available data and information relating to biodiversity, aligning strongly with biodiversity knowledge and information access."
   },
   {
     "targetId": "NBSAP_14",
@@ -24484,7 +24482,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.95,
-    "reasoning": "This is primarily about participatory biodiversity decision-making, access to justice, and access to information, which directly matches crosscutting biodiversity governance and rights-based planning."
+    "reasoning": "The target centers on participatory biodiversity decision-making, access to information, and access to justice, which are core biodiversity governance and rights elements in this category."
   },
   {
     "targetId": "NBSAP_14",
@@ -24605,7 +24603,7 @@
     "taxonomyType": "globe",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.35
   },
   {
     "targetId": "NBSAP_16",
@@ -24630,7 +24628,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.95,
-    "reasoning": "The target is a cross-cutting policy commitment to mainstream gender equality and gender-responsive decision-making in biodiversity governance and management."
+    "reasoning": "The target is chiefly about mainstreaming gender equality and inclusive decision-making in biodiversity policy, planning, management, and implementation."
   },
   {
     "targetId": "NBSAP_16",
@@ -24644,10 +24642,9 @@
     "targetId": "NBSAP_16",
     "categoryId": "globe_7",
     "taxonomyType": "globe",
-    "isRelevant": true,
+    "isRelevant": false,
     "isPrimary": false,
-    "score": 0.58,
-    "reasoning": "It explicitly includes biodiversity conservation and management, which aligns with in situ conservation measures and protected area governance."
+    "score": 0.25
   },
   {
     "targetId": "NBSAP_16",
@@ -24661,10 +24658,9 @@
     "targetId": "NBSAP_16",
     "categoryId": "globe_9",
     "taxonomyType": "globe",
-    "isRelevant": true,
+    "isRelevant": false,
     "isPrimary": false,
-    "score": 0.62,
-    "reasoning": "It explicitly includes sustainable use, making this a major substantive theme alongside conservation and management."
+    "score": 0.3
   },
   {
     "targetId": "NDC_1",
@@ -53246,101 +53242,43 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.1
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "gga_agriculture_food",
-    "taxonomyType": "gga",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "gga_health",
-    "taxonomyType": "gga",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.34
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "gga_ecosystems_biodiversity",
-    "taxonomyType": "gga",
-    "isRelevant": true,
-    "isPrimary": true,
-    "score": 0.98,
-    "reasoning": "The target explicitly centers biodiversity considerations and nature-based approaches to prevent biodiversity loss."
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "gga_infrastructure_settlements",
-    "taxonomyType": "gga",
-    "isRelevant": true,
-    "isPrimary": false,
-    "score": 0.72,
-    "reasoning": "It directly references spatial and urban planning, linking biodiversity integration to resilient human settlements."
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "gga_livelihoods",
-    "taxonomyType": "gga",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
-  },
-  {
-    "targetId": "NBSAP_1",
-    "categoryId": "gga_cultural_heritage",
-    "taxonomyType": "gga",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.12
-  },
-  {
-    "targetId": "NBSAP_2",
-    "categoryId": "gga_water",
-    "taxonomyType": "gga",
-    "isRelevant": false,
-    "isPrimary": false,
     "score": 0.4
   },
   {
-    "targetId": "NBSAP_2",
+    "targetId": "NBSAP_1",
     "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.2
+  },
+  {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_health",
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
     "score": 0.1
   },
   {
-    "targetId": "NBSAP_2",
-    "categoryId": "gga_health",
-    "taxonomyType": "gga",
-    "isRelevant": false,
-    "isPrimary": false,
-    "score": 0.0
-  },
-  {
-    "targetId": "NBSAP_2",
+    "targetId": "NBSAP_1",
     "categoryId": "gga_ecosystems_biodiversity",
     "taxonomyType": "gga",
     "isRelevant": true,
     "isPrimary": true,
     "score": 1.0,
-    "reasoning": "The target explicitly focuses on restoring terrestrial, freshwater, marine and coastal ecosystems and their contributions to people and the planet."
+    "reasoning": "The target explicitly focuses on restoring terrestrial, freshwater, marine and coastal ecosystems to strengthen nature\u2019s contributions."
   },
   {
-    "targetId": "NBSAP_2",
+    "targetId": "NBSAP_1",
     "categoryId": "gga_infrastructure_settlements",
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.1
   },
   {
-    "targetId": "NBSAP_2",
+    "targetId": "NBSAP_1",
     "categoryId": "gga_livelihoods",
     "taxonomyType": "gga",
     "isRelevant": false,
@@ -53348,6 +53286,64 @@
     "score": 0.2
   },
   {
+    "targetId": "NBSAP_1",
+    "categoryId": "gga_cultural_heritage",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.1
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_water",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_agriculture_food",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_health",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.22
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_ecosystems_biodiversity",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": true,
+    "score": 0.98,
+    "reasoning": "The target explicitly centers on biodiversity considerations and nature-based approaches to prevent biodiversity loss."
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_infrastructure_settlements",
+    "taxonomyType": "gga",
+    "isRelevant": true,
+    "isPrimary": false,
+    "score": 0.58,
+    "reasoning": "It directly mentions integrating nature-based approaches into spatial and urban planning, linking it to settlements planning."
+  },
+  {
+    "targetId": "NBSAP_2",
+    "categoryId": "gga_livelihoods",
+    "taxonomyType": "gga",
+    "isRelevant": false,
+    "isPrimary": false,
+    "score": 0.0
+  },
+  {
     "targetId": "NBSAP_2",
     "categoryId": "gga_cultural_heritage",
     "taxonomyType": "gga",
@@ -53361,7 +53357,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.22
+    "score": 0.28
   },
   {
     "targetId": "NBSAP_3",
@@ -53386,7 +53382,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.98,
-    "reasoning": "The target is explicitly about conserving terrestrial, coastal, and marine areas and mainstreaming OECMs, which directly aligns with ecosystem and biodiversity protection."
+    "reasoning": "The target is explicitly about conserving terrestrial, inland water, coastal and marine areas through protected areas and OECMs."
   },
   {
     "targetId": "NBSAP_3",
@@ -53402,7 +53398,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.12
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_3",
@@ -53410,7 +53406,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.08
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_4",
@@ -53483,7 +53479,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.18
+    "score": 0.14
   },
   {
     "targetId": "NBSAP_5",
@@ -53500,7 +53496,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.97,
-    "reasoning": "Sustainable, safe, and legal management and trade of wild species is directly about conserving biodiversity and ecosystems while supporting nature-based stewardship."
+    "reasoning": "Sustainable, safe, and legal management and trade of wild species is fundamentally about conserving biodiversity and ecosystems."
   },
   {
     "targetId": "NBSAP_5",
@@ -53516,7 +53512,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.46
+    "score": 0.42
   },
   {
     "targetId": "NBSAP_5",
@@ -53524,7 +53520,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.22
+    "score": 0.18
   },
   {
     "targetId": "NBSAP_6",
@@ -53565,7 +53561,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.06
+    "score": 0.08
   },
   {
     "targetId": "NBSAP_6",
@@ -53573,7 +53569,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.12
+    "score": 0.08
   },
   {
     "targetId": "NBSAP_6",
@@ -53597,7 +53593,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.08
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_7",
@@ -53671,7 +53667,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 1.0,
-    "reasoning": "The target explicitly focuses on minimizing climate change impacts on biodiversity and building resilience in ecosystems."
+    "reasoning": "The target explicitly focuses on minimizing climate change impacts on biodiversity and building resilience."
   },
   {
     "targetId": "NBSAP_8",
@@ -53703,7 +53699,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.0
+    "score": 0.1
   },
   {
     "targetId": "NBSAP_9",
@@ -53725,10 +53721,10 @@
     "targetId": "NBSAP_9",
     "categoryId": "gga_ecosystems_biodiversity",
     "taxonomyType": "gga",
-    "isRelevant": true,
+    "isRelevant": false,
     "isPrimary": true,
-    "score": 0.5,
-    "reasoning": "Reducing waste and overconsumption can lessen pressure on natural ecosystems and biodiversity through lower resource extraction and pollution."
+    "score": 0.4,
+    "reasoning": "Sustainable consumption and waste reduction can lessen pressure on ecosystems and biodiversity through reduced resource extraction and pollution."
   },
   {
     "targetId": "NBSAP_9",
@@ -53744,7 +53740,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.2
+    "score": 0.1
   },
   {
     "targetId": "NBSAP_9",
@@ -53769,7 +53765,7 @@
     "isRelevant": true,
     "isPrimary": false,
     "score": 0.86,
-    "reasoning": "Agriculture, aquaculture, fisheries and forestry are named directly, making sustainable production systems a major theme."
+    "reasoning": "Agriculture, aquaculture, fisheries and forestry are core production sectors named directly in the target."
   },
   {
     "targetId": "NBSAP_10",
@@ -53786,7 +53782,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.97,
-    "reasoning": "The target explicitly centers on sustaining multiple sectors through the wise use of biodiversity."
+    "reasoning": "The target explicitly centers on biodiversity and its wise use as the means to improve sustainability across multiple sectors."
   },
   {
     "targetId": "NBSAP_10",
@@ -53802,7 +53798,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.48
+    "score": 0.42
   },
   {
     "targetId": "NBSAP_10",
@@ -53810,7 +53806,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.08
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_11",
@@ -53842,8 +53838,8 @@
     "taxonomyType": "gga",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.98,
-    "reasoning": "The target is explicitly centered on biodiversity risk assessment, disclosure, mitigation, and incentives to support biodiversity."
+    "score": 0.99,
+    "reasoning": "The target is explicitly centered on assessing, disclosing, mitigating, and incentivizing business action on biodiversity impacts and benefits."
   },
   {
     "targetId": "NBSAP_11",
@@ -53859,7 +53855,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.12
+    "score": 0.11
   },
   {
     "targetId": "NBSAP_11",
@@ -53867,7 +53863,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.08
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_12",
@@ -53892,7 +53888,7 @@
     "isRelevant": false,
     "isPrimary": true,
     "score": 0.3,
-    "reasoning": "Biosafety is directly concerned with preventing biological risks that can affect human health, though climate resilience is not explicit here."
+    "reasoning": "Biosafety is linked to preventing biological risks that can affect human health, though climate resilience is not explicit."
   },
   {
     "targetId": "NBSAP_12",
@@ -53940,7 +53936,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.14
+    "score": 0.16
   },
   {
     "targetId": "NBSAP_13",
@@ -53956,8 +53952,8 @@
     "taxonomyType": "gga",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.93,
-    "reasoning": "The target centers on biological resources and related knowledge, which directly aligns with biodiversity governance and conservation."
+    "score": 0.95,
+    "reasoning": "The target centers on biological resources and traditional knowledge, which directly aligns with biodiversity governance and conservation-related benefit sharing."
   },
   {
     "targetId": "NBSAP_13",
@@ -53973,7 +53969,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.28
+    "score": 0.34
   },
   {
     "targetId": "NBSAP_13",
@@ -53981,8 +53977,8 @@
     "taxonomyType": "gga",
     "isRelevant": true,
     "isPrimary": false,
-    "score": 0.72,
-    "reasoning": "Traditional knowledge is an explicit element of the target, linking it strongly to protection and recognition of Indigenous and local knowledge systems."
+    "score": 0.58,
+    "reasoning": "Traditional knowledge is an explicit element of the target and relates to protecting and valuing Indigenous and local knowledge systems."
   },
   {
     "targetId": "NBSAP_14",
@@ -54072,7 +54068,7 @@
     "isRelevant": true,
     "isPrimary": true,
     "score": 0.95,
-    "reasoning": "NBSAP and NBTs are biodiversity policy instruments, so the target is primarily about strengthening implementation for ecosystems and biodiversity outcomes."
+    "reasoning": "NBSAP and NBTs are explicitly about biodiversity strategy and targets, making ecosystems and biodiversity the central focus."
   },
   {
     "targetId": "NBSAP_15",
@@ -54096,7 +54092,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.1
+    "score": 0.0
   },
   {
     "targetId": "NBSAP_16",
@@ -54128,8 +54124,8 @@
     "taxonomyType": "gga",
     "isRelevant": true,
     "isPrimary": true,
-    "score": 0.97,
-    "reasoning": "The target explicitly focuses on biodiversity conservation, management and sustainable use, making this the primary category."
+    "score": 0.98,
+    "reasoning": "The target explicitly focuses on biodiversity conservation, management and sustainable use, making ecosystems and biodiversity the primary category."
   },
   {
     "targetId": "NBSAP_16",
@@ -54145,7 +54141,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.22
+    "score": 0.12
   },
   {
     "targetId": "NBSAP_16",
@@ -54153,7 +54149,7 @@
     "taxonomyType": "gga",
     "isRelevant": false,
     "isPrimary": false,
-    "score": 0.12
+    "score": 0.08
   },
   {
     "targetId": "NDC_1",

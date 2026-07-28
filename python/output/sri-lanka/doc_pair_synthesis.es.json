@@ -4,17 +4,18 @@
     "doc_b": "NAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NAP (Agriculture)",
-    "aligned_count": 479,
-    "flagged_count": 53,
+    "aligned_count": 388,
+    "flagged_count": 19,
     "contradiction_types": {
-      "resource_competition": 26,
-      "delivery_friction": 27
+      "resource_competition": 3,
+      "goal_conflict": 7,
+      "delivery_friction": 9
     },
     "synthesis": {
-      "storyline_name": "Gestión responsable de las tierras agrícolas mediante sistemas facilitadores",
-      "reinforce": "Los documentos suelen alinearse en torno a la mejora de la condición del suelo, la reducción de la erosión y el apoyo a una agricultura resiliente mediante extensión, capacitación, orientación sobre GAP, funciones coordinadas de los organismos, organizaciones de agricultores y sistemas de información como ERP y herramientas móviles de asesoramiento. Un patrón recurrente es que los instrumentos de implementación del NAP apoyan los resultados de LDN en las tierras de cultivo, especialmente cuando se mencionan la producción ecológica, la conservación del suelo y del agua, y el uso sostenible de los recursos naturales.",
-      "clash": "La posible desalineación se repite principalmente cuando LDN limita la conversión de humedales o procura una mayor cobertura forestal, mientras que las medidas de NAP relativas al crédito, la fijación de precios, la zonificación, las zonas agroindustriales, la producción orientada al mercado, la maquinaria y el crecimiento de la productividad podrían aumentar la presión sobre la misma base de tierras. Los casos examinados suelen señalar la competencia por los recursos en la asignación de tierras, así como los riesgos de implementación si los instrumentos de financiación agrícola, extensión o intensificación se aplican sin salvaguardias claras para los humedales y los bosques.",
-      "coordination_hint": "La zonificación integrada del uso de la tierra, junto con la evaluación del financiamiento agrícola, la extensión agrícola y la ubicación industrial, podría ayudar a mantener las medidas de productividad en las tierras agrícolas existentes, al tiempo que apoya la conservación de los humedales y la expansión forestal.",
+      "storyline_name": "Medidas habilitadoras agrícolas y salvaguardias para el uso de la tierra",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección cuando los instrumentos facilitadores del NAP, como la reforma de la extensión, la investigación y la generación de tecnología, los sistemas de insumos y semillas, los servicios de asesoramiento a los agricultores, la financiación y la rehabilitación del riego, podrían apoyar los objetivos de LDN de reducir la degradación del suelo y la erosión del suelo en tierras cultivadas. La alineación también se repite cuando las salvaguardias ambientales, la gestión ecológica de insumos, las mejoras orgánicas y medidas más amplias de resiliencia en la agricultura se alinean con los resultados relativos a la cobertura forestal, el carbono orgánico del suelo y la gestión sostenible de la tierra.",
+      "clash": "La posible desalineación reaparece principalmente en torno a la asignación de tierras y los incentivos, especialmente cuando las metas de LDN para aumentar la cobertura forestal o minimizar la conversión de humedales coinciden con medidas de NAP que promueven la producción de cultivos, la rentabilidad, el crédito, la zonificación de cultivos, los planes de cultivo, las zonas agroindustriales, la expansión del riego y la eliminación de restricciones al desarrollo agrícola. Estos pares suelen señalar un mecanismo compartido: la expansión o intensificación agrícola podría aumentar la presión sobre los bosques, los humedales o las tierras adyacentes, a menos que las condiciones de ubicación, zonificación y financiamiento estén estrechamente alineadas.",
+      "coordination_hint": "La zonificación conjunta del uso de la tierra, las salvaguardias para humedales y bosques, y la evaluación de las medidas relativas al crédito, los cultivos, el riego y la agroindustria podrían ayudar a mantener la implementación agrícola alineada con los objetivos de degradación de la tierra.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -24,14 +25,14 @@
     "doc_b": "NBSAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NBSAP (Nature)",
-    "aligned_count": 54,
+    "aligned_count": 56,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Restauración de tierras mediante herramientas de gobernanza de la biodiversidad",
-      "reinforce": "Los dos documentos se alinean en gran medida en torno a la restauración de tierras degradadas, la protección de los humedales, el aumento de la cobertura forestal y la reducción de la erosión del suelo, y los resultados en materia de biodiversidad suelen lograrse mediante la conservación de hábitats, la restauración de ecosistemas y el uso sostenible de la tierra. Un mecanismo recurrente es que las herramientas de gobernanza y aplicación del NBSAP, como la conservación basada en áreas, la planificación espacial, el control de la contaminación, la gestión de especies invasoras, los incentivos empresariales y la toma de decisiones participativa basada en datos, respaldan las metas de LDN relativas a los suelos, los bosques, las tierras de cultivo y los humedales.",
+      "storyline_name": "Mecanismos compartidos de planificación de la restauración de tierras y la biodiversidad",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección en materia de restauración de tierras degradadas, ampliación de la cobertura forestal, protección de humedales y mejora de la condición del suelo, con vínculos recurrentes a través de la forestación, la restauración de cuencas hidrográficas y hábitats, las OECM y la conservación de las aguas continentales. La alineación también se repite mediante herramientas facilitadoras en la NBSAP, entre ellas la planificación espacial sensible a la biodiversidad, la reducción de la contaminación y el monitoreo de la calidad del suelo, el control de especies invasoras, la divulgación empresarial y los incentivos, y las medidas de agricultura sostenible que apoyan las metas de LDN sobre degradación del suelo, erosión, humedales y bosques.",
       "clash": "No hay una posible desalineación recurrente en este conjunto.",
-      "coordination_hint": "La planificación conjunta en los instrumentos de restauración, protección de humedales, expansión forestal y gobernanza de la biodiversidad podría ayudar a traducir estas amplias áreas de alineación en vías de implementación compartidas.",
+      "coordination_hint": "La planificación conjunta en torno a los sitios de restauración, las prioridades relativas a los humedales y las aguas continentales, y el seguimiento compartido de los suelos y los ecosistemas podría ayudar a conectar las vías de implementación superpuestas de ambos documentos.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -41,17 +42,17 @@
     "doc_b": "NDC",
     "label_a": "LDN (Land degradation)",
     "label_b": "NDC (Climate Change)",
-    "aligned_count": 204,
-    "flagged_count": 5,
+    "aligned_count": 168,
+    "flagged_count": 3,
     "contradiction_types": {
-      "resource_competition": 3,
+      "goal_conflict": 1,
       "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Gestión integrada del uso de la tierra y de los ecosistemas",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante medidas basadas en la tierra que conectan la expansión forestal, la protección de los humedales, la restauración del suelo, el control de la erosión y la acción climática en la agricultura, la silvicultura, el agua y la planificación. Una mayor alineación se repite cuando la NDC incluye instrumentos directamente relacionados, como la gestión forestal sostenible y la restauración hasta 32%, los árboles fuera de los bosques, la conservación de los ecosistemas de carbono azul, la agricultura climáticamente inteligente, la gestión de cuencas hidrográficas y la integración de la adaptación que pueden respaldar los resultados relativos al suelo y los humedales.",
-      "clash": "La posible desalineación se repite principalmente en torno a la competencia por la misma base territorial, especialmente cuando la producción de cultivos, la expansión relacionada con los productos lácteos, o la ubicación de instalaciones industriales y de riego podrían superponerse con aumentos de la cobertura forestal o límites a la conversión de humedales. Los casos examinados suelen señalar cuestiones de planificación espacial y diseño hidrológico, más que objetivos intrínsecamente opuestos, en particular en el caso de humedales cercanos a la agricultura, parques ecoindustriales y obras de riego.",
-      "coordination_hint": "La zonificación conjunta del uso de la tierra, la planificación a escala de cuenca y la evaluación preliminar de las inversiones agrícolas, industriales y de riego en función de los mapas de bosques y humedales podrían ayudar a mantener la implementación alineada.",
+      "storyline_name": "Planificación compartida del uso de la tierra para paisajes resilientes",
+      "reinforce": "Los documentos suelen alinearse mediante vías de adaptación basadas en la tierra y de gestión de los recursos, especialmente en torno a la agricultura sostenible, la conservación del suelo, la cobertura forestal y la protección de los humedales. Entre los mecanismos recurrentes figuran la agricultura climáticamente inteligente, la ampliación de las áreas protegidas, las medidas de gestión de cuencas hidrográficas y del agua, y las prácticas agrícolas como IPNS, IPM, las variedades resilientes y la rehabilitación del riego, que pueden apoyar la productividad del suelo, el control de la erosión y la resiliencia de los ecosistemas.",
+      "clash": "La recurrente posible desalineación se concentra en torno a los humedales, donde los esfuerzos por aumentar la producción de cultivos, ampliar los parques ecoindustriales o incrementar los sistemas de riego podrían generar presiones de conversión del suelo, emplazamiento, drenaje o hidrológicas en zonas superpuestas. Este patrón tiende a señalar riesgos de implementación vinculados a dónde se produce la expansión de la infraestructura o de la producción, más que a una discordancia general en los objetivos globales.",
+      "coordination_hint": "La zonificación conjunta del uso del suelo, la revisión de la ubicación y el diseño sensible a los humedales en las medidas de agricultura, industria, agua y conservación podrían ayudar a mantener los objetivos compartidos en materia de clima y tierra orientados en la misma dirección.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -61,17 +62,17 @@
     "doc_b": "NFAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 16,
+    "aligned_count": 11,
     "flagged_count": 3,
     "contradiction_types": {
       "delivery_friction": 3
     },
     "synthesis": {
-      "storyline_name": "Gestión de los ecosistemas terrestres y acuáticos en humedales y cuencas hidrográficas",
-      "reinforce": "Los documentos suelen alinearse mediante vínculos indirectos entre la tierra y el agua, donde la cobertura forestal, la protección del suelo y la reducción de la erosión en las cuencas hidrográficas favorecen la calidad del agua, el estado de los hábitats y la productividad pertinentes para la pesca continental, la acuicultura, los estuarios y los sistemas costeros. La alineación también se repite en torno a la gestión sostenible de los recursos, la participación comunitaria y la planificación basada en la ciencia, especialmente cuando la protección de los humedales y la gobernanza pesquera avanzan en la misma dirección para la conservación de los hábitats y el apoyo a los medios de vida.",
-      "clash": "La posible desalineación reaparece en torno a las vías de implementación relacionadas con los humedales, porque la expansión de la acuicultura, la producción acuática orientada a la exportación y el desarrollo empresarial o turístico vinculado a la pesca podrían aumentar la presión para convertir humedales para estanques, accesos, instalaciones u otra infraestructura. Este patrón se limita al objetivo de conversión de humedales de LDN y tiende a reflejar una geografía compartida y decisiones de emplazamiento más que objetivos de política opuestos.",
-      "coordination_hint": "La planificación espacial sensible a los humedales, la ubicación y las salvaguardias en todos los organismos de tierras, acuicultura y pesca podrían ayudar a aprovechar las sinergias entre la tierra y el agua, al tiempo que reducen la posible desalineación en las zonas de humedales compartidas.",
-      "confidence": "high"
+      "storyline_name": "Vínculos entre los ecosistemas terrestres y acuáticos en el crecimiento de la pesca",
+      "reinforce": "Los documentos suelen alinearse mediante vínculos de gestión tierra-agua, donde la cobertura forestal, la protección de los humedales, una menor degradación del suelo y la reducción de la erosión de las tierras de cultivo pueden respaldar la calidad del agua, el estado del hábitat y las funciones de cría pertinentes para la pesca continental, la acuicultura y la gestión más amplia de los recursos pesqueros. Esto se repite principalmente como una superposición facilitadora mediante la gestión de cuencas, la gestión integrada de las zonas costeras, la evaluación ambiental y la gestión de los recursos basada en la ciencia, en lugar de mediante instrumentos de implementación compartidos o los mismos actores.",
+      "clash": "La posible desalineación recurrente se da en torno a los humedales, donde las medidas del NFAP que amplían la acuicultura, la producción acuática orientada a la exportación o la actividad empresarial basada en humedales podrían generar presión para convertir o modificar humedales que la Meta 2 de LDN procura mantener sin cambios en la cobertura del suelo. El patrón es una cuestión del lado de la implementación en geografías compartidas de humedales interiores y costeros, y el análisis por pares a menudo señala la ubicación, la zonificación y las salvaguardias como factores que podrían determinar si ambos objetivos pueden avanzar conjuntamente.",
+      "coordination_hint": "La planificación espacial conjunta para los humedales y las zonas adyacentes de empresas de acuicultura o pesca podría ayudar a identificar dónde pueden impulsarse medidas de crecimiento y objetivos de no conversión en los mismos paisajes.",
+      "confidence": "medium"
     },
     "synthesis_error": null
   },
@@ -80,17 +81,18 @@
     "doc_b": "NMP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 58,
-    "flagged_count": 62,
+    "aligned_count": 43,
+    "flagged_count": 35,
     "contradiction_types": {
-      "delivery_friction": 42,
-      "resource_competition": 20
+      "delivery_friction": 24,
+      "resource_competition": 6,
+      "goal_conflict": 5
     },
     "synthesis": {
-      "storyline_name": "Salvaguardias de la restauración de tierras frente a la demanda de tierras para la minería",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando la política sobre minerales utiliza la regulación ambiental, el cierre de minas, la rehabilitación, el monitoreo y herramientas de gobernanza más amplias para apoyar la cobertura forestal, la protección de los humedales, una menor degradación del suelo y una reducción de la erosión. Un mecanismo positivo recurrente es que la restauración y rehabilitación de los sitios mineros, junto con salvaguardias como el FPIC, la armonización jurídica, la aplicación de la normativa y el intercambio de datos, podrían crear condiciones propicias para resultados de recuperación de tierras en el marco de las metas de LDN.",
-      "clash": "La posible desalineación reaparece en torno a la misma base física de tierras, especialmente cuando la expansión forestal, la conservación de humedales, la protección del suelo o el control de la erosión de tierras de cultivo pueden superponerse con la zonificación minera, la utilización de reservas, la promoción de inversiones y las tierras mantenidas disponibles para futuras actividades mineras. Los casos examinados suelen señalar problemas de implementación derivados de los permisos, la infraestructura y la minería en zonas sensibles o restringidas, así como competencia por los recursos cuando las tierras se asignan tanto a resultados de restauración o conservación como al desarrollo minero.",
-      "coordination_hint": "La planificación espacial compartida, la zonificación y la evaluación a nivel de sitio, vinculadas a normas de rehabilitación y a reglas de exclusión o salvaguardia para bosques, humedales, suelos productivos y tierras cultivadas, podrían ayudar a que las dos políticas funcionen de manera más coherente en las áreas superpuestas.",
+      "storyline_name": "Salvaguardias sobre el uso de la tierra en torno a las decisiones de expansión minera",
+      "reinforce": "Los documentos suelen alinearse mediante controles ambientales del lado minero, como la aprobación previa en zonas sensibles, regulaciones ambientales más estrictas, requisitos de restauración y rehabilitación, cierre de minas y procedimientos de prevención de la contaminación, que respaldan los objetivos de LDN relativos a los bosques, los humedales, los suelos y la erosión. Esta alineación tiende a ser facilitadora más que directa, porque las medidas del NMP suelen ser instrumentos de gobernanza o rehabilitación que podrían ayudar a proteger la condición de la tierra donde la minería se superpone con zonas sensibles.",
+      "clash": "La posible desalineación se repite cuando las disposiciones del NMP abren tierras para la exploración, la zonificación, la preparación para la inversión, la utilización de reservas o futuros proyectos minerales, porque estos pasos podrían convertir o alterar la misma base territorial a la que LDN se dirige para la cobertura forestal, la protección de humedales, la condición del suelo y el control de la erosión. Los casos examinados se refieren principalmente a las vías de implementación y la asignación de tierras, especialmente cuando las áreas prioritarias para minerales o las medidas de facilitación de la minería pueden superponerse con bosques, humedales, tierras de cultivo o áreas de alto valor edáfico.",
+      "coordination_hint": "La planificación espacial compartida, con zonas de exclusión, filtros de autorización y condiciones de rehabilitación, podría ayudar a que ambos documentos avancen en la misma dirección allí donde el potencial mineral se superpone con usos del suelo sensibles.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -100,14 +102,14 @@
     "doc_b": "NWRP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 126,
+    "aligned_count": 120,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Vínculos basados en cuencas hidrográficas entre la gestión responsable de la tierra y del agua",
-      "reinforce": "Los documentos suelen alinearse mediante mecanismos paisajísticos compartidos, especialmente la planificación de cuencas hidrográficas y fluviales, la conservación de humedales y cuencas altas, y la planificación del uso del suelo para acuíferos. Las medidas de LDN sobre bosques, humedales, degradación del suelo y erosión de tierras de cultivo tienden a apoyar los objetivos del NWRP en materia de calidad del agua, salud de las cuencas, infiltración, recarga y resiliencia climática, por lo general como vínculos facilitadores más que como el mismo instrumento de implementación.",
+      "storyline_name": "Vías integradas de gestión responsable de la tierra y el agua",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección mediante la gestión de cuencas hidrográficas, cuencas fluviales, acuíferos y humedales, y las acciones de LDN sobre bosques, suelos, control de la erosión y retención de humedales apoyan la recarga hídrica, la infiltración, la regulación de los flujos y la calidad del agua. La alineación también se repite a través de los instrumentos habilitadores del NWRP, incluidos la planificación del uso de la tierra, los planes de cuenca, las directrices para las cuencas altas, el monitoreo, las normas y la gobernanza participativa, que podrían apoyar los resultados de neutralidad de la degradación de las tierras incluso cuando las acciones no son idénticas.",
       "clash": "No hay una posible desalineación recurrente en este conjunto.",
-      "coordination_hint": "El uso conjunto de los procesos de planificación de cuencas, cuencas hidrográficas y humedales podría ayudar a conectar las prioridades de restauración de tierras con la asignación de agua, la calidad del agua y las medidas de protección de cuencas en los mismos paisajes.",
+      "coordination_hint": "Vincular las medidas de tierras de LDN con la planificación de cuencas del NWRP, la cartografía de recarga de acuíferos y la gobernanza participativa del agua podría ayudar a traducir estas sinergias indirectas en una implementación más coordinada.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -118,16 +120,16 @@
     "label_a": "LDN (Land degradation)",
     "label_b": "PPPP (Physical planning)",
     "aligned_count": 12,
-    "flagged_count": 4,
+    "flagged_count": 2,
     "contradiction_types": {
-      "delivery_friction": 4
+      "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Apoyo a la planificación espacial para la gestión responsable de la tierra",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante la zonificación del uso del suelo, los controles del desarrollo y la ubicación sensible a la conservación. En los bosques, los humedales, la degradación del suelo y la erosión, las metas de LDN se alinean con los componentes del PPPP que conservan ecosistemas críticos, orientan los asentamientos hacia ubicaciones adecuadas y priorizan el uso de la infraestructura existente para reducir la presión sobre las tierras no urbanizadas.",
-      "clash": "Una posible desalineación recurrente aparece en torno al Componente 4 del PPPP, donde un mayor uso de ubicaciones de alto potencial, incluidas áreas paisajísticas o vinculadas a reservas, podría superponerse con tierras necesarias para la expansión forestal, la conservación de humedales, la restauración del suelo o el control de la erosión. El patrón a menudo apunta a desafíos de implementación cuando el uso del suelo orientado al desarrollo y las medidas de protección de la tierra operan en los mismos paisajes sin salvaguardias espaciales suficientemente claras.",
-      "coordination_hint": "Los arreglos compartidos de zonificación, evaluación preliminar de sitios y salvaguardias ambientales podrían ayudar a que ambos documentos se implementen de maneras que apoyen el desarrollo, al tiempo que mantienen los objetivos relativos a los bosques, los humedales y los suelos.",
-      "confidence": "high"
+      "storyline_name": "Apoyo a la planificación espacial para los resultados de la conservación de la tierra",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante una planificación del uso de la tierra que protege las zonas sensibles y orienta el desarrollo hacia ubicaciones adecuadas y la infraestructura existente. Esto se ajusta a los objetivos de LDN sobre la cobertura forestal, la protección de los humedales, la degradación del suelo y el control de la erosión, especialmente cuando los componentes de PPPP hacen hincapié en la conservación, la ubicación de los asentamientos y la optimización de los activos actuales en lugar de la nueva conversión de tierras.",
+      "clash": "Una posible desalineación recurrente aparece cuando el Componente 4 del PPPP promueve un mayor uso y un desarrollo diversificado de ubicaciones, incluidas las reservas naturales y los entornos paisajísticos, mientras que las metas de LDN buscan una mayor cobertura forestal y una menor conversión de humedales. La superposición a menudo apunta a una competencia por las mismas parcelas de tierra, a menos que la zonificación, las exclusiones y las salvaguardias separen claramente las huellas de desarrollo de las áreas de restauración y de humedales.",
+      "coordination_hint": "La zonificación espacial compartida y la evaluación de las ubicaciones de desarrollo en relación con las áreas de expansión forestal y protección de humedales podrían ayudar a que ambos documentos apoyen la implementación en los mismos lugares.",
+      "confidence": "medium"
     },
     "synthesis_error": null
   },
@@ -136,17 +138,18 @@
     "doc_b": "NBSAP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NBSAP (Nature)",
-    "aligned_count": 2437,
-    "flagged_count": 56,
+    "aligned_count": 2403,
+    "flagged_count": 46,
     "contradiction_types": {
-      "resource_competition": 17,
-      "delivery_friction": 39
+      "resource_competition": 21,
+      "delivery_friction": 23,
+      "goal_conflict": 2
     },
     "synthesis": {
-      "storyline_name": "Modernización agrícola con salvaguardias para la biodiversidad",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando las medidas agrícolas utilizan herramientas regulatorias y de fortalecimiento de capacidades que pueden respaldar los resultados en materia de biodiversidad, como un control más estricto de los insumos agrícolas, salvaguardias ambientales para las prácticas agrícolas, extensión a nivel de aldea y capacitación sobre producción respetuosa con el medio ambiente. La alineación también se repite a través de sistemas facilitadores, incluido el análisis del impacto ambiental en la planificación agrícola, la gestión de los sistemas alimentarios, la energía renovable en la agricultura y el apoyo a la agricultura sostenible y la bioseguridad.",
-      "clash": "La posible desalineación se repite cuando las medidas del NAP para ampliar la producción, la rentabilidad, el crédito, las zonas agroindustriales, la maquinaria y el suministro de insumos podrían aumentar la presión sobre la tierra, el agua, las áreas de restauración, las áreas conservadas, las especies y las metas de contaminación en el marco del NBSAP. Los mecanismos más repetidos son las decisiones de implementación en torno a la producción de fertilizantes y productos fitosanitarios, la desregulación o una adopción más rápida de tecnologías, y la expansión agrícola orientada al crecimiento, junto con cierta competencia por los recursos sobre la tierra y el espacio costero necesarios para la conservación o la restauración.",
-      "coordination_hint": "La coordinación podría ayudar cuando la financiación agrícola, la zonificación, la regulación de insumos, el apoyo tecnológico y la ubicación de la agroindustria se evalúan en función de las prioridades de conservación, restauración, control de la contaminación y protección de las especies.",
+      "storyline_name": "Agricultura sensible a la biodiversidad mediante planificación e incentivos",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando las medidas agrícolas promueven insumos ecológicos u orgánicos, la eficiencia en el uso de insumos, la regulación de las aguas subterráneas, las normas de producto y la agricultura resiliente al clima, mientras que la NBSAP proporciona planificación de la biodiversidad, reducción de la contaminación, divulgación empresarial, financiación y sistemas de capacidades que pueden respaldar esas medidas. La alineación también se repite a través de instrumentos de gobernanza como marcos regulatorios, órganos de seguimiento, extensión, investigación y sistemas de mercado que podrían ayudar a incorporar consideraciones sobre biodiversidad en la producción agrícola y las cadenas de valor.",
+      "clash": "La posible desalineación se repite principalmente allí donde los incentivos agrícolas, el crédito, la banca, el apoyo a los precios, las zonas agroindustriales, la adopción de maquinaria, los sistemas de fertilizantes y las medidas de producción de alto rendimiento podrían aumentar la presión sobre la misma tierra, aguas continentales, hábitats, corredores o áreas de restauración a las que se dirigen las acciones de conservación y resiliencia del NBSAP. Un segundo patrón recurrente son las vías de implementación relacionadas con los insumos, en las que el apoyo a los fertilizantes, los nutrientes para las plantas, las tecnologías de protección vegetal o los aumentos de productividad intensivos en insumos podrían ir en contra de la vía del NBSAP de reducir la contaminación y la dependencia del uso de agroquímicos.",
+      "coordination_hint": "La evaluación espacial conjunta de la financiación agrícola, la zonificación, el apoyo a los insumos y la ubicación agroindustrial en relación con las prioridades de conservación, restauración, corredores y control de la contaminación podría ayudar a mantener la implementación alineada.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -156,17 +159,18 @@
     "doc_b": "NDC",
     "label_a": "NAP (Agriculture)",
     "label_b": "NDC (Climate Change)",
-    "aligned_count": 9022,
-    "flagged_count": 73,
+    "aligned_count": 7006,
+    "flagged_count": 25,
     "contradiction_types": {
-      "resource_competition": 44,
-      "delivery_friction": 29
+      "resource_competition": 15,
+      "goal_conflict": 1,
+      "delivery_friction": 9
     },
     "synthesis": {
-      "storyline_name": "Modernización agrícola climáticamente inteligente con salvaguardias para el uso de la tierra",
-      "reinforce": "Los dos documentos se alinean en gran medida en torno a una agricultura climáticamente inteligente y eficiente en el uso de los recursos, incluido el uso sostenible de la tierra, la energía renovable en la agricultura, las TIC y los servicios de asesoramiento, la información de alerta temprana y la reducción de las pérdidas posteriores a la cosecha. Un patrón recurrente es que los instrumentos de implementación del NAP, como las actualizaciones normativas, la financiación, la logística, las instalaciones de procesamiento y el apoyo a la toma de decisiones de los agricultores, a menudo respaldan las acciones de adaptación y mitigación del NDC en cultivos, ganadería, silvicultura y una reducción más amplia de las emisiones.",
-      "clash": "La posible desalineación reaparece cuando la financiación agrícola, el crédito, las zonas agroindustriales, la rentabilidad y los incentivos a la producción, o la expansión de los cultivos podrían competir con la expansión de las áreas protegidas, la restauración de hábitats, los árboles fuera de los bosques y, en algunos casos, los recursos hídricos sometidos a estrés. Otro patrón recurrente es la posible desalineación del lado de la implementación, en la que la eliminación de restricciones a la maquinaria y la tecnología, la expansión de los sistemas de fertilizantes e insumos, o la ampliación de la agroindustria podrían dificultar el logro de los objetivos relativos a los GEI, la biodiversidad o las cuencas fluviales, a menos que se incorporen condiciones de bajas emisiones y sensibles al hábitat.",
-      "coordination_hint": "La planificación espacial, la zonificación y la evaluación de la financiación agrícola y de la ubicación de las agroindustrias en relación con las áreas protegidas, las prioridades de restauración, las zonas sensibles al agua y los criterios de bajas emisiones podrían ayudar a que ambos documentos avancen en la misma dirección.",
+      "storyline_name": "Implementación de una agricultura climáticamente inteligente y competencia por el uso de la tierra",
+      "reinforce": "Los dos documentos se alinean en gran medida en torno a una agricultura climáticamente inteligente implementada mediante mecanismos de extensión, capacitación, sistemas de asesoramiento, datos y gobernanza. Entre los ejemplos recurrentes figuran la incorporación transversal del cambio climático en la agricultura, el fortalecimiento de la capacidad de los servicios de extensión y de los graduados, el uso de asesoramiento y bases de datos agrometeorológicos, y la mejora de la gestión del agua y de la tierra para que la productividad agrícola y la resiliencia avancen en la misma dirección.",
+      "clash": "La posible desalineación apunta con mayor frecuencia a la competencia por la tierra y el agua, donde la expansión agrícola, la zonificación, el crédito, el desarrollo agroindustrial o los incentivos a la productividad podrían superponerse con la expansión de las áreas protegidas, la restauración forestal, la gestión de hábitats o los objetivos relacionados con el estrés hídrico. Un patrón recurrente de menor magnitud se refiere a los incentivos para insumos y tecnologías, donde el uso de nutrientes o la flexibilización de las restricciones regulatorias y financieras para el desarrollo agrícola podrían complicar la reducción de emisiones o las salvaguardias relacionadas con la biodiversidad, dependiendo de cómo se diseñen y ubiquen.",
+      "coordination_hint": "La planificación espacial conjunta, la coordinación de la asignación de agua y la evaluación de los incentivos financieros, de zonificación y tecnológicos en función de las prioridades en materia de biodiversidad, silvicultura y agua podrían ayudar a mantener la implementación alineada.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -176,17 +180,17 @@
     "doc_b": "NFAP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 926,
-    "flagged_count": 17,
+    "aligned_count": 650,
+    "flagged_count": 5,
     "contradiction_types": {
-      "resource_competition": 11,
-      "delivery_friction": 6
+      "delivery_friction": 1,
+      "resource_competition": 4
     },
     "synthesis": {
-      "storyline_name": "Apoyo compartido a los sistemas alimentarios con superposición en la gobernanza del agua",
-      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en cuanto a las medidas facilitadoras para los medios de vida rurales y el desempeño de los sistemas alimentarios, especialmente mediante el acceso a los mercados, el valor añadido, las organizaciones de productores, el crédito, la transferencia de tecnología, la extensión y la gobernanza participativa. La alineación también se repite en torno a la gestión basada en el conocimiento y la ciencia, la resiliencia climática, la gestión de cuencas y la coordinación entre organismos, aunque esto suele ser de apoyo más que de ejecución conjunta directa.",
-      "clash": "La posible desalineación se repite principalmente allí donde el riego agrícola, la rehabilitación de embalses, los controles de las aguas subterráneas y el uso de nutrientes se cruzan con la acuicultura continental, la pesca en embalses y la producción pesquera orientada a la exportación que dependen de los mismos sistemas de agua dulce. Un segundo patrón recurrente es la presión del lado de la oferta entre la desregulación agrícola o la expansión de la producción y los objetivos de la pesca en materia de servicios ecosistémicos, salvaguardias de la biodiversidad, bioseguridad y gestión basada en la ciencia en aguas continentales y costeras.",
-      "coordination_hint": "La asignación de agua a nivel de cuenca, las normas de operación de los embalses y las salvaguardias ambientales compartidas para la acuicultura, el riego y la gestión de cuencas hidrográficas podrían ayudar a mantener alineadas las dos agendas de política en los lugares donde coinciden sobre los mismos cuerpos de agua.",
+      "storyline_name": "Apoyo intersectorial mediante normas y sistemas de capacidades",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante sistemas facilitadores como la educación, la extensión, el despliegue de graduados, la adopción de tecnología, los laboratorios, los controles de procesos y las normas reguladas para la gestión de alimentos y recursos. La alineación también se repite en torno al acceso a los mercados, la manipulación poscosecha, el valor añadido y la producción ambientalmente responsable, aunque por lo general como vínculos de apoyo entre canales separados de ejecución en agricultura y pesca, más que como acciones conjuntas directas.",
+      "clash": "La posible desalineación se repite principalmente en torno a los recursos compartidos de agua dulce, donde la eficiencia del riego, la protección de las aguas subterráneas y la rehabilitación de embalses en el NAP podrían superponerse con la expansión de la acuicultura y de la pesca continental en el NFAP. Otra posible desalineación aparece cuando las salvaguardias de los servicios ecosistémicos podrían enfrentar presión en su aplicación derivada de la expansión de la pesca y la acuicultura orientadas a la exportación, dependiendo de la ubicación, el uso del agua y los controles de producción.",
+      "coordination_hint": "La asignación integrada del agua, la planificación de embalses y las normas ambientales y de producción compartidas podrían ayudar a que ambos documentos avancen de maneras que respalden conjuntamente los objetivos de la agricultura y la pesca.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -196,17 +200,18 @@
     "doc_b": "NMP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 1714,
-    "flagged_count": 642,
+    "aligned_count": 691,
+    "flagged_count": 180,
     "contradiction_types": {
-      "resource_competition": 515,
-      "delivery_friction": 127
+      "resource_competition": 159,
+      "goal_conflict": 8,
+      "delivery_friction": 13
     },
     "synthesis": {
-      "storyline_name": "Gobernanza del uso de la tierra en la agricultura y la minería",
-      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en materia de instrumentos de gobernanza intersectorial, especialmente salvaguardias ambientales, cumplimiento normativo, participación de las partes interesadas, investigación e intercambio de información, y rehabilitación de tierras minadas para su uso futuro. La alineación también se repite cuando las normas mineras sobre áreas ambientalmente sensibles, controles de impacto y uso sostenible de los recursos podrían respaldar los objetivos agrícolas en torno a la producción ecológica, la conservación del agua y del suelo, y los sistemas de insumos.",
-      "clash": "La posible desalineación se repite principalmente en torno a la competencia por la misma base territorial, y muchos de los pares examinados vinculan la expansión agrícola, las zonas agroindustriales, el riego, la extensión y las medidas de productividad con disposiciones mineras que priorizan el uso minero en determinadas áreas, reservan tierras para futuras inversiones o despejan yacimientos para el desarrollo. Un patrón recurrente menor apunta a presiones del lado de la ejecución, en las que la infraestructura relacionada con la minería, los permisos o la preparación para la inversión en paisajes rurales compartidos podrían complicar la implementación de la conservación de la agrobiodiversidad y de prácticas agrícolas respetuosas con el medio ambiente.",
-      "coordination_hint": "La planificación espacial conjunta, la zonificación y la secuenciación de los usos del suelo, junto con procesos compartidos de consulta y concesión de permisos, podrían ayudar a gestionar la superposición allí donde coinciden las tierras agrícolas productivas y las zonas prioritarias para los minerales.",
+      "storyline_name": "Alineación de la gobernanza intersectorial con la competencia por el uso de la tierra",
+      "reinforce": "Estos documentos suelen alinearse mediante instrumentos de gobernanza compartidos, entre ellos la regulación ambiental, la integración de políticas, el seguimiento, los marcos fiscales, la investigación y la difusión de tecnología, y los mecanismos de asociación público-privada. El patrón tiende a ser indirecto más que de ejecución conjunta, y ambos documentos respaldan una mejor supervisión, la protección ambiental, la adición de valor y la toma de decisiones responsable en todos los sectores productivos.",
+      "clash": "La posible desalineación se repite principalmente en torno a la asignación de tierras, y muchos de los pares examinados vinculan la expansión agrícola, la productividad, los sistemas de semillas, las zonas agroindustriales y la agricultura resiliente al clima con disposiciones de política minera que priorizan determinadas áreas para el uso minero o mantienen la tierra disponible para futuras inversiones mineras. Un conjunto más reducido también señala vías de implementación en las que la exploración minera, la facilitación de la minería o la zonificación minera podrían complicar las medidas agrícolas vinculadas a salvaguardias de la biodiversidad, servicios ecosistémicos y una gestión de la tierra respetuosa con el medio ambiente.",
+      "coordination_hint": "La planificación espacial compartida, la zonificación y la revisión interinstitucional de las áreas importantes para la agricultura, la agroindustria, la biodiversidad y el desarrollo minero podrían ayudar a aclarar dónde las dos políticas pueden avanzar en la misma dirección.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -216,17 +221,17 @@
     "doc_b": "NWRP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 5366,
-    "flagged_count": 100,
+    "aligned_count": 4659,
+    "flagged_count": 21,
     "contradiction_types": {
-      "resource_competition": 66,
-      "delivery_friction": 34
+      "resource_competition": 9,
+      "delivery_friction": 12
     },
     "synthesis": {
-      "storyline_name": "Crecimiento agrícola dentro de la gobernanza compartida del agua",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de gobernanza participativa del agua, eficiencia del riego y normas ambientales, por ejemplo mediante la toma de decisiones por las partes interesadas, las normas de calidad del agua, la planificación de cuencas hidrográficas y tecnologías de ahorro de agua como el riego por goteo y la captación de agua de lluvia. La alineación también se repite en torno a instrumentos habilitadores, incluida la coordinación interministerial, las actualizaciones jurídicas y reglamentarias, la investigación y la extensión, y el desarrollo tecnológico que respalda una agricultura resiliente al clima al tiempo que mejora la gestión del agua.",
-      "clash": "La posible desalineación se repite cuando los instrumentos de expansión agrícola, como el crédito a bajo interés, las zonas agroindustriales, el cultivo de tercera temporada y las metas de crecimiento de toda la economía, podrían aumentar la demanda sobre aguas superficiales finitas, aguas subterráneas, cuencas hidrográficas y humedales que la política hídrica procura asignar, conservar y monitorear. Un segundo patrón recurrente es la posible desalineación del lado de la implementación, en la que los incentivos para la intensificación, la maquinaria, los nutrientes o la agroindustria agrupada podrían dificultar el mantenimiento de la protección de las cuencas de captación, los planes de cuenca fluvial, los controles de efluentes y las normas de calidad del agua, a menos que la implementación esté estrechamente coordinada.",
-      "coordination_hint": "El uso conjunto de la planificación de cuencas y subcuencas, las normas de asignación de agua y las condiciones de financiación agrícola o zonificación podría ayudar a que estos documentos se alineen en los lugares donde coinciden la expansión agrícola y la conservación del agua.",
+      "storyline_name": "Crecimiento agrícola vinculado a la gestión responsable del agua",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando las medidas agrícolas se vinculan con la eficiencia hídrica, la calidad del agua y la gestión de cuencas o acuíferos, por ejemplo mediante el riego por goteo, el uso prudente de fertilizantes y plaguicidas, la conservación del suelo y de las cuencas, y la planificación basada en cuencas. La alineación también se repite en torno a instrumentos habilitadores como la extensión, la educación, los mecanismos de coordinación, el monitoreo y las normas que podrían ayudar a incorporar las consideraciones relativas al agua en la práctica agrícola.",
+      "clash": "La posible desalineación se repite cuando la expansión agrícola, los incentivos o un acceso más fácil a financiamiento, maquinaria y tecnologías podrían aumentar la demanda sobre los recursos hídricos compartidos, especialmente las aguas subterráneas, los embalses y los sistemas de cuencas hidrográficas que la política hídrica busca conservar y asignar entre los usuarios. Otra posible desalineación recurrente se refiere a las medidas relativas a fertilizantes, nutrientes, agroindustria y protección vegetal que podrían complicar las normas de calidad del agua, los controles de efluentes, la protección de cuencas de captación y la gestión de cuencas fluviales si la implementación no se coordina estrechamente.",
+      "coordination_hint": "El uso conjunto de la planificación de cuencas y acuíferos, las salvaguardias de la calidad del agua y las condiciones de financiación o tecnología agrícolas podría ayudar a mantener la modernización agrícola alineada con los objetivos de asignación y conservación del agua.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -236,17 +241,17 @@
     "doc_b": "PPPP",
     "label_a": "NAP (Agriculture)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 579,
-    "flagged_count": 51,
+    "aligned_count": 447,
+    "flagged_count": 8,
     "contradiction_types": {
-      "delivery_friction": 48,
-      "resource_competition": 3
+      "delivery_friction": 7,
+      "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Coordinación del uso de la tierra entre la agricultura y la planificación espacial",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de zonificación, uso del suelo sensible a la conservación y mejor aprovechamiento de los recursos e infraestructuras existentes. Medidas del NAP como la zonificación de cultivos, las Buenas Prácticas Agrícolas, la eficiencia del riego, la gestión de cuencas, la gobernanza participativa y la coordinación de los sistemas alimentarios ciudad-región se alinean con los componentes del PPPP sobre la conservación del agua, los ecosistemas y los paisajes culturales, al tiempo que orientan el desarrollo hacia ubicaciones adecuadas y dotadas de servicios.",
-      "clash": "La posible desalineación reaparece cuando las acciones del NAP que amplían o intensifican la producción, como el cultivo de tercera temporada, las zonas agroindustriales, el suministro de insumos, el crédito agrícola, los incentivos a la rentabilidad y la rehabilitación del riego, coinciden con las disposiciones del PPPP para conservar paisajes críticos y promover el uso diversificado de ubicaciones de alto potencial. Los casos examinados suelen señalar una superposición en la implementación en torno a la localización, la asignación de agua y la presión del desarrollo en áreas sensibles o de uso múltiple, con un patrón menor de competencia por los recursos en torno a los recursos hídricos.",
-      "coordination_hint": "La zonificación espacial conjunta, la planificación del uso del agua y la evaluación de emplazamientos para inversiones agrícolas podrían ayudar a mantener alineadas las prioridades de producción, conservación y desarrollo basado en la ubicación en las mismas áreas.",
+      "storyline_name": "Desarrollo agrícola dentro de la planificación espacial sensible a la conservación",
+      "reinforce": "En muchos pares, los documentos coinciden en el uso de la planificación espacial, las salvaguardias ambientales y los principios de eficiencia en el uso de los recursos para orientar el desarrollo agrícola. Esto se repite en los vínculos entre medidas agrícolas como los avisos agro-meteorológicos, la extensión ecológica, el riego con ahorro de agua, la energía renovable, las instalaciones de mercado y procesamiento, y las disposiciones del PPPP sobre la conservación de los recursos hídricos, los ecosistemas, los paisajes culturales y la optimización de la infraestructura existente.",
+      "clash": "La posible desalineación reaparece cuando la expansión agrícola o las medidas facilitadoras, como las zonas agroindustriales, la producción nacional de fertilizantes y productos fitosanitarios, la desregulación para la adopción de maquinaria y tecnología, y el crecimiento de la economía agroalimentaria, podrían ser más difíciles de implementar junto con los requisitos de conservación de PPPP para paisajes sensibles y recursos hídricos. Una cuestión recurrente de menor entidad se refiere a las reivindicaciones compartidas sobre el agua, donde la rehabilitación de embalses de riego podría competir con objetivos de planificación más amplios destinados a conservar los recursos hídricos y las funciones de los ecosistemas.",
+      "coordination_hint": "Los procesos conjuntos de zonificación del uso de la tierra, revisión de la ubicación y asignación de agua podrían ayudar a que la inversión agrícola y las salvaguardias de planificación avancen en la misma dirección en áreas ambientalmente sensibles.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -256,37 +261,37 @@
     "doc_b": "NDC",
     "label_a": "NBSAP (Nature)",
     "label_b": "NDC (Climate Change)",
-    "aligned_count": 1144,
-    "flagged_count": 4,
+    "aligned_count": 943,
+    "flagged_count": 3,
     "contradiction_types": {
-      "delivery_friction": 3,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Dependencia compartida de una gobernanza facilitadora y salvaguardias",
-      "reinforce": "Los dos documentos suelen estar alineados mediante medidas facilitadoras, especialmente la financiación y la capacidad para la acción en materia de biodiversidad, mejores datos y planificación participativa, y marcos de divulgación empresarial o de bioseguridad que pueden respaldar las acciones climáticas en la silvicultura, el agua, la pesca, los asentamientos y la industria. Un segundo patrón recurrente es la superposición práctica en la que las medidas climáticas apoyan directamente los resultados en materia de biodiversidad, como la gestión de las aguas residuales que reduce la contaminación, las acciones en ríos y cuencas hidrográficas que apoyan los ecosistemas de agua dulce, y las medidas de restauración o basadas en árboles que avanzan en la misma dirección que los objetivos de resiliencia y gestión de la biodiversidad.",
-      "clash": "La posible desalineación aparece principalmente en torno a la ejecución de nueva infraestructura de gas natural, donde la ubicación de las plantas, los corredores asociados y la evaluación de proyectos podrían encajar de manera incómoda con la integración de la biodiversidad en la planificación y con las expectativas empresariales de evaluar y mitigar los riesgos para la biodiversidad. Una cuestión recurrente de menor escala se refiere a las trayectorias de uso de la tierra y de la demanda, donde la conservación de las tierras y las aguas podría competir por espacio o agua con la expansión de los cultivos, y donde una mayor productividad lechera podría orientarse de manera distinta a los esfuerzos por reducir el consumo excesivo, a menos que las medidas relativas al consumo y a la producción se coordinen.",
-      "coordination_hint": "La planificación espacial conjunta, la evaluación preliminar de proyectos y la coordinación del uso de la tierra entre las autoridades de energía, agricultura y biodiversidad podrían ayudar a mantener la implementación alineada mediante el uso de datos compartidos y salvaguardias.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NBSAP",
-    "doc_b": "NFAP",
-    "label_a": "NBSAP (Nature)",
-    "label_b": "NFAP (Fisheries)",
-    "aligned_count": 95,
-    "flagged_count": 45,
-    "contradiction_types": {
-      "delivery_friction": 44,
+      "delivery_friction": 2,
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Sostenibilidad acuática compartida con presiones de expansión",
-      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en materia de pesca y acuicultura sostenibles, especialmente cuando la NBSAP proporciona herramientas facilitadoras como una gobernanza con perspectiva de género, una toma de decisiones participativa y basada en la evidencia, apoyo financiero y de capacidades, reducción de la contaminación y principios de uso sostenible. La alineación también se repite en torno a la gestión de la biodiversidad marina y continental mediante la bioseguridad, el cumplimiento internacional, la reducción de residuos en las cadenas de valor pesqueras y medidas de bienestar comunitario que pueden respaldar un uso más sostenible de los recursos.",
-      "clash": "La posible desalineación se repite principalmente allí donde las trayectorias de producción, exportación, consumo, turismo, puerto, marina y expansión de la acuicultura del NFAP se superponen con los objetivos del NBSAP en materia de conservación de áreas, restauración de ecosistemas, protección de especies, resiliencia climática, control de la contaminación y prevención de especies exóticas invasoras. Un patrón particularmente claro se refiere a las especies exóticas, la ampliación del esfuerzo pesquero y la infraestructura costera o interior, que podrían aumentar la presión en los mismos espacios marinos, costeros, de humedales y de agua dulce que el NBSAP busca conservar o restaurar, y también existe una posible desalineación directa entre la reducción del sobreconsumo y el aumento del consumo de pescado per cápita.",
-      "coordination_hint": "La planificación espacial conjunta, la evaluación de bioseguridad, los controles de especies y las salvaguardias de biodiversidad para la acuicultura, la infraestructura pesquera y la expansión del mercado podrían ayudar a mantener alineados los objetivos compartidos relativos a los ecosistemas marinos y de aguas continentales.",
+      "storyline_name": "Planificación compartida de la biodiversidad en todas las acciones climáticas",
+      "reinforce": "Los dos documentos se alinean en gran medida mediante la restauración de hábitats, la gestión de áreas protegidas y sensibles al clima, el control de especies exóticas invasoras, la reducción de la contaminación y la gestión resiliente al clima de ríos, costas y paisajes productivos. Un segundo patrón recurrente es el apoyo facilitador mediante sistemas de datos compartidos, la toma de decisiones participativa, las actualizaciones normativas y jurídicas, la financiación, la gobernanza con perspectiva de género y las prácticas empresariales o sectoriales que pueden ayudar a que las medidas de biodiversidad y clima avancen en la misma dirección.",
+      "clash": "La posible desalineación aparece principalmente allí donde la zonificación terrestre y costera sensible a la biodiversidad podría intersectarse con la expansión de la infraestructura de gas natural, la producción de cultivos o la pesca y la acuicultura en los mismos espacios. Estos casos de revisión suelen señalar la ubicación, la designación de áreas y la evaluación de impactos como los mecanismos concretos en los que la coordinación puede ser más importante.",
+      "coordination_hint": "Los procesos conjuntos de planificación espacial, zonificación y evaluación ambiental podrían ayudar a armonizar las áreas de conservación, las prioridades de restauración y las inversiones climáticas antes de que se fijen las ubicaciones y las vías de implementación.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NFAP",
+    "label_a": "NBSAP (Nature)",
+    "label_b": "NFAP (Fisheries)",
+    "aligned_count": 93,
+    "flagged_count": 32,
+    "contradiction_types": {
+      "delivery_friction": 31,
+      "goal_conflict": 1
+    },
+    "synthesis": {
+      "storyline_name": "Salvaguardias de la biodiversidad acuática junto con la expansión de la pesca",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección en la gestión de zonas costeras, marinas, lagunas, estuarios y aguas continentales mediante la gestión de recursos basada en la ciencia, la planificación espacial, las áreas protegidas y las OECM, el control de la contaminación y las prácticas sostenibles de acuicultura o pesca. La alineación también se repite mediante medidas habilitadoras, la participación con perspectiva de género, la financiación de la biodiversidad, la divulgación de riesgos empresariales, la trazabilidad y la reducción de residuos que pueden respaldar cadenas de valor pesqueras más sostenibles y el bienestar de las comunidades.",
+      "clash": "La posible desalineación se repite cuando la producción, exportación, consumo, expansión empresarial y de infraestructura del NFAP en espacios acuáticos compartidos podrían complicar los objetivos del NBSAP sobre restauración de hábitats, gestión de áreas protegidas y OECM, recuperación de especies, controles sobre especies silvestres, resiliencia climática y planificación sensible a la biodiversidad. Un mecanismo particularmente recurrente es la intensificación de la acuicultura y la importación o el cultivo de nuevas especies exóticas, lo que a menudo apunta a riesgos de bioseguridad y de especies invasoras, y un par identifica una posible desalineación directa con los objetivos de prevención de IAS.",
+      "coordination_hint": "La zonificación conjunta, la evaluación de la biodiversidad de las inversiones en pesca y acuicultura, y las normas acordadas sobre introducción de especies y bioseguridad podrían ayudar a mantener alineadas las medidas compartidas de desarrollo acuático y conservación.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -296,17 +301,18 @@
     "doc_b": "NMP",
     "label_a": "NBSAP (Nature)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 402,
-    "flagged_count": 195,
+    "aligned_count": 280,
+    "flagged_count": 134,
     "contradiction_types": {
-      "delivery_friction": 159,
-      "resource_competition": 36
+      "delivery_friction": 96,
+      "resource_competition": 23,
+      "goal_conflict": 15
     },
     "synthesis": {
-      "storyline_name": "Alineación de la gobernanza intersectorial con las presiones sobre el uso de la tierra",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de gobernanza facilitadora, especialmente mediante mejores datos y seguimiento, toma de decisiones participativa, transparencia, consulta a las partes interesadas, reconocimiento de derechos, incluido el FPIC, y responsabilidad ambiental en el sector minero. También se alinean con salvaguardias prácticas como procedimientos de prevención de la contaminación, cierre y rehabilitación de minas, tecnologías más limpias y mecanismos de intercambio de información que podrían apoyar una gestión de minerales sensible a la biodiversidad.",
-      "clash": "La posible desalineación se repite con mayor frecuencia allí donde la zonificación minera, la priorización del uso de la tierra, la declaración oficial de yacimientos, la exploración, la promoción de inversiones y la infraestructura vinculada a la minería podrían superponerse con áreas destinadas a la conservación, la restauración, la protección de las especies y el uso sostenible. Un segundo patrón recurrente es la presión de implementación sobre la ejecución en materia de biodiversidad, especialmente en torno al control de la contaminación, la prevención de especies invasoras, la resiliencia climática y la financiación y capacidad de los NBSAP, donde la extracción, el procesamiento o la expansión del acceso pueden competir por atención, espacio o esfuerzo de gestión.",
-      "coordination_hint": "La planificación espacial integrada terrestre y marina, la concesión de permisos y la evaluación vinculadas, y el uso temprano de salvaguardias de biodiversidad y procesos de participación podrían ayudar a que las dos agendas funcionen de manera conjunta allí donde las zonas mineras se superponen con ecosistemas sensibles.",
+      "storyline_name": "Planificación del uso de la tierra en torno a la biodiversidad y la minería",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección en materia de instrumentos de gobernanza ambiental, especialmente la planificación espacial sensible a la biodiversidad, la evaluación de impacto, el cierre y la rehabilitación de minas, el control de la contaminación, la gestión de los ecosistemas costeros y la divulgación empresarial o los enfoques de quien contamina paga. La alineación también se repite en torno a sistemas habilitadores, como el fortalecimiento de capacidades, el intercambio de datos, la toma de decisiones participativa, el reconocimiento de derechos, incluido el FPIC, y el reciclaje de residuos minerales.",
+      "clash": "La posible desalineación reaparece con mayor claridad cuando ambos documentos formulan reivindicaciones sobre la tierra y el espacio costero o marino, por ejemplo áreas de conservación, sitios de restauración, corredores de hábitat y tierras mantenidas disponibles o zonificadas para el uso futuro de minerales. También suele señalar presiones de implementación cuando la exploración mineral, la promoción de inversiones, el desarrollo industrial o las preferencias mineras avanzan a través de los mismos sistemas de planificación y permisos que el NBSAP utiliza para la evaluación de la biodiversidad, las consideraciones relativas a las áreas protegidas, los límites de contaminación y las prioridades de restauración.",
+      "coordination_hint": "La zonificación espacial conjunta, la evaluación temprana de la biodiversidad para las zonas minerales y las normas compartidas para la exclusión, la rehabilitación y la participación de las partes interesadas podrían ayudar a que ambos documentos se alineen de manera más coherente en los lugares donde la conservación y el desarrollo mineral se superponen.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -316,14 +322,14 @@
     "doc_b": "NWRP",
     "label_a": "NBSAP (Nature)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 501,
+    "aligned_count": 471,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Planificación ecosistémica compartida para cuencas hidrográficas y biodiversidad",
-      "reinforce": "Los documentos suelen alinearse mediante la planificación del uso de la tierra, los planes de cuenca fluvial, la conservación de cuencas de captación y cuencas hidrográficas, y la protección de acuíferos como mecanismos prácticos que apoyan la restauración de los ecosistemas de agua dulce, la reducción de la contaminación y una conservación más amplia de la tierra y el agua. Un segundo patrón recurrente es la dependencia compartida de herramientas de gobernanza facilitadoras, incluida la revisión jurídica, la toma de decisiones participativa, los conocimientos locales, las normas y el seguimiento, y la coordinación entre los distintos niveles de gobierno.",
+      "storyline_name": "Planificación y gobernanza compartidas de los ecosistemas hídricos",
+      "reinforce": "Estos documentos se alinean en gran medida en torno a la conservación de las aguas continentales, las cuencas hidrográficas, las áreas de captación y los hábitats conexos mediante la planificación espacial, la planificación por cuencas fluviales o por divisiones, la restauración y el control de la contaminación. Un mecanismo recurrente es la habilitación de la gobernanza, los datos, la participación, las normas de calidad del agua y la coordinación entre niveles en la política hídrica que respalda las acciones de biodiversidad sobre los ecosistemas de agua dulce, la resiliencia climática y las áreas protegidas o conservadas.",
       "clash": "No hay una posible desalineación recurrente en este conjunto.",
-      "coordination_hint": "El uso conjunto de los procesos de planificación de cuencas, subcuencas y uso de la tierra, junto con mecanismos compartidos de participación y seguimiento, podría ayudar a vincular los objetivos de biodiversidad con la implementación de la gestión del agua.",
+      "coordination_hint": "El uso conjunto de planes de cuenca, sistemas de monitoreo de la calidad del agua y plataformas participativas de gobernanza del agua podría ayudar a conectar las acciones de restauración y conservación de la biodiversidad con la planificación de los recursos hídricos.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -333,16 +339,16 @@
     "doc_b": "PPPP",
     "label_a": "NBSAP (Nature)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 49,
-    "flagged_count": 14,
+    "aligned_count": 46,
+    "flagged_count": 11,
     "contradiction_types": {
-      "delivery_friction": 14
+      "delivery_friction": 11
     },
     "synthesis": {
-      "storyline_name": "La planificación espacial como marco de implementación de la biodiversidad",
-      "reinforce": "En todos los pares alineados, el PPPP suele alinearse con el NBSAP al incorporar la sensibilidad de conservación, las salvaguardias del uso del suelo y el uso de la infraestructura existente en las decisiones de desarrollo, lo que puede apoyar la protección de los hábitats, la restauración, la reducción de la contaminación, la resiliencia climática y el uso racional de la biodiversidad. Esto se repite con mayor claridad en torno al Componente 1 del PPPP sobre la conservación de áreas críticas y singulares, y de manera más indirecta a través de los Componentes 2 y 3, donde la ubicación de los asentamientos y la optimización de los recursos existentes pueden reducir la presión sobre las áreas sensibles terrestres, de agua dulce, costeras y marinas.",
-      "clash": "La posible desalineación recurrente se concentra en el Componente 4 del PPPP, donde el uso intensificado y el desarrollo diversificado de ubicaciones, incluidas las reservas naturales y los entornos paisajísticos, podrían generar presión en los mismos espacios a los que el NBSAP se dirige para la conservación, la restauración, la protección de las especies, la bioseguridad y la gestión de baja contaminación. Los registros de revisión señalan repetidamente riesgos del lado de la implementación en torno a la zonificación, el acceso, las salvaguardias y los límites al uso de los sitios, más que una diferencia fundamental en los objetivos generales.",
-      "coordination_hint": "Una coordinación más estrecha en materia de zonificación espacial, salvaguardias de biodiversidad y criterios de planificación específicos para cada sitio en reservas, áreas paisajísticas y otros lugares sensibles podría ayudar a que ambos documentos avancen de manera más coherente en la misma dirección.",
+      "storyline_name": "Planificación espacial en torno a ecosistemas sensibles y desarrollo",
+      "reinforce": "Los documentos suelen alinearse mediante una planificación espacial sensible a la biodiversidad, especialmente cuando los Componentes 1 a 3 de PPPP apoyan la conservación de ecosistemas críticos, la ubicación de asentamientos en zonas más seguras y adecuadas, y un mejor uso de la infraestructura existente en lugar de nueva conversión de tierras. Esto se repite en mecanismos como la evaluación de desarrollos ambientalmente sensibles, los enfoques basados en la naturaleza en la planificación urbana y de asentamientos, la divulgación de riesgos empresariales relacionados con la biodiversidad y las decisiones de planificación que apoyan las áreas protegidas, las OECM, la restauración, la reducción de la contaminación y la protección del hábitat de las especies.",
+      "clash": "La posible desalineación recurrente se concentra en el Componente 4 del PPPP, donde un mayor uso de ubicaciones, incluidas las reservas naturales y los entornos paisajísticos, podría superponerse con las acciones del NBSAP para la restauración, la conservación basada en áreas, la protección de especies, el control de la contaminación, la resiliencia climática y la gobernanza de la biodiversidad. El patrón a menudo apunta a una superposición en la implementación en los mismos lugares, donde el uso orientado al desarrollo de reservas o áreas paisajísticas podría complicar las salvaguardias de biodiversidad, la participación, la distribución de beneficios y la financiación de la conservación, a menos que los controles espaciales sean claros.",
+      "coordination_hint": "La zonificación conjunta, la evaluación de la biodiversidad y los procesos transparentes de selección de emplazamientos podrían ayudar a orientar el desarrollo hacia ubicaciones de menor impacto, al tiempo que mantienen las áreas de reserva, paisajísticas y de restauración en consonancia con las prioridades del NBSAP.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -352,17 +358,17 @@
     "doc_b": "NFAP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 453,
-    "flagged_count": 34,
+    "aligned_count": 380,
+    "flagged_count": 16,
     "contradiction_types": {
-      "resource_competition": 8,
-      "delivery_friction": 26
+      "delivery_friction": 13,
+      "resource_competition": 3
     },
     "synthesis": {
-      "storyline_name": "Gestión de los ecosistemas costeros junto con la expansión de la pesca",
-      "reinforce": "Los documentos a menudo avanzan en la misma dirección cuando la planificación costera y marina resiliente al clima respalda la gestión pesquera basada en la ciencia, especialmente mediante la designación de áreas, los planes de gestión, la previsión, la gestión del riesgo y los enfoques basados en los ecosistemas. La alineación también se repite en torno a las condiciones habilitantes para el bienestar y los medios de vida de los pescadores, donde los sistemas de pérdidas y daños, la alerta temprana, la infraestructura resiliente, la gestión de aguas residuales y la restauración costera podrían apoyar a comunidades pesqueras más seguras y resilientes.",
-      "clash": "La posible desalineación se repite cuando la producción, exportación, acuicultura, puertos, embarcaciones, turismo y expansión de los medios de vida del NFAP pueden superponerse con las prioridades de la NDC relativas a las áreas protegidas, la restauración de hábitats, los ecosistemas de carbono azul, la conectividad del paisaje marino y la gestión basada en los ecosistemas en aguas costeras e interiores vulnerables. Un segundo patrón recurrente es la competencia por los recursos, donde la expansión de la actividad pesquera marina y continental podría recurrir al mismo presupuesto de emisiones, recursos de agua dulce e infraestructura hídrica que la NDC asigna a los objetivos de mitigación y gestión del agua.",
-      "coordination_hint": "La planificación espacial conjunta, la asignación de agua y la evaluación de bioseguridad, vinculadas con trayectorias de pesca de bajas emisiones y salvaguardias de hábitats, podrían ayudar a que ambos documentos se alineen de manera más coherente en las zonas acuáticas costeras e interiores compartidas.",
+      "storyline_name": "Gestión de los ecosistemas costeros y vías de expansión de la pesca",
+      "reinforce": "Los documentos suelen alinearse en torno a la gobernanza de la pesca resiliente al clima, la alerta temprana, operaciones más seguras en el mar y la gestión de los recursos basada en la ciencia, especialmente cuando intervienen la ordenación pesquera basada en los ecosistemas, los marcos de cumplimiento y la planificación de la resiliencia. También avanzan en la misma dirección mediante sistemas facilitadores como el transporte, la energía renovable, la gestión de las aguas residuales, la planificación y la infraestructura posterior a la captura que pueden respaldar cadenas de valor de la pesca y la acuicultura más resilientes.",
+      "clash": "La posible desalineación se repite cuando las medidas de la NDC para ampliar las áreas protegidas, restaurar los hábitats costeros, conservar los ecosistemas de carbono azul, gestionar las especies invasoras o mantener la productividad de lagunas vulnerables coinciden con medidas del NFAP para ampliar la acuicultura, la producción marina, las exportaciones o la infraestructura conexa en las mismas aguas y zonas costeras. Un patrón recurrente menor se refiere al uso compartido de recursos, cuando el riego y la acuicultura continental pueden depender de los mismos sistemas de agua dulce, y cuando las vías para una mayor producción marina podrían aumentar las emisiones dentro del margen nacional de mitigación.",
+      "coordination_hint": "La planificación espacial conjunta, el cribado de bioseguridad y la zonificación de cuencas o zonas costeras vinculada a los planes de gestión pesquera podrían ayudar a que estas agendas avancen conjuntamente en ecosistemas interiores y costeros compartidos.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -372,17 +378,18 @@
     "doc_b": "NMP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 1544,
-    "flagged_count": 408,
+    "aligned_count": 1078,
+    "flagged_count": 146,
     "contradiction_types": {
-      "delivery_friction": 255,
-      "resource_competition": 153
+      "resource_competition": 49,
+      "delivery_friction": 89,
+      "goal_conflict": 8
     },
     "synthesis": {
-      "storyline_name": "Planificación espacial en torno al desarrollo minero gestionado ambientalmente",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en los instrumentos de gestión ambiental en torno a la minería, especialmente los datos ambientales de referencia, las regulaciones ambientales, el cierre de minas, la rehabilitación y salvaguardias más amplias para minimizar los impactos en los ecosistemas circundantes. La alineación también se repite mediante medidas facilitadoras como la reforma jurídica y administrativa, la investigación, la colaboración en I+D, la transparencia y el seguimiento, que podrían apoyar la implementación relacionada con el clima en las áreas de industria, residuos, zonas costeras, biodiversidad y agua.",
-      "clash": "La posible desalineación se repite principalmente allí donde la exploración minera, la reserva de tierras, la zonificación de áreas de alto potencial mineral o la promoción de inversiones se superponen con prioridades climáticas que dependen de la misma tierra, agua, cuencas hidrográficas, costas o hábitats. El conjunto de documentos revisados suele señalar problemas de implementación en torno a las áreas protegidas, los ecosistemas de carbono azul, la gestión de cuencas fluviales, la infraestructura resiliente de agua y saneamiento, la agricultura y otras actividades de restauración o gestión del riesgo, con una competencia por los recursos especialmente centrada en la asignación finita de tierras.",
-      "coordination_hint": "La planificación espacial integrada, utilizando capas de biodiversidad, agua, zonas costeras y riesgo climático junto con la zonificación mineral, los permisos y los requisitos de rehabilitación, podría ayudar a mantener la implementación alineada en las áreas superpuestas.",
+      "storyline_name": "Salvaguardias ambientales junto con la asignación de tierras para minerales",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando la NDC promueve la resiliencia, la restauración, la gestión de residuos y del agua, y la I+D relacionada con el clima, mientras que la NMP respalda estos aspectos mediante salvaguardias mineras como planes de rehabilitación y cierre, procedimientos de prevención de la contaminación, reglamentaciones ambientales, controles de áreas restringidas, armonización jurídica e I+D sectorial. Una alineación recurrente es que los instrumentos de gobernanza del sector mineral podrían apoyar un desarrollo industrial más limpio, una gestión más segura de las aguas residuales y los residuos, la protección de áreas sensibles y la recopilación de evidencia para la gestión climática y ambiental.",
+      "clash": "La posible desalineación se repite principalmente en torno al espacio terrestre y marino, especialmente cuando el NMP prevé la priorización de minerales, la reserva de tierras, depósitos listos para la inversión o la ampliación de la exploración, y la NDC procura áreas protegidas, conectividad de hábitats, restauración forestal y de cuencas, agricultura sostenible, resiliencia de la pesca o planificación costera. También suele señalar problemas de implementación cuando la exploración costa afuera o en tierra y la infraestructura relacionada con la minería podrían complicar las actualizaciones de la regulación sobre biodiversidad, la cartografía de peligros y vulnerabilidad, la remediación del agua y la restauración de ecosistemas en áreas superpuestas.",
+      "coordination_hint": "La planificación espacial integrada, incluida la zonificación, la evaluación preliminar, la secuenciación y los datos ambientales compartidos, podría ayudar a mantener compatibles el desarrollo mineral y las medidas de resiliencia climática allí donde se superponen.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -392,17 +399,14 @@
     "doc_b": "NWRP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 2500,
-    "flagged_count": 5,
-    "contradiction_types": {
-      "resource_competition": 4,
-      "delivery_friction": 1
-    },
+    "aligned_count": 2352,
+    "flagged_count": 0,
+    "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Gobernanza del agua que posibilita vías de implementación climática",
-      "reinforce": "En todos los pares alineados, el patrón recurrente es que los instrumentos de planificación y gobernanza de NWRP, los planes de cuenca hidrográfica, la planificación de acuíferos y cuencas de captación, las normas de calidad del agua, la participación de las partes interesadas y los mecanismos de asignación suelen respaldar las acciones de NDC en la gestión de aguas residuales, el riego, la agricultura, la resiliencia costera, el uso de la tierra y otros sectores sensibles al clima. Un subconjunto más pequeño pero más claro se alinea mediante vínculos operativos directos, especialmente cuando la gestión de aguas residuales se conecta con la planificación de las aguas superficiales y cuando los métodos de uso del agua a nivel de explotación agrícola se alinean con la gestión de cultivos climáticamente inteligente.",
-      "clash": "Los registros de posible desalineación se repiten principalmente en torno a las presiones sobre la asignación de agua derivadas de la expansión energética e industrial, en particular la hidroeléctrica, la biomasa, la generación eléctrica a partir de gas natural y los parques ecoindustriales, donde la demanda de agua podría superponerse con las prioridades domésticas, de seguridad alimentaria, ambientales y de conservación de cuencas hidrográficas. Un patrón adicional apunta a una posible desalineación del lado de la implementación, en la que los planes divisionales de uso de la tierra y de conservación de cuencas hidrográficas podrían influir en la ubicación de la infraestructura relacionada con el gas en áreas compartidas.",
-      "coordination_hint": "La planificación conjunta a nivel de cuenca y de área de captación para la energía, la industria y la asignación de agua podría ayudar a identificar dónde la ubicación, la elección de tecnología, las medidas de eficiencia y las salvaguardias ambientales pueden mantener estos objetivos avanzando en la misma dirección.",
+      "storyline_name": "Gobernanza integrada del agua para la resiliencia climática",
+      "reinforce": "Los documentos se alinean en gran medida en torno a herramientas integradas de gestión del agua, incluida la planificación de cuencas fluviales, la conservación de acuíferos, el monitoreo de aguas subterráneas y superficiales, la planificación del uso del suelo y el uso combinado de fuentes de agua. Este patrón a menudo indica que las acciones climáticas en materia de abastecimiento de agua, saneamiento, alerta temprana de inundaciones, protección de cuencas, gestión de aguas residuales y resiliencia costera cuentan con el apoyo de los mecanismos de gobernanza, planificación, datos y participación de las partes interesadas del NWRP.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "La vinculación de las medidas de adaptación de la NDC con los planes de cuenca del NWRP, la planificación de acuíferos, los sistemas de seguimiento y los comités de partes interesadas podría ayudar a traducir los objetivos compartidos de resiliencia hídrica en una implementación coordinada.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -412,17 +416,16 @@
     "doc_b": "PPPP",
     "label_a": "NDC (Climate Change)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 283,
-    "flagged_count": 40,
+    "aligned_count": 263,
+    "flagged_count": 10,
     "contradiction_types": {
-      "delivery_friction": 39,
-      "resource_competition": 1
+      "delivery_friction": 10
     },
     "synthesis": {
-      "storyline_name": "Planificación espacial y decisiones sobre el uso de la tierra con información climática",
-      "reinforce": "Los documentos a menudo avanzan en la misma dirección cuando las medidas climáticas dependen de la planificación espacial, especialmente para la ubicación de asentamientos, la conservación del agua, el agua y saneamiento resilientes al clima, la gestión de cuencas fluviales y un mejor uso de la infraestructura existente. La alineación también reaparece cuando las herramientas de evidencia de las NDC, como la cartografía agroecológica, la alerta temprana y la revisión de pérdidas y daños, podrían fundamentar las decisiones de PPPP sobre habitabilidad, utilidad de los activos existentes y desarrollo sensible a la conservación.",
-      "clash": "La posible desalineación se repite principalmente en torno al Componente 4 del PPPP, donde el uso orientado al desarrollo de ubicaciones de alto potencial, paisajísticas, de reserva, costeras u otras ubicaciones sensibles podría complicar la ejecución de las acciones de la NDC sobre biodiversidad, restauración costera, adaptación, reducción del riesgo, infraestructura de bajas emisiones y ubicación de instalaciones de residuos. Un patrón menor también apunta a una posible competencia por los recursos compartidos de tierra y agua, particularmente cuando la gestión del riego y el desarrollo diversificado basado en la ubicación pueden recurrir a la misma base de recursos.",
-      "coordination_hint": "La zonificación conjunta, la evaluación de riesgos climáticos y los criterios de selección de emplazamientos en los organismos de planificación, conservación, infraestructura y agua podrían ayudar a mantener el desarrollo basado en la localización alineado con los objetivos climáticos y de los ecosistemas.",
+      "storyline_name": "Planificación espacial con información climática y salvaguardias de conservación",
+      "reinforce": "En muchos pares alineados, las medidas sectoriales de la NDC, como los marcos de gestión del riesgo, la previsión, la cartografía agroecológica, la producción más limpia, el uso eficiente de la infraestructura y la gestión de residuos o del agua, se alinean con los principios de PPPP sobre habitabilidad, desarrollo sensible a la conservación y optimización de los recursos existentes. El vínculo recurrente es que los instrumentos de evidencia y eficiencia de la NDC podrían orientar dónde se localiza el desarrollo y cómo se gestionan la tierra, la infraestructura, los ecosistemas y los servicios en el marco de la planificación física.",
+      "clash": "La posible desalineación recurrente se concentra en torno al énfasis del Componente 4 del PPPP en mejorar el uso de los potenciales basados en la ubicación, incluidas las reservas naturales y los entornos paisajísticos, junto con las acciones de la NDC para proteger o restaurar hábitats vulnerables, áreas protegidas, conectividad ecológica, bosques, ecosistemas de carbono azul, zonas costeras y marinas, zonas de vulnerabilidad pesquera y cuencas fluviales propensas a inundaciones. Estos registros suelen señalar una superposición en la etapa de ejecución en los mismos paisajes, donde el uso del suelo orientado al desarrollo y las medidas de conservación, restauración o gestión de riesgos podrían competir a menos que los límites espaciales y las salvaguardias sean claros.",
+      "coordination_hint": "La zonificación espacial conjunta, la evaluación de peligros y las salvaguardias a nivel de sitio podrían ayudar a alinear las decisiones de desarrollo basadas en la ubicación con las áreas protegidas, los corredores ecológicos, los ecosistemas costeros, las cuencas hidrográficas y las cuencas prioritarias de inundación.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -432,17 +435,17 @@
     "doc_b": "NMP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 100,
-    "flagged_count": 70,
+    "aligned_count": 53,
+    "flagged_count": 17,
     "contradiction_types": {
-      "delivery_friction": 54,
-      "resource_competition": 16
+      "delivery_friction": 11,
+      "resource_competition": 6
     },
     "synthesis": {
-      "storyline_name": "Superposición intersectorial en la zonificación costera y continental",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante salvaguardias habilitantes en la política de minerales, como la aprobación previa en áreas ambientalmente sensibles, la gestión de los recursos costeros, la restauración y rehabilitación, los instrumentos de quien contamina paga, y las normas de gobernanza sobre transparencia y participación que podrían apoyar la pesca, la acuicultura y la protección de los ecosistemas acuáticos. La alineación también se repite en torno a amplias agendas de valor agregado y cumplimiento, donde la mejora de la cadena de suministro pesquera y las obligaciones internacionales se alinean con las normas del sector de los minerales, la capacidad de aplicación y los procedimientos de prevención de la contaminación.",
-      "clash": "La posible desalineación se repite principalmente en la implementación, donde la zonificación minera, la asignación de reservas, la exploración, las declaraciones de yacimientos listos para la inversión y la regulación que facilita la minería podrían superponerse con las zonas de pesca, las aguas continentales, los hábitats costeros, los sitios de acuicultura y los derechos de acceso de las comunidades pesqueras. Un segundo patrón recurrente es la competencia por los recursos sobre la tierra y los espacios acuáticos adyacentes, especialmente cuando la política de minerales prioriza la disponibilidad de tierras o el uso de minerales en determinadas zonas de las que la política pesquera también depende para la acuicultura, los medios de vida costeros, la infraestructura de exportación y la gestión de hábitats.",
-      "coordination_hint": "La planificación espacial conjunta, la consulta y la evaluación de impactos en las zonas costeras, de aguas continentales y terrestres adyacentes podrían ayudar a mantener alineadas la ubicación de las actividades mineras, la rehabilitación y las disposiciones de acceso a la pesca cuando estén implicados los mismos lugares.",
+      "storyline_name": "Superposición de la gobernanza costera con las presiones del uso espacial",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en materia de gobernanza ambiental, especialmente mediante la evaluación de impacto, las aprobaciones restrictivas en zonas sensibles, la gestión de los recursos costeros, los controles de la contaminación, la rehabilitación y una capacidad jurídica y administrativa más amplia. Esta alineación tiende a ser indirecta pero concreta allí donde las salvaguardias y el seguimiento del sector minero podrían respaldar la pesca, la acuicultura, los ecosistemas costeros y las condiciones para la participación comunitaria.",
+      "clash": "La posible desalineación se repite cuando la exploración minera marina y la actividad minera del fondo marino comparten el mismo espacio marino que la producción pesquera, las cadenas de suministro de pescado, las exportaciones, el consumo y el acceso de las comunidades, creando presiones del lado de la implementación en torno a la zonificación, la secuenciación y las salvaguardias. Un segundo patrón recurrente es la competencia por zonas terrestres o acuáticas costeras, de humedales e interiores, donde la zonificación minera, la reserva de tierras o la priorización podrían superponerse con sitios de acuicultura, puertos, instalaciones turísticas y la tenencia de las comunidades pesqueras.",
+      "coordination_hint": "La planificación espacial marina y costera conjunta, vinculada con la zonificación participativa del uso de la tierra y las salvaguardias ambientales, podría ayudar a aclarar dónde las actividades pesqueras y minerales pueden coexistir y dónde la separación puede ser útil.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -452,17 +455,16 @@
     "doc_b": "NWRP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 224,
-    "flagged_count": 26,
+    "aligned_count": 206,
+    "flagged_count": 6,
     "contradiction_types": {
-      "resource_competition": 24,
-      "delivery_friction": 2
+      "resource_competition": 6
     },
     "synthesis": {
-      "storyline_name": "Gobernanza del agua que posibilita trayectorias de crecimiento de la pesca",
-      "reinforce": "En muchos pares alineados, el NWRP tiende a proporcionar condiciones habilitantes para los objetivos del NFAP mediante leyes sobre el agua, planificación de cuencas y acuíferos, normas de calidad del agua, participación de las partes interesadas y coordinación entre niveles de gobierno. Esto a menudo apunta a un apoyo compartido en torno a las pesquerías continentales, la acuicultura, las cadenas de suministro de pescado y los ecosistemas costeros o vinculados a las cuencas hidrográficas, aunque la superposición suele ser indirecta más que un mecanismo conjunto de implementación.",
-      "clash": "La posible desalineación recurrente es la competencia por recursos finitos de agua dulce, de cuencas, acuíferos y vertientes, especialmente cuando la expansión de la acuicultura del NFAP y la producción orientada a la exportación incrementan la demanda de agua junto con las medidas del NWRP relativas a asignación, conservación, derechos y eficiencia. Un patrón menor pero repetido también se refiere a la calidad del agua, donde la intensificación de la actividad acuícola podría hacer más exigente el cumplimiento de las normas y los requisitos de seguimiento.",
-      "coordination_hint": "Los mecanismos de asignación a nivel de cuenca, ubicación, eficiencia en el uso del agua y seguimiento de la calidad del agua que incluyan a los actores de la pesca y la acuicultura podrían ayudar a mantener la producción, la conservación y la gestión del agua para múltiples usuarios avanzando en la misma dirección.",
+      "storyline_name": "La asignación y la calidad del agua como facilitadores de la pesca",
+      "reinforce": "En muchos pares, los documentos se alinean entre sí mediante la planificación de cuencas, la conservación de cuencas de captación y humedales, las normas de calidad del agua, el control de efluentes y la planificación hídrica relacionada con el clima que respaldan la pesca continental, la acuicultura, las cadenas de suministro de pescado y los medios de vida de los pescadores. El patrón recurrente es habilitador más que directo, ya que el NWRP proporciona instrumentos intersectoriales de gobernanza del agua y gestión ambiental que tienden a respaldar los objetivos del NFAP en materia de producción, bienestar, consumo, exportación y gestión de los recursos.",
+      "clash": "La posible desalineación recurrente gira en torno a la competencia por la capacidad finita de las aguas continentales y de las cuencas hidrográficas, especialmente cuando el NFAP busca ampliar la acuicultura o la producción orientada a la exportación, mientras que el NWRP prioriza el uso doméstico, la seguridad alimentaria, las necesidades ambientales, la conservación o la asignación basada en prioridades entre sectores. Esto a menudo apunta a puntos de presión compartidos en la asignación por cuencas, la reasignación durante períodos de crisis, la ubicación de la acuicultura y las salvaguardias ambientales, más que a una incompatibilidad general entre los documentos.",
+      "coordination_hint": "La planificación conjunta a nivel de cuenca sobre las necesidades de agua para la acuicultura, las normas de asignación, la ubicación y las salvaguardias relativas a los caudales ambientales o a las cuencas hidrográficas podría ayudar a gestionar los riesgos recurrentes de competencia por los recursos, manteniendo al mismo tiempo a la vista la alineación más amplia.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -472,16 +474,16 @@
     "doc_b": "PPPP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 23,
-    "flagged_count": 7,
+    "aligned_count": 17,
+    "flagged_count": 3,
     "contradiction_types": {
-      "delivery_friction": 7
+      "delivery_friction": 3
     },
     "synthesis": {
       "storyline_name": "Apoyo a la planificación espacial para el desarrollo de la pesca",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando las acciones pesqueras dependen de la planificación espacial, las salvaguardias ambientales y un mejor uso de la infraestructura existente, como los sitios portuarios, de desembarque, de procesamiento y de acuicultura. Esto se repite en la planificación sensible a la conservación, la habitabilidad de los asentamientos y la optimización de la infraestructura, donde PPPP proporciona principios facilitadores de zonificación y ubicación que se alinean con la gestión de recursos de NFAP, la mejora posterior a la captura, el bienestar comunitario y el desarrollo de medios de vida.",
-      "clash": "Una posible desalineación recurrente aparece cuando la producción de NFAP o la expansión de las exportaciones, especialmente la infraestructura marina, la intensificación de la acuicultura y el desarrollo en zonas costeras o de aguas continentales, se superponen con las prioridades de conservación de PPPP o con el desarrollo territorial en reservas y lugares paisajísticos. Los casos examinados señalan sistemáticamente una presión en la etapa de implementación sobre los mismos ecosistemas o sitios, lo que sugiere que la localización, la zonificación y los controles ambientales podrían adquirir importancia allí donde coinciden el crecimiento de la pesca y el desarrollo más amplio de las zonas terrestres y acuáticas.",
-      "coordination_hint": "La zonificación conjunta de las zonas costeras e interiores, la evaluación ambiental vinculada y la selección temprana de emplazamientos podrían ayudar a armonizar la expansión de la pesca con decisiones de planificación sensibles a la conservación y basadas en la ubicación.",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección cuando las acciones pesqueras se apoyan en la planificación espacial, las salvaguardias de conservación y un mejor uso de la infraestructura existente, especialmente para puertos, sitios de desembarque, zonas de acuicultura, medios de vida costeros y asentamientos pesqueros. Un patrón recurrente es que PPPP proporciona herramientas intersectoriales sobre la ubicación sensible a los ecosistemas, la habitabilidad de los asentamientos y la optimización de la infraestructura que se alinean con los objetivos de NFAP sobre la gestión sostenible de los recursos, las mejoras posteriores a la captura, el bienestar comunitario y el desarrollo de empresas basadas en la pesca.",
+      "clash": "La posible desalineación recurrente aparece en torno a la expansión de la producción y la infraestructura conexa en la pesca marina, la acuicultura y el desarrollo orientado a la exportación cuando estas actividades afectan las mismas zonas costeras, de aguas continentales y de ecosistemas que PPPP procura conservar. Los casos examinados suelen señalar riesgos en la etapa de implementación en relación con la ubicación, la intensidad de uso, la elección de especies y las nuevas instalaciones, donde las salvaguardias de conservación y las trayectorias de producción pueden no estar alineadas automáticamente.",
+      "coordination_hint": "La evaluación espacial conjunta, las salvaguardias ambientales y la coordinación temprana sobre las opciones de emplazamiento relacionadas con puertos, acuicultura y exportación podrían ayudar a que estos documentos respalden tanto los objetivos de producción como los de conservación.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -491,17 +493,18 @@
     "doc_b": "NWRP",
     "label_a": "NMP (Minerals)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 1085,
-    "flagged_count": 258,
+    "aligned_count": 834,
+    "flagged_count": 105,
     "contradiction_types": {
-      "delivery_friction": 148,
-      "resource_competition": 110
+      "delivery_friction": 88,
+      "resource_competition": 16,
+      "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Desarrollo mineral dentro de los sistemas de gobernanza del agua",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de gobernanza facilitadora, especialmente mediante la revisión de leyes, el fortalecimiento de las instituciones, la mejora de los datos y la investigación, y el uso de herramientas de planificación como los planes de cuenca, los planes de uso del suelo, las normas y la participación de las partes interesadas. La alineación también se repite cuando el cierre de minas, la rehabilitación, el control de la contaminación y un procesamiento más limpio pueden apoyar la protección de las cuencas hidrográficas, la conservación de los acuíferos, la gestión de la calidad del agua y una supervisión ambiental más amplia.",
-      "clash": "La posible desalineación reaparece cuando la zonificación minera, la priorización del uso de la tierra, la promoción de inversiones y la facilitación de la exploración o la minería podrían aumentar las demandas sobre recursos finitos de cuencas, acuíferos, aguas superficiales y aguas subterráneas que la política hídrica asigna entre sectores y usuarios. Otra posible desalineación recurrente se refiere a la implementación en zonas sensibles al agua, donde las preferencias mineras o la expansión del procesamiento podrían superponerse con cuencas altas, humedales, sistemas fluviales, prácticas comunitarias relacionadas con el agua y procesos de gobernanza del agua multinivel.",
-      "coordination_hint": "La planificación espacial integrada y la concesión de permisos, vinculadas a normas de asignación de cuencas o acuíferos, salvaguardias de cuencas hidrográficas y foros compartidos de partes interesadas, podrían ayudar a mantener alineados el desarrollo minero y la gestión del agua en las mismas geografías.",
+      "storyline_name": "Gobernanza intersectorial y asignación de tierras sensible al agua",
+      "reinforce": "Los dos documentos suelen estar alineados mediante herramientas de gobernanza compartidas, especialmente la transparencia, la participación de las partes interesadas, la coordinación institucional, la investigación y el intercambio de información, y una mayor capacidad regulatoria. También avanzan en la misma dirección cuando los controles de la minería, el cierre de minas, la rehabilitación, la prevención de la contaminación y las autorizaciones en zonas sensibles apoyan la calidad del agua, la protección de los acuíferos y la gestión de cuencas o subcuencas.",
+      "clash": "La posible desalineación se repite principalmente cuando el documento sobre minerales promueve la disponibilidad de tierras, la zonificación, los yacimientos despejados o la inversión minera facilitada, mientras que el documento sobre agua protege las cuencas de captación, los acuíferos, las cuencas altas, los humedales, las cuencas fluviales y la calidad del agua mediante planes de uso del suelo y controles de vertido. Un segundo patrón recurrente es la competencia por el agua finita y las tierras sensibles al agua, especialmente cuando la expansión minera o los sitios listos para la inversión podrían aumentar las demandas sobre la asignación de agua de la cuenca o superponerse con áreas reservadas para funciones de cuenca hidrográfica.",
+      "coordination_hint": "La planificación espacial integrada, la concesión de permisos basada en cuencas y los procesos compartidos de asignación y monitoreo del agua podrían ayudar a que ambos documentos avancen conjuntamente allí donde las zonas minerales se superponen con acuíferos, cuencas hidrográficas o cuencas fluviales.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -511,17 +514,18 @@
     "doc_b": "PPPP",
     "label_a": "NMP (Minerals)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 130,
-    "flagged_count": 66,
+    "aligned_count": 117,
+    "flagged_count": 32,
     "contradiction_types": {
-      "delivery_friction": 56,
-      "resource_competition": 10
+      "delivery_friction": 24,
+      "resource_competition": 7,
+      "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Planificación espacial en torno al uso de la tierra para minerales",
-      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección allí donde coinciden las salvaguardias de regulación y planificación de los minerales, especialmente mediante las regulaciones ambientales para la minería, los instrumentos de control de la contaminación, los datos de referencia de las minas, la rehabilitación y la evaluación del uso del suelo sensible a la conservación. La alineación también se repite en torno al uso compartido de información espacial y sobre recursos, como los inventarios de minerales, los sistemas de seguimiento y los insumos de investigación que podrían fundamentar las decisiones sobre dónde son más adecuados el desarrollo, los asentamientos o el uso del suelo posterior a la minería.",
-      "clash": "La posible desalineación se repite principalmente en torno a la secuenciación de la ejecución y la ubicación, donde la identificación de yacimientos, su declaración como listos para la inversión, la promoción de la inversión minera o la orientación del desarrollo hacia tierras con alto potencial mineral pueden superponerse con los objetivos de planificación relativos a la habitabilidad, la conservación y el uso diversificado de lugares paisajísticos o sensibles. Un segundo patrón recurrente es la posible desalineación en la asignación de tierras, donde la reserva de tierras o la priorización del uso minero en determinadas zonas podrían competir con los planes para optimizar las áreas existentes con servicios o asignar tierras para asentamientos y otros usos de desarrollo.",
-      "coordination_hint": "La zonificación espacial conjunta, la evaluación compartida de las aprobaciones mineras y de planificación, y el uso de evidencia geoespacial común podrían ayudar a mantener alineadas las decisiones de inversión minera y las opciones de planificación física en ubicaciones superpuestas.",
+      "storyline_name": "Planificación espacial para minerales y tierras sensibles",
+      "reinforce": "Los documentos suelen alinearse en torno al uso de información espacial, zonificación, seguimiento y salvaguardias regulatorias para orientar dónde tiene lugar la actividad minera y cómo se utiliza la tierra. Esto se repite en pares que vinculan los inventarios de minerales, la cartografía, la rehabilitación y la regulación ambiental con las prioridades de la planificación física en materia de conservación, habitabilidad y mejor uso de la tierra y la infraestructura existentes.",
+      "clash": "La posible desalineación se repite cuando las disposiciones del NMP para asegurar, priorizar, declarar oficialmente o desarrollar tierras con presencia de minerales se superponen con las prioridades del PPPP de conservar ecosistemas únicos y recursos hídricos, o de asignar tierras adecuadas para asentamientos y otros desarrollos basados en la ubicación. Los casos examinados también suelen señalar problemas de implementación en contextos sensibles costeros, paisajísticos, de reserva o de derechos indígenas, donde las aprobaciones mineras, la exploración, la infraestructura o la promoción de inversiones podrían competir con las salvaguardias de planificación y los criterios de selección de sitios.",
+      "coordination_hint": "La zonificación espacial integrada, los criterios compartidos de evaluación del uso del suelo y la coordinación temprana sobre las aprobaciones y la selección de emplazamientos podrían ayudar a gestionar las superposiciones entre las áreas de inversión minera y las prioridades de conservación o asentamiento.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -531,17 +535,16 @@
     "doc_b": "PPPP",
     "label_a": "NWRP (Water)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 111,
-    "flagged_count": 21,
+    "aligned_count": 112,
+    "flagged_count": 4,
     "contradiction_types": {
-      "delivery_friction": 17,
-      "resource_competition": 4
+      "delivery_friction": 4
     },
     "synthesis": {
-      "storyline_name": "Planificación espacial y asignación de recursos sensibles al agua",
-      "reinforce": "Los documentos suelen alinearse en torno al uso de herramientas de planificación espacial y de gobernanza para proteger los recursos hídricos, incluidos los planes de uso del suelo para acuíferos, la planificación de cuencas fluviales y de captación, las normas de calidad del agua, la evaluación de la vulnerabilidad climática y los comités de partes interesadas. Esto se repite con mayor claridad cuando la planificación orientada a la conservación de PPPP para los recursos hídricos, los ecosistemas y los paisajes culturales respalda las medidas de NWRP sobre seguimiento, actualizaciones jurídicas, gobernanza participativa y gestión del agua sensible a la conservación.",
-      "clash": "La posible desalineación se repite principalmente en torno al Componente 4 del PPPP, donde el desarrollo basado en la ubicación y el mayor uso de reservas naturales o entornos paisajísticos podrían ejercer presión adicional sobre las mismas cuencas hidrográficas, acuíferos, humedales, cuencas fluviales y suministros locales de agua que el NWRP procura conservar, regular o asignar entre los usuarios. Los casos examinados suelen señalar problemas de secuenciación de la implementación y de diseño, como la zonificación, los permisos, la protección de las zonas de recarga, el control de efluentes y las normas de asignación del agua, y en un conjunto más reducido, a la competencia directa por el agua finita entre los usuarios existentes y los nuevos.",
-      "coordination_hint": "El uso conjunto de información sobre cuencas, acuíferos, áreas de captación y zonas de recarga en la selección de emplazamientos, la zonificación y la concesión de permisos podría ayudar a mantener las decisiones de desarrollo alineadas con las salvaguardias relativas a la asignación del agua, la calidad y la conservación.",
+      "storyline_name": "Planificación espacial sensible al agua y optimización de los recursos",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando la planificación física incorpora la conservación de los recursos hídricos, mediante instrumentos como el uso del suelo sensible a la conservación, los planes de acuíferos y cuencas fluviales, la identificación de zonas de recarga, las normas de calidad del agua y la legislación hídrica actualizada. Un segundo patrón recurrente es el uso eficiente de los recursos e infraestructuras existentes, donde las medidas del NWRP sobre valoración del agua, evaluación de la demanda, gestión de las aguas subterráneas y participación de las partes interesadas se alinean con el énfasis del PPPP en optimizar lo que ya está disponible.",
+      "clash": "Una posible desalineación recurrente aparece en torno al enfoque del Componente 4 de PPPP en explorar y mejorar el uso de ubicaciones, incluidas las reservas naturales y los entornos paisajísticos, cuando esas mismas áreas se superponen con cuencas hidrográficas, humedales, cuencas fluviales y sistemas ribereños priorizados para la conservación o la gestión basada en cuencas en NWRP. Los casos examinados señalan de manera consistente problemas en la etapa de implementación, en la que la actividad de desarrollo basada en la ubicación podría complicar la protección de las cuencas de captación, la gestión de las aguas superficiales, el control de efluentes y la protección de las funciones de las cuencas altas, a menos que las salvaguardias espaciales sean claras.",
+      "coordination_hint": "La zonificación espacial conjunta y la evaluación a nivel de cuenca de las ubicaciones de desarrollo propuestas podrían ayudar a armonizar las decisiones sobre el uso de la ubicación con las prioridades de gestión de cuencas hidrográficas, humedales y cuencas fluviales.",
       "confidence": "high"
     },
     "synthesis_error": null
