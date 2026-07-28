@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import type { ModelDisagreementRow, RatingsByCountry } from "@/types";
 
-import { summarizeLedger } from "./analysis-sections";
+import { poolEvaluationSample, summarizeLedger } from "./analysis-sections";
 
 const row = (a: string, b: string) =>
   ({ targetAId: a, targetBId: b }) as ModelDisagreementRow;
 
-const rating = (ts = 1) => ({ rating: "real" as const, note: "", ts });
+const rating = (ts = 1) => ({ rating: "flagged" as const, note: "", ts });
 
 describe("summarizeLedger", () => {
   const report = {
@@ -84,5 +84,64 @@ describe("summarizeLedger", () => {
     expect(s.inCurrentSamples).toBe(1);
     expect(s.perModel[0].rated).toBe(1);
     expect(s.consensus.rated).toBe(1);
+  });
+});
+
+describe("poolEvaluationSample", () => {
+  const key = (r: { targetAId: string; targetBId: string }) =>
+    `${r.targetAId}::${r.targetBId}`;
+
+  it("pools every model sample plus the consensus sample, deduplicated", () => {
+    const shared = row("NDC_1", "FSS_2");
+    const pooled = poolEvaluationSample({
+      models: ["gpt-5-4", "deepseek-v4-pro"],
+      uniqueSignalRandomSample: {
+        "gpt-5-4": [shared, row("NDC_3", "NBSAP_4")],
+        "deepseek-v4-pro": [row("ILDN_5", "NRVTS_6")],
+      },
+      consensusFlaggedRandomSample: [shared, row("HR_7", "NDC_8")],
+    });
+    expect(pooled.map(key).sort()).toEqual([
+      "HR_7::NDC_8",
+      "ILDN_5::NRVTS_6",
+      "NDC_1::FSS_2",
+      "NDC_3::NBSAP_4",
+    ]);
+  });
+
+  it("orders deterministically, not by per-model insertion order", () => {
+    const report = {
+      models: ["gpt-5-4", "deepseek-v4-pro"],
+      uniqueSignalRandomSample: {
+        "gpt-5-4": [row("A_1", "B_1"), row("A_2", "B_2"), row("A_3", "B_3")],
+        "deepseek-v4-pro": [row("C_1", "D_1"), row("C_2", "D_2")],
+      },
+      consensusFlaggedRandomSample: [row("E_1", "F_1")],
+    };
+    const first = poolEvaluationSample(report).map(key);
+    const second = poolEvaluationSample(report).map(key);
+    expect(second).toEqual(first);
+    // The hash shuffle should break up the model-by-model grouping the
+    // input arrives in (all gpt rows, then all deepseek rows, then
+    // consensus) — otherwise position leaks which model flagged a pair.
+    const insertionOrder = [
+      "A_1::B_1",
+      "A_2::B_2",
+      "A_3::B_3",
+      "C_1::D_1",
+      "C_2::D_2",
+      "E_1::F_1",
+    ];
+    expect(first).not.toEqual(insertionOrder);
+  });
+
+  it("handles missing sample maps", () => {
+    expect(
+      poolEvaluationSample({
+        models: ["gpt-5-4"],
+        uniqueSignalRandomSample: {},
+        consensusFlaggedRandomSample: [],
+      }),
+    ).toEqual([]);
   });
 });

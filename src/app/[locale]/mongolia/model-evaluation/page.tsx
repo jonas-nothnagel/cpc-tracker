@@ -2,10 +2,13 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/ui/header";
 import { Link } from "@/i18n/navigation";
 import {
+  computeModelAgreement,
   listAvailableModels,
+  loadModelAlignmentLabels,
   loadModelComparison,
   loadModelFlaggedPairKeys,
   loadRatings,
+  sanitizeForBlindEvaluation,
 } from "@/lib/dashboard-data";
 import { EvaluationSections } from "@/components/model-comparison/analysis-sections";
 
@@ -25,9 +28,17 @@ export default async function MongoliaModelEvaluationPage() {
   const models = listAvailableModels(COUNTRY);
   if (models.length === 0) notFound();
 
-  const report = loadModelComparison(COUNTRY);
+  const fullReport = loadModelComparison(COUNTRY);
+  // Blind evaluation: only the sanitized slice ever reaches the client —
+  // model verdicts and rationales must not be recoverable via view-source.
+  const report = fullReport ? sanitizeForBlindEvaluation(fullReport) : null;
   const ratings = loadRatings(COUNTRY);
   const flaggedByModel = loadModelFlaggedPairKeys(COUNTRY);
+  // Aggregate agreement only — per-pair model verdicts stay on the server.
+  const modelAgreement = computeModelAgreement(
+    loadModelAlignmentLabels(COUNTRY),
+    ratings,
+  );
 
   return (
     <div
@@ -48,10 +59,16 @@ export default async function MongoliaModelEvaluationPage() {
           </Link>
         </div>
         <p className="text-sm text-[var(--undp-gray)] mb-6 max-w-3xl">
-          Rate individual flagged pairs as &ldquo;real concern&rdquo;,
-          &ldquo;thin / not actionable&rdquo;, or &ldquo;skip&rdquo;. The
-          tool produces a precision estimate per sample with a Wilson 95%
-          confidence interval. Ratings persist to the server-side ledger{" "}
+          Give each sampled policy pair your own verdict on the same
+          five-level scale the models use — &ldquo;No relationship&rdquo;,
+          &ldquo;Partially aligned&rdquo;, &ldquo;Moderately aligned&rdquo;,
+          &ldquo;Strongly aligned&rdquo;, or &ldquo;Potential
+          misalignment&rdquo;. The models&apos; verdicts and
+          rationales are hidden, so each rating is an independent human
+          judgement directly comparable with theirs. The tool tracks how
+          often your blind verdict lands on &ldquo;Potential
+          misalignment&rdquo;, with a Wilson 95% confidence interval.
+          Ratings persist to the server-side ledger{" "}
           <code className="font-mono text-[10px] px-1 bg-gray-100">
             python/output/ratings-ledger.jsonl
           </code>{" "}
@@ -64,6 +81,7 @@ export default async function MongoliaModelEvaluationPage() {
             report={report}
             initialRatings={ratings}
             flaggedByModel={flaggedByModel}
+            modelAgreement={modelAgreement}
           />
         ) : (
           <p className="text-xs text-[var(--undp-gray)] mt-8 italic max-w-3xl">

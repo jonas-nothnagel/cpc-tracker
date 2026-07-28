@@ -141,9 +141,18 @@ def main() -> int:
     common = set.intersection(*(set(i) for i in all_idx.values()))
 
     # Human adjudications from the ratings ledger (latest event per pair wins).
-    # "real" = a human confirmed the pair deserves a flag; "thin" = confirmed
-    # the old flag was an artifact; "skip" = declined to judge. Retention gates
-    # exclude thin/skip pairs and hard-require the confirmed ones.
+    # Two schemes coexist in the ledger:
+    #   - legacy (pre-July 2026): "real" (confirmed the flag) / "thin" (the
+    #     flag was an artifact) / "skip" (declined to judge);
+    #   - current: the reviewer's own BLIND verdict on the model scale
+    #     ("none" / "low" / "medium" / "high" / "flagged").
+    # For gating, both map onto keep / reject / declined: a "flagged" blind
+    # verdict confirms the pair deserves a flag (= legacy "real"); any other
+    # blind level means the human, judging the same pair, did not land on a
+    # flag (= legacy "thin"); "skip" stays declined.
+    keep_ratings = {"real", "flagged"}
+    reject_ratings = {"thin", "none", "low", "medium", "high"}
+    declined_ratings = {"skip"}
     ratings: dict[tuple[str, str], str] = {}
     ledger_path = config.OUTPUT_DIR / "ratings-ledger.jsonl"
     if ledger_path.exists():
@@ -241,12 +250,15 @@ def main() -> int:
     t_old, t_new = all_idx[args.treatment], new_idx[args.treatment]
     c_old, c_new = all_idx[args.control], new_idx[args.control]
 
-    # Consensus pairs the human vetted as artifacts (thin) or declined (skip)
-    # do not count against retention; confirmed keeps (real) are hard-required.
+    # Consensus pairs the human vetted as non-flags (rejects) or declined do
+    # not count against retention; confirmed keeps are hard-required.
+    excluded_ratings = reject_ratings | declined_ratings
     vetted_consensus = [
-        k for k in strata["a_consensus"] if ratings.get(k) not in ("thin", "skip")
+        k for k in strata["a_consensus"] if ratings.get(k) not in excluded_ratings
     ]
-    confirmed_keeps = [k for k in strata["a_consensus"] if ratings.get(k) == "real"]
+    confirmed_keeps = [
+        k for k in strata["a_consensus"] if ratings.get(k) in keep_ratings
+    ]
 
     def _modal_share(idx) -> float:
         flags = [k for k in union_keys if idx[k]["alignment"] == "flagged"]
@@ -290,7 +302,7 @@ def main() -> int:
         },
         "G2_treatment_consensus_retention_vetted": {
             "value": retention(vetted_consensus, t_new),
-            "threshold": ">= 0.90 (thin/skip-rated pairs excluded)",
+            "threshold": ">= 0.90 (human-rejected/declined pairs excluded)",
             "pass": retention(vetted_consensus, t_new) >= 0.90,
         },
         "G2b_treatment_confirmed_keeps_flagged": {
@@ -305,7 +317,7 @@ def main() -> int:
         },
         "G3b_control_consensus_retention_vetted": {
             "value": retention(vetted_consensus, c_new),
-            "threshold": ">= 0.90 (thin/skip-rated pairs excluded)",
+            "threshold": ">= 0.90 (human-rejected/declined pairs excluded)",
             "pass": retention(vetted_consensus, c_new) >= 0.90,
         },
         "G3d_control_confirmed_keeps_flagged": {
@@ -380,7 +392,7 @@ def main() -> int:
         "strataSizes": {n: len(keys) for n, keys in strata.items()},
         "adjudicatedConsensus": {
             r: sum(1 for k in strata["a_consensus"] if ratings.get(k) == r)
-            for r in ("real", "thin", "skip")
+            for r in sorted(keep_ratings | reject_ratings | declined_ratings)
         },
         "unionPairs": len(union_keys),
         "gates": gates,
