@@ -37,10 +37,15 @@ const RATINGS_LEDGER = join(
 const COUNTRY_SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const PAIR_KEY_RE = /^[A-Za-z0-9_.-]+::[A-Za-z0-9_.-]+$/;
 
+// The reviewer rates on the models' own alignment scale. Legacy events in
+// the ledger use the retired "real" | "thin" | "skip" scheme; they are not
+// accepted for new writes.
 const VALID_RATINGS: ReadonlySet<PairRatingValue> = new Set([
-  "real",
-  "thin",
-  "skip",
+  "none",
+  "low",
+  "medium",
+  "high",
+  "flagged",
 ]);
 
 function validateRating(input: unknown): PairRating | null {
@@ -82,7 +87,7 @@ export async function POST(
   const rating = validateRating(ratingInput);
   if (!rating) {
     return NextResponse.json(
-      { error: "invalid rating (must be {rating: 'real'|'thin'|'skip', note: string, ts: number})" },
+      { error: "invalid rating (must be {rating: 'none'|'low'|'medium'|'high'|'flagged', note: string, ts: number})" },
       { status: 400 },
     );
   }

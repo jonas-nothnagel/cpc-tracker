@@ -498,13 +498,19 @@ export interface ModelComparisonReport {
 // Manual evaluation ratings
 // ---------------------------------------------------------------------------
 //
-// Human ratings on individual flagged pairs. Stored server-side at
-// `python/output/{country}/_ratings.json` (NOT localStorage — see
-// memory/feedback_server_side_storage.md). Ratings persist across reviewers,
-// browsers, and deploys; the same file is updated by every POST to
-// `/api/ratings/[country]`.
+// Human ratings on individual sampled pairs. Stored server-side in the
+// append-only ledger `python/output/ratings-ledger.jsonl` (NOT localStorage —
+// see memory/feedback_server_side_storage.md). Ratings persist across
+// reviewers, browsers, and deploys; every POST to `/api/ratings/[country]`
+// appends one event line.
 
-export type PairRatingValue = "real" | "thin" | "skip";
+/** The reviewer's own verdict for a pair, on the SAME scale the models use
+ *  (`AlignmentLevel`) so human and model verdicts are directly comparable.
+ *  Legacy ledger events carry the pre-July-2026 scheme ("real" | "thin" |
+ *  "skip"): they stay in the ledger for audit and prompt calibration, but
+ *  `loadRatings` ignores them and the evaluation page shows those pairs as
+ *  unrated. */
+export type PairRatingValue = AlignmentLevel;
 
 export interface PairRating {
   rating: PairRatingValue;
@@ -523,6 +529,26 @@ export type RatingsByCountry = Record<string, PairRating>;
 export interface PairRatingEvent extends PairRating {
   country: string;
   pairKey: string;
+}
+
+/** A sampled pair with every model verdict stripped — all the blind
+ *  evaluation page is allowed to see about a pair besides its targets. */
+export type BlindPairSample = Pick<ModelDisagreementRow, "targetAId" | "targetBId">;
+
+/** The slice of the model-comparison artifact the blind evaluation page
+ *  receives. Built server-side by `sanitizeForBlindEvaluation` so model
+ *  labels, rationales, and flag details never reach the client payload
+ *  (not just the DOM) — a view-source can't unblind a reviewer. */
+export interface BlindEvaluationReport {
+  country: string;
+  /** Model slugs, flagship-first — used only for ledger bookkeeping. */
+  models: string[];
+  /** Target ID → statement + source-doc metadata for the sampled pairs. */
+  targets: Record<string, TargetSummary>;
+  /** Per model: the same deterministic sample as the full report, verdicts stripped. */
+  uniqueSignalRandomSample: Record<string, BlindPairSample[]>;
+  /** The consensus sample from the full report, verdicts stripped. */
+  consensusFlaggedRandomSample: BlindPairSample[];
 }
 
 // ---------------------------------------------------------------------------

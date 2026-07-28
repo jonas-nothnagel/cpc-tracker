@@ -23,7 +23,10 @@ import { getCountry, isValidCountryId } from "@/config/countries";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
 import type {
+  BlindEvaluationReport,
+  BlindPairSample,
   ModelComparisonReport,
+  ModelDisagreementRow,
   PairRating,
   PairRatingValue,
   RatingsByCountry,
@@ -108,13 +111,47 @@ export function loadModelComparison(country: string): ModelComparisonReport | nu
   return report;
 }
 
+/** Strip a comparison report down to what the blind evaluation page may
+ *  see: pair IDs and target text only — no model labels, rationales, or
+ *  flag details, and none of the analyst-view row sets. Runs server-side
+ *  so the verdicts never enter the client payload; the DOM staying blind
+ *  is not enough when view-source would unblind the reviewer. */
+export function sanitizeForBlindEvaluation(
+  report: ModelComparisonReport,
+): BlindEvaluationReport {
+  const strip = (rows: ModelDisagreementRow[] | undefined): BlindPairSample[] =>
+    (rows ?? []).map(({ targetAId, targetBId }) => ({ targetAId, targetBId }));
+  const uniqueSignalRandomSample: Record<string, BlindPairSample[]> = {};
+  for (const slug of report.models) {
+    uniqueSignalRandomSample[slug] = strip(
+      report.uniqueSignalRandomSample?.[slug],
+    );
+  }
+  return {
+    country: report.country,
+    models: report.models,
+    targets: report.targets,
+    uniqueSignalRandomSample,
+    consensusFlaggedRandomSample: strip(report.consensusFlaggedRandomSample),
+  };
+}
+
 /** Human ratings on individual flagged pairs. Streams the append-only
  *  ledger at `python/output/ratings-ledger.jsonl` and folds events to
  *  `{ pairKey → latest rating for this country }`. Intentionally NOT
  *  cached: reviewer writes flip the file at runtime, so each page render
  *  re-reads. Fold is O(events) — fast enough for anything short of
  *  hundreds of thousands of ratings. */
-const RATING_VALUES: ReadonlySet<PairRatingValue> = new Set(["real", "thin", "skip"]);
+// Current scheme only: legacy "real" | "thin" | "skip" events fail this
+// check and fold to "unrated", so reviewers re-rate those pairs on the
+// alignment scale. The legacy events stay in the ledger for calibration.
+const RATING_VALUES: ReadonlySet<PairRatingValue> = new Set([
+  "none",
+  "low",
+  "medium",
+  "high",
+  "flagged",
+]);
 
 /**
  * Per-model flagged pair keys from each model's full alignment output

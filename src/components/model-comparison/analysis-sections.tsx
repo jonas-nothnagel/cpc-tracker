@@ -24,6 +24,8 @@ import {
 import { exportRatings, setRating } from "@/lib/evaluation-api";
 import type {
   AlignmentLevel,
+  BlindEvaluationReport,
+  BlindPairSample,
   JudgeVerdict,
   ModelComparisonReport,
   ModelDisagreementRow,
@@ -170,7 +172,9 @@ export function EvaluationSections({
   initialRatings = {},
   flaggedByModel = {},
 }: {
-  report: ModelComparisonReport;
+  /** Sanitized server-side (sanitizeForBlindEvaluation) — model verdicts
+   *  never reach this component or the client payload. */
+  report: BlindEvaluationReport;
   initialRatings?: RatingsByCountry;
   /** Per-model FULL flagged pair keys (loadModelFlaggedPairKeys); used to
    *  attribute ledger ratings to models beyond the re-drawn samples. */
@@ -194,19 +198,13 @@ export function EvaluationSections({
 
   return (
     <div className="space-y-10 mt-10">
-      <EvaluationTutorial models={report.models} />
+      <EvaluationTutorial />
       <RatingsLedgerSummary
         report={report}
         ratings={ratings}
         flaggedByModel={flaggedByModel}
       />
-      <EvaluationSampleTabs
-        report={report}
-        ratings={ratings}
-        flaggedByModel={flaggedByModel}
-        onChangeRating={applyRating}
-      />
-      <ConsensusEvaluation
+      <BlindEvaluationSection
         report={report}
         ratings={ratings}
         onChangeRating={applyRating}
@@ -222,10 +220,11 @@ export function EvaluationSections({
  * appear in the sections below. Pure and exported for tests.
  */
 export function summarizeLedger(
-  report: Pick<
-    ModelComparisonReport,
-    "models" | "uniqueSignalRandomSample" | "consensusFlaggedRandomSample"
-  >,
+  report: {
+    models: string[];
+    uniqueSignalRandomSample?: Record<string, BlindPairSample[]>;
+    consensusFlaggedRandomSample?: BlindPairSample[];
+  },
   ratings: RatingsByCountry,
   flaggedByModel: Record<string, string[]> = {},
 ): {
@@ -289,7 +288,7 @@ function RatingsLedgerSummary({
   ratings,
   flaggedByModel = {},
 }: {
-  report: ModelComparisonReport;
+  report: BlindEvaluationReport;
   ratings: RatingsByCountry;
   flaggedByModel?: Record<string, string[]>;
 }) {
@@ -303,14 +302,14 @@ function RatingsLedgerSummary({
       </h2>
       <p className="text-xs text-[var(--undp-gray)] mb-3 max-w-3xl">
         Every rating is saved permanently on the server, including across
-        model re-runs. When the comparison is regenerated, the samples below
-        are re-drawn — so earlier ratings may not appear in the current
-        samples, but they are not lost.
+        model re-runs. When the comparison is regenerated, the sample below
+        is re-drawn — so earlier ratings may not appear in the current
+        sample, but they are not lost.
       </p>
       <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-[var(--undp-black)] mb-3">
         <span>
           <span className="font-medium">{s.totalRated}</span> pairs rated in
-          total (incl. skips)
+          total
         </span>
         <span>
           <span className="font-medium">{s.inCurrentSamples}</span> appear in
@@ -384,17 +383,19 @@ function RatingsLedgerSummary({
 /** A compact 4-step tutorial rendered at the top of the evaluation page.
  *  Each step shows a mini-mockup of the actual UI element the reviewer
  *  will see, so the visual language carries through to the live tool.
- *  Sticks to the existing palette (LEVEL_COLOR, MODEL_COLOR, rating
- *  button hues) so the mockups read as continuous with the real rows. */
-function EvaluationTutorial({ models }: { models: string[] }) {
+ *  Sticks to the existing palette (LEVEL_COLOR, rating button hues) so
+ *  the mockups read as continuous with the real rows. */
+function EvaluationTutorial() {
   return (
     <section className="bg-white border border-gray-200 rounded-lg p-5">
       <h2 className="text-base font-medium text-[var(--undp-black)] mb-1">
         How to complete an evaluation
       </h2>
       <p className="text-xs text-[var(--undp-gray)] mb-4 max-w-3xl">
-        Each row in the samples below is one flagged policy-pair. Work
-        through them in this order — the mock visuals show what
+        Each row in the sample below is one policy pair drawn from the
+        pipeline&apos;s flags. The models&apos; verdicts and rationales are
+        deliberately hidden — you rate each pair on its own wording. Work
+        through the rows in this order; the mock visuals show what
         you&apos;ll see at each step.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
@@ -427,24 +428,20 @@ function EvaluationTutorial({ models }: { models: string[] }) {
 
         <TutorialStep
           number={2}
-          title="Compare model rationales"
-          caption={`All ${models.length} models' verbatim reasoning, plus their flag metadata (mechanism, confidence, manageability) when they flagged. Look for substantive engagement with specific policy content — not length.`}
+          title="Judge the pair blind"
+          caption="What the models concluded about this pair is hidden on purpose. Decide from the two statements alone whether they could pull against each other — you're grading the pair, not agreeing or disagreeing with a model."
         >
           <div className="grid grid-cols-2 gap-1.5">
-            {models.slice(0, 4).map((m) => (
+            {[0, 1, 2, 3].map((i) => (
               <div
-                key={m}
-                className="bg-white border rounded p-1.5"
-                style={{
-                  borderLeftColor: modelColor(m),
-                  borderLeftWidth: 2,
-                }}
+                key={i}
+                className="bg-white border border-dashed border-gray-300 rounded p-1.5"
               >
-                <div className="text-[8px] font-medium text-[var(--undp-black)] truncate">
-                  {prettify(m)}
+                <div className="text-[8px] italic text-gray-400">
+                  model verdict hidden
                 </div>
-                <div className="h-1 w-full bg-gray-300 rounded mt-1" />
-                <div className="h-1 w-3/4 bg-gray-300 rounded mt-0.5" />
+                <div className="h-1 w-full bg-gray-200 rounded mt-1" />
+                <div className="h-1 w-3/4 bg-gray-200 rounded mt-0.5" />
               </div>
             ))}
           </div>
@@ -452,17 +449,17 @@ function EvaluationTutorial({ models }: { models: string[] }) {
 
         <TutorialStep
           number={3}
-          title="Pick a rating"
-          caption='Choose "Real concern" if a policymaker should look at this pair, "Thin" if the flag is over-cautious, or "Skip" if you need more context. Your rating saves to the server immediately.'
+          title="Give your verdict"
+          caption='Rate the pair on the same five-level scale the models use — "No relationship", "Partially aligned", "Moderately aligned", "Strongly aligned", or "Potential misalignment" when the two pull against each other. Your rating saves to the server immediately.'
         >
           <div className="flex flex-wrap gap-1">
-            {(["real", "thin", "skip"] as const).map((value) => (
+            {ALIGNMENT_LEVELS_ORDER.map((value) => (
               <span
                 key={value}
-                className="text-[10px] px-2 py-1 rounded border"
+                className="text-[10px] px-1.5 py-0.5 rounded border border-gray-200"
                 style={{
-                  borderColor: RATING_COLOR[value],
-                  color: RATING_COLOR[value],
+                  backgroundColor: LEVEL_COLOR[value],
+                  color: "#111827",
                 }}
               >
                 {RATING_LABEL[value]}
@@ -473,13 +470,13 @@ function EvaluationTutorial({ models }: { models: string[] }) {
 
         <TutorialStep
           number={4}
-          title="Watch precision converge"
-          caption="As you rate more pairs, the Wilson 95% confidence interval narrows. Wide CI = not enough samples to conclude anything. Skipped pairs don't count toward precision."
+          title="Watch agreement converge"
+          caption='Every sampled pair was flagged by at least one model, so the share you also rate "Potential misalignment" is the flags&apos; precision against blind human judgement. As you rate more pairs, its Wilson 95% confidence interval narrows.'
         >
           <div className="bg-white border border-gray-200 rounded p-2">
-            <div className="text-[10px] font-medium">7 of 30 rated</div>
+            <div className="text-[10px] font-medium">7 of 150 rated</div>
             <div className="text-[10px] text-[var(--undp-gray)] tabular-nums">
-              real 5 · thin 2 · skip 0
+              Potential misalignment 5 · other levels 2
             </div>
             <div className="text-[10px] mt-1">
               <span className="font-medium">71%</span>{" "}
@@ -496,50 +493,32 @@ function EvaluationTutorial({ models }: { models: string[] }) {
           Decision rubric
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          <div className="flex items-start gap-2">
-            <span
-              className="text-[10px] px-1.5 py-0.5 rounded text-white whitespace-nowrap mt-0.5"
-              style={{ backgroundColor: RATING_COLOR.real }}
-            >
-              Real concern
-            </span>
-            <span className="text-[var(--undp-gray)]">
-              A policymaker reading this rationale should take action
-              (coordinate, escalate, review).
-            </span>
-          </div>
-          <div className="flex items-start gap-2">
-            <span
-              className="text-[10px] px-1.5 py-0.5 rounded text-white whitespace-nowrap mt-0.5"
-              style={{ backgroundColor: RATING_COLOR.thin }}
-            >
-              Thin
-            </span>
-            <span className="text-[var(--undp-gray)]">
-              Technically a flag but no actionable policy concern. The model
-              is being over-cautious.
-            </span>
-          </div>
-          <div className="flex items-start gap-2">
-            <span
-              className="text-[10px] px-1.5 py-0.5 rounded text-white whitespace-nowrap mt-0.5"
-              style={{ backgroundColor: RATING_COLOR.skip }}
-            >
-              Skip
-            </span>
-            <span className="text-[var(--undp-gray)]">
-              You can&apos;t tell without more context (domain knowledge,
-              source documents). Excluded from the precision math.
-            </span>
-          </div>
+          {ALIGNMENT_LEVELS_ORDER.map((value) => (
+            <div key={value} className="flex items-start gap-2">
+              <span
+                className="text-[10px] px-1.5 py-0.5 rounded border border-gray-200 whitespace-nowrap mt-0.5"
+                style={{
+                  backgroundColor: LEVEL_COLOR[value],
+                  color: "#111827",
+                }}
+              >
+                {RATING_LABEL[value]}
+              </span>
+              <span className="text-[var(--undp-gray)]">
+                {RATING_RUBRIC[value]}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="text-xs text-[var(--undp-gray)] mt-3 italic max-w-3xl">
-        Precision = <span className="font-mono">real / (real + thin)</span>.
-        With n &lt; 10 the CI is wide; aim for at least 20 ratings per
-        sample before drawing conclusions. Your ratings save to the server
-        as you click — visible across browsers, devices, and reviewers.
+        There is no skip button — leave a pair unrated if you can&apos;t tell
+        without more context, and use &ldquo;Show only unrated&rdquo; to come
+        back to it. With n &lt; 10 the confidence interval is wide; aim for
+        at least 20 ratings before drawing conclusions. Your ratings save to
+        the server as you click — visible across browsers, devices, and
+        reviewers.
       </div>
     </section>
   );
@@ -1053,7 +1032,6 @@ function DisagreementRow({
   targets,
   isOpen,
   onToggle,
-  footer,
 }: {
   row: ModelDisagreementRow;
   models: string[];
@@ -1062,10 +1040,6 @@ function DisagreementRow({
   targets?: Record<string, TargetSummary>;
   isOpen: boolean;
   onToggle: () => void;
-  /** Rendered inside the expanded area, below the rationale grid. Used by
-   *  the evaluation sections to inject rating controls without forking
-   *  the row layout. */
-  footer?: React.ReactNode;
 }) {
   return (
     <>
@@ -1144,7 +1118,6 @@ function DisagreementRow({
                 );
               })}
             </div>
-            {footer && <div className="mt-3">{footer}</div>}
           </td>
         </tr>
       )}
@@ -1746,21 +1719,40 @@ export { ALIGNMENT_LEVELS_ORDER };
 // Evaluation sample sections (manual rating tool)
 // ---------------------------------------------------------------------------
 //
-// Rate individual flagged pairs as "real concern" / "thin / not actionable" /
-// "skip". Ratings are persisted server-side via POST /api/ratings/[country],
-// so they survive browsers, devices, and deploys. The page reads the current
-// ratings on render; mutations are optimistic with rollback on API error.
+// The reviewer gives each sampled pair their own verdict on the SAME
+// five-level scale the models use (none/low/medium/high/flagged), so human
+// and model verdicts are directly comparable. The rating is BLIND: all
+// per-model samples are pooled into one
+// deterministically shuffled list, and the models' verdicts, rationales, and
+// flag details are never rendered — the reviewer judges the pair text alone.
+// Per-model attribution still happens downstream (summarizeLedger via
+// flaggedByModel, calibrate_prompt.py via the ledger) because ratings are
+// keyed by pair. Ratings are persisted server-side via POST
+// /api/ratings/[country], so they survive browsers, devices, and deploys.
+// The page reads the current ratings on render; mutations are optimistic
+// with rollback on API error.
 
+// Follows the guardrail vocabulary of `labels.alignment` in messages/en.json
+// (never a bare "low", never stronger than "Potential misalignment"), but
+// spells out what each level refers to — a bare "Medium" button doesn't say
+// medium WHAT, so the rating buttons say "aligned" explicitly.
 const RATING_LABEL: Record<PairRatingValue, string> = {
-  real: "Real concern",
-  thin: "Thin / not actionable",
-  skip: "Skip",
+  none: "No relationship",
+  low: "Partially aligned",
+  medium: "Moderately aligned",
+  high: "Strongly aligned",
+  flagged: "Potential misalignment",
 };
 
-const RATING_COLOR: Record<PairRatingValue, string> = {
-  real: "#22c55e",
-  thin: "#f87171",
-  skip: "#9ca3af",
+// Condensed from the pipeline's five-category scoring rubric in
+// python/src/align.py, so blind human verdicts grade against the same
+// definitions the models were given.
+const RATING_RUBRIC: Record<PairRatingValue, string> = {
+  none: "No shared goals, actions, ecosystems, or actors — aligning the two would not make sense in implementation.",
+  low: "Superficial overlap only (terminology, broad theme); intent, scale, timeline, or geography differ too much for practical coordination.",
+  medium: "Clear thematic or geographic overlap and compatible priorities — the two could support each other, though neither depends on the other.",
+  high: "Strongly aligned across goals, actions, ecosystems, and actors — coordinated implementation would clearly enhance outcomes.",
+  flagged: "The two could pull against each other, and you can point to the specific friction in their text: opposing goals, a shared finite resource, or one side's delivery undermining the other's. Worth closer human review.",
 };
 
 function pairKeyOf(row: { targetAId: string; targetBId: string }): string {
@@ -1841,20 +1833,24 @@ function RatingControls({
     <div className="bg-white border border-gray-200 rounded p-3">
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-xs font-medium text-[var(--undp-black)]">
-          Your evaluation:
+          Your verdict:
         </span>
-        {(Object.keys(RATING_LABEL) as PairRatingValue[]).map((value) => {
+        {ALIGNMENT_LEVELS_ORDER.map((value) => {
           const isActive = currentRating?.rating === value;
           return (
             <button
               key={value}
               onClick={() => submit(value)}
               disabled={pending}
-              className="px-2.5 py-1 text-xs rounded border transition-colors disabled:opacity-60"
+              className={`px-2.5 py-1 text-xs rounded border transition-colors disabled:opacity-60 ${
+                isActive ? "font-medium" : ""
+              }`}
               style={{
-                borderColor: isActive ? RATING_COLOR[value] : "#e5e7eb",
-                backgroundColor: isActive ? RATING_COLOR[value] : "white",
-                color: isActive ? "white" : "#111827",
+                // The level palette is pale, so the active state leans on a
+                // dark border + dark text rather than white-on-color.
+                borderColor: isActive ? "#111827" : "#e5e7eb",
+                backgroundColor: isActive ? LEVEL_COLOR[value] : "white",
+                color: "#111827",
               }}
             >
               {RATING_LABEL[value]}
@@ -1872,7 +1868,7 @@ function RatingControls({
         <div className="mt-2 flex flex-col gap-2">
           <textarea
             className="text-xs border border-gray-200 rounded p-2 w-full min-h-[60px]"
-            placeholder="Optional reviewer note (e.g., why this pair is or isn't actionable)"
+            placeholder="Optional reviewer note (e.g., what in the two texts drove your verdict)"
             value={noteDraft}
             onChange={(e) => setNoteDraft(e.target.value)}
           />
@@ -1917,68 +1913,108 @@ function RatingProgress({
       acc[r.rating] = (acc[r.rating] ?? 0) + 1;
       return acc;
     },
-    { real: 0, thin: 0, skip: 0 } as Record<PairRatingValue, number>,
+    { none: 0, low: 0, medium: 0, high: 0, flagged: 0 } as Record<
+      PairRatingValue,
+      number
+    >,
   );
-  const evaluated = counts.real + counts.thin;
-  const precision = evaluated > 0 ? counts.real / evaluated : null;
-  const [ciLo, ciHi] = wilsonInterval(counts.real, evaluated);
+  const rated = sampleRatings.length;
+  // Every sampled pair was flagged by at least one model, so the share of
+  // blind human verdicts landing on "flagged" is the flags' precision
+  // against independent judgement.
+  const flagShare = rated > 0 ? counts.flagged / rated : null;
+  const [ciLo, ciHi] = wilsonInterval(counts.flagged, rated);
 
   return (
     <div className="bg-white border border-gray-100 rounded-lg p-4 mb-3">
       <div className="flex items-baseline justify-between flex-wrap gap-2">
         <div className="text-sm font-medium">
-          {sampleRatings.length} of {sampleSize} rated
+          {rated} of {sampleSize} rated
         </div>
         <div className="text-xs text-[var(--undp-gray)] tabular-nums">
-          real {counts.real} · thin {counts.thin} · skip {counts.skip}
+          {ALIGNMENT_LEVELS_ORDER.map(
+            (lvl) => `${RATING_LABEL[lvl]} ${counts[lvl]}`,
+          ).join(" · ")}
         </div>
       </div>
-      {precision !== null ? (
+      {flagShare !== null ? (
         <div className="mt-2 text-sm">
           <span className="font-medium">
-            Precision so far: {(precision * 100).toFixed(0)}%
+            You also rated &ldquo;Potential misalignment&rdquo;:{" "}
+            {(flagShare * 100).toFixed(0)}%
           </span>
           <span className="text-xs text-[var(--undp-gray)] ml-2">
-            (95% CI: {(ciLo * 100).toFixed(0)}% – {(ciHi * 100).toFixed(0)}%, n = {evaluated})
+            (95% CI: {(ciLo * 100).toFixed(0)}% – {(ciHi * 100).toFixed(0)}%,
+            n = {rated})
           </span>
         </div>
       ) : (
         <div className="mt-2 text-xs text-[var(--undp-gray)] italic">
-          Rate at least one pair as &ldquo;real concern&rdquo; or &ldquo;thin&rdquo;
-          to see a precision estimate. Skipped pairs are excluded from the math.
+          Rate a pair to see how often your blind verdict lands on
+          &ldquo;Potential misalignment&rdquo; — every pair in this sample was
+          flagged by at least one model.
         </div>
       )}
     </div>
   );
 }
 
-function EvaluationSampleSection({
-  country,
-  heading,
-  framing,
-  sample,
-  totalAvailable,
-  models,
-  targets,
+/** Pool every evaluation sample (each model's solo-flag sample plus the
+ *  consensus sample) into ONE deduplicated list, ordered by a hash of the
+ *  pair key. The hash order is a deterministic shuffle: it breaks up the
+ *  per-model grouping so a reviewer can't infer which model flagged a pair
+ *  from its position in the list, yet stays identical across reloads and
+ *  reviewers. Pure and exported for tests. */
+export function poolEvaluationSample(report: {
+  models: string[];
+  uniqueSignalRandomSample?: Record<string, BlindPairSample[]>;
+  consensusFlaggedRandomSample?: BlindPairSample[];
+}): BlindPairSample[] {
+  const byKey = new Map<string, BlindPairSample>();
+  for (const slug of report.models) {
+    for (const row of report.uniqueSignalRandomSample?.[slug] ?? []) {
+      const key = pairKeyOf(row);
+      if (!byKey.has(key)) byKey.set(key, row);
+    }
+  }
+  for (const row of report.consensusFlaggedRandomSample ?? []) {
+    const key = pairKeyOf(row);
+    if (!byKey.has(key)) byKey.set(key, row);
+  }
+  return [...byKey.entries()]
+    .sort(
+      ([a], [b]) =>
+        hashPairKey(a) - hashPairKey(b) || (a < b ? -1 : a > b ? 1 : 0),
+    )
+    .map(([, row]) => row);
+}
+
+/** FNV-1a — tiny, dependency-free, stable across JS engines. */
+function hashPairKey(key: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < key.length; i++) {
+    h ^= key.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
+function BlindEvaluationSection({
+  report,
   ratings,
   onChangeRating,
 }: {
-  country: string;
-  heading: string;
-  framing: React.ReactNode;
-  sample: ModelDisagreementRow[];
-  totalAvailable: number;
-  models: string[];
-  targets: Record<string, TargetSummary>;
+  report: BlindEvaluationReport;
   ratings: RatingsByCountry;
   onChangeRating: (pairKey: string, next: PairRating | null) => void;
 }) {
+  const sample = useMemo(() => poolEvaluationSample(report), [report]);
   const [showOnlyUnrated, setShowOnlyUnrated] = useState(false);
-  const [expanded, setExpanded] = useState<Set<string>>(() => {
-    // Default-expand every row in the sample so the reviewer can read
-    // rationales without an extra click per pair.
-    return new Set(sample.map((row) => pairKeyOf(row)));
-  });
+  // Default-expand every row so the reviewer can read both targets without
+  // an extra click per pair.
+  const [expanded, setExpanded] = useState<Set<string>>(
+    () => new Set(sample.map((row) => pairKeyOf(row))),
+  );
   const toggle = (key: string) => {
     setExpanded((prev) => {
       const next = new Set(prev);
@@ -2004,16 +2040,21 @@ function EvaluationSampleSection({
     [sample, ratings, showOnlyUnrated],
   );
 
-  const handleExport = () => exportRatings(country, ratings);
-
   return (
     <section>
-      <h3 className="text-base font-medium text-[var(--undp-black)] mb-2">
-        {heading}
-      </h3>
-      <div className="text-sm text-[var(--undp-gray)] mb-4 max-w-3xl">
-        {framing}
-      </div>
+      <h2 className="text-lg font-medium text-[var(--undp-black)] mb-2">
+        Rate the sampled pairs
+      </h2>
+      <p className="text-sm text-[var(--undp-gray)] mb-4 max-w-3xl">
+        A deterministic random sample of {sample.length} pairs drawn from the
+        pairs the models flagged for potential misalignment (each
+        model&apos;s solo flags plus a slice every model agreed on), shown
+        in a neutral order. Give each pair your own verdict on the same
+        five-level scale the models use. Which models flagged each pair —
+        and what they concluded — is hidden, so each rating is an
+        independent human judgement. The model-by-model view lives on the
+        model-comparison page.
+      </p>
       <RatingProgress
         sampleRatings={sampleRatings}
         sampleSize={sample.length}
@@ -2028,7 +2069,7 @@ function EvaluationSampleSection({
           Show only unrated
         </label>
         <button
-          onClick={handleExport}
+          onClick={() => exportRatings(report.country, ratings)}
           className="text-xs text-[var(--undp-blue)] hover:underline ml-auto"
         >
           Export all ratings as JSON
@@ -2036,9 +2077,8 @@ function EvaluationSampleSection({
       </div>
       {sample.length === 0 ? (
         <div className="bg-white border border-gray-100 rounded-lg p-6 text-sm text-[var(--undp-gray)] italic">
-          No pairs in the random sample. {totalAvailable === 0
-            ? "This model has no qualifying flags."
-            : "Regenerate the analyzer artifact to populate it."}
+          No pairs in the evaluation sample. Regenerate the analyzer
+          artifact to populate it.
         </div>
       ) : (
         <div className="overflow-x-auto border border-gray-100 bg-white rounded-lg">
@@ -2046,31 +2086,26 @@ function EvaluationSampleSection({
             <thead className="bg-gray-50 text-xs uppercase tracking-wide text-[var(--undp-gray)]">
               <tr>
                 <th className="text-left px-3 py-2">Pair</th>
-                {models.map((m) => (
-                  <th key={m} className="text-left px-3 py-2">
-                    {prettify(m)}
-                  </th>
-                ))}
+                <th className="text-left px-3 py-2">Sources</th>
                 <th className="text-right px-3 py-2">Your rating</th>
               </tr>
             </thead>
             <tbody>
               {visible.map((row) => {
                 const key = pairKeyOf(row);
-                const rating = ratings[key];
                 return (
-                  <DisagreementRow
+                  <BlindPairRow
                     key={key}
                     row={row}
-                    models={models}
-                    targets={targets}
+                    targets={report.targets}
+                    rating={ratings[key]}
                     isOpen={expanded.has(key)}
                     onToggle={() => toggle(key)}
                     footer={
                       <RatingControls
-                        country={country}
+                        country={report.country}
                         pairKey={key}
-                        currentRating={rating}
+                        currentRating={ratings[key]}
                         onChange={onChangeRating}
                       />
                     }
@@ -2085,142 +2120,89 @@ function EvaluationSampleSection({
   );
 }
 
-function EvaluationSampleTabs({
-  report,
-  ratings,
-  flaggedByModel = {},
-  onChangeRating,
+/** One pair in the blind evaluation list: target IDs and source-document
+ *  badges only — never the models' labels, rationales, or flag details. */
+function BlindPairRow({
+  row,
+  targets,
+  rating,
+  isOpen,
+  onToggle,
+  footer,
 }: {
-  report: ModelComparisonReport;
-  ratings: RatingsByCountry;
-  flaggedByModel?: Record<string, string[]>;
-  onChangeRating: (pairKey: string, next: PairRating | null) => void;
+  row: BlindPairSample;
+  targets: Record<string, TargetSummary>;
+  rating: PairRating | undefined;
+  isOpen: boolean;
+  onToggle: () => void;
+  footer: React.ReactNode;
 }) {
-  const [active, setActive] = useState(report.models[0] ?? "");
-  const sample = report.uniqueSignalRandomSample?.[active] ?? [];
-  const total = report.uniqueSignalTotal?.[active] ?? 0;
-  const ledger = summarizeLedger(report, ratings, flaggedByModel);
-  const priorRatedOf = (slug: string) =>
-    ledger.perModel.find((m) => m.slug === slug)?.priorRated ?? 0;
-
+  const sources = [
+    targets[row.targetAId]?.sourceDocument,
+    targets[row.targetBId]?.sourceDocument,
+  ];
   return (
-    <section>
-      <h2 className="text-lg font-medium text-[var(--undp-black)] mb-2">
-        Evaluate each model&apos;s solo flags
-      </h2>
-      <p className="text-sm text-[var(--undp-gray)] mb-4 max-w-3xl">
-        For each model, a deterministic random sample drawn from the
-        model&apos;s FULL solo-flag set. Rate each pair as &ldquo;real
-        concern&rdquo; (worth a policymaker&apos;s attention) or &ldquo;thin /
-        not actionable.&rdquo; The precision estimate updates as you go and
-        carries a 95% confidence interval — small samples produce wide
-        intervals; that&apos;s the math telling you what you can and
-        can&apos;t conclude.
-      </p>
-      <div className="flex flex-wrap gap-2 mb-3">
-        {report.models.map((slug) => {
-          const sampleForModel = report.uniqueSignalRandomSample?.[slug] ?? [];
-          const ratedCount = sampleForModel.filter(
-            (row) => ratings[pairKeyOf(row)],
-          ).length;
-          const isActive = slug === active;
-          return (
-            <button
-              key={slug}
-              onClick={() => setActive(slug)}
-              className="px-3 py-1.5 text-xs rounded border transition-colors"
-              style={
-                isActive
-                  ? {
-                      backgroundColor: modelColor(slug),
-                      borderColor: modelColor(slug),
-                      color: "white",
-                    }
-                  : { borderColor: "#e5e7eb", backgroundColor: "white" }
-              }
+    <>
+      <tr
+        className="border-t border-gray-100 cursor-pointer hover:bg-gray-50"
+        onClick={onToggle}
+      >
+        <td className="px-3 py-2 font-mono text-xs">
+          <span className="text-[var(--undp-gray)] mr-1">{isOpen ? "▼" : "▶"}</span>
+          {row.targetAId} ↔ {row.targetBId}
+        </td>
+        <td className="px-3 py-2">
+          <span className="inline-flex gap-1">
+            {sources.map((doc, i) =>
+              doc ? (
+                <span
+                  key={i}
+                  className="text-xs px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-900"
+                >
+                  {doc}
+                </span>
+              ) : null,
+            )}
+          </span>
+        </td>
+        <td className="text-right px-3 py-2">
+          {rating ? (
+            <span
+              className="inline-block px-2 py-0.5 rounded text-xs font-medium border border-gray-200"
+              style={{
+                backgroundColor: LEVEL_COLOR[rating.rating],
+                color: "#111827",
+              }}
             >
-              {prettify(slug)}{" "}
-              <span
-                className={`ml-1 ${
-                  isActive ? "opacity-80" : "text-[var(--undp-gray)]"
-                }`}
-              >
-                ({ratedCount}/{sampleForModel.length}
-                {priorRatedOf(slug) > 0 &&
-                  ` · ${priorRatedOf(slug)} rated overall`}
-                )
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      <EvaluationSampleSection
-        key={active}
-        country={report.country}
-        heading={`${prettify(active)} solo flags`}
-        framing={
-          <>
-            Random sample of {sample.length} pairs drawn from the{" "}
-            <span className="font-medium">{total.toLocaleString()}</span> pairs
-            that <span className="font-medium">only {prettify(active)}</span>{" "}
-            flagged (no other model agreed). Reading these tells you whether
-            this model is catching real concerns the others missed, or
-            over-flagging.
-          </>
-        }
-        sample={sample}
-        totalAvailable={total}
-        models={report.models}
-        targets={report.targets}
-        ratings={ratings}
-        onChangeRating={onChangeRating}
-      />
-    </section>
+              {RATING_LABEL[rating.rating]}
+            </span>
+          ) : (
+            <span className="text-xs text-[var(--undp-gray)] italic">
+              unrated
+            </span>
+          )}
+        </td>
+      </tr>
+      {isOpen && (
+        <tr className="border-t border-gray-100 bg-gray-50/50">
+          <td colSpan={3} className="px-3 py-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <TargetBlock
+                label="Target A"
+                targetId={row.targetAId}
+                target={targets[row.targetAId]}
+              />
+              <TargetBlock
+                label="Target B"
+                targetId={row.targetBId}
+                target={targets[row.targetBId]}
+              />
+            </div>
+            {footer}
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
 
-function ConsensusEvaluation({
-  report,
-  ratings,
-  onChangeRating,
-}: {
-  report: ModelComparisonReport;
-  ratings: RatingsByCountry;
-  onChangeRating: (pairKey: string, next: PairRating | null) => void;
-}) {
-  const sample = report.consensusFlaggedRandomSample ?? [];
-  const consensusTotal = report.flaggingOverlap?.consensusFlaggedCount ?? 0;
-
-  return (
-    <section>
-      <h2 className="text-lg font-medium text-[var(--undp-black)] mb-2">
-        Validate the consensus queue
-      </h2>
-      <p className="text-sm text-[var(--undp-gray)] mb-4 max-w-3xl">
-        Pairs flagged by ALL {report.models.length} models. If the
-        consensus queue isn&apos;t mostly &ldquo;real concern&rdquo;, the
-        high-confidence triage tier needs recalibration. Rating this sample
-        tells you whether you can act on consensus flags without further
-        review.
-      </p>
-      <EvaluationSampleSection
-        country={report.country}
-        heading="Consensus-flagged pairs"
-        framing={
-          <>
-            Random sample of {sample.length} pairs drawn from the{" "}
-            <span className="font-medium">{consensusTotal.toLocaleString()}</span>{" "}
-            pairs every model independently flagged. High precision here
-            would mean the consensus queue is a safe, low-noise triage tier.
-          </>
-        }
-        sample={sample}
-        totalAvailable={consensusTotal}
-        models={report.models}
-        targets={report.targets}
-        ratings={ratings}
-        onChangeRating={onChangeRating}
-      />
-    </section>
-  );
-}
