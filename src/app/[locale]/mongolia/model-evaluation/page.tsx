@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/ui/header";
 import { Link } from "@/i18n/navigation";
 import {
+  computeModelAgreement,
   listAvailableModels,
+  loadModelAlignmentLabels,
   loadModelComparison,
   loadModelFlaggedPairKeys,
   loadRatings,
@@ -32,6 +34,11 @@ export default async function MongoliaModelEvaluationPage() {
   const report = fullReport ? sanitizeForBlindEvaluation(fullReport) : null;
   const ratings = loadRatings(COUNTRY);
   const flaggedByModel = loadModelFlaggedPairKeys(COUNTRY);
+  // Aggregate agreement only — per-pair model verdicts stay on the server.
+  const modelAgreement = computeModelAgreement(
+    loadModelAlignmentLabels(COUNTRY),
+    ratings,
+  );
 
   return (
     <div
@@ -74,6 +81,7 @@ export default async function MongoliaModelEvaluationPage() {
             report={report}
             initialRatings={ratings}
             flaggedByModel={flaggedByModel}
+            modelAgreement={modelAgreement}
           />
         ) : (
           <p className="text-xs text-[var(--undp-gray)] mt-8 italic max-w-3xl">

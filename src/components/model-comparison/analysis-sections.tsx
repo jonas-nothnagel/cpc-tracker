@@ -27,6 +27,7 @@ import type {
   BlindEvaluationReport,
   BlindPairSample,
   JudgeVerdict,
+  ModelAgreementSummary,
   ModelComparisonReport,
   ModelDisagreementRow,
   PairFlagDetails,
@@ -171,6 +172,7 @@ export function EvaluationSections({
   report,
   initialRatings = {},
   flaggedByModel = {},
+  modelAgreement = [],
 }: {
   /** Sanitized server-side (sanitizeForBlindEvaluation) — model verdicts
    *  never reach this component or the client payload. */
@@ -179,6 +181,10 @@ export function EvaluationSections({
   /** Per-model FULL flagged pair keys (loadModelFlaggedPairKeys); used to
    *  attribute ledger ratings to models beyond the re-drawn samples. */
   flaggedByModel?: Record<string, string[]>;
+  /** Server-computed aggregates of how each model's verdicts match the
+   *  reviewer's blind ratings (computeModelAgreement). Aggregates only —
+   *  recomputed on page load, so it lags ratings made this session. */
+  modelAgreement?: ModelAgreementSummary[];
 }) {
   const [ratings, setRatings] = useState<RatingsByCountry>(initialRatings);
 
@@ -203,6 +209,7 @@ export function EvaluationSections({
         report={report}
         ratings={ratings}
         flaggedByModel={flaggedByModel}
+        modelAgreement={modelAgreement}
       />
       <BlindEvaluationSection
         report={report}
@@ -287,14 +294,19 @@ function RatingsLedgerSummary({
   report,
   ratings,
   flaggedByModel = {},
+  modelAgreement = [],
 }: {
   report: BlindEvaluationReport;
   ratings: RatingsByCountry;
   flaggedByModel?: Record<string, string[]>;
+  modelAgreement?: ModelAgreementSummary[];
 }) {
   const s = summarizeLedger(report, ratings, flaggedByModel);
   if (s.totalRated === 0) return null;
   const hasFlagSets = Object.values(flaggedByModel).some((l) => l.length > 0);
+  const hasAgreement = modelAgreement.some((m) => m.n > 0);
+  const agreementOf = (slug: string) =>
+    modelAgreement.find((m) => m.slug === slug);
   return (
     <section className="bg-white border border-gray-200 rounded-lg p-5">
       <h2 className="text-base font-medium text-[var(--undp-black)] mb-1">
@@ -326,6 +338,9 @@ function RatingsLedgerSummary({
         <thead>
           <tr className="text-left text-[var(--undp-gray)] border-b border-gray-200">
             <th className="py-1 pr-4 font-medium">Sample</th>
+            {hasAgreement && (
+              <th className="py-1 pr-4 font-medium">Match with your ratings</th>
+            )}
             <th className="py-1 pr-4 font-medium">This sample</th>
             <th className="py-1 pr-4 font-medium">Remaining</th>
             {hasFlagSets && (
@@ -345,6 +360,27 @@ function RatingsLedgerSummary({
                 />
                 {prettify(m.slug)} solo flags
               </td>
+              {hasAgreement && (
+                <td className="py-1 pr-4 tabular-nums">
+                  {(() => {
+                    const ag = agreementOf(m.slug);
+                    if (!ag || ag.n === 0) return "—";
+                    return (
+                      <>
+                        <span className="font-medium">
+                          {Math.round((ag.flagMatches / ag.n) * 100)}%
+                        </span>{" "}
+                        on flags
+                        <span className="text-[var(--undp-gray)]">
+                          {" "}
+                          · {Math.round((ag.exactMatches / ag.n) * 100)}% exact
+                          level (n={ag.n})
+                        </span>
+                      </>
+                    );
+                  })()}
+                </td>
+              )}
               <td className="py-1 pr-4 tabular-nums">
                 {m.rated} of {m.sampleSize}
               </td>
@@ -358,6 +394,9 @@ function RatingsLedgerSummary({
           ))}
           <tr>
             <td className="py-1 pr-4">Consensus-flagged pairs</td>
+            {hasAgreement && (
+              <td className="py-1 pr-4 text-[var(--undp-gray)]">—</td>
+            )}
             <td className="py-1 pr-4 tabular-nums">
               {s.consensus.rated} of {s.consensus.sampleSize}
             </td>
@@ -368,6 +407,18 @@ function RatingsLedgerSummary({
           </tr>
         </tbody>
       </table>
+      {hasAgreement && (
+        <p className="text-[11px] text-[var(--undp-gray)] mt-2 max-w-2xl">
+          &ldquo;Match with your ratings&rdquo; compares the model&apos;s
+          stored verdicts against every pair you have rated (all runs):
+          &ldquo;on flags&rdquo; means you and the model reach the same
+          flag / no-flag call; &ldquo;exact level&rdquo; means the same
+          level on the five-level scale. Computed on the server as
+          aggregates only — no per-pair verdict reaches this page — and
+          refreshed on page load, so ratings made just now count after a
+          reload.
+        </p>
+      )}
       {hasFlagSets && (
         <p className="text-[11px] text-[var(--undp-gray)] mt-2 max-w-2xl">
           &ldquo;Rated among this model&apos;s flags&rdquo; counts every pair

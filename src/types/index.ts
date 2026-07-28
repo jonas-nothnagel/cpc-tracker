@@ -531,6 +531,19 @@ export interface PairRatingEvent extends PairRating {
   pairKey: string;
 }
 
+/** Per-model agreement between the model's stored verdicts and the
+ *  reviewer's blind ratings. Computed server-side from alignment.json so
+ *  per-pair verdicts never reach the blind page — only these aggregates. */
+export interface ModelAgreementSummary {
+  slug: string;
+  /** Rated pairs this model has a verdict for. */
+  n: number;
+  /** Pairs where model and reviewer chose the exact same level. */
+  exactMatches: number;
+  /** Pairs where both sides agree on flagged vs not-flagged. */
+  flagMatches: number;
+}
+
 /** A sampled pair with every model verdict stripped — all the blind
  *  evaluation page is allowed to see about a pair besides its targets. */
 export type BlindPairSample = Pick<ModelDisagreementRow, "targetAId" | "targetBId">;

@@ -25,6 +25,7 @@ import { localizeCategories } from "@/data/category-translations";
 import type {
   BlindEvaluationReport,
   BlindPairSample,
+  ModelAgreementSummary,
   ModelComparisonReport,
   ModelDisagreementRow,
   PairRating,
@@ -109,6 +110,67 @@ export function loadModelComparison(country: string): ModelComparisonReport | nu
   );
   modelComparisonCache.set(id, report);
   return report;
+}
+
+/** Full per-model verdict maps ("A::B" → alignment level) from each model's
+ *  alignment.json. Server-side only: feeds computeModelAgreement so the
+ *  blind evaluation page can show aggregate agreement without any per-pair
+ *  verdict entering the client payload. Missing/broken files yield an empty
+ *  map for that model. */
+export function loadModelAlignmentLabels(
+  country: string,
+): Record<string, Record<string, string>> {
+  const out: Record<string, Record<string, string>> = {};
+  for (const model of listAvailableModels(country)) {
+    out[model] = {};
+    try {
+      const raw = readFileSync(
+        join(PYTHON_OUTPUT, country.toLowerCase(), model, "alignment.json"),
+        "utf-8",
+      );
+      const rows = JSON.parse(raw) as {
+        targetAId?: string;
+        targetBId?: string;
+        alignment?: string;
+      }[];
+      if (!Array.isArray(rows)) continue;
+      for (const row of rows) {
+        if (
+          typeof row.targetAId === "string" &&
+          typeof row.targetBId === "string" &&
+          typeof row.alignment === "string"
+        ) {
+          out[model][`${row.targetAId}::${row.targetBId}`] = row.alignment;
+        }
+      }
+    } catch {
+      // Leave the model's map empty; the page shows "—" for that model.
+    }
+  }
+  return out;
+}
+
+/** Aggregate agreement between the reviewer's blind ratings and each
+ *  model's stored verdicts. Pure and order-insensitive on pair keys;
+ *  exported for tests. Only these aggregates leave the server. */
+export function computeModelAgreement(
+  labelsByModel: Record<string, Record<string, string>>,
+  ratings: RatingsByCountry,
+): ModelAgreementSummary[] {
+  return Object.entries(labelsByModel).map(([slug, labels]) => {
+    let n = 0;
+    let exactMatches = 0;
+    let flagMatches = 0;
+    for (const [pairKey, rating] of Object.entries(ratings)) {
+      const [a, b] = pairKey.split("::");
+      const level = labels[pairKey] ?? (a && b ? labels[`${b}::${a}`] : undefined);
+      if (level == null) continue;
+      n++;
+      if (level === rating.rating) exactMatches++;
+      if ((level === "flagged") === (rating.rating === "flagged")) flagMatches++;
+    }
+    return { slug, n, exactMatches, flagMatches };
+  });
 }
 
 /** Strip a comparison report down to what the blind evaluation page may
