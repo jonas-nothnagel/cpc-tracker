@@ -12,3 +12,10 @@
 {"country": "mongolia", "pairKey": "FSS_33::NRVTS_1", "rating": "thin", "note": "v2.2 round-2 consensus-drop adjudication. correct drop: cross-sector inference chain", "ts": 1783600662627}
 {"country": "mongolia", "pairKey": "NDC_10::SECTORAL_15", "rating": "real", "note": "v2.2 round-2 consensus-drop adjudication. keep: livestock support vs explicit harmful-subsidy reform commitment", "ts": 1783600662628}
 {"country": "mongolia", "pairKey": "NRVTS_17::SECTORAL_15", "rating": "real", "note": "v2.2 round-2 consensus-drop adjudication. keep: yield push vs explicit harmful-subsidy reform commitment", "ts": 1783600662629}
+{"country":"mongolia","pairKey":"NBSAP_2::SECTORAL_9","rating":"none","note":"","ts":1785239435381}
+{"country":"mongolia","pairKey":"NBSAP_2::SECTORAL_9","rating":"low","note":"","ts":1785239436719}
+{"country":"mongolia","pairKey":"NBSAP_2::SECTORAL_9","rating":"medium","note":"","ts":1785239437834}
+{"country":"mongolia","pairKey":"NBSAP_2::SECTORAL_9","rating":"high","note":"","ts":1785239438485}
+{"country":"mongolia","pairKey":"NBSAP_2::SECTORAL_9","rating":"flagged","note":"","ts":1785239439021}
+{"country":"mongolia","pairKey":"NBSAP_2::SECTORAL_9","rating":"high","note":"","ts":1785239439871}
+{"country":"mongolia","pairKey":"NBSAP_2::SECTORAL_9","rating":"low","note":"","ts":1785239441611}
