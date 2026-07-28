@@ -87,6 +87,11 @@ export interface Target {
   timeBoundDetails?: string;
   /** Implementation activities associated with this target (from structured upload or manual entry) */
   activities?: string;
+  /** One entry per line of `activities`, present only where a curation step listed the
+   *  activities as discrete items (Sri Lanka's NBSAP actions and NFAP clauses). Its
+   *  presence is what tells the UI the newlines in `activities` separate items rather
+   *  than wrapping one block of document text, as they do for Mongolia. */
+  activitySources?: unknown[];
   /** Actions or measures to implement the target (from structured upload or manual entry) */
   actions?: string;
   /** For translated targets: the original-language text (e.g. Spanish source for Panama).
