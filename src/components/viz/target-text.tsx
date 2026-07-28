@@ -307,15 +307,73 @@ export function TargetTextWithHighlights({ target }: { target: Target }) {
 /**
  * Collapsible display of activities and actions/measures for a target.
  * Shows nothing if both fields are empty.
+ *
+ * Newlines inside these fields mean different things depending on where the
+ * data came from, so only itemised data is listed. Where a curation step
+ * recorded each activity separately (`activitySources`, as for Sri Lanka's
+ * NBSAP actions and NFAP clauses) each line is a whole item and gets its own
+ * bullet. Where the text was lifted from a document (Mongolia's measures) the
+ * newlines are that document's line wrapping, so splitting on them would cut
+ * sentences in half and count wrapped fragments as separate measures; those
+ * stay a paragraph, exactly as before.
  */
+function splitLines(value?: string): string[] {
+  if (!value) return [];
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+/** The activity lines that may be shown as separate items, or [] when the
+ *  target's activities are an unitemised block of document text. */
+export function itemisedActivities(target: Target | TargetRow): string[] {
+  if (!Array.isArray((target as Target).activitySources)) return [];
+  return splitLines(target.activities);
+}
+
+/** What the disclosure toggle counts: individual activities where they are
+ *  itemised, otherwise the number of sections shown. */
+export function activitiesActionsCount(target: Target | TargetRow): number {
+  const items = itemisedActivities(target);
+  if (items.length) return items.length;
+  return (target.activities ? 1 : 0) + (target.actions ? 1 : 0);
+}
+
+function ItemList({ label, lines }: { label: string; lines: string[] }) {
+  return (
+    <div>
+      <span className="text-caption font-medium text-[var(--undp-gray)]">{label}</span>
+      <ul
+        aria-label={label}
+        className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5 list-disc pl-4 space-y-1"
+      >
+        {lines.map((line, i) => (
+          <li key={i}>{line}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Paragraph({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <span className="text-caption font-medium text-[var(--undp-gray)]">{label}</span>
+      <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">{value}</p>
+    </div>
+  );
+}
+
 export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
   const t = useTranslations("viz.targetText");
   const [open, setOpen] = useState(false);
   const { activities, actions } = target;
+  const itemised = itemisedActivities(target);
 
   if (!activities && !actions) return null;
 
-  const count = (activities ? 1 : 0) + (actions ? 1 : 0);
+  const count = activitiesActionsCount(target);
 
   return (
     <div className="mt-1.5">
@@ -331,26 +389,13 @@ export function ActivitiesActions({ target }: { target: Target | TargetRow }) {
       </button>
       {open && (
         <div className="mt-1 space-y-1.5 pl-2 border-l border-line-strong">
-          {activities && (
-            <div>
-              <span className="text-caption font-medium text-[var(--undp-gray)]">
-                {t("activitiesActions.activities")}
-              </span>
-              <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">
-                {activities}
-              </p>
-            </div>
-          )}
-          {actions && (
-            <div>
-              <span className="text-caption font-medium text-[var(--undp-gray)]">
-                {t("activitiesActions.actions")}
-              </span>
-              <p className="text-caption text-[var(--undp-black)] leading-relaxed mt-0.5">
-                {actions}
-              </p>
-            </div>
-          )}
+          {activities &&
+            (itemised.length > 1 ? (
+              <ItemList label={t("activitiesActions.activities")} lines={itemised} />
+            ) : (
+              <Paragraph label={t("activitiesActions.activities")} value={activities} />
+            ))}
+          {actions && <Paragraph label={t("activitiesActions.actions")} value={actions} />}
         </div>
       )}
     </div>

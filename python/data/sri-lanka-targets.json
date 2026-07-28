@@ -57,51 +57,195 @@
   },
   {
     "id": "NBSAP_1",
-    "text": "Incorporate, biodiversity considerations into national policies and plans, and nature-based approaches into spatial and urban planning to prevent loss of biodiversity and enhance human well-being",
+    "text": "Restore degraded terrestrial, freshwater, marine and coastal ecosystems to enhance nature’s contributions to people and the planet.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "1",
+    "sourceLabel": "NBT 1",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Incorporate, biodiversity considerations into national policies and plans, and nature-based approaches into spatial and urban planning to prevent loss of biodiversity and enhance human well-being",
+        "sourceText": "Restore degraded terrestrial, freshwater, marine and coastal ecosystems to enhance nature’s contributions to people and the planet.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "IUCN Global Ecosystems typology is adopted, and Red List of Ecosystems is prepared for Sri Lanka and updated by 2030\nIdentify and map degraded natural habitats by ecosystem type and level of degradation\nPrepare a list of priority sites that needs to be restored\nPrepare a compendium of all restoration actions conducted thus far and identify sound ecological practices that can be upscaled for restoring damaged ecosystems\nDevelop and implement a national ecosystem (terrestrial, coastal and marine) restoration plan identifying the best possible strategies for afforestation, enhancement, restoration and establishing connectivity\nEstablish a National Compensatory Afforestation Fund to support restoration under the proposed funding mechanism by the treasury\nImplement mangrove and riverbank restoration and forest conservation projects for watersheds\nMainstream EBA and Eco DRR in all development planning and the education system\nDevelop assessment methodologies for biodiversity and ecosystem service values\nIntegrate biodiversity and ecosystem service values into educational curricula for meaningful engagement\nIntegrate biodiversity and ecosystems service values to national accounts",
+    "activitySources": [
+      {
+        "text": "IUCN Global Ecosystems typology is adopted, and Red List of Ecosystems is prepared for Sri Lanka and updated by 2030",
+        "sourceText": "Action 1.1. IUCN Global Ecosystems typology is adopted, and Red List of Ecosystems is prepared for Sri Lanka and updated by 2030",
+        "section": "1.1"
+      },
+      {
+        "text": "Identify and map degraded natural habitats by ecosystem type and level of degradation",
+        "sourceText": "Action 1.2. Identify and map degraded natural habitats by ecosystem type and level of degradation",
+        "section": "1.2"
+      },
+      {
+        "text": "Prepare a list of priority sites that needs to be restored",
+        "sourceText": "Action 1.3. Prepare a list of priority sites that needs to be restored",
+        "section": "1.3"
+      },
+      {
+        "text": "Prepare a compendium of all restoration actions conducted thus far and identify sound ecological practices that can be upscaled for restoring damaged ecosystems",
+        "sourceText": "Action 1.4. Prepare a compendium of all restoration actions conducted thus far and identify sound ecological practices that can be upscaled for restoring damaged ecosystems",
+        "section": "1.4"
+      },
+      {
+        "text": "Develop and implement a national ecosystem (terrestrial, coastal and marine) restoration plan identifying the best possible strategies for afforestation, enhancement, restoration and establishing connectivity",
+        "sourceText": "Action 1.5. Develop and implement a national ecosystem (terrestrial, coastal and marine) restoration plan identifying the best possible strategies for afforestation, enhancement, restoration and establishing connectivity",
+        "section": "1.5"
+      },
+      {
+        "text": "Establish a National Compensatory Afforestation Fund to support restoration under the proposed funding mechanism by the treasury",
+        "sourceText": "Action 1.6. Establish a National Compensatory Afforestation Fund to support restoration under the proposed funding mechanism by the treasury",
+        "section": "1.6"
+      },
+      {
+        "text": "Implement mangrove and riverbank restoration and forest conservation projects for watersheds",
+        "sourceText": "Action 1.7. Implement mangrove and riverbank restoration and forest conservation projects for watersheds",
+        "section": "1.7"
+      },
+      {
+        "text": "Mainstream EBA and Eco DRR in all development planning and the education system",
+        "sourceText": "Action 1.8. Mainstream EBA and Eco DRR in all development planning and the education system",
+        "section": "1.8"
+      },
+      {
+        "text": "Develop assessment methodologies for biodiversity and ecosystem service values",
+        "sourceText": "Action 1.9. Develop assessment methodologies for biodiversity and ecosystem service values",
+        "section": "1.9"
+      },
+      {
+        "text": "Integrate biodiversity and ecosystem service values into educational curricula for meaningful engagement",
+        "sourceText": "Action 1.10. Integrate biodiversity and ecosystem service values into educational curricula for meaningful engagement",
+        "section": "1.10"
+      },
+      {
+        "text": "Integrate biodiversity and ecosystems service values to national accounts",
+        "sourceText": "Action 1.11. Integrate biodiversity and ecosystems service values to national accounts",
+        "section": "1.11"
+      }
+    ]
   },
   {
     "id": "NBSAP_2",
-    "text": "Restore degraded terrestrial, freshwater, marine and coastal ecosystems to enhance nature’s contributions to people and the planet",
+    "text": "Incorporate, biodiversity considerations into national policies, plans, and decision-making and integrate nature-based approaches into spatial and urban planning to prevent loss of biodiversity and enhance human well-being.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "2",
+    "sourceLabel": "NBT 2",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Restore degraded terrestrial, freshwater, marine and coastal ecosystems to enhance nature’s contributions to people and the planet",
+        "sourceText": "Incorporate, biodiversity considerations into national policies, plans, and decision-making and integrate nature-based approaches into spatial and urban planning to prevent loss of biodiversity and enhance human well-being.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Update the National Physical Plan considering biodiversity and including all Protected Areas as well as ESAs, OECMs, EPAs, MPAs, FMAs, SMAs, etc.,\nConduct a Strategic Environment Assessment for the updated National Physical Plan\nDevelop a mechanism to align new development projects with updated NPP\nDevelop the capacity and raise awareness of national and local authority planners to make their designs biodiversity friendly\nDevelop a mechanism to incorporate blue-green spaces in city and urban plans as well as enhancing urban greenness by promoting street trees, green roofs, living walls, enriched home gardens etc.,\nIntegrate NBSAP actions into relevant sectoral annual plans and budgets\nMake biodiversity impact assessments mandatory for all GoSL funded projects\nDevelop a biodiversity CSR framework for effective and transparent engagement of private sector and NGOs for biodiversity actions\nDevelop and adopt the Biodiversity Policy of Sri Lanka by integrating it with related action plans",
+    "activitySources": [
+      {
+        "text": "Update the National Physical Plan considering biodiversity and including all Protected Areas as well as ESAs, OECMs, EPAs, MPAs, FMAs, SMAs, etc.,",
+        "sourceText": "Action 2.1. Update the National Physical Plan considering biodiversity and including all Protected Areas as well as ESAs, OECMs, EPAs, MPAs, FMAs, SMAs, etc.,",
+        "section": "2.1"
+      },
+      {
+        "text": "Conduct a Strategic Environment Assessment for the updated National Physical Plan",
+        "sourceText": "Action 2.2. Conduct a Strategic Environment Assessment for the updated National Physical Plan",
+        "section": "2.2"
+      },
+      {
+        "text": "Develop a mechanism to align new development projects with updated NPP",
+        "sourceText": "Action 2.3. Develop a mechanism to align new development projects with updated NPP",
+        "section": "2.3"
+      },
+      {
+        "text": "Develop the capacity and raise awareness of national and local authority planners to make their designs biodiversity friendly",
+        "sourceText": "Action 2.4. Develop the capacity and raise awareness of national and local authority planners to make their designs biodiversity friendly",
+        "section": "2.4"
+      },
+      {
+        "text": "Develop a mechanism to incorporate blue-green spaces in city and urban plans as well as enhancing urban greenness by promoting street trees, green roofs, living walls, enriched home gardens etc.,",
+        "sourceText": "Action 2.5. Develop a mechanism to incorporate blue-green spaces in city and urban plans as well as enhancing urban greenness by promoting street trees, green roofs, living walls, enriched home gardens etc.,",
+        "section": "2.5"
+      },
+      {
+        "text": "Integrate NBSAP actions into relevant sectoral annual plans and budgets",
+        "sourceText": "Action 2.6. Integrate NBSAP actions into relevant sectoral annual plans and budgets",
+        "section": "2.6"
+      },
+      {
+        "text": "Make biodiversity impact assessments mandatory for all GoSL funded projects",
+        "sourceText": "Action 2.7. Make biodiversity impact assessments mandatory for all GoSL funded projects",
+        "section": "2.7"
+      },
+      {
+        "text": "Develop a biodiversity CSR framework for effective and transparent engagement of private sector and NGOs for biodiversity actions",
+        "sourceText": "Action 2.8. Develop a biodiversity CSR framework for effective and transparent engagement of private sector and NGOs for biodiversity actions",
+        "section": "2.8"
+      },
+      {
+        "text": "Develop and adopt the Biodiversity Policy of Sri Lanka by integrating it with related action plans",
+        "sourceText": "Action 2.9. Develop and adopt the Biodiversity Policy of Sri Lanka by integrating it with related action plans",
+        "section": "2.9"
+      }
+    ]
   },
   {
     "id": "NBSAP_3",
-    "text": "Conserve 30% of the island’s land and waters, and 10% of the coastal and marine areas including areas outside the protected areas by mainstreaming OECMs and other national approaches",
+    "text": "Conserve 30% of the island’s land and inland waters, and 10% of the coastal and marine areas including areas outside the protected areas by mainstreaming OECMs and other national approaches.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "3",
+    "sourceLabel": "NBT 3",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Conserve 30% of the island’s land and waters, and 10% of the coastal and marine areas including areas outside the protected areas by mainstreaming OECMs and other national approaches",
+        "sourceText": "Conserve 30% of the island’s land and inland waters, and 10% of the coastal and marine areas including areas outside the protected areas by mainstreaming OECMs and other national approaches.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Update the protected area gap analysis (2006) and implement a strategy to protect the critical habitats outside the PA network\nExisting PA network is accurately mapped and managed effectively to achieve identified conservation goals, and to achieve green listing standards ensuring the connectivity of PAs and true representation of the island’s biodiversity\nIdentify, declare and manage ecosystems of special importance (e.g., blue carbon ecosystems and lagoons) as protected/managed areas\nEstablish a national framework for Other Effective Area-based Conservation Measures (OECMs) and recognize and manage OECMs on land, inland waters and marine areas\nCarry out an assessment of the coastal and marine sector and identify and designate the areas that need to be protected\nSafeguard key paleo-biodiversity sites (Jurassic, Miocene and Pleistocene) that represent key evolutionary links through declaration and management of such sites and promotion of some sites as paleo-tourism destinations\nDevelop and strengthen the implementation of special management areas, conservation areas and affected areas as defined by the CC&CRM Act",
+    "activitySources": [
+      {
+        "text": "Update the protected area gap analysis (2006) and implement a strategy to protect the critical habitats outside the PA network",
+        "sourceText": "Action 3.1. Update the protected area gap analysis (2006) and implement a strategy to protect the critical habitats outside the PA network",
+        "section": "3.1"
+      },
+      {
+        "text": "Existing PA network is accurately mapped and managed effectively to achieve identified conservation goals, and to achieve green listing standards ensuring the connectivity of PAs and true representation of the island’s biodiversity",
+        "sourceText": "Action 3.2. Existing PA network is accurately mapped and managed effectively to achieve identified conservation goals, and to achieve green listing standards ensuring the connectivity of PAs and true representation of the island’s biodiversity",
+        "section": "3.2"
+      },
+      {
+        "text": "Identify, declare and manage ecosystems of special importance (e.g., blue carbon ecosystems and lagoons) as protected/managed areas",
+        "sourceText": "Action 3.4. Identify, declare and manage ecosystems of special importance (e.g., blue carbon ecosystems and lagoons) as protected/managed areas",
+        "section": "3.4"
+      },
+      {
+        "text": "Establish a national framework for Other Effective Area-based Conservation Measures (OECMs) and recognize and manage OECMs on land, inland waters and marine areas",
+        "sourceText": "Action 3.5. Establish a national framework for Other Effective Area-based Conservation Measures (OECMs) and recognize and manage OECMs on land, inland waters and marine areas",
+        "section": "3.5"
+      },
+      {
+        "text": "Carry out an assessment of the coastal and marine sector and identify and designate the areas that need to be protected",
+        "sourceText": "Action 3.6. Carry out an assessment of the coastal and marine sector and identify and designate the areas that need to be protected",
+        "section": "3.6"
+      },
+      {
+        "text": "Safeguard key paleo-biodiversity sites (Jurassic, Miocene and Pleistocene) that represent key evolutionary links through declaration and management of such sites and promotion of some sites as paleo-tourism destinations",
+        "sourceText": "Action 3.7. Safeguard key paleo-biodiversity sites (Jurassic, Miocene and Pleistocene) that represent key evolutionary links through declaration and management of such sites and promotion of some sites as paleo-tourism destinations",
+        "section": "3.7"
+      },
+      {
+        "text": "Develop and strengthen the implementation of special management areas, conservation areas and affected areas as defined by the CC&CRM Act",
+        "sourceText": "Action 3.8. Develop and strengthen the implementation of special management areas, conservation areas and affected areas as defined by the CC&CRM Act",
+        "section": "3.8"
+      }
+    ]
   },
   {
     "id": "NBSAP_4",
     "text": "Halt species extinction, protect genetic diversity, and manage human-wildlife conflict",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "4",
+    "sourceLabel": "NBT 4",
     "country": "Sri Lanka",
     "sources": [
       {
@@ -109,175 +253,695 @@
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Establish a national list of species and ecosystem types with annual updating\nUpdate the national red lists once in five years and ensure that the data is shared with the IUCN Global Red List\nConduct risk assessments to identify species that are vulnerable to climate change\nDevelop and implement recovery plans for prioritized threatened species as well as climate vulnerable species\nEstablish ex situ conservation facilities such as botanic gardens, zoos, aquaria, wetland parks, arboreta, medicinal gardens, urban parks, natural history museums, plant herbaria etc., or upgrade & improve existing facilities in each bioclimatic zones for conservation, education and research\nSupport to establish captive breeding / propagation programs to assist species recovery programs\nStrengthen existing animal care shelters under the Department of Wildlife Conservation for rehabilitation of confiscated, injured and displaced animals and develop guidelines for reintroduction of rehabilitated species back to the wild\nDevelop and implement species level management plans for threatened species that cause conflict",
+    "activitySources": [
+      {
+        "text": "Establish a national list of species and ecosystem types with annual updating",
+        "sourceText": "Action 4.1. Establish a national list of species and ecosystem types with annual updating",
+        "section": "4.1"
+      },
+      {
+        "text": "Update the national red lists once in five years and ensure that the data is shared with the IUCN Global Red List",
+        "sourceText": "Action 4.2. Update the national red lists once in five years and ensure that the data is shared with the IUCN Global Red List",
+        "section": "4.2"
+      },
+      {
+        "text": "Conduct risk assessments to identify species that are vulnerable to climate change",
+        "sourceText": "Action 4.3. Conduct risk assessments to identify species that are vulnerable to climate change",
+        "section": "4.3"
+      },
+      {
+        "text": "Develop and implement recovery plans for prioritized threatened species as well as climate vulnerable species",
+        "sourceText": "Action 4.4. Develop and implement recovery plans for prioritized threatened species as well as climate vulnerable species",
+        "section": "4.4"
+      },
+      {
+        "text": "Establish ex situ conservation facilities such as botanic gardens, zoos, aquaria, wetland parks, arboreta, medicinal gardens, urban parks, natural history museums, plant herbaria etc., or upgrade & improve existing facilities in each bioclimatic zones for conservation, education and research",
+        "sourceText": "Action 4.5. Establish ex situ conservation facilities such as botanic gardens, zoos, aquaria, wetland parks, arboreta, medicinal gardens, urban parks, natural history museums, plant herbaria etc., or upgrade & improve existing facilities in each bioclimatic zones for conservation, education and research",
+        "section": "4.5"
+      },
+      {
+        "text": "Support to establish captive breeding / propagation programs to assist species recovery programs",
+        "sourceText": "Action 4.6. Support to establish captive breeding / propagation programs to assist species recovery programs",
+        "section": "4.6"
+      },
+      {
+        "text": "Strengthen existing animal care shelters under the Department of Wildlife Conservation for rehabilitation of confiscated, injured and displaced animals and develop guidelines for reintroduction of rehabilitated species back to the wild",
+        "sourceText": "Action 4.7. Strengthen existing animal care shelters under the Department of Wildlife Conservation for rehabilitation of confiscated, injured and displaced animals and develop guidelines for reintroduction of rehabilitated species back to the wild",
+        "section": "4.7"
+      },
+      {
+        "text": "Develop and implement species level management plans for threatened species that cause conflict",
+        "sourceText": "Action 4.8. Develop and implement species level management plans for threatened species that cause conflict",
+        "section": "4.8"
+      }
+    ]
   },
   {
     "id": "NBSAP_5",
-    "text": "Ensure wild species are managed, used, and traded sustainably, safely, and legally providing benefits to people and the planet",
+    "text": "Ensure wild species are managed, used, and traded sustainably, safely, and legally providing benefits to people and the planet.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "5",
+    "sourceLabel": "NBT 5",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Ensure wild species are managed, used, and traded sustainably, safely, and legally providing benefits to people and the planet",
+        "sourceText": "Ensure wild species are managed, used, and traded sustainably, safely, and legally providing benefits to people and the planet.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Identify gaps in enforcement of tracking, monitoring, and prosecuting illegal trade of scheduled species\nUpdate the current legislation and regulations to address identified gaps as well as alignment with international conventions such as CITES\nControl targeted and non-targeted removal of marine, freshwater and terrestrial species\nProvide protection to breeding grounds of marine turtles and strengthen ex situ conservation programs\nImplement best practices to minimize the destructive harvesting methods used for biological resources from terrestrial, aquatic and marine systems\nUpdate wild species data collection systems to support their sustainable management\nDevelop and implement recovery plans for species stocks that are depleted due to overexploitation\nIdentify gaps in Fishery Management Areas (FMA) and implement programs to address the identified gaps\nUpdate and implement Sri Lanka National Plan of Action for conservation of important wild species including sharks",
+    "activitySources": [
+      {
+        "text": "Identify gaps in enforcement of tracking, monitoring, and prosecuting illegal trade of scheduled species",
+        "sourceText": "Action 5.1. Identify gaps in enforcement of tracking, monitoring, and prosecuting illegal trade of scheduled species",
+        "section": "5.1"
+      },
+      {
+        "text": "Update the current legislation and regulations to address identified gaps as well as alignment with international conventions such as CITES",
+        "sourceText": "Action 5.2. Update the current legislation and regulations to address identified gaps as well as alignment with international conventions such as CITES",
+        "section": "5.2"
+      },
+      {
+        "text": "Control targeted and non-targeted removal of marine, freshwater and terrestrial species",
+        "sourceText": "Action 5.3. Control targeted and non-targeted removal of marine, freshwater and terrestrial species",
+        "section": "5.3"
+      },
+      {
+        "text": "Provide protection to breeding grounds of marine turtles and strengthen ex situ conservation programs",
+        "sourceText": "Action 5.4. Provide protection to breeding grounds of marine turtles and strengthen ex situ conservation programs",
+        "section": "5.4"
+      },
+      {
+        "text": "Implement best practices to minimize the destructive harvesting methods used for biological resources from terrestrial, aquatic and marine systems",
+        "sourceText": "Action 5.5. Implement best practices to minimize the destructive harvesting methods used for biological resources from terrestrial, aquatic and marine systems",
+        "section": "5.5"
+      },
+      {
+        "text": "Update wild species data collection systems to support their sustainable management",
+        "sourceText": "Action 5.6. Update wild species data collection systems to support their sustainable management",
+        "section": "5.6"
+      },
+      {
+        "text": "Develop and implement recovery plans for species stocks that are depleted due to overexploitation",
+        "sourceText": "Action 5.7. Develop and implement recovery plans for species stocks that are depleted due to overexploitation",
+        "section": "5.7"
+      },
+      {
+        "text": "Identify gaps in Fishery Management Areas (FMA) and implement programs to address the identified gaps",
+        "sourceText": "Action 5.8. Identify gaps in Fishery Management Areas (FMA) and implement programs to address the identified gaps",
+        "section": "5.8"
+      },
+      {
+        "text": "Update and implement Sri Lanka National Plan of Action for conservation of important wild species including sharks",
+        "sourceText": "Action 5.9. Update and implement Sri Lanka National Plan of Action for conservation of important wild species including sharks",
+        "section": "5.9"
+      }
+    ]
   },
   {
     "id": "NBSAP_6",
-    "text": "Prevention and control of Invasive Alien Species (IAS) for enhanced biosecurity",
+    "text": "Prevention and control of Invasive Alien Species (IAS) for enhanced biosecurity.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "6",
+    "sourceLabel": "NBT 6",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Prevention and control of Invasive Alien Species (IAS) for enhanced biosecurity",
+        "sourceText": "Prevention and control of Invasive Alien Species (IAS) for enhanced biosecurity.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Review and update existing laws and policies related to IAS management.\nEstablish a mechanism for updating National IAS lists every five years\nConduct a national assessment of invasive alien species (IAS), including development of a priority list of fauna and flora for control and management\nStrengthening border control agencies by improving detection capacity and guidelines for prevention of entry\nEstablish a sustainable IAS detection, monitoring and reporting system\nEstablish a mechanism to remove and destroy IAS that are commonly in use such as aquarium fish and ornamental plants that are listed as IAS\nDevelop and implement species specific management plans and monitor for five key IAS\nConduct a national level awareness campaign on invasive alien species and their impacts on natural habitats",
+    "activitySources": [
+      {
+        "text": "Review and update existing laws and policies related to IAS management.",
+        "sourceText": "Action 6.1. Review and update existing laws and policies related to IAS management.",
+        "section": "6.1"
+      },
+      {
+        "text": "Establish a mechanism for updating National IAS lists every five years",
+        "sourceText": "Action 6.2. Establish a mechanism for updating National IAS lists every five years",
+        "section": "6.2"
+      },
+      {
+        "text": "Conduct a national assessment of invasive alien species (IAS), including development of a priority list of fauna and flora for control and management",
+        "sourceText": "Action 6.3. Conduct a national assessment of invasive alien species (IAS), including development of a priority list of fauna and flora for control and management",
+        "section": "6.3"
+      },
+      {
+        "text": "Strengthening border control agencies by improving detection capacity and guidelines for prevention of entry",
+        "sourceText": "Action 6.4. Strengthening border control agencies by improving detection capacity and guidelines for prevention of entry",
+        "section": "6.4"
+      },
+      {
+        "text": "Establish a sustainable IAS detection, monitoring and reporting system",
+        "sourceText": "Action 6.5. Establish a sustainable IAS detection, monitoring and reporting system",
+        "section": "6.5"
+      },
+      {
+        "text": "Establish a mechanism to remove and destroy IAS that are commonly in use such as aquarium fish and ornamental plants that are listed as IAS",
+        "sourceText": "Action 6.6. Establish a mechanism to remove and destroy IAS that are commonly in use such as aquarium fish and ornamental plants that are listed as IAS",
+        "section": "6.6"
+      },
+      {
+        "text": "Develop and implement species specific management plans and monitor for five key IAS",
+        "sourceText": "Action 6.7. Develop and implement species specific management plans and monitor for five key IAS",
+        "section": "6.7"
+      },
+      {
+        "text": "Conduct a national level awareness campaign on invasive alien species and their impacts on natural habitats",
+        "sourceText": "Action 6.8. Conduct a national level awareness campaign on invasive alien species and their impacts on natural habitats",
+        "section": "6.8"
+      }
+    ]
   },
   {
     "id": "NBSAP_7",
-    "text": "Reduce pollution to levels that are not harmful to biodiversity and ecosystem functions and services",
+    "text": "Reduce pollution to levels that are not harmful to biodiversity and ecosystem functions and services.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "7",
+    "sourceLabel": "NBT 7",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Reduce pollution to levels that are not harmful to biodiversity and ecosystem functions and services",
+        "sourceText": "Reduce pollution to levels that are not harmful to biodiversity and ecosystem functions and services.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Develop, implement and monitor a national programme that reduces reliance on agrochemical usage\nDevelop and implement a national strategy that reduces the release of pollutants and waste to natural ecosystems.\nEstablish real time monitoring systems for assessing water, air and soil quality at strategic locations\nImplement nature-based solutions for improving ecological resilience of natural ecosystems\nRegularize the collection and disposal of waste in urban areas and areas in proximity to Sensitive / Protected sites",
+    "activitySources": [
+      {
+        "text": "Develop, implement and monitor a national programme that reduces reliance on agrochemical usage",
+        "sourceText": "Action 7.1. Develop, implement and monitor a national programme that reduces reliance on agrochemical usage",
+        "section": "7.1"
+      },
+      {
+        "text": "Develop and implement a national strategy that reduces the release of pollutants and waste to natural ecosystems.",
+        "sourceText": "Action 7.2. Develop and implement a national strategy that reduces the release of pollutants and waste to natural ecosystems.",
+        "section": "7.2"
+      },
+      {
+        "text": "Establish real time monitoring systems for assessing water, air and soil quality at strategic locations",
+        "sourceText": "Action 7.3. Establish real time monitoring systems for assessing water, air and soil quality at strategic locations",
+        "section": "7.3"
+      },
+      {
+        "text": "Implement nature-based solutions for improving ecological resilience of natural ecosystems",
+        "sourceText": "Action 7.4. Implement nature-based solutions for improving ecological resilience of natural ecosystems",
+        "section": "7.4"
+      },
+      {
+        "text": "Regularize the collection and disposal of waste in urban areas and areas in proximity to Sensitive / Protected sites",
+        "sourceText": "Action 7.5. Regularize the collection and disposal of waste in urban areas and areas in proximity to Sensitive / Protected sites",
+        "section": "7.5"
+      }
+    ]
   },
   {
     "id": "NBSAP_8",
-    "text": "Minimize the impact of climate change on biodiversity and build resilience",
+    "text": "Minimize the impact of climate change on biodiversity and build resilience.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "8",
+    "sourceLabel": "NBT 8",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Minimize the impact of climate change on biodiversity and build resilience",
+        "sourceText": "Minimize the impact of climate change on biodiversity and build resilience.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Establish permanent monitoring plots in climate boundaries to determine shifts in ecosystem and species distribution\nDemarcate and establish buffer zones around high-quality habitats to facilitate adaptation to the habitat shift\nMap and restore riparian areas in the boundaries of shifting climate zones to establish connectivity corridors to facilitate migration of habitats and critical species\nEstablish ecological networks and connectivity corridors by improving the management of protected areas, creating new habitats and restoring degraded habitats\nCarry out a national assessment of the impact of climate change on identified vulnerable species and ecosystems and develop potential mitigation and adaptation strategies\nCarry out an assessment of species that are undergoing range expansion due to climate change and examine their impacts on ecosystems and livelihoods",
+    "activitySources": [
+      {
+        "text": "Establish permanent monitoring plots in climate boundaries to determine shifts in ecosystem and species distribution",
+        "sourceText": "Action 8.1. Establish permanent monitoring plots in climate boundaries to determine shifts in ecosystem and species distribution",
+        "section": "8.1"
+      },
+      {
+        "text": "Demarcate and establish buffer zones around high-quality habitats to facilitate adaptation to the habitat shift",
+        "sourceText": "Action 8.2. Demarcate and establish buffer zones around high-quality habitats to facilitate adaptation to the habitat shift",
+        "section": "8.2"
+      },
+      {
+        "text": "Map and restore riparian areas in the boundaries of shifting climate zones to establish connectivity corridors to facilitate migration of habitats and critical species",
+        "sourceText": "Action 8.3. Map and restore riparian areas in the boundaries of shifting climate zones to establish connectivity corridors to facilitate migration of habitats and critical species",
+        "section": "8.3"
+      },
+      {
+        "text": "Establish ecological networks and connectivity corridors by improving the management of protected areas, creating new habitats and restoring degraded habitats",
+        "sourceText": "Action 8.4. Establish ecological networks and connectivity corridors by improving the management of protected areas, creating new habitats and restoring degraded habitats",
+        "section": "8.4"
+      },
+      {
+        "text": "Carry out a national assessment of the impact of climate change on identified vulnerable species and ecosystems and develop potential mitigation and adaptation strategies",
+        "sourceText": "Action 8.5. Carry out a national assessment of the impact of climate change on identified vulnerable species and ecosystems and develop potential mitigation and adaptation strategies",
+        "section": "8.5"
+      },
+      {
+        "text": "Carry out an assessment of species that are undergoing range expansion due to climate change and examine their impacts on ecosystems and livelihoods",
+        "sourceText": "Action 8.6. Carry out an assessment of species that are undergoing range expansion due to climate change and examine their impacts on ecosystems and livelihoods",
+        "section": "8.6"
+      }
+    ]
   },
   {
     "id": "NBSAP_9",
-    "text": "Enable sustainable consumption choices to reduce waste and overconsumption",
+    "text": "Enable sustainable consumption choices to reduce waste and overconsumption.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "9",
+    "sourceLabel": "NBT 9",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Enable sustainable consumption choices to reduce waste and overconsumption",
+        "sourceText": "Enable sustainable consumption choices to reduce waste and overconsumption.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Improve conversion efficiency of raw material to final products\nMainstream and promote circular economy approach across all segments of the society as well as production and service sectors to reduce waste\nMainstream Extended Producer Responsibility and Polluters Pay across supply chain to ensure sustainable sourcing, production and consumption from cradle-to-grave\nIntroduce a module on sustainable consumption, waste reduction and responsible food use into school curriculum\nFoster lifestyles that encourage sustainable consumption and use of environmentally friendly products\nDesign and develop programs to raise awareness on circular economy and ecological footprint concepts among general public",
+    "activitySources": [
+      {
+        "text": "Improve conversion efficiency of raw material to final products",
+        "sourceText": "Action 9.1. Improve conversion efficiency of raw material to final products",
+        "section": "9.1"
+      },
+      {
+        "text": "Mainstream and promote circular economy approach across all segments of the society as well as production and service sectors to reduce waste",
+        "sourceText": "Action 9.2. Mainstream and promote circular economy approach across all segments of the society as well as production and service sectors to reduce waste",
+        "section": "9.2"
+      },
+      {
+        "text": "Mainstream Extended Producer Responsibility and Polluters Pay across supply chain to ensure sustainable sourcing, production and consumption from cradle-to-grave",
+        "sourceText": "Action 9.3. Mainstream Extended Producer Responsibility and Polluters Pay across supply chain to ensure sustainable sourcing, production and consumption from cradle-to-grave",
+        "section": "9.3"
+      },
+      {
+        "text": "Introduce a module on sustainable consumption, waste reduction and responsible food use into school curriculum",
+        "sourceText": "Action 9.4. Introduce a module on sustainable consumption, waste reduction and responsible food use into school curriculum",
+        "section": "9.4"
+      },
+      {
+        "text": "Foster lifestyles that encourage sustainable consumption and use of environmentally friendly products",
+        "sourceText": "Action 9.5. Foster lifestyles that encourage sustainable consumption and use of environmentally friendly products",
+        "section": "9.5"
+      },
+      {
+        "text": "Design and develop programs to raise awareness on circular economy and ecological footprint concepts among general public",
+        "sourceText": "Action 9.6. Design and develop programs to raise awareness on circular economy and ecological footprint concepts among general public",
+        "section": "9.6"
+      }
+    ]
   },
   {
     "id": "NBSAP_10",
-    "text": "Enhance sustainability in agriculture, aquaculture, fisheries, forestry and tourism through wiseuse of biodiversity",
+    "text": "Enhance sustainability in agriculture, aquaculture, fisheries, forestry and tourism through wise use of biodiversity.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "10",
+    "sourceLabel": "NBT 10",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Enhance sustainability in agriculture, aquaculture, fisheries, forestry and tourism through wiseuse of biodiversity",
+        "sourceText": "Enhance sustainability in agriculture, aquaculture, fisheries, forestry and tourism through wise use of biodiversity.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Develop a national biodiversity mainstreaming roadmap with sector-specific targets and M&E indicators for identified sectors (food systems, tourism, etc.,)\nFacilitate the development and scaling up of agrotourism initiatives\nMainstream underutilized, lesser known or neglected crops, [livestock, poultry and fish though technological advancements and innovation ]\nDocument and adopt useful elements of traditional knowledge/ practices of unique agroecosystems (such as Kandyan home gardens, tank cascade systems, owita and Mavee lands) to address current issues\nIdentify and conserve useful biodiversity and ecosystem services (BES) such as natural enemies, pollinators and soil microorganisms for sustainable agricultural productivity\nImplement circa situm (on farm) conservation for wild relatives, traditional varieties, land races and native varieties\nPromote agroforestry models including home gardens for diversified income and biodiversity benefits\nFacilitate agroforestry models for riparian habitats to enhance connectivity and trapping sediment flow into waterways",
+    "activitySources": [
+      {
+        "text": "Develop a national biodiversity mainstreaming roadmap with sector-specific targets and M&E indicators for identified sectors (food systems, tourism, etc.,)",
+        "sourceText": "Action 10.1. Develop a national biodiversity mainstreaming roadmap with sector-specific targets and M&E indicators for identified sectors (food systems, tourism, etc.,)",
+        "section": "10.1"
+      },
+      {
+        "text": "Facilitate the development and scaling up of agrotourism initiatives",
+        "sourceText": "Action 10.2. Facilitate the development and scaling up of agrotourism initiatives",
+        "section": "10.2"
+      },
+      {
+        "text": "Mainstream underutilized, lesser known or neglected crops, [livestock, poultry and fish though technological advancements and innovation ]",
+        "sourceText": "Action 10.3. Mainstream underutilized, lesser known or neglected crops, [livestock, poultry and fish though technological advancements and innovation ]",
+        "section": "10.3"
+      },
+      {
+        "text": "Document and adopt useful elements of traditional knowledge/ practices of unique agroecosystems (such as Kandyan home gardens, tank cascade systems, owita and Mavee lands) to address current issues",
+        "sourceText": "Action 10.4. Document and adopt useful elements of traditional knowledge/ practices of unique agroecosystems (such as Kandyan home gardens, tank cascade systems, owita and Mavee lands) to address current issues",
+        "section": "10.4"
+      },
+      {
+        "text": "Identify and conserve useful biodiversity and ecosystem services (BES) such as natural enemies, pollinators and soil microorganisms for sustainable agricultural productivity",
+        "sourceText": "Action 10.5. Identify and conserve useful biodiversity and ecosystem services (BES) such as natural enemies, pollinators and soil microorganisms for sustainable agricultural productivity",
+        "section": "10.5"
+      },
+      {
+        "text": "Implement circa situm (on farm) conservation for wild relatives, traditional varieties, land races and native varieties",
+        "sourceText": "Action 10.6. Implement circa situm (on farm) conservation for wild relatives, traditional varieties, land races and native varieties",
+        "section": "10.6"
+      },
+      {
+        "text": "Promote agroforestry models including home gardens for diversified income and biodiversity benefits",
+        "sourceText": "Action 10.7. Promote agroforestry models including home gardens for diversified income and biodiversity benefits",
+        "section": "10.7"
+      },
+      {
+        "text": "Facilitate agroforestry models for riparian habitats to enhance connectivity and trapping sediment flow into waterways",
+        "sourceText": "Action 10.8. Facilitate agroforestry models for riparian habitats to enhance connectivity and trapping sediment flow into waterways",
+        "section": "10.8"
+      }
+    ]
   },
   {
     "id": "NBSAP_11",
-    "text": "Enable businesses to assess, disclose and mitigate risks and negative impacts on biodiversity, while benefiting from and supporting biodiversity and taking steps to minimize harmful incentives while upscaling positive incentives",
+    "text": "Enable businesses to assess, disclose and mitigate risks and negative impacts on biodiversity, while benefiting from and supporting biodiversity and taking steps to minimize harmful incentives while upscaling positive incentives.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "11",
+    "sourceLabel": "NBT 11",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Enable businesses to assess, disclose and mitigate risks and negative impacts on biodiversity, while benefiting from and supporting biodiversity and taking steps to minimize harmful incentives while upscaling positive incentives",
+        "sourceText": "Enable businesses to assess, disclose and mitigate risks and negative impacts on biodiversity, while benefiting from and supporting biodiversity and taking steps to minimize harmful incentives while upscaling positive incentives.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Integrate Biodiversity Strategies into Business Strategies of Companies\nDevelop and implement a business and biodiversity Action Plan for private sector\nDevelop tools such as biopoints, payment for ecosystem services and the necessary policies for businesses to benefit from biodiversity conservation\nPrepare a mechanism to harness private sector participation and investment in biodiversity conservation\nGuide the private sector to report their initiatives on biodiversity conservation through their websites and national platforms\nCoordination for identifying and removing perverse incentives such as tax exemptions, subsidies, concessional loans that damage biodiversity and ecosystem services\nProvide incentives for conservation of biodiversity",
+    "activitySources": [
+      {
+        "text": "Integrate Biodiversity Strategies into Business Strategies of Companies",
+        "sourceText": "Action 11.1. Integrate Biodiversity Strategies into Business Strategies of Companies",
+        "section": "11.1"
+      },
+      {
+        "text": "Develop and implement a business and biodiversity Action Plan for private sector",
+        "sourceText": "Action 11.2. Develop and implement a business and biodiversity Action Plan for private sector",
+        "section": "11.2"
+      },
+      {
+        "text": "Develop tools such as biopoints, payment for ecosystem services and the necessary policies for businesses to benefit from biodiversity conservation",
+        "sourceText": "Action 11.3. Develop tools such as biopoints, payment for ecosystem services and the necessary policies for businesses to benefit from biodiversity conservation",
+        "section": "11.3"
+      },
+      {
+        "text": "Prepare a mechanism to harness private sector participation and investment in biodiversity conservation",
+        "sourceText": "Action 11.4. Prepare a mechanism to harness private sector participation and investment in biodiversity conservation",
+        "section": "11.4"
+      },
+      {
+        "text": "Guide the private sector to report their initiatives on biodiversity conservation through their websites and national platforms",
+        "sourceText": "Action 11.5. Guide the private sector to report their initiatives on biodiversity conservation through their websites and national platforms",
+        "section": "11.5"
+      },
+      {
+        "text": "Coordination for identifying and removing perverse incentives such as tax exemptions, subsidies, concessional loans that damage biodiversity and ecosystem services",
+        "sourceText": "Action 11.6. Coordination for identifying and removing perverse incentives such as tax exemptions, subsidies, concessional loans that damage biodiversity and ecosystem services",
+        "section": "11.6"
+      },
+      {
+        "text": "Provide incentives for conservation of biodiversity",
+        "sourceText": "Action 11.7. Provide incentives for conservation of biodiversity",
+        "section": "11.7"
+      }
+    ]
   },
   {
     "id": "NBSAP_12",
-    "text": "Strengthen biosafety while accruing the benefits of biotechnology",
+    "text": "Strengthen biosafety while accruing the benefits of biotechnology.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "12",
+    "sourceLabel": "NBT 12",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Strengthen biosafety while accruing the benefits of biotechnology",
+        "sourceText": "Strengthen biosafety while accruing the benefits of biotechnology.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Strengthen the policy on biosafety\nDevelop mechanisms to implement the National Biosafety Act and relevant regulations in place\nEstablish risk analysis procedures for emerging technologies and strengthen capacity for risk assessment\nEnhance Sri Lanka’s scientific capacity on biosafety\nPromote use of modern biotechnology in bioprospecting of both animal and plant genetic resources\nPromote conservation of underutilized plant species, livestock and their wild relatives\nCarry out molecular genetics research to identify and use beneficial genes of wild relatives and traditional varieties with the aim of improving cultivated crop and animal varieties",
+    "activitySources": [
+      {
+        "text": "Strengthen the policy on biosafety",
+        "sourceText": "Action 12.1. Strengthen the policy on biosafety",
+        "section": "12.1"
+      },
+      {
+        "text": "Develop mechanisms to implement the National Biosafety Act and relevant regulations in place",
+        "sourceText": "Action 12.2. Develop mechanisms to implement the National Biosafety Act and relevant regulations in place",
+        "section": "12.2"
+      },
+      {
+        "text": "Establish risk analysis procedures for emerging technologies and strengthen capacity for risk assessment",
+        "sourceText": "Action 12.3. Establish risk analysis procedures for emerging technologies and strengthen capacity for risk assessment",
+        "section": "12.3"
+      },
+      {
+        "text": "Enhance Sri Lanka’s scientific capacity on biosafety",
+        "sourceText": "Action 12.4. Enhance Sri Lanka’s scientific capacity on biosafety",
+        "section": "12.4"
+      },
+      {
+        "text": "Promote use of modern biotechnology in bioprospecting of both animal and plant genetic resources",
+        "sourceText": "Action 12.5. Promote use of modern biotechnology in bioprospecting of both animal and plant genetic resources",
+        "section": "12.5"
+      },
+      {
+        "text": "Promote conservation of underutilized plant species, livestock and their wild relatives",
+        "sourceText": "Action 12.6. Promote conservation of underutilized plant species, livestock and their wild relatives",
+        "section": "12.6"
+      },
+      {
+        "text": "Carry out molecular genetics research to identify and use beneficial genes of wild relatives and traditional varieties with the aim of improving cultivated crop and animal varieties",
+        "sourceText": "Action 12.7. Carry out molecular genetics research to identify and use beneficial genes of wild relatives and traditional varieties with the aim of improving cultivated crop and animal varieties",
+        "section": "12.7"
+      }
+    ]
   },
   {
     "id": "NBSAP_13",
-    "text": "Enable benefit sharing from biological resources, related digital sequence information, and traditional knowledge",
+    "text": "Enable benefit sharing from biological resources, related digital sequence information, and traditional knowledge.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "13",
+    "sourceLabel": "NBT 13",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Enable benefit sharing from biological resources, related digital sequence information, and traditional knowledge",
+        "sourceText": "Enable benefit sharing from biological resources, related digital sequence information, and traditional knowledge.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Review and strengthen the policy, legal and institutional frameworks for benefit sharing\nPreparation of national ABS guidelines, model contracts, Mutually Agreed Terms (MAT), Prior Informed Consent (PIC) and compliance mechanisms\nEstablishment of a national ABS helpdesk\nConduct Pilot tests for community-level ABS protocols with IPLCs, documenting TK and developing benefit-sharing mechanisms\nAwareness campaigns on ABS for youth, IPLCs, researchers, and private sector\nPromote and mobilise cultural practices and traditional wisdom related to biodiversity",
+    "activitySources": [
+      {
+        "text": "Review and strengthen the policy, legal and institutional frameworks for benefit sharing",
+        "sourceText": "Action 13.1. Review and strengthen the policy, legal and institutional frameworks for benefit sharing",
+        "section": "13.1"
+      },
+      {
+        "text": "Preparation of national ABS guidelines, model contracts, Mutually Agreed Terms (MAT), Prior Informed Consent (PIC) and compliance mechanisms",
+        "sourceText": "Action 13.2. Preparation of national ABS guidelines, model contracts, Mutually Agreed Terms (MAT), Prior Informed Consent (PIC) and compliance mechanisms",
+        "section": "13.2",
+        "_transportRepair": "a continuation row labelled without a minor number was joined onto this action; the ', ' joining the two rows is inserted, not present in the source sheet"
+      },
+      {
+        "text": "Establishment of a national ABS helpdesk",
+        "sourceText": "Action 13.3. Establishment of a national ABS helpdesk",
+        "section": "13.3"
+      },
+      {
+        "text": "Conduct Pilot tests for community-level ABS protocols with IPLCs, documenting TK and developing benefit-sharing mechanisms",
+        "sourceText": "Action 13.4. Conduct Pilot tests for community-level ABS protocols with IPLCs, documenting TK and developing benefit-sharing mechanisms",
+        "section": "13.4"
+      },
+      {
+        "text": "Awareness campaigns on ABS for youth, IPLCs, researchers, and private sector",
+        "sourceText": "Action 13.5. Awareness campaigns on ABS for youth, IPLCs, researchers, and private sector",
+        "section": "13.5"
+      },
+      {
+        "text": "Promote and mobilise cultural practices and traditional wisdom related to biodiversity",
+        "sourceText": "Action 13.6. Promote and mobilise cultural practices and traditional wisdom related to biodiversity",
+        "section": "13.6"
+      }
+    ]
   },
   {
     "id": "NBSAP_14",
-    "text": "Decision-making is based on best possible available data and participatory approach with an emphasis on access to justice and information relating to biodiversity",
+    "text": "Decision-making is based on best possible available data and participatory approach with an emphasis on access to justice and information relating to biodiversity.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "14",
+    "sourceLabel": "NBT 14",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Decision-making is based on best possible available data and participatory approach with an emphasis on access to justice and information relating to biodiversity",
+        "sourceText": "Decision-making is based on best possible available data and participatory approach with an emphasis on access to justice and information relating to biodiversity.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Establish a National Biodiversity Information System to document country’s biodiversity and populate the database and update regularly to support awareness and decision making\nFacilitate to establish a searchable database on traditional knowledge, beliefs and practices of biodiversity under the proposed NBIS\nStrengthening the knowledge platforms on Biosafety Clearing-house and Access to Benefit Sharing\nUndertake surveys to gather data on unexplored areas and data deficient species\nStrengthen public consultation process in the formulation of legislation, policies and plans that directly or indirectly impact biodiversity\nDevelop an interface through which public can easily access key documents related to biodiversity such as national plans, national policies, management plans, gazette notifications, Environmental Impact Assessment Reports\nDevelop a mechanism for active involvement and engagement of indigenous peoples and local communities in decision-making processes affecting their way of life, customs and resources.\nStrengthen the national clearing house mechanism as a platform for sharing information to the public.\nEstablish and support a journalist forum to regularly disseminate scientific findings and their implications to general public in a user-friendly manner",
+    "activitySources": [
+      {
+        "text": "Establish a National Biodiversity Information System to document country’s biodiversity and populate the database and update regularly to support awareness and decision making",
+        "sourceText": "Action 14.1. Establish a National Biodiversity Information System to document country’s biodiversity and populate the database and update regularly to support awareness and decision making",
+        "section": "14.1"
+      },
+      {
+        "text": "Facilitate to establish a searchable database on traditional knowledge, beliefs and practices of biodiversity under the proposed NBIS",
+        "sourceText": "Action 14.2. Facilitate to establish a searchable database on traditional knowledge, beliefs and practices of biodiversity under the proposed NBIS",
+        "section": "14.2"
+      },
+      {
+        "text": "Strengthening the knowledge platforms on Biosafety Clearing-house and Access to Benefit Sharing",
+        "sourceText": "Action 14.3. Strengthening the knowledge platforms on Biosafety Clearing-house and Access to Benefit Sharing",
+        "section": "14.3"
+      },
+      {
+        "text": "Undertake surveys to gather data on unexplored areas and data deficient species",
+        "sourceText": "Action 14.4. Undertake surveys to gather data on unexplored areas and data deficient species",
+        "section": "14.4"
+      },
+      {
+        "text": "Strengthen public consultation process in the formulation of legislation, policies and plans that directly or indirectly impact biodiversity",
+        "sourceText": "Action 14.5. Strengthen public consultation process in the formulation of legislation, policies and plans that directly or indirectly impact biodiversity",
+        "section": "14.5"
+      },
+      {
+        "text": "Develop an interface through which public can easily access key documents related to biodiversity such as national plans, national policies, management plans, gazette notifications, Environmental Impact Assessment Reports",
+        "sourceText": "Action 14.6. Develop an interface through which public can easily access key documents related to biodiversity such as national plans, national policies, management plans, gazette notifications, Environmental Impact Assessment Reports",
+        "section": "14.6"
+      },
+      {
+        "text": "Develop a mechanism for active involvement and engagement of indigenous peoples and local communities in decision-making processes affecting their way of life, customs and resources.",
+        "sourceText": "Action 14.7. Develop a mechanism for active involvement and engagement of indigenous peoples and local communities in decision-making processes affecting their way of life, customs and resources.",
+        "section": "14.7"
+      },
+      {
+        "text": "Strengthen the national clearing house mechanism as a platform for sharing information to the public.",
+        "sourceText": "Action 14.8. Strengthen the national clearing house mechanism as a platform for sharing information to the public.",
+        "section": "14.8"
+      },
+      {
+        "text": "Establish and support a journalist forum to regularly disseminate scientific findings and their implications to general public in a user-friendly manner",
+        "sourceText": "Action 14.9. Establish and support a journalist forum to regularly disseminate scientific findings and their implications to general public in a user-friendly manner",
+        "section": "14.9"
+      }
+    ]
   },
   {
     "id": "NBSAP_15",
-    "text": "Mobilize funding while enhancing the capacity at all levels for effective implementation of the NBSAP to achieve the NBTs by 2030",
+    "text": "Mobilize funding while enhancing the capacity at all levels for effective implementation of the NBSAP to achieve the NBTs by 2030.",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "15",
+    "sourceLabel": "NBT 15",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Mobilize funding while enhancing the capacity at all levels for effective implementation of the NBSAP to achieve the NBTs by 2030",
+        "sourceText": "Mobilize funding while enhancing the capacity at all levels for effective implementation of the NBSAP to achieve the NBTs by 2030.",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Ensure that all project proposals submitted to global financing available for Sri Lanka such as GEF, GBFF, GCF etc., are aligned with the NBSAP actions\nDevelop innovative financing mechanisms to generate sustainable self-financing for biodiversity and ecosystem services conservation\nEncourage public private partnership for investing in biodiversity conservation and also promote private sector and NGOs to invest on biodiversity conservation and sustainable use\nEncourage CSOs and private sector to leverage global funds available for biodiversity conservation\nEstablish and use a citizen science platform to get broader public participation in biodiversity conservation and research\nStrengthen biodiversity elements in preschool and school curricula\nDevelop and implement biodiversity related trainings to all educator levels using local examples and case studies\nDevelop and implement a program that encourage youth to get involved in biodiversity conservation and research in collaboration with tertiary education providers, government stakeholders and international platforms\nEnhance the capacity for use of modern technological tools for effective monitoring and management of biodiversity\nImplement BIOFIN plan and solutions",
+    "activitySources": [
+      {
+        "text": "Ensure that all project proposals submitted to global financing available for Sri Lanka such as GEF, GBFF, GCF etc., are aligned with the NBSAP actions",
+        "sourceText": "Action 15.1. Ensure that all project proposals submitted to global financing available for Sri Lanka such as GEF, GBFF, GCF etc., are aligned with the NBSAP actions",
+        "section": "15.1"
+      },
+      {
+        "text": "Develop innovative financing mechanisms to generate sustainable self-financing for biodiversity and ecosystem services conservation",
+        "sourceText": "Action 15.2. Develop innovative financing mechanisms to generate sustainable self-financing for biodiversity and ecosystem services conservation",
+        "section": "15.2"
+      },
+      {
+        "text": "Encourage public private partnership for investing in biodiversity conservation and also promote private sector and NGOs to invest on biodiversity conservation and sustainable use",
+        "sourceText": "Action 15.3. Encourage public private partnership for investing in biodiversity conservation and also promote private sector and NGOs to invest on biodiversity conservation and sustainable use",
+        "section": "15.3"
+      },
+      {
+        "text": "Encourage CSOs and private sector to leverage global funds available for biodiversity conservation",
+        "sourceText": "Action 15.4. Encourage CSOs and private sector to leverage global funds available for biodiversity conservation",
+        "section": "15.4"
+      },
+      {
+        "text": "Establish and use a citizen science platform to get broader public participation in biodiversity conservation and research",
+        "sourceText": "Action 15.5. Establish and use a citizen science platform to get broader public participation in biodiversity conservation and research",
+        "section": "15.5"
+      },
+      {
+        "text": "Strengthen biodiversity elements in preschool and school curricula",
+        "sourceText": "Action 15.6. Strengthen biodiversity elements in preschool and school curricula",
+        "section": "15.6"
+      },
+      {
+        "text": "Develop and implement biodiversity related trainings to all educator levels using local examples and case studies",
+        "sourceText": "Action 15.7. Develop and implement biodiversity related trainings to all educator levels using local examples and case studies",
+        "section": "15.7"
+      },
+      {
+        "text": "Develop and implement a program that encourage youth to get involved in biodiversity conservation and research in collaboration with tertiary education providers, government stakeholders and international platforms",
+        "sourceText": "Action 15.8. Develop and implement a program that encourage youth to get involved in biodiversity conservation and research in collaboration with tertiary education providers, government stakeholders and international platforms",
+        "section": "15.8"
+      },
+      {
+        "text": "Enhance the capacity for use of modern technological tools for effective monitoring and management of biodiversity",
+        "sourceText": "Action 15.9. Enhance the capacity for use of modern technological tools for effective monitoring and management of biodiversity",
+        "section": "15.9"
+      },
+      {
+        "text": "Implement BIOFIN plan and solutions",
+        "sourceText": "Action 15.10. Implement BIOFIN plan and solutions",
+        "section": "15.10"
+      }
+    ]
   },
   {
     "id": "NBSAP_16",
-    "text": "Ensure gender equality and a gender-responsive approach for biodiversity conservation, management and sustainable use",
+    "text": "Ensure gender equality and a gender-responsive approach for biodiversity conservation, management and sustainable use (Refer Biodiversity Gender Action Plan).",
     "sourceDocument": "NBSAP",
-    "sourceLabel": "16",
+    "sourceLabel": "NBT 16",
     "country": "Sri Lanka",
     "sources": [
       {
-        "sourceText": "Ensure gender equality and a gender-responsive approach for biodiversity conservation, management and sustainable use",
+        "sourceText": "Ensure gender equality and a gender-responsive approach for biodiversity conservation, management and sustainable use (Refer Biodiversity Gender Action Plan).",
         "url": ""
       }
     ],
-    "textCleanup": "verbatim"
+    "textCleanup": "verbatim",
+    "activities": "Ensure that women and girls have an equal opportunity and capacity to contribute to biodiversity conservation, sustainable use biodiversity and access benefits accrued from biodiversity\nEnsure that women and girls are represented in governance and decision-making related to biodiversity conservation, sustainable use and benefit sharing\nEnsure relevant changes to laws, policies and cultural norms, including those related to rules around land registration and ownership, and practices to enable women to have access and control of land and natural resources\nEnsure equal access for all women and girls to resources, services and technologies to support their engagement in the governance, conservation and sustainable use of biodiversity (including financial services, credit, education, training and relevant information among others)\nStrengthen the capacity of national and local line agencies to mainstream gender responsive approaches for biodiversity conservation\nIntroduce mechanisms to recognize and appreciate the role of women in biodiversity conservation\nMore training and development opportunities for women and girls during NBSAP implementation process",
+    "activitySources": [
+      {
+        "text": "Ensure that women and girls have an equal opportunity and capacity to contribute to biodiversity conservation, sustainable use biodiversity and access benefits accrued from biodiversity",
+        "sourceText": "Action 16.1. Ensure that women and girls have an equal opportunity and capacity to contribute to biodiversity conservation, sustainable use biodiversity and access benefits accrued from biodiversity",
+        "section": "16.1"
+      },
+      {
+        "text": "Ensure that women and girls are represented in governance and decision-making related to biodiversity conservation, sustainable use and benefit sharing",
+        "sourceText": "Action 16.2. Ensure that women and girls are represented in governance and decision-making related to biodiversity conservation, sustainable use and benefit sharing",
+        "section": "16.2"
+      },
+      {
+        "text": "Ensure relevant changes to laws, policies and cultural norms, including those related to rules around land registration and ownership, and practices to enable women to have access and control of land and natural resources",
+        "sourceText": "Action 16.3. Ensure relevant changes to laws, policies and cultural norms, including those related to rules around land registration and ownership, and practices to enable women to have access and control of land and natural resources",
+        "section": "16.3"
+      },
+      {
+        "text": "Ensure equal access for all women and girls to resources, services and technologies to support their engagement in the governance, conservation and sustainable use of biodiversity (including financial services, credit, education, training and relevant information among others)",
+        "sourceText": "Action 16.4. Ensure equal access for all women and girls to resources, services and technologies to support their engagement in the governance, conservation and sustainable use of biodiversity (including financial services, credit, education, training and relevant information among others)",
+        "section": "16.4"
+      },
+      {
+        "text": "Strengthen the capacity of national and local line agencies to mainstream gender responsive approaches for biodiversity conservation",
+        "sourceText": "Action 16.5. Strengthen the capacity of national and local line agencies to mainstream gender responsive approaches for biodiversity conservation",
+        "section": "16.5"
+      },
+      {
+        "text": "Introduce mechanisms to recognize and appreciate the role of women in biodiversity conservation",
+        "sourceText": "Action 16.6. Introduce mechanisms to recognize and appreciate the role of women in biodiversity conservation",
+        "section": "16.6"
+      },
+      {
+        "text": "More training and development opportunities for women and girls during NBSAP implementation process",
+        "sourceText": "Action 16.7. More training and development opportunities for women and girls during NBSAP implementation process",
+        "section": "16.7"
+      }
+    ]
   },
   {
     "id": "NDC_1",

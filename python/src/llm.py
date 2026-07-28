@@ -122,6 +122,49 @@ def get_semaphore() -> asyncio.Semaphore:
 
 
 # ---------------------------------------------------------------------------
+# Sampling-parameter support
+# ---------------------------------------------------------------------------
+# Some deployments (gpt-5.6-terra) accept only the default temperature and
+# reject an explicit value with a deterministic 400. Learned at the first
+# rejection and remembered for the process, so the pipeline drops the parameter
+# instead of burning the retry budget on an error that can never succeed.
+
+_models_without_temperature: set[str] = set()
+
+
+def _rejects_temperature(err: Exception) -> bool:
+    """True when the provider refused the call *because of* the temperature.
+
+    Prefers the structured error body, which names the offending parameter
+    exactly, and falls back to the message only when that is unavailable.
+    Matching on the message alone is unreliable in both directions: providers
+    word this differently ("does not support" / "is not supported" / "is not
+    allowed"), and unrelated failures can mention temperature simply because
+    the policy text being analysed does.
+    """
+    body = getattr(err, "body", None)
+    if isinstance(body, dict):
+        error = body.get("error")
+        if isinstance(error, dict) and "param" in error:
+            return error.get("param") == "temperature"
+
+    msg = str(err).lower()
+    if "'temperature'" not in msg and "temperature parameter" not in msg:
+        return False
+    return any(
+        phrase in msg
+        for phrase in (
+            "does not support",
+            "is not supported",
+            "unsupported_value",
+            "unsupported parameter",
+            "not allowed",
+            "not permitted",
+        )
+    )
+
+
+# ---------------------------------------------------------------------------
 # Output language
 # ---------------------------------------------------------------------------
 # A single pipeline-wide setting drives every LLM call's output language.
@@ -334,12 +377,13 @@ async def call_llm_detailed(
             async with sem:
                 kwargs: dict[str, Any] = {
                     "model": model,
-                    "temperature": temperature,
                     "messages": [
                         {"role": "system", "content": system},
                         {"role": "user", "content": user},
                     ],
                 }
+                if model not in _models_without_temperature:
+                    kwargs["temperature"] = temperature
                 if top_p is not None:
                     kwargs["top_p"] = top_p
                 if max_tokens is not None:
@@ -367,11 +411,19 @@ async def call_llm_detailed(
                 # Cache the result; mark ceiling-truncated responses so a
                 # future call with a larger budget re-runs instead of
                 # replaying the cut-off content.
-                meta = (
+                meta: dict[str, Any] | None = (
                     {"truncated": True, "maxTokens": max_tokens}
                     if finish == "length"
                     else None
                 )
+                # Temperature is deliberately not part of the cache key, so a
+                # response sampled at the model's default is otherwise
+                # indistinguishable from a reproducible temperature-0 one.
+                # Record it, since the two are not interchangeable: measured
+                # run-to-run churn is ~4% at temperature 0 and ~17% at a model
+                # default (docs/model-selection.md).
+                if model in _models_without_temperature:
+                    meta = {**(meta or {}), "samplingDefault": True}
                 write_cache(cache_namespace, system, user, model, content, meta=meta)
                 info = {"status": _call_status(content, {}), "cached": False}
                 if finish == "length":
@@ -386,6 +438,23 @@ async def call_llm_detailed(
             # pipeline. The caller observes "" and treats it as an unparseable
             # response (level=none, no flag).
             err_msg = str(e)
+            # A deployment that only allows its default temperature rejects the
+            # explicit value every time, so retrying as-is would spend the whole
+            # backoff budget. Remember it and retry immediately without the
+            # parameter; the run continues at the model's default sampling.
+            if _rejects_temperature(e) and model not in _models_without_temperature:
+                _models_without_temperature.add(model)
+                logger.warning(
+                    "Model %s rejects an explicit temperature; dropping the parameter "
+                    "for the rest of this run. Responses now use the model's default "
+                    "sampling, which is not reproducible the way temperature 0 is, and "
+                    "cache entries written before this point were produced at %s. "
+                    "Detail: %s",
+                    model, temperature, err_msg[:160],
+                )
+                # Retry immediately without backing off: the error is
+                # deterministic, so there is nothing to wait for.
+                continue
             if "content_filter" in err_msg or "ResponsibleAIPolicyViolation" in err_msg:
                 logger.warning(
                     f"LLM call rejected by Azure content filter; returning empty "

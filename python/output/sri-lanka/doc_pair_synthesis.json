@@ -4,17 +4,18 @@
     "doc_b": "NAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NAP (Agriculture)",
-    "aligned_count": 479,
-    "flagged_count": 53,
+    "aligned_count": 388,
+    "flagged_count": 19,
     "contradiction_types": {
-      "resource_competition": 26,
-      "delivery_friction": 27
+      "resource_competition": 3,
+      "goal_conflict": 7,
+      "delivery_friction": 9
     },
     "synthesis": {
-      "storyline_name": "Agricultural land stewardship through enabling systems",
-      "reinforce": "The documents often align around improving soil condition, reducing erosion, and supporting resilient agriculture through extension, training, GAP guidance, coordinated agency roles, farmer organizations, and information systems such as ERP and mobile advisory tools. A recurring pattern is that NAP delivery instruments support LDN outcomes on cropland, especially where eco-friendly production, soil and water conservation, and sustainable natural resource use are named.",
-      "clash": "Possible misalignment recurs mainly where LDN limits conversion of wetlands or seeks more forest cover, while NAP measures for credit, pricing, zoning, agro-industrial zones, market-oriented production, machinery, and productivity growth could increase pressure on the same land base. The review cases often point to resource competition over land allocation, and to delivery risks if agricultural finance, extension, or intensification instruments are applied without clear wetland and forest safeguards.",
-      "coordination_hint": "Integrated land-use zoning, together with screening of agricultural finance, extension, and industrial siting, could help keep productivity measures on existing farmland while supporting wetland retention and forest expansion.",
+      "storyline_name": "Agricultural enabling measures and land-use safeguards",
+      "reinforce": "The documents often pull in the same direction where NAP enabling instruments, such as extension reform, research and technology generation, input and seed systems, farmer advisory services, finance, and irrigation rehabilitation, could support LDN aims to reduce soil degradation and soil erosion on cultivated land. Alignment also recurs where environmental safeguards, eco-friendly input management, organic ameliorations, and broader resilience measures in agriculture align with forest cover, soil organic carbon, and sustainable land management outcomes.",
+      "clash": "Possible misalignment recurs mainly around land allocation and incentives, especially where LDN targets to increase forest cover or minimize wetland conversion meet NAP measures that promote crop production, profitability, credit, crop zoning, cropping plans, agro-industrial zones, irrigation expansion, and removal of constraints on agricultural development. These pairs often point to a shared mechanism, agricultural expansion or intensification could increase pressure on forests, wetlands, or adjacent land unless siting, zoning, and financing conditions are closely aligned.",
+      "coordination_hint": "Joint land-use zoning, wetland and forest safeguards, and screening of credit, cropping, irrigation, and agro-industrial measures could help keep agricultural delivery aligned with land degradation objectives.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -24,14 +25,14 @@
     "doc_b": "NBSAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NBSAP (Nature)",
-    "aligned_count": 54,
+    "aligned_count": 56,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Land restoration through biodiversity governance tools",
-      "reinforce": "The two documents largely align around restoring degraded land, protecting wetlands, increasing forest cover, and reducing soil erosion, with biodiversity outcomes often delivered through habitat conservation, ecosystem restoration, and sustainable land use. A recurring mechanism is that NBSAP governance and delivery tools, such as area-based conservation, spatial planning, pollution control, invasive species management, business incentives, and participatory data-based decision-making, support LDN targets on soils, forests, cropland, and wetlands.",
+      "storyline_name": "Shared land restoration and biodiversity planning mechanisms",
+      "reinforce": "The documents often pull in the same direction on restoring degraded land, expanding forest cover, protecting wetlands, and improving soil condition, with recurring links through afforestation, watershed and habitat restoration, OECMs, and conservation of inland waters. Alignment also recurs through enabling tools in the NBSAP, including biodiversity-sensitive spatial planning, pollution reduction and soil-quality monitoring, invasive species control, business disclosure and incentives, and sustainable agriculture measures that support LDN targets on soil degradation, erosion, wetlands, and forests.",
       "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Joint planning across restoration, wetland protection, forest expansion, and biodiversity governance instruments could help translate these broad areas of alignment into shared implementation pathways.",
+      "coordination_hint": "Joint planning around restoration sites, wetland and inland-water priorities, and shared soil and ecosystem monitoring could help connect the two documents' overlapping implementation pathways.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -41,17 +42,17 @@
     "doc_b": "NDC",
     "label_a": "LDN (Land degradation)",
     "label_b": "NDC (Climate Change)",
-    "aligned_count": 204,
-    "flagged_count": 5,
+    "aligned_count": 168,
+    "flagged_count": 3,
     "contradiction_types": {
-      "resource_competition": 3,
+      "goal_conflict": 1,
       "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Integrated land use and ecosystem management",
-      "reinforce": "The two documents often pull in the same direction through land-based measures that connect forest expansion, wetland protection, soil restoration, erosion control, and climate action in agriculture, forestry, water, and planning. Stronger alignment recurs where the NDC includes directly related instruments such as sustainable forest management and restoration to 32%, trees outside forests, blue carbon ecosystem conservation, climate-smart agriculture, river basin management, and adaptation mainstreaming that can support soil and wetland outcomes.",
-      "clash": "Possible misalignment recurs mainly around competition for the same land base, especially where crop production, dairy-related expansion, or industrial and irrigation siting could overlap with forest-cover increases or limits on wetland conversion. The review cases often point to spatial planning and hydrological design questions, rather than inherently opposing goals, particularly for wetlands near agriculture, eco-industrial parks, and irrigation works.",
-      "coordination_hint": "Joint land-use zoning, basin-scale planning, and early screening of agricultural, industrial, and irrigation investments against forest and wetland maps could help keep implementation aligned.",
+      "storyline_name": "Shared land-use planning for resilient landscapes",
+      "reinforce": "The documents often align through land-based adaptation and resource-management pathways, especially around sustainable agriculture, soil conservation, forest cover, and wetland protection. Recurring mechanisms include climate-smart agriculture, protected-area expansion, watershed and water-management measures, and farm practices such as IPNS, IPM, resilient varieties, and irrigation rehabilitation that can support soil productivity, erosion control, and ecosystem resilience.",
+      "clash": "The recurring possible misalignment is concentrated around wetlands, where efforts to increase crop production, expand eco-industrial parks, or augment irrigation systems could create land-conversion, siting, drainage, or hydrological pressures in overlapping areas. This pattern tends to point to implementation risks linked to where infrastructure or production expansion occurs, rather than to a broad mismatch in overall objectives.",
+      "coordination_hint": "Joint land-use zoning, siting review, and wetland-sensitive design across agriculture, industry, water, and conservation measures could help keep shared climate and land objectives pulling in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -61,17 +62,17 @@
     "doc_b": "NFAP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 16,
+    "aligned_count": 11,
     "flagged_count": 3,
     "contradiction_types": {
       "delivery_friction": 3
     },
     "synthesis": {
-      "storyline_name": "Land-water ecosystem management across wetlands and catchments",
-      "reinforce": "The documents often align through indirect land-water linkages, where forest cover, soil protection, and reduced erosion in catchments support water quality, habitat condition, and productivity relevant to inland fisheries, aquaculture, estuaries, and coastal systems. Alignment also recurs around sustainable resource management, community participation, and science-based planning, especially where wetland protection and fisheries governance pull in the same direction for habitat conservation and livelihood support.",
-      "clash": "Possible misalignment recurs around wetland-related delivery pathways, because aquaculture expansion, export-oriented aquatic production, and fisheries-linked enterprise or tourism development could increase pressure to convert wetlands for ponds, access, facilities, or other infrastructure. This pattern is limited to LDN's wetland-conversion target and tends to reflect shared geography and siting choices rather than opposing policy goals.",
-      "coordination_hint": "Wetland-sensitive spatial planning, siting, and safeguards across land, aquaculture, and fisheries agencies could help capture the land-water synergies while reducing potential misalignment in shared wetland areas.",
-      "confidence": "high"
+      "storyline_name": "Land-water ecosystem links in fisheries growth",
+      "reinforce": "The documents often align through land-water management links, where forest cover, wetland protection, lower soil degradation, and reduced cropland erosion can support water quality, habitat condition, and nursery functions relevant to inland fisheries, aquaculture, and broader fisheries resource management. This recurs mainly as enabling overlap through catchment management, integrated coastal zone management, environmental assessment, and science-based resource management, rather than through shared delivery instruments or the same actors.",
+      "clash": "The recurring possible misalignment is around wetlands, where NFAP measures that expand aquaculture, export-oriented aquatic production, or wetland-based enterprise activity could create pressure to convert or modify wetlands that LDN Target 2 seeks to keep from changing land cover. The pattern is a delivery-side issue in shared inland and coastal wetland geographies, and the pair analysis often points to siting, zoning, and safeguards as factors that could shape whether both aims can proceed together.",
+      "coordination_hint": "Joint spatial planning for wetlands and adjacent aquaculture or fisheries enterprise areas could help identify where growth measures and no-conversion objectives may be pursued in the same landscapes.",
+      "confidence": "medium"
     },
     "synthesis_error": null
   },
@@ -80,17 +81,18 @@
     "doc_b": "NMP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 58,
-    "flagged_count": 62,
+    "aligned_count": 43,
+    "flagged_count": 35,
     "contradiction_types": {
-      "delivery_friction": 42,
-      "resource_competition": 20
+      "delivery_friction": 24,
+      "resource_competition": 6,
+      "goal_conflict": 5
     },
     "synthesis": {
-      "storyline_name": "Land restoration safeguards versus mining land demand",
-      "reinforce": "The two documents often pull in the same direction where the minerals policy uses environmental regulation, mine closure, rehabilitation, monitoring, and broader governance tools to support forest cover, wetland protection, lower soil degradation, and reduced erosion. A recurring positive mechanism is that restoration and rehabilitation of mine sites, together with safeguards such as FPIC, legal alignment, enforcement, and data sharing, could create enabling conditions for land recovery outcomes under the LDN targets.",
-      "clash": "Possible misalignment recurs around the same physical land base, especially where forest expansion, wetland retention, soil protection, or cropland erosion control may overlap with mineral zoning, reserve utilization, investment promotion, and land kept available for future mining. The review cases often point to delivery issues from permitting, infrastructure, and mining in sensitive or restricted areas, and to resource competition where land is being allocated both for restoration or conservation outcomes and for mineral development.",
-      "coordination_hint": "Shared spatial planning, zoning, and site-level screening, linked to rehabilitation standards and exclusion or safeguard rules for forests, wetlands, productive soils, and cultivated land, could help the two policies operate more consistently in overlapping areas.",
+      "storyline_name": "Land-use safeguards around mining expansion decisions",
+      "reinforce": "The documents often align through mining-side environmental controls, such as prior approval in sensitive areas, stricter environmental regulations, restoration and rehabilitation requirements, mine closure, and contamination-prevention procedures, which support LDN aims on forests, wetlands, soils, and erosion. This alignment tends to be enabling rather than direct, because the NMP measures are usually governance or rehabilitation instruments that could help protect land condition where mining overlaps sensitive areas.",
+      "clash": "Possible misalignment recurs where NMP provisions open land for exploration, zoning, investment readiness, reserve utilization, or future mineral projects, because these steps could convert or disturb the same land base targeted by LDN for forest cover, wetland protection, soil condition, and erosion control. The review cases are mostly about delivery pathways and land allocation, especially where mineral-priority areas or mining facilitation measures may overlap forests, wetlands, cropland, or high-soil-value areas.",
+      "coordination_hint": "Shared spatial planning, with exclusion areas, permitting screens, and rehabilitation conditions, could help both documents pull in the same direction where mineral potential overlaps sensitive land uses.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -100,14 +102,14 @@
     "doc_b": "NWRP",
     "label_a": "LDN (Land degradation)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 126,
+    "aligned_count": 120,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Catchment-based links between land and water stewardship",
-      "reinforce": "The documents often align through shared landscape mechanisms, especially catchment and river basin planning, wetland and upper watershed conservation, and land-use planning for aquifers. LDN measures on forests, wetlands, soil degradation, and cropland erosion tend to support NWRP aims on water quality, basin health, infiltration, recharge, and climate resilience, usually as enabling links rather than the same implementation instrument.",
+      "storyline_name": "Integrated land and water stewardship pathways",
+      "reinforce": "The documents often pull in the same direction through watershed, river basin, aquifer, and wetland management, with LDN actions on forests, soils, erosion control, and wetland retention supporting water recharge, infiltration, flow regulation, and water quality. Alignment also recurs through enabling instruments in the NWRP, including land use planning, basin plans, upper watershed guidelines, monitoring, standards, and participatory governance, which could support land degradation neutrality outcomes even where actions are not identical.",
       "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Joint use of basin, watershed, and wetland planning processes could help connect land restoration priorities with water allocation, water quality, and catchment protection measures in the same landscapes.",
+      "coordination_hint": "Linking LDN land measures with NWRP basin planning, aquifer recharge mapping, and participatory water governance could help translate these indirect synergies into more coordinated implementation.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -118,16 +120,16 @@
     "label_a": "LDN (Land degradation)",
     "label_b": "PPPP (Physical planning)",
     "aligned_count": 12,
-    "flagged_count": 4,
+    "flagged_count": 2,
     "contradiction_types": {
-      "delivery_friction": 4
+      "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Spatial planning support for land stewardship",
-      "reinforce": "The two documents often pull in the same direction through land-use zoning, development controls, and conservation-sensitive siting. Across forests, wetlands, soil degradation, and erosion, LDN targets align with PPPP components that conserve critical ecosystems, guide settlement to suitable locations, and prioritize use of existing infrastructure to reduce pressure on undeveloped land.",
-      "clash": "A recurring possible misalignment appears around PPPP Component 4, where enhanced use of high-potential locations, including scenic or reserve-linked areas, could overlap with land needed for forest expansion, wetland retention, soil restoration, or erosion control. The pattern often points to delivery challenges when development-oriented land use and land protection measures operate in the same landscapes without sufficiently clear spatial safeguards.",
-      "coordination_hint": "Shared zoning, site-screening, and environmental safeguard arrangements could help both documents be implemented in ways that support development while maintaining forest, wetland, and soil objectives.",
-      "confidence": "high"
+      "storyline_name": "Spatial planning support for land conservation outcomes",
+      "reinforce": "The two documents often pull in the same direction through land-use planning that protects sensitive areas and steers development toward suitable locations and existing infrastructure. This aligns with LDN goals on forest cover, wetland protection, soil degradation, and erosion control, especially where PPPP components emphasize conservation, settlement siting, and optimizing current assets rather than new land conversion.",
+      "clash": "A recurring possible misalignment appears where PPPP Component 4 promotes enhanced use and diversified development of locations, including natural reserves and scenic settings, while LDN targets seek more forest cover and less wetland conversion. The overlap often points to competition over the same land parcels unless zoning, exclusions, and safeguards clearly separate development footprints from restoration and wetland areas.",
+      "coordination_hint": "Shared spatial zoning and screening of development locations against forest expansion and wetland protection areas could help both documents support implementation in the same places.",
+      "confidence": "medium"
     },
     "synthesis_error": null
   },
@@ -136,17 +138,18 @@
     "doc_b": "NBSAP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NBSAP (Nature)",
-    "aligned_count": 2437,
-    "flagged_count": 56,
+    "aligned_count": 2403,
+    "flagged_count": 46,
     "contradiction_types": {
-      "resource_competition": 17,
-      "delivery_friction": 39
+      "resource_competition": 21,
+      "delivery_friction": 23,
+      "goal_conflict": 2
     },
     "synthesis": {
-      "storyline_name": "Agricultural modernization with biodiversity safeguards",
-      "reinforce": "The two documents often pull in the same direction where agriculture measures use regulatory and capacity tools that can support biodiversity outcomes, such as stricter control of agricultural inputs, environmental safeguards for farming practices, village-level extension, and training on eco-friendly production. Alignment also recurs through enabling systems, including environmental impact analysis in agriculture planning, food-system management, renewable energy in agriculture, and support for sustainable agriculture and biosecurity.",
-      "clash": "Possible misalignment recurs where NAP measures to expand production, profitability, credit, agro-industrial zones, machinery, and input supply could increase pressure on land, water, restoration areas, conserved areas, species, and pollution targets under the NBSAP. The most repeated mechanisms are delivery choices around fertilizer and plant protection production, deregulation or faster technology uptake, and growth-oriented agricultural expansion, alongside some resource competition over land and coastal space needed for conservation or restoration.",
-      "coordination_hint": "Coordination could help where agricultural finance, zoning, input regulation, technology support, and agro-industrial siting are screened against conservation, restoration, pollution-control, and species-protection priorities.",
+      "storyline_name": "Biodiversity-sensitive agriculture through planning and incentives",
+      "reinforce": "The two documents often pull in the same direction where agriculture measures promote eco-friendly or organic inputs, input-use efficiency, groundwater regulation, product standards, and climate-resilient farming, while the NBSAP provides biodiversity planning, pollution reduction, business disclosure, financing, and capacity systems that can support those measures. Alignment also recurs through governance instruments such as regulatory frameworks, monitoring bodies, extension, research, and market systems that could help embed biodiversity considerations into agricultural production and value chains.",
+      "clash": "Possible misalignment recurs mainly where agriculture incentives, credit, banking, price support, agro-industrial zones, machinery uptake, fertilizer systems, and high-yield production measures could increase pressure on the same land, inland waters, habitats, corridors, or restoration areas targeted by NBSAP conservation and resilience actions. A second recurring pattern is input-related delivery pathways, where support for fertilizer, plant nutrients, plant protection technologies, or input-intensive productivity gains could work against the NBSAP pathway of reducing pollution and reliance on agrochemical use.",
+      "coordination_hint": "Joint spatial screening of agricultural finance, zoning, input support, and agro-industrial siting against conservation, restoration, corridor, and pollution-control priorities could help keep implementation aligned.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -156,17 +159,18 @@
     "doc_b": "NDC",
     "label_a": "NAP (Agriculture)",
     "label_b": "NDC (Climate Change)",
-    "aligned_count": 9022,
-    "flagged_count": 73,
+    "aligned_count": 7006,
+    "flagged_count": 25,
     "contradiction_types": {
-      "resource_competition": 44,
-      "delivery_friction": 29
+      "resource_competition": 15,
+      "goal_conflict": 1,
+      "delivery_friction": 9
     },
     "synthesis": {
-      "storyline_name": "Climate-smart agricultural modernization with land-use safeguards",
-      "reinforce": "The two documents largely align around climate-smart and resource-efficient agriculture, including sustainable land use, renewable energy in farming, ICT and advisory services, early warning information, and post-harvest loss reduction. A recurring pattern is that NAP delivery tools such as regulation updates, finance, logistics, processing facilities, and farmer decision support often support NDC adaptation and mitigation actions in crops, livestock, forestry, and broader emissions reduction.",
-      "clash": "Possible misalignment recurs where agricultural finance, credit, agro-industrial zones, profitability and production incentives, or cropping expansion could compete with protected-area expansion, habitat restoration, trees outside forests, and in some cases stressed water resources. Another recurring pattern is delivery-side possible misalignment where removing constraints on machinery and technology, expanding fertilizer and input systems, or scaling agro-industry could make it harder to deliver GHG, biodiversity, or river-basin objectives unless low-emission and habitat-sensitive conditions are built in.",
-      "coordination_hint": "Spatial planning, zoning, and screening of agricultural finance and agro-industrial siting against protected areas, restoration priorities, water-sensitive areas, and low-emission criteria could help both documents pull in the same direction.",
+      "storyline_name": "Climate-smart agricultural delivery and land-use competition",
+      "reinforce": "The two documents largely align around climate-smart agriculture delivered through extension, training, advisory systems, data, and governance mechanisms. Recurring examples include mainstreaming climate change into agriculture, building extension and graduate capacity, using agro-meteorological advisories and databases, and improving water and land management so agricultural productivity and resilience pull in the same direction.",
+      "clash": "Possible misalignment most often points to competition over land and water where agricultural expansion, zoning, credit, agro-industrial development, or productivity incentives could overlap with protected-area expansion, forest restoration, habitat management, or water-stress objectives. A smaller recurring pattern concerns input and technology incentives, where nutrient use or eased regulatory and financial constraints for agricultural development could complicate emissions reduction or biodiversity-related safeguards depending on how they are designed and sited.",
+      "coordination_hint": "Joint spatial planning, water allocation coordination, and screening of finance, zoning, and technology incentives against biodiversity, forestry, and water priorities could help keep implementation aligned.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -176,17 +180,17 @@
     "doc_b": "NFAP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 926,
-    "flagged_count": 17,
+    "aligned_count": 650,
+    "flagged_count": 5,
     "contradiction_types": {
-      "resource_competition": 11,
-      "delivery_friction": 6
+      "delivery_friction": 1,
+      "resource_competition": 4
     },
     "synthesis": {
-      "storyline_name": "Shared food-system support with water governance overlap",
-      "reinforce": "The two documents often pull in the same direction on enabling measures for rural livelihoods and food-system performance, especially through market access, value addition, producer organizations, credit, technology transfer, extension, and participatory governance. Alignment also recurs around knowledge and science-based management, climate resilience, catchment management, and coordination across agencies, although this is usually supportive rather than direct joint delivery.",
-      "clash": "Possible misalignment recurs mainly where agricultural irrigation, reservoir rehabilitation, groundwater controls, and nutrient use intersect with inland aquaculture, reservoir fisheries, and export-oriented fish production that depend on the same freshwater systems. A second recurring pattern is delivery-side pressure between agricultural deregulation or production expansion and fisheries objectives on ecosystem services, biodiversity safeguards, biosecurity, and science-based management in inland and coastal waters.",
-      "coordination_hint": "Basin-level water allocation, reservoir operating rules, and shared environmental safeguards for aquaculture, irrigation, and watershed management could help keep the two policy agendas aligned in places where they meet on the same water bodies.",
+      "storyline_name": "Cross-sector support through standards and capacity systems",
+      "reinforce": "The two documents often pull in the same direction through enabling systems such as education, extension, graduate deployment, technology uptake, laboratories, process controls, and regulated standards for food and resource management. Alignment also recurs around market access, post-harvest handling, value addition, and environmentally responsible production, although usually as supportive links across separate agriculture and fisheries delivery channels rather than direct joint actions.",
+      "clash": "Possible misalignment recurs mainly around shared freshwater resources, where irrigation efficiency, groundwater protection, and reservoir rehabilitation in the NAP could overlap with aquaculture and inland fisheries expansion in the NFAP. A further possible misalignment appears where ecosystem-service safeguards could face delivery pressure from export-oriented fisheries and aquaculture expansion, depending on siting, water use, and production controls.",
+      "coordination_hint": "Integrated water allocation, reservoir planning, and shared environmental and production standards could help both documents proceed in ways that support agriculture and fisheries objectives together.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -196,17 +200,18 @@
     "doc_b": "NMP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 1714,
-    "flagged_count": 642,
+    "aligned_count": 691,
+    "flagged_count": 180,
     "contradiction_types": {
-      "resource_competition": 515,
-      "delivery_friction": 127
+      "resource_competition": 159,
+      "goal_conflict": 8,
+      "delivery_friction": 13
     },
     "synthesis": {
-      "storyline_name": "Land-use governance across farming and mining",
-      "reinforce": "The two documents often pull in the same direction on cross-sector governance tools, especially environmental safeguards, regulatory compliance, stakeholder participation, research and information sharing, and rehabilitation of mined land for future use. Alignment also recurs where mining rules on environmentally sensitive areas, impact controls, and sustainable resource use could support agricultural objectives around eco-friendly production, water and soil conservation, and input systems.",
-      "clash": "Possible misalignment recurs mainly around competition for the same land base, with many reviewed pairs linking agricultural expansion, agro-industrial zones, irrigation, extension, and productivity measures to mineral provisions that prioritize mineral use in certain areas, reserve land for future investment, or clear deposits for development. A smaller recurring pattern points to delivery-side pressures where mining-related infrastructure, permitting, or investment readiness in shared rural landscapes could complicate implementation of agrobiodiversity conservation and eco-friendly farming practices.",
-      "coordination_hint": "Joint spatial planning, zoning, and sequencing of land uses, alongside shared consultation and permitting processes, could help manage overlap where productive farmland and mineral-priority areas coincide.",
+      "storyline_name": "Cross-sector governance alignment with land-use competition",
+      "reinforce": "These documents often align through shared governance tools, including environmental regulation, policy integration, monitoring, fiscal frameworks, research and technology dissemination, and public-private partnership mechanisms. The pattern tends to be indirect rather than joint delivery, with both documents supporting better oversight, environmental protection, value addition, and accountable decision-making across productive sectors.",
+      "clash": "Possible misalignment recurs mainly around land allocation, with many reviewed pairs linking agricultural expansion, productivity, seed systems, agro-industrial zones, and climate-resilient farming to mineral policy provisions that prioritize certain areas for mineral use or keep land available for future mineral investment. A smaller set also points to implementation pathways where mineral exploration, mining facilitation, or mineral zoning could complicate agriculture measures tied to biodiversity safeguards, ecosystem services, and eco-friendly land management.",
+      "coordination_hint": "Shared spatial planning, zoning, and inter-agency review of areas important for farming, agro-industry, biodiversity, and mineral development could help clarify where the two policies can pull in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -216,17 +221,17 @@
     "doc_b": "NWRP",
     "label_a": "NAP (Agriculture)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 5366,
-    "flagged_count": 100,
+    "aligned_count": 4659,
+    "flagged_count": 21,
     "contradiction_types": {
-      "resource_competition": 66,
-      "delivery_friction": 34
+      "resource_competition": 9,
+      "delivery_friction": 12
     },
     "synthesis": {
-      "storyline_name": "Agricultural growth within shared water governance",
-      "reinforce": "The two documents often pull in the same direction on participatory water governance, irrigation efficiency, and environmental standards, for example through stakeholder decision-making, water quality standards, river basin planning, and water-saving technologies such as drip irrigation and rainwater harvesting. Alignment also recurs around enabling instruments, including inter-ministerial coordination, legal and regulatory updates, research and extension, and technology development that supports climate-resilient agriculture while improving water management.",
-      "clash": "Possible misalignment recurs where agricultural expansion instruments, such as low-interest credit, agro-industrial zones, third-season cultivation, and economy-wide growth targets, could increase demand on finite surface water, groundwater, watersheds, and wetlands that the water policy seeks to allocate, conserve, and monitor. A second recurring pattern is delivery-side possible misalignment where incentives for intensification, machinery, nutrients, or clustered agro-industry could make it harder to maintain catchment protection, river basin plans, effluent controls, and water quality standards unless implementation is closely coordinated.",
-      "coordination_hint": "Joint use of basin and catchment planning, water allocation rules, and agricultural finance or zoning conditions could help these documents align in places where farm expansion and water conservation meet.",
+      "storyline_name": "Agricultural growth linked to water stewardship",
+      "reinforce": "The two documents often pull in the same direction where agriculture measures connect to water efficiency, water quality, and catchment or aquifer management, for example through drip irrigation, judicious fertilizer and pesticide use, soil and catchment conservation, and basin-based planning. Alignment also recurs around enabling instruments such as extension, education, coordination mechanisms, monitoring, and standards that could help bring water considerations into agricultural practice.",
+      "clash": "Possible misalignment recurs where agricultural expansion, incentives, or easier access to finance, machinery, and technologies could increase demand on shared water resources, especially groundwater, reservoirs, and watershed systems that the water policy seeks to conserve and allocate across users. Another recurring possible misalignment concerns fertilizer, nutrient, agro-industrial, and plant protection measures that could complicate water quality standards, effluent controls, catchment protection, and river basin management if implementation is not closely coordinated.",
+      "coordination_hint": "Joint use of basin and aquifer planning, water-quality safeguards, and agriculture finance or technology conditions could help keep farm modernization aligned with water allocation and conservation objectives.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -236,17 +241,17 @@
     "doc_b": "PPPP",
     "label_a": "NAP (Agriculture)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 579,
-    "flagged_count": 51,
+    "aligned_count": 447,
+    "flagged_count": 8,
     "contradiction_types": {
-      "delivery_friction": 48,
-      "resource_competition": 3
+      "delivery_friction": 7,
+      "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Land-use coordination between agriculture and spatial planning",
-      "reinforce": "The two documents often pull in the same direction on zoning, conservation-sensitive land use, and better use of existing resources and infrastructure. NAP measures such as crop zoning, Good Agricultural Practices, irrigation efficiency, catchment management, participatory governance, and city-region food system coordination align with PPPP components on conserving water, ecosystems, and cultural landscapes, while guiding development toward suitable and serviceable locations.",
-      "clash": "Possible misalignment recurs where NAP actions that expand or intensify production, such as third-season cultivation, agro-industrial zones, input supply, farm credit, profitability incentives, and irrigation rehabilitation, meet PPPP provisions for conserving critical landscapes and promoting diversified use of high-potential locations. The review cases often point to delivery overlap around siting, water allocation, and development pressure in sensitive or multi-use areas, with a smaller pattern of resource competition around water resources.",
-      "coordination_hint": "Joint spatial zoning, water-use planning, and site-screening for agricultural investments could help keep production, conservation, and location-based development priorities aligned in the same areas.",
+      "storyline_name": "Agricultural development within conservation-sensitive spatial planning",
+      "reinforce": "Across many pairs, the documents align with using spatial planning, environmental safeguards, and resource-efficiency principles to shape agricultural development. This recurs in links between agriculture measures such as agro-met advisories, eco-friendly extension, water-saving irrigation, renewable energy, market and processing facilities, and PPPP provisions on conserving water resources, ecosystems, cultural landscapes, and optimizing existing infrastructure.",
+      "clash": "Possible misalignment recurs where agricultural expansion or enabling measures, such as agro-industrial zones, domestic fertilizer and plant protection production, deregulation for machinery and technology uptake, and growth in the agri-food economy, could be harder to deliver alongside PPPP conservation requirements for sensitive landscapes and water resources. A smaller recurring issue concerns shared claims on water, where irrigation reservoir rehabilitation could compete with broader planning aims to conserve water resources and ecosystem functions.",
+      "coordination_hint": "Joint land-use zoning, siting review, and water allocation processes could help agricultural investment and planning safeguards pull in the same direction in environmentally sensitive areas.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -256,37 +261,37 @@
     "doc_b": "NDC",
     "label_a": "NBSAP (Nature)",
     "label_b": "NDC (Climate Change)",
-    "aligned_count": 1144,
-    "flagged_count": 4,
+    "aligned_count": 943,
+    "flagged_count": 3,
     "contradiction_types": {
-      "delivery_friction": 3,
-      "resource_competition": 1
-    },
-    "synthesis": {
-      "storyline_name": "Shared reliance on enabling governance and safeguards",
-      "reinforce": "The two documents often align through enabling measures, especially finance and capacity for biodiversity action, better data and participatory planning, and business disclosure or biosafety frameworks that can support climate actions in forestry, water, fisheries, settlements, and industry. A second recurring pattern is practical overlap where climate measures directly support biodiversity outcomes, such as wastewater management reducing pollution, river and catchment actions supporting freshwater ecosystems, and restoration or tree-based measures pulling in the same direction as biodiversity resilience and management goals.",
-      "clash": "Possible misalignment appears mainly around delivery of new natural gas infrastructure, where plant siting, associated corridors, and project screening could sit uneasily with biodiversity mainstreaming in planning and with business expectations to assess and mitigate biodiversity risks. A smaller recurring issue concerns land and demand pathways, where conserving land and waters could compete with crop expansion for space or water, and where higher dairy productivity could pull differently from efforts to reduce overconsumption unless consumption and production measures are coordinated.",
-      "coordination_hint": "Joint spatial planning, project screening, and land-use coordination across energy, agriculture, and biodiversity authorities could help keep implementation aligned while using shared data and safeguards.",
-      "confidence": "high"
-    },
-    "synthesis_error": null
-  },
-  {
-    "doc_a": "NBSAP",
-    "doc_b": "NFAP",
-    "label_a": "NBSAP (Nature)",
-    "label_b": "NFAP (Fisheries)",
-    "aligned_count": 95,
-    "flagged_count": 45,
-    "contradiction_types": {
-      "delivery_friction": 44,
+      "delivery_friction": 2,
       "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Shared aquatic sustainability with expansion pressures",
-      "reinforce": "The two documents often pull in the same direction on sustainable fisheries and aquaculture, especially where the NBSAP provides enabling tools such as gender-responsive governance, participatory and evidence-based decision-making, funding and capacity support, pollution reduction, and sustainable-use principles. Alignment also recurs around marine and inland biodiversity management through biosecurity, international compliance, waste reduction in fish value chains, and community welfare measures that can support more sustainable resource use.",
-      "clash": "Possible misalignment recurs mainly where NFAP production, export, consumption, tourism, harbour, marina, and aquaculture expansion pathways overlap with NBSAP aims on area conservation, ecosystem restoration, species protection, climate resilience, pollution control, and invasive alien species prevention. A particularly clear pattern concerns exotic species, expanded fishing effort, and coastal or inland infrastructure, which could increase pressure in the same marine, coastal, wetland, and freshwater spaces that the NBSAP seeks to conserve or restore, and there is also one direct possible misalignment between reducing overconsumption and increasing per capita fish consumption.",
-      "coordination_hint": "Joint spatial planning, biosecurity screening, species controls, and biodiversity safeguards for aquaculture, fisheries infrastructure, and market expansion could help keep shared marine and inland-water objectives aligned.",
+      "storyline_name": "Shared biodiversity planning across climate actions",
+      "reinforce": "The two documents largely align through habitat restoration, protected and climate-sensitive area management, invasive alien species control, pollution reduction, and climate-resilient management of rivers, coasts, and production landscapes. A second recurring pattern is enabling support through shared data systems, participatory decision-making, policy and legal updates, financing, gender-responsive governance, and business or sector practices that can help biodiversity and climate measures pull in the same direction.",
+      "clash": "Possible misalignment appears mainly where biodiversity-sensitive land and coastal zoning could intersect with expansion of natural gas infrastructure, crop production, or fisheries and aquaculture in the same spaces. These review cases often point to siting, area designation, and impact assessment as the concrete mechanisms where coordination may matter most.",
+      "coordination_hint": "Joint spatial planning, zoning, and environmental assessment processes could help align conservation areas, restoration priorities, and climate investments before locations and delivery pathways are fixed.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NFAP",
+    "label_a": "NBSAP (Nature)",
+    "label_b": "NFAP (Fisheries)",
+    "aligned_count": 93,
+    "flagged_count": 32,
+    "contradiction_types": {
+      "delivery_friction": 31,
+      "goal_conflict": 1
+    },
+    "synthesis": {
+      "storyline_name": "Aquatic biodiversity safeguards alongside fisheries expansion",
+      "reinforce": "The documents often pull in the same direction in coastal, marine, lagoon, estuary, and inland-water management through science-based resource management, spatial planning, protected areas and OECMs, pollution control, and sustainable aquaculture or fisheries practices. Alignment also recurs through enabling measures, gender-responsive participation, biodiversity finance, business risk disclosure, traceability, and waste reduction that can support more sustainable fisheries value chains and community welfare.",
+      "clash": "Possible misalignment recurs where NFAP production, export, consumption, enterprise, and infrastructure expansion in shared aquatic spaces could complicate NBSAP aims on habitat restoration, protected-area and OECM management, species recovery, wild-species controls, climate resilience, and biodiversity-sensitive planning. A particularly repeated mechanism is aquaculture intensification and the import or culture of new exotic species, which often points to biosecurity and invasive-species risks, and one pair identifies a direct potential misalignment with IAS prevention objectives.",
+      "coordination_hint": "Joint zoning, biodiversity screening of fisheries and aquaculture investments, and agreed species-introduction and biosecurity rules could help keep shared aquatic development and conservation measures aligned.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -296,17 +301,18 @@
     "doc_b": "NMP",
     "label_a": "NBSAP (Nature)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 402,
-    "flagged_count": 195,
+    "aligned_count": 280,
+    "flagged_count": 134,
     "contradiction_types": {
-      "delivery_friction": 159,
-      "resource_competition": 36
+      "delivery_friction": 96,
+      "resource_competition": 23,
+      "goal_conflict": 15
     },
     "synthesis": {
-      "storyline_name": "Cross-sector governance alignment with land-use pressures",
-      "reinforce": "The two documents often pull in the same direction on enabling governance, especially through better data and monitoring, participatory decision-making, transparency, stakeholder consultation, rights recognition including FPIC, and environmental responsibility in the mineral sector. They also align with practical safeguards such as pollution prevention procedures, mine closure and rehabilitation, cleaner technologies, and information-sharing mechanisms that could support biodiversity-sensitive mineral management.",
-      "clash": "Possible misalignment recurs most often where mineral zoning, land prioritization, deposit gazetting, exploration, investment promotion, and mining-linked infrastructure could overlap with areas targeted for conservation, restoration, species protection, and sustainable use. A second recurring pattern is implementation pressure on biodiversity delivery, especially around pollution control, invasive-species prevention, climate resilience, and NBSAP financing and capacity where extraction, processing, or access expansion may compete for attention, space, or management effort.",
-      "coordination_hint": "Integrated land and marine spatial planning, linked permitting and screening, and early use of biodiversity safeguards and participation processes could help the two agendas work together where mining areas overlap with sensitive ecosystems.",
+      "storyline_name": "Land-use planning around biodiversity and mining",
+      "reinforce": "The documents often pull in the same direction on environmental governance tools, especially biodiversity-sensitive spatial planning, impact assessment, mine closure and rehabilitation, pollution control, coastal ecosystem management, and business disclosure or polluter-pays approaches. Alignment also recurs around enabling systems, such as capacity building, data sharing, participatory decision-making, rights recognition including FPIC, and recycling of mineral wastes.",
+      "clash": "Possible misalignment recurs most clearly where both documents make claims on land and coastal or marine space, for example conservation areas, restoration sites, habitat corridors, and land kept available or zoned for future mineral use. It also often points to delivery pressures when mineral exploration, investment promotion, industrial development, or mining preferences move through the same planning and permitting systems that the NBSAP uses for biodiversity screening, protected-area considerations, pollution limits, and restoration priorities.",
+      "coordination_hint": "Joint spatial zoning, early biodiversity screening for mineral areas, and shared rules for exclusion, rehabilitation, and stakeholder participation could help both documents align more consistently in places where conservation and mineral development overlap.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -316,14 +322,14 @@
     "doc_b": "NWRP",
     "label_a": "NBSAP (Nature)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 501,
+    "aligned_count": 471,
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Shared ecosystem planning for watersheds and biodiversity",
-      "reinforce": "The documents often align through land use planning, river basin plans, catchment and watershed conservation, and aquifer protection as practical mechanisms that support freshwater ecosystem restoration, pollution reduction, and broader land and water conservation. A second recurring pattern is shared reliance on enabling governance tools, including legal review, participatory decision-making, local knowledge, standards and monitoring, and coordination across levels of government.",
+      "storyline_name": "Shared water ecosystem planning and governance",
+      "reinforce": "These documents largely align around conserving inland waters, watersheds, catchments, and related habitats through spatial planning, river basin or divisional planning, restoration, and pollution control. A recurring mechanism is enabling governance, data, participation, water quality standards, and cross-level coordination in the water policy supporting biodiversity actions on freshwater ecosystems, climate resilience, and protected or conserved areas.",
       "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Joint use of basin, catchment, and land use planning processes, alongside shared participation and monitoring arrangements, could help connect biodiversity objectives with water management implementation.",
+      "coordination_hint": "Joint use of catchment plans, water quality monitoring systems, and participatory water governance platforms could help connect biodiversity restoration and conservation actions with water resource planning.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -333,16 +339,16 @@
     "doc_b": "PPPP",
     "label_a": "NBSAP (Nature)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 49,
-    "flagged_count": 14,
+    "aligned_count": 46,
+    "flagged_count": 11,
     "contradiction_types": {
-      "delivery_friction": 14
+      "delivery_friction": 11
     },
     "synthesis": {
-      "storyline_name": "Spatial planning as biodiversity delivery framework",
-      "reinforce": "Across the aligned pairs, the PPPP often aligns with the NBSAP by embedding conservation sensitivity, land-use safeguards, and use of existing infrastructure into development decisions, which can support habitat protection, restoration, pollution reduction, climate resilience, and wise use of biodiversity. This recurs most clearly around PPPP Component 1 on conserving critical and unique areas, and more indirectly through Components 2 and 3 where settlement siting and optimization of existing resources can reduce pressure on sensitive land, water, coastal, and marine areas.",
-      "clash": "The recurring possible misalignment is concentrated in PPPP Component 4, where enhanced use and diversified development of locations, including natural reserves and scenic settings, could create pressure in the same spaces targeted by the NBSAP for conservation, restoration, species protection, biosecurity, and low-pollution management. The review records repeatedly point to delivery-side risks around zoning, access, safeguards, and limits on site use, rather than a fundamental difference in overall goals.",
-      "coordination_hint": "Closer coordination on spatial zoning, biodiversity safeguards, and site-specific planning criteria for reserves, scenic areas, and other sensitive locations could help both documents pull in the same direction more consistently.",
+      "storyline_name": "Spatial planning around sensitive ecosystems and development",
+      "reinforce": "The documents often align through biodiversity-sensitive spatial planning, especially where PPPP Components 1 to 3 support conservation of critical ecosystems, settlement siting in safer and more suitable areas, and better use of existing infrastructure rather than new land conversion. This recurs across mechanisms such as environmentally sensitive development screening, nature-based approaches in urban and settlement planning, business biodiversity risk disclosure, and planning choices that support protected areas, OECMs, restoration, pollution reduction, and species habitat protection.",
+      "clash": "The recurring possible misalignment is concentrated in PPPP Component 4, where enhanced use of locations including natural reserves and scenic settings could overlap with NBSAP actions for restoration, area-based conservation, species protection, pollution control, climate resilience, and biodiversity governance. The pattern often points to delivery-side overlap in the same places, where development-oriented use of reserves or scenic areas could complicate biodiversity safeguards, participation, benefit-sharing, and conservation financing unless spatial controls are clear.",
+      "coordination_hint": "Joint zoning, biodiversity screening, and transparent site-selection processes could help channel development toward lower-impact locations while keeping reserve, scenic, and restoration areas consistent with NBSAP priorities.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -352,17 +358,17 @@
     "doc_b": "NFAP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NFAP (Fisheries)",
-    "aligned_count": 453,
-    "flagged_count": 34,
+    "aligned_count": 380,
+    "flagged_count": 16,
     "contradiction_types": {
-      "resource_competition": 8,
-      "delivery_friction": 26
+      "delivery_friction": 13,
+      "resource_competition": 3
     },
     "synthesis": {
-      "storyline_name": "Coastal ecosystem management alongside fisheries expansion",
-      "reinforce": "The documents often pull in the same direction where climate-resilient coastal and marine planning supports science-based fisheries management, especially through area designation, management plans, forecasting, risk management, and ecosystem-based approaches. Alignment also recurs around enabling conditions for fisher welfare and livelihoods, where loss and damage systems, early warning, resilient infrastructure, wastewater management, and coastal restoration could support safer and more resilient fisheries communities.",
-      "clash": "Possible misalignment recurs where NFAP production, export, aquaculture, harbour, vessel, tourism, and livelihood expansion may overlap with NDC priorities for protected areas, habitat restoration, blue carbon ecosystems, seascape connectivity, and ecosystem-based management in vulnerable coastal and inland waters. A second recurring pattern is resource competition, where expanded marine and inland fisheries activity could draw on the same emissions budget, freshwater resources, and water infrastructure that the NDC allocates to mitigation and water management objectives.",
-      "coordination_hint": "Joint spatial planning, water allocation, and biosecurity screening, linked with low-emission fisheries pathways and habitat safeguards, could help both documents align more consistently in shared coastal and inland aquatic areas.",
+      "storyline_name": "Coastal ecosystem management and fisheries expansion pathways",
+      "reinforce": "The documents often align around climate-resilient fisheries governance, early warning, safer operations at sea, and science-based resource management, especially where ecosystem-based fisheries management, compliance frameworks, and resilience planning are involved. They also pull in the same direction through enabling systems such as transport, renewable energy, wastewater management, planning, and post-harvest infrastructure that can support more resilient fisheries and aquaculture value chains.",
+      "clash": "Possible misalignment recurs where NDC measures to expand protected areas, restore coastal habitats, conserve blue carbon ecosystems, manage invasive species, or maintain vulnerable lagoon productivity meet NFAP measures to expand aquaculture, marine production, exports, or related infrastructure in the same waters and coastal zones. A smaller recurring pattern concerns shared resource use, where irrigation and inland aquaculture may draw on the same freshwater systems, and where higher marine production pathways could increase emissions within the national mitigation envelope.",
+      "coordination_hint": "Joint spatial planning, biosecurity screening, and basin or coastal zoning linked to fisheries management plans could help these agendas move forward together in shared inland and coastal ecosystems.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -372,17 +378,18 @@
     "doc_b": "NMP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 1544,
-    "flagged_count": 408,
+    "aligned_count": 1078,
+    "flagged_count": 146,
     "contradiction_types": {
-      "delivery_friction": 255,
-      "resource_competition": 153
+      "resource_competition": 49,
+      "delivery_friction": 89,
+      "goal_conflict": 8
     },
     "synthesis": {
-      "storyline_name": "Spatial planning around environmentally managed mineral development",
-      "reinforce": "The two documents often pull in the same direction on environmental management instruments around mining, especially baseline environmental data, environmental regulations, mine closure, rehabilitation, and broader safeguards to minimize impacts on surrounding ecosystems. Alignment also recurs through enabling measures such as legal and administrative reform, research, R&D collaboration, transparency, and monitoring, which could support climate-related implementation across industry, waste, coastal, biodiversity, and water areas.",
-      "clash": "Possible misalignment recurs mainly where mineral exploration, land reservation, zoning of high mineral potential areas, or investment promotion overlap with climate priorities that depend on the same land, water, catchments, coasts, or habitats. The review set often points to delivery issues around protected areas, blue carbon ecosystems, river basin management, resilient water and sanitation infrastructure, agriculture, and other restoration or risk-management activities, with resource competition especially centered on finite land allocation.",
-      "coordination_hint": "Integrated spatial planning, using biodiversity, water, coastal, and climate-risk layers alongside mineral zoning, permitting, and rehabilitation requirements, could help keep implementation aligned in overlapping areas.",
+      "storyline_name": "Environmental safeguards alongside mineral land allocation",
+      "reinforce": "The two documents often pull in the same direction where the NDC promotes resilience, restoration, waste and water management, and climate-related R&D, while the NMP supports these through mining safeguards such as rehabilitation and closure plans, contamination-prevention procedures, environmental regulations, restricted-area controls, legal harmonization, and sector R&D. A recurring alignment is that mineral-sector governance instruments could support cleaner industrial development, safer wastewater and waste handling, protection of sensitive areas, and evidence gathering for climate and environmental management.",
+      "clash": "Possible misalignment recurs mainly around land and marine space, especially where the NMP provides for mineral prioritization, land reservation, investment-ready deposits, or expanded exploration, and the NDC seeks protected areas, habitat connectivity, forest and catchment restoration, sustainable agriculture, fisheries resilience, or coastal planning. It also often points to delivery issues where offshore or onshore exploration and mining-related infrastructure could complicate biodiversity regulation updates, hazard and vulnerability mapping, water remediation, and ecosystem restoration in overlapping areas.",
+      "coordination_hint": "Integrated spatial planning, including zoning, screening, sequencing, and shared environmental data, could help keep mineral development and climate resilience measures compatible where they overlap.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -392,17 +399,14 @@
     "doc_b": "NWRP",
     "label_a": "NDC (Climate Change)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 2500,
-    "flagged_count": 5,
-    "contradiction_types": {
-      "resource_competition": 4,
-      "delivery_friction": 1
-    },
+    "aligned_count": 2352,
+    "flagged_count": 0,
+    "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Water governance enabling climate implementation pathways",
-      "reinforce": "Across the aligned pairs, the recurring pattern is that NWRP planning and governance instruments, river basin plans, aquifer and catchment planning, water quality standards, stakeholder participation, and allocation mechanisms, often support NDC actions in wastewater management, irrigation, agriculture, coastal resilience, land use, and other climate-sensitive sectors. A smaller but clearer subset aligns through direct operational links, especially where wastewater management connects to surface water planning and where farm-level water-use methods align with climate-smart crop management.",
-      "clash": "The possible misalignment records recur mainly around water allocation pressures from energy and industrial expansion, particularly hydro, biomass, natural gas power, and eco-industrial parks where water demand could overlap with domestic, food security, environmental, and watershed conservation priorities. One additional pattern points to delivery-side possible misalignment where divisional land-use and catchment conservation plans could shape the siting of gas-related infrastructure in shared areas.",
-      "coordination_hint": "Joint basin and catchment level planning for energy, industry, and water allocation could help identify where siting, technology choice, efficiency measures, and environmental safeguards may keep these objectives pulling in the same direction.",
+      "storyline_name": "Integrated water governance for climate resilience",
+      "reinforce": "The documents largely align around integrated water management tools, including river basin planning, aquifer conservation, groundwater and surface water monitoring, land-use planning, and combined use of water sources. This pattern often points to climate actions on water supply, sanitation, flood early warning, catchment protection, wastewater management, and coastal resilience being supported by the NWRP's governance, planning, data, and stakeholder participation mechanisms.",
+      "clash": "No recurring possible misalignment in this set.",
+      "coordination_hint": "Linking NDC adaptation measures with NWRP basin plans, aquifer planning, monitoring systems, and stakeholder committees could help translate shared water-resilience aims into coordinated implementation.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -412,17 +416,16 @@
     "doc_b": "PPPP",
     "label_a": "NDC (Climate Change)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 283,
-    "flagged_count": 40,
+    "aligned_count": 263,
+    "flagged_count": 10,
     "contradiction_types": {
-      "delivery_friction": 39,
-      "resource_competition": 1
+      "delivery_friction": 10
     },
     "synthesis": {
-      "storyline_name": "Climate-informed spatial planning and land-use choices",
-      "reinforce": "The documents often pull in the same direction where climate measures depend on spatial planning, especially for settlement siting, water conservation, climate-resilient water and sanitation, river basin management, and better use of existing infrastructure. Alignment also recurs where NDC evidence tools, such as agro-ecological mapping, early warning, and loss-and-damage review, could inform PPPP decisions on livability, utility of existing assets, and conservation-sensitive development.",
-      "clash": "Possible misalignment recurs mainly around PPPP Component 4, where development-oriented use of high-potential, scenic, reserve, coastal, or other sensitive locations could complicate delivery of NDC actions on biodiversity, coastal restoration, adaptation, risk reduction, low-emission infrastructure, and waste facility siting. A smaller pattern also points to possible competition over shared land and water resources, particularly where irrigation management and diversified location-based development may draw on the same resource base.",
-      "coordination_hint": "Joint zoning, climate-risk screening, and site-selection criteria across planning, conservation, infrastructure, and water agencies could help keep location-based development aligned with climate and ecosystem objectives.",
+      "storyline_name": "Climate-informed spatial planning with conservation safeguards",
+      "reinforce": "Across many aligned pairs, the NDC's sector measures, such as risk management frameworks, forecasting, agro-ecological mapping, cleaner production, efficient infrastructure use, and waste or water management, align with PPPP principles on livability, conservation-sensitive development, and optimizing existing resources. The recurring link is that NDC evidence and efficiency instruments could inform where development is located and how land, infrastructure, ecosystems, and services are managed under physical planning.",
+      "clash": "The recurring possible misalignment is concentrated around PPPP Component 4's emphasis on enhancing use of location-based potentials, including natural reserves and scenic settings, alongside NDC actions to protect or restore vulnerable habitats, protected areas, ecological connectivity, forests, blue carbon ecosystems, coastal and marine areas, fisheries vulnerability zones, and flood-prone river basins. These records often point to delivery-stage overlap in the same landscapes, where development-oriented land use and conservation, restoration, or hazard-management measures could compete unless spatial boundaries and safeguards are clear.",
+      "coordination_hint": "Joint spatial zoning, hazard screening, and site-level safeguards could help align location-based development choices with protected areas, ecological corridors, coastal ecosystems, catchments, and priority flood basins.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -432,17 +435,17 @@
     "doc_b": "NMP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NMP (Minerals)",
-    "aligned_count": 100,
-    "flagged_count": 70,
+    "aligned_count": 53,
+    "flagged_count": 17,
     "contradiction_types": {
-      "delivery_friction": 54,
-      "resource_competition": 16
+      "delivery_friction": 11,
+      "resource_competition": 6
     },
     "synthesis": {
-      "storyline_name": "Cross-sector overlap in coastal and inland zoning",
-      "reinforce": "The two documents often pull in the same direction through enabling safeguards in the minerals policy, such as prior approval in environmentally sensitive areas, coastal resource management, restoration and rehabilitation, polluter-pays tools, and governance norms on transparency and participation that could support fisheries, aquaculture, and aquatic ecosystem protection. Alignment also recurs around broad value-addition and compliance agendas, where fisheries supply-chain upgrading and international obligations align with minerals-sector standards, enforcement capacity, and contamination-prevention procedures.",
-      "clash": "Possible misalignment recurs mainly in delivery where mineral zoning, reserve allocation, exploration, ready-for-investment deposit declarations, and mining-facilitating regulation could overlap with fishing grounds, inland waters, coastal habitats, aquaculture sites, and fisher community access rights. A second recurring pattern is resource competition over land and adjacent water spaces, especially where the minerals policy prioritizes land availability or mineral use in certain areas that fisheries policy also relies on for aquaculture, coastal livelihoods, export infrastructure, and habitat management.",
-      "coordination_hint": "Joint spatial planning, consultation, and impact assessment across coastal, inland-water, and adjacent land areas could help keep mineral siting, rehabilitation, and fisheries access arrangements aligned where the same places are involved.",
+      "storyline_name": "Coastal governance overlap with spatial-use pressures",
+      "reinforce": "The two documents often pull in the same direction on environmental governance, especially through impact assessment, restrictive approvals in sensitive areas, coastal resource management, contamination controls, rehabilitation, and broader legal and administrative capacity. This alignment tends to be indirect but concrete where mineral-sector safeguards and monitoring could support fisheries, aquaculture, coastal ecosystems, and community participation conditions.",
+      "clash": "Possible misalignment recurs where offshore mineral exploration and sea-floor mining activity share the same marine space as fisheries production, fish supply chains, exports, consumption, and community access, creating delivery-side pressures around zoning, sequencing, and safeguards. A second recurring pattern is competition over coastal, wetland, and inland land or water areas, where mineral zoning, land reservation, or prioritization could overlap with aquaculture sites, harbours, tourism facilities, and fisher community tenure.",
+      "coordination_hint": "Joint marine and coastal spatial planning, linked with participatory land-use zoning and environmental safeguards, could help clarify where fisheries and mineral activities may coexist and where separation may be helpful.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -452,17 +455,16 @@
     "doc_b": "NWRP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 224,
-    "flagged_count": 26,
+    "aligned_count": 206,
+    "flagged_count": 6,
     "contradiction_types": {
-      "resource_competition": 24,
-      "delivery_friction": 2
+      "resource_competition": 6
     },
     "synthesis": {
-      "storyline_name": "Water governance enabling fisheries growth pathways",
-      "reinforce": "Across many aligned pairs, the NWRP tends to provide enabling conditions for NFAP goals through water laws, basin and aquifer planning, water quality standards, stakeholder participation, and coordination across levels of government. This often points to shared support around inland fisheries, aquaculture, fish supply chains, and coastal or watershed-linked ecosystems, although the overlap is usually indirect rather than a joint delivery mechanism.",
-      "clash": "The recurring possible misalignment is competition over finite freshwater, basin, aquifer, and watershed resources, especially where NFAP aquaculture expansion and export-oriented production increase water demand alongside NWRP allocation, conservation, rights, and efficiency measures. A smaller but repeated pattern also concerns water quality, where intensified aquaculture activity could make compliance with standards and monitoring requirements more demanding.",
-      "coordination_hint": "Basin-level allocation, siting, water-use efficiency, and water-quality monitoring arrangements that include fisheries and aquaculture actors could help keep production, conservation, and multi-user water management pulling in the same direction.",
+      "storyline_name": "Water allocation and quality as fisheries enablers",
+      "reinforce": "Across many pairs, the documents align with each other through basin planning, catchment and wetland conservation, water quality standards, effluent control, and climate-related water planning that support inland fisheries, aquaculture, fish supply chains, and fisher livelihoods. The recurring pattern is enabling rather than direct, with NWRP providing cross-sector water governance and environmental management instruments that tend to support NFAP production, welfare, consumption, export, and resource-management aims.",
+      "clash": "The recurring possible misalignment is around competition for finite inland water and watershed capacity, especially where NFAP seeks to expand aquaculture or export-oriented production while NWRP prioritizes domestic use, food security, environmental needs, conservation, or priority-based allocation across sectors. This often points to shared pressure points in basin-wise allocation, crisis-period reallocation, aquaculture siting, and environmental safeguards, rather than a broad mismatch between the documents.",
+      "coordination_hint": "Joint basin-level planning on aquaculture water needs, allocation norms, siting, and environmental flow or watershed safeguards could help manage the recurring resource-competition risks while keeping the broader alignment in view.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -472,16 +474,16 @@
     "doc_b": "PPPP",
     "label_a": "NFAP (Fisheries)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 23,
-    "flagged_count": 7,
+    "aligned_count": 17,
+    "flagged_count": 3,
     "contradiction_types": {
-      "delivery_friction": 7
+      "delivery_friction": 3
     },
     "synthesis": {
       "storyline_name": "Spatial planning support for fisheries development",
-      "reinforce": "The two documents often pull in the same direction where fisheries actions depend on spatial planning, environmental safeguards, and better use of existing infrastructure, such as harbour, landing, processing, and aquaculture sites. This recurs across conservation-sensitive planning, settlement livability, and infrastructure optimization, where PPPP provides enabling zoning and siting principles that align with NFAP resource management, post-harvest improvement, community welfare, and livelihood development.",
-      "clash": "A recurring possible misalignment appears when NFAP production or export expansion, especially marine infrastructure, aquaculture intensification, and development in coastal or inland water areas, overlaps with PPPP conservation priorities or place-based development in reserves and scenic locations. The review cases consistently point to delivery-stage pressure on the same ecosystems or sites, suggesting that siting, zoning, and environmental controls could become important where fisheries growth and broader land-water development meet.",
-      "coordination_hint": "Joint coastal and inland zoning, linked environmental assessment, and early site screening could help align fisheries expansion with conservation-sensitive and location-based planning decisions.",
+      "reinforce": "The documents often pull in the same direction where fisheries actions rely on spatial planning, conservation safeguards, and better use of existing infrastructure, especially for harbours, landing sites, aquaculture areas, coastal livelihoods, and fishing settlements. A recurring pattern is that PPPP provides cross-sector tools on ecosystem-sensitive siting, settlement livability, and infrastructure optimization that align with NFAP goals on sustainable resource management, post-harvest improvements, community welfare, and fisheries-based enterprise development.",
+      "clash": "The recurring possible misalignment appears around production expansion and related infrastructure in marine fisheries, aquaculture, and export-oriented development when these activities affect the same coastal, inland-water, and ecosystem areas that PPPP seeks to conserve. The review cases often point to delivery-stage risks around siting, intensity of use, species choices, and new facilities, where conservation safeguards and production pathways may not line up automatically.",
+      "coordination_hint": "Joint spatial screening, environmental safeguards, and early coordination on harbour, aquaculture, and export-related site choices could help these documents support both production and conservation aims.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -491,17 +493,18 @@
     "doc_b": "NWRP",
     "label_a": "NMP (Minerals)",
     "label_b": "NWRP (Water)",
-    "aligned_count": 1085,
-    "flagged_count": 258,
+    "aligned_count": 834,
+    "flagged_count": 105,
     "contradiction_types": {
-      "delivery_friction": 148,
-      "resource_competition": 110
+      "delivery_friction": 88,
+      "resource_competition": 16,
+      "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Mineral development within water governance systems",
-      "reinforce": "The two documents often pull in the same direction on enabling governance, especially through reviewing laws, strengthening institutions, improving data and research, and using planning tools such as basin plans, land use plans, standards, and stakeholder participation. Alignment also recurs where mine closure, rehabilitation, pollution control, and cleaner processing can support catchment protection, aquifer conservation, water quality management, and broader environmental oversight.",
-      "clash": "Possible misalignment recurs where mineral zoning, land prioritization, investment promotion, and facilitation of exploration or mining could increase claims on finite basin, aquifer, surface water, and groundwater resources that the water policy allocates across sectors and users. Another recurring possible misalignment concerns delivery in water-sensitive areas, where mining preferences or processing expansion could overlap with upper watersheds, wetlands, river systems, community water practices, and multi-level water governance processes.",
-      "coordination_hint": "Integrated spatial planning and permitting, linked to basin or aquifer allocation rules, watershed safeguards, and shared stakeholder forums, could help keep mineral development and water management aligned in the same geographies.",
+      "storyline_name": "Cross-sector governance and water-sensitive land allocation",
+      "reinforce": "The two documents often align through shared governance tools, especially transparency, stakeholder participation, institutional coordination, research and information sharing, and stronger regulatory capacity. They also pull in the same direction where mining controls, mine closure, rehabilitation, contamination prevention, and approvals in sensitive areas support water quality, aquifer protection, and basin or catchment management.",
+      "clash": "Possible misalignment recurs mainly where the minerals document promotes land availability, zoning, cleared deposits, or facilitated mining investment, while the water document protects catchments, aquifers, upper watersheds, wetlands, river basins, and water quality through land-use plans and discharge controls. A second recurring pattern is competition over finite water and water-sensitive land, especially where mining expansion or investment-ready sites could increase claims on basin water allocation or overlap areas reserved for watershed functions.",
+      "coordination_hint": "Integrated spatial planning, basin-based permitting, and shared water allocation and monitoring processes could help both documents proceed together where mineral areas overlap aquifers, catchments, or river basins.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -511,17 +514,18 @@
     "doc_b": "PPPP",
     "label_a": "NMP (Minerals)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 130,
-    "flagged_count": 66,
+    "aligned_count": 117,
+    "flagged_count": 32,
     "contradiction_types": {
-      "delivery_friction": 56,
-      "resource_competition": 10
+      "delivery_friction": 24,
+      "resource_competition": 7,
+      "goal_conflict": 1
     },
     "synthesis": {
-      "storyline_name": "Spatial planning around mineral land use",
-      "reinforce": "The two documents often pull in the same direction where mineral regulation and planning safeguards meet, especially through environmental regulations for mining, pollution-control instruments, mine baseline data, rehabilitation, and conservation-sensitive land-use screening. Alignment also recurs around shared use of spatial and resource information, such as mineral inventories, monitoring systems, and research inputs that could inform decisions on where development, settlement, or post-mining land use is most suitable.",
-      "clash": "Possible misalignment recurs mainly around delivery sequencing and siting, where identifying deposits, declaring them ready for investment, promoting mineral investment, or steering development toward high-mineral-potential land can overlap with planning aims for livability, conservation, and diversified use of scenic or sensitive locations. A second recurring pattern is potential misalignment over land allocation, where reserving land or prioritizing mineral use in certain areas could compete with plans to optimize existing serviced areas or allocate land for settlements and other development uses.",
-      "coordination_hint": "Joint spatial zoning, shared screening of mineral and planning approvals, and use of common geospatial evidence could help keep mineral investment decisions and physical planning choices aligned in overlapping locations.",
+      "storyline_name": "Spatial planning for minerals and sensitive land",
+      "reinforce": "The documents often align around using spatial information, zoning, monitoring, and regulatory safeguards to guide where mineral activity occurs and how land is used. This recurs in pairs linking mineral inventories, mapping, rehabilitation, and environmental regulation with physical planning priorities on conservation, livability, and better use of existing land and infrastructure.",
+      "clash": "Possible misalignment recurs where NMP provisions to secure, prioritize, gazette, or develop mineral-bearing land overlap with PPPP priorities for conserving unique ecosystems and water resources, or allocating suitable land for settlements and other location-based development. Review cases also often point to delivery issues in sensitive coastal, scenic, reserve, or indigenous-rights contexts, where mining approvals, exploration, infrastructure, or investment promotion could compete with planning safeguards and site-selection criteria.",
+      "coordination_hint": "Integrated spatial zoning, shared land-screening criteria, and early coordination on approvals and site selection could help manage overlaps between mineral investment areas and conservation or settlement priorities.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -531,17 +535,16 @@
     "doc_b": "PPPP",
     "label_a": "NWRP (Water)",
     "label_b": "PPPP (Physical planning)",
-    "aligned_count": 111,
-    "flagged_count": 21,
+    "aligned_count": 112,
+    "flagged_count": 4,
     "contradiction_types": {
-      "delivery_friction": 17,
-      "resource_competition": 4
+      "delivery_friction": 4
     },
     "synthesis": {
-      "storyline_name": "Water-sensitive spatial planning and resource allocation",
-      "reinforce": "The documents often align around using spatial planning and governance tools to protect water resources, including land-use plans for aquifers, river basin and catchment planning, water quality standards, climate vulnerability assessment, and stakeholder committees. This recurs most clearly where PPPP's conservation-oriented planning for water resources, ecosystems, and cultural landscapes supports NWRP measures on monitoring, legal updates, participatory governance, and conservation-sensitive water management.",
-      "clash": "Possible misalignment recurs mainly around PPPP Component 4, where location-based development and enhanced use of natural reserves or scenic settings could place added pressure on the same watersheds, aquifers, wetlands, river basins, and local water supplies that NWRP seeks to conserve, regulate, or allocate across users. The review cases often point to delivery sequencing and design issues, such as zoning, permitting, recharge-zone protection, effluent control, and water allocation rules, and in a smaller set to direct competition for finite water among existing and new users.",
-      "coordination_hint": "Joint use of basin, aquifer, watershed, and recharge-zone information in site selection, zoning, and permitting could help keep development choices aligned with water allocation, quality, and conservation safeguards.",
+      "storyline_name": "Water-sensitive spatial planning and resource optimization",
+      "reinforce": "The two documents often pull in the same direction where physical planning incorporates water-resource conservation, through instruments such as conservation-sensitive land use, aquifer and river-basin plans, recharge-zone identification, water quality standards, and updated water legislation. A second recurring pattern is efficient use of existing resources and infrastructure, where NWRP measures on water valuation, demand assessment, groundwater management, and stakeholder participation align with PPPP's emphasis on optimizing what is already available.",
+      "clash": "A recurring possible misalignment appears around PPPP Component 4's focus on exploring and enhancing the use of locations, including natural reserves and scenic settings, when those same areas overlap with watersheds, wetlands, river basins, and riverine systems prioritized for conservation or basin-based management in NWRP. The review cases consistently point to delivery-stage issues, where location-based development activity could complicate catchment protection, surface-water management, effluent control, and protection of upper watershed functions unless spatial safeguards are clear.",
+      "coordination_hint": "Joint spatial zoning and basin-level screening of proposed development locations could help align location-use decisions with watershed, wetland, and river-basin management priorities.",
       "confidence": "high"
     },
     "synthesis_error": null

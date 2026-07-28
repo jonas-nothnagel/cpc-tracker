@@ -111,9 +111,9 @@ export const COUNTRIES: CountryEntry[] = [
     name: "Sri Lanka",
     iso3: "lka",
     status: "pilot",
-    // Coherence-only (Level 1): the CO delivered policy targets only (NDC 3.0,
-    // draft NBSAP, LDN). No BTR / BER / NR7 data, so those sections auto-hide.
-    // Targets, country config, and the pipeline run all land in this branch.
+    // Coherence-only (Level 1): the CO delivered policy targets only, now across
+    // eight documents (NDC 3.0, draft NBSAP, LDN, NAP, PPPP, NWRP, NFAP, NMP).
+    // No BTR / BER / NR7 data, so those sections auto-hide.
     visible: true,
     has: {
       coherence: true,
