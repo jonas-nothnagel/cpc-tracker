@@ -122,6 +122,23 @@ def get_semaphore() -> asyncio.Semaphore:
 
 
 # ---------------------------------------------------------------------------
+# Sampling-parameter support
+# ---------------------------------------------------------------------------
+# Some deployments (gpt-5.6-terra) accept only the default temperature and
+# reject an explicit value with a deterministic 400. Learned at the first
+# rejection and remembered for the process, so the pipeline drops the parameter
+# instead of burning the retry budget on an error that can never succeed.
+
+_models_without_temperature: set[str] = set()
+
+
+def _rejects_temperature(err_msg: str) -> bool:
+    return "temperature" in err_msg and (
+        "does not support" in err_msg or "unsupported_value" in err_msg
+    )
+
+
+# ---------------------------------------------------------------------------
 # Output language
 # ---------------------------------------------------------------------------
 # A single pipeline-wide setting drives every LLM call's output language.
@@ -334,12 +351,13 @@ async def call_llm_detailed(
             async with sem:
                 kwargs: dict[str, Any] = {
                     "model": model,
-                    "temperature": temperature,
                     "messages": [
                         {"role": "system", "content": system},
                         {"role": "user", "content": user},
                     ],
                 }
+                if model not in _models_without_temperature:
+                    kwargs["temperature"] = temperature
                 if top_p is not None:
                     kwargs["top_p"] = top_p
                 if max_tokens is not None:
@@ -386,6 +404,19 @@ async def call_llm_detailed(
             # pipeline. The caller observes "" and treats it as an unparseable
             # response (level=none, no flag).
             err_msg = str(e)
+            # A deployment that only allows its default temperature rejects the
+            # explicit value every time, so retrying as-is would spend the whole
+            # backoff budget. Remember it and retry immediately without the
+            # parameter; the run continues at the model's default sampling.
+            if _rejects_temperature(err_msg) and model not in _models_without_temperature:
+                _models_without_temperature.add(model)
+                logger.warning(
+                    "Model %s rejects an explicit temperature; dropping the parameter "
+                    "for the rest of this run (responses use the model default). "
+                    "Detail: %s",
+                    model, err_msg[:160],
+                )
+                continue
             if "content_filter" in err_msg or "ResponsibleAIPolicyViolation" in err_msg:
                 logger.warning(
                     f"LLM call rejected by Azure content filter; returning empty "
