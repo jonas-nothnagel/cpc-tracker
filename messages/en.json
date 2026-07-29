@@ -211,6 +211,26 @@
           }
         }
       },
+      "fundingGrid": {
+        "steps": {
+          "kpis": {
+            "title": "The four aligned-spend levels",
+            "body": "Each tile counts targets by their level of aligned spend: the 10 with the most, the 10 with the least (above zero), and those with none. The levels compare targets with each other — they never judge whether financing is sufficient."
+          },
+          "dots": {
+            "title": "Every dot is one policy target",
+            "body": "Targets are grouped by policy document and coloured by aligned-spend level. Click a dot to see the programmes the AI judged aligned with it. Each document's total counts every programme once — and because documents are lenses over the same reviewed spending, totals repeat across documents and cannot be added up."
+          },
+          "globe": {
+            "title": "The same spending, by biodiversity function",
+            "body": "This groups the reviewed spending by GLOBE category — what the money supports rather than which programme spends it. Categories are assigned by the Tracker's AI from programme descriptions, and each programme counts once."
+          },
+          "method": {
+            "title": "The method, in plain language",
+            "body": "Open this note for how the figures are produced: what counts as an aligned programme, how a programme backing several targets is handled, and why totals are not the sum of per-target figures."
+          }
+        }
+      },
       "deliveryRoster": {
         "steps": {
           "statusKey": {

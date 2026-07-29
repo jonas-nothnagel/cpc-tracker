@@ -34,7 +34,7 @@ export function GlobeSpendBreakdown({
   const maxShare = Math.max(summary.maxShare, 0.0001);
 
   return (
-    <div className="mt-6">
+    <div data-tour="grid-globe" className="mt-6">
       <h3 className="text-body font-medium text-[var(--undp-black)] mb-2">
         {t("title")}
         <InfoBox>{t("info")}</InfoBox>

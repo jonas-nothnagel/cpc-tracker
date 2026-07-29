@@ -20,7 +20,7 @@ export function FinancingMethodNote() {
   const t = useTranslations("briefing.financing.methodNote");
   const questions = ["q1", "q2", "q3", "q4"] as const;
   return (
-    <details className="group max-w-prose">
+    <details data-tour="grid-method" className="group max-w-prose">
       <summary className="cursor-pointer text-body font-medium text-[var(--undp-black)] list-none flex items-center gap-2">
         <span
           aria-hidden="true"

@@ -51,6 +51,7 @@ import type {
 import { FundingTargetGrid } from "./funding-target-grid";
 import { FinancingMethodNote } from "./financing-method-note";
 import { GlobeSpendBreakdown } from "./globe-spend-breakdown";
+import { TourButton } from "../tour/tour-button";
 
 export const FINANCING_SECTION_ID = "financing";
 
@@ -154,6 +155,13 @@ export function FinancingSection({
       body={grid ? t("lensBody") : sentence.body}
       evidence={evidence}
       disclosure={grid ? <FinancingMethodNote /> : undefined}
+      // Grid layout only: countries with the centerpiece get its own
+      // "financing" tour from the sticky-aside TourButton instead.
+      tourButton={
+        grid ? (
+          <TourButton tourId="fundingGrid" scopeId={FINANCING_SECTION_ID} />
+        ) : undefined
+      }
     />
   );
 }

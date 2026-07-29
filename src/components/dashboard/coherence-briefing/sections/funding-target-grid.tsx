@@ -699,7 +699,7 @@ export function FundingTargetGrid({
           caveat={t("provenance.caveat")}
         />
       </div>
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+      <section data-tour="grid-kpis" className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         <div className="bg-white border border-gray-100 rounded-lg p-3">
           <p className="text-caption text-[var(--undp-gray)]">
             {t("kpi.reviewed")}
@@ -739,7 +739,7 @@ export function FundingTargetGrid({
 
       {mode === "drawer" ? (
         <div>
-          <div className="px-1">
+          <div data-tour="grid-dots" className="px-1">
             {docs.map((d) => (
               <DocRow
                 key={d.docId}
@@ -769,7 +769,7 @@ export function FundingTargetGrid({
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 items-start">
           <div>
-            <div className="px-1">
+            <div data-tour="grid-dots" className="px-1">
               {docs.map((d) => (
                 <DocRow
                   key={d.docId}

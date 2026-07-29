@@ -211,6 +211,26 @@
           }
         }
       },
+      "fundingGrid": {
+        "steps": {
+          "kpis": {
+            "title": "Los cuatro niveles de gasto alineado",
+            "body": "Cada tarjeta cuenta metas según su nivel de gasto alineado: las 10 con más, las 10 con menos (mayor que cero) y las que no tienen ninguno. Los niveles comparan metas entre sí; nunca juzgan si el financiamiento es suficiente."
+          },
+          "dots": {
+            "title": "Cada punto es una meta de política",
+            "body": "Las metas se agrupan por documento de política y se colorean según su nivel de gasto alineado. Haga clic en un punto para ver los programas que la IA juzgó alineados con esa meta. El total de cada documento cuenta cada programa una sola vez — y como los documentos son lentes sobre el mismo gasto revisado, los totales se repiten entre documentos y no pueden sumarse."
+          },
+          "globe": {
+            "title": "El mismo gasto, por función de biodiversidad",
+            "body": "Aquí el gasto revisado se agrupa por categoría GLOBE: qué apoya el dinero, en lugar de qué programa lo gasta. Las categorías las asigna la IA del Tracker a partir de las descripciones de los programas, y cada programa se cuenta una sola vez."
+          },
+          "method": {
+            "title": "El método, en lenguaje sencillo",
+            "body": "Abra esta nota para ver cómo se producen las cifras: qué cuenta como un programa alineado, cómo se maneja un programa que respalda varias metas y por qué los totales no son la suma de las cifras por meta."
+          }
+        }
+      },
       "deliveryRoster": {
         "steps": {
           "statusKey": {
