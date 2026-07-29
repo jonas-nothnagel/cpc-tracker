@@ -2,7 +2,10 @@ import { describe, it, expect } from "vitest";
 import {
   computeBudgetCoverage,
   computeFinancingCoherence,
+  computeFundingTargetRows,
+  dedupeContributorSpend,
   formatBerMoney,
+  groupFundingRowsByDoc,
   pickBerDescription,
   pickBerName,
 } from "./financing-coherence";
@@ -311,5 +314,239 @@ describe("pickBerDescription", () => {
     };
     expect(pickBerDescription(skinny, "en")).toBe("ONLY legacy");
     expect(pickBerDescription(skinny, "es")).toBe("ONLY legacy");
+  });
+});
+
+// ── Per-target funding rows: tiers, overlap, and deduped totals ──────────────
+
+describe("computeFundingTargetRows", () => {
+  function target(id: string, doc: string): Target {
+    return {
+      id,
+      text: `${id} text`,
+      sourceDocument: doc,
+      sourceLabel: id,
+      country: "Testland",
+      isQuantitative: false,
+      isTimeBound: false,
+    };
+  }
+  function align(
+    a: string,
+    b: string,
+    level: AlignmentResult["alignment"],
+  ): AlignmentResult {
+    return { targetAId: a, targetBId: b, alignment: level, description: "" };
+  }
+
+  /** N programmes with spends N..1 (distinct after 1M rounding), each
+   *  high-aligned to its own target, plus one zero-spend programme aligned to
+   *  its own target. */
+  function fixture(n: number) {
+    const targets: Target[] = [];
+    const alignment: AlignmentResult[] = [];
+    const programs: BerData["programs"] = [];
+    const expenditure: BerData["expenditure"] = [];
+    for (let i = 1; i <= n; i++) {
+      targets.push(target(`T${i}`, "NBSAP"));
+      alignment.push(align(`BER_P${i}`, `T${i}`, "high"));
+      programs.push({
+        code: `P${i}`,
+        name: `Programme ${i}`,
+        description: "",
+        type: "environmental",
+      });
+      expenditure.push({
+        code: `P${i}`,
+        name: `Programme ${i}`,
+        values: { "2020": n - i + 1 },
+      });
+    }
+    targets.push(target("TZERO", "NBSAP"));
+    alignment.push(align("BER_PZERO", "TZERO", "high"));
+    programs.push({
+      code: "PZERO",
+      name: "Zero-spend programme",
+      description: "",
+      type: "environmental",
+    });
+    expenditure.push({ code: "PZERO", name: "Zero-spend programme", values: { "2020": 0 } });
+    const berData: BerData = {
+      programs,
+      expenditure,
+      currency: "PAB",
+      unit: "million",
+      period: { start: 2020, end: 2020 },
+    };
+    return { targets, alignment, berData };
+  }
+
+  const baseArgs = (f: ReturnType<typeof fixture>) => ({
+    targets: f.targets,
+    alignment: f.alignment,
+    berData: f.berData,
+    countryConfig: null,
+    locale: "en",
+    visibleDocIds: new Set(["NBSAP"]),
+  });
+
+  it("assigns the renamed tiers: top-10 high, bottom-10 low, middle medium, zero none", () => {
+    // 22 non-zero rows: spends 22..1. topCutoff = 10th largest (13),
+    // bottomCutoff = 10th smallest (10) → high: 22..13, medium: 12..11,
+    // low: 10..1, none: the zero-spend target.
+    const rows = computeFundingTargetRows(baseArgs(fixture(22)));
+    const byId = new Map(rows.map((r) => [r.targetId, r]));
+    expect(byId.get("T1")!.tier).toBe("high"); // spend 22
+    expect(byId.get("T10")!.tier).toBe("high"); // spend 13, at cutoff
+    expect(byId.get("T11")!.tier).toBe("medium"); // spend 12
+    expect(byId.get("T12")!.tier).toBe("medium"); // spend 11
+    expect(byId.get("T13")!.tier).toBe("low"); // spend 10, at cutoff
+    expect(byId.get("T22")!.tier).toBe("low"); // spend 1
+    expect(byId.get("TZERO")!.tier).toBe("none");
+    expect(byId.get("TZERO")!.alignedSpend).toBe(0);
+    expect(byId.get("TZERO")!.alignedProgrammeCount).toBe(0);
+  });
+
+  it("gives targets tied at the displayed rounding the same tier", () => {
+    const f = fixture(22);
+    // Make T11's programme spend fractionally under T10's: rounds to the same
+    // 1M bucket as the top-10 cutoff, so both must land in the same tier.
+    f.berData.expenditure.find((e) => e.code === "P11")!.values["2020"] = 12.6; // rounds to 13
+    const rows = computeFundingTargetRows(baseArgs(f));
+    const byId = new Map(rows.map((r) => [r.targetId, r]));
+    expect(byId.get("T10")!.tier).toBe(byId.get("T11")!.tier);
+  });
+
+  it("counts a shared programme's full spend under every aligned target (documented overlap)", () => {
+    const f = fixture(12);
+    // P1 (spend 12) also medium-aligns with T2.
+    f.alignment.push(align("BER_P1", "T2", "medium"));
+    const rows = computeFundingTargetRows(baseArgs(f));
+    const byId = new Map(rows.map((r) => [r.targetId, r]));
+    expect(byId.get("T2")!.alignedSpend).toBe(11 + 12); // own P2 + full P1
+    expect(byId.get("T2")!.alignedProgrammeCount).toBe(2);
+  });
+
+  it("ignores low/none-aligned pairs as contributors", () => {
+    const f = fixture(12);
+    f.alignment.push(align("BER_P1", "T2", "low"));
+    f.alignment.push(align("BER_P1", "T3", "none"));
+    const rows = computeFundingTargetRows(baseArgs(f));
+    const byId = new Map(rows.map((r) => [r.targetId, r]));
+    expect(byId.get("T2")!.alignedProgrammeCount).toBe(1);
+    expect(byId.get("T3")!.alignedProgrammeCount).toBe(1);
+  });
+});
+
+describe("dedupeContributorSpend", () => {
+  function target(id: string, doc: string): Target {
+    return {
+      id,
+      text: `${id} text`,
+      sourceDocument: doc,
+      sourceLabel: id,
+      country: "Testland",
+      isQuantitative: false,
+      isTimeBound: false,
+    };
+  }
+  function align(
+    a: string,
+    b: string,
+    level: AlignmentResult["alignment"],
+  ): AlignmentResult {
+    return { targetAId: a, targetBId: b, alignment: level, description: "" };
+  }
+
+  const berData: BerData = {
+    programs: [
+      { code: "P1", name: "P1", description: "", type: "environmental" },
+      { code: "P2", name: "P2", description: "", type: "environmental" },
+    ],
+    expenditure: [
+      { code: "P1", name: "P1", values: { "2020": 10 } },
+      { code: "P2", name: "P2", values: { "2020": 5 } },
+    ],
+    currency: "PAB",
+    unit: "million",
+    period: { start: 2020, end: 2020 },
+  };
+
+  it("counts a programme once even when it backs several targets", () => {
+    const rows = computeFundingTargetRows({
+      targets: [target("T1", "NBSAP"), target("T2", "NBSAP")],
+      // P1 aligns with both targets; P2 with T2 only.
+      alignment: [
+        align("BER_P1", "T1", "high"),
+        align("BER_P1", "T2", "high"),
+        align("BER_P2", "T2", "medium"),
+      ],
+      berData,
+      countryConfig: null,
+      locale: "en",
+      visibleDocIds: new Set(["NBSAP"]),
+    });
+    // Per-target values keep the intentional overlap...
+    expect(rows.reduce((s, r) => s + r.alignedSpend, 0)).toBe(10 + 10 + 5);
+    // ...while the union counts P1 once.
+    expect(dedupeContributorSpend(rows)).toEqual({ spend: 15, programmeCount: 2 });
+  });
+});
+
+describe("groupFundingRowsByDoc", () => {
+  function target(id: string, doc: string): Target {
+    return {
+      id,
+      text: `${id} text`,
+      sourceDocument: doc,
+      sourceLabel: id,
+      country: "Testland",
+      isQuantitative: false,
+      isTimeBound: false,
+    };
+  }
+  function align(
+    a: string,
+    b: string,
+    level: AlignmentResult["alignment"],
+  ): AlignmentResult {
+    return { targetAId: a, targetBId: b, alignment: level, description: "" };
+  }
+
+  it("dedupes doc totals per document while rows keep per-target overlap", () => {
+    const berData: BerData = {
+      programs: [
+        { code: "P1", name: "P1", description: "", type: "environmental" },
+        { code: "P2", name: "P2", description: "", type: "environmental" },
+      ],
+      expenditure: [
+        { code: "P1", name: "P1", values: { "2020": 10 } },
+        { code: "P2", name: "P2", values: { "2020": 5 } },
+      ],
+      currency: "PAB",
+      unit: "million",
+      period: { start: 2020, end: 2020 },
+    };
+    const rows = computeFundingTargetRows({
+      targets: [target("A1", "NBSAP"), target("A2", "NBSAP"), target("B1", "NAP")],
+      alignment: [
+        // P1 backs both NBSAP targets → NBSAP total must count it once.
+        align("BER_P1", "A1", "high"),
+        align("BER_P1", "A2", "high"),
+        align("BER_P2", "B1", "high"),
+      ],
+      berData,
+      countryConfig: null,
+      locale: "en",
+      visibleDocIds: new Set(["NBSAP", "NAP"]),
+    });
+    const docs = groupFundingRowsByDoc(rows, null);
+    const nbsap = docs.find((d) => d.docId === "NBSAP")!;
+    const nap = docs.find((d) => d.docId === "NAP")!;
+    expect(nbsap.docSpend).toBe(10); // NOT 20
+    expect(nbsap.docProgrammeCount).toBe(1);
+    expect(nbsap.rows.reduce((s, r) => s + r.alignedSpend, 0)).toBe(20); // overlap preserved per target
+    expect(nap.docSpend).toBe(5);
+    expect(nap.docProgrammeCount).toBe(1);
   });
 });

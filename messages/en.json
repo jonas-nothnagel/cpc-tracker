@@ -792,24 +792,28 @@
         "headline": "{country}'s reviewed biodiversity spending matches {share} the policy targets.",
         "body": "Across the {docCount, plural, one {# policy document} other {# policy documents}} there are {total, plural, one {# target} other {# targets}}. {reached} have a matching budget line in this review; the other {outsideReach} have none. Each dot below is one target; open a document for both sides."
       },
+      "lensBody": "Expenditure figures come from the budget programmes covered by the review. Each policy document below is one analytical lens over the same reviewed spending, so amounts repeat across documents and cannot be summed.",
       "targetGrid": {
         "kpi": {
           "reviewed": "Targets reviewed",
-          "wellFunded": "Well-funded",
-          "wellFundedCaption": "≥ top-10 spend threshold",
-          "underFunded": "Under-funded",
-          "underFundedCaption": "≤ bottom-10 spend threshold",
-          "unfunded": "No aligned spend",
-          "unfundedCaption": "no programme judged aligned"
+          "highCaption": "among the 10 targets with the most aligned spend",
+          "lowCaption": "among the 10 with the least aligned spend (above zero)",
+          "noneCaption": "no programme description judged aligned"
         },
         "tier": {
-          "well-funded": "Well-funded",
-          "normal": "Funded",
-          "under-funded": "Under-funded",
-          "unfunded": "No aligned spend"
+          "high": "High aligned spend",
+          "medium": "Medium aligned spend",
+          "low": "Low aligned spend",
+          "none": "No aligned spend"
+        },
+        "docTotal": "Total spend of the programmes the AI matched to this document's targets, counting each programme once.",
+        "provenance": {
+          "sourceLabel": "Biodiversity Expenditure Review (BER), {start}–{end}",
+          "method": "The Biodiversity Expenditure Review (BER) identifies and quantifies biodiversity expenditure; it does not connect expenditure to policy targets. Every link shown here was made by the Tracker's AI, which compares each funding line's description with each target's text and judges how well they align.",
+          "caveat": "AI-estimated alignment between descriptions — an indication of thematic association, not a record of money spent on a target."
         },
         "detail": {
-          "placeholder": "Click any dot to see the target, the funding tier, and the programmes the AI judged aligned with it.",
+          "placeholder": "Click any dot to see the target, its aligned-spend level, and the programmes the AI judged aligned with it.",
           "close": "Close target details",
           "readMore": "Read more",
           "showLess": "Show less",
@@ -829,6 +833,25 @@
           "otherInstitution": "Other",
           "institutionSubtotal": "{count, plural, one {# programme} other {# programmes}} · {money}"
         }
+      },
+      "methodNote": {
+        "title": "How these figures are produced",
+        "intro": "Biodiversity expenditure originates in public budget allocations implemented through institutions and programmes. The Biodiversity Expenditure Review (BER) identifies and quantifies that expenditure; it does not assign it to policy targets. The Tracker adds an analytical layer: its AI compares each programme's description with each policy target's text and records where the descriptions align. Each policy document above is therefore one analytical lens over the same reviewed expenditure — not an owner of it.",
+        "q1Title": "What counts as an aligned programme?",
+        "q1Body": "A budget programme whose description the Tracker's AI judged closely or moderately aligned with this target's text, and which recorded executed spend over the review period.",
+        "q2Title": "What if one programme aligns with several targets?",
+        "q2Body": "When a programme's description aligns with several targets, its full spend appears under each of them. A target's figure measures how much reviewed spending has descriptions aligned with that target — not money allocated to it.",
+        "q3Title": "How should per-target figures be read?",
+        "q3Body": "As a relative signal for comparing targets. They say nothing about whether financing is sufficient to achieve a target — that would require financing-needs and gap data this module does not include.",
+        "q4Title": "Is spending double-counted?",
+        "q4Body": "Per-target figures intentionally overlap. Wherever a total is shown for a document or for the review as a whole, each programme is counted once, so totals are not the sum of the per-target figures.",
+        "coverageNote": "The headline match count uses only closely aligned links; the dot grid and per-target figures also include moderately aligned links."
+      },
+      "globeBreakdown": {
+        "title": "Reviewed spend by GLOBE category",
+        "info": "GLOBE is the global biodiversity expenditure taxonomy of BIOFIN, the UNDP Biodiversity Finance Initiative (2024 edition). It groups spending by the biodiversity function it supports.",
+        "aiCaption": "Categories are assigned by the Tracker's AI from each programme's description — they are not the national BIOFIN team's classification. Each programme counts once, under its main category. AI-estimated and indicative.",
+        "noSpendCategories": "{count, plural, one {# category} other {# categories}} with no classified spend"
       }
     },
     "financingCenter": {
@@ -1710,7 +1733,7 @@
       },
       "finance": {
         "spendVsMisalignment": "Where does biodiversity spend sit relative to potential misalignments?",
-        "underFunded": "Which national targets appear under-funded?",
+        "underFunded": "Which national targets have the least aligned spend?",
         "fundedCategories": "Which biodiversity categories carry the most tagged spend?"
       }
     },

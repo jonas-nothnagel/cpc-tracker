@@ -4,13 +4,16 @@
  * Funding target grid — the Financing section's evidence panel.
  *
  * Every visible policy target is one dot, grouped by document, color-coded by
- * funding tier (well-funded / normal / under-funded / unfunded). Click a dot
- * to open a sticky detail panel on the right with the target text, contributing
+ * aligned-spend tier (high / medium / low / none — relative volume of
+ * AI-aligned expenditure, never financing adequacy). Click a dot to open a
+ * sticky detail panel on the right with the target text, contributing
  * programmes, and a per-year aligned-spend bar chart.
  *
- * "Aligned spend" is the sum of executed expenditure across programmes the
- * pipeline judged high- or medium-aligned with this target. AI-judged
- * semantic coherence — not traced material flow.
+ * "Aligned spend" is the sum of executed expenditure across programmes whose
+ * descriptions the pipeline judged high- or medium-aligned with this target's
+ * text. AI-judged alignment between descriptions — not traced material flow.
+ * Per-target values intentionally overlap; document totals count each
+ * programme once (dedupeContributorSpend in financing-coherence).
  */
 
 import { useEffect, useState } from "react";
@@ -20,13 +23,16 @@ import type {
   FundingTargetRow,
   FundingTier,
 } from "@/lib/financing-coherence";
+import { DataProvenance } from "@/components/ui/data-provenance";
 import type { AlignmentLevel } from "@/types";
 
+// Keys are FundingTier values, distinct from the AlignmentLevel keys of
+// LEVEL_COLOR below despite the lexical overlap — keep the lookups separate.
 const TIER_COLOR: Record<FundingTier, string> = {
-  "well-funded": "var(--undp-green)",
-  "normal": "var(--undp-blue)",
-  "under-funded": "var(--undp-yellow)",
-  "unfunded": "var(--undp-red)",
+  high: "var(--undp-green)",
+  medium: "var(--undp-blue)",
+  low: "var(--undp-yellow)",
+  none: "var(--undp-red)",
 };
 const LEVEL_COLOR: Record<AlignmentLevel, string> = {
   high: "var(--undp-green)",
@@ -38,7 +44,7 @@ const LEVEL_COLOR: Record<AlignmentLevel, string> = {
 
 const TEXT_PREVIEW_LEN = 160;
 
-function fmtMoney(value: number, unit: string, currency: string): string {
+export function fmtMoney(value: number, unit: string, currency: string): string {
   // Same unit/currency rules formatBerMoney follows: data ships in `unit`
   // (e.g. "million") of `currency` (e.g. "PAB"). Display in compact form for
   // grid + panel rows.
@@ -62,6 +68,8 @@ function fmtMoney(value: number, unit: string, currency: string): string {
 function DocRow({
   docLabel,
   rows,
+  docSpend,
+  docTotalTitle,
   selectedId,
   onSelect,
   fmt,
@@ -69,19 +77,26 @@ function DocRow({
 }: {
   docLabel: string;
   rows: FundingTargetRow[];
+  /** Deduped document total — each programme counted once (never the sum of
+   *  per-target alignedSpend, which intentionally overlaps). */
+  docSpend: number;
+  docTotalTitle: string;
   selectedId: string | null;
   onSelect: (r: FundingTargetRow) => void;
   fmt: (v: number) => string;
   tierLabel: (t: FundingTier) => string;
 }) {
-  const docSpend = rows.reduce((s, r) => s + r.alignedSpend, 0);
   return (
     <div className="grid grid-cols-[180px_1fr] gap-3 items-center py-2 border-b border-gray-100 last:border-b-0">
       <div>
         <p className="text-data text-[var(--undp-black)] font-medium truncate" title={docLabel}>
           {docLabel}
         </p>
-        <p className="text-caption tabular-nums text-[var(--undp-gray)]">
+        <p
+          className="text-caption tabular-nums text-[var(--undp-gray)]"
+          title={docTotalTitle}
+          aria-label={`${rows.length} · ${fmt(docSpend)}. ${docTotalTitle}`}
+        >
           {rows.length} · {fmt(docSpend)}
         </p>
       </div>
@@ -97,10 +112,10 @@ function DocRow({
               aria-pressed={selected}
               className={
                 "inline-block w-2.5 h-2.5 rounded-full cursor-pointer transition-transform hover:scale-150 focus:scale-150 focus:outline-none " +
-                (r.tier === "unfunded" ? "border " : "") +
+                (r.tier === "none" ? "border " : "") +
                 (selected ? "ring-2 ring-offset-1 ring-[var(--undp-black)] scale-150" : "")
               }
-              style={r.tier === "unfunded"
+              style={r.tier === "none"
                 ? { borderColor: TIER_COLOR[r.tier] }
                 : { backgroundColor: TIER_COLOR[r.tier] }
               }
@@ -347,7 +362,16 @@ function ContributorRow({
           style={{ backgroundColor: LEVEL_COLOR[c.level] }}
           title={c.level}
         />
-        <span className="flex-1 text-[var(--undp-black)] leading-snug">{c.name}</span>
+        <span className="flex-1 min-w-0 leading-snug">
+          <span className="block text-[var(--undp-black)]">{c.name}</span>
+          {(c.institution || c.description) && (
+            <span className="line-clamp-1 text-[var(--undp-gray)]">
+              {c.institution}
+              {c.institution && c.description ? " — " : ""}
+              {c.description}
+            </span>
+          )}
+        </span>
         <span className="tabular-nums text-[var(--undp-gray)] shrink-0">{fmt(c.spend)}</span>
         <span
           aria-hidden="true"
@@ -602,7 +626,7 @@ function ColorLegend({
 }: {
   tierLabel: (t: FundingTier) => string;
 }) {
-  const tiers: FundingTier[] = ["well-funded", "normal", "under-funded", "unfunded"];
+  const tiers: FundingTier[] = ["high", "medium", "low", "none"];
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 px-1 text-caption text-[var(--undp-gray)]">
       {tiers.map((tier) => (
@@ -611,9 +635,9 @@ function ColorLegend({
             aria-hidden="true"
             className={
               "inline-block w-2.5 h-2.5 rounded-full " +
-              (tier === "unfunded" ? "border" : "")
+              (tier === "none" ? "border" : "")
             }
-            style={tier === "unfunded"
+            style={tier === "none"
               ? { borderColor: TIER_COLOR[tier] }
               : { backgroundColor: TIER_COLOR[tier] }
             }
@@ -629,17 +653,26 @@ export function FundingTargetGrid({
   docs,
   unit,
   currency,
+  period,
   totals,
   mode = "docked",
 }: {
-  docs: { docId: string; docLabel: string; rows: FundingTargetRow[] }[];
+  docs: {
+    docId: string;
+    docLabel: string;
+    rows: FundingTargetRow[];
+    docSpend: number;
+    docProgrammeCount: number;
+  }[];
   unit: string;
   currency: string;
+  /** BER review period, for the provenance source label. */
+  period?: { start: number; end: number };
   totals: {
     reviewed: number;
-    wellFunded: number;
-    underFunded: number;
-    unfunded: number;
+    high: number;
+    low: number;
+    none: number;
   };
   /**
    * "docked": always-visible detail panel in a right-side column (default).
@@ -656,6 +689,16 @@ export function FundingTargetGrid({
 
   return (
     <div>
+      <div className="flex justify-end mb-2">
+        <DataProvenance
+          origin="mixed"
+          sources={period
+            ? [{ label: t("provenance.sourceLabel", { start: period.start, end: period.end }) }]
+            : undefined}
+          method={t("provenance.method")}
+          caveat={t("provenance.caveat")}
+        />
+      </div>
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         <div className="bg-white border border-gray-100 rounded-lg p-3">
           <p className="text-caption text-[var(--undp-gray)]">
@@ -667,30 +710,30 @@ export function FundingTargetGrid({
         </div>
         <div className="bg-white border border-gray-100 rounded-lg p-3">
           <p className="text-caption font-medium" style={{ color: "var(--undp-green)" }}>
-            {t("kpi.wellFunded")}
+            {tierLabel("high")}
           </p>
           <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-green)" }}>
-            {totals.wellFunded}
+            {totals.high}
           </p>
-          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.wellFundedCaption")}</p>
+          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.highCaption")}</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-lg p-3">
           <p className="text-caption font-medium" style={{ color: "var(--undp-yellow)" }}>
-            {t("kpi.underFunded")}
+            {tierLabel("low")}
           </p>
           <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-yellow)" }}>
-            {totals.underFunded}
+            {totals.low}
           </p>
-          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.underFundedCaption")}</p>
+          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.lowCaption")}</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-lg p-3">
           <p className="text-caption font-medium" style={{ color: "var(--undp-red)" }}>
-            {t("kpi.unfunded")}
+            {tierLabel("none")}
           </p>
           <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-red)" }}>
-            {totals.unfunded}
+            {totals.none}
           </p>
-          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.unfundedCaption")}</p>
+          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.noneCaption")}</p>
         </div>
       </section>
 
@@ -702,6 +745,8 @@ export function FundingTargetGrid({
                 key={d.docId}
                 docLabel={d.docLabel}
                 rows={d.rows}
+                docSpend={d.docSpend}
+                docTotalTitle={t("docTotal")}
                 selectedId={selected?.targetId ?? null}
                 onSelect={setSelected}
                 fmt={fmt}
@@ -730,6 +775,8 @@ export function FundingTargetGrid({
                   key={d.docId}
                   docLabel={d.docLabel}
                   rows={d.rows}
+                  docSpend={d.docSpend}
+                  docTotalTitle={t("docTotal")}
                   selectedId={selected?.targetId ?? null}
                   onSelect={setSelected}
                   fmt={fmt}

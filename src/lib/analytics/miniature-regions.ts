@@ -241,11 +241,15 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
     {
       id: "target-grid",
       name: "Funding dot grid",
-      // briefing.financing.targetGrid.tier.*
+      // briefing.financing.targetGrid.tier.* — current aligned-spend labels
+      // plus the pre-2026-07 funding-tier labels, so historical events keep
+      // resolving to this region.
       match: frag(
-        "Well-funded", "Funded", "Under-funded", "No aligned spend",
-        "Bien financiada", "Financiada", "Sub-financiada", "Sin gasto alineado",
-        "Сайн санхүүжсэн", "Санхүүжсэн", "Тааруухан санхүүжсэн", "Зэрэгцэх зарцуулалтгүй",
+        "aligned spend", "asto alineado", "тохирох зарцуулалт",
+        "No aligned spend", "Sin gasto alineado", "Зэрэгцэх зарцуулалтгүй",
+        "Well-funded", "Funded", "Under-funded",
+        "Bien financiada", "Financiada", "Sub-financiada",
+        "Сайн санхүүжсэн", "Санхүүжсэн", "Тааруухан санхүүжсэн",
       ),
     },
     OTHER,

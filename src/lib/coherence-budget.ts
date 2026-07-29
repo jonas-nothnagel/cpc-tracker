@@ -220,10 +220,11 @@ export function computeBudgetByTaxonomy(args: {
 }
 
 /**
- * GLOBE budget summary: BER programmes classified to `globe_sub`, rolled up to
- * the 9 primary GLOBE categories. Thin wrapper over {@link computeBudgetByTaxonomy}
- * kept for existing callers (briefing finance centerpiece, explorer, chat
- * context); behaviour is identical to the pre-generalisation function.
+ * GLOBE budget summary rolled up to the 9 primary GLOBE categories. Tries the
+ * two-level rollup first (Mongolia: BER programmes classified to `globe_sub`,
+ * mapped to parents), then falls back to single-level primary `globe` tags
+ * (Panama: BER programmes carry no `globe_sub` classifications). Callers
+ * (briefing finance centerpiece, explorer, chat context) are unchanged.
  */
 export function computeBudgetByGlobeCategory(args: {
   berData: BerData | null;
@@ -235,15 +236,23 @@ export function computeBudgetByGlobeCategory(args: {
 }): CategoryBudgetSummary | null {
   const subToParent = new Map<string, string>();
   for (const s of args.globeSubcategories) subToParent.set(s.id, s.parentId);
-  return computeBudgetByTaxonomy({
+  const shared = {
     berData: args.berData,
     categories: args.globeCategories,
-    primaryTaxonomyType: "globe",
-    budgetTaxonomyType: "globe_sub",
-    subToParent,
     classifications: args.classifications,
     targets: args.targets,
     alignment: args.alignment,
+  };
+  const twoLevel = computeBudgetByTaxonomy({
+    ...shared,
+    primaryTaxonomyType: "globe",
+    budgetTaxonomyType: "globe_sub",
+    subToParent,
+  });
+  if (twoLevel) return twoLevel;
+  return computeBudgetByTaxonomy({
+    ...shared,
+    primaryTaxonomyType: "globe",
   });
 }
 

@@ -1,0 +1,92 @@
+Dear Lea, Michael and team,
+Following our recent meetings, I reviewed the current presentation of Panama's Biodiversity Expenditure Review (BER) information in the Tracker and would like to share a few preliminary observations and discussion points.
+These comments are intended to contribute to the ongoing development of the financial module and reflect my perspective as the technical focal point supporting the preparation of Panama's BIOFIN products. They are shared in the spirit of constructive collaboration and with the understanding that the module continues to evolve.
+Analytical perspective of the financial module
+One of the first questions that arose during the review concerns the analytical perspective adopted by the financial module.
+
+The current interface is organised around policy documents and their individual targets, displaying the biodiversity expenditure that the Tracker identifies as aligned with each target.
+
+This raises an interesting methodological question: Is the primary objective of the financial module to show which policy targets appear to be supported by biodiversity expenditure, or to illustrate how biodiversity expenditure contributes across multiple policy frameworks?
+
+From the BIOFIN perspective, biodiversity expenditure originates from public budget allocations implemented through institutions, programmes, activities, and projects. The Tracker then provides an analytical layer by identifying how that expenditure aligns with policy instruments and policy targets, which are not budgetary units themselves.
+
+Consequently, expenditure is not inherently attached to a single policy document; rather, policy documents provide different analytical perspectives through which the same expenditure can be interpreted.
+
+Clarifying this conceptual perspective may help users better understand the analytical purpose of the module.
+
+Interpretation of expenditure alignment
+
+The current implementation establishes relationships between biodiversity expenditure and policy targets through semantic analysis.
+
+This approach represents an innovative analytical feature of the CPC Tracker. As reflected in its conceptual design, the objective is not to present definitive findings but to generate evidence that prompts further review, raises relevant policy questions, and supports informed discussions on how biodiversity expenditure may contribute to strengthening the implementation and achievement of national policy objectives.
+
+However, it may be useful to clarify within the interface that these expenditure-target relationships are generated through the Tracker's analytical methodology, whereas the BER itself identifies biodiversity expenditure without directly assigning expenditure to individual policy targets.
+
+Making this distinction explicit could strengthen methodological transparency and facilitate interpretation.
+
+        3. Review of terminology
+
+During our discussion, the team specifically invited feedback on the terminology currently used in the financial module, including expressions such as Aligned Spend, Well-funded, Funded, and Under-funded.
+
+Based on this preliminary review, Aligned Spend appears consistent with the analytical logic of the module and appropriately reflects expenditure identified as aligned with policy targets through the Tracker's analytical process.
+
+The labels Well-funded and Under-funded, however, may merit further consideration. These expressions could naturally be interpreted as assessments of the adequacy or sufficiency of financing available to achieve a policy target. The current analysis, however, appears to measure the volume of aligned biodiversity expenditure rather than whether financial resources are sufficient to achieve the corresponding policy objective.
+
+From the BIOFIN perspective, assessing whether a policy target is adequately financed would normally require information on financing needs and expenditure gaps, in addition to expenditure itself. Since the current module focuses on aligned biodiversity expenditure, terminology explicitly referring to expenditure alignment may better represent the analytical scope of the results.
+
+It may therefore be useful to consider whether the current labels are intended to describe relative levels of aligned biodiversity expenditure rather than financing adequacy. If this is the case, terminology that explicitly refers to expenditure alignment, for example, High Aligned Expenditure, Medium Aligned Expenditure, Low Aligned Expenditure, and No Aligned Expenditure (or similar expressions), may more accurately reflect the analytical scope of the current module while avoiding unintended interpretations regarding the sufficiency of financing.
+
+       4. Presentation of expenditure information
+
+The current interface presents expenditure primarily through programme names extracted from the expenditure database.
+
+As discussed during previous meetings, Panama shared a complementary expenditure dataset containing additional descriptive information to facilitate the interpretation of expenditure records beyond the administrative budget labels. This information was developed specifically to support the implementation of Panama's biodiversity expenditure data in the Tracker and to improve the interpretation of expenditure records.
+
+While programme names provide traceability to the underlying budget structure, several expenditure records share identical programme names, making interpretation more difficult for users.
+
+Considering that these descriptive fields are already available within the dataset, it may be worth exploring whether they could be incorporated more visibly into the interface—for example, through expandable descriptions, grouped expenditure records or other presentation options that improve readability while preserving the existing analytical structure.
+
+         5. Future opportunity: BIOFIN thematic expenditure categories
+
+Panama is currently seeking to develop a complementary thematic classification of biodiversity expenditure as part of the continued refinement of the BER.
+
+The proposed categories include:
+
+Knowledge
+Economy
+Pollution Management
+Biosafety
+Sustainable Use
+Protected Areas and Conservation
+Restoration
+Biodiversity Planning
+
+Although this thematic classification is not ready yet, it may eventually provide an additional analytical layer that complements the current programme-based presentation.
+
+Unlike administrative programme names, these categories describe the biodiversity function supported by the expenditure and may therefore facilitate interpretation of financial contributions to policy objectives.
+
+In addition, such thematic categories may strengthen cross-country comparability across BIOFIN countries while preserving each country's administrative budget structure.
+
+          6. Methodological transparency
+
+During the review, several questions naturally arose while interpreting the results presented for individual policy targets.
+
+For example:
+
+What exactly constitutes an aligned programme?
+How are expenditure lines associated with multiple policy targets treated within the analysis?
+How should users interpret the expenditure values presented for individual targets?
+When the same expenditure contributes to multiple policy targets or policy documents, how does the analytical framework avoid potential double counting or repeated interpretation?
+
+Providing concise methodological notes within the interface or through supporting documentation, could further strengthen transparency and users' confidence in interpreting the results.
+
+       7. Concluding remarks
+
+These observations reflect only a preliminary review of the current implementation of Panama's financial information within the CPC Tracker and are shared in the spirit of constructive collaboration.
+
+Overall, I believe the integration of biodiversity expenditure into the Tracker represents an important innovation and has significant potential to strengthen the connection between policy coherence analysis and biodiversity finance.
+
+As Panama continues refining the BER, particularly through the development of thematic biodiversity expenditure categories, some additional inputs could eventually be shared that may further strengthen the financial component of the Tracker.
+
+I hope these preliminary observations are useful as the financial module continues to evolve.
+

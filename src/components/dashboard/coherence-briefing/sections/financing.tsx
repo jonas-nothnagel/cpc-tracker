@@ -7,12 +7,16 @@
  * Two evidence layouts share this slide, keyed off `countryId`:
  *
  *   - PANAMA: the `FundingTargetGrid` — every visible target is one dot,
- *     colored by funding tier (well-funded / funded / under-funded / no
- *     aligned spend), grouped by document. Click a dot to pop open a
- *     drawer with the target text, contributing programmes, and a per-year
- *     aligned-spend bar chart. "Aligned spend" = sum of executed spend
- *     across programmes the LLM judged high/medium-aligned with the
- *     target — AI-judged semantic coherence, not audited flow.
+ *     colored by aligned-spend tier (high / medium / low / none — relative
+ *     volume of AI-aligned expenditure, never financing adequacy), grouped
+ *     by document. Click a dot to pop open a drawer with the target text,
+ *     contributing programmes, and a per-year aligned-spend bar chart.
+ *     "Aligned spend" = sum of executed spend across programmes whose
+ *     descriptions the LLM judged high/medium-aligned with the target's
+ *     text — AI-judged alignment between descriptions, not audited flow.
+ *     The grid layout also brings the methodology disclosure, provenance
+ *     badge, and GLOBE spend breakdown (all gated on data presence, not
+ *     the country id, so the next BER country inherits them).
  *
  *   - EVERY OTHER COUNTRY (Mongolia today): the `DocumentCoverage`
  *     dot-map — one uniform dot per target, filled = has a HIGH-confidence
@@ -37,6 +41,7 @@ import {
   type FinancingCoherenceSummary,
 } from "@/lib/financing-coherence";
 import { getDocColor, getDocMediumLabel } from "@/lib/utils";
+import type { CategoryBudgetSummary } from "@/lib/coherence-budget";
 import type {
   AlignmentResult,
   BerData,
@@ -44,6 +49,8 @@ import type {
   Target,
 } from "@/types";
 import { FundingTargetGrid } from "./funding-target-grid";
+import { FinancingMethodNote } from "./financing-method-note";
+import { GlobeSpendBreakdown } from "./globe-spend-breakdown";
 
 export const FINANCING_SECTION_ID = "financing";
 
@@ -57,6 +64,7 @@ export function FinancingSection({
   targets,
   budgetAlignment,
   berData,
+  globeSpend,
   onOpenBudgetPair,
 }: {
   summary: FinancingCoherenceSummary;
@@ -68,6 +76,9 @@ export function FinancingSection({
   targets: Target[];
   budgetAlignment: AlignmentResult[] | null;
   berData: BerData | null;
+  /** Reviewed spend rolled up to primary GLOBE categories (Tracker-AI
+   *  assigned). Rendered as a breakdown block under the grid when present. */
+  globeSpend?: CategoryBudgetSummary | null;
   /** Open the shared drawer on a budget-line↔commitment match (full rationale).
    *  Used only by the DocumentCoverage layout (non-Panama). */
   onOpenBudgetPair: (programBerId: string, targetId: string) => void;
@@ -101,9 +112,9 @@ export function FinancingSection({
     const docs = groupFundingRowsByDoc(rows, countryConfig);
     const totals = {
       reviewed: rows.length,
-      wellFunded: rows.filter((r) => r.tier === "well-funded").length,
-      underFunded: rows.filter((r) => r.tier === "under-funded").length,
-      unfunded: rows.filter((r) => r.tier === "unfunded").length,
+      high: rows.filter((r) => r.tier === "high").length,
+      low: rows.filter((r) => r.tier === "low").length,
+      none: rows.filter((r) => r.tier === "none").length,
     };
     return { docs, totals };
   }, [isPanama, targets, budgetAlignment, berData, countryConfig, locale]);
@@ -111,13 +122,17 @@ export function FinancingSection({
   let evidence: React.ReactNode = undefined;
   if (isPanama && grid) {
     evidence = (
-      <FundingTargetGrid
-        docs={grid.docs}
-        unit={berData?.unit ?? "million"}
-        currency={berData?.currency ?? ""}
-        totals={grid.totals}
-        mode="drawer"
-      />
+      <div>
+        <FundingTargetGrid
+          docs={grid.docs}
+          unit={berData?.unit ?? "million"}
+          currency={berData?.currency ?? ""}
+          period={berData?.period}
+          totals={grid.totals}
+          mode="drawer"
+        />
+        {globeSpend && <GlobeSpendBreakdown summary={globeSpend} />}
+      </div>
     );
   } else if (!isPanama && coverage && coverage.byDocument.length > 0) {
     evidence = (
@@ -133,8 +148,12 @@ export function FinancingSection({
     <SlideFrame
       id={FINANCING_SECTION_ID}
       headline={sentence.headline}
-      body={sentence.body}
+      // The grid layout gets the lens framing: every policy document is one
+      // analytical view over the same reviewed expenditure, so per-document
+      // amounts repeat and must not be summed (Panama BIOFIN feedback, §1).
+      body={grid ? t("lensBody") : sentence.body}
       evidence={evidence}
+      disclosure={grid ? <FinancingMethodNote /> : undefined}
     />
   );
 }

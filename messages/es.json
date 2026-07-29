@@ -792,24 +792,28 @@
         "headline": "El gasto en biodiversidad examinado de {country} cubre {share} las metas de política.",
         "body": "En {docCount, plural, one {# documento de política} other {# documentos de política}} hay {total, plural, one {# meta} other {# metas}}. {reached} tienen una línea presupuestaria correspondiente en este examen; las otras {outsideReach} no tienen ninguna. Cada punto abajo es una meta; abra un documento para ver ambos lados."
       },
+      "lensBody": "Las cifras de gasto provienen de los programas presupuestarios cubiertos por la revisión. Cada documento de política es un lente analítico sobre el mismo gasto revisado: los montos se repiten entre documentos y no deben sumarse.",
       "targetGrid": {
         "kpi": {
           "reviewed": "Metas revisadas",
-          "wellFunded": "Bien financiadas",
-          "wellFundedCaption": "≥ umbral del top 10 de gasto",
-          "underFunded": "Sub-financiadas",
-          "underFundedCaption": "≤ umbral del bottom 10 de gasto",
-          "unfunded": "Sin gasto alineado",
-          "unfundedCaption": "ningún programa juzgado alineado"
+          "highCaption": "entre las 10 metas con mayor gasto alineado",
+          "lowCaption": "entre las 10 con menor gasto alineado (mayor que cero)",
+          "noneCaption": "ninguna descripción de programa juzgada alineada"
         },
         "tier": {
-          "well-funded": "Bien financiada",
-          "normal": "Financiada",
-          "under-funded": "Sub-financiada",
-          "unfunded": "Sin gasto alineado"
+          "high": "Gasto alineado alto",
+          "medium": "Gasto alineado medio",
+          "low": "Gasto alineado bajo",
+          "none": "Sin gasto alineado"
+        },
+        "docTotal": "Gasto total de los programas que la IA vinculó con las metas de este documento; cada programa se cuenta una sola vez.",
+        "provenance": {
+          "sourceLabel": "Revisión del Gasto en Biodiversidad (BER), {start}–{end}",
+          "method": "La Revisión del Gasto en Biodiversidad (BER) identifica y cuantifica el gasto en biodiversidad; no vincula el gasto con metas de política. Cada vínculo que se muestra aquí fue generado por la IA del Tracker, que compara la descripción de cada línea de financiamiento con el texto de cada meta y evalúa cuánto se alinean.",
+          "caveat": "Alineación entre descripciones estimada por IA: una indicación de asociación temática, no un registro de dinero gastado en una meta."
         },
         "detail": {
-          "placeholder": "Haga clic en cualquier punto para ver la meta, el nivel de financiamiento y los programas que la IA juzgó alineados con ella.",
+          "placeholder": "Haga clic en cualquier punto para ver la meta, su nivel de gasto alineado y los programas que la IA juzgó alineados con ella.",
           "close": "Cerrar detalles de la meta",
           "readMore": "Leer más",
           "showLess": "Ver menos",
@@ -829,6 +833,25 @@
           "otherInstitution": "Otras",
           "institutionSubtotal": "{count, plural, one {# programa} other {# programas}} · {money}"
         }
+      },
+      "methodNote": {
+        "title": "Cómo se producen estas cifras",
+        "intro": "El gasto en biodiversidad se origina en asignaciones del presupuesto público ejecutadas a través de instituciones y programas. La Revisión del Gasto en Biodiversidad (BER, por sus siglas en inglés) identifica y cuantifica ese gasto; no lo asigna a metas de política. El Tracker añade una capa analítica: su IA compara la descripción de cada programa con el texto de cada meta de política y registra dónde se alinean las descripciones. Cada documento de política es, por tanto, un lente analítico sobre el mismo gasto revisado, no su propietario.",
+        "q1Title": "¿Qué cuenta como un programa alineado?",
+        "q1Body": "Un programa presupuestario cuya descripción la IA del Tracker juzgó estrecha o moderadamente alineada con el texto de esta meta, y que registró gasto ejecutado durante el período de la revisión.",
+        "q2Title": "¿Y si un programa se alinea con varias metas?",
+        "q2Body": "Cuando la descripción de un programa se alinea con varias metas, su gasto completo aparece bajo cada una de ellas. La cifra de una meta mide cuánto gasto revisado tiene descripciones alineadas con esa meta, no dinero asignado a ella.",
+        "q3Title": "¿Cómo deben leerse las cifras por meta?",
+        "q3Body": "Como una señal relativa para comparar metas. No dicen nada sobre si el financiamiento es suficiente para lograr una meta: eso requeriría datos de necesidades y brechas de financiamiento que este módulo no incluye.",
+        "q4Title": "¿Se cuenta el gasto dos veces?",
+        "q4Body": "Las cifras por meta se superponen intencionalmente. Donde se muestra un total por documento o para toda la revisión, cada programa se cuenta una sola vez, por lo que los totales no son la suma de las cifras por meta.",
+        "coverageNote": "El conteo del titular usa solo vínculos estrechamente alineados; la cuadrícula de puntos y las cifras por meta incluyen también vínculos moderadamente alineados."
+      },
+      "globeBreakdown": {
+        "title": "Gasto revisado por categoría GLOBE",
+        "info": "GLOBE es la taxonomía global del gasto en biodiversidad de BIOFIN, la Iniciativa de Financiamiento de la Biodiversidad del PNUD (edición 2024). Agrupa el gasto según la función de biodiversidad que apoya.",
+        "aiCaption": "Las categorías son asignadas por la IA del Tracker a partir de la descripción de cada programa; no son la clasificación del equipo nacional de BIOFIN. Cada programa se cuenta una sola vez, bajo su categoría principal. Estimado por IA e indicativo.",
+        "noSpendCategories": "{count, plural, one {# categoría} other {# categorías}} sin gasto clasificado"
       }
     },
     "financingCenter": {
@@ -1710,7 +1733,7 @@
       },
       "finance": {
         "spendVsMisalignment": "¿Dónde se sitúa el gasto en biodiversidad respecto a las posibles desalineaciones?",
-        "underFunded": "¿Qué metas nacionales parecen estar infrafinanciadas?",
+        "underFunded": "¿Qué metas nacionales tienen menos gasto alineado?",
         "fundedCategories": "¿Qué categorías de biodiversidad concentran más gasto etiquetado?"
       }
     },

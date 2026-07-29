@@ -2,6 +2,19 @@
 
 Working doc capturing decisions for integrating Panama's biodiversity expenditure data into the budget-to-target alignment pipeline. Locked decisions feed the implementation plan.
 
+## Feedback round — 2026-07-29 (BIOFIN Panama focal point)
+
+Panama's BIOFIN technical focal point reviewed the shipped financial module and sent structured feedback (`docs/feedback/panama-financing-2026-07.txt`). Decisions taken in response (branch `feat/panama-financing-feedback`):
+
+1. **Terminology**: "Well-funded / Funded / Under-funded" replaced with "High / Medium / Low / No aligned spend" (their proposed wording). The tiers were always rank-based volume cutoffs, never adequacy judgments; the labels now say so. The `FundingTier` enum was renamed to match (`high|medium|low|none`).
+2. **Linking-language copy rule**: all text describing a programme↔target link must name both sides of the comparison — the AI aligns the funding line's *description* with the target's *text* — and never phrase links as money flowing to / funding / spent on a target. Applied across UI strings, provenance, methodology notes, and the public methodology pages.
+3. **Provenance made explicit**: the grid now carries a DataProvenance badge stating the BER identifies expenditure but does not connect it to targets; every link is Tracker-AI-generated.
+4. **Double counting disclosed and totals fixed**: per-target aligned-spend figures intentionally overlap (a programme backs every target it aligns with); document-level totals now count each programme once (`dedupeContributorSpend`). Spend apportionment across targets was considered and deferred — it is a methodology change requiring BIOFIN validation.
+5. **Descriptions surfaced**: institution + Tablas description now show on the collapsed contributor row (they were two clicks deep), disambiguating duplicate programme names ("Transferencias Varias" ×2).
+6. **Interim GLOBE breakdown shipped**: reviewed spend grouped by primary GLOBE category on the financing slide, explicitly labeled Tracker-AI-assigned. When Panama's own thematic classification (8 categories, near-1:1 with GLOBE) is ready, ingest it as authoritative and replace/complement the AI-assigned view. Required a single-level fallback in `computeBudgetByGlobeCategory` (Panama BER programmes carry primary `globe` tags, no `globe_sub`).
+7. **In-UI methodology note**: "How these figures are produced" expander on the financing slide answers the focal point's four questions (aligned-programme definition, multi-target treatment, per-target interpretation, double counting), gated on grid presence rather than country id so future BER countries inherit it.
+8. **Declined for now**: expenditure-first navigation rebuild (framing copy covers the lens-over-expenditure point; `ProgramDetailTable` exists in `/prototypes` if demand returns).
+
 ## Source pivot — 2026-06-17
 
 Originally we picked `Base de datos FINAL.xlsx` (the raw MEF transactional database) as the canonical source. After implementing the BD-based ingest and validating quality, Magda (BIOFIN Panama) clarified that Tablas_adicionales is her preferred view — both files reflect the same underlying budget executions; Tablas adds three augmentations BD lacks:
