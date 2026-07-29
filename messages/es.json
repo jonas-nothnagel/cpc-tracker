@@ -215,7 +215,7 @@
         "steps": {
           "kpis": {
             "title": "Los cuatro niveles de gasto alineado",
-            "body": "Cada tarjeta cuenta metas según su nivel de gasto alineado: las 10 con más, las 10 con menos (mayor que cero) y las que no tienen ninguno. Los niveles comparan metas entre sí; nunca juzgan si el financiamiento es suficiente."
+            "body": "Cada tarjeta cuenta metas según su nivel de gasto alineado: aproximadamente las 10 con más, aproximadamente las 10 con menos (mayor que cero) y las que no tienen ninguno. Las metas cuyos montos mostrados son iguales siempre comparten nivel, por lo que los conteos pueden superar 10. Los niveles comparan metas entre sí; nunca juzgan si el financiamiento es suficiente."
           },
           "dots": {
             "title": "Cada punto es una meta de política",
@@ -816,8 +816,8 @@
       "targetGrid": {
         "kpi": {
           "reviewed": "Metas revisadas",
-          "highCaption": "entre las 10 metas con mayor gasto alineado",
-          "lowCaption": "entre las 10 con menor gasto alineado (mayor que cero)",
+          "highCaption": "las 10 con mayor gasto alineado; montos iguales comparten nivel",
+          "lowCaption": "las 10 con menor gasto alineado (mayor que cero); montos iguales comparten nivel",
           "noneCaption": "ninguna descripción de programa juzgada alineada"
         },
         "tier": {

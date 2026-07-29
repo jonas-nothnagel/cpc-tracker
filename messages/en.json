@@ -215,7 +215,7 @@
         "steps": {
           "kpis": {
             "title": "The four aligned-spend levels",
-            "body": "Each tile counts targets by their level of aligned spend: the 10 with the most, the 10 with the least (above zero), and those with none. The levels compare targets with each other — they never judge whether financing is sufficient."
+            "body": "Each tile counts targets by their level of aligned spend: roughly the 10 with the most, roughly the 10 with the least (above zero), and those with none. Targets whose displayed amounts are equal always share a level, so the counts can exceed 10. The levels compare targets with each other — they never judge whether financing is sufficient."
           },
           "dots": {
             "title": "Every dot is one policy target",
@@ -816,8 +816,8 @@
       "targetGrid": {
         "kpi": {
           "reviewed": "Targets reviewed",
-          "highCaption": "among the 10 targets with the most aligned spend",
-          "lowCaption": "among the 10 with the least aligned spend (above zero)",
+          "highCaption": "top 10 by aligned spend — equal amounts share a level",
+          "lowCaption": "bottom 10 by aligned spend above zero — equal amounts share a level",
           "noneCaption": "no programme description judged aligned"
         },
         "tier": {
