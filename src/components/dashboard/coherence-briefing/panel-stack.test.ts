@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import en from "../../../../messages/en.json";
 import {
   backLabelKey,
   openPanel,
@@ -162,6 +163,17 @@ describe("backLabelKey", () => {
   it("maps every kind to a message key", () => {
     for (const panel of ALL_KINDS) {
       expect(backLabelKey(panel), `missing key for ${panel.kind}`).toBeTruthy();
+    }
+  });
+
+  it("only names messages that exist", () => {
+    // The key is resolved dynamically at render time, so a typo would not fail
+    // the build: it would ship as a literal "[[briefing.drawer.backTo.x]]" in
+    // the back row. The locale parity gate then keeps es and mn in step.
+    const messages = en.briefing.drawer.backTo as Record<string, string>;
+    for (const panel of ALL_KINDS) {
+      const key = backLabelKey(panel);
+      expect(messages[key], `no message for ${panel.kind} -> ${key}`).toBeTruthy();
     }
   });
 

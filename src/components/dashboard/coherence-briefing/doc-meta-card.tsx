@@ -54,10 +54,10 @@ export function DocMetaCard({
   deadlineCoverage?: { total: number; timeBound: number };
   /** Hide the leading colour dot when the context already shows it (overview rows). */
   hideDot?: boolean;
-  /** An extra action beside "View document", supplied only by the surfaces that
-   *  can host one. A slot rather than a prop so DocHoverCard, which appears on
-   *  hover and disappears as the pointer travels toward it, cannot acquire a
-   *  button that would be impossible to click. */
+  /** An extra action beside "View document", e.g. a way into the document's
+   *  targets. A slot rather than a set of props so this component stays
+   *  presentational and each surface decides whether it can host an action and
+   *  how that action should behave once used. */
   footer?: ReactNode;
 }) {
   const t = useTranslations("briefing.docFocus");
@@ -276,7 +276,11 @@ export function DocHoverCard({
               meta={meta}
               color={color}
               fullTitle={fullTitle}
-              footer={footer}
+              footer={
+                footer && (
+                  <span onClick={() => setCoords(null)}>{footer}</span>
+                )
+              }
             />
           </div>,
           document.body,
@@ -390,7 +394,14 @@ export function DocInfoPopover({
               meta={meta}
               color={color}
               deadlineCoverage={deadlineCoverage}
-              footer={footer}
+              footer={
+                footer && (
+                  // The footer action opens a panel over this popover, which
+                  // would otherwise still be sitting here when the panel
+                  // closes. The click bubbles after the action's own handler.
+                  <span onClick={() => setCoords(null)}>{footer}</span>
+                )
+              }
             />
           </div>,
           document.body,

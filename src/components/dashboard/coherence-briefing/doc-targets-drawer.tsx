@@ -18,7 +18,13 @@
  * DrawerShell; this file renders a DrawerHeader and a body.
  */
 
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useTranslations } from "next-intl";
 import { DrawerHeader } from "@/components/ui/drawer-shell";
 import { getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
@@ -234,33 +240,30 @@ export function DocTargetsDrawer({
             {t("empty.noTargets")}
           </p>
         ) : matches.length === 0 ? (
-          <div className="space-y-3">
-            <p className="text-body text-[var(--undp-gray)]">
+          <>
+            <StatusLine empty>
               {view.query.trim() !== ""
                 ? t("empty.noMatches")
                 : t("empty.noFilterMatches")}
-            </p>
+            </StatusLine>
             <button
               type="button"
               onClick={clearAll}
-              className="text-caption text-[var(--undp-blue)] hover:underline"
+              className="mt-3 text-caption text-[var(--undp-blue)] hover:underline"
             >
               {view.query.trim() !== ""
                 ? t("clearSearch")
                 : t("clearFilters")}
             </button>
-          </div>
+          </>
         ) : (
           <>
-            <p
-              aria-live="polite"
-              className="mb-2 text-caption text-[var(--undp-gray)] tabular-nums"
-            >
+            <StatusLine>
               {t("showingCount", {
                 shown: visibleRows.length,
                 total: matches.length,
               })}
-            </p>
+            </StatusLine>
             <ul
               ref={listRef}
               className="border-y border-gray-200 divide-y divide-gray-200"
@@ -274,28 +277,59 @@ export function DocTargetsDrawer({
                 />
               ))}
             </ul>
-            {remaining > 0 && (
-              <button
-                type="button"
-                onClick={showMore}
-                className="mt-4 text-caption text-[var(--undp-blue)] hover:underline"
-              >
-                {t("showMore", { count: Math.min(BATCH, remaining) })}
-              </button>
-            )}
-            {isNarrowed && (
-              <button
-                type="button"
-                onClick={clearAll}
-                className="mt-4 ml-4 text-caption text-[var(--undp-gray)] underline underline-offset-2 hover:text-[var(--undp-black)]"
-              >
-                {t("clearAll")}
-              </button>
+            {(remaining > 0 || isNarrowed) && (
+              <div className="mt-4 flex flex-wrap items-center gap-4">
+                {remaining > 0 && (
+                  <button
+                    type="button"
+                    onClick={showMore}
+                    className="text-caption text-[var(--undp-blue)] hover:underline"
+                  >
+                    {t("showMore", { count: Math.min(BATCH, remaining) })}
+                  </button>
+                )}
+                {isNarrowed && (
+                  <button
+                    type="button"
+                    onClick={clearAll}
+                    className="text-caption text-[var(--undp-gray)] underline underline-offset-2 hover:text-[var(--undp-black)]"
+                  >
+                    {t("clearAll")}
+                  </button>
+                )}
+              </div>
             )}
           </>
         )}
       </div>
     </>
+  );
+}
+
+/**
+ * How many targets are showing, or why none are. One element for both states so
+ * the live region stays mounted: rendering the count and the empty message as
+ * separate branches means the region unmounts at the exact moment a search
+ * empties the list, and a reader hears nothing.
+ */
+function StatusLine({
+  children,
+  empty = false,
+}: {
+  children: ReactNode;
+  empty?: boolean;
+}) {
+  return (
+    <p
+      aria-live="polite"
+      className={
+        empty
+          ? "text-body text-[var(--undp-gray)]"
+          : "mb-2 text-caption text-[var(--undp-gray)] tabular-nums"
+      }
+    >
+      {children}
+    </p>
   );
 }
 

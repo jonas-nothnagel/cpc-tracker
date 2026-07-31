@@ -24,6 +24,9 @@ export type BriefingPanel =
   | { kind: "target-pair"; aId: string; bId: string }
   | { kind: "doc-pair"; docA: PolicyDocumentType; docB: PolicyDocumentType }
   | { kind: "theme"; name: string }
+  /** Dormant: the Direction slide lists every theme inline, so nothing opens
+   *  this today. Kept because ThemeDrawer still renders the grid, and picking
+   *  from it now pushes a theme rather than replacing the panel. */
   | { kind: "all-storylines" }
   | {
       kind: "sector";
