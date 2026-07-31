@@ -19,6 +19,7 @@ import {
   type Nr7Status,
 } from "@/lib/labels";
 import { track } from "@/lib/analytics/client";
+import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -417,6 +418,77 @@ function splitSourceLabel(label: string): { code: string | null; title: string }
 
 // ─── Detail panel ───────────────────────────────────────────────────
 
+/**
+ * Why this target sits in the group the wheel is currently showing.
+ *
+ * The ranked classifier stores a one-sentence `reasoning` on every primary and
+ * relevant record (python/src/classify.py). It reaches the client in the
+ * dashboard payload but, before this, was rendered nowhere in the briefing or
+ * explorer — so a reviewer could see that a target was placed in a theme but
+ * never why, and had no way to judge a weak placement. Surfacing it is the
+ * point of a review tool: the classification is a prompt to check, not a
+ * finding.
+ *
+ * Renders nothing when grouping by document (no taxonomy involved) or when no
+ * record carries reasoning. For the derived "no clear theme" bucket there is no
+ * per-target sentence by construction — the target matched nothing — so we say
+ * that plainly instead.
+ */
+function ClassificationReason({
+  targetId,
+  categoryId,
+  categoryLabel,
+  groupMode,
+  classifications,
+}: {
+  targetId: string;
+  categoryId: string;
+  categoryLabel?: string;
+  groupMode?: GroupMode;
+  classifications?: ThematicClassification[];
+}) {
+  const t = useTranslations("explorer.detailPanel");
+  const record = useMemo(() => {
+    if (!classifications || !groupMode || groupMode === "document") return null;
+    return (
+      classifications.find(
+        (c) =>
+          c.targetId === targetId &&
+          c.taxonomyType === groupMode &&
+          c.categoryId === categoryId,
+      ) ?? null
+    );
+  }, [classifications, groupMode, targetId, categoryId]);
+
+  if (!groupMode || groupMode === "document") return null;
+
+  const isBucket = isUnclassifiedCategoryId(categoryId);
+  if (!isBucket && !record?.reasoning) return null;
+
+  const score = typeof record?.score === "number" ? record.score : null;
+
+  return (
+    <div className="mt-3 rounded-md bg-[var(--undp-light)] px-3 py-2.5">
+      <p className="text-caption font-medium text-[var(--undp-gray)]">
+        {categoryLabel
+          ? t("classification.heading", { category: categoryLabel })
+          : t("classification.headingGeneric")}
+        {score !== null && !isBucket ? (
+          <span className="ml-1.5 font-normal">
+            {t("classification.score", { score: score.toFixed(2) })}
+          </span>
+        ) : null}
+      </p>
+      <p className="mt-1 text-caption text-[var(--undp-black)] leading-relaxed">
+        {isBucket ? t("classification.unmatched") : record?.reasoning}
+      </p>
+      <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
+        {t("classification.aiDisclaimer")}
+      </p>
+    </div>
+  );
+}
+
 function DetailPanel({
   node,
   connections,
@@ -425,6 +497,9 @@ function DetailPanel({
   nr7Item,
   nr7ProgressMap,
   countryConfig,
+  classifications,
+  groupMode,
+  categoryLabel,
 }: {
   node: NodePos;
   connections: (AlignmentResult & { otherTarget: Target })[];
@@ -433,6 +508,12 @@ function DetailPanel({
   nr7Item?: Nr7ProgressItem | null;
   nr7ProgressMap?: Map<string, string>;
   countryConfig?: CountryConfig | null;
+  /** Full classification list; used to explain the current grouping. */
+  classifications?: ThematicClassification[];
+  /** Active wheel grouping. Maps 1:1 to `taxonomyType` except "document". */
+  groupMode?: GroupMode;
+  /** Display name of the group this target sits in. */
+  categoryLabel?: string;
 }) {
   const alignmentLabels = useAlignmentLabels();
   const nr7BadgeLabels = useNr7BadgeLabels();
@@ -520,6 +601,13 @@ function DetailPanel({
             {targetTextExpanded ? t("showLess") : t("readFull")}
           </button>
         )}
+        <ClassificationReason
+          targetId={node.target.id}
+          categoryId={node.groupId}
+          categoryLabel={categoryLabel}
+          groupMode={groupMode}
+          classifications={classifications}
+        />
         <ActivitiesActions target={node.target} />
       </div>
 
@@ -4925,6 +5013,11 @@ export function PolicyCoherenceExplorer({
                 nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
                 nr7ProgressMap={nr7ProgressMap}
                 countryConfig={countryConfig}
+                classifications={classifications}
+                groupMode={groupMode}
+                categoryLabel={
+                  arcs.find((a) => a.id === selectedNode.groupId)?.label
+                }
               />
             ) : focalGroup ? (
               <CategoryPanel

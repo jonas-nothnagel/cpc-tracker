@@ -1568,7 +1568,14 @@
       "sortedBySeverity": "ordenado por severidad",
       "nr7Progress": "Progreso NR7: {label}",
       "nr7TitlePrefix": "NR7: {label}",
-      "keyChallenges": "Desafíos clave"
+      "keyChallenges": "Desafíos clave",
+      "classification": {
+        "heading": "Por qué este objetivo se agrupa en {category}",
+        "headingGeneric": "Por qué este objetivo se agrupa aquí",
+        "score": "· relevancia {score}",
+        "unmatched": "Ningún tema alcanzó el umbral de relevancia para este objetivo. Puede que aun así se relacione con estos temas; el análisis no encontró una coincidencia clara.",
+        "aiDisclaimer": "Clasificación generada por IA. Trátela como un punto de partida para revisar, no como una conclusión."
+      }
     },
     "targetCard": {
       "showLess": "Mostrar menos ▴",

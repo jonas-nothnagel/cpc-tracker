@@ -1568,7 +1568,14 @@
       "sortedBySeverity": "sorted by severity",
       "nr7Progress": "NR7 Progress: {label}",
       "nr7TitlePrefix": "NR7: {label}",
-      "keyChallenges": "Key challenges"
+      "keyChallenges": "Key challenges",
+      "classification": {
+        "heading": "Why this target is grouped under {category}",
+        "headingGeneric": "Why this target is grouped here",
+        "score": "· relevance {score}",
+        "unmatched": "No theme scored at or above the relevance threshold for this target. It may still touch on these themes; the analysis found no clear match.",
+        "aiDisclaimer": "AI-generated classification. Treat as a prompt to review, not a settled finding."
+      }
     },
     "targetCard": {
       "showLess": "Show less ▴",
