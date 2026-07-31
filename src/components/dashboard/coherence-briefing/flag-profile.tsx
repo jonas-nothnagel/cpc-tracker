@@ -7,10 +7,13 @@
  * subjects: a friction TYPE (every flagged pair of one mechanism) or a single
  * TARGET (every flagged pair touching it). Replaces the old "one cherry-picked
  * example" drill-down so an aggregate like "53% delivery friction" opens its
- * actual composition. Shares the shell conventions of SectorDrawer.
+ * actual composition.
+ *
+ * Chrome (scrim, dialog, keys, scroll lock, focus trap, close) belongs to
+ * DrawerShell; this file renders a DrawerHeader and a body.
  */
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
   ALIGNED_COLOR,
@@ -24,9 +27,7 @@ import {
   buildTargetFrictionTree,
   type TargetFrictionTree,
 } from "@/lib/coherence-briefing";
-import { useDrawerHistory } from "@/lib/use-drawer-history";
-import { DrawerBackButton } from "@/components/ui/drawer-back-button";
-import { useFocusTrap } from "@/components/ui/use-focus-trap";
+import { DrawerHeader } from "@/components/ui/drawer-shell";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
   AlignmentConfidence,
@@ -64,7 +65,7 @@ const MANAGEABILITY_RANK: Record<AlignmentManageability, number> = {
 };
 
 export function FlagProfileDrawer({
-  subject: rootSubject,
+  subject,
   alignment,
   targets,
   classifications,
@@ -72,10 +73,10 @@ export function FlagProfileDrawer({
   taxonomyType,
   totalFlagged,
   countryConfig,
-  onClose,
   onOpenPair,
+  onOpenTarget,
 }: {
-  subject: FlagProfileSubject | null;
+  subject: FlagProfileSubject;
   alignment: AlignmentResult[];
   targets: Target[];
   classifications: ThematicClassification[];
@@ -83,46 +84,12 @@ export function FlagProfileDrawer({
   taxonomyType: string;
   totalFlagged: number;
   countryConfig: CountryConfig | null;
-  onClose: () => void;
   onOpenPair: (aId: string, bId: string) => void;
+  /** Drill from the Recurring Targets column into one target's own profile. */
+  onOpenTarget: (target: Target) => void;
 }) {
   const t = useTranslations("briefing.drawer.flagProfile");
   const contradictionLabels = useContradictionTypeLabels();
-  // Drill-into-target navigation (Recurring Targets column) is owned by the
-  // drawer, not the parent — clicking pushes a new subject onto the internal
-  // stack and the Back button pops it. Resets automatically when the parent
-  // hands us a different rootSubject.
-  const {
-    current: subject,
-    push: pushSubject,
-    back: goBack,
-    canGoBack,
-  } = useDrawerHistory<FlagProfileSubject>(rootSubject);
-  const handleOpenTarget = useCallback(
-    (target: Target) => pushSubject({ kind: "target", target }),
-    [pushSubject],
-  );
-  useEffect(() => {
-    if (!subject) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      if (canGoBack) goBack();
-      else onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [subject, canGoBack, goBack, onClose]);
-
-  useEffect(() => {
-    if (!subject) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [subject]);
-
-  const panelRef = useFocusTrap<HTMLElement>(subject !== null);
 
   const targetMap = useMemo(
     () => new Map(targets.map((t) => [t.id, t])),
@@ -130,7 +97,6 @@ export function FlagProfileDrawer({
   );
 
   const subset = useMemo(() => {
-    if (!subject) return [];
     if (subject.kind === "friction-type") {
       const base = alignment.filter(
         (a) => a.alignment === "flagged" && a.mechanism === subject.mechanism,
@@ -156,7 +122,6 @@ export function FlagProfileDrawer({
   }, [subject, alignment, targetMap]);
 
   const profile = useMemo(() => {
-    if (!subject) return null;
     return buildFlagSubsetProfile({
       pairs: subset,
       targets,
@@ -198,7 +163,7 @@ export function FlagProfileDrawer({
   // flagged total (its cross-document pairs), not the corpus, so "% of …" reads
   // honestly against the bar it was opened from.
   const docScopedFlaggedTotal = useMemo(() => {
-    if (!subject || subject.kind !== "friction-type" || !subject.doc)
+    if (subject.kind !== "friction-type" || !subject.doc)
       return null;
     const doc = subject.doc;
     let n = 0;
@@ -217,7 +182,7 @@ export function FlagProfileDrawer({
 
   // Three-level hierarchy (mechanism → peer doc → counterpart) for the target view.
   const frictionTree = useMemo<TargetFrictionTree | null>(() => {
-    if (!subject || subject.kind !== "target") return null;
+    if (subject.kind !== "target") return null;
     return buildTargetFrictionTree({
       focalTargetId: subject.target.id,
       pairs: subset,
@@ -225,7 +190,7 @@ export function FlagProfileDrawer({
     });
   }, [subject, subset, targets]);
 
-  if (!subject || !profile) return null;
+  if (!profile) return null;
 
   const total = profile.total;
   const docScope =
@@ -244,75 +209,48 @@ export function FlagProfileDrawer({
   const themeNoun = taxonomyType === "globe" ? t("themeNoun.globe") : t("themeNoun.sectors");
 
   return (
-    <div className="fixed inset-0 z-30 flex justify-end">
-      <button
-        type="button"
-        aria-label={t("closeAria")}
-        onClick={onClose}
-        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
-      />
-      <aside
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={t("dialogAria", { name: headerTitle })}
-        className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#ffffff" }}
-      >
-        {canGoBack && <DrawerBackButton onBack={goBack} />}
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line bg-white/90 backdrop-blur">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0">
-              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
-                {subject.kind === "friction-type"
-                  ? t("eyebrow.friction")
-                  : t("eyebrow.target")}
-              </p>
-              {subject.kind === "target" && (
-                <DocBadge
-                  docType={subject.target.sourceDocument}
-                  countryConfig={countryConfig}
-                />
-              )}
-              <h3
-                className="text-xl text-[var(--undp-black)] font-medium leading-tight"
-                style={{ fontFamily: HEADLINE_SERIF }}
-              >
-                {headerTitle}
-              </h3>
-              {docScopeLabel && (
-                <p className="mt-1 text-caption text-[var(--undp-gray)] leading-snug">
-                  {t("withinDoc", { doc: docScopeLabel })}
-                </p>
-              )}
-              {subject.kind === "target" && (
-                <p className="mt-1 text-data text-[var(--undp-gray)] leading-snug line-clamp-3">
-                  {subject.target.text}
-                </p>
-              )}
-              <p className="mt-2 text-caption text-[var(--undp-gray)] tabular-nums">
-                {t("pairCount", { count: total })}
-                {shareDenom > 0 &&
-                  " · " +
-                    t("pairShareOfDoc", {
-                      pct: sharePct,
-                      scope: docScopeLabel ?? "",
-                      docScoped: docScopeLabel ? 1 : 0,
-                    })}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={t("closeBtnAria")}
-              className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
-            >
-              ×
-            </button>
-          </div>
-        </header>
+    <>
+      <DrawerHeader>
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
+          {subject.kind === "friction-type"
+            ? t("eyebrow.friction")
+            : t("eyebrow.target")}
+        </p>
+        {subject.kind === "target" && (
+          <DocBadge
+            docType={subject.target.sourceDocument}
+            countryConfig={countryConfig}
+          />
+        )}
+        <h3
+          className="text-xl text-[var(--undp-black)] font-medium leading-tight"
+          style={{ fontFamily: HEADLINE_SERIF }}
+        >
+          {headerTitle}
+        </h3>
+        {docScopeLabel && (
+          <p className="mt-1 text-caption text-[var(--undp-gray)] leading-snug">
+            {t("withinDoc", { doc: docScopeLabel })}
+          </p>
+        )}
+        {subject.kind === "target" && (
+          <p className="mt-1 text-data text-[var(--undp-gray)] leading-snug line-clamp-3">
+            {subject.target.text}
+          </p>
+        )}
+        <p className="mt-2 text-caption text-[var(--undp-gray)] tabular-nums">
+          {t("pairCount", { count: total })}
+          {shareDenom > 0 &&
+            " · " +
+              t("pairShareOfDoc", {
+                pct: sharePct,
+                scope: docScopeLabel ?? "",
+                docScoped: docScopeLabel ? 1 : 0,
+              })}
+        </p>
+      </DrawerHeader>
 
-        <div className="px-6 py-6 space-y-7">
+      <div className="px-6 py-6 space-y-7">
           {total === 0 ? (
             <p className="text-body text-[var(--undp-gray)]">
               {t("empty")}
@@ -324,7 +262,7 @@ export function FlagProfileDrawer({
                 subject={subject}
                 countryConfig={countryConfig}
                 themeNoun={themeNoun}
-                onOpenTarget={handleOpenTarget}
+                onOpenTarget={onOpenTarget}
               />
               <ManageabilityBar
                 manageability={profile.manageability}
@@ -350,9 +288,8 @@ export function FlagProfileDrawer({
               </p>
             </>
           )}
-        </div>
-      </aside>
-    </div>
+      </div>
+    </>
   );
 }
 

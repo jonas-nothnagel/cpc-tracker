@@ -81,10 +81,15 @@ export function OriginalLanguageChip({
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      // Claim the key so an enclosing panel does not also navigate back on the
+      // same press. On `document`, which runs ahead of the panel's own
+      // window-level handler.
+      e.preventDefault();
+      setOpen(false);
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
   }, [open]);
 
   // No genuine original to inspect, or the "original" is itself a machine

@@ -33,6 +33,7 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { DocInfoPopover } from "../doc-meta-card";
+import { ViewTargetsAction } from "../view-targets-action";
 import { TourButton } from "../tour/tour-button";
 import {
   buildAnchorHeadline,
@@ -72,6 +73,7 @@ export function DocFocusSection({
   onSelectDoc,
   onOpenPair,
   onOpenType,
+  onViewTargets,
 }: {
   targets: Target[];
   alignment: AlignmentResult[];
@@ -83,6 +85,8 @@ export function DocFocusSection({
   onOpenPair: (aId: string, bId: string) => void;
   /** Open the doc-scoped decomposition drawer for a friction mechanism. */
   onOpenType: (mechanism: AlignmentMechanism) => void;
+  /** Open the focused document's own targets. */
+  onViewTargets: (doc: PolicyDocumentType) => void;
 }) {
   const t = useTranslations("briefing.docFocus");
   const headlineData = useMemo<AnchorHeadline>(
@@ -141,6 +145,7 @@ export function DocFocusSection({
           label={label}
           meta={meta}
           deadlineCoverage={deadlineCoverage}
+          onViewTargets={onViewTargets}
           frictions={frictions}
           focusedDoc={focusedDoc}
           countryConfig={countryConfig}
@@ -260,6 +265,7 @@ function DocFocusEvidence({
   label,
   meta,
   deadlineCoverage,
+  onViewTargets,
   frictions,
   focusedDoc,
   countryConfig,
@@ -270,6 +276,7 @@ function DocFocusEvidence({
   label: string;
   meta: DocMeta;
   deadlineCoverage: { total: number; timeBound: number };
+  onViewTargets: (doc: PolicyDocumentType) => void;
   frictions: DocFocusFrictions;
   focusedDoc: PolicyDocumentType;
   countryConfig: CountryConfig | null;
@@ -286,6 +293,12 @@ function DocFocusEvidence({
   return (
     <div className="space-y-5">
       <DocInfoPopover
+        footer={
+          <ViewTargetsAction
+            count={deadlineCoverage.total}
+            onClick={() => onViewTargets(focusedDoc)}
+          />
+        }
         meta={meta}
         color={getDocColor(countryConfig, focusedDoc)}
         deadlineCoverage={deadlineCoverage}

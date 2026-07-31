@@ -15,12 +15,14 @@
  * flagged rows (which are 2-3× more likely to be false positives).
  * The pool composition counts at the bottom stay unfiltered — the
  * filter is a review affordance, not a data revision.
+ *
+ * Chrome (scrim, dialog, keys, scroll lock, focus trap, close) belongs to
+ * DrawerShell; this file renders a DrawerHeader and a body.
  */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useFocusTrap } from "@/components/ui/use-focus-trap";
-import { track } from "@/lib/analytics/client";
+import { DrawerHeader } from "@/components/ui/drawer-shell";
 import {
   ALIGNED_COLOR,
   ALIGNMENT_COLORS,
@@ -47,13 +49,11 @@ export function SectorDrawer({
   briefing,
   sectorSynthesis,
   countryConfig,
-  onClose,
   onOpenTargetPair,
 }: {
-  briefing: SectorBriefing | null;
+  briefing: SectorBriefing;
   sectorSynthesis: SectorSynthesis | null;
   countryConfig: CountryConfig | null;
-  onClose: () => void;
   onOpenTargetPair?: (
     pair: AlignmentResult,
     targetA: Target,
@@ -61,29 +61,6 @@ export function SectorDrawer({
   ) => void;
 }) {
   const t = useTranslations("briefing.drawer.sector");
-  // Removable usage analytics: see src/lib/analytics/README.md.
-  useEffect(() => void (briefing && track("drawer_opened", { kind: "sector" })), [briefing]);
-  useEffect(() => {
-    if (!briefing) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [briefing, onClose]);
-
-  useEffect(() => {
-    if (!briefing) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [briefing]);
-
-  const panelRef = useFocusTrap<HTMLElement>(briefing !== null);
-
-  if (!briefing) return null;
 
   // Sector header sentence, localized (replaces the old lib-composed English).
   const hub = briefing.recurringHub;
@@ -107,62 +84,39 @@ export function SectorDrawer({
           });
 
   return (
-    <div className="fixed inset-0 z-30 flex justify-end">
-      <button
-        type="button"
-        aria-label={t("closeAria")}
-        onClick={onClose}
-        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
-      />
-      <aside
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={t("dialogAria", { name: briefing.categoryName })}
-        className="relative h-full w-full sm:w-[560px] md:w-[640px] bg-white shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#ffffff" }}
-      >
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line bg-white/90 backdrop-blur">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0">
-              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
-                {t("eyebrow")}
-              </p>
-              <h3
-                className="text-xl text-[var(--undp-black)] font-medium leading-tight"
-                style={{ fontFamily: HEADLINE_SERIF }}
-              >
-                {briefing.categoryName}
-              </h3>
-              <p className="mt-1 text-caption text-[var(--undp-gray)]">
-                {t("headerCounts", { targets: briefing.targetCount, pairs: briefing.signalCount })}
-              </p>
-              <p className="mt-3 text-data leading-snug text-[var(--undp-black)]">
-                {synthesisSentence}
-              </p>
-              {briefing.recurringHub &&
-                briefing.recurringHub.flaggedPairCount >= 2 && (
-                  <p className="mt-2 text-caption text-[var(--undp-gray)] line-clamp-3">
-                    <span className="text-caption font-semibold mr-1">
-                      {t("recursLabel")}
-                    </span>
-                    {briefing.recurringHub.target.sourceLabel} ·{" "}
-                    {briefing.recurringHub.target.text}
-                  </p>
-                )}
-            </div>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={t("closeBtnAria")}
-              className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
-            >
-              ×
-            </button>
-          </div>
-        </header>
+    <>
+      <DrawerHeader>
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
+          {t("eyebrow")}
+        </p>
+        <h3
+          className="text-xl text-[var(--undp-black)] font-medium leading-tight"
+          style={{ fontFamily: HEADLINE_SERIF }}
+        >
+          {briefing.categoryName}
+        </h3>
+        <p className="mt-1 text-caption text-[var(--undp-gray)]">
+          {t("headerCounts", {
+            targets: briefing.targetCount,
+            pairs: briefing.signalCount,
+          })}
+        </p>
+        <p className="mt-3 text-data leading-snug text-[var(--undp-black)]">
+          {synthesisSentence}
+        </p>
+        {briefing.recurringHub &&
+          briefing.recurringHub.flaggedPairCount >= 2 && (
+            <p className="mt-2 text-caption text-[var(--undp-gray)] line-clamp-3">
+              <span className="text-caption font-semibold mr-1">
+                {t("recursLabel")}
+              </span>
+              {briefing.recurringHub.target.sourceLabel} ·{" "}
+              {briefing.recurringHub.target.text}
+            </p>
+          )}
+      </DrawerHeader>
 
-        <div className="px-6 py-6 space-y-8">
+      <div className="px-6 py-6 space-y-8">
           {sectorSynthesis ? (
             <SectorSynthesisBlock
               synthesis={sectorSynthesis}
@@ -190,9 +144,8 @@ export function SectorDrawer({
               />
             </>
           )}
-        </div>
-      </aside>
-    </div>
+      </div>
+    </>
   );
 }
 

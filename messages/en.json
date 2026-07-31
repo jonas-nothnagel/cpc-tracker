@@ -396,9 +396,18 @@
       "clickHint": "click a cell for the gaps"
     },
     "drawer": {
+      "backTo": {
+        "targetPair": "Back to {a} and {b}",
+        "docPair": "Back to {a} ↔ {b}",
+        "theme": "Back to {name}",
+        "allThemes": "Back to all themes",
+        "sector": "Back to {name}",
+        "frictionType": "Back to {name}",
+        "target": "Back to {name}",
+        "docTargets": "Back to {name} targets"
+      },
       "flagProfile": {
         "closeAria": "Close profile",
-        "closeBtnAria": "Close",
         "dialogAria": "Profile: {name}",
         "eyebrow": {
           "friction": "Potential misalignment type",
@@ -435,10 +444,8 @@
       },
       "pair": {
         "closeAria": "Close pair detail",
-        "closeBtnAria": "Close",
         "docPairDialogAria": "Document pair detail",
         "targetPairDialogAria": "Pair detail",
-        "backTo": "Back to {a} ↔ {b}",
         "eyebrow": {
           "target": "Pair detail",
           "doc": "Document pair"
@@ -502,7 +509,6 @@
       },
       "theme": {
         "closeAria": "Close theme view",
-        "closeBtnAria": "Close",
         "dialogAria": "Theme: {name}",
         "eyebrow": {
           "reinforce": "Recurring alignment",
@@ -536,7 +542,6 @@
       "sector": {
         "eyebrow": "Sector view",
         "closeAria": "Close sector view",
-        "closeBtnAria": "Close",
         "dialogAria": "Sector view: {name}",
         "headerCounts": "{targets, number} targets · {pairs, number} scored pairs touch this sector",
         "recursLabel": "Recurs:",
@@ -936,8 +941,39 @@
       "included": "{visible} of {total, plural, one {# policy document} other {# policy documents}} included.",
       "excluded": "{names} excluded.",
       "done": "Done",
-      "addOrRemove": "Add or remove documents",
+      "addOrRemove": "Inspect and adjust documents",
       "resetToDefault": "Reset to default"
+    },
+    "docTargets": {
+      "action": "{count, plural, one {# target} other {# targets}}",
+      "eyebrow": "Document targets",
+      "subtitle": "{count, plural, one {# target} other {# targets}} in document order",
+      "searchLabel": "Search these targets",
+      "searchPlaceholder": "Search by wording or reference",
+      "filterGroupAria": "Filter these targets",
+      "filter": {
+        "quantitative": "Quantitative ({count, number})",
+        "timeBound": "Time-bound ({count, number})",
+        "inMisalignments": "In potential misalignments ({count, number})"
+      },
+      "showingCount": "Showing {shown, number} of {total, number} targets",
+      "showMore": "Show {count, number} more",
+      "clearSearch": "Clear search",
+      "clearFilters": "Clear filters",
+      "clearAll": "Clear search and filters",
+      "misalignmentCount": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
+      "openProfile": "View this target's potential misalignments",
+      "expandRowAria": "Show full target {name}",
+      "collapseRowAria": "Hide full target {name}",
+      "sourceSection": "Section: {name}",
+      "sourceQuote": "As written in the document",
+      "openSource": "Open the source",
+      "excludedNote": "This document is currently excluded from the analysis, so no potential misalignments are counted for it.",
+      "empty": {
+        "noTargets": "No targets were extracted from this document.",
+        "noMatches": "No targets in this document match that search.",
+        "noFilterMatches": "No targets match the selected filters."
+      }
     },
     "centerLegend": {
       "variant": {

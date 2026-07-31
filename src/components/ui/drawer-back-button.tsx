@@ -3,13 +3,13 @@
 import { useTranslations } from "next-intl";
 
 /**
- * DrawerBackButton — sticky "← Back" affordance for drawers that drill deeper
- * via useDrawerHistory.push. Render at the top of the drawer body when
- * history.canGoBack is true; the parent decides what label to show (defaults
- * to a generic "Back").
+ * DrawerBackButton — the "← Back" row at the top of a drawer that was reached
+ * by drilling down from another panel. DrawerShell renders it inside its own
+ * sticky header whenever there is somewhere to go back to, which is why this
+ * component carries no positioning or background of its own.
  *
- * Style matches PairDrawer's existing back row (the de facto pattern in this
- * codebase) so adopting it across drawers reads consistent.
+ * The label is contextual ("Back to NDC ↔ NBSAP"), so a reader can tell where
+ * back leads without having to remember the route they took.
  */
 export function DrawerBackButton({
   onBack,
@@ -27,9 +27,9 @@ export function DrawerBackButton({
       type="button"
       onClick={onBack}
       aria-label={t("backAria")}
-      className="sticky top-0 z-20 w-full text-left text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] px-6 py-2 bg-white/90 backdrop-blur border-b border-gray-200"
+      className="w-full text-left text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] px-6 py-2 border-b border-line transition-colors"
     >
-      ← {visibleLabel}
+      <span aria-hidden="true">←</span> {visibleLabel}
     </button>
   );
 }

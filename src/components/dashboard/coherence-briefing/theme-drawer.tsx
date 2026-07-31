@@ -18,9 +18,9 @@
  * themes, the strongest alignments.
  */
 
-import { useEffect, useMemo, useState, type RefObject } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useFocusTrap } from "@/components/ui/use-focus-trap";
+import { DrawerHeader } from "@/components/ui/drawer-shell";
 import {
   ALIGNED_COLOR,
   ALIGNMENT_COLORS,
@@ -43,7 +43,6 @@ import {
   rankStorylines,
   type StorylineProfile,
 } from "@/lib/coherence-briefing";
-import { track } from "@/lib/analytics/client";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { FeedbackControl } from "./feedback-control";
 import type {
@@ -99,13 +98,8 @@ export interface ThemeDrawerProps {
   totalDocCount: number;
   /** Canonical country slug; enables the feedback control when present. */
   countryId?: string;
-  onClose: () => void;
-  /**
-   * Fired when the user picks one storyline from the all-storylines grid.
-   * The parent should set `theme` to the picked storyline (and may clear
-   * `allStorylines` if it wants the back button to dismiss the drawer
-   * directly instead of returning to the grid).
-   */
+  /** Fired when the user picks one storyline from the all-storylines grid.
+   *  The host pushes it onto the panel trail, so back returns to the grid. */
   onOpenSingleTheme?: (storyline: CorpusStoryline) => void;
   onOpenTargetPair: (
     pair: AlignmentResult,
@@ -127,36 +121,11 @@ export function ThemeDrawer({
   taxonomyType,
   totalDocCount,
   countryId,
-  onClose,
   onOpenSingleTheme,
   onOpenTargetPair,
   onOpenTargetProfile,
 }: ThemeDrawerProps) {
   const t = useTranslations("briefing.drawer.theme");
-  const isOpen = theme !== null || allStorylines !== null;
-  // Removable usage analytics: see src/lib/analytics/README.md.
-  useEffect(() => void (isOpen && track("drawer_opened", { kind: theme ? "theme" : "storylines" })), [isOpen, theme]);
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [isOpen]);
-
-  // Shared across both render paths (main drawer and the AllStorylinesView
-  // branch); only one panel is ever mounted at a time, so a single ref is safe.
-  const panelRef = useFocusTrap<HTMLElement>(isOpen);
 
   const groups = useMemo<DocPairGroup[]>(() => {
     if (!theme) return [];
@@ -228,8 +197,6 @@ export function ThemeDrawer({
         alignment={alignment}
         targetsById={targetsById}
         onPick={(s) => onOpenSingleTheme?.(s)}
-        onClose={onClose}
-        panelRef={panelRef}
       />
     );
   }
@@ -242,23 +209,9 @@ export function ThemeDrawer({
   const themeAnchor = slugifyAnchorId(theme.name);
 
   return (
-    <div className="fixed inset-0 z-40 flex justify-end">
-      <button
-        type="button"
-        aria-label={t("closeAria")}
-        onClick={onClose}
-        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
-      />
-      <aside
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={t("dialogAria", { name: theme.name })}
-        className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#ffffff" }}
-      >
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
-          <div className="min-w-0">
+    <>
+      <DrawerHeader>
+        <div className="min-w-0">
             <div className="flex items-center gap-2 mb-2">
               <span
                 aria-hidden="true"
@@ -287,18 +240,10 @@ export function ThemeDrawer({
                 records: profile.liveCount,
               })}
             </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t("closeBtnAria")}
-            className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
-          >
-            ×
-          </button>
-        </header>
+        </div>
+      </DrawerHeader>
 
-        <div className="px-6 py-6 space-y-6">
+      <div className="px-6 py-6 space-y-6">
           <p className="text-body text-[var(--undp-black)] leading-relaxed">
             {theme.description}
           </p>
@@ -480,8 +425,7 @@ export function ThemeDrawer({
             }}
           />
         )}
-      </aside>
-    </div>
+    </>
   );
 }
 
@@ -773,15 +717,11 @@ function AllStorylinesView({
   alignment,
   targetsById,
   onPick,
-  onClose,
-  panelRef,
 }: {
   storylines: CorpusStoryline[];
   alignment: AlignmentResult[];
   targetsById: Map<string, Target>;
   onPick: (s: CorpusStoryline) => void;
-  onClose: () => void;
-  panelRef: RefObject<HTMLElement | null>;
 }) {
   const t = useTranslations("briefing.drawer.theme");
   const liveStats = useMemo(
@@ -798,50 +738,26 @@ function AllStorylinesView({
   const reinforce = storylines.filter((s) => s.type === "reinforcement");
   const friction = storylines.filter((s) => s.type === "friction");
   return (
-    <div className="fixed inset-0 z-40 flex justify-end">
-      <button
-        type="button"
-        aria-label={t("all.closeAria")}
-        onClick={onClose}
-        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
-      />
-      <aside
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={t("all.dialogAria")}
-        className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#ffffff" }}
-      >
-        <header className="sticky top-0 z-10 px-6 py-4 border-b border-line flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
-          <div className="min-w-0">
-            <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
-              {t("all.eyebrow")}
-            </p>
-            <h3
-              className="text-xl text-[var(--undp-black)] font-medium leading-snug"
-              style={{ fontFamily: HEADLINE_SERIF }}
-            >
-              {t("all.heading", { count: storylines.length })}
-            </h3>
-            <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
-              {t("all.subtitle", {
-                aligned: reinforce.length,
-                flagged: friction.length,
-              })}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t("closeBtnAria")}
-            className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
-          >
-            ×
-          </button>
-        </header>
+    <>
+      <DrawerHeader>
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
+          {t("all.eyebrow")}
+        </p>
+        <h3
+          className="text-xl text-[var(--undp-black)] font-medium leading-snug"
+          style={{ fontFamily: HEADLINE_SERIF }}
+        >
+          {t("all.heading", { count: storylines.length })}
+        </h3>
+        <p className="mt-1 text-caption text-[var(--undp-gray)] tabular-nums">
+          {t("all.subtitle", {
+            aligned: reinforce.length,
+            flagged: friction.length,
+          })}
+        </p>
+      </DrawerHeader>
 
-        <div className="px-6 py-6 space-y-6">
+      <div className="px-6 py-6 space-y-6">
           {reinforce.length > 0 && (
             <StorylineGroup
               label={t("eyebrow.reinforce")}
@@ -860,12 +776,11 @@ function AllStorylinesView({
               onPick={onPick}
             />
           )}
-          <p className="text-caption text-[var(--undp-gray)] leading-relaxed">
-            {t("aiDisclaimer")}
-          </p>
-        </div>
-      </aside>
-    </div>
+        <p className="text-caption text-[var(--undp-gray)] leading-relaxed">
+          {t("aiDisclaimer")}
+        </p>
+      </div>
+    </>
   );
 }
 
