@@ -80,10 +80,8 @@ import type {
   WheelFocus,
   WheelState,
 } from "./centerpiece/wheel";
-import { SectorDrawer } from "./sector-drawer";
-import { PairDrawer, type PairDrawerData } from "./pair-drawer";
-import { ThemeDrawer } from "./theme-drawer";
-import { FlagProfileDrawer, type FlagProfileSubject } from "./flag-profile";
+import { BriefingPanelHost } from "./briefing-panels";
+import { useBriefingPanels } from "./use-briefing-panels";
 import { DocFilterControl, DocToggleLegend } from "./doc-filter-control";
 import { TourButton } from "./tour/tour-button";
 import type { BriefingTourId } from "./tour/steps";
@@ -91,7 +89,6 @@ import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
 import { getDocTypeOrder } from "@/lib/utils";
 import {
-  buildSectorBriefing,
   buildSectorCoherenceShare,
   buildSectorTensionDensity,
   canonicalHiddenKey,
@@ -107,7 +104,6 @@ import {
   type CorpusThemesPayload,
   type CoverageConcentrationStat,
   type FaultLine,
-  type SectorBriefing,
   type SectorCoherenceShareSummary,
   type SectorSynthesisPayload,
   type SectorTension,
@@ -828,58 +824,42 @@ export function CoherenceBriefing({
     [sectorRows],
   );
 
-  // ── Drawer state ────────────────────────────────────────────────
-  const [pairData, setPairData] = useState<PairDrawerData | null>(null);
-  const [flagProfile, setFlagProfile] = useState<FlagProfileSubject | null>(
-    null,
+  // ── Panel trail ─────────────────────────────────────────────────
+  // One back-navigable stack for every drill-down. Opening from the page
+  // starts a fresh trail; drilling from inside a panel pushes onto it.
+  const panels = useBriefingPanels();
+  const openPanel = panels.open;
+
+  const openThemeDrawer = useCallback(
+    (s: CorpusStoryline) => openPanel({ kind: "theme", name: s.name }),
+    [openPanel],
   );
-  const [sectorFocusForDrawer, setSectorFocusForDrawer] = useState<{
-    categoryId: string;
-    categoryName: string;
-    taxonomyType: string;
-  } | null>(null);
-  const [activeTheme, setActiveTheme] = useState<CorpusStoryline | null>(null);
-  // Dormant: Direction now lists every theme inline, so nothing opens the
-  // ThemeDrawer "all storylines" view. Kept until that view is removed.
-  const [showAllStorylines, setShowAllStorylines] = useState(false);
 
-  const openThemeDrawer = useCallback((s: CorpusStoryline) => {
-    setActiveTheme(s);
-    setShowAllStorylines(false);
-  }, []);
-  const closeThemeDrawer = useCallback(() => {
-    setActiveTheme(null);
-    setShowAllStorylines(false);
-  }, []);
-
-  const openPairFromFaultLine = useCallback((line: FaultLine) => {
-    setPairData({
-      mode: "target-pair",
-      pair: line.pair,
-      targetA: line.targetA,
-      targetB: line.targetB,
-    });
-  }, []);
+  const openPairFromFaultLine = useCallback(
+    (line: FaultLine) =>
+      // Reading order comes from the row, not from the stored pair record.
+      openPanel({
+        kind: "target-pair",
+        aId: line.targetA.id,
+        bId: line.targetB.id,
+      }),
+    [openPanel],
+  );
 
   const openPairById = useCallback(
     (aId: string, bId: string) => {
-      const tA = targetMap.get(aId);
-      const tB = targetMap.get(bId);
-      if (!tA || !tB) return;
-      const conn = visibleAlignment.find(
+      // Checked here rather than in the panel so a row that cannot resolve
+      // simply does nothing, instead of flashing a panel open and shut.
+      if (!targetMap.has(aId) || !targetMap.has(bId)) return;
+      const conn = visibleAlignment.some(
         (p) =>
           (p.targetAId === aId && p.targetBId === bId) ||
           (p.targetAId === bId && p.targetBId === aId),
       );
       if (!conn) return;
-      setPairData({
-        mode: "target-pair",
-        pair: conn,
-        targetA: tA,
-        targetB: tB,
-      });
+      openPanel({ kind: "target-pair", aId, bId });
     },
-    [visibleAlignment, targetMap],
+    [visibleAlignment, targetMap, openPanel],
   );
 
   // Implementation drill-down: open an action↔target relation in the same
@@ -888,10 +868,8 @@ export function CoherenceBriefing({
   // Target stand-in from `actionPairTargets`.
   const openActionPair = useCallback(
     (actionId: string, targetId: string) => {
-      const tTarget = targetMap.get(targetId);
-      const tAction = actionPairTargets.get(actionId);
-      if (!tTarget || !tAction) return;
-      const conn = alignment.find(
+      if (!targetMap.has(targetId) || !actionPairTargets.has(actionId)) return;
+      const conn = alignment.some(
         (p) =>
           (p.targetAId === actionId && p.targetBId === targetId) ||
           (p.targetAId === targetId && p.targetBId === actionId),
@@ -899,14 +877,9 @@ export function CoherenceBriefing({
       if (!conn) return;
       // Action first: the connector reads in delivery direction ("BTR action
       // supports / is possibly misaligned with the policy target").
-      setPairData({
-        mode: "target-pair",
-        pair: conn,
-        targetA: tAction,
-        targetB: tTarget,
-      });
+      openPanel({ kind: "target-pair", aId: actionId, bId: targetId });
     },
-    [targetMap, actionPairTargets, alignment],
+    [targetMap, actionPairTargets, alignment, openPanel],
   );
 
   // Financing drill-down (non-Panama DocumentCoverage layout): open a
@@ -915,10 +888,10 @@ export function CoherenceBriefing({
   // `budgetPairTargets`.
   const openBudgetPair = useCallback(
     (programBerId: string, targetId: string) => {
-      const tTarget = targetMap.get(targetId);
-      const tBudget = budgetPairTargets.get(programBerId);
-      if (!tTarget || !tBudget || !budgetAlignment) return;
-      const conn = budgetAlignment.find(
+      if (!targetMap.has(targetId) || !budgetPairTargets.has(programBerId)) {
+        return;
+      }
+      const conn = budgetAlignment?.some(
         (p) =>
           (p.targetAId === programBerId && p.targetBId === targetId) ||
           (p.targetAId === targetId && p.targetBId === programBerId),
@@ -926,37 +899,15 @@ export function CoherenceBriefing({
       if (!conn) return;
       // Budget line first: the connector reads in funding direction ("budget
       // line supports the policy commitment").
-      setPairData({
-        mode: "target-pair",
-        pair: conn,
-        targetA: tBudget,
-        targetB: tTarget,
-      });
+      openPanel({ kind: "target-pair", aId: programBerId, bId: targetId });
     },
-    [targetMap, budgetPairTargets, budgetAlignment],
+    [targetMap, budgetPairTargets, budgetAlignment, openPanel],
   );
 
   const openDocPairDrawer = useCallback(
-    (dp: DocPairSynthesis) => {
-      const matchingPairs = visibleAlignment.filter((a) => {
-        const tA = targetMap.get(a.targetAId);
-        const tB = targetMap.get(a.targetBId);
-        if (!tA || !tB) return false;
-        const sA = tA.sourceDocument;
-        const sB = tB.sourceDocument;
-        return (
-          (sA === dp.doc_a && sB === dp.doc_b) ||
-          (sA === dp.doc_b && sB === dp.doc_a)
-        );
-      });
-      setPairData({
-        mode: "doc-pair",
-        docPair: dp,
-        pairs: matchingPairs,
-        targetsById: targetMap,
-      });
-    },
-    [visibleAlignment, targetMap],
+    (dp: DocPairSynthesis) =>
+      openPanel({ kind: "doc-pair", docA: dp.doc_a, docB: dp.doc_b }),
+    [openPanel],
   );
 
   const openDocPairByDocs = useCallback(
@@ -992,36 +943,28 @@ export function CoherenceBriefing({
 
   const openSectorDrawer = useCallback(
     (s: { categoryId: string; categoryName: string; taxonomyType: string }) =>
-      setSectorFocusForDrawer(s),
-    [],
+      openPanel({ kind: "sector", ...s }),
+    [openPanel],
   );
 
-  const drawerBriefing = useMemo<SectorBriefing | null>(() => {
-    if (!sectorFocusForDrawer) return null;
-    return buildSectorBriefing({
-      categoryId: sectorFocusForDrawer.categoryId,
-      categoryName: sectorFocusForDrawer.categoryName,
-      taxonomyType: sectorFocusForDrawer.taxonomyType,
-      targets: visibleTargets,
-      alignment: visibleAlignment,
-      classifications: visibleClassifications,
-      cap: 6,
-    });
-  }, [
-    sectorFocusForDrawer,
-    visibleTargets,
-    visibleAlignment,
-    visibleClassifications,
-  ]);
+  const openDocTargets = useCallback(
+    (doc: PolicyDocumentType) => openPanel({ kind: "doc-targets", doc }),
+    [openPanel],
+  );
 
-  const drawerSectorSynthesis = useMemo(() => {
-    if (!sectorFocusForDrawer) return null;
-    return (
-      sectorSynthesesIndex.get(
-        `${sectorFocusForDrawer.taxonomyType}:${sectorFocusForDrawer.categoryId}`,
-      ) ?? null
-    );
-  }, [sectorFocusForDrawer, sectorSynthesesIndex]);
+  /** Targets per document, over the whole corpus rather than the visible
+   *  subset: an excluded document still shows its real count, because that is
+   *  what the reader needs in order to decide whether to bring it back in. */
+  const targetCountByDoc = useMemo(() => {
+    const counts = new Map<PolicyDocumentType, number>();
+    for (const target of targets) {
+      counts.set(
+        target.sourceDocument,
+        (counts.get(target.sourceDocument) ?? 0) + 1,
+      );
+    }
+    return counts;
+  }, [targets]);
 
   // ── Active section + focus override (driven by IntersectionObserver) ──
   const [activeSection, setActiveSection] = useState<SectionId>(
@@ -1466,6 +1409,8 @@ export function CoherenceBriefing({
           countryConfig={countryConfig}
           onToggle={toggleDoc}
           onReset={resetHiddenDocs}
+          targetCountByDoc={targetCountByDoc}
+          onViewTargets={openDocTargets}
         />
         {storylineCaveat && (
           <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
@@ -1521,8 +1466,9 @@ export function CoherenceBriefing({
                   availableDocs={availableDocs}
                   onSelectDoc={setSelectedFocusDoc}
                   onOpenPair={openPairById}
+                  onViewTargets={openDocTargets}
                   onOpenType={(mechanism) =>
-                    setFlagProfile({
+                    openPanel({
                       kind: "friction-type",
                       mechanism,
                       doc: focusedDoc,
@@ -1552,7 +1498,7 @@ export function CoherenceBriefing({
               <FrictionTypesSection
                 totals={frictionTotals}
                 onOpenType={(mechanism) =>
-                  setFlagProfile({ kind: "friction-type", mechanism })
+                  openPanel({ kind: "friction-type", mechanism })
                 }
               />
             </div>
@@ -1565,7 +1511,7 @@ export function CoherenceBriefing({
                 concentration={targetConcentration}
                 countryConfig={countryConfig}
                 onOpenTarget={(target) =>
-                  setFlagProfile({ kind: "target", target })
+                  openPanel({ kind: "target-profile", targetId: target.id })
                 }
               />
             </div>
@@ -1665,6 +1611,8 @@ export function CoherenceBriefing({
                   hiddenDocs={hiddenDocs}
                   countryConfig={countryConfig}
                   onToggle={toggleDoc}
+                  targetCountByDoc={targetCountByDoc}
+                  onViewTargets={openDocTargets}
                 />
               </div>
               <div className="mb-2 flex items-center justify-between">
@@ -1725,74 +1673,28 @@ export function CoherenceBriefing({
         </div>
       </div>
 
-      <SectorDrawer
-        briefing={drawerBriefing}
-        sectorSynthesis={drawerSectorSynthesis}
+      <BriefingPanelHost
+        panels={panels}
         countryConfig={countryConfig}
-        onClose={() => setSectorFocusForDrawer(null)}
-        onOpenTargetPair={(pair, tA, tB) => {
-          setSectorFocusForDrawer(null);
-          setPairData({
-            mode: "target-pair",
-            pair,
-            targetA: tA,
-            targetB: tB,
-          });
-        }}
-      />
-      <ThemeDrawer
-        theme={activeTheme}
-        allStorylines={
-          showAllStorylines && visibleCorpusThemes
-            ? visibleCorpusThemes.storylines
-            : null
-        }
-        alignment={visibleAlignment}
-        targetsById={targetMap}
-        countryConfig={countryConfig}
-        classifications={visibleClassifications}
-        categories={sectorCategories}
-        taxonomyType={lensTaxonomyType}
-        totalDocCount={documentCount}
         countryId={countryId}
-        onClose={closeThemeDrawer}
-        onOpenSingleTheme={openThemeDrawer}
-        onOpenTargetPair={(pair, tA, tB) => {
-          setActiveTheme(null);
-          setShowAllStorylines(false);
-          setPairData({
-            mode: "target-pair",
-            pair,
-            targetA: tA,
-            targetB: tB,
-          });
-        }}
-        onOpenTargetProfile={(target) => {
-          setActiveTheme(null);
-          setShowAllStorylines(false);
-          setFlagProfile({ kind: "target", target });
-        }}
-      />
-      <FlagProfileDrawer
-        subject={flagProfile}
-        alignment={policyAlignment}
-        targets={visibleTargets}
-        classifications={visibleClassifications}
-        categories={sectorCategories}
-        taxonomyType={lensTaxonomyType}
+        targetMap={targetMap}
+        actionPairTargets={actionPairTargets}
+        budgetPairTargets={budgetPairTargets}
+        visibleAlignment={visibleAlignment}
+        alignment={alignment}
+        budgetAlignment={budgetAlignment ?? null}
+        policyAlignment={policyAlignment}
+        docPairSyntheses={visibleDocPairSyntheses}
+        corpusThemes={visibleCorpusThemes}
+        visibleTargets={visibleTargets}
+        visibleClassifications={visibleClassifications}
+        sectorCategories={sectorCategories}
+        lensTaxonomyType={lensTaxonomyType}
+        sectorSynthesesIndex={sectorSynthesesIndex}
         totalFlagged={frictionTotals.total}
-        countryConfig={countryConfig}
-        onClose={() => setFlagProfile(null)}
-        onOpenPair={(a, b) => {
-          setFlagProfile(null);
-          openPairById(a, b);
-        }}
-      />
-      <PairDrawer
-        data={pairData}
-        countryConfig={countryConfig}
-        countryId={countryId}
-        onClose={() => setPairData(null)}
+        totalDocCount={documentCount}
+        allTargets={targets}
+        hiddenDocs={hiddenDocs}
       />
       {/* Expand the active centerpiece to a large overlay so relationships are
           explorable at size; the same graphic + legend renders bigger here. */}

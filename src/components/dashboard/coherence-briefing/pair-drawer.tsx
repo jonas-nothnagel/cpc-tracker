@@ -1,20 +1,23 @@
 "use client";
 
 /**
- * PairDrawer — side drawer for either a single target-pair (clicked from a
+ * PairDrawer — panel body for either a single target-pair (clicked from a
  * fault-line row or wheel chord) or a whole doc-pair (clicked from Section 3
- * ranking). The two modes share the same chrome (slide-in, Escape closes,
- * body scroll locks) but render different bodies via a discriminated union.
+ * ranking). One discriminated union, two bodies.
  *
  * Doc-pair mode shows the LLM synthesis (reinforce + clash + coordination
  * hint), a prominent counts strip, and a flagged-only list of target-pairs
- * with a "Show aligned" expand. Clicking a target-pair row pivots to
- * target-pair mode, with a Back button to return to the doc-pair view.
+ * with a "Show aligned" expand. Clicking a target-pair row drills into
+ * target-pair mode; the panel trail supplies the way back.
  *
- * Target-pair mode renders the existing two-target card view + AI rationale.
+ * Target-pair mode renders the two-target card view + AI rationale.
+ *
+ * The surrounding chrome (scrim, dialog, Escape and back keys, scroll lock,
+ * focus trap, close button) belongs to DrawerShell; this file renders a
+ * DrawerHeader and a body.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   ALIGNED_COLOR,
@@ -28,10 +31,7 @@ import {
   useAlignmentLabels,
   useContradictionTypeLabels,
 } from "@/lib/labels";
-import { track } from "@/lib/analytics/client";
-import { useDrawerHistory } from "@/lib/use-drawer-history";
-import { DrawerBackButton } from "@/components/ui/drawer-back-button";
-import { useFocusTrap } from "@/components/ui/use-focus-trap";
+import { DrawerHeader } from "@/components/ui/drawer-shell";
 import { isContradiction } from "@/types";
 import { FeedbackControl } from "./feedback-control";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
@@ -74,110 +74,32 @@ export function PairDrawer({
   data,
   countryConfig,
   countryId,
-  onClose,
+  onOpenTargetPair,
 }: {
-  data: PairDrawerData | null;
+  data: PairDrawerData;
   countryConfig: CountryConfig | null;
   /** Canonical country slug; enables the feedback control when present. */
   countryId?: string;
-  onClose: () => void;
+  /** Drill from a doc-pair example row into that single target-pair. */
+  onOpenTargetPair: (aId: string, bId: string) => void;
 }) {
-  const t = useTranslations("briefing.drawer.pair");
-  // Drilling from a doc-pair into one of its target-pairs is owned by the
-  // drawer itself: pushSubject layers a target-pair on top, Back pops, and
-  // Esc prefers Back over Close. The hook resets the stack automatically
-  // when the parent hands us a different `data` reference.
-  const {
-    current: renderData,
-    previous,
-    push: pushSubject,
-    back: goBack,
-    canGoBack,
-  } = useDrawerHistory<PairDrawerData>(data);
-  const handleOpenTargetPair = useCallback(
-    (pair: AlignmentResult, targetA: Target, targetB: Target) =>
-      pushSubject({ mode: "target-pair", pair, targetA, targetB }),
-    [pushSubject],
-  );
-
-  useEffect(() => {
-    if (!data) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      if (canGoBack) goBack();
-      else onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [data, onClose, canGoBack, goBack]);
-
-  // Removable usage analytics: see src/lib/analytics/README.md.
-  useEffect(() => void (data && track("drawer_opened", { kind: data.mode })), [data]);
-
-  useEffect(() => {
-    if (!data) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [data]);
-
-  const panelRef = useFocusTrap<HTMLElement>(data !== null);
-
-  if (!data || !renderData) return null;
-
-  const backLabel =
-    previous && previous.mode === "doc-pair"
-      ? t("backTo", {
-          a: getDocMediumLabel(countryConfig, previous.docPair.doc_a),
-          b: getDocMediumLabel(countryConfig, previous.docPair.doc_b),
-        })
-      : undefined;
-
-  return (
-    <div className="fixed inset-0 z-30 flex justify-end">
-      <button
-        type="button"
-        aria-label={t("closeAria")}
-        onClick={onClose}
-        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
-      />
-      <aside
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={
-          renderData.mode === "doc-pair"
-            ? t("docPairDialogAria")
-            : t("targetPairDialogAria")
-        }
-        className="relative h-full w-full sm:w-[560px] md:w-[640px] shadow-2xl overflow-y-auto"
-        style={{ backgroundColor: "#ffffff" }}
-      >
-        {canGoBack && <DrawerBackButton onBack={goBack} label={backLabel} />}
-        {renderData.mode === "target-pair" ? (
-          <TargetPairBody
-            pair={renderData.pair}
-            targetA={renderData.targetA}
-            targetB={renderData.targetB}
-            countryConfig={countryConfig}
-            countryId={countryId}
-            onClose={onClose}
-          />
-        ) : (
-          <DocPairBody
-            docPair={renderData.docPair}
-            pairs={renderData.pairs}
-            targetsById={renderData.targetsById}
-            countryConfig={countryConfig}
-            countryId={countryId}
-            onClose={onClose}
-            onOpenTargetPair={handleOpenTargetPair}
-          />
-        )}
-      </aside>
-    </div>
+  return data.mode === "target-pair" ? (
+    <TargetPairBody
+      pair={data.pair}
+      targetA={data.targetA}
+      targetB={data.targetB}
+      countryConfig={countryConfig}
+      countryId={countryId}
+    />
+  ) : (
+    <DocPairBody
+      docPair={data.docPair}
+      pairs={data.pairs}
+      targetsById={data.targetsById}
+      countryConfig={countryConfig}
+      countryId={countryId}
+      onOpenTargetPair={onOpenTargetPair}
+    />
   );
 }
 
@@ -189,14 +111,12 @@ function TargetPairBody({
   targetB,
   countryConfig,
   countryId,
-  onClose,
 }: {
   pair: AlignmentResult;
   targetA: Target;
   targetB: Target;
   countryConfig: CountryConfig | null;
   countryId?: string;
-  onClose: () => void;
 }) {
   const t = useTranslations("briefing.drawer.pair");
   const alignmentLabels = useAlignmentLabels();
@@ -205,32 +125,22 @@ function TargetPairBody({
   const contra = isContradiction(pair.alignment);
   return (
     <>
-      <header className="sticky top-0 z-10 px-6 py-4 border-b border-line flex items-start justify-between gap-4 bg-white/90 backdrop-blur">
-        <div>
-          <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
-            {t("eyebrow.target")}
-          </p>
-          <h3
-            className="text-xl text-[var(--undp-black)] font-medium leading-tight"
-            style={{ fontFamily: HEADLINE_SERIF }}
-          >
-            {alignmentLabels[pair.alignment]}
-            {pair.mechanism && (
-              <span className="block text-data font-sans font-normal text-[var(--undp-gray)] mt-1">
-                {contradictionLabels[pair.mechanism]}
-              </span>
-            )}
-          </h3>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={t("closeBtnAria")}
-          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none"
+      <DrawerHeader>
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
+          {t("eyebrow.target")}
+        </p>
+        <h3
+          className="text-xl text-[var(--undp-black)] font-medium leading-tight"
+          style={{ fontFamily: HEADLINE_SERIF }}
         >
-          ×
-        </button>
-      </header>
+          {alignmentLabels[pair.alignment]}
+          {pair.mechanism && (
+            <span className="block text-data font-sans font-normal text-[var(--undp-gray)] mt-1">
+              {contradictionLabels[pair.mechanism]}
+            </span>
+          )}
+        </h3>
+      </DrawerHeader>
 
       <div className="px-6 py-6 space-y-5">
         <TargetCard
@@ -395,7 +305,6 @@ function DocPairBody({
   targetsById,
   countryConfig,
   countryId,
-  onClose,
   onOpenTargetPair,
 }: {
   docPair: DocPairSynthesis;
@@ -403,16 +312,18 @@ function DocPairBody({
   targetsById: Map<string, Target>;
   countryConfig: CountryConfig | null;
   countryId?: string;
-  onClose: () => void;
-  onOpenTargetPair: (
-    pair: AlignmentResult,
-    targetA: Target,
-    targetB: Target,
-  ) => void;
+  onOpenTargetPair: (aId: string, bId: string) => void;
 }) {
   const t = useTranslations("briefing.drawer.pair");
   const labelAFull = getDocFullLabel(countryConfig, docPair.doc_a);
   const labelBFull = getDocFullLabel(countryConfig, docPair.doc_b);
+  // The example rows carry the resolved targets; the panel trail only needs
+  // their ids, in the order the row displayed them.
+  const openRow = useCallback(
+    (_pair: AlignmentResult, targetA: Target, targetB: Target) =>
+      onOpenTargetPair(targetA.id, targetB.id),
+    [onOpenTargetPair],
+  );
 
   // Round-2 restructure: flagged + aligned pairs are split into example
   // sub-lists that live BENEATH each synthesis panel rather than as a
@@ -437,34 +348,22 @@ function DocPairBody({
 
   return (
     <>
-      <header className="sticky top-0 z-10 px-6 py-4 bg-white/90 backdrop-blur border-b border-line">
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
-              {t("eyebrow.doc")}
-            </p>
-            <h3
-              className="text-xl text-[var(--undp-black)] font-medium leading-tight truncate"
-              style={{ fontFamily: HEADLINE_SERIF }}
-            >
-              {labelAFull} ↔ {labelBFull}
-            </h3>
-            {!failed && (
-              <p className="mt-1 text-data text-[var(--undp-gray)] leading-snug">
-                {docPair.synthesis.storyline_name}
-              </p>
-            )}
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t("closeBtnAria")}
-            className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-2xl leading-none shrink-0"
-          >
-            ×
-          </button>
-        </div>
-      </header>
+      <DrawerHeader>
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
+          {t("eyebrow.doc")}
+        </p>
+        <h3
+          className="text-xl text-[var(--undp-black)] font-medium leading-tight truncate"
+          style={{ fontFamily: HEADLINE_SERIF }}
+        >
+          {labelAFull} ↔ {labelBFull}
+        </h3>
+        {!failed && (
+          <p className="mt-1 text-data text-[var(--undp-gray)] leading-snug">
+            {docPair.synthesis.storyline_name}
+          </p>
+        )}
+      </DrawerHeader>
 
       <div className="px-6 py-6 space-y-6">
         {!failed && (
@@ -492,7 +391,7 @@ function DocPairBody({
                 totalCount={alignedPairs.length}
                 targetsById={targetsById}
                 countryConfig={countryConfig}
-                onOpenTargetPair={onOpenTargetPair}
+                onOpenTargetPair={openRow}
               />
               <ExamplesColumn
                 variant="flagged"
@@ -501,7 +400,7 @@ function DocPairBody({
                 totalCount={flaggedPairs.length}
                 targetsById={targetsById}
                 countryConfig={countryConfig}
-                onOpenTargetPair={onOpenTargetPair}
+                onOpenTargetPair={openRow}
               />
             </div>
           </>
@@ -528,7 +427,7 @@ function DocPairBody({
             alignedPairs={alignedPairs}
             targetsById={targetsById}
             countryConfig={countryConfig}
-            onOpenTargetPair={onOpenTargetPair}
+            onOpenTargetPair={openRow}
           />
         )}
       </div>

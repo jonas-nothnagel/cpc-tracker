@@ -396,9 +396,18 @@
       "clickHint": "нүднийг дарж зөрүүг харна уу"
     },
     "drawer": {
+      "backTo": {
+        "targetPair": "{a}, {b} руу буцах",
+        "docPair": "{a} ↔ {b} руу буцах",
+        "theme": "{name} руу буцах",
+        "allThemes": "Бүх сэдэв рүү буцах",
+        "sector": "{name} руу буцах",
+        "frictionType": "{name} руу буцах",
+        "target": "{name} руу буцах",
+        "docTargets": "{name}-ийн зорилтууд руу буцах"
+      },
       "flagProfile": {
         "closeAria": "Профайл хаах",
-        "closeBtnAria": "Хаах",
         "dialogAria": "Профайл: {name}",
         "eyebrow": {
           "friction": "Болзошгүй үл нийцлийн төрөл",
@@ -435,10 +444,8 @@
       },
       "pair": {
         "closeAria": "Хосын дэлгэрэнгүйг хаах",
-        "closeBtnAria": "Хаах",
         "docPairDialogAria": "Баримтын хосын дэлгэрэнгүй",
         "targetPairDialogAria": "Хосын дэлгэрэнгүй",
-        "backTo": "{a} ↔ {b} руу буцах",
         "eyebrow": {
           "target": "Хосын дэлгэрэнгүй",
           "doc": "Баримтын хос"
@@ -502,7 +509,6 @@
       },
       "theme": {
         "closeAria": "Сэдвийн харагдацыг хаах",
-        "closeBtnAria": "Хаах",
         "dialogAria": "Сэдэв: {name}",
         "eyebrow": {
           "reinforce": "Давтагдах уялдаа",
@@ -536,7 +542,6 @@
       "sector": {
         "eyebrow": "Салбарын харагдац",
         "closeAria": "Салбарын харагдацыг хаах",
-        "closeBtnAria": "Хаах",
         "dialogAria": "Салбарын харагдац: {name}",
         "headerCounts": "{targets, number} зорилт · {pairs, number} оноологдсон хос энэ салбарт хамаарна",
         "recursLabel": "Давтагдана:",
@@ -936,8 +941,39 @@
       "included": "{total, plural, one {# бодлогын баримт бичиг} other {# бодлогын баримт бичиг}}-аас {visible} оруулсан.",
       "excluded": "{names} хассан.",
       "done": "Дууссан",
-      "addOrRemove": "Баримт бичиг нэмэх эсвэл хасах",
+      "addOrRemove": "Баримт бичгүүдийг үзэж, тохируулах",
       "resetToDefault": "Анхдагч руу буцаах"
+    },
+    "docTargets": {
+      "action": "{count, plural, one {# зорилт} other {# зорилт}}",
+      "eyebrow": "Баримт бичгийн зорилтууд",
+      "subtitle": "{count, plural, one {# зорилт} other {# зорилт}}, баримт бичгийн дарааллаар",
+      "searchLabel": "Эдгээр зорилтоос хайх",
+      "searchPlaceholder": "Утга буюу дугаараар хайх",
+      "filterGroupAria": "Эдгээр зорилтыг шүүх",
+      "filter": {
+        "quantitative": "Тоон ({count, number})",
+        "timeBound": "Хугацаатай ({count, number})",
+        "inMisalignments": "Болзошгүй зөрчилтэй ({count, number})"
+      },
+      "showingCount": "Нийт {total, number}-аас {shown, number} зорилтыг харуулж байна",
+      "showMore": "Дахин {count, number}-ыг харах",
+      "clearSearch": "Хайлтыг арилгах",
+      "clearFilters": "Шүүлтүүрийг арилгах",
+      "clearAll": "Хайлт болон шүүлтүүрийг арилгах",
+      "misalignmentCount": "{count, plural, one {# болзошгүй зөрчил} other {# болзошгүй зөрчил}}",
+      "openProfile": "Энэ зорилтын болзошгүй зөрчлүүдийг харах",
+      "expandRowAria": "{name} зорилтын бүрэн эхийг харуулах",
+      "collapseRowAria": "{name} зорилтын бүрэн эхийг нуух",
+      "sourceSection": "Хэсэг: {name}",
+      "sourceQuote": "Баримт бичигт бичигдсэнээр",
+      "openSource": "Эх сурвалжийг нээх",
+      "excludedNote": "Энэ баримт бичгийг одоогоор шинжилгээнээс хассан тул түүнд болзошгүй зөрчил тооцоогүй болно.",
+      "empty": {
+        "noTargets": "Энэ баримт бичгээс зорилт гаргаж аваагүй байна.",
+        "noMatches": "Энэ баримт бичигт тухайн хайлтад тохирох зорилт алга.",
+        "noFilterMatches": "Сонгосон шүүлтүүрт тохирох зорилт алга."
+      }
     },
     "centerLegend": {
       "variant": {

@@ -27,6 +27,7 @@ import { useTranslations } from "next-intl";
 import { getDocColor, getDocMediumLabel, getDocMeta } from "@/lib/utils";
 import type { CountryConfig, PolicyDocumentType } from "@/types";
 import { DocHoverCard, DocMetaCard } from "./doc-meta-card";
+import { ViewTargetsAction } from "./view-targets-action";
 
 /** One document toggle: colour dot + label. Included reads solid; excluded
  *  reads dimmed with a hollow dot and a strikethrough, so it is obviously
@@ -37,6 +38,8 @@ function DocToggleItem({
   countryConfig,
   onToggle,
   showDetails = false,
+  targetCount,
+  onViewTargets,
 }: {
   doc: PolicyDocumentType;
   included: boolean;
@@ -45,6 +48,10 @@ function DocToggleItem({
   /** When true, render the reference metadata inline (the add/remove overview);
    *  otherwise the metadata appears in a hover card (the wheel legend). */
   showDetails?: boolean;
+  /** Targets in this document, over the whole corpus. Optional so the hover-card
+   *  variant keeps calling this with no extra wiring. */
+  targetCount?: number;
+  onViewTargets?: (doc: PolicyDocumentType) => void;
 }) {
   const t = useTranslations("briefing.docFilter");
   const color = getDocColor(countryConfig, doc);
@@ -92,21 +99,46 @@ function DocToggleItem({
         meta.published ||
         meta.author ||
         meta.objective ||
-        meta.url,
+        meta.url ||
+        // A document with no sourced record still has targets worth opening.
+        (onViewTargets && targetCount),
     );
     return (
       <div className="flex flex-col gap-1 text-data">
         {toggle}
         {hasMeta && (
           <div className={`pl-3.5 ${included ? "" : "opacity-50"}`}>
-            <DocMetaCard meta={meta} color={color} hideDot />
+            <DocMetaCard
+              meta={meta}
+              color={color}
+              hideDot
+              footer={
+                onViewTargets && targetCount !== undefined ? (
+                  <ViewTargetsAction
+                    count={targetCount}
+                    onClick={() => onViewTargets(doc)}
+                  />
+                ) : undefined
+              }
+            />
           </div>
         )}
       </div>
     );
   }
   return (
-    <DocHoverCard doc={doc} countryConfig={countryConfig}>
+    <DocHoverCard
+      doc={doc}
+      countryConfig={countryConfig}
+      footer={
+        onViewTargets && targetCount !== undefined ? (
+          <ViewTargetsAction
+            count={targetCount}
+            onClick={() => onViewTargets(doc)}
+          />
+        ) : undefined
+      }
+    >
       {toggle}
     </DocHoverCard>
   );
@@ -124,6 +156,10 @@ interface DocFilterControlProps extends DocControlBaseProps {
   /** The config default, so "Reset to default" can restore it. */
   defaultHiddenDocTypes: string[];
   onReset: () => void;
+  /** Targets per document across the whole corpus, so an excluded document
+   *  still reports what it holds while the reader decides about it. */
+  targetCountByDoc: Map<PolicyDocumentType, number>;
+  onViewTargets: (doc: PolicyDocumentType) => void;
 }
 
 export function DocFilterControl({
@@ -133,6 +169,8 @@ export function DocFilterControl({
   countryConfig,
   onToggle,
   onReset,
+  targetCountByDoc,
+  onViewTargets,
 }: DocFilterControlProps) {
   const t = useTranslations("briefing.docFilter");
   const [expanded, setExpanded] = useState(false);
@@ -191,6 +229,8 @@ export function DocFilterControl({
                 countryConfig={countryConfig}
                 onToggle={onToggle}
                 showDetails
+                targetCount={targetCountByDoc.get(doc) ?? 0}
+                onViewTargets={onViewTargets}
               />
             ))}
           </div>
@@ -220,7 +260,12 @@ export function DocToggleLegend({
   hiddenDocs,
   countryConfig,
   onToggle,
-}: DocControlBaseProps) {
+  targetCountByDoc,
+  onViewTargets,
+}: DocControlBaseProps & {
+  targetCountByDoc: Map<PolicyDocumentType, number>;
+  onViewTargets: (doc: PolicyDocumentType) => void;
+}) {
   if (allDocs.length === 0) return null;
   return (
     <div className="mb-3">
@@ -232,6 +277,8 @@ export function DocToggleLegend({
             included={!hiddenDocs.has(doc)}
             countryConfig={countryConfig}
             onToggle={onToggle}
+            targetCount={targetCountByDoc.get(doc) ?? 0}
+            onViewTargets={onViewTargets}
           />
         ))}
       </div>

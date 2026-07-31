@@ -73,6 +73,7 @@ export const ROUTE_NAMES: Record<string, string> = {
 /** Plain-English descriptions of tracked events for the analytics UI. */
 export const TRACK_EVENT_NAMES: Record<string, string> = {
   drawer_opened: "Opened a detail panel",
+  panel_drilled: "Drilled deeper in a detail panel",
   chat_message_sent: "Sent a chat message",
   analysis_run_started: "Started an analysis",
   upload_step: "Moved through the upload steps",

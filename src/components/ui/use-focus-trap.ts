@@ -23,6 +23,10 @@ import { useEffect, useRef, type RefObject } from "react";
  * effects rather than duplicating or overriding them.
  *
  * @param active whether the panel is currently open
+ * @param options.autoFocus when false, the panel places initial focus itself
+ *   and this hook contributes only the Tab cycle, the escape safety net, and
+ *   the restore-on-close. DrawerShell uses this so focus lands on the panel
+ *   header rather than on whichever control happens to come first.
  * @returns a ref to attach to the panel's root element (the floating panel,
  *   not the scrim)
  */
@@ -40,7 +44,9 @@ function visibleFocusable(container: HTMLElement): HTMLElement[] {
 
 export function useFocusTrap<T extends HTMLElement = HTMLDivElement>(
   active: boolean,
+  options?: { autoFocus?: boolean },
 ): RefObject<T | null> {
+  const autoFocus = options?.autoFocus ?? true;
   const containerRef = useRef<T>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
 
@@ -108,8 +114,8 @@ export function useFocusTrap<T extends HTMLElement = HTMLDivElement>(
 
     // Move focus into the panel on open (after paint, like modal.tsx), then
     // observe so later content swaps re-home focus too.
-    requestAnimationFrame(() => {
-      focusFirst();
+    const frame = requestAnimationFrame(() => {
+      if (autoFocus) focusFirst();
       const container = containerRef.current;
       if (container) {
         observer.observe(container, { childList: true, subtree: true });
@@ -117,6 +123,7 @@ export function useFocusTrap<T extends HTMLElement = HTMLDivElement>(
     });
 
     return () => {
+      cancelAnimationFrame(frame);
       document.removeEventListener("keydown", handleKeyDown);
       observer.disconnect();
       // Only restore focus if the opener is still in the document; calling
@@ -125,7 +132,7 @@ export function useFocusTrap<T extends HTMLElement = HTMLDivElement>(
       const prev = previousFocus.current;
       if (prev && prev.isConnected) prev.focus();
     };
-  }, [active]);
+  }, [active, autoFocus]);
 
   return containerRef;
 }

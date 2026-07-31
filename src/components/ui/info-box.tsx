@@ -26,7 +26,11 @@ export function InfoBox({ children }: InfoBoxProps) {
       }
     }
     function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      // Claim the key so an enclosing panel does not also navigate back on the
+      // same press.
+      e.preventDefault();
+      setOpen(false);
     }
     document.addEventListener("mousedown", handleClick);
     document.addEventListener("keydown", handleKey);

@@ -396,9 +396,18 @@
       "clickHint": "pulse una celda para ver las brechas"
     },
     "drawer": {
+      "backTo": {
+        "targetPair": "Volver a {a} y {b}",
+        "docPair": "Volver a {a} ↔ {b}",
+        "theme": "Volver a {name}",
+        "allThemes": "Volver a todos los temas",
+        "sector": "Volver a {name}",
+        "frictionType": "Volver a {name}",
+        "target": "Volver a {name}",
+        "docTargets": "Volver a las metas de {name}"
+      },
       "flagProfile": {
         "closeAria": "Cerrar perfil",
-        "closeBtnAria": "Cerrar",
         "dialogAria": "Perfil: {name}",
         "eyebrow": {
           "friction": "Tipo de posible desalineación",
@@ -435,10 +444,8 @@
       },
       "pair": {
         "closeAria": "Cerrar detalle del par",
-        "closeBtnAria": "Cerrar",
         "docPairDialogAria": "Detalle del par de documentos",
         "targetPairDialogAria": "Detalle del par",
-        "backTo": "Volver a {a} ↔ {b}",
         "eyebrow": {
           "target": "Detalle del par",
           "doc": "Par de documentos"
@@ -502,7 +509,6 @@
       },
       "theme": {
         "closeAria": "Cerrar vista de tema",
-        "closeBtnAria": "Cerrar",
         "dialogAria": "Tema: {name}",
         "eyebrow": {
           "reinforce": "Alineación recurrente",
@@ -536,7 +542,6 @@
       "sector": {
         "eyebrow": "Vista de sector",
         "closeAria": "Cerrar vista de sector",
-        "closeBtnAria": "Cerrar",
         "dialogAria": "Vista de sector: {name}",
         "headerCounts": "{targets, number} metas · {pairs, number} pares evaluados tocan este sector",
         "recursLabel": "Recurre:",
@@ -936,8 +941,39 @@
       "included": "{visible} de {total, plural, one {# documento de política} other {# documentos de política}} incluidos.",
       "excluded": "{names} excluidos.",
       "done": "Listo",
-      "addOrRemove": "Agregar o quitar documentos",
+      "addOrRemove": "Revisar y ajustar los documentos",
       "resetToDefault": "Restablecer valores predeterminados"
+    },
+    "docTargets": {
+      "action": "{count, plural, one {# meta} other {# metas}}",
+      "eyebrow": "Metas del documento",
+      "subtitle": "{count, plural, one {# meta} other {# metas}} en el orden del documento",
+      "searchLabel": "Buscar en estas metas",
+      "searchPlaceholder": "Buscar por texto o referencia",
+      "filterGroupAria": "Filtrar estas metas",
+      "filter": {
+        "quantitative": "Cuantitativas ({count, number})",
+        "timeBound": "Con plazo ({count, number})",
+        "inMisalignments": "En posibles desalineaciones ({count, number})"
+      },
+      "showingCount": "Mostrando {shown, number} de {total, number} metas",
+      "showMore": "Ver {count, number} más",
+      "clearSearch": "Borrar la búsqueda",
+      "clearFilters": "Quitar los filtros",
+      "clearAll": "Borrar la búsqueda y los filtros",
+      "misalignmentCount": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
+      "openProfile": "Ver las posibles desalineaciones de esta meta",
+      "expandRowAria": "Mostrar el texto completo de la meta {name}",
+      "collapseRowAria": "Ocultar el texto completo de la meta {name}",
+      "sourceSection": "Sección: {name}",
+      "sourceQuote": "Tal como aparece en el documento",
+      "openSource": "Abrir la fuente",
+      "excludedNote": "Este documento está excluido del análisis en este momento, por lo que no se contabilizan posibles desalineaciones para él.",
+      "empty": {
+        "noTargets": "No se extrajeron metas de este documento.",
+        "noMatches": "Ninguna meta de este documento coincide con esa búsqueda.",
+        "noFilterMatches": "Ninguna meta coincide con los filtros seleccionados."
+      }
     },
     "centerLegend": {
       "variant": {

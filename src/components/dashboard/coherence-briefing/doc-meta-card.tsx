@@ -18,7 +18,13 @@
  * another ministry can place a document they don't know without leaving the view.
  */
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import {
@@ -37,6 +43,7 @@ export function DocMetaCard({
   fullTitle,
   deadlineCoverage,
   hideDot = false,
+  footer,
 }: {
   meta: DocMeta;
   /** The document's identity colour, used for the leading dot + deadline sliver. */
@@ -47,6 +54,11 @@ export function DocMetaCard({
   deadlineCoverage?: { total: number; timeBound: number };
   /** Hide the leading colour dot when the context already shows it (overview rows). */
   hideDot?: boolean;
+  /** An extra action beside "View document", e.g. a way into the document's
+   *  targets. A slot rather than a set of props so this component stays
+   *  presentational and each surface decides whether it can host an action and
+   *  how that action should behave once used. */
+  footer?: ReactNode;
 }) {
   const t = useTranslations("briefing.docFocus");
   const factLine = [meta.published, meta.author].filter(Boolean).join(" · ");
@@ -90,16 +102,21 @@ export function DocMetaCard({
           {meta.objective}
         </p>
       )}
-      {meta.url && (
-        <a
-          href={meta.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-caption font-medium text-[var(--undp-blue)] hover:underline"
-        >
-          {t("viewDocument")}
-          <span aria-hidden="true">↗</span>
-        </a>
+      {(meta.url || footer) && (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          {meta.url && (
+            <a
+              href={meta.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-caption font-medium text-[var(--undp-blue)] hover:underline"
+            >
+              {t("viewDocument")}
+              <span aria-hidden="true">↗</span>
+            </a>
+          )}
+          {footer}
+        </div>
       )}
       {showDeadlines && deadlineCoverage && (
         <div className="flex items-center gap-2 pt-0.5">
@@ -128,21 +145,37 @@ export function DocMetaCard({
  * Hover/focus wrapper that shows the document's reference card next to `children`.
  * Renders children untouched when the document carries no reference metadata, so
  * documents without a sourced record (e.g. internal reviews) get no empty card.
+ *
+ * The card is portaled to the end of the body, which keeps it clear of the
+ * legend's layout but puts it last in tab order. Tab from the trigger is
+ * therefore redirected into the card, and Tab or Shift+Tab back out of it
+ * returns to the trigger, so the link and the targets action inside are
+ * reachable without a mouse instead of sitting behind every other control on
+ * the page.
  */
 export function DocHoverCard({
   doc,
   countryConfig,
+  footer,
   children,
 }: {
   doc: PolicyDocumentType;
   countryConfig: CountryConfig | null;
+  /** An extra action inside the card, e.g. a way into the document's targets. */
+  footer?: ReactNode;
   children: ReactNode;
 }) {
   const meta = getDocMeta(countryConfig, doc);
   const hasMeta = Boolean(
-    meta.docKind || meta.published || meta.author || meta.objective || meta.url,
+    meta.docKind ||
+      meta.published ||
+      meta.author ||
+      meta.objective ||
+      meta.url ||
+      footer,
   );
   const ref = useRef<HTMLSpanElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(
     null,
@@ -173,6 +206,45 @@ export function DocHoverCard({
     if (closeTimer.current) clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => setCoords(null), 120);
   };
+  const focusTrigger = () => {
+    ref.current?.querySelector("button")?.focus();
+  };
+  /** Order matters: moving focus first lets the resulting focus event reopen the
+   *  card, and the close below then wins the same batch. Closing first would
+   *  leave the reopen as the last write, so the card could never be dismissed
+   *  from the keyboard. */
+  const dismiss = () => {
+    focusTrigger();
+    setCoords(null);
+  };
+  /** React routes portal events through the component tree, so this handler sees
+   *  keys pressed both on the trigger and inside the card. */
+  const handleKeyDown = (e: ReactKeyboardEvent) => {
+    if (e.key === "Escape") {
+      dismiss();
+      return;
+    }
+    if (e.key !== "Tab" || !coords) return;
+    const stops = Array.from(
+      cardRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])',
+      ) ?? [],
+    );
+    if (stops.length === 0) return;
+    const insideCard = cardRef.current?.contains(e.target as Node) ?? false;
+    if (!insideCard) {
+      if (e.shiftKey) return;
+      e.preventDefault();
+      stops[0].focus();
+      return;
+    }
+    const index = stops.indexOf(document.activeElement as HTMLElement);
+    const leaving = e.shiftKey ? index <= 0 : index === stops.length - 1;
+    if (leaving) {
+      e.preventDefault();
+      dismiss();
+    }
+  };
   return (
     <span
       ref={ref}
@@ -181,16 +253,18 @@ export function DocHoverCard({
       onMouseLeave={scheduleClose}
       onFocus={open}
       onBlur={scheduleClose}
-      onKeyDown={(e) => {
-        if (e.key === "Escape") setCoords(null);
-      }}
+      onKeyDown={handleKeyDown}
     >
       {children}
       {coords &&
         typeof document !== "undefined" &&
         createPortal(
+          // Deliberately not role="tooltip": the card holds a link and, on the
+          // wheel legend, a targets action, and a tooltip may not contain
+          // interactive content.
           <div
-            role="tooltip"
+            ref={cardRef}
+            aria-label={fullTitle}
             onMouseEnter={() => {
               if (closeTimer.current) clearTimeout(closeTimer.current);
             }}
@@ -198,7 +272,16 @@ export function DocHoverCard({
             className="fixed z-50 w-[300px] rounded-md border border-line bg-white p-3.5 shadow-xl"
             style={{ top: coords.top, left: coords.left }}
           >
-            <DocMetaCard meta={meta} color={color} fullTitle={fullTitle} />
+            <DocMetaCard
+              meta={meta}
+              color={color}
+              fullTitle={fullTitle}
+              footer={
+                footer && (
+                  <span onClick={() => setCoords(null)}>{footer}</span>
+                )
+              }
+            />
           </div>,
           document.body,
         )}
@@ -215,11 +298,15 @@ export function DocInfoPopover({
   meta,
   color,
   deadlineCoverage,
+  footer,
   children,
 }: {
   meta: DocMeta;
   color: string;
   deadlineCoverage?: { total: number; timeBound: number };
+  /** An extra action inside the card. Legitimate here, unlike in the hover
+   *  card, because this popover opens on click and stays until dismissed. */
+  footer?: ReactNode;
   children: ReactNode;
 }) {
   const t = useTranslations("briefing.docFocus");
@@ -307,6 +394,14 @@ export function DocInfoPopover({
               meta={meta}
               color={color}
               deadlineCoverage={deadlineCoverage}
+              footer={
+                footer && (
+                  // The footer action opens a panel over this popover, which
+                  // would otherwise still be sitting here when the panel
+                  // closes. The click bubbles after the action's own handler.
+                  <span onClick={() => setCoords(null)}>{footer}</span>
+                )
+              }
             />
           </div>,
           document.body,

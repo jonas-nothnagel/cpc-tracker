@@ -66,6 +66,7 @@ describe("display-name maps", () => {
   it("names every emitted track event", () => {
     for (const name of [
       "drawer_opened",
+      "panel_drilled",
       "chat_message_sent",
       "analysis_run_started",
       "upload_step",
