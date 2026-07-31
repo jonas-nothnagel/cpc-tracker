@@ -224,6 +224,9 @@ const HR_LENS_COLORS: Record<string, string> = {
   hr_defenders: "#dc2626",
   hr_business: "#64748b",
   hr_disabilities: "#0891b2",
+  // Derived "no clear theme" bucket: deliberately neutral grey so it reads as
+  // an absence of signal rather than as another theme competing for attention.
+  hr_unclassified: "#cbd5e1",
 };
 
 interface CoherenceBriefingProps {

@@ -646,7 +646,9 @@
         "emptyBody": "O ningún objetivo está clasificado como primario en una {noun} bajo esta lente, o el país no tiene una taxonomía de {noun} configurada.",
         "singleHeadline": "{name} concentra el {pct}% de los objetivos clasificados.",
         "everyHeadline": "Los objetivos clasificados abarcan los {sectors, number} {nounPlural}, sobre todo en {name}.",
-        "topHeadline": "{list} concentran el {pct}% de los objetivos clasificados."
+        "topHeadline": "{list} concentran el {pct}% de los objetivos clasificados.",
+        "unclassifiedNote": "{count, number} de {total, number} objetivos no coinciden claramente con {nounPlural}.",
+        "noneClassifiedHeadline": "Ningún objetivo coincide claramente con {nounPlural}."
       },
       "flag": {
         "none": "Aún no hay relaciones revisadas bajo esta lente.",

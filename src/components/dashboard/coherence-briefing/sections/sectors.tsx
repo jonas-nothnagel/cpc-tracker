@@ -372,13 +372,31 @@ function composeCoverageSentence({
   const nounStyle = nounStyleFor(taxonomyType);
   const noun = t(`noun.${nounStyle}.singular`);
   const nounPlural = t(`noun.${nounStyle}.plural`);
-  const { populatedSectors, totalTargets, topNames, share } =
+  const { populatedSectors, totalTargets, topNames, share, unclassifiedTargets } =
     coverageConcentration;
+
+  // The derived "no clear theme" bucket is reported as its own sentence rather
+  // than ranked among the themes — it is the absence of a theme, so naming it
+  // as a concentration peak would misstate what the analysis found.
+  const unclassifiedNote =
+    unclassifiedTargets > 0
+      ? t("coverage.unclassifiedNote", {
+          count: unclassifiedTargets,
+          total: totalTargets + unclassifiedTargets,
+          nounPlural,
+        })
+      : "";
 
   if (totalTargets === 0 || populatedSectors === 0) {
     return {
-      headline: t("coverage.emptyHeadline", { noun }),
-      body: t("coverage.emptyBody", { noun }),
+      headline:
+        unclassifiedTargets > 0
+          ? t("coverage.noneClassifiedHeadline", {
+              count: unclassifiedTargets,
+              nounPlural,
+            })
+          : t("coverage.emptyHeadline", { noun }),
+      body: unclassifiedTargets > 0 ? unclassifiedNote : t("coverage.emptyBody", { noun }),
     };
   }
 
@@ -397,7 +415,11 @@ function composeCoverageSentence({
     headline = t("coverage.topHeadline", { list, pct: sharePct });
   }
 
-  return { headline, body: composeFlagBody({ mergedRows, midShare, nounPlural, t }) };
+  const flagBody = composeFlagBody({ mergedRows, midShare, nounPlural, t });
+  return {
+    headline,
+    body: unclassifiedNote ? `${unclassifiedNote} ${flagBody}` : flagBody,
+  };
 }
 
 /**

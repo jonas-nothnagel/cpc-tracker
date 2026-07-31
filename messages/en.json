@@ -646,7 +646,9 @@
         "emptyBody": "Either no target is primary-classified to a {noun} under this lens, or the country has no {noun} taxonomy configured.",
         "singleHeadline": "{name} holds {pct}% of classified targets.",
         "everyHeadline": "Classified targets span all {sectors, number} {nounPlural}, most in {name}.",
-        "topHeadline": "{list} hold {pct}% of classified targets."
+        "topHeadline": "{list} hold {pct}% of classified targets.",
+        "unclassifiedNote": "{count, number} of {total, number} targets have no clear match to one of these {nounPlural}.",
+        "noneClassifiedHeadline": "No targets match one of these {nounPlural} clearly."
       },
       "flag": {
         "none": "No reviewed relationships under this lens yet.",
