@@ -129,7 +129,11 @@ export function SectorsSection({
           <p className="text-body text-[var(--undp-gray)]">{t("noTaxonomy")}</p>
         ) : (
           <div className="border-y border-gray-200 py-3">
-            <SectorColumnHeader sortMode={sortMode} onSort={setSortMode} />
+            <SectorColumnHeader
+              sortMode={sortMode}
+              onSort={setSortMode}
+              taxonomyType={taxonomyType}
+            />
             <ul
               className="divide-y divide-gray-100"
               onMouseLeave={() => onHoverSector?.(null)}
@@ -293,12 +297,26 @@ export function SectorWheelFilter({
   );
 }
 
+/** Which noun a lens's rows should be called. GGA and human rights rows are
+ *  "themes"; GLOBE rows are "categories"; everything else keeps "sector". Shared
+ *  by the column header and the coverage sentence so a lens never mixes nouns.
+ *  NOTE the "Show all N sectors" link is deliberately still hard-nouned: the
+ *  analytics registry (`lib/analytics/miniature-regions.ts`) routes clicks on it
+ *  by matching that rendered string, so varying it by lens would break routing. */
+function nounStyleFor(taxonomyType: string): "theme" | "category" | "sector" {
+  if (taxonomyType === "gga" || taxonomyType === "hr") return "theme";
+  if (taxonomyType === "globe") return "category";
+  return "sector";
+}
+
 function SectorColumnHeader({
   sortMode,
   onSort,
+  taxonomyType,
 }: {
   sortMode: SectorSortMode;
   onSort: (m: SectorSortMode) => void;
+  taxonomyType: string;
 }) {
   const t = useTranslations("briefing.sectors");
   return (
@@ -306,7 +324,7 @@ function SectorColumnHeader({
       className={`${GRID} px-1 pb-1 mb-1 text-caption text-[var(--undp-gray)]`}
       data-tour="sector-columns"
     >
-      <span>{t("col.sector")}</span>
+      <span>{t(`col.${nounStyleFor(taxonomyType)}`)}</span>
       <button
         type="button"
         onClick={() => onSort("coverage")}
@@ -351,14 +369,7 @@ function composeCoverageSentence({
   taxonomyType: string;
   t: ReturnType<typeof useTranslations<"briefing.sectors">>;
 }): CoverageSentence {
-  // GGA themes are not "sectors"; the globe lens reads "category". Anything else
-  // keeps the generic "sector" noun.
-  const nounStyle =
-    taxonomyType === "gga"
-      ? "theme"
-      : taxonomyType === "globe"
-        ? "category"
-        : "sector";
+  const nounStyle = nounStyleFor(taxonomyType);
   const noun = t(`noun.${nounStyle}.singular`);
   const nounPlural = t(`noun.${nounStyle}.plural`);
   const { populatedSectors, totalTargets, topNames, share } =

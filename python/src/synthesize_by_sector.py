@@ -50,7 +50,7 @@ CACHE_NAMESPACE = "sector_synthesis"
 
 # Explicit taxonomy allowlist for sector-level synthesis. It must list every
 # taxonomy whose sector cards should appear: the active ranked lenses (`sector`,
-# `globe`, `gga`) plus the country-specific and paused lenses (`country`,
+# `globe`, `gga`, `hr`) plus the country-specific and paused lenses (`country`,
 # `adaptation_goal`, `nbs`) that may still carry classifications in a given
 # country's output. `globe_sub` is deliberately absent: 49 subcategories produce
 # too many thin pools to be useful at the section-2 sector-card level, and that
@@ -58,7 +58,7 @@ CACHE_NAMESPACE = "sector_synthesis"
 # `config.ACTIVE_TAXONOMIES` whenever a ranked lens is added or paused (adding a
 # lens also needs a name entry in run_analysis.py's `sector_category_names`).
 # Override via the function arg for a different set.
-DEFAULT_TAXONOMY_ALLOWLIST = ("nbs", "sector", "globe", "gga", "country", "adaptation_goal")
+DEFAULT_TAXONOMY_ALLOWLIST = ("nbs", "sector", "globe", "gga", "hr", "country", "adaptation_goal")
 
 
 SYSTEM_PROMPT = (

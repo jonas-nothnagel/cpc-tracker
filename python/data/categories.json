@@ -4,7 +4,8 @@
     "nbs_categories": "Methodology development process for Git Hub.pdf, Table 2. Names and descriptions verbatim from the PDF. The PDF in turn cites IPCC Special Report on Climate Change and Land and Natural Climate Solutions (Griscom et al. 2017).",
     "globe_categories": "BIOFIN GLOBE 2024 taxonomy as curated by the team in dev_data_scripts/sharepoint_sync/Insight I taxonomy/Globe Taxonomy categories.xlsx (sheet \"Globe Taxonomy\"). All descriptions are verbatim from column B. See per-entry `source` field.",
     "globe_subcategories": "BIOFIN GLOBE 2024 taxonomy authoritative XLSX at dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx. Descriptions are verbatim from column D (\"Definitions / Examples\") of each subcategory row. For codes where BIOFIN has no description (currently only 4.07), text is verbatim from the corresponding bullet in the SharePoint Globe Taxonomy categories.xlsx — see per-entry `source` field. IDs match BIOFIN canonical numbering (no project renumbering).",
-    "gga_categories": "UNFCCC decision 2/CMA.5 'Global goal on adaptation' (FCCC/PA/CMA/2023/16/Add.1, 15 March 2024), paragraph 9(a)-(g): the seven thematic targets of the UAE Framework for Global Climate Resilience. Descriptions are verbatim from the decision text; the short `name` labels are project-assigned, since the decision assigns no headers to the sub-paragraphs. Official Spanish/French wording (where present) is verbatim from the S/F editions of the same decision."
+    "gga_categories": "UNFCCC decision 2/CMA.5 'Global goal on adaptation' (FCCC/PA/CMA/2023/16/Add.1, 15 March 2024), paragraph 9(a)-(g): the seven thematic targets of the UAE Framework for Global Climate Resilience. Descriptions are verbatim from the decision text; the short `name` labels are project-assigned, since the decision assigns no headers to the sub-paragraphs. Official Spanish/French wording (where present) is verbatim from the S/F editions of the same decision.",
+    "hr_categories": "UNDP, \"Human rights themes for AI Flagship Policy Coherence Tracker\" (docs/Human rights categories for AI Flagship Policy Coherence Analzyer.pdf), draft circulated for comment among UNDP human rights experts, July 2026. Theme names and descriptive-action bullets are verbatim from the machine-readable companion docs/updated_human_rights.xlsx, sheet \"Sheet1\" (9 themes, 40 bullets); the \"Descriptive actions\" lead-in is that sheet's own column header. The document states it builds on the UN Environment Management Group's \"Guidance on integrating human rights in National Biodiversity Strategy and Action Plans (NBSAPs)\" (April 2023, https://unemg.org/wp-content/uploads/2023/04/Guidance-on-integrating-human-rights-in-National-Biodiversity-Strategy-and-Action-Plans-NBSAPs.pdf) but expands beyond the KMGBF to national policies generally. The `block` field is display-only and records the source PDF's rights/issues vs \"Groups\" section split; it is not sent to the classifier. STATUS: DRAFT UNDER EXPERT REVIEW — not a final taxonomy. Regenerate with dev_data_scripts/ingest_hr_taxonomy_31jul26.py when comments land."
   },
   "ipcc_sectors": [
     {
@@ -559,6 +560,71 @@
       "description_es": "Proteger el patrimonio cultural frente a los efectos de los riesgos climáticos mediante la elaboración de estrategias de adaptación para preservar las prácticas culturales y los lugares de importancia patrimonial y mediante el diseño de infraestructuras resilientes al clima, tomando como guía los conocimientos tradicionales, los conocimientos de los Pueblos Indígenas y los sistemas de conocimientos locales",
       "description_fr": "Protéger le patrimoine culturel des risques liés au climat en élaborant des stratégies d'adaptation visant à préserver les pratiques culturelles et les sites patrimoniaux et en concevant des infrastructures résilientes face aux changements climatiques, compte tenu des connaissances traditionnelles, du savoir des peuples autochtones et des systèmes de connaissances locaux",
       "source": "decision 2/CMA.5 para 9(g) - verbatim description; short label project-assigned"
+    }
+  ],
+  "hr_categories": [
+    {
+      "id": "hr_information_education",
+      "name": "Information and education",
+      "description": "Descriptive actions:\n- Guarantee the right to access of environmental information\n- Ensure the right of public access to information concerning projects, policies and decision-making processes is satisfied in a timely, accessible and effective manner\n- Prior assessment of the possible social, environmental, and human rights impacts of proposed projects, targets, and policies\n- Ensure education, public awareness, and public access to information that is comprehensible and accessible to all people including Indigenous and local communities, children and youth, women, older persons and persons with disabilities\n- Ensure the right of all people to an education with respect and diverse cultural perspectives",
+      "block": "rights",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 5 rows for theme \"Information and education\" — verbatim"
+    },
+    {
+      "id": "hr_participation",
+      "name": "Free, meaningful and active public participation",
+      "description": "Descriptive actions:\n- Protect the rights to public participation in decision-making, freedom of expression, association and peaceful assembly\n- Take measures to guarantee the participation and inclusion of all relevant stakeholders, including people in vulnerable situations, peasants, Indigenous Peoples, local communities, trade unions, women, employers’ organizations and environmental and human rights defenders\n- Recognize people as agents of change and empower them to contribute to the planning process\n- Communicate with the public in a transparent and effective manner of the outcomes of participatory processes related to the development, monitoring and implementation of the national policies",
+      "block": "rights",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 4 rows for theme \"Free, meaningful and active public participation\" — verbatim"
+    },
+    {
+      "id": "hr_access_justice",
+      "name": "Access to justice",
+      "description": "Descriptive actions:\n- Identify and/or establish effective, accessible and appropriate complaints mechanisms and remedies at the national level, including legal remedies, for those who experience human rights harms and negative impacts of policies\n- Guarantee access to justice and effective remedy for persons, groups and peoples in vulnerable situations\n- Ensure accountability and effective remedy for human rights harms",
+      "block": "rights",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 3 rows for theme \"Access to justice\" — verbatim"
+    },
+    {
+      "id": "hr_indigenous_local_communities",
+      "name": "Indigenous Peoples and local communities",
+      "description": "Descriptive actions:\n- Take measures to ensure the meaningful and effective participation of Indigenous Peoples and local communities throughout the development, implementation and monitoring of national policies\n- Respect, protect and fulfil the rights of Indigenous Peoples and local communities, including free prior and informed consent\n- Recognize the contribution of Indigenous peoples and local communities to scientific and technical knowledge as well as their efforts and leadership\n- Guarantee the rights of Indigenous Peoples and local communities to their lands, resources and territories\n- Prohibit forcibly displace Indigenous Peoples and local communities\n- Respect, protect and fulfil the rights of Indigenous Peoples and local communities including with respect to participation in decision-making, ensuring free, prior and informed consent, in line with international standards",
+      "block": "groups",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 6 rows for theme \"Indigenous Peoples and local communities\" — verbatim"
+    },
+    {
+      "id": "hr_gender_equality",
+      "name": "Gender equality",
+      "description": "Descriptive actions:\n- Ensure the meaningful and effective participation of women, girls and gender-diverse persons throughout the implementation and reporting phases of actions, including through providing leadership opportunities\n- Identify barriers to the participation and engagement of women, girls and gender-diverse persons including social, political, cultural and legal limitations, as well as strategies to address them\n- Implement the gender plan of action in synergy with gender plans or strategies developed under other relevant multilateral environmental agreements or related multilateral processes\n- Develop and track gender-sensitive indicators in line with the CBD Kunming – Montreal Global Biodiversity Framework and its Gender Plan of Action\n- Undertake gender analysis and share information on gender-differentiated biodiversity practices\n- Promote strategies and actions that support the diversification of all people’s biodiversity-based income generating activities and livelihood strategies\n- Mobilize adequate resources for the implementation of gender-responsive actions during the implementation of national policies",
+      "block": "groups",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 7 rows for theme \"Gender equality\" — verbatim"
+    },
+    {
+      "id": "hr_children_youth",
+      "name": "Children and youth",
+      "description": "Descriptive actions:\n- Ensure the rights of children and youth in relation to biodiversity\n- Promote opportunities for children and youth to communicate, empower and mobilize themselves and take action for societal and environmental transformation, including through training, online platforms and youth-led groups, organizations and networks\n- Guarantee the rights of children and youth to meaningful and effective participation in biodiversity action and education with respect for nature\n- Develop mechanisms to represent the best interests of children in the development, monitoring and implementation of national policies",
+      "block": "groups",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 4 rows for theme \"Children and youth\" — verbatim"
+    },
+    {
+      "id": "hr_defenders",
+      "name": "Environmental Human Rights Defenders",
+      "description": "Descriptive actions:\n- Respect, protect and fulfil the rights of Environmental Human Rights Defenders to participation, access to information, freedom of expression, assembly and association including in the development, monitoring and implementation of NBSAPs\n- Ensure action against threats to the life or wellbeing of Environmental Human Rights Defenders and access to justice and effective remedy when violations occur\n- Provide for effective investigations and prosecute those responsible for violence and intimidation against Environmental Human Rights Defenders, including business actors\n- Establish and/or provide information related to mechanisms in place to guarantee the effective protection of Environmental Human Rights Defenders",
+      "block": "groups",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 4 rows for theme \"Environmental Human Rights Defenders\" — verbatim"
+    },
+    {
+      "id": "hr_business",
+      "name": "Businesses",
+      "description": "Descriptive actions:\n- Identify and promote accountability for the duties of businesses to prevent business-related human rights harms\n- Call for businesses to undertake comprehensive human rights due diligence, including in relation to the right to a clean, healthy and sustainable environment, in all business activities in order to prevent biodiversity loss and accompanying human rights harms\n- Identify and/or establish mechanisms to monitor environmental and human rights violations by businesses, including along supply chains\n- Identify and/or establish mechanisms for holding businesses accountable for causing or failing to prevent biodiversity and habitat loss and for any associated human rights harms, for example, through regulation and effective mechanisms for accountability and remedy",
+      "block": "groups",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 4 rows for theme \"Businesses\" — verbatim"
+    },
+    {
+      "id": "hr_disabilities",
+      "name": "Rights of Persons with Disabilities",
+      "description": "Descriptive actions:\n- Recognize the need to promote and protect the human rights of all persons with disabilities\n- Recognize the valued existing and potential contributions made by persons with disabilities and that the promotion of the full enjoyment by persons with disabilities of their human rights and fundamental freedoms and of full participation by persons with disabilities will result in their enhanced sense of belonging and in significant advances in the human, social and economic development, and actions to combat climate change, biodiversity loss, and land degradation\n- Support people with disabilities to be actively involved in decision-making processes about policies and programmes, including those directly concerning them and the environment, climate change, and land degradation",
+      "block": "groups",
+      "source": "docs/updated_human_rights.xlsx, sheet \"Sheet1\", 3 rows for theme \"Rights of Persons with Disabilities\" — verbatim"
     }
   ]
 }

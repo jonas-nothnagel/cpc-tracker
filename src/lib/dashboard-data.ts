@@ -413,6 +413,7 @@ export interface DashboardResponse {
   globeCategories: unknown[];
   globeSubcategories: unknown[];
   ggaCategories: unknown[];
+  hrCategories: unknown[];
   classifications: unknown[];
   alignment: unknown[];
   btrData: Record<string, unknown> | null;
@@ -486,6 +487,7 @@ export function assembleDashboardData(
     globe_categories?: unknown[];
     globe_subcategories?: unknown[];
     gga_categories?: unknown[];
+    hr_categories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
   const alignmentRaw = readJson<Record<string, unknown>[]>(join(outputDir, "alignment.json"));
@@ -761,6 +763,10 @@ export function assembleDashboardData(
       globeSubcategories: categories.globe_subcategories ?? [],
       ggaCategories: localizeCategories(
         (categories.gga_categories ?? []) as Record<string, unknown>[],
+        locale,
+      ),
+      hrCategories: localizeCategories(
+        (categories.hr_categories ?? []) as Record<string, unknown>[],
         locale,
       ),
       classifications: finalClassifications,

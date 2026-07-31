@@ -91,6 +91,7 @@ async def classify_active_taxonomies(
     globe_subcategories: list[dict],
     globe_few_shot_examples: list[dict],
     gga_categories: list[dict],
+    hr_categories: list[dict],
     cache_suffix: str,
 ) -> dict[str, list[dict]]:
     """Ranked classification of items (targets or BTR/BER pseudo-targets)
@@ -104,7 +105,14 @@ async def classify_active_taxonomies(
     through every visualization. Without few-shot examples (e.g. Panama) it
     falls back to the generic ranked classifier on the 9 top-level categories.
     """
-    out: dict[str, list[dict]] = {"nbs": [], "sector": [], "globe": [], "globe_sub": [], "gga": []}
+    out: dict[str, list[dict]] = {
+        "nbs": [],
+        "sector": [],
+        "globe": [],
+        "globe_sub": [],
+        "gga": [],
+        "hr": [],
+    }
     if "nbs" in ACTIVE_TAXONOMIES:
         out["nbs"] = await rank_classification(items, nbs_categories, "nbs")
     if "sector" in ACTIVE_TAXONOMIES:
@@ -127,6 +135,8 @@ async def classify_active_taxonomies(
             out["globe"] = await rank_classification(items, globe_categories, "globe")
     if gga_categories and "gga" in ACTIVE_TAXONOMIES:
         out["gga"] = await rank_classification(items, gga_categories, "gga")
+    if hr_categories and "hr" in ACTIVE_TAXONOMIES:
+        out["hr"] = await rank_classification(items, hr_categories, "hr")
     return out
 
 
@@ -159,7 +169,9 @@ def write_status(
     (OUTPUT_DIR / "status.json").write_text(json.dumps(payload, indent=2))
 
 
-def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, list, list, list, list, list]:
+def load_input_data(
+    targets_file: str = "mongolia-targets.json",
+) -> tuple[list, list, list, list, list, list, list]:
     """Load targets and categories from JSON files."""
     targets = json.loads((DATA_DIR / targets_file).read_text())
     cats = json.loads((DATA_DIR / "categories.json").read_text())
@@ -168,13 +180,15 @@ def load_input_data(targets_file: str = "mongolia-targets.json") -> tuple[list, 
     globe = cats.get("globe_categories", [])
     globe_sub = cats.get("globe_subcategories", [])
     gga = cats.get("gga_categories", [])
+    hr = cats.get("hr_categories", [])
     logger.info(
         f"Loaded {len(targets)} targets, "
         f"{len(nbs)} NBS + {len(sectors)} IPCC sectors + "
         f"{len(globe)} GLOBE categories ({len(globe_sub)} subcategories) + "
-        f"{len(gga)} GGA climate-resilience targets"
+        f"{len(gga)} GGA climate-resilience targets + "
+        f"{len(hr)} human rights themes"
     )
-    return targets, nbs, sectors, globe, globe_sub, gga
+    return targets, nbs, sectors, globe, globe_sub, gga, hr
 
 
 def derive_country_file(targets_file: str, suffix: str) -> str:
@@ -335,7 +349,7 @@ async def main() -> None:
 
     try:
         # 1. Load data
-        targets, nbs_categories, sectors, globe_categories, globe_subcategories, gga_categories = load_input_data(args.targets_file)
+        targets, nbs_categories, sectors, globe_categories, globe_subcategories, gga_categories, hr_categories = load_input_data(args.targets_file)
         if args.limit_targets is not None:
             original_count = len(targets)
             targets = targets[: args.limit_targets]
@@ -464,6 +478,7 @@ async def main() -> None:
             globe_subcategories=globe_subcategories,
             globe_few_shot_examples=globe_few_shot_examples,
             gga_categories=gga_categories,
+            hr_categories=hr_categories,
             cache_suffix="targets",
         )
         nbs_classifications = target_cls["nbs"]
@@ -471,6 +486,7 @@ async def main() -> None:
         globe_classifications = target_cls["globe"]
         globe_sub_classifications = target_cls["globe_sub"]
         gga_classifications = target_cls["gga"]
+        hr_classifications = target_cls["hr"]
 
         all_classifications = (
             nbs_classifications
@@ -478,6 +494,7 @@ async def main() -> None:
             + globe_classifications
             + globe_sub_classifications
             + gga_classifications
+            + hr_classifications
         )
 
         # Country-specific adaptation-goal classification (e.g. Mongolia APNDC).
@@ -617,6 +634,7 @@ async def main() -> None:
                     globe_subcategories=globe_subcategories,
                     globe_few_shot_examples=globe_few_shot_examples,
                     gga_categories=gga_categories,
+                    hr_categories=hr_categories,
                     cache_suffix="btr",
                 )
                 btr_nbs = btr_cls["nbs"]
@@ -624,9 +642,10 @@ async def main() -> None:
                 btr_globe = btr_cls["globe"]
                 btr_globe_sub = btr_cls["globe_sub"]
                 btr_gga = btr_cls["gga"]
+                btr_hr = btr_cls["hr"]
 
                 all_classifications.extend(
-                    btr_nbs + btr_globe + btr_sectors + btr_globe_sub + btr_gga
+                    btr_nbs + btr_globe + btr_sectors + btr_globe_sub + btr_gga + btr_hr
                 )
 
                 # Write back the primary sector onto pseudo-targets and
@@ -679,7 +698,7 @@ async def main() -> None:
                     f"Updated classifications with BTR entries "
                     f"({len(btr_nbs)} NBS + {len(btr_globe)} GLOBE + "
                     f"{len(btr_sectors)} sectors + {len(btr_globe_sub)} GLOBE subcategories + "
-                    f"{len(btr_gga)} GGA)"
+                    f"{len(btr_gga)} GGA + {len(btr_hr)} human rights)"
                 )
 
                 # Policy target × BTR action pairs (both mitigation and adaptation).
@@ -741,6 +760,7 @@ async def main() -> None:
                     globe_subcategories=globe_subcategories,
                     globe_few_shot_examples=globe_few_shot_examples,
                     gga_categories=gga_categories,
+                    hr_categories=hr_categories,
                     cache_suffix="ber",
                 )
                 ber_nbs = ber_cls["nbs"]
@@ -748,9 +768,10 @@ async def main() -> None:
                 ber_globe = ber_cls["globe"]
                 ber_globe_sub = ber_cls["globe_sub"]
                 ber_gga = ber_cls["gga"]
+                ber_hr = ber_cls["hr"]
 
                 all_classifications.extend(
-                    ber_nbs + ber_globe + ber_sectors + ber_globe_sub + ber_gga
+                    ber_nbs + ber_globe + ber_sectors + ber_globe_sub + ber_gga + ber_hr
                 )
 
                 # Re-save classifications with BER entries included
@@ -761,7 +782,7 @@ async def main() -> None:
                     f"({len(ber_nbs)} NBS + {len(ber_globe)} GLOBE + "
                     f"{len(ber_sectors)} sectors + "
                     f"{len(ber_globe_sub)} GLOBE subcategories + "
-                    f"{len(ber_gga)} GGA)"
+                    f"{len(ber_gga)} GGA + {len(ber_hr)} human rights)"
                 )
 
                 b_pairs = generate_budget_pairs(targets, budget_pseudo_targets)
@@ -820,6 +841,8 @@ async def main() -> None:
             sector_category_names[("globe", cat["id"])] = cat.get("name", cat["id"])
         for cat in gga_categories:
             sector_category_names[("gga", cat["id"])] = cat.get("name", cat["id"])
+        for cat in hr_categories:
+            sector_category_names[("hr", cat["id"])] = cat.get("name", cat["id"])
         if config_path.exists():
             cfg = json.loads(config_path.read_text())
             for cat in cfg.get("countrySectors", []):

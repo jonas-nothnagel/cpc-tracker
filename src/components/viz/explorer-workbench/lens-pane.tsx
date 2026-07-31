@@ -8,7 +8,7 @@ import {
 } from "@/lib/coherence-budget";
 import type { CountryConfig } from "@/types";
 
-type GroupMode = "document" | "sector" | "globe" | "gga";
+type GroupMode = "document" | "sector" | "globe" | "gga" | "hr";
 type AlignFilter =
   | "all"
   | "high_medium"
@@ -56,6 +56,7 @@ export function LensPane({
   onPreviewGroup,
   countryConfig,
   hasGga,
+  hasHr,
 }: {
   view: ViewMode;
   groupMode: GroupMode;
@@ -76,6 +77,9 @@ export function LensPane({
   /** Whether the data carries any primary GGA (climate-resilience) classification.
    *  Gates the fourth group-by option so it only appears where it has content. */
   hasGga?: boolean;
+  /** Whether the data carries any primary human rights classification. Gates the
+   *  human rights group-by option so it only appears where it has content. */
+  hasHr?: boolean;
 }) {
   const t = useTranslations("explorer");
   const isDocGroup = groupMode === "document";
@@ -121,6 +125,9 @@ export function LensPane({
             ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
             ...(hasGga
               ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")] as [GroupMode, string, string]]
+              : []),
+            ...(hasHr
+              ? [["hr", t("controls.groupHr"), t("controls.groupHrTitle")]]
               : []),
           ] as [GroupMode, string, string][]
         ).map(([mode, label, title]) => (

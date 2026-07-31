@@ -99,7 +99,7 @@ interface TaxCategory {
   description: string;
 }
 
-type GroupMode = "document" | "sector" | "globe" | "gga";
+type GroupMode = "document" | "sector" | "globe" | "gga" | "hr";
 type AlignFilter = "all" | "high_medium" | "high_contra" | "high" | "contradictions";
 type ActionTypeFilter = "all" | "mitigation" | "adaptation";
 
@@ -187,6 +187,7 @@ function buildGroups(
   sectors: TaxCategory[],
   globeCategories: TaxCategory[],
   ggaCategories: TaxCategory[],
+  hrCategories: TaxCategory[],
   classifications: ThematicClassification[],
   countryConfig?: CountryConfig | null,
 ): Group[] {
@@ -206,6 +207,7 @@ function buildGroups(
   }
   if (mode === "sector") return buildGroupsByTaxonomy(targets, sectors, "sector", classifications);
   if (mode === "gga") return buildGroupsByTaxonomy(targets, ggaCategories, "gga", classifications);
+  if (mode === "hr") return buildGroupsByTaxonomy(targets, hrCategories, "hr", classifications);
   return buildGroupsByTaxonomy(targets, globeCategories, "globe", classifications);
 }
 
@@ -1227,7 +1229,7 @@ function useTypedBody(text: string, charDelayMs = 10): string {
  */
 function revealDocsForFocalTaxonomyCategory(args: {
   focalCategoryId: string;
-  taxonomyType: "sector" | "globe" | "gga";
+  taxonomyType: "sector" | "globe" | "gga" | "hr";
   classifications: ThematicClassification[];
   targetMap: Map<string, Target>;
   docsToShow: Set<string>;
@@ -2794,6 +2796,9 @@ interface PolicyCoherenceExplorerProps {
   /** Climate-resilience (GGA) taxonomy categories — decision 2/CMA.5 thematic
    *  targets. Enables the fourth "Resilience" wheel grouping when present. */
   ggaCategories?: TaxCategory[];
+  /** Human rights themes (UNDP guidance; DRAFT under expert review). Enables
+   *  the human rights wheel grouping when present. */
+  hrCategories?: TaxCategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
   btrData?: BtrData | null;
@@ -2818,6 +2823,7 @@ export function PolicyCoherenceExplorer({
   globeCategories,
   globeSubcategories,
   ggaCategories = [],
+  hrCategories = [],
   classifications,
   nr7Data,
   btrData,
@@ -3017,6 +3023,15 @@ export function PolicyCoherenceExplorer({
       ),
     [classifications],
   );
+  // Whether any target carries a primary human rights classification. Gates the
+  // group-by option so it only shows where the pipeline produced content.
+  const hasHr = useMemo(
+    () =>
+      classifications.some(
+        (c) => c.taxonomyType === "hr" && c.isPrimary === true,
+      ),
+    [classifications],
+  );
   const visibleTargetIds = useMemo(
     () => new Set(visibleTargets.map((t) => t.id)),
     [visibleTargets],
@@ -3108,8 +3123,8 @@ export function PolicyCoherenceExplorer({
     focalGroupId ?? (activeId ? null : previewGroupId);
 
   const groups = useMemo(
-    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig),
-    [visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig],
+    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, ggaCategories, hrCategories, classifications, countryConfig),
+    [visibleTargets, groupMode, sectors, globeCategories, ggaCategories, hrCategories, classifications, countryConfig],
   );
 
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
@@ -3474,6 +3489,7 @@ export function PolicyCoherenceExplorer({
           sectors,
           globeCategories,
           ggaCategories,
+          hrCategories,
           budgetSummary,
           btrData,
           availableDocs,
@@ -3565,6 +3581,7 @@ export function PolicyCoherenceExplorer({
       countryConfig,
       globeCategories,
       ggaCategories,
+      hrCategories,
       hiddenDocs,
       groupMode,
       filter,
@@ -3772,7 +3789,8 @@ export function PolicyCoherenceExplorer({
         nextFocalGroupId &&
         (effectiveGroupMode === "sector" ||
           effectiveGroupMode === "globe" ||
-          effectiveGroupMode === "gga")
+          effectiveGroupMode === "gga" ||
+          effectiveGroupMode === "hr")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -3903,7 +3921,8 @@ export function PolicyCoherenceExplorer({
         nextFocalGroupId &&
         (effectiveGroupMode === "sector" ||
           effectiveGroupMode === "globe" ||
-          effectiveGroupMode === "gga")
+          effectiveGroupMode === "gga" ||
+          effectiveGroupMode === "hr")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -5126,6 +5145,7 @@ export function PolicyCoherenceExplorer({
             onPreviewGroup={handlePreviewGroup}
             countryConfig={countryConfig}
             hasGga={hasGga}
+            hasHr={hasHr}
           />
         }
         modal={
@@ -5263,6 +5283,9 @@ export function PolicyCoherenceExplorer({
                   ...(hasGga
                     ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")]]
                     : []),
+                  ...(hasHr
+                    ? [["hr", t("controls.groupHr"), t("controls.groupHrTitle")]]
+                    : []),
                 ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
                   <button
                     key={mode}
@@ -5291,6 +5314,9 @@ export function PolicyCoherenceExplorer({
                 <option value="sector">{t("controls.groupOptionSector")}</option>
                 {hasGga && (
                   <option value="gga">{t("controls.groupOptionGga")}</option>
+                )}
+                {hasHr && (
+                  <option value="hr">{t("controls.groupOptionHr")}</option>
                 )}
               </select>
             )}
@@ -5515,7 +5541,7 @@ export function PolicyCoherenceExplorer({
               {/* Document column */}
               <div>
                 <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
-                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : t("wheel.legendSector")}
+                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : groupMode === "hr" ? t("wheel.legendHumanRights") : t("wheel.legendSector")}
                 </p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (

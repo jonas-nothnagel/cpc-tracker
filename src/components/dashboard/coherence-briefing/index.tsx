@@ -143,6 +143,7 @@ import type {
   DocPairSynthesis,
   GlobeCategory,
   GgaCategory,
+  HrCategory,
   GlobeSubcategory,
   IpccSector,
   NbsCategory,
@@ -210,6 +211,21 @@ const GGA_LENS_COLORS: Record<string, string> = {
   gga_cultural_heritage: "#b45309",
 };
 
+/** Distinct swatches for the nine human rights themes. Keyed by category id so
+ *  the mapping is stable regardless of array order. Colour is presentation only:
+ *  it carries no judgement about a theme and makes no source claim. */
+const HR_LENS_COLORS: Record<string, string> = {
+  hr_information_education: "#0468b1",
+  hr_participation: "#7c3aed",
+  hr_access_justice: "#b45309",
+  hr_indigenous_local_communities: "#059669",
+  hr_gender_equality: "#db2777",
+  hr_children_youth: "#d97706",
+  hr_defenders: "#dc2626",
+  hr_business: "#64748b",
+  hr_disabilities: "#0891b2",
+};
+
 interface CoherenceBriefingProps {
   countryName: string;
   countryId?: string;
@@ -220,6 +236,8 @@ interface CoherenceBriefingProps {
   globeCategories: GlobeCategory[];
   /** GGA climate-resilience themes (decision 2/CMA.5), surfaced as a lens. */
   ggaCategories?: GgaCategory[];
+  /** Human rights themes (UNDP guidance; DRAFT), surfaced as a lens. */
+  hrCategories?: HrCategory[];
   nbsCategories: NbsCategory[];
   countryConfig: CountryConfig | null;
   docPairSyntheses?: DocPairSynthesis[];
@@ -250,6 +268,7 @@ export function CoherenceBriefing({
   sectors,
   globeCategories,
   ggaCategories = [],
+  hrCategories = [],
   countryConfig,
   docPairSyntheses = [],
   corpusThemes = null,
@@ -278,6 +297,7 @@ export function CoherenceBriefing({
       globeCategories,
       globeSubcategories,
       ggaCategories,
+      hrCategories,
       classifications,
       nr7Data,
       btrData,
@@ -291,6 +311,7 @@ export function CoherenceBriefing({
       globeCategories,
       globeSubcategories,
       ggaCategories,
+      hrCategories,
       classifications,
       nr7Data,
       btrData,
@@ -758,6 +779,22 @@ export function CoherenceBriefing({
         })),
       });
     }
+    // Human rights lens (UNDP guidance, DRAFT under expert review). Same
+    // data-driven gating as every other lens: offered only when the pipeline
+    // has classified targets against it.
+    if (hrCategories.length > 0) {
+      candidates.push({
+        id: "hr",
+        label: t("lens.hr"),
+        tooltip: t("lens.hrTooltip"),
+        taxonomyType: "hr",
+        categories: hrCategories.map((c) => ({
+          id: c.id,
+          name: c.name,
+          color: HR_LENS_COLORS[c.id] ?? "#9ca3af",
+        })),
+      });
+    }
     return candidates.filter((opt) => {
       const idSet = new Set(opt.categories.map((c) => c.id));
       return visibleClassifications.some(
@@ -767,7 +804,7 @@ export function CoherenceBriefing({
           idSet.has(c.categoryId),
       );
     });
-  }, [t, globeCategories, ggaCategories, sectors, countryConfig, visibleClassifications]);
+  }, [t, globeCategories, ggaCategories, hrCategories, sectors, countryConfig, visibleClassifications]);
 
   const [activeLensId, setActiveLensId] = useState<LensId | null>(null);
 

@@ -4,7 +4,7 @@
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused; updated 2026-07-06: sector synthesis (`synthesize_by_sector.py`) now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis produces up to 3+3 noun-phrase themes grounded in deterministic evidence tables, with disjoint counting for potential-misalignment themes, per-theme aggregates, a style validator with corrective retry, and expanded precomputed visibility states — see the Step 8 section; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged). This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused; updated 2026-07-06: sector synthesis (`synthesize_by_sector.py`) now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis produces up to 3+3 noun-phrase themes grounded in deterministic evidence tables, with disjoint counting for potential-misalignment themes, per-theme aggregates, a style validator with corrective retry, and expanded precomputed visibility states — see the Step 8 section; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-31: added the human rights themes taxonomy (9 themes, UNDP guidance, DRAFT under expert review) to `ACTIVE_TAXONOMIES`, the sector-synthesis allowlist, and the dashboard lenses. This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
 
 ---
 
@@ -33,7 +33,8 @@ Input: Policy targets (text + source document type)
   │
   ├─ Step 2: Thematic Classification (LLM)
   │     ├─ IPCC sectors (7), GLOBE categories (9) + subcategories (49)
-  │     ├─ GGA climate-resilience themes (7); optional country adaptation goals
+  │     ├─ GGA climate-resilience themes (7); human rights themes (9, draft)
+  │     ├─ optional country adaptation goals
   │     └─ ranked dual-mode (primary + relevant); active set: config.ACTIVE_TAXONOMIES
   │
   ├─ Step 3: Cross-Document Pair Generation (computation)
@@ -93,7 +94,7 @@ Administrative references (e.g., "Article 2", "Target 3") are explicitly exclude
 
 Dashboard surfaces choose a mode intentionally: **primary** for ranking ("what is this target mainly about?") and **relevant** for breadth ("everything this target touches"). The two modes are never mixed in a single view, because relevant tags carry different scores.
 
-**Categories are pre-defined by experts and traced to a primary source, never LLM-drafted.** The set of taxonomies the pipeline classifies against is `ACTIVE_TAXONOMIES` in `python/src/config.py` — since 2026-07-03: **IPCC sectors, GLOBE, and GGA** (plus optional country-specific adaptation goals). The taxonomies:
+**Categories are pre-defined by experts and traced to a primary source, never LLM-drafted.** The set of taxonomies the pipeline classifies against is `ACTIVE_TAXONOMIES` in `python/src/config.py` — since 2026-07-31: **IPCC sectors, GLOBE, GGA, and human rights themes** (plus optional country-specific adaptation goals). The taxonomies:
 
 ### Nature-Based Solutions Categories (10) — paused since 2026-07-03
 
@@ -128,11 +129,19 @@ When a country supplies adaptation data (e.g. Mongolia's APNDC goals via `mongol
 
 The seven thematic targets of the **UAE Framework for Global Climate Resilience** (UNFCCC decision 2/CMA.5, paragraph 9): Water; Agriculture and food; Health; Ecosystems and biodiversity; Infrastructure and human settlements; Livelihoods; Cultural heritage. Descriptions are verbatim from the decision text (the short labels are project-assigned, as the decision gives its sub-paragraphs no headers). Unlike the country-specific adaptation goals, this is a portable global adaptation/resilience lens, applied to every country's policy targets and, where present, to BTR measures and BER budget programmes.
 
+### Human rights themes (9) — DRAFT
+
+Nine themes from UNDP's *Human rights themes for AI Flagship Policy Coherence Tracker* (draft circulated to UNDP human rights experts, July 2026), which builds on the UN Environment Management Group's *Guidance on integrating human rights in National Biodiversity Strategy and Action Plans* (April 2023) and generalises it beyond the KMGBF to national policies. The source document separates rights/issues themes — Information and education; Free, meaningful and active public participation; Access to justice — from themes grouped by rights-holder: Indigenous Peoples and local communities; Gender equality; Children and youth; Environmental Human Rights Defenders; Businesses; Rights of Persons with Disabilities. Each theme's description is the verbatim list of "descriptive actions" from the source; the rights/groups split is carried as a display-only `block` field and is never sent to the classifier.
+
+This lens reports **which human rights themes a country's targets engage, as written in the reviewed documents**. It is not an assessment of a country's human rights record, performance, or compliance, and a thinly-covered theme is not evidence of a rights violation.
+
+*Status: the taxonomy is a draft under expert review. Regenerate with `dev_data_scripts/ingest_hr_taxonomy_31jul26.py` when comments land; backfill committed outputs with `python/scripts/classify_hr.py`.*
+
 Which taxonomies (lenses) are available is a country-level, data-driven choice, not a fixed part of the methodology; users may also bring their own taxonomy.
 
 **Cost note:** This is the most API-intensive step. The ranked classifier scores all categories in a taxonomy per target, so cost scales with the number of targets and the breadth of the active taxonomies. Results are cached (per taxonomy namespace) to avoid duplicate calls across analyses.
 
-**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`sector` / `globe` / `adaptation_goal` / `gga`; `nbs` only in outputs from before 2026-07-03), and a short `reasoning` for primary/relevant entries.
+**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`sector` / `globe` / `adaptation_goal` / `gga` / `hr`; `nbs` only in outputs from before 2026-07-03), and a short `reasoning` for primary/relevant entries.
 
 ---
 

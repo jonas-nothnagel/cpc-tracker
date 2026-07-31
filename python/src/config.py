@@ -35,7 +35,9 @@ LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0"))
 # only; NBS is paused until the taxonomy strategy is revisited. Category files
 # still load (synthesis display names, parser aliases), but no new NBS
 # classifications are produced. Restore by adding "nbs" back here.
-ACTIVE_TAXONOMIES: frozenset[str] = frozenset({"sector", "globe", "gga"})
+# 2026-07-31: human rights themes ("hr") added — see the hr_categories entry in
+# data/categories.json for provenance and its DRAFT status.
+ACTIVE_TAXONOMIES: frozenset[str] = frozenset({"sector", "globe", "gga", "hr"})
 
 # ---------------------------------------------------------------------------
 # Paths

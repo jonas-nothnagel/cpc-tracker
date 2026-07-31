@@ -39,6 +39,7 @@ import type {
   CountryConfig,
   GlobeCategory,
   GgaCategory,
+  HrCategory,
   IpccSector,
   MitigationMeasure,
   SupportProject,
@@ -351,7 +352,7 @@ function buildAdaptationRows(
 // Biodiversity row builder (grouped by GLOBE category)
 // ---------------------------------------------------------------------------
 
-type CoverageGroupMode = "default" | "biodiversity" | "country_sectors" | "gga";
+type CoverageGroupMode = "default" | "biodiversity" | "country_sectors" | "gga" | "hr";
 
 const BIODIVERSITY_PALETTE = [
   "#0d9488", "#7c3aed", "#0284c7", "#16a34a",
@@ -1640,6 +1641,7 @@ interface ImplementationCoverageProps {
   /** GGA climate-resilience themes (decision 2/CMA.5); enables a "By climate
    *  resilience" grouping mode, single-level like the GLOBE biodiversity view. */
   ggaCategories?: GgaCategory[];
+  hrCategories?: HrCategory[];
   /**
    * Existing classifications from the pipeline. Filtered by `taxonomyType` —
    * `sector` for the mitigation table, `adaptation_goal` for the adaptation
@@ -1657,6 +1659,7 @@ export function ImplementationCoverage({
   sectors,
   globeCategories,
   ggaCategories,
+  hrCategories,
   classifications,
   highlightSector,
   countryConfig,
@@ -1701,6 +1704,16 @@ export function ImplementationCoverage({
         ? buildBiodiversityRows(btrData, ggaCategories, targets, classifications, "gga")
         : { rows: [], unclassified: [] },
     [btrData, ggaCategories, targets, classifications],
+  );
+
+  // Human rights grouping. Single-level taxonomy, so the same category-coverage
+  // builder is reused with taxonomyType "hr".
+  const hrData = useMemo(
+    () =>
+      hrCategories && hrCategories.length > 0
+        ? buildBiodiversityRows(btrData, hrCategories, targets, classifications, "hr")
+        : { rows: [], unclassified: [] },
+    [btrData, hrCategories, targets, classifications],
   );
 
   const countrySectorRows = useMemo(
@@ -1842,10 +1855,11 @@ export function ImplementationCoverage({
   const hasBiodiversityData =
     globeCategories != null && globeCategories.length > 0;
   const hasGgaData = ggaCategories != null && ggaCategories.length > 0;
+  const hasHrData = hrCategories != null && hrCategories.length > 0;
 
   return (
     <div>
-      {(hasBiodiversityData || hasCountrySectors || hasGgaData) && (
+      {(hasBiodiversityData || hasCountrySectors || hasGgaData || hasHrData) && (
         <div className="flex items-center gap-2 mb-4">
           <select
             value={groupMode}
@@ -1871,6 +1885,9 @@ export function ImplementationCoverage({
             )}
             {hasGgaData && (
               <option value="gga">{t("groupMode.byGga")}</option>
+            )}
+            {hasHrData && (
+              <option value="hr">{t("groupMode.byHr")}</option>
             )}
           </select>
         </div>
@@ -1910,6 +1927,17 @@ export function ImplementationCoverage({
           countryConfig={countryConfig}
           title={t("gga.title")}
           sectionDesc={t("gga.sectionDesc")}
+          infoBox={null}
+        />
+      ) : groupMode === "hr" ? (
+        <BiodiversityByGlobe
+          rows={hrData.rows}
+          unclassified={hrData.unclassified}
+          expandedCategory={expandedBioCategory}
+          onToggle={toggleBioCategory}
+          countryConfig={countryConfig}
+          title={t("hr.title")}
+          sectionDesc={t("hr.sectionDesc")}
           infoBox={null}
         />
       ) : (
