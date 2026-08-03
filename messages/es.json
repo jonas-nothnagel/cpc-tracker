@@ -505,7 +505,8 @@
           "cancel": "Cancelar",
           "anonNote": "Los comentarios son anónimos y solo los ve el equipo del proyecto.",
           "error": "No se pudo guardar el comentario. Inténtelo de nuevo más tarde."
-        }
+        },
+        "openAsPage": "Abrir como página"
       },
       "theme": {
         "closeAria": "Cerrar vista de tema",
@@ -1405,6 +1406,39 @@
     },
     "metricSelector": {
       "label": "Desglosar por recurso:"
+    }
+  },
+  "finding": {
+    "headline": {
+      "docsPair": "{docA} y {docB}",
+      "docsSame": "dos compromisos de {doc}",
+      "flaggedResourceNamed": "Posible competencia por {resources} entre {docs}",
+      "flaggedResource": "Posible competencia por recursos compartidos entre {docs}",
+      "flaggedGoal": "Objetivos que podrían apuntar en direcciones distintas: {docs}",
+      "flaggedDeliveryContext": "Posibles brechas de implementación y coordinación entre {docs} en {context}",
+      "flaggedDelivery": "Posibles brechas de implementación y coordinación entre {docs}",
+      "flaggedGeneric": "Posible desalineación entre {docs}",
+      "alignedHigh": "{docs} parecen fuertemente alineados",
+      "alignedMedium": "{docs} parecen ampliamente compatibles",
+      "alignedLow": "{docs} parecen parcialmente alineados",
+      "alignedNone": "No se identificó una relación directa entre {docs}"
+    },
+    "card": {
+      "kicker": "Hallazgo de coherencia de políticas",
+      "assessmentLabel": "Evaluación",
+      "mechanismLabel": "Por qué estos dos compromisos podrían interactuar",
+      "targetsLabel": "Los dos compromisos, textuales",
+      "copyLink": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "backToDashboard": "Ver en el panel completo de coherencia"
+    },
+    "index": {
+      "title": "Hallazgos candidatos",
+      "intro": "Posibles desalineaciones entre distintos documentos de política, ordenadas por las señales que el análisis ya contiene. La coincidencia entre modelos no equivale a certeza; cada entrada sigue siendo una sugerencia de la IA para revisión.",
+      "internalNote": "Lista interna de prueba.",
+      "count": "{count, number} hallazgos candidatos",
+      "modelsFlagging": "señalado por {count, number} de {total, number} modelos",
+      "empty": "No hay posibles desalineaciones entre documentos distintos en este conjunto de datos."
     }
   },
   "labels": {

@@ -505,7 +505,8 @@
           "cancel": "Cancel",
           "anonNote": "Feedback is anonymous and goes only to the project team.",
           "error": "The feedback could not be saved. Please try again later."
-        }
+        },
+        "openAsPage": "Open as a page"
       },
       "theme": {
         "closeAria": "Close theme view",
@@ -1405,6 +1406,39 @@
     },
     "metricSelector": {
       "label": "Break down by resource:"
+    }
+  },
+  "finding": {
+    "headline": {
+      "docsPair": "{docA} and {docB}",
+      "docsSame": "two commitments in {doc}",
+      "flaggedResourceNamed": "Possible competition for {resources} between {docs}",
+      "flaggedResource": "Possible competition for shared resources between {docs}",
+      "flaggedGoal": "Goals that may pull in different directions: {docs}",
+      "flaggedDeliveryContext": "Possible delivery and coordination gaps between {docs} in {context}",
+      "flaggedDelivery": "Possible delivery and coordination gaps between {docs}",
+      "flaggedGeneric": "Potential misalignment between {docs}",
+      "alignedHigh": "{docs} appear strongly aligned",
+      "alignedMedium": "{docs} appear broadly compatible",
+      "alignedLow": "{docs} appear partly aligned",
+      "alignedNone": "No direct relationship identified between {docs}"
+    },
+    "card": {
+      "kicker": "Policy coherence finding",
+      "assessmentLabel": "Assessment",
+      "mechanismLabel": "Why these two commitments may interact",
+      "targetsLabel": "The two commitments, verbatim",
+      "copyLink": "Copy link",
+      "copied": "Link copied",
+      "backToDashboard": "View in the full coherence dashboard"
+    },
+    "index": {
+      "title": "Candidate findings",
+      "intro": "Potential misalignments between different policy documents, ordered by the signals the analysis already carries. Agreement between models is not correctness; every entry remains an AI suggestion for review.",
+      "internalNote": "Internal testing list.",
+      "count": "{count, number} candidate findings",
+      "modelsFlagging": "identified by {count, number} of {total, number} models",
+      "empty": "No potential misalignments between different documents in this dataset."
     }
   },
   "labels": {

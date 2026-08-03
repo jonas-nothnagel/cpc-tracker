@@ -33,6 +33,8 @@ import {
 } from "@/lib/labels";
 import { DrawerHeader } from "@/components/ui/drawer-shell";
 import { isContradiction } from "@/types";
+import { Link } from "@/i18n/navigation";
+import { anchorKeyOf } from "@/lib/feedback/anchor";
 import { FeedbackControl } from "./feedback-control";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import type {
@@ -194,6 +196,16 @@ function TargetPairBody({
             <p className="mt-3 text-caption text-[var(--undp-gray)] leading-relaxed">
               {t("aiRationaleDisclaimer")}
             </p>
+            {countryId && (
+              <p className="mt-3">
+                <Link
+                  href={`/${countryId}/finding/${anchorKeyOf([pair.targetAId, pair.targetBId])}`}
+                  className="text-caption font-medium text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline underline-offset-2"
+                >
+                  {t("openAsPage")}
+                </Link>
+              </p>
+            )}
           </section>
         )}
       </div>
