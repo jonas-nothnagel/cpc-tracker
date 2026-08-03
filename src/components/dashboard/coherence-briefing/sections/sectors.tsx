@@ -52,6 +52,10 @@ export function SectorsSection({
   onLensChange,
   onOpenSector,
   onHoverSector,
+  canHideUnclassified = false,
+  hideUnclassified = false,
+  onHideUnclassifiedChange,
+  unclassifiedCount = 0,
 }: {
   sectorRows: SectorTension[];
   sectorShares: SectorCoherenceShareSummary | null;
@@ -66,6 +70,11 @@ export function SectorsSection({
     taxonomyType: string;
   }) => void;
   onHoverSector?: (categoryId: string | null) => void;
+  /** True when the active lens has targets it could not place in any theme. */
+  canHideUnclassified?: boolean;
+  hideUnclassified?: boolean;
+  onHideUnclassifiedChange?: (next: boolean) => void;
+  unclassifiedCount?: number;
 }) {
   const t = useTranslations("briefing.sectors");
   const [sortMode, setSortMode] = useState<SectorSortMode>("coverage");
@@ -118,11 +127,24 @@ export function SectorsSection({
         ) : undefined
       }
       controls={
-        <LensChipRow
-          availableLenses={availableLenses}
-          activeLensId={activeLensId}
-          onLensChange={onLensChange}
-        />
+        <div>
+          <LensChipRow
+            availableLenses={availableLenses}
+            activeLensId={activeLensId}
+            onLensChange={onLensChange}
+          />
+          {canHideUnclassified && onHideUnclassifiedChange && (
+            <label className="mt-2 flex items-center gap-2 text-caption text-[var(--undp-gray)] cursor-pointer">
+              <input
+                type="checkbox"
+                checked={hideUnclassified}
+                onChange={(e) => onHideUnclassifiedChange(e.target.checked)}
+                className="h-3.5 w-3.5 accent-[var(--undp-blue)] cursor-pointer"
+              />
+              {t("hideUnclassified", { count: unclassifiedCount })}
+            </label>
+          )}
+        </div>
       }
       evidence={
         mergedRows.length === 0 ? (

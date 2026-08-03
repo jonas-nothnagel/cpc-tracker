@@ -3082,17 +3082,47 @@ export function PolicyCoherenceExplorer({
     return map;
   }, [nr7Data]);
 
+  // Targets the ACTIVE grouping could not place in any real category — they sit
+  // in the derived "no clear theme" bucket. Empty for groupings without one.
+  const unclassifiedTargetIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (groupMode === "document") return ids;
+    for (const c of classifications) {
+      if (
+        c.isPrimary &&
+        c.taxonomyType === groupMode &&
+        isUnclassifiedCategoryId(c.categoryId)
+      ) {
+        ids.add(c.targetId);
+      }
+    }
+    return ids;
+  }, [classifications, groupMode]);
+
+  // Opt-in focus mode; off by default so the wheel never quietly understates
+  // how much of the corpus the active lens does not cover.
+  const [hideUnclassified, setHideUnclassified] = useState(false);
+  const canHideUnclassified = unclassifiedTargetIds.size > 0;
+  const hidingUnclassified = hideUnclassified && canHideUnclassified;
+
   const visibleTargets = useMemo(
     () =>
       targets.filter((t) => {
         if (hiddenDocs.has(t.sourceDocument)) return false;
+        if (hidingUnclassified && unclassifiedTargetIds.has(t.id)) return false;
         // Type filter only affects BTR pseudo-targets (which carry actionType).
         // Policy targets are always shown regardless of this filter.
         if (actionTypeFilter === "all") return true;
         if (t.actionType === undefined) return true;
         return t.actionType === actionTypeFilter;
       }),
-    [targets, hiddenDocs, actionTypeFilter],
+    [
+      targets,
+      hiddenDocs,
+      actionTypeFilter,
+      hidingUnclassified,
+      unclassifiedTargetIds,
+    ],
   );
 
   // Whether any adaptation actions are present in the data at all. Used to
@@ -4980,7 +5010,7 @@ export function PolicyCoherenceExplorer({
                     fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                     className="select-none pointer-events-none"
                   >
-                    {t("wheel.centerTargets", { count: targets.length })}
+                    {t("wheel.centerTargets", { count: visibleTargets.length })}
                   </text>
                   <text
                     x={0} y={22}
@@ -5239,6 +5269,10 @@ export function PolicyCoherenceExplorer({
             countryConfig={countryConfig}
             hasGga={hasGga}
             hasHr={hasHr}
+            canHideUnclassified={canHideUnclassified}
+            hideUnclassified={hidingUnclassified}
+            onHideUnclassifiedChange={setHideUnclassified}
+            unclassifiedCount={unclassifiedTargetIds.size}
           />
         }
         modal={

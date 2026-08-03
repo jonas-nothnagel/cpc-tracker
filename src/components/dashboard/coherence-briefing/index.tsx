@@ -87,6 +87,7 @@ import { TourButton } from "./tour/tour-button";
 import type { BriefingTourId } from "./tour/steps";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
+import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
 import {
   buildSectorCoherenceShare,
@@ -820,13 +821,75 @@ export function CoherenceBriefing({
     return availableLenses[0];
   }, [availableLenses, activeLensId]);
 
+  // Targets the active lens could not place in any real category (they sit in
+  // the derived "no clear theme" bucket). Empty for lenses without a bucket.
+  const unclassifiedTargetIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (!lens) return ids;
+    for (const c of visibleClassifications) {
+      if (
+        c.isPrimary &&
+        c.taxonomyType === lens.taxonomyType &&
+        isUnclassifiedCategoryId(c.categoryId)
+      ) {
+        ids.add(c.targetId);
+      }
+    }
+    return ids;
+  }, [lens, visibleClassifications]);
+
+  // Opt-in focus mode: drop those targets from this lens's views so the
+  // remaining themes can be compared without the bucket dominating. Off by
+  // default — hiding them by default would understate how much of the corpus
+  // the lens does not actually cover.
+  const [hideUnclassified, setHideUnclassified] = useState(false);
+  const canHideUnclassified = unclassifiedTargetIds.size > 0;
+  const hidingUnclassified = hideUnclassified && canHideUnclassified;
+
+  const lensTargets = useMemo(
+    () =>
+      hidingUnclassified
+        ? visibleTargets.filter((t) => !unclassifiedTargetIds.has(t.id))
+        : visibleTargets,
+    [hidingUnclassified, visibleTargets, unclassifiedTargetIds],
+  );
+  const lensAlignment = useMemo(
+    () =>
+      hidingUnclassified
+        ? visibleAlignment.filter(
+            (a) =>
+              !unclassifiedTargetIds.has(a.targetAId) &&
+              !unclassifiedTargetIds.has(a.targetBId),
+          )
+        : visibleAlignment,
+    [hidingUnclassified, visibleAlignment, unclassifiedTargetIds],
+  );
+  const lensClassifications = useMemo(
+    () =>
+      hidingUnclassified
+        ? visibleClassifications.filter(
+            (c) => !unclassifiedTargetIds.has(c.targetId),
+          )
+        : visibleClassifications,
+    [hidingUnclassified, visibleClassifications, unclassifiedTargetIds],
+  );
+  const lensCategories = useMemo(
+    () =>
+      hidingUnclassified
+        ? (lens?.categories ?? []).filter(
+            (c) => !isUnclassifiedCategoryId(c.id),
+          )
+        : (lens?.categories ?? []),
+    [hidingUnclassified, lens],
+  );
+
   const sectorRows = useMemo<SectorTension[]>(() => {
     if (!lens) return [];
     const density = buildSectorTensionDensity({
-      targets: visibleTargets,
-      alignment: visibleAlignment,
-      classifications: visibleClassifications,
-      categories: lens.categories.map((c) => ({ id: c.id, name: c.name })),
+      targets: lensTargets,
+      alignment: lensAlignment,
+      classifications: lensClassifications,
+      categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
     return [...density].sort((a, b) => {
@@ -835,25 +898,25 @@ export function CoherenceBriefing({
       }
       return b.targetCount - a.targetCount;
     });
-  }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
+  }, [lens, lensTargets, lensAlignment, lensClassifications, lensCategories]);
 
   const sectorShares = useMemo<SectorCoherenceShareSummary | null>(() => {
     if (!lens) return null;
     return buildSectorCoherenceShare({
-      targets: visibleTargets,
-      alignment: visibleAlignment,
-      classifications: visibleClassifications,
-      categories: lens.categories.map((c) => ({ id: c.id, name: c.name })),
+      targets: lensTargets,
+      alignment: lensAlignment,
+      classifications: lensClassifications,
+      categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
-  }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
+  }, [lens, lensTargets, lensAlignment, lensClassifications, lensCategories]);
 
   const sectorSynthesesIndex = useMemo(
     () => indexSectorSyntheses(visibleSectorSyntheses),
     [visibleSectorSyntheses],
   );
 
-  const sectorCategories = useMemo(() => lens?.categories ?? [], [lens]);
+  const sectorCategories = lensCategories;
   const lensTaxonomyType = lens?.taxonomyType ?? "sector";
   const topTensionSector = useMemo(
     () => sectorRows.find((s) => s.tensionCount > 0) ?? sectorRows[0] ?? null,
@@ -1396,9 +1459,9 @@ export function CoherenceBriefing({
     return (
       <>
         <WheelCenterpiece
-          targets={visibleTargets}
-          alignments={visibleAlignment}
-          classifications={visibleClassifications}
+          targets={lensTargets}
+          alignments={lensAlignment}
+          classifications={lensClassifications}
           countryConfig={countryConfig}
           state={wheelState}
           sectorCategories={sectorCategories}
@@ -1569,6 +1632,10 @@ export function CoherenceBriefing({
                 onLensChange={handleLensChange}
                 onOpenSector={openSectorDrawer}
                 onHoverSector={setSectorHoverId}
+                canHideUnclassified={canHideUnclassified}
+                hideUnclassified={hidingUnclassified}
+                onHideUnclassifiedChange={setHideUnclassified}
+                unclassifiedCount={unclassifiedTargetIds.size}
               />
             </div>
             {financing && (

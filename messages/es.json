@@ -661,7 +661,8 @@
       "rowAriaLabel": "{name}: {count, number} objetivos primarios. {flag}.",
       "flagAriaValue": "{pct, number}% de las relaciones revisadas son una posible desalineación",
       "flagAriaNone": "sin relaciones revisadas bajo esta lente",
-      "primaryCount": "{count, number} primarios"
+      "primaryCount": "{count, number} primarios",
+      "hideUnclassified": "Ocultar los {count, number} objetivos sin tema claro"
     },
     "docPairs": {
       "empty": "Aún no hay síntesis de pares de documentos disponible. Ejecute el paso de síntesis para surgir los pares aquí.",
@@ -1517,7 +1518,8 @@
       "groupGgaTitle": "Agrupar por tema de resiliencia climática (Objetivo Mundial de Adaptación, decisión 2/CMA.5)",
       "groupHrTitle": "Agrupar por tema de derechos humanos (orientación del PNUD; borrador en revisión)",
       "groupOptionGga": "Por adaptación climática",
-      "groupOptionHr": "Por Derechos Humanos"
+      "groupOptionHr": "Por Derechos Humanos",
+      "hideUnclassified": "Ocultar los {count, number} sin tema claro"
     },
     "doc": {
       "mitigation": "Mitigación",

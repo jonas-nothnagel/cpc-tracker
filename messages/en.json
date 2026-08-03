@@ -661,7 +661,8 @@
       "rowAriaLabel": "{name}: {count, number} primary targets. {flag}.",
       "flagAriaValue": "{pct, number}% of reviewed relationships are a potential misalignment",
       "flagAriaNone": "no reviewed relationships under this lens",
-      "primaryCount": "{count, number} primary"
+      "primaryCount": "{count, number} primary",
+      "hideUnclassified": "Hide the {count, number} targets with no clear theme"
     },
     "docPairs": {
       "empty": "No doc-pair synthesis available yet. Run the synthesis step to surface the pairings here.",
@@ -1517,7 +1518,8 @@
       "groupGgaTitle": "Group by climate-resilience theme (Global Goal on Adaptation, decision 2/CMA.5)",
       "groupHrTitle": "Group by human rights theme (UNDP guidance; draft under expert review)",
       "groupOptionGga": "By Climate Adaptation",
-      "groupOptionHr": "By Human Rights"
+      "groupOptionHr": "By Human Rights",
+      "hideUnclassified": "Hide the {count, number} with no clear theme"
     },
     "doc": {
       "mitigation": "Mitigation",

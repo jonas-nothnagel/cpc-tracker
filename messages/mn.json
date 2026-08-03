@@ -661,7 +661,8 @@
       "rowAriaLabel": "{name}: {count, number} үндсэн зорилт. {flag}.",
       "flagAriaValue": "хянагдсан хамаарлын {pct, number}% нь болзошгүй үл нийцэл",
       "flagAriaNone": "энэ ангиллын хүрээнд хянагдсан хамаарал алга",
-      "primaryCount": "{count, number} үндсэн"
+      "primaryCount": "{count, number} үндсэн",
+      "hideUnclassified": "Тодорхой сэдэвгүй {count, number} зорилтыг нуух"
     },
     "docPairs": {
       "empty": "Баримтын хосын нэгтгэл одоогоор байхгүй. Хосуудыг энд гаргахын тулд нэгтгэх алхмыг ажиллуулна уу.",
@@ -1517,7 +1518,8 @@
       "groupGgaTitle": "Уур амьсгалын тэсвэрлэлтийн сэдвээр бүлэглэх (Дасан зохицох дэлхийн зорилго, 2/CMA.5 шийдвэр)",
       "groupHrTitle": "Хүний эрхийн сэдвээр бүлэглэх (НҮБХХ-ийн удирдамж; хянагдаж буй төсөл)",
       "groupOptionGga": "Уур амьсгалын дасан зохицлоор",
-      "groupOptionHr": "Хүний эрхээр"
+      "groupOptionHr": "Хүний эрхээр",
+      "hideUnclassified": "Тодорхой сэдэвгүй {count, number}-г нуух"
     },
     "doc": {
       "mitigation": "Бууруулалт",
