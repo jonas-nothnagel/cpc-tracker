@@ -73,122 +73,129 @@ export function FindingCard({
   const color = ALIGNMENT_COLORS[pair.alignment];
 
   return (
-    <article className="space-y-6">
-      <header>
-        <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
+    <article>
+      {/* One-viewport artifact: header spans, then evidence left, assessment
+          right on desktop. Regular-weight serif so a two-line claim reads as
+          a statement, not a shout. */}
+      <header className="mb-5">
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
           {countryName ? `${t("kicker")} · ${countryName}` : t("kicker")}
         </p>
         <h1
-          className="text-headline sm:text-headline-lg font-medium text-[var(--undp-black)] [text-wrap:balance]"
+          className="text-headline font-normal leading-[1.25] text-[var(--undp-black)] [text-wrap:balance] max-w-[56rem]"
           style={{ fontFamily: HEADLINE_SERIF }}
         >
           {headline}
         </h1>
       </header>
 
-      <section aria-label={t("assessmentLabel")}>
-        <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
-          {t("assessmentLabel")}
-        </p>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-body font-semibold" style={{ color }}>
-            {alignmentLabels[pair.alignment]}
-          </span>
-          {pair.mechanism && (
-            <SubFieldChip variant="mechanism" value={pair.mechanism} />
-          )}
-          {pair.manageability && (
-            <SubFieldChip variant="manageability" value={pair.manageability} />
-          )}
-          {pair.confidence && (
-            <SubFieldChip variant="confidence" value={pair.confidence} />
-          )}
-        </div>
-      </section>
-
-      <section aria-label={t("targetsLabel")}>
-        <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
-          {t("targetsLabel")}
-        </p>
-        <div className="space-y-4">
-          <TargetBlock target={a} countryConfig={countryConfig} color={color} />
-          <div className="flex items-center gap-3" aria-hidden="true">
-            <span
-              className="block h-px flex-1"
-              style={{
-                backgroundImage: `linear-gradient(90deg, transparent, ${color}, transparent)`,
-              }}
-            />
-            <span className="text-caption font-medium" style={{ color }}>
-              {contra ? tp("connector.flagged") : tp("connector.aligned")}
-            </span>
-            <span
-              className="block h-px flex-1"
-              style={{
-                backgroundImage: `linear-gradient(90deg, transparent, ${color}, transparent)`,
-              }}
-            />
-          </div>
-          <TargetBlock target={b} countryConfig={countryConfig} color={color} />
-        </div>
-      </section>
-
-      {contra && pair.mechanism && (
-        <section className="border-t border-line pt-4">
+      <div className="lg:grid lg:grid-cols-2 lg:gap-x-12">
+        <section aria-label={t("targetsLabel")}>
           <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
-            {t("mechanismLabel")}
+            {t("targetsLabel")}
           </p>
-          <p className="text-body text-[var(--undp-black)] leading-relaxed">
-            {mechanismDescriptions[pair.mechanism]}
-          </p>
+          <div className="space-y-3">
+            <TargetBlock target={a} countryConfig={countryConfig} color={color} />
+            <div className="flex items-center gap-3" aria-hidden="true">
+              <span
+                className="block h-px flex-1"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, transparent, ${color}, transparent)`,
+                }}
+              />
+              <span className="text-caption font-medium" style={{ color }}>
+                {contra ? tp("connector.flagged") : tp("connector.aligned")}
+              </span>
+              <span
+                className="block h-px flex-1"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, transparent, ${color}, transparent)`,
+                }}
+              />
+            </div>
+            <TargetBlock target={b} countryConfig={countryConfig} color={color} />
+          </div>
         </section>
-      )}
 
-      {pair.description && (
-        <section className="border-t border-line pt-4">
-          <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
-            <p className="text-caption font-medium text-[var(--undp-gray)]">
-              {tp("aiRationaleLabel")}
+        <div className="mt-6 lg:mt-0">
+          <section aria-label={t("assessmentLabel")}>
+            <p className="text-caption font-medium text-[var(--undp-gray)] mb-2">
+              {t("assessmentLabel")}
             </p>
-            <FrictionDimensionChip
-              mechanism={pair.mechanism}
-              contestedResources={pair.contestedResources}
-              sharedContext={pair.sharedContext}
-            />
-          </div>
-          <p className="text-body text-[var(--undp-black)] leading-relaxed">
-            {pair.description}
-          </p>
-          <p className="mt-3 text-caption text-[var(--undp-gray)] leading-relaxed">
-            {tp("aiRationaleDisclaimer")}
-          </p>
-          <div className="mt-4">
-            <FeedbackControl
-              variant="inline"
-              countryId={countryId}
-              surface="target_pair_rationale"
-              anchorIds={[pair.targetAId, pair.targetBId]}
-              contentText={pair.description}
-              context={{
-                alignment: pair.alignment,
-                mechanism: pair.mechanism,
-                confidence: pair.confidence,
-                manageability: pair.manageability,
-              }}
-            />
-          </div>
-        </section>
-      )}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-body font-semibold" style={{ color }}>
+                {alignmentLabels[pair.alignment]}
+              </span>
+              {pair.mechanism && (
+                <SubFieldChip variant="mechanism" value={pair.mechanism} />
+              )}
+              {pair.manageability && (
+                <SubFieldChip variant="manageability" value={pair.manageability} />
+              )}
+              {pair.confidence && (
+                <SubFieldChip variant="confidence" value={pair.confidence} />
+              )}
+            </div>
+          </section>
 
-      <footer className="border-t border-line pt-4 flex items-baseline justify-between gap-4 flex-wrap">
-        <CopyLinkButton />
-        <Link
-          href={`/${countryId}`}
-          className="text-data font-medium text-[var(--undp-gray)] hover:text-[var(--undp-blue)]"
-        >
-          {t("backToDashboard")}
-        </Link>
-      </footer>
+          {contra && pair.mechanism && (
+            <section className="border-t border-line pt-3 mt-4">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
+                {t("mechanismLabel")}
+              </p>
+              <p className="text-body text-[var(--undp-black)] leading-relaxed">
+                {mechanismDescriptions[pair.mechanism]}
+              </p>
+            </section>
+          )}
+
+          {pair.description && (
+            <section className="border-t border-line pt-3 mt-4">
+              <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
+                <p className="text-caption font-medium text-[var(--undp-gray)]">
+                  {tp("aiRationaleLabel")}
+                </p>
+                <FrictionDimensionChip
+                  mechanism={pair.mechanism}
+                  contestedResources={pair.contestedResources}
+                  sharedContext={pair.sharedContext}
+                />
+              </div>
+              <p className="text-data text-[var(--undp-black)] leading-relaxed">
+                {pair.description}
+              </p>
+              <p className="mt-2 text-caption text-[var(--undp-gray)] leading-relaxed">
+                {tp("aiRationaleDisclaimer")}
+              </p>
+              <div className="mt-3">
+                <FeedbackControl
+                  variant="inline"
+                  countryId={countryId}
+                  surface="target_pair_rationale"
+                  anchorIds={[pair.targetAId, pair.targetBId]}
+                  contentText={pair.description}
+                  context={{
+                    alignment: pair.alignment,
+                    mechanism: pair.mechanism,
+                    confidence: pair.confidence,
+                    manageability: pair.manageability,
+                  }}
+                />
+              </div>
+            </section>
+          )}
+
+          <footer className="border-t border-line pt-3 mt-4 flex items-baseline justify-between gap-4 flex-wrap">
+            <CopyLinkButton />
+            <Link
+              href={`/${countryId}`}
+              className="text-data font-medium text-[var(--undp-gray)] hover:text-[var(--undp-blue)]"
+            >
+              {t("backToDashboard")}
+            </Link>
+          </footer>
+        </div>
+      </div>
     </article>
   );
 }

@@ -5,7 +5,7 @@ import { getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { resolveFindingPair } from "@/lib/finding/resolve";
 import { buildFindingHeadline } from "@/lib/finding/headline";
-import { getDocFullLabel } from "@/lib/utils";
+import { findingDocName } from "@/lib/finding/doc-name";
 import type { CountryConfig } from "@/types";
 import { FindingCard } from "@/components/finding/finding-card";
 
@@ -49,13 +49,16 @@ async function loadFinding(props: Props) {
   const countryConfig = (data.countryConfig as CountryConfig | null) ?? null;
   const sameDoc = found.targetA.sourceDocument === found.targetB.sourceDocument;
   const t = await getTranslations({ locale, namespace: "finding" });
+  // Headline names are the compact human ones; the untrimmed full names
+  // appear in the card's source lines, keeping expansion on the same page.
+  const nameOpts = { preferNative: locale !== "en" };
   const docs = sameDoc
     ? t("headline.docsSame", {
-        doc: getDocFullLabel(countryConfig, found.targetA.sourceDocument),
+        doc: findingDocName(countryConfig, found.targetA.sourceDocument, nameOpts),
       })
     : t("headline.docsPair", {
-        docA: getDocFullLabel(countryConfig, found.targetA.sourceDocument),
-        docB: getDocFullLabel(countryConfig, found.targetB.sourceDocument),
+        docA: findingDocName(countryConfig, found.targetA.sourceDocument, nameOpts),
+        docB: findingDocName(countryConfig, found.targetB.sourceDocument, nameOpts),
       });
   const template = buildFindingHeadline({
     level: found.pair.alignment,
@@ -89,8 +92,8 @@ export default async function FindingPage(props: Props) {
       className="min-h-screen"
       style={{ backgroundColor: "var(--undp-paper)" }}
     >
-      <div className="mx-auto w-full max-w-[44rem] px-6 py-10">
-        <p className="mb-8 text-caption">
+      <div className="mx-auto w-full max-w-5xl px-6 py-6">
+        <p className="mb-5 text-caption">
           <Link
             href="/"
             className="font-medium text-[var(--undp-gray)] hover:text-[var(--undp-blue)]"
