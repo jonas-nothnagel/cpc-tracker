@@ -40,6 +40,7 @@ export function FindingCard({
   countryId,
   countryName,
   headline,
+  significance,
 }: {
   pair: AlignmentResult;
   targetA: Target;
@@ -50,6 +51,9 @@ export function FindingCard({
   countryName?: string;
   /** Pre-translated claim sentence; byte-identical to the page title. */
   headline: string;
+  /** Pre-localized "why this pair stands out" lines, all data-derived
+   *  server-side (model agreement, pattern rarity, concentration, review). */
+  significance?: string[];
 }) {
   const locale = useLocale();
   const t = useTranslations("finding.card");
@@ -115,6 +119,16 @@ export function FindingCard({
             </div>
             <TargetBlock target={b} countryConfig={countryConfig} color={color} />
           </div>
+          {contra && pair.mechanism && (
+            <div className="border-t border-line pt-3 mt-4">
+              <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
+                {t("mechanismLabel")}
+              </p>
+              <p className="text-body text-[var(--undp-black)] leading-relaxed">
+                {mechanismDescriptions[pair.mechanism]}
+              </p>
+            </div>
+          )}
         </section>
 
         <div className="mt-6 lg:mt-0">
@@ -138,14 +152,24 @@ export function FindingCard({
             </div>
           </section>
 
-          {contra && pair.mechanism && (
-            <section className="border-t border-line pt-3 mt-4">
+          {significance && significance.length > 0 && (
+            <section
+              className="border-t border-line pt-3 mt-4"
+              aria-label={t("standsOutLabel")}
+            >
               <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
-                {t("mechanismLabel")}
+                {t("standsOutLabel")}
               </p>
-              <p className="text-body text-[var(--undp-black)] leading-relaxed">
-                {mechanismDescriptions[pair.mechanism]}
-              </p>
+              <ul className="space-y-1">
+                {significance.map((line) => (
+                  <li
+                    key={line}
+                    className="text-data text-[var(--undp-black)] leading-relaxed"
+                  >
+                    {line}
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
 

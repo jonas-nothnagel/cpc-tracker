@@ -2,10 +2,13 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getCountry } from "@/config/countries";
-import { getCountryDashboardPayload } from "@/lib/dashboard-data";
+import { getCountryDashboardPayload, loadRatings } from "@/lib/dashboard-data";
 import { resolveFindingPair } from "@/lib/finding/resolve";
 import { buildFindingHeadline } from "@/lib/finding/headline";
 import { findingDocName } from "@/lib/finding/doc-name";
+import { loadConsensusCounts } from "@/lib/finding/consensus";
+import { computeSignificanceFacts } from "@/lib/finding/significance";
+import { getAlignmentLabels, getContradictionTypeLabels } from "@/lib/labels";
 import type { CountryConfig } from "@/types";
 import { FindingCard } from "@/components/finding/finding-card";
 
@@ -69,7 +72,58 @@ async function loadFinding(props: Props) {
   });
   const headline = t(template.key, { ...template.values, docs });
 
-  return { locale, entry, countryConfig, found, headline };
+  // "Why this pair stands out": every line computed from stored data.
+  const consensus = loadConsensusCounts(entry.id);
+  const facts = computeSignificanceFacts(data.alignment, data.targets, found.pair, {
+    consensusCounts: consensus?.counts,
+    modelsTotal: consensus?.modelsTotal,
+    ratings: loadRatings(entry.id),
+  });
+  const significance: string[] = [];
+  if (facts.modelsFlagging) {
+    significance.push(
+      t("card.modelAgreement", {
+        count: facts.modelsFlagging.count,
+        total: facts.modelsFlagging.total,
+      }),
+    );
+  }
+  if (facts.typeRarity) {
+    const mechanismLabels = await getContradictionTypeLabels(locale);
+    significance.push(
+      t("card.typeRarity", {
+        mechanism: mechanismLabels[facts.typeRarity.mechanism],
+        count: facts.typeRarity.count,
+        comparisons: facts.typeRarity.totalComparisons,
+      }),
+    );
+  }
+  if (facts.concentration) {
+    significance.push(
+      t("card.concentration", {
+        target: facts.concentration.sourceLabel,
+        count: facts.concentration.count,
+        flaggedTotal: facts.concentration.flaggedTotal,
+      }),
+    );
+  }
+  if (facts.review !== undefined) {
+    if (facts.review) {
+      const alignmentLabels = await getAlignmentLabels(locale);
+      significance.push(
+        t("card.reviewed", {
+          rating: alignmentLabels[facts.review.rating],
+          date: new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(
+            new Date(facts.review.ts),
+          ),
+        }),
+      );
+    } else {
+      significance.push(t("card.notReviewed"));
+    }
+  }
+
+  return { locale, entry, countryConfig, found, headline, significance };
 }
 
 export async function generateMetadata(props: Props) {
@@ -84,7 +138,7 @@ export async function generateMetadata(props: Props) {
 export default async function FindingPage(props: Props) {
   const loaded = await loadFinding(props);
   if (!loaded) notFound();
-  const { locale, entry, countryConfig, found, headline } = loaded;
+  const { locale, entry, countryConfig, found, headline, significance } = loaded;
   const tc = await getTranslations({ locale, namespace: "common" });
 
   return (
@@ -92,8 +146,8 @@ export default async function FindingPage(props: Props) {
       className="min-h-screen"
       style={{ backgroundColor: "var(--undp-paper)" }}
     >
-      <div className="mx-auto w-full max-w-5xl px-6 py-6">
-        <p className="mb-5 text-caption">
+      <div className="mx-auto w-full max-w-5xl px-6 py-4">
+        <p className="mb-4 text-caption">
           <Link
             href="/"
             className="font-medium text-[var(--undp-gray)] hover:text-[var(--undp-blue)]"
@@ -109,6 +163,7 @@ export default async function FindingPage(props: Props) {
           countryId={entry.id}
           countryName={entry.name}
           headline={headline}
+          significance={significance}
         />
       </div>
     </div>

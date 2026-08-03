@@ -1430,7 +1430,13 @@
       "targetsLabel": "The two commitments, verbatim",
       "copyLink": "Copy link",
       "copied": "Link copied",
-      "backToDashboard": "View in the full coherence dashboard"
+      "backToDashboard": "View in the full coherence dashboard",
+      "standsOutLabel": "Why this pair stands out",
+      "modelAgreement": "Identified as a potential misalignment by {count, number} of {total, number} AI models independently.",
+      "typeRarity": "This pattern ({mechanism}) appears in {count, number} of {comparisons, number} compared pairs.",
+      "concentration": "{target} alone is involved in {count, number} of the {flaggedTotal, number} potentially misaligned pairs.",
+      "reviewed": "Reviewed: a country reviewer rated this pair “{rating}” on {date}.",
+      "notReviewed": "Not yet reviewed by a country team."
     },
     "index": {
       "title": "Candidate findings",

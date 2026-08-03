@@ -1430,7 +1430,13 @@
       "targetsLabel": "Los dos compromisos, textuales",
       "copyLink": "Copiar enlace",
       "copied": "Enlace copiado",
-      "backToDashboard": "Ver en el panel completo de coherencia"
+      "backToDashboard": "Ver en el panel completo de coherencia",
+      "standsOutLabel": "Por qué destaca este par",
+      "modelAgreement": "Identificado como posible desalineación por {count, number} de {total, number} modelos de IA de forma independiente.",
+      "typeRarity": "Este patrón ({mechanism}) aparece en {count, number} de {comparisons, number} pares comparados.",
+      "concentration": "{target} por sí solo participa en {count, number} de los {flaggedTotal, number} pares con posible desalineación.",
+      "reviewed": "Revisado: una persona revisora del país calificó este par como “{rating}” el {date}.",
+      "notReviewed": "Aún sin revisión por un equipo de país."
     },
     "index": {
       "title": "Hallazgos candidatos",

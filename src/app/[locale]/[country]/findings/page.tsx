@@ -2,12 +2,8 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getCountry } from "@/config/countries";
-import {
-  getCountryDashboardPayload,
-  listAvailableModels,
-  loadModelFlaggedPairKeys,
-} from "@/lib/dashboard-data";
-import { anchorKeyOf } from "@/lib/feedback/anchor";
+import { getCountryDashboardPayload } from "@/lib/dashboard-data";
+import { loadConsensusCounts } from "@/lib/finding/consensus";
 import { selectFindingCandidates } from "@/lib/finding/candidates";
 import {
   getAlignmentLabels,
@@ -46,22 +42,11 @@ export default async function FindingsIndexPage(props: Props) {
   const data = result.payload.data;
   const countryConfig = (data.countryConfig as CountryConfig | null) ?? null;
 
-  // Cross-model consensus, only where several models have run: count, per
-  // canonical pairKey, how many models flag the pair.
-  const models = listAvailableModels(entry.id);
-  let consensusCounts: Record<string, number> | undefined;
-  if (models.length > 1) {
-    consensusCounts = {};
-    for (const keys of Object.values(loadModelFlaggedPairKeys(entry.id))) {
-      for (const raw of keys) {
-        const key = anchorKeyOf(raw.split("::"));
-        consensusCounts[key] = (consensusCounts[key] ?? 0) + 1;
-      }
-    }
-  }
+  // Cross-model consensus, only where several models have run.
+  const consensus = loadConsensusCounts(entry.id);
 
   const candidates = selectFindingCandidates(data.alignment, data.targets, {
-    consensusCounts,
+    consensusCounts: consensus?.counts,
   });
 
   const t = await getTranslations({ locale, namespace: "finding" });
@@ -107,10 +92,10 @@ export default async function FindingsIndexPage(props: Props) {
           <ol className="border-t border-line">
             {candidates.map((c) => {
               const signals = [
-                consensusCounts
+                consensus
                   ? t("index.modelsFlagging", {
                       count: c.modelsFlagging ?? 1,
-                      total: models.length,
+                      total: consensus.modelsTotal,
                     })
                   : null,
                 c.pair.confidence ? confidenceLabels[c.pair.confidence] : null,

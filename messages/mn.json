@@ -1430,7 +1430,13 @@
       "targetsLabel": "Хоёр зорилт, эх бичвэрээр",
       "copyLink": "Холбоос хуулах",
       "copied": "Холбоос хуулагдлаа",
-      "backToDashboard": "Уялдааны бүрэн самбарт үзэх"
+      "backToDashboard": "Уялдааны бүрэн самбарт үзэх",
+      "standsOutLabel": "Энэ хос юугаараа онцлог вэ",
+      "modelAgreement": "{total, number} AI загварын {count, number} нь энэ хосыг болзошгүй үл нийцэл гэж бие даан тодорхойлсон.",
+      "typeRarity": "Энэ хэв маяг ({mechanism}) харьцуулсан {comparisons, number} хосын {count, number}-д илэрсэн.",
+      "concentration": "{target} дангаараа болзошгүй үл нийцэлтэй {flaggedTotal, number} хосын {count, number}-д оролцож байна.",
+      "reviewed": "Хянагдсан: улсын хянагч энэ хосыг {date}-нд “{rating}” гэж үнэлсэн.",
+      "notReviewed": "Улсын багийн хяналт хараахан хийгдээгүй."
     },
     "index": {
       "title": "Хянаж үзэх дүгнэлтүүд",

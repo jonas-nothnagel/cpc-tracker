@@ -57,7 +57,10 @@ const TARGET_B: Target = {
 const HEADLINE =
   "Possible competition for land between the Food Security Strategy and the NDC";
 
-function renderCard(overrides: Partial<AlignmentResult> = {}) {
+function renderCard(
+  overrides: Partial<AlignmentResult> = {},
+  significance?: string[],
+) {
   return render(
     <NextIntlClientProvider locale="en" messages={en}>
       <FindingCard
@@ -67,6 +70,7 @@ function renderCard(overrides: Partial<AlignmentResult> = {}) {
         countryConfig={null}
         countryId="mongolia"
         headline={HEADLINE}
+        significance={significance}
       />
     </NextIntlClientProvider>,
   );
@@ -113,6 +117,24 @@ describe("FindingCard", () => {
     expect(
       screen.queryByText(en.labels.contradictionDescription.resource_competition),
     ).toBeNull();
+  });
+
+  it("renders the significance lines when provided", () => {
+    renderCard({}, [
+      "Identified as a potential misalignment by 4 of 4 AI models independently.",
+      "Not yet reviewed by a country team.",
+    ]);
+    expect(screen.getByText(en.finding.card.standsOutLabel)).toBeTruthy();
+    expect(
+      screen.getByText(
+        "Identified as a potential misalignment by 4 of 4 AI models independently.",
+      ),
+    ).toBeTruthy();
+  });
+
+  it("hides the significance section without lines", () => {
+    renderCard();
+    expect(screen.queryByText(en.finding.card.standsOutLabel)).toBeNull();
   });
 
   it("copies the page link on request", async () => {
