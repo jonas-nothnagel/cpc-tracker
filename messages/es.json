@@ -1447,6 +1447,20 @@
       "empty": "No hay posibles desalineaciones entre documentos distintos en este conjunto de datos."
     }
   },
+  "pulse": {
+    "title": "{flagged, number} posibles desalineaciones, concentradas en {inflamed, number} de {pairs, number} rutas entre documentos",
+    "subtitle": "{docs, number} documentos de política · {compared, number} pares de metas comparados",
+    "pathwayLine": "{flagged, number} posibles desalineaciones en {compared, number} pares comparados ({pct})",
+    "moreRanked": "y {count, number} más, ordenados",
+    "back": "Volver a todos los documentos",
+    "topStrands": "Primero las señales más fuertes",
+    "showRationale": "Mostrar el razonamiento de la IA",
+    "hideRationale": "Ocultar el razonamiento de la IA",
+    "targetsWord": "metas",
+    "clickHint": "Seleccione una fibra roja para seguirla",
+    "legendTissue": "Líneas verdes: cuánto de cada par de documentos está alineado. La calma es la norma; esta capa es la mayoría.",
+    "legendNerve": "Fibras rojas discontinuas: rutas entre documentos cuya proporción de posible desalineación está en o por encima del promedio de este corpus. El grosor crece con esa proporción. Las dos capas usan escalas distintas."
+  },
   "labels": {
     "alignment": {
       "flagged": "Posible desalineación",

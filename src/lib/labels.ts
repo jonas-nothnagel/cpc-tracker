@@ -136,6 +136,19 @@ export async function getContradictionTypeLabels(
   >;
 }
 
+export async function getContradictionTypeDescriptions(
+  locale: string,
+): Promise<Record<AlignmentMechanism, string>> {
+  const t = await getTranslations({
+    locale,
+    namespace: "labels.contradictionDescription",
+  });
+  return Object.fromEntries(CONTRADICTION_KEYS.map((k) => [k, t(k)])) as Record<
+    AlignmentMechanism,
+    string
+  >;
+}
+
 export async function getManageabilityLabels(
   locale: string,
 ): Promise<Record<AlignmentManageability, string>> {

@@ -1447,6 +1447,20 @@
       "empty": "No potential misalignments between different documents in this dataset."
     }
   },
+  "pulse": {
+    "title": "{flagged, number} potential misalignments, concentrated in {inflamed, number} of {pairs, number} document pathways",
+    "subtitle": "{docs, number} policy documents · {compared, number} compared target pairs",
+    "pathwayLine": "{flagged, number} potential misalignments in {compared, number} compared pairs ({pct})",
+    "moreRanked": "and {count, number} more, ranked",
+    "back": "Back to all documents",
+    "topStrands": "Strongest signals first",
+    "showRationale": "Show the AI rationale",
+    "hideRationale": "Hide the AI rationale",
+    "targetsWord": "targets",
+    "clickHint": "Select a red fiber to follow it",
+    "legendTissue": "Green lines: how much of each document pair aligns. Calm is the norm; this layer is the majority.",
+    "legendNerve": "Red dashed fibers: document pathways whose share of potential misalignment sits at or above this corpus's own average. Width grows with that share. The two layers use separate scales."
+  },
   "labels": {
     "alignment": {
       "flagged": "Potential misalignment",
