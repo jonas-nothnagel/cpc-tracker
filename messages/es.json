@@ -644,9 +644,9 @@
       "coverage": {
         "emptyHeadline": "Ninguna {noun} tiene aún un objetivo clasificado.",
         "emptyBody": "O ningún objetivo está clasificado como primario en una {noun} bajo esta lente, o el país no tiene una taxonomía de {noun} configurada.",
-        "singleHeadline": "{name} concentra el {pct}% de los objetivos clasificados.",
-        "everyHeadline": "Los objetivos clasificados abarcan los {sectors, number} {nounPlural}, sobre todo en {name}.",
-        "topHeadline": "{list} concentran el {pct}% de los objetivos clasificados.",
+        "singleHeadline": "{name} concentra el {pct}% de los {total, number} objetivos clasificados.",
+        "everyHeadline": "Los {total, number} objetivos clasificados abarcan los {sectors, number} {nounPlural}, sobre todo en {name}.",
+        "topHeadline": "{list} concentran el {pct}% de los {total, number} objetivos clasificados.",
         "unclassifiedNote": "{count, number} de {total, number} objetivos no coinciden claramente con {nounPlural}.",
         "noneClassifiedHeadline": "Ningún objetivo coincide claramente con {nounPlural}."
       },

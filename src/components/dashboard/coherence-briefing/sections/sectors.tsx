@@ -426,15 +426,24 @@ function composeCoverageSentence({
   const list = formatList(topNames, t);
   let headline: string;
   if (topNames.length === 1) {
-    headline = t("coverage.singleHeadline", { name: topNames[0], pct: sharePct });
+    headline = t("coverage.singleHeadline", {
+      name: topNames[0],
+      pct: sharePct,
+      total: totalTargets,
+    });
   } else if (topNames.length >= populatedSectors) {
     headline = t("coverage.everyHeadline", {
       sectors: populatedSectors,
       nounPlural,
       name: topNames[0],
+      total: totalTargets,
     });
   } else {
-    headline = t("coverage.topHeadline", { list, pct: sharePct });
+    headline = t("coverage.topHeadline", {
+      list,
+      pct: sharePct,
+      total: totalTargets,
+    });
   }
 
   const flagBody = composeFlagBody({ mergedRows, midShare, nounPlural, t });
