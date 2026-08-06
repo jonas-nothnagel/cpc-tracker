@@ -2,112 +2,219 @@
 
 import type { ReactNode } from "react";
 
+type ViewMode = "coherence" | "finance";
+
 /**
- * Explorer B canvas. A reflowing three-column layout — lens pane (left), hero
- * wheel + command dock (centre), answers (right) — so the pieces sit beside one
- * another rather than overlapping. Nothing is an absolute overlay over the
- * wheel, so the lens stays clickable, the wheel's edge labels never slide under
- * the lens, and opening the answers panel reserves space (the wheel reflows)
- * instead of covering it. No visible frame: it blends into the briefing page.
- * Stacks vertically on small screens. Purely presentational — every interactive
- * piece is built by the parent. Nothing carries a z-index so the briefing's
- * sticky section nav (z-10) always paints over it.
+ * Explorer flagship canvas — a single, non-scrolling screen.
+ *
+ * Three grid rows fill the height the briefing finale gives it:
+ *   1. Top bar      — title, live stat line, share / country / view switch.
+ *   2. Stage        — lens rail (left) + the wheel (right), with the answer
+ *                     as a *floating overlay* that never reflows the wheel.
+ *   3. Ask dock     — always visible so the question box and its toggles stay
+ *                     on screen while an answer plays out on the wheel.
+ *
+ * `minmax(0,1fr)` on the middle row lets it shrink below its content so the
+ * wheel scales down on short viewports instead of pushing the dock off-screen.
+ * Purely presentational: every interactive piece is built by the parent and
+ * passed in; the top-bar controls are the one exception, rendered here so the
+ * one-screen chrome stays in one place.
  */
 export function WorkbenchStage({
-  statLine,
+  title,
+  statLead,
+  statFlagged,
+  statTail,
+  onShare,
+  shareLabel,
+  shareCopied,
+  countryName,
+  showViewSwitch,
+  view,
+  onViewChange,
+  viewCoherenceLabel,
+  viewFinanceLabel,
   lensPane,
   wheel,
+  answerOpen,
+  answerCard,
+  answersAvailable,
+  onShowAnswers,
+  answersLabel,
   dock,
-  answers,
-  answersOpen,
-  onToggleAnswers,
-  answersHandleLabel,
-  answersHeading,
-  answersToggleTitle,
-  answersClose,
-  financeActive,
-  financeNote,
   footerCaveat,
   modal,
 }: {
-  statLine: string;
+  title: string;
+  /** Stat line split so the flagged count can carry its own colour + weight. */
+  statLead: string;
+  statFlagged: string;
+  statTail: string;
+  onShare: () => void;
+  shareLabel: string;
+  shareCopied: boolean;
+  countryName: string;
+  showViewSwitch: boolean;
+  view: ViewMode;
+  onViewChange: (view: ViewMode) => void;
+  viewCoherenceLabel: string;
+  viewFinanceLabel: string;
   lensPane: ReactNode;
   wheel: ReactNode;
-  dock: ReactNode;
-  answers: ReactNode;
-  answersOpen: boolean;
-  onToggleAnswers: () => void;
-  answersHandleLabel: string;
-  answersHeading: string;
-  answersToggleTitle: string;
-  answersClose: string;
-  financeActive: boolean;
-  financeNote: string;
+  /** Whether the floating answer card is showing (slides the wheel left). */
+  answerOpen: boolean;
+  answerCard: ReactNode;
+  /** An answer exists but the card is collapsed: offer a way back to it. */
+  answersAvailable: boolean;
+  onShowAnswers: () => void;
+  answersLabel: string;
+  /** AI-generated label + confidence caveat + question-storage notice. */
   footerCaveat: string;
+  dock: ReactNode;
   modal?: ReactNode;
 }) {
+  const pill = (active: boolean, activeBg: string) =>
+    `cursor-pointer whitespace-nowrap rounded-full px-3.5 py-1.5 text-data font-medium transition-colors ${
+      active
+        ? `${activeBg} text-white`
+        : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+    }`;
+
   return (
-    <section className="mb-2">
-      <p className="mb-4 text-caption text-[var(--undp-gray)]">{statLine}</p>
-
-      <div className="relative mx-auto flex max-w-[1180px] flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-        {/* Lens pane — left column. */}
-        <div className="lg:w-[250px] lg:shrink-0">{lensPane}</div>
-
-        {/* Hero wheel + command dock — centre column. */}
-        <div className="flex min-w-0 flex-1 flex-col items-center">
-          <div className="w-full max-w-[860px]">{wheel}</div>
-          {financeActive && (
-            <p className="mt-1 max-w-[460px] text-center text-caption text-[var(--undp-gray)]">
-              {financeNote}
-            </p>
-          )}
-          <div className="mt-5 w-full max-w-[720px]">{dock}</div>
+    <div className="grid h-full w-full min-w-0 grid-cols-1 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden bg-white">
+      {/* ── Row 1 · Top bar ─────────────────────────────────────────── */}
+      <div className="flex items-center justify-between gap-4 border-b border-line bg-white px-5 py-2.5 sm:px-6">
+        <div className="min-w-0 flex-1">
+          {/* On the house 5-step ramp: the same serif headline the Explore
+              section used before it folded into this top bar. */}
+          <h2 className="truncate font-display text-headline font-medium text-[var(--undp-black)]">
+            {title}
+          </h2>
+          <p className="mt-0.5 truncate text-caption leading-normal text-[var(--undp-gray)]">
+            {statLead}{" "}
+            <span className="font-semibold text-[var(--color-flagged)]">
+              {statFlagged}
+            </span>{" "}
+            · {statTail}
+          </p>
         </div>
-
-        {/* Answers — a right column when open (reserves space, no overlap),
-            otherwise a small handle on the right edge. */}
-        {answersOpen ? (
-          <div className="w-full lg:w-[346px] lg:shrink-0">
-            <div className="flex max-h-[760px] flex-col rounded-2xl border border-line bg-white shadow-lg">
-              <div className="flex shrink-0 items-center justify-between border-b border-line-soft px-3.5 py-2.5">
-                <span className="text-caption font-medium text-[var(--undp-gray)]">
-                  {answersHeading}
-                </span>
-                <button
-                  type="button"
-                  onClick={onToggleAnswers}
-                  title={answersToggleTitle}
-                  className="text-caption font-medium text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-black)]"
-                >
-                  {answersClose}
-                </button>
-              </div>
-              <div className="min-h-0 flex-1 overflow-y-auto px-3.5 py-3.5">
-                {answers}
-              </div>
-            </div>
-          </div>
-        ) : (
+        <div className="flex flex-none items-center gap-2.5">
+          {/* Reachability: while the answer card is collapsed but an answer is
+              still available, this brings it back (the old drawer handle). */}
+          {answersAvailable && !answerOpen && (
+            <button
+              type="button"
+              onClick={onShowAnswers}
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--undp-blue)] bg-white px-3.5 py-1.5 text-caption font-medium text-[var(--undp-blue)] transition-colors hover:bg-[var(--undp-blue)] hover:text-white"
+            >
+              {answersLabel}
+            </button>
+          )}
           <button
             type="button"
-            onClick={onToggleAnswers}
-            title={answersToggleTitle}
-            aria-expanded={false}
-            className="absolute right-0 top-0 hidden items-center rounded-l-xl border border-r-0 border-line bg-white px-2.5 py-3 text-caption font-medium text-[var(--undp-gray)] shadow-md transition-colors hover:text-[var(--undp-black)] lg:flex"
-            style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+            onClick={onShare}
+            className={`hidden items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-caption transition-colors sm:inline-flex ${
+              shareCopied
+                ? "border-[var(--undp-blue)] text-[var(--undp-blue)]"
+                : "border-line-strong text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+            }`}
           >
-            {answersHandleLabel}
+            {shareLabel}
           </button>
-        )}
+          <span className="hidden items-center gap-1.5 rounded-full border border-line-strong bg-white px-3.5 py-1.5 text-[0.78rem] font-medium text-[var(--undp-black)] md:inline-flex">
+            {countryName}
+          </span>
+          {showViewSwitch && (
+            <div className="inline-flex items-center gap-0.5 rounded-full border border-line-strong bg-white p-[3px]">
+              <button
+                type="button"
+                onClick={() => onViewChange("coherence")}
+                aria-pressed={view === "coherence"}
+                className={pill(view === "coherence", "bg-[var(--undp-black)]")}
+              >
+                {viewCoherenceLabel}
+              </button>
+              <button
+                type="button"
+                onClick={() => onViewChange("finance")}
+                aria-pressed={view === "finance"}
+                className={pill(view === "finance", "bg-[#0e7490]")}
+              >
+                {viewFinanceLabel}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      <p className="mt-4 flex items-center gap-2 text-caption text-[var(--undp-gray)]">
-        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--undp-yellow,#edb716)]" />
-        {footerCaveat}
-      </p>
+      {/* ── Row 2 · Stage (lens rail + wheel with floating answer) ───── */}
+      <div className="grid min-h-0 min-w-0 grid-cols-1 gap-3.5 px-4 py-2 sm:px-6 lg:grid-cols-[224px_minmax(0,1fr)]">
+        {/* Lens rail — hidden on narrow screens where the wheel needs the room. */}
+        <div className="hidden min-h-0 self-start lg:block lg:max-h-full lg:overflow-y-auto lg:overflow-x-hidden [scrollbar-width:thin]">
+          {lensPane}
+        </div>
+
+        {/* Wheel stage. The wheel is centred and glides left when an answer is
+            open; the answer card floats over the right, never reflowing it. */}
+        <div className="relative flex min-h-0 min-w-0 items-center justify-center">
+          <div
+            className="flex h-full w-full min-w-0 items-center justify-center transition-transform duration-500 [transition-timing-function:var(--ease-out)] motion-reduce:transition-none"
+            style={{
+              transform: answerOpen
+                ? "translateX(clamp(-150px, -13%, -80px))"
+                : "translateX(0)",
+            }}
+          >
+            {wheel}
+          </div>
+
+          {/* No -translate-y-1/2 class on the card: Tailwind v4 compiles it to
+              the standalone `translate` property, which composes with the
+              inline `transform` rather than being overridden by it, so the card
+              would sit a full 100% up. The inline transform owns centring. */}
+          <div
+            aria-hidden={!answerOpen}
+            // inert while closed: the card keeps its content in the DOM so it
+            // can fade, but opacity/pointer-events alone leave its buttons in
+            // the tab order — keyboard focus would land on an invisible card,
+            // and focusable children inside aria-hidden is an ARIA violation.
+            inert={!answerOpen}
+            className="pointer-events-none absolute right-0 top-1/2 z-10 flex max-h-[calc(100%-1.5rem)] w-[min(344px,86%)] transition-[opacity,transform] duration-500 [transition-timing-function:var(--ease-out)] motion-reduce:transition-none"
+            style={{
+              opacity: answerOpen ? 1 : 0,
+              transform: answerOpen
+                ? "translate(0, -50%)"
+                : "translate(26px, -50%)",
+            }}
+          >
+            {/* min-h-0 (not max-h-full): a percentage max-height would resolve
+                against an auto-height parent and compute to `none`, letting a
+                long answer grow past the stage and slide under the top bar.
+                Stretching a shrinkable flex item keeps it inside the cap. */}
+            <div
+              className={`flex min-h-0 w-full ${answerOpen ? "pointer-events-auto" : ""}`}
+            >
+              {answerCard}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Row 3 · Ask dock ────────────────────────────────────────── */}
+      <div className="flex flex-col items-center px-4 pb-3 pt-1 sm:px-6">
+        <div className="w-full max-w-[860px]">
+          {dock}
+          {/* Always-visible caveat: labels the analysis as AI-generated with its
+              confidence caveat, and carries the notice that questions are
+              stored. Both must stay on the face, not behind a click. */}
+          <p className="mt-2 flex items-start gap-2 text-caption leading-snug text-[var(--undp-gray)]">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--undp-yellow)]" />
+            {footerCaveat}
+          </p>
+        </div>
+      </div>
 
       {modal}
-    </section>
+    </div>
   );
 }

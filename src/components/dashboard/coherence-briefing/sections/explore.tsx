@@ -18,22 +18,22 @@ export const EXPLORE_SECTION_ID = "explore";
 
 export function ExploreSection({ children }: { children: ReactNode }) {
   const t = useTranslations("briefing.explore");
+  // The Explore finale is a self-contained one-screen workbench: it owns its
+  // own title, stat line, and controls in a top bar, so the section heading
+  // and intro fold into that chrome and stay only as an accessible landmark.
+  // Height fills the viewport below the app header + section nav (~8rem) so the
+  // whole workbench (title, wheel, ask dock) sits on one screen without the
+  // page scrolling within it. `100dvh` keeps mobile browser chrome honest.
   return (
     <section
       id={EXPLORE_SECTION_ID}
-      className="scroll-mt-24 pt-2"
+      className="flex h-[calc(100dvh-8rem)] min-h-[620px] scroll-mt-[8rem] flex-col"
       aria-labelledby={`${EXPLORE_SECTION_ID}-heading`}
     >
-      <h2
-        id={`${EXPLORE_SECTION_ID}-heading`}
-        className="font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium mb-3"
-      >
+      <h2 id={`${EXPLORE_SECTION_ID}-heading`} className="sr-only">
         {t("heading")}
       </h2>
-      <p className="text-body text-[var(--undp-black)] max-w-prose mb-6">
-        {t("body")}
-      </p>
-      {children}
+      <div className="min-h-0 flex-1">{children}</div>
     </section>
   );
 }
