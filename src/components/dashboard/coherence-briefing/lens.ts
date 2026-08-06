@@ -6,7 +6,7 @@
 
 import type { SectorCategoryRef } from "./centerpiece/wheel";
 
-export type LensId = "globe" | "ipcc" | "country" | "gga";
+export type LensId = "globe" | "ipcc" | "country" | "gga" | "hr";
 
 export interface LensOption {
   id: LensId;

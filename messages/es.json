@@ -132,7 +132,9 @@
       "ipcc": "Sectores de mitigación",
       "country": "Sectores del país",
       "gga": "Adaptación climática",
-      "ggaTooltip": "Objetivo Mundial de Adaptación: las siete metas temáticas del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (decisión 2/CMA.5 de la CMNUCC)"
+      "hr": "Derechos humanos",
+      "ggaTooltip": "Objetivo Mundial de Adaptación: las siete metas temáticas del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (decisión 2/CMA.5 de la CMNUCC)",
+      "hrTooltip": "Nueve temas de derechos humanos de la orientación del PNUD para esta herramienta, basada en la orientación del Grupo de Gestión Ambiental de las Naciones Unidas sobre la integración de los derechos humanos en la planificación nacional de la biodiversidad. Muestra qué temas abordan los documentos revisados. Borrador en revisión por personas expertas."
     },
     "legend": {
       "aligned": "Alineado",
@@ -609,7 +611,7 @@
     },
     "sectors": {
       "noTaxonomy": "No hay taxonomía sectorial disponible para este país.",
-      "showAll": "Mostrar los {count, number} sectores →",
+      "showAll": "Ver los {count, number} sectores →",
       "collapseToTop": "Contraer a los {count, number} principales",
       "groupBy": "Agrupar por",
       "show": "Mostrar",
@@ -620,6 +622,8 @@
       },
       "col": {
         "sector": "Sector",
+        "category": "Categoría",
+        "theme": "Tema",
         "targets": "Objetivos",
         "flaggedShare": "Posible desalineación"
       },
@@ -640,9 +644,11 @@
       "coverage": {
         "emptyHeadline": "Ninguna {noun} tiene aún un objetivo clasificado.",
         "emptyBody": "O ningún objetivo está clasificado como primario en una {noun} bajo esta lente, o el país no tiene una taxonomía de {noun} configurada.",
-        "singleHeadline": "{name} concentra el {pct}% de los objetivos clasificados.",
-        "everyHeadline": "Los objetivos clasificados abarcan los {sectors, number} {nounPlural}, sobre todo en {name}.",
-        "topHeadline": "{list} concentran el {pct}% de los objetivos clasificados."
+        "singleHeadline": "{name} concentra el {pct}% de los {total, number} objetivos clasificados.",
+        "everyHeadline": "Los {total, number} objetivos clasificados abarcan los {sectors, number} {nounPlural}, sobre todo en {name}.",
+        "topHeadline": "{list} concentran el {pct}% de los {total, number} objetivos clasificados.",
+        "unclassifiedNote": "{count, number} de {total, number} objetivos no coinciden claramente con {nounPlural}.",
+        "noneClassifiedHeadline": "Ningún objetivo coincide claramente con {nounPlural}."
       },
       "flag": {
         "none": "Aún no hay relaciones revisadas bajo esta lente.",
@@ -655,7 +661,8 @@
       "rowAriaLabel": "{name}: {count, number} objetivos primarios. {flag}.",
       "flagAriaValue": "{pct, number}% de las relaciones revisadas son una posible desalineación",
       "flagAriaNone": "sin relaciones revisadas bajo esta lente",
-      "primaryCount": "{count, number} primarios"
+      "primaryCount": "{count, number} primarios",
+      "hideUnclassified": "Ocultar los {count, number} objetivos sin tema claro"
     },
     "docPairs": {
       "empty": "Aún no hay síntesis de pares de documentos disponible. Ejecute el paso de síntesis para surgir los pares aquí.",
@@ -1507,8 +1514,12 @@
       "atAGlance": "De un vistazo",
       "atAGlanceTitle": "Mostrar u ocultar el panel resumen de un vistazo",
       "groupGga": "Adaptación climática",
+      "groupHr": "Derechos humanos",
       "groupGgaTitle": "Agrupar por tema de resiliencia climática (Objetivo Mundial de Adaptación, decisión 2/CMA.5)",
-      "groupOptionGga": "Por adaptación climática"
+      "groupHrTitle": "Agrupar por tema de derechos humanos (orientación del PNUD; borrador en revisión)",
+      "groupOptionGga": "Por adaptación climática",
+      "groupOptionHr": "Por Derechos Humanos",
+      "hideUnclassified": "Ocultar los {count, number} sin tema claro"
     },
     "doc": {
       "mitigation": "Mitigación",
@@ -1546,7 +1557,8 @@
       "centerSpendTagged": "gasto en biodiversidad etiquetado",
       "centerScanning": "Leyendo…",
       "centerScanningDetail": "{targets, number} metas · {docs, number} documentos",
-      "legendResilience": "Adaptación climática"
+      "legendResilience": "Adaptación climática",
+      "legendHumanRights": "Tema de derechos humanos"
     },
     "detailPanel": {
       "closeAria": "Cerrar detalle de la meta",
@@ -1558,7 +1570,14 @@
       "sortedBySeverity": "ordenado por severidad",
       "nr7Progress": "Progreso NR7: {label}",
       "nr7TitlePrefix": "NR7: {label}",
-      "keyChallenges": "Desafíos clave"
+      "keyChallenges": "Desafíos clave",
+      "classification": {
+        "heading": "Por qué este objetivo se agrupa en {category}",
+        "headingGeneric": "Por qué este objetivo se agrupa aquí",
+        "score": "· relevancia {score}",
+        "unmatched": "Ningún tema alcanzó el umbral de relevancia para este objetivo. Puede que aun así se relacione con estos temas; el análisis no encontró una coincidencia clara.",
+        "aiDisclaimer": "Clasificación generada por IA. Trátela como un punto de partida para revisar, no como una conclusión."
+      }
     },
     "targetCard": {
       "showLess": "Mostrar menos ▴",
@@ -2109,11 +2128,16 @@
         "byIpccSector": "Por sector de mitigación (estandarizado)",
         "default": "Predeterminado (Mitigación climática + Metas de adaptación)",
         "byBiodiversity": "Por taxonomía de biodiversidad",
-        "byGga": "Por adaptación climática (Objetivo Mundial de Adaptación)"
+        "byGga": "Por adaptación climática (Objetivo Mundial de Adaptación)",
+        "byHr": "Por temas de derechos humanos"
       },
       "gga": {
         "title": "Todas las acciones reportadas, por tema de adaptación climática",
         "sectionDesc": "Acciones de mitigación y adaptación agrupadas por tema del Objetivo Mundial de Adaptación (Marco de los EAU para la Resiliencia Climática Mundial)."
+      },
+      "hr": {
+        "title": "Todas las acciones reportadas, por tema de derechos humanos",
+        "sectionDesc": "Acciones de mitigación y adaptación agrupadas según el tema de derechos humanos que abordan (orientación del PNUD; borrador en revisión). La cobertura refleja los documentos revisados, no una evaluación del desempeño en derechos humanos."
       },
       "status": {
         "active": {

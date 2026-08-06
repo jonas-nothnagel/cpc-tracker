@@ -143,6 +143,9 @@ export async function POST(request: NextRequest) {
         nbs_categories: body.nbsCategories ?? defaultCats.nbs_categories ?? [],
         ipcc_sectors: body.sectors ?? defaultCats.ipcc_sectors ?? [],
         globe_categories: defaultCats.globe_categories ?? [],
+        // Fixed, non-user-curated taxonomy: carry the defaults through or the
+        // pipeline silently produces no human rights lens for uploads.
+        hr_categories: defaultCats.hr_categories ?? [],
       };
       writeFileSync(
         join(inputDir, "categories.json"),

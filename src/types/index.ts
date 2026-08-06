@@ -195,6 +195,28 @@ export interface GgaCategory {
 }
 
 /**
+ * A human rights theme — one of the nine themes in the UNDP guidance
+ * "Human rights themes for AI Flagship Policy Coherence Tracker", which builds
+ * on UN Environment Management Group guidance on integrating human rights in
+ * national biodiversity planning. Used as a selectable taxonomy lens.
+ *
+ * NOTE this taxonomy is a DRAFT under review by UNDP human rights experts.
+ */
+export interface HrCategory {
+  id: string;
+  name: string;
+  description: string;
+  /**
+   * Display-only grouping from the source document, which separates
+   * rights/issues themes from themes it groups by rights-holder ("Groups").
+   * Never sent to the classifier.
+   */
+  block?: "rights" | "groups";
+  /** Primary source citation for the description. */
+  source?: string;
+}
+
+/**
  * A GLOBE subcategory (level 2) within a Primary Biodiversity Category.
  * These come directly from the BIOFIN GLOBE 2024 taxonomy and are used for
  * fine-grained BER classification.
@@ -237,8 +259,17 @@ export interface ThematicClassification {
    *   (e.g. Mongolia APNDC's 8 goals from BTR1 Table III.9)
    * - "gga": Global Goal on Adaptation thematic targets (UAE Framework for
    *   Global Climate Resilience, decision 2/CMA.5; 7 climate-resilience themes)
+   * - "hr": human rights themes (UNDP guidance building on UN Environment
+   *   Management Group guidance; 9 themes — DRAFT under expert review)
    */
-  taxonomyType: "nbs" | "sector" | "globe" | "globe_sub" | "adaptation_goal" | "gga";
+  taxonomyType:
+    | "nbs"
+    | "sector"
+    | "globe"
+    | "globe_sub"
+    | "adaptation_goal"
+    | "gga"
+    | "hr";
   /** Whether the target pertains to this category (score >= relevance threshold) */
   isRelevant: boolean;
   /** True for the single highest-scoring category per (target, taxonomyType). Use this for single-label views. */

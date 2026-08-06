@@ -189,10 +189,73 @@ async def run_classification(
 # Ranked classifier (preferred)
 # ---------------------------------------------------------------------------
 
+# Human rights scoring guidance, appended to the generic rank prompt for the
+# `hr` taxonomy only.
+#
+# WHY: the generic prompt asks how strongly a target "relates to" a category.
+# For topical taxonomies (IPCC sectors, GLOBE) topical relation IS the thing
+# being measured, so that works. For rights themes it does not: a mining
+# regulation genuinely "relates to" a business theme without engaging anyone's
+# rights. Measured over all four countries' first pass, of the 80 primary
+# `hr_business` placements scoring >= 0.8, ZERO contained any rights, due
+# diligence, accountability, remedy or consent language -- the model was
+# matching the subject noun ("mining activities are business operations") rather
+# than the right. The same held for `hr_information_education`, where
+# inter-agency data sharing scored 0.90 against the right to access information.
+#
+# This is PROJECT-DEFINED framing, not source-traced taxonomy text: it tells the
+# model how to interpret the categories and introduces no policy content of its
+# own (guardrail: no LLM-drafted content in pipeline inputs; project-defined
+# framing is permitted when labelled as such, which this comment does).
+#
+# Plain string, NOT an f-string: the literal {"ranked": []} must survive.
+_HR_SCORING_GUIDANCE = """# HOW TO SCORE THIS TAXONOMY
+These categories are human rights themes. Score whether the target ENGAGES the
+right, not whether it shares a topic, sector or actor with the theme.
+
+A target engages a right when implementing it would change whether people can
+exercise that right - by guaranteeing, extending, protecting, restricting or
+creating accountability for it, or by removing a barrier to it.
+
+Shared subject matter is NOT engagement:
+- Naming, regulating or funding an actor group does not by itself engage that
+  group's rights. Licensing, market development, industrial policy and sector
+  regulation involving businesses are not the business theme unless the target
+  concerns human rights due diligence, accountability for human rights harms,
+  or remedy.
+- Producing, sharing or using information does not by itself engage the right to
+  information. Scientific data, monitoring systems, research collaboration and
+  inter-agency information exchange are not the information theme unless the
+  target concerns the public's ability to obtain, understand or act on
+  information about decisions that affect them.
+- Naming a group as a beneficiary is not the same as addressing that group's
+  participation, consent, protection or non-discrimination.
+
+Purely technical, financial, infrastructural or administrative targets commonly
+engage no theme at all. When that is so, return {"ranked": []} - an empty array
+is a correct and expected answer, not a failure.
+
+Interpret the 0.0-1.0 scale as follows for this taxonomy:
+- 0.85-1.0 the target is explicitly about securing, protecting or enforcing this right
+- 0.6-0.84 a clear, deliberate rights dimension, though not the target's main purpose
+- 0.4-0.59 the right is plausibly affected and the target names the right or its holders
+- 0.2-0.39 indirect; a reviewer could reasonably disagree
+- omit     shared topic, sector or actor only"""
+
+# Per-taxonomy scoring guidance. Appended ONLY for the taxonomies listed here,
+# so every other lens's prompt bytes -- and therefore its warm `rank_*` cache --
+# are byte-for-byte untouched.
+TAXONOMY_SCORING_GUIDANCE: dict[str, str] = {"hr": _HR_SCORING_GUIDANCE}
+
 
 def build_rank_system_prompt(taxonomy_type: str) -> str:
-    """System prompt for the ranked classifier."""
-    return f"""You are a policy classifier. Your job is to assess how strongly a policy target relates to each category in a {taxonomy_type} taxonomy.
+    """System prompt for the ranked classifier.
+
+    Taxonomies without an entry in TAXONOMY_SCORING_GUIDANCE get exactly the
+    prompt they always had, keeping their caches valid.
+    """
+    guidance = TAXONOMY_SCORING_GUIDANCE.get(taxonomy_type)
+    base = f"""You are a policy classifier. Your job is to assess how strongly a policy target relates to each category in a {taxonomy_type} taxonomy.
 
 # TASK
 Given a target and a list of N categories, score every category for its relevance to the target on a 0.0-1.0 scale, where:
@@ -214,6 +277,7 @@ Return ONLY a JSON object, no markdown:
 }}
 
 Order the array from highest score to lowest. The top entry will be treated as the primary classification."""
+    return f"{base}\n\n{guidance}" if guidance else base
 
 
 def build_rank_user_message(

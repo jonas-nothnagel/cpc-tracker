@@ -22,6 +22,10 @@ import { gzipSync } from "node:zlib";
 import { getCountry, isValidCountryId } from "@/config/countries";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
+import {
+  applyUnclassifiedBuckets,
+  unclassifiedCategory,
+} from "@/lib/unclassified-bucket";
 import type {
   BlindEvaluationReport,
   BlindPairSample,
@@ -413,6 +417,7 @@ export interface DashboardResponse {
   globeCategories: unknown[];
   globeSubcategories: unknown[];
   ggaCategories: unknown[];
+  hrCategories: unknown[];
   classifications: unknown[];
   alignment: unknown[];
   btrData: Record<string, unknown> | null;
@@ -486,6 +491,7 @@ export function assembleDashboardData(
     globe_categories?: unknown[];
     globe_subcategories?: unknown[];
     gga_categories?: unknown[];
+    hr_categories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
   const alignmentRaw = readJson<Record<string, unknown>[]>(join(outputDir, "alignment.json"));
@@ -702,11 +708,20 @@ export function assembleDashboardData(
       )
     : new Set<string>();
 
-  const finalClassifications = excludedTargetIds.size
+  const visibleClassifications = excludedTargetIds.size
     ? (classifications as Record<string, unknown>[]).filter(
         (c) => !excludedTargetIds.has(String(c.targetId ?? "")),
       )
     : classifications;
+
+  // Route targets with no relevant category into an explicit "no clear theme"
+  // bucket rather than letting a sub-threshold primary read as a real one.
+  // Display-only and derived here, never in categories.json — see
+  // `lib/unclassified-bucket.ts` for why.
+  const { classifications: finalClassifications, bucketed } =
+    applyUnclassifiedBuckets(
+      (visibleClassifications ?? []) as Record<string, unknown>[],
+    );
 
   const finalAlignment = excludedTargetIds.size
     ? (allAlignment as Record<string, unknown>[]).filter(
@@ -761,6 +776,13 @@ export function assembleDashboardData(
       globeSubcategories: categories.globe_subcategories ?? [],
       ggaCategories: localizeCategories(
         (categories.gga_categories ?? []) as Record<string, unknown>[],
+        locale,
+      ),
+      hrCategories: localizeCategories(
+        [
+          ...((categories.hr_categories ?? []) as Record<string, unknown>[]),
+          ...(bucketed.has("hr") ? [unclassifiedCategory("hr")] : []),
+        ],
         locale,
       ),
       classifications: finalClassifications,

@@ -8,7 +8,7 @@ import {
 } from "@/lib/coherence-budget";
 import type { CountryConfig } from "@/types";
 
-type GroupMode = "document" | "sector" | "globe" | "gga";
+type GroupMode = "document" | "sector" | "globe" | "gga" | "hr";
 type AlignFilter =
   | "all"
   | "high_medium"
@@ -56,6 +56,11 @@ export function LensPane({
   onPreviewGroup,
   countryConfig,
   hasGga,
+  hasHr,
+  canHideUnclassified,
+  hideUnclassified,
+  onHideUnclassifiedChange,
+  unclassifiedCount,
 }: {
   view: ViewMode;
   groupMode: GroupMode;
@@ -76,6 +81,14 @@ export function LensPane({
   /** Whether the data carries any primary GGA (climate-resilience) classification.
    *  Gates the fourth group-by option so it only appears where it has content. */
   hasGga?: boolean;
+  /** Whether the data carries any primary human rights classification. Gates the
+   *  human rights group-by option so it only appears where it has content. */
+  hasHr?: boolean;
+  /** True when the active grouping has targets it could not place in any theme. */
+  canHideUnclassified?: boolean;
+  hideUnclassified?: boolean;
+  onHideUnclassifiedChange?: (next: boolean) => void;
+  unclassifiedCount?: number;
 }) {
   const t = useTranslations("explorer");
   const isDocGroup = groupMode === "document";
@@ -122,6 +135,9 @@ export function LensPane({
             ...(hasGga
               ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")] as [GroupMode, string, string]]
               : []),
+            ...(hasHr
+              ? [["hr", t("controls.groupHr"), t("controls.groupHrTitle")]]
+              : []),
           ] as [GroupMode, string, string][]
         ).map(([mode, label, title]) => (
           <button
@@ -140,6 +156,18 @@ export function LensPane({
           </button>
         ))}
       </div>
+
+      {canHideUnclassified && onHideUnclassifiedChange && (
+        <label className="mb-4 -mt-2 flex items-center gap-2 text-caption text-[var(--undp-gray)] cursor-pointer">
+          <input
+            type="checkbox"
+            checked={hideUnclassified ?? false}
+            onChange={(e) => onHideUnclassifiedChange(e.target.checked)}
+            className="h-3.5 w-3.5 accent-[var(--undp-blue)] cursor-pointer"
+          />
+          {t("controls.hideUnclassified", { count: unclassifiedCount ?? 0 })}
+        </label>
+      )}
 
       {/* Contextual block: Coherence cycles the alignment filter; Finance shows
           the tagged-spend summary tiles. */}

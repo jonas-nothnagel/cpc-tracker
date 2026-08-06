@@ -87,6 +87,7 @@ import { TourButton } from "./tour/tour-button";
 import type { BriefingTourId } from "./tour/steps";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
+import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
 import {
   buildSectorCoherenceShare,
@@ -143,6 +144,7 @@ import type {
   DocPairSynthesis,
   GlobeCategory,
   GgaCategory,
+  HrCategory,
   GlobeSubcategory,
   IpccSector,
   NbsCategory,
@@ -210,6 +212,24 @@ const GGA_LENS_COLORS: Record<string, string> = {
   gga_cultural_heritage: "#b45309",
 };
 
+/** Distinct swatches for the nine human rights themes. Keyed by category id so
+ *  the mapping is stable regardless of array order. Colour is presentation only:
+ *  it carries no judgement about a theme and makes no source claim. */
+const HR_LENS_COLORS: Record<string, string> = {
+  hr_information_education: "#0468b1",
+  hr_participation: "#7c3aed",
+  hr_access_justice: "#b45309",
+  hr_indigenous_local_communities: "#059669",
+  hr_gender_equality: "#db2777",
+  hr_children_youth: "#d97706",
+  hr_defenders: "#dc2626",
+  hr_business: "#64748b",
+  hr_disabilities: "#0891b2",
+  // Derived "no clear theme" bucket: deliberately neutral grey so it reads as
+  // an absence of signal rather than as another theme competing for attention.
+  hr_unclassified: "#cbd5e1",
+};
+
 interface CoherenceBriefingProps {
   countryName: string;
   countryId?: string;
@@ -220,6 +240,8 @@ interface CoherenceBriefingProps {
   globeCategories: GlobeCategory[];
   /** GGA climate-resilience themes (decision 2/CMA.5), surfaced as a lens. */
   ggaCategories?: GgaCategory[];
+  /** Human rights themes (UNDP guidance; DRAFT), surfaced as a lens. */
+  hrCategories?: HrCategory[];
   nbsCategories: NbsCategory[];
   countryConfig: CountryConfig | null;
   docPairSyntheses?: DocPairSynthesis[];
@@ -250,6 +272,7 @@ export function CoherenceBriefing({
   sectors,
   globeCategories,
   ggaCategories = [],
+  hrCategories = [],
   countryConfig,
   docPairSyntheses = [],
   corpusThemes = null,
@@ -278,6 +301,7 @@ export function CoherenceBriefing({
       globeCategories,
       globeSubcategories,
       ggaCategories,
+      hrCategories,
       classifications,
       nr7Data,
       btrData,
@@ -291,6 +315,7 @@ export function CoherenceBriefing({
       globeCategories,
       globeSubcategories,
       ggaCategories,
+      hrCategories,
       classifications,
       nr7Data,
       btrData,
@@ -758,6 +783,22 @@ export function CoherenceBriefing({
         })),
       });
     }
+    // Human rights lens (UNDP guidance, DRAFT under expert review). Same
+    // data-driven gating as every other lens: offered only when the pipeline
+    // has classified targets against it.
+    if (hrCategories.length > 0) {
+      candidates.push({
+        id: "hr",
+        label: t("lens.hr"),
+        tooltip: t("lens.hrTooltip"),
+        taxonomyType: "hr",
+        categories: hrCategories.map((c) => ({
+          id: c.id,
+          name: c.name,
+          color: HR_LENS_COLORS[c.id] ?? "#9ca3af",
+        })),
+      });
+    }
     return candidates.filter((opt) => {
       const idSet = new Set(opt.categories.map((c) => c.id));
       return visibleClassifications.some(
@@ -767,7 +808,7 @@ export function CoherenceBriefing({
           idSet.has(c.categoryId),
       );
     });
-  }, [t, globeCategories, ggaCategories, sectors, countryConfig, visibleClassifications]);
+  }, [t, globeCategories, ggaCategories, hrCategories, sectors, countryConfig, visibleClassifications]);
 
   const [activeLensId, setActiveLensId] = useState<LensId | null>(null);
 
@@ -780,13 +821,75 @@ export function CoherenceBriefing({
     return availableLenses[0];
   }, [availableLenses, activeLensId]);
 
+  // Targets the active lens could not place in any real category (they sit in
+  // the derived "no clear theme" bucket). Empty for lenses without a bucket.
+  const unclassifiedTargetIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (!lens) return ids;
+    for (const c of visibleClassifications) {
+      if (
+        c.isPrimary &&
+        c.taxonomyType === lens.taxonomyType &&
+        isUnclassifiedCategoryId(c.categoryId)
+      ) {
+        ids.add(c.targetId);
+      }
+    }
+    return ids;
+  }, [lens, visibleClassifications]);
+
+  // Opt-in focus mode: drop those targets from this lens's views so the
+  // remaining themes can be compared without the bucket dominating. Off by
+  // default — hiding them by default would understate how much of the corpus
+  // the lens does not actually cover.
+  const [hideUnclassified, setHideUnclassified] = useState(false);
+  const canHideUnclassified = unclassifiedTargetIds.size > 0;
+  const hidingUnclassified = hideUnclassified && canHideUnclassified;
+
+  const lensTargets = useMemo(
+    () =>
+      hidingUnclassified
+        ? visibleTargets.filter((t) => !unclassifiedTargetIds.has(t.id))
+        : visibleTargets,
+    [hidingUnclassified, visibleTargets, unclassifiedTargetIds],
+  );
+  const lensAlignment = useMemo(
+    () =>
+      hidingUnclassified
+        ? visibleAlignment.filter(
+            (a) =>
+              !unclassifiedTargetIds.has(a.targetAId) &&
+              !unclassifiedTargetIds.has(a.targetBId),
+          )
+        : visibleAlignment,
+    [hidingUnclassified, visibleAlignment, unclassifiedTargetIds],
+  );
+  const lensClassifications = useMemo(
+    () =>
+      hidingUnclassified
+        ? visibleClassifications.filter(
+            (c) => !unclassifiedTargetIds.has(c.targetId),
+          )
+        : visibleClassifications,
+    [hidingUnclassified, visibleClassifications, unclassifiedTargetIds],
+  );
+  const lensCategories = useMemo(
+    () =>
+      hidingUnclassified
+        ? (lens?.categories ?? []).filter(
+            (c) => !isUnclassifiedCategoryId(c.id),
+          )
+        : (lens?.categories ?? []),
+    [hidingUnclassified, lens],
+  );
+
   const sectorRows = useMemo<SectorTension[]>(() => {
     if (!lens) return [];
     const density = buildSectorTensionDensity({
-      targets: visibleTargets,
-      alignment: visibleAlignment,
-      classifications: visibleClassifications,
-      categories: lens.categories.map((c) => ({ id: c.id, name: c.name })),
+      targets: lensTargets,
+      alignment: lensAlignment,
+      classifications: lensClassifications,
+      categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
     return [...density].sort((a, b) => {
@@ -795,25 +898,25 @@ export function CoherenceBriefing({
       }
       return b.targetCount - a.targetCount;
     });
-  }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
+  }, [lens, lensTargets, lensAlignment, lensClassifications, lensCategories]);
 
   const sectorShares = useMemo<SectorCoherenceShareSummary | null>(() => {
     if (!lens) return null;
     return buildSectorCoherenceShare({
-      targets: visibleTargets,
-      alignment: visibleAlignment,
-      classifications: visibleClassifications,
-      categories: lens.categories.map((c) => ({ id: c.id, name: c.name })),
+      targets: lensTargets,
+      alignment: lensAlignment,
+      classifications: lensClassifications,
+      categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
-  }, [lens, visibleTargets, visibleAlignment, visibleClassifications]);
+  }, [lens, lensTargets, lensAlignment, lensClassifications, lensCategories]);
 
   const sectorSynthesesIndex = useMemo(
     () => indexSectorSyntheses(visibleSectorSyntheses),
     [visibleSectorSyntheses],
   );
 
-  const sectorCategories = useMemo(() => lens?.categories ?? [], [lens]);
+  const sectorCategories = lensCategories;
   const lensTaxonomyType = lens?.taxonomyType ?? "sector";
   const topTensionSector = useMemo(
     () => sectorRows.find((s) => s.tensionCount > 0) ?? sectorRows[0] ?? null,
@@ -1356,9 +1459,9 @@ export function CoherenceBriefing({
     return (
       <>
         <WheelCenterpiece
-          targets={visibleTargets}
-          alignments={visibleAlignment}
-          classifications={visibleClassifications}
+          targets={lensTargets}
+          alignments={lensAlignment}
+          classifications={lensClassifications}
           countryConfig={countryConfig}
           state={wheelState}
           sectorCategories={sectorCategories}
@@ -1529,6 +1632,10 @@ export function CoherenceBriefing({
                 onLensChange={handleLensChange}
                 onOpenSector={openSectorDrawer}
                 onHoverSector={setSectorHoverId}
+                canHideUnclassified={canHideUnclassified}
+                hideUnclassified={hidingUnclassified}
+                onHideUnclassifiedChange={setHideUnclassified}
+                unclassifiedCount={unclassifiedTargetIds.size}
               />
             </div>
             {financing && (

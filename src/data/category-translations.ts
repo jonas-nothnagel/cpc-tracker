@@ -183,6 +183,53 @@ export const CATEGORY_TRANSLATIONS: Record<string, CategoryTranslationEntry> = {
     es: { name: "Patrimonio cultural" },
     mn: { name: "Соёлын өв" },
   },
+
+  // ── Human rights themes ─────────────────────────────────────────────────────
+  // Working translations pending native-speaker review: human rights
+  // terminology carries legal weight and a loose rendering can misstate a
+  // right. English is the authoritative wording until reviewed.
+  hr_information_education: {
+    es: { name: "Información y educación" },
+    mn: { name: "Мэдээлэл ба боловсрол" },
+  },
+  hr_participation: {
+    es: { name: "Participación pública libre, significativa y activa" },
+    mn: { name: "Чөлөөтэй, үр дүнтэй, идэвхтэй олон нийтийн оролцоо" },
+  },
+  hr_access_justice: {
+    es: { name: "Acceso a la justicia" },
+    mn: { name: "Шүүх эрх зүйн хүртээмж" },
+  },
+  hr_indigenous_local_communities: {
+    es: { name: "Pueblos Indígenas y comunidades locales" },
+    mn: { name: "Уугуул иргэд ба нутгийн иргэдийн бүлгүүд" },
+  },
+  hr_gender_equality: {
+    es: { name: "Igualdad de género" },
+    mn: { name: "Жендэрийн тэгш байдал" },
+  },
+  hr_children_youth: {
+    es: { name: "Niñez y juventud" },
+    mn: { name: "Хүүхэд ба залуучууд" },
+  },
+  hr_defenders: {
+    es: { name: "Personas defensoras de los derechos humanos ambientales" },
+    mn: { name: "Байгаль орчны хүний эрхийн хамгаалагчид" },
+  },
+  hr_business: {
+    es: { name: "Empresas" },
+    mn: { name: "Бизнес эрхлэгчид" },
+  },
+  hr_disabilities: {
+    es: { name: "Derechos de las personas con discapacidad" },
+    mn: { name: "Хөгжлийн бэрхшээлтэй хүмүүсийн эрх" },
+  },
+  // Derived display-only bucket (see lib/unclassified-bucket.ts), not a
+  // taxonomy category — it has no entry in categories.json.
+  hr_unclassified: {
+    es: { name: "Sin tema de derechos humanos claro" },
+    mn: { name: "Тодорхой хүний эрхийн сэдэвгүй" },
+  },
 };
 
 /**

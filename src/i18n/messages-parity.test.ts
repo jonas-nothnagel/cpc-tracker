@@ -150,6 +150,7 @@ describe("taxonomy category translation coverage (es/mn)", () => {
     "nbs_categories",
     "globe_categories",
     "gga_categories",
+    "hr_categories",
   ] as const;
 
   for (const group of RENDERED_GROUPS) {

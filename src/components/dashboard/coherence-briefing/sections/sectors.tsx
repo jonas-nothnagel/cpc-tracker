@@ -52,6 +52,10 @@ export function SectorsSection({
   onLensChange,
   onOpenSector,
   onHoverSector,
+  canHideUnclassified = false,
+  hideUnclassified = false,
+  onHideUnclassifiedChange,
+  unclassifiedCount = 0,
 }: {
   sectorRows: SectorTension[];
   sectorShares: SectorCoherenceShareSummary | null;
@@ -66,6 +70,11 @@ export function SectorsSection({
     taxonomyType: string;
   }) => void;
   onHoverSector?: (categoryId: string | null) => void;
+  /** True when the active lens has targets it could not place in any theme. */
+  canHideUnclassified?: boolean;
+  hideUnclassified?: boolean;
+  onHideUnclassifiedChange?: (next: boolean) => void;
+  unclassifiedCount?: number;
 }) {
   const t = useTranslations("briefing.sectors");
   const [sortMode, setSortMode] = useState<SectorSortMode>("coverage");
@@ -118,18 +127,35 @@ export function SectorsSection({
         ) : undefined
       }
       controls={
-        <LensChipRow
-          availableLenses={availableLenses}
-          activeLensId={activeLensId}
-          onLensChange={onLensChange}
-        />
+        <div>
+          <LensChipRow
+            availableLenses={availableLenses}
+            activeLensId={activeLensId}
+            onLensChange={onLensChange}
+          />
+          {canHideUnclassified && onHideUnclassifiedChange && (
+            <label className="mt-2 flex items-center gap-2 text-caption text-[var(--undp-gray)] cursor-pointer">
+              <input
+                type="checkbox"
+                checked={hideUnclassified}
+                onChange={(e) => onHideUnclassifiedChange(e.target.checked)}
+                className="h-3.5 w-3.5 accent-[var(--undp-blue)] cursor-pointer"
+              />
+              {t("hideUnclassified", { count: unclassifiedCount })}
+            </label>
+          )}
+        </div>
       }
       evidence={
         mergedRows.length === 0 ? (
           <p className="text-body text-[var(--undp-gray)]">{t("noTaxonomy")}</p>
         ) : (
           <div className="border-y border-gray-200 py-3">
-            <SectorColumnHeader sortMode={sortMode} onSort={setSortMode} />
+            <SectorColumnHeader
+              sortMode={sortMode}
+              onSort={setSortMode}
+              taxonomyType={taxonomyType}
+            />
             <ul
               className="divide-y divide-gray-100"
               onMouseLeave={() => onHoverSector?.(null)}
@@ -293,12 +319,26 @@ export function SectorWheelFilter({
   );
 }
 
+/** Which noun a lens's rows should be called. GGA and human rights rows are
+ *  "themes"; GLOBE rows are "categories"; everything else keeps "sector". Shared
+ *  by the column header and the coverage sentence so a lens never mixes nouns.
+ *  NOTE the "Show all N sectors" link is deliberately still hard-nouned: the
+ *  analytics registry (`lib/analytics/miniature-regions.ts`) routes clicks on it
+ *  by matching that rendered string, so varying it by lens would break routing. */
+function nounStyleFor(taxonomyType: string): "theme" | "category" | "sector" {
+  if (taxonomyType === "gga" || taxonomyType === "hr") return "theme";
+  if (taxonomyType === "globe") return "category";
+  return "sector";
+}
+
 function SectorColumnHeader({
   sortMode,
   onSort,
+  taxonomyType,
 }: {
   sortMode: SectorSortMode;
   onSort: (m: SectorSortMode) => void;
+  taxonomyType: string;
 }) {
   const t = useTranslations("briefing.sectors");
   return (
@@ -306,7 +346,7 @@ function SectorColumnHeader({
       className={`${GRID} px-1 pb-1 mb-1 text-caption text-[var(--undp-gray)]`}
       data-tour="sector-columns"
     >
-      <span>{t("col.sector")}</span>
+      <span>{t(`col.${nounStyleFor(taxonomyType)}`)}</span>
       <button
         type="button"
         onClick={() => onSort("coverage")}
@@ -351,23 +391,34 @@ function composeCoverageSentence({
   taxonomyType: string;
   t: ReturnType<typeof useTranslations<"briefing.sectors">>;
 }): CoverageSentence {
-  // GGA themes are not "sectors"; the globe lens reads "category". Anything else
-  // keeps the generic "sector" noun.
-  const nounStyle =
-    taxonomyType === "gga"
-      ? "theme"
-      : taxonomyType === "globe"
-        ? "category"
-        : "sector";
+  const nounStyle = nounStyleFor(taxonomyType);
   const noun = t(`noun.${nounStyle}.singular`);
   const nounPlural = t(`noun.${nounStyle}.plural`);
-  const { populatedSectors, totalTargets, topNames, share } =
+  const { populatedSectors, totalTargets, topNames, share, unclassifiedTargets } =
     coverageConcentration;
+
+  // The derived "no clear theme" bucket is reported as its own sentence rather
+  // than ranked among the themes — it is the absence of a theme, so naming it
+  // as a concentration peak would misstate what the analysis found.
+  const unclassifiedNote =
+    unclassifiedTargets > 0
+      ? t("coverage.unclassifiedNote", {
+          count: unclassifiedTargets,
+          total: totalTargets + unclassifiedTargets,
+          nounPlural,
+        })
+      : "";
 
   if (totalTargets === 0 || populatedSectors === 0) {
     return {
-      headline: t("coverage.emptyHeadline", { noun }),
-      body: t("coverage.emptyBody", { noun }),
+      headline:
+        unclassifiedTargets > 0
+          ? t("coverage.noneClassifiedHeadline", {
+              count: unclassifiedTargets,
+              nounPlural,
+            })
+          : t("coverage.emptyHeadline", { noun }),
+      body: unclassifiedTargets > 0 ? unclassifiedNote : t("coverage.emptyBody", { noun }),
     };
   }
 
@@ -375,18 +426,31 @@ function composeCoverageSentence({
   const list = formatList(topNames, t);
   let headline: string;
   if (topNames.length === 1) {
-    headline = t("coverage.singleHeadline", { name: topNames[0], pct: sharePct });
+    headline = t("coverage.singleHeadline", {
+      name: topNames[0],
+      pct: sharePct,
+      total: totalTargets,
+    });
   } else if (topNames.length >= populatedSectors) {
     headline = t("coverage.everyHeadline", {
       sectors: populatedSectors,
       nounPlural,
       name: topNames[0],
+      total: totalTargets,
     });
   } else {
-    headline = t("coverage.topHeadline", { list, pct: sharePct });
+    headline = t("coverage.topHeadline", {
+      list,
+      pct: sharePct,
+      total: totalTargets,
+    });
   }
 
-  return { headline, body: composeFlagBody({ mergedRows, midShare, nounPlural, t }) };
+  const flagBody = composeFlagBody({ mergedRows, midShare, nounPlural, t });
+  return {
+    headline,
+    body: unclassifiedNote ? `${unclassifiedNote} ${flagBody}` : flagBody,
+  };
 }
 
 /**

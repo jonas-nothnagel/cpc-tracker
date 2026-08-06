@@ -19,6 +19,7 @@ import {
   type Nr7Status,
 } from "@/lib/labels";
 import { track } from "@/lib/analytics/client";
+import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -99,7 +100,7 @@ interface TaxCategory {
   description: string;
 }
 
-type GroupMode = "document" | "sector" | "globe" | "gga";
+type GroupMode = "document" | "sector" | "globe" | "gga" | "hr";
 type AlignFilter = "all" | "high_medium" | "high_contra" | "high" | "contradictions";
 type ActionTypeFilter = "all" | "mitigation" | "adaptation";
 
@@ -187,6 +188,7 @@ function buildGroups(
   sectors: TaxCategory[],
   globeCategories: TaxCategory[],
   ggaCategories: TaxCategory[],
+  hrCategories: TaxCategory[],
   classifications: ThematicClassification[],
   countryConfig?: CountryConfig | null,
 ): Group[] {
@@ -206,6 +208,7 @@ function buildGroups(
   }
   if (mode === "sector") return buildGroupsByTaxonomy(targets, sectors, "sector", classifications);
   if (mode === "gga") return buildGroupsByTaxonomy(targets, ggaCategories, "gga", classifications);
+  if (mode === "hr") return buildGroupsByTaxonomy(targets, hrCategories, "hr", classifications);
   return buildGroupsByTaxonomy(targets, globeCategories, "globe", classifications);
 }
 
@@ -415,6 +418,77 @@ function splitSourceLabel(label: string): { code: string | null; title: string }
 
 // ─── Detail panel ───────────────────────────────────────────────────
 
+/**
+ * Why this target sits in the group the wheel is currently showing.
+ *
+ * The ranked classifier stores a one-sentence `reasoning` on every primary and
+ * relevant record (python/src/classify.py). It reaches the client in the
+ * dashboard payload but, before this, was rendered nowhere in the briefing or
+ * explorer — so a reviewer could see that a target was placed in a theme but
+ * never why, and had no way to judge a weak placement. Surfacing it is the
+ * point of a review tool: the classification is a prompt to check, not a
+ * finding.
+ *
+ * Renders nothing when grouping by document (no taxonomy involved) or when no
+ * record carries reasoning. For the derived "no clear theme" bucket there is no
+ * per-target sentence by construction — the target matched nothing — so we say
+ * that plainly instead.
+ */
+function ClassificationReason({
+  targetId,
+  categoryId,
+  categoryLabel,
+  groupMode,
+  classifications,
+}: {
+  targetId: string;
+  categoryId: string;
+  categoryLabel?: string;
+  groupMode?: GroupMode;
+  classifications?: ThematicClassification[];
+}) {
+  const t = useTranslations("explorer.detailPanel");
+  const record = useMemo(() => {
+    if (!classifications || !groupMode || groupMode === "document") return null;
+    return (
+      classifications.find(
+        (c) =>
+          c.targetId === targetId &&
+          c.taxonomyType === groupMode &&
+          c.categoryId === categoryId,
+      ) ?? null
+    );
+  }, [classifications, groupMode, targetId, categoryId]);
+
+  if (!groupMode || groupMode === "document") return null;
+
+  const isBucket = isUnclassifiedCategoryId(categoryId);
+  if (!isBucket && !record?.reasoning) return null;
+
+  const score = typeof record?.score === "number" ? record.score : null;
+
+  return (
+    <div className="mt-3 rounded-md bg-[var(--undp-light)] px-3 py-2.5">
+      <p className="text-caption font-medium text-[var(--undp-gray)]">
+        {categoryLabel
+          ? t("classification.heading", { category: categoryLabel })
+          : t("classification.headingGeneric")}
+        {score !== null && !isBucket ? (
+          <span className="ml-1.5 font-normal">
+            {t("classification.score", { score: score.toFixed(2) })}
+          </span>
+        ) : null}
+      </p>
+      <p className="mt-1 text-caption text-[var(--undp-black)] leading-relaxed">
+        {isBucket ? t("classification.unmatched") : record?.reasoning}
+      </p>
+      <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
+        {t("classification.aiDisclaimer")}
+      </p>
+    </div>
+  );
+}
+
 function DetailPanel({
   node,
   connections,
@@ -423,6 +497,9 @@ function DetailPanel({
   nr7Item,
   nr7ProgressMap,
   countryConfig,
+  classifications,
+  groupMode,
+  categoryLabel,
 }: {
   node: NodePos;
   connections: (AlignmentResult & { otherTarget: Target })[];
@@ -431,6 +508,12 @@ function DetailPanel({
   nr7Item?: Nr7ProgressItem | null;
   nr7ProgressMap?: Map<string, string>;
   countryConfig?: CountryConfig | null;
+  /** Full classification list; used to explain the current grouping. */
+  classifications?: ThematicClassification[];
+  /** Active wheel grouping. Maps 1:1 to `taxonomyType` except "document". */
+  groupMode?: GroupMode;
+  /** Display name of the group this target sits in. */
+  categoryLabel?: string;
 }) {
   const alignmentLabels = useAlignmentLabels();
   const nr7BadgeLabels = useNr7BadgeLabels();
@@ -518,6 +601,13 @@ function DetailPanel({
             {targetTextExpanded ? t("showLess") : t("readFull")}
           </button>
         )}
+        <ClassificationReason
+          targetId={node.target.id}
+          categoryId={node.groupId}
+          categoryLabel={categoryLabel}
+          groupMode={groupMode}
+          classifications={classifications}
+        />
         <ActivitiesActions target={node.target} />
       </div>
 
@@ -1227,7 +1317,7 @@ function useTypedBody(text: string, charDelayMs = 10): string {
  */
 function revealDocsForFocalTaxonomyCategory(args: {
   focalCategoryId: string;
-  taxonomyType: "sector" | "globe" | "gga";
+  taxonomyType: "sector" | "globe" | "gga" | "hr";
   classifications: ThematicClassification[];
   targetMap: Map<string, Target>;
   docsToShow: Set<string>;
@@ -2794,6 +2884,9 @@ interface PolicyCoherenceExplorerProps {
   /** Climate-resilience (GGA) taxonomy categories — decision 2/CMA.5 thematic
    *  targets. Enables the fourth "Resilience" wheel grouping when present. */
   ggaCategories?: TaxCategory[];
+  /** Human rights themes (UNDP guidance; DRAFT under expert review). Enables
+   *  the human rights wheel grouping when present. */
+  hrCategories?: TaxCategory[];
   classifications: ThematicClassification[];
   nr7Data?: Nr7Data | null;
   btrData?: BtrData | null;
@@ -2818,6 +2911,7 @@ export function PolicyCoherenceExplorer({
   globeCategories,
   globeSubcategories,
   ggaCategories = [],
+  hrCategories = [],
   classifications,
   nr7Data,
   btrData,
@@ -2988,17 +3082,47 @@ export function PolicyCoherenceExplorer({
     return map;
   }, [nr7Data]);
 
+  // Targets the ACTIVE grouping could not place in any real category — they sit
+  // in the derived "no clear theme" bucket. Empty for groupings without one.
+  const unclassifiedTargetIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (groupMode === "document") return ids;
+    for (const c of classifications) {
+      if (
+        c.isPrimary &&
+        c.taxonomyType === groupMode &&
+        isUnclassifiedCategoryId(c.categoryId)
+      ) {
+        ids.add(c.targetId);
+      }
+    }
+    return ids;
+  }, [classifications, groupMode]);
+
+  // Opt-in focus mode; off by default so the wheel never quietly understates
+  // how much of the corpus the active lens does not cover.
+  const [hideUnclassified, setHideUnclassified] = useState(false);
+  const canHideUnclassified = unclassifiedTargetIds.size > 0;
+  const hidingUnclassified = hideUnclassified && canHideUnclassified;
+
   const visibleTargets = useMemo(
     () =>
       targets.filter((t) => {
         if (hiddenDocs.has(t.sourceDocument)) return false;
+        if (hidingUnclassified && unclassifiedTargetIds.has(t.id)) return false;
         // Type filter only affects BTR pseudo-targets (which carry actionType).
         // Policy targets are always shown regardless of this filter.
         if (actionTypeFilter === "all") return true;
         if (t.actionType === undefined) return true;
         return t.actionType === actionTypeFilter;
       }),
-    [targets, hiddenDocs, actionTypeFilter],
+    [
+      targets,
+      hiddenDocs,
+      actionTypeFilter,
+      hidingUnclassified,
+      unclassifiedTargetIds,
+    ],
   );
 
   // Whether any adaptation actions are present in the data at all. Used to
@@ -3014,6 +3138,15 @@ export function PolicyCoherenceExplorer({
     () =>
       classifications.some(
         (c) => c.taxonomyType === "gga" && c.isPrimary === true,
+      ),
+    [classifications],
+  );
+  // Whether any target carries a primary human rights classification. Gates the
+  // group-by option so it only shows where the pipeline produced content.
+  const hasHr = useMemo(
+    () =>
+      classifications.some(
+        (c) => c.taxonomyType === "hr" && c.isPrimary === true,
       ),
     [classifications],
   );
@@ -3108,8 +3241,8 @@ export function PolicyCoherenceExplorer({
     focalGroupId ?? (activeId ? null : previewGroupId);
 
   const groups = useMemo(
-    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig),
-    [visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig],
+    () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, ggaCategories, hrCategories, classifications, countryConfig),
+    [visibleTargets, groupMode, sectors, globeCategories, ggaCategories, hrCategories, classifications, countryConfig],
   );
 
   const filtered = useMemo(() => filterAlign(visibleAlignment, filter), [visibleAlignment, filter]);
@@ -3474,6 +3607,7 @@ export function PolicyCoherenceExplorer({
           sectors,
           globeCategories,
           ggaCategories,
+          hrCategories,
           budgetSummary,
           btrData,
           availableDocs,
@@ -3565,6 +3699,7 @@ export function PolicyCoherenceExplorer({
       countryConfig,
       globeCategories,
       ggaCategories,
+      hrCategories,
       hiddenDocs,
       groupMode,
       filter,
@@ -3772,7 +3907,8 @@ export function PolicyCoherenceExplorer({
         nextFocalGroupId &&
         (effectiveGroupMode === "sector" ||
           effectiveGroupMode === "globe" ||
-          effectiveGroupMode === "gga")
+          effectiveGroupMode === "gga" ||
+          effectiveGroupMode === "hr")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -3903,7 +4039,8 @@ export function PolicyCoherenceExplorer({
         nextFocalGroupId &&
         (effectiveGroupMode === "sector" ||
           effectiveGroupMode === "globe" ||
-          effectiveGroupMode === "gga")
+          effectiveGroupMode === "gga" ||
+          effectiveGroupMode === "hr")
       ) {
         revealDocsForFocalTaxonomyCategory({
           focalCategoryId: nextFocalGroupId,
@@ -4873,7 +5010,7 @@ export function PolicyCoherenceExplorer({
                     fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                     className="select-none pointer-events-none"
                   >
-                    {t("wheel.centerTargets", { count: targets.length })}
+                    {t("wheel.centerTargets", { count: visibleTargets.length })}
                   </text>
                   <text
                     x={0} y={22}
@@ -4906,6 +5043,11 @@ export function PolicyCoherenceExplorer({
                 nr7Item={selectedId ? nr7ItemMap.get(selectedId) ?? null : null}
                 nr7ProgressMap={nr7ProgressMap}
                 countryConfig={countryConfig}
+                classifications={classifications}
+                groupMode={groupMode}
+                categoryLabel={
+                  arcs.find((a) => a.id === selectedNode.groupId)?.label
+                }
               />
             ) : focalGroup ? (
               <CategoryPanel
@@ -5126,6 +5268,11 @@ export function PolicyCoherenceExplorer({
             onPreviewGroup={handlePreviewGroup}
             countryConfig={countryConfig}
             hasGga={hasGga}
+            hasHr={hasHr}
+            canHideUnclassified={canHideUnclassified}
+            hideUnclassified={hidingUnclassified}
+            onHideUnclassifiedChange={setHideUnclassified}
+            unclassifiedCount={unclassifiedTargetIds.size}
           />
         }
         modal={
@@ -5263,6 +5410,9 @@ export function PolicyCoherenceExplorer({
                   ...(hasGga
                     ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")]]
                     : []),
+                  ...(hasHr
+                    ? [["hr", t("controls.groupHr"), t("controls.groupHrTitle")]]
+                    : []),
                 ] as [GroupMode, string, string][]).map(([mode, label, title]) => (
                   <button
                     key={mode}
@@ -5291,6 +5441,9 @@ export function PolicyCoherenceExplorer({
                 <option value="sector">{t("controls.groupOptionSector")}</option>
                 {hasGga && (
                   <option value="gga">{t("controls.groupOptionGga")}</option>
+                )}
+                {hasHr && (
+                  <option value="hr">{t("controls.groupOptionHr")}</option>
                 )}
               </select>
             )}
@@ -5515,7 +5668,7 @@ export function PolicyCoherenceExplorer({
               {/* Document column */}
               <div>
                 <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
-                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : t("wheel.legendSector")}
+                  {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : groupMode === "hr" ? t("wheel.legendHumanRights") : t("wheel.legendSector")}
                 </p>
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (

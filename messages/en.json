@@ -132,7 +132,9 @@
       "ipcc": "Mitigation sectors",
       "country": "Country sectors",
       "gga": "Climate adaptation",
-      "ggaTooltip": "Global Goal on Adaptation: the seven thematic targets of the UAE Framework for Global Climate Resilience (UNFCCC decision 2/CMA.5)"
+      "hr": "Human rights",
+      "ggaTooltip": "Global Goal on Adaptation: the seven thematic targets of the UAE Framework for Global Climate Resilience (UNFCCC decision 2/CMA.5)",
+      "hrTooltip": "Nine human rights themes from UNDP guidance for this tool, building on UN Environment Management Group guidance on integrating human rights in national biodiversity planning. Shows which themes the reviewed documents engage. Draft under expert review."
     },
     "legend": {
       "aligned": "Aligned",
@@ -620,6 +622,8 @@
       },
       "col": {
         "sector": "Sector",
+        "category": "Category",
+        "theme": "Theme",
         "targets": "Targets",
         "flaggedShare": "Potential misalignment"
       },
@@ -640,9 +644,11 @@
       "coverage": {
         "emptyHeadline": "No {noun} carries a classified target yet.",
         "emptyBody": "Either no target is primary-classified to a {noun} under this lens, or the country has no {noun} taxonomy configured.",
-        "singleHeadline": "{name} holds {pct}% of classified targets.",
-        "everyHeadline": "Classified targets span all {sectors, number} {nounPlural}, most in {name}.",
-        "topHeadline": "{list} hold {pct}% of classified targets."
+        "singleHeadline": "{name} holds {pct}% of the {total, number} classified targets.",
+        "everyHeadline": "The {total, number} classified targets span all {sectors, number} {nounPlural}, most in {name}.",
+        "topHeadline": "{list} hold {pct}% of the {total, number} classified targets.",
+        "unclassifiedNote": "{count, number} of {total, number} targets have no clear match to one of these {nounPlural}.",
+        "noneClassifiedHeadline": "No targets match one of these {nounPlural} clearly."
       },
       "flag": {
         "none": "No reviewed relationships under this lens yet.",
@@ -655,7 +661,8 @@
       "rowAriaLabel": "{name}: {count, number} primary targets. {flag}.",
       "flagAriaValue": "{pct, number}% of reviewed relationships are a potential misalignment",
       "flagAriaNone": "no reviewed relationships under this lens",
-      "primaryCount": "{count, number} primary"
+      "primaryCount": "{count, number} primary",
+      "hideUnclassified": "Hide the {count, number} targets with no clear theme"
     },
     "docPairs": {
       "empty": "No doc-pair synthesis available yet. Run the synthesis step to surface the pairings here.",
@@ -1507,8 +1514,12 @@
       "atAGlance": "At a glance",
       "atAGlanceTitle": "Show or hide the at-a-glance summary panel",
       "groupGga": "Climate adaptation",
+      "groupHr": "Human rights",
       "groupGgaTitle": "Group by climate-resilience theme (Global Goal on Adaptation, decision 2/CMA.5)",
-      "groupOptionGga": "By Climate Adaptation"
+      "groupHrTitle": "Group by human rights theme (UNDP guidance; draft under expert review)",
+      "groupOptionGga": "By Climate Adaptation",
+      "groupOptionHr": "By Human Rights",
+      "hideUnclassified": "Hide the {count, number} with no clear theme"
     },
     "doc": {
       "mitigation": "Mitigation",
@@ -1546,7 +1557,8 @@
       "centerSpendTagged": "biodiversity spend tagged",
       "centerScanning": "Reading…",
       "centerScanningDetail": "{targets, number} targets · {docs, number} documents",
-      "legendResilience": "Climate adaptation"
+      "legendResilience": "Climate adaptation",
+      "legendHumanRights": "Human rights theme"
     },
     "detailPanel": {
       "closeAria": "Close target detail",
@@ -1558,7 +1570,14 @@
       "sortedBySeverity": "sorted by severity",
       "nr7Progress": "NR7 Progress: {label}",
       "nr7TitlePrefix": "NR7: {label}",
-      "keyChallenges": "Key challenges"
+      "keyChallenges": "Key challenges",
+      "classification": {
+        "heading": "Why this target is grouped under {category}",
+        "headingGeneric": "Why this target is grouped here",
+        "score": "· relevance {score}",
+        "unmatched": "No theme scored at or above the relevance threshold for this target. It may still touch on these themes; the analysis found no clear match.",
+        "aiDisclaimer": "AI-generated classification. Treat as a prompt to review, not a settled finding."
+      }
     },
     "targetCard": {
       "showLess": "Show less ▴",
@@ -2109,11 +2128,16 @@
         "byIpccSector": "By Mitigation sector (standardised)",
         "default": "Default (Climate Mitigation + Adaptation Goals)",
         "byBiodiversity": "By Biodiversity Taxonomy",
-        "byGga": "By Climate adaptation (Global Goal on Adaptation)"
+        "byGga": "By Climate adaptation (Global Goal on Adaptation)",
+        "byHr": "By Human rights themes"
       },
       "gga": {
         "title": "All reported actions, by climate-adaptation theme",
         "sectionDesc": "Mitigation and adaptation actions grouped by Global Goal on Adaptation theme (UAE Framework for Global Climate Resilience)."
+      },
+      "hr": {
+        "title": "All reported actions, by human rights theme",
+        "sectionDesc": "Mitigation and adaptation actions grouped by the human rights theme they engage (UNDP guidance; draft under expert review). Coverage reflects the reviewed documents, not an assessment of human rights performance."
       },
       "status": {
         "active": {
