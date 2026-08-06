@@ -732,16 +732,16 @@
     <div class="pstep" data-i="11">
       <p class="p-eyebrow sy"><span class="pp">Fase 3 · Ejecución</span><span class="ps">Paso 12 · Nivel 2</span></p>
       <h2 class="p-title serif">Siga las finanzas</h2>
-      <p class="p-say">El mismo método mapea los programas de una <strong>revisión del gasto presupuestario</strong> frente a las metas, mostrando dónde el dinero respalda la ambición y dónde la ambición no tiene presupuesto que la respalde.</p>
+      <p class="p-say">El mismo método compara la descripción de cada programa de una <strong>revisión del gasto presupuestario</strong> con el texto de las metas, mostrando dónde el gasto revisado se alinea con la ambición y dónde la ambición no tiene ninguna línea presupuestaria alineada.</p>
       <div class="p-viz"><div style="width:100%">
         <div class="fin-list">
-          <div class="fin-row"><span class="fin-prog">Pasture management programme</span><span class="fin-link ok">funds →</span><span class="fin-tgt">Pasture restoration target</span></div>
-          <div class="fin-row"><span class="fin-prog">Soil &amp; fodder programme</span><span class="fin-link ok">funds →</span><span class="fin-tgt">Sustainable agriculture</span></div>
-          <div class="fin-row"><span class="fin-prog" style="color:var(--undp-gray)">– no programme –</span><span class="fin-link gap">no budget →</span><span class="fin-tgt">Wetland restoration target</span></div>
+          <div class="fin-row"><span class="fin-prog">Pasture management programme</span><span class="fin-link ok">se alinea →</span><span class="fin-tgt">Pasture restoration target</span></div>
+          <div class="fin-row"><span class="fin-prog">Soil &amp; fodder programme</span><span class="fin-link ok">se alinea →</span><span class="fin-tgt">Sustainable agriculture</span></div>
+          <div class="fin-row"><span class="fin-prog" style="color:var(--undp-gray)">– no programme –</span><span class="fin-link gap">sin línea alineada →</span><span class="fin-tgt">Wetland restoration target</span></div>
         </div>
-        <p class="fin-caveat">Un <abbr title="budget expenditure review">BER</abbr> cubre solo los programas en la revisión cargada, un subconjunto del gasto nacional.</p>
+        <p class="fin-caveat">Un <abbr title="budget expenditure review">BER</abbr> cubre solo los programas en la revisión cargada, un subconjunto del gasto nacional. La revisión identifica el gasto; cada vínculo programa-meta lo genera la comparación de descripciones de la IA del Tracker, no la revisión.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Nivel 2, finanzas. <abbr title="budget expenditure review">BER</abbr> los programas se convierten en seudoobjetivos y pasan por el mismo flujo de trabajo de clasificar → descomponer → alinear; una perspectiva de financiamiento vincula los programas y las acciones reportadas por categoría compartida. Implementado para Mongolia; otros países pendientes.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia (BER)</span></div></div>
+      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Nivel 2, finanzas. <abbr title="budget expenditure review">BER</abbr> los programas se convierten en seudoobjetivos y pasan por el mismo flujo de trabajo de clasificar → descomponer → alinear; una perspectiva de financiamiento vincula los programas y las acciones reportadas por categoría compartida. El «gasto alineado» de una meta suma los programas cuyas descripciones se alinean con ella (volumen relativo, nunca suficiencia del financiamiento); un programa respalda cada meta con la que se alinea, por lo que las cifras por meta se superponen mientras que los totales por documento cuentan cada programa una sola vez. Implementado para Mongolia y Panamá.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia · Panama (BER)</span></div></div>
       <div class="p-note p-deep"><p class="nl">Análisis profundo · la reutilización</p>
         <div class="prompt">
           <div class="prow"><span class="role code">Same workflow</span><div class="ptext">BER programme → <em>pseudo-target</em> → classify → Agent 1 decompose → Agent 2 align against each policy target.</div></div>

@@ -16,6 +16,7 @@ export type BriefingTourId =
   | "wheel"
   | "docMatrix"
   | "financing"
+  | "fundingGrid"
   | "deliveryRoster"
   | "institutionFlow"
   | "frictionTypes"
@@ -52,6 +53,14 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "source", target: "financing-source", placement: "bottom" },
     { id: "concentration", target: "financing-concentration", placement: "left" },
     { id: "execution", target: "financing-execution", placement: "top" },
+  ],
+  // The funding-target-grid layout (Panama-style slides). The centerpiece
+  // "financing" tour above stays for countries that render it.
+  fundingGrid: [
+    { id: "kpis", target: "grid-kpis", placement: "bottom" },
+    { id: "dots", target: "grid-dots", placement: "bottom" },
+    { id: "globe", target: "grid-globe", placement: "top" },
+    { id: "method", target: "grid-method", placement: "top" },
   ],
   deliveryRoster: [
     { id: "statusKey", target: "roster-status-key", placement: "bottom" },

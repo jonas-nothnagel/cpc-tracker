@@ -249,11 +249,18 @@ The adapted prompt frames the comparison as policy-target vs. reported-measure (
 
 ## Step 7: Budget-Target Alignment (Level 2, conditional)
 
-**Purpose:** Map government budget programmes against policy targets to see where money does and does not follow ambition. Runs only when a Biodiversity Expenditure Review (`{country}-ber.json`) is present (currently Mongolia).
+**Purpose:** Map government budget programmes against policy targets to see where money does and does not follow ambition. Runs only when a Biodiversity Expenditure Review (`{country}-ber.json`) is present (currently Mongolia and Panama).
 
-**Method:** Budget programmes (name, description, and multi-year expenditure) are converted to pseudo-targets and run through the same workflow as Steps 4–5: Agent 1 decomposes each programme, then an adapted Agent 2 assesses alignment against each policy target on the v2.1 five-state scale. Framing follows the guardrail that the BER is "reviewed biodiversity spending", not "the country's biodiversity budget".
+**Method:** Budget programmes (name, description, and multi-year expenditure) are converted to pseudo-targets and run through the same workflow as Steps 4–5: Agent 1 decomposes each programme, then an adapted Agent 2 assesses alignment against each policy target on the v2.1 five-state scale. The comparison is between the programme's *description* and the target's *text* — the BER identifies and quantifies expenditure but never assigns it to policy targets; every programme↔target link is produced by this analysis. Framing follows the guardrail that the BER is "reviewed biodiversity spending", not "the country's biodiversity budget".
 
 **Output:** `budget_alignment.json` and `budget_pseudo_targets.json`.
+
+**Presentation of results (frontend):**
+
+- **Aligned spend** for a target = the sum of executed expenditure across programmes whose descriptions the pipeline judged `high`- or `medium`-aligned with that target's text (zero-spend programmes are excluded). It expresses how much reviewed spending is *associated* with a target, not money allocated to it.
+- **Aligned-spend tiers** ("High / Medium / Low / No aligned spend") are rank-based: the top 10 and bottom 10 targets by aligned spend within the visible document set (tie-aware at the displayed rounding). They describe relative volume of aligned expenditure — never financing adequacy, which would require financing-needs and gap data the module does not include.
+- **Overlap and totals:** a programme contributes its full spend to every target it aligns with, so per-target figures intentionally overlap. Document-level and whole-review totals count each programme once (union of contributors) and are therefore not the sum of the per-target figures.
+- **GLOBE breakdown:** reviewed spend grouped by the programme's single primary GLOBE category (BIOFIN global biodiversity expenditure taxonomy). Categories are assigned by the Tracker's AI classification of programme descriptions, not by the national BIOFIN team; each programme counts once.
 
 ---
 

@@ -736,16 +736,16 @@
     <div class="pstep" data-i="11">
       <p class="p-eyebrow sy"><span class="pp">Phase 3 · Delivery</span><span class="ps">Step 12 · Level 2</span></p>
       <h2 class="p-title serif">Follow the finance</h2>
-      <p class="p-say">The same method maps a <strong>budget expenditure review</strong>'s programmes against the targets, showing where money backs ambition, and where ambition has no budget behind it.</p>
+      <p class="p-say">The same method compares each of a <strong>budget expenditure review</strong>'s programme descriptions against the targets' text, showing where reviewed spending aligns with ambition, and where ambition has no aligned budget line.</p>
       <div class="p-viz"><div style="width:100%">
         <div class="fin-list">
-          <div class="fin-row"><span class="fin-prog">Pasture management programme</span><span class="fin-link ok">funds →</span><span class="fin-tgt">Pasture restoration target</span></div>
-          <div class="fin-row"><span class="fin-prog">Soil &amp; fodder programme</span><span class="fin-link ok">funds →</span><span class="fin-tgt">Sustainable agriculture</span></div>
-          <div class="fin-row"><span class="fin-prog" style="color:var(--undp-gray)">– no programme –</span><span class="fin-link gap">no budget →</span><span class="fin-tgt">Wetland restoration target</span></div>
+          <div class="fin-row"><span class="fin-prog">Pasture management programme</span><span class="fin-link ok">aligns →</span><span class="fin-tgt">Pasture restoration target</span></div>
+          <div class="fin-row"><span class="fin-prog">Soil &amp; fodder programme</span><span class="fin-link ok">aligns →</span><span class="fin-tgt">Sustainable agriculture</span></div>
+          <div class="fin-row"><span class="fin-prog" style="color:var(--undp-gray)">– no programme –</span><span class="fin-link gap">no aligned line →</span><span class="fin-tgt">Wetland restoration target</span></div>
         </div>
-        <p class="fin-caveat">A <abbr title="budget expenditure review">BER</abbr> covers only programmes in the uploaded review, a subset of national expenditure.</p>
+        <p class="fin-caveat">A <abbr title="budget expenditure review">BER</abbr> covers only programmes in the uploaded review, a subset of national expenditure. The review identifies expenditure; every programme-to-target link is made by the Tracker's AI comparison of descriptions, not by the review.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Level 2, finance. <abbr title="budget expenditure review">BER</abbr> programmes become pseudo-targets and run through the same classify → decompose → align workflow; a funding view links programmes and reported actions by shared category. Shipped for Mongolia; other countries pending.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia (BER)</span></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Level 2, finance. <abbr title="budget expenditure review">BER</abbr> programmes become pseudo-targets and run through the same classify → decompose → align workflow; a funding view links programmes and reported actions by shared category. A target's "aligned spend" sums the programmes whose descriptions align with it (relative volume, never financing adequacy); a programme backs every target it aligns with, so per-target figures overlap while document totals count each programme once. Shipped for Mongolia and Panama.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia · Panama (BER)</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the reuse</p>
         <div class="prompt">
           <div class="prow"><span class="role code">Same workflow</span><div class="ptext">BER programme → <em>pseudo-target</em> → classify → Agent 1 decompose → Agent 2 align against each policy target.</div></div>

@@ -403,7 +403,7 @@ export function CoherenceBriefing({
 
   // ── Financing coherence (Level 2) ───────────────────────────────
   // Only shown for countries with a Biodiversity Expenditure Review (Mongolia
-  // today). Built on hard BER facts alone — no budget↔policy alignment, no
+  // and Panama today). Built on hard BER facts alone — no budget↔policy alignment, no
   // taxonomy. Null → the Financing slide is dropped entirely. The commitment
   // count it compares against is the live visible-target count (recomputes
   // with the document toggle).
@@ -1400,7 +1400,8 @@ export function CoherenceBriefing({
     if (activeSection === FINANCING_SECTION_ID && financing) {
       // Panama drops the centerpiece: its FundingTargetGrid stretches across
       // both columns via `lg:w-[calc(100%+520px)]` + `lg:invisible` on the
-      // aside, so the finance-outcome centerpiece would be duplicative.
+      // aside, so the finance-outcome centerpiece would be duplicative — the
+      // slide's own GlobeSpendBreakdown carries the GLOBE rollup there.
       // Every other country keeps the centerpiece (the budget object itself:
       // what it is, where money concentrates, unspent share).
       if (countryId === "panama") return null;
@@ -1663,6 +1664,7 @@ export function CoherenceBriefing({
                   targets={targets}
                   budgetAlignment={budgetAlignment}
                   berData={berData}
+                  globeSpend={outcomeBudget}
                   onOpenBudgetPair={openBudgetPair}
                 />
               </div>
