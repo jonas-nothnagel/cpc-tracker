@@ -152,6 +152,12 @@ html {
   --undp-red: #ee402d;
   /* Warm off-white page ground for the editorial bands below the hero. */
   --undp-paper: #faf8f4;
+  /* Elevation for the workbench: a quiet resting shadow for the lens rail,
+     a stronger "pop" reserved for floating layers (ask dock, answer card). */
+  --shadow-card: 0 6px 24px rgba(35, 46, 61, 0.06);
+  --shadow-pop: 0 12px 40px rgba(35, 46, 61, 0.14);
+  /* Exponential ease-out for focus/slide choreography (never bounce). */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   /* Chart palette — clean UNDP-aligned */
   --chart-ndc: #0468b1;
   --chart-nbt: #0d9488;

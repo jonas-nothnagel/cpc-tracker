@@ -2902,18 +2902,23 @@ export function PolicyCoherenceExplorer({
   // appears when a target or category is selected (its stats). Toggling this
   // off brings the chat + insights + at-a-glance panel in beside the wheel.
 
-  // Explorer B answers drawer. Collapsed by default so the wheel reads as the
-  // clean hero; opens when a question is answered, a target / category is
-  // selected, or the user rotates an insight, so output is never hidden behind
-  // the bottom dock. answerCount badges the current thread on the handle.
+  // Answers overlay. Collapsed by default so the wheel reads as the clean hero;
+  // opens when a question is answered, a target / category is selected, or the
+  // user surfaces an insight, so output is never hidden behind the ask dock.
   const [answersCollapsed, setAnswersCollapsed] = useState(true);
-  const [answerCount, setAnswerCount] = useState(0);
+
+  // "Share this view" transient confirmation ("Link copied ✓"). Timer is held
+  // in a ref so a rapid re-click resets the countdown cleanly.
+  const [copied, setCopied] = useState(false);
+  const copyTimer = useRef<number | null>(null);
 
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
   // wheel and the panel shows target detail; closing the target falls back to
   // the category panel because the group remains focal.
   const [focalGroupId, setFocalGroupId] = useState<string | null>(null);
+  // Transient group hover-preview from the lens legend (see effectiveFocalGroupId).
+  const [previewGroupId, setPreviewGroupId] = useState<string | null>(null);
   // External focus: when Tensions section links to a specific target.
   // Track prop changes during render so we don't run setState inside an effect
   // (see React docs: "Adjusting some state when a prop changes"). Seed with
@@ -3094,6 +3099,14 @@ export function PolicyCoherenceExplorer({
 
   const activeId = selectedId ?? hoveredId;
 
+  // Legend hover-preview: transiently traces one group's threads on the wheel
+  // without opening a panel. A clicked focal group (focalGroupId) always wins;
+  // an active target suppresses preview entirely. This id drives ONLY the
+  // wheel's dim/focus visuals + centre label, never railVisible, so hovering
+  // the legend never opens the detail rail.
+  const effectiveFocalGroupId =
+    focalGroupId ?? (activeId ? null : previewGroupId);
+
   const groups = useMemo(
     () => buildGroups(visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig),
     [visibleTargets, groupMode, sectors, globeCategories, ggaCategories, classifications, countryConfig],
@@ -3268,7 +3281,6 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory((prev) => (prev.length > 0 ? [] : prev));
-    setAnswerCount(0);
   }, []);
 
   // Returns the panel to the country's load-time defaults: clears any
@@ -3287,8 +3299,38 @@ export function PolicyCoherenceExplorer({
     setAnswersCollapsed(true);
   }, [countryConfig, clearChat]);
 
+  // "Share this view" — copies the current URL and flips the button to a
+  // confirmation for ~1.8s. A rapid re-click restarts the timer cleanly.
+  const share = useCallback(() => {
+    if (copyTimer.current) window.clearTimeout(copyTimer.current);
+    try {
+      void navigator.clipboard?.writeText(window.location.href);
+    } catch {
+      /* clipboard may be unavailable (insecure context); copy is best-effort */
+    }
+    setCopied(true);
+    copyTimer.current = window.setTimeout(() => setCopied(false), 1800);
+  }, []);
+  useEffect(
+    () => () => {
+      if (copyTimer.current) window.clearTimeout(copyTimer.current);
+    },
+    [],
+  );
+
+  // Legend hover-preview setter. Suppressed while an answer or a detail panel
+  // is open so the answer's own wheel focus is not fought by an idle hover.
+  const handlePreviewGroup = useCallback(
+    (id: string | null) => {
+      if (id && (selectedId || focalGroupId || chat.loading || chat.reply)) return;
+      setPreviewGroupId(id);
+    },
+    [selectedId, focalGroupId, chat.loading, chat.reply],
+  );
+
   const handleNodeClick = useCallback((id: string) => {
     setComparedPair(null);
+    setPreviewGroupId(null);
     setSelectedId((prev) => (prev === id ? null : id));
     setAnswersCollapsed(false);
     // Chat is NOT cleared on selection: in the workbench the chat is a
@@ -3390,14 +3432,16 @@ export function PolicyCoherenceExplorer({
   // Declared before handleAsk so the chat's strict-mode scope filter can
   // restrict its target index to the focal category's targets.
   const focalGroupTargetIds = useMemo(() => {
-    if (!focalGroupId) return null;
+    if (!effectiveFocalGroupId) return null;
     const ids = new Set<string>();
-    for (const n of nodes) if (n.groupId === focalGroupId) ids.add(n.id);
+    for (const n of nodes) if (n.groupId === effectiveFocalGroupId) ids.add(n.id);
     return ids;
-  }, [nodes, focalGroupId]);
+  }, [nodes, effectiveFocalGroupId]);
 
   const handleAsk = useCallback(
     async (query: string) => {
+      setPreviewGroupId(null);
+      setAnswersCollapsed(false);
       setChat({
         loading: true,
         reply: null,
@@ -3494,9 +3538,8 @@ export function PolicyCoherenceExplorer({
             { role: "assistant" as const, content: json.reply },
           ].slice(-6),
         );
-        // A fresh answer landed: badge it and make sure the answers drawer is
-        // open so the reply is visible (the chat input lives in the dock).
-        setAnswerCount((c) => c + 1);
+        // A fresh answer landed: open the answers overlay so the reply is
+        // visible (the chat input lives in the dock).
         setAnswersCollapsed(false);
       } catch (err) {
         setChat({
@@ -3917,6 +3960,21 @@ export function PolicyCoherenceExplorer({
     [arcs, focalGroupId],
   );
 
+  // Focal group for wheel VISUALS (click focus or legend hover-preview). Unlike
+  // `focalGroup`, this reflects hover and so must never drive railVisible.
+  const effectiveFocalGroup = useMemo(
+    () =>
+      effectiveFocalGroupId
+        ? arcs.find((a) => a.id === effectiveFocalGroupId) ?? null
+        : null,
+    [arcs, effectiveFocalGroupId],
+  );
+
+  // Wheel scanning state: while a question is in flight the threads fade and
+  // the centre reads "Reading N targets…", so the answer visibly plays out on
+  // the wheel when it resolves. This is the loading state for the ask flow.
+  const scanning = chat.loading;
+
   // Panel shows when the user opts into "At a glance", OR whenever a target /
   // category is selected — detail must stay reachable even when collapsed.
   // Workbench keeps the rail open at all times so the persistent chat header is
@@ -3930,7 +3988,7 @@ export function PolicyCoherenceExplorer({
   // Group focus drives the dim treatment on the wheel only when no target is
   // active. Active target takes visual priority and reuses the existing
   // hover/click highlight path.
-  const isGroupFocus = !!focalGroupId && !activeId;
+  const isGroupFocus = !!effectiveFocalGroupId && !activeId;
 
   const arcGen = useMemo(
     () =>
@@ -4054,10 +4112,11 @@ export function PolicyCoherenceExplorer({
   const wheelSvg = (
             <svg
               viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
-              className="w-full"
+              className={isWorkbench ? "h-full w-full" : "w-full"}
+              preserveAspectRatio="xMidYMid meet"
               style={{
                 maxHeight: isWorkbench
-                  ? "min(660px, 70vh)"
+                  ? 820
                   : isEmbed
                     ? "min(600px, 64vh)"
                     : 620,
@@ -4203,7 +4262,7 @@ export function PolicyCoherenceExplorer({
                       n.groupId === arc.id &&
                       (n.id === activeId || connectedIds.has(n.id)),
                   );
-                const isFocal = arc.id === focalGroupId;
+                const isFocal = arc.id === effectiveFocalGroupId;
                 const arcMidR = (INNER_R + arcOuterR) / 2;
                 const badgeX = arcMidR * Math.sin(arc.midAngle);
                 const badgeY = -arcMidR * Math.cos(arc.midAngle);
@@ -4304,13 +4363,15 @@ export function PolicyCoherenceExplorer({
                   const isContraMode = filter === "contradictions";
                   // In group focus mode, give the surviving edges a bit more
                   // presence — the noise is gone so they can carry weight.
-                  const opacity = isGroupFocus
-                    ? contra
-                      ? 0.7
-                      : 0.55
-                    : isContraMode
-                      ? 0.55
-                      : ambientOpacity;
+                  const opacity = scanning
+                    ? 0.05
+                    : isGroupFocus
+                      ? contra
+                        ? 0.7
+                        : 0.55
+                      : isContraMode
+                        ? 0.55
+                        : ambientOpacity;
                   const strokeWidth = isGroupFocus
                     ? contra || conn.alignment === "high"
                       ? 1.8
@@ -4602,7 +4663,7 @@ export function PolicyCoherenceExplorer({
                   const anchor = anchorFor(angle);
                   // Nudge label slightly away from leader endpoint
                   const nudge = anchor === "start" ? 3 : anchor === "end" ? -3 : 0;
-                  const isFocal = arc.id === focalGroupId;
+                  const isFocal = arc.id === effectiveFocalGroupId;
                   const labelDimmed =
                     !!activeId || (isGroupFocus && !isFocal);
                   const leaderOpacity = activeId
@@ -4755,13 +4816,28 @@ export function PolicyCoherenceExplorer({
                 }
                 className="select-none pointer-events-none"
               >
-                {activeId
-                  ? targetMap.get(activeId)?.sourceLabel ?? ""
-                  : focalGroup
-                    ? focalGroup.label
-                    : targets[0]?.country ?? t("wheel.countryFallback")}
+                {scanning
+                  ? t("wheel.centerScanning")
+                  : activeId
+                    ? targetMap.get(activeId)?.sourceLabel ?? ""
+                    : effectiveFocalGroup
+                      ? effectiveFocalGroup.label
+                      : targets[0]?.country ?? t("wheel.countryFallback")}
               </text>
-              {activeId ? (
+              {scanning ? (
+                <text
+                  x={0} y={8}
+                  textAnchor="middle" dominantBaseline="middle"
+                  fontSize={10}
+                  fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
+                  className="select-none pointer-events-none"
+                >
+                  {t("wheel.centerScanningDetail", {
+                    targets: targets.length,
+                    docs: availableDocs.length,
+                  })}
+                </text>
+              ) : activeId ? (
                 <text
                   x={0} y={8}
                   textAnchor="middle" dominantBaseline="middle"
@@ -4773,7 +4849,7 @@ export function PolicyCoherenceExplorer({
                     ? t("wheel.centerConnectionsSingular", { count: activeConns.length })
                     : t("wheel.centerConnectionsPlural", { count: activeConns.length })}
                 </text>
-              ) : focalGroup ? (
+              ) : effectiveFocalGroup ? (
                 <text
                   x={0} y={8}
                   textAnchor="middle" dominantBaseline="middle"
@@ -4781,9 +4857,9 @@ export function PolicyCoherenceExplorer({
                   fill={isEmbed ? "var(--undp-gray)" : "#94a3b8"}
                   className="select-none pointer-events-none"
                 >
-                  {focalGroup.count === 1
-                    ? t("wheel.centerTargetSingular", { count: focalGroup.count })
-                    : t("wheel.centerTargetPlural", { count: focalGroup.count })}
+                  {effectiveFocalGroup.count === 1
+                    ? t("wheel.centerTargetSingular", { count: effectiveFocalGroup.count })
+                    : t("wheel.centerTargetPlural", { count: effectiveFocalGroup.count })}
                 </text>
               ) : (
                 <>
@@ -4885,38 +4961,153 @@ export function PolicyCoherenceExplorer({
   if (isWorkbench) {
     const countryName = targets[0]?.country ?? t("wheel.countryFallback");
     const financeView = view === "finance";
-    const statLine = financeView
-      ? t("workbench.statFinance", {
-          country: countryName,
-          targets: targets.length,
+
+    // Corpus headline stats. Computed over the full alignment set so the top-bar
+    // line reads as a stable headline (doc-hiding reshapes the wheel, not this).
+    const strongCount = alignment.filter((a) => a.alignment === "high").length;
+    const flaggedCount = alignment.filter((a) =>
+      isContradiction(a.alignment),
+    ).length;
+    const fundedCount =
+      budgetSummary?.entries.filter((e) => e.totalBudget > 0).length ?? 0;
+
+    // Stat line, split so the flagged count carries its own colour + weight.
+    // Finance swaps in a spend headline plus the reviewed-spending scope caveat.
+    const statLead = financeView
+      ? t("workbench.statFinanceLead", {
+          spend: budgetSummary
+            ? formatBudgetValue(
+                budgetSummary.totalBudget,
+                budgetSummary.currency,
+              )
+            : "",
+          funded: fundedCount,
+          total: budgetSummary?.entries.length ?? 0,
         })
-      : t("workbench.statCoherence", {
+      : t("workbench.statStrong", { count: strongCount });
+    const statFlagged = financeView
+      ? ""
+      : t("workbench.statMisalignments", { count: flaggedCount });
+    const statTail = financeView
+      ? t("workbench.statFinanceScope")
+      : t("workbench.statContext", {
           country: countryName,
           targets: targets.length,
+          docs: availableDocs.length,
         });
+
+    // The floating answer overlay is open whenever there is something to show:
+    // a resolved answer, an error, an insight the user surfaced, or a selected
+    // target / category. During a FRESH ask (nothing already open) it stays
+    // closed while the wheel scans, then slides in when the answer resolves;
+    // when a panel is already open, it stays put and the answer stacks in.
+    const overlayOpen =
+      !answersCollapsed &&
+      (selectedNode != null ||
+        focalGroup != null ||
+        !!chat.reply ||
+        !!chat.error ||
+        (!!currentInsight && !scanning));
+
+    // Close the overlay: drop the target / category selection and re-centre the
+    // wheel. The chat reply is deliberately NOT cleared — closing the card is a
+    // "get this out of my way" gesture, not "discard the answer", so the reply
+    // stays reachable through the top-bar Answers control (matching the old
+    // collapsible drawer, which kept its contents when collapsed).
+    const closeOverlay = () => {
+      setSelectedId(null);
+      setComparedPair(null);
+      setFocalGroupId(null);
+      setPreviewGroupId(null);
+      setAnswersCollapsed(true);
+    };
+
+    // Is there an answer to come back to while the card is collapsed? Only a
+    // real reply / error counts: a passive rotating insight is not something
+    // the user asked for, so it must not put a blue control in the top bar.
+    const hasAnswerToShow = !!chat.reply || !!chat.error;
+
+    // Switching views resets any open answer (handoff behaviour); setView also
+    // snaps grouping (Finance → GLOBE, Coherence → Documents).
+    const handleWorkbenchViewChange = (v: "coherence" | "finance") => {
+      setView(v);
+      setSelectedId(null);
+      setComparedPair(null);
+      setFocalGroupId(null);
+      setPreviewGroupId(null);
+      clearChat();
+      setAnswersCollapsed(true);
+    };
+
+    // Legend rows for the non-document groupings (GLOBE / sectors / GGA).
+    const categoryLegend = arcs.map((a) => ({
+      id: a.id,
+      label: a.label,
+      color: a.color,
+    }));
+
+    // One floating card: the AI answer (chat reply / surfaced insight) stacks
+    // above any selected target / category detail, matching the pre-rework
+    // "answers + detail" pairing but presented as an overlay. A single header
+    // close clears the whole overlay; insight bubbles are suppressed while a
+    // detail panel owns the card so the two don't compete.
+    const answerCard = (
+      <div className="flex min-h-0 w-full flex-col overflow-hidden rounded-xl border border-line bg-white/95 shadow-[var(--shadow-pop)] backdrop-blur">
+        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-line-soft px-4 py-2.5">
+          <span className="text-caption font-medium text-[var(--undp-blue)]">
+            {t("workbench.answerEyebrow")}
+          </span>
+          <button
+            type="button"
+            onClick={closeOverlay}
+            aria-label={t("workbench.answersClose")}
+            className="px-1 text-base leading-none text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-black)]"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3.5 py-3.5 [scrollbar-width:thin]">
+          <ChatOutput
+            chat={chat}
+            currentInsight={currentInsight}
+            canShowMe={canShowMe}
+            onApplyHook={onApplyHook}
+            onSelectChatEntity={handleChatEntityClick}
+            hideInsights={selectedNode != null || focalGroup != null}
+          />
+          {/* Only the detail rail (a selected target / category) belongs in the
+              card. The idle "At a glance" EmptyPanel is suppressed — it is not
+              an answer and reads as a nested card inside the overlay. */}
+          {(selectedNode != null || focalGroup != null) && railPanel}
+        </div>
+      </div>
+    );
+
     return (
       <WorkbenchStage
-        statLine={statLine}
+        title={t("workbench.title")}
+        statLead={statLead}
+        statFlagged={statFlagged}
+        statTail={statTail}
+        onShare={share}
+        shareLabel={copied ? t("workbench.shareCopied") : t("workbench.share")}
+        shareCopied={copied}
+        countryName={countryName}
+        showViewSwitch={!!budgetSummary}
+        view={view}
+        onViewChange={handleWorkbenchViewChange}
+        viewCoherenceLabel={t("workbench.viewCoherence")}
+        viewFinanceLabel={t("workbench.viewFinance")}
         wheel={wheelSvg}
+        answerOpen={overlayOpen}
+        answerCard={answerCard}
+        answersAvailable={hasAnswerToShow}
+        onShowAnswers={() => setAnswersCollapsed(false)}
+        answersLabel={t("workbench.answersHeading")}
         dock={workbenchChat(false, true, true)}
-        answersOpen={!answersCollapsed}
-        onToggleAnswers={() => setAnswersCollapsed((c) => !c)}
-        answersHandleLabel={t("workbench.answersHandle", { count: answerCount })}
-        answersHeading={t("workbench.answersHeading")}
-        answersToggleTitle={t("workbench.answersTitle")}
-        answersClose={t("workbench.answersClose")}
-        financeActive={financeView}
-        financeNote={t(
-          spendScaleActive
-            ? "workbench.finance.encodingSpend"
-            : "workbench.finance.helperNote",
-        )}
-        footerCaveat={t("workbench.footerCaveat")}
         lensPane={
           <LensPane
             view={view}
-            onViewChange={setView}
-            showViewSwitch={!!budgetSummary}
             groupMode={groupMode}
             onGroupChange={handleGroupChange}
             filter={filter}
@@ -4925,26 +5116,13 @@ export function PolicyCoherenceExplorer({
             budgetScale={budgetScale}
             onBudgetScaleChange={setBudgetScale}
             availableDocs={availableDocs}
+            categoryLegend={categoryLegend}
             hiddenDocs={hiddenDocs}
             onToggleDoc={toggleDoc}
+            onPreviewGroup={handlePreviewGroup}
             countryConfig={countryConfig}
             hasGga={hasGga}
           />
-        }
-        answers={
-          <div className="space-y-3">
-            {!answersCollapsed && (
-              <ChatOutput
-                chat={chat}
-                currentInsight={currentInsight}
-                canShowMe={canShowMe}
-                onApplyHook={onApplyHook}
-                onSelectChatEntity={handleChatEntityClick}
-                hideInsights
-              />
-            )}
-            {railPanel}
-          </div>
         }
         modal={
           <PairDetailModal
