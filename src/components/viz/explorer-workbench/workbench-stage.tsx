@@ -42,6 +42,7 @@ export function WorkbenchStage({
   onShowAnswers,
   answersLabel,
   dock,
+  footerCaveat,
   modal,
 }: {
   title: string;
@@ -67,6 +68,8 @@ export function WorkbenchStage({
   answersAvailable: boolean;
   onShowAnswers: () => void;
   answersLabel: string;
+  /** AI-generated label + confidence caveat + question-storage notice. */
+  footerCaveat: string;
   dock: ReactNode;
   modal?: ReactNode;
 }) {
@@ -171,6 +174,11 @@ export function WorkbenchStage({
               would sit a full 100% up. The inline transform owns centring. */}
           <div
             aria-hidden={!answerOpen}
+            // inert while closed: the card keeps its content in the DOM so it
+            // can fade, but opacity/pointer-events alone leave its buttons in
+            // the tab order — keyboard focus would land on an invisible card,
+            // and focusable children inside aria-hidden is an ARIA violation.
+            inert={!answerOpen}
             className="pointer-events-none absolute right-0 top-1/2 z-10 flex max-h-[calc(100%-1.5rem)] w-[min(344px,86%)] transition-[opacity,transform] duration-500 [transition-timing-function:var(--ease-out)] motion-reduce:transition-none"
             style={{
               opacity: answerOpen ? 1 : 0,
@@ -194,7 +202,16 @@ export function WorkbenchStage({
 
       {/* ── Row 3 · Ask dock ────────────────────────────────────────── */}
       <div className="flex flex-col items-center px-4 pb-3 pt-1 sm:px-6">
-        <div className="w-full max-w-[860px]">{dock}</div>
+        <div className="w-full max-w-[860px]">
+          {dock}
+          {/* Always-visible caveat: labels the analysis as AI-generated with its
+              confidence caveat, and carries the notice that questions are
+              stored. Both must stay on the face, not behind a click. */}
+          <p className="mt-2 flex items-start gap-2 text-caption leading-snug text-[var(--undp-gray)]">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--undp-yellow)]" />
+            {footerCaveat}
+          </p>
+        </div>
       </div>
 
       {modal}

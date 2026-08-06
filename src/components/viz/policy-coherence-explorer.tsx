@@ -3304,7 +3304,10 @@ export function PolicyCoherenceExplorer({
   const share = useCallback(() => {
     if (copyTimer.current) window.clearTimeout(copyTimer.current);
     try {
-      void navigator.clipboard?.writeText(window.location.href);
+      // .catch as well as try/catch: writeText rejects asynchronously when the
+      // document lacks focus or clipboard permission, which try/catch misses
+      // and which would surface as an unhandled rejection.
+      void navigator.clipboard?.writeText(window.location.href).catch(() => {});
     } catch {
       /* clipboard may be unavailable (insecure context); copy is best-effort */
     }
@@ -5105,6 +5108,7 @@ export function PolicyCoherenceExplorer({
         onShowAnswers={() => setAnswersCollapsed(false)}
         answersLabel={t("workbench.answersHeading")}
         dock={workbenchChat(false, true, true)}
+        footerCaveat={t("workbench.footerCaveat")}
         lensPane={
           <LensPane
             view={view}

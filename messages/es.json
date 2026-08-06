@@ -1659,7 +1659,6 @@
       "share": "Compartir esta vista",
       "shareCopied": "Enlace copiado ✓",
       "answerEyebrow": "Respuesta · Generada por IA",
-      "answerCaveat": "Considérelo una indicación para revisar, no un hallazgo definitivo.",
       "answersHandle": "{count, plural, =0 {Respuestas} other {Respuestas · #}}",
       "answersTitle": "Mostrar u ocultar las respuestas y el detalle",
       "answersClose": "Contraer",

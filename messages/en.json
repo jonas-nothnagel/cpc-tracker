@@ -1659,7 +1659,6 @@
       "share": "Share this view",
       "shareCopied": "Link copied ✓",
       "answerEyebrow": "Answer · AI-generated",
-      "answerCaveat": "Treat as a prompt to review, not a settled finding.",
       "answersHandle": "{count, plural, =0 {Answers} other {Answers · #}}",
       "answersTitle": "Show or hide answers and detail",
       "answersClose": "Collapse",
