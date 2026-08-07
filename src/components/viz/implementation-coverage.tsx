@@ -1852,10 +1852,30 @@ export function ImplementationCoverage({
     setExpandedCountrySector((prev) => (prev === id ? null : id));
   }, []);
 
+  // A lens is offered only when the pipeline actually classified this country
+  // against it. The category lists come from the global categories.json and are
+  // therefore non-empty for every country, so they cannot gate on their own —
+  // same data-driven rule the briefing and the explorer already apply.
+  const classifiedTaxonomies = useMemo(() => {
+    const seen = new Set<string>();
+    for (const c of classifications) {
+      if (c.isPrimary && c.taxonomyType) seen.add(c.taxonomyType);
+    }
+    return seen;
+  }, [classifications]);
+
   const hasBiodiversityData =
-    globeCategories != null && globeCategories.length > 0;
-  const hasGgaData = ggaCategories != null && ggaCategories.length > 0;
-  const hasHrData = hrCategories != null && hrCategories.length > 0;
+    globeCategories != null &&
+    globeCategories.length > 0 &&
+    classifiedTaxonomies.has("globe");
+  const hasGgaData =
+    ggaCategories != null &&
+    ggaCategories.length > 0 &&
+    classifiedTaxonomies.has("gga");
+  const hasHrData =
+    hrCategories != null &&
+    hrCategories.length > 0 &&
+    classifiedTaxonomies.has("hr");
 
   return (
     <div>
