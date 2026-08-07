@@ -601,21 +601,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_agriculture_food",
       "category_name": "Agriculture and food",
-      "aligned_count": 9918,
-      "flagged_count": 305,
+      "aligned_count": 10434,
+      "flagged_count": 253,
       "pool_composition": {
-        "primary_count": 4655,
-        "relevant_only_count": 6817
+        "primary_count": 4670,
+        "relevant_only_count": 6846
       },
       "contradiction_types": {
-        "delivery_friction": 263,
-        "resource_competition": 42
+        "delivery_friction": 208,
+        "resource_competition": 45
       },
       "synthesis": {
-        "storyline_name": "linking agri-food transformation with land safeguards",
-        "reinforce": "Reinforcing pairs often align agriculture-related adaptation, agroclimatic information, farmer training, and restoration with forest safeguards, biodiversity corridors, and climate-smart territorial planning. This tends to point to complementary delivery where agri-food improvement is directed through geospatial information, early warning, safeguards, and restoration mechanisms rather than treated separately from land and ecosystem management.",
-        "clash": "Possible misalignment recurs where agricultural modernization, export promotion, irrigation, and related infrastructure could increase pressure on forests, wetlands, riparian areas, or other restoration and conservation zones. Several pairs are also flagged for review because reservoirs, roads, logistics corridors, and rural technification may compete for the same land and water resources that agriculture-linked restoration, soil protection, or watershed measures depend on.",
-        "coordination_hint": "It would often help to coordinate agri-food support with zoning, watershed allocation, agroclimatic platforms, and forest or wetland safeguards, so productivity gains tend to stay on existing suitable lands and avoid undermining restoration goals.",
+        "storyline_name": "Link climate-smart farming with forest governance",
+        "reinforce": "Reinforcement often appears where agriculture-facing measures, such as organic agriculture support, farmer training, agroclimatic information systems, and district agrifood transformation, align with forest, soil-carbon, and territorial governance actions. The sample also points to enabling links through indigenous participation, land demarcation, MRV, and incentive design, which can help sustainable farming, soil management, and land-based mitigation work in the same landscapes.",
+        "clash": "Possible misalignment recurs where agricultural modernization, export promotion, logistics, irrigation, reservoirs, roads, and fish-farming could increase pressure on forests, mangroves, protected areas, organic soils, and restoration zones that also touch this sector. A smaller but repeated issue is resource competition, especially over land and water in shared rural or watershed areas, which is flagged for review where forestry rehabilitation or protected-area restoration overlaps with irrigation and agro-industrial expansion.",
+        "coordination_hint": "It tends to help to coordinate agricultural productivity and infrastructure measures with land-use zoning, watershed allocation, protected-area and indigenous safeguards, and deforestation-free incentive rules in the same rural territories.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -624,21 +624,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_cultural_heritage",
       "category_name": "Cultural heritage",
-      "aligned_count": 6445,
-      "flagged_count": 164,
+      "aligned_count": 6673,
+      "flagged_count": 199,
       "pool_composition": {
-        "primary_count": 1943,
-        "relevant_only_count": 5647
+        "primary_count": 1948,
+        "relevant_only_count": 5667
       },
       "contradiction_types": {
-        "delivery_friction": 163,
-        "resource_competition": 1
+        "delivery_friction": 195,
+        "resource_competition": 4
       },
       "synthesis": {
-        "storyline_name": "Link heritage stewardship with indigenous participation",
-        "reinforce": "Reinforcing pairs often align cultural heritage-related actions with culturally appropriate participation of indigenous peoples and local communities, especially through community tourism, ecotourism planning, safeguard monitoring, and recognition of traditional knowledge. They also tend to reinforce when legal, regulatory, or incentive frameworks for forests, protected areas, tourism, and carbon mechanisms create enabling conditions for conserving traditions, natural resources, and patrimonial assets together.",
-        "clash": "Possible misalignment recurs where tourism expansion, logistics corridors, roads, energy, water, or agro-industrial modernization could place delivery pressure on forested landscapes, protected areas, or indigenous territories that also underpin heritage-linked community stewardship. These pairs are usually flagged for review as delivery friction rather than direct contradiction, with zoning, consent, safeguards, and territorial coordination repeatedly identified as the practical pressure points.",
-        "coordination_hint": "It tends to help to sequence heritage-linked tourism or infrastructure delivery with early territorial screening, indigenous participation, and land-use safeguards, especially where community traditions and conserved landscapes overlap.",
+        "storyline_name": "Linking indigenous stewardship with heritage-sensitive governance",
+        "reinforce": "Reinforcing pairs often align around indigenous participation, FPIC, ancestral practices, and community monitoring as enabling mechanisms for conservation and management in territories that can also carry cultural heritage value. This recurs through REDD+ working groups, safeguards, communication, benefit-sharing, and restoration or tourism-planning interfaces, which tend to reinforce more inclusive governance of natural and patrimonial landscapes.",
+        "clash": "Possible misalignment is mostly flagged for review where territorial security, protected-area demarcation, FPIC, or ancestral-practice-based management may face delivery friction from logistics corridors, roads, housing, industrial expansion, Canal-linked infrastructure, or tourism development. The recurring mechanism is implementation pressure on land use, access, and consultation in indigenous or protected landscapes, rather than a direct policy contradiction.",
+        "coordination_hint": "It tends to help to coordinate land-use planning, boundary recognition, routing and siting decisions, and FPIC or safeguard processes early where cultural or indigenous territorial values overlap with infrastructure, tourism, or industrial delivery.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -647,21 +647,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_ecosystems_biodiversity",
       "category_name": "Ecosystems and biodiversity",
-      "aligned_count": 32675,
-      "flagged_count": 965,
+      "aligned_count": 34227,
+      "flagged_count": 1074,
       "pool_composition": {
-        "primary_count": 35690,
-        "relevant_only_count": 3465
+        "primary_count": 35826,
+        "relevant_only_count": 3487
       },
       "contradiction_types": {
-        "delivery_friction": 906,
-        "resource_competition": 59
+        "delivery_friction": 988,
+        "resource_competition": 86
       },
       "synthesis": {
-        "storyline_name": "Strengthen biodiversity governance and monitoring systems",
-        "reinforce": "Reinforcing pairs often align around enabling institutions for ecosystems and biodiversity, especially REDD+ coordination, safeguards, monitoring, benefit-sharing, and legal frameworks that connect with biodiversity reporting, protected-area governance, wetlands monitoring, and the Nature Pledge. This recurs through concrete mechanisms such as inter-institutional agreements, forest and land monitoring systems, stakeholder participation, FPIC-related processes, and incentive or payment systems for conservation.",
-        "clash": "Possible misalignment is mostly flagged for review where biodiversity protection and restoration measures, such as mangrove protection, biological corridors, protected-area boundary control, forest restoration, and watershed ecosystem management, may face delivery friction from roads, logistics corridors, housing, energy, reservoir, tourism, or agro-industrial expansion in overlapping landscapes. The recurring mechanism is not direct policy contradiction, but implementation pressure through land-use change, access expansion, siting, and infrastructure delivery that could complicate conservation outcomes unless spatial planning and safeguards are applied.",
-        "coordination_hint": "It tends to help to connect biodiversity monitoring, REDD+ and watershed governance bodies, and land-use permitting or infrastructure planners early, so monitoring data, zoning, FPIC, and safeguards can guide delivery in shared forest, coastal, wetland, and watershed areas.",
+        "storyline_name": "Strengthen forest governance and connected conservation delivery",
+        "reinforce": "Reinforcing pairs often align around forest protection, protected-area management, ecological corridors, restoration finance, and monitoring systems, especially where REDD+, protected areas, and reforestation instruments are linked. A second recurring alignment is enabling governance, transparency, participation, and knowledge systems that reinforce biodiversity delivery through public information, safeguards, carbon accounting, and coordination platforms.",
+        "clash": "Possible misalignment recurs where transport, logistics, housing, energy, industrial, tourism, or water infrastructure could create localized pressure on forests, riparian zones, mangroves, restoration sites, or REDD+ territories, and many pairs are flagged for review on siting, routing, and land-use grounds. A smaller pattern flagged for review concerns resource competition, especially where forestry rehabilitation, irrigation, or major water infrastructure may compete for the same land, watershed space, or water-management priorities.",
+        "coordination_hint": "This sector tends to benefit from early spatial planning, watershed and corridor zoning, and safeguards that connect infrastructure and productive investments to forest, coastal, and restoration priorities.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -670,20 +670,20 @@
       "taxonomy_type": "gga",
       "category_id": "gga_health",
       "category_name": "Health",
-      "aligned_count": 1197,
-      "flagged_count": 3,
+      "aligned_count": 1364,
+      "flagged_count": 6,
       "pool_composition": {
-        "primary_count": 1298,
+        "primary_count": 1342,
         "relevant_only_count": 682
       },
       "contradiction_types": {
-        "delivery_friction": 3
+        "delivery_friction": 6
       },
       "synthesis": {
-        "storyline_name": "Link health delivery to climate and biodiversity systems",
-        "reinforce": "Health targets often align with climate adaptation, monitoring, and cross-sector governance measures. The recurring mechanism is enabling coordination, such as integrating climate variables into epidemiological surveillance, using documented monitoring procedures, and linking One Health or zoonotic-risk work with community capacity, environmental data, and biodiversity enforcement systems.",
-        "clash": "Possible misalignment is flagged for review where health-related wildlife trafficking controls meet faster logistics and trade-corridor expansion at ports, airports, and transport routes. The friction tends to concern delivery, not goals, because stronger inspections, traceability, and inter-agency enforcement may need to be designed alongside trade facilitation so control effectiveness is not weakened.",
-        "coordination_hint": "It would often help to connect health surveillance, zoonotic-risk control, and logistics or environmental monitoring through shared protocols, inspection capacity, and data-sharing arrangements.",
+        "storyline_name": "Link health delivery to climate and territory systems",
+        "reinforce": "Health targets often align with climate adaptation, land-use planning, water risk management, and community participation through enabling mechanisms such as climate-informed epidemiological surveillance, safer access to facilities, and risk-sensitive public systems. A second recurring pattern reinforces One Health style links between health STI agendas and biodiversity, REDD+, and wildlife-related actions, mainly through shared needs for monitoring, safeguards, indigenous and community engagement, and cross-sector information systems.",
+        "clash": "Possible misalignment is flagged for review where wildlife-trafficking control, including zoonotic-risk surveillance and inspections, may face delivery friction from faster logistics corridors, tourism expansion, or new road access that can increase movement through high-risk areas. Additional friction recurs where infrastructure, industrial, or canal-related expansion overlaps with risk-sensitive land-use controls, which could indirectly affect health-relevant safety and service conditions unless siting, checkpoints, and permitting are coordinated.",
+        "coordination_hint": "It tends to help to connect health surveillance, One Health monitoring, and facility-access planning with transport, land-use, and wildlife-control decisions in shared territories, especially where climate risk or mobility expansion is active.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -692,21 +692,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_infrastructure_settlements",
       "category_name": "Infrastructure and human settlements",
-      "aligned_count": 9536,
-      "flagged_count": 793,
+      "aligned_count": 10197,
+      "flagged_count": 976,
       "pool_composition": {
-        "primary_count": 7598,
-        "relevant_only_count": 5064
+        "primary_count": 7608,
+        "relevant_only_count": 5073
       },
       "contradiction_types": {
-        "delivery_friction": 754,
-        "resource_competition": 39
+        "delivery_friction": 898,
+        "resource_competition": 78
       },
       "synthesis": {
-        "storyline_name": "Link infrastructure delivery to climate and land safeguards",
-        "reinforce": "Infrastructure and settlement actions often align with climate-risk observatories, adaptation planning, waste baselining, and water and sanitation risk management. The recurring mechanism is enabling coordination, where monitoring systems, legal frameworks, watershed management, and local planning can reinforce service expansion, coastal adaptation, and urban waste management.",
-        "clash": "Possible misalignment is repeatedly flagged where logistics corridors, roads, Canal and watershed infrastructure, housing expansion, and related economic hubs intersect forests, restoration areas, indigenous territories, protected areas, or municipal waste systems. The recurring friction tends to be delivery pressure on shared land, water, and governance space, with some cases also flagged for review as resource competition over watershed land and water, especially around reforestation and reservoir or protected-area expansion.",
-        "coordination_hint": "It often points to the value of routing, zoning, watershed-based planning, municipal waste integration, and early safeguards and participation processes so infrastructure and settlement delivery can remain consistent with adaptation, forest, and conservation objectives.",
+        "storyline_name": "Use monitoring and planning systems to support infrastructure",
+        "reinforce": "Reinforcement often comes from national monitoring, data-governance, and framework-setting targets that align with infrastructure and settlement delivery, especially for climate observatories, water and sanitation upgrades, sustainable mobility, housing standards, and service planning. The sample also points to enabling links where digital tools, fiscal planning, and cross-sector governance can support infrastructure implementation through better data standards, reporting, budgeting, and decentralized risk monitoring.",
+        "clash": "Possible misalignment recurs where transport corridors, Canal-related water infrastructure, housing expansion, roads, and energy networks may intersect protected areas, restoration zones, indigenous territories, watershed management priorities, or species-sensitive landscapes. A smaller but repeated issue is resource competition, flagged for review where major logistics or reservoir investments could compete with water, land, and watershed resources needed for restoration, agrifood resilience, or universal water and sanitation services.",
+        "coordination_hint": "This sector tends to benefit from early spatial planning, watershed and land-use screening, and shared data and consultation protocols so infrastructure siting and service expansion can align with conservation, indigenous-territory, and water-allocation objectives.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -715,21 +715,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_livelihoods",
       "category_name": "Livelihoods",
-      "aligned_count": 12314,
+      "aligned_count": 12980,
       "flagged_count": 316,
       "pool_composition": {
-        "primary_count": 5035,
-        "relevant_only_count": 9779
+        "primary_count": 5065,
+        "relevant_only_count": 9795
       },
       "contradiction_types": {
-        "delivery_friction": 270,
-        "resource_competition": 46
+        "delivery_friction": 266,
+        "resource_competition": 50
       },
       "synthesis": {
-        "storyline_name": "Linking community-based resource use with inclusive livelihoods",
-        "reinforce": "Reinforcing pairs often align around sustainable use of biodiversity, forests, and agri-food systems as livelihood pathways, supported by innovation, biocommerce, restoration, and species management. A recurring mechanism is community and indigenous participation, benefit-sharing, local capacity building, and pilots or research that help translate conservation and climate actions into local economic value.",
-        "clash": "Possible misalignment is mostly flagged for review where livelihood-oriented forest, biotrade, tourism, or agri-food actions may share territory with logistics, transport, reservoir, irrigation, or export-agriculture expansion. The recurring friction tends to be delivery-related, where infrastructure siting, access expansion, water use, or commercialization pressure could complicate sustainable management, community safeguards, or forest and wildlife-based livelihood models in the same landscapes.",
-        "coordination_hint": "This sector often points to a need for territorial zoning, safeguards, and participatory planning so livelihood gains from sustainable resource use can align with infrastructure, water, and agricultural modernization investments.",
+        "storyline_name": "Link livelihood delivery to forest governance systems",
+        "reinforce": "Livelihood actions in this sector often align with enabling systems for forest governance, monitoring, transparency, communication, and incentives. The sample repeatedly points to community training, women and youth enterprise support, biocommerce, certification, and ecosystem-service valuation being reinforced by REDD+, Nature Pledge, and restoration measures that improve tracking, stakeholder uptake, and market conditions.",
+        "clash": "Possible misalignment recurs where livelihood-oriented forest and biocommerce activities meet road building, logistics corridors, reservoir works, irrigation expansion, or broader production infrastructure. These flagged pairs often point to delivery friction or resource competition over land, water, access, and protected or watershed areas, especially if infrastructure siting and productive expansion are not coordinated with safeguards and zoning.",
+        "coordination_hint": "It tends to help to sequence livelihood support with territorial planning, water allocation, routing, and community participation mechanisms, so forest-based income measures can align with infrastructure and production investments in the same landscapes.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -738,21 +738,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_water",
       "category_name": "Water",
-      "aligned_count": 11255,
-      "flagged_count": 307,
+      "aligned_count": 11694,
+      "flagged_count": 366,
       "pool_composition": {
-        "primary_count": 6374,
-        "relevant_only_count": 6358
+        "primary_count": 6378,
+        "relevant_only_count": 6378
       },
       "contradiction_types": {
-        "delivery_friction": 254,
-        "resource_competition": 53
+        "delivery_friction": 281,
+        "resource_competition": 85
       },
       "synthesis": {
-        "storyline_name": "Link water planning with watershed governance",
-        "reinforce": "Water targets often align with forest restoration, protected-area management, early warning, and inclusive governance by reinforcing watershed information, hydrological regulation, riparian protection, and institutional coordination. The sample repeatedly points to synergy where water availability, demand monitoring, recharge-zone protection, and participatory governance support broader resilience and service delivery.",
-        "clash": "Possible misalignment is repeatedly flagged for review where water-related infrastructure, reservoirs, irrigation, logistics, housing, tourism, or agricultural expansion may overlap riparian zones, recharge areas, protected areas, wetlands, or restoration landscapes. The recurring mechanism is delivery friction, and sometimes resource competition, over shared watershed space, land-use decisions, and safeguard implementation rather than direct policy contradiction.",
-        "coordination_hint": "It tends to help to sequence water infrastructure and productive-use investments with watershed zoning, protected-area and tenure verification, and shared safeguard and monitoring arrangements in the same basins.",
+        "storyline_name": "Link watershed protection with water service delivery",
+        "reinforce": "Water targets often align with forest restoration, riparian protection, protected-area management, and climate-risk planning where these help sustain water sources, recharge zones, and service resilience. Reinforcement also recurs through enabling measures, such as institutional strengthening, monitoring, safeguards, and inclusive participation, which tend to support water governance and implementation quality.",
+        "clash": "Possible misalignment is repeatedly flagged where water availability or Canal-related water management relies on reservoirs, major infrastructure, or associated land-use change in forested watersheds, protected areas, riparian zones, or indigenous territories. Resource competition also recurs when the same land and water in strategic basins may be needed both for conservation, adaptation, or community forest management and for large water-supply infrastructure.",
+        "coordination_hint": "It often points to the value of basin-level spatial planning, early safeguards and consultation, and joint siting decisions so water infrastructure and service expansion can proceed while reinforcing watershed protection.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -1361,21 +1361,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_agriculture_food",
         "category_name": "Agriculture and food",
-        "aligned_count": 9918,
-        "flagged_count": 305,
+        "aligned_count": 10434,
+        "flagged_count": 253,
         "pool_composition": {
-          "primary_count": 4655,
-          "relevant_only_count": 6817
+          "primary_count": 4670,
+          "relevant_only_count": 6846
         },
         "contradiction_types": {
-          "delivery_friction": 263,
-          "resource_competition": 42
+          "delivery_friction": 208,
+          "resource_competition": 45
         },
         "synthesis": {
-          "storyline_name": "linking agri-food transformation with land safeguards",
-          "reinforce": "Reinforcing pairs often align agriculture-related adaptation, agroclimatic information, farmer training, and restoration with forest safeguards, biodiversity corridors, and climate-smart territorial planning. This tends to point to complementary delivery where agri-food improvement is directed through geospatial information, early warning, safeguards, and restoration mechanisms rather than treated separately from land and ecosystem management.",
-          "clash": "Possible misalignment recurs where agricultural modernization, export promotion, irrigation, and related infrastructure could increase pressure on forests, wetlands, riparian areas, or other restoration and conservation zones. Several pairs are also flagged for review because reservoirs, roads, logistics corridors, and rural technification may compete for the same land and water resources that agriculture-linked restoration, soil protection, or watershed measures depend on.",
-          "coordination_hint": "It would often help to coordinate agri-food support with zoning, watershed allocation, agroclimatic platforms, and forest or wetland safeguards, so productivity gains tend to stay on existing suitable lands and avoid undermining restoration goals.",
+          "storyline_name": "Link climate-smart farming with forest governance",
+          "reinforce": "Reinforcement often appears where agriculture-facing measures, such as organic agriculture support, farmer training, agroclimatic information systems, and district agrifood transformation, align with forest, soil-carbon, and territorial governance actions. The sample also points to enabling links through indigenous participation, land demarcation, MRV, and incentive design, which can help sustainable farming, soil management, and land-based mitigation work in the same landscapes.",
+          "clash": "Possible misalignment recurs where agricultural modernization, export promotion, logistics, irrigation, reservoirs, roads, and fish-farming could increase pressure on forests, mangroves, protected areas, organic soils, and restoration zones that also touch this sector. A smaller but repeated issue is resource competition, especially over land and water in shared rural or watershed areas, which is flagged for review where forestry rehabilitation or protected-area restoration overlaps with irrigation and agro-industrial expansion.",
+          "coordination_hint": "It tends to help to coordinate agricultural productivity and infrastructure measures with land-use zoning, watershed allocation, protected-area and indigenous safeguards, and deforestation-free incentive rules in the same rural territories.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1384,21 +1384,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_cultural_heritage",
         "category_name": "Cultural heritage",
-        "aligned_count": 6445,
-        "flagged_count": 164,
+        "aligned_count": 6673,
+        "flagged_count": 199,
         "pool_composition": {
-          "primary_count": 1943,
-          "relevant_only_count": 5647
+          "primary_count": 1948,
+          "relevant_only_count": 5667
         },
         "contradiction_types": {
-          "delivery_friction": 163,
-          "resource_competition": 1
+          "delivery_friction": 195,
+          "resource_competition": 4
         },
         "synthesis": {
-          "storyline_name": "Link heritage stewardship with indigenous participation",
-          "reinforce": "Reinforcing pairs often align cultural heritage-related actions with culturally appropriate participation of indigenous peoples and local communities, especially through community tourism, ecotourism planning, safeguard monitoring, and recognition of traditional knowledge. They also tend to reinforce when legal, regulatory, or incentive frameworks for forests, protected areas, tourism, and carbon mechanisms create enabling conditions for conserving traditions, natural resources, and patrimonial assets together.",
-          "clash": "Possible misalignment recurs where tourism expansion, logistics corridors, roads, energy, water, or agro-industrial modernization could place delivery pressure on forested landscapes, protected areas, or indigenous territories that also underpin heritage-linked community stewardship. These pairs are usually flagged for review as delivery friction rather than direct contradiction, with zoning, consent, safeguards, and territorial coordination repeatedly identified as the practical pressure points.",
-          "coordination_hint": "It tends to help to sequence heritage-linked tourism or infrastructure delivery with early territorial screening, indigenous participation, and land-use safeguards, especially where community traditions and conserved landscapes overlap.",
+          "storyline_name": "Linking indigenous stewardship with heritage-sensitive governance",
+          "reinforce": "Reinforcing pairs often align around indigenous participation, FPIC, ancestral practices, and community monitoring as enabling mechanisms for conservation and management in territories that can also carry cultural heritage value. This recurs through REDD+ working groups, safeguards, communication, benefit-sharing, and restoration or tourism-planning interfaces, which tend to reinforce more inclusive governance of natural and patrimonial landscapes.",
+          "clash": "Possible misalignment is mostly flagged for review where territorial security, protected-area demarcation, FPIC, or ancestral-practice-based management may face delivery friction from logistics corridors, roads, housing, industrial expansion, Canal-linked infrastructure, or tourism development. The recurring mechanism is implementation pressure on land use, access, and consultation in indigenous or protected landscapes, rather than a direct policy contradiction.",
+          "coordination_hint": "It tends to help to coordinate land-use planning, boundary recognition, routing and siting decisions, and FPIC or safeguard processes early where cultural or indigenous territorial values overlap with infrastructure, tourism, or industrial delivery.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1407,21 +1407,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_ecosystems_biodiversity",
         "category_name": "Ecosystems and biodiversity",
-        "aligned_count": 32675,
-        "flagged_count": 965,
+        "aligned_count": 34227,
+        "flagged_count": 1074,
         "pool_composition": {
-          "primary_count": 35690,
-          "relevant_only_count": 3465
+          "primary_count": 35826,
+          "relevant_only_count": 3487
         },
         "contradiction_types": {
-          "delivery_friction": 906,
-          "resource_competition": 59
+          "delivery_friction": 988,
+          "resource_competition": 86
         },
         "synthesis": {
-          "storyline_name": "Strengthen biodiversity governance and monitoring systems",
-          "reinforce": "Reinforcing pairs often align around enabling institutions for ecosystems and biodiversity, especially REDD+ coordination, safeguards, monitoring, benefit-sharing, and legal frameworks that connect with biodiversity reporting, protected-area governance, wetlands monitoring, and the Nature Pledge. This recurs through concrete mechanisms such as inter-institutional agreements, forest and land monitoring systems, stakeholder participation, FPIC-related processes, and incentive or payment systems for conservation.",
-          "clash": "Possible misalignment is mostly flagged for review where biodiversity protection and restoration measures, such as mangrove protection, biological corridors, protected-area boundary control, forest restoration, and watershed ecosystem management, may face delivery friction from roads, logistics corridors, housing, energy, reservoir, tourism, or agro-industrial expansion in overlapping landscapes. The recurring mechanism is not direct policy contradiction, but implementation pressure through land-use change, access expansion, siting, and infrastructure delivery that could complicate conservation outcomes unless spatial planning and safeguards are applied.",
-          "coordination_hint": "It tends to help to connect biodiversity monitoring, REDD+ and watershed governance bodies, and land-use permitting or infrastructure planners early, so monitoring data, zoning, FPIC, and safeguards can guide delivery in shared forest, coastal, wetland, and watershed areas.",
+          "storyline_name": "Strengthen forest governance and connected conservation delivery",
+          "reinforce": "Reinforcing pairs often align around forest protection, protected-area management, ecological corridors, restoration finance, and monitoring systems, especially where REDD+, protected areas, and reforestation instruments are linked. A second recurring alignment is enabling governance, transparency, participation, and knowledge systems that reinforce biodiversity delivery through public information, safeguards, carbon accounting, and coordination platforms.",
+          "clash": "Possible misalignment recurs where transport, logistics, housing, energy, industrial, tourism, or water infrastructure could create localized pressure on forests, riparian zones, mangroves, restoration sites, or REDD+ territories, and many pairs are flagged for review on siting, routing, and land-use grounds. A smaller pattern flagged for review concerns resource competition, especially where forestry rehabilitation, irrigation, or major water infrastructure may compete for the same land, watershed space, or water-management priorities.",
+          "coordination_hint": "This sector tends to benefit from early spatial planning, watershed and corridor zoning, and safeguards that connect infrastructure and productive investments to forest, coastal, and restoration priorities.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1430,20 +1430,20 @@
         "taxonomy_type": "gga",
         "category_id": "gga_health",
         "category_name": "Health",
-        "aligned_count": 1197,
-        "flagged_count": 3,
+        "aligned_count": 1364,
+        "flagged_count": 6,
         "pool_composition": {
-          "primary_count": 1298,
+          "primary_count": 1342,
           "relevant_only_count": 682
         },
         "contradiction_types": {
-          "delivery_friction": 3
+          "delivery_friction": 6
         },
         "synthesis": {
-          "storyline_name": "Link health delivery to climate and biodiversity systems",
-          "reinforce": "Health targets often align with climate adaptation, monitoring, and cross-sector governance measures. The recurring mechanism is enabling coordination, such as integrating climate variables into epidemiological surveillance, using documented monitoring procedures, and linking One Health or zoonotic-risk work with community capacity, environmental data, and biodiversity enforcement systems.",
-          "clash": "Possible misalignment is flagged for review where health-related wildlife trafficking controls meet faster logistics and trade-corridor expansion at ports, airports, and transport routes. The friction tends to concern delivery, not goals, because stronger inspections, traceability, and inter-agency enforcement may need to be designed alongside trade facilitation so control effectiveness is not weakened.",
-          "coordination_hint": "It would often help to connect health surveillance, zoonotic-risk control, and logistics or environmental monitoring through shared protocols, inspection capacity, and data-sharing arrangements.",
+          "storyline_name": "Link health delivery to climate and territory systems",
+          "reinforce": "Health targets often align with climate adaptation, land-use planning, water risk management, and community participation through enabling mechanisms such as climate-informed epidemiological surveillance, safer access to facilities, and risk-sensitive public systems. A second recurring pattern reinforces One Health style links between health STI agendas and biodiversity, REDD+, and wildlife-related actions, mainly through shared needs for monitoring, safeguards, indigenous and community engagement, and cross-sector information systems.",
+          "clash": "Possible misalignment is flagged for review where wildlife-trafficking control, including zoonotic-risk surveillance and inspections, may face delivery friction from faster logistics corridors, tourism expansion, or new road access that can increase movement through high-risk areas. Additional friction recurs where infrastructure, industrial, or canal-related expansion overlaps with risk-sensitive land-use controls, which could indirectly affect health-relevant safety and service conditions unless siting, checkpoints, and permitting are coordinated.",
+          "coordination_hint": "It tends to help to connect health surveillance, One Health monitoring, and facility-access planning with transport, land-use, and wildlife-control decisions in shared territories, especially where climate risk or mobility expansion is active.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1452,21 +1452,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_infrastructure_settlements",
         "category_name": "Infrastructure and human settlements",
-        "aligned_count": 9536,
-        "flagged_count": 793,
+        "aligned_count": 10197,
+        "flagged_count": 976,
         "pool_composition": {
-          "primary_count": 7598,
-          "relevant_only_count": 5064
+          "primary_count": 7608,
+          "relevant_only_count": 5073
         },
         "contradiction_types": {
-          "delivery_friction": 754,
-          "resource_competition": 39
+          "delivery_friction": 898,
+          "resource_competition": 78
         },
         "synthesis": {
-          "storyline_name": "Link infrastructure delivery to climate and land safeguards",
-          "reinforce": "Infrastructure and settlement actions often align with climate-risk observatories, adaptation planning, waste baselining, and water and sanitation risk management. The recurring mechanism is enabling coordination, where monitoring systems, legal frameworks, watershed management, and local planning can reinforce service expansion, coastal adaptation, and urban waste management.",
-          "clash": "Possible misalignment is repeatedly flagged where logistics corridors, roads, Canal and watershed infrastructure, housing expansion, and related economic hubs intersect forests, restoration areas, indigenous territories, protected areas, or municipal waste systems. The recurring friction tends to be delivery pressure on shared land, water, and governance space, with some cases also flagged for review as resource competition over watershed land and water, especially around reforestation and reservoir or protected-area expansion.",
-          "coordination_hint": "It often points to the value of routing, zoning, watershed-based planning, municipal waste integration, and early safeguards and participation processes so infrastructure and settlement delivery can remain consistent with adaptation, forest, and conservation objectives.",
+          "storyline_name": "Use monitoring and planning systems to support infrastructure",
+          "reinforce": "Reinforcement often comes from national monitoring, data-governance, and framework-setting targets that align with infrastructure and settlement delivery, especially for climate observatories, water and sanitation upgrades, sustainable mobility, housing standards, and service planning. The sample also points to enabling links where digital tools, fiscal planning, and cross-sector governance can support infrastructure implementation through better data standards, reporting, budgeting, and decentralized risk monitoring.",
+          "clash": "Possible misalignment recurs where transport corridors, Canal-related water infrastructure, housing expansion, roads, and energy networks may intersect protected areas, restoration zones, indigenous territories, watershed management priorities, or species-sensitive landscapes. A smaller but repeated issue is resource competition, flagged for review where major logistics or reservoir investments could compete with water, land, and watershed resources needed for restoration, agrifood resilience, or universal water and sanitation services.",
+          "coordination_hint": "This sector tends to benefit from early spatial planning, watershed and land-use screening, and shared data and consultation protocols so infrastructure siting and service expansion can align with conservation, indigenous-territory, and water-allocation objectives.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1475,21 +1475,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_livelihoods",
         "category_name": "Livelihoods",
-        "aligned_count": 12314,
+        "aligned_count": 12980,
         "flagged_count": 316,
         "pool_composition": {
-          "primary_count": 5035,
-          "relevant_only_count": 9779
+          "primary_count": 5065,
+          "relevant_only_count": 9795
         },
         "contradiction_types": {
-          "delivery_friction": 270,
-          "resource_competition": 46
+          "delivery_friction": 266,
+          "resource_competition": 50
         },
         "synthesis": {
-          "storyline_name": "Linking community-based resource use with inclusive livelihoods",
-          "reinforce": "Reinforcing pairs often align around sustainable use of biodiversity, forests, and agri-food systems as livelihood pathways, supported by innovation, biocommerce, restoration, and species management. A recurring mechanism is community and indigenous participation, benefit-sharing, local capacity building, and pilots or research that help translate conservation and climate actions into local economic value.",
-          "clash": "Possible misalignment is mostly flagged for review where livelihood-oriented forest, biotrade, tourism, or agri-food actions may share territory with logistics, transport, reservoir, irrigation, or export-agriculture expansion. The recurring friction tends to be delivery-related, where infrastructure siting, access expansion, water use, or commercialization pressure could complicate sustainable management, community safeguards, or forest and wildlife-based livelihood models in the same landscapes.",
-          "coordination_hint": "This sector often points to a need for territorial zoning, safeguards, and participatory planning so livelihood gains from sustainable resource use can align with infrastructure, water, and agricultural modernization investments.",
+          "storyline_name": "Link livelihood delivery to forest governance systems",
+          "reinforce": "Livelihood actions in this sector often align with enabling systems for forest governance, monitoring, transparency, communication, and incentives. The sample repeatedly points to community training, women and youth enterprise support, biocommerce, certification, and ecosystem-service valuation being reinforced by REDD+, Nature Pledge, and restoration measures that improve tracking, stakeholder uptake, and market conditions.",
+          "clash": "Possible misalignment recurs where livelihood-oriented forest and biocommerce activities meet road building, logistics corridors, reservoir works, irrigation expansion, or broader production infrastructure. These flagged pairs often point to delivery friction or resource competition over land, water, access, and protected or watershed areas, especially if infrastructure siting and productive expansion are not coordinated with safeguards and zoning.",
+          "coordination_hint": "It tends to help to sequence livelihood support with territorial planning, water allocation, routing, and community participation mechanisms, so forest-based income measures can align with infrastructure and production investments in the same landscapes.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1498,21 +1498,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_water",
         "category_name": "Water",
-        "aligned_count": 11255,
-        "flagged_count": 307,
+        "aligned_count": 11694,
+        "flagged_count": 366,
         "pool_composition": {
-          "primary_count": 6374,
-          "relevant_only_count": 6358
+          "primary_count": 6378,
+          "relevant_only_count": 6378
         },
         "contradiction_types": {
-          "delivery_friction": 254,
-          "resource_competition": 53
+          "delivery_friction": 281,
+          "resource_competition": 85
         },
         "synthesis": {
-          "storyline_name": "Link water planning with watershed governance",
-          "reinforce": "Water targets often align with forest restoration, protected-area management, early warning, and inclusive governance by reinforcing watershed information, hydrological regulation, riparian protection, and institutional coordination. The sample repeatedly points to synergy where water availability, demand monitoring, recharge-zone protection, and participatory governance support broader resilience and service delivery.",
-          "clash": "Possible misalignment is repeatedly flagged for review where water-related infrastructure, reservoirs, irrigation, logistics, housing, tourism, or agricultural expansion may overlap riparian zones, recharge areas, protected areas, wetlands, or restoration landscapes. The recurring mechanism is delivery friction, and sometimes resource competition, over shared watershed space, land-use decisions, and safeguard implementation rather than direct policy contradiction.",
-          "coordination_hint": "It tends to help to sequence water infrastructure and productive-use investments with watershed zoning, protected-area and tenure verification, and shared safeguard and monitoring arrangements in the same basins.",
+          "storyline_name": "Link watershed protection with water service delivery",
+          "reinforce": "Water targets often align with forest restoration, riparian protection, protected-area management, and climate-risk planning where these help sustain water sources, recharge zones, and service resilience. Reinforcement also recurs through enabling measures, such as institutional strengthening, monitoring, safeguards, and inclusive participation, which tend to support water governance and implementation quality.",
+          "clash": "Possible misalignment is repeatedly flagged where water availability or Canal-related water management relies on reservoirs, major infrastructure, or associated land-use change in forested watersheds, protected areas, riparian zones, or indigenous territories. Resource competition also recurs when the same land and water in strategic basins may be needed both for conservation, adaptation, or community forest management and for large water-supply infrastructure.",
+          "coordination_hint": "It often points to the value of basin-level spatial planning, early safeguards and consultation, and joint siting decisions so water infrastructure and service expansion can proceed while reinforcing watershed protection.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2120,21 +2120,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_agriculture_food",
         "category_name": "Agriculture and food",
-        "aligned_count": 2844,
-        "flagged_count": 130,
+        "aligned_count": 2913,
+        "flagged_count": 124,
         "pool_composition": {
-          "primary_count": 1035,
-          "relevant_only_count": 2160
+          "primary_count": 1039,
+          "relevant_only_count": 2175
         },
         "contradiction_types": {
-          "delivery_friction": 109,
-          "resource_competition": 21
+          "delivery_friction": 102,
+          "resource_competition": 22
         },
         "synthesis": {
-          "storyline_name": "Linking agri-food management with land and climate systems",
-          "reinforce": "Reinforcing pairs often align agriculture and food actions with restoration, forest protection, organic-soil management, and agroecological land use, especially where shared tools include territorial planning, MRV, incentives, and productive reconversion. A second recurring pattern is enabling-system alignment, where agricultural geospatial and agroclimatic platforms, STI collaboration, and early warning or monitoring systems reinforce more climate-resilient and better coordinated agri-food delivery.",
-          "clash": "Possible misalignment recurs where agricultural modernization, irrigation, export promotion, logistics, roads, or water-storage infrastructure could increase pressure on corridors, wetlands, forests, organic soils, or species habitats that other targets seek to conserve. Resource competition is also flagged for review around water, with agri-food expansion and productive water capture potentially competing with drinking water supply or adaptation priorities in shared basins and vulnerable territories.",
-          "coordination_hint": "It tends to help to coordinate this sector through basin and land-use zoning, biodiversity and wetland safeguards, and shared use of agroclimatic, geospatial, and monitoring systems so productivity gains align with conservation and water constraints.",
+          "storyline_name": "Link agri-food transformation to land and water systems",
+          "reinforce": "Reinforcing pairs often align agriculture and food actions with enabling systems for agroclimatic data, geospatial monitoring, digitalization, STI uptake, and inter-institutional coordination, especially around OSIGA, priority district selection, and standardized information flows. Alignment also recurs where agri-food transformation is connected to restoration, organic soils and degraded-land management, irrigation oversight, and water governance, which tends to reinforce climate-smart production and territorial planning.",
+          "clash": "Possible misalignment is most often flagged for review where agricultural production, irrigation, export competitiveness, or related infrastructure could compete with restoration, protected areas, wetlands, organic soils, and watershed objectives for shared land or water. Delivery friction also recurs when roads, reservoirs, housing, logistics, tourism, or industrial expansion may affect agricultural landscapes and connected ecosystems unless zoning, siting, hydrological safeguards, and pollution controls are coordinated.",
+          "coordination_hint": "It tends to help to coordinate agri-food modernization with basin-level water allocation, land-use zoning, and shared monitoring platforms so production gains can align with restoration, wetland protection, and pollution-reduction measures.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2143,20 +2143,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_cultural_heritage",
         "category_name": "Cultural heritage",
-        "aligned_count": 902,
+        "aligned_count": 917,
         "flagged_count": 39,
         "pool_composition": {
           "primary_count": 257,
-          "relevant_only_count": 793
+          "relevant_only_count": 795
         },
         "contradiction_types": {
-          "delivery_friction": 39
+          "delivery_friction": 37,
+          "resource_competition": 2
         },
         "synthesis": {
-          "storyline_name": "Linking heritage tourism with conservation safeguards",
-          "reinforce": "Within cultural heritage, alignment often appears where tourism, ecotourism, agrotourism, and patrimonial planning are paired with community participation, traditional knowledge, restoration, ecological corridors, and climate or biodiversity governance. These pairs tend to reinforce heritage use models that rely on local livelihoods, land-use planning, and protection of natural and cultural assets, especially in the CHCP and related tourism planning contexts.",
-          "clash": "Possible misalignment recurs when tourism and heritage promotion, especially infrastructure, destination expansion, mobility, and urban development, overlaps with protected sites, ecological corridors, wetlands, coastal adaptation zones, forest priorities, or invasive-species controls. Friction is also flagged for review where large logistics or transport works could outpace consultation, zoning, and safeguard processes that heritage-linked territories and communities may depend on.",
-          "coordination_hint": "It would often help to sequence cultural heritage tourism plans with site-level zoning, community consultation, biodiversity screening, and coastal or watershed safeguards so expansion reinforces, rather than strains, protected and culturally significant landscapes.",
+          "storyline_name": "Link cultural participation safeguards to conservation delivery",
+          "reinforce": "Reinforcing pairs often align cultural heritage-relevant elements through community participation, traditional knowledge, access to information, and legal safeguards that support conservation, restoration, watershed management, and community livelihoods. This recurs where Indigenous peoples, Afro-descendant communities, local producers, ecotourism, handicrafts, and patrimonial or natural-capital planning are connected by governance frameworks, monitoring, and inclusive territorial decision-making.",
+          "clash": "Possible misalignment is flagged mainly where tourism expansion, roads, logistics, housing, energy, or other infrastructure could create land-use, access, or consultation pressure in territories also targeted for conservation, restoration, protected-area management, or traditional-knowledge safeguards. In this sector, the recurring friction tends to be delivery-related rather than a direct policy contradiction, and often points to siting, zoning, FPIC, and sequencing gaps around culturally significant or community-managed landscapes.",
+          "coordination_hint": "It may help to sequence tourism and infrastructure planning with early community consultation, FPIC-compatible procedures, and place-based zoning so cultural heritage-linked livelihoods and safeguards can reinforce, rather than be crowded by, conservation and development delivery.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2165,21 +2166,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_ecosystems_biodiversity",
         "category_name": "Ecosystems and biodiversity",
-        "aligned_count": 7195,
-        "flagged_count": 328,
+        "aligned_count": 7390,
+        "flagged_count": 353,
         "pool_composition": {
-          "primary_count": 7545,
-          "relevant_only_count": 807
+          "primary_count": 7574,
+          "relevant_only_count": 809
         },
         "contradiction_types": {
-          "delivery_friction": 305,
-          "resource_competition": 23
+          "delivery_friction": 314,
+          "resource_competition": 39
         },
         "synthesis": {
-          "storyline_name": "Strengthen biodiversity governance to enable delivery",
-          "reinforce": "Reinforcing pairs often point to biodiversity outcomes aligning with stronger governance, monitoring, legal frameworks, and transparency systems, for example on genetic resources and benefit-sharing, biosafety, protected areas, forest restoration, and species management. This also tends to reinforce cross-sector delivery where land-use planning, water management, digital tools, and innovation provide enabling conditions for conservation, restoration, and biodiversity reporting.",
-          "clash": "Possible misalignment recurs where infrastructure, logistics, tourism, housing, energy, reservoirs, and road building overlap with protected areas, forests, wetlands, watersheds, or adaptation territories, creating delivery friction through siting, habitat fragmentation, erosion, or local plan override risks. A second pattern is flagged for review where agricultural expansion, irrigation, export competitiveness, or trade facilitation may compete with restoration, organic soils, riparian protection, invasive-species controls, and species conservation unless zoning, safeguards, and water allocation are coordinated.",
-          "coordination_hint": "It tends to help to sequence biodiversity-sensitive spatial planning, routing, zoning, and monitoring early, so infrastructure, agriculture, water, and trade measures can align more consistently with protected areas, restoration landscapes, wetlands, and species priorities.",
+          "storyline_name": "Link conservation delivery with cross-sector governance tools",
+          "reinforce": "Ecosystems and biodiversity targets often align with broader governance, science, finance, and planning measures that can enable conservation delivery, such as biosafety regulation, STI systems, data flows, regulatory modernization, and community capacity. Stronger reinforcement recurs where documents directly pair restoration, protected areas, biological corridors, vegetation cover, and forest protection with shared management, financing, and monitoring mechanisms.",
+          "clash": "Possible misalignment is flagged mainly where infrastructure and productive expansion, especially roads, reservoirs, logistics, energy, housing, tourism, and industrial siting, may overlap with protected areas, corridors, wetlands, riparian zones, forests, and coastal ecosystems. Resource competition appears less often, but it recurs around reservoir development and land or water allocation pressures in watershed and forest landscapes targeted for conservation or sustainable land use.",
+          "coordination_hint": "This sector tends to benefit from integrated spatial planning, early siting review, and safeguards that connect biodiversity priorities with watershed, transport, energy, tourism, coastal, and industrial decisions.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2188,20 +2189,20 @@
         "taxonomy_type": "gga",
         "category_id": "gga_health",
         "category_name": "Health",
-        "aligned_count": 634,
-        "flagged_count": 3,
+        "aligned_count": 670,
+        "flagged_count": 6,
         "pool_composition": {
-          "primary_count": 521,
+          "primary_count": 528,
           "relevant_only_count": 272
         },
         "contradiction_types": {
-          "delivery_friction": 3
+          "delivery_friction": 6
         },
         "synthesis": {
           "storyline_name": "Link health delivery to climate and data systems",
-          "reinforce": "Health targets often align with broader climate adaptation, STI, and public-management reforms that strengthen epidemiological surveillance, interoperable information systems, workforce capability, and One Health style coordination. Reinforcement also recurs where hospital expansion, telemedicine, medical research, and urban green-blue planning can jointly support healthier and more climate-resilient service environments.",
-          "clash": "Possible misalignment is limited and indirect in this sector. The flagged cases point mainly to delivery friction at transport and logistics interfaces, where faster corridor and infrastructure expansion could weaken zoonotic-risk controls, inspections, traceability, or spatial safeguards unless coordination is built in.",
-          "coordination_hint": "Health implementation tends to benefit from early coordination with logistics, land-use, climate, and STI actors on surveillance data standards, inspection protocols, facility siting, and One Health risk management.",
+          "reinforce": "Health targets often align with climate adaptation, water and sanitation planning, and broader STI or digital-government measures. The recurring mechanism is enabling support, where climate-informed surveillance, health infrastructure, water security, and interoperable data systems reinforce more resilient service delivery and One Health evidence use.",
+          "clash": "Possible misalignment is limited and indirect in this sector sample. Friction flagged for review recurs where transport, logistics, tourism, road building, or industrial expansion could increase access, movement, or land-use pressure in ways that complicate wildlife control and risk-sensitive planning, which can matter for zoonotic-risk management linked to health.",
+          "coordination_hint": "It tends to help to connect health surveillance and facility planning with shared climate, water, land-use, and transport data, especially where One Health risks or infrastructure expansion overlap.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2210,21 +2211,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_infrastructure_settlements",
         "category_name": "Infrastructure and human settlements",
-        "aligned_count": 3916,
-        "flagged_count": 291,
+        "aligned_count": 3989,
+        "flagged_count": 349,
         "pool_composition": {
-          "primary_count": 2883,
-          "relevant_only_count": 1785
+          "primary_count": 2887,
+          "relevant_only_count": 1788
         },
         "contradiction_types": {
-          "delivery_friction": 265,
-          "resource_competition": 26
+          "delivery_friction": 303,
+          "resource_competition": 46
         },
         "synthesis": {
-          "storyline_name": "Linking climate and water intelligence to infrastructure delivery",
-          "reinforce": "Infrastructure and settlement actions often align with national climate, water, and science systems when those systems provide data, standards, or planning support for transport, water supply, sanitation, urban green space, and energy resilience. This recurs in pairs linking mobility, watershed services, and urban or service infrastructure with observatories, adaptation monitoring, water-information systems, green-transition regulation, and innovation capacity.",
-          "clash": "Possible misalignment is most often flagged where transport, logistics, housing, Canal, reservoir, or other built-infrastructure expansion overlaps forests, watersheds, biodiversity areas, coastal adaptation zones, or water and sanitation systems. The recurring mechanism is delivery friction over siting, land take, habitat fragmentation, water-resource pressure, tighter permitting, or induced development in the same territories targeted for restoration, conservation, or adaptation.",
-          "coordination_hint": "It tends to help to sequence infrastructure and settlement investments with territorial screening, watershed and biodiversity safeguards, utility coordination, and shared climate-risk and water-information platforms.",
+          "storyline_name": "Linking settlement planning with resilience infrastructure",
+          "reinforce": "Infrastructure and settlement targets often align with adaptation, water, waste, and digital-governance measures when they provide enabling systems such as sustainable building rules, housing programs, urban green and blue spaces, recycling infrastructure, early warning information, and open data. The sample also points to practical reinforcement through land-use planning, municipal capacity, and service networks, especially where housing, water governance, climate observatories, and urban environmental management need shared standards and local implementation.",
+          "clash": "Possible misalignment recurs where housing, roads, logistics corridors, ports, reservoirs, and other major infrastructure expand into the same land, watershed, coastal, or urban spaces targeted for forests, protective vegetation, marine-coastal adaptation, or urban green and blue areas. Friction is usually flagged for review as delivery pressure or resource competition, with concrete mechanisms including siting conflicts, land conversion, altered water flows, and competition for planning attention unless zoning, safeguards, and routing are coordinated.",
+          "coordination_hint": "It tends to help to sequence infrastructure and settlement delivery through shared spatial planning, watershed-to-coast assessment, and urban zoning so housing, mobility, water, and logistics investments can align with green space, restoration, and adaptation priorities.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2233,21 +2234,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_livelihoods",
         "category_name": "Livelihoods",
-        "aligned_count": 2775,
-        "flagged_count": 100,
+        "aligned_count": 2869,
+        "flagged_count": 102,
         "pool_composition": {
-          "primary_count": 1231,
-          "relevant_only_count": 2058
+          "primary_count": 1244,
+          "relevant_only_count": 2061
         },
         "contradiction_types": {
-          "delivery_friction": 84,
-          "resource_competition": 16
+          "delivery_friction": 83,
+          "resource_competition": 19
         },
         "synthesis": {
-          "storyline_name": "Link livelihood delivery to environmental governance",
-          "reinforce": "Livelihood-related actions often align when local income activities, training, ecotourism, agrotourism, irrigation, or forestry-linked quality-of-life goals are reinforced by broader governance, science, water, and risk-management measures. The sample repeatedly points to enabling links where regulation, early warning, STI capacity, water services, and community networks support more resilient local production and service-based livelihoods, especially in the Canal watershed and rural territories.",
-          "clash": "Possible misalignment is most often flagged where livelihood expansion, especially agro-industrial support, irrigation, roads, logistics, and tourism infrastructure, may add pressure on forests, ecological corridors, wild species, wetlands, or biodiversity-sensitive incentives. A second recurring issue is resource competition in shared watershed spaces, where sustainable land-use or protected-area objectives can compete with irrigation and production demands for land and water allocation.",
-          "coordination_hint": "It tends to help to sequence livelihood investments with zoning, biodiversity and water safeguards, subsidy screening, and territorial participation mechanisms, particularly in shared watershed and productive landscapes.",
+          "storyline_name": "Link livelihood resilience to land and water stewardship",
+          "reinforce": "Livelihood-related actions often align when they pair community income opportunities with restoration, protected-area management, watershed health, and climate-risk information. The sample repeatedly shows enabling links through incentives, ecotourism or agrotourism, forestry and agri-food support, financial inclusion, and monitoring systems that can help target resilient local production and vulnerable groups.",
+          "clash": "Possible misalignment recurs where livelihood expansion depends on roads, logistics, housing, agro-industrial growth, energy, reservoirs, or forestry industry development in the same landscapes targeted for conservation, restoration, organic soils protection, or watershed management. The flagged pattern is mainly delivery friction, with some resource competition over land, water, infrastructure siting, and institutional attention in protected areas, Canal watershed zones, and productive rural territories.",
+          "coordination_hint": "It tends to help to screen livelihood and productive investments through shared spatial zoning, watershed and biodiversity safeguards, and local adaptation data so income-generation measures can be directed toward compatible areas and practices.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2256,21 +2257,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_water",
         "category_name": "Water",
-        "aligned_count": 4185,
-        "flagged_count": 155,
+        "aligned_count": 4261,
+        "flagged_count": 172,
         "pool_composition": {
           "primary_count": 2540,
-          "relevant_only_count": 2066
+          "relevant_only_count": 2072
         },
         "contradiction_types": {
-          "delivery_friction": 122,
-          "resource_competition": 33
+          "delivery_friction": 123,
+          "resource_competition": 49
         },
         "synthesis": {
-          "storyline_name": "Link watershed planning with water service delivery",
-          "reinforce": "Water targets often align with cross-cutting planning, institutional strengthening, and adaptation measures that improve watershed governance, risk management, and service expansion. The sample repeatedly points to reinforcement between water security actions and local adaptation plans, land-use planning, institutional capacity, participation, and restoration of riparian or recharge areas.",
-          "clash": "Possible misalignment recurs where water infrastructure, logistics corridors, reservoirs, irrigation, roads, or other productive expansion overlap the same basins, recharge zones, wetlands, protected areas, or adaptation-priority territories. Flagged pairs often point to delivery friction from siting and construction impacts, and resource competition between potable supply, Canal reliability, irrigation, and other users drawing on finite freshwater in shared watersheds.",
-          "coordination_hint": "It tends to help to use basin-level spatial planning, water allocation rules, environmental flows, and early consultation so water supply, watershed protection, and competing infrastructure or production uses can be sequenced coherently.",
+          "storyline_name": "Strengthen water governance through shared planning and data",
+          "reinforce": "Water targets often align with broader governance, conservation, and capacity-building measures that improve monitoring, early warning, planning, regulation, and institutional capability. This recurs in pairings between PNSH actions and open data, public-sector professionalization, protected-area management, watershed restoration, sanitation planning, and education or research on sustainable water use.",
+          "clash": "Possible misalignment is most often flagged where water availability or water-related infrastructure, especially reservoirs, drainage works, and basin interventions, may create delivery friction with forest protection, wetland or organic-soil conservation, protected areas, and restoration priorities. A second recurring pattern flagged for review is resource competition over shared watershed land and water, particularly where Canal reliability, logistics, agro-industrial expansion, or other infrastructure could intensify pressure on water governance and allocation in overlapping basins.",
+          "coordination_hint": "It tends to help to coordinate basin-level spatial planning, permitting, hydrological data systems, and environmental safeguards so water investments reinforce conservation and service goals rather than adding pressure in the same watersheds.",
           "confidence": "high"
         },
         "synthesis_error": null

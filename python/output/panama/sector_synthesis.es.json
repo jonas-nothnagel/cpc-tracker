@@ -16,9 +16,9 @@
       },
       "synthesis": {
         "storyline_name": "Vinculación de los incentivos a la bioprospección con salvaguardias y participación",
-        "reinforce": "El acceso y la participación en los beneficios suelen estar alineados cuando la bioprospección, el biocomercio y la financiación relacionada se combinan con la participación de las comunidades, el reconocimiento de los conocimientos tradicionales, la participación justa y equitativa en los beneficios y las salvaguardias sociales. También tienden a reforzar instrumentos nacionales de gobernanza, como los marcos jurídicos, el seguimiento, el MRV, la bioseguridad y la arquitectura financiera, que pueden respaldar una ejecución responsable de proyectos basados en la biodiversidad.",
+        "reinforce": "El acceso y la participación en los beneficios suelen estar alineados cuando la bioprospección, el biocomercio y la financiación conexa se combinan con la participación de las comunidades, el reconocimiento de los conocimientos tradicionales, la participación justa y equitativa en los beneficios y las salvaguardias sociales. También tiende a reforzar instrumentos nacionales de gobernanza, como los marcos jurídicos, el seguimiento, el MRV, la bioseguridad y la arquitectura financiera, que pueden respaldar una ejecución responsable de proyectos basados en la biodiversidad.",
         "clash": "La posible desalineación reaparece cuando la gobernanza relacionada con ABS o las medidas de bioprospección coinciden con grandes obras de infraestructura, logística, vivienda, energía o cuencas hidrográficas que podrían afectar el acceso a los recursos biológicos, los territorios controlados por las comunidades o la integridad de los ecosistemas. La mayoría de los casos señalados apuntan a fricciones en la implementación, con un patrón menor de competencia por recursos de tierra y agua en paisajes vinculados al Canal u otros paisajes de desarrollo, y normalmente se señalan para revisión en lugar de tratarse como una contradicción directa de objetivos.",
-        "coordination_hint": "Este sector probablemente se beneficiaría de una planificación espacial temprana, procedimientos de FPIC y participación, y coordinación de permisos y salvaguardias, de modo que los arreglos de uso y distribución de beneficios basados en la biodiversidad puedan avanzar junto con la ejecución de infraestructuras y del uso de la tierra.",
+        "coordination_hint": "Este sector probablemente se beneficiaría de una planificación espacial temprana, procedimientos de FPIC y participación, y coordinación de permisos y salvaguardias para que los arreglos de uso y distribución de beneficios basados en la biodiversidad puedan avanzar junto con la ejecución de infraestructuras y del uso de la tierra.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -40,8 +40,8 @@
       "synthesis": {
         "storyline_name": "Fortalecer la sensibilización, el seguimiento y la gestión comunitaria",
         "reinforce": "Este sector suele estar alineado cuando la sensibilización sobre la biodiversidad, la capacitación, la comunicación y el seguimiento se utilizan como herramientas facilitadoras para la conservación de los bosques, REDD+, el biocomercio y la participación comunitaria. La muestra señala repetidamente un refuerzo mediante la divulgación pública, la participación culturalmente apropiada de los pueblos indígenas y las comunidades locales, los sistemas técnicos de seguimiento y los marcos de gobernanza que mejoran la manera en que el conocimiento sobre biodiversidad se genera, se comparte y se aplica.",
-        "clash": "La posible desalineación reaparece cuando la sensibilización sobre la biodiversidad, la protección de las especies, la participación basada en FPIC, o los esfuerzos comunitarios de bioprospección y ecoturismo se encuentran con infraestructuras de transporte, logística, vivienda, turismo o relacionadas con el Canal en territorios superpuestos. Los pares señalados suelen apuntar a fricciones en la implementación y, ocasionalmente, a competencia por los recursos, debido al aumento del acceso, la presión sobre el uso del suelo, la perturbación del hábitat o las demandas adicionales sobre los mismos espacios de cuencas hidrográficas y bosques, lo que puede requerir salvaguardias, zonificación y secuenciación.",
-        "coordination_hint": "Suele ser útil vincular desde el inicio las acciones de sensibilización y conocimiento sobre la biodiversidad con la planificación espacial, los procesos de FPIC, los controles de visitantes y de acceso, y los sistemas de seguimiento allí donde la infraestructura, el turismo o la expansión productiva puedan superponerse con ecosistemas sensibles o territorios indígenas y rurales.",
+        "clash": "La posible desalineación reaparece cuando la sensibilización sobre la biodiversidad, la protección de las especies, la participación basada en FPIC, o los esfuerzos comunitarios de bioprospección y ecoturismo se encuentran con infraestructuras de transporte, logística, vivienda, turismo o relacionadas con el Canal en territorios superpuestos. Los pares señalados suelen apuntar a fricciones en la implementación y, ocasionalmente, a competencia por los recursos, mediante un mayor acceso, presión sobre el uso del suelo, perturbación del hábitat o mayores demandas sobre los mismos espacios de cuencas hidrográficas y bosques, lo que puede requerir salvaguardias, zonificación y secuenciación.",
+        "coordination_hint": "Suele ser útil vincular desde una etapa temprana las acciones de sensibilización y conocimiento sobre la biodiversidad con la planificación espacial, los procesos de FPIC, los controles de visitantes y de acceso, y los sistemas de seguimiento allí donde la infraestructura, el turismo o la expansión productiva puedan superponerse con ecosistemas sensibles o territorios indígenas y rurales.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -61,8 +61,8 @@
       },
       "synthesis": {
         "storyline_name": "Fortalecer la bioseguridad mediante la gobernanza y los controles fronterizos",
-        "reinforce": "La política de bioseguridad suele estar alineada con medidas más amplias de gobernanza ambiental que refuerzan la delimitación de las funciones institucionales, la modernización regulatoria, los protocolos de seguimiento, los sistemas de información, la trazabilidad y la presentación de informes públicos. También tiende a reforzar las medidas de bioprospección y biocomercio relacionadas con la biotecnología al proporcionar condiciones de autorización, supervisión y distribución de beneficios para una implementación más segura.",
-        "clash": "La posible desalineación se señala repetidamente allí donde la prevención de especies invasoras o la supervisión de la bioseguridad coinciden con la expansión de la logística, la modernización del Canal y de los corredores, la construcción de carreteras, la infraestructura energética y de vivienda, o las obras hidráulicas. La fricción recurrente está relacionada con la ejecución, porque un movimiento más rápido de bienes, materiales y personas, o el uso de especies exóticas en la reforestación, puede aumentar las vías de introducción o superar la capacidad de inspección, control, trazabilidad y gestión.",
+        "reinforce": "La política de bioseguridad suele alinearse con medidas más amplias de gobernanza ambiental que refuerzan la delimitación de las funciones institucionales, la modernización regulatoria, los protocolos de seguimiento, los sistemas de información, la trazabilidad y la presentación de informes públicos. También tiende a reforzar las medidas de bioprospección y biocomercio relacionadas con la biotecnología al proporcionar condiciones de autorización, supervisión y distribución de beneficios para una implementación más segura.",
+        "clash": "La posible desalineación se señala repetidamente allí donde la prevención de especies invasoras o la supervisión de la bioseguridad coinciden con la expansión logística, la modernización del Canal y de los corredores, la construcción de carreteras, la infraestructura energética y de vivienda, o las obras hidráulicas. La fricción recurrente está relacionada con la ejecución, porque un movimiento más rápido de bienes, materiales y personas, o el uso de especies exóticas en la reforestación, puede aumentar las vías de introducción o superar la capacidad de inspección, control, trazabilidad y gestión.",
         "coordination_hint": "Puede ser útil integrar la bioseguridad y la detección de especies invasoras, la trazabilidad y las salvaguardias específicas para cada sitio en los procedimientos de transporte, comercio, reforestación y ejecución de infraestructuras en puertos, corredores, cuencas hidrográficas y otros puntos de entrada o perturbación.",
         "confidence": "high"
       },
@@ -83,10 +83,10 @@
         "resource_competition": 104
       },
       "synthesis": {
-        "storyline_name": "Vincular la financiación verde, la gobernanza y la implementación local",
-        "reinforce": "Los pares de refuerzo suelen apuntar a un patrón de economía verde en el que el fortalecimiento institucional para REDD+, las salvaguardias, el monitoreo, la transparencia y la detección de delitos ambientales se alinea con la financiación climática, de biodiversidad y de tierras, especialmente en torno a la reforestación y el despliegue de fondos. La muestra también tiende a mostrar vínculos facilitadores desde la capacitación comunitaria, el biocomercio, el ecoturismo, la inclusión, la innovación y la planificación territorial hacia trayectorias de producción y restauración más verdes, incluso cuando los sistemas de implementación son separados.",
+        "storyline_name": "Vincular las finanzas verdes, la gobernanza y la implementación a nivel local",
+        "reinforce": "Los pares de refuerzo suelen apuntar a un patrón de economía verde en el que el fortalecimiento institucional para REDD+, las salvaguardias, el monitoreo, la transparencia y la detección de delitos ambientales se alinea con la financiación climática, de biodiversidad y de tierras, especialmente en torno a la reforestación y el despliegue de fondos. La muestra también tiende a mostrar vínculos facilitadores desde la capacitación comunitaria, el biocomercio, el ecoturismo, la inclusión, la innovación y la planificación territorial hacia trayectorias de producción y restauración más ecológicas, incluso cuando los sistemas de implementación son separados.",
         "clash": "La posible desalineación se repite cuando los objetivos de economía verde para la protección de los bosques, las áreas protegidas, los humedales, las salvaguardias de biodiversidad y la restauración se señalan para revisión frente a corredores logísticos, carreteras, puertos, embalses, expansión de la vivienda, riego y otros grandes cambios de infraestructura o de uso del suelo. Un patrón menor pero reiterado de competencia por los recursos aparece en torno a la tierra y el agua compartidas, especialmente entre la expansión agrícola o la vivienda y el suministro de agua potable, los territorios de biocomercio o los usos del suelo orientados a la conservación.",
-        "coordination_hint": "A menudo sería útil coordinar este sector mediante una planificación espacial temprana, normas de asignación de cuencas hidrográficas y tierras, integración de salvaguardias, y el uso de REDD+, biodiversidad y sistemas de monitoreo para orientar las decisiones sobre infraestructura, vivienda e inversión productiva.",
+        "coordination_hint": "A menudo sería útil coordinar este sector mediante una planificación espacial temprana, normas de asignación de cuencas hidrográficas y tierras, integración de salvaguardias, y el uso de REDD+, biodiversidad y sistemas de monitoreo para orientar las decisiones de inversión en infraestructura, vivienda y producción.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -107,9 +107,9 @@
       },
       "synthesis": {
         "storyline_name": "Vincular la gobernanza de la biodiversidad con el monitoreo forestal y los incentivos",
-        "reinforce": "Los pares de refuerzo suelen alinear la planificación y la financiación de la biodiversidad con REDD+, la gestión de áreas protegidas y la gobernanza forestal mediante el monitoreo, la transparencia, la valoración de los servicios ecosistémicos y mecanismos de incentivos como los pagos por resultados y el apoyo a la restauración. Un segundo patrón recurrente es que la seguridad jurídica de los territorios indígenas, los conocimientos tradicionales y el fortalecimiento de capacidades adaptado a las comunidades tiende a reforzar la planificación de la conservación al mejorar la legitimidad de la implementación, la calidad de los datos y los mecanismos de distribución de beneficios.",
-        "clash": "La posible desalineación se señala repetidamente allí donde los instrumentos de planificación de la biodiversidad y los bosques, incluidos REDD+, la protección de manglares, la restauración y la gobernanza de las áreas protegidas, coinciden con corredores logísticos, infraestructura del Canal y vial, expansión de la vivienda, crecimiento del turismo, expansión energética o desarrollo agroindustrial. La fricción suele referirse a la presión de ejecución sobre los mismos paisajes, cuencas hidrográficas o áreas sensibles a los bosques y, en un conjunto menor de casos, a la competencia por recursos finitos de tierra o agua que podría debilitar los resultados de restauración, conectividad o conservación sin zonificación, emplazamiento y salvaguardias.",
-        "coordination_hint": "Este sector suele señalar la necesidad de conectar la financiación para la biodiversidad, el seguimiento y la gobernanza territorial con la planificación espacial temprana, la asignación de cuencas hidrográficas y la concesión de permisos para infraestructuras, de modo que la ejecución del desarrollo pueda alinearse con las prioridades de conservación y restauración.",
+        "reinforce": "Los pares de refuerzo suelen alinear la planificación y la financiación de la biodiversidad con REDD+, la gestión de áreas protegidas y la gobernanza forestal mediante el monitoreo, la transparencia, la valoración de los servicios ecosistémicos y mecanismos de incentivos como los pagos por resultados y el apoyo a la restauración. Un segundo patrón recurrente es que la seguridad jurídica de los territorios indígenas, los conocimientos tradicionales y el fortalecimiento de capacidades adaptado a las comunidades tienden a reforzar la planificación de la conservación al mejorar la legitimidad de la implementación, la calidad de los datos y los mecanismos de distribución de beneficios.",
+        "clash": "La posible desalineación se señala repetidamente allí donde los instrumentos de planificación de la biodiversidad y los bosques, incluidos REDD+, la protección de manglares, la restauración y la gobernanza de las áreas protegidas, coinciden con corredores logísticos, infraestructura del Canal y vial, expansión de la vivienda, crecimiento del turismo, expansión de la energía o desarrollo agroindustrial. La fricción suele referirse a la presión de ejecución sobre los mismos paisajes, cuencas hidrográficas o áreas sensibles para los bosques y, en un conjunto menor de casos, a la competencia por recursos finitos de tierra o agua que podría debilitar los resultados de restauración, conectividad o conservación sin zonificación, emplazamiento y salvaguardias.",
+        "coordination_hint": "Este sector suele señalar la necesidad de conectar la financiación de la biodiversidad, el seguimiento y la gobernanza territorial con la planificación espacial temprana, la asignación de cuencas hidrográficas y la concesión de permisos para infraestructuras, de modo que la ejecución del desarrollo pueda alinearse con las prioridades de conservación y restauración.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -131,7 +131,7 @@
       "synthesis": {
         "storyline_name": "Fortalecer el control de la contaminación mediante datos e instituciones",
         "reinforce": "La gestión de la contaminación suele alinearse con medidas de gobernanza transversales que fortalecen las líneas de base, el monitoreo, la retroalimentación ciudadana, la capacidad institucional y las metodologías estandarizadas, especialmente para los residuos sólidos urbanos, el desperdicio de alimentos, los plásticos y los sistemas más amplios de información ambiental. El refuerzo también es recurrente cuando la reducción de la contaminación en las cuencas hidrográficas, la ampliación del saneamiento y los enfoques de economía circular respaldan condiciones ambientales más limpias, incluso cuando las metas emparejadas se centran principalmente en la gobernanza forestal, hídrica o climática.",
-        "clash": "La posible desalineación se señala repetidamente cuando los corredores logísticos, las carreteras, los puertos, la vivienda, los embalses, el riego y otras expansiones de infraestructura o producción podrían aumentar la escorrentía, los flujos de desechos, las cargas químicas o la presión sobre las mismas cuencas hidrográficas y sistemas costeros objeto de medidas de reducción de la contaminación. La competencia por los recursos es menos común, pero se señala para revisión cuando las principales inversiones relacionadas con el agua y los canales pueden recurrir a la misma capacidad finita del agua o de los sistemas acuáticos necesaria para lograr resultados en materia de agua potable, saneamiento, seguimiento y gestión de la contaminación.",
+        "clash": "La posible desalineación se señala repetidamente cuando los corredores logísticos, las carreteras, los puertos, la vivienda, los embalses, el riego y otras expansiones de infraestructura o producción podrían aumentar la escorrentía, los flujos de desechos, las cargas químicas o la presión sobre las mismas cuencas hidrográficas y sistemas costeros objeto de reducción de la contaminación. La competencia por los recursos es menos común, pero se señala para revisión cuando las principales inversiones relacionadas con el agua y los canales pueden recurrir a la misma capacidad finita de agua o de los sistemas acuáticos necesaria para los resultados en materia de agua potable, saneamiento, monitoreo y gestión de la contaminación.",
         "coordination_hint": "Suele ser útil vincular los objetivos de contaminación con la ubicación de los corredores, las salvaguardias de cuencas hidrográficas y costeras, los sistemas de residuos portuarios y logísticos, y los acuerdos compartidos de asignación y seguimiento del agua desde las primeras etapas del diseño del proyecto.",
         "confidence": "high"
       },
@@ -153,7 +153,7 @@
       },
       "synthesis": {
         "storyline_name": "fortalecimiento de la gobernanza, el seguimiento y la restauración de las áreas protegidas",
-        "reinforce": "Las medidas de áreas protegidas y conservación suelen alinearse con planes de gestión más sólidos, demarcación de límites, restauración con especies nativas, capacidad de guardaparques y de aplicación de la normativa, y sistemas nacionales de monitoreo para bosques, humedales y ecosistemas marino-costeros. La muestra también señala un apoyo facilitador de las finanzas, la seguridad territorial indígena, la participación inclusiva y los sistemas científicos o de datos que pueden reforzar la implementación de la conservación.",
+        "reinforce": "Las medidas de áreas protegidas y conservación suelen alinearse con planes de gestión más sólidos, la demarcación de límites, la restauración con especies nativas, la capacidad de guardaparques y de aplicación de la normativa, y los sistemas nacionales de monitoreo de bosques, humedales y ecosistemas marino-costeros. La muestra también señala el apoyo facilitador de la financiación, la seguridad territorial indígena, la participación inclusiva y los sistemas científicos o de datos que pueden reforzar la implementación de la conservación.",
         "clash": "La posible desalineación se repite cuando el transporte, la logística, la vivienda, los embalses, la energía, el turismo, el crecimiento industrial o la expansión agroindustrial pueden ejercer presión sobre las áreas protegidas, las zonas de amortiguamiento, los corredores biológicos, los manglares, los bosques y los ecosistemas conectados de cuenca a costa. La mayoría de los casos señalados corresponden a fricciones de implementación más que a una contradicción directa, y a menudo apuntan a riesgos derivados de la ubicación, el trazado, el cambio de uso del suelo, la fragmentación o las reivindicaciones superpuestas sobre tierras destinadas a la conservación o la restauración.",
         "coordination_hint": "Suele ser útil utilizar la zonificación, la clarificación de límites, las salvaguardias ambientales y los datos de seguimiento compartidos en una fase temprana de la planificación de infraestructuras, turismo, agricultura, energía y agua cuando las áreas protegidas o los paisajes de conservación conectados puedan verse afectados.",
         "confidence": "high"
@@ -177,7 +177,7 @@
       "synthesis": {
         "storyline_name": "Vincular la ejecución de la restauración con la gobernanza de las cuencas hidrográficas y los bosques",
         "reinforce": "La restauración en estos pares suele estar alineada con el monitoreo forestal, la aplicación de la normativa, las salvaguardias, la gestión de áreas protegidas y la arquitectura financiera, especialmente cuando la reforestación, la regeneración natural, la recuperación ribereña y los corredores biológicos dependen de instituciones más sólidas y de MRV. También tiende a reforzar las agendas de seguridad hídrica y adaptación costera, porque la restauración de cuencas hidrográficas, las medidas relativas a manglares y humedales, y la planificación de áreas protegidas apuntan a geografías de implementación compartidas y beneficios hidrológicos.",
-        "clash": "La posible desalineación se repite cuando las áreas de restauración pueden enfrentar fricciones en la ejecución derivadas de infraestructuras de vivienda, transporte, energía, turismo, Canal y logística, especialmente cuando el trazado, la ubicación o la expansión urbana alcanzan áreas protegidas, zonas de amortiguamiento, corredores, humedales o espacios costeros. Un patrón menor se señala para revisión como competencia por los recursos, cuando las plantaciones comerciales, los embalses o la expansión urbana podrían competir con suelos orgánicos, humedales, áreas de carbono forestal u otras tierras priorizadas para la restauración y la conservación.",
+        "clash": "La posible desalineación se repite allí donde las áreas de restauración pueden enfrentar fricciones de implementación derivadas de la infraestructura de vivienda, transporte, energía, turismo, Canal y logística, especialmente cuando el trazado, la ubicación o la expansión urbana alcanzan áreas protegidas, zonas de amortiguamiento, corredores, humedales o espacios costeros. Se señala para revisión un patrón menor como competencia por los recursos, en el que las plantaciones comerciales, los embalses o la expansión urbana podrían competir con los suelos orgánicos, los humedales, las áreas de carbono forestal u otras tierras priorizadas para la restauración y la conservación.",
         "coordination_hint": "Este sector a menudo se beneficiaría de una zonificación espacial temprana, una planificación a escala de cuenca hidrográfica y una evaluación basada en salvaguardias, de modo que las prioridades de restauración puedan secuenciarse junto con la infraestructura, la vivienda y los usos productivos del suelo.",
         "confidence": "high"
       },
@@ -200,8 +200,8 @@
       "synthesis": {
         "storyline_name": "Vincular la implementación del uso sostenible mediante la gestión comunitaria",
         "reinforce": "Los pares de refuerzo suelen indicar que el uso sostenible se alinea con la protección forestal basada en la comunidad, la participación inclusiva y los incentivos compatibles con los medios de vida, especialmente en torno a REDD+, el biocomercio, el comercio de productos de la biodiversidad y el bienestar vinculado a la silvicultura. La muestra también tiende a mostrar una alineación más flexible con los sistemas facilitadores, como el monitoreo, la capacitación, la planificación del uso de la tierra, la reducción de la contaminación y la restauración de cuencas hidrográficas o zonas costeras, cuando estos crean mejores condiciones para las actividades de uso sostenible sin requerir una implementación estrechamente compartida.",
-        "clash": "La posible desalineación se repite cuando las medidas de uso sostenible en bosques, manglares, cuencas hidrográficas, áreas protegidas y gestión de especies silvestres coinciden con la expansión de grandes infraestructuras, vivienda, logística, embalses o industria en paisajes superpuestos. Los pares señalados también apuntan a cierta competencia por los recursos, especialmente en relación con la tierra, el agua y la atención institucional, lo que sugiere la necesidad de revisar la ubicación, la zonificación, las salvaguardias y la secuenciación, en lugar de una contradicción directa de políticas.",
-        "coordination_hint": "Suele ser útil evaluar desde el inicio las principales inversiones en tierras y aguas en función de las áreas de uso sostenible, utilizando planificación espacial participativa, procedimientos de salvaguardia y diseño de proyectos sensibles a las cuencas hidrográficas o a los bosques.",
+        "clash": "La posible desalineación se repite cuando las medidas de uso sostenible en bosques, manglares, cuencas hidrográficas, áreas protegidas y gestión de especies silvestres coinciden con la expansión de grandes infraestructuras, vivienda, logística, embalses o industria en paisajes superpuestos. Los pares señalados también apuntan a cierta competencia por los recursos, especialmente en relación con la tierra, el agua y la atención institucional, lo que sugiere la necesidad de revisar la ubicación, la zonificación, las salvaguardias y la secuenciación, más que una contradicción directa de políticas.",
+        "coordination_hint": "Suele ser útil evaluar desde el inicio las principales inversiones en tierras y aguas en relación con las áreas de uso sostenible, utilizando planificación espacial participativa, procedimientos de salvaguardia y un diseño de proyectos sensible a las cuencas hidrográficas o a los bosques.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -223,8 +223,8 @@
       "synthesis": {
         "storyline_name": "Fortalecer la protección de los hábitats mediante la planificación y el seguimiento",
         "reinforce": "Este sector suele estar alineado cuando las metas de protección y restauración de hábitats están respaldadas por sistemas habilitadores, como la ampliación de las áreas protegidas, normas más estrictas para los manglares, líneas de base para la restauración, sistemas de seguimiento y marcos regulatorios o de financiación. La muestra también muestra un refuerzo recurrente entre las medidas de conservación a nivel de sitio, como la gestión de áreas protegidas, el control de especies invasoras, la restauración y las normas de uso sostenible, especialmente cuando intervienen mecanismos compartidos de zonificación, vigilancia, datos y gobernanza.",
-        "clash": "La posible desalineación se señala con mayor frecuencia cuando la expansión costera, logística, industrial, turística, hídrica o de los sectores productivos podría añadir presión de uso del suelo o de infraestructura en manglares, humedales costeros, zonas de adaptación marino-costeras, corredores biológicos o áreas protegidas. Un patrón recurrente menor es la competencia por los recursos, en la que la expansión de áreas protegidas, la restauración o la planificación de la adaptación pueden competir con la producción forestal o el desarrollo de embalses y riego por recursos compartidos de tierra o agua.",
-        "coordination_hint": "Este sector tiende a beneficiarse de una zonificación espacial temprana, la planificación costera y de cuencas hidrográficas, y el uso de sistemas de seguimiento de hábitats y salvaguardias para orientar la infraestructura, la producción y la restauración hacia ubicaciones compatibles.",
+        "clash": "La posible desalineación se señala con mayor frecuencia cuando la expansión costera, logística, industrial, turística, hídrica o de los sectores productivos podría añadir presión de uso del suelo o de infraestructura en manglares, humedales costeros, zonas de adaptación marino-costeras, corredores biológicos o áreas protegidas. Un patrón recurrente menor es la competencia por los recursos, donde la expansión de áreas protegidas, la restauración o la planificación de la adaptación pueden competir con la producción forestal o el desarrollo de embalses y riego por recursos compartidos de tierra o agua.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la zonificación espacial temprana, la planificación costera y de cuencas hidrográficas, y el uso de sistemas de seguimiento de hábitats y salvaguardias para orientar la infraestructura, la producción y la restauración hacia ubicaciones compatibles.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -245,7 +245,7 @@
       },
       "synthesis": {
         "storyline_name": "Vincular la agricultura sostenible con la gestión responsable de las cuencas hidrográficas y de las comunidades",
-        "reinforce": "Los pares de refuerzo suelen señalar medidas de agricultura y ganadería alineadas con la restauración de cuencas hidrográficas, la agroforestería, la reducción de la contaminación y la transformación agroalimentaria climáticamente inteligente. El mecanismo recurrente es el fortalecimiento de capacidades, los proyectos piloto, la capacitación de productores, la certificación y la coordinación local que ayudan a los productores a adoptar prácticas de menor impacto, al tiempo que apoyan los medios de vida rurales y las funciones de los ecosistemas.",
+        "reinforce": "Los pares de refuerzo suelen señalar medidas de agricultura y ganadería alineadas con la restauración de cuencas hidrográficas, la agroforestería, la reducción de la contaminación y la transformación agroalimentaria climáticamente inteligente. El mecanismo recurrente es el fortalecimiento de capacidades, los proyectos piloto, la capacitación de productores, la certificación y la coordinación local, que ayudan a los productores a adoptar prácticas de menor impacto al tiempo que apoyan los medios de vida rurales y las funciones de los ecosistemas.",
         "clash": "La posible desalineación se señala con mayor frecuencia para revisión cuando la modernización agrícola, la promoción de las exportaciones, el riego o la infraestructura conexa podrían aumentar la presión sobre los bosques, las áreas de restauración, los corredores biológicos, los manglares o los territorios protegidos e indígenas. Una segunda fricción recurrente es la competencia por los recursos en torno a la tierra y el agua, especialmente cuando la expansión agroindustrial o el riego pueden competir con la reforestación, la restauración o el suministro de agua potable en paisajes rurales compartidos.",
         "coordination_hint": "Suele ser útil coordinar el apoyo agrícola, el riego, las carreteras y la infraestructura de exportación con la zonificación del uso de la tierra a nivel de cuenca, las salvaguardias de biodiversidad y las normas de asignación de agua en los mismos paisajes productivos.",
         "confidence": "high"
@@ -269,7 +269,7 @@
       "synthesis": {
         "storyline_name": "Vincular la gobernanza de las cuencas hidrográficas con la planificación territorial y de infraestructuras",
         "reinforce": "La gestión del agua suele alinearse con una gobernanza más amplia de la tierra, los bosques y la adaptación, especialmente cuando la protección de cuencas hidrográficas, la restauración ribereña, la planificación urbana azul-verde, el monitoreo de riesgos y el fortalecimiento institucional refuerzan la sostenibilidad del agua y la resiliencia de los servicios. La muestra también señala vínculos facilitadores entre los servicios de agua y otros sectores, como el turismo, la producción sostenible y la gestión forestal, donde una mejor infraestructura o gobernanza del agua respalda la prestación sin requerir una implementación estrechamente compartida.",
-        "clash": "La posible desalineación se repite allí donde la infraestructura principal de recursos hídricos o logística, especialmente las inversiones vinculadas al Canal y los embalses, puede complicar la protección de cuencas hidrográficas, la implementación de REDD+, la restauración, la reducción de la contaminación o los procesos de salvaguardias comunitarias en cuencas superpuestas. También se señala para revisión la competencia por los recursos allí donde la disponibilidad finita de agua, tierra, financiación o capacidad de prestación de servicios puede verse atraída entre el suministro del Canal, el riego, la expansión logística, la agricultura y los objetivos universales de agua y saneamiento.",
+        "clash": "La posible desalineación reaparece cuando la infraestructura principal de recursos hídricos o logística, especialmente las inversiones vinculadas al Canal y los embalses, puede complicar la protección de cuencas hidrográficas, la implementación de REDD+, la restauración, la reducción de la contaminación o los procesos de salvaguardias comunitarias en cuencas superpuestas. La competencia por los recursos también se señala para revisión cuando la disponibilidad finita de agua, tierra, financiación o capacidad de servicios puede verse atraída entre el suministro del Canal, el riego, la expansión logística, la agricultura y los objetivos universales de agua y saneamiento.",
         "coordination_hint": "Suele ser útil secuenciar tempranamente la planificación del uso de la tierra a nivel de cuenca, la asignación de agua, la consulta sobre salvaguardias y el monitoreo ambiental, especialmente cuando las acciones relativas a embalses, transporte, restauración y ampliación de servicios pueden converger en la misma cuenca hidrográfica.",
         "confidence": "high"
       },
@@ -292,8 +292,8 @@
       "synthesis": {
         "storyline_name": "Fortalecer la gobernanza de REDD+ y las salvaguardias comunitarias",
         "reinforce": "Los pares de refuerzo suelen indicar una fuerte alineación entre las acciones de gestión forestal y los sistemas habilitadores de REDD+, especialmente las salvaguardias, la transparencia, la coordinación descentralizada, el monitoreo y la participación de los pueblos indígenas, las mujeres y la juventud. Esto se repite allí donde medidas más amplias de transparencia climática, participación comunitaria, FPIC y capacidad institucional refuerzan la gestión de las áreas protegidas, la restauración, la implementación de incentivos y la supervisión forestal.",
-        "clash": "La posible desalineación se señala con mayor frecuencia cuando el transporte, la energía, el agua, la vivienda, el turismo, la logística o la expansión agrícola podrían generar fricciones en la implementación en paisajes forestales, cuencas hidrográficas o territorios indígenas pertinentes para la conservación, la restauración o la implementación de REDD+. Una fricción recurrente menor se señala para revisión entre instrumentos orientados a la conservación, como los pagos por servicios ecosistémicos o la protección de manglares, y la expansión de la industria forestal cuando la zonificación, el abastecimiento o la ubicación aún pueden no estar claros.",
-        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la aplicación de salvaguardas y los mecanismos de participación, especialmente cuando la infraestructura, la expansión productiva o las obras en cuencas hidrográficas pueden cruzarse con áreas REDD+, zonas de restauración o territorios forestales indígenas.",
+        "clash": "La posible desalineación se señala con mayor frecuencia cuando el transporte, la energía, el agua, la vivienda, el turismo, la logística o la expansión agrícola podrían generar fricciones en la implementación en paisajes forestales, cuencas hidrográficas o territorios indígenas pertinentes para la conservación, la restauración o la implementación de REDD+. Una fricción recurrente menor se señala para revisión entre instrumentos orientados a la conservación, como los pagos por servicios ecosistémicos o la protección de manglares, y la expansión de la industria forestal, cuando la zonificación, el abastecimiento o la ubicación aún podrían no estar claros.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la aplicación de salvaguardas y los mecanismos de participación, especialmente cuando la infraestructura, la expansión productiva o las obras en cuencas hidrográficas pueden intersectar con áreas REDD+, zonas de restauración o territorios forestales indígenas.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -314,7 +314,7 @@
       },
       "synthesis": {
         "storyline_name": "Vincular la protección de los humedales con la planificación de cuencas hidrográficas y costera",
-        "reinforce": "Este sector suele estar alineado cuando la protección de humedales, zonas ribereñas y suelos orgánicos se incorpora en sistemas más amplios de adaptación, áreas protegidas, cuencas hidrográficas y gobernanza forestal. Entre los mecanismos recurrentes se incluyen la zonificación compartida y la planificación territorial, los sistemas de seguimiento y MRV, la coordinación interinstitucional, la restauración de zonas de servidumbre hídrica y manglares, y la financiación o los incentivos que refuerzan la implementación de la conservación.",
+        "reinforce": "Este sector suele estar alineado cuando la protección de humedales, zonas ribereñas y suelos orgánicos se incorpora en sistemas más amplios de adaptación, áreas protegidas, cuencas hidrográficas y gobernanza forestal. Los mecanismos recurrentes incluyen la zonificación y la planificación territorial compartidas, los sistemas de seguimiento y MRV, la coordinación interinstitucional, la restauración de zonas de servidumbre hídrica y manglares, y la financiación o los incentivos que refuerzan la implementación de la conservación.",
         "clash": "La posible desalineación se repite cuando el turismo, la logística, la vivienda, la expansión industrial, las carreteras, los embalses o la infraestructura hídrica relacionada con el Canal se planifican en paisajes que pueden superponerse con humedales, franjas de protección ribereña, áreas protegidas o suelos orgánicos. El patrón señalado tiende a ser de fricción en la ejecución y, en ocasiones, de competencia por los recursos, cuando la ubicación, la ocupación de tierras, el drenaje o la alteración hidrológica podrían complicar la restauración, la protección o el monitoreo, a menos que se apliquen salvaguardias.",
         "coordination_hint": "A menudo sería útil utilizar la planificación espacial compartida, la zonificación de cuencas hidrográficas y normas de seguimiento y salvaguardias sensibles a los humedales desde una etapa temprana en las decisiones sobre infraestructura, turismo y uso de la tierra que afectan a este sector.",
         "confidence": "high"
@@ -338,7 +338,7 @@
       "synthesis": {
         "storyline_name": "Vincular la implementación de la conservación mediante la gobernanza y el territorio",
         "reinforce": "Los pares de refuerzo suelen indicar que la protección y la conectividad de los ecosistemas se ven fortalecidas por instrumentos de gobernanza, financiación y participación, especialmente cuando las áreas protegidas, los corredores biológicos, la restauración, los PES, la planificación de la adaptación y la cogestión indígena o comunitaria están vinculados. La muestra también muestra alineación en torno a mecanismos territoriales prácticos, como la restauración ribereña y forestal, el control de especies invasoras, el monitoreo y la planificación basada en FPIC, que tienden a reforzar la eficacia de la conservación en paisajes compartidos.",
-        "clash": "La posible desalineación se repite cuando los objetivos de conservación, restauración, expansión de áreas protegidas o corredores biológicos coinciden con la ejecución de infraestructura y producción, especialmente corredores logísticos, carreteras, transmisión de energía, embalses, desarrollo turístico, crecimiento industrial, riego y expansión agroindustrial. Un segundo problema recurrente es la competencia por recursos en relación con la tierra y el agua, donde la reforestación comercial, la ubicación de plantaciones, la producción agrícola o las grandes obras en cuencas hidrográficas pueden competir con áreas prioritarias de conservación, la conectividad ecológica o los objetivos de gestión de bosques y especies.",
+        "clash": "La posible desalineación se repite cuando los objetivos de conservación, restauración, expansión de áreas protegidas o corredores biológicos coinciden con la ejecución de infraestructura y producción, especialmente corredores logísticos, carreteras, transmisión de energía, embalses, desarrollo turístico, crecimiento industrial, riego y expansión agroindustrial. Un segundo problema recurrente es la competencia por recursos sobre la tierra y el agua, donde la reforestación comercial, la ubicación de plantaciones, la producción agrícola o las principales obras de cuencas hidrográficas pueden competir con áreas prioritarias de conservación, la conectividad ecológica o los objetivos de gestión de bosques y especies.",
         "coordination_hint": "Este sector suele beneficiarse de la planificación espacial temprana, la zonificación, la asignación de cuencas hidrográficas y el diseño de salvaguardias, de modo que los objetivos de restauración, áreas protegidas y corredores puedan alcanzarse junto con las inversiones en infraestructura y productivas.",
         "confidence": "high"
       },
@@ -360,8 +360,8 @@
       },
       "synthesis": {
         "storyline_name": "Vincular la ejecución de la restauración con la gobernanza y el seguimiento",
-        "reinforce": "Dentro de este sector, la alineación suele provenir de que la restauración, la transformación agroalimentaria climáticamente inteligente, la agricultura orgánica y la recuperación forestal se vean reforzadas por medidas habilitadoras como el MRV, el monitoreo comunitario, los sistemas de salvaguardias, la capacidad de aplicación, el apoyo a la STI y la participación inclusiva. La muestra también señala un refuerzo directo en el que la conservación de los bosques, la medición de la reforestación, la gestión de incendios, la protección de cuencas hidrográficas y la recuperación de tierras degradadas apoyan la restauración del suelo y los aumentos de productividad en paisajes rurales y vinculados a humedales que se superponen.",
-        "clash": "La posible desalineación reaparece cuando las agendas de expansión del transporte, la logística, los embalses, las carreteras, el turismo, la industria u otras podrían añadir presión sobre el uso de la tierra, la hidrología o el acceso en zonas destinadas a la recuperación del suelo, la protección de los suelos orgánicos, la agricultura orgánica o la transformación climáticamente inteligente de los sistemas agroalimentarios. Un patrón señalado de menor magnitud es la competencia por los recursos, especialmente cuando la reforestación comercial o las grandes infraestructuras hídricas pueden competir con los suelos orgánicos protegidos, los humedales o las tierras agrícolas con alto contenido de carbono por el mismo espacio o régimen hídrico.",
+        "reinforce": "Dentro de este sector, la alineación suele provenir del hecho de que la restauración, la transformación agroalimentaria climáticamente inteligente, la agricultura orgánica y la recuperación forestal se ven reforzadas por medidas habilitadoras como el MRV, el monitoreo comunitario, los sistemas de salvaguardias, la capacidad de aplicación, el apoyo a la STI y la participación inclusiva. La muestra también señala un refuerzo directo en el que la conservación de los bosques, la medición de la reforestación, la gestión de incendios, la protección de cuencas hidrográficas y la recuperación de tierras degradadas apoyan la restauración del suelo y las ganancias de productividad en paisajes rurales y vinculados a humedales que se superponen.",
+        "clash": "La posible desalineación reaparece cuando las agendas de expansión del transporte, la logística, los embalses, las carreteras, el turismo, la industria u otras podrían añadir presión sobre el uso del suelo, la hidrología o el acceso en zonas destinadas a la recuperación del suelo, la protección de suelos orgánicos, la agricultura orgánica o la transformación climáticamente inteligente de los sistemas agroalimentarios. Un patrón señalado de menor magnitud es la competencia por los recursos, especialmente cuando la reforestación comercial o las grandes infraestructuras hídricas pueden competir con los suelos orgánicos protegidos, los humedales o las tierras agrícolas con alto contenido de carbono por el mismo espacio o régimen hídrico.",
         "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la zonificación, las salvaguardias hidrológicas y las decisiones sobre trazado o emplazamiento, especialmente cuando las acciones de restauración o relativas a suelos orgánicos se superponen con la infraestructura, la industria, el turismo o la ejecución de plantaciones.",
         "confidence": "low"
       },
@@ -383,8 +383,8 @@
       },
       "synthesis": {
         "storyline_name": "Vinculación de la gobernanza del riesgo con la implementación de la resiliencia de los ecosistemas",
-        "reinforce": "Los pares de refuerzo suelen alinear este sector con sistemas facilitadores de seguimiento, coordinación, financiación y planificación, como los marcos de alerta temprana multiamenaza, los observatorios climáticos, la medición y las salvaguardias de REDD+, y el apoyo a la toma de decisiones sobre el riesgo hídrico. La muestra también señala un refuerzo operativo directo cuando la gestión de incendios forestales, la medición de la restauración, la financiación de la reforestación y la gestión preventiva del riesgo hídrico están conectadas a través de paisajes compartidos de cuencas hidrográficas, bosques y restauración.",
-        "clash": "La posible desalineación se señala principalmente para revisión como una fricción en la implementación entre las acciones de prevención de riesgos basadas en la naturaleza y la implementación liderada por infraestructura, especialmente embalses, obras hídricas relacionadas con el Canal, corredores logísticos, carreteras, vivienda y expansión energética. El mecanismo recurrente es que la construcción, el trazado o el cambio de uso del suelo pueden ejercer presión sobre las mismas zonas ribereñas, manglares, áreas costeras, bosques, zonas de recarga y corredores ecológicos que estas medidas basadas en la naturaleza buscan restaurar, proteger o utilizar para la adaptación.",
+        "reinforce": "Los pares de refuerzo suelen alinear este sector con sistemas habilitadores para el seguimiento, la coordinación, las finanzas y la planificación, como los marcos de alerta temprana multiamenaza, los observatorios climáticos, la medición y las salvaguardias de REDD+, y el apoyo a la toma de decisiones sobre el riesgo hídrico. La muestra también señala un refuerzo operativo directo cuando la gestión de incendios forestales, la medición de la restauración, las finanzas para la reforestación y la gestión preventiva del riesgo hídrico están conectadas a través de paisajes compartidos de cuencas hidrográficas, bosques y restauración.",
+        "clash": "La posible desalineación se señala principalmente para revisión como fricción en la implementación entre las acciones de prevención de riesgos basadas en la naturaleza y la implementación liderada por infraestructura, especialmente embalses, obras hídricas relacionadas con el Canal, corredores logísticos, carreteras, vivienda y expansión energética. El mecanismo recurrente es que la construcción, el trazado o el cambio de uso del suelo pueden ejercer presión sobre las mismas zonas ribereñas, manglares, áreas costeras, bosques, zonas de recarga y corredores ecológicos que estas medidas basadas en la naturaleza buscan restaurar, proteger o utilizar para la adaptación.",
         "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, las salvaguardias a escala de cuenca hidrográfica y el monitoreo compartido, de modo que la ubicación de la infraestructura y las inversiones en resiliencia puedan alinearse con las prioridades de restauración, gestión de incendios, adaptación costera y protección de los ecosistemas.",
         "confidence": "high"
       },
@@ -407,8 +407,8 @@
       "synthesis": {
         "storyline_name": "Desarrollo de sistemas de medición, financiación y participación para REDD+",
         "reinforce": "Los pares de refuerzo suelen alinearse en torno a la medición de las absorciones y las reducciones de emisiones de REDD+, el pago por resultados y los marcos jurídicos, de financiación y de seguimiento para la reforestación, la restauración, la conservación de los bosques y la valoración de los servicios ecosistémicos. Esto también tiende a reforzar los mecanismos de participación y ejecución, incluida la supervisión comunitaria, el FPIC, los grupos de trabajo indígenas y locales, la clarificación de los límites de las áreas protegidas y los vehículos de financiación, como los PES y los fondos de restauración.",
-        "clash": "La posible desalineación se señala repetidamente allí donde el transporte, la logística, la vivienda, el turismo y la infraestructura de la cuenca del Canal podrían superponerse con bosques, áreas de restauración, suelos orgánicos, humedales u otros paisajes relevantes para el carbono. El mecanismo recurrente es la fricción en la implementación y, en ocasiones, la competencia por los recursos, mediante la conversión del uso de la tierra, la ampliación del acceso, el trazado de rutas o las obras en cuencas hidrográficas que pueden complicar la restauración, la conservación, la medición del carbono o la distribución de beneficios de REDD+ en los mismos lugares.",
-        "coordination_hint": "Este sector suele señalar la necesidad de planificación espacial, salvaguardias de trazado y zonificación, y una alineación temprana entre los sistemas de MRV y financiación de REDD+ y las decisiones sobre infraestructura o desarrollo de tierras en paisajes compartidos, especialmente la cuenca del Canal y las áreas de restauración forestal.",
+        "clash": "La posible desalineación se señala repetidamente allí donde el transporte, la logística, la vivienda, el turismo y la infraestructura de la cuenca del Canal podrían superponerse con bosques, áreas de restauración, suelos orgánicos, humedales u otros paisajes relevantes para el carbono. El mecanismo recurrente es la fricción en la implementación y, en ocasiones, también la competencia por los recursos, mediante la conversión del uso del suelo, la ampliación del acceso, el trazado de rutas o las obras en cuencas hidrográficas que pueden complicar la restauración, la conservación, la medición del carbono o la distribución de beneficios de REDD+ en los mismos lugares.",
+        "coordination_hint": "Este sector suele señalar la necesidad de planificación espacial, salvaguardias de trazado y zonificación, y una alineación temprana entre los sistemas de MRV y financiación de REDD+ y las decisiones sobre infraestructura o desarrollo de la tierra en paisajes compartidos, especialmente la cuenca del Canal y las áreas de restauración forestal.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -429,9 +429,9 @@
       },
       "synthesis": {
         "storyline_name": "Orientar el crecimiento de los asentamientos mediante salvaguardias espaciales",
-        "reinforce": "La gestión de los asentamientos urbanos suele estar alineada con medidas que fortalecen la vivienda sostenible, las normas de construcción, la eficiencia energética de los hogares, las líneas de base de los espacios verdes y azules urbanos, y la capacidad de planificación municipal. La muestra también señala vínculos facilitadores con los sistemas de datos, la divulgación científica y la planificación de la resiliencia, lo que tiende a reforzar una mejor ubicación, la prestación de servicios y un desarrollo urbano más ecológico.",
+        "reinforce": "La gestión de los asentamientos urbanos suele estar alineada con medidas que fortalecen la vivienda sostenible, las normas de construcción, la eficiencia energética de los hogares, las líneas de base de los espacios verdes y azules urbanos, y la capacidad de planificación municipal. La muestra también señala vínculos facilitadores con los sistemas de datos, la divulgación científica y la planificación de la resiliencia, lo que tiende a reforzar una mejor localización, la prestación de servicios y un desarrollo urbano más ecológico.",
         "clash": "La posible desalineación se repite cuando la expansión de la vivienda, la subdivisión de tierras, la infraestructura de transporte o logística, y el desarrollo urbano más amplio podrían ejercer presión sobre los corredores ecológicos, los manglares, los humedales, las áreas de restauración forestal o los territorios indígenas. La mayoría de los pares señalados apuntan a fricciones en la implementación más que a una contradicción directa, y se señalan para revisión porque pueden ser necesarios la zonificación, el trazado de rutas, las normas de exclusión, las salvaguardias de tenencia y la evaluación ambiental allí donde el crecimiento de los asentamientos se superpone con tierras protegidas o sensibles a la restauración.",
-        "coordination_hint": "A menudo sería útil vincular las decisiones sobre vivienda urbana, transporte y administración de tierras con mapas de riesgo, límites de conservación, líneas de base de los espacios verdes urbanos y salvaguardias territoriales antes de que se avance en la ubicación o la concesión de permisos.",
+        "coordination_hint": "A menudo sería útil vincular las decisiones sobre vivienda urbana, transporte y administración de tierras con mapas de riesgo, límites de conservación, líneas de base de espacios verdes urbanos y salvaguardias territoriales antes de que se proceda a la ubicación o autorización.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -453,8 +453,8 @@
       "synthesis": {
         "storyline_name": "Vincular la gestión sostenible de la tierra con el seguimiento",
         "reinforce": "Los pares de refuerzo suelen indicar una alineación entre la gestión sostenible de la tierra vinculada a la agricultura, las prácticas orgánicas o agroforestales, y sistemas más amplios de seguimiento, MRV, observatorios climáticos, capacitación y participación comunitaria. La muestra también refuerza los vínculos entre la restauración a nivel de finca o la creación de corredores y enfoques más amplios de restauración rural, gestión de cuencas hidrográficas y bioeconomía, especialmente cuando pueden compartirse actores locales, protocolos técnicos y apoyo a los productores.",
-        "clash": "La posible desalineación reaparece cuando la promoción de las exportaciones agrícolas, el riego, la logística, las carreteras, los embalses u otra infraestructura que facilita el crecimiento podrían aumentar la presión sobre la tierra o el agua en los mismos paisajes destinados a la conservación de los bosques, la restauración, los corredores biológicos, la aplicación de las áreas protegidas, la seguridad territorial indígena o la protección de los suelos orgánicos. La competencia por los recursos se señala para revisión principalmente en contextos de cuencas hidrográficas, donde el riego o la infraestructura hídrica de gran escala pueden competir con los objetivos de conservación y uso sostenible de la tierra que también afectan a la agricultura.",
-        "coordination_hint": "Suele ser útil coordinar la modernización agrícola y las inversiones en agua con la zonificación del uso de la tierra, la planificación de cuencas hidrográficas, las salvaguardias de biodiversidad y la orientación de las ganancias de productividad hacia las tierras agrícolas existentes en lugar de hacia nuevos desmontes.",
+        "clash": "La posible desalineación se repite cuando la promoción de las exportaciones agrícolas, el riego, la logística, las carreteras, los embalses u otra infraestructura que facilita el crecimiento podrían aumentar la presión sobre la tierra o el agua en los mismos paisajes destinados a la conservación de los bosques, la restauración, los corredores biológicos, la aplicación de las áreas protegidas, la seguridad territorial indígena o la protección de los suelos orgánicos. La competencia por los recursos se señala para revisión principalmente en entornos de cuencas hidrográficas, donde el riego o la infraestructura hídrica de gran escala pueden competir con los objetivos de conservación y uso sostenible de la tierra que también afectan a la agricultura.",
+        "coordination_hint": "Suele ser útil coordinar la modernización agrícola y las inversiones en agua con la zonificación del uso del suelo, la planificación de cuencas hidrográficas, las salvaguardias de biodiversidad y la orientación de las ganancias de productividad hacia las tierras agrícolas existentes en lugar de hacia nuevos desmontes.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -474,8 +474,8 @@
         "resource_competition": 2
       },
       "synthesis": {
-        "storyline_name": "Impulsar la expansión energética con salvaguardias climáticas y de la tierra",
-        "reinforce": "La política energética suele alinearse con agendas más amplias de clima, urbanas y de innovación. Los pares de refuerzo recurrentes apuntan a la energía renovable, la electricidad distribuida, los edificios sostenibles y la planificación de la resiliencia del sector energético como vías concretas de implementación que refuerzan la reducción nacional de emisiones, la planificación de la adaptación y los objetivos estratégicos de innovación.",
+        "storyline_name": "Impulsar la expansión energética con salvaguardias climáticas y territoriales",
+        "reinforce": "La política energética suele alinearse con agendas más amplias de clima, urbanas y de innovación. Los pares recurrentes de refuerzo apuntan a la energía renovable, la electricidad distribuida, los edificios sostenibles y la planificación de la resiliencia del sector energético como vías concretas de implementación que refuerzan la reducción nacional de emisiones, la planificación de la adaptación y los objetivos estratégicos de innovación.",
         "clash": "La posible desalineación se repite allí donde la expansión de la electricidad, la transmisión, las plantas de energía renovable y la infraestructura conexa se cruzan con los bosques, los territorios indígenas, la gestión de cuencas hidrográficas y otros paisajes sensibles. Los pares señalados suelen indicar fricciones de implementación en torno al emplazamiento, el trazado, el consentimiento y la integración de salvaguardias, y un conjunto más reducido también señala la presión de las grandes infraestructuras y las inversiones en almacenamiento de agua sobre la planificación orientada a la mitigación.",
         "coordination_hint": "Suele ser útil que la planificación energética aplique de manera sistemática la evaluación espacial, los criterios de riesgo climático, los procesos de FPIC y participación, y las salvaguardias forestales y de cuencas hidrográficas antes de trazar o secuenciar nuevas infraestructuras.",
         "confidence": "high"
@@ -498,9 +498,9 @@
       },
       "synthesis": {
         "storyline_name": "Vincular el crecimiento industrial con sistemas de producción de bajo impacto",
-        "reinforce": "En todos los pares analizados, este sector suele estar alineado cuando la producción industrial o de alta huella está vinculada a sistemas más amplios de mitigación, reducción de la contaminación, MRV, certificación y trazabilidad. El mecanismo recurrente es una gobernanza facilitadora, capacidad de investigación y normas de mercado que refuerzan una producción más limpia, declaraciones de sostenibilidad más creíbles y la integración de la industria en los objetivos nacionales de emisiones y contaminación.",
+        "reinforce": "En todos los pares analizados, este sector suele estar alineado cuando la producción industrial o de alta huella está conectada con sistemas más amplios de mitigación, reducción de la contaminación, MRV, certificación y trazabilidad. El mecanismo recurrente es una gobernanza facilitadora, capacidad de investigación y normas de mercado que refuerzan una producción más limpia, declaraciones de sostenibilidad más creíbles y la integración de la industria en los objetivos nacionales de emisiones y contaminación.",
         "clash": "La posible desalineación se señala repetidamente cuando la expansión industrial, el desarrollo logístico o los incentivos a la inversión podrían aumentar la presión sobre la tierra, el agua, las emisiones o las zonas costeras, lo que complica la reducción de la contaminación, la protección de los bosques, la gestión de cuencas hidrográficas, la reforma de los incentivos para la biodiversidad o la planificación de la adaptación. La fricción tiende a estar relacionada con la implementación más que con una contradicción directa, con una necesidad recurrente de zonificación, controles de ubicación, salvaguardias y diseño industrial bajo en carbono.",
-        "coordination_hint": "A menudo sería útil vincular la política industrial y las decisiones conexas sobre infraestructura en este sector con la planificación espacial, los criterios de emisiones y contaminación, y la evaluación de incentivos en una etapa temprana del diseño y la autorización de proyectos.",
+        "coordination_hint": "A menudo sería útil vincular la política industrial y las decisiones conexas sobre infraestructura en este sector con la planificación espacial, los criterios de emisiones y contaminación, y la evaluación de incentivos en una fase temprana del diseño y la autorización de proyectos.",
         "confidence": "low"
       },
       "synthesis_error": null
@@ -543,7 +543,7 @@
         "delivery_friction": 868
       },
       "synthesis": {
-        "storyline_name": "Vinculación de los sistemas facilitadores en la implementación ambiental",
+        "storyline_name": "Vinculación de los sistemas habilitadores en la implementación ambiental",
         "reinforce": "Los pares de refuerzo en este espacio transversal suelen alinearse en torno a funciones habilitadoras, sistemas de información, participación, financiación, seguimiento y capacidad institucional que respaldan la implementación en las agendas de bosques, clima, agua, ciencia y biodiversidad. Un patrón recurrente es que las medidas de REDD+, restauración y gobernanza forestal refuerzan observatorios más amplios, sistemas de innovación, arquitectura fiscal y financiera, y plataformas de participación de las partes interesadas, especialmente cuando intervienen MRV, normas de datos, certificación o pagos basados en resultados.",
         "clash": "La posible desalineación se señala principalmente para revisión como fricción en la implementación, especialmente cuando medidas de gran escala en materia de logística, cuenca del Canal, carreteras, puertos, embalses, vivienda, industria u orientadas a la exportación pueden coincidir con esfuerzos de conservación, REDD+, adaptación, control de especies invasoras o gobernanza de cuencas hidrográficas. La competencia por los recursos aparece con menor frecuencia, pero reaparece en torno a sistemas compartidos de tierra y agua, como la agricultura frente a la reforestación o la infraestructura hídrica frente a la protección de humedales y suelos orgánicos.",
         "coordination_hint": "Este sector tiende a beneficiarse de una planificación espacial temprana, normas compartidas de seguimiento y registro, y salvaguardias que conectan las decisiones sobre infraestructura, producción y cuencas hidrográficas con sistemas transversales de gobernanza ambiental.",
@@ -567,9 +567,9 @@
       },
       "synthesis": {
         "storyline_name": "Equilibrar la expansión del transporte con las salvaguardias de las cuencas hidrográficas y los bosques",
-        "reinforce": "La planificación del transporte suele alinearse con agendas más amplias de clima y sostenibilidad cuando las medidas de movilidad se enmarcan como movilidad sostenible, mejora del transporte público o gestión de la cuenca del Canal. Un mecanismo de refuerzo recurrente es la facilitación de la coordinación, mediante la cual la descarbonización del transporte, la planificación de cuencas hidrográficas y los sistemas de datos o financiación ambientales podrían respaldar una localización y una implementación más resilientes, aunque por lo general solo de manera indirecta.",
-        "clash": "La posible desalineación se repite cuando las carreteras, los corredores logísticos, los puertos, la infraestructura vinculada al Canal y las obras de embalses pueden aumentar la presión sobre el uso de la tierra en áreas protegidas, zonas ribereñas, áreas de recarga hídrica, corredores biológicos, territorios indígenas y paisajes pertinentes para REDD+. La mayoría de los casos señalados apuntan a fricciones en la implementación más que a una contradicción directa, y la ejecución del transporte suele señalarse para revisión a menos que el trazado, la zonificación, la consulta y las salvaguardias ambientales se coordinen.",
-        "coordination_hint": "Los proyectos de transporte en este sector a menudo se beneficiarían de una evaluación espacial temprana, la zonificación de cuencas hidrográficas y áreas protegidas, y los procesos de salvaguardia comunitaria e indígena, especialmente en las zonas vinculadas al Canal y en las áreas de corredores.",
+        "reinforce": "La planificación del transporte a menudo se alinea con agendas más amplias de clima y sostenibilidad cuando las medidas de movilidad se enmarcan como movilidad sostenible, mejora del transporte público o gestión de la cuenca del Canal. Un mecanismo de refuerzo recurrente es la facilitación de la coordinación, mediante la cual la descarbonización del transporte, la planificación de cuencas hidrográficas y los sistemas de datos o financiación ambiental podrían respaldar una localización y una implementación más resilientes, aunque por lo general solo de manera indirecta.",
+        "clash": "La posible desalineación reaparece cuando las carreteras, los corredores logísticos, los puertos, la infraestructura vinculada al Canal y las obras de embalses pueden aumentar la presión sobre el uso del suelo en áreas protegidas, zonas ribereñas, áreas de recarga hídrica, corredores biológicos, territorios indígenas y paisajes pertinentes para REDD+. La mayoría de los casos señalados apuntan a fricciones en la implementación más que a una contradicción directa, y la ejecución del transporte suele señalarse para revisión a menos que el trazado, la zonificación, la consulta y las salvaguardias ambientales se coordinen.",
+        "coordination_hint": "Los proyectos de transporte en este sector a menudo se beneficiarían de una evaluación espacial temprana, la zonificación de cuencas hidrográficas y áreas protegidas, y los procesos de salvaguardia comunitaria e indígena, especialmente en las zonas vinculadas al Canal y los corredores.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -590,9 +590,9 @@
       },
       "synthesis": {
         "storyline_name": "Vincular los objetivos sobre residuos con una gobernanza ambiental más amplia",
-        "reinforce": "Las metas relacionadas con los residuos suelen alinearse con medidas más amplias de gobernanza, coordinación y planificación ambientales, especialmente cuando la economía circular, la infraestructura de reciclaje, el establecimiento de líneas de base de residuos o la reducción de la huella están conectados con la gestión de los recursos naturales y la coordinación interinstitucional. La muestra también señala un refuerzo entre los objetivos en materia de residuos y la gestión del agua, el saneamiento y las cuencas hidrográficas, cuando una mejor prestación de servicios, el control de vertidos y la planificación municipal pueden respaldar resultados más limpios en materia de residuos, aunque esto tiende a ser facilitador más que implementado conjuntamente de forma directa.",
-        "clash": "La posible desalineación se repite cuando la expansión de la infraestructura logística, industrial, vial y de otro tipo de gran escala podría aumentar los volúmenes de residuos, los flujos de envases plásticos, los residuos de construcción, las emisiones o las presiones de demanda de servicios más rápido de lo que los sistemas de residuos pueden adaptarse. Se señala para revisión una cuestión menor pero recurrente en torno a la competencia por el agua compartida y la capacidad de la infraestructura, donde las inversiones en canales, logística y servicios públicos pueden ejercer presión sobre los mismos sistemas de los que dependen la prestación relacionada con los residuos y la vinculada al saneamiento.",
-        "coordination_hint": "A menudo apunta a secuenciar conjuntamente las líneas de base de residuos, los requisitos de economía circular y las salvaguardias para puertos, corredores y servicios industriales y municipales, de modo que el crecimiento de la infraestructura no supere la capacidad de gestión de residuos.",
+        "reinforce": "Las metas relacionadas con los residuos suelen alinearse con medidas más amplias de gobernanza, coordinación y planificación ambiental, especialmente cuando la economía circular, la infraestructura de reciclaje, el establecimiento de líneas de base de residuos o la reducción de la huella están conectados con la gestión de los recursos naturales y la coordinación interinstitucional. La muestra también señala un refuerzo entre los objetivos en materia de residuos y la gestión del agua, el saneamiento y las cuencas hidrográficas, cuando una mejor prestación de servicios, el control de vertidos y la planificación municipal pueden respaldar resultados más limpios en materia de residuos, aunque esto tiende a ser facilitador más que implementado conjuntamente de forma directa.",
+        "clash": "La posible desalineación se repite cuando la expansión de infraestructuras logísticas, industriales, viales y de otro tipo de gran escala podría aumentar los volúmenes de residuos, los flujos de envases plásticos, los residuos de construcción, las emisiones o las presiones de demanda de servicios más rápido de lo que los sistemas de residuos pueden adaptarse. Se señala para revisión una cuestión menor pero recurrente en torno a la competencia por el agua compartida y la capacidad de las infraestructuras, cuando las inversiones en canales, logística y servicios públicos pueden ejercer presión sobre los mismos sistemas de los que dependen la prestación relacionada con los residuos y la vinculada al saneamiento.",
+        "coordination_hint": "A menudo apunta a secuenciar conjuntamente las líneas de base de residuos, los requisitos de economía circular y las salvaguardias para los puertos, los corredores, la industria y los servicios municipales, de modo que el crecimiento de la infraestructura no supere la capacidad de gestión de residuos.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -601,21 +601,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_agriculture_food",
       "category_name": "Agriculture and food",
-      "aligned_count": 9918,
-      "flagged_count": 305,
+      "aligned_count": 10434,
+      "flagged_count": 253,
       "pool_composition": {
-        "primary_count": 4655,
-        "relevant_only_count": 6817
+        "primary_count": 4670,
+        "relevant_only_count": 6846
       },
       "contradiction_types": {
-        "delivery_friction": 263,
-        "resource_competition": 42
+        "delivery_friction": 208,
+        "resource_competition": 45
       },
       "synthesis": {
-        "storyline_name": "vincular la transformación agroalimentaria con las salvaguardias de la tierra",
-        "reinforce": "Los pares de refuerzo suelen alinear la adaptación relacionada con la agricultura, la información agroclimática, la capacitación de los agricultores y la restauración con las salvaguardias forestales, los corredores de biodiversidad y la planificación territorial climáticamente inteligente. Esto tiende a apuntar a una implementación complementaria en la que la mejora agroalimentaria se orienta mediante información geoespacial, alerta temprana, salvaguardias y mecanismos de restauración, en lugar de tratarse por separado de la gestión de la tierra y los ecosistemas.",
-        "clash": "La posible desalineación se repite allí donde la modernización agrícola, la promoción de las exportaciones, el riego y la infraestructura conexa podrían aumentar la presión sobre los bosques, los humedales, las zonas ribereñas u otras zonas de restauración y conservación. También se señalan varios pares para revisión porque los embalses, las carreteras, los corredores logísticos y la tecnificación rural pueden competir por los mismos recursos de tierra y agua de los que dependen la restauración vinculada a la agricultura, la protección del suelo o las medidas relativas a las cuencas hidrográficas.",
-        "coordination_hint": "A menudo sería útil coordinar el apoyo agroalimentario con la zonificación, la asignación de cuencas hidrográficas, las plataformas agroclimáticas y las salvaguardias para los bosques o humedales, de modo que los aumentos de productividad tiendan a mantenerse en las tierras aptas existentes y eviten menoscabar los objetivos de restauración.",
+        "storyline_name": "Vincular la agricultura climáticamente inteligente con la gobernanza forestal",
+        "reinforce": "El refuerzo suele aparecer cuando las medidas orientadas a la agricultura, como el apoyo a la agricultura orgánica, la capacitación de agricultores, los sistemas de información agroclimática y la transformación agroalimentaria distrital, se alinean con las acciones relativas a los bosques, el carbono del suelo y la gobernanza territorial. La muestra también señala vínculos facilitadores mediante la participación indígena, la demarcación de tierras, el MRV y el diseño de incentivos, que pueden ayudar a que la agricultura sostenible, la gestión del suelo y la mitigación basada en la tierra funcionen en los mismos paisajes.",
+        "clash": "La posible desalineación se repite cuando la modernización agrícola, la promoción de las exportaciones, la logística, el riego, los embalses, las carreteras y la piscicultura podrían aumentar la presión sobre los bosques, los manglares, las áreas protegidas, los suelos orgánicos y las zonas de restauración que también afectan a este sector. Un problema menor pero recurrente es la competencia por los recursos, especialmente por la tierra y el agua en zonas rurales o de cuencas compartidas, que se señala para revisión cuando la rehabilitación forestal o la restauración de áreas protegidas se superpone con el riego y la expansión agroindustrial.",
+        "coordination_hint": "Suele ser útil coordinar las medidas de productividad agrícola e infraestructura con la zonificación del uso de la tierra, la asignación de cuencas hidrográficas, las salvaguardias de las áreas protegidas y de los pueblos indígenas, y las normas de incentivos libres de deforestación en los mismos territorios rurales.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -624,21 +624,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_cultural_heritage",
       "category_name": "Cultural heritage",
-      "aligned_count": 6445,
-      "flagged_count": 164,
+      "aligned_count": 6673,
+      "flagged_count": 199,
       "pool_composition": {
-        "primary_count": 1943,
-        "relevant_only_count": 5647
+        "primary_count": 1948,
+        "relevant_only_count": 5667
       },
       "contradiction_types": {
-        "delivery_friction": 163,
-        "resource_competition": 1
+        "delivery_friction": 195,
+        "resource_competition": 4
       },
       "synthesis": {
-        "storyline_name": "Vincular la gestión del patrimonio con la participación indígena",
-        "reinforce": "Los pares de refuerzo suelen alinear las acciones relacionadas con el patrimonio cultural con la participación culturalmente apropiada de los pueblos indígenas y las comunidades locales, especialmente mediante el turismo comunitario, la planificación del ecoturismo, el seguimiento de salvaguardias y el reconocimiento de los conocimientos tradicionales. También tienden a reforzarse cuando los marcos jurídicos, regulatorios o de incentivos para los bosques, las áreas protegidas, el turismo y los mecanismos de carbono crean condiciones propicias para conservar conjuntamente las tradiciones, los recursos naturales y los bienes patrimoniales.",
-        "clash": "La posible desalineación reaparece cuando la expansión del turismo, los corredores logísticos, las carreteras, la energía, el agua o la modernización agroindustrial podrían ejercer presión de implementación sobre paisajes forestales, áreas protegidas o territorios indígenas que también sustentan la gestión comunitaria vinculada al patrimonio. Estos pares suelen señalarse para revisión como fricción en la implementación más que como contradicción directa, y la zonificación, el consentimiento, las salvaguardias y la coordinación territorial se identifican repetidamente como los puntos prácticos de presión.",
-        "coordination_hint": "Suele ser útil secuenciar el turismo vinculado al patrimonio o la ejecución de infraestructuras con una evaluación territorial temprana, la participación indígena y salvaguardias para el uso de la tierra, especialmente cuando las tradiciones comunitarias y los paisajes conservados se superponen.",
+        "storyline_name": "Vinculación de la gestión indígena con una gobernanza sensible al patrimonio",
+        "reinforce": "Los pares de refuerzo suelen alinearse en torno a la participación indígena, el FPIC, las prácticas ancestrales y el monitoreo comunitario como mecanismos facilitadores para la conservación y la gestión en territorios que también pueden tener valor de patrimonio cultural. Esto se repite en los grupos de trabajo de REDD+, las salvaguardias, la comunicación, la distribución de beneficios y las interfaces de restauración o planificación del turismo, que tienden a reforzar una gobernanza más inclusiva de los paisajes naturales y patrimoniales.",
+        "clash": "La posible desalineación se señala principalmente para revisión cuando la seguridad territorial, la demarcación de áreas protegidas, el FPIC o la gestión basada en prácticas ancestrales pueden enfrentar fricciones en la ejecución derivadas de corredores logísticos, carreteras, vivienda, expansión industrial, infraestructura vinculada al Canal o desarrollo turístico. El mecanismo recurrente es la presión de implementación sobre el uso de la tierra, el acceso y la consulta en paisajes indígenas o protegidos, más que una contradicción directa de política.",
+        "coordination_hint": "Suele ser útil coordinar desde una etapa temprana la planificación del uso de la tierra, el reconocimiento de límites, las decisiones sobre trazado y emplazamiento, y los procesos de FPIC o de salvaguardias cuando los valores culturales o territoriales indígenas se superponen con la infraestructura, el turismo o la ejecución industrial.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -647,21 +647,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_ecosystems_biodiversity",
       "category_name": "Ecosystems and biodiversity",
-      "aligned_count": 32675,
-      "flagged_count": 965,
+      "aligned_count": 34227,
+      "flagged_count": 1074,
       "pool_composition": {
-        "primary_count": 35690,
-        "relevant_only_count": 3465
+        "primary_count": 35826,
+        "relevant_only_count": 3487
       },
       "contradiction_types": {
-        "delivery_friction": 906,
-        "resource_competition": 59
+        "delivery_friction": 988,
+        "resource_competition": 86
       },
       "synthesis": {
-        "storyline_name": "Fortalecer la gobernanza de la biodiversidad y los sistemas de seguimiento",
-        "reinforce": "Los pares de refuerzo suelen alinearse en torno a instituciones facilitadoras para los ecosistemas y la biodiversidad, especialmente la coordinación de REDD+, las salvaguardias, el monitoreo, la distribución de beneficios y los marcos jurídicos que se conectan con la presentación de informes sobre biodiversidad, la gobernanza de las áreas protegidas, el monitoreo de los humedales y el Nature Pledge. Esto se repite mediante mecanismos concretos como acuerdos interinstitucionales, sistemas de monitoreo forestal y de tierras, participación de las partes interesadas, procesos relacionados con el FPIC y sistemas de incentivos o pagos para la conservación.",
-        "clash": "La posible desalineación se señala principalmente para revisión cuando las medidas de protección y restauración de la biodiversidad, como la protección de manglares, los corredores biológicos, el control de los límites de las áreas protegidas, la restauración forestal y la gestión de los ecosistemas de cuencas hidrográficas, pueden enfrentar fricciones en su ejecución derivadas de carreteras, corredores logísticos, vivienda, energía, embalses, turismo o expansión agroindustrial en paisajes superpuestos. El mecanismo recurrente no es una contradicción directa de políticas, sino la presión de implementación a través del cambio de uso del suelo, la expansión del acceso, la localización y la ejecución de infraestructura, que podría complicar los resultados de conservación a menos que se apliquen la planificación espacial y las salvaguardias.",
-        "coordination_hint": "Suele ser útil conectar desde el principio a los órganos de seguimiento de la biodiversidad, REDD+ y gobernanza de cuencas hidrográficas, así como a las autoridades de concesión de permisos de uso del suelo o a los planificadores de infraestructuras, de modo que los datos de seguimiento, la zonificación, el FPIC y las salvaguardias puedan orientar la implementación en zonas compartidas de bosques, costas, humedales y cuencas hidrográficas.",
+        "storyline_name": "Fortalecer la gobernanza forestal y la ejecución conectada de la conservación",
+        "reinforce": "Los pares de refuerzo suelen alinearse en torno a la protección de los bosques, la gestión de las áreas protegidas, los corredores ecológicos, la financiación de la restauración y los sistemas de seguimiento, especialmente cuando REDD+, las áreas protegidas y los instrumentos de reforestación están vinculados. Una segunda alineación recurrente es la gobernanza habilitadora, la transparencia, la participación y los sistemas de conocimiento que refuerzan la implementación de la biodiversidad mediante información pública, salvaguardias, contabilidad del carbono y plataformas de coordinación.",
+        "clash": "La posible desalineación se repite cuando la infraestructura de transporte, logística, vivienda, energía, industria, turismo o agua podría generar presión localizada sobre los bosques, las zonas ribereñas, los manglares, los sitios de restauración o los territorios REDD+, y muchos pares se señalan para revisión por motivos de ubicación, trazado y uso del suelo. Un patrón menor señalado para revisión se refiere a la competencia por los recursos, especialmente cuando la rehabilitación forestal, el riego o la infraestructura hídrica de gran escala pueden competir por la misma tierra, el espacio de cuenca hidrográfica o las prioridades de gestión del agua.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la zonificación de cuencas hidrográficas y corredores, y las salvaguardias que vinculan la infraestructura y las inversiones productivas con las prioridades forestales, costeras y de restauración.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -670,20 +670,20 @@
       "taxonomy_type": "gga",
       "category_id": "gga_health",
       "category_name": "Health",
-      "aligned_count": 1197,
-      "flagged_count": 3,
+      "aligned_count": 1364,
+      "flagged_count": 6,
       "pool_composition": {
-        "primary_count": 1298,
+        "primary_count": 1342,
         "relevant_only_count": 682
       },
       "contradiction_types": {
-        "delivery_friction": 3
+        "delivery_friction": 6
       },
       "synthesis": {
-        "storyline_name": "Vincular la prestación de servicios de salud con los sistemas climáticos y de biodiversidad",
-        "reinforce": "Las metas de salud suelen alinearse con las medidas de adaptación al clima, seguimiento y gobernanza intersectorial. El mecanismo recurrente consiste en facilitar la coordinación, como integrar variables climáticas en la vigilancia epidemiológica, utilizar procedimientos de seguimiento documentados y vincular el trabajo de One Health o sobre riesgo zoonótico con la capacidad comunitaria, los datos ambientales y los sistemas de aplicación de la biodiversidad.",
-        "clash": "Se señala una posible desalineación para su revisión cuando los controles del tráfico de vida silvestre relacionados con la salud coinciden con una logística más rápida y la expansión de corredores comerciales en puertos, aeropuertos y rutas de transporte. La fricción tiende a referirse a la implementación, no a los objetivos, porque es posible que deban diseñarse inspecciones más rigurosas, trazabilidad y aplicación interinstitucional de la normativa junto con la facilitación del comercio para que no se debilite la eficacia de los controles.",
-        "coordination_hint": "A menudo sería útil conectar la vigilancia de la salud, el control del riesgo zoonótico y la logística o el monitoreo ambiental mediante protocolos compartidos, capacidad de inspección y mecanismos de intercambio de datos.",
+        "storyline_name": "Vincular la prestación de servicios de salud con los sistemas climáticos y territoriales",
+        "reinforce": "Las metas de salud suelen alinearse con la adaptación al clima, la planificación del uso de la tierra, la gestión del riesgo hídrico y la participación comunitaria mediante mecanismos facilitadores como la vigilancia epidemiológica informada por el clima, un acceso más seguro a las instalaciones y sistemas públicos sensibles al riesgo. Un segundo patrón recurrente refuerza los vínculos de estilo One Health entre las agendas de CTI en materia de salud y la biodiversidad, REDD+ y las acciones relacionadas con la vida silvestre, principalmente a través de necesidades compartidas de seguimiento, salvaguardias, participación indígena y comunitaria, y sistemas de información intersectoriales.",
+        "clash": "Se señala una posible desalineación para su revisión cuando el control del tráfico de vida silvestre, incluida la vigilancia del riesgo zoonótico y las inspecciones, puede enfrentar fricciones en su implementación derivadas de corredores logísticos más rápidos, la expansión del turismo o nuevos accesos viales que pueden incrementar el tránsito por zonas de alto riesgo. Se observan fricciones adicionales cuando la expansión de infraestructura, industrial o relacionada con canales se superpone con controles del uso del suelo sensibles al riesgo, lo que podría afectar indirectamente las condiciones de seguridad y de prestación de servicios pertinentes para la salud, a menos que el emplazamiento, los puntos de control y los permisos se coordinen.",
+        "coordination_hint": "Suele ser útil conectar la vigilancia de la salud, el seguimiento de One Health y la planificación del acceso a las instalaciones con las decisiones sobre transporte, uso del suelo y control de la fauna silvestre en territorios compartidos, especialmente donde el riesgo climático o la expansión de la movilidad están activos.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -692,21 +692,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_infrastructure_settlements",
       "category_name": "Infrastructure and human settlements",
-      "aligned_count": 9536,
-      "flagged_count": 793,
+      "aligned_count": 10197,
+      "flagged_count": 976,
       "pool_composition": {
-        "primary_count": 7598,
-        "relevant_only_count": 5064
+        "primary_count": 7608,
+        "relevant_only_count": 5073
       },
       "contradiction_types": {
-        "delivery_friction": 754,
-        "resource_competition": 39
+        "delivery_friction": 898,
+        "resource_competition": 78
       },
       "synthesis": {
-        "storyline_name": "Vincular la ejecución de infraestructuras con salvaguardias climáticas y de la tierra",
-        "reinforce": "Las acciones en materia de infraestructura y asentamientos suelen estar alineadas con los observatorios de riesgo climático, la planificación de la adaptación, el establecimiento de líneas de base de residuos y la gestión de riesgos relacionados con el agua y el saneamiento. El mecanismo recurrente es la facilitación de la coordinación, mediante la cual los sistemas de seguimiento, los marcos jurídicos, la gestión de cuencas hidrográficas y la planificación local pueden reforzar la ampliación de los servicios, la adaptación costera y la gestión de residuos urbanos.",
-        "clash": "La posible desalineación se señala repetidamente allí donde los corredores logísticos, las carreteras, el Canal y la infraestructura de cuencas hidrográficas, la expansión de la vivienda y los polos económicos conexos se intersectan con bosques, áreas de restauración, territorios indígenas, áreas protegidas o sistemas municipales de residuos. La fricción recurrente tiende a ser la presión de ejecución sobre el espacio compartido de tierra, agua y gobernanza, y algunos casos también se señalan para revisión como competencia por los recursos de tierra y agua de cuencas hidrográficas, especialmente en torno a la reforestación y la expansión de embalses o áreas protegidas.",
-        "coordination_hint": "A menudo señala el valor del trazado, la zonificación, la planificación basada en cuencas hidrográficas, la integración de los residuos municipales, y los procesos tempranos de salvaguardias y participación para que la ejecución de infraestructuras y asentamientos pueda mantenerse coherente con los objetivos de adaptación, bosques y conservación.",
+        "storyline_name": "Utilizar sistemas de seguimiento y planificación para apoyar la infraestructura",
+        "reinforce": "El refuerzo suele provenir de metas nacionales de seguimiento, gobernanza de datos y establecimiento de marcos que se alinean con la provisión de infraestructura y asentamientos, especialmente para observatorios climáticos, mejoras de agua y saneamiento, movilidad sostenible, normas de vivienda y planificación de servicios. La muestra también señala vínculos facilitadores en los que las herramientas digitales, la planificación fiscal y la gobernanza intersectorial pueden apoyar la implementación de infraestructura mediante mejores estándares de datos, presentación de informes, presupuestación y seguimiento descentralizado del riesgo.",
+        "clash": "La posible desalineación se repite allí donde los corredores de transporte, la infraestructura hídrica relacionada con el Canal, la expansión de la vivienda, las carreteras y las redes energéticas pueden intersectar áreas protegidas, zonas de restauración, territorios indígenas, prioridades de gestión de cuencas hidrográficas o paisajes sensibles para las especies. Un problema menor pero recurrente es la competencia por los recursos, señalada para revisión cuando las principales inversiones en logística o embalses podrían competir por los recursos hídricos, terrestres y de cuencas hidrográficas necesarios para la restauración, la resiliencia agroalimentaria o los servicios universales de agua y saneamiento.",
+        "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la evaluación preliminar de cuencas hidrográficas y del uso del suelo, y de protocolos compartidos de datos y consulta, de modo que la ubicación de la infraestructura y la expansión de los servicios puedan alinearse con los objetivos de conservación, de los territorios indígenas y de asignación del agua.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -715,21 +715,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_livelihoods",
       "category_name": "Livelihoods",
-      "aligned_count": 12314,
+      "aligned_count": 12980,
       "flagged_count": 316,
       "pool_composition": {
-        "primary_count": 5035,
-        "relevant_only_count": 9779
+        "primary_count": 5065,
+        "relevant_only_count": 9795
       },
       "contradiction_types": {
-        "delivery_friction": 270,
-        "resource_competition": 46
+        "delivery_friction": 266,
+        "resource_competition": 50
       },
       "synthesis": {
-        "storyline_name": "Vinculación del uso de los recursos basado en la comunidad con medios de vida inclusivos",
-        "reinforce": "Los pares que se refuerzan mutuamente suelen alinearse en torno al uso sostenible de la biodiversidad, los bosques y los sistemas agroalimentarios como vías de medios de vida, respaldados por la innovación, el biocomercio, la restauración y la gestión de especies. Un mecanismo recurrente es la participación comunitaria e indígena, la distribución de beneficios, el fortalecimiento de las capacidades locales y los proyectos piloto o la investigación que ayudan a traducir las acciones de conservación y clima en valor económico local.",
-        "clash": "La posible desalineación se señala principalmente para revisión cuando las acciones forestales orientadas a los medios de vida, de biocomercio, turismo o agroalimentación pueden compartir territorio con la expansión de la logística, el transporte, los embalses, el riego o la agricultura de exportación. La fricción recurrente tiende a estar relacionada con la implementación, cuando la ubicación de la infraestructura, la ampliación del acceso, el uso del agua o la presión de la comercialización podrían complicar la gestión sostenible, las salvaguardias comunitarias o los modelos de medios de vida basados en los bosques y la vida silvestre en los mismos paisajes.",
-        "coordination_hint": "Este sector suele señalar la necesidad de zonificación territorial, salvaguardias y planificación participativa para que las mejoras en los medios de vida derivadas del uso sostenible de los recursos puedan alinearse con las inversiones en infraestructura, agua y modernización agrícola.",
+        "storyline_name": "Vincular la provisión de medios de vida a los sistemas de gobernanza forestal",
+        "reinforce": "Las acciones relativas a los medios de vida en este sector suelen estar alineadas con sistemas facilitadores para la gobernanza forestal, el monitoreo, la transparencia, la comunicación y los incentivos. La muestra señala repetidamente que la capacitación comunitaria, el apoyo a emprendimientos de mujeres y jóvenes, el biocomercio, la certificación y la valoración de los servicios ecosistémicos se ven reforzados por REDD+, Nature Pledge y medidas de restauración que mejoran el seguimiento, la apropiación por las partes interesadas y las condiciones de mercado.",
+        "clash": "La posible desalineación reaparece allí donde las actividades forestales y de biocomercio orientadas a los medios de vida se encuentran con la construcción de carreteras, corredores logísticos, obras de embalses, expansión del riego o infraestructura productiva más amplia. Estos pares señalados suelen apuntar a fricciones en la implementación o a competencia por recursos en relación con la tierra, el agua, el acceso y las áreas protegidas o de cuencas hidrográficas, especialmente si la ubicación de la infraestructura y la expansión productiva no se coordinan con las salvaguardias y la zonificación.",
+        "coordination_hint": "Suele ser útil secuenciar el apoyo a los medios de vida con la planificación territorial, la asignación de agua, el trazado de rutas y los mecanismos de participación comunitaria, de modo que las medidas de ingresos basadas en los bosques puedan alinearse con las inversiones en infraestructura y producción en los mismos paisajes.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -738,21 +738,21 @@
       "taxonomy_type": "gga",
       "category_id": "gga_water",
       "category_name": "Water",
-      "aligned_count": 11255,
-      "flagged_count": 307,
+      "aligned_count": 11694,
+      "flagged_count": 366,
       "pool_composition": {
-        "primary_count": 6374,
-        "relevant_only_count": 6358
+        "primary_count": 6378,
+        "relevant_only_count": 6378
       },
       "contradiction_types": {
-        "delivery_friction": 254,
-        "resource_competition": 53
+        "delivery_friction": 281,
+        "resource_competition": 85
       },
       "synthesis": {
-        "storyline_name": "Vincular la planificación del agua con la gobernanza de las cuencas hidrográficas",
-        "reinforce": "Las metas relativas al agua suelen alinearse con la restauración forestal, la gestión de áreas protegidas, la alerta temprana y la gobernanza inclusiva al reforzar la información sobre cuencas hidrográficas, la regulación hidrológica, la protección ribereña y la coordinación institucional. La muestra señala repetidamente una sinergia allí donde la disponibilidad de agua, el monitoreo de la demanda, la protección de las zonas de recarga y la gobernanza participativa respaldan una resiliencia más amplia y la prestación de servicios.",
-        "clash": "La posible desalineación se señala repetidamente para su revisión cuando la infraestructura relacionada con el agua, los embalses, el riego, la logística, la vivienda, el turismo o la expansión agrícola pueden superponerse con zonas ribereñas, áreas de recarga, áreas protegidas, humedales o paisajes de restauración. El mecanismo recurrente es la fricción en la implementación y, en ocasiones, la competencia por los recursos, en torno al espacio compartido de las cuencas hidrográficas, las decisiones sobre el uso de la tierra y la aplicación de salvaguardias, más que una contradicción directa de políticas.",
-        "coordination_hint": "Suele ser útil secuenciar las inversiones en infraestructura hídrica y usos productivos con la zonificación de cuencas hidrográficas, la verificación de áreas protegidas y de la tenencia, y los mecanismos compartidos de salvaguardias y seguimiento en las mismas cuencas.",
+        "storyline_name": "Vincular la protección de las cuencas hidrográficas con la prestación de servicios de agua",
+        "reinforce": "Las metas relativas al agua suelen alinearse con la restauración forestal, la protección ribereña, la gestión de áreas protegidas y la planificación del riesgo climático cuando estas contribuyen a sostener las fuentes de agua, las zonas de recarga y la resiliencia de los servicios. El refuerzo también se repite mediante medidas habilitadoras, como el fortalecimiento institucional, el monitoreo, las salvaguardias y la participación inclusiva, que tienden a respaldar la gobernanza del agua y la calidad de la implementación.",
+        "clash": "La posible desalineación se señala repetidamente cuando la disponibilidad de agua o la gestión del agua relacionada con el Canal dependen de embalses, infraestructura de gran escala o cambios asociados en el uso del suelo en cuencas hidrográficas forestales, áreas protegidas, zonas ribereñas o territorios indígenas. La competencia por los recursos también es recurrente cuando la misma tierra y agua en cuencas estratégicas pueden ser necesarias tanto para la conservación, la adaptación o la gestión forestal comunitaria como para infraestructura de gran escala de abastecimiento de agua.",
+        "coordination_hint": "A menudo señala el valor de la planificación espacial a nivel de cuenca, las salvaguardias tempranas y la consulta, y las decisiones conjuntas sobre el emplazamiento para que la infraestructura hídrica y la expansión de los servicios puedan avanzar al tiempo que refuerzan la protección de las cuencas hidrográficas.",
         "confidence": "high"
       },
       "synthesis_error": null
@@ -1361,21 +1361,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_agriculture_food",
         "category_name": "Agriculture and food",
-        "aligned_count": 9918,
-        "flagged_count": 305,
+        "aligned_count": 10434,
+        "flagged_count": 253,
         "pool_composition": {
-          "primary_count": 4655,
-          "relevant_only_count": 6817
+          "primary_count": 4670,
+          "relevant_only_count": 6846
         },
         "contradiction_types": {
-          "delivery_friction": 263,
-          "resource_competition": 42
+          "delivery_friction": 208,
+          "resource_competition": 45
         },
         "synthesis": {
-          "storyline_name": "vincular la transformación agroalimentaria con las salvaguardias de la tierra",
-          "reinforce": "Los pares de refuerzo suelen alinear la adaptación relacionada con la agricultura, la información agroclimática, la capacitación de los agricultores y la restauración con las salvaguardias forestales, los corredores de biodiversidad y la planificación territorial climáticamente inteligente. Esto tiende a apuntar a una implementación complementaria en la que la mejora agroalimentaria se orienta mediante información geoespacial, alerta temprana, salvaguardias y mecanismos de restauración, en lugar de tratarse por separado de la gestión de la tierra y los ecosistemas.",
-          "clash": "La posible desalineación se repite allí donde la modernización agrícola, la promoción de las exportaciones, el riego y la infraestructura conexa podrían aumentar la presión sobre los bosques, los humedales, las zonas ribereñas u otras zonas de restauración y conservación. También se señalan varios pares para revisión porque los embalses, las carreteras, los corredores logísticos y la tecnificación rural pueden competir por los mismos recursos de tierra y agua de los que dependen la restauración vinculada a la agricultura, la protección del suelo o las medidas relativas a las cuencas hidrográficas.",
-          "coordination_hint": "A menudo sería útil coordinar el apoyo agroalimentario con la zonificación, la asignación de cuencas hidrográficas, las plataformas agroclimáticas y las salvaguardias para los bosques o humedales, de modo que los aumentos de productividad tiendan a mantenerse en las tierras aptas existentes y eviten menoscabar los objetivos de restauración.",
+          "storyline_name": "Vincular la agricultura climáticamente inteligente con la gobernanza forestal",
+          "reinforce": "El refuerzo suele aparecer cuando las medidas orientadas a la agricultura, como el apoyo a la agricultura orgánica, la capacitación de agricultores, los sistemas de información agroclimática y la transformación agroalimentaria distrital, se alinean con acciones relativas a los bosques, el carbono del suelo y la gobernanza territorial. La muestra también señala vínculos facilitadores mediante la participación indígena, la demarcación de tierras, el MRV y el diseño de incentivos, que pueden ayudar a que la agricultura sostenible, la gestión del suelo y la mitigación basada en la tierra funcionen en los mismos paisajes.",
+          "clash": "La posible desalineación se repite cuando la modernización agrícola, la promoción de las exportaciones, la logística, el riego, los embalses, las carreteras y la piscicultura podrían aumentar la presión sobre los bosques, los manglares, las áreas protegidas, los suelos orgánicos y las zonas de restauración que también afectan a este sector. Un problema menor pero recurrente es la competencia por los recursos, especialmente por la tierra y el agua en zonas rurales o de cuencas compartidas, que se señala para revisión cuando la rehabilitación forestal o la restauración de áreas protegidas se superpone con el riego y la expansión agroindustrial.",
+          "coordination_hint": "Suele ser útil coordinar las medidas de productividad agrícola e infraestructura con la zonificación del uso de la tierra, la asignación de cuencas hidrográficas, las salvaguardias de las áreas protegidas y de los pueblos indígenas, y las normas de incentivos libres de deforestación en los mismos territorios rurales.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1384,21 +1384,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_cultural_heritage",
         "category_name": "Cultural heritage",
-        "aligned_count": 6445,
-        "flagged_count": 164,
+        "aligned_count": 6673,
+        "flagged_count": 199,
         "pool_composition": {
-          "primary_count": 1943,
-          "relevant_only_count": 5647
+          "primary_count": 1948,
+          "relevant_only_count": 5667
         },
         "contradiction_types": {
-          "delivery_friction": 163,
-          "resource_competition": 1
+          "delivery_friction": 195,
+          "resource_competition": 4
         },
         "synthesis": {
-          "storyline_name": "Vincular la gestión del patrimonio con la participación indígena",
-          "reinforce": "Los pares de refuerzo suelen alinear las acciones relacionadas con el patrimonio cultural con la participación culturalmente apropiada de los pueblos indígenas y las comunidades locales, especialmente mediante el turismo comunitario, la planificación del ecoturismo, el seguimiento de salvaguardias y el reconocimiento de los conocimientos tradicionales. También tienden a reforzarse cuando los marcos jurídicos, regulatorios o de incentivos para los bosques, las áreas protegidas, el turismo y los mecanismos de carbono crean condiciones propicias para conservar conjuntamente las tradiciones, los recursos naturales y los bienes patrimoniales.",
-          "clash": "La posible desalineación reaparece cuando la expansión del turismo, los corredores logísticos, las carreteras, la energía, el agua o la modernización agroindustrial podrían ejercer presión de implementación sobre paisajes forestales, áreas protegidas o territorios indígenas que también sustentan la gestión comunitaria vinculada al patrimonio. Estos pares suelen señalarse para revisión como fricción en la implementación más que como contradicción directa, y la zonificación, el consentimiento, las salvaguardias y la coordinación territorial se identifican repetidamente como los puntos prácticos de presión.",
-          "coordination_hint": "Suele ser útil secuenciar el turismo vinculado al patrimonio o la ejecución de infraestructuras con una evaluación territorial temprana, la participación indígena y salvaguardias para el uso de la tierra, especialmente cuando las tradiciones comunitarias y los paisajes conservados se superponen.",
+          "storyline_name": "Vinculación de la gestión indígena con una gobernanza sensible al patrimonio",
+          "reinforce": "Los pares de refuerzo suelen alinearse en torno a la participación indígena, el FPIC, las prácticas ancestrales y el monitoreo comunitario como mecanismos facilitadores para la conservación y la gestión en territorios que también pueden tener valor de patrimonio cultural. Esto se repite en los grupos de trabajo de REDD+, las salvaguardias, la comunicación, la distribución de beneficios y las interfaces de restauración o planificación del turismo, que tienden a reforzar una gobernanza más inclusiva de los paisajes naturales y patrimoniales.",
+          "clash": "La posible desalineación se señala principalmente para revisión cuando la seguridad territorial, la demarcación de áreas protegidas, el FPIC o la gestión basada en prácticas ancestrales pueden enfrentar fricciones en la ejecución derivadas de corredores logísticos, carreteras, vivienda, expansión industrial, infraestructura vinculada al Canal o desarrollo turístico. El mecanismo recurrente es la presión de implementación sobre el uso de la tierra, el acceso y la consulta en paisajes indígenas o protegidos, más que una contradicción directa de política.",
+          "coordination_hint": "Suele ser útil coordinar tempranamente la planificación del uso de la tierra, el reconocimiento de límites, las decisiones sobre trazado y emplazamiento, y los procesos de FPIC o de salvaguardias cuando los valores culturales o territoriales indígenas se superponen con la infraestructura, el turismo o la ejecución industrial.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1407,21 +1407,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_ecosystems_biodiversity",
         "category_name": "Ecosystems and biodiversity",
-        "aligned_count": 32675,
-        "flagged_count": 965,
+        "aligned_count": 34227,
+        "flagged_count": 1074,
         "pool_composition": {
-          "primary_count": 35690,
-          "relevant_only_count": 3465
+          "primary_count": 35826,
+          "relevant_only_count": 3487
         },
         "contradiction_types": {
-          "delivery_friction": 906,
-          "resource_competition": 59
+          "delivery_friction": 988,
+          "resource_competition": 86
         },
         "synthesis": {
-          "storyline_name": "Fortalecer la gobernanza de la biodiversidad y los sistemas de seguimiento",
-          "reinforce": "Los pares de refuerzo suelen alinearse en torno a instituciones facilitadoras para los ecosistemas y la biodiversidad, especialmente la coordinación de REDD+, las salvaguardias, el monitoreo, la distribución de beneficios y los marcos jurídicos que se conectan con la presentación de informes sobre biodiversidad, la gobernanza de las áreas protegidas, el monitoreo de los humedales y el Nature Pledge. Esto se repite mediante mecanismos concretos como acuerdos interinstitucionales, sistemas de monitoreo forestal y de tierras, participación de las partes interesadas, procesos relacionados con el FPIC y sistemas de incentivos o pagos para la conservación.",
-          "clash": "La posible desalineación se señala principalmente para revisión cuando las medidas de protección y restauración de la biodiversidad, como la protección de manglares, los corredores biológicos, el control de los límites de las áreas protegidas, la restauración forestal y la gestión de los ecosistemas de cuencas hidrográficas, pueden enfrentar fricciones en su ejecución derivadas de carreteras, corredores logísticos, vivienda, energía, embalses, turismo o expansión agroindustrial en paisajes superpuestos. El mecanismo recurrente no es una contradicción directa de políticas, sino la presión de implementación a través del cambio de uso del suelo, la expansión del acceso, la localización y la ejecución de infraestructura, que podría complicar los resultados de conservación a menos que se apliquen la planificación espacial y las salvaguardias.",
-          "coordination_hint": "Suele ser útil conectar desde el principio a los órganos de seguimiento de la biodiversidad, REDD+ y gobernanza de cuencas hidrográficas, así como a las autoridades de concesión de permisos de uso del suelo o a los planificadores de infraestructuras, de modo que los datos de seguimiento, la zonificación, el FPIC y las salvaguardias puedan orientar la implementación en zonas compartidas de bosques, costas, humedales y cuencas hidrográficas.",
+          "storyline_name": "Fortalecer la gobernanza forestal y la ejecución conectada de la conservación",
+          "reinforce": "Los pares de refuerzo suelen alinearse en torno a la protección de los bosques, la gestión de las áreas protegidas, los corredores ecológicos, la financiación de la restauración y los sistemas de seguimiento, especialmente cuando REDD+, las áreas protegidas y los instrumentos de reforestación están vinculados. Una segunda alineación recurrente es la gobernanza habilitadora, la transparencia, la participación y los sistemas de conocimiento que refuerzan la implementación de la biodiversidad mediante información pública, salvaguardias, contabilidad del carbono y plataformas de coordinación.",
+          "clash": "La posible desalineación se repite cuando la infraestructura de transporte, logística, vivienda, energía, industria, turismo o agua podría generar presión localizada sobre los bosques, las zonas ribereñas, los manglares, los sitios de restauración o los territorios REDD+, y muchos pares se señalan para revisión por motivos de ubicación, trazado y uso del suelo. Un patrón menor señalado para revisión se refiere a la competencia por los recursos, especialmente cuando la rehabilitación forestal, el riego o la infraestructura hídrica de gran escala pueden competir por la misma tierra, el espacio de cuenca hidrográfica o las prioridades de gestión del agua.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la zonificación de cuencas hidrográficas y corredores, y las salvaguardias que vinculan la infraestructura y las inversiones productivas con las prioridades forestales, costeras y de restauración.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1430,20 +1430,20 @@
         "taxonomy_type": "gga",
         "category_id": "gga_health",
         "category_name": "Health",
-        "aligned_count": 1197,
-        "flagged_count": 3,
+        "aligned_count": 1364,
+        "flagged_count": 6,
         "pool_composition": {
-          "primary_count": 1298,
+          "primary_count": 1342,
           "relevant_only_count": 682
         },
         "contradiction_types": {
-          "delivery_friction": 3
+          "delivery_friction": 6
         },
         "synthesis": {
-          "storyline_name": "Vincular la prestación de servicios de salud con los sistemas climáticos y de biodiversidad",
-          "reinforce": "Las metas de salud suelen alinearse con las medidas de adaptación al clima, seguimiento y gobernanza intersectorial. El mecanismo recurrente consiste en facilitar la coordinación, como integrar variables climáticas en la vigilancia epidemiológica, utilizar procedimientos de seguimiento documentados y vincular el trabajo de One Health o sobre riesgo zoonótico con la capacidad comunitaria, los datos ambientales y los sistemas de aplicación de la biodiversidad.",
-          "clash": "Se señala una posible desalineación para su revisión cuando los controles del tráfico de vida silvestre relacionados con la salud coinciden con una logística más rápida y la expansión de corredores comerciales en puertos, aeropuertos y rutas de transporte. La fricción tiende a referirse a la implementación, no a los objetivos, porque es posible que deban diseñarse inspecciones más rigurosas, trazabilidad y aplicación interinstitucional de la normativa junto con la facilitación del comercio para que no se debilite la eficacia de los controles.",
-          "coordination_hint": "A menudo sería útil conectar la vigilancia de la salud, el control del riesgo zoonótico y la logística o el monitoreo ambiental mediante protocolos compartidos, capacidad de inspección y mecanismos de intercambio de datos.",
+          "storyline_name": "Vincular la prestación de servicios de salud con los sistemas climáticos y territoriales",
+          "reinforce": "Las metas de salud suelen alinearse con la adaptación al clima, la planificación del uso de la tierra, la gestión del riesgo hídrico y la participación comunitaria mediante mecanismos facilitadores como la vigilancia epidemiológica informada por el clima, un acceso más seguro a las instalaciones y sistemas públicos sensibles al riesgo. Un segundo patrón recurrente refuerza los vínculos de estilo One Health entre las agendas de STI en materia de salud y la biodiversidad, REDD+ y las acciones relacionadas con la vida silvestre, principalmente a través de necesidades compartidas de seguimiento, salvaguardias, participación indígena y comunitaria, y sistemas de información intersectoriales.",
+          "clash": "Se señala una posible desalineación para su revisión cuando el control del tráfico de vida silvestre, incluida la vigilancia del riesgo zoonótico y las inspecciones, puede enfrentar fricciones en su implementación derivadas de corredores logísticos más rápidos, la expansión del turismo o nuevos accesos por carretera que pueden incrementar el tránsito por zonas de alto riesgo. Se observan fricciones adicionales cuando la expansión de infraestructura, industrial o relacionada con canales se superpone con controles del uso del suelo sensibles al riesgo, lo que podría afectar indirectamente las condiciones de seguridad y de prestación de servicios pertinentes para la salud, a menos que la ubicación, los puestos de control y los permisos se coordinen.",
+          "coordination_hint": "Suele ser útil conectar la vigilancia de la salud, el seguimiento de One Health y la planificación del acceso a las instalaciones con las decisiones sobre transporte, uso del suelo y control de la fauna silvestre en territorios compartidos, especialmente donde el riesgo climático o la expansión de la movilidad están activos.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1452,21 +1452,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_infrastructure_settlements",
         "category_name": "Infrastructure and human settlements",
-        "aligned_count": 9536,
-        "flagged_count": 793,
+        "aligned_count": 10197,
+        "flagged_count": 976,
         "pool_composition": {
-          "primary_count": 7598,
-          "relevant_only_count": 5064
+          "primary_count": 7608,
+          "relevant_only_count": 5073
         },
         "contradiction_types": {
-          "delivery_friction": 754,
-          "resource_competition": 39
+          "delivery_friction": 898,
+          "resource_competition": 78
         },
         "synthesis": {
-          "storyline_name": "Vincular la ejecución de infraestructuras con salvaguardias climáticas y de la tierra",
-          "reinforce": "Las acciones en materia de infraestructura y asentamientos suelen estar alineadas con los observatorios de riesgo climático, la planificación de la adaptación, el establecimiento de líneas de base de residuos y la gestión de riesgos relacionados con el agua y el saneamiento. El mecanismo recurrente es la facilitación de la coordinación, mediante la cual los sistemas de seguimiento, los marcos jurídicos, la gestión de cuencas hidrográficas y la planificación local pueden reforzar la ampliación de los servicios, la adaptación costera y la gestión de residuos urbanos.",
-          "clash": "La posible desalineación se señala repetidamente allí donde los corredores logísticos, las carreteras, el Canal y la infraestructura de cuencas hidrográficas, la expansión de la vivienda y los polos económicos conexos se intersectan con bosques, áreas de restauración, territorios indígenas, áreas protegidas o sistemas municipales de residuos. La fricción recurrente tiende a ser la presión de ejecución sobre el espacio compartido de tierra, agua y gobernanza, y algunos casos también se señalan para revisión como competencia por los recursos de tierra y agua de cuencas hidrográficas, especialmente en torno a la reforestación y la expansión de embalses o áreas protegidas.",
-          "coordination_hint": "A menudo señala el valor del trazado, la zonificación, la planificación basada en cuencas hidrográficas, la integración de los residuos municipales, y los procesos tempranos de salvaguardias y participación para que la ejecución de infraestructuras y asentamientos pueda mantenerse coherente con los objetivos de adaptación, bosques y conservación.",
+          "storyline_name": "Utilizar sistemas de seguimiento y planificación para apoyar la infraestructura",
+          "reinforce": "El refuerzo suele provenir de metas nacionales de seguimiento, gobernanza de datos y establecimiento de marcos que se alinean con la provisión de infraestructura y asentamientos, especialmente en lo relativo a observatorios climáticos, mejoras en agua y saneamiento, movilidad sostenible, normas de vivienda y planificación de servicios. La muestra también señala vínculos facilitadores en los que las herramientas digitales, la planificación fiscal y la gobernanza intersectorial pueden apoyar la implementación de infraestructura mediante mejores estándares de datos, presentación de informes, presupuestación y seguimiento descentralizado del riesgo.",
+          "clash": "La posible desalineación se repite allí donde los corredores de transporte, la infraestructura hídrica relacionada con el Canal, la expansión de la vivienda, las carreteras y las redes energéticas pueden intersectar áreas protegidas, zonas de restauración, territorios indígenas, prioridades de gestión de cuencas hidrográficas o paisajes sensibles para las especies. Una cuestión de menor magnitud pero recurrente es la competencia por los recursos, señalada para revisión allí donde las principales inversiones en logística o embalses podrían competir por los recursos hídricos, terrestres y de cuencas hidrográficas necesarios para la restauración, la resiliencia agroalimentaria o los servicios universales de agua y saneamiento.",
+          "coordination_hint": "Este sector tiende a beneficiarse de la planificación espacial temprana, la evaluación de cuencas hidrográficas y del uso del suelo, y de protocolos compartidos de datos y consulta, de modo que la ubicación de la infraestructura y la ampliación de los servicios puedan alinearse con los objetivos de conservación, de los territorios indígenas y de asignación del agua.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1475,21 +1475,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_livelihoods",
         "category_name": "Livelihoods",
-        "aligned_count": 12314,
+        "aligned_count": 12980,
         "flagged_count": 316,
         "pool_composition": {
-          "primary_count": 5035,
-          "relevant_only_count": 9779
+          "primary_count": 5065,
+          "relevant_only_count": 9795
         },
         "contradiction_types": {
-          "delivery_friction": 270,
-          "resource_competition": 46
+          "delivery_friction": 266,
+          "resource_competition": 50
         },
         "synthesis": {
-          "storyline_name": "Vinculación del uso de los recursos basado en la comunidad con medios de vida inclusivos",
-          "reinforce": "Los pares que se refuerzan mutuamente suelen alinearse en torno al uso sostenible de la biodiversidad, los bosques y los sistemas agroalimentarios como vías de medios de vida, respaldados por la innovación, el biocomercio, la restauración y la gestión de especies. Un mecanismo recurrente es la participación comunitaria e indígena, la distribución de beneficios, el fortalecimiento de las capacidades locales y los proyectos piloto o la investigación que ayudan a traducir las acciones de conservación y clima en valor económico local.",
-          "clash": "La posible desalineación se señala principalmente para revisión cuando las acciones forestales orientadas a los medios de vida, de biocomercio, turismo o agroalimentación pueden compartir territorio con la expansión de la logística, el transporte, los embalses, el riego o la agricultura de exportación. La fricción recurrente tiende a estar relacionada con la implementación, cuando la ubicación de la infraestructura, la ampliación del acceso, el uso del agua o la presión de la comercialización podrían complicar la gestión sostenible, las salvaguardias comunitarias o los modelos de medios de vida basados en los bosques y la vida silvestre en los mismos paisajes.",
-          "coordination_hint": "Este sector suele señalar la necesidad de zonificación territorial, salvaguardias y planificación participativa para que las mejoras en los medios de vida derivadas del uso sostenible de los recursos puedan alinearse con las inversiones en infraestructura, agua y modernización agrícola.",
+          "storyline_name": "Vincular la provisión de medios de vida a los sistemas de gobernanza forestal",
+          "reinforce": "Las acciones relativas a los medios de vida en este sector suelen estar alineadas con sistemas habilitantes para la gobernanza forestal, el monitoreo, la transparencia, la comunicación y los incentivos. La muestra señala repetidamente que la capacitación comunitaria, el apoyo a emprendimientos de mujeres y jóvenes, el biocomercio, la certificación y la valoración de los servicios ecosistémicos se ven reforzados por REDD+, Nature Pledge y medidas de restauración que mejoran el seguimiento, la adopción por las partes interesadas y las condiciones de mercado.",
+          "clash": "La posible desalineación reaparece allí donde las actividades forestales y de biocomercio orientadas a los medios de vida coinciden con la construcción de carreteras, corredores logísticos, obras de embalses, expansión del riego o infraestructura productiva más amplia. Estos pares señalados suelen apuntar a fricciones en la implementación o a competencia por recursos en relación con la tierra, el agua, el acceso y las áreas protegidas o de cuenca, especialmente si la ubicación de la infraestructura y la expansión productiva no se coordinan con las salvaguardias y la zonificación.",
+          "coordination_hint": "Suele ser útil secuenciar el apoyo a los medios de vida con la planificación territorial, la asignación de agua, el trazado y los mecanismos de participación comunitaria, de modo que las medidas de ingresos basadas en los bosques puedan alinearse con las inversiones en infraestructura y producción en los mismos paisajes.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -1498,21 +1498,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_water",
         "category_name": "Water",
-        "aligned_count": 11255,
-        "flagged_count": 307,
+        "aligned_count": 11694,
+        "flagged_count": 366,
         "pool_composition": {
-          "primary_count": 6374,
-          "relevant_only_count": 6358
+          "primary_count": 6378,
+          "relevant_only_count": 6378
         },
         "contradiction_types": {
-          "delivery_friction": 254,
-          "resource_competition": 53
+          "delivery_friction": 281,
+          "resource_competition": 85
         },
         "synthesis": {
-          "storyline_name": "Vincular la planificación del agua con la gobernanza de las cuencas hidrográficas",
-          "reinforce": "Las metas relativas al agua suelen alinearse con la restauración forestal, la gestión de áreas protegidas, la alerta temprana y la gobernanza inclusiva al reforzar la información sobre cuencas hidrográficas, la regulación hidrológica, la protección ribereña y la coordinación institucional. La muestra señala repetidamente una sinergia allí donde la disponibilidad de agua, el monitoreo de la demanda, la protección de las zonas de recarga y la gobernanza participativa respaldan una resiliencia más amplia y la prestación de servicios.",
-          "clash": "La posible desalineación se señala repetidamente para su revisión cuando la infraestructura relacionada con el agua, los embalses, el riego, la logística, la vivienda, el turismo o la expansión agrícola pueden superponerse con zonas ribereñas, áreas de recarga, áreas protegidas, humedales o paisajes de restauración. El mecanismo recurrente es la fricción en la implementación y, en ocasiones, la competencia por los recursos, en torno al espacio compartido de las cuencas hidrográficas, las decisiones sobre el uso de la tierra y la aplicación de salvaguardias, más que una contradicción directa de políticas.",
-          "coordination_hint": "Suele ser útil secuenciar las inversiones en infraestructura hídrica y usos productivos con la zonificación de cuencas hidrográficas, la verificación de áreas protegidas y de la tenencia, y los mecanismos compartidos de salvaguardias y seguimiento en las mismas cuencas.",
+          "storyline_name": "Vincular la protección de las cuencas hidrográficas con la prestación de servicios de agua",
+          "reinforce": "Las metas relativas al agua suelen alinearse con la restauración forestal, la protección ribereña, la gestión de áreas protegidas y la planificación del riesgo climático cuando estas contribuyen a sostener las fuentes de agua, las zonas de recarga y la resiliencia de los servicios. El refuerzo también se repite mediante medidas habilitadoras, como el fortalecimiento institucional, el monitoreo, las salvaguardias y la participación inclusiva, que tienden a apoyar la gobernanza del agua y la calidad de la implementación.",
+          "clash": "La posible desalineación se señala repetidamente cuando la disponibilidad de agua o la gestión del agua relacionada con el Canal dependen de embalses, infraestructura de gran escala o cambios asociados en el uso del suelo en cuencas hidrográficas forestales, áreas protegidas, zonas ribereñas o territorios indígenas. La competencia por los recursos también es recurrente cuando la misma tierra y agua en cuencas estratégicas pueden ser necesarias tanto para la conservación, la adaptación o la gestión forestal comunitaria como para infraestructura de gran escala de abastecimiento de agua.",
+          "coordination_hint": "A menudo señala el valor de la planificación espacial a nivel de cuenca, las salvaguardias tempranas y la consulta, y las decisiones conjuntas sobre la ubicación, de modo que la infraestructura hídrica y la expansión de los servicios puedan avanzar al tiempo que se refuerza la protección de las cuencas hidrográficas.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2120,21 +2120,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_agriculture_food",
         "category_name": "Agriculture and food",
-        "aligned_count": 2844,
-        "flagged_count": 130,
+        "aligned_count": 2913,
+        "flagged_count": 124,
         "pool_composition": {
-          "primary_count": 1035,
-          "relevant_only_count": 2160
+          "primary_count": 1039,
+          "relevant_only_count": 2175
         },
         "contradiction_types": {
-          "delivery_friction": 109,
-          "resource_competition": 21
+          "delivery_friction": 102,
+          "resource_competition": 22
         },
         "synthesis": {
-          "storyline_name": "Vinculación de la gestión agroalimentaria con los sistemas de tierras y clima",
-          "reinforce": "Los pares de refuerzo suelen alinear las acciones de agricultura y alimentación con la restauración, la protección de los bosques, la gestión de suelos orgánicos y el uso agroecológico de la tierra, especialmente cuando las herramientas compartidas incluyen la planificación territorial, el MRV, los incentivos y la reconversión productiva. Un segundo patrón recurrente es la alineación de los sistemas facilitadores, en la que las plataformas geoespaciales y agroclimáticas agrícolas, la colaboración en STI y los sistemas de alerta temprana o de seguimiento refuerzan una implementación agroalimentaria más resiliente al clima y mejor coordinada.",
-          "clash": "La posible desalineación reaparece cuando la modernización agrícola, el riego, la promoción de las exportaciones, la logística, las carreteras o la infraestructura de almacenamiento de agua podrían aumentar la presión sobre los corredores, los humedales, los bosques, los suelos orgánicos o los hábitats de las especies que otras metas buscan conservar. También se señala para revisión la competencia por los recursos en torno al agua, ya que la expansión agroalimentaria y la captación productiva de agua podrían competir con el suministro de agua potable o con las prioridades de adaptación en cuencas compartidas y territorios vulnerables.",
-          "coordination_hint": "Suele ser útil coordinar este sector mediante la zonificación de cuencas y del uso de la tierra, salvaguardias para la biodiversidad y los humedales, y el uso compartido de sistemas agroclimáticos, geoespaciales y de seguimiento, de modo que los aumentos de la productividad se ajusten a la conservación y a las limitaciones hídricas.",
+          "storyline_name": "Vincular la transformación agroalimentaria con los sistemas de tierras y agua",
+          "reinforce": "Los pares de refuerzo suelen alinear las acciones en materia de agricultura y alimentación con sistemas facilitadores para los datos agroclimáticos, el monitoreo geoespacial, la digitalización, la adopción de STI y la coordinación interinstitucional, especialmente en torno a OSIGA, la selección de distritos prioritarios y los flujos de información estandarizados. La alineación también se repite cuando la transformación agroalimentaria se conecta con la restauración, los suelos orgánicos y la gestión de tierras degradadas, la supervisión del riego y la gobernanza del agua, lo que tiende a reforzar la producción climáticamente inteligente y la planificación territorial.",
+          "clash": "La posible desalineación se señala con mayor frecuencia para revisión cuando la producción agrícola, el riego, la competitividad de las exportaciones o la infraestructura conexa podrían competir con la restauración, las áreas protegidas, los humedales, los suelos orgánicos y los objetivos de las cuencas hidrográficas por tierras o agua compartidas. La fricción en la implementación también se repite cuando las carreteras, los embalses, la vivienda, la logística, el turismo o la expansión industrial pueden afectar los paisajes agrícolas y los ecosistemas conectados, a menos que se coordinen la zonificación, la ubicación, las salvaguardias hidrológicas y los controles de la contaminación.",
+          "coordination_hint": "Suele ser útil coordinar la modernización agroalimentaria con la asignación de agua a nivel de cuenca, la zonificación del uso del suelo y las plataformas compartidas de seguimiento, de modo que las mejoras de la producción puedan alinearse con la restauración, la protección de los humedales y las medidas de reducción de la contaminación.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2143,20 +2143,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_cultural_heritage",
         "category_name": "Cultural heritage",
-        "aligned_count": 902,
+        "aligned_count": 917,
         "flagged_count": 39,
         "pool_composition": {
           "primary_count": 257,
-          "relevant_only_count": 793
+          "relevant_only_count": 795
         },
         "contradiction_types": {
-          "delivery_friction": 39
+          "delivery_friction": 37,
+          "resource_competition": 2
         },
         "synthesis": {
-          "storyline_name": "Vinculación del turismo patrimonial con salvaguardias de conservación",
-          "reinforce": "Dentro del patrimonio cultural, la alineación suele aparecer cuando el turismo, el ecoturismo, el agroturismo y la planificación patrimonial se combinan con la participación comunitaria, los conocimientos tradicionales, la restauración, los corredores ecológicos y la gobernanza climática o de la biodiversidad. Estas combinaciones tienden a reforzar modelos de uso del patrimonio que dependen de los medios de vida locales, la planificación del uso de la tierra y la protección de los activos naturales y culturales, especialmente en el CHCP y en los contextos conexos de planificación turística.",
-          "clash": "La posible desalineación reaparece cuando la promoción del turismo y del patrimonio, especialmente la infraestructura, la expansión de destinos, la movilidad y el desarrollo urbano, se superpone con sitios protegidos, corredores ecológicos, humedales, zonas de adaptación costera, prioridades forestales o controles de especies invasoras. También se señala fricción para revisión cuando grandes obras logísticas o de transporte podrían superar el ritmo de los procesos de consulta, zonificación y salvaguardias de los que pueden depender los territorios y las comunidades vinculados al patrimonio.",
-          "coordination_hint": "A menudo sería útil secuenciar los planes de turismo del patrimonio cultural con la zonificación a nivel de sitio, la consulta comunitaria, la evaluación de la biodiversidad y las salvaguardias costeras o de cuencas hidrográficas, de modo que la expansión refuerce, en lugar de sobrecargar, los paisajes protegidos y culturalmente significativos.",
+          "storyline_name": "Vincular las salvaguardias de participación cultural a la ejecución de la conservación",
+          "reinforce": "Los pares de refuerzo suelen alinear elementos pertinentes para el patrimonio cultural mediante la participación comunitaria, los conocimientos tradicionales, el acceso a la información y las salvaguardias jurídicas que apoyan la conservación, la restauración, la gestión de cuencas hidrográficas y los medios de vida comunitarios. Esto se repite allí donde los pueblos indígenas, las comunidades afrodescendientes, los productores locales, el ecoturismo, las artesanías y la planificación patrimonial o del capital natural están conectados por marcos de gobernanza, seguimiento y toma de decisiones territoriales inclusiva.",
+          "clash": "La posible desalineación se señala principalmente cuando la expansión del turismo, las carreteras, la logística, la vivienda, la energía u otras infraestructuras podrían generar presión sobre el uso de la tierra, el acceso o la consulta en territorios también destinados a la conservación, la restauración, la gestión de áreas protegidas o las salvaguardias de los conocimientos tradicionales. En este sector, la fricción recurrente tiende a estar relacionada con la implementación más que con una contradicción directa de política, y a menudo apunta a vacíos en la localización, la zonificación, el FPIC y la secuenciación en torno a paisajes culturalmente significativos o gestionados por las comunidades.",
+          "coordination_hint": "Puede ser útil secuenciar la planificación del turismo y de la infraestructura con consultas tempranas a las comunidades, procedimientos compatibles con el FPIC y una zonificación basada en el lugar, de modo que los medios de vida vinculados al patrimonio cultural y las salvaguardias puedan reforzar la implementación de la conservación y el desarrollo, en lugar de verse desplazados por ella.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2165,21 +2166,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_ecosystems_biodiversity",
         "category_name": "Ecosystems and biodiversity",
-        "aligned_count": 7195,
-        "flagged_count": 328,
+        "aligned_count": 7390,
+        "flagged_count": 353,
         "pool_composition": {
-          "primary_count": 7545,
-          "relevant_only_count": 807
+          "primary_count": 7574,
+          "relevant_only_count": 809
         },
         "contradiction_types": {
-          "delivery_friction": 305,
-          "resource_competition": 23
+          "delivery_friction": 314,
+          "resource_competition": 39
         },
         "synthesis": {
-          "storyline_name": "Fortalecer la gobernanza de la biodiversidad para posibilitar la implementación",
-          "reinforce": "Los pares de refuerzo suelen indicar que los resultados en materia de biodiversidad se alinean con una gobernanza más sólida, el seguimiento, los marcos jurídicos y los sistemas de transparencia, por ejemplo en relación con los recursos genéticos y la participación en los beneficios, la bioseguridad, las áreas protegidas, la restauración forestal y la gestión de especies. Esto también tiende a reforzar la implementación intersectorial cuando la planificación del uso de la tierra, la gestión del agua, las herramientas digitales y la innovación proporcionan condiciones propicias para la conservación, la restauración y la presentación de informes sobre biodiversidad.",
-          "clash": "La posible desalineación reaparece allí donde la infraestructura, la logística, el turismo, la vivienda, la energía, los embalses y la construcción de carreteras se superponen con áreas protegidas, bosques, humedales, cuencas hidrográficas o territorios de adaptación, generando fricciones en la implementación debido a riesgos relacionados con la ubicación, la fragmentación del hábitat, la erosión o la prevalencia de planes locales. Un segundo patrón se señala para revisión allí donde la expansión agrícola, el riego, la competitividad de las exportaciones o la facilitación del comercio pueden competir con la restauración, los suelos orgánicos, la protección ribereña, los controles de especies invasoras y la conservación de especies, a menos que la zonificación, las salvaguardias y la asignación de agua estén coordinadas.",
-          "coordination_hint": "Suele ser útil secuenciar tempranamente la planificación espacial sensible a la biodiversidad, el trazado, la zonificación y el seguimiento, de modo que las medidas de infraestructura, agricultura, agua y comercio puedan alinearse de manera más coherente con las áreas protegidas, los paisajes de restauración, los humedales y las prioridades relativas a las especies.",
+          "storyline_name": "Vincular la ejecución de la conservación con herramientas de gobernanza intersectorial",
+          "reinforce": "Las metas relativas a los ecosistemas y la biodiversidad suelen alinearse con medidas más amplias de gobernanza, ciencia, financiación y planificación que pueden facilitar la implementación de la conservación, como la regulación de la bioseguridad, los sistemas de STI, los flujos de datos, la modernización regulatoria y la capacidad comunitaria. Un refuerzo más sólido se repite cuando los documentos vinculan directamente la restauración, las áreas protegidas, los corredores biológicos, la cobertura vegetal y la protección de los bosques con mecanismos compartidos de gestión, financiación y seguimiento.",
+          "clash": "La posible desalineación se señala principalmente cuando la infraestructura y la expansión productiva, especialmente las carreteras, los embalses, la logística, la energía, la vivienda, el turismo y la localización industrial, pueden superponerse con áreas protegidas, corredores, humedales, zonas ribereñas, bosques y ecosistemas costeros. La competencia por los recursos aparece con menor frecuencia, pero reaparece en torno al desarrollo de embalses y a las presiones sobre la asignación de tierras o agua en paisajes de cuencas hidrográficas y bosques destinados a la conservación o al uso sostenible de la tierra.",
+          "coordination_hint": "Este sector tiende a beneficiarse de una planificación espacial integrada, una revisión temprana del emplazamiento y salvaguardias que conectan las prioridades de biodiversidad con las decisiones relativas a las cuencas hidrográficas, el transporte, la energía, el turismo, las zonas costeras y la industria.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2188,20 +2189,20 @@
         "taxonomy_type": "gga",
         "category_id": "gga_health",
         "category_name": "Health",
-        "aligned_count": 634,
-        "flagged_count": 3,
+        "aligned_count": 670,
+        "flagged_count": 6,
         "pool_composition": {
-          "primary_count": 521,
+          "primary_count": 528,
           "relevant_only_count": 272
         },
         "contradiction_types": {
-          "delivery_friction": 3
+          "delivery_friction": 6
         },
         "synthesis": {
           "storyline_name": "Vincular la prestación de servicios de salud con los sistemas climáticos y de datos",
-          "reinforce": "Las metas de salud suelen alinearse con reformas más amplias de adaptación al clima, STI y gestión pública que fortalecen la vigilancia epidemiológica, los sistemas de información interoperables, la capacidad de la fuerza laboral y la coordinación al estilo One Health. El fortalecimiento también es recurrente cuando la expansión hospitalaria, la telemedicina, la investigación médica y la planificación urbana verde-azul pueden apoyar conjuntamente entornos de prestación de servicios más saludables y más resilientes al clima.",
-          "clash": "La posible desalineación es limitada e indirecta en este sector. Los casos señalados apuntan principalmente a fricciones en la implementación en las interfaces de transporte y logística, donde una expansión más rápida de los corredores y la infraestructura podría debilitar los controles del riesgo zoonótico, las inspecciones, la trazabilidad o las salvaguardias espaciales, a menos que se incorpore coordinación.",
-          "coordination_hint": "La implementación en materia de salud tiende a beneficiarse de una coordinación temprana con los actores de logística, uso de la tierra, clima y STI en materia de normas de datos de vigilancia, protocolos de inspección, ubicación de instalaciones y gestión de riesgos de One Health.",
+          "reinforce": "Las metas de salud suelen alinearse con la adaptación al cambio climático, la planificación del agua y el saneamiento, y medidas más amplias de STI o de gobierno digital. El mecanismo recurrente es el apoyo facilitador, mediante el cual la vigilancia informada por el clima, la infraestructura sanitaria, la seguridad hídrica y los sistemas de datos interoperables refuerzan una prestación de servicios más resiliente y el uso de evidencia de One Health.",
+          "clash": "La posible desalineación es limitada e indirecta en esta muestra sectorial. La fricción señalada para revisión reaparece cuando el transporte, la logística, el turismo, la construcción de carreteras o la expansión industrial podrían aumentar el acceso, la movilidad o la presión sobre el uso de la tierra de maneras que compliquen el control de la fauna silvestre y la planificación sensible al riesgo, lo que puede ser importante para la gestión del riesgo zoonótico vinculada a la salud.",
+          "coordination_hint": "Suele ser útil conectar la vigilancia de la salud y la planificación de instalaciones con datos compartidos sobre clima, agua, uso del suelo y transporte, especialmente cuando los riesgos de One Health o la expansión de la infraestructura se superponen.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2210,21 +2211,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_infrastructure_settlements",
         "category_name": "Infrastructure and human settlements",
-        "aligned_count": 3916,
-        "flagged_count": 291,
+        "aligned_count": 3989,
+        "flagged_count": 349,
         "pool_composition": {
-          "primary_count": 2883,
-          "relevant_only_count": 1785
+          "primary_count": 2887,
+          "relevant_only_count": 1788
         },
         "contradiction_types": {
-          "delivery_friction": 265,
-          "resource_competition": 26
+          "delivery_friction": 303,
+          "resource_competition": 46
         },
         "synthesis": {
-          "storyline_name": "Vinculación de la inteligencia climática e hídrica con la ejecución de infraestructuras",
-          "reinforce": "Las acciones en materia de infraestructura y asentamientos suelen alinearse con los sistemas nacionales de clima, agua y ciencia cuando esos sistemas proporcionan datos, normas o apoyo de planificación para el transporte, el suministro de agua, el saneamiento, los espacios verdes urbanos y la resiliencia energética. Esto se repite en pares que vinculan la movilidad, los servicios de cuencas hidrográficas y la infraestructura urbana o de servicios con observatorios, el seguimiento de la adaptación, los sistemas de información sobre el agua, la regulación de la transición verde y la capacidad de innovación.",
-          "clash": "La posible desalineación se señala con mayor frecuencia cuando la expansión del transporte, la logística, la vivienda, el Canal, los embalses u otras infraestructuras construidas se superpone con bosques, cuencas hidrográficas, áreas de biodiversidad, zonas de adaptación costera o sistemas de agua y saneamiento. El mecanismo recurrente es la fricción en la ejecución en relación con la ubicación, la ocupación de tierras, la fragmentación de hábitats, la presión sobre los recursos hídricos, el endurecimiento de los permisos o el desarrollo inducido en los mismos territorios previstos para la restauración, la conservación o la adaptación.",
-          "coordination_hint": "Suele ser útil secuenciar las inversiones en infraestructura y asentamientos con la evaluación territorial, las salvaguardias de cuencas hidrográficas y biodiversidad, la coordinación de servicios públicos y las plataformas compartidas de información sobre riesgos climáticos y agua.",
+          "storyline_name": "Vinculación de la planificación de los asentamientos con la infraestructura de resiliencia",
+          "reinforce": "Las metas de infraestructura y asentamientos suelen alinearse con las medidas de adaptación, agua, residuos y gobernanza digital cuando proporcionan sistemas habilitadores como normas de construcción sostenible, programas de vivienda, espacios verdes y azules urbanos, infraestructura de reciclaje, información de alerta temprana y datos abiertos. La muestra también señala un refuerzo práctico mediante la planificación del uso del suelo, la capacidad municipal y las redes de servicios, especialmente cuando la vivienda, la gobernanza del agua, los observatorios climáticos y la gestión ambiental urbana requieren normas compartidas e implementación local.",
+          "clash": "La posible desalineación reaparece cuando la vivienda, las carreteras, los corredores logísticos, los puertos, los embalses y otras infraestructuras importantes se expanden hacia los mismos espacios terrestres, de cuenca hidrográfica, costeros o urbanos previstos para bosques, vegetación de protección, adaptación marino-costera o áreas verdes y azules urbanas. La fricción suele señalarse para revisión como presión de ejecución o competencia por los recursos, con mecanismos concretos que incluyen conflictos de ubicación, conversión del uso del suelo, alteración de los flujos de agua y competencia por la atención de la planificación, a menos que la zonificación, las salvaguardias y el trazado de rutas estén coordinados.",
+          "coordination_hint": "Suele ser útil secuenciar la ejecución de infraestructuras y asentamientos mediante una planificación espacial compartida, una evaluación de cuenca a costa y la zonificación urbana, de modo que las inversiones en vivienda, movilidad, agua y logística puedan alinearse con los espacios verdes, la restauración y las prioridades de adaptación.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2233,21 +2234,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_livelihoods",
         "category_name": "Livelihoods",
-        "aligned_count": 2775,
-        "flagged_count": 100,
+        "aligned_count": 2869,
+        "flagged_count": 102,
         "pool_composition": {
-          "primary_count": 1231,
-          "relevant_only_count": 2058
+          "primary_count": 1244,
+          "relevant_only_count": 2061
         },
         "contradiction_types": {
-          "delivery_friction": 84,
-          "resource_competition": 16
+          "delivery_friction": 83,
+          "resource_competition": 19
         },
         "synthesis": {
-          "storyline_name": "Vincular la provisión de medios de vida con la gobernanza ambiental",
-          "reinforce": "Las acciones relacionadas con los medios de vida suelen estar alineadas cuando las actividades locales de generación de ingresos, la capacitación, el ecoturismo, el agroturismo, el riego o los objetivos de calidad de vida vinculados a la silvicultura se ven reforzados por medidas más amplias de gobernanza, ciencia, agua y gestión del riesgo. La muestra señala repetidamente vínculos facilitadores en los que la regulación, la alerta temprana, la capacidad en STI, los servicios de agua y las redes comunitarias apoyan una producción local y unos medios de vida basados en servicios más resilientes, especialmente en la cuenca del Canal y los territorios rurales.",
-          "clash": "La posible desalineación se señala con mayor frecuencia cuando la expansión de los medios de vida, especialmente el apoyo agroindustrial, el riego, las carreteras, la logística y la infraestructura turística, puede añadir presión sobre los bosques, los corredores ecológicos, las especies silvestres, los humedales o los incentivos sensibles para la biodiversidad. Un segundo problema recurrente es la competencia por los recursos en espacios compartidos de cuencas hidrográficas, donde los objetivos de uso sostenible de la tierra o de las áreas protegidas pueden competir con las demandas de riego y producción en la asignación de tierras y agua.",
-          "coordination_hint": "Suele ser útil secuenciar las inversiones en medios de vida con la zonificación, las salvaguardias de biodiversidad y agua, la revisión de subsidios y los mecanismos de participación territorial, particularmente en cuencas hidrográficas compartidas y paisajes productivos.",
+          "storyline_name": "Vincular la resiliencia de los medios de vida con la gestión responsable de la tierra y el agua",
+          "reinforce": "Las acciones relacionadas con los medios de vida suelen estar alineadas cuando combinan oportunidades de ingresos para las comunidades con la restauración, la gestión de áreas protegidas, la salud de las cuencas hidrográficas y la información sobre riesgos climáticos. La muestra muestra repetidamente vínculos facilitadores mediante incentivos, ecoturismo o agroturismo, apoyo forestal y agroalimentario, inclusión financiera y sistemas de seguimiento que pueden ayudar a orientar la producción local resiliente y a los grupos vulnerables.",
+          "clash": "La posible desalineación reaparece cuando la expansión de los medios de vida depende de carreteras, logística, vivienda, crecimiento agroindustrial, energía, embalses o desarrollo de la industria forestal en los mismos paisajes destinados a la conservación, la restauración, la protección de los suelos orgánicos o la gestión de cuencas hidrográficas. El patrón señalado es principalmente de fricción en la implementación, con cierta competencia por los recursos en relación con la tierra, el agua, la ubicación de infraestructuras y la atención institucional en áreas protegidas, zonas de cuencas del Canal y territorios rurales productivos.",
+          "coordination_hint": "Suele ser útil examinar las inversiones en medios de vida y productivas mediante una zonificación espacial compartida, salvaguardias de cuencas hidrográficas y biodiversidad, y datos locales de adaptación, de modo que las medidas de generación de ingresos puedan orientarse hacia áreas y prácticas compatibles.",
           "confidence": "high"
         },
         "synthesis_error": null
@@ -2256,21 +2257,21 @@
         "taxonomy_type": "gga",
         "category_id": "gga_water",
         "category_name": "Water",
-        "aligned_count": 4185,
-        "flagged_count": 155,
+        "aligned_count": 4261,
+        "flagged_count": 172,
         "pool_composition": {
           "primary_count": 2540,
-          "relevant_only_count": 2066
+          "relevant_only_count": 2072
         },
         "contradiction_types": {
-          "delivery_friction": 122,
-          "resource_competition": 33
+          "delivery_friction": 123,
+          "resource_competition": 49
         },
         "synthesis": {
-          "storyline_name": "Vincular la planificación de cuencas hidrográficas con la prestación de servicios de agua",
-          "reinforce": "Las metas relativas al agua suelen alinearse con la planificación transversal, el fortalecimiento institucional y las medidas de adaptación que mejoran la gobernanza de las cuencas hidrográficas, la gestión del riesgo y la ampliación de los servicios. La muestra señala repetidamente el refuerzo mutuo entre las acciones de seguridad hídrica y los planes locales de adaptación, la planificación del uso del suelo, la capacidad institucional, la participación y la restauración de las zonas ribereñas o de recarga.",
-          "clash": "La posible desalineación reaparece cuando la infraestructura hídrica, los corredores logísticos, los embalses, el riego, las carreteras u otra expansión productiva se superponen en las mismas cuencas, zonas de recarga, humedales, áreas protegidas o territorios prioritarios para la adaptación. Los pares señalados a menudo apuntan a fricciones en la implementación derivadas de los impactos de la ubicación y la construcción, y a la competencia por los recursos entre el suministro de agua potable, la fiabilidad del Canal, el riego y otros usuarios que dependen del agua dulce finita en cuencas hidrográficas compartidas.",
-          "coordination_hint": "Suele ser útil utilizar la planificación espacial a nivel de cuenca, las normas de asignación del agua, los caudales ecológicos y la consulta temprana para que el suministro de agua, la protección de las cuencas hidrográficas y los usos competidores de infraestructura o producción puedan secuenciarse de manera coherente.",
+          "storyline_name": "Fortalecer la gobernanza del agua mediante la planificación y los datos compartidos",
+          "reinforce": "Las metas relativas al agua suelen alinearse con medidas más amplias de gobernanza, conservación y fortalecimiento de capacidades que mejoran el monitoreo, la alerta temprana, la planificación, la regulación y la capacidad institucional. Esto se repite en las vinculaciones entre las acciones del PNSH y los datos abiertos, la profesionalización del sector público, la gestión de áreas protegidas, la restauración de cuencas hidrográficas, la planificación del saneamiento y la educación o investigación sobre el uso sostenible del agua.",
+          "clash": "La posible desalineación se señala con mayor frecuencia cuando la disponibilidad de agua o la infraestructura relacionada con el agua, especialmente los embalses, las obras de drenaje y las intervenciones en cuencas, pueden generar fricciones en la implementación con la protección de los bosques, la conservación de humedales o de suelos orgánicos, las áreas protegidas y las prioridades de restauración. Un segundo patrón recurrente señalado para revisión es la competencia por los recursos sobre la tierra y el agua compartidas de las cuencas hidrográficas, en particular cuando la fiabilidad del Canal, la logística, la expansión agroindustrial u otra infraestructura podrían intensificar la presión sobre la gobernanza y la asignación del agua en cuencas superpuestas.",
+          "coordination_hint": "Suele ser útil coordinar la planificación espacial a nivel de cuenca, la concesión de permisos, los sistemas de datos hidrológicos y las salvaguardias ambientales para que las inversiones en agua refuercen los objetivos de conservación y de servicios, en lugar de añadir presión en las mismas cuencas hidrográficas.",
           "confidence": "high"
         },
         "synthesis_error": null

@@ -1,6 +1,6 @@
-End-to-end delivery: ship a PR, self-review, apply the non-blocking fixes, merge, then sync to the Vercel remote.
+End-to-end delivery: ship a PR, self-review, apply the non-blocking fixes, merge, sync to the Vercel backup, then deploy the merged commit to the live Azure site.
 
-This is the combined form of `/ship` + `/review-pr` + (merge) + `/sync`. Use when the current working tree holds a focused change that is ready to go all the way to production in one pass.
+This is the combined form of `/ship` + `/review-pr` + (merge) + `/sync` + deploy. Use when the current working tree holds a focused change that is ready to go all the way to production in one pass.
 
 If `$ARGUMENTS` is provided, treat it as the branch name hint (e.g. `fix/lint-break` or `feat/footprint-tracker`). Otherwise derive a branch name from the change.
 
@@ -62,19 +62,34 @@ Follow the `/sync` workflow:
 2. `git pull origin main` — should report "Already up to date" because `gh pr merge` already synced.
 3. `git push old-origin main` — this is the critical step. `old-origin` points at `jonas-nothnagel/cpc-tracker.git`, which Vercel watches for the demo deploy. Skipping this means the merge never reaches the public demo.
 
-### 6. Report
+### 6. Deploy to live (Azure)
+
+Azure App Service `cpc-tracker-c657` is the **primary live site** and no longer auto-deploys on merge (GitHub Actions was deactivated for this account 2026-06-23), so the merged commit must be pushed to Azure explicitly. This is the step that makes the change actually go live.
+
+1. Confirm you are on `main` at the merge commit with a clean working tree.
+2. Run **`pnpm run deploy`** (builds the image with Docker buildx, pushes to ACR `policycoherence/cpc-tracker:{sha,latest}`, then polls the live URL for 200). It must be `pnpm run deploy`, never `pnpm deploy` — the bare form hits pnpm's native `deploy` subcommand instead of the script.
+3. **PIM gate (interactive, cannot be automated).** The standing Azure role is Reader; ACR push needs Contributor. If the script stops with a Reader-role error it prints an activation link (`https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/ActivationMenuBlade/~/azurerbac`). Surface it, pause and ask the user to activate **Contributor** (default 2h), then re-run `pnpm run deploy`. Do not try to elevate the role yourself.
+4. The ACR webhook (`webappcpctrackerc657`) is healthy and fires on push, so App Service pulls the new image automatically; the container swap finishes ~1-2 min after the script's 200 poll returns (the poll can go green on the old container first). If a deploy ever looks stuck on the old image, force the pull: `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
+5. **No-Docker fallback.** If `pnpm run deploy` fails because Docker isn't installed on the machine, build server-side instead (no local Docker): `az acr build --registry policycoherence --image cpc-tracker:latest --image cpc-tracker:$(git rev-parse --short HEAD) .` then `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
+6. Confirm live: `curl -sS -o /dev/null -w "%{http_code}" https://cpc-tracker-c657.azurewebsites.net/` returns 200 and the homepage title still reads "CPC Analyzer".
+
+### 7. Report
 
 Print a concise summary:
 - PR URL and number
 - Commit hashes (original + review fixes)
 - Merge commit hash
 - Confirmation that `old-origin/main` was updated
+- Confirmation that the live Azure site was deployed (image tag / SHA) and returns 200
 
 ## Important
 
 - **Never force push** or amend published commits.
 - **Never commit `.env` files or credentials.** Warn the user if they ask to.
 - **Never skip the `old-origin` push** — it is what drives the Vercel demo deploy (see `reference_vercel_deploy` memory).
+- **Never skip the Azure deploy step** — Azure is the primary live site and does not auto-deploy on merge; without step 6 the change is merged but not live. See `reference_manual_azure_deploy` memory.
+- **The PIM Contributor activation is interactive** — it needs the user's portal + MFA and cannot be automated. Pause and wait; do not attempt to elevate the role or work around it.
+- **This deploy step is a stopgap.** When GitHub Actions auto-deploy is restored for the account, remove step 6 and merges will go live automatically again.
 - **Never add AI attribution** to commits, PR body, review comments, or follow-up comments.
 - **Stop before merge** if the review finds anything that could be a bug, a regression, or a security issue. Non-blocking nits (dead code, typo in comment, naming) can be auto-applied; judgement calls require user confirmation.
 - **Match recent commit style.** Before writing the commit message, glance at `git log --oneline -10` to mirror title phrasing conventions.
