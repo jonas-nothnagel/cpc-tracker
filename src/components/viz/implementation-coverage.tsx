@@ -1877,12 +1877,32 @@ export function ImplementationCoverage({
     hrCategories.length > 0 &&
     classifiedTaxonomies.has("hr");
 
+  // The selected grouping can stop being offered while this component stays
+  // mounted — switching country or model swaps in classifications that may not
+  // cover the same lenses. Fall back rather than leave the select pointing at a
+  // mode with no option and the body rendering an empty table.
+  const groupModeOffered =
+    groupMode === "biodiversity"
+      ? hasBiodiversityData
+      : groupMode === "gga"
+        ? hasGgaData
+        : groupMode === "hr"
+          ? hasHrData
+          : groupMode === "country_sectors"
+            ? hasCountrySectors
+            : true;
+  const activeGroupMode: CoverageGroupMode = groupModeOffered
+    ? groupMode
+    : hasCountrySectors
+      ? "country_sectors"
+      : "default";
+
   return (
     <div>
       {(hasBiodiversityData || hasCountrySectors || hasGgaData || hasHrData) && (
         <div className="flex items-center gap-2 mb-4">
           <select
-            value={groupMode}
+            value={activeGroupMode}
             onChange={(e) => setGroupMode(e.target.value as CoverageGroupMode)}
             className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
           >
@@ -1915,7 +1935,7 @@ export function ImplementationCoverage({
 
       <ReportingGapsCard gaps={gaps} />
 
-      {groupMode === "country_sectors" ? (
+      {activeGroupMode === "country_sectors" ? (
         <>
           <MitigationByCountrySector
             rows={countrySectorRows}
@@ -1930,7 +1950,7 @@ export function ImplementationCoverage({
             countryConfig={countryConfig}
           />
         </>
-      ) : groupMode === "biodiversity" ? (
+      ) : activeGroupMode === "biodiversity" ? (
         <BiodiversityByGlobe
           rows={biodiversityData.rows}
           unclassified={biodiversityData.unclassified}
@@ -1938,7 +1958,7 @@ export function ImplementationCoverage({
           onToggle={toggleBioCategory}
           countryConfig={countryConfig}
         />
-      ) : groupMode === "gga" ? (
+      ) : activeGroupMode === "gga" ? (
         <BiodiversityByGlobe
           rows={ggaData.rows}
           unclassified={ggaData.unclassified}
@@ -1949,7 +1969,7 @@ export function ImplementationCoverage({
           sectionDesc={t("gga.sectionDesc")}
           infoBox={null}
         />
-      ) : groupMode === "hr" ? (
+      ) : activeGroupMode === "hr" ? (
         <BiodiversityByGlobe
           rows={hrData.rows}
           unclassified={hrData.unclassified}
