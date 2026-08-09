@@ -141,9 +141,12 @@ export default async function MongoliaModelComparisonPage() {
         <p className="text-sm text-[var(--undp-gray)] mb-6 max-w-3xl">
           The same Mongolia inputs (153 targets, 9,678 cross-document pairs) run
           through the pipeline on four different LLMs. AI-generated outputs;
-          comparison runs, not the production result. Footprint values flagged{" "}
-          <em>estimated</em> use generic per-token coefficients (model not in
-          the EcoLogits registry).
+          comparison runs, not the production result. These runs predate the
+          August 2026 target re-curation (the production corpus now separates
+          the official NDC 3.0 from the Resolution 91 national targets: 178
+          targets), so they remain comparable with each other but not with the
+          current dashboard. Footprint values flagged <em>estimated</em> use
+          generic per-token coefficients (model not in the EcoLogits registry).
         </p>
 
         <div className="overflow-x-auto border border-gray-100 bg-white rounded-lg">

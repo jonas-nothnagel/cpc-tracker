@@ -630,6 +630,91 @@
     "textOriginalSource": "machine"
   },
   {
+    "id": "NDC_28",
+    "text": "By implementing unconditional measures under national and sectoral development policies and plans, total GHG emissions (excluding LULUCF) could be reduced by 23.0% by 2030 and 30.3% by 2035 compared to the Business as Usual (BAU) scenario. This corresponds to a reduction of 16.0 million t CO₂-eq. in 2030 and 24.7 million t CO₂-eq. in 2035",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Unconditional target",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "By implementing unconditional measures under national and sectoral development policies and plans, total GHG emissions (excluding LULUCF) could be reduced by 23.0% by 2030 and 30.3% by 2035 compared to the Business as Usual (BAU) scenario. This corresponds to a reduction of 16.0 million t CO₂-eq. in 2030 and 24.7 million t CO₂-eq. in 2035",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Үндэсний болон салбарын хөгжлийн бодлого, төлөвлөгөөний хүрээнд болзолгүй арга хэмжээнүүдийг хэрэгжүүлснээр нийт GHG ялгарлыг (LULUCF-ийг эс тооцвол) Business as Usual (BAU) хувилбартай харьцуулахад 2030 он гэхэд 23.0%, 2035 он гэхэд 30.3%-иар бууруулах боломжтой. Энэ нь 2030 онд 16.0 million t CO₂-eq., 2035 онд 24.7 million t CO₂-eq. бууралтад тус тус дүйцнэ.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
+    "id": "NDC_29",
+    "text": "Under the BAU scenario for GHG absorption, forest sequestration in 2035 is estimated at -21.1 million t CO₂-eq. By implementing measures aimed at increasing forest sequestration, it could reach -24.4 million t CO₂-eq. by 2035, allowing an additional approximately 3.3 million t CO₂-eq. to be absorbed through enhanced sequestration.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forest sequestration",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Under the BAU scenario for GHG absorption, forest sequestration in 2035 is estimated at -21.1 million t CO₂-eq. By implementing measures aimed at increasing forest sequestration, it could reach -24.4 million t CO₂-eq. by 2035, allowing an additional approximately 3.3 million t CO₂-eq. to be absorbed through enhanced sequestration.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "GHG шингээлтийн BAU хувилбарын дагуу 2035 онд ойн шингээлт -21.1 million t CO₂-eq. гэж тооцоологдож байна. Ойн шингээлтийг нэмэгдүүлэхэд чиглэсэн арга хэмжээг хэрэгжүүлснээр 2035 он гэхэд энэ нь -24.4 million t CO₂-eq. хүрэх боломжтой бөгөөд ингэснээр сайжруулсан шингээлтийн үр дүнд нэмэлтээр ойролцоогоор 3.3 million t CO₂-eq. шингээх боломж бүрдэнэ.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
+    "id": "NDC_30",
+    "text": "By successfully implementing measures to reduce GHG emissions from sources and increase GHG sequestration, Mongolia could reduce net GHG emissions by 19.3 million t CO₂-eq. by 2030, corresponding to a 39.8% reduction compared to the BAU scenario, and by 28.0 million t CO₂-eq. by 2035 corresponding to a 46.3% reduction.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Unconditional measures and forest sequestration",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "By successfully implementing measures to reduce GHG emissions from sources and increase GHG sequestration, Mongolia could reduce net GHG emissions by 19.3 million t CO₂-eq. by 2030, corresponding to a 39.8% reduction compared to the BAU scenario, and by 28.0 million t CO₂-eq. by 2035 corresponding to a 46.3% reduction.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Эх үүсвэрээс гарах GHG ялгарлыг бууруулах, GHG шингээлтийг нэмэгдүүлэх арга хэмжээг амжилттай хэрэгжүүлснээр Монгол Улс 2030 он гэхэд цэвэр GHG ялгарлыг 19.3 million t CO₂-eq.-аар бууруулах боломжтой бөгөөд энэ нь BAU хувилбартай харьцуулахад 39.8% бууралтад, мөн 2035 он гэхэд 28.0 million t CO₂-eq.-аар бууруулах боломжтой бөгөөд энэ нь 46.3% бууралтад тус тус нийцнэ.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
+    "id": "NDC_31",
+    "text": "With the successful implementation of major GHG reduction measures in relevant sectors, supported by international finance and technology, an additional reduction of 1.8 million t CO₂-eq. by 2030 and 3.9 million t CO₂-eq. by 2035 could be achieved at the national level. Additionally, Mongolia is planning to restore 10% of heavily degraded rangelands in forest-steppe and steppe ecological zones. As a result, rangeland carbon sequestration will be enhanced, depending on above and below ground carbon content and the area.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Conditional targets",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "With the successful implementation of major GHG reduction measures in relevant sectors, supported by international finance and technology, an additional reduction of 1.8 million t CO₂-eq. by 2030 and 3.9 million t CO₂-eq. by 2035 could be achieved at the national level. Additionally, Mongolia is planning to restore 10% of heavily degraded rangelands in forest-steppe and steppe ecological zones. As a result, rangeland carbon sequestration will be enhanced, depending on above and below ground carbon content and the area.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Холбогдох салбаруудад GHG бууруулах томоохон арга хэмжээг олон улсын санхүүжилт, технологийн дэмжлэгтэйгээр амжилттай хэрэгжүүлснээр үндэсний хэмжээнд 2030 он гэхэд 1.8 million t CO₂-eq., 2035 он гэхэд 3.9 million t CO₂-eq.-ийн нэмэлт бууралтад хүрэх боломжтой. Үүнээс гадна, Монгол Улс ойт хээр болон хээрийн экологийн бүс дэх хүчтэй доройтсон бэлчээрийн 10%-ийг нөхөн сэргээхээр төлөвлөж байна. Үүний үр дүнд газрын дээрх болон газрын доорх нүүрстөрөгчийн агууламж, мөн талбайн хэмжээнээс хамааран бэлчээрийн нүүрстөрөгч шингээлт нэмэгдэнэ.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
+    "id": "NDC_32",
+    "text": "To create the necessary conditions for ecosystems and biodiversity to adapt to and withstand the impacts of climate change.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Biodiversity Goal",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "To create the necessary conditions for ecosystems and biodiversity to adapt to and withstand the impacts of climate change.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Экосистем болон биологийн олон янз байдал нь уур амьсгалын өөрчлөлтийн нөлөөлөлд дасан зохицож, тэсвэртэй байх шаардлагатай нөхцөлийг бүрдүүлэх.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
     "id": "NDC_1",
     "text": "Expand the legal protection of land by enlarging the boundaries of protected areas, designating ecological corridors, and enabling species migration and movement. This will improve the adaptive capacity and resilience of biodiversity vulnerable to climate change.",
     "sourceDocument": "NDC",
@@ -666,6 +751,23 @@
     "textOriginalSource": "machine"
   },
   {
+    "id": "NDC_33",
+    "text": "Increase the capacity of the water resource sector to adapt to climate change and reduce vulnerability and risks to ensure water security.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Water resources Goal",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Increase the capacity of the water resource sector to adapt to climate change and reduce vulnerability and risks to ensure water security.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Усны нөөцийн салбарын уур амьсгалын өөрчлөлтөд дасан зохицох чадавхыг нэмэгдүүлж, усны аюулгүй байдлыг хангахын тулд эмзэг байдал болон эрсдэлийг бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
     "id": "NDC_3",
     "text": "Improve the policy, legal, structural, and organizational environment for the climate change adaptation of the sector.",
     "sourceDocument": "NDC",
@@ -698,6 +800,23 @@
     ],
     "textCleanup": "verbatim",
     "textOriginal": "Усны салбарын тэсвэрлэх чадварыг хамгаалах, нөхөн сэргээх, тогтвортой ашиглах болон усны найдвартай хүртээмжийг хангах зорилгоор дэвшилтэт технологийг ашиглах замаар бэхжүүлэх.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
+    "id": "NDC_34",
+    "text": "Protect forest ecosystem resilience and develop adaptive forest resources based on sustainable forest management.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Forests Goal",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Protect forest ecosystem resilience and develop adaptive forest resources based on sustainable forest management.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Ойн экосистемийн тэсвэрлэх чадварыг хамгаалж, тогтвортой ойн менежментэд үндэслэн дасан зохицох чадвартай ойн нөөцийг хөгжүүлэх.",
     "language": "mn",
     "textOriginalSource": "machine"
   },
@@ -756,12 +875,29 @@
     "textOriginalSource": "machine"
   },
   {
+    "id": "NDC_35",
+    "text": "To strengthen national resilience and adaptive capacity by reducing vulnerability and risks associated with climate-induced natural disasters.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Natural disasters Goal",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "To strengthen national resilience and adaptive capacity by reducing vulnerability and risks associated with climate-induced natural disasters.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Уур амьсгалын нөлөөгөөр үүссэн байгалийн гамшигтай холбоотой эмзэг байдал, эрсдэлийг бууруулах замаар үндэсний тэсвэрлэх чадвар болон дасан зохицох чадавхыг бэхжүүлэх.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
     "id": "NDC_8",
     "text": "Enhance the legal and regulatory framework related to disaster risk reduction.",
     "sourceDocument": "NDC",
     "sourceLabel": "Natural disasters 1",
     "country": "Mongolia",
-    "actions": "Measures:\n1. Strengthen forest sector policies and strategies in alignment with climate change\nadaptation, while enhancing legal frameworks and forest protection standards,\n2. Improve forest resource management through advanced planning and monitoring\nsystems,\n3. Strengthen the capacity of professional forestry organizations,\n4. Improve sustainable management for the protection and rational use of forest byproducts.\n29\nConditional measure:\n5. Establish and implement a comprehensive payment mechanism for forest ecosystem\nservices.",
+    "actions": "Measures:\n1. Introduce amendments to the Law on Disaster Protection and approve related rules, regulations, and standards,\n2. Approve a revised version of the Law on Meteorological and Environmental Monitoring, along with its supporting procedures and technical standards,\n3. Update the National Program on Community-Based Disaster Risk Reduction,\n4. Revise and approve Government Resolution No. 286 (2015) on \"Regulations, Lists, and Schedules for Hydrometeorological Data Use,\" including updated climatic and hydrological parameters for design norms in buildings, roads, and bridges,\n5. Conduct disaster risk assessments at the city, in particular Ulaanbaatar capital and territorial levels and evaluate the level of implementation.",
     "sources": [
       {
         "sourceText": "Enhance the legal and regulatory framework related to disaster risk reduction.",
@@ -788,6 +924,23 @@
     ],
     "textCleanup": "verbatim",
     "textOriginal": "Бүх түвшинд эрт сэрэмжлүүлэх тогтолцоог бэхжүүлж, гамшгийн эрсдэлийг бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
+    "id": "NDC_36",
+    "text": "To develop a sustainable and productive animal husbandry that is aligned with the carrying capacity of pasture and water resources, based on advanced adaptation technologies, resilient to risks.",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Animal husbandry and pastureland Goal",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "To develop a sustainable and productive animal husbandry that is aligned with the carrying capacity of pasture and water resources, based on advanced adaptation technologies, resilient to risks.",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Бэлчээр болон усны нөөцийн даацад нийцсэн, дэвшилтэт дасан зохицох технологид суурилсан, эрсдэлд тэсвэртэй, тогтвортой бөгөөд бүтээмжтэй мал аж ахуйг хөгжүүлэх.",
     "language": "mn",
     "textOriginalSource": "machine"
   },
@@ -860,6 +1013,23 @@
     ],
     "textCleanup": "verbatim",
     "textOriginal": "Бэлчээрийн тогтвортой, зохистой хамтын менежментийн практикийг бий болгож, бэлчээрийн нөхөн сэргээлтийн хамрах хүрээг өргөжүүлэх.",
+    "language": "mn",
+    "textOriginalSource": "machine"
+  },
+  {
+    "id": "NDC_37",
+    "text": "Develop sustainable, resilient, and productive agricultural systems by implementing advanced adaptation technologies that preserve soil fertility",
+    "sourceDocument": "NDC",
+    "sourceLabel": "Arable farming Goal",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Develop sustainable, resilient, and productive agricultural systems by implementing advanced adaptation technologies that preserve soil fertility",
+        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Хөрсний үржил шимийг хадгалсан дэвшилтэт дасан зохицох технологийг хэрэгжүүлэх замаар тогтвортой, уур амьсгалын нөлөөнд тэсвэртэй, бүтээмжтэй хөдөө аж ахуйн тогтолцоог хөгжүүлэх",
     "language": "mn",
     "textOriginalSource": "machine"
   },
@@ -1008,108 +1178,390 @@
     "textOriginalSource": "machine"
   },
   {
-    "id": "NDC_22",
-    "text": "The agricultural sector will reduce 5.277 million tons of CO2 until 2030 and 9.78 million tons of CO2 until 2035 by adhering (national livestock herd to 50 million head) ecological carrying capacity of rangelands and improving livestock economic turnover through increasing export and meat supply to the domestic.",
+    "id": "NDC_38",
+    "text": "When implementing climate change-related goals and measures, ensure the full participation of all stakeholders, including children, youth, vulnerable groups, and men and women, guarantee equal opportunities for everyone, and establish climate-equitable and inclusive governance",
     "sourceDocument": "NDC",
-    "sourceLabel": "Livestock mitigation",
+    "sourceLabel": "Inclusion Goal",
     "country": "Mongolia",
     "sources": [
       {
-        "sourceText": "The agricultural sector will reduce 5.277 million tons of CO2 until 2030 and 9.78 million tons of CO2 until 2035 by adhering (national livestock herd to 50 million head) ecological carrying capacity of rangelands and improving livestock economic turnover through increasing export and meat supply to the domestic.",
+        "sourceText": "When implementing climate change-related goals and measures, ensure the full participation of all stakeholders, including children, youth, vulnerable groups, and men and women, guarantee equal opportunities for everyone, and establish climate-equitable and inclusive governance",
         "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
       }
     ],
     "textCleanup": "verbatim",
-    "textOriginal": "Хөдөө аж ахуйн салбар нь бэлчээрийн экологийн даацыг мөрдөх (үндэсний мал сүргийн тоог 50 million толгойд хүргэх) болон экспортыг нэмэгдүүлж, дотоодын зах зээлд махны нийлүүлэлтийг өсгөх замаар мал аж ахуйн эдийн засгийн эргэлтийг сайжруулснаар 2030 он хүртэл 5.277 million тонн CO₂, 2035 он хүртэл 9.78 million тонн CO₂-ийг бууруулна.",
+    "textOriginal": "Уур амьсгалын өөрчлөлттэй холбоотой зорилт, арга хэмжээг хэрэгжүүлэхдээ хүүхэд, залуучууд, эмзэг бүлгүүд, эрэгтэйчүүд болон эмэгтэйчүүдийг оролцуулан бүх оролцогч талуудын бүрэн оролцоог хангаж, хүн бүрт тэгш боломжийг баталгаажуулж, уур амьсгалын шударга, хүртээмжтэй засаглалыг бий болгоно уу",
     "language": "mn",
     "textOriginalSource": "machine"
   },
   {
-    "id": "NDC_23",
-    "text": "By improving the circulation of livestock and livestock raw materials and increasing exports, Livestock CO2 emissions shall be reduced by 4.15 million tons by 2030 and 7.48 million tons by 2035.",
+    "id": "NDC_39",
+    "text": "Ensure that all social groups, including men and women, persons with disabilities, vulnerable populations, youth, and the elderly are equally involved in climate actions, while integrating gender-responsive principles into climate policy, planning, and implementation.",
     "sourceDocument": "NDC",
-    "sourceLabel": "Mitigation 1",
+    "sourceLabel": "Inclusion Objective 1",
     "country": "Mongolia",
     "sources": [
       {
-        "sourceText": "By improving the circulation of livestock and livestock raw materials and increasing exports, Livestock CO2 emissions shall be reduced by 4.15 million tons by 2030 and 7.48 million tons by 2035.",
+        "sourceText": "Ensure that all social groups, including men and women, persons with disabilities, vulnerable populations, youth, and the elderly are equally involved in climate actions, while integrating gender-responsive principles into climate policy, planning, and implementation.",
         "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
       }
     ],
+    "actions": "Measures:\n1. Ensure both men and women, as well as vulnerable communities are represented in climate related policy-making committees and climate governance structures, fostering gender balanced decision-making in environmental sectors,\n2. Facilitate market access for small-scale businesses led by both men and women, supporting climate-resilient production and sustainable value chains,\n3. Develop a digital platform to disseminate traditional eco-friendly pastoral livestock management practices and modern adaptive technologies and innovations among young herders,\n4. Enhance the capacity of the vulnerable communities, while ensuring equal access to natural resources, technologies, and decision-making for both men and women as well as the youth, people with disability and indigenous groups,\n5. Provide climate education and training so that youth can make informed contributions and include the climate educational content in the secondary education, TVET, and tertiary education,\n6. Allocate dedicated funding for participation of vulnerable communities in NDC processes and for climate actions led by these groups.",
     "textCleanup": "verbatim",
-    "textOriginal": "Мал, малын гаралтай түүхий эдийн эргэлтийг сайжруулж, экспортыг нэмэгдүүлснээр Мал аж ахуйн CO₂ ялгарлыг 2030 он гэхэд 4.15 сая тонноор, 2035 он гэхэд 7.48 сая тонноор бууруулна.",
+    "textOriginal": "Эрэгтэй, эмэгтэй хүмүүс, хөгжлийн бэрхшээлтэй хүмүүс, эмзэг бүлгийн хүн ам, залуучууд, ахмад настнууд зэрэг нийгмийн бүх бүлгийг уур амьсгалын үйл ажиллагаанд тэгш оролцуулахын зэрэгцээ жендэрийн мэдрэмжтэй зарчмуудыг уур амьсгалын бодлого, төлөвлөлт, хэрэгжилтэд нэгтгэн тусгахыг хангана.",
     "language": "mn",
     "textOriginalSource": "machine"
   },
   {
-    "id": "NDC_24",
-    "text": "By increasing meat supply to the domestic market will reduce livestock CO2 emissions by 1.12 million tons by 2030 and by 2.29 million tons by 2035",
+    "id": "NDC_40",
+    "text": "In line with Article 7.5 of the Paris Agreement, promote, respect, and consider gender equality and women ’s rights in all climate adaptation and mitigation measures by integrating gender-responsive approaches",
     "sourceDocument": "NDC",
-    "sourceLabel": "Mitigation 2",
+    "sourceLabel": "Inclusion Objective 2",
     "country": "Mongolia",
     "sources": [
       {
-        "sourceText": "By increasing meat supply to the domestic market will reduce livestock CO2 emissions by 1.12 million tons by 2030 and by 2.29 million tons by 2035",
+        "sourceText": "In line with Article 7.5 of the Paris Agreement, promote, respect, and consider gender equality and women ’s rights in all climate adaptation and mitigation measures by integrating gender-responsive approaches",
         "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
       }
     ],
     "textCleanup": "verbatim",
-    "textOriginal": "Дотоодын зах зээлд махны нийлүүлэлтийг нэмэгдүүлснээр 2030 он гэхэд мал аж ахуйн CO₂ ялгарлыг 1.12 сая тонноор, 2035 он гэхэд 2.29 сая тонноор бууруулна.",
+    "textOriginal": "Парисын хэлэлцээрийн 7.5 дугаар зүйлд нийцүүлэн, жендэрийн тэгш байдал болон эмэгтэйчүүдийн эрхийг бүх уур амьсгалын дасан зохицох болон сааруулах арга хэмжээнд жендэрийн мэдрэмжтэй хандлагыг нэгтгэн тусгах замаар дэмжиж, хүндэтгэн, харгалзан үзнэ.",
     "language": "mn",
     "textOriginalSource": "machine"
   },
   {
-    "id": "NDC_25",
-    "text": "Reduce Soil Organic Carbon loss by restoring 10% of heavily degraded rangelands within the forest-steppe (3%) and steppe (7%) ecological zones, moving land from Recovery Class IV (heavily degraded) to Recovery Class III (moderately degraded).",
+    "id": "NDC_41",
+    "text": "Improve the favorable legal, institutional, and financial environment necessary to achieve NDC3.0 targets and action, and provide all stakeholders with knowledge and information",
     "sourceDocument": "NDC",
-    "sourceLabel": "Mitigation 3",
+    "sourceLabel": "Enabling environment Goal",
     "country": "Mongolia",
     "sources": [
       {
-        "sourceText": "Reduce Soil Organic Carbon loss by restoring 10% of heavily degraded rangelands within the forest-steppe (3%) and steppe (7%) ecological zones, moving land from Recovery Class IV (heavily degraded) to Recovery Class III (moderately degraded).",
+        "sourceText": "Improve the favorable legal, institutional, and financial environment necessary to achieve NDC3.0 targets and action, and provide all stakeholders with knowledge and information",
         "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
       }
     ],
     "textCleanup": "verbatim",
-    "textOriginal": "Ойн хээр (3%) болон хээр (7%) экологийн бүсүүдийн хүрээнд ихээр доройтсон бэлчээрийн 10%-ийг сэргээн, газрыг Сэргэлтийн IV ангиллаас (ихээр доройтсон) Сэргэлтийн III ангилалд (дунд зэрэг доройтсон) шилжүүлэх замаар хөрсний органик нүүрстөрөгчийн алдагдлыг бууруулах.",
+    "textOriginal": "NDC3.0 зорилт болон үйл ажиллагааг хэрэгжүүлэхэд шаардлагатай эрх зүйн, институцийн болон санхүүгийн таатай орчныг сайжруулж, бүх оролцогч талуудад мэдлэг, мэдээллээр хангах",
     "language": "mn",
     "textOriginalSource": "machine"
   },
   {
-    "id": "NDC_26",
-    "text": "Ensure the inclusion of all social groups—including men, women, persons with disabilities, vulnerable communities, youth, and the elderly—in climate actions, while adhering to the core principles of gender-responsive climate budgeting",
+    "id": "NDC_42",
+    "text": "Improve the legal, policy, and institutional arrangements for climate change adaptation in priority sectors and provide knowledge and information to the relevant parties",
     "sourceDocument": "NDC",
-    "sourceLabel": "Inclusion",
+    "sourceLabel": "Enabling environment Target",
     "country": "Mongolia",
-    "actions": "Promote the full, equal and meaningful participation of diverse social groups - women, youth and differently abled people- at all levels of climate-related decision-making processes\nStrengthen the skills of relevant decision-makers/officials in gender-responsive climate budgeting and allocate dedicated funding to support gender-inclusive climate initiatives that promote gender equality and women’s empowerment\nEstablish mechanisms to collect sex-disaggregated data and develop national gender and climate change indicators and tools across all levels of climate action implementation to support evidence-based and inclusive policymaking",
     "sources": [
       {
-        "sourceText": "Ensure the inclusion of all social groups—including men, women, persons with disabilities, vulnerable communities, youth, and the elderly—in climate actions, while adhering to the core principles of gender-responsive climate budgeting",
+        "sourceText": "Improve the legal, policy, and institutional arrangements for climate change adaptation in priority sectors and provide knowledge and information to the relevant parties",
         "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
       }
     ],
+    "actions": "Measures:\n1. Improve the policy, legal, structural, and organizational environment for implementation of the climate response actions in priority environmental, social, and economic sectors\n2. Improve the structural and organizational environment for implementation of the climate response actions in priority environmental, social, and economic sectors,\n3. Allocate dedicated funding to mitigation and adaptation measures identified in NDC3.0 in its implementation plan, including gender-responsive initiatives,\n4. Leverage international climate finance mechanisms and foster public-private partnerships to sustain climate efforts,\n5. Strengthen the knowledge and capacity of stakeholders of the environmental, social, and economic sectors on climate change adaptation, and provide information by expanding research activities.",
     "textCleanup": "verbatim",
-    "textOriginal": "Уур амьсгалын үйл ажиллагаанд эрэгтэйчүүд, эмэгтэйчүүд, хөгжлийн бэрхшээлтэй хүмүүс, эмзэг бүлгийн хамт олон, залуучууд, ахмад настнууд зэрэг бүх нийгмийн бүлгүүдийн оролцоог хангахын зэрэгцээ жендэрийн мэдрэмжтэй уур амьсгалын төсөвлөлтийн үндсэн зарчмуудыг мөрдөнө.",
+    "textOriginal": "Тэргүүлэх салбаруудад уур амьсгалын өөрчлөлтөд дасан зохицохтой холбоотой хууль эрх зүйн, бодлогын болон институцийн зохицуулалтыг сайжруулж, холбогдох талуудад мэдлэг, мэдээллээр хангах",
     "language": "mn",
     "textOriginalSource": "machine"
   },
   {
-    "id": "NDC_27",
-    "text": "Ensure that all climate change mitigation and adaptation actions are gender-responsive by explicitly respecting, promoting, and considering gender equality and the empowerment of women, in line with the Paris Agreement, particularly Article 7.5 on gender-responsive adaptation.",
-    "sourceDocument": "NDC",
-    "sourceLabel": "Gender equality",
+    "id": "NITIPA_1",
+    "text": "In the energy production and supply sector, 5,556.3 thousand tons of CO2-eq will be reduced by 2030 and 8,264.9 thousand tons of CO2-eq by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Target 1",
     "country": "Mongolia",
-    "actions": "Integrate gender equality into all climate policy, programme, and project cycles (design, implementation, and evaluation stages) and conduct gender assessments using national gender indicators and tools to track progress on gender equality within climate policies and programmes\nProvide capacity development training for policymakers, planners, and implementers on gender-responsive climate action\nSupport women's leadership and capacity in climate-related sectors, especially in local and vulnerable communities",
     "sources": [
       {
-        "sourceText": "Ensure that all climate change mitigation and adaptation actions are gender-responsive by explicitly respecting, promoting, and considering gender equality and the empowerment of women, in line with the Paris Agreement, particularly Article 7.5 on gender-responsive adaptation.",
-        "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf"
+        "sourceText": "Эрчим хүчний үйлдвэрлэл, хангамжийн салбарт 2030 он гэхэд 5,556.3 мян.тн СО₂-экв, 2035 он гэхэд 8,264.9 мян.тн СО₂-экв-аар бууруулна.\nСэргээгдэх эрчим хүчний үйлдвэрлэлийг нэмэгдүүлэх (усан цахилгаан станц, салхин цахилгаан станц, нарны цахилгаан станц, нарны дулааны станц, дулааны насос суурилуулах)-2030 он гэхэд 2,769.2 мян.тн СО₂-экв, 2035 он гэхэд 4,688.4 мян.тн СО₂-экв\nЭрчим хүчний үйлдвэрлэлийн үр ашгийг дээшлүүлэх (дамжуулалт, түгээлтийн алдагдлыг бууруулах, дулааны цахилгаан станцуудын дотоод цахилгаан эрчим хүчний хэрэглээг бууруулах, дулаан хангамжийн үр ашгийг дээшлүүлэх)-2030 он гэхэд 2,630.1 мян.тн СО₂-экв, 2035 он гэхэд 3,395.1 мян.тн СО₂-экв\nХатуу түлш солих (Улаанбаатар хотын дулаан хангамжид болон гэр хороололд хийн түлш ашиглах)-2030 он гэхэд 157.0 мян.тн СО₂-экв, 2035 он гэхэд 181.4 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
       }
     ],
     "textCleanup": "verbatim",
-    "textOriginal": "Уур амьсгалын өөрчлөлтийг сааруулах болон дасан зохицох бүх арга хэмжээг жендэрийн мэдрэмжтэй байхаар хангаж, Парисын хэлэлцээр, ялангуяа жендэрийн мэдрэмжтэй дасан зохицох талаар тусгасан 7.5 дугаар зүйлд нийцүүлэн жендэрийн тэгш байдлыг болон эмэгтэйчүүдийн эрх мэдлийг бэхжүүлэхийг ил тод хүндэтгэж, дэмжиж, харгалзан үзнэ.",
+    "textOriginal": "Эрчим хүчний үйлдвэрлэл, хангамжийн салбарт 2030 он гэхэд 5,556.3 мян.тн СО₂-экв, 2035 он гэхэд 8,264.9 мян.тн СО₂-экв-аар бууруулна.",
     "language": "mn",
-    "textOriginalSource": "machine"
+    "textOriginalSource": "source",
+    "activities": "Increase renewable energy production (installation of hydroelectric power plants, wind power plants, solar power plants, solar thermal power plants, heat pumps) - 2,769.2 thousand tons of CO2-eq by 2030 and 4,688.4 thousand tons of CO2-eq by 2035\nImprove energy production efficiency (reduce transmission and distribution losses, reduce internal electricity consumption of thermal power plants, improve heat supply efficiency) - 2,630.1 thousand tons of CO2-eq by 2030 and 3,395.1 thousand tons of CO2-eq by 2035\nSolid fuel replacement (use of gas fuel in Ulaanbaatar city heating supply and ger districts) - 157.0 thousand tons of CO2-eq by 2030, 181.4 thousand tons of CO2-eq by 2035."
+  },
+  {
+    "id": "NITIPA_2",
+    "text": "In the agricultural sector, reduce emissions by 5,277.7 thousand tons of CO2-eq by 2030 and 9,781.2 thousand tons of CO2-eq by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Target 2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Хөдөө аж ахуйн салбарт 2030 он гэхэд 5,277.7 мян.тн СО₂-экв, 2035 он гэхэд 9,781.2 мян.тн СО₂-экв-аар бууруулна.\nМал, түүний гаралтай бүтээгдэхүүний эргэлтийг сайжруулж, экспортыг нэмэгдүүлэх-2030 он гэхэд 4,151.5 мян.тн СО₂-экв, 2035 он гэхэд 7,481.8 мян.тн СО₂-экв\nДотоодын зах зээлд мах нийлүүлэлтийг нэмэгдүүлэх-2030 он гэхэд 1,126.2 мян.тн СО₂-экв, 2035 он гэхэд 2,299.4 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Хөдөө аж ахуйн салбарт 2030 он гэхэд 5,277.7 мян.тн СО₂-экв, 2035 он гэхэд 9,781.2 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Improving the circulation of livestock and its products and increasing exports - 4,151.5 thousand tons of CO2-eq by 2030 and 7,481.8 thousand tons of CO2-eq by 2035\nIncreasing meat supply to the domestic market - 1,126.2 thousand tons of CO2-eq by 2030 and 2,299.4 thousand tons of CO2-eq by 2035."
+  },
+  {
+    "id": "NITIPA_3",
+    "text": "In the industrial sector, 1,163.6 thousand tons of CO2-eq will be reduced by 2030 and 1,313 thousand tons of CO2-eq by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Target 3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Аж үйлдвэрийн салбарт 2030 он гэхэд 1,163.6 мян.тн СО₂-экв, 2035 он гэхэд 1,313 мян.тн СО₂-экв-аар бууруулна.\nЦементийн үйлдвэрүүдийн хаягдал дулааныг ашиглах-2030 он гэхэд 32.4 мян.тн СО₂-экв, 2035 он гэхэд 39.5 мян.тн СО₂-экв\nЦементийн үйлдвэрлэлд нунтаг үнс ашиглах-2030 он гэхэд 33.7 мян.тн СО₂-экв, 2035 он гэхэд 81.0 мян.тн СО₂-экв\nЭрчим хүчний хэмнэлттэй технологи нэвтрүүлэх-2030 он гэхэд 511.5 мян.тн СО₂-экв, 2035 он гэхэд 564.0 мян.тн СО₂-экв\nЭрчим хүчний хэрэглээний хэмнэлтийн менежмент (эрчим хүч хэмнэх техникийн болон техникийн бус арга)-ийг сайжруулах-2030 он гэхэд 586.0 мян.тн СО₂-экв, 2035 он гэхэд 628.5 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Аж үйлдвэрийн салбарт 2030 он гэхэд 1,163.6 мян.тн СО₂-экв, 2035 он гэхэд 1,313 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Use of waste heat from cement plants - 32.4 thousand tons of CO2-eq by 2030 and 39.5 thousand tons of CO2-eq by 2035\nUse of fly ash in cement production - 33.7 thousand tons of CO2-eq by 2030 and 81.0 thousand tons of CO2-eq by 2035\nIntroduction of energy-efficient technologies - 511.5 thousand tons of CO2-eq by 2030 and 564.0 thousand tons of CO2-eq by 2035\nImprove energy efficiency management (technical and non-technical energy saving methods) - 586.0 thousand tons of CO2-eq by 2030, and 628.5 thousand tons of CO2-eq by 2035."
+  },
+  {
+    "id": "NITIPA_4",
+    "text": "In the road and transport sector, 2,762.2 thousand tons of CO2-eq will be reduced by 2030 and 3,465.9 thousand tons of CO2-eq by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Target 4",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Зам, тээврийн салбарт 2030 он гэхэд 2,762.2 мян.тн СО₂-экв, 2035 он гэхэд 3,465.9 мян.тн СО₂-экв-аар бууруулна.\nЕвро-5 стандартын шатахуунд шилжих-2030 он гэхэд 92.3 мян.тн СО₂-экв, 2035 он гэхэд 113.5 мян.тн СО₂-экв\nНүүрсни' экспортын тээврийг төмөр замын тээвэрт шилжүүлэх-2030 он гэхэд 2,459.1 мян.тн СО₂-экв, 2035 он гэхэд 2,940.9 мян.тн СО₂-экв\nЦахилгаан автомашин болон нийтийн тээврийн хэрэглээг нэмэгдүүлэх-2030 он гэхэд 124.4 мян.тн СО₂-экв, 2035 он гэхэд 266.0 мян.тн СО₂-экв\nИмпортын автотээврийг төмөр замын тээвэрт шилжүүлэх-2030 он гэхэд 86.4 мян.тн СО₂-экв, 2035 он гэхэд 145.5 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Зам, тээврийн салбарт 2030 он гэхэд 2,762.2 мян.тн СО₂-экв, 2035 он гэхэд 3,465.9 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Switching to Euro-5 standard fuel - 92.3 thousand tons of CO2-eq by 2030 and 113.5 thousand tons of CO2-eq by 2035\nTransferring coal export transport to railway transport - 2,459.1 thousand tons of CO2-eq by 2030 and 2,940.9 thousand tons of CO2-eq by 2035\nIncrease the use of electric vehicles and public transport - 124.4 thousand tons of CO2-eq by 2030, and 266.0 thousand tons of CO2-eq by 2035\nTransfer imported road transport to railway transport - 86.4 thousand tons of CO2-eq by 2030, and 145.5 thousand tons of CO2-eq by 2035."
+  },
+  {
+    "id": "NITIPA_5",
+    "text": "In the construction sector, 633.5 thousand tons of CO2-eq will be reduced by 2030 and 1,066.1 thousand tons of CO2-eq by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Target 5",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Барилгын салбарт 2030 он гэхэд 633.5 мян.тн СО₂-экв, 2035 он гэхэд 1,066.1 мян.тн СО₂-экв-аар бууруулна.\nНогоон орон сууцны барилга барих-2030 он гэхэд 102.3 мян.тн СО₂-экв, 2035 он гэхэд 146.6 мян.тн СО₂-экв\nЭрчим хүчний хэмнэлттэй амины шинэ орон сууц барих-2030 он гэхэд 57.0 мян.тн СО₂-экв, 2035 он гэхэд 108.0 мян.тн СО₂-экв\nСургууль, цэцэрлэгийн барилгын дулаан техникийн шинэчлэл, засвар хийх-2030 он гэхэд 68.8 мян.тн СО₂-экв, 2035 он гэхэд 131.2 мян.тн СО₂-экв\nТөсөвт байгууллагын барилгын дулаан техникийн шинэчлэл хийх-2030 он гэхэд 104.6 мян.тн СО₂-экв, 2035 он гэхэд 197.2 мян.тн СО₂-экв\nМонгол гэрийн дулаан алдагдлыг бууруулах, халаалтыг шинэчлэх-2030 он гэхэд 41.3 мян.тн СО₂-экв, 2035 он гэхэд 83.5 мян.тн СО₂-экв\nАмины орон сууц (байшин)-ны дулаан алдагдлыг бууруулах, халаалтыг шинэчлэх-2030 он гэхэд 206.8 мян.тн СО₂-экв, 2035 он гэхэд 300.7 мян.тн СО₂-экв\nУгсармал орон сууцны барилгын дулаан техникийн шинэчлэл хийх-2030 он гэхэд 52.7 мян.тн СО₂-экв, 2035 он гэхэд 98.9 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Барилгын салбарт 2030 он гэхэд 633.5 мян.тн СО₂-экв, 2035 он гэхэд 1,066.1 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Construction of green residential buildings - 102.3 thousand tons of CO2-eq by 2030 and 146.6 thousand tons of CO2-eq by 2035\nConstruction of new energy-efficient residential buildings - 57.0 thousand tons of CO2-eq by 2030 and 108.0 thousand tons of CO2-eq by 2035\nRenovation and repair of thermal engineering of school and kindergarten buildings - 68.8 thousand tons of CO2-eq by 2030 and 131.2 thousand tons of CO2-eq by 2035\nRenovation of thermal engineering of buildings of budgetary institutions - 104.6 thousand tons of CO2-eq by 2030, 197.2 thousand tons of CO2-eq by 2035\nReduction of heat loss and modernization of heating in Mongolian homes - 41.3 thousand tons of CO2-eq by 2030, 83.5 thousand tons of CO2-eq by 2035\nReduction of heat loss and modernization of heating in residential buildings - 206.8 thousand tons of CO2-eq by 2030, 300.7 thousand tons of CO2-eq by 2035\nRenovation of thermal engineering of prefabricated residential buildings - 52.7 thousand tons of CO2-eq by 2030, 98.9 thousand tons of CO2-eq by 2035."
+  },
+  {
+    "id": "NITIPA_6",
+    "text": "In the waste sector, 641.6 thousand tons of CO2-eq will be reduced by 2030 and 844.4 thousand tons of CO2-eq by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Target 6",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Хог хаягдлын салбарт 2030 он гэхэд 641.6 мян.тн СО₂-экв, 2035 он гэхэд 844.4 мян.тн СО₂-экв-аар бууруулна.\nХог хаягдлыг дахин боловсруулах, дахивар нөөцийн хэрэглээг нэмэгдүүлэх-2030 он гэхэд 9.7 мян.тн СО₂-экв, 2035 он гэхэд 114.3 мян.тн СО₂-экв\nТөвлөрсөн хог хаягдлын цэгээс ялгарах метан хийг хоргүйжүүлэх-2030 он гэхэд 499.0 мян.тн СО₂-экв, 2035 он гэхэд 590.2 мян.тн СО₂-экв\nЦэвэрлэх байгууламжийг шинэчлэх, өргөтгөх-2030 он гэхэд 132.9 мян.тн СО₂-экв, 2035 он гэхэд 139.9 мян.тн СО₂-экв.\nНэгдсэ дүнгээр Монгол Улс үндэсний хүлэмжийн хийн ялгарлыг нийт ялгаруулах суурь нөхцөлтэй харьцуулахад 2030 он гэхэд 16,034.9 мян.тн, 2035 он гэхэд нийт 24,735.5 мян.тн нүүрстөрөгчийн давхар ислийн эквивалент (СО₂-экв)-тай тэнцэх хэмжээгээр бууруулна.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Хог хаягдлын салбарт 2030 он гэхэд 641.6 мян.тн СО₂-экв, 2035 он гэхэд 844.4 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Increase waste recycling and use of secondary resources - 9.7 thousand tons of CO2-eq by 2030 and 114.3 thousand tons of CO2-eq by 2035\nDetoxify methane gas emitted from centralized waste disposal sites - 499.0 thousand tons of CO2-eq by 2030 and 590.2 thousand tons of CO2-eq by 2035\nRenew and expand treatment facilities - 132.9 thousand tons of CO2-eq by 2030, 139.9 thousand tons of CO2-eq by 2035.\nOverall, Mongolia will reduce its national greenhouse gas emissions by 16,034.9 thousand tons of carbon dioxide equivalent (CO2-eq) by 2030 and 24,735.5 thousand tons of carbon dioxide equivalent (CO2-eq) by 2035, compared to the total emission baseline."
+  },
+  {
+    "id": "NITIPA_7",
+    "text": "Energy: The implementation of the following hydroelectric power plant (HPP) construction projects will reduce emissions by 386.2 thousand tons of CO2-eq by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Conditional Measure 1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Эрчим хүч: Дараах усан цэнэгт цахилгаан станц (УЦЦС) барих төслийг хэрэгжүүлснээр 2035 он гэхэд 386.2 мян.тн СО₂-экв-аар бууруулна.\nСэлэнгэ аймгийн Жавхлант УЦЦС (100 МВт): 193.1 мян.тн СО₂-экв\nХэнтий аймгийн Цэнхэрмандал УЦЦС (100 МВт): 193.1 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Эрчим хүч: Дараах усан цэнэгт цахилгаан станц (УЦЦС) барих төслийг хэрэгжүүлснээр 2035 он гэхэд 386.2 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Javkhlant HPP (100 MW) in Selenge aimag: 193.1 thousand tons of CO2-eq\nTsenkhermandal HPP (100 MW) in Khentii aimag: 193.1 thousand tons of CO2-eq."
+  },
+  {
+    "id": "NITIPA_8",
+    "text": "Buildings: By increasing energy efficiency, green buildings, and renewable energy use, 613.9 thousand tons of CO2-eq will be reduced by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Conditional Measure 2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Барилга: Эрчим хүчний үр ашигтай, ногоон барилга, сэргээгдэх эрчим хүчний хэрэглээг нэмэгдүүлснээр 2035 он гэхэд 613.9 мян.тн СО₂-экв-аар бууруулна.\nНогоон барилга, ногоон орон сууц: 215.1 мян.тн СО₂-экв\n15-100 кВт усан халаалтын зуух шинэчлэх: 174.8 мян.тн СО₂-экв\nБарилгын дулаан хангамжид сэргээгдэх эрчим хүчийг нэвтрүүлэх: 224.1 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Барилга: Эрчим хүчний үр ашигтай, ногоон барилга, сэргээгдэх эрчим хүчний хэрэглээг нэмэгдүүлснээр 2035 он гэхэд 613.9 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Green buildings and green housing: 215.1 thousand tons of CO2-eq\nRenovation of 15-100 kW water heating boilers: 174.8 thousand tons of CO2-eq\nIntroduction of renewable energy to building heat supply: 224.1 thousand tons of CO2-eq."
+  },
+  {
+    "id": "NITIPA_9",
+    "text": "Agriculture: By improving livestock economic turnover, breeding, and profitability, 1,881.4 thousand tons of CO2-eq will be reduced by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Conditional Measure 3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Хөдөө аж ахуй: Малын эдийн засгийн эргэлт, үүлдэр, ашиг шимийг сайжруулах замаар 2035 он гэхэд 1,881.4 мян.тн СО₂-экв-аар бууруулна.\nХонины мах, ноос экспортлох: 398.4+99.6=498.0 мян.тн СО₂-экв\nЯмааны мах, ноолуур экспортлох: 631.3+157.8=789.1 мян.тн СО₂-экв\nАдууны мах экспортлох: 594.2 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Хөдөө аж ахуй: Малын эдийн засгийн эргэлт, үүлдэр, ашиг шимийг сайжруулах замаар 2035 он гэхэд 1,881.4 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Export of mutton and wool: 398.4+99.6=498.0 thousand tons of CO2-eq\nExport of goat meat and cashmere: 631.3+157.8=789.1 thousand tons of CO2-eq\nExpot of horse meat: 594.2 thousand tons of CO2-eq."
+  },
+  {
+    "id": "NITIPA_10",
+    "text": "Industry: Technological innovation and the introduction of CO₂ capture technologies will reduce CO₂ emissions by 974.9 thousand tons by 2035.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Conditional Measure 4",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Аж үйлдвэр: Технологийн шинэчлэл, CO₂ барих технологи нэвтрүүлснээр 2035 он гэхэд 974.9 мян.тн СО₂-экв-аар бууруулна.\nЦементийн үйлдвэрт нунтаг жонш ашиглах: 197.5 мян.тн СО₂-экв\nCO₂ ялган авч, газрын гүнд булшлах (CCS): 777.4 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Аж үйлдвэр: Технологийн шинэчлэл, CO₂ барих технологи нэвтрүүлснээр 2035 он гэхэд 974.9 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Use of powdered fluoride in cement plants: 197.5 thousand tons\nCO₂ capture and storage (CCS): 777.4 thousand tons."
+  },
+  {
+    "id": "NITIPA_11",
+    "text": "Waste: 85.7 thousand tons of CO₂-eq will be reduced by 2035 by increasing recycling and upgrading treatment facilities.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Conditional Measure 5",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Хог хаягдал: Дахин боловсруулалтыг нэмэгдүүлэх болон цэвэрлэх байгууламжийн шинэчлэл хийснээр 2035 он гэхэд 85.7 мян.тн СО₂-экв-аар бууруулна.\nБүсийн төвүүдэд дахин боловсруулах үйлдвэрүүд барих: 13.9 мян.тн СО₂-экв\n6-аас доошгүй аймгийн төвд цэвэрлэх байгууламж барих: 71.8 мян.тн СО₂-экв.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Хог хаягдал: Дахин боловсруулалтыг нэмэгдүүлэх болон цэвэрлэх байгууламжийн шинэчлэл хийснээр 2035 он гэхэд 85.7 мян.тн СО₂-экв-аар бууруулна.",
+    "language": "mn",
+    "textOriginalSource": "source",
+    "activities": "Construction of recycling plants in regional centers: 13.9 thousand tons of CO₂-eq\nConstruction of treatment facilities in the centers of at least 6 provinces: 71.8 thousand tons of CO₂-eq."
+  },
+  {
+    "id": "NITIPA_12",
+    "text": "129,339,500 hectares of Mongolia's total territory is used for pasture. The results of many years of research by the Meteorological and Environmental Analysis Department and the General Department of Land Management, Geodesy and Cartography confirm that the carbon absorption capacity of pasture soils is being lost due to desertification, land degradation, and climate change.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Conditional Measure 6",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Монгол Улсын нийт нутаг дэвсгэрийн 129,339,500 га талбай бэлчээрийн зориулалтаар ашиглагдаж байна. Цөлжилт, газрын доройтол болон уур амьсгалын өөрчлөлтийн нөлөөгөөр бэлчээрийн хөрсний нүүрстөрөгч шингээх чадвар алдагдаж байгааг Цаг уур, орчны шинжилгээний газрын болон Газар зохион байгуулалт, геодези, зураг зүйн ерөнхий газрын олон жилийн судалгааны дүн нотолж байна.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Монгол Улсын нийт нутаг дэвсгэрийн 129,339,500 га талбай бэлчээрийн зориулалтаар ашиглагдаж байна. Цөлжилт, газрын доройтол болон уур амьсгалын өөрчлөлтийн нөлөөгөөр бэлчээрийн хөрсний нүүрстөрөгч шингээх чадвар алдагдаж байгааг Цаг уур, орчны шинжилгээний газрын болон Газар зохион байгуулалт, геодези, зураг зүйн ерөнхий газрын олон жилийн судалгааны дүн нотолж байна.",
+    "language": "mn",
+    "textOriginalSource": "source"
+  },
+  {
+    "id": "NITIPA_13",
+    "text": "Legal, regulatory and institutional capacity: Improve the legal, regulatory and institutional capacity required to implement climate change policies and programs.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Cross-sector objective 1",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Хууль, эрх зүй, бүтэц зохион байгуулалтын чадавх: Уур амьсгалын өөрчлөлтийн бодлого, хөтөлбөрийг хэрэгжүүлэхэд шаардлагатай хууль, эрх зүйн орчин, бүтэц зохион байгуулалтын чадавхыг сайжруулна.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Хууль, эрх зүй, бүтэц зохион байгуулалтын чадавх: Уур амьсгалын өөрчлөлтийн бодлого, хөтөлбөрийг хэрэгжүүлэхэд шаардлагатай хууль, эрх зүйн орчин, бүтэц зохион байгуулалтын чадавхыг сайжруулна.",
+    "language": "mn",
+    "textOriginalSource": "source"
+  },
+  {
+    "id": "NITIPA_14",
+    "text": "Financing: Mobilize national and international financial resources and establish a sustainable financing mechanism for implementing climate change measures.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Cross-sector objective 2",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Санхүүжилт: Үндэсний болон олон улсын санхүүгийн эх үүсвэрийг дайчлан, уур амьсгалын өөрчлөлтийн арга хэмжээг хэрэгжүүлэхэд шаардлагатай санхүүжилтийн тогтвортой механизмыг бүрдүүлнэ.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Санхүүжилт: Үндэсний болон олон улсын санхүүгийн эх үүсвэрийг дайчлан, уур амьсгалын өөрчлөлтийн арга хэмжээг хэрэгжүүлэхэд шаардлагатай санхүүжилтийн тогтвортой механизмыг бүрдүүлнэ.",
+    "language": "mn",
+    "textOriginalSource": "source"
+  },
+  {
+    "id": "NITIPA_15",
+    "text": "Gender and social inclusion: Implement gender-sensitive climate policies that equally include all social groups (women, children, youth, the elderly, people with disabilities, vulnerable groups, etc.).",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Cross-sector objective 3",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Жендэр ба нийгмийн оролцоо: Нийгмийн бүх бүлгийг (эмэгтэйчүүд, хүүхэд залуучууд, ахмадууд, хөгжлийн бэрхшээлтэй иргэд, эмзэг бүлэг г.м.) тэгш хамруулах, жендэрийн мэдрэмжтэй уур амьсгалын бодлого хэрэгжүүлнэ.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Жендэр ба нийгмийн оролцоо: Нийгмийн бүх бүлгийг (эмэгтэйчүүд, хүүхэд залуучууд, ахмадууд, хөгжлийн бэрхшээлтэй иргэд, эмзэг бүлэг г.м.) тэгш хамруулах, жендэрийн мэдрэмжтэй уур амьсгалын бодлого хэрэгжүүлнэ.",
+    "language": "mn",
+    "textOriginalSource": "source"
+  },
+  {
+    "id": "NITIPA_16",
+    "text": "Knowledge and education: Expand research on climate change and support decision-making based on its results.",
+    "sourceDocument": "NITIPA",
+    "sourceLabel": "Cross-sector objective 4",
+    "country": "Mongolia",
+    "sources": [
+      {
+        "sourceText": "Мэдлэг ба боловсрол: Уур амьсгалын өөрчлөлтийн талаарх судалгааг өргөжүүлж, түүний үр дүнд суурилсан шийдвэр гаргалтыг дэмжинэ.",
+        "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1",
+        "note": "Government of Mongolia Resolution No. 91 (10 September 2025), annex: 'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
+      }
+    ],
+    "textCleanup": "verbatim",
+    "textOriginal": "Мэдлэг ба боловсрол: Уур амьсгалын өөрчлөлтийн талаарх судалгааг өргөжүүлж, түүний үр дүнд суурилсан шийдвэр гаргалтыг дэмжинэ.",
+    "language": "mn",
+    "textOriginalSource": "source"
   },
   {
     "id": "SECTORAL_1",
