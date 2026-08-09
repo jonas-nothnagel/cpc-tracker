@@ -1,0 +1,62 @@
+{
+  "country": "mongolia/gpt-5-4",
+  "locale": "mn",
+  "targetLanguage": "Mongolian",
+  "model": "gpt-5.4",
+  "temperature": 0.0,
+  "promptSystem": "You are a professional translator specialising in UN climate and biodiversity policy documents.\nTranslate the provided English text into Mongolian using the Mongolian Cyrillic script, in a faithful, professional, institutional register suitable for policy makers.\n\nHard rules:\n- Preserve ALL numbers, percentages, and units exactly as written. Do not add, drop, or alter any number, and keep a percent sign attached to its number.\n- Preserve these acronyms VERBATIM, never translated, expanded, or re-cased: NDC, NBSAP, NAP, BTR, BER, LDN, ILDN, FSS, NRVTS, IPCC, GLOBE, GGA, NbS, REDD+, UNFCCC, CBD, SDG, NR7, CO₂, LULUCF, OECM.\n- Render \"possible misalignment\" or \"potential misalignment\" as \"болзошгүй үл нийцэл\". Never use \"зөрчил\" or \"зөрчилдөөн\".\n- Do not use em dashes.\n- Keep structural elements intact: line breaks, lists, and colons stay where they were.\n- Return only the Mongolian translation. No commentary, no notes, no quotation marks wrapping the result.",
+  "promptUserTemplate": "Translate this text to {target}:\n\n{text}",
+  "acronymsPreserved": [
+    "NDC",
+    "NBSAP",
+    "NAP",
+    "BTR",
+    "BER",
+    "LDN",
+    "ILDN",
+    "FSS",
+    "NRVTS",
+    "IPCC",
+    "GLOBE",
+    "GGA",
+    "NbS",
+    "REDD+",
+    "UNFCCC",
+    "CBD",
+    "SDG",
+    "NR7",
+    "CO₂",
+    "LULUCF",
+    "OECM"
+  ],
+  "runDate": "2026-08-09T16:17:20.161366+00:00",
+  "cacheNamespace": "snapshot_translation_mn",
+  "files": {
+    "corpus_themes.json": {
+      "items": 6,
+      "fieldsTranslated": 190,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    },
+    "doc_pair_synthesis.json": {
+      "items": 28,
+      "fieldsTranslated": 112,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": []
+    },
+    "sector_synthesis.json": {
+      "items": 38,
+      "fieldsTranslated": 1512,
+      "emptyFallbacks": 0,
+      "numericDriftFlags": [
+        {
+          "locator": "states[ILDN].sector_ippu.reinforce",
+          "field": "reinforce",
+          "issue": "number '2' missing from translation"
+        }
+      ]
+    }
+  },
+  "totalFieldsTranslated": 1814,
+  "totalNumericDriftFlags": 1
+}

@@ -83,32 +83,32 @@ Decomposition for `FSS_1` (abridged):
 
 ## Step 5: Assess Alignment — Agent 2 (Alignment Advisor)
 
-- **Script:** `align.py` (`assess_alignment`), schema in `alignment_schema.py` · **Cache:** `alignment_v2`
+- **Script:** `align.py` (`assess_alignment`), schema in `alignment_schema.py` · **Cache:** `alignment_v3`
 - **Reads:** the two decompositions (never the raw target text) · **Writes:** `alignment.json`
 
-The advisor assigns one of **five states** (v2.1 schema): `none`, `low`, `medium`, `high`, or `flagged`. A `flagged` pair (display label "Potential misalignment") additionally carries `mechanism` (`goal_conflict` / `resource_competition` / `delivery_friction`), `manageability` (`manageable` / `fundamental`), and `confidence` (`high` / `medium` / `low`). Earlier labels (`possible conflict`, `likely conflict`, `low_tension`, ...) parse only as backward-compatible aliases collapsing onto `flagged`.
+The advisor assigns one of **five states** (prompt v2.2): `none`, `low`, `medium`, `high`, or `flagged`. A `flagged` pair (display label "Potential misalignment") additionally carries `mechanism` (`goal_conflict` / `resource_competition` / `delivery_friction`), `manageability` (`manageable` / `fundamental`), and `confidence` (`high` / `medium` / `low`). Earlier labels (`possible conflict`, `likely conflict`, `low_tension`, ...) parse only as backward-compatible aliases collapsing onto `flagged`.
 
-Real output for `FSS_1` × `ILDN_3`:
+Real output for `FSS_13` × `ILDN_3` (our followed pair `FSS_1` × `ILDN_3` itself lands on `medium`):
 
 ```json
 {
-  "targetAId": "FSS_1",
+  "targetAId": "FSS_13",
   "targetBId": "ILDN_3",
   "alignment": "flagged",
-  "mechanism": "delivery_friction",
+  "mechanism": "resource_competition",
   "manageability": "manageable",
   "confidence": "medium",
-  "description": "The food-security target seeks to build a legal environment for expanding export-oriented agriculture ... while the LDN target seeks to expand a network of managed resource protected areas. These targets share land-use relevance ... but agricultural legal expansion may create implementation pressure on some of the same landscapes the protected-area network aims to conserve, so coordination through zoning and safeguards would be needed."
+  "description": "The FSS target promotes preferential loans to expand livestock farming and agriculture in rural areas, while the LDN target seeks to establish managed resource protected areas in under-represented terrestrial ecosystems, creating a plausible one-step competition for rural land ... The targets are not inherently opposed ... but they warrant review to ensure zoning and siting keep financed farming expansion out of ecosystems selected for protected-area establishment."
 }
 ```
 
-A positive verdict looks the same minus the three sub-fields, e.g. `FSS_17` × `ILDN_4` → `high` (soil-protection measures directly support land-degradation-neutrality outcomes). Across Mongolia's 9,678 pairs the spread is roughly medium 5,691 · low 1,512 · high 1,336 · flagged 1,128 · none 11.
+A positive verdict looks the same minus the three sub-fields, e.g. `FSS_26` × `ILDN_8` → `high` (pasture-utilisation, grazing-land and carrying-capacity measures directly support land-degradation-neutrality outcomes). Across Mongolia's 13,404 pairs the spread is roughly medium 7,474 · low 3,861 · high 1,388 · flagged 671 · none 10.
 
 ### Step 5a: Friction-Dimension Enrichment
 
 - **Script:** `extract_friction_dimensions.py` · **Cache:** `friction_dimensions`
 
-A separate cached pass reads the rationale of `flagged` pairs whose mechanism is `resource_competition` or `delivery_friction` and, grounded strictly in that text, adds `contestedResources` (≤3 common nouns) and `sharedContext` (a place name) in place. For our pair it adds `"contestedResources": ["landscape"]`. Running it separately keeps verdicts stable across re-runs.
+A separate cached pass reads the rationale of `flagged` pairs whose mechanism is `resource_competition` or `delivery_friction` and, grounded strictly in that text, adds `contestedResources` (≤3 common nouns) and `sharedContext` (a place name) in place. For the `FSS_13` × `ILDN_3` example above it adds `"contestedResources": ["land"]` and `"sharedContext": "under-represented terrestrial ecosystems"`. Running it separately keeps verdicts stable across re-runs.
 
 ---
 
