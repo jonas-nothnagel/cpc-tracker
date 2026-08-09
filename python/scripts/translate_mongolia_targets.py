@@ -404,7 +404,7 @@ async def _run() -> None:
         genuine_ids = {r["id"] for r in genuine}
         translate_ids = {r["id"] for r in translate}
         logger.info(
-            f"Partition: {len(genuine)} genuine (FSS, source) / "
+            f"Partition: {len(genuine)} genuine (FSS + NITIPA, source) / "
             f"{len(translate)} English-only (to translate)"
         )
         if len(genuine) != 57 or len(translate) != 121:

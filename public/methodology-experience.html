@@ -600,9 +600,9 @@
         <text x="64" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0d7a70" font-weight="600">NBSAP</text>
         <text x="296" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0468b1" font-weight="600">NDC</text>
         <g id="pairLines" stroke-linecap="round"></g><g id="pairNodesL"></g><g id="pairNodesR"></g>
-      </svg><p class="pair-cap"><b>1,245 pairs</b> in this example · highlighted = the example pair</p></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> spatial-planning target and the <b>NDC</b> water target become <b>one of the 1,245 pairs</b>. The tool then checks whether they reinforce one another or pull apart.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">The cross-product of every different-document pairing, de-duplicated: 20×27 + 20×15 + 27×15 = 1,245. No pre-filter is applied, so a genuine cross-sector link is never screened out before the assessment looks at it.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
+      </svg><p class="pair-cap"><b>1,560 pairs</b> in this example · highlighted = the example pair</p></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> spatial-planning target and the <b>NDC</b> water target become <b>one of the 1,560 pairs</b>. The tool then checks whether they reinforce one another or pull apart.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">The cross-product of every different-document pairing, de-duplicated: 20×36 + 20×15 + 36×15 = 1,560. No pre-filter is applied, so a genuine cross-sector link is never screened out before the assessment looks at it.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the logic</p>
         <div class="prompt">
           <div class="prow"><span class="role code">Code (no LLM)</span><div class="ptext">group targets by document → take the Cartesian product of each <em>different-document</em> pairing → de-duplicate by pair.</div></div>
@@ -668,11 +668,11 @@
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · the verdict</p>
         <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
         <div class="ex-facets">
-          <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
+          <span class="facet" style="background:rgba(234,88,12,0.12);color:#ea580c"><span class="fl">Mechanism</span> Resource competition</span>
           <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
           <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
         </div>
-        <p class="exb" style="margin-top:10px">Both targets share land and water governance, but the NDC's water infrastructure (reservoirs, irrigation, managed aquifer recharge) could press on the ecosystems the NBSAP target protects. Coordination through spatial planning, zoning and safeguards would keep them aligned.</p>
+        <p class="exb" style="margin-top:10px">Both targets support ecosystem protection and planning, but the NDC also names water accumulation facilities, irrigation ponds, canals and pasture irrigation, which can compete with the ecosystems the NBSAP target protects. Zoning, environmental-flow safeguards and biodiversity-sensitive siting would keep them aligned.</p>
       </div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Runs on <code>gpt-5.4</code> (private Azure, temperature 0 for repeatable results). Levels none / low ("Partial") / medium / high / flagged, shown as <strong>"Potential misalignment"</strong>. A flag adds mechanism, manageability and confidence, so a reviewer sees <em>why</em> a pair was flagged rather than a bare severity number.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
@@ -689,12 +689,12 @@
       <h2 class="p-title serif">Score it, and map the whole picture</h2>
       <p class="p-say">Finally, with no further AI, the individual judgements roll up into <strong>coherency scores</strong> between each pair of documents, plus a simple count of <strong>how many pairs are flagged</strong> for a closer look. These feed the dashboard: the coherence wheel, alignment heatmaps and theme breakdowns.</p>
       <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
-        <div class="gauge-row"><div class="gauge"><div class="gv">66%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">46</div><div class="gl">pairs flagged (of 540)</div></div></div>
+        <div class="gauge-row"><div class="gauge"><div class="gv">70%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">19</div><div class="gl">pairs flagged (of 720)</div></div></div>
         <svg id="wheelSvg" viewBox="0 0 320 320" width="210" height="210" role="img" aria-label="Coherence wheel" style="overflow:visible"></svg>
         <div class="wheel-legend"><span><span class="ln" style="background:var(--align-high)"></span> Aligned</span><span><span class="ln" style="background:repeating-linear-gradient(90deg,var(--align-flagged) 0 4px,transparent 4px 7px)"></span> Potential misalignment</span></div>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · where it lands</p><p class="exb">The example pair is <b>1 of 46 flagged</b> between the NDC and NBSAP. The other <b>494 of 540</b> pairs sit on the positive scale (471 of them medium or high), so one flag barely moves the <b>66%</b> score, but it is now visible on the wheel and ready for review.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx"><code>Score = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. For Mongolia's NDC and NBSAP that is 66% across 540 pairs, of which 46 are flagged for review. All derived metrics are computed locally, zero model calls.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · where it lands</p><p class="exb">The example pair is <b>1 of 19 flagged</b> between the NDC and NBSAP. The other <b>701 of 720</b> pairs sit on the positive scale (660 of them medium or high), so one flag barely moves the <b>70%</b> score, but it is now visible on the wheel and ready for review.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx"><code>Score = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. For Mongolia's NDC and NBSAP that is 70% across 720 pairs, of which 19 are flagged for review. All derived metrics are computed locally, zero model calls.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
     </div>
 
     <div class="pstep" data-i="10">
@@ -703,14 +703,14 @@
       <p class="p-say">Across every pair, the tool shows <strong>how much</strong> potential misalignment there is and <strong>what kind</strong> it is. It is framed as where to look first: a prompt for review, never a verdict. Every result is <strong>AI-assisted and traceable to the source text</strong>, and the final interpretation rests with national experts.</p>
       <div class="p-viz"><div style="width:100%">
         <p class="mini-lab">How much is flagged</p>
-        <div class="conc-bar"><span style="flex:.12;background:var(--align-flagged)"></span><span style="flex:.88;background:var(--border-200)"></span></div>
+        <div class="conc-bar"><span style="flex:.05;background:var(--align-flagged)"></span><span style="flex:.95;background:var(--border-200)"></span></div>
         <p class="mini-cap">About <b>1 in 20 pairs</b> is flagged for review (671 of 13,404). Most pairs align, so the flags are where to focus.</p>
         <p class="mini-lab" style="margin-top:16px">What kind it is</p>
-        <div class="mech-bar"><span style="flex:.50;background:var(--mech-resource)"></span><span style="flex:.49;background:var(--mech-delivery)"></span><span style="flex:.02;background:var(--mech-goal)"></span></div>
-        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Competing resources 50% &nbsp; <b style="color:var(--mech-delivery)">●</b> Delivery 49% &nbsp; <b style="color:var(--mech-goal)">●</b> Conflicting goals 2%</p>
+        <div class="mech-bar"><span style="flex:.32;background:var(--mech-resource)"></span><span style="flex:.59;background:var(--mech-delivery)"></span><span style="flex:.09;background:var(--mech-goal)"></span></div>
+        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Competing resources 32% &nbsp; <b style="color:var(--mech-delivery)">●</b> Delivery 59% &nbsp; <b style="color:var(--mech-goal)">●</b> Conflicting goals 9%</p>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">In the NDC and NBSAP pairing, <b>46 of 540</b> pairs are flagged, and most are the <b>delivery</b> kind, like the example pair: coordinating water infrastructure with spatial planning would ease it.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces recurring potential misalignment across document pairs, plus hedged pathway pointers, anchored to visible evidence, never prescriptive. In Mongolia's corpus the flagged share is about 12%, spread across many targets rather than a few.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">In the NDC and NBSAP pairing, <b>19 of 720</b> pairs are flagged, and most are the <b>delivery</b> kind. The example pair is a <b>resource</b> flag: coordinating water infrastructure with spatial planning would ease it.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces recurring potential misalignment across document pairs, plus hedged pathway pointers, anchored to visible evidence, never prescriptive. In Mongolia's corpus the flagged share is about 5%, spread across many targets rather than a few.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
     </div>
 
     <div class="pstep" data-i="14">
@@ -718,7 +718,7 @@
       <h2 class="p-title serif">Rate the insights to improve them</h2>
       <p class="p-say">Every AI judgement on the dashboard can be rated. A <strong>thumbs up or down</strong>, with an optional note, records where the reading was helpful and where it fell short. The feedback is anonymous and stored, and it <strong>informs future runs</strong>, so the analysis improves over time.</p>
       <div class="p-viz"><div style="width:100%">
-        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets share land and water governance, but the NDC's water infrastructure could press on the ecosystems the NBSAP target protects…"</div>
+        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets support ecosystem protection and planning, but the NDC also names water infrastructure that can compete with the ecosystems the NBSAP target protects…"</div>
           <div class="prov" style="justify-content:space-between">
             <span style="font-size:11.5px;color:var(--undp-gray)">Was this assessment helpful?</span>
             <span style="display:inline-flex;gap:9px;align-items:center">

@@ -1045,13 +1045,16 @@ async def main() -> None:
             run_id = os.getenv("CPC_RUN_ID")
             # Model-subdir runs write to <root>/<country>/<model-slug>/, so the
             # country is the first path component under the output root, not
-            # the leaf directory name.
+            # the leaf directory name. relative_to() yields Path(".") (empty
+            # .parts) when OUTPUT_DIR IS the root (flat-fallback layout), and
+            # raises ValueError when it is outside the root entirely.
             country = None
             if not os.getenv("CPC_OUTPUT_DIR"):
                 try:
-                    country = OUTPUT_DIR.relative_to(config.OUTPUT_DIR).parts[0]
+                    rel_parts = OUTPUT_DIR.relative_to(config.OUTPUT_DIR).parts
                 except ValueError:
-                    country = OUTPUT_DIR.name
+                    rel_parts = ()
+                country = rel_parts[0] if rel_parts else OUTPUT_DIR.name
             zone = electricity_zone()
             # Per-model rows when measured; otherwise one row from the flat total
             # (an estimated, fully-cached run has no by_model breakdown).

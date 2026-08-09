@@ -55,10 +55,23 @@ NITIPA_SOURCE_NOTE = (
     "'Парисын хэлэлцээрийг хэрэгжүүлэх үндэсний тодорхойлсон хувь нэмрийн зорилт'"
 )
 
+# Both the rounded spreadsheet form (5.277 Mt) and the Resolution 91 comma
+# form (5,277.7 thousand tons) of every disputed figure, so neither notation
+# can slip back into an NDC row. Matched with digit boundaries (see
+# assert_no_disputed_tokens) so legitimate numbers like "21.12%" or "34.157"
+# cannot false-positive the guard.
 DISPUTED_TOKENS = [
     "5.277", "9.78", "4.15", "7.48", "1.12", "2.29",
+    "5,277", "9,781", "4,151", "7,481", "1,126", "2,299",
     "50 million head", "meat supply",
 ]
+
+
+def assert_no_disputed_tokens(blob: str, row_id: str) -> None:
+    for tok in DISPUTED_TOKENS:
+        pattern = r"(?<![\d.,])" + re.escape(tok) + r"(?!\d)"
+        assert not re.search(pattern, blob, re.IGNORECASE), \
+            f"disputed token {tok!r} in {row_id}"
 
 VERBATIM_THRESHOLD = 0.98
 
@@ -339,8 +352,7 @@ def main() -> None:
         if t["sourceDocument"] != "NDC":
             continue
         blob = " ".join([t["text"], t.get("actions", "")])
-        for tok in DISPUTED_TOKENS:
-            assert tok.lower() not in blob.lower(), f"disputed token {tok!r} in {t['id']}"
+        assert_no_disputed_tokens(blob, t["id"])
     nit_blob = " ".join(t["text"] + " " + t.get("activities", "") for t in new_nit)
     assert "5,277" in nit_blob and "meat supply" in nit_blob.lower(), \
         "Resolution 91 livestock content missing from NITIPA"

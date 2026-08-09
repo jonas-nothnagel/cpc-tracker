@@ -596,9 +596,9 @@
         <text x="64" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0d7a70" font-weight="600">NBSAP</text>
         <text x="296" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0468b1" font-weight="600">NDC</text>
         <g id="pairLines" stroke-linecap="round"></g><g id="pairNodesL"></g><g id="pairNodesR"></g>
-      </svg><p class="pair-cap"><b>1,245 pares</b> en este ejemplo · resaltado = el par de ejemplo</p></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">La meta de planificación espacial del <b>NBSAP</b> y la meta hídrica del <b>NDC</b> se convierten en <b>uno de los 1,245 pares</b>. Luego, la herramienta verifica si se refuerzan mutuamente o se desalinean.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">El producto cruzado de cada emparejamiento entre documentos diferentes, sin duplicados: 20×27 + 20×15 + 27×15 = 1,245. No se aplica ningún prefiltro, por lo que un vínculo intersectorial genuino nunca se descarta antes de que la evaluación lo examine.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
+      </svg><p class="pair-cap"><b>1,560 pares</b> en este ejemplo · resaltado = el par de ejemplo</p></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">La meta de planificación espacial del <b>NBSAP</b> y la meta hídrica del <b>NDC</b> se convierten en <b>uno de los 1,560 pares</b>. Luego, la herramienta verifica si se refuerzan mutuamente o se desalinean.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">El producto cruzado de cada emparejamiento entre documentos diferentes, sin duplicados: 20×36 + 20×15 + 36×15 = 1,560. No se aplica ningún prefiltro, por lo que un vínculo intersectorial genuino nunca se descarta antes de que la evaluación lo examine.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
       <div class="p-note p-deep"><p class="nl">Análisis profundo · la lógica</p>
         <div class="prompt">
           <div class="prow"><span class="role code">Code (no LLM)</span><div class="ptext">group targets by document → take the Cartesian product of each <em>different-document</em> pairing → de-duplicate by pair.</div></div>
@@ -664,11 +664,11 @@
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · el veredicto</p>
         <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
         <div class="ex-facets">
-          <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
+          <span class="facet" style="background:rgba(234,88,12,0.12);color:#ea580c"><span class="fl">Mechanism</span> Resource competition</span>
           <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
           <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
         </div>
-        <p class="exb" style="margin-top:10px">Ambos objetivos comparten la gobernanza de la tierra y el agua, pero la infraestructura hídrica del NDC (embalses, riego, recarga gestionada de acuíferos) podría ejercer presión sobre los ecosistemas que protege el objetivo del NBSAP. La coordinación mediante la planificación espacial, la zonificación y las salvaguardias mantendría su alineación.</p>
+        <p class="exb" style="margin-top:10px">Ambos objetivos apoyan la protección y la planificación de los ecosistemas, pero el NDC también menciona instalaciones de acumulación de agua, estanques de riego, canales y riego de pastizales, que pueden competir con los ecosistemas que protege el objetivo del NBSAP. La zonificación, las salvaguardias de caudales ambientales y una ubicación sensible a la biodiversidad mantendrían su alineación.</p>
       </div></div>
       <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Se ejecuta en <code>gpt-5.4</code> (Azure privado, temperatura 0 para resultados reproducibles). Niveles ninguno / bajo ("Parcial") / medio / alto / marcado, mostrados como <strong>"Posible desalineación"</strong>. Una marca añade mecanismo, capacidad de gestión y confianza, de modo que un revisor vea <em>por qué</em> un par fue marcado en lugar de solo un número de gravedad.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
       <div class="p-note p-deep"><p class="nl">Análisis profundo · la instrucción</p>
@@ -685,12 +685,12 @@
       <h2 class="p-title serif">Puntúelo y trace el panorama completo</h2>
       <p class="p-say">Por último, sin más intervención de IA, los juicios individuales se agregan en <strong>puntuaciones de coherencia</strong> entre cada par de documentos, además de un recuento simple de <strong>cuántos pares están señalados</strong> para un examen más detallado. Estos alimentan el panel: la rueda de coherencia, los mapas de calor de alineación y los desgloses temáticos.</p>
       <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
-        <div class="gauge-row"><div class="gauge"><div class="gv">66%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">46</div><div class="gl">pairs flagged (of 540)</div></div></div>
+        <div class="gauge-row"><div class="gauge"><div class="gv">70%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">19</div><div class="gl">pairs flagged (of 720)</div></div></div>
         <svg id="wheelSvg" viewbox="0 0 320 320" width="210" height="210" role="img" aria-label="Coherence wheel" style="overflow:visible"></svg>
         <div class="wheel-legend"><span><span class="ln" style="background:var(--align-high)"></span> Aligned</span><span><span class="ln" style="background:repeating-linear-gradient(90deg,var(--align-flagged) 0 4px,transparent 4px 7px)"></span> Potential misalignment</span></div>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · dónde se ubica</p><p class="exb">El par de ejemplo es <b>1 de 46 señalado</b> entre la NDC y la NBSAP. Los otros <b>494 de 540</b> pares se sitúan en la escala positiva (471 de ellos de nivel medio o alto), por lo que una señalización apenas modifica la puntuación de <b>66%</b>, pero ahora es visible en la rueda y está lista para su revisión.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx"><code>Puntuación = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. Para el NDC y el NBSAP de Mongolia, eso es 66% en 540 pares, de los cuales 46 están marcados para revisión. Todas las métricas derivadas se calculan localmente, cero llamadas al modelo.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · dónde se ubica</p><p class="exb">El par de ejemplo es <b>1 de 19 señalado</b> entre la NDC y la NBSAP. Los otros <b>701 de 720</b> pares se sitúan en la escala positiva (660 de ellos de nivel medio o alto), por lo que una señalización apenas modifica la puntuación de <b>70%</b>, pero ahora es visible en la rueda y está lista para su revisión.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx"><code>Puntuación = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. Para el NDC y el NBSAP de Mongolia, eso es 70% en 720 pares, de los cuales 19 están marcados para revisión. Todas las métricas derivadas se calculan localmente, cero llamadas al modelo.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
     </div>
 
     <div class="pstep" data-i="10">
@@ -699,14 +699,14 @@
       <p class="p-say">En cada par, la herramienta muestra <strong>cuánta</strong> Posible desalineación existe y <strong>de qué tipo</strong> es. Se presenta como una indicación de dónde mirar primero: una invitación a la revisión, nunca un veredicto. Cada resultado está <strong>asistido por IA y es rastreable al texto fuente</strong>, y la interpretación final recae en los expertos nacionales.</p>
       <div class="p-viz"><div style="width:100%">
         <p class="mini-lab">Cuánto está marcado</p>
-        <div class="conc-bar"><span style="flex:.12;background:var(--align-flagged)"></span><span style="flex:.88;background:var(--border-200)"></span></div>
+        <div class="conc-bar"><span style="flex:.05;background:var(--align-flagged)"></span><span style="flex:.95;background:var(--border-200)"></span></div>
         <p class="mini-cap">Aproximadamente <b>1 de cada 20 pares</b> está marcado para revisión (671 de 13,404). La mayoría de los pares están alineados, por lo que las marcas indican dónde centrar la atención.</p>
         <p class="mini-lab" style="margin-top:16px">¿Qué tipo es?</p>
-        <div class="mech-bar"><span style="flex:.50;background:var(--mech-resource)"></span><span style="flex:.49;background:var(--mech-delivery)"></span><span style="flex:.02;background:var(--mech-goal)"></span></div>
-        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Recursos en competencia 50%   <b style="color:var(--mech-delivery)">●</b> Implementación 49%   <b style="color:var(--mech-goal)">●</b> Objetivos en conflicto 2%</p>
+        <div class="mech-bar"><span style="flex:.32;background:var(--mech-resource)"></span><span style="flex:.59;background:var(--mech-delivery)"></span><span style="flex:.09;background:var(--mech-goal)"></span></div>
+        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Recursos en competencia 32%   <b style="color:var(--mech-delivery)">●</b> Implementación 59%   <b style="color:var(--mech-goal)">●</b> Objetivos en conflicto 9%</p>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">En el emparejamiento de NDC y NBSAP, <b>46 of 540</b> pares están señalados, y la mayoría son del tipo de <b>implementación</b>, como el par de ejemplo: coordinar la infraestructura hídrica con la planificación espacial lo facilitaría.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Una capa de síntesis lee la combinación de mecanismos y pone de relieve la Posible desalineación recurrente entre pares de documentos, además de indicaciones prudentes sobre vías, ancladas en evidencia visible, nunca prescriptivas. En el corpus de Mongolia, la proporción señalada es de aproximadamente el 12%, distribuida entre muchos objetivos en lugar de unos pocos.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">En el emparejamiento de NDC y NBSAP, <b>19 de 720</b> pares están señalados, y la mayoría son del tipo de <b>implementación</b>. El par de ejemplo es una señal de <b>recursos</b>: coordinar la infraestructura hídrica con la planificación espacial lo facilitaría.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Una capa de síntesis lee la combinación de mecanismos y pone de relieve la Posible desalineación recurrente entre pares de documentos, además de indicaciones prudentes sobre vías, ancladas en evidencia visible, nunca prescriptivas. En el corpus de Mongolia, la proporción señalada es de aproximadamente el 5%, distribuida entre muchos objetivos en lugar de unos pocos.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
     </div>
 
     <div class="pstep" data-i="14">
@@ -714,7 +714,7 @@
       <h2 class="p-title serif">Califique las perspectivas para mejorarlas</h2>
       <p class="p-say">Cada juicio de IA en el panel puede ser calificado. Un <strong>pulgar hacia arriba o hacia abajo</strong>, con una nota opcional, registra dónde la lectura fue útil y dónde se quedó corta. La retroalimentación es anónima y se almacena, y <strong>sirve de base para ejecuciones futuras</strong>, de modo que el análisis mejora con el tiempo.</p>
       <div class="p-viz"><div style="width:100%">
-        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets share land and water governance, but the NDC's water infrastructure could press on the ecosystems the NBSAP target protects…"</div>
+        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets support ecosystem protection and planning, but the NDC also names water infrastructure that can compete with the ecosystems the NBSAP target protects…"</div>
           <div class="prov" style="justify-content:space-between">
             <span style="font-size:11.5px;color:var(--undp-gray)">Was this assessment helpful?</span>
             <span style="display:inline-flex;gap:9px;align-items:center">
