@@ -6,7 +6,7 @@ to [`../METHODOLOGY.md`](../METHODOLOGY.md), which explains the "why". For the
 document → targets extraction phase that produces the input, see
 [`EXTRACTION_PIPELINE.md`](EXTRACTION_PIPELINE.md).
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (the analysis stages here are unchanged; targets files may now additionally carry `textOriginal`/`language`/`sources`/`textCleanup` from wizard uploads, which the analysis passes through untouched); updated 2026-07-03: active taxonomy set (`config.ACTIVE_TAXONOMIES`) reduced to IPCC sectors, GLOBE, and GGA — NBS paused; updated 2026-07-06: sector synthesis now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis reworked — evidence tables, 3+3 noun-phrase themes with pathways and anchors, disjoint friction counts, per-theme aggregates, shared style validator (`synthesis_style.py`), expanded precompute states, and `scripts/rerun_synthesis.py` for surgical re-runs; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [EXTRACTION_PIPELINE.md](EXTRACTION_PIPELINE.md); the analysis stages here are unchanged, and targets files may now also carry `labelSource`, which the analysis passes through untouched); updated 2026-07-31: added the human rights themes taxonomy (9, draft) to the active set. Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (the analysis stages here are unchanged; targets files may now additionally carry `textOriginal`/`language`/`sources`/`textCleanup` from wizard uploads, which the analysis passes through untouched); updated 2026-07-03: active taxonomy set (`config.ACTIVE_TAXONOMIES`) reduced to IPCC sectors, GLOBE, and GGA — NBS paused; updated 2026-07-06: sector synthesis now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis reworked — evidence tables, 3+3 noun-phrase themes with pathways and anchors, disjoint friction counts, per-theme aggregates, shared style validator (`synthesis_style.py`), expanded precompute states, and `scripts/rerun_synthesis.py` for surgical re-runs; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [EXTRACTION_PIPELINE.md](EXTRACTION_PIPELINE.md); the analysis stages here are unchanged, and targets files may now also carry `labelSource`, which the analysis passes through untouched); updated 2026-07-31: added the human rights themes taxonomy (9, draft) to the active set; updated 2026-08-09: Mongolia corpus re-curated (official NDC 3.0 separated from Government Resolution No. 91 targets, new `NITIPA` document type; 178 targets, 13,404 pairs) — pipeline behaviour unchanged, worked-example numbers refreshed. Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
 
 The whole run is orchestrated by **`run_analysis.py`** as eight stages (`TOTAL_STEPS = 8`). Steps 6 and 7 run only when the relevant data exists. Every LLM call is cached on disk by a hash of `{system_prompt, user_prompt, model}`, namespaced per step, so re-running with the same inputs and model costs nothing.
 
@@ -26,7 +26,7 @@ python -m src.run_analysis --language mn                     # en | es | mn | fr
 
 ## Running example
 
-We follow two Mongolia targets through the run. Mongolia has **153 targets** across seven document types (FSS 41, NDC 27, NRVTS 27, NBSAP 20, NAP 15, Vision 2050 / SECTORAL 15, ILDN 8).
+We follow two Mongolia targets through the run. Mongolia has **178 targets** across eight document types (FSS 41, NDC 36, NRVTS 27, NBSAP 20, NITIPA / "National targets (Res. 91)" 16, NAP 15, Vision 2050 / SECTORAL 15, ILDN 8).
 
 | ID | Document | Text (abridged) |
 |----|----------|-----------------|
@@ -57,7 +57,7 @@ For each target the **ranked** classifier scores every category in a taxonomy (0
 
 - **Script:** `align.py` (`generate_pairs`) · computation, no LLM
 
-Every target is paired with every target from a **different** document type (Cartesian product across doc types, deduplicated by id-sorted pair). No classification filter is applied. For Mongolia this yields **9,678** pairs to assess. `FSS_1` (FSS) and `ILDN_3` (ILDN) are different document types, so the pair is included.
+Every target is paired with every target from a **different** document type (Cartesian product across doc types, deduplicated by id-sorted pair). No classification filter is applied. For Mongolia this yields **13,404** pairs to assess. `FSS_1` (FSS) and `ILDN_3` (ILDN) are different document types, so the pair is included.
 
 ---
 
@@ -83,32 +83,32 @@ Decomposition for `FSS_1` (abridged):
 
 ## Step 5: Assess Alignment — Agent 2 (Alignment Advisor)
 
-- **Script:** `align.py` (`assess_alignment`), schema in `alignment_schema.py` · **Cache:** `alignment_v2`
+- **Script:** `align.py` (`assess_alignment`), schema in `alignment_schema.py` · **Cache:** `alignment_v3`
 - **Reads:** the two decompositions (never the raw target text) · **Writes:** `alignment.json`
 
-The advisor assigns one of **five states** (v2.1 schema): `none`, `low`, `medium`, `high`, or `flagged`. A `flagged` pair (display label "Potential misalignment") additionally carries `mechanism` (`goal_conflict` / `resource_competition` / `delivery_friction`), `manageability` (`manageable` / `fundamental`), and `confidence` (`high` / `medium` / `low`). Earlier labels (`possible conflict`, `likely conflict`, `low_tension`, ...) parse only as backward-compatible aliases collapsing onto `flagged`.
+The advisor assigns one of **five states** (prompt v2.2): `none`, `low`, `medium`, `high`, or `flagged`. A `flagged` pair (display label "Potential misalignment") additionally carries `mechanism` (`goal_conflict` / `resource_competition` / `delivery_friction`), `manageability` (`manageable` / `fundamental`), and `confidence` (`high` / `medium` / `low`). Earlier labels (`possible conflict`, `likely conflict`, `low_tension`, ...) parse only as backward-compatible aliases collapsing onto `flagged`.
 
-Real output for `FSS_1` × `ILDN_3`:
+Real output for `FSS_13` × `ILDN_3` (our followed pair `FSS_1` × `ILDN_3` itself lands on `medium`):
 
 ```json
 {
-  "targetAId": "FSS_1",
+  "targetAId": "FSS_13",
   "targetBId": "ILDN_3",
   "alignment": "flagged",
-  "mechanism": "delivery_friction",
+  "mechanism": "resource_competition",
   "manageability": "manageable",
   "confidence": "medium",
-  "description": "The food-security target seeks to build a legal environment for expanding export-oriented agriculture ... while the LDN target seeks to expand a network of managed resource protected areas. These targets share land-use relevance ... but agricultural legal expansion may create implementation pressure on some of the same landscapes the protected-area network aims to conserve, so coordination through zoning and safeguards would be needed."
+  "description": "The FSS target promotes preferential loans to expand livestock farming and agriculture in rural areas, while the LDN target seeks to establish managed resource protected areas in under-represented terrestrial ecosystems, creating a plausible one-step competition for rural land ... The targets are not inherently opposed ... but they warrant review to ensure zoning and siting keep financed farming expansion out of ecosystems selected for protected-area establishment."
 }
 ```
 
-A positive verdict looks the same minus the three sub-fields, e.g. `FSS_17` × `ILDN_4` → `high` (soil-protection measures directly support land-degradation-neutrality outcomes). Across Mongolia's 9,678 pairs the spread is roughly medium 5,691 · low 1,512 · high 1,336 · flagged 1,128 · none 11.
+A positive verdict looks the same minus the three sub-fields, e.g. `FSS_26` × `ILDN_8` → `high` (pasture-utilisation, grazing-land and carrying-capacity measures directly support land-degradation-neutrality outcomes). Across Mongolia's 13,404 pairs the spread is roughly medium 7,474 · low 3,861 · high 1,388 · flagged 671 · none 10.
 
 ### Step 5a: Friction-Dimension Enrichment
 
 - **Script:** `extract_friction_dimensions.py` · **Cache:** `friction_dimensions`
 
-A separate cached pass reads the rationale of `flagged` pairs whose mechanism is `resource_competition` or `delivery_friction` and, grounded strictly in that text, adds `contestedResources` (≤3 common nouns) and `sharedContext` (a place name) in place. For our pair it adds `"contestedResources": ["landscape"]`. Running it separately keeps verdicts stable across re-runs.
+A separate cached pass reads the rationale of `flagged` pairs whose mechanism is `resource_competition` or `delivery_friction` and, grounded strictly in that text, adds `contestedResources` (≤3 common nouns) and `sharedContext` (a place name) in place. For the `FSS_13` × `ILDN_3` example above it adds `"contestedResources": ["land"]` and `"sharedContext": "under-represented terrestrial ecosystems"`. Running it separately keeps verdicts stable across re-runs.
 
 ---
 

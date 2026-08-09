@@ -10,9 +10,10 @@ each English `text` is translated into Mongolian Cyrillic via Claude Opus 4.6
 (through OpenRouter), labelled `textOriginalSource: "machine"` so the UI can be
 honest about provenance.
 
-The 41 FSS (Food Supply & Safety) targets already carry a *genuine* Mongolian
-`textOriginal` (`language: "mn"`) lifted from the Mongolian-language resolution.
-Those are left untouched except for stamping `textOriginalSource: "source"`.
+The 41 FSS (Food Supply & Safety) targets and the 16 NITIPA targets (Government
+Resolution No. 91, 2025) already carry a *genuine* Mongolian `textOriginal`
+(`language: "mn"`) lifted from the Mongolian-language resolutions. Those are
+left untouched except for stamping `textOriginalSource: "source"`.
 
 The script UPDATES `python/data/mongolia-targets.json` in place (it is
 git-tracked; a one-time pristine backup is written to
@@ -33,7 +34,7 @@ Invocation:
 
 Requirements:
     - `OPENROUTER_API_KEY` (or `LLM_API_KEY`) in the project-root `.env`
-    - `python/data/mongolia-targets.json` present (153 records)
+    - `python/data/mongolia-targets.json` present (178 records)
 """
 
 from __future__ import annotations
@@ -257,11 +258,12 @@ def partition_records(
     data: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """
-    Split the 153 records into:
-      - genuine: the 41 FSS records that carry a real Mongolian `textOriginal`
-        (`language: "mn"`). These are NOT translated.
-      - translate: the 112 English-only records (no `textOriginal`). Their
-        English `text` is machine-translated into Mongolian.
+    Split the 178 records into:
+      - genuine: the 41 FSS + 16 NITIPA records that carry a real Mongolian
+        `textOriginal` (`language: "mn"`). These are NOT translated.
+      - translate: the 121 records extracted from English submissions. Their
+        English `text` is machine-translated into Mongolian (records already
+        stamped "machine" replay from the disk cache).
 
     Robust to re-runs: once stamped, records carry `textOriginalSource`
     ("source" → genuine, "machine" → translate), so re-running on an
@@ -320,17 +322,17 @@ def assert_invariants(
     translate_ids: set[str],
 ) -> None:
     """Hard invariants. Violations raise (and the caller restores the backup)."""
-    assert len(data) == 153, f"expected 153 records, found {len(data)}"
+    assert len(data) == 178, f"expected 178 records, found {len(data)}"
 
     new_by_id = {r["id"]: r for r in data}
     assert set(new_by_id) == set(original_by_id), "record id set changed"
     assert len(new_by_id) == len(data), "duplicate ids introduced"
     assert genuine_ids | translate_ids == set(original_by_id), "partition gap"
     assert not (genuine_ids & translate_ids), "partition overlap"
-    assert len(genuine_ids) == 41, f"expected 41 genuine records, got {len(genuine_ids)}"
+    assert len(genuine_ids) == 57, f"expected 57 genuine records, got {len(genuine_ids)}"
     assert (
-        len(translate_ids) == 112
-    ), f"expected 112 translated records, got {len(translate_ids)}"
+        len(translate_ids) == 121
+    ), f"expected 121 translated records, got {len(translate_ids)}"
 
     for rid, new_rec in new_by_id.items():
         old_rec = original_by_id[rid]
@@ -402,13 +404,13 @@ async def _run() -> None:
         genuine_ids = {r["id"] for r in genuine}
         translate_ids = {r["id"] for r in translate}
         logger.info(
-            f"Partition: {len(genuine)} genuine (FSS, source) / "
+            f"Partition: {len(genuine)} genuine (FSS + NITIPA, source) / "
             f"{len(translate)} English-only (to translate)"
         )
-        if len(genuine) != 41 or len(translate) != 112:
+        if len(genuine) != 57 or len(translate) != 121:
             raise RuntimeError(
                 f"Unexpected partition {len(genuine)}/{len(translate)}; "
-                "expected 41/112. Aborting."
+                "expected 57/121. Aborting."
             )
 
         active_acronyms = acronym_preflight([r["text"] for r in translate])
@@ -486,8 +488,9 @@ async def _run() -> None:
                 "ILDN/SECTORAL targets were extracted from English international "
                 "submissions; no aligned Mongolian source text exists in-repo, so "
                 "verbatim restoration was confirmed NOT feasible. The 41 FSS "
-                "targets carry genuine Mongolian originals (textOriginalSource="
-                "'source'); the 112 others are machine-translated "
+                "targets and 16 NITIPA targets (Government Resolution No. 91, "
+                "2025) carry genuine Mongolian originals (textOriginalSource="
+                "'source'); the 121 others are machine-translated "
                 "(textOriginalSource='machine')."
             ),
             "model": TRANSLATION_MODEL,
