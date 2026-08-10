@@ -32,6 +32,7 @@
 import { useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import {
   computeFundingTargetRows,
   groupFundingRowsByDoc,
@@ -153,6 +154,7 @@ export function FinancingSection({
       // analytical view over the same reviewed expenditure, so per-document
       // amounts repeat and must not be summed (Panama BIOFIN feedback, §1).
       body={grid ? t("lensBody") : sentence.body}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       evidence={evidence}
       disclosure={grid ? <FinancingMethodNote /> : undefined}
       // Grid layout only: countries with the centerpiece get its own

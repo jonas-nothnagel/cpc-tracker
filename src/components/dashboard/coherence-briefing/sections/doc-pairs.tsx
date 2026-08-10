@@ -16,6 +16,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { TourButton } from "../tour/tour-button";
 import { computeDocPairBalance, getDocPairKey } from "@/lib/coherence-briefing";
 import { ALIGNMENT_COLORS, getDocMediumLabel } from "@/lib/utils";
@@ -116,6 +117,7 @@ export function DocPairsSection({
       id={DOC_PAIRS_SECTION_ID}
       headline={headline}
       body={body}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         ranked.length > 0 ? (
           <TourButton tourId="docPairs" scopeId={DOC_PAIRS_SECTION_ID} />

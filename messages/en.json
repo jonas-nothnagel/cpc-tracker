@@ -627,7 +627,8 @@
         "legend": "{count, plural, one {1 target carries} other {# targets carry}} {pct, number}% of potentially misaligned pairs. Each segment is one target; click to open."
       },
       "showAll": "Show all {count, number}",
-      "showFewer": "Show fewer"
+      "showFewer": "Show fewer",
+      "reading": "The bar shows how concentrated the <potentialMisalignment>potential misalignments</potentialMisalignment> are. The list names the <target>targets</target> that recur most."
     },
     "sectors": {
       "noTaxonomy": "No sector taxonomy is available for this country.",
@@ -682,7 +683,8 @@
       "flagAriaValue": "{pct, number}% of reviewed relationships are a potential misalignment",
       "flagAriaNone": "no reviewed relationships under this lens",
       "primaryCount": "{count, number} primary",
-      "hideUnclassified": "Hide the {count, number} targets with no clear theme"
+      "hideUnclassified": "Hide the {count, number} targets with no clear theme",
+      "reading": "Each <target>target</target> counts once, under its <primaryTheme>primary theme</primaryTheme>. Each share compares a sector against its own pairs."
     },
     "docPairs": {
       "empty": "No doc-pair synthesis available yet. Run the synthesis step to surface the pairings here.",
@@ -700,7 +702,8 @@
       "countAligned": "{count, number} aligned",
       "countFlagged": "{count, number} potentially misaligned",
       "showAll": "Show all {count, number} pairings",
-      "showFewer": "Show fewer"
+      "showFewer": "Show fewer",
+      "reading": "Each cell is one document <pair>pair</pair>. Darker means more of its pairs are a <potentialMisalignment>potential misalignment</potentialMisalignment>."
     },
     "frictionTypes": {
       "emptyHeadline": "No potential misalignment to characterise yet.",
@@ -714,7 +717,8 @@
       "body": {
         "mixed": "{total, number} potentially misaligned pairs split across the three types. Click any segment to see how those pairs break down.",
         "dominant": "Of {total, number} potentially misaligned pairs, {label} accounts for {pct}%. Click any segment to see how those pairs break down by document, theme, and target."
-      }
+      },
+      "reading": "The same <pair>pairs</pair>, sorted by what the friction is about: the goals, the resources, or the delivery."
     },
     "docFocus": {
       "switcherAriaLabel": "Pick a document to focus on",
@@ -742,7 +746,8 @@
       "body": "{label} sits with {peers, plural, one {1 other document} other {# other documents}}. {aligned, number} of its scored pairs reach strong alignment; {flagged, number} show potential misalignment.",
       "showAll": "Show all {count, number}",
       "showFewer": "Show fewer",
-      "dominantMechanism": "Most potential misalignment for {label} is {mechanism}; view the breakdown."
+      "dominantMechanism": "Most potential misalignment for {label} is {mechanism}; view the breakdown.",
+      "reading": "One document at a time: its <pair>pairs</pair> with the others, and which are a <potentialMisalignment>potential misalignment</potentialMisalignment>."
     },
     "direction": {
       "docPhrase": "{count, plural, one {1 document} other {# documents}}",
@@ -776,7 +781,8 @@
         "alignsTop": "{count, plural, =0 {Coherent themes} one {Top coherent theme} other {Top # coherent themes}}",
         "reviewTop": "{count, plural, =0 {Potentially misaligned themes} one {Top potentially misaligned theme} other {Top # potentially misaligned themes}}",
         "emptyAligns": "No coherent cross-document themes identified for the current selection."
-      }
+      },
+      "reading": "Every count here is a <pair>pair of targets</pair> from two different documents, not a count of documents."
     },
     "emptyState": {
       "allDocsHidden": "All documents are hidden. Add at least one document above to see the coherence briefing."
@@ -872,7 +878,8 @@
         "info": "GLOBE is the global biodiversity expenditure taxonomy of BIOFIN, the UNDP Biodiversity Finance Initiative (2024 edition). It groups spending by the biodiversity function it supports.",
         "aiCaption": "Categories are assigned by the Tracker's AI from each programme's description — they are not the national BIOFIN team's classification. Each programme counts once, under its main category. AI-estimated and indicative.",
         "noSpendCategories": "{count, plural, one {# category} other {# categories}} with no classified spend"
-      }
+      },
+      "reading": "One dot per <target>target</target>, shaded by relative aligned spend. Shading shows volume, never whether the funding is enough."
     },
     "financingCenter": {
       "header": {
@@ -949,7 +956,8 @@
         "adopted": "Adopted",
         "ongoing": "Ongoing",
         "implemented": "Implemented"
-      }
+      },
+      "reading": "One dot per <target>target</target>. Filled means the <btr>BTR</btr> reports an action supporting it, not that the target is met."
     },
     "implementationCenter": {
       "header": {
@@ -2441,6 +2449,48 @@
           "description": "At least three peripheral documents contribute medium-or-better operationalisation of this ambition."
         }
       }
+    }
+  },
+  "glossary": {
+    "coherence": {
+      "term": "coherence",
+      "definition": "Whether commitments in different policy documents point in the same direction. The tool compares them in pairs; it does not judge the policies themselves."
+    },
+    "target": {
+      "term": "target",
+      "definition": "A single commitment taken from a policy document: what it says will be achieved. Targets are used exactly as written and are never rewritten."
+    },
+    "pair": {
+      "term": "pair",
+      "definition": "Two targets from different documents, compared against each other. Every count on this page counts pairs, not documents."
+    },
+    "aligned": {
+      "term": "aligned",
+      "definition": "The two targets support each other: acting on one helps deliver the other."
+    },
+    "potentialMisalignment": {
+      "term": "potential misalignment",
+      "definition": "The two targets may pull against each other. This is a prompt for someone to review the pair, not a finding that the policies conflict."
+    },
+    "sectorLens": {
+      "term": "sector lens",
+      "definition": "The set of sector categories used to group targets. Switching lens regroups the same targets under a different classification; it does not change the analysis."
+    },
+    "primaryTheme": {
+      "term": "primary theme",
+      "definition": "The single theme a target matched most closely. Used where each target should be counted once."
+    },
+    "relevantTheme": {
+      "term": "relevant themes",
+      "definition": "Every theme a target matched closely enough to be worth listing. Used where breadth matters, so one target can appear under several."
+    },
+    "btr": {
+      "term": "BTR",
+      "definition": "Biennial Transparency Report: the report a country submits to the UN climate convention describing the actions it has actually taken."
+    },
+    "ber": {
+      "term": "BER",
+      "definition": "Biodiversity Expenditure Review: a review of what public money was actually spent on biodiversity."
     }
   }
 }

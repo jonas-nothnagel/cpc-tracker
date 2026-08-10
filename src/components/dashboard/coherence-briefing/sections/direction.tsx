@@ -36,6 +36,7 @@ import { useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import {
   PrimerCard,
   PrimerCardBody,
@@ -139,6 +140,7 @@ export function DirectionSection({
       id={DIRECTION_SECTION_ID}
       headline={t(`verdict.${verdict.bucket}`)}
       body={synthesis}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         corpusThemes && storylines.length > 0 ? (
           <TourButton tourId="directionThemes" scopeId={DIRECTION_SECTION_ID} />

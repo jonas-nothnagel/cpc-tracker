@@ -1734,7 +1734,11 @@ export function CoherenceBriefing({
               </div>
               <div className="mb-2 flex items-center justify-between">
                 {/* Guided walkthrough of the current centerpiece. */}
-                <TourButton tourId={activeTourId} scopeRef={stickyCenterRef} />
+                <TourButton
+                  tourId={activeTourId}
+                  scopeRef={stickyCenterRef}
+                  labelled
+                />
                 <button
                   type="button"
                   onClick={() => setExpanded(true)}

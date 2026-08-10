@@ -32,6 +32,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { DocInfoPopover } from "../doc-meta-card";
 import { ViewTargetsAction } from "../view-targets-action";
 import { TourButton } from "../tour/tour-button";
@@ -131,6 +132,7 @@ export function DocFocusSection({
       id={DOC_FOCUS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={<TourButton tourId="docFocus" scopeId={DOC_FOCUS_SECTION_ID} />}
       controls={
         <DocSwitcher
