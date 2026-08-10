@@ -78,6 +78,36 @@ def test_identical_rows_dedupe():
     assert merge_ledger.merge_rows([r], [dict(r)]) == [r]
 
 
+def test_seed_metadata_correction_supersedes_volume_copy():
+    # The seed's country was repaired (model slug -> mongolia); the volume still
+    # holds the pre-repair copy. Same event: the corrected seed row must win,
+    # never both.
+    corrected = row(
+        ts="2026-07-04T09:00:00Z",
+        run_id=None,
+        component="dev_pipeline",
+        country="mongolia",
+        model="gpt-5.4-mini",
+        co2_geq=474.8,
+    )
+    stale = dict(corrected, country="gpt-5-4-mini")
+    merged = merge_ledger.merge_rows([corrected], [stale])
+    assert merged == [corrected]
+
+
+def test_schema_bump_alone_does_not_duplicate():
+    v1 = row(ts="2026-06-02T10:09:22Z", run_id=None, schema=1)
+    v2 = dict(v1, schema=2)
+    assert merge_ledger.merge_rows([v2], [v1]) == [v2]
+
+
+def test_different_metrics_are_distinct_events():
+    a = row(ts="2026-06-02T10:09:22Z", run_id=None, co2_geq=3.0)
+    b = dict(a, co2_geq=3.000001)
+    merged = merge_ledger.merge_rows([a], [b])
+    assert len(merged) == 2
+
+
 def test_merge_sorts_by_ts():
     seed = [row(ts="2026-06-03T00:00:00Z", run_id=None)]
     vol = [row(ts="2026-06-01T00:00:00Z", run_id=None, co2_geq=9.0)]

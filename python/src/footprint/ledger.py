@@ -14,7 +14,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-LEDGER_SCHEMA = 1
+# Schema 2 (2026-08-10) adds optional per-metric min/max bounds carrying the
+# EcoLogits modelled-uncertainty envelope. Rows without bounds (schema 1, and
+# writers that have none to report) stay valid; readers fall back to the
+# midpoint fields.
+LEDGER_SCHEMA = 2
 _FILENAME = "footprint-ledger.jsonl"
 
 
@@ -57,12 +61,21 @@ def append_event(
     input_tokens: int | None = None,
     output_tokens: int | None = None,
     ts: str | None = None,
+    energy_wh_min: float | None = None,
+    energy_wh_max: float | None = None,
+    water_ml_min: float | None = None,
+    water_ml_max: float | None = None,
+    co2_geq_min: float | None = None,
+    co2_geq_max: float | None = None,
+    minerals_ugsbeq_min: float | None = None,
+    minerals_ugsbeq_max: float | None = None,
 ) -> None:
     """Append one usage event as a single JSON line.
 
     Atomic: a single ``O_APPEND`` write of a line below ``PIPE_BUF`` (4096
     bytes) is POSIX-atomic, so concurrent appends from the pipeline and the
-    chat route never interleave. Rows are well under 1 KB.
+    chat route never interleave. Rows are well under 1 KB (with the optional
+    min/max bounds, ~700 bytes).
     """
     row: dict[str, Any] = {
         "ts": ts or _utc_now(),
@@ -83,6 +96,18 @@ def append_event(
         "source": source,
         "schema": LEDGER_SCHEMA,
     }
+    bounds = {
+        "energy_wh_min": energy_wh_min,
+        "energy_wh_max": energy_wh_max,
+        "water_ml_min": water_ml_min,
+        "water_ml_max": water_ml_max,
+        "co2_geq_min": co2_geq_min,
+        "co2_geq_max": co2_geq_max,
+        "minerals_ugsbeq_min": minerals_ugsbeq_min,
+        "minerals_ugsbeq_max": minerals_ugsbeq_max,
+    }
+    if all(v is not None for v in bounds.values()):
+        row.update({k: round(float(v), 6) for k, v in bounds.items()})  # type: ignore[arg-type]
     line = (json.dumps(row, ensure_ascii=False) + "\n").encode("utf-8")
     fd = os.open(str(ledger_path()), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
     try:

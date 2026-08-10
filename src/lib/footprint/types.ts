@@ -5,7 +5,9 @@
  * from client components).
  */
 
-export const LEDGER_SCHEMA = 1;
+// Schema 2 (2026-08-10) adds optional per-metric min/max bounds carrying the
+// EcoLogits modelled-uncertainty envelope; schema 1 rows (no bounds) stay valid.
+export const LEDGER_SCHEMA = 2;
 
 export type FootprintComponent =
   | "extract"
@@ -34,6 +36,17 @@ export interface LedgerEvent {
   minerals_ugsbeq: number; // ADPe
   source: FootprintSource;
   schema: number;
+  // Modelled-uncertainty bounds (schema 2, optional). Absent on rows recorded
+  // before August 2026 and on writers with nothing to report; readers fall
+  // back to the midpoint fields above.
+  energy_wh_min?: number;
+  energy_wh_max?: number;
+  water_ml_min?: number;
+  water_ml_max?: number;
+  co2_geq_min?: number;
+  co2_geq_max?: number;
+  minerals_ugsbeq_min?: number;
+  minerals_ugsbeq_max?: number;
 }
 
 export interface FootprintMetrics {
@@ -50,8 +63,25 @@ export interface RollupBucket extends FootprintMetrics {
   event_count: number;
 }
 
+/**
+ * Conservative uncertainty envelope over the ledger: per metric, the sum of
+ * row minima and maxima, with rows that carry no bounds contributing their
+ * midpoint to both. The envelope therefore understates the true uncertainty
+ * rather than inventing it; `bounded_share` says how much of the midpoint
+ * total comes from rows that actually carry bounds.
+ */
+export interface FootprintEnvelope {
+  energy_wh: { min: number; max: number };
+  water_ml: { min: number; max: number };
+  co2_geq: { min: number; max: number };
+  minerals_ugsbeq: { min: number; max: number };
+  /** Share (0..1) of the co2 midpoint total carried by rows with bounds. */
+  bounded_share: number;
+}
+
 export interface FootprintRollup {
   totals: FootprintMetrics & { call_count: number; event_count: number };
+  envelope: FootprintEnvelope;
   byModel: RollupBucket[];
   byComponent: RollupBucket[];
   byRegion: RollupBucket[];

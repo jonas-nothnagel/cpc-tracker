@@ -62,6 +62,27 @@ describe("rollUp", () => {
     expect(r.totals.event_count).toBe(0);
     expect(r.byModel).toEqual([]);
     expect(r.latestTs).toBeNull();
+    expect(r.envelope.bounded_share).toBe(0);
+  });
+
+  it("sums min/max bounds into the envelope, falling back to midpoints", () => {
+    const r = rollUp([
+      // Schema 2 row with a real modelled range.
+      ev({ co2_geq: 10, co2_geq_min: 6, co2_geq_max: 18, schema: 2 }),
+      // Schema 1 row without bounds: contributes its midpoint to both ends.
+      ev({ co2_geq: 5 }),
+    ]);
+    expect(r.envelope.co2_geq.min).toBe(11); // 6 + 5
+    expect(r.envelope.co2_geq.max).toBe(23); // 18 + 5
+    // 10 of 15 g carry bounds.
+    expect(r.envelope.bounded_share).toBeCloseTo(10 / 15);
+  });
+
+  it("keeps a midpoint-only ledger's envelope hugging the totals", () => {
+    const r = rollUp([ev({ co2_geq: 3, energy_wh: 1 }), ev({ co2_geq: 7, energy_wh: 2 })]);
+    expect(r.envelope.co2_geq).toEqual({ min: 10, max: 10 });
+    expect(r.envelope.energy_wh).toEqual({ min: 3, max: 3 });
+    expect(r.envelope.bounded_share).toBe(0);
   });
 });
 

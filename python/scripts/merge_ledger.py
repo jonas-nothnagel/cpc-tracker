@@ -17,7 +17,13 @@ that on every deploy while keeping live rows:
      ``footprint.json`` files, so SEED owns them and a volume-only backfill row
      is by definition stale (this drops a previously-seeded duplicate, e.g. an
      old Panama backfill superseded by a fresh run).
-  3. De-duplicate identical rows (canonical JSON).
+  3. De-duplicate on row IDENTITY: everything except curated metadata
+     (``country``, ``run_id``) and ``schema``. A volume row matching a seed
+     row on identity is the same recorded event, possibly carrying metadata
+     the seed has since corrected (e.g. the 2026-08 repair of model-comparison
+     rows whose ``country`` held a model slug) -- the seed version wins.
+     Metrics are 6-decimal floats, so two genuinely different events never
+     collide on identity in practice.
   4. Sort by timestamp and write VOLUME.
 
 First deploy (no VOLUME yet) => output == SEED, matching the old behaviour.
@@ -54,21 +60,31 @@ def _read_rows(path: Path) -> list[dict]:
     return rows
 
 
-def _canonical(row: dict) -> str:
-    return json.dumps(row, sort_keys=True)
+# Fields the seed may retroactively correct (curation) without the row becoming
+# a different event. ``schema`` is included so a schema bump alone never
+# duplicates an otherwise-identical row.
+_CURATED_FIELDS = ("country", "run_id", "schema")
+
+
+def _identity(row: dict) -> str:
+    return json.dumps(
+        {k: v for k, v in row.items() if k not in _CURATED_FIELDS}, sort_keys=True
+    )
 
 
 def merge_rows(seed: list[dict], volume: list[dict]) -> list[dict]:
     """Reconcile per the module docstring. Pure, so it is unit-testable."""
     merged: list[dict] = list(seed)
-    seen = {_canonical(r) for r in seed}
+    seen = {_identity(r) for r in seed}
     for row in volume:
         run_id = row.get("run_id") or ""
         if run_id.startswith("backfill:"):
             # Seed is authoritative for backfill rows; drop volume-only stale ones.
             continue
-        key = _canonical(row)
+        key = _identity(row)
         if key in seen:
+            # Same event already in the merge (identical row, or a seed row
+            # whose curated metadata supersedes this copy).
             continue
         seen.add(key)
         merged.append(row)

@@ -2755,6 +2755,14 @@ async def main_async(args: argparse.Namespace) -> int:
                 co2_geq=float(row.get("co2_geq", 0) or 0),
                 minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
                 source=footprint.get("source", "unavailable"),
+                energy_wh_min=row.get("energy_wh_min"),
+                energy_wh_max=row.get("energy_wh_max"),
+                water_ml_min=row.get("water_ml_min"),
+                water_ml_max=row.get("water_ml_max"),
+                co2_geq_min=row.get("co2_geq_min"),
+                co2_geq_max=row.get("co2_geq_max"),
+                minerals_ugsbeq_min=row.get("minerals_ugsbeq_min"),
+                minerals_ugsbeq_max=row.get("minerals_ugsbeq_max"),
             )
     except Exception as e:
         logger.warning(f"Could not append extraction footprint ledger row: {e}")
