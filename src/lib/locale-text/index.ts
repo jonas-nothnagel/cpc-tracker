@@ -111,14 +111,19 @@ export function localizeTargetTexts<T extends LocalizableTarget>(
   return changed ? next : targets;
 }
 
-/** The subset of a document-type entry this module reads and writes. */
-interface LocalizableDocEntry {
+/** Any config entry that carries per-locale display overrides. */
+interface LabelledEntry {
   labels?: Record<string, Record<string, string | undefined>>;
   [key: string]: unknown;
 }
 
 /**
- * Fold each document type's `labels[locale]` overrides onto its base fields.
+ * Fold each entry's `labels[locale]` overrides onto its base fields.
+ *
+ * Used for document types (mediumLabel / docKind / objective) and for the
+ * coverage-gap notes, which are country-specific sourced prose declared in the
+ * same config and would otherwise read as English on a translated page for
+ * exactly the same reason the document labels did.
  *
  * Applied at the data layer for the same reason as the target-text swap: every
  * `getDocMediumLabel` / `getDocMeta` call site then works unchanged, and the
@@ -129,7 +134,7 @@ interface LocalizableDocEntry {
  * comes back untouched — including the same object identity, so nothing
  * re-renders that did not need to.
  */
-export function localizeDocumentTypes<T extends LocalizableDocEntry>(
+export function localizeLabelled<T extends LabelledEntry>(
   documentTypes: T[],
   locale: string | undefined,
 ): T[] {

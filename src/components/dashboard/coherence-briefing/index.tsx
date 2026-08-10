@@ -1560,6 +1560,7 @@ export function CoherenceBriefing({
                 corpusThemes={visibleCorpusThemes}
                 alignment={policyAlignment}
                 targets={visibleTargets}
+                allDocs={allDocs}
                 onOpenStoryline={openThemeDrawer}
                 onOpenPair={openPairFromFaultLine}
                 onHighlightPair={setPrimerHighlight}

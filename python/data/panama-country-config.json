@@ -1,5 +1,21 @@
 {
   "_comment": "Country-specific display configuration for Panama. Same shape as mongolia-country-config.json. Document taxonomy and provenance strings drive the dashboard without any code changes.",
+  "_coverageGapsComment": "Sectors and instrument types this corpus does NOT cover, declared as a fact rather than inferred. Added Aug 2026 after the focal-group session (23 Jul 2026): the two ARAP (Autoridad de los Recursos Acuaticos de Panama) participants rated the tool only partly useful 'due to the absence of specific tools for fisheries and aquaculture'. Panama's sector taxonomy does name 'Agricultura Ganaderia y Acuicultura Sostenible' and 'Sistemas Marino-Costeros', so a reader from ARAP sees their sector listed but finds no instrument behind it, which is worse than an openly stated gap. Each entry must name what is missing and why it matters to the reader, in neutral terms: a gap statement describes this corpus, never an institution's performance (political-sensitivity guardrail). 'source' records who raised it. WORDING NOT YET CONFIRMED WITH THE COUNTRY OFFICE - confirm before release.",
+  "coverageGaps": [
+    {
+      "id": "fisheries-aquaculture",
+      "title": "Fisheries and aquaculture",
+      "text": "No national fisheries or aquaculture instrument is part of this corpus, so commitments from that sector are not represented in any of the comparisons on this page.",
+      "source": "Raised by ARAP representatives, focus group 23 July 2026",
+      "labels": {
+        "es": {
+          "title": "Pesca y acuicultura",
+          "text": "Ningún instrumento nacional de pesca o acuicultura forma parte de este corpus, por lo que los compromisos de ese sector no están representados en ninguna de las comparaciones de esta página.",
+       "source": "Planteado por representantes de la ARAP, grupo focal del 23 de julio de 2026"
+        }
+      }
+    }
+  ],
   "_documentTypesComment": "Panama's source documents. NP + ENR were carried over from the original Apr 2026 xlsx; HR, PEG, PNSH, PENCYT, PIOTA, PNRF replaced IRMF + SPGCF on 11 May 2026 per Lea's 8 May feedback (data_panama_5May26.xlsx). Short labels come verbatim from the Doc column. Colors chosen from the UNDP-compatible Tailwind palette: avoided red (#dc2626 political sensitivity per CLAUDE.md), the BTR reserved #7c3aed, and the OTHER reserved #78716c. Colors are mutually distinguishable under deuteranopia/protanopia simulation. NP (Nature Pledge) is the anchor / national development plan; BTR is added at runtime via the reserved-token offset so it sorts last automatically.",
   "anchorDocType": "NP",
   "_defaultHiddenDocTypesComment": "Documents hidden by default EVERYWHERE (the briefing analytical views AND the Explore workbench, section 08), shipped to the browser and toggleable. ENR (Estrategia Nacional REDD+) is a ~206-target REDD+ strategy, roughly half the corpus, that a reviewer flagged as not a policy document and that skews every visual; the country office confirmed it is never needed on the default views. Distinct from excludedDocTypes (hard strip) and from secondaryDocTypes (hidden in the briefing only, still shown in Explore).",

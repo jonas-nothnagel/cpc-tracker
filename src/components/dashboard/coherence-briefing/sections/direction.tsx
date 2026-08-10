@@ -37,6 +37,7 @@ import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
+import { CoveragePanel } from "./coverage";
 import {
   PrimerCard,
   PrimerCardBody,
@@ -84,6 +85,7 @@ export function DirectionSection({
   corpusThemes,
   alignment,
   targets,
+  allDocs,
   onOpenStoryline,
   onOpenPair,
   onHighlightPair,
@@ -100,6 +102,10 @@ export function DirectionSection({
   alignment: AlignmentResult[];
   /** Visible (document-filtered) targets. */
   targets: Target[];
+  /** EVERY document in the corpus, including ones hidden from the current
+   *  view: the coverage panel reports what was analysed at all, not what is
+   *  currently on screen. */
+  allDocs: string[];
   onOpenStoryline: (s: CorpusStoryline) => void;
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
@@ -158,12 +164,17 @@ export function DirectionSection({
         ) : null
       }
       disclosure={
-        <PrimerDisclosure
-          primer={primer}
-          countryConfig={countryConfig}
-          onOpenPair={onOpenPair}
-          onHighlightPair={onHighlightPair}
-        />
+        <>
+          <PrimerDisclosure
+            primer={primer}
+            countryConfig={countryConfig}
+            onOpenPair={onOpenPair}
+            onHighlightPair={onHighlightPair}
+          />
+          {/* Sits on the first slide because that is where a reader decides
+              whether this tool has anything for them. See ./coverage.tsx. */}
+          <CoveragePanel allDocs={allDocs} countryConfig={countryConfig} />
+        </>
       }
     />
   );

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   applyAlignmentTranslations,
-  localizeDocumentTypes,
+  localizeLabelled,
   localizeTargetText,
   localizeTargetTexts,
   shouldUseOriginal,
@@ -95,7 +95,7 @@ describe("localizeTargetTexts", () => {
   });
 });
 
-describe("localizeDocumentTypes", () => {
+describe("localizeLabelled", () => {
   const docs = [
     {
       id: "PEG",
@@ -107,25 +107,25 @@ describe("localizeDocumentTypes", () => {
   ];
 
   it("folds the locale's overrides onto the base fields", () => {
-    const [peg] = localizeDocumentTypes(docs, "es");
+    const [peg] = localizeLabelled(docs, "es");
     expect(peg.mediumLabel).toBe("PEG (Plan Estratégico de Gobierno)");
     // Untranslated fields keep the sourced English rather than blanking.
     expect(peg.docKind).toBe("Government strategic plan");
   });
 
   it("leaves entries with no override for this locale untouched", () => {
-    const out = localizeDocumentTypes(docs, "es");
+    const out = localizeLabelled(docs, "es");
     expect(out[1]).toBe(docs[1]);
   });
 
   it("ignores an empty override rather than erasing a sourced label", () => {
     const blank = [{ id: "X", mediumLabel: "X (Real)", labels: { es: { mediumLabel: "" } } }];
-    expect(localizeDocumentTypes(blank, "es")[0].mediumLabel).toBe("X (Real)");
+    expect(localizeLabelled(blank, "es")[0].mediumLabel).toBe("X (Real)");
   });
 
   it("keeps array identity for English and for an unlisted locale", () => {
-    expect(localizeDocumentTypes(docs, "en")).toBe(docs);
-    expect(localizeDocumentTypes(docs, "fr")).toBe(docs);
+    expect(localizeLabelled(docs, "en")).toBe(docs);
+    expect(localizeLabelled(docs, "fr")).toBe(docs);
   });
 });
 
