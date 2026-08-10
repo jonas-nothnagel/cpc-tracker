@@ -1506,7 +1506,26 @@
         "medium": "Otro",
         "full": "Otro documento de política"
       }
-    }
+    },
+    "docClass": {
+      "commitment": "Compromiso nacional",
+      "strategic_plan": "Plan estratégico de gobierno",
+      "sector_plan": "Plan nacional sectorial",
+      "sector_strategy": "Estrategia sectorial",
+      "roadmap": "Hoja de ruta de implementación",
+      "programme": "Programa nacional",
+      "territorial_instrument": "Instrumento de ordenamiento territorial",
+      "reporting": "Reporte internacional"
+    },
+    "docTier": {
+      "1": "Compromiso nacional",
+      "2": "Plan de gobierno",
+      "3": "Planes y estrategias sectoriales",
+      "4": "Instrumentos operativos",
+      "5": "Reportes",
+      "other": "Sin clasificar"
+    },
+    "docTierHint": "Lugar que ocupa este documento en la jerarquía nacional"
   },
   "explorer": {
     "heading": {

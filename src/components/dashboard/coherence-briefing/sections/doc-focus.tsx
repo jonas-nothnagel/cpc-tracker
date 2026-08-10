@@ -50,6 +50,7 @@ import {
   getDocMeta,
   type DocMeta,
 } from "@/lib/utils";
+import { getDocClass } from "@/lib/doc-taxonomy";
 import { useContradictionTypeLabels } from "@/lib/labels";
 import type {
   AlignmentMechanism,
@@ -301,6 +302,7 @@ function DocFocusEvidence({
         }
         meta={meta}
         color={getDocColor(countryConfig, focusedDoc)}
+        docClass={getDocClass(countryConfig, focusedDoc)}
         deadlineCoverage={deadlineCoverage}
       >
         <span className="text-caption text-[var(--undp-gray)] leading-snug group-hover:underline underline-offset-2 decoration-1">

@@ -1506,7 +1506,26 @@
         "medium": "Other",
         "full": "Other Policy Document"
       }
-    }
+    },
+    "docClass": {
+      "commitment": "National commitment",
+      "strategic_plan": "Government strategic plan",
+      "sector_plan": "National sector plan",
+      "sector_strategy": "Sector strategy",
+      "roadmap": "Implementation roadmap",
+      "programme": "National programme",
+      "territorial_instrument": "Territorial planning instrument",
+      "reporting": "International reporting"
+    },
+    "docTier": {
+      "1": "National commitment",
+      "2": "Government-wide plan",
+      "3": "Sector plans and strategies",
+      "4": "Operational instruments",
+      "5": "Reporting",
+      "other": "Not classified"
+    },
+    "docTierHint": "Where this document sits in the national hierarchy"
   },
   "explorer": {
     "heading": {

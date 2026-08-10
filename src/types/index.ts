@@ -898,6 +898,23 @@ export interface DocumentTypeEntry {
   // pipeline prompt.
   /** What kind of document it is, e.g. "National pledge", "REDD+ strategy". */
   docKind?: string;
+  /**
+   * Normalised instrument kind, from the project-defined `DOC_CLASSES`
+   * vocabulary in `src/lib/doc-taxonomy`. A machine-readable counterpart to the
+   * free-text `docKind` above, so every surface can group documents the same
+   * way. The vocabulary is project-defined; THIS DOCUMENT'S assignment to it
+   * must trace to the document's own self-description (see `_docClassComment`
+   * in the country config). Optional — omit and the UI renders as it did before
+   * the taxonomy existed.
+   */
+  docClass?: string;
+  /**
+   * Where this document sits in the national hierarchy: 1 = the national
+   * commitment other instruments answer to, rising to 5 = international
+   * reporting. Drives ordering and grouping in legends, filters, matrix axes,
+   * and wheel arcs. Same provenance rule as `docClass`. Optional.
+   */
+  docTier?: number;
   /** When it was developed/issued, e.g. "November 2025", "2025", "2025-2029". */
   published?: string;
   /** Issuing body / author, e.g. "Government of Panama", "SENACYT". */

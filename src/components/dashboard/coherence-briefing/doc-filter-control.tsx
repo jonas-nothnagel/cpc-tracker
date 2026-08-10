@@ -22,12 +22,67 @@
  * All labels and colours trace to the country config via the getDoc* helpers.
  */
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { getDocColor, getDocMediumLabel, getDocMeta } from "@/lib/utils";
+import {
+  getDocClass,
+  groupDocsByTier,
+  hasDocTaxonomy,
+  MAX_DOC_TIER,
+} from "@/lib/doc-taxonomy";
 import type { CountryConfig, PolicyDocumentType } from "@/types";
 import { DocHoverCard, DocMetaCard } from "./doc-meta-card";
 import { ViewTargetsAction } from "./view-targets-action";
+
+/**
+ * Renders `docs` grouped under their national-hierarchy tier, or as one
+ * ungrouped block when the country has declared no hierarchy — which is exactly
+ * how both controls rendered before `src/lib/doc-taxonomy` existed.
+ *
+ * The tier heading is what tells a reader that a national commitment and a
+ * single watershed's territorial plan are not peers; the Panama focus group
+ * (23 Jul 2026) read them as peers because nothing said otherwise.
+ */
+function TierGrouped({
+  docs,
+  countryConfig,
+  headingAlign = "left",
+  children,
+}: {
+  docs: PolicyDocumentType[];
+  countryConfig: CountryConfig | null;
+  /** The legend centres its items, so its tier headings centre too. */
+  headingAlign?: "left" | "center";
+  children: (docs: PolicyDocumentType[]) => ReactNode;
+}) {
+  const t = useTranslations("labels");
+  const groups = useMemo(
+    () => groupDocsByTier(countryConfig, docs),
+    [countryConfig, docs],
+  );
+
+  if (!hasDocTaxonomy(countryConfig)) return <>{children(docs)}</>;
+
+  return (
+    <div className="space-y-4">
+      {groups.map((group) => (
+        <div key={group.tier}>
+          <p
+            className={`text-[11px] uppercase tracking-wider font-semibold text-[var(--undp-gray)] mb-1.5 ${
+              headingAlign === "center" ? "text-center" : ""
+            }`}
+          >
+            {group.tier > MAX_DOC_TIER
+              ? t("docTier.other")
+              : t(`docTier.${group.tier}` as "docTier.1")}
+          </p>
+          {children(group.docIds)}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 /** One document toggle: colour dot + label. Included reads solid; excluded
  *  reads dimmed with a hollow dot and a strikethrough, so it is obviously
@@ -111,6 +166,7 @@ function DocToggleItem({
             <DocMetaCard
               meta={meta}
               color={color}
+              docClass={getDocClass(countryConfig, doc)}
               hideDot
               footer={
                 onViewTargets && targetCount !== undefined ? (
@@ -220,20 +276,24 @@ export function DocFilterControl({
 
       {expanded && (
         <div className="mt-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
-            {allDocs.map((doc) => (
-              <DocToggleItem
-                key={doc}
-                doc={doc}
-                included={!hiddenDocs.has(doc)}
-                countryConfig={countryConfig}
-                onToggle={onToggle}
-                showDetails
-                targetCount={targetCountByDoc.get(doc) ?? 0}
-                onViewTargets={onViewTargets}
-              />
-            ))}
-          </div>
+          <TierGrouped docs={allDocs} countryConfig={countryConfig}>
+            {(docs) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+                {docs.map((doc) => (
+                  <DocToggleItem
+                    key={doc}
+                    doc={doc}
+                    included={!hiddenDocs.has(doc)}
+                    countryConfig={countryConfig}
+                    onToggle={onToggle}
+                    showDetails
+                    targetCount={targetCountByDoc.get(doc) ?? 0}
+                    onViewTargets={onViewTargets}
+                  />
+                ))}
+              </div>
+            )}
+          </TierGrouped>
           {!isDefault && (
             <button
               type="button"
@@ -267,21 +327,32 @@ export function DocToggleLegend({
   onViewTargets: (doc: PolicyDocumentType) => void;
 }) {
   if (allDocs.length === 0) return null;
+  // Tier rows rather than one wrapped run: the vertical order IS the hierarchy,
+  // so the legend reads as a ranking at a glance without a heavier treatment
+  // that would compete with the wheel beside it.
   return (
     <div className="mb-3">
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-caption">
-        {allDocs.map((doc) => (
-          <DocToggleItem
-            key={doc}
-            doc={doc}
-            included={!hiddenDocs.has(doc)}
-            countryConfig={countryConfig}
-            onToggle={onToggle}
-            targetCount={targetCountByDoc.get(doc) ?? 0}
-            onViewTargets={onViewTargets}
-          />
-        ))}
-      </div>
+      <TierGrouped
+        docs={allDocs}
+        countryConfig={countryConfig}
+        headingAlign="center"
+      >
+        {(docs) => (
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-caption">
+            {docs.map((doc) => (
+              <DocToggleItem
+                key={doc}
+                doc={doc}
+                included={!hiddenDocs.has(doc)}
+                countryConfig={countryConfig}
+                onToggle={onToggle}
+                targetCount={targetCountByDoc.get(doc) ?? 0}
+                onViewTargets={onViewTargets}
+              />
+            ))}
+          </div>
+        )}
+      </TierGrouped>
     </div>
   );
 }

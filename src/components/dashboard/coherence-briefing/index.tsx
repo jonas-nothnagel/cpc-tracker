@@ -89,6 +89,7 @@ import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
 import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
+import { docTierSortKey, hasDocTaxonomy } from "@/lib/doc-taxonomy";
 import {
   buildSectorCoherenceShare,
   buildSectorTensionDensity,
@@ -361,14 +362,21 @@ export function CoherenceBriefing({
     [defaultHiddenDocTypes],
   );
 
-  // Every document in the FULL corpus, in config order — drives the filter
-  // control so a hidden doc still appears as a toggle.
+  // Every document in the FULL corpus — drives the filter control so a hidden
+  // doc still appears as a toggle, and sets the order the wheel arcs, matrix
+  // axes and legend inherit. Ordered by national hierarchy where the country
+  // has declared one (see src/lib/doc-taxonomy), otherwise config order, which
+  // is what this did before the taxonomy existed.
   const allDocs = useMemo<PolicyDocumentType[]>(() => {
     const docs = new Set<PolicyDocumentType>();
     for (const t of targets) docs.add(t.sourceDocument);
-    return Array.from(docs).sort(
-      (a, b) =>
-        getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+    const byConfig = (id: PolicyDocumentType) =>
+      getDocTypeOrder(countryConfig, id);
+    return Array.from(docs).sort((a, b) =>
+      hasDocTaxonomy(countryConfig)
+        ? docTierSortKey(countryConfig, a, byConfig(a)) -
+          docTierSortKey(countryConfig, b, byConfig(b))
+        : byConfig(a) - byConfig(b),
     );
   }, [targets, countryConfig]);
 
