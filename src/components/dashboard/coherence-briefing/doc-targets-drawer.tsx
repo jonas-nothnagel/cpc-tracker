@@ -33,6 +33,7 @@ import {
   OriginalLanguageChip,
   TargetTextWithHighlights,
 } from "@/components/viz/target-text";
+import { DefinitionChip } from "./target-quality";
 import {
   buildDocTargetHaystacks,
   countDocTargetFilters,
@@ -421,6 +422,7 @@ function TargetRow({
               </span>
             )}
             <OriginalLanguageChip target={target} />
+            <DefinitionChip target={target} />
           </div>
           <ActivitiesActions target={target} />
           {source?.section && (

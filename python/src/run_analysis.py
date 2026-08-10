@@ -49,6 +49,7 @@ from .llm import (
 )
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
+from .target_quality import assess_target_quality
 from .measure_align import (
     measures_to_pseudo_targets,
     generate_measure_pairs,
@@ -274,6 +275,13 @@ def parse_args() -> argparse.Namespace:
              "the LLM_MODEL env var.",
     )
     parser.add_argument(
+        "--skip-target-quality",
+        action="store_true",
+        help="Skip the target-definition-elements step. The dashboard hides "
+             "every quality affordance when target_quality.json is absent, so "
+             "this is a safe way to shorten a run.",
+    )
+    parser.add_argument(
         "--limit-targets",
         type=int,
         default=None,
@@ -459,6 +467,8 @@ async def main() -> None:
         t_count = sum(1 for q in quant_flags if q.get("isTimeBound"))
         logger.info(f"Saved quantitative flags: {q_count} quantitative, {t_count} time-bound")
 
+        target_quality: list = []
+
         # 3. Thematic classification against the active taxonomies
         # (config.ACTIVE_TAXONOMIES; today IPCC sectors, GLOBE, GGA).
         write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against thematic taxonomies", started_at=started_at)
@@ -562,6 +572,38 @@ async def main() -> None:
         out_path = OUTPUT_DIR / "decompositions.json"
         out_path.write_text(json.dumps(decompositions, indent=2))
         logger.info(f"Saved {len(decompositions)} decompositions to {out_path}")
+
+        # 4b. Which elements each target's text states (action / scope /
+        # outcome). Element presence, never a grade — see target_quality.py.
+        # Runs here, right after decomposition, so it can pass the pipeline's
+        # own reading of each target as context and assess the same thing the
+        # rest of the run saw. Optional: the dashboard hides every quality
+        # affordance when target_quality.json is absent, so skipping costs
+        # nothing else in the run.
+        if args.skip_target_quality:
+            logger.info("Skipping target definition elements (--skip-target-quality)")
+        else:
+            write_status(
+                4,
+                "Target definition elements",
+                f"Reading which elements {len(targets)} targets state",
+                started_at=started_at,
+            )
+            logger.info("")
+            logger.info("STEP 4b: Target definition elements")
+            logger.info("-" * 40)
+            decomposition_context = {
+                tid: text
+                for tid, text in (decompositions or {}).items()
+                if isinstance(text, str)
+            }
+            target_quality = await assess_target_quality(targets, decomposition_context)
+            quality_path = OUTPUT_DIR / "target_quality.json"
+            quality_path.write_text(json.dumps(target_quality, indent=2))
+            logger.info(
+                f"Saved target definition elements for {len(target_quality)} targets "
+                f"to {quality_path}"
+            )
 
         # 6. Assess alignment
         write_status(5, "Alignment assessment", f"Assessing alignment for {len(pairs)} target pairs with Agent 2", started_at=started_at)
@@ -1000,6 +1042,12 @@ async def main() -> None:
                     "count": len(quant_flags),
                     "avg_output_tokens": 50,
                     "avg_latency_s": 1.0,
+                },
+                {
+                    "name": "target_quality",
+                    "count": len(target_quality),
+                    "avg_output_tokens": 120,
+                    "avg_latency_s": 1.2,
                 },
                 {
                     "name": "classification",

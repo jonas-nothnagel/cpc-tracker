@@ -160,6 +160,22 @@
         "5": "Reporting"
       }
     },
+    "targetQuality": {
+      "chipLabel": "{stated} of {total} stated",
+      "chipAria": "This target states {stated} of {total} elements. Open for detail.",
+      "panelAria": "Which elements this target states",
+      "panelTitle": "This target states {stated} of {total} elements",
+      "notStated": "Not stated in the text.",
+      "caveat": "AI-generated reading of the target's wording, with the supporting phrase quoted. It describes what the text says, not how good the target is.",
+      "coverageItem": "{count}/{total} {element}",
+      "element": {
+        "action": "A specific action",
+        "scope": "Where or for whom",
+        "outcome": "The result expected",
+        "measurable": "A measurable value",
+        "deadline": "A deadline"
+      }
+    },
     "lens": {
       "globe": "Biodiversity",
       "ipcc": "Mitigation sectors",

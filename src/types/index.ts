@@ -109,6 +109,17 @@ export interface Target {
    *  translation caveat on the language chip. Undefined behaves as "source". */
   textOriginalSource?: "source" | "machine";
   /**
+   * Which elements this target's text states, from
+   * `python/src/target_quality.py` merged with the quantitative flags.
+   *
+   * A read of the TEXT, not a grade of the target and never a judgement of
+   * whoever wrote it (political-sensitivity guardrail). Every element marked
+   * true carries the verbatim phrase from the target that supports it; the
+   * pipeline drops any claim it could not quote. Absent when the country has
+   * no `target_quality.json`, which hides every quality affordance.
+   */
+  definition?: TargetDefinition;
+  /**
    * Set by `src/lib/locale-text` when `text` has been swapped to the target's
    * source language for a matching locale: holds the English analysis text that
    * `text` used to carry, so the language chip can still show both sides.
@@ -336,6 +347,37 @@ export type AlignmentConfidence = "low" | "medium" | "high";
 export type ContradictionType = AlignmentMechanism;
 
 /** Result of comparing two targets for alignment (v2.1 schema). */
+/**
+ * The five elements a well-defined target states. Ordered as a reader meets
+ * them: what will be done, where and for whom, what changes, by how much,
+ * by when.
+ *
+ * DELIBERATELY NOT A SCORE. "3 of 5 elements stated" is an observation about
+ * the text; "3 out of 5 quality" would be a judgement the model cannot support
+ * against policy language that is often deliberately broad, and would read as
+ * criticism of the institution that wrote it. Nothing in the UI may rank
+ * documents or sectors by this.
+ */
+export const TARGET_DEFINITION_ELEMENTS = [
+  "action",
+  "scope",
+  "outcome",
+  "measurable",
+  "deadline",
+] as const;
+
+export type TargetDefinitionElement =
+  (typeof TARGET_DEFINITION_ELEMENTS)[number];
+
+export interface TargetDefinition {
+  /** Whether the target's text states each element. */
+  elements: Partial<Record<TargetDefinitionElement, boolean>>;
+  /** The verbatim phrase supporting each stated element. Empty where absent. */
+  evidence: Partial<Record<TargetDefinitionElement, string>>;
+  /** How clearly the text settles the question — not how good the target is. */
+  confidence?: "high" | "medium" | "low";
+}
+
 export interface AlignmentResult {
   /** First target id */
   targetAId: string;

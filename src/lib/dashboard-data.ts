@@ -524,6 +524,19 @@ export function assembleDashboardData(
         locale,
       )
     : null;
+  // Which elements each target's text states (action / scope / outcome), from
+  // python/src/target_quality.py. Optional by design: when the file is absent
+  // every quality affordance hides, exactly as the briefing already treats
+  // missing BER / BTR / NR7 data. See .../coherence-briefing/target-quality.
+  const targetQuality = readJson<
+    {
+      targetId: string;
+      elements?: Record<string, boolean>;
+      evidence?: Record<string, string>;
+      confidence?: string;
+    }[]
+  >(join(outputDir, "target_quality.json"));
+
   const quantFlags = readJson<
     { targetId: string; isQuantitative: boolean; isTimeBound: boolean; quantitativeDetails?: string; timeBoundDetails?: string }[]
   >(
@@ -577,15 +590,47 @@ export function assembleDashboardData(
     }
   }
 
+  // The five elements are assembled here rather than in the pipeline: two of
+  // them (measurable / deadline) already existed as quantitative flags, and
+  // recomputing them would risk the two sources disagreeing.
+  const qualityByTarget = new Map<
+    string,
+    {
+      elements: Record<string, boolean>;
+      evidence: Record<string, string>;
+      confidence?: string;
+    }
+  >();
+  if (targetQuality) {
+    for (const q of targetQuality) {
+      const flags = flagsByTarget.get(q.targetId);
+      qualityByTarget.set(q.targetId, {
+        elements: {
+          measurable: flags?.isQuantitative ?? false,
+          deadline: flags?.isTimeBound ?? false,
+          ...(q.elements ?? {}),
+        },
+        evidence: {
+          measurable: flags?.quantitativeDetails ?? "",
+          deadline: flags?.timeBoundDetails ?? "",
+          ...(q.evidence ?? {}),
+        },
+        confidence: q.confidence,
+      });
+    }
+  }
+
   const enrichedTargets = localizeTargetTexts(
     (targets as (Record<string, unknown> & LocalizableTarget)[]).map((t) => {
       const flags = flagsByTarget.get(String(t.id));
+      const quality = qualityByTarget.get(String(t.id));
       return {
         ...t,
         isQuantitative: flags?.isQuantitative ?? false,
         isTimeBound: flags?.isTimeBound ?? false,
         quantitativeDetails: flags?.quantitativeDetails ?? undefined,
         timeBoundDetails: flags?.timeBoundDetails ?? undefined,
+        definition: quality,
       };
     }),
     // Show people their own words: in a locale that matches the target's
