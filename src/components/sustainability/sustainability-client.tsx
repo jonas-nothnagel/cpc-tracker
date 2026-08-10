@@ -17,8 +17,13 @@ import {
 } from "recharts";
 
 import { downloadFile } from "@/lib/download";
+import {
+  equivalentsMeaningful,
+  everydayEquivalents,
+} from "@/lib/footprint/equivalents";
 import { cumulativeByComponent } from "@/lib/footprint/rollup";
 import type {
+  FootprintEnvelope,
   FootprintMetrics,
   FootprintRollup,
   LedgerEvent,
@@ -144,12 +149,14 @@ function MetricTile({
   unit,
   unitTitle,
   sub,
+  range,
 }: {
   label: string;
   value: string;
   unit: string;
   unitTitle: string;
   sub: string;
+  range?: string;
 }) {
   return (
     <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg p-5">
@@ -166,6 +173,72 @@ function MetricTile({
         </span>
       </p>
       <p className="text-xs text-[var(--undp-gray)] mt-0.5">{sub}</p>
+      {range && (
+        <p className="text-[10px] text-[var(--undp-gray)] mt-0.5 tabular-nums">
+          {range}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// The modelled-uncertainty line is shown only when it is informative: enough
+// of the recorded carbon actually carries bounds (older rows contribute their
+// midpoint to both ends, which would render a fake zero-width range), and the
+// envelope is meaningfully wider than the midpoint display.
+function envelopeRange(
+  envelope: FootprintEnvelope,
+  key: keyof FootprintMetrics,
+  midpoint: number,
+  fmt: (v: number) => { value: string; unit: string },
+  label: (min: string, max: string) => string,
+): string | undefined {
+  if (envelope.bounded_share < 0.3 || midpoint <= 0) return undefined;
+  const { min, max } = envelope[key];
+  if ((max - min) / midpoint < 0.02) return undefined;
+  const lo = fmt(min);
+  const hi = fmt(max);
+  return label(`${lo.value} ${lo.unit}`, `${hi.value} ${hi.unit}`);
+}
+
+// Everyday anchors round to one decimal while small, whole numbers once large.
+function eqRound(v: number): number {
+  return v >= 10 ? Math.round(v) : Math.round(v * 10) / 10;
+}
+
+function EquivalentsStrip({
+  totals,
+}: {
+  totals: FootprintMetrics;
+}) {
+  const t = useTranslations("sustainability");
+  if (!equivalentsMeaningful(totals)) return null;
+  const eq = everydayEquivalents(totals);
+  const items = [
+    t("equivalents.ev", { count: eqRound(eq.evCharges) }),
+    t("equivalents.petrol", { count: eqRound(eq.petrolLitres) }),
+    t("equivalents.bathtubs", { count: eqRound(eq.bathtubs) }),
+  ];
+  return (
+    <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg px-5 py-4">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+        {t("equivalents.title")}
+      </p>
+      <p className="text-sm text-[var(--undp-black)] mt-1.5 leading-relaxed">
+        {items.map((item, i) => (
+          <span key={item}>
+            {item}
+            {i < items.length - 1 && (
+              <span aria-hidden="true" className="text-[var(--undp-gray)] mx-2">
+                &middot;
+              </span>
+            )}
+          </span>
+        ))}
+      </p>
+      <p className="text-[10px] text-[var(--undp-gray)] mt-1.5">
+        {t("equivalents.note")}
+      </p>
     </div>
   );
 }
@@ -409,11 +482,24 @@ function Dashboard({ data }: { data: FootprintRollup }) {
   const metric = METRICS.find((m) => m.key === metricKey) ?? METRICS[0];
   const metricLabel = t(`tile.${metric.tileKey}`);
 
-  const { totals } = data;
+  const { totals, envelope } = data;
   const carbon = fmtCarbon(totals.co2_geq);
   const energy = fmtEnergy(totals.energy_wh);
   const water = fmtWater(totals.water_ml);
   const minerals = fmtMinerals(totals.minerals_ugsbeq);
+  const rangeLabel = (min: string, max: string) => t("tile.range", { min, max });
+  const ranges = {
+    carbon: envelopeRange(envelope, "co2_geq", totals.co2_geq, fmtCarbon, rangeLabel),
+    energy: envelopeRange(envelope, "energy_wh", totals.energy_wh, fmtEnergy, rangeLabel),
+    water: envelopeRange(envelope, "water_ml", totals.water_ml, fmtWater, rangeLabel),
+    minerals: envelopeRange(
+      envelope,
+      "minerals_ugsbeq",
+      totals.minerals_ugsbeq,
+      fmtMinerals,
+      rangeLabel,
+    ),
+  };
   const callsLabel = t("tile.callsLabel", { calls: compact(totals.call_count) });
   const lastRecorded = data.latestTs
     ? data.latestTs.slice(0, 10)
@@ -467,6 +553,7 @@ function Dashboard({ data }: { data: FootprintRollup }) {
           unit={carbon.unit}
           unitTitle={t("tile.carbonUnitTitle")}
           sub={callsLabel}
+          range={ranges.carbon}
         />
         <MetricTile
           label={t("tile.energy")}
@@ -474,6 +561,7 @@ function Dashboard({ data }: { data: FootprintRollup }) {
           unit={energy.unit}
           unitTitle={t("tile.energyUnitTitle")}
           sub={t("tile.lastRecorded", { date: lastRecorded })}
+          range={ranges.energy}
         />
         <MetricTile
           label={t("tile.water")}
@@ -481,6 +569,7 @@ function Dashboard({ data }: { data: FootprintRollup }) {
           unit={water.unit}
           unitTitle={t("tile.waterUnitTitle")}
           sub={t("tile.waterSub")}
+          range={ranges.water}
         />
         <MetricTile
           label={t("tile.minerals")}
@@ -488,8 +577,11 @@ function Dashboard({ data }: { data: FootprintRollup }) {
           unit={minerals.unit}
           unitTitle={t("tile.mineralsUnitTitle")}
           sub={t("tile.mineralsSub")}
+          range={ranges.minerals}
         />
       </div>
+
+      <EquivalentsStrip totals={totals} />
 
       <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">

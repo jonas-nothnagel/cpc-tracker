@@ -1429,7 +1429,15 @@
       "mineralsSub": "uso de recursos abióticos",
       "callsLabel": "en {calls} llamadas al modelo",
       "lastRecorded": "último registro {date}",
-      "notAvailable": "n/d"
+      "notAvailable": "n/d",
+      "range": "rango modelado: {min} a {max}"
+    },
+    "equivalents": {
+      "title": "En términos cotidianos",
+      "ev": "{count, plural, one {aproximadamente una carga completa de un coche eléctrico de gran autonomía} other {aproximadamente # cargas completas de un coche eléctrico de gran autonomía}}",
+      "petrol": "{count, plural, one {el carbono de aproximadamente un litro de gasolina} other {el carbono de aproximadamente # litros de gasolina}}",
+      "bathtubs": "{count, plural, one {aproximadamente una bañera de agua de refrigeración} other {aproximadamente # bañeras de agua de refrigeración}}",
+      "note": "Comparaciones ilustrativas: factores de conversión de la EPA de Estados Unidos (agosto de 2026), una batería de coche eléctrico de 75 a 100 kWh y una bañera de 155 litros."
     },
     "charts": {
       "carbonOverTime": "Carbono a lo largo del tiempo",
