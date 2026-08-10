@@ -23,6 +23,13 @@ import { getCountry, isValidCountryId } from "@/config/countries";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
 import {
+  applyAlignmentTranslations,
+  localizeDocumentTypes,
+  localizeTargetTexts,
+  type AlignmentTranslationOverlay,
+  type LocalizableTarget,
+} from "@/lib/locale-text";
+import {
   applyUnclassifiedBuckets,
   unclassifiedCategory,
 } from "@/lib/unclassified-bucket";
@@ -494,9 +501,29 @@ export function assembleDashboardData(
     hr_categories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
+  // Read the sparse per-locale rationale overlay for one alignment file.
+  // Deliberately NOT readLocalizedJson: that swaps a whole file, and these are
+  // maps merged onto the English records. See src/lib/locale-text.
+  const rationaleOverlay = (name: string) =>
+    locale && locale !== "en"
+      ? readJson<AlignmentTranslationOverlay>(
+          join(outputDir, name.replace(/\.json$/, `.${locale}.json`)),
+        )
+      : null;
+
   const alignmentRaw = readJson<Record<string, unknown>[]>(join(outputDir, "alignment.json"));
   // Migrate any v1 records to v2.1 shape so the rest of the assembly sees a single schema.
-  const alignment = alignmentRaw ? migrateLegacyAlignmentRecords(alignmentRaw) : null;
+  const alignmentMigrated = alignmentRaw ? migrateLegacyAlignmentRecords(alignmentRaw) : null;
+  // Overlay the per-locale pair rationales where a translation pass has run.
+  // Deliberately NOT readLocalizedJson: that swaps a whole file, and this one is
+  // a sparse map merged onto the English records. See src/lib/locale-text.
+  const alignment = alignmentMigrated
+    ? applyAlignmentTranslations(
+        alignmentMigrated,
+        rationaleOverlay("alignment.json"),
+        locale,
+      )
+    : null;
   const quantFlags = readJson<
     { targetId: string; isQuantitative: boolean; isTimeBound: boolean; quantitativeDetails?: string; timeBoundDetails?: string }[]
   >(
@@ -550,16 +577,23 @@ export function assembleDashboardData(
     }
   }
 
-  const enrichedTargets = (targets as Record<string, unknown>[]).map((t) => {
-    const flags = flagsByTarget.get(String(t.id));
-    return {
-      ...t,
-      isQuantitative: flags?.isQuantitative ?? false,
-      isTimeBound: flags?.isTimeBound ?? false,
-      quantitativeDetails: flags?.quantitativeDetails ?? undefined,
-      timeBoundDetails: flags?.timeBoundDetails ?? undefined,
-    };
-  });
+  const enrichedTargets = localizeTargetTexts(
+    (targets as (Record<string, unknown> & LocalizableTarget)[]).map((t) => {
+      const flags = flagsByTarget.get(String(t.id));
+      return {
+        ...t,
+        isQuantitative: flags?.isQuantitative ?? false,
+        isTimeBound: flags?.isTimeBound ?? false,
+        quantitativeDetails: flags?.quantitativeDetails ?? undefined,
+        timeBoundDetails: flags?.timeBoundDetails ?? undefined,
+      };
+    }),
+    // Show people their own words: in a locale that matches the target's
+    // source language, render the original and keep the English analysis text
+    // behind the language chip. Safe to do here because the country payload is
+    // cached per-locale. See src/lib/locale-text.
+    locale,
+  );
 
   const btrData = readJson<{ mitigationMeasures?: Record<string, unknown>[] } & Record<string, unknown>>(
     join(outputDir, "btr_data.json")
@@ -635,7 +669,11 @@ export function assembleDashboardData(
     join(outputDir, "measure_alignment.json")
   );
   const measureAlignment = measureAlignmentRaw
-    ? migrateLegacyAlignmentRecords(measureAlignmentRaw)
+    ? applyAlignmentTranslations(
+        migrateLegacyAlignmentRecords(measureAlignmentRaw),
+        rationaleOverlay("measure_alignment.json"),
+        locale,
+      )
     : null;
 
   const allTargets = measurePseudoTargets
@@ -654,7 +692,11 @@ export function assembleDashboardData(
     join(outputDir, "budget_alignment.json")
   );
   const budgetAlignment = budgetAlignmentRaw
-    ? migrateLegacyAlignmentRecords(budgetAlignmentRaw)
+    ? applyAlignmentTranslations(
+        migrateLegacyAlignmentRecords(budgetAlignmentRaw),
+        rationaleOverlay("budget_alignment.json"),
+        locale,
+      )
     : null;
   const berData = readJson<unknown>(
     join(dataDir, deriveCountryFile(targetsFile, "ber"))
@@ -732,6 +774,20 @@ export function assembleDashboardData(
     : allAlignment;
 
   // Scrub excluded entries from the config sent to the frontend.
+  // Fold per-locale document label overrides in before the exclusion filter, so
+  // both steps hand on one already-localized documentTypes list and no call
+  // site downstream needs to know a locale exists. See src/lib/locale-text.
+  if (countryConfig) {
+    const cfg = countryConfig as Record<string, unknown>;
+    const docTypes = cfg.documentTypes as
+      | Record<string, unknown>[]
+      | undefined;
+    if (docTypes) {
+      const localized = localizeDocumentTypes(docTypes, locale);
+      if (localized !== docTypes) cfg.documentTypes = localized;
+    }
+  }
+
   let finalConfig = countryConfig;
   if (excluded.size && countryConfig) {
     const cfg = countryConfig as Record<string, unknown>;

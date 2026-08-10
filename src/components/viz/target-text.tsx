@@ -52,12 +52,24 @@ export function OriginalLanguageChip({
     | "sourceLabelOriginal"
     | "language"
     | "textOriginalSource"
+    | "textTranslation"
+    | "sourceLabelTranslation"
   >;
   languageCode?: string;
   languageName?: string;
 }) {
   const t = useTranslations("viz.targetText");
   const [open, setOpen] = useState(false);
+
+  // When `src/lib/locale-text` has already swapped this target onto its source
+  // language, `text` IS the original and the English analysis text has moved to
+  // `textTranslation`. Reading the English side from there keeps the panel
+  // honest — otherwise both halves would show the same Spanish string — and
+  // flips what the chip offers: not "see the original" but "see the English
+  // this verdict was computed on".
+  const swapped = Boolean(target.textTranslation);
+  const englishText = target.textTranslation ?? target.text;
+  const englishLabel = target.sourceLabelTranslation ?? target.sourceLabel;
 
   const resolved = (() => {
     if (languageCode && languageName) return { code: languageCode, name: languageName };
@@ -119,11 +131,19 @@ export function OriginalLanguageChip({
           }
         }}
         aria-expanded={open}
-        aria-label={t("chip.ariaLabel", { language: displayName })}
-        title={t("chip.title", { language: displayName })}
+        aria-label={
+          swapped
+            ? t("chip.ariaLabelEnglish")
+            : t("chip.ariaLabel", { language: displayName })
+        }
+        title={
+          swapped
+            ? t("chip.titleEnglish")
+            : t("chip.title", { language: displayName })
+        }
         className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-caption font-semibold hover:bg-amber-100 transition-colors cursor-pointer"
       >
-        {resolved.code}
+        {swapped ? "EN" : resolved.code}
       </span>
       {open && (
         <span
@@ -161,12 +181,12 @@ export function OriginalLanguageChip({
               <p className="text-caption font-medium text-[var(--undp-gray)] mb-0.5">
                 {t("panel.translationEnglish")}
               </p>
-              {target.sourceLabel && (
+              {englishLabel && (
                 <p className="font-medium text-[var(--undp-gray)] mb-1">
-                  {target.sourceLabel}
+                  {englishLabel}
                 </p>
               )}
-              <p className="text-[var(--undp-black)]">{target.text}</p>
+              <p className="text-[var(--undp-black)]">{englishText}</p>
             </div>
           </div>
         </span>

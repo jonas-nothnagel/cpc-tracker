@@ -109,6 +109,18 @@ export interface Target {
    *  translation caveat on the language chip. Undefined behaves as "source". */
   textOriginalSource?: "source" | "machine";
   /**
+   * Set by `src/lib/locale-text` when `text` has been swapped to the target's
+   * source language for a matching locale: holds the English analysis text that
+   * `text` used to carry, so the language chip can still show both sides.
+   * Absent whenever no swap happened (any English-locale request, and every
+   * target with no genuine source-language original).
+   */
+  textTranslation?: string;
+  /** Set alongside `textTranslation`: the English `sourceLabel` before the swap. */
+  sourceLabelTranslation?: string;
+  /** Set alongside `textTranslation`: the language `text` is currently in. */
+  textLocale?: string;
+  /**
    * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
    * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
    */
@@ -339,6 +351,15 @@ export interface AlignmentResult {
   confidence?: AlignmentConfidence;
   /** AI-generated rationale for the classification */
   description: string;
+  /**
+   * Set by `src/lib/locale-text` when a rationale translation pass has run for
+   * this locale but did not cover this pair (by default only `high`, `low` and
+   * `flagged` verdicts are translated). The rationale above is therefore still
+   * English on a translated page, and the UI must say so rather than leave the
+   * reader to guess. Absent when no pass has run, so a fully-English page has
+   * nothing to disclose.
+   */
+  descriptionTranslationPending?: boolean;
   /**
    * Concrete dimension the flag concerns, extracted from `description` by the
    * friction-dimensions step (python/src/extract_friction_dimensions.py).
@@ -925,6 +946,21 @@ export interface DocumentTypeEntry {
   url?: string;
   /** Provenance note for the metadata above (esp. `objective`). */
   sourceNote?: string;
+  /**
+   * Per-locale display overrides, keyed by locale code. Only the fields a
+   * locale actually overrides need to be present; anything absent falls back
+   * to the base (English) field above.
+   *
+   * Exists because the base labels are English ("PEG (Gov't Strategic Plan)")
+   * and read as English next to Spanish content on `/es/{country}` — the
+   * linguistic-consistency point in the Panama focal-group report. Same
+   * provenance rule as the fields they override: a translated label must come
+   * from the document's own title, never a new claim about the document.
+   */
+  labels?: Record<
+    string,
+    Partial<Pick<DocumentTypeEntry, "mediumLabel" | "fullLabel" | "docKind" | "objective">>
+  >;
 }
 
 /**

@@ -191,6 +191,15 @@ function TargetPairBody({
             <p className="text-body text-[var(--undp-black)] leading-relaxed">
               {pair.description}
             </p>
+            {/* Say why this one paragraph is in English on an otherwise
+                translated page. Only ever set when a translation pass has run
+                and did not cover this pair, so a fully-English page shows
+                nothing here. */}
+            {pair.descriptionTranslationPending && (
+              <p className="mt-2 text-caption text-[var(--undp-gray)] italic leading-relaxed">
+                {t("rationaleTranslationPending")}
+              </p>
+            )}
             <p className="mt-3 text-caption text-[var(--undp-gray)] leading-relaxed">
               {t("aiRationaleDisclaimer")}
             </p>

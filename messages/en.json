@@ -545,7 +545,8 @@
           "cancel": "Cancel",
           "anonNote": "Feedback is anonymous and goes only to the project team.",
           "error": "The feedback could not be saved. Please try again later."
-        }
+        },
+        "rationaleTranslationPending": "This explanation has not been translated yet, so it is shown in English."
       },
       "theme": {
         "closeAria": "Close theme view",
@@ -1959,7 +1960,9 @@
       },
       "chip": {
         "ariaLabel": "Show original {language} source text",
-        "title": "Click to see the original {language} source"
+        "title": "Click to see the original {language} source",
+        "ariaLabelEnglish": "Show the English text the analysis used",
+        "titleEnglish": "Show the English text the analysis used"
       },
       "panel": {
         "ariaLabel": "Original {language} source and English translation",

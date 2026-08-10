@@ -545,7 +545,8 @@
           "cancel": "Cancelar",
           "anonNote": "Los comentarios son anónimos y solo los ve el equipo del proyecto.",
           "error": "No se pudo guardar el comentario. Inténtelo de nuevo más tarde."
-        }
+        },
+        "rationaleTranslationPending": "Esta explicación aún no ha sido traducida, por lo que se muestra en inglés."
       },
       "theme": {
         "closeAria": "Cerrar vista de tema",
@@ -1959,7 +1960,9 @@
       },
       "chip": {
         "ariaLabel": "Mostrar el texto fuente original en {language}",
-        "title": "Haga clic para ver la fuente original en {language}"
+        "title": "Haga clic para ver la fuente original en {language}",
+        "ariaLabelEnglish": "Ver el texto en inglés utilizado en el análisis",
+        "titleEnglish": "Ver el texto en inglés utilizado en el análisis"
       },
       "panel": {
         "ariaLabel": "Fuente original en {language} y traducción al inglés",

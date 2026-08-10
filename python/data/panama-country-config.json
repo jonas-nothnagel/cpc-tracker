@@ -7,6 +7,7 @@
   "_secondaryDocTypesComment": "Second-tier policy documents per the country office + regional office (July 2026). Hidden by default in the briefing analytical views (the coherence wheel on every slide, the doc-pairs matrix, section counts) so the four strategic documents (NP, PEG, PENCYT, PNSH) lead every view, but one click away via the document filter / wheel legend, and shown in full in the Explore workbench (section 08). The briefing seeds its hidden set from defaultHiddenDocTypes + secondaryDocTypes; Explore seeds from defaultHiddenDocTypes only, so it still shows these three (ENR stays hidden there). NOTE: the combined briefing default (ENR+HR+PIOTA+PNRF hidden) is not a precomputed synthesis state, so the corpus-themes and sector AI-synthesis prose fall back to full-corpus text with a caveat (or on-demand regeneration) until the synthesis layer is re-run; figures, the wheel, the matrix and doc-pair storylines stay exact regardless.",
   "secondaryDocTypes": ["HR", "PIOTA", "PNRF"],
   "excludedDocTypes": ["CNR"],
+  "_labelsComment": "Per-locale display overrides for documentTypes. Added Aug 2026 for the Panama focal-group report (23 Jul 2026): 'ensure linguistic consistency in the Spanish version by correcting content that is still in English'. On /es/panama the document labels read 'PEG (Gov't Strategic Plan)', 'PNSH (Water Security)' and so on, in English, next to Spanish content. Each Spanish mediumLabel is the acronym plus the instrument's own Spanish short name, taken from the fullLabel already recorded below (which is the document's official title); each Spanish docKind is a translation of the English docKind, not a new claim about the document. Locales with no entry fall back to the base English fields.",
   "_docClassComment": "Machine-readable document classification (docClass) and national-hierarchy level (docTier) consumed by src/lib/doc-taxonomy. Added Aug 2026 in response to the Panama focal-group report (23 Jul 2026), which found that showing documents of different types and hierarchies without differentiation led readers to misread the relationships between them. THE VOCABULARY IS PROJECT-DEFINED (see DOC_CLASSES in src/lib/doc-taxonomy); EACH ASSIGNMENT TRACES TO THE DOCUMENT'S OWN SELF-DESCRIPTION, already recorded in docKind / objective below: NP calls itself a pledge unifying Panama's climate, biodiversity and land-degradation commitments in a single framework, so it is the commitment the other instruments answer to (tier 1). PEG is the whole-of-government Plan Estrategico de Gobierno for the 2025-2029 administration (tier 2). PENCYT and PNSH are national plans each scoped to one theme, science-technology-innovation and water security (sector_plan, tier 3). ENR calls itself a strategy defining measures to reduce deforestation across 33 priority basins (sector_strategy, tier 3). HR states that it operationalises the Nature Pledge, so it is downstream of NP (roadmap, tier 4). PNRF is a national programme with its own delivery target of 50k hectares in five years (programme, tier 4). PIOTA is a territorial and environmental planning instrument for the Panama Canal watershed, i.e. subnational in scope (territorial_instrument, tier 4). BTR is not listed: reporting / tier 5 comes from the reserved-token defaults in doc-taxonomy. CNR is excluded from the product. NOT YET REVIEWED BY THE COUNTRY OFFICE - confirm before this ships.",
   "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel. URLs verified to resolve (HTTP 200/206) on 2026-06-30 against official domains; large PDF bodies were not all text-extracted, so 'match' rests on official domain + exact filename. Notes: NP is also mirrored on transparencia-climatica.miambiente.gob.pa; the PEG url is the Gaceta Oficial No. 30186-b (27 Dec 2024) that publishes the plan; PNSH uses the water-security PDF the CO originally mis-slotted under PNRF (confirmed = Plan Nacional de Seguridad Hidrica, NOT forest restoration). HR (Hoja de Ruta) has no standalone public PDF (it lives inside the Nature Pledge document + the online module), so no url; its year is the roadmap presentation (news-sourced). PNRF has no direct official PDF; the url is MiAMBIENTE's official FlipHTML5 flipbook of the full programme (the Gaceta No. 29294-A adoption decree is also at https://faolex.fao.org/docs/pdf/pan204044.pdf). Objectives for NP/ENR are concise factual summaries from the official MiAMBIENTE platform/launch pages; the PNRF objective is near-verbatim from the MiAMBIENTE press release. CNR is excluded from the product.",
   "documentTypes": [
@@ -19,6 +20,12 @@
       "docKind": "National pledge / unified commitment framework",
       "docClass": "commitment",
       "docTier": 1,
+      "labels": {
+        "es": {
+          "mediumLabel": "NP (Pacto con la Naturaleza)",
+          "docKind": "Compromiso nacional / marco unificado de compromisos"
+        }
+      },
       "published": "November 2025",
       "author": "Government of Panama (MiAMBIENTE)",
       "url": "https://unfccc.int/sites/default/files/2025-11/Pacto%20de%20Panam%C3%A1%20con%20la%20Naturaleza%20%28Nature%20Pledge%29.pdf",
@@ -33,6 +40,12 @@
       "docKind": "Government strategic plan",
       "docClass": "strategic_plan",
       "docTier": 2,
+      "labels": {
+        "es": {
+          "mediumLabel": "PEG (Plan Estratégico de Gobierno)",
+          "docKind": "Plan estratégico de gobierno"
+        }
+      },
       "published": "2025-2029 (published December 2024)",
       "author": "Government of Panama (via Ministerio de Economía y Finanzas)",
       "url": "https://www.mef.gob.pa/wp-content/uploads/2024/12/GacetaNo_30186b_20241227.pdf"
@@ -46,6 +59,12 @@
       "docKind": "National strategic plan (science, technology and innovation)",
       "docClass": "sector_plan",
       "docTier": 3,
+      "labels": {
+        "es": {
+          "mediumLabel": "PENCYT (Ciencia e Innovación)",
+          "docKind": "Plan estratégico nacional (ciencia, tecnología e innovación)"
+        }
+      },
       "published": "2025-2029",
       "author": "SENACYT (Secretaría Nacional de Ciencia, Tecnología e Innovación)",
       "url": "https://www.senacyt.gob.pa/wp-content/uploads/2025/05/PENCYT-2025-2029.pdf"
@@ -59,6 +78,12 @@
       "docKind": "National plan (water security)",
       "docClass": "sector_plan",
       "docTier": 3,
+      "labels": {
+        "es": {
+          "mediumLabel": "PNSH (Seguridad Hídrica)",
+          "docKind": "Plan nacional (seguridad hídrica)"
+        }
+      },
       "published": "2015-2050 (adopted 2016)",
       "author": "Government of Panama (Consejo Nacional del Agua, CONAGUA)",
       "url": "https://www.senacyt.gob.pa/wp-content/uploads/2018/12/3.-Plan-Nacional-de-Seguridad-Hidrica-2015-2050-Agua-para-Todos.pdf"
@@ -72,6 +97,12 @@
       "docKind": "REDD+ strategy",
       "docClass": "sector_strategy",
       "docTier": 3,
+      "labels": {
+        "es": {
+          "mediumLabel": "ENR (Estrategia REDD+)",
+          "docKind": "Estrategia REDD+"
+        }
+      },
       "published": "2022",
       "author": "Ministerio de Ambiente (MiAMBIENTE), with FAO and Green Climate Fund support",
       "url": "https://transparencia-climatica.miambiente.gob.pa/wp-content/uploads/2022/10/Documento-ENREDD.pdf",
@@ -86,6 +117,12 @@
       "docKind": "Government roadmap (operationalises the Nature Pledge)",
       "docClass": "roadmap",
       "docTier": 4,
+      "labels": {
+        "es": {
+          "mediumLabel": "HR (Hoja de Ruta del Pacto)",
+          "docKind": "Hoja de ruta de gobierno (operativiza el Pacto con la Naturaleza)"
+        }
+      },
       "published": "2026",
       "author": "Government of Panama (MiAMBIENTE)"
     },
@@ -98,6 +135,12 @@
       "docKind": "Territorial and environmental planning instrument",
       "docClass": "territorial_instrument",
       "docTier": 4,
+      "labels": {
+        "es": {
+          "mediumLabel": "PIOTA (Cuenca del Canal)",
+          "docKind": "Instrumento de ordenamiento territorial y ambiental"
+        }
+      },
       "published": "2022",
       "author": "Autoridad del Canal de Panamá (Panama Canal watershed)",
       "url": "https://pancanal.com/wp-content/uploads/2022/08/01_Documento-PIOTA.pdf"
@@ -111,6 +154,12 @@
       "docKind": "National programme (forest restoration)",
       "docClass": "programme",
       "docTier": 4,
+      "labels": {
+        "es": {
+          "mediumLabel": "PNRF (Restauración Forestal)",
+          "docKind": "Programa nacional (restauración forestal)"
+        }
+      },
       "published": "2021-2025 (adopted May 2021)",
       "author": "Ministerio de Ambiente (MiAMBIENTE), Dirección Nacional Forestal",
       "url": "https://online.fliphtml5.com/eebm/ofrr/",
