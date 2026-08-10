@@ -127,6 +127,24 @@
       "financing": "Financiación",
       "implementation": "Implementación"
     },
+    "stages": {
+      "policies": {
+        "label": "Lo que dicen las políticas",
+        "caption": "Los compromisos de cada documento y cómo se relacionan entre sí."
+      },
+      "friction": {
+        "label": "Dónde se separan",
+        "caption": "Las parejas que conviene revisar: el origen de la fricción y dónde se concentra."
+      },
+      "delivery": {
+        "label": "Financiamiento y ejecución",
+        "caption": "Qué metas tienen presupuesto detrás y cuáles tienen una acción reportada."
+      },
+      "explore": {
+        "label": "Explorar",
+        "caption": "Todo lo que las secciones anteriores no calculan de antemano. Arme su propia vista."
+      }
+    },
     "lens": {
       "globe": "Biodiversidad",
       "ipcc": "Sectores de mitigación",

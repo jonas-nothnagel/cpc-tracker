@@ -90,6 +90,7 @@ import type { LensId, LensOption } from "./lens";
 import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
 import { docTierSortKey, hasDocTaxonomy } from "@/lib/doc-taxonomy";
+import { resolveStages } from "./nav-stages";
 import {
   buildSectorCoherenceShare,
   buildSectorTensionDensity,
@@ -1873,31 +1874,72 @@ function JumpNav({
   order: SectionId[];
 }) {
   const sectionLabels = useSectionLabels();
+  const t = useTranslations("briefing.stages");
+  const stages = resolveStages(order);
+
+  const chip = (id: SectionId, index: number) => (
+    <li key={id} className="flex items-center">
+      <a
+        href={`#${id}`}
+        aria-current={active === id ? "true" : undefined}
+        className={`px-2.5 py-1 rounded text-data font-medium transition-colors ${
+          active === id
+            ? "bg-[var(--undp-blue)] text-white"
+            : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+        }`}
+      >
+        <span className="text-caption tabular-nums opacity-60 mr-1.5">
+          0{index + 1}
+        </span>
+        {sectionLabels[id]}
+      </a>
+    </li>
+  );
+
+  // Rollback path: with no stages the nav is the flat list it always was.
+  if (!stages) {
+    return (
+      <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
+        <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
+          {order.map((id, i) => chip(id, i))}
+        </ul>
+      </nav>
+    );
+  }
+
+  const activeStage = stages.find((s) => s.sections.includes(active));
+
   return (
-    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
-      <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
-        {order.map((id, i) => {
-          const isActive = active === id;
-          return (
-            <li key={id} className="flex items-center">
-              <a
-                href={`#${id}`}
-                aria-current={isActive ? "true" : undefined}
-                className={`px-2.5 py-1 rounded text-data font-medium transition-colors ${
-                  isActive
-                    ? "bg-[var(--undp-blue)] text-white"
-                    : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
-                }`}
-              >
-                <span className="text-caption tabular-nums opacity-60 mr-1.5">
-                  0{i + 1}
-                </span>
-                {sectionLabels[id]}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
+      <div className="flex items-start gap-x-6 gap-y-2 flex-wrap">
+        {stages.map((stage) => (
+          <div key={`${stage.id}-${stage.firstIndex}`}>
+            <p
+              className={`text-[11px] uppercase tracking-wider font-semibold mb-0.5 px-2.5 transition-colors ${
+                stage === activeStage
+                  ? "text-[var(--undp-black)]"
+                  : "text-[var(--undp-gray)]/70"
+              }`}
+            >
+              {t(`${stage.id}.label`)}
+            </p>
+            <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
+              {stage.sections.map((id) =>
+                chip(id, order.indexOf(id)),
+              )}
+            </ul>
+          </div>
+        ))}
+      </div>
+      {/* One caption, for the stage the reader is currently in. Showing all
+          four at once was the density the focus group was already objecting
+          to; showing the current one answers "what is this group for?" as
+          they arrive in it. */}
+      {activeStage && (
+        <p className="mt-1.5 px-2.5 text-caption text-[var(--undp-gray)]">
+          {t(`${activeStage.id}.caption`)}
+        </p>
+      )}
     </nav>
   );
 }
