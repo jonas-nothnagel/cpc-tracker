@@ -161,19 +161,24 @@
       }
     },
     "targetQuality": {
-      "chipLabel": "{stated} de {total} indicados",
-      "chipAria": "Esta meta indica {stated} de {total} elementos. Abrir para ver el detalle.",
-      "panelAria": "Qué elementos indica esta meta",
-      "panelTitle": "Esta meta indica {stated} de {total} elementos",
-      "notStated": "No se indica en el texto.",
-      "caveat": "Lectura generada por IA de la redacción de la meta, con la frase que la respalda. Describe lo que dice el texto, no qué tan buena es la meta.",
-      "coverageItem": "{count}/{total} {element}",
+      "band": {
+        "full": "Bien definida",
+        "partial": "Parcialmente definida",
+        "broad": "Definida en términos amplios"
+      },
+      "chipScore": "{stated}/{total}",
+      "chipAria": "Calidad de la meta: {verdict}, cumple {stated} de {total} criterios. Abrir para ver el detalle.",
+      "panelAria": "Qué tan bien definida está esta meta",
+      "panelTitle": "¿Qué tan bien definida está esta meta?",
+      "panelSubtitle": "Cumple {stated} de {total} criterios para una meta que se pueda dar seguimiento.",
+      "notMet": "No se indica en la meta.",
+      "caveat": "Evaluación por IA de qué tan completa es la redacción de la meta, citando el texto que respalda cada criterio. Juzga si la meta se puede monitorear, no si la política es acertada o suficientemente ambiciosa.",
       "element": {
-        "action": "Una acción específica",
-        "scope": "Dónde o para quién",
-        "outcome": "El resultado esperado",
-        "measurable": "Un valor medible",
-        "deadline": "Un plazo"
+        "action": "Nombra una acción específica",
+        "scope": "Indica dónde o para quién",
+        "outcome": "Señala el resultado esperado",
+        "measurable": "Incluye un valor medible",
+        "deadline": "Incluye un plazo"
       }
     },
     "lens": {

@@ -161,19 +161,24 @@
       }
     },
     "targetQuality": {
-      "chipLabel": "{stated} of {total} stated",
-      "chipAria": "This target states {stated} of {total} elements. Open for detail.",
-      "panelAria": "Which elements this target states",
-      "panelTitle": "This target states {stated} of {total} elements",
-      "notStated": "Not stated in the text.",
-      "caveat": "AI-generated reading of the target's wording, with the supporting phrase quoted. It describes what the text says, not how good the target is.",
-      "coverageItem": "{count}/{total} {element}",
+      "band": {
+        "full": "Well defined",
+        "partial": "Partly defined",
+        "broad": "Broadly defined"
+      },
+      "chipScore": "{stated}/{total}",
+      "chipAria": "Target quality: {verdict}, meets {stated} of {total} criteria. Open for detail.",
+      "panelAria": "How well defined this target is",
+      "panelTitle": "How well defined is this target?",
+      "panelSubtitle": "Meets {stated} of {total} criteria for a target that can be tracked.",
+      "notMet": "Not stated in the target.",
+      "caveat": "AI assessment of how fully the target is written, quoting the wording behind each criterion. It judges whether the target can be tracked, not whether the policy is right or ambitious enough.",
       "element": {
-        "action": "A specific action",
-        "scope": "Where or for whom",
-        "outcome": "The result expected",
-        "measurable": "A measurable value",
-        "deadline": "A deadline"
+        "action": "Names a specific action",
+        "scope": "Says where or for whom",
+        "outcome": "States the result expected",
+        "measurable": "Includes a measurable value",
+        "deadline": "Includes a deadline"
       }
     },
     "lens": {
