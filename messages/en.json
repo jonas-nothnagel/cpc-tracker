@@ -166,6 +166,7 @@
         "partial": "Partly defined",
         "broad": "Broadly defined"
       },
+      "chipLabel": "How well defined:",
       "chipScore": "{stated}/{total}",
       "chipAria": "Target quality: {verdict}, meets {stated} of {total} criteria. Open for detail.",
       "panelAria": "How well defined this target is",

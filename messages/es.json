@@ -166,6 +166,7 @@
         "partial": "Parcialmente definida",
         "broad": "Definida en términos amplios"
       },
+      "chipLabel": "Qué tan definida:",
       "chipScore": "{stated}/{total}",
       "chipAria": "Calidad de la meta: {verdict}, cumple {stated} de {total} criterios. Abrir para ver el detalle.",
       "panelAria": "Qué tan bien definida está esta meta",

@@ -40,7 +40,7 @@ import {
   OriginalLanguageChip,
   TargetTextWithHighlights,
 } from "@/components/viz/target-text";
-import { DefinitionChip } from "./target-quality";
+import { DefinitionChip, DefinitionSummary } from "./target-quality";
 import { TargetProvenance } from "./targets-access";
 import {
   buildDocTargetHaystacks,
@@ -422,11 +422,23 @@ function TargetRow({
             {target.text}
           </span>
         )}
-        {!open && flags.length > 0 && (
-          <span className="mt-1 block pl-4 text-caption text-[var(--undp-gray)]">
-            {flags.join(" · ")}
-          </span>
-        )}
+        {/* The quality verdict rides on the collapsed row, not just inside it:
+            a reader scanning a 206-target list should see which targets are
+            written tightly enough to track without opening each one. It
+            replaces the quantitative / time-bound badges rather than sitting
+            beside them, because those two ARE criteria in the score. */}
+        {!open &&
+          (target.definition?.elements ? (
+            <span className="mt-1 block pl-4">
+              <DefinitionSummary target={target} />
+            </span>
+          ) : (
+            flags.length > 0 && (
+              <span className="mt-1 block pl-4 text-caption text-[var(--undp-gray)]">
+                {flags.join(" · ")}
+              </span>
+            )
+          ))}
       </button>
 
       {open && (

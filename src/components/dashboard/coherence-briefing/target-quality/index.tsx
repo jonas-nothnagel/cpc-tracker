@@ -81,6 +81,60 @@ export function definitionBand(
 }
 
 /**
+ * The face both variants share: what this is, the verdict, the score, the dots.
+ *
+ * The leading label is not decoration. Without it the chip read "Partly defined
+ * 3/5", which tells a reader the answer to a question nobody asked them — the
+ * subject has to be on the face, because the panel that explains it only opens
+ * on hover.
+ */
+function DefinitionFace({
+  elements,
+}: {
+  elements: NonNullable<Target["definition"]>["elements"];
+}) {
+  const t = useTranslations("briefing.targetQuality");
+  const total = TARGET_DEFINITION_ELEMENTS.length;
+  const stated = TARGET_DEFINITION_ELEMENTS.filter((e) => elements[e]).length;
+  return (
+    <>
+      <span className="text-[var(--undp-gray)]">{t("chipLabel")}</span>
+      <span className="font-medium text-[var(--undp-black)]">
+        {t(`band.${definitionBand(stated)}` as "band.full")}
+      </span>
+      <span className="tabular-nums">{t("chipScore", { stated, total })}</span>
+      {/* Dots track WHICH criteria are met, in the fixed criterion order, so
+          their pattern matches the breakdown in the panel. Filling the first N
+          would show the right count and the wrong criteria. */}
+      <span className="inline-flex items-center gap-[3px]">
+        {TARGET_DEFINITION_ELEMENTS.map((element) => (
+          <CriterionDot key={element} met={Boolean(elements[element])} />
+        ))}
+      </span>
+    </>
+  );
+}
+
+/**
+ * Read-only variant for a collapsed row, where the interactive chip cannot go:
+ * the row itself is a <button>, and a button inside a button is invalid. Same
+ * face, no popover — expanding the row reveals the full breakdown.
+ */
+export function DefinitionSummary({
+  target,
+}: {
+  target: Pick<Target, "definition">;
+}) {
+  const elements = target.definition?.elements;
+  if (!elements) return null;
+  return (
+    <span className="inline-flex items-center gap-1.5 text-caption text-[var(--undp-gray)]">
+      <DefinitionFace elements={elements} />
+    </span>
+  );
+}
+
+/**
  * The compact chip: a verdict, the score behind it, and five dots. Expands on
  * hover, focus, or tap to the per-criterion breakdown with quoted evidence.
  *
@@ -114,17 +168,9 @@ export function DefinitionChip({ target }: { target: Pick<Target, "definition"> 
         onBlur={() => setOpen(false)}
         aria-expanded={open}
         aria-label={t("chipAria", { verdict: t(`band.${band}` as "band.full"), stated, total })}
-        className="inline-flex items-center gap-1.5 text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] transition-colors"
+        className="inline-flex items-center gap-1.5 text-caption text-[var(--undp-gray)] underline decoration-dotted decoration-from-font underline-offset-4 hover:text-[var(--undp-black)] transition-colors"
       >
-        <span className="font-medium text-[var(--undp-black)]">
-          {t(`band.${band}` as "band.full")}
-        </span>
-        <span className="tabular-nums">{t("chipScore", { stated, total })}</span>
-        <span className="inline-flex items-center gap-[3px]">
-          {TARGET_DEFINITION_ELEMENTS.map((element) => (
-            <CriterionDot key={element} met={Boolean(definition.elements[element])} />
-          ))}
-        </span>
+        <DefinitionFace elements={definition.elements} />
       </button>
 
       {open && (
