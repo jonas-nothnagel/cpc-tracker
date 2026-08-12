@@ -39,7 +39,8 @@
       "labels": {
         "es": {
           "mediumLabel": "NP (Pacto con la Naturaleza)",
-          "docKind": "Compromiso nacional / marco unificado de compromisos"
+          "docKind": "Compromiso nacional / marco unificado de compromisos",
+          "objective": "Unifica los compromisos nacionales de Panamá en materia de clima, biodiversidad y degradación de la tierra (las tres Convenciones de Río) en un solo marco orientado a 2035."
         }
       },
       "published": "November 2025",
@@ -116,7 +117,8 @@
       "labels": {
         "es": {
           "mediumLabel": "ENR (Estrategia REDD+)",
-          "docKind": "Estrategia REDD+"
+          "docKind": "Estrategia REDD+",
+          "objective": "Define medidas para reducir la deforestación y la degradación forestal, implementadas en 33 cuencas hidrográficas prioritarias."
         }
       },
       "published": "2022",
@@ -173,7 +175,8 @@
       "labels": {
         "es": {
           "mediumLabel": "PNRF (Restauración Forestal)",
-          "docKind": "Programa nacional (restauración forestal)"
+          "docKind": "Programa nacional (restauración forestal)",
+          "objective": "Reforestar en cinco años más de 50 mil hectáreas, con énfasis en la protección y conservación de cuencas prioritarias y productoras de agua."
         }
       },
       "published": "2021-2025 (adopted May 2021)",

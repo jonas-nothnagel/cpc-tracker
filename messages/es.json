@@ -1083,6 +1083,18 @@
         "noFilterMatches": "Ninguna meta coincide con los filtros seleccionados."
       }
     },
+    "browseTargets": {
+      "lead": "Explore los compromisos detrás de este análisis: {count, number} metas de política, más aquello con lo que se comparan.",
+      "chipAria": "Ver {count, plural, one {# meta} other {# metas}} de {name}",
+      "reportedAction": "Acciones reportadas (BTR)",
+      "budgetLine": "Partidas presupuestarias (BER)"
+    },
+    "provenance": {
+      "asWritten": "Tal como aparece en el documento fuente",
+      "citation": "Reportado en {ref}",
+      "section": "Sección {name}",
+      "openDocument": "Abrir el documento"
+    },
     "centerLegend": {
       "variant": {
         "wheel": "Rueda",

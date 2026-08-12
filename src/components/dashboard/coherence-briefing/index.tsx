@@ -91,6 +91,7 @@ import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
 import { docTierSortKey, hasDocTaxonomy } from "@/lib/doc-taxonomy";
 import { resolveStages } from "./nav-stages";
+import { TargetsBrowseBar } from "./targets-access";
 import {
   buildSectorCoherenceShare,
   buildSectorTensionDensity,
@@ -1078,6 +1079,43 @@ export function CoherenceBriefing({
     return counts;
   }, [targets]);
 
+  /** EVERYTHING the analysis touches, including the BTR reported-action and BER
+   *  budget-line stand-ins that the analytical views deliberately exclude.
+   *
+   *  Feeds the browse bar and the targets drawer ONLY. This widens what a reader
+   *  can open and read; it never changes what the briefing compares, which stays
+   *  on the filtered `targets`. Without this the BTR chip would open an empty
+   *  drawer, because `targets` has both stand-in kinds filtered out upstream. */
+  const browsableTargets = useMemo<Target[]>(() => {
+    const byId = new Map<string, Target>();
+    for (const target of explorerData) byId.set(target.id, target);
+    // The BER stand-ins are built in this component from `berData` rather than
+    // arriving in the payload's target list, so they have to be folded in here.
+    for (const target of budgetPairTargets.values()) byId.set(target.id, target);
+    return [...byId.values()];
+  }, [explorerData, budgetPairTargets]);
+
+  const browsableCountByDoc = useMemo(() => {
+    const counts = new Map<PolicyDocumentType, number>();
+    for (const target of browsableTargets) {
+      counts.set(
+        target.sourceDocument,
+        (counts.get(target.sourceDocument) ?? 0) + 1,
+      );
+    }
+    return counts;
+  }, [browsableTargets]);
+
+  const browsableDocs = useMemo<PolicyDocumentType[]>(() => {
+    const extra = new Set<PolicyDocumentType>();
+    for (const target of browsableTargets) {
+      if (!allDocs.includes(target.sourceDocument)) extra.add(target.sourceDocument);
+    }
+    // allDocs first (already tier-ordered), then whatever only the wider corpus
+    // has; the bar re-sorts and puts the stand-ins last regardless.
+    return [...allDocs, ...extra];
+  }, [allDocs, browsableTargets]);
+
   // ── Active section + focus override (driven by IntersectionObserver) ──
   const [activeSection, setActiveSection] = useState<SectionId>(
     DIRECTION_SECTION_ID,
@@ -1525,6 +1563,15 @@ export function CoherenceBriefing({
           targetCountByDoc={targetCountByDoc}
           onViewTargets={openDocTargets}
         />
+        {/* The front door to the commitments themselves. Every other route into
+            the targets drawer is a hover or an expand, which is why readers
+            reported they could not get at the targets in totality. */}
+        <TargetsBrowseBar
+          allDocs={browsableDocs}
+          countryConfig={countryConfig}
+          targetCountByDoc={browsableCountByDoc}
+          onViewTargets={openDocTargets}
+        />
         {storylineCaveat && (
           <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
             {storylineCaveat}
@@ -1561,6 +1608,7 @@ export function CoherenceBriefing({
                 alignment={policyAlignment}
                 targets={visibleTargets}
                 allDocs={allDocs}
+                onViewTargets={openDocTargets}
                 onOpenStoryline={openThemeDrawer}
                 onOpenPair={openPairFromFaultLine}
                 onHighlightPair={setPrimerHighlight}
@@ -1816,7 +1864,7 @@ export function CoherenceBriefing({
         sectorSynthesesIndex={sectorSynthesesIndex}
         totalFlagged={frictionTotals.total}
         totalDocCount={documentCount}
-        allTargets={targets}
+        allTargets={browsableTargets}
         hiddenDocs={hiddenDocs}
       />
       {/* Expand the active centerpiece to a large overlay so relationships are

@@ -1083,6 +1083,18 @@
         "noFilterMatches": "No targets match the selected filters."
       }
     },
+    "browseTargets": {
+      "lead": "Browse the commitments behind this analysis — {count, number} policy targets, plus what they are compared against.",
+      "chipAria": "Browse the {count, plural, one {# target} other {# targets}} in {name}",
+      "reportedAction": "Reported actions (BTR)",
+      "budgetLine": "Budget lines (BER)"
+    },
+    "provenance": {
+      "asWritten": "As written in the source document",
+      "citation": "Reported in {ref}",
+      "section": "Section {name}",
+      "openDocument": "Open the document"
+    },
     "centerLegend": {
       "variant": {
         "wheel": "Wheel",

@@ -86,6 +86,7 @@ export function DirectionSection({
   alignment,
   targets,
   allDocs,
+  onViewTargets,
   onOpenStoryline,
   onOpenPair,
   onHighlightPair,
@@ -106,6 +107,8 @@ export function DirectionSection({
    *  view: the coverage panel reports what was analysed at all, not what is
    *  currently on screen. */
   allDocs: string[];
+  /** Opens a document's targets from the coverage panel. */
+  onViewTargets?: (doc: string) => void;
   onOpenStoryline: (s: CorpusStoryline) => void;
   onOpenPair: (line: FaultLine) => void;
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
@@ -173,7 +176,11 @@ export function DirectionSection({
           />
           {/* Sits on the first slide because that is where a reader decides
               whether this tool has anything for them. See ./coverage.tsx. */}
-          <CoveragePanel allDocs={allDocs} countryConfig={countryConfig} />
+          <CoveragePanel
+            allDocs={allDocs}
+            countryConfig={countryConfig}
+            onViewTargets={onViewTargets}
+          />
         </>
       }
     />

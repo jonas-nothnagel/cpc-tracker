@@ -67,11 +67,15 @@ export function readCoverageGaps(
 export function CoveragePanel({
   allDocs,
   countryConfig,
+  onViewTargets,
 }: {
   /** Every document in the corpus, including any hidden from the current view:
    *  this panel answers "what was analysed at all", not "what is on screen". */
   allDocs: PolicyDocumentType[];
   countryConfig: CountryConfig | null;
+  /** Opens a document's targets. Optional so the panel still renders (as plain
+   *  text) anywhere that cannot host the drawer. */
+  onViewTargets?: (doc: PolicyDocumentType) => void;
 }) {
   const t = useTranslations("briefing.coverage");
   const [open, setOpen] = useState(false);
@@ -113,10 +117,26 @@ export function CoveragePanel({
                         : t(`tier.${group.tier}` as "tier.1")}
                     </p>
                   )}
-                  <p className="text-caption text-[var(--undp-black)] leading-snug">
-                    {group.docIds
-                      .map((id) => getDocMediumLabel(countryConfig, id))
-                      .join(", ")}
+                  {/* Each instrument opens its own targets. This panel already
+                      lists every document, so it is the second obvious way in
+                      after the browse bar at the top of the page. */}
+                  <p className="text-caption leading-snug text-[var(--undp-black)]">
+                    {group.docIds.map((id, i) => (
+                      <span key={id}>
+                        {i > 0 && ", "}
+                        {onViewTargets ? (
+                          <button
+                            type="button"
+                            onClick={() => onViewTargets(id)}
+                            className="underline decoration-dotted underline-offset-2 hover:text-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)]"
+                          >
+                            {getDocMediumLabel(countryConfig, id)}
+                          </button>
+                        ) : (
+                          getDocMediumLabel(countryConfig, id)
+                        )}
+                      </span>
+                    ))}
                   </p>
                 </li>
               ))}

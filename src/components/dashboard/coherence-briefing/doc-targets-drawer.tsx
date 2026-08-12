@@ -27,13 +27,21 @@ import {
 } from "react";
 import { useTranslations } from "next-intl";
 import { DrawerHeader } from "@/components/ui/drawer-shell";
-import { getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
+import {
+  getDocColor,
+  getDocFullLabel,
+  getDocMediumLabel,
+  getDocMeta,
+} from "@/lib/utils";
+import { getDocClass } from "@/lib/doc-taxonomy";
+import { DocMetaCard } from "./doc-meta-card";
 import {
   ActivitiesActions,
   OriginalLanguageChip,
   TargetTextWithHighlights,
 } from "@/components/viz/target-text";
 import { DefinitionChip } from "./target-quality";
+import { TargetProvenance } from "./targets-access";
 import {
   buildDocTargetHaystacks,
   countDocTargetFilters,
@@ -227,6 +235,17 @@ export function DocTargetsDrawer({
           {" · "}
           {t("subtitle", { count: docTargets.length })}
         </p>
+        {/* The document's own reference card — kind, publisher, date, and the
+            link to the official copy — so a reader can place the instrument and
+            open it without going back out to the wheel legend to find it. */}
+        <div className="mt-2.5">
+          <DocMetaCard
+            meta={getDocMeta(countryConfig, doc)}
+            color={getDocColor(countryConfig, doc)}
+            docClass={getDocClass(countryConfig, doc)}
+            hideDot
+          />
+        </div>
       </DrawerHeader>
 
       <div className="px-6 py-5">
@@ -273,6 +292,7 @@ export function DocTargetsDrawer({
                 <TargetRow
                   key={target.id}
                   target={target}
+                  countryConfig={countryConfig}
                   flaggedCount={flaggedCountByTargetId.get(target.id) ?? 0}
                   onOpenProfile={() => onOpenTargetProfile(target.id)}
                 />
@@ -336,10 +356,12 @@ function StatusLine({
 
 function TargetRow({
   target,
+  countryConfig,
   flaggedCount,
   onOpenProfile,
 }: {
   target: Target;
+  countryConfig: CountryConfig | null;
   flaggedCount: number;
   onOpenProfile: () => void;
 }) {
@@ -441,17 +463,10 @@ function TargetRow({
             </div>
           )}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-0.5">
-            {source?.url && (
-              <a
-                href={source.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-caption font-medium text-[var(--undp-blue)] hover:underline"
-              >
-                {t("openSource")}
-                <span aria-hidden="true"> ↗</span>
-              </a>
-            )}
+            {/* Resolved rather than `source.url` raw: most of Panama's spans
+                point at UNDP SharePoint, which is a sign-in wall for the people
+                this is built for. See targets-access/public-source-url.ts. */}
+            <TargetProvenance target={target} countryConfig={countryConfig} />
             {flaggedCount > 0 && (
               <button
                 type="button"

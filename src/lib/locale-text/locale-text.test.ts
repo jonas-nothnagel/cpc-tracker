@@ -69,7 +69,10 @@ describe("localizeTargetText", () => {
   });
 
   it("leaves the label alone when no source-language label was curated", () => {
-    const { sourceLabelOriginal: _drop, ...noLabel } = PANAMA_TARGET;
+    const noLabel: LocalizableTarget = {
+      ...PANAMA_TARGET,
+      sourceLabelOriginal: undefined,
+    };
     const out = localizeTargetText(noLabel, "es");
     expect(out.sourceLabel).toBe("Cross-cutting principle 1");
     expect(out.sourceLabelTranslation).toBeUndefined();
