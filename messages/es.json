@@ -145,21 +145,6 @@
         "caption": "Todo lo que las secciones anteriores no calculan de antemano. Arme su propia vista."
       }
     },
-    "coverage": {
-      "show": "Qué cubre este análisis y qué no ({count} documentos)",
-      "hide": "Ocultar cobertura",
-      "includedHeading": "En este análisis",
-      "notCoveredHeading": "No cubierto",
-      "gapsNote": "Los compromisos de estas áreas no aparecen en ninguna cifra de esta página. Incorporar un instrumento suma sus metas a la comparación.",
-      "tierOther": "Sin clasificar",
-      "tier": {
-        "1": "Compromiso nacional",
-        "2": "Plan de gobierno",
-        "3": "Planes y estrategias sectoriales",
-        "4": "Instrumentos operativos",
-        "5": "Reportes"
-      }
-    },
     "targetQuality": {
       "band": {
         "full": "Bien definida",

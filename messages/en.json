@@ -145,21 +145,6 @@
         "caption": "Everything the sections above do not pre-compute. Build your own view."
       }
     },
-    "coverage": {
-      "show": "What this analysis covers, and what it does not ({count} documents)",
-      "hide": "Hide coverage",
-      "includedHeading": "In this analysis",
-      "notCoveredHeading": "Not covered",
-      "gapsNote": "Commitments from these areas are absent from every figure on this page. Adding an instrument brings its targets into the comparison.",
-      "tierOther": "Not classified",
-      "tier": {
-        "1": "National commitment",
-        "2": "Government-wide plan",
-        "3": "Sector plans and strategies",
-        "4": "Operational instruments",
-        "5": "Reporting"
-      }
-    },
     "targetQuality": {
       "band": {
         "full": "Well defined",

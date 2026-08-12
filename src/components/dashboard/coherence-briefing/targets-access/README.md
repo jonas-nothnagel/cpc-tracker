@@ -9,8 +9,7 @@ REDD+ strategy). Every route into it was a hover or an expand: the wheel
 legend's hover card, the collapsed inspect-and-adjust panel, the Doc-in-Focus
 title popover. Nothing on the page said the word "targets" until you had already
 gone looking. `TargetsBrowseBar` is a visible, always-on row of documents and
-counts, above the fold, and every chip opens that same drawer. The coverage
-panel's instrument names became buttons into it too.
+counts, above the fold, and every chip opens that same drawer.
 
 **Getting to the source.** The drawer already showed a labelled verbatim quote
 and a section line. What was broken was the link beside them: it rendered
@@ -61,7 +60,7 @@ find your way around, which is the state that prompted this.
    ```
 
 2. Find and delete the touch points (a mount in `index.tsx`, the link swap and
-   header card in `doc-targets-drawer.tsx`, the buttons in `sections/coverage.tsx`):
+   header card in `doc-targets-drawer.tsx`):
 
    ```bash
    grep -rn "targets-access\|TargetsBrowseBar\|TargetProvenance\|publicSourceUrl" src/
@@ -77,6 +76,6 @@ find your way around, which is the state that prompted this.
 
    Note that this reinstates the SharePoint problem for Panama.
 
-4. Drop `browsableDocs` / `browsableCountByDoc` from `index.tsx`, the
-   `onViewTargets` prop from `CoveragePanel` and `DirectionSection`, and the
+4. Drop `browsableDocs` / `browsableCountByDoc` / `browsableTargets` from
+   `index.tsx` (restoring `allTargets={targets}`), and the
    `briefing.browseTargets` / `briefing.provenance` message blocks.

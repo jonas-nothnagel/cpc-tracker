@@ -831,13 +831,6 @@ export function assembleDashboardData(
       const localized = localizeLabelled(docTypes, locale);
       if (localized !== docTypes) cfg.documentTypes = localized;
     }
-    // Coverage-gap notes are country-specific sourced prose declared in the
-    // same config, so they carry `labels` and fold the same way.
-    const gaps = cfg.coverageGaps as Record<string, unknown>[] | undefined;
-    if (Array.isArray(gaps)) {
-      const localized = localizeLabelled(gaps, locale);
-      if (localized !== gaps) cfg.coverageGaps = localized;
-    }
   }
 
   let finalConfig = countryConfig;

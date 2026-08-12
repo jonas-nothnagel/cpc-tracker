@@ -49,13 +49,15 @@ const REGIONS = [
       ),
   },
   {
-    ws: "WS5",
-    color: "#d97706",
-    label: "What the corpus does not cover",
-    find: () =>
-      [...document.querySelectorAll("section#direction button")].find((b) =>
-        /what this analysis covers|qué cubre/i.test(b.textContent ?? ""),
-      ),
+    ws: "Targets",
+    color: "#0f766e",
+    label: "Front door: every document and its target count",
+    find: () => {
+      const p = [...document.querySelectorAll("p")].find((x) =>
+        /Browse the commitments|Explore los compromisos/.test(x.textContent ?? ""),
+      );
+      return p ? p.parentElement : null;
+    },
   },
 ];
 
