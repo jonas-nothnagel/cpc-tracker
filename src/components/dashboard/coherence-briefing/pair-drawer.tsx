@@ -35,6 +35,7 @@ import { DrawerHeader } from "@/components/ui/drawer-shell";
 import { isContradiction } from "@/types";
 import { FeedbackControl } from "./feedback-control";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
+import { DefinitionChip } from "./target-quality";
 import type {
   AlignmentConfidence,
   AlignmentLevel,
@@ -191,6 +192,15 @@ function TargetPairBody({
             <p className="text-body text-[var(--undp-black)] leading-relaxed">
               {pair.description}
             </p>
+            {/* Say why this one paragraph is in English on an otherwise
+                translated page. Only ever set when a translation pass has run
+                and did not cover this pair, so a fully-English page shows
+                nothing here. */}
+            {pair.descriptionTranslationPending && (
+              <p className="mt-2 text-caption text-[var(--undp-gray)] italic leading-relaxed">
+                {t("rationaleTranslationPending")}
+              </p>
+            )}
             <p className="mt-3 text-caption text-[var(--undp-gray)] leading-relaxed">
               {t("aiRationaleDisclaimer")}
             </p>
@@ -280,15 +290,25 @@ function TargetCard({
       <p className="text-body text-[var(--undp-black)] leading-relaxed">
         {target.text}
       </p>
-      {(target.isQuantitative || target.isTimeBound) && (
-        <p className="mt-2 text-caption font-medium text-[var(--undp-gray)]">
-          {[
-            target.isQuantitative ? t("badge.quantitative") : null,
-            target.isTimeBound ? t("badge.timeBound") : null,
-          ]
-            .filter(Boolean)
-            .join(" · ")}
-        </p>
+      {/* The elements chip already reports measurable and deadline among its
+          five, so it replaces the two badges rather than sitting beside them.
+          Stand-ins (BTR / BER) and countries with no target_quality.json carry
+          no `definition`, so they keep the badges they have always had. */}
+      {target.definition?.elements ? (
+        <span className="mt-2 block">
+          <DefinitionChip target={target} />
+        </span>
+      ) : (
+        (target.isQuantitative || target.isTimeBound) && (
+          <p className="mt-2 text-caption font-medium text-[var(--undp-gray)]">
+            {[
+              target.isQuantitative ? t("badge.quantitative") : null,
+              target.isTimeBound ? t("badge.timeBound") : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+        )
       )}
       <p className="mt-2 text-caption text-[var(--undp-gray)]">
         {t("sourceLabel", { name: docFull })}

@@ -17,6 +17,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { TourButton } from "../tour/tour-button";
 import {
   type CoverageConcentrationStat,
@@ -121,6 +122,7 @@ export function SectorsSection({
       id={SECTORS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         mergedRows.length > 0 ? (
           <TourButton tourId="sectors" scopeId={SECTORS_SECTION_ID} />

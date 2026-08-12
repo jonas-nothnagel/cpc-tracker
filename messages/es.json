@@ -127,6 +127,46 @@
       "financing": "Financiación",
       "implementation": "Implementación"
     },
+    "stages": {
+      "policies": {
+        "label": "Lo que dicen las políticas",
+        "caption": "Los compromisos de cada documento y cómo se relacionan entre sí."
+      },
+      "friction": {
+        "label": "Dónde se separan",
+        "caption": "Las parejas que conviene revisar: el origen de la fricción y dónde se concentra."
+      },
+      "delivery": {
+        "label": "Financiamiento y ejecución",
+        "caption": "Qué metas tienen presupuesto detrás y cuáles tienen una acción reportada."
+      },
+      "explore": {
+        "label": "Explorar",
+        "caption": "Todo lo que las secciones anteriores no calculan de antemano. Arme su propia vista."
+      }
+    },
+    "targetQuality": {
+      "band": {
+        "full": "Bien definida",
+        "partial": "Parcialmente definida",
+        "broad": "Definida en términos amplios"
+      },
+      "chipLabel": "Qué tan definida:",
+      "chipScore": "{stated}/{total}",
+      "chipAria": "Calidad de la meta: {verdict}, cumple {stated} de {total} criterios. Abrir para ver el detalle.",
+      "panelAria": "Qué tan bien definida está esta meta",
+      "panelTitle": "¿Qué tan bien definida está esta meta?",
+      "panelSubtitle": "Cumple {stated} de {total} criterios para una meta que se pueda dar seguimiento.",
+      "notMet": "No se indica en la meta.",
+      "caveat": "Evaluación por IA de qué tan completa es la redacción de la meta, citando el texto que respalda cada criterio. Juzga si la meta se puede monitorear, no si la política es acertada o suficientemente ambiciosa.",
+      "element": {
+        "action": "Nombra una acción específica",
+        "scope": "Indica dónde o para quién",
+        "outcome": "Señala el resultado esperado",
+        "measurable": "Incluye un valor medible",
+        "deadline": "Incluye un plazo"
+      }
+    },
     "lens": {
       "globe": "Biodiversidad",
       "ipcc": "Sectores de mitigación",
@@ -527,7 +567,8 @@
           "cancel": "Cancelar",
           "anonNote": "Los comentarios son anónimos y solo los ve el equipo del proyecto.",
           "error": "No se pudo guardar el comentario. Inténtelo de nuevo más tarde."
-        }
+        },
+        "rationaleTranslationPending": "Esta explicación aún no ha sido traducida, por lo que se muestra en inglés."
       },
       "theme": {
         "closeAria": "Cerrar vista de tema",
@@ -627,7 +668,8 @@
         "legend": "{count, plural, one {1 meta concentra} other {# metas concentran}} el {pct, number}% de los pares posiblemente desalineados. Cada segmento es una meta; haga clic para abrirla."
       },
       "showAll": "Mostrar todos ({count, number})",
-      "showFewer": "Mostrar menos"
+      "showFewer": "Mostrar menos",
+      "reading": "La barra muestra qué tan concentradas están las <potentialMisalignment>posibles desalineaciones</potentialMisalignment>. La lista nombra las <target>metas</target> que más se repiten."
     },
     "sectors": {
       "noTaxonomy": "No hay taxonomía sectorial disponible para este país.",
@@ -682,7 +724,8 @@
       "flagAriaValue": "{pct, number}% de las relaciones revisadas son una posible desalineación",
       "flagAriaNone": "sin relaciones revisadas bajo esta lente",
       "primaryCount": "{count, number} primarios",
-      "hideUnclassified": "Ocultar los {count, number} objetivos sin tema claro"
+      "hideUnclassified": "Ocultar los {count, number} objetivos sin tema claro",
+      "reading": "Cada <target>meta</target> cuenta una vez, bajo su <primaryTheme>tema principal</primaryTheme>. Cada proporción compara un sector con sus propias parejas."
     },
     "docPairs": {
       "empty": "Aún no hay síntesis de pares de documentos disponible. Ejecute el paso de síntesis para surgir los pares aquí.",
@@ -700,7 +743,8 @@
       "countAligned": "{count, number} alineados",
       "countFlagged": "{count, number} posiblemente desalineados",
       "showAll": "Mostrar las {count, number} combinaciones",
-      "showFewer": "Mostrar menos"
+      "showFewer": "Mostrar menos",
+      "reading": "Cada celda es una <pair>pareja</pair> de documentos. Más oscuro significa que más de sus parejas son una <potentialMisalignment>posible desalineación</potentialMisalignment>."
     },
     "frictionTypes": {
       "emptyHeadline": "Aún no hay posible desalineación que caracterizar.",
@@ -714,7 +758,8 @@
       "body": {
         "mixed": "{total, number} pares posiblemente desalineados se reparten entre los tres tipos. Pulse cualquier segmento para ver cómo se desglosan esos pares.",
         "dominant": "De {total, number} pares posiblemente desalineados, {label} concentra el {pct}%. Pulse cualquier segmento para ver cómo se desglosan esos pares por documento, tema y meta."
-      }
+      },
+      "reading": "Las mismas <pair>parejas</pair>, ordenadas según el origen de la fricción: los objetivos, los recursos o la ejecución."
     },
     "docFocus": {
       "switcherAriaLabel": "Elija un documento para enfocar",
@@ -742,7 +787,8 @@
       "body": "{label} convive con {peers, plural, one {1 otro documento} other {# otros documentos}}. {aligned, number} de sus pares evaluados alcanzan una alineación fuerte; {flagged, number} muestran posible desalineación.",
       "showAll": "Mostrar todos ({count, number})",
       "showFewer": "Mostrar menos",
-      "dominantMechanism": "La mayor parte de la posible desalineación de {label} corresponde a {mechanism}; ver el desglose."
+      "dominantMechanism": "La mayor parte de la posible desalineación de {label} corresponde a {mechanism}; ver el desglose.",
+      "reading": "Un documento a la vez: sus <pair>parejas</pair> con los demás, y cuáles son una <potentialMisalignment>posible desalineación</potentialMisalignment>."
     },
     "direction": {
       "docPhrase": "{count, plural, one {1 documento} other {# documentos}}",
@@ -776,7 +822,8 @@
         "alignsTop": "{count, plural, =0 {Temas coherentes} one {Tema coherente principal} other {Los # temas coherentes principales}}",
         "reviewTop": "{count, plural, =0 {Temas con posible desalineación} one {Tema principal con posible desalineación} other {Los # temas principales con posible desalineación}}",
         "emptyAligns": "No se identificaron temas coherentes entre documentos para la selección actual."
-      }
+      },
+      "reading": "Cada cifra aquí es una <pair>pareja de metas</pair> de dos documentos distintos, no un conteo de documentos."
     },
     "emptyState": {
       "allDocsHidden": "Todos los documentos están ocultos. Añada al menos un documento arriba para ver el informe de coherencia."
@@ -872,7 +919,8 @@
         "info": "GLOBE es la taxonomía global del gasto en biodiversidad de BIOFIN, la Iniciativa de Financiamiento de la Biodiversidad del PNUD (edición 2024). Agrupa el gasto según la función de biodiversidad que apoya.",
         "aiCaption": "Las categorías son asignadas por la IA del Tracker a partir de la descripción de cada programa; no son la clasificación del equipo nacional de BIOFIN. Cada programa se cuenta una sola vez, bajo su categoría principal. Estimado por IA e indicativo.",
         "noSpendCategories": "{count, plural, one {# categoría} other {# categorías}} sin gasto clasificado"
-      }
+      },
+      "reading": "Un punto por <target>meta</target>, sombreado según el gasto alineado relativo. El sombreado muestra volumen, nunca si el financiamiento es suficiente."
     },
     "financingCenter": {
       "header": {
@@ -949,7 +997,8 @@
         "adopted": "Adoptada",
         "ongoing": "En curso",
         "implemented": "Implementada"
-      }
+      },
+      "reading": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> reporta una acción que la apoya, no que la meta se haya cumplido."
     },
     "implementationCenter": {
       "header": {
@@ -1024,6 +1073,18 @@
         "noMatches": "Ninguna meta de este documento coincide con esa búsqueda.",
         "noFilterMatches": "Ninguna meta coincide con los filtros seleccionados."
       }
+    },
+    "browseTargets": {
+      "lead": "Explore los compromisos detrás de este análisis: {count, number} metas de política, más aquello con lo que se comparan.",
+      "chipAria": "Ver {count, plural, one {# meta} other {# metas}} de {name}",
+      "reportedAction": "Acciones reportadas (BTR)",
+      "budgetLine": "Partidas presupuestarias (BER)"
+    },
+    "provenance": {
+      "asWritten": "Tal como aparece en el documento fuente",
+      "citation": "Reportado en {ref}",
+      "section": "Sección {name}",
+      "openDocument": "Abrir el documento"
     },
     "centerLegend": {
       "variant": {
@@ -1506,7 +1567,26 @@
         "medium": "Otro",
         "full": "Otro documento de política"
       }
-    }
+    },
+    "docClass": {
+      "commitment": "Compromiso nacional",
+      "strategic_plan": "Plan estratégico de gobierno",
+      "sector_plan": "Plan nacional sectorial",
+      "sector_strategy": "Estrategia sectorial",
+      "roadmap": "Hoja de ruta de implementación",
+      "programme": "Programa nacional",
+      "territorial_instrument": "Instrumento de ordenamiento territorial",
+      "reporting": "Reporte internacional"
+    },
+    "docTier": {
+      "1": "Compromiso nacional",
+      "2": "Plan de gobierno",
+      "3": "Planes y estrategias sectoriales",
+      "4": "Instrumentos operativos",
+      "5": "Reportes",
+      "other": "Sin clasificar"
+    },
+    "docTierHint": "Lugar que ocupa este documento en la jerarquía nacional"
   },
   "explorer": {
     "heading": {
@@ -1914,7 +1994,9 @@
       },
       "chip": {
         "ariaLabel": "Mostrar el texto fuente original en {language}",
-        "title": "Haga clic para ver la fuente original en {language}"
+        "title": "Haga clic para ver la fuente original en {language}",
+        "ariaLabelEnglish": "Ver el texto en inglés utilizado en el análisis",
+        "titleEnglish": "Ver el texto en inglés utilizado en el análisis"
       },
       "panel": {
         "ariaLabel": "Fuente original en {language} y traducción al inglés",
@@ -2422,6 +2504,48 @@
           "description": "Al menos tres documentos periféricos contribuyen a una operacionalización media o mejor de esta ambición."
         }
       }
+    }
+  },
+  "glossary": {
+    "coherence": {
+      "term": "coherencia",
+      "definition": "Si los compromisos de distintos documentos de política apuntan en la misma dirección. La herramienta los compara por parejas; no juzga las políticas en sí."
+    },
+    "target": {
+      "term": "meta",
+      "definition": "Un compromiso tomado de un documento de política: lo que dice que se logrará. Las metas se usan tal como están escritas y nunca se reescriben."
+    },
+    "pair": {
+      "term": "pareja",
+      "definition": "Dos metas de documentos distintos, comparadas entre sí. Todas las cifras de esta página cuentan parejas, no documentos."
+    },
+    "aligned": {
+      "term": "alineadas",
+      "definition": "Las dos metas se apoyan entre sí: avanzar en una ayuda a cumplir la otra."
+    },
+    "potentialMisalignment": {
+      "term": "posible desalineación",
+      "definition": "Las dos metas podrían tirar en sentidos distintos. Es una señal para que alguien revise la pareja, no una conclusión de que las políticas se oponen."
+    },
+    "sectorLens": {
+      "term": "enfoque sectorial",
+      "definition": "El conjunto de categorías sectoriales usado para agrupar las metas. Cambiar de enfoque reagrupa las mismas metas bajo otra clasificación; no cambia el análisis."
+    },
+    "primaryTheme": {
+      "term": "tema principal",
+      "definition": "El único tema con el que la meta coincide más. Se usa cuando cada meta debe contarse una sola vez."
+    },
+    "relevantTheme": {
+      "term": "temas relevantes",
+      "definition": "Todos los temas con los que la meta coincide lo suficiente como para mencionarlos. Se usa cuando importa la amplitud, por lo que una meta puede aparecer en varios."
+    },
+    "btr": {
+      "term": "BTR",
+      "definition": "Informe Bienal de Transparencia: el informe que un país presenta ante la convención climática de la ONU describiendo las acciones que efectivamente ha realizado."
+    },
+    "ber": {
+      "term": "BER",
+      "definition": "Revisión del Gasto en Biodiversidad: un análisis de en qué se gastó efectivamente el dinero público destinado a biodiversidad."
     }
   }
 }

@@ -89,6 +89,9 @@ import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
 import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
+import { docTierSortKey, hasDocTaxonomy } from "@/lib/doc-taxonomy";
+import { resolveStages } from "./nav-stages";
+import { TargetsBrowseBar } from "./targets-access";
 import {
   buildSectorCoherenceShare,
   buildSectorTensionDensity,
@@ -361,14 +364,21 @@ export function CoherenceBriefing({
     [defaultHiddenDocTypes],
   );
 
-  // Every document in the FULL corpus, in config order — drives the filter
-  // control so a hidden doc still appears as a toggle.
+  // Every document in the FULL corpus — drives the filter control so a hidden
+  // doc still appears as a toggle, and sets the order the wheel arcs, matrix
+  // axes and legend inherit. Ordered by national hierarchy where the country
+  // has declared one (see src/lib/doc-taxonomy), otherwise config order, which
+  // is what this did before the taxonomy existed.
   const allDocs = useMemo<PolicyDocumentType[]>(() => {
     const docs = new Set<PolicyDocumentType>();
     for (const t of targets) docs.add(t.sourceDocument);
-    return Array.from(docs).sort(
-      (a, b) =>
-        getDocTypeOrder(countryConfig, a) - getDocTypeOrder(countryConfig, b),
+    const byConfig = (id: PolicyDocumentType) =>
+      getDocTypeOrder(countryConfig, id);
+    return Array.from(docs).sort((a, b) =>
+      hasDocTaxonomy(countryConfig)
+        ? docTierSortKey(countryConfig, a, byConfig(a)) -
+          docTierSortKey(countryConfig, b, byConfig(b))
+        : byConfig(a) - byConfig(b),
     );
   }, [targets, countryConfig]);
 
@@ -1069,6 +1079,43 @@ export function CoherenceBriefing({
     return counts;
   }, [targets]);
 
+  /** EVERYTHING the analysis touches, including the BTR reported-action and BER
+   *  budget-line stand-ins that the analytical views deliberately exclude.
+   *
+   *  Feeds the browse bar and the targets drawer ONLY. This widens what a reader
+   *  can open and read; it never changes what the briefing compares, which stays
+   *  on the filtered `targets`. Without this the BTR chip would open an empty
+   *  drawer, because `targets` has both stand-in kinds filtered out upstream. */
+  const browsableTargets = useMemo<Target[]>(() => {
+    const byId = new Map<string, Target>();
+    for (const target of explorerData) byId.set(target.id, target);
+    // The BER stand-ins are built in this component from `berData` rather than
+    // arriving in the payload's target list, so they have to be folded in here.
+    for (const target of budgetPairTargets.values()) byId.set(target.id, target);
+    return [...byId.values()];
+  }, [explorerData, budgetPairTargets]);
+
+  const browsableCountByDoc = useMemo(() => {
+    const counts = new Map<PolicyDocumentType, number>();
+    for (const target of browsableTargets) {
+      counts.set(
+        target.sourceDocument,
+        (counts.get(target.sourceDocument) ?? 0) + 1,
+      );
+    }
+    return counts;
+  }, [browsableTargets]);
+
+  const browsableDocs = useMemo<PolicyDocumentType[]>(() => {
+    const extra = new Set<PolicyDocumentType>();
+    for (const target of browsableTargets) {
+      if (!allDocs.includes(target.sourceDocument)) extra.add(target.sourceDocument);
+    }
+    // allDocs first (already tier-ordered), then whatever only the wider corpus
+    // has; the bar re-sorts and puts the stand-ins last regardless.
+    return [...allDocs, ...extra];
+  }, [allDocs, browsableTargets]);
+
   // ── Active section + focus override (driven by IntersectionObserver) ──
   const [activeSection, setActiveSection] = useState<SectionId>(
     DIRECTION_SECTION_ID,
@@ -1516,6 +1563,15 @@ export function CoherenceBriefing({
           targetCountByDoc={targetCountByDoc}
           onViewTargets={openDocTargets}
         />
+        {/* The front door to the commitments themselves. Every other route into
+            the targets drawer is a hover or an expand, which is why readers
+            reported they could not get at the targets in totality. */}
+        <TargetsBrowseBar
+          allDocs={browsableDocs}
+          countryConfig={countryConfig}
+          targetCountByDoc={browsableCountByDoc}
+          onViewTargets={openDocTargets}
+        />
         {storylineCaveat && (
           <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
             {storylineCaveat}
@@ -1726,7 +1782,11 @@ export function CoherenceBriefing({
               </div>
               <div className="mb-2 flex items-center justify-between">
                 {/* Guided walkthrough of the current centerpiece. */}
-                <TourButton tourId={activeTourId} scopeRef={stickyCenterRef} />
+                <TourButton
+                  tourId={activeTourId}
+                  scopeRef={stickyCenterRef}
+                  labelled
+                />
                 <button
                   type="button"
                   onClick={() => setExpanded(true)}
@@ -1802,7 +1862,7 @@ export function CoherenceBriefing({
         sectorSynthesesIndex={sectorSynthesesIndex}
         totalFlagged={frictionTotals.total}
         totalDocCount={documentCount}
-        allTargets={targets}
+        allTargets={browsableTargets}
         hiddenDocs={hiddenDocs}
       />
       {/* Expand the active centerpiece to a large overlay so relationships are
@@ -1861,31 +1921,72 @@ function JumpNav({
   order: SectionId[];
 }) {
   const sectionLabels = useSectionLabels();
+  const t = useTranslations("briefing.stages");
+  const stages = resolveStages(order);
+
+  const chip = (id: SectionId, index: number) => (
+    <li key={id} className="flex items-center">
+      <a
+        href={`#${id}`}
+        aria-current={active === id ? "true" : undefined}
+        className={`px-2.5 py-1 rounded text-data font-medium transition-colors ${
+          active === id
+            ? "bg-[var(--undp-blue)] text-white"
+            : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+        }`}
+      >
+        <span className="text-caption tabular-nums opacity-60 mr-1.5">
+          0{index + 1}
+        </span>
+        {sectionLabels[id]}
+      </a>
+    </li>
+  );
+
+  // Rollback path: with no stages the nav is the flat list it always was.
+  if (!stages) {
+    return (
+      <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
+        <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
+          {order.map((id, i) => chip(id, i))}
+        </ul>
+      </nav>
+    );
+  }
+
+  const activeStage = stages.find((s) => s.sections.includes(active));
+
   return (
-    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
-      <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
-        {order.map((id, i) => {
-          const isActive = active === id;
-          return (
-            <li key={id} className="flex items-center">
-              <a
-                href={`#${id}`}
-                aria-current={isActive ? "true" : undefined}
-                className={`px-2.5 py-1 rounded text-data font-medium transition-colors ${
-                  isActive
-                    ? "bg-[var(--undp-blue)] text-white"
-                    : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
-                }`}
-              >
-                <span className="text-caption tabular-nums opacity-60 mr-1.5">
-                  0{i + 1}
-                </span>
-                {sectionLabels[id]}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
+      <div className="flex items-start gap-x-6 gap-y-2 flex-wrap">
+        {stages.map((stage) => (
+          <div key={`${stage.id}-${stage.firstIndex}`}>
+            <p
+              className={`text-[11px] uppercase tracking-wider font-semibold mb-0.5 px-2.5 transition-colors ${
+                stage === activeStage
+                  ? "text-[var(--undp-black)]"
+                  : "text-[var(--undp-gray)]/70"
+              }`}
+            >
+              {t(`${stage.id}.label`)}
+            </p>
+            <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
+              {stage.sections.map((id) =>
+                chip(id, order.indexOf(id)),
+              )}
+            </ul>
+          </div>
+        ))}
+      </div>
+      {/* One caption, for the stage the reader is currently in. Showing all
+          four at once was the density the focus group was already objecting
+          to; showing the current one answers "what is this group for?" as
+          they arrive in it. */}
+      {activeStage && (
+        <p className="mt-1.5 px-2.5 text-caption text-[var(--undp-gray)]">
+          {t(`${activeStage.id}.caption`)}
+        </p>
+      )}
     </nav>
   );
 }

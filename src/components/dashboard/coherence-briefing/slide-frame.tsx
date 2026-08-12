@@ -20,6 +20,7 @@ export function SlideFrame({
   id,
   headline,
   body,
+  reading,
   controls,
   evidence,
   disclosure,
@@ -28,6 +29,10 @@ export function SlideFrame({
   id: string;
   headline: ReactNode;
   body?: ReactNode;
+  /** How to READ the evidence, as opposed to what it says. One quiet line under
+   *  the finding, always visible (see src/components/ui/glossary). Optional:
+   *  omit and the slide renders exactly as it did before reading lines existed. */
+  reading?: ReactNode;
   controls?: ReactNode;
   evidence?: ReactNode;
   disclosure?: ReactNode;
@@ -57,6 +62,7 @@ export function SlideFrame({
           {body}
         </p>
       )}
+      {reading}
       {controls && <div className="mb-6">{controls}</div>}
       {evidence && <div className="mb-6">{evidence}</div>}
       {disclosure && (

@@ -28,6 +28,7 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { TourButton } from "../tour/tour-button";
 import {
   nr7StatusByNbsapTarget,
@@ -84,6 +85,7 @@ export function ImplementationSection({
       id={IMPLEMENTATION_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         coverage.hasMeasureAlignment ? (
           <TourButton

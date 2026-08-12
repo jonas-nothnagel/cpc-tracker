@@ -109,6 +109,29 @@ export interface Target {
    *  translation caveat on the language chip. Undefined behaves as "source". */
   textOriginalSource?: "source" | "machine";
   /**
+   * Which elements this target's text states, from
+   * `python/src/target_quality.py` merged with the quantitative flags.
+   *
+   * A read of the TEXT, not a grade of the target and never a judgement of
+   * whoever wrote it (political-sensitivity guardrail). Every element marked
+   * true carries the verbatim phrase from the target that supports it; the
+   * pipeline drops any claim it could not quote. Absent when the country has
+   * no `target_quality.json`, which hides every quality affordance.
+   */
+  definition?: TargetDefinition;
+  /**
+   * Set by `src/lib/locale-text` when `text` has been swapped to the target's
+   * source language for a matching locale: holds the English analysis text that
+   * `text` used to carry, so the language chip can still show both sides.
+   * Absent whenever no swap happened (any English-locale request, and every
+   * target with no genuine source-language original).
+   */
+  textTranslation?: string;
+  /** Set alongside `textTranslation`: the English `sourceLabel` before the swap. */
+  sourceLabelTranslation?: string;
+  /** Set alongside `textTranslation`: the language `text` is currently in. */
+  textLocale?: string;
+  /**
    * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
    * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
    */
@@ -324,6 +347,37 @@ export type AlignmentConfidence = "low" | "medium" | "high";
 export type ContradictionType = AlignmentMechanism;
 
 /** Result of comparing two targets for alignment (v2.1 schema). */
+/**
+ * The five elements a well-defined target states. Ordered as a reader meets
+ * them: what will be done, where and for whom, what changes, by how much,
+ * by when.
+ *
+ * DELIBERATELY NOT A SCORE. "3 of 5 elements stated" is an observation about
+ * the text; "3 out of 5 quality" would be a judgement the model cannot support
+ * against policy language that is often deliberately broad, and would read as
+ * criticism of the institution that wrote it. Nothing in the UI may rank
+ * documents or sectors by this.
+ */
+export const TARGET_DEFINITION_ELEMENTS = [
+  "action",
+  "scope",
+  "outcome",
+  "measurable",
+  "deadline",
+] as const;
+
+export type TargetDefinitionElement =
+  (typeof TARGET_DEFINITION_ELEMENTS)[number];
+
+export interface TargetDefinition {
+  /** Whether the target's text states each element. */
+  elements: Partial<Record<TargetDefinitionElement, boolean>>;
+  /** The verbatim phrase supporting each stated element. Empty where absent. */
+  evidence: Partial<Record<TargetDefinitionElement, string>>;
+  /** How clearly the text settles the question — not how good the target is. */
+  confidence?: "high" | "medium" | "low";
+}
+
 export interface AlignmentResult {
   /** First target id */
   targetAId: string;
@@ -339,6 +393,15 @@ export interface AlignmentResult {
   confidence?: AlignmentConfidence;
   /** AI-generated rationale for the classification */
   description: string;
+  /**
+   * Set by `src/lib/locale-text` when a rationale translation pass has run for
+   * this locale but did not cover this pair (by default only `high`, `low` and
+   * `flagged` verdicts are translated). The rationale above is therefore still
+   * English on a translated page, and the UI must say so rather than leave the
+   * reader to guess. Absent when no pass has run, so a fully-English page has
+   * nothing to disclose.
+   */
+  descriptionTranslationPending?: boolean;
   /**
    * Concrete dimension the flag concerns, extracted from `description` by the
    * friction-dimensions step (python/src/extract_friction_dimensions.py).
@@ -898,6 +961,23 @@ export interface DocumentTypeEntry {
   // pipeline prompt.
   /** What kind of document it is, e.g. "National pledge", "REDD+ strategy". */
   docKind?: string;
+  /**
+   * Normalised instrument kind, from the project-defined `DOC_CLASSES`
+   * vocabulary in `src/lib/doc-taxonomy`. A machine-readable counterpart to the
+   * free-text `docKind` above, so every surface can group documents the same
+   * way. The vocabulary is project-defined; THIS DOCUMENT'S assignment to it
+   * must trace to the document's own self-description (see `_docClassComment`
+   * in the country config). Optional — omit and the UI renders as it did before
+   * the taxonomy existed.
+   */
+  docClass?: string;
+  /**
+   * Where this document sits in the national hierarchy: 1 = the national
+   * commitment other instruments answer to, rising to 5 = international
+   * reporting. Drives ordering and grouping in legends, filters, matrix axes,
+   * and wheel arcs. Same provenance rule as `docClass`. Optional.
+   */
+  docTier?: number;
   /** When it was developed/issued, e.g. "November 2025", "2025", "2025-2029". */
   published?: string;
   /** Issuing body / author, e.g. "Government of Panama", "SENACYT". */
@@ -908,6 +988,21 @@ export interface DocumentTypeEntry {
   url?: string;
   /** Provenance note for the metadata above (esp. `objective`). */
   sourceNote?: string;
+  /**
+   * Per-locale display overrides, keyed by locale code. Only the fields a
+   * locale actually overrides need to be present; anything absent falls back
+   * to the base (English) field above.
+   *
+   * Exists because the base labels are English ("PEG (Gov't Strategic Plan)")
+   * and read as English next to Spanish content on `/es/{country}` — the
+   * linguistic-consistency point in the Panama focal-group report. Same
+   * provenance rule as the fields they override: a translated label must come
+   * from the document's own title, never a new claim about the document.
+   */
+  labels?: Record<
+    string,
+    Partial<Pick<DocumentTypeEntry, "mediumLabel" | "fullLabel" | "docKind" | "objective">>
+  >;
 }
 
 /**
