@@ -147,18 +147,18 @@
     },
     "targetQuality": {
       "band": {
-        "full": "Well defined",
-        "partial": "Partly defined",
-        "broad": "Broadly defined"
+        "full": "High",
+        "partial": "Moderate",
+        "broad": "Limited"
       },
-      "chipLabel": "How well defined:",
+      "chipLabel": "Analysis precision:",
       "chipScore": "{stated}/{total}",
-      "chipAria": "Target quality: {verdict}, meets {stated} of {total} criteria. Open for detail.",
-      "panelAria": "How well defined this target is",
-      "panelTitle": "How well defined is this target?",
-      "panelSubtitle": "Meets {stated} of {total} criteria for a target that can be tracked.",
-      "notMet": "Not stated in the target.",
-      "caveat": "AI assessment of how fully the target is written, quoting the wording behind each criterion. It judges whether the target can be tracked, not whether the policy is right or ambitious enough.",
+      "chipAria": "Analysis precision: {verdict}. The AI found {stated} of {total} details it uses to compare targets. Open for detail.",
+      "panelAria": "How precise the analysis can be for this target",
+      "panelTitle": "How precise can the analysis be for this target?",
+      "panelSubtitle": "The AI found {stated} of {total} details it uses when checking coherence against other targets.",
+      "notMet": "Not found in the target's wording.",
+      "caveat": "AI note on the detail it can work with — not a judgement of the target. The more of these details the wording gives, the more precisely the AI can assess this target's coherence with others.",
       "element": {
         "action": "Names a specific action",
         "scope": "Says where or for whom",

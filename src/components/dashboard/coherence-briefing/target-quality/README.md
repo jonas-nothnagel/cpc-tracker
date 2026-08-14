@@ -1,30 +1,38 @@
 # Target quality (removable system)
 
-Assesses **how well defined each target is** against five criteria a trackable
-target meets — names a specific action, says where or for whom, states the
-result expected, includes a measurable value, includes a deadline — with the
-verbatim wording from the target quoted for each criterion it meets. Renders a
-banded verdict ("Well defined" / "Partly defined" / "Broadly defined") plus the
-score behind it.
+Reports **how precise the AI analysis can be for each target** based on five
+details it uses when checking coherence — names a specific action, says where
+or for whom, states the result expected, includes a measurable value, includes
+a deadline — with the verbatim wording from the target quoted for each detail
+it found. Renders a banded verdict ("Analysis precision: High / Moderate /
+Limited") plus the score behind it.
 
 Added for the Panama focal-group report (23 Jul 2026), which asked the tool to
-grow toward "goals, indicators, progress". A planner cannot track a target that
-does not say what will change, by how much, where, or by when; telling them
-which targets are ready to monitor is the most useful thing this analysis can
-add without new data.
+grow toward "goals, indicators, progress". A target that does not say what will
+change, by how much, where, or by when gives the coherence analysis little to
+work with; showing planners how much detail the AI found — and what more detail
+buys — is the most useful thing this analysis can add without new data.
 
-## What it judges, and what it does not
+## What it reports, and what it does not
 
-It judges how fully a target is **written** — whether it can be monitored as it
-stands. It says nothing about whether the policy is right, ambitious enough, or
-a priority. A broad framing principle is not a bad commitment for lacking a
-number, and the caveat on every panel says so.
+It reports how much of a target's **wording** the AI can draw on when comparing
+it with other targets. It says nothing about whether the policy is right,
+ambitious enough, or a priority. A broad framing principle is not a bad
+commitment for lacking a number, and the caveat on every panel says so.
 
-The first version hedged so hard it stopped communicating: the chip read "3 of 5
-stated" and the caveat said it described "what the text says, not how good the
-target is" — a denial of the feature's own purpose. Readers could not tell what
-was being measured. Naming the judgement is the fix; bounding it is the caveat's
-job.
+The framing is on its third iteration; both earlier ones failed, so change the
+copy carefully:
+
+- v1 hedged so hard it stopped communicating: the chip read "3 of 5 stated" and
+  the caveat denied the feature's own purpose. Readers could not tell what was
+  being measured.
+- v2 named a judgement of the target ("How well defined: Broadly defined").
+  Country feedback (Aug 2026) read this as criticism of national targets —
+  exactly the offence the political-sensitivity guardrail exists to avoid.
+- v3 (current) keeps a real verdict but puts the measured property on the
+  system: the chip reports the precision of the **AI analysis**, and the
+  caveat says what added detail buys — a more accurate coherence assessment.
+  The lowest band, "Limited", describes the analysis, not the commitment.
 
 Hard rules that stand:
 
