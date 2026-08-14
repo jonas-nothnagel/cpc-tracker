@@ -1,0 +1,2928 @@
+[
+  {
+    "targetId": "NDC_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "restoration, Management and Conservation of mangroves, flooded forests, and aquatic habitats",
+      "scope": "mangroves, flooded forests, and aquatic habitats",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and implement integrated marine spatial planning",
+      "scope": "marine",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Expand, establish and improve the management of coastal and marine protected areas",
+      "scope": "coastal and marine protected areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_4",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "reducing tillage and sustainable agriculture (such as mulching, cover cropping, crop rotations, alternative crops)",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_5",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce agroforestry practices on rubber-high value timber",
+      "scope": "for smallholders",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_7",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce and promote agroforestry",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Improve animal waste management",
+      "scope": "for soil improvement and rural energy",
+      "outcome": "soil improvement and rural energy"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Improve fodder and feeding",
+      "scope": "for livestock production",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_10",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop climate resilient crop varieties",
+      "scope": "",
+      "outcome": "climate resilient crop varieties well suited to market demand"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "on crop production",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_12",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the production of Climate-Resilient High-Value Crops",
+      "scope": "",
+      "outcome": "Improve Diversification"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_13",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Research and Development of Climate-Resilient Livestock Breeds",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_14",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Climate-Smart Fodder Management and production",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "low"
+  },
+  {
+    "targetId": "NDC_15",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for agri-food system",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_16",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Scaling up solar irrigation",
+      "scope": "",
+      "outcome": "improve climate-resilient agriculture practices, enhance water efficiency and mitigation potentials"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_17",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Reducing food loss and waste"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conduct climate risk assessments, develop a climate-resilient and inclusive WASH response framework, and monitoring and evaluation",
+      "scope": "across all provinces",
+      "outcome": "to strengthen climate risk- informed programming across all provinces"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Operationalize the implementation of the climate resilient and inclusive WASH response framework",
+      "scope": "for climate-resilient, low-carbon, and inclusive WASH",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "the implementation of climate resilient measures for piped water supply infrastructures and services",
+      "scope": "for piped water supply infrastructures and services, particularly in climate risk prone areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "de-risk investments and climate financing",
+      "scope": "for climate-resilient and low carbon water supply infrastructures and systems",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Update the national piped water data monitoring system with inclusion of climate resilient aspects",
+      "scope": "for the communities (with particular attention for women and children) living in climate disaster prone areas",
+      "outcome": "to assess vulnerabilities, track progress, and ensure targeted interventions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Expand sewage and Fecal Sludge Management (FSM) systems coverage area in urban areas",
+      "scope": "in urban areas",
+      "outcome": "to reduce GHG and prevent contaminations during extreme weather events"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrating traditional and Indigenous water management systems",
+      "scope": "water management",
+      "outcome": "Promote water management resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establishment and modernization of a centralized and standardized meteorological and hydrological data centre",
+      "scope": "for water management",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce sustainable rubber wood harvesting",
+      "scope": "rubber wood harvesting",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_27",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through REDD+ Mechanism and other measures",
+      "scope": "",
+      "outcome": "Reduce deforestation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through afforestation and reforestation activities(A/R)",
+      "scope": "forest cover",
+      "outcome": "Expand forest cover"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through assisted natural regeneration (ANR) and other forest restoration measures",
+      "scope": "forest carbon stocks",
+      "outcome": "Increase forest carbon stocks"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Incorporate good and/or improved forest management practices",
+      "scope": "forest",
+      "outcome": "enhance forest carbon stocks as well as ecosystem integrity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "integrated landscape management and sustainable forestry practices",
+      "scope": "forest management practices",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_32",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "protection of the existing forest and biodiversity ecosystem",
+      "scope": "in the production forest area",
+      "outcome": "Forest Ecosystem adaptation and resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Increase forest restoration areas",
+      "scope": "at cultural heritage sites",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Increasing Awareness and Capacity Building in the implementation of REDD+ mechanism, ecotourism models, monitoring systems, law enforcement, and others.",
+      "scope": "in the implementation of REDD+ mechanism, ecotourism models, monitoring systems, law enforcement, and others. (FOLU)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_35",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in REDD+ implementation, forest and land use/cover change monitoring, and community-based financing framework. (FOLU)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish and strengthen national biodiversity monitoring and assessment systems",
+      "scope": "national biodiversity monitoring and assessment systems",
+      "outcome": "reflecting ecosystem and livelihood resilience"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_37",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "biodiversity",
+      "outcome": "in line with the country's NBSAP"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_38",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct gap assessments and develop policy and framework instruments on biodiversity",
+      "scope": "on biodiversity",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_39",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify zones within Protected Areas (PAs) that are threatened by climate risks",
+      "scope": "within Protected Areas (PAs)",
+      "outcome": "increase their resilience"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_40",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Strengthen Private-Public Partnerships (PPP)",
+      "scope": "in PAs",
+      "outcome": "promote and operationalise Payment for Ecosystem Services (PES)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_41",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "through ecotourism",
+      "scope": "in Protected Areas (PAs), Community Forestry (CF) and Community Fisheries (CFi)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_42",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Prepare the modality of green spaces for urban planning or new sub-cities",
+      "scope": "for urban planning or new sub-cities",
+      "outcome": "to address the vulnerability of urbanisation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_43",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "conducting climate vulnerability and impact assessments to integrate climate resilience strategies into sub-national development plans",
+      "scope": "cities at the sub-national level",
+      "outcome": "integrate climate resilience strategies into sub-national development plans"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_44",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop guidelines and plans",
+      "scope": "into land use and urban planning",
+      "outcome": "integrate climate resilience into land use and urban planning"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_45",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Design and build guidance for climate-resilient houses and buildings",
+      "scope": "for low-income households",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_46",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "enhancement of legal framework, adoption of quality assurance system and capacity building of the SSW",
+      "scope": "the planning, development and support of the Social Service Workforce",
+      "outcome": "Integrate disaster risk reduction and climate change into the planning, development and support of the Social Service Workforce"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_47",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in their local areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_48",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in animal production",
+      "outcome": "develop readiness to respond to hazards"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_49",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Climate Services",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_50",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Construct climate and Disaster Resilience Safe Evacuation Centres with integrated climate and inclusive disaster-resilient design",
+      "scope": "in disaster-prone areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_51",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "ensuring inclusive dissemination and integrating digital platforms with impact-based forecasting under the Early Warning for All (EW4ALL) initiative",
+      "scope": "under the Early Warning for All (EW4ALL) initiative",
+      "outcome": "Improve early warning systems"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_52",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrating anticipatory action (AA), securing appropriate financing, and enhancing local and community capacities",
+      "scope": "local and community capacities",
+      "outcome": "Strengthen disaster preparedness and resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_53",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "identify vulnerable communities",
+      "scope": "vulnerable communities",
+      "outcome": "support evidence-based decision-making"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_54",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "social workers, caregivers, and local communities",
+      "outcome": "support victims and vulnerable groups in climate risk and disaster preparedness"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_55",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "local economy and development",
+      "outcome": "supporting local economy and development"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_56",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Health Care Facilities, including WASH",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_57",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a building code",
+      "scope": "into building designs and building/housing construction",
+      "outcome": "mainstreams climate resilience into building designs and building/housing construction"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_58",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Rural road rehabilitation and improvement",
+      "scope": "Rural road",
+      "outcome": "for climate change resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_59",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Indigenous Peoples and Local Communities (IPLC)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_60",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Register",
+      "scope": "in ecotourism and community-based ecotourism sites",
+      "outcome": "increase climate resilience in ecotourism and community-based ecotourism sites"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_61",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "among poor, vulnerable and at-risk population",
+      "outcome": "Building climate resilience among poor, vulnerable and at-risk population"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_62",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implementing shock responsive social protection (SRSP)",
+      "scope": "among poor, vulnerable, and at-risk population",
+      "outcome": "Reducing climate vulnerability among poor, vulnerable, and at-risk population"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_63",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "expanding social protection",
+      "scope": "to those whose livelihoods are/will be affected by climate change",
+      "outcome": "Enabling a just and inclusive transition"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_64",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establishing the foundations for climate-sensitive housing related support",
+      "scope": "for poor, vulnerable and at risk population",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_65",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Expand Specialized Social Services (SSS) and reinforce the climate resilience",
+      "scope": "of all rehabilitation centers, residential care institutions (RCIs) and communities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_66",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrating green concepts into the national Technical and Vocational Education and Training (TVET) system",
+      "scope": "in the country",
+      "outcome": "environmental sustainability and climate resilience in the country"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_67",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the development plans, including M&E, and in the public investment program, at the national/capital/provincial levels",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_68",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "into Climate Vulnerability Assessments and sectoral planning",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_69",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a national sewage and FSM data monitoring system with inclusion of climate resilient indicators",
+      "scope": "national sewage and FSM data monitoring system",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_70",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Repair and rehabilitate existing road infrastructure, ensuring climate-resilient designs, and establish effective operation and maintenance systems that consider the impacts of climate change",
+      "scope": "existing road infrastructure",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_71",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "constructing new buildings and facilities, retrofitting existing structures, and designing climate-resilient infrastructure",
+      "scope": "school infrastructure",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_72",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Research/Evidence generation and knowledge management for climate impacts, including adaptation and mitigation actions, with consideration for determinants of health.",
+      "scope": "for climate impacts, including adaptation and mitigation actions, with consideration for determinants of health",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_73",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of government",
+      "outcome": "enhance access to information and public awareness on climate change and its impacts on the promotion, protection and fulfilment of rights of children, and support families and communities to become climate resilient"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_74",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "natural and cultural heritage",
+      "outcome": "Resilience of natural and cultural heritage to climate change"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_75",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "developing and implementing public awareness campaigns on climate-sensitive diseases (e.g., dengue, malaria), injuries (e.g., drowning, snakebites), nutrition, and mental health, with targeted messaging for vulnerable groups (e.g., children, pregnant women, elderly, migrants, and persons with disabilities)",
+      "scope": "community resilience to climate-related health risks",
+      "outcome": "Strengthen community resilience to climate-related health risks"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_76",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "New national road construction with climate-resilient designs",
+      "scope": "national road construction",
+      "outcome": "to withstand the impacts of climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_77",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the most vulnerable urban communities, including women, children and young people",
+      "outcome": "Increase awareness and knowledge"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_78",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "the share of RE-installed capacity to 72% by 2035 (conditionally to 80% by 2035)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_79",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Phase down coal-fired power plants",
+      "scope": "coal-fired power plants",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_80",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in major cities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_81",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Enforce regulations for introducing fuel efficiency and emission standards",
+      "scope": "for internal combustion engine (ICE) vehicles in road transport",
+      "outcome": "introducing fuel efficiency and emission standards for internal combustion engine (ICE) vehicles in road transport"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_82",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Scale up the adoption of electric mobility",
+      "scope": "for low-carbon road transport",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_83",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop an inclusive climate financing policy framework, supported by tools and coordination mechanisms",
+      "scope": "in climate finance and carbon markets",
+      "outcome": "to mobilize and track climate expenditures, funds and revenues"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_84",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Shift long-distance freight and passenger transport from road to rail",
+      "scope": "long-distance freight and passenger transport",
+      "outcome": "from road to rail"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_85",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "through inland waterways",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_86",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Energy Infrastructure",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_87",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Waste collection and segregation at source",
+      "scope": "at households, schools, markets, restaurants/hotels levels",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_88",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for organic waste processing",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_89",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Industrial wastewater (IWW)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_90",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in construction sites",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_91",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "operationalize air quality management sub-decree and emission standard",
+      "scope": "Air quality",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_92",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Convert Special Economic Zone (SEZ)/ Industrial Park (IP) into Eco-industrial parks (EIPs)",
+      "scope": "Special Economic Zone (SEZ)/ Industrial Park (IP)",
+      "outcome": "into Eco-industrial parks (EIPs)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_93",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement solid waste reduction strategies, and pollution control measures",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_94",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through mainstreaming migration and displacement trends, gender and disability inclusion",
+      "scope": "of national and local institutions and communities",
+      "outcome": "Strengthen the preparedness and response capacities of national and local institutions and communities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_95",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in government leadership and decision-making roles relevant to all NDC priority sectors",
+      "outcome": "Increase the proportion and capacity of women"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_96",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "the integration of gender considerations in climate-related policies",
+      "scope": "in all NDC sectors, with special focus on the transition to green economy",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_97",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "traditional knowledge",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_98",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "through its climate change technical working group",
+      "scope": "the national sustainable development council",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_99",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Upgrade non-formal education curriculum",
+      "scope": "non-formal education curriculum",
+      "outcome": "build green competencies"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_100",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Mainstream climate change into the national education strategic plan and its operational plans",
+      "scope": "the national education strategic plan and its operational plans",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_101",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "capacity building for healthcare providers to address climate health impacts on vulnerable populations",
+      "scope": "in national and provincial-level health sector planning and implementation",
+      "outcome": "effectively integrate climate risks and adaptation options in national and provincial-level health sector planning and implementation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_102",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_103",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "digital data governance and reporting mechanism",
+      "scope": "(Agriculture)",
+      "outcome": "in line with the Enhanced Transparency Framework (ETF) reporting requirement"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_104",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop M&E framework",
+      "scope": "in PAs",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_105",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Shift food consumption",
+      "scope": "food consumption",
+      "outcome": "more nutritious, healthier and more sustainable diets"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_106",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "engaging stakeholders (private sector and tourism association)",
+      "scope": "in the tourism sector",
+      "outcome": "environmentally friendly practices"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Restore fishery resources and aquatic habitats",
+      "scope": "Management of fisheries and aquaculture farmland",
+      "outcome": "create a balance for aquatic biodiversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "amidst climate risks and impacts",
+      "outcome": "Productivity and food security maintained"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Management of crop farmland",
+      "outcome": "adjustment in agricultural patterns in response to the changing climate"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrated farming or crop rotation",
+      "scope": "Management of crop farmland",
+      "outcome": "mitigate risks and damages from climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop water resources in non-irrigated zones",
+      "scope": "Management of crop farmland",
+      "outcome": "be more effective and sufficient to meet the demand for crops and livestock"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "undertaking cover cropping, contour tillage, and crop selection according to the soil and climatic conditions in degraded agricultural land",
+      "scope": "in degraded agricultural land",
+      "outcome": "increase production per unit, strengthen food security, and enhance the productivity of the areas"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop livestock management systems and products",
+      "scope": "Management of livestock farmland",
+      "outcome": "to respond to the climate change trends"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop an index for the capacity of the agricultural sector's self-reliance in the event of climate-related disasters",
+      "scope": "the agricultural sector",
+      "outcome": "to assess farmers' capacity in different areas"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Map climate-risk agricultural areas and climate change impacts at the local level and make the information available for farmers to access and apply",
+      "scope": "at the local level",
+      "outcome": "make the information available for farmers to access and apply"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop precision farming technology",
+      "scope": "among farmers",
+      "outcome": "lower the cost of operation, thus allowing more comprehensive access and adoption among farmers and increasing the effectiveness in planning and managing agricultural activities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for household consumption",
+      "outcome": "produce sufficient food for household consumption, reduce the risk of food shortages, and always have access to food"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish seed banks for crops, livestock, and aquatic species",
+      "scope": "for crops, livestock, and aquatic species",
+      "outcome": "to loan the means of production and act as a reserve in events of natural disasters"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_13",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "farmers' access",
+      "outcome": "to accommodate the changes in climatic conditions"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_14",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the agricultural sector",
+      "outcome": "to reduce food loss and food waste in the agricultural sector"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Support networks building for climate change adaptation",
+      "scope": "in the agricultural sector",
+      "outcome": "to enable cooperation on early warnings, climate risk assessments, and exchanges of knowledge, technology, and agricultural innovation with linkages to the local context"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Enhance farmers' awareness of climate change impacts on the agricultural sector and capacity building of farmers to adaptive and climate-risk management",
+      "scope": "farmers",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop research to assess climate change factors",
+      "scope": "the agricultural sector (crop farming, livestock production, fishery, and aquaculture resources)",
+      "outcome": "assess climate change factors that may impact the agricultural sector"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Alternate Wetting and Drying (AWD)",
+      "scope": "Dry-season rice area in irrigation zones",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_19",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "farmers",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_20",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Agricultural households",
+      "outcome": "Agricultural households with access to irrigation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Climate change research projects covering crops, livestock, and fisheries",
+      "scope": "crops, livestock, and fisheries",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_22",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "water-related disasters",
+      "outcome": "Increased water security and decreased losses and damage from water-related disasters"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and improve water resources management",
+      "scope": "in irrigated zones in flood risk and drought risk areas",
+      "outcome": "to be more effective"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Information management systems for forecasting and warning dissemination",
+      "scope": "Early Warning Systems",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_25",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in water-risk areas",
+      "outcome": "Percentage of functional telemetry systems"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Flood Prevention and Mitigation Plans",
+      "scope": "for all river basins",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_27",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "key cities",
+      "outcome": "Number of key cities with flood protection and urban drainage systems"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Established effective public health systems",
+      "scope": "public health systems",
+      "outcome": "manage risks and reduce impacts from climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Sustainable management of biodiversity resources",
+      "scope": "biodiversity resources",
+      "outcome": "to respond to climate impacts"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_30",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Individuals, communities, and cities",
+      "outcome": "Enhanced capacity of Individuals, communities, and cities to adapt to climate change impacts appropriately according to the local context"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop systems to control, prevent, and treat livestock diseases caused by climate change and epidemics caused by floods and drought",
+      "scope": "Management of fisheries and aquaculture farmland",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_32",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop fishery management systems",
+      "scope": "Management of fisheries and aquaculture farmland",
+      "outcome": "respond to climate change trends"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Cooperation Agreements: MOUs with external agencies",
+      "scope": "with external agencies",
+      "outcome": "supporting adaptation and resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_34",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Learning Centers: Climate-smart adaptation learning centers and demonstration plots utilizing adaptation strategies",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Drought Prevention and Mitigation Plans",
+      "scope": "for all river basins",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_36",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the tourism sector",
+      "outcome": "Strengthened capacity of the tourism sector toward climate-resilience and sustainable development"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Rehabilitate or sustainably manage",
+      "scope": "degraded coastal zones (mangroves, reefs)",
+      "outcome": "\u2265 50% of degraded coastal zones (mangroves, reefs)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "promoting mangrove restoration and shoreline vegetation buffers",
+      "scope": "coastal zone",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "climate-smart practices (irrigation, drought-resilient seeds, crop diversification)",
+      "scope": "agricultural land",
+      "outcome": "\u2265 50% of agricultural land under climate-smart practices"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "soil & water conservation, agroforestry, improved seeds, irrigation",
+      "scope": "climate-smart agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through improved storage and value addition",
+      "scope": "crops (e.g., fruits, vegetables)",
+      "outcome": "Reduce post-harvest losses of crops (e.g., fruits, vegetables) by 40%"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "reduce leakages, promote rainwater harvesting, regulate abstraction",
+      "scope": "water resources management",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Demarcate and protect 60% of major water sources",
+      "scope": "in all major basins",
+      "outcome": "strengthen water resilience"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "restoring 2 million ha of degraded forests",
+      "scope": "degraded forests",
+      "outcome": "Decrease the deforestation rate by 20% from the national baseline"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Scale up community-based forest management, afforestation, and REDD+ initiatives",
+      "scope": "community-based forest management, afforestation, and REDD+ initiatives",
+      "outcome": "to reduce deforestation pressures"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Undertake risk & vulnerability mapping for land-use planning",
+      "scope": "focusing on flood-prone and coastal hazard areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopting efficiency measures and enforcing coastal building codes",
+      "scope": "tourism",
+      "outcome": "climate-resilient and low carbon tourism"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Integrate climate change adaptation into \u2265 60% of national/sector plans and local government budgets by 2026",
+      "scope": "national/sector plans and local government budgets",
+      "outcome": "climate change adaptation into \u2265 60% of national/sector plans and local government budgets by 2026"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Construct or upgrade flood-control systems",
+      "scope": "in at least 50% of water basins",
+      "outcome": "flood-control systems in at least 50% of water basins"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "community-level outreach",
+      "scope": "for climate extremes",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Provide incentives for climate-smart technology innovation",
+      "scope": "climate-smart technology innovation",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "pilot waste-to-energy projects",
+      "scope": "in all major urban centers",
+      "outcome": "modern waste management"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_17",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in all climate actions",
+      "outcome": "equitable participation and benefit-sharing"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Integrate climate change curricula into primary, secondary, and tertiary education, with annual climate forums",
+      "scope": "into primary, secondary, and tertiary education",
+      "outcome": "climate change curricula into primary, secondary, and tertiary education"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "institutional strengthening, training, awareness",
+      "scope": "on climate change governance",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a National Climate Change Financing Mechanism and integrate a climate code in national budgets",
+      "scope": "in national budgets",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopting improved rangeland management",
+      "scope": "in \u2265 40% of pastoral communities",
+      "outcome": "Promote livestock resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct climate-proofing",
+      "scope": "for all major new infrastructure projects (roads, rail, power lines)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct or update climate-risk assessments in \u2265 30 districts and improve national meteorological networks",
+      "scope": "in \u2265 30 districts",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_24",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "economy-wide",
+      "outcome": "Reduce economy-wide GHG emissions by 30-35% below BAU by 2030"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Expand renewable energy (solar, wind, geothermal, hydro, bioenergy)",
+      "scope": "of total generation mix",
+      "outcome": "to \u2265 25% of total generation mix"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt energy-efficient technologies (efficient cookstoves, industrial retrofits)",
+      "scope": "in \u2265 40% of households and 20% of factories",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_27",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Promote energy efficiency (e.g., efficient cookstoves) and renewable energy (solar, wind)",
+      "scope": "",
+      "outcome": "diversify the energy mix"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "CCS_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce or scale up mass transit systems (BRT, rail) and non-motorized transport",
+      "scope": "in major cities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "CCS_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Equip 70% of health facilities with climate-resilient water and power systems, expanding disease surveillance to all regions",
+      "scope": "70% of health facilities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "identified and brought under participatory, integrated and biodiversity-inclusive spatial planning and management processes",
+      "scope": "all areas of high biodiversity importance",
+      "outcome": "natural habitat loss brought close to zero"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "defined, mapped, prioritized and under restoration",
+      "scope": "degraded terrestrial, inland water, marine and coastal ecosystems",
+      "outcome": "enhance biodiversity, connectivity, and ecosystem functions and services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "effectively conserved by the protected area system and other effective area-based conservation measures (OECMs), with management plans and effective management in place",
+      "scope": "terrestrial and inland water areas, and at least XX% of marine and coastal areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through nature-based solutions and/or ecosystem-based approaches",
+      "scope": "for the benefit of all people and nature",
+      "outcome": "nature's contributions to people are restored, maintained and enhanced, including ecosystem functions and services, reduction in disease risk, and protection from natural hazards and disasters"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "including environmental-friendly practices such as sustainable intensification, agroecological and other innovative approaches",
+      "scope": "the areas used for agriculture, aquaculture, fisheries and forestry",
+      "outcome": "contributing to food security, restoring and conserving biodiversity, and maintaining nature's contributions to social and economic good, including ecosystem functions and services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through in situ and ex situ conservation and sustainable management",
+      "scope": "in wild and domesticated populations",
+      "outcome": "halt the human-induced extinction of threatened species, reduce extinction risks and ensure the restoration of genetic diversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "applying the ecosystem approach",
+      "scope": "the use, harvesting and trade of wild species",
+      "outcome": "preventing overexploitation, minimizing impacts on non-target species and ecosystems, and reducing the risk of pathogen spillover"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "controlling measures determined and implemented",
+      "scope": "major invasive alien species (IAS) and their pathways",
+      "outcome": "reduce and minimize rate of invasion and their impacts on biodiversity and ecosystem services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through nature-based solutions, ecosystem-based approaches, climate mitigation and adaptation and disaster risk reduction strategies",
+      "scope": "on biodiversity",
+      "outcome": "the impacts of climate change on biodiversity are reduced and minimized"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "biodiversity-inclusive urban planning is promoted and substantially implemented",
+      "scope": "in cities and other densely populated areas",
+      "outcome": "significantly increase the area, quality, connectivity and public access to green and blue spaces"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "biodiversity values are integrated into national, sub-national, local and private sector policies, regulations, planning and decision-making processes",
+      "scope": "national, sub-national, local and private sector policies, regulations, planning and decision-making processes",
+      "outcome": "key public and private activities, fiscal policies and financial flows are progressively aligned with the country's sustainable development goals and the Global Biodiversity Framework"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "build national capacities for biodiversity conservation, promote technology and scientific transfer, foster joint technology development and joint scientific research",
+      "scope": "among international, national and IPLCs",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "has been established and maintained and is widely shared",
+      "scope": "among stakeholders and the public",
+      "outcome": "a user-friendly information system containing data and information on biodiversity (including its associated ecosystem services, values, functions, status, trends, threats and the consequences of its loss) has been established and maintained and is widely shared among stakeholders and the public"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "effective measures in place to mitigate cumulative effects of excess nutrients, pesticides and highly hazardous chemicals, and plastic pollution",
+      "scope": "on terrestrial and aquatic ecosystems",
+      "outcome": "pollutant pressures on terrestrial and aquatic ecosystems are substantially reduced to levels that are not detrimental to ecosystem function and biodiversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_15",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "by indigenous peoples and local communities",
+      "outcome": "the management and use of wild species is sustainable for the benefit of people, ensuring social, economic and environmental benefits while enabling sustainable use by indigenous peoples and local communities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_16",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "from genetic resources and traditional knowledge",
+      "outcome": "the country will initiate the fair and equitable sharing of benefits from genetic resources and traditional knowledge, contributing to national benefits while protecting rights and raising awareness"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "measures that require monitoring, assessment and disclosure of biodiversity risks and impacts across operations and supply chains",
+      "scope": "across operations and supply chains",
+      "outcome": "the negative impacts of business on biodiversity are reduced"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "the elimination, phasing out or reform of incentives, including subsidies, that are harmful to biodiversity and the scaling up of positive incentives",
+      "scope": "for the conservation and sustainable use of biodiversity",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through increased national budget, innovative financing, public-private/NGOs partnerships and international support",
+      "scope": "for the development and implementation of the National Biodiversity Strategy and Action Plan",
+      "outcome": "the country will mobilize funds for the development and implementation of the National Biodiversity Strategy and Action Plan"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_20",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "reduce overconsumption and waste generation by at least 30%"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_21",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of indigenous peoples and local communities, women, youth and persons with disabilities in biodiversity decision-making, in relation to their rights to lands, resources and traditional knowledge",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through a gender-responsive approach, ensuring that women and girls have equal rights and access to land and natural resources, and equitable opportunities for meaningful participation and leadership at all levels, including the fair and equitable sharing of benefits arising from biodiversity and natural resources",
+      "scope": "in biodiversity conservation and NBSAP implementation",
+      "outcome": "gender equality in biodiversity conservation and NBSAP implementation is achieved and valued"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_1",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop planning strategies",
+      "scope": "land productivity and ecosystem services",
+      "outcome": "improvement of land productivity and ecosystem services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "affected ecosystems",
+      "outcome": "Improve the conditions of affected ecosystems"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop planning strategies",
+      "scope": "ecosystems",
+      "outcome": "reducing the vulnerability of ecosystems to drought"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Integrate climate change adaptation into the National Land Degradation Neutrality Strategy",
+      "scope": "the National Land Degradation Neutrality Strategy",
+      "outcome": "enhance the resilience of ecosystems and communities to climate impacts"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_6",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "ecosystems and vulnerable populations",
+      "outcome": "increase the resilience of ecosystems and vulnerable populations"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop planning strategies",
+      "scope": "in the fight against desertification",
+      "outcome": "generate environmental benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_8",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "civil society, non-governmental organizations, and other stakeholders",
+      "outcome": "highlight the importance of Land Degradation neutrality and the adoption of sustainable practices"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "among different actors, including government institutions, international organizations, the private sector, academia, and civil society",
+      "outcome": "jointly address the challenges of land degradation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "ensuring that their knowledge, needs, and perspectives are equitably incorporated",
+      "scope": "of women",
+      "outcome": "Ensure gender equality"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the effective implementation of the Fight Against Desertification",
+      "scope": "the Fight Against Desertification",
+      "outcome": "Generate global environmental benefits"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_12",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_13",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop planning strategies",
+      "scope": "for people living in vulnerable areas",
+      "outcome": "improving food security and adequate access to water"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Mobilize a substantial and additional amount of financial and non-financial resources",
+      "scope": "at the global and national levels",
+      "outcome": "support the implementation of the Convention"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_16",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  }
+]
