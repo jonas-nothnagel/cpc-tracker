@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "step": 8,
+  "totalSteps": 8,
+  "currentStep": "Complete",
+  "message": "Pipeline finished in 47.5s",
+  "startedAt": "2026-08-14T23:26:08.627158+00:00",
+  "completedAt": "2026-08-14T23:26:56.115571+00:00",
+  "error": null,
+  "summary": {
+    "totalTargets": 209,
+    "totalClassifications": 6688,
+    "relevantClassifications": 1042,
+    "totalPairs": 14784,
+    "alignmentLevels": {
+      "low": 4585,
+      "medium": 8837,
+      "high": 1300,
+      "flagged": 36,
+      "none": 26
+    },
+    "totalContradictions": 36,
+    "measureAlignmentPairs": 0,
+    "measurePseudoTargets": 0,
+    "budgetAlignmentPairs": 0,
+    "budgetPseudoTargets": 0,
+    "elapsedSeconds": 47.5
+  },
+  "promptVersion": "2.2",
+  "footprint": {
+    "energy_wh": 78.30438854348662,
+    "water_ml": 338.86380750970915,
+    "co2_geq": 31.630336222484313,
+    "minerals_ugsbeq": 97.15086746962885,
+    "call_count": 16103,
+    "tracked_call_count": 176,
+    "estimated_call_count": 0,
+    "cached_call_count": 15927,
+    "model": "gpt-5.4",
+    "available": true,
+    "source": "measured",
+    "by_model": [
+      {
+        "energy_wh": 78.30438854348662,
+        "water_ml": 338.86380750970915,
+        "co2_geq": 31.630336222484313,
+        "minerals_ugsbeq": 97.15086746962885,
+        "call_count": 16103,
+        "tracked_call_count": 176,
+        "estimated_call_count": 0,
+        "cached_call_count": 15927,
+        "model": "gpt-5.4",
+        "available": true,
+        "source": "measured"
+      }
+    ]
+  }
+}
