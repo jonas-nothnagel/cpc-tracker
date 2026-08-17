@@ -6,6 +6,7 @@
   "excludedDocTypes": [],
   "_documentTypesComment": "Sri Lanka's eight source documents. NDC/NBSAP/LDN from data_sri_lanka_15Jun26.xlsx: shortLabel / fullLabel verbatim from the xlsx Doc and Document columns, mediumLabel parenthetical = verbatim Convention column value. NAP/PPPP/NMP/NWRP are expert-curated from data_sri_lanka_2Jul26.xlsx (NMP/NWRP from its 2 Jul evening extension); NFAP is pipeline-extracted and expert-approved: fullLabel verbatim from the xlsx Document column / the document's own front matter, parenthetical = the sector domain. NMP objective is the policy's Vision (p.3) verbatim; NMP states no issuing author in its front matter (inquiries contact only), so author is omitted. Colors from the UNDP-compatible Tailwind palette; avoids reserved red (#dc2626 political sensitivity), BTR purple (#7c3aed), and OTHER grey (#78716c); mutually distinguishable.",
   "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel; urls verified to return HTTP 200 on 2026-06-30 by reading each document's front matter. NDC 3.0 and LDN are direct PDFs (UNFCCC / UNCCD) and their objectives are near-verbatim from each document's cover letter. NBSAP: the Kunming-Montreal-aligned update is still in preparation and no public draft PDF was found, so no url / date / objective is set (the 2016-2022 NBSAP and the 2024 National Policy on Biodiversity are different documents and were not substituted). The NBSAP targets and actions carried here are the country's own draft, shared with the project by the CO on 2026-07-17.",
+  "_docClassComment": "Machine-readable document classification (docClass) and national-hierarchy level (docTier) consumed by src/lib/doc-taxonomy. Added Aug 2026 for parity with Panama. THE VOCABULARY IS PROJECT-DEFINED (see DOC_CLASSES in src/lib/doc-taxonomy); EACH ASSIGNMENT TRACES TO THE DOCUMENT'S OWN SELF-DESCRIPTION recorded in docKind below, never its subject matter: NDC is a contribution declared to the UNFCCC and LDN declares country targets to the UNCCD (commitment, tier 2; no tier-1 instrument exists in this corpus - the corpus has no unifying national vision document, so tier 1 is intentionally empty). NBSAP calls itself a Strategy and Action Plan (sector_strategy, tier 3). NAP (the National Agriculture Policy, per its docKind note NOT a National Adaptation Plan), NWRP, NFAP and NMP each self-describe as a national sectoral policy - the vocabulary's closest class is sector_plan (tier 3); 'policy' vs 'plan' is noted as an approximation. PPPP self-describes as the national physical planning policy and plan, a spatial planning instrument (territorial_instrument, tier 3 - national scope, unlike Panama's subnational PIOTA at tier 4). BTR is not in this corpus. NOT YET REVIEWED BY THE COUNTRY OFFICE - confirm before this ships.",
   "documentTypes": [
     {
       "id": "NDC",
@@ -13,6 +14,8 @@
       "mediumLabel": "NDC (Climate Change)",
       "fullLabel": "Nationally Determined Contributions 3.0",
       "color": "#0468b1",
+      "docClass": "commitment",
+      "docTier": 2,
       "docKind": "Nationally Determined Contribution (UNFCCC)",
       "published": "September 2025",
       "author": "Climate Change Secretariat, Ministry of Environment, Sri Lanka",
@@ -25,6 +28,8 @@
       "mediumLabel": "NBSAP (Nature)",
       "fullLabel": "draft National Biodiversity Strategy and Action Plan",
       "color": "#166534",
+      "docClass": "sector_strategy",
+      "docTier": 3,
       "docKind": "National Biodiversity Strategy and Action Plan (CBD), in preparation",
       "author": "Ministry of Environment, Sri Lanka (Biodiversity Secretariat)"
     },
@@ -34,6 +39,8 @@
       "mediumLabel": "LDN (Land degradation)",
       "fullLabel": "Land Degradation Neutrality document",
       "color": "#b45309",
+      "docClass": "commitment",
+      "docTier": 2,
       "docKind": "UNCCD Land Degradation Neutrality country targets",
       "published": "December 2017",
       "author": "Ministry of Mahaweli Development and Environment, Sri Lanka (UNCCD LDN Target Setting Programme)",
@@ -46,6 +53,8 @@
       "mediumLabel": "NAP (Agriculture)",
       "fullLabel": "National Agriculture Policy",
       "color": "#65a30d",
+      "docClass": "sector_plan",
+      "docTier": 3,
       "docKind": "National sectoral policy (agriculture); NAP here is the National Agriculture Policy, not a National Adaptation Plan"
     },
     {
@@ -54,6 +63,8 @@
       "mediumLabel": "PPPP (Physical planning)",
       "fullLabel": "Physical Planning Policy & Plan - 2048",
       "color": "#a21caf",
+      "docClass": "territorial_instrument",
+      "docTier": 3,
       "docKind": "National physical planning policy and plan (updated edition)",
       "author": "National Physical Planning Department (NPPD), Sri Lanka",
       "objective": "Provide all development agencies and potential developers with a broad national level guiding framework for planning and executing development activities impacting the physical environment of the island and its territorial waters."
@@ -64,6 +75,8 @@
       "mediumLabel": "NWRP (Water)",
       "fullLabel": "National Water Resources Policy of Sri Lanka",
       "color": "#0e7490",
+      "docClass": "sector_plan",
+      "docTier": 3,
       "docKind": "National sectoral policy (water resources), 2023 edition",
       "published": "2023"
     },
@@ -73,6 +86,8 @@
       "mediumLabel": "NFAP (Fisheries)",
       "fullLabel": "The National Fisheries and Aquaculture Policy",
       "color": "#4f46e5",
+      "docClass": "sector_plan",
+      "docTier": 3,
       "docKind": "National sectoral policy (fisheries and aquaculture)",
       "published": "2018",
       "author": "Ministry of Fisheries and Aquatic Resources Development, Sri Lanka"
@@ -83,6 +98,8 @@
       "mediumLabel": "NMP (Minerals)",
       "fullLabel": "National Mineral Policy",
       "color": "#db2777",
+      "docClass": "sector_plan",
+      "docTier": 3,
       "docKind": "National sectoral policy (minerals)",
       "published": "2026",
       "objective": "Managing national mineral wealth for the optimal benefit of the nation."
