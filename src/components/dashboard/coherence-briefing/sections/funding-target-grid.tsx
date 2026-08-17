@@ -24,6 +24,7 @@ import type {
   FundingTier,
 } from "@/lib/financing-coherence";
 import { DataProvenance } from "@/components/ui/data-provenance";
+import { stripCountryIdPrefix } from "@/lib/utils";
 import type { AlignmentLevel } from "@/types";
 
 // Keys are FundingTier values, distinct from the AlignmentLevel keys of
@@ -371,7 +372,7 @@ function DetailDrawer({
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-1.5">
               <span className="font-mono text-caption text-[var(--undp-gray)]">
-                {row.targetId.replace(/^panama_|^mongolia_/, "")}
+                {stripCountryIdPrefix(row.targetId)}
               </span>
               <span className="text-caption text-[var(--undp-gray)] truncate">
                 {row.docLabel}
