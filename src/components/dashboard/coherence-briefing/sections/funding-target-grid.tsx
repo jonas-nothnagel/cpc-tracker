@@ -191,121 +191,6 @@ function YearlySpark({
   );
 }
 
-function DetailPanel({
-  row,
-  onClose,
-  fmt,
-  tierLabel,
-  t,
-}: {
-  row: FundingTargetRow | null;
-  onClose: () => void;
-  fmt: (v: number) => string;
-  tierLabel: (t: FundingTier) => string;
-  t: ReturnType<typeof useTranslations<"briefing.financing.targetGrid">>;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  useEffect(() => {
-    setExpanded(false);
-  }, [row?.targetId]);
-  if (!row) {
-    return (
-      <div className="bg-[var(--undp-paper)] border border-gray-100 rounded-lg p-4 text-data leading-relaxed text-[var(--undp-gray)]">
-        {t("detail.placeholder")}
-      </div>
-    );
-  }
-  const top = row.contributors.slice(0, 5);
-  const rest = row.contributors.length - top.length;
-  const needsTruncation = row.text.length > TEXT_PREVIEW_LEN;
-  const displayedText = expanded || !needsTruncation
-    ? row.text
-    : row.text.slice(0, TEXT_PREVIEW_LEN).trimEnd() + "…";
-
-  return (
-    <div className="bg-white border border-gray-100 rounded-lg p-4">
-      <div className="flex items-baseline justify-between gap-2 mb-2">
-        <div className="flex items-baseline gap-2 min-w-0">
-          <span className="font-mono text-caption text-[var(--undp-gray)] truncate">
-            {row.targetId.replace(/^panama_|^mongolia_/, "")}
-          </span>
-          <span className="text-caption text-[var(--undp-gray)] truncate">
-            {row.docLabel}
-          </span>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={t("detail.close")}
-          className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] text-body leading-none px-1 shrink-0"
-        >
-          ✕
-        </button>
-      </div>
-      <span
-        className="inline-block text-caption font-medium px-1.5 py-0.5 rounded mb-2.5"
-        style={{ backgroundColor: TIER_COLOR[row.tier] + "1f", color: TIER_COLOR[row.tier] }}
-      >
-        {tierLabel(row.tier)}
-      </span>
-      <p className="text-data leading-relaxed text-[var(--undp-black)]">{displayedText}</p>
-      {needsTruncation && (
-        <button
-          type="button"
-          onClick={() => setExpanded((v) => !v)}
-          className="mt-1 text-caption text-[var(--undp-blue)] hover:text-[var(--undp-blue-dark)] underline"
-        >
-          {expanded ? t("detail.showLess") : t("detail.readMore")}
-        </button>
-      )}
-      <div className="mt-3 border-t border-gray-100 pt-2.5 text-data">
-        <div className="flex items-baseline justify-between mb-1">
-          <span className="text-[var(--undp-gray)]">{t("detail.alignedSpend")}</span>
-          <span className="tabular-nums font-medium text-[var(--undp-black)]">
-            {fmt(row.alignedSpend)}
-          </span>
-        </div>
-        <div className="flex items-baseline justify-between mb-2.5">
-          <span className="text-[var(--undp-gray)]">{t("detail.alignedProgrammes")}</span>
-          <span className="tabular-nums font-medium text-[var(--undp-black)]">
-            {row.alignedProgrammeCount}
-          </span>
-        </div>
-        <YearlySpark series={row.yearlySpend} fmt={fmt} label={t("detail.spendPerYear")} />
-        {top.length > 0 ? (
-          <div className="mt-3">
-            <p className="text-caption text-[var(--undp-gray)] mb-1.5">
-              {t("detail.topContributing")}
-            </p>
-            <ul className="space-y-1.5">
-              {top.map((c: FundingTargetContributor) => (
-                <li key={c.code} className="flex items-start gap-2 text-caption">
-                  <span
-                    className="inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
-                    style={{ backgroundColor: LEVEL_COLOR[c.level] }}
-                    title={c.level}
-                  />
-                  <span className="flex-1 text-[var(--undp-black)] leading-snug">{c.name}</span>
-                  <span className="tabular-nums text-[var(--undp-gray)] shrink-0">{fmt(c.spend)}</span>
-                </li>
-              ))}
-            </ul>
-            {rest > 0 && (
-              <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
-                {t("detail.moreProgrammes", { count: rest })}
-              </p>
-            )}
-          </div>
-        ) : (
-          <p className="mt-2 text-caption text-[var(--undp-gray)]">
-            {t("detail.noContributors")}
-          </p>
-        )}
-      </div>
-    </div>
-  );
-}
-
 /** Group contributors by locale-picked institution; sort groups by
  *  aggregate spend descending, and programmes within each group by spend
  *  descending. Contributors with an empty institution collapse into a
@@ -655,7 +540,6 @@ export function FundingTargetGrid({
   currency,
   period,
   totals,
-  mode = "docked",
 }: {
   docs: {
     docId: string;
@@ -674,13 +558,6 @@ export function FundingTargetGrid({
     low: number;
     none: number;
   };
-  /**
-   * "docked": always-visible detail panel in a right-side column (default).
-   * "drawer": panel pops open as a fixed right-edge dialog on click. Used on
-   * Panama where the widened financing block gives the dot grid full horizontal
-   * room and the drawer overlays only when needed.
-   */
-  mode?: "docked" | "drawer";
 }) {
   const t = useTranslations("briefing.financing.targetGrid");
   const [selected, setSelected] = useState<FundingTargetRow | null>(null);
@@ -737,66 +614,34 @@ export function FundingTargetGrid({
         </div>
       </section>
 
-      {mode === "drawer" ? (
-        <div>
-          <div data-tour="grid-dots" className="px-1">
-            {docs.map((d) => (
-              <DocRow
-                key={d.docId}
-                docLabel={d.docLabel}
-                rows={d.rows}
-                docSpend={d.docSpend}
-                docTotalTitle={t("docTotal")}
-                selectedId={selected?.targetId ?? null}
-                onSelect={setSelected}
-                fmt={fmt}
-                tierLabel={tierLabel}
-              />
-            ))}
-          </div>
-          <ColorLegend tierLabel={tierLabel} />
-          {selected && (
-            <DetailDrawer
-              key={selected.targetId}
-              row={selected}
-              onClose={() => setSelected(null)}
+      <div>
+        <div data-tour="grid-dots" className="px-1">
+          {docs.map((d) => (
+            <DocRow
+              key={d.docId}
+              docLabel={d.docLabel}
+              rows={d.rows}
+              docSpend={d.docSpend}
+              docTotalTitle={t("docTotal")}
+              selectedId={selected?.targetId ?? null}
+              onSelect={setSelected}
               fmt={fmt}
               tierLabel={tierLabel}
-              t={t}
             />
-          )}
+          ))}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 items-start">
-          <div>
-            <div data-tour="grid-dots" className="px-1">
-              {docs.map((d) => (
-                <DocRow
-                  key={d.docId}
-                  docLabel={d.docLabel}
-                  rows={d.rows}
-                  docSpend={d.docSpend}
-                  docTotalTitle={t("docTotal")}
-                  selectedId={selected?.targetId ?? null}
-                  onSelect={setSelected}
-                  fmt={fmt}
-                  tierLabel={tierLabel}
-                />
-              ))}
-            </div>
-            <ColorLegend tierLabel={tierLabel} />
-          </div>
-          <aside className="lg:sticky lg:top-4">
-            <DetailPanel
-              row={selected}
-              onClose={() => setSelected(null)}
-              fmt={fmt}
-              tierLabel={tierLabel}
-              t={t}
-            />
-          </aside>
-        </div>
-      )}
+        <ColorLegend tierLabel={tierLabel} />
+        {selected && (
+          <DetailDrawer
+            key={selected.targetId}
+            row={selected}
+            onClose={() => setSelected(null)}
+            fmt={fmt}
+            tierLabel={tierLabel}
+            t={t}
+          />
+        )}
+      </div>
     </div>
   );
 }

@@ -131,7 +131,6 @@ export function FinancingSection({
           currency={berData?.currency ?? ""}
           period={berData?.period}
           totals={grid.totals}
-          mode="drawer"
         />
         {globeSpend && <GlobeSpendBreakdown summary={globeSpend} />}
       </div>
