@@ -7,6 +7,7 @@ Provider-agnostic: swap LLM_BASE_URL + LLM_MODEL to change backend.
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 
@@ -60,3 +61,26 @@ CACHE_DIR = Path(os.getenv("CPC_CACHE_DIR") or str(OUTPUT_DIR / ".cache"))
 # Ensure directories exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def country_display_name(country: str) -> str:
+    """Human-readable country name for synthesis prompts and logs.
+
+    Reads `name` from `{country}-country-config.json`; falls back to a
+    title-cased slug ("sri-lanka" -> "Sri Lanka"), never to a placeholder.
+    This used to have three divergent fallbacks — run_analysis fell back to
+    the literal string "the country", which reached the corpus-synthesis
+    prompts for Mongolia and Panama because their configs lacked `name`.
+    Prompt-affecting: the name is embedded in the corpus-synthesis user
+    prompt, so changing a country's `name` invalidates its corpus-themes
+    LLM cache entries.
+    """
+    config_path = DATA_DIR / f"{country}-country-config.json"
+    if config_path.exists():
+        try:
+            name = json.loads(config_path.read_text()).get("name")
+        except (OSError, json.JSONDecodeError):
+            name = None
+        if name:
+            return str(name)
+    return country.replace("-", " ").title()

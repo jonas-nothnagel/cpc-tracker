@@ -31,7 +31,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from . import config
-from .config import ACTIVE_TAXONOMIES, CACHE_DIR, DATA_DIR, OUTPUT_DIR
+from .config import (
+    ACTIVE_TAXONOMIES,
+    CACHE_DIR,
+    DATA_DIR,
+    OUTPUT_DIR,
+    country_display_name,
+)
 from .classify import rank_classification
 from .classify_globe import (
     classify_globe_subcategories,
@@ -866,10 +872,24 @@ async def main() -> None:
         out_path.write_text(json.dumps(doc_pair_records, indent=2, ensure_ascii=False))
         logger.info(f"  Saved {len(doc_pair_records)} doc-pair syntheses to {out_path}")
 
-        country_name = "the country"
-        if config_path.exists():
-            cfg_for_name = json.loads(config_path.read_text())
-            country_name = cfg_for_name.get("name") or country_name
+        # Resolved via the shared helper (config `name`, else title-cased
+        # slug). Reaches the corpus-synthesis prompt, so it is part of the
+        # LLM cache key for corpus themes.
+        country_stem = re.sub(
+            r"-?targets$",
+            "",
+            args.targets_file[:-5]
+            if args.targets_file.endswith(".json")
+            else args.targets_file,
+        )
+        if country_stem:
+            country_name = country_display_name(country_stem)
+        else:
+            # Upload flow ("targets.json" carries no country stem): use the
+            # country the wizard stamped on the records, else stay generic.
+            country_name = (
+                targets[0].get("country") if targets else None
+            ) or "the country"
 
         # Sector synthesis needs category-name resolution. Build it once from the
         # taxonomies already loaded in this run plus country-specific files; it is
