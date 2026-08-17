@@ -71,7 +71,7 @@ from .budget_align import (
 )
 from .synthesize_doc_pairs import synthesize_doc_pairs
 from .synthesize_corpus import synthesize_corpus
-from .synthesize_by_sector import synthesize_by_sector
+from .synthesize_by_sector import build_sector_category_names, synthesize_by_sector
 from .synthesis_states import (
     canonical_hidden_key,
     filter_doc_pair_records,
@@ -891,34 +891,27 @@ async def main() -> None:
                 targets[0].get("country") if targets else None
             ) or "the country"
 
-        # Sector synthesis needs category-name resolution. Build it once from the
-        # taxonomies already loaded in this run plus country-specific files; it is
+        # Sector synthesis needs category-name resolution. Single shared
+        # builder with the synthesize_by_sector CLI (the two used to diverge:
+        # the CLI path was missing gga/hr names); built once from the
+        # taxonomies already loaded in this run plus country-specific files,
         # reused across every precompute state.
-        sector_category_names: dict[tuple[str, str], str] = {}
-        for cat in nbs_categories:
-            sector_category_names[("nbs", cat["id"])] = cat.get("name", cat["id"])
-        for cat in sectors:
-            sector_category_names[("sector", cat["id"])] = cat.get("name", cat["id"])
-        for cat in globe_categories:
-            sector_category_names[("globe", cat["id"])] = cat.get("name", cat["id"])
-        for cat in gga_categories:
-            sector_category_names[("gga", cat["id"])] = cat.get("name", cat["id"])
-        for cat in hr_categories:
-            sector_category_names[("hr", cat["id"])] = cat.get("name", cat["id"])
-        if config_path.exists():
-            cfg = json.loads(config_path.read_text())
-            for cat in cfg.get("countrySectors", []):
-                sector_category_names[("country", cat["id"])] = cat.get(
-                    "name", cat["id"]
-                )
-        if adp_data:
-            for g in adp_data.get("adaptationGoals", []):
-                gid = str(g["id"])
-                descr = g.get("description", gid)
-                short = descr[:80].rstrip(",.")
-                if len(descr) > 80:
-                    short = short + "…"
-                sector_category_names[("adaptation_goal", gid)] = short
+        sector_category_names = build_sector_category_names(
+            category_lists={
+                "nbs": nbs_categories,
+                "sector": sectors,
+                "globe": globe_categories,
+                "globe_sub": globe_subcategories,
+                "gga": gga_categories,
+                "hr": hr_categories,
+            },
+            country_config=(
+                json.loads(config_path.read_text())
+                if config_path.exists()
+                else None
+            ),
+            adaptation_data=adp_data,
+        )
 
         # Precompute the corpus + sector storylines for each toggle state the
         # document filter can reach: the full corpus (""), every single-doc-
