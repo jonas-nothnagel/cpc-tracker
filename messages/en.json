@@ -1408,6 +1408,41 @@
     }
   },
   "country": {},
+  "modelComparison": {
+    "subtitle": "{country} · Model comparison",
+    "title": "{country} · model comparison",
+    "openEvaluation": "Open manual evaluation tool →",
+    "intro": "The same {country} inputs run through the pipeline on {count, number} different LLMs. AI-generated outputs; comparison runs, not the production result. Footprint values flagged estimated use generic per-token coefficients (model not in the EcoLogits registry).",
+    "corpusCaveat": "The {reference} row reflects the current production corpus ({targets, number} targets, {pairs, number} pairs); rows with a different pair count still hold an earlier corpus, so their differences against {reference} reflect the corpus change as well as the model until those runs are refreshed.",
+    "th": {
+      "model": "Model",
+      "status": "Status",
+      "wallClock": "Wall-clock",
+      "llmCalls": "LLM calls",
+      "targets": "Targets",
+      "pairs": "Pairs",
+      "high": "High",
+      "flagged": "Flagged",
+      "energy": "Energy (Wh)",
+      "co2": "CO₂e (g)",
+      "water": "Water (mL)",
+      "footprintSource": "Footprint source"
+    },
+    "source": {
+      "estimated": "estimated",
+      "mixed": "mixed",
+      "measured": "measured"
+    },
+    "clickHint": "Click a model name to open the {country} dashboard with that model’s outputs.",
+    "runHint": "Run <command>uv run python -m src.analyze_model_comparison --country {country}</command> to generate the detailed cross-model analysis sections."
+  },
+  "modelEvaluation": {
+    "subtitle": "{country} · Model evaluation",
+    "title": "{country} · manual evaluation",
+    "back": "← Back to model comparison",
+    "intro": "Give each sampled policy pair your own verdict on the same five-level scale the models use — “No relationship”, “Partially aligned”, “Moderately aligned”, “Strongly aligned”, or “Potential misalignment”. The models’ verdicts and rationales are hidden, so each rating is an independent human judgement directly comparable with theirs. The tool tracks how often your blind verdict lands on “Potential misalignment”, with a Wilson 95% confidence interval. Ratings persist to the server-side ledger <path>python/output/ratings-ledger.jsonl</path> — visible across browsers, devices, and reviewers, and kept across model re-runs and deploys.",
+    "runHint": "Run <command>uv run python -m src.analyze_model_comparison --country {country}</command> to generate the evaluation samples first."
+  },
   "prototypes": {
     "unavailable": {
       "subtitle": "Prototypes",

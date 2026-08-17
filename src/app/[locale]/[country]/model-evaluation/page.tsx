@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Header } from "@/components/ui/header";
 import { Link } from "@/i18n/navigation";
+import { getCountry, isValidCountryId } from "@/config/countries";
 import {
   computeModelAgreement,
   listAvailableModels,
@@ -12,7 +14,9 @@ import {
 } from "@/lib/dashboard-data";
 import { EvaluationSections } from "@/components/model-comparison/analysis-sections";
 
-const COUNTRY = "mongolia";
+interface PageProps {
+  params: Promise<{ country: string }>;
+}
 
 // Ratings and model outputs live on the persistent volume and change at
 // runtime (reviewer clicks, pipeline re-runs). Without this the page is
@@ -20,23 +24,35 @@ const COUNTRY = "mongolia";
 // ledger — live ratings then silently vanish on every reload.
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata() {
-  return { title: "Mongolia model evaluation | CPC Analyzer" };
+export async function generateMetadata({ params }: PageProps) {
+  const { country } = await params;
+  const entry = isValidCountryId(country.toLowerCase())
+    ? getCountry(country.toLowerCase())
+    : undefined;
+  if (!entry?.visible) return { title: "CPC Analyzer" };
+  return { title: `${entry.name} model evaluation | CPC Analyzer` };
 }
 
-export default async function MongoliaModelEvaluationPage() {
-  const models = listAvailableModels(COUNTRY);
+export default async function ModelEvaluationPage({ params }: PageProps) {
+  const { country } = await params;
+  const lower = country.toLowerCase();
+  if (!isValidCountryId(lower)) notFound();
+  const entry = getCountry(lower);
+  if (!entry?.visible) notFound();
+
+  const t = await getTranslations("modelEvaluation");
+  const models = listAvailableModels(entry.id);
   if (models.length === 0) notFound();
 
-  const fullReport = loadModelComparison(COUNTRY);
+  const fullReport = loadModelComparison(entry.id);
   // Blind evaluation: only the sanitized slice ever reaches the client —
   // model verdicts and rationales must not be recoverable via view-source.
   const report = fullReport ? sanitizeForBlindEvaluation(fullReport) : null;
-  const ratings = loadRatings(COUNTRY);
-  const flaggedByModel = loadModelFlaggedPairKeys(COUNTRY);
+  const ratings = loadRatings(entry.id);
+  const flaggedByModel = loadModelFlaggedPairKeys(entry.id);
   // Aggregate agreement only — per-pair model verdicts stay on the server.
   const modelAgreement = computeModelAgreement(
-    loadModelAlignmentLabels(COUNTRY),
+    loadModelAlignmentLabels(entry.id),
     ratings,
   );
 
@@ -45,35 +61,30 @@ export default async function MongoliaModelEvaluationPage() {
       className="min-h-screen flex flex-col"
       style={{ backgroundColor: "#fbfaf7" }}
     >
-      <Header subtitle="Mongolia · Model evaluation" basePath="/mongolia" />
+      <Header
+        subtitle={t("subtitle", { country: entry.name })}
+        basePath={`/${entry.id}`}
+      />
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
         <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
           <h1 className="text-2xl font-medium text-[var(--undp-black)]">
-            Mongolia · manual evaluation
+            {t("title", { country: entry.name })}
           </h1>
           <Link
-            href="/mongolia/model-comparison"
+            href={`/${entry.id}/model-comparison`}
             className="text-sm text-[var(--undp-blue)] hover:underline"
           >
-            ← Back to model comparison
+            {t("back")}
           </Link>
         </div>
         <p className="text-sm text-[var(--undp-gray)] mb-6 max-w-3xl">
-          Give each sampled policy pair your own verdict on the same
-          five-level scale the models use — &ldquo;No relationship&rdquo;,
-          &ldquo;Partially aligned&rdquo;, &ldquo;Moderately aligned&rdquo;,
-          &ldquo;Strongly aligned&rdquo;, or &ldquo;Potential
-          misalignment&rdquo;. The models&apos; verdicts and
-          rationales are hidden, so each rating is an independent human
-          judgement directly comparable with theirs. The tool tracks how
-          often your blind verdict lands on &ldquo;Potential
-          misalignment&rdquo;, with a Wilson 95% confidence interval.
-          Ratings persist to the server-side ledger{" "}
-          <code className="font-mono text-[10px] px-1 bg-gray-100">
-            python/output/ratings-ledger.jsonl
-          </code>{" "}
-          — visible across browsers, devices, and reviewers, and kept across
-          model re-runs and deploys.
+          {t.rich("intro", {
+            path: (chunks) => (
+              <code className="font-mono text-[10px] px-1 bg-gray-100">
+                {chunks}
+              </code>
+            ),
+          })}
         </p>
 
         {report ? (
@@ -85,11 +96,14 @@ export default async function MongoliaModelEvaluationPage() {
           />
         ) : (
           <p className="text-xs text-[var(--undp-gray)] mt-8 italic max-w-3xl">
-            Run{" "}
-            <code className="font-mono text-[10px] px-1 bg-gray-100">
-              uv run python -m src.analyze_model_comparison --country {COUNTRY}
-            </code>{" "}
-            to generate the evaluation samples first.
+            {t.rich("runHint", {
+              command: (chunks) => (
+                <code className="font-mono text-[10px] px-1 bg-gray-100">
+                  {chunks}
+                </code>
+              ),
+              country: entry.id,
+            })}
           </p>
         )}
       </main>

@@ -11,13 +11,15 @@ describe("toRoutePattern", () => {
     expect(toRoutePattern("/sustainability")).toBe("/sustainability");
     expect(toRoutePattern("/prototypes")).toBe("/prototypes");
     expect(toRoutePattern("/mongolia/model-comparison")).toBe(
-      "/mongolia/model-comparison",
+      "/[country]/model-comparison",
     );
-    expect(toRoutePattern("/mongolia/model-evaluation")).toBe(
-      "/mongolia/model-evaluation",
+    expect(toRoutePattern("/panama/model-evaluation")).toBe(
+      "/[country]/model-evaluation",
     );
     expect(toRoutePattern("/panama")).toBe("/[country]");
     expect(toRoutePattern("/panama/upload")).toBe("/[country]/upload");
+    // The country segment is registry-validated for sub-pages too.
+    expect(toRoutePattern("/notacountry/model-comparison")).toBe("/other");
     expect(toRoutePattern("/analysis/run-2026-07-01")).toBe("/analysis/[id]");
   });
 
@@ -44,6 +46,7 @@ describe("countryFromPath", () => {
   it("extracts the country only from country-shaped routes", () => {
     expect(countryFromPath("/panama")).toBe("panama");
     expect(countryFromPath("/panama/upload")).toBe("panama");
+    expect(countryFromPath("/mongolia/model-comparison")).toBe("mongolia");
     expect(countryFromPath("/dashboard")).toBeNull();
     expect(countryFromPath("/")).toBeNull();
   });

@@ -1408,6 +1408,41 @@
     }
   },
   "country": {},
+  "modelComparison": {
+    "subtitle": "{country} · Comparación de modelos",
+    "title": "{country} · comparación de modelos",
+    "openEvaluation": "Abrir la herramienta de evaluación manual →",
+    "intro": "Los mismos insumos de {country} procesados por la canalización con {count, number} LLM distintos. Resultados generados por IA; son corridas de comparación, no el resultado de producción. Los valores de huella marcados como estimados usan coeficientes genéricos por token (el modelo no figura en el registro EcoLogits).",
+    "corpusCaveat": "La fila {reference} refleja el corpus de producción actual ({targets, number} metas, {pairs, number} pares); las filas con un número de pares distinto conservan un corpus anterior, por lo que sus diferencias frente a {reference} reflejan el cambio de corpus además del modelo, hasta que esas corridas se actualicen.",
+    "th": {
+      "model": "Modelo",
+      "status": "Estado",
+      "wallClock": "Tiempo total",
+      "llmCalls": "Llamadas al LLM",
+      "targets": "Metas",
+      "pairs": "Pares",
+      "high": "Alta",
+      "flagged": "Señalados",
+      "energy": "Energía (Wh)",
+      "co2": "CO₂e (g)",
+      "water": "Agua (mL)",
+      "footprintSource": "Fuente de la huella"
+    },
+    "source": {
+      "estimated": "estimado",
+      "mixed": "mixto",
+      "measured": "medido"
+    },
+    "clickHint": "Haga clic en el nombre de un modelo para abrir el panel de {country} con los resultados de ese modelo.",
+    "runHint": "Ejecute <command>uv run python -m src.analyze_model_comparison --country {country}</command> para generar las secciones detalladas de análisis entre modelos."
+  },
+  "modelEvaluation": {
+    "subtitle": "{country} · Evaluación de modelos",
+    "title": "{country} · evaluación manual",
+    "back": "← Volver a la comparación de modelos",
+    "intro": "Dé su propio veredicto a cada par de políticas muestreado en la misma escala de cinco niveles que usan los modelos: “Sin relación”, “Parcialmente alineado”, “Moderadamente alineado”, “Fuertemente alineado” o “Posible desalineación”. Los veredictos y las justificaciones de los modelos están ocultos, de modo que cada calificación es un juicio humano independiente directamente comparable con los suyos. La herramienta registra con qué frecuencia su veredicto a ciegas cae en “Posible desalineación”, con un intervalo de confianza de Wilson del 95%. Las calificaciones se guardan en el registro del servidor <path>python/output/ratings-ledger.jsonl</path>: visibles entre navegadores, dispositivos y personas revisoras, y se conservan entre corridas de modelos y despliegues.",
+    "runHint": "Ejecute <command>uv run python -m src.analyze_model_comparison --country {country}</command> para generar primero las muestras de evaluación."
+  },
   "prototypes": {
     "unavailable": {
       "subtitle": "Prototipos",
