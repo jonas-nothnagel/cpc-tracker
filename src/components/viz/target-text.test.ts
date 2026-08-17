@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { itemisedActivities, activitiesActionsCount } from "./target-text";
+import { itemisedActivities, activitiesActionsCount, resolveTargetLanguage } from "./target-text";
 import type { Target } from "@/types";
 
 /**
@@ -61,5 +61,46 @@ describe("activitiesActionsCount", () => {
 
   it("is zero when the target has neither", () => {
     expect(activitiesActionsCount(base)).toBe(0);
+  });
+});
+
+// Every current corpus declares `language` on rows that carry textOriginal
+// (mongolia: mn, panama: es, cote-divoire: fr), so the declared code is the
+// primary path; detection is a fallback of a fallback and must never guess
+// between Latin-script languages (the pre-fix behavior defaulted to Spanish
+// and mislabeled Côte d'Ivoire's French sources).
+describe("resolveTargetLanguage", () => {
+  it("uses the caller override first", () => {
+    expect(
+      resolveTargetLanguage({ language: "es", textOriginal: "x" }, "PT", "Portuguese"),
+    ).toEqual({ code: "PT", name: "Portuguese" });
+  });
+
+  it("resolves declared registry codes", () => {
+    expect(resolveTargetLanguage({ language: "es", textOriginal: "Meta 1" }))
+      .toEqual({ code: "ES", name: "Spanish" });
+    expect(resolveTargetLanguage({ language: "mn", textOriginal: "Зорилт" }))
+      .toEqual({ code: "MN", name: "Mongolian" });
+    expect(resolveTargetLanguage({ language: "fr", textOriginal: "Objectif 1" }))
+      .toEqual({ code: "FR", name: "French" });
+  });
+
+  it("shows a declared but unregistered code verbatim instead of guessing", () => {
+    expect(resolveTargetLanguage({ language: "pt", textOriginal: "Meta 1" }))
+      .toEqual({ code: "PT", name: "PT" });
+  });
+
+  it("detects Cyrillic as Mongolian when no code is declared", () => {
+    expect(resolveTargetLanguage({ textOriginal: "Ойн нөхөрлөл" }))
+      .toEqual({ code: "MN", name: "Mongolian" });
+  });
+
+  it("never guesses between Latin-script languages: no code, no claim", () => {
+    expect(
+      resolveTargetLanguage({ textOriginal: "Réduire la déforestation" }),
+    ).toBeNull();
+    expect(resolveTargetLanguage({ textOriginal: "Reducir la deforestación" }))
+      .toBeNull();
+    expect(resolveTargetLanguage({})).toBeNull();
   });
 });

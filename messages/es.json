@@ -1990,7 +1990,8 @@
     "targetText": {
       "language": {
         "es": "español",
-        "mn": "mongol"
+        "mn": "mongol",
+        "fr": "francés"
       },
       "chip": {
         "ariaLabel": "Mostrar el texto fuente original en {language}",
