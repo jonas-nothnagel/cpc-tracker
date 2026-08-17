@@ -5653,7 +5653,7 @@ export function PolicyCoherenceExplorer({
                 </button>
                 {budgetShadingActive && (
                   <p className="text-caption text-[var(--undp-gray)] leading-snug">
-                    {t("budget.mongoliaNote", {
+                    {t("budget.berNote", {
                       start: budgetSummary.period.start,
                       end: budgetSummary.period.end,
                     })}

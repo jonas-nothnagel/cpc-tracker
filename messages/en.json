@@ -1137,7 +1137,7 @@
     "step1": {
       "intro": "Select the country and upload its policy documents. Common formats are accepted; the system detects how to process each file.",
       "countryLabel": "Country",
-      "countryPlaceholder": "e.g. Mongolia",
+      "countryPlaceholder": "Country name",
       "referenceBadge": "Reference data",
       "referenceNext": "Reference data in next step",
       "docTypeLabel": "Document type",
@@ -1656,7 +1656,7 @@
       "label": "Biodiversity Budget",
       "onTitle": "Turn off the Biodiversity Budget shading. The wheel keeps the biodiversity grouping.",
       "offTitle": "Switch to the Biodiversity Budget view: groups arcs by biodiversity category and shades each by its share of tagged BER spend.",
-      "mongoliaNote": "BER (Biodiversity Expenditure Review), {start, number}-{end, number} totals. Subset of national expenditure.",
+      "berNote": "BER (Biodiversity Expenditure Review), {start, number}-{end, number} totals. Subset of national expenditure.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% of tagged BER)",
       "fallbackAmount": "0 MNT"
     },
@@ -2178,7 +2178,7 @@
       },
       "lulucfExplainer": {
         "heading": "About negative LULUCF values:",
-        "body": "The Land Use, Land-Use Change and Forestry sector shows negative numbers because Mongolia's forests and grasslands currently <strong>absorb more CO₂ than they emit</strong>, making this sector a net carbon sink. In international GHG accounting, removals from the atmosphere are reported as negative values. A value becoming <em>less negative</em> (moving toward zero) means the sink is weakening and absorbing less carbon over time, which is a warning sign for climate goals."
+        "body": "The Land Use, Land-Use Change and Forestry sector shows negative numbers because the country's forests and grasslands currently <strong>absorb more CO₂ than they emit</strong>, making this sector a net carbon sink. In international GHG accounting, removals from the atmosphere are reported as negative values. A value becoming <em>less negative</em> (moving toward zero) means the sink is weakening and absorbing less carbon over time, which is a warning sign for climate goals."
       },
       "yAxisUnit": "kt CO₂ eq"
     },
@@ -2299,7 +2299,7 @@
       },
       "gaps": {
         "title": "Reporting gaps",
-        "footnote": "Counts use the IPCC sector recorded for each BTR action in the underlying data file (hand-curated for Mongolia, parser-extracted for Panama). Government self-reports rarely surface contradictions, so absence of a reported action is not the same as absence of activity on the ground.",
+        "footnote": "Counts use the IPCC sector recorded for each BTR action in the underlying data file; depending on the country, sectors were hand-curated from the BTR or parser-extracted. Government self-reports rarely surface contradictions, so absence of a reported action is not the same as absence of activity on the ground.",
         "nationalSectorCoverage": "BTR mitigation reporting covers {covered, number} of {total, number} national sector categories. {names} {count, plural, one {is} other {are}} not covered by any reported mitigation action.",
         "ipccSectorCoverage": "BTR mitigation reporting covers {covered, number} of {total, number} IPCC sectors. {names} {count, plural, one {is} other {are}} not covered by any reported mitigation action.",
         "implementationStatus": "Only {implemented, number} of {total, number} reported BTR {total, plural, one {action is} other {actions are}} marked 'fully implemented'. The other {other, number} are ongoing, adopted or planned.",
