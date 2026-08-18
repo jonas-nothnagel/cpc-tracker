@@ -284,3 +284,68 @@ describe("validateRegistry", () => {
     ).not.toThrow();
   });
 });
+
+// ---------------------------------------------------------------------------
+// Drift guard: the has.* capability flags vs actual on-disk data.
+//
+// The dashboard gates features on data presence, not on these flags (only the
+// upload wizard reads them, and it runs client-side where it cannot probe the
+// filesystem) — so nothing at runtime would ever notice a stale flag. This
+// suite is the notice: each flag must match the data that actually backs the
+// capability, handling both output layouts (flat and per-model subdirs).
+// ---------------------------------------------------------------------------
+
+import { existsSync, readdirSync, statSync } from "fs";
+import { join } from "path";
+
+const PY = join(process.cwd(), "python");
+
+/** Resolve the country's output dir(s): the flat root, or every per-model
+ *  subdir that carries an alignment.json (Mongolia's layout). */
+function outputDirs(id: string): string[] {
+  const root = join(PY, "output", id);
+  if (!existsSync(root)) return [];
+  if (existsSync(join(root, "alignment.json"))) return [root];
+  return readdirSync(root)
+    .map((name) => join(root, name))
+    .filter(
+      (p) => statSync(p).isDirectory() && existsSync(join(p, "alignment.json")),
+    );
+}
+
+const hasOutputFile = (id: string, file: string): boolean =>
+  outputDirs(id).some((dir) => existsSync(join(dir, file)));
+
+describe("has.* flags match on-disk data (drift guard)", () => {
+  for (const entry of listCountries()) {
+    const { id, iso3, has } = entry;
+
+    it(`${id}: coherence ↔ alignment.json`, () => {
+      expect(outputDirs(id).length > 0).toBe(has.coherence);
+    });
+
+    it(`${id}: btr.mitigation ↔ measure_alignment.json`, () => {
+      expect(hasOutputFile(id, "measure_alignment.json")).toBe(
+        has.btr.mitigation,
+      );
+    });
+
+    it(`${id}: btr.adaptation ↔ ${id}-btr-adaptation.json`, () => {
+      expect(existsSync(join(PY, "data", `${id}-btr-adaptation.json`))).toBe(
+        has.btr.adaptation,
+      );
+    });
+
+    it(`${id}: nr7 ↔ external/nr7_${iso3}.json`, () => {
+      expect(existsSync(join(PY, "data", "external", `nr7_${iso3}.json`))).toBe(
+        has.nr7,
+      );
+    });
+
+    it(`${id}: ber ↔ ${id}-ber.json + budget_alignment.json`, () => {
+      const berData = existsSync(join(PY, "data", `${id}-ber.json`));
+      const budgetAligned = hasOutputFile(id, "budget_alignment.json");
+      expect(berData && budgetAligned).toBe(has.ber);
+    });
+  }
+});
