@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
         error:
           "Running new analyses is not available in the hosted preview. " +
           "The AI pipeline requires a local or Docker environment with Python. " +
-          "You can explore the pre-computed Mongolia pilot on the Dashboard.",
+          "You can explore the pre-computed country analyses on the Dashboard.",
       },
       { status: 501 }
     );
