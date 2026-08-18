@@ -65,8 +65,8 @@ export const ROUTE_NAMES: Record<string, string> = {
   "/methodology": "Methodology page",
   "/sustainability": "Sustainability page",
   "/prototypes": "Prototypes",
-  "/mongolia/model-comparison": "Model comparison (Mongolia)",
-  "/mongolia/model-evaluation": "Model evaluation (Mongolia)",
+  "/[country]/model-comparison": "Model comparison",
+  "/[country]/model-evaluation": "Model evaluation",
   "/other": "Other pages",
 };
 

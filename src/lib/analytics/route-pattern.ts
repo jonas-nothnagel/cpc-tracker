@@ -12,13 +12,13 @@ export const ROUTE_PATTERNS = new Set([
   "/dashboard",
   "/[country]",
   "/[country]/upload",
+  "/[country]/model-comparison",
+  "/[country]/model-evaluation",
   "/upload",
   "/analysis/[id]",
   "/methodology",
   "/sustainability",
   "/prototypes",
-  "/mongolia/model-comparison",
-  "/mongolia/model-evaluation",
   "/other",
 ]);
 
@@ -29,9 +29,10 @@ const STATIC_ROUTES = new Set([
   "/methodology",
   "/sustainability",
   "/prototypes",
-  "/mongolia/model-comparison",
-  "/mongolia/model-evaluation",
 ]);
+
+/** Second path segments that resolve to a per-country sub-page pattern. */
+const COUNTRY_SUBPAGES = new Set(["upload", "model-comparison", "model-evaluation"]);
 
 export function toRoutePattern(pathname: string): string {
   const path = pathname.replace(/\/+$/, "") || "/";
@@ -48,10 +49,10 @@ export function toRoutePattern(pathname: string): string {
   }
   if (
     segments.length === 2 &&
-    segments[1] === "upload" &&
+    COUNTRY_SUBPAGES.has(segments[1]) &&
     getCountry(segments[0])
   ) {
-    return "/[country]/upload";
+    return `/[country]/${segments[1]}`;
   }
   return "/other";
 }
@@ -60,7 +61,7 @@ export function toRoutePattern(pathname: string): string {
 export function countryFromPath(pathname: string): string | null {
   const segments = pathname.split("/").filter(Boolean);
   const pattern = toRoutePattern(pathname);
-  if (pattern === "/[country]" || pattern === "/[country]/upload") {
+  if (pattern === "/[country]" || pattern.startsWith("/[country]/")) {
     return segments[0];
   }
   return null;
