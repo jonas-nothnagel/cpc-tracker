@@ -85,10 +85,17 @@ describe("parseFeedbackBody", () => {
   });
 
   it("falls back to en for unknown locales", () => {
-    const res = parseFeedbackBody(validBody({ locale: "fr" }));
+    const res = parseFeedbackBody(validBody({ locale: "de" }));
     expect(res.ok).toBe(true);
     if (!res.ok) return;
     expect(res.event.locale).toBe("en");
+  });
+
+  it("accepts fr (Côte d'Ivoire corpus language)", () => {
+    const res = parseFeedbackBody(validBody({ locale: "fr" }));
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    expect(res.event.locale).toBe("fr");
   });
 
   it("accepts a single-id storyline anchor", () => {

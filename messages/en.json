@@ -2025,7 +2025,8 @@
     "targetText": {
       "language": {
         "es": "Spanish",
-        "mn": "Mongolian"
+        "mn": "Mongolian",
+        "fr": "French"
       },
       "chip": {
         "ariaLabel": "Show original {language} source text",

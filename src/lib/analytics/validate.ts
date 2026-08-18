@@ -37,7 +37,7 @@ const UUID =
 const VIEW_ID = /^[a-z0-9]{8}$/;
 /** Analysis run ids as minted by the pipeline; never free-form text. */
 const ANALYSIS_ID = /^[a-zA-Z0-9_-]{1,64}$/;
-const LOCALES = new Set(["en", "es", "mn"]);
+const LOCALES = new Set(["en", "es", "mn", "fr"]);
 const VIEWPORTS = new Set<ViewportBucket>(["xs", "sm", "md", "lg", "xl"]);
 const CLICK_ROLES = new Set<ClickRole>(["button", "link", "tab", "other"]);
 /** "browser/os" coarse families only (client.ts derives; this re-checks). */
