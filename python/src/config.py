@@ -60,3 +60,28 @@ CACHE_DIR = Path(os.getenv("CPC_CACHE_DIR") or str(OUTPUT_DIR / ".cache"))
 # Ensure directories exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+# ---------------------------------------------------------------------------
+# Country registry
+# ---------------------------------------------------------------------------
+
+# The default targets file for single-country CLI entry points (run_analysis,
+# probe_cache, rerun_measure_alignment). One named constant so "the default
+# country is Mongolia" is written down exactly once.
+DEFAULT_TARGETS_FILE: str = "mongolia-targets.json"
+
+
+def all_targets_files() -> list[str]:
+    """Every committed country corpus, as targets filenames.
+
+    The `python/data/*-targets.json` glob IS the pipeline's country registry:
+    a country exists exactly when its curated corpus does, and output dirs
+    derive from the same stem (mongolia-targets.json -> output/mongolia/).
+    Scripts that fan out across countries must use this instead of a
+    hardcoded list — every such list has gone stale (all four predated
+    Country X). Sorted, with the default country first for stable output.
+    """
+    found = sorted(p.name for p in DATA_DIR.glob("*-targets.json"))
+    if DEFAULT_TARGETS_FILE in found:
+        return [DEFAULT_TARGETS_FILE, *[f for f in found if f != DEFAULT_TARGETS_FILE]]
+    return found

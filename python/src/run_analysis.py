@@ -31,7 +31,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from . import config
-from .config import ACTIVE_TAXONOMIES, CACHE_DIR, DATA_DIR, OUTPUT_DIR
+from .config import (
+    ACTIVE_TAXONOMIES,
+    CACHE_DIR,
+    DATA_DIR,
+    DEFAULT_TARGETS_FILE,
+    OUTPUT_DIR,
+)
 from .classify import rank_classification
 from .classify_globe import (
     classify_globe_subcategories,
@@ -171,7 +177,7 @@ def write_status(
 
 
 def load_input_data(
-    targets_file: str = "mongolia-targets.json",
+    targets_file: str = DEFAULT_TARGETS_FILE,
 ) -> tuple[list, list, list, list, list, list, list]:
     """Load targets and categories from JSON files."""
     targets = json.loads((DATA_DIR / targets_file).read_text())
@@ -254,8 +260,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run CPC analysis pipeline")
     parser.add_argument(
         "--targets-file",
-        default="mongolia-targets.json",
-        help="Name of the targets JSON file in DATA_DIR (default: mongolia-targets.json)",
+        default=DEFAULT_TARGETS_FILE,
+        help=f"Name of the targets JSON file in DATA_DIR (default: {DEFAULT_TARGETS_FILE})",
     )
     parser.add_argument(
         "--language",

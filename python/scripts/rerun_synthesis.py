@@ -43,7 +43,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.config import DATA_DIR, OUTPUT_DIR  # noqa: E402
+from src.config import DATA_DIR, OUTPUT_DIR, all_targets_files  # noqa: E402
 from src.llm import set_language  # noqa: E402
 from src.synthesis_states import (  # noqa: E402
     canonical_hidden_key,
@@ -61,12 +61,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger("rerun_synthesis")
 
-DEFAULT_TARGETS = [
-    "mongolia-targets.json",
-    "panama-targets.json",
-    "sri-lanka-targets.json",
-    "cote-divoire-targets.json",
-]
+# Every committed corpus, from the python/data glob — see config.all_targets_files.
+DEFAULT_TARGETS = all_targets_files()
 
 
 def stem_for(targets_file: str) -> str:
