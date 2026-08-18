@@ -1137,7 +1137,7 @@
     "step1": {
       "intro": "Seleccione el país y cargue los documentos de política correspondientes. Se aceptan los formatos comunes; el sistema detecta cómo procesar cada archivo.",
       "countryLabel": "País",
-      "countryPlaceholder": "p. ej. Mongolia",
+      "countryPlaceholder": "Nombre del país",
       "referenceBadge": "Datos de referencia",
       "referenceNext": "Datos de referencia en el siguiente paso",
       "docTypeLabel": "Tipo de documento",
@@ -1408,6 +1408,41 @@
     }
   },
   "country": {},
+  "modelComparison": {
+    "subtitle": "{country} · Comparación de modelos",
+    "title": "{country} · comparación de modelos",
+    "openEvaluation": "Abrir la herramienta de evaluación manual →",
+    "intro": "Los mismos insumos de {country} procesados por la canalización con {count, number} LLM distintos. Resultados generados por IA; son corridas de comparación, no el resultado de producción. Los valores de huella marcados como estimados usan coeficientes genéricos por token (el modelo no figura en el registro EcoLogits).",
+    "corpusCaveat": "La fila {reference} refleja el corpus de producción actual ({targets, number} metas, {pairs, number} pares); las filas con un número de pares distinto conservan un corpus anterior, por lo que sus diferencias frente a {reference} reflejan el cambio de corpus además del modelo, hasta que esas corridas se actualicen.",
+    "th": {
+      "model": "Modelo",
+      "status": "Estado",
+      "wallClock": "Tiempo total",
+      "llmCalls": "Llamadas al LLM",
+      "targets": "Metas",
+      "pairs": "Pares",
+      "high": "Alta",
+      "flagged": "Señalados",
+      "energy": "Energía (Wh)",
+      "co2": "CO₂e (g)",
+      "water": "Agua (mL)",
+      "footprintSource": "Fuente de la huella"
+    },
+    "source": {
+      "estimated": "estimado",
+      "mixed": "mixto",
+      "measured": "medido"
+    },
+    "clickHint": "Haga clic en el nombre de un modelo para abrir el panel de {country} con los resultados de ese modelo.",
+    "runHint": "Ejecute <command>uv run python -m src.analyze_model_comparison --country {country}</command> para generar las secciones detalladas de análisis entre modelos."
+  },
+  "modelEvaluation": {
+    "subtitle": "{country} · Evaluación de modelos",
+    "title": "{country} · evaluación manual",
+    "back": "← Volver a la comparación de modelos",
+    "intro": "Dé su propio veredicto a cada par de políticas muestreado en la misma escala de cinco niveles que usan los modelos: “Sin relación”, “Parcialmente alineado”, “Moderadamente alineado”, “Fuertemente alineado” o “Posible desalineación”. Los veredictos y las justificaciones de los modelos están ocultos, de modo que cada calificación es un juicio humano independiente directamente comparable con los suyos. La herramienta registra con qué frecuencia su veredicto a ciegas cae en “Posible desalineación”, con un intervalo de confianza de Wilson del 95%. Las calificaciones se guardan en el registro del servidor <path>python/output/ratings-ledger.jsonl</path>: visibles entre navegadores, dispositivos y personas revisoras, y se conservan entre corridas de modelos y despliegues.",
+    "runHint": "Ejecute <command>uv run python -m src.analyze_model_comparison --country {country}</command> para generar primero las muestras de evaluación."
+  },
   "prototypes": {
     "unavailable": {
       "subtitle": "Prototipos",
@@ -1656,7 +1691,7 @@
       "label": "Presupuesto de biodiversidad",
       "onTitle": "Apagar el sombreado de Presupuesto de Biodiversidad. La rueda mantiene la agrupación por biodiversidad.",
       "offTitle": "Cambiar a la vista de Presupuesto de Biodiversidad: agrupa los arcos por categoría de biodiversidad y sombrea cada uno según su proporción del gasto BER etiquetado.",
-      "mongoliaNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
+      "berNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% del BER etiquetado)",
       "fallbackAmount": "0 MNT"
     },
@@ -1990,7 +2025,8 @@
     "targetText": {
       "language": {
         "es": "español",
-        "mn": "mongol"
+        "mn": "mongol",
+        "fr": "francés"
       },
       "chip": {
         "ariaLabel": "Mostrar el texto fuente original en {language}",
@@ -2178,7 +2214,7 @@
       },
       "lulucfExplainer": {
         "heading": "Acerca de los valores negativos de LULUCF:",
-        "body": "El sector de Uso de la Tierra, Cambio de Uso de la Tierra y Silvicultura muestra números negativos porque los bosques y pastizales de Mongolia actualmente <strong>absorben más CO₂ del que emiten</strong>, lo que hace de este sector un sumidero neto de carbono. En la contabilidad internacional de GEI, las remociones de la atmósfera se reportan como valores negativos. Un valor que se vuelve <em>menos negativo</em> (acercándose a cero) significa que el sumidero se está debilitando y absorbe menos carbono con el tiempo, lo que es una señal de alerta para los objetivos climáticos."
+        "body": "El sector de Uso de la Tierra, Cambio de Uso de la Tierra y Silvicultura muestra números negativos porque los bosques y pastizales del país actualmente <strong>absorben más CO₂ del que emiten</strong>, lo que convierte a este sector en un sumidero neto de carbono. En la contabilidad internacional de GEI, las absorciones de la atmósfera se registran como valores negativos. Que un valor se vuelva <em>menos negativo</em> (acercándose a cero) significa que el sumidero se está debilitando y absorbe menos carbono con el tiempo, una señal de alerta para las metas climáticas."
       },
       "yAxisUnit": "kt CO₂ eq"
     },
@@ -2299,7 +2335,7 @@
       },
       "gaps": {
         "title": "Brechas de reporte",
-        "footnote": "Los conteos utilizan el sector del IPCC registrado para cada acción del BTR en el archivo de datos subyacente (curado manualmente para Mongolia, extraído por analizador para Panamá). Los autoinformes gubernamentales rara vez revelan contradicciones, por lo que la ausencia de una acción reportada no equivale a la ausencia de actividad sobre el terreno.",
+        "footnote": "Los conteos utilizan el sector del IPCC registrado para cada acción del BTR en el archivo de datos subyacente; según el país, los sectores fueron curados manualmente del BTR o extraídos por analizador. Los autoinformes gubernamentales rara vez muestran contradicciones, por lo que la ausencia de una acción reportada no equivale a la ausencia de actividad sobre el terreno.",
         "nationalSectorCoverage": "El reporte de mitigación del BTR cubre {covered, number} de {total, number} categorías sectoriales nacionales. {names} no {count, plural, one {está cubierta} other {están cubiertas}} por ninguna acción de mitigación reportada.",
         "ipccSectorCoverage": "El reporte de mitigación del BTR cubre {covered, number} de {total, number} sectores del IPCC. {names} no {count, plural, one {está cubierto} other {están cubiertos}} por ninguna acción de mitigación reportada.",
         "implementationStatus": "Solo {implemented, number} de {total, number} {total, plural, one {acción reportada del BTR está marcada} other {acciones reportadas del BTR están marcadas}} como 'totalmente implementada'. Las otras {other, number} están en curso, adoptadas o planificadas.",

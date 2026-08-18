@@ -1,5 +1,5 @@
 {
-  "country": "mongolia",
+  "country": "mongolia/gpt-5-4",
   "locale": "es",
   "targetLanguage": "Spanish",
   "model": "gpt-5.4",
@@ -29,28 +29,28 @@
     "LULUCF",
     "OECM"
   ],
-  "runDate": "2026-07-06T14:38:12.982284+00:00",
+  "runDate": "2026-08-18T08:49:57.699621+00:00",
   "cacheNamespace": "snapshot_translation_es",
   "files": {
     "corpus_themes.json": {
       "items": 6,
-      "fieldsTranslated": 165,
+      "fieldsTranslated": 184,
       "emptyFallbacks": 0,
       "numericDriftFlags": []
     },
     "doc_pair_synthesis.json": {
-      "items": 21,
-      "fieldsTranslated": 84,
+      "items": 28,
+      "fieldsTranslated": 112,
       "emptyFallbacks": 0,
       "numericDriftFlags": []
     },
     "sector_synthesis.json": {
-      "items": 40,
-      "fieldsTranslated": 160,
+      "items": 38,
+      "fieldsTranslated": 1512,
       "emptyFallbacks": 0,
       "numericDriftFlags": []
     }
   },
-  "totalFieldsTranslated": 409,
+  "totalFieldsTranslated": 1808,
   "totalNumericDriftFlags": 0
 }

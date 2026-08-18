@@ -1074,6 +1074,19 @@ export interface CountryConfig {
    * document id (e.g. a national development plan).
    */
   anchorDocType?: string;
+  /**
+   * Which evidence layout the financing (Level 2) slide should use.
+   * - `"dotmap"` (default): the DocumentCoverage dot-map — one uniform dot per
+   *   target, filled when a HIGH-confidence budget line matches. The fallback
+   *   for budget data that cannot support the grid's spend tiers.
+   * - `"grid"`: the FundingTargetGrid — one dot per target tiered by relative
+   *   aligned-spend volume, with per-programme drill-down. Requires BER
+   *   programmes with executed spend; both BER countries (Mongolia, Panama)
+   *   use it so the section reads consistently across countries. If the data
+   *   yields no funding rows the slide falls back to the dot-map, so a
+   *   mis-flagged country fails soft.
+   */
+  financingLayout?: "grid" | "dotmap";
 }
 
 /**

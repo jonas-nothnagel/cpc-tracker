@@ -515,6 +515,53 @@ export function computeFundingTargetRows(args: {
     .sort((a, b) => b.alignedSpend - a.alignedSpend);
 }
 
+/** The financing slide's wide-grid evidence, or null when the country uses
+ *  the dot-map. Non-null only when BOTH hold:
+ *    1. the country opts in via `countryConfig.financingLayout === "grid"`
+ *       (config intent — the grid's aligned-spend-tier framing must fit the
+ *       country's budget data, which is an editorial call, not a data one), and
+ *    2. the data actually yields at least one funding row (berData +
+ *       budgetAlignment present, ≥1 visible target) — so a mis-flagged
+ *       country fails soft to the DocumentCoverage dot-map.
+ *  The briefing derives its whole wide-grid layout (suppressed centerpiece,
+ *  widened column, invisible aside, fundingGrid tour) from this being
+ *  non-null; no surface may branch on the country id. */
+export function computeFundingGrid(args: {
+  targets: Target[];
+  budgetAlignment: AlignmentResult[] | null;
+  berData: BerData | null;
+  countryConfig: CountryConfig | null;
+  locale: string;
+}): FundingGrid | null {
+  const { targets, budgetAlignment, berData, countryConfig, locale } = args;
+  if (countryConfig?.financingLayout !== "grid") return null;
+  if (!berData || !budgetAlignment) return null;
+  const visibleDocIds = visibleFinancingDocIds(countryConfig);
+  const rows = computeFundingTargetRows({
+    targets,
+    alignment: budgetAlignment,
+    berData,
+    countryConfig,
+    locale,
+    visibleDocIds,
+  });
+  if (rows.length === 0) return null;
+  return {
+    docs: groupFundingRowsByDoc(rows, countryConfig),
+    totals: {
+      reviewed: rows.length,
+      high: rows.filter((r) => r.tier === "high").length,
+      low: rows.filter((r) => r.tier === "low").length,
+      none: rows.filter((r) => r.tier === "none").length,
+    },
+  };
+}
+
+export interface FundingGrid {
+  docs: ReturnType<typeof groupFundingRowsByDoc>;
+  totals: { reviewed: number; high: number; low: number; none: number };
+}
+
 /** Sum each contributing programme ONCE across the given rows (union by
  *  programme code). Per-target alignedSpend values intentionally overlap (the
  *  same programme backs every target its description aligns with), so any

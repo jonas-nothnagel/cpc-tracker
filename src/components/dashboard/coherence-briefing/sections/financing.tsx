@@ -4,21 +4,25 @@
  * Financing — the Level 2 slide. One question: which policy targets have
  * money behind them, and which don't?
  *
- * Two evidence layouts share this slide, keyed off `countryId`:
+ * Two evidence layouts share this slide, chosen by the `grid` prop (computed
+ * upstream by `computeFundingGrid`: countryConfig.financingLayout === "grid"
+ * AND the data yields funding rows — never the country id):
  *
- *   - PANAMA: the `FundingTargetGrid` — every visible target is one dot,
- *     colored by aligned-spend tier (high / medium / low / none — relative
- *     volume of AI-aligned expenditure, never financing adequacy), grouped
- *     by document. Click a dot to pop open a drawer with the target text,
- *     contributing programmes, and a per-year aligned-spend bar chart.
- *     "Aligned spend" = sum of executed spend across programmes whose
- *     descriptions the LLM judged high/medium-aligned with the target's
- *     text — AI-judged alignment between descriptions, not audited flow.
- *     The grid layout also brings the methodology disclosure, provenance
- *     badge, and GLOBE spend breakdown (all gated on data presence, not
- *     the country id, so the next BER country inherits them).
+ *   - GRID (`grid` non-null; Mongolia and Panama today): the
+ *     `FundingTargetGrid` — every
+ *     visible target is one dot, colored by aligned-spend tier (high /
+ *     medium / low / none — relative volume of AI-aligned expenditure, never
+ *     financing adequacy), grouped by document. Click a dot to pop open a
+ *     drawer with the target text, contributing programmes, and a per-year
+ *     aligned-spend bar chart. "Aligned spend" = sum of executed spend
+ *     across programmes whose descriptions the LLM judged high/medium-
+ *     aligned with the target's text — AI-judged alignment between
+ *     descriptions, not audited flow. The grid layout also brings the
+ *     methodology disclosure, provenance badge, and GLOBE spend breakdown
+ *     (all gated on data presence, so the next BER country inherits them).
  *
- *   - EVERY OTHER COUNTRY (Mongolia today): the `DocumentCoverage`
+ *   - DOT-MAP (`grid` null; the fallback when a country's budget data cannot
+ *     support spend tiers, or when it opts out): the `DocumentCoverage`
  *     dot-map — one uniform dot per target, filled = has a HIGH-confidence
  *     matching budget line, hollow = none. Opening a document shows both
  *     sides (matched + unmatched). Rationale opens in the shared
@@ -29,26 +33,18 @@
  * budget). If a non-biodiversity budget is ever added, revisit the noun.
  */
 
-import { useMemo } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
 import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
-import {
-  computeFundingTargetRows,
-  groupFundingRowsByDoc,
-  visibleFinancingDocIds,
-  type BudgetCoverage,
-  type BudgetCoverageDoc,
-  type FinancingCoherenceSummary,
+import type {
+  BudgetCoverage,
+  BudgetCoverageDoc,
+  FinancingCoherenceSummary,
+  FundingGrid,
 } from "@/lib/financing-coherence";
 import { getDocColor, getDocMediumLabel } from "@/lib/utils";
 import type { CategoryBudgetSummary } from "@/lib/coherence-budget";
-import type {
-  AlignmentResult,
-  BerData,
-  CountryConfig,
-  Target,
-} from "@/types";
+import type { BerData, CountryConfig } from "@/types";
 import { FundingTargetGrid } from "./funding-target-grid";
 import { FinancingMethodNote } from "./financing-method-note";
 import { GlobeSpendBreakdown } from "./globe-spend-breakdown";
@@ -61,10 +57,8 @@ export function FinancingSection({
   commitmentCount,
   coverage,
   countryConfig,
-  countryId,
   countryName,
-  targets,
-  budgetAlignment,
+  grid,
   berData,
   globeSpend,
   onOpenBudgetPair,
@@ -73,21 +67,19 @@ export function FinancingSection({
   commitmentCount: number;
   coverage: BudgetCoverage | null;
   countryConfig: CountryConfig | null;
-  countryId?: string;
   countryName: string;
-  targets: Target[];
-  budgetAlignment: AlignmentResult[] | null;
+  /** Wide-grid evidence from `computeFundingGrid` (config intent + data
+   *  presence), or null for the DocumentCoverage dot-map. */
+  grid: FundingGrid | null;
   berData: BerData | null;
   /** Reviewed spend rolled up to primary GLOBE categories (Tracker-AI
    *  assigned). Rendered as a breakdown block under the grid when present. */
   globeSpend?: CategoryBudgetSummary | null;
   /** Open the shared drawer on a budget-line↔commitment match (full rationale).
-   *  Used only by the DocumentCoverage layout (non-Panama). */
+   *  Used only by the DocumentCoverage layout. */
   onOpenBudgetPair: (programBerId: string, targetId: string) => void;
 }) {
   const t = useTranslations("briefing.financing");
-  const locale = useLocale();
-  const isPanama = countryId === "panama";
   const sentence = composeSentence(
     coverage,
     summary,
@@ -96,47 +88,21 @@ export function FinancingSection({
     t,
   );
 
-  // Per-target funding rows powering the Panama dot grid. Computed only when
-  // Panama is active — skip the join for other countries.
-  const grid = useMemo(() => {
-    if (!isPanama) return null;
-    if (!berData || !budgetAlignment) return null;
-    const visibleDocIds = visibleFinancingDocIds(countryConfig);
-    const rows = computeFundingTargetRows({
-      targets,
-      alignment: budgetAlignment,
-      berData,
-      countryConfig,
-      locale,
-      visibleDocIds,
-    });
-    if (rows.length === 0) return null;
-    const docs = groupFundingRowsByDoc(rows, countryConfig);
-    const totals = {
-      reviewed: rows.length,
-      high: rows.filter((r) => r.tier === "high").length,
-      low: rows.filter((r) => r.tier === "low").length,
-      none: rows.filter((r) => r.tier === "none").length,
-    };
-    return { docs, totals };
-  }, [isPanama, targets, budgetAlignment, berData, countryConfig, locale]);
-
   let evidence: React.ReactNode = undefined;
-  if (isPanama && grid) {
+  if (grid) {
     evidence = (
-      <div>
-        <FundingTargetGrid
-          docs={grid.docs}
-          unit={berData?.unit ?? "million"}
-          currency={berData?.currency ?? ""}
-          period={berData?.period}
-          totals={grid.totals}
-          mode="drawer"
-        />
-        {globeSpend && <GlobeSpendBreakdown summary={globeSpend} />}
-      </div>
+      <FundingTargetGrid
+        docs={grid.docs}
+        unit={berData?.unit ?? "million"}
+        currency={berData?.currency ?? ""}
+        period={berData?.period}
+        totals={grid.totals}
+        // Rendered in the grid's right-hand summary rail so the slide keeps
+        // the content-beside-summary shape instead of stacking vertically.
+        aside={globeSpend ? <GlobeSpendBreakdown summary={globeSpend} /> : undefined}
+      />
     );
-  } else if (!isPanama && coverage && coverage.byDocument.length > 0) {
+  } else if (coverage && coverage.byDocument.length > 0) {
     evidence = (
       <DocumentCoverage
         coverage={coverage}

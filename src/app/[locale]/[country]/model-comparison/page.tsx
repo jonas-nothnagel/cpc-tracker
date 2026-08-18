@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Header } from "@/components/ui/header";
 import { Link } from "@/i18n/navigation";
+import { getCountry, isValidCountryId } from "@/config/countries";
 import {
   listAvailableModels,
   loadModelComparison,
@@ -12,7 +13,10 @@ import { AnalysisSections } from "@/components/model-comparison/analysis-section
 
 const PROJECT_ROOT = process.cwd();
 const PYTHON_OUTPUT = join(PROJECT_ROOT, "python", "output");
-const COUNTRY = "mongolia";
+
+interface PageProps {
+  params: Promise<{ country: string }>;
+}
 
 interface FootprintSnap {
   energy_wh?: number;
@@ -42,6 +46,7 @@ interface Row {
   slug: string;
   status: string | null;
   elapsed: number | null;
+  totalTargets: number | null;
   totalPairs: number | null;
   highAlignments: number | null;
   flagged: number | null;
@@ -60,19 +65,20 @@ function readJson<T>(path: string): T | null {
   }
 }
 
-function loadRow(slug: string): Row {
+function loadRow(country: string, slug: string): Row {
   const status = readJson<StatusFile>(
-    join(PYTHON_OUTPUT, COUNTRY, slug, "status.json"),
+    join(PYTHON_OUTPUT, country, slug, "status.json"),
   );
   const fp =
     status?.footprint ??
     readJson<FootprintSnap>(
-      join(PYTHON_OUTPUT, COUNTRY, slug, "footprint.json"),
+      join(PYTHON_OUTPUT, country, slug, "footprint.json"),
     );
   return {
     slug,
     status: status?.status ?? null,
     elapsed: status?.summary?.elapsedSeconds ?? null,
+    totalTargets: status?.summary?.totalTargets ?? null,
     totalPairs: status?.summary?.totalPairs ?? null,
     highAlignments: status?.summary?.alignmentLevels?.high ?? null,
     flagged: status?.summary?.alignmentLevels?.flagged ?? null,
@@ -109,63 +115,92 @@ function prettifySlug(slug: string): string {
   return known[slug] ?? slug;
 }
 
-export async function generateMetadata() {
-  return { title: "Mongolia model comparison | CPC Analyzer" };
+export async function generateMetadata({ params }: PageProps) {
+  const { country } = await params;
+  const entry = isValidCountryId(country.toLowerCase())
+    ? getCountry(country.toLowerCase())
+    : undefined;
+  if (!entry?.visible) return { title: "CPC Analyzer" };
+  return { title: `${entry.name} model comparison | CPC Analyzer` };
 }
 
-export default async function MongoliaModelComparisonPage() {
-  const t = await getTranslations("dashboard");
-  const models = listAvailableModels(COUNTRY);
+export default async function ModelComparisonPage({ params }: PageProps) {
+  const { country } = await params;
+  const lower = country.toLowerCase();
+  if (!isValidCountryId(lower)) notFound();
+  const entry = getCountry(lower);
+  if (!entry?.visible) notFound();
+
+  const t = await getTranslations("modelComparison");
+  const tDash = await getTranslations("dashboard");
+  const models = listAvailableModels(entry.id);
   if (models.length === 0) notFound();
 
-  const rows = models.map(loadRow);
+  const rows = models.map((slug) => loadRow(entry.id, slug));
+  // models[0] is the production default (PREFERRED_DEFAULT_SLUGS promotion in
+  // listAvailableModels). When another row ran on a different corpus size,
+  // surface that: its deltas mix corpus change with model change.
+  const reference = rows[0];
+  const staleCorpus = rows.some(
+    (r) =>
+      r.slug !== reference.slug &&
+      r.totalPairs != null &&
+      reference.totalPairs != null &&
+      r.totalPairs !== reference.totalPairs,
+  );
+
   // Analytic artifact is optional — when missing (fresh country, no
   // analyzer run yet) the page still renders the summary table.
-  const report = loadModelComparison(COUNTRY);
+  const report = loadModelComparison(entry.id);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#fbfaf7" }}>
-      <Header subtitle="Mongolia · Model comparison" basePath="/mongolia" />
+      <Header
+        subtitle={t("subtitle", { country: entry.name })}
+        basePath={`/${entry.id}`}
+      />
       <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
         <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
           <h1 className="text-2xl font-medium text-[var(--undp-black)]">
-            Mongolia · model comparison
+            {t("title", { country: entry.name })}
           </h1>
           <Link
-            href="/mongolia/model-evaluation"
+            href={`/${entry.id}/model-evaluation`}
             className="text-sm text-[var(--undp-blue)] hover:underline"
           >
-            Open manual evaluation tool →
+            {t("openEvaluation")}
           </Link>
         </div>
         <p className="text-sm text-[var(--undp-gray)] mb-6 max-w-3xl">
-          The same Mongolia inputs run through the pipeline on four different
-          LLMs. AI-generated outputs; comparison runs, not the production
-          result. The GPT-5.4 row reflects the current production corpus
-          (August 2026 re-curation separating the official NDC 3.0 from the
-          Resolution 91 national targets: 178 targets, 13,404 pairs); the
-          other rows still hold the earlier 153-target corpus (9,678 pairs),
-          so their differences against GPT-5.4 reflect the corpus change as
-          well as the model until those runs are refreshed. Footprint values
-          flagged <em>estimated</em> use generic per-token coefficients (model
-          not in the EcoLogits registry).
+          {t("intro", { country: entry.name, count: models.length })}
+          {staleCorpus && (
+            <>
+              {" "}
+              {t("corpusCaveat", {
+                reference: prettifySlug(reference.slug),
+                targets: reference.totalTargets ?? 0,
+                pairs: reference.totalPairs ?? 0,
+              })}
+            </>
+          )}
         </p>
 
         <div className="overflow-x-auto border border-gray-100 bg-white rounded-lg">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wide text-[var(--undp-gray)]">
               <tr>
-                <th className="text-left px-4 py-3">Model</th>
-                <th className="text-right px-4 py-3">Status</th>
-                <th className="text-right px-4 py-3">Wall-clock</th>
-                <th className="text-right px-4 py-3">LLM calls</th>
-                <th className="text-right px-4 py-3">Pairs</th>
-                <th className="text-right px-4 py-3">High</th>
-                <th className="text-right px-4 py-3">Flagged</th>
-                <th className="text-right px-4 py-3">Energy (Wh)</th>
-                <th className="text-right px-4 py-3">CO₂e (g)</th>
-                <th className="text-right px-4 py-3">Water (mL)</th>
-                <th className="text-right px-4 py-3">Footprint source</th>
+                <th className="text-left px-4 py-3">{t("th.model")}</th>
+                <th className="text-right px-4 py-3">{t("th.status")}</th>
+                <th className="text-right px-4 py-3">{t("th.wallClock")}</th>
+                <th className="text-right px-4 py-3">{t("th.llmCalls")}</th>
+                <th className="text-right px-4 py-3">{t("th.targets")}</th>
+                <th className="text-right px-4 py-3">{t("th.pairs")}</th>
+                <th className="text-right px-4 py-3">{t("th.high")}</th>
+                <th className="text-right px-4 py-3">{t("th.flagged")}</th>
+                <th className="text-right px-4 py-3">{t("th.energy")}</th>
+                <th className="text-right px-4 py-3">{t("th.co2")}</th>
+                <th className="text-right px-4 py-3">{t("th.water")}</th>
+                <th className="text-right px-4 py-3">{t("th.footprintSource")}</th>
               </tr>
             </thead>
             <tbody>
@@ -173,7 +208,7 @@ export default async function MongoliaModelComparisonPage() {
                 <tr key={row.slug} className="border-t border-gray-100">
                   <td className="px-4 py-3 font-medium">
                     <Link
-                      href={`/mongolia?model=${row.slug}`}
+                      href={`/${entry.id}?model=${row.slug}`}
                       className="text-[var(--undp-blue)] hover:underline"
                     >
                       {prettifySlug(row.slug)}
@@ -187,6 +222,9 @@ export default async function MongoliaModelComparisonPage() {
                   </td>
                   <td className="text-right px-4 py-3 tabular-nums">
                     {fmtNumber(row.callCount)}
+                  </td>
+                  <td className="text-right px-4 py-3 tabular-nums">
+                    {fmtNumber(row.totalTargets)}
                   </td>
                   <td className="text-right px-4 py-3 tabular-nums">
                     {fmtNumber(row.totalPairs)}
@@ -208,11 +246,11 @@ export default async function MongoliaModelComparisonPage() {
                   </td>
                   <td className="text-right px-4 py-3">
                     {row.source === "estimated" ? (
-                      <em className="text-amber-700">estimated</em>
+                      <em className="text-amber-700">{t("source.estimated")}</em>
                     ) : row.source === "mixed" ? (
-                      <em className="text-amber-700">mixed</em>
+                      <em className="text-amber-700">{t("source.mixed")}</em>
                     ) : row.source === "measured" ? (
-                      <span className="text-green-700">measured</span>
+                      <span className="text-green-700">{t("source.measured")}</span>
                     ) : (
                       <span className="text-[var(--undp-gray)]">—</span>
                     )}
@@ -224,17 +262,21 @@ export default async function MongoliaModelComparisonPage() {
         </div>
 
         <p className="text-xs text-[var(--undp-gray)] mt-4 max-w-3xl">
-          Click a model name to open the Mongolia dashboard with that model&apos;s
-          outputs. {t("footer.text")}
+          {t("clickHint", { country: entry.name })} {tDash("footer.text")}
         </p>
 
         {report ? (
           <AnalysisSections report={report} />
         ) : (
           <p className="text-xs text-[var(--undp-gray)] mt-8 italic max-w-3xl">
-            Run <code className="font-mono text-[10px] px-1 bg-gray-100">uv run
-            python -m src.analyze_model_comparison --country {COUNTRY}</code> to
-            generate the detailed cross-model analysis sections.
+            {t.rich("runHint", {
+              command: (chunks) => (
+                <code className="font-mono text-[10px] px-1 bg-gray-100">
+                  {chunks}
+                </code>
+              ),
+              country: entry.id,
+            })}
           </p>
         )}
       </main>

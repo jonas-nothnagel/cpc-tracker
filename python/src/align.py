@@ -86,7 +86,7 @@ ALIGNMENT_CACHE_NAMESPACE = "alignment_v3"
 
 # v2.2 canonical template. Use as-is for target-target alignment by passing
 # intro_framing="". The wrapper modules in measure_align.py, budget_align.py,
-# and nr7_align.py format with their own framing string so the same scoring
+# format with their own framing string so the same scoring
 # rubric drives every alignment family.
 ADVISOR_USER_TEMPLATE = """    Role: Alignment Advisor
     Goal: Compare two structured targets from different policies and assign an alignment level from five clearly defined categories.
@@ -310,7 +310,7 @@ fully delivered without revising one, so the friction lives in the targets thems
 # ALIGNMENT_MAP, MECHANISM_MAP, MANAGEABILITY_MAP, CONFIDENCE_MAP,
 # FLAGGED_LEVELS, and parse_alignment now live in alignment_schema.py so the
 # four alignment-family modules (align, measure_align, budget_align,
-# nr7_align) share a single source of truth.
+# budget_align) share a single source of truth.
 
 DOC_TYPE_LABELS = {
     "NDC": "NDC",

@@ -35,10 +35,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.classify import rank_classification  # noqa: E402
-from src.config import DATA_DIR, LLM_MODEL, OUTPUT_DIR  # noqa: E402
+from src.config import DATA_DIR, LLM_MODEL, OUTPUT_DIR, all_targets_files  # noqa: E402
 from src.llm import set_language  # noqa: E402
 
-DEFAULT_TARGETS = ["mongolia-targets.json"]
+# Every committed corpus, from the python/data glob — see config.all_targets_files.
+DEFAULT_TARGETS = all_targets_files()
 
 # Mirrors PREFERRED_DEFAULT_SLUGS in src/lib/dashboard-data.ts: the model dir the
 # dashboard shows by default when a country has per-model outputs.
@@ -123,7 +124,11 @@ async def classify_country(
 
 async def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--targets-file", default=None, help="single country; default = Mongolia")
+    parser.add_argument(
+        "--targets-file",
+        default=None,
+        help="single country; default = every committed corpus",
+    )
     parser.add_argument("--model-dir", default=None, help="e.g. gpt-5-4; default = dashboard default")
     parser.add_argument("--language", default="en", choices=["en", "es", "mn", "fr"])
     args = parser.parse_args()
