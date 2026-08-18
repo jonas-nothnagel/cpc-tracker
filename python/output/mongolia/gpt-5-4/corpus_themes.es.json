@@ -1,10 +1,10 @@
 {
   "storylines": [
     {
-      "name": "Climate and biodiversity enabling systems across sectors",
+      "name": "Sistemas facilitadores para el clima y la biodiversidad en todos los sectores",
       "type": "reinforcement",
-      "description": "A strong recurring pattern is alignment through legal frameworks, institutional capacity, finance, research, monitoring, and knowledge systems that support implementation across climate, biodiversity, land, and agriculture documents. This appears repeatedly where adaptation, NDC delivery, biodiversity mainstreaming, and land investment tools provide shared governance and reporting mechanisms rather than relying on the same sector instrument.",
-      "pathway": "Indicator alignment and joint monitoring across NAP, NDC, NBSAP, ILDN, and NITIPA could be a practical starting point for reviewing how shared enabling systems are being used in implementation.",
+      "description": "Un patrón recurrente sólido es la alineación mediante marcos jurídicos, capacidad institucional, financiación, investigación, seguimiento y sistemas de conocimiento que apoyan la implementación en los documentos sobre clima, biodiversidad, tierra y agricultura. Esto aparece repetidamente cuando la adaptación, la ejecución de la NDC, la integración de la biodiversidad y las herramientas de inversión en tierras proporcionan mecanismos compartidos de gobernanza y presentación de informes, en lugar de depender del mismo instrumento sectorial.",
+      "pathway": "La alineación de indicadores y el seguimiento conjunto en los NAP, NDC, NBSAP, ILDN y NITIPA podrían ser un punto de partida práctico para revisar cómo se están utilizando los sistemas habilitadores compartidos en la implementación.",
       "contributing_doc_pairs": [
         "ILDN<->NAP",
         "ILDN<->NBSAP",
@@ -154,10 +154,10 @@
       }
     },
     {
-      "name": "Sustainable land restoration and stewardship pathways",
+      "name": "Vías para la restauración sostenible de la tierra y su gestión responsable",
       "type": "reinforcement",
-      "description": "Many document pairs align on reforestation, pasture governance, anti-desertification, wetland stewardship, protected areas, and broader land rehabilitation. The recurring mechanism is that land restoration targets and investment tools are matched with biodiversity planning, adaptation measures, and long-term sector strategies that support implementation in the same landscapes.",
-      "pathway": "Shared land-condition monitoring and spatial prioritisation across ILDN, NRVTS, NBSAP, NAP, NDC, and Vision 2050 could help clarify where restoration measures are already pulling in the same direction.",
+      "description": "Muchos pares de documentos se alinean en la reforestación, la gobernanza de los pastizales, la lucha contra la desertificación, la gestión de los humedales, las áreas protegidas y la rehabilitación más amplia de las tierras. El mecanismo recurrente es que las metas de restauración de tierras y los instrumentos de inversión se armonizan con la planificación de la biodiversidad, las medidas de adaptación y las estrategias sectoriales de largo plazo que apoyan la implementación en los mismos paisajes.",
+      "pathway": "El seguimiento compartido de la condición de la tierra y la priorización espacial en ILDN, NRVTS, NBSAP, NAP, NDC y Vision 2050 podrían ayudar a aclarar en qué ámbitos las medidas de restauración ya están avanzando en la misma dirección.",
       "contributing_doc_pairs": [
         "ILDN<->NBSAP",
         "ILDN<->NRVTS",
@@ -311,10 +311,10 @@
       }
     },
     {
-      "name": "Climate resilient agriculture and pasture management",
+      "name": "Agricultura resiliente al clima y gestión de pastizales",
       "type": "reinforcement",
-      "description": "There is repeated alignment around climate-resilient agriculture through pasture carrying-capacity management, soil conservation, water management, resilient crop systems, livestock quality measures, and agricultural eco-initiatives. This pattern is especially visible where sector strategies on agriculture connect with adaptation, NDC, and climate-target documents through practical delivery measures in crops, livestock, and rural risk management.",
-      "pathway": "A common results framework for climate-resilient agriculture across FSS, NAP, NDC, NITIPA, and Vision 2050 could help review how pasture, crop, and livestock measures are supporting shared outcomes.",
+      "description": "Existe una alineación reiterada en torno a la agricultura resiliente al clima mediante la gestión de la capacidad de carga de los pastizales, la conservación del suelo, la gestión del agua, los sistemas de cultivos resilientes, las medidas de calidad del ganado y las ecoiniciativas agrícolas. Este patrón es especialmente visible cuando las estrategias sectoriales sobre agricultura se conectan con la adaptación, la NDC y los documentos sobre objetivos climáticos a través de medidas prácticas de implementación en cultivos, ganadería y gestión del riesgo rural.",
+      "pathway": "Un marco común de resultados para la agricultura resiliente al clima en los FSS, NAP, NDC, NITIPA y Vision 2050 podría ayudar a revisar cómo las medidas relativas a pastizales, cultivos y ganado están apoyando resultados compartidos.",
       "contributing_doc_pairs": [
         "FSS<->NAP",
         "FSS<->NDC",
@@ -460,10 +460,10 @@
       }
     },
     {
-      "name": "Land allocation pressures from agricultural expansion",
+      "name": "Presiones sobre la asignación de tierras derivadas de la expansión agrícola",
       "type": "friction",
-      "description": "The most repeated possible misalignment concerns new cropland, irrigated cash crops, intensive livestock facilities, fodder production, and rural agricultural relocation overlapping with protected areas, restoration zones, forests, wetlands, and broader land neutrality objectives. The evidence points mainly to spatial overlap and siting choices on a finite land base, with land the most frequently cited contested resource across review pairs.",
-      "pathway": "Joint land-use screening and zoning across FSS, NBSAP, NRVTS, ILDN, and Vision 2050 could be worth a closer look where expansion and restoration measures may converge in the same areas.",
+      "description": "La posible desalineación más repetida se refiere a nuevas tierras de cultivo, cultivos comerciales de regadío, instalaciones ganaderas intensivas, producción de forraje y reubicación agrícola rural que se superponen con áreas protegidas, zonas de restauración, bosques, humedales y objetivos más amplios de neutralidad de la tierra. La evidencia apunta principalmente a la superposición espacial y a las decisiones de ubicación sobre una base de tierra finita, siendo la tierra el recurso en disputa citado con mayor frecuencia en los pares de revisión.",
+      "pathway": "La evaluación y zonificación conjuntas del uso de la tierra en FSS, NBSAP, NRVTS, ILDN y Vision 2050 podrían merecer un examen más detenido cuando las medidas de expansión y restauración puedan converger en las mismas áreas.",
       "contributing_doc_pairs": [
         "FSS<->ILDN",
         "FSS<->NBSAP",
@@ -641,10 +641,10 @@
       }
     },
     {
-      "name": "Water allocation pressures from irrigation growth",
+      "name": "Presiones sobre la asignación de agua derivadas del crecimiento del riego",
       "type": "friction",
-      "description": "A second recurring possible misalignment concerns irrigation expansion, ponds, wells, canals, and livestock water infrastructure drawing on the same water resources and river-basin space targeted for water security, ecological flows, wetlands, biodiversity corridors, and ecosystem protection. This pattern appears across climate, biodiversity, land, and long-term sector strategies, with water the second most frequently cited contested resource.",
-      "pathway": "Basin-level water allocation review and biodiversity-sensitive siting across NDC, NAP, NBSAP, NRVTS, and Vision 2050 could help clarify where irrigation and ecosystem objectives may need closer coordination.",
+      "description": "Una segunda posible desalineación recurrente se refiere a la expansión del riego, estanques, pozos, canales e infraestructura hídrica para el ganado que recurren a los mismos recursos hídricos y al espacio de la cuenca fluvial previstos para la seguridad hídrica, los caudales ecológicos, los humedales, los corredores de biodiversidad y la protección de los ecosistemas. Este patrón aparece en las estrategias climáticas, de biodiversidad, de tierras y sectoriales de largo plazo, siendo el agua el segundo recurso en disputa citado con mayor frecuencia.",
+      "pathway": "La revisión de la asignación de agua a nivel de cuenca y la ubicación sensible a la biodiversidad en NDC, NAP, NBSAP, NRVTS y Vision 2050 podrían ayudar a aclarar dónde los objetivos de riego y de los ecosistemas podrían requerir una coordinación más estrecha.",
       "contributing_doc_pairs": [
         "ILDN<->SECTORAL",
         "NAP<->NBSAP",
@@ -830,10 +830,10 @@
       }
     },
     {
-      "name": "Hydropower and livestock delivery in sensitive landscapes",
+      "name": "Desarrollo de la energía hidroeléctrica y la ganadería en paisajes sensibles",
       "type": "friction",
-      "description": "A narrower but recurring possible misalignment appears where hydropower construction and livestock-related mitigation or expansion measures may overlap with forests, wetlands, protected areas, ecological corridors, and river connectivity objectives. The review cases point to dam siting, associated infrastructure, grazing intensity, and supply-chain expansion as the main delivery mechanisms that may warrant closer examination.",
-      "pathway": "Shared safeguards and spatial review across NITIPA, NDC, NBSAP, ILDN, and NRVTS could help examine where hydropower and livestock measures may intersect with conservation and restoration areas.",
+      "description": "Una posible desalineación más acotada pero recurrente aparece cuando la construcción de centrales hidroeléctricas y las medidas de mitigación o expansión relacionadas con la ganadería pueden superponerse con los objetivos relativos a los bosques, los humedales, las áreas protegidas, los corredores ecológicos y la conectividad fluvial. Los casos examinados señalan el emplazamiento de represas, la infraestructura asociada, la intensidad del pastoreo y la expansión de las cadenas de suministro como los principales mecanismos de implementación que pueden justificar un examen más detenido.",
+      "pathway": "Las salvaguardias compartidas y la revisión espacial en NITIPA, NDC, NBSAP, ILDN y NRVTS podrían ayudar a examinar dónde las medidas relativas a la energía hidroeléctrica y la ganadería pueden coincidir con las áreas de conservación y restauración.",
       "contributing_doc_pairs": [
         "ILDN<->NITIPA",
         "NAP<->NITIPA",
@@ -1021,7 +1021,7 @@
       }
     }
   ],
-  "summary_paragraph": "Across Mongolia's policy set, the strongest recurring alignment appears in shared enabling systems, climate-resilient agriculture, and land restoration pathways. Legal frameworks, monitoring, finance, research, and knowledge access often support implementation across climate, biodiversity, land, and food-system documents, while pasture management, soil protection, anti-desertification, and restoration measures frequently pull in the same direction. The main areas that may warrant closer review concern land allocation for agricultural expansion, water allocation linked to irrigation growth, and a smaller set of cases involving hydropower and livestock delivery in sensitive landscapes. These possible misalignments appear to arise mainly from siting, zoning, sequencing, and resource allocation choices in overlapping geographies, rather than from broad differences in overall policy direction.",
+  "summary_paragraph": "En el conjunto de políticas de Mongolia, la alineación recurrente más sólida aparece en los sistemas habilitadores compartidos, la agricultura resiliente al clima y las vías de restauración de tierras. Los marcos jurídicos, el seguimiento, la financiación, la investigación y el acceso al conocimiento suelen apoyar la implementación en los documentos sobre clima, biodiversidad, tierras y sistemas alimentarios, mientras que la gestión de pastizales, la protección del suelo, las medidas contra la desertificación y las medidas de restauración con frecuencia avanzan en la misma dirección. Las principales áreas que pueden justificar un examen más detenido se refieren a la asignación de tierras para la expansión agrícola, la asignación de agua vinculada al crecimiento del riego y un conjunto más reducido de casos relacionados con la energía hidroeléctrica y la provisión ganadera en paisajes sensibles. Estas posibles desalineaciones parecen surgir principalmente de decisiones sobre ubicación, zonificación, secuenciación y asignación de recursos en geografías superpuestas, más que de diferencias amplias en la orientación general de las políticas.",
   "doc_pair_count": 28,
   "schema_version": 2,
   "validation_warnings": [],
@@ -1029,10 +1029,10 @@
     "": {
       "storylines": [
         {
-          "name": "Climate and biodiversity enabling systems across sectors",
+          "name": "Sistemas facilitadores para el clima y la biodiversidad en todos los sectores",
           "type": "reinforcement",
-          "description": "A strong recurring pattern is alignment through legal frameworks, institutional capacity, finance, research, monitoring, and knowledge systems that support implementation across climate, biodiversity, land, and agriculture documents. This appears repeatedly where adaptation, NDC delivery, biodiversity mainstreaming, and land investment tools provide shared governance and reporting mechanisms rather than relying on the same sector instrument.",
-          "pathway": "Indicator alignment and joint monitoring across NAP, NDC, NBSAP, ILDN, and NITIPA could be a practical starting point for reviewing how shared enabling systems are being used in implementation.",
+          "description": "Un patrón recurrente sólido es la alineación mediante marcos jurídicos, capacidad institucional, financiación, investigación, seguimiento y sistemas de conocimiento que apoyan la implementación en los documentos sobre clima, biodiversidad, tierra y agricultura. Esto aparece repetidamente cuando la adaptación, la ejecución de la NDC, la transversalización de la biodiversidad y las herramientas de inversión en tierras proporcionan mecanismos compartidos de gobernanza y presentación de informes, en lugar de depender del mismo instrumento sectorial.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto en los NAP, NDC, NBSAP, ILDN y NITIPA podrían ser un punto de partida práctico para revisar cómo se están utilizando los sistemas habilitadores compartidos en la implementación.",
           "contributing_doc_pairs": [
             "ILDN<->NAP",
             "ILDN<->NBSAP",
@@ -1182,10 +1182,10 @@
           }
         },
         {
-          "name": "Sustainable land restoration and stewardship pathways",
+          "name": "Vías para la restauración y gestión sostenible de la tierra",
           "type": "reinforcement",
-          "description": "Many document pairs align on reforestation, pasture governance, anti-desertification, wetland stewardship, protected areas, and broader land rehabilitation. The recurring mechanism is that land restoration targets and investment tools are matched with biodiversity planning, adaptation measures, and long-term sector strategies that support implementation in the same landscapes.",
-          "pathway": "Shared land-condition monitoring and spatial prioritisation across ILDN, NRVTS, NBSAP, NAP, NDC, and Vision 2050 could help clarify where restoration measures are already pulling in the same direction.",
+          "description": "Muchos pares de documentos se alinean en la reforestación, la gobernanza de los pastizales, la lucha contra la desertificación, la gestión de los humedales, las áreas protegidas y la rehabilitación más amplia de las tierras. El mecanismo recurrente es que las metas de restauración de tierras y los instrumentos de inversión se armonizan con la planificación de la biodiversidad, las medidas de adaptación y las estrategias sectoriales de largo plazo que apoyan la implementación en los mismos paisajes.",
+          "pathway": "El seguimiento compartido de la condición de la tierra y la priorización espacial en ILDN, NRVTS, NBSAP, NAP, NDC y Vision 2050 podrían ayudar a aclarar dónde las medidas de restauración ya están avanzando en la misma dirección.",
           "contributing_doc_pairs": [
             "ILDN<->NBSAP",
             "ILDN<->NRVTS",
@@ -1339,10 +1339,10 @@
           }
         },
         {
-          "name": "Climate resilient agriculture and pasture management",
+          "name": "Agricultura resiliente al clima y gestión de pastizales",
           "type": "reinforcement",
-          "description": "There is repeated alignment around climate-resilient agriculture through pasture carrying-capacity management, soil conservation, water management, resilient crop systems, livestock quality measures, and agricultural eco-initiatives. This pattern is especially visible where sector strategies on agriculture connect with adaptation, NDC, and climate-target documents through practical delivery measures in crops, livestock, and rural risk management.",
-          "pathway": "A common results framework for climate-resilient agriculture across FSS, NAP, NDC, NITIPA, and Vision 2050 could help review how pasture, crop, and livestock measures are supporting shared outcomes.",
+          "description": "Existe una alineación reiterada en torno a la agricultura resiliente al clima mediante la gestión de la capacidad de carga de los pastizales, la conservación del suelo, la gestión del agua, los sistemas de cultivos resilientes, las medidas de calidad del ganado y las ecoiniciativas agrícolas. Este patrón es especialmente visible cuando las estrategias sectoriales sobre agricultura se conectan con la adaptación, la NDC y los documentos sobre objetivos climáticos a través de medidas prácticas de implementación en cultivos, ganadería y gestión del riesgo rural.",
+          "pathway": "Un marco común de resultados para la agricultura resiliente al clima en los FSS, NAP, NDC, NITIPA y Vision 2050 podría ayudar a revisar cómo las medidas relativas a pastizales, cultivos y ganado están apoyando resultados compartidos.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "FSS<->NDC",
@@ -1488,10 +1488,10 @@
           }
         },
         {
-          "name": "Land allocation pressures from agricultural expansion",
+          "name": "Presiones sobre la asignación de tierras derivadas de la expansión agrícola",
           "type": "friction",
-          "description": "The most repeated possible misalignment concerns new cropland, irrigated cash crops, intensive livestock facilities, fodder production, and rural agricultural relocation overlapping with protected areas, restoration zones, forests, wetlands, and broader land neutrality objectives. The evidence points mainly to spatial overlap and siting choices on a finite land base, with land the most frequently cited contested resource across review pairs.",
-          "pathway": "Joint land-use screening and zoning across FSS, NBSAP, NRVTS, ILDN, and Vision 2050 could be worth a closer look where expansion and restoration measures may converge in the same areas.",
+          "description": "La posible desalineación más repetida se refiere a nuevas tierras de cultivo, cultivos comerciales de regadío, instalaciones ganaderas intensivas, producción de forraje y reubicación agrícola rural que se superponen con áreas protegidas, zonas de restauración, bosques, humedales y objetivos más amplios de neutralidad de la tierra. La evidencia apunta principalmente a la superposición espacial y a las decisiones de ubicación en una base territorial finita, siendo la tierra el recurso en disputa citado con mayor frecuencia en los pares de revisión.",
+          "pathway": "La evaluación y zonificación conjuntas del uso de la tierra en FSS, NBSAP, NRVTS, ILDN y Vision 2050 podrían merecer un examen más detenido cuando las medidas de expansión y restauración puedan converger en las mismas áreas.",
           "contributing_doc_pairs": [
             "FSS<->ILDN",
             "FSS<->NBSAP",
@@ -1669,10 +1669,10 @@
           }
         },
         {
-          "name": "Water allocation pressures from irrigation growth",
+          "name": "Presiones sobre la asignación de agua derivadas del crecimiento del riego",
           "type": "friction",
-          "description": "A second recurring possible misalignment concerns irrigation expansion, ponds, wells, canals, and livestock water infrastructure drawing on the same water resources and river-basin space targeted for water security, ecological flows, wetlands, biodiversity corridors, and ecosystem protection. This pattern appears across climate, biodiversity, land, and long-term sector strategies, with water the second most frequently cited contested resource.",
-          "pathway": "Basin-level water allocation review and biodiversity-sensitive siting across NDC, NAP, NBSAP, NRVTS, and Vision 2050 could help clarify where irrigation and ecosystem objectives may need closer coordination.",
+          "description": "Una segunda posible desalineación recurrente se refiere a la expansión del riego, estanques, pozos, canales e infraestructura hídrica para el ganado que recurren a los mismos recursos hídricos y al espacio de la cuenca fluvial previstos para la seguridad hídrica, los caudales ecológicos, los humedales, los corredores de biodiversidad y la protección de los ecosistemas. Este patrón aparece en las estrategias climáticas, de biodiversidad, de tierras y sectoriales de largo plazo, siendo el agua el segundo recurso en disputa citado con mayor frecuencia.",
+          "pathway": "La revisión de la asignación de agua a nivel de cuenca y la ubicación sensible a la biodiversidad en NDC, NAP, NBSAP, NRVTS y Vision 2050 podrían ayudar a aclarar dónde los objetivos de riego y de los ecosistemas podrían requerir una coordinación más estrecha.",
           "contributing_doc_pairs": [
             "ILDN<->SECTORAL",
             "NAP<->NBSAP",
@@ -1858,10 +1858,10 @@
           }
         },
         {
-          "name": "Hydropower and livestock delivery in sensitive landscapes",
+          "name": "Desarrollo de la energía hidroeléctrica y la ganadería en paisajes sensibles",
           "type": "friction",
-          "description": "A narrower but recurring possible misalignment appears where hydropower construction and livestock-related mitigation or expansion measures may overlap with forests, wetlands, protected areas, ecological corridors, and river connectivity objectives. The review cases point to dam siting, associated infrastructure, grazing intensity, and supply-chain expansion as the main delivery mechanisms that may warrant closer examination.",
-          "pathway": "Shared safeguards and spatial review across NITIPA, NDC, NBSAP, ILDN, and NRVTS could help examine where hydropower and livestock measures may intersect with conservation and restoration areas.",
+          "description": "Una posible desalineación más acotada pero recurrente aparece cuando la construcción de centrales hidroeléctricas y las medidas de mitigación o expansión relacionadas con la ganadería pueden superponerse con los objetivos relativos a los bosques, los humedales, las áreas protegidas, los corredores ecológicos y la conectividad fluvial. Los casos examinados señalan el emplazamiento de represas, la infraestructura asociada, la intensidad del pastoreo y la expansión de las cadenas de suministro como los principales mecanismos de implementación que pueden justificar un examen más detenido.",
+          "pathway": "Las salvaguardias compartidas y la revisión espacial en NITIPA, NDC, NBSAP, ILDN y NRVTS podrían ayudar a examinar dónde las medidas relativas a la energía hidroeléctrica y la ganadería pueden coincidir con las áreas de conservación y restauración.",
           "contributing_doc_pairs": [
             "ILDN<->NITIPA",
             "NAP<->NITIPA",
@@ -2049,7 +2049,7 @@
           }
         }
       ],
-      "summary_paragraph": "Across Mongolia's policy set, the strongest recurring alignment appears in shared enabling systems, climate-resilient agriculture, and land restoration pathways. Legal frameworks, monitoring, finance, research, and knowledge access often support implementation across climate, biodiversity, land, and food-system documents, while pasture management, soil protection, anti-desertification, and restoration measures frequently pull in the same direction. The main areas that may warrant closer review concern land allocation for agricultural expansion, water allocation linked to irrigation growth, and a smaller set of cases involving hydropower and livestock delivery in sensitive landscapes. These possible misalignments appear to arise mainly from siting, zoning, sequencing, and resource allocation choices in overlapping geographies, rather than from broad differences in overall policy direction.",
+      "summary_paragraph": "En el conjunto de políticas de Mongolia, la alineación recurrente más sólida aparece en los sistemas habilitadores compartidos, la agricultura resiliente al clima y las vías de restauración de tierras. Los marcos jurídicos, el seguimiento, la financiación, la investigación y el acceso al conocimiento suelen apoyar la implementación en los documentos sobre clima, biodiversidad, tierras y sistemas alimentarios, mientras que la gestión de pastizales, la protección del suelo, las medidas contra la desertificación y las medidas de restauración con frecuencia avanzan en la misma dirección. Las principales áreas que pueden justificar un examen más detenido se refieren a la asignación de tierras para la expansión agrícola, la asignación de agua vinculada al crecimiento del riego y un conjunto más reducido de casos relacionados con la energía hidroeléctrica y la provisión ganadera en paisajes sensibles. Estas posibles desalineaciones parecen surgir principalmente de decisiones sobre ubicación, zonificación, secuenciación y asignación de recursos en geografías superpuestas, más que de diferencias amplias en la orientación general de las políticas.",
       "doc_pair_count": 28,
       "schema_version": 2,
       "validation_warnings": []
@@ -2057,10 +2057,10 @@
     "FSS": {
       "storylines": [
         {
-          "name": "Land restoration and ecosystem management systems",
+          "name": "Restauración de tierras y sistemas de gestión de ecosistemas",
           "type": "reinforcement",
-          "description": "Across ILDN, NRVTS, NBSAP, NAP, NDC, and Vision 2050, recurring alignment centres on restoration, sustainable forest and pasture management, anti-desertification action, and protected-area related land stewardship. This pattern is carried by target setting, transformative projects, ecosystem-service valuation, and land rehabilitation measures that support implementation across multiple landscapes.",
-          "pathway": "Joint use of land-condition indicators and restoration tracking across ILDN, NRVTS, NBSAP, NAP, NDC, and Vision 2050 could help maintain a common implementation picture.",
+          "description": "En ILDN, NRVTS, NBSAP, NAP, NDC y Vision 2050, la alineación recurrente se centra en la restauración, la gestión sostenible de los bosques y los pastizales, la acción contra la desertificación y la gestión de la tierra relacionada con las áreas protegidas. Este patrón se sustenta en el establecimiento de metas, proyectos transformadores, la valoración de los servicios ecosistémicos y medidas de rehabilitación de tierras que apoyan la implementación en múltiples paisajes.",
+          "pathway": "El uso conjunto de indicadores de la condición de la tierra y del seguimiento de la restauración en ILDN, NRVTS, NBSAP, NAP, NDC y Vision 2050 podría ayudar a mantener una visión común de la implementación.",
           "contributing_doc_pairs": [
             "ILDN<->NAP",
             "ILDN<->NBSAP",
@@ -2220,10 +2220,10 @@
           }
         },
         {
-          "name": "Cross sector finance capacity and monitoring",
+          "name": "Capacidad y seguimiento de la financiación intersectorial",
           "type": "reinforcement",
-          "description": "A second recurring alignment is the use of legal frameworks, institutional capacity, research, finance mobilisation, and monitoring systems as shared delivery tools across climate, biodiversity, and land agendas. These enabling measures repeatedly support sector implementation in agriculture, forests, water, waste, construction, and broader climate action.",
-          "pathway": "Indicator alignment and shared reporting routines across NAP, NITIPA, NDC, NBSAP, and ILDN may be worth a closer look as a starting point for coordinated delivery.",
+          "description": "Una segunda alineación recurrente es el uso de marcos jurídicos, capacidad institucional, investigación, movilización de financiación y sistemas de seguimiento como herramientas compartidas de implementación en las agendas de clima, biodiversidad y tierras. Estas medidas habilitadoras apoyan repetidamente la implementación sectorial en agricultura, bosques, agua, residuos, construcción y una acción climática más amplia.",
+          "pathway": "La alineación de indicadores y las rutinas compartidas de presentación de informes en NAP, NITIPA, NDC, NBSAP e ILDN pueden merecer un examen más detenido como punto de partida para una implementación coordinada.",
           "contributing_doc_pairs": [
             "ILDN<->NAP",
             "ILDN<->NBSAP",
@@ -2381,10 +2381,10 @@
           }
         },
         {
-          "name": "Climate resilient agriculture and pasture governance",
+          "name": "Agricultura resiliente al clima y gobernanza de los pastizales",
           "type": "reinforcement",
-          "description": "Several pairs align around climate-resilient agriculture, pasture carrying-capacity measures, livestock management, soil conservation, and adaptation-oriented rural planning. Vision 2050, NAP, NDC, NITIPA, and NRVTS often pull in the same direction where agricultural resilience is linked with pasture rules, anti-desertification measures, and ecosystem-aware land management.",
-          "pathway": "Common planning assumptions for pasture carrying capacity, agricultural resilience, and land rehabilitation across Vision 2050, NAP, NDC, NITIPA, and NRVTS could help keep implementation pathways comparable.",
+          "description": "Varios pares se alinean en torno a la agricultura resiliente al clima, las medidas de capacidad de carga de los pastizales, la gestión del ganado, la conservación del suelo y la planificación rural orientada a la adaptación. Vision 2050, NAP, NDC, NITIPA y NRVTS a menudo avanzan en la misma dirección cuando la resiliencia agrícola se vincula con las normas sobre pastizales, las medidas de lucha contra la desertificación y la gestión de la tierra con conciencia de los ecosistemas.",
+          "pathway": "Los supuestos de planificación comunes sobre la capacidad de carga de los pastizales, la resiliencia agrícola y la rehabilitación de tierras en Vision 2050, NAP, NDC, NITIPA y NRVTS podrían ayudar a mantener comparables las trayectorias de implementación.",
           "contributing_doc_pairs": [
             "NAP<->NDC",
             "NAP<->NITIPA",
@@ -2530,10 +2530,10 @@
           }
         },
         {
-          "name": "Irrigation expansion and shared water landscapes",
+          "name": "Expansión del riego y paisajes hídricos compartidos",
           "type": "friction",
-          "description": "The most recurrent potential misalignment concerns irrigated agriculture expansion and associated water infrastructure in landscapes also targeted for restoration, protected areas, wetlands, ecological corridors, or water security measures. Evidence tables point to SECTORAL_8 and NDC_4 as major anchors, and the syntheses repeatedly mention basin overlap, irrigation demand, ponds, canals, and crop expansion drawing on the same land and water base.",
-          "pathway": "Basin-level water allocation and spatial screening across Vision 2050, NDC, NAP, NBSAP, NRVTS, and ILDN could help clarify where irrigation and conservation measures may proceed together.",
+          "description": "La posible desalineación más recurrente se refiere a la expansión de la agricultura de regadío y la infraestructura hídrica asociada en paisajes también destinados a la restauración, las áreas protegidas, los humedales, los corredores ecológicos o las medidas de seguridad hídrica. Las tablas de evidencia señalan a SECTORAL_8 y NDC_4 como principales puntos de referencia, y las síntesis mencionan repetidamente la superposición de cuencas, la demanda de riego, los estanques, los canales y la expansión de cultivos que recurren a la misma base de tierra y agua.",
+          "pathway": "La asignación de agua a nivel de cuenca y la evaluación espacial en Vision 2050, NDC, NAP, NBSAP, NRVTS e ILDN podrían ayudar a aclarar dónde las medidas de riego y conservación pueden avanzar conjuntamente.",
           "contributing_doc_pairs": [
             "ILDN<->NDC",
             "ILDN<->SECTORAL",
@@ -2722,10 +2722,10 @@
           }
         },
         {
-          "name": "Hydropower siting and freshwater ecosystem protection",
+          "name": "Ubicación de la energía hidroeléctrica y protección de los ecosistemas de agua dulce",
           "type": "friction",
-          "description": "A distinct possible misalignment appears around hydropower construction and related river-basin infrastructure where freshwater ecosystems, wetland hydrology, forest landscapes, or biodiversity objectives are also in view. This pattern is concentrated in pairs involving NITIPA, with repeated references to dam siting, river flows, aquatic habitats, and shared freshwater use.",
-          "pathway": "Ecological-flow review and basin-level siting checks across NITIPA, NAP, NBSAP, NDC, ILDN, and NRVTS may be worth a closer look where hydropower and ecosystem measures intersect.",
+          "description": "Una posible desalineación diferenciada aparece en torno a la construcción de centrales hidroeléctricas y la infraestructura conexa de cuencas fluviales, cuando también se contemplan los ecosistemas de agua dulce, la hidrología de los humedales, los paisajes forestales o los objetivos de biodiversidad. Este patrón se concentra en pares que involucran a NITIPA, con referencias reiteradas al emplazamiento de represas, los caudales fluviales, los hábitats acuáticos y el uso compartido del agua dulce.",
+          "pathway": "La revisión de los caudales ecológicos y las comprobaciones de emplazamiento a nivel de cuenca en NITIPA, NAP, NBSAP, NDC, ILDN y NRVTS pueden merecer un examen más detenido allí donde las medidas hidroeléctricas y las relativas a los ecosistemas se intersectan.",
           "contributing_doc_pairs": [
             "ILDN<->NITIPA",
             "NAP<->NITIPA",
@@ -2905,10 +2905,10 @@
           }
         },
         {
-          "name": "Livestock expansion and pasture habitat pressures",
+          "name": "Expansión de la ganadería y presiones sobre los hábitats de pastoreo",
           "type": "friction",
-          "description": "Another recurring possible misalignment concerns livestock expansion or turnover measures where grazing intensity, reserve pasture, feed and water infrastructure, or broader agricultural output goals may overlap with protected areas, ecological corridors, forests, and restored rangelands. The evidence highlights NITIPA_2 and NITIPA_9 alongside pasture and biodiversity targets, with repeated references to carrying capacity, habitat pressure, and land-use overlap.",
-          "pathway": "Shared stocking, grazing, and land-use screening rules across ILDN, NBSAP, NDC, and Vision 2050 could help clarify where livestock measures and protected landscape objectives may remain aligned.",
+          "description": "Otra posible desalineación recurrente se refiere a las medidas de expansión o renovación del ganado, en las que la intensidad del pastoreo, las pasturas de reserva, la infraestructura de alimentación y agua, o metas más amplias de producción agrícola pueden superponerse con áreas protegidas, corredores ecológicos, bosques y pastizales restaurados. La evidencia destaca NITIPA_2 y NITIPA_9 junto con metas de pasturas y biodiversidad, con referencias reiteradas a la capacidad de carga, la presión sobre los hábitats y la superposición de usos del suelo.",
+          "pathway": "Las normas compartidas de carga ganadera, pastoreo y evaluación del uso de la tierra en ILDN, NBSAP, NDC y Vision 2050 podrían ayudar a aclarar en qué ámbitos las medidas relativas al ganado y los objetivos de los paisajes protegidos pueden seguir estando alineados.",
           "contributing_doc_pairs": [
             "NITIPA<->SECTORAL",
             "NBSAP<->NRVTS"
@@ -3071,7 +3071,7 @@
           }
         }
       ],
-      "summary_paragraph": "Mongolia's policy set shows strong recurring alignment around land restoration, ecosystem management, and climate-resilient agriculture, supported by shared legal, financial, research, and monitoring systems. These links appear consistently across land, biodiversity, adaptation, mitigation, and long-term development documents, and often pull in the same direction through restoration, pasture governance, anti-desertification action, and cross-sector implementation tools. At the same time, several document pairs indicate possible misalignment where irrigated agriculture, hydropower, and some livestock expansion measures draw on the same land and water resources as protected areas, wetlands, forests, corridors, and restoration priorities. The evidence suggests that these patterns are concentrated in a limited set of recurring implementation interfaces, particularly around basin allocation, siting, zoning, and carrying-capacity assumptions.",
+      "summary_paragraph": "El conjunto de políticas de Mongolia muestra una sólida alineación recurrente en torno a la restauración de tierras, la gestión de ecosistemas y la agricultura resiliente al clima, respaldada por sistemas compartidos de carácter jurídico, financiero, de investigación y de seguimiento. Estos vínculos aparecen de manera consistente en los documentos sobre tierras, biodiversidad, adaptación, mitigación y desarrollo a largo plazo, y a menudo avanzan en la misma dirección mediante la restauración, la gobernanza de los pastizales, la acción contra la desertificación y herramientas de implementación intersectorial. Al mismo tiempo, varios pares de documentos indican una posible desalineación cuando la agricultura de regadío, la energía hidroeléctrica y algunas medidas de expansión ganadera recurren a los mismos recursos de tierra y agua que las áreas protegidas, los humedales, los bosques, los corredores y las prioridades de restauración. La evidencia sugiere que estos patrones se concentran en un conjunto limitado de interfaces de implementación recurrentes, en particular en torno a la asignación por cuencas, la localización, la zonificación y los supuestos sobre capacidad de carga.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": []
@@ -3079,10 +3079,10 @@
     "ILDN": {
       "storylines": [
         {
-          "name": "Climate and biodiversity enabling systems across sectors",
+          "name": "Sistemas facilitadores para el clima y la biodiversidad en todos los sectores",
           "type": "reinforcement",
-          "description": "A strong recurring pattern is alignment through legal frameworks, institutional capacity, research, knowledge access, finance, and mainstreaming tools that support implementation across climate, biodiversity, land, and agriculture agendas. This appears repeatedly where adaptation and biodiversity governance measures provide the operating conditions for sector delivery, including standards, monitoring, participation, and evidence-based planning.",
-          "pathway": "Joint indicator alignment and implementation tracking across NAP, NDC, NBSAP, Vision 2050, and National targets may be worth a closer look as a starting point for keeping these enabling systems connected.",
+          "description": "Un patrón recurrente sólido es la alineación mediante marcos jurídicos, capacidad institucional, investigación, acceso al conocimiento, financiación e instrumentos de integración que apoyan la implementación en las agendas de clima, biodiversidad, tierra y agricultura. Esto aparece repetidamente cuando las medidas de gobernanza de la adaptación y la biodiversidad proporcionan las condiciones operativas para la ejecución sectorial, incluidas normas, seguimiento, participación y planificación basada en evidencia.",
+          "pathway": "La alineación conjunta de indicadores y el seguimiento de la implementación en NAP, NDC, NBSAP, Vision 2050 y las metas nacionales pueden merecer un examen más detenido como punto de partida para mantener conectados estos sistemas facilitadores.",
           "contributing_doc_pairs": [
             "NAP<->NDC",
             "NAP<->NBSAP",
@@ -3223,10 +3223,10 @@
           }
         },
         {
-          "name": "Climate resilient agriculture and pasture management",
+          "name": "Agricultura resiliente al clima y gestión de pastizales",
           "type": "reinforcement",
-          "description": "Many document pairs pull in the same direction on climate-resilient agriculture through pasture carrying-capacity management, water services, soil conservation, livestock quality systems, traceability, veterinary support, and resilient crop practices. The pattern is especially visible where agricultural modernization is linked with adaptation, anti-desertification, and sustainable resource use rather than output growth alone.",
-          "pathway": "Shared monitoring of pasture condition, water use, and resilient production indicators across FSS, NAP, NDC, Vision 2050, and National targets could provide a practical starting point for review.",
+          "description": "Muchos pares de documentos avanzan en la misma dirección en materia de agricultura resiliente al clima mediante la gestión de la capacidad de carga de los pastizales, los servicios hídricos, la conservación del suelo, los sistemas de calidad pecuaria, la trazabilidad, el apoyo veterinario y las prácticas de cultivos resilientes. El patrón es especialmente visible cuando la modernización agrícola se vincula con la adaptación, la lucha contra la desertificación y el uso sostenible de los recursos, en lugar de centrarse únicamente en el crecimiento de la producción.",
+          "pathway": "El seguimiento compartido del estado de los pastizales, el uso del agua y los indicadores de producción resiliente en FSS, NAP, NDC, Vision 2050 y las metas nacionales podría proporcionar un punto de partida práctico para la revisión.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "FSS<->NDC",
@@ -3372,10 +3372,10 @@
           }
         },
         {
-          "name": "Land restoration and ecosystem stewardship instruments",
+          "name": "Instrumentos de restauración de tierras y gestión de ecosistemas",
           "type": "reinforcement",
-          "description": "There is consistent alignment around restoration, protected and connected areas, agroforestry, wetland and headwater stewardship, and ecosystem-service based land management. This pattern is supported by shared use of spatial planning, rehabilitation programmes, protected-area expansion, and valuation tools that connect biodiversity, land degradation neutrality, and long-term development planning.",
-          "pathway": "A common spatial evidence base and periodic boundary review across NBSAP, NRVTS, NDC, NAP, and Vision 2050 could help maintain alignment in restoration landscapes.",
+          "description": "Existe una alineación consistente en torno a la restauración, las áreas protegidas y conectadas, la agroforestería, la gestión responsable de los humedales y las cabeceras de cuenca, y la gestión de la tierra basada en los servicios ecosistémicos. Este patrón está respaldado por el uso compartido de la planificación espacial, los programas de rehabilitación, la expansión de las áreas protegidas y las herramientas de valoración que conectan la biodiversidad, la neutralidad de la degradación de las tierras y la planificación del desarrollo a largo plazo.",
+          "pathway": "Una base común de evidencia espacial y una revisión periódica de límites en NBSAP, NRVTS, NDC, NAP y Vision 2050 podrían ayudar a mantener la alineación en los paisajes de restauración.",
           "contributing_doc_pairs": [
             "NAP<->NRVTS",
             "NBSAP<->NRVTS",
@@ -3518,10 +3518,10 @@
           }
         },
         {
-          "name": "Agricultural expansion and protected land overlap",
+          "name": "Superposición entre la expansión agrícola y las tierras protegidas",
           "type": "friction",
-          "description": "The most recurrent potential misalignment concerns cropland expansion, irrigated farming, intensive livestock, fodder production, and related rural agricultural support operating in the same land base targeted for protected areas, restoration, corridors, forests, wetlands, and biodiversity-sensitive zoning. The evidence points mainly to siting and land allocation choices, with land the most frequently contested resource and several of the highest-review targets centred on new cropland, cash crops, irrigation, and protected areas.",
-          "pathway": "Joint spatial screening of FSS, Vision 2050, NBSAP, and NRVTS measures against protected areas, restoration priorities, and corridor maps could be a useful starting point for review.",
+          "description": "La posible desalineación más recurrente se refiere a la expansión de las tierras de cultivo, la agricultura de regadío, la ganadería intensiva, la producción de forraje y el apoyo agrícola rural conexo que operan en la misma base territorial destinada a áreas protegidas, restauración, corredores, bosques, humedales y zonificación sensible a la biodiversidad. La evidencia apunta principalmente a decisiones de emplazamiento y asignación de tierras, siendo la tierra el recurso objeto de disputa con mayor frecuencia y centrándose varias de las metas con mayor nivel de revisión en nuevas tierras de cultivo, cultivos comerciales, riego y áreas protegidas.",
+          "pathway": "La evaluación espacial conjunta de las medidas del FSS, Vision 2050, NBSAP y NRVTS en relación con las áreas protegidas, las prioridades de restauración y los mapas de corredores podría ser un punto de partida útil para la revisión.",
           "contributing_doc_pairs": [
             "FSS<->NBSAP",
             "FSS<->NRVTS",
@@ -3693,10 +3693,10 @@
           }
         },
         {
-          "name": "Water allocation and irrigation siting pressures",
+          "name": "Presiones sobre la asignación de agua y la ubicación del riego",
           "type": "friction",
-          "description": "A second recurring potential misalignment concerns irrigation expansion, ponds, canals, pipelines, livestock water points, and other water infrastructure drawing on the same basins and freshwater systems used for ecological flows, wetland protection, habitat connectivity, and water-sector resilience. Water is the second most frequently contested resource, and this pattern appears repeatedly where adaptation, agricultural growth, and biodiversity measures converge in the same landscapes.",
-          "pathway": "Basin-level allocation review and shared siting criteria across NAP, NDC, NBSAP, and Vision 2050 may be worth a closer look where irrigation and ecosystem objectives meet.",
+          "description": "Una segunda posible desalineación recurrente se refiere a la expansión del riego, estanques, canales, tuberías, puntos de agua para el ganado y otras infraestructuras hídricas que recurren a las mismas cuencas y sistemas de agua dulce utilizados para los caudales ecológicos, la protección de los humedales, la conectividad de los hábitats y la resiliencia del sector hídrico. El agua es el segundo recurso objeto de disputa con mayor frecuencia, y este patrón aparece repetidamente allí donde las medidas de adaptación, crecimiento agrícola y biodiversidad convergen en los mismos paisajes.",
+          "pathway": "La revisión de la asignación a nivel de cuenca y los criterios compartidos de ubicación en NAP, NDC, NBSAP y Vision 2050 pueden merecer un examen más detenido allí donde confluyen los objetivos de riego y de los ecosistemas.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "NAP<->NBSAP",
@@ -3880,10 +3880,10 @@
           }
         },
         {
-          "name": "Livestock growth and low emission land goals",
+          "name": "Crecimiento de la ganadería y objetivos de tierras con bajas emisiones",
           "type": "friction",
-          "description": "A further recurring potential misalignment appears where livestock expansion, intensive beef and dairy systems, pig and poultry support, fodder growth, and rural relocation for agriculture may increase pressure on pasture, soils, forests, and emissions pathways that climate and land documents are also trying to manage. The review cases often point to implementation choices such as stocking levels, energy sourcing, land conversion, and the balance between herd growth and productivity gains.",
-          "pathway": "Cross-document review of livestock support conditions, carrying-capacity thresholds, and emissions indicators in FSS, National targets, and related climate documents could provide a starting point for closer examination.",
+          "description": "Otra posible desalineación recurrente aparece cuando la expansión ganadera, los sistemas intensivos de carne de vacuno y lácteos, el apoyo a los sectores porcino y avícola, el crecimiento de forraje y la reubicación rural para la agricultura pueden aumentar la presión sobre los pastizales, los suelos, los bosques y las trayectorias de emisiones que los documentos sobre clima y tierra también están tratando de gestionar. Los casos examinados suelen señalar opciones de implementación como los niveles de carga ganadera, el abastecimiento energético, la conversión de tierras y el equilibrio entre el crecimiento del hato y las ganancias de productividad.",
+          "pathway": "La revisión interdocumental de las condiciones de apoyo a la ganadería, los umbrales de capacidad de carga y los indicadores de emisiones en FSS, las metas nacionales y los documentos climáticos relacionados podría proporcionar un punto de partida para un examen más detallado.",
           "contributing_doc_pairs": [
             "FSS<->NDC",
             "FSS<->NITIPA",
@@ -4073,7 +4073,7 @@
           }
         }
       ],
-      "summary_paragraph": "Across Mongolia's policy set, the strongest recurring alignment appears in cross-sector enabling systems, climate-resilient agriculture, and land restoration instruments, with many document pairs supporting common approaches on legal frameworks, capacity, monitoring, pasture management, and ecosystem stewardship. These patterns are visible across climate, biodiversity, land, and long-term development documents, and the aligned pair counts are generally high relative to review cases. At the same time, potential misalignment appears repeatedly where agricultural expansion, irrigation, and livestock growth may overlap with protected areas, restoration priorities, ecological flows, and low-emission land pathways. The evidence suggests that these issues arise mainly through siting, zoning, water allocation, and implementation design in shared landscapes, rather than through a broad difference in overall direction.",
+      "summary_paragraph": "En el conjunto de políticas de Mongolia, la alineación recurrente más sólida aparece en los sistemas habilitadores intersectoriales, la agricultura resiliente al clima y los instrumentos de restauración de tierras, y muchos pares de documentos respaldan enfoques comunes sobre marcos jurídicos, capacidad, seguimiento, gestión de pastizales y administración de ecosistemas. Estos patrones son visibles en los documentos sobre clima, biodiversidad, tierras y desarrollo a largo plazo, y los recuentos de pares alineados son generalmente altos en relación con los casos examinados. Al mismo tiempo, la posible desalineación aparece repetidamente allí donde la expansión agrícola, el riego y el crecimiento del ganado pueden superponerse con las áreas protegidas, las prioridades de restauración, los flujos ecológicos y las trayectorias de uso de la tierra con bajas emisiones. La evidencia sugiere que estas cuestiones surgen principalmente a través de la localización, la zonificación, la asignación de agua y el diseño de la implementación en paisajes compartidos, más que por una diferencia amplia en la dirección general.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": []
@@ -4081,10 +4081,10 @@
     "NAP": {
       "storylines": [
         {
-          "name": "Shared enabling systems for climate and land delivery",
+          "name": "Sistemas habilitadores compartidos para la implementación en materia de clima y tierras",
           "type": "reinforcement",
-          "description": "Across several pairings, the documents align through legal frameworks, finance, partnerships, monitoring, research, and knowledge systems that support implementation across climate, biodiversity, land restoration, and agriculture. This pattern is especially visible where cross-cutting capacity and reporting tools in ILDN, NDC, NITIPA, NBSAP, and Vision 2050 support sector measures on restoration, adaptation, sustainable production, and land stewardship.",
-          "pathway": "Indicator alignment and joint monitoring across ILDN, NDC, NITIPA, NBSAP, and Vision 2050 could be a useful starting point for tracking where shared enabling measures are supporting delivery in the same places.",
+          "description": "En varios emparejamientos, los documentos se alinean mediante marcos jurídicos, financiación, alianzas, seguimiento, investigación y sistemas de conocimiento que apoyan la implementación en los ámbitos del clima, la biodiversidad, la restauración de tierras y la agricultura. Este patrón es especialmente visible cuando las herramientas transversales de capacidad y presentación de informes en ILDN, NDC, NITIPA, NBSAP y Vision 2050 respaldan medidas sectoriales sobre restauración, adaptación, producción sostenible y gestión responsable de la tierra.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto en ILDN, NDC, NITIPA, NBSAP y Vision 2050 podrían ser un punto de partida útil para rastrear dónde las medidas facilitadoras compartidas están apoyando la implementación en los mismos lugares.",
           "contributing_doc_pairs": [
             "ILDN<->NITIPA",
             "ILDN<->NDC",
@@ -4231,10 +4231,10 @@
           }
         },
         {
-          "name": "Climate resilient agriculture and sustainable land management",
+          "name": "Agricultura resiliente al clima y gestión sostenible de la tierra",
           "type": "reinforcement",
-          "description": "A strong recurring pattern links climate-resilient agriculture, anti-desertification action, pasture governance, soil protection, and sustainable production practices. The syntheses repeatedly note alignment through irrigation efficiency, agroforestry, pasture carrying-capacity management, resilient crop systems, and agricultural adaptation measures that pull in the same direction across food, climate, land, and long-term development documents.",
-          "pathway": "Shared land and water indicators across FSS, NDC, NRVTS, and Vision 2050 could help clarify where climate-smart production measures and land stewardship measures are proceeding together.",
+          "description": "Un patrón sólido y recurrente vincula la agricultura resiliente al clima, la acción contra la desertificación, la gobernanza de los pastizales, la protección del suelo y las prácticas de producción sostenible. Las síntesis señalan repetidamente una alineación mediante la eficiencia del riego, la agroforestería, la gestión de la capacidad de carga de los pastizales, los sistemas de cultivos resilientes y las medidas de adaptación agrícola que avanzan en la misma dirección en los documentos sobre alimentación, clima, tierra y desarrollo a largo plazo.",
+          "pathway": "Los indicadores compartidos de tierras y agua en FSS, NDC, NRVTS y Vision 2050 podrían ayudar a aclarar en qué ámbitos las medidas de producción climáticamente inteligente y las medidas de gestión responsable de la tierra avanzan conjuntamente.",
           "contributing_doc_pairs": [
             "FSS<->NDC",
             "FSS<->NRVTS",
@@ -4374,10 +4374,10 @@
           }
         },
         {
-          "name": "Restoration planning with biodiversity mainstreaming tools",
+          "name": "Planificación de la restauración con herramientas de integración de la biodiversidad",
           "type": "reinforcement",
-          "description": "The biodiversity and land-focused documents consistently align on restoration, protected areas, sustainable forestry and agriculture, and the use of spatial planning and biodiversity mainstreaming tools. This includes recurring links between protected-area expansion, reforestation, wetland and grassland management, ecosystem-service approaches, and accessible biodiversity data for planning and investment decisions.",
-          "pathway": "Joint use of spatial datasets and restoration indicators across ILDN, NBSAP, NRVTS, and Vision 2050 may help maintain a common evidence base for land rehabilitation and biodiversity-sensitive planning.",
+          "description": "Los documentos centrados en la biodiversidad y la tierra se alinean de manera consistente en materia de restauración, áreas protegidas, silvicultura y agricultura sostenibles, y el uso de herramientas de planificación espacial e integración transversal de la biodiversidad. Esto incluye vínculos recurrentes entre la expansión de las áreas protegidas, la reforestación, la gestión de humedales y pastizales, los enfoques de servicios ecosistémicos y los datos de biodiversidad accesibles para las decisiones de planificación e inversión.",
+          "pathway": "El uso conjunto de conjuntos de datos espaciales e indicadores de restauración en ILDN, NBSAP, NRVTS y Vision 2050 puede ayudar a mantener una base común de evidencia para la rehabilitación de tierras y la planificación sensible a la biodiversidad.",
           "contributing_doc_pairs": [
             "ILDN<->NBSAP",
             "NBSAP<->NRVTS",
@@ -4515,10 +4515,10 @@
           }
         },
         {
-          "name": "Irrigated crop expansion and protected land allocation",
+          "name": "Expansión de cultivos de regadío y asignación de tierras protegidas",
           "type": "friction",
-          "description": "The most repeated potential misalignment concerns expansion of irrigated agriculture, new cropland, and cash crops in landscapes also targeted for protected areas, restoration, wetlands, forests, or ecological corridors. The evidence tables point to irrigated agriculture expansion, new cropland conversion, and protected-area targets as the most recurrent anchors, with land and water the most frequently contested resources.",
-          "pathway": "Joint spatial zoning and basin-level screening across FSS, NBSAP, NDC, NRVTS, and Vision 2050 could help clarify where irrigation and crop expansion may be compatible with protected-area and restoration priorities.",
+          "description": "La posible desalineación más repetida se refiere a la expansión de la agricultura de regadío, nuevas tierras de cultivo y cultivos comerciales en paisajes también destinados a áreas protegidas, restauración, humedales, bosques o corredores ecológicos. Las tablas de evidencia señalan la expansión de la agricultura de regadío, la conversión de nuevas tierras de cultivo y las metas de áreas protegidas como los puntos de referencia más recurrentes, siendo la tierra y el agua los recursos objeto de disputa con mayor frecuencia.",
+          "pathway": "La zonificación espacial conjunta y la evaluación a nivel de cuenca en FSS, NBSAP, NDC, NRVTS y Vision 2050 podrían ayudar a aclarar dónde la irrigación y la expansión de cultivos pueden ser compatibles con las prioridades de las áreas protegidas y de restauración.",
           "contributing_doc_pairs": [
             "FSS<->NBSAP",
             "FSS<->NDC",
@@ -4707,10 +4707,10 @@
           }
         },
         {
-          "name": "Livestock intensification and pasture carrying capacity",
+          "name": "Intensificación de la ganadería y capacidad de carga de los pastizales",
           "type": "friction",
-          "description": "A second recurring potential misalignment concerns intensive livestock, fodder expansion, and rural agricultural relocation in areas where pasture carrying-capacity rules, grassland recovery, forest protection, or protected-area objectives are also in play. The syntheses repeatedly describe this as a delivery-side issue shaped by stocking levels, grazing intensity, reserve pasture use, and the siting of livestock facilities.",
-          "pathway": "Common carrying-capacity thresholds and land-use screening across FSS, NITIPA, NDC, NRVTS, and Vision 2050 may be worth a closer look where livestock modernization and pasture recovery measures overlap.",
+          "description": "Una segunda posible desalineación recurrente se refiere a la ganadería intensiva, la expansión de forraje y la reubicación agrícola rural en zonas donde también están en juego las normas sobre capacidad de carga de los pastizales, la recuperación de los pastizales, la protección de los bosques o los objetivos de las áreas protegidas. Las síntesis describen repetidamente esto como una cuestión del lado de la implementación, determinada por los niveles de carga ganadera, la intensidad del pastoreo, el uso de pastos de reserva y la ubicación de las instalaciones ganaderas.",
+          "pathway": "Los umbrales comunes de capacidad de carga y la evaluación del uso de la tierra en FSS, NITIPA, NDC, NRVTS y Vision 2050 pueden merecer un examen más detenido cuando se superponen las medidas de modernización de la ganadería y recuperación de pastizales.",
           "contributing_doc_pairs": [
             "FSS<->ILDN",
             "FSS<->NITIPA",
@@ -4901,7 +4901,7 @@
           }
         }
       ],
-      "summary_paragraph": "The document set shows strong and repeated alignment around enabling systems, climate-resilient agriculture, and land restoration planning, with many pairings indicating that monitoring, finance, legal frameworks, research, and biodiversity mainstreaming support implementation across sectors. Alignment is particularly visible where sustainable land management, pasture governance, anti-desertification action, and restoration measures pull in the same direction across climate, biodiversity, land, and development strategies. At the same time, several recurring potential misalignments appear around irrigated crop expansion, new cropland, and livestock intensification in landscapes where protected areas, restoration, pasture recovery, and water allocation objectives are also active. A smaller but still recurring pattern concerns hydropower and water infrastructure siting in sensitive river basins and conservation landscapes, which may merit closer review where implementation footprints overlap.",
+      "summary_paragraph": "El conjunto de documentos muestra una alineación sólida y reiterada en torno a los sistemas facilitadores, la agricultura resiliente al clima y la planificación de la restauración de tierras, y muchas combinaciones indican que el seguimiento, la financiación, los marcos jurídicos, la investigación y la transversalización de la biodiversidad apoyan la implementación en todos los sectores. La alineación es particularmente visible allí donde la gestión sostenible de la tierra, la gobernanza de los pastizales, la acción contra la desertificación y las medidas de restauración avanzan en la misma dirección en las estrategias de clima, biodiversidad, tierra y desarrollo. Al mismo tiempo, varias posibles desalineaciones recurrentes aparecen en torno a la expansión de cultivos de regadío, nuevas tierras de cultivo y la intensificación ganadera en paisajes donde también están activos los objetivos relativos a las áreas protegidas, la restauración, la recuperación de pastizales y la asignación de agua. Un patrón menor, pero aún recurrente, se refiere a la ubicación de la energía hidroeléctrica y de la infraestructura hídrica en cuencas fluviales sensibles y paisajes de conservación, lo que puede justificar un examen más detenido allí donde las huellas de implementación se superponen.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": [
@@ -4913,10 +4913,10 @@
     "NBSAP": {
       "storylines": [
         {
-          "name": "Climate adaptation and implementation enabling systems",
+          "name": "Adaptación al clima y sistemas facilitadores de la implementación",
           "type": "reinforcement",
-          "description": "A strong recurring pattern is alignment through legal frameworks, institutional capacity, finance, research, training, and monitoring that support delivery across climate, land, and agriculture agendas. This appears repeatedly where NAP, NDC, NITIPA, ILDN, and Vision 2050 provide enabling conditions for sector measures, target setting, restoration projects, and climate-resilient production systems.",
-          "pathway": "Indicator alignment and joint monitoring across NAP, NDC, NITIPA, ILDN, and Vision 2050 could be a useful starting point for tracking how shared enabling measures support delivery across sectors.",
+          "description": "Un patrón recurrente sólido es la alineación mediante marcos jurídicos, capacidad institucional, financiación, investigación, formación y seguimiento que respaldan la implementación en las agendas de clima, tierra y agricultura. Esto aparece repetidamente cuando NAP, NDC, NITIPA, ILDN y Vision 2050 proporcionan condiciones habilitantes para medidas sectoriales, el establecimiento de metas, proyectos de restauración y sistemas de producción resilientes al clima.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto en NAP, NDC, NITIPA, ILDN y Vision 2050 podrían ser un punto de partida útil para rastrear cómo las medidas habilitadoras compartidas apoyan la implementación en todos los sectores.",
           "contributing_doc_pairs": [
             "ILDN<->NAP",
             "ILDN<->NDC",
@@ -5072,10 +5072,10 @@
           }
         },
         {
-          "name": "Climate resilient agriculture and pasture management",
+          "name": "Agricultura resiliente al clima y gestión de pastizales",
           "type": "reinforcement",
-          "description": "Many document pairs align around climate-resilient agriculture through soil conservation, pasture carrying-capacity management, water management, early warning, traceability, veterinary services, and resilient crop and livestock systems. The pattern is especially visible where food-system modernization and livestock improvement are linked with adaptation, risk reduction, and sustainable pasture use.",
-          "pathway": "Shared implementation metrics across FSS, NAP, NDC, NITIPA, NRVTS, and Vision 2050 could help clarify where climate-resilient agriculture and pasture measures are already pulling in the same direction.",
+          "description": "Muchos pares de documentos se alinean en torno a una agricultura resiliente al clima mediante la conservación del suelo, la gestión de la capacidad de carga de los pastizales, la gestión del agua, la alerta temprana, la trazabilidad, los servicios veterinarios y los sistemas resilientes de cultivos y ganadería. El patrón es especialmente visible allí donde la modernización del sistema alimentario y la mejora de la ganadería están vinculadas con la adaptación, la reducción del riesgo y el uso sostenible de los pastizales.",
+          "pathway": "Las métricas de implementación compartidas entre FSS, NAP, NDC, NITIPA, NRVTS y Vision 2050 podrían ayudar a aclarar en qué ámbitos las medidas de agricultura y pastizales resilientes al clima ya están avanzando en la misma dirección.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "FSS<->NDC",
@@ -5229,10 +5229,10 @@
           }
         },
         {
-          "name": "Land restoration and ecosystem stewardship measures",
+          "name": "Medidas de restauración de tierras y gestión de ecosistemas",
           "type": "reinforcement",
-          "description": "There is consistent alignment on reforestation, anti-desertification action, protected-area expansion, wetland and headwater stewardship, agroforestry, and land rehabilitation. This often works through a combination of restoration instruments in NRVTS and ILDN and broader ecosystem-service, rehabilitation, and land stewardship measures in Vision 2050, NAP, and NDC.",
-          "pathway": "Linked land-condition monitoring and restoration reporting across ILDN, NRVTS, NAP, NDC, and Vision 2050 may help maintain visibility over shared ecosystem stewardship outcomes.",
+          "description": "Existe una alineación consistente en la reforestación, la acción contra la desertificación, la expansión de las áreas protegidas, la gestión de los humedales y las cabeceras de cuenca, la agroforestería y la rehabilitación de tierras. Esto suele funcionar mediante una combinación de instrumentos de restauración en NRVTS e ILDN y medidas más amplias de servicios ecosistémicos, rehabilitación y gestión de tierras en Vision 2050, NAP y NDC.",
+          "pathway": "La vinculación del seguimiento de la condición de la tierra y la presentación de informes sobre restauración en ILDN, NRVTS, NAP, NDC y Vision 2050 puede ayudar a mantener la visibilidad sobre los resultados compartidos de la gestión responsable de los ecosistemas.",
           "contributing_doc_pairs": [
             "FSS<->ILDN",
             "FSS<->NRVTS",
@@ -5383,10 +5383,10 @@
           }
         },
         {
-          "name": "Irrigated and expanded agriculture land claims",
+          "name": "Reclamaciones de tierras agrícolas irrigadas y ampliadas",
           "type": "friction",
-          "description": "The most repeated possible misalignment concerns expansion of irrigated agriculture, new cropland, and cash-crop production in landscapes also targeted for restoration, protected areas, forests, wetlands, or broader land-neutrality objectives. Evidence tables point to this as the most consequential recurring pattern, with irrigated agriculture expansion, rice and sugar beet expansion, and new cropland targets appearing most often in pairs identified for review, and land and water named as the main contested resources.",
-          "pathway": "Joint land-use screening and basin-level water allocation across FSS, Vision 2050, NDC, NAP, NRVTS, and ILDN could help clarify where irrigation and cropland expansion may be compatible with restoration and protection measures.",
+          "description": "La posible desalineación más repetida se refiere a la expansión de la agricultura de regadío, nuevas tierras de cultivo y la producción de cultivos comerciales en paisajes también destinados a la restauración, las áreas protegidas, los bosques, los humedales o objetivos más amplios de neutralidad de la tierra. Las tablas de evidencia señalan esto como el patrón recurrente más significativo, y la expansión de la agricultura de regadío, la expansión del arroz y la remolacha azucarera, y los objetivos de nuevas tierras de cultivo aparecen con mayor frecuencia en los pares identificados para revisión, mientras que la tierra y el agua se mencionan como los principales recursos en disputa.",
+          "pathway": "La evaluación conjunta del uso de la tierra y la asignación del agua a nivel de cuenca en los FSS, Vision 2050, NDC, NAP, NRVTS e ILDN podrían ayudar a aclarar dónde la expansión del riego y de las tierras de cultivo puede ser compatible con las medidas de restauración y protección.",
           "contributing_doc_pairs": [
             "FSS<->ILDN",
             "FSS<->NAP",
@@ -5572,10 +5572,10 @@
           }
         },
         {
-          "name": "Livestock intensification and pasture carrying capacity",
+          "name": "Intensificación de la ganadería y capacidad de carga de los pastizales",
           "type": "friction",
-          "description": "A second recurring possible misalignment concerns intensive livestock, fodder expansion, farm establishment, and rural agricultural relocation where the same areas are also subject to pasture carrying-capacity limits, grassland restoration, biodiversity protection, or agricultural emissions objectives. The pattern is concentrated in food-system and climate pairings, with intensive livestock and farm support targets among the most frequent anchors in pairs identified for review.",
-          "pathway": "A closer look at stocking thresholds, fodder area planning, and site-level grazing rules across FSS, NITIPA, NDC, NAP, NRVTS, and Vision 2050 could help distinguish productivity gains from added pressure on shared pasture resources.",
+          "description": "Una segunda posible desalineación recurrente se refiere a la ganadería intensiva, la expansión de forraje, el establecimiento de explotaciones agrícolas y la reubicación agrícola rural cuando las mismas zonas también están sujetas a límites de capacidad de carga de los pastizales, restauración de pastizales, protección de la biodiversidad u objetivos de emisiones agrícolas. El patrón se concentra en las vinculaciones entre sistemas alimentarios y clima, con metas de apoyo a la ganadería intensiva y a las explotaciones agrícolas entre los puntos de anclaje más frecuentes en los pares identificados para revisión.",
+          "pathway": "Un examen más detallado de los umbrales de carga ganadera, la planificación de las áreas de forraje y las normas de pastoreo a nivel de sitio en FSS, NITIPA, NDC, NAP, NRVTS y Vision 2050 podría ayudar a distinguir las ganancias de productividad de la presión adicional sobre los recursos de pastizales compartidos.",
           "contributing_doc_pairs": [
             "FSS<->NITIPA",
             "NITIPA<->SECTORAL",
@@ -5752,10 +5752,10 @@
           }
         },
         {
-          "name": "Infrastructure siting in protected river landscapes",
+          "name": "Ubicación de infraestructuras en paisajes fluviales protegidos",
           "type": "friction",
-          "description": "A narrower but repeated possible misalignment appears where hydropower, water infrastructure, wells, ponds, and related works may overlap with protected areas, ecological corridors, wetlands, forest landscapes, or river-flow objectives. The recurring mechanism is not a broad difference in direction, but delivery-stage overlap in siting, flow management, and access within the same river basins and conservation landscapes.",
-          "pathway": "Boundary review, ecological-flow checks, and shared siting criteria across ILDN, NDC, and Resolution 91 may be worth a closer look where river-basin infrastructure and protected landscapes intersect.",
+          "description": "Una posible desalineación más acotada pero reiterada aparece allí donde la energía hidroeléctrica, la infraestructura hídrica, los pozos, los estanques y las obras conexas pueden superponerse con áreas protegidas, corredores ecológicos, humedales, paisajes forestales u objetivos de caudal de los ríos. El mecanismo recurrente no es una diferencia amplia de orientación, sino una superposición en la etapa de implementación en la ubicación, la gestión de caudales y el acceso dentro de las mismas cuencas fluviales y paisajes de conservación.",
+          "pathway": "La revisión de límites, las comprobaciones de caudal ecológico y los criterios compartidos de emplazamiento en ILDN, NDC y la Resolución 91 pueden merecer un examen más detenido allí donde se cruzan las infraestructuras de cuenca fluvial y los paisajes protegidos.",
           "contributing_doc_pairs": [
             "ILDN<->NDC",
             "ILDN<->NITIPA"
@@ -5903,7 +5903,7 @@
           }
         }
       ],
-      "summary_paragraph": "Across Mongolia's policy set, the strongest recurring alignment appears in climate adaptation and implementation systems, climate-resilient agriculture, and land restoration measures, with many documents supporting one another through legal frameworks, finance, monitoring, research, and shared land stewardship tools. The evidence also suggests that several possible misalignments recur around the same resource base, especially land and water, where irrigated agriculture, new cropland, and some livestock expansion measures may overlap with restoration, protected-area, pasture, forest, and wetland objectives. These patterns are concentrated most clearly in pairings involving the food security strategy and Vision 2050, while climate and land documents otherwise show substantial alignment. Overall, the portfolio appears broadly coherent in direction, with a limited number of implementation interfaces that may merit closer spatial, hydrological, and indicator-level review.",
+      "summary_paragraph": "En el conjunto de políticas de Mongolia, la alineación recurrente más sólida aparece en la adaptación al cambio climático y los sistemas de implementación, la agricultura resiliente al clima y las medidas de restauración de tierras, y muchos documentos se apoyan mutuamente mediante marcos jurídicos, financiación, seguimiento, investigación y herramientas compartidas de gestión de la tierra. La evidencia también sugiere que varias posibles desalineaciones se repiten en torno a la misma base de recursos, especialmente la tierra y el agua, donde la agricultura de regadío, las nuevas tierras de cultivo y algunas medidas de expansión ganadera pueden superponerse con los objetivos de restauración, áreas protegidas, pastizales, bosques y humedales. Estos patrones se concentran con mayor claridad en las combinaciones que involucran la estrategia de seguridad alimentaria y la Visión 2050, mientras que, por lo demás, los documentos sobre clima y tierra muestran una alineación sustancial. En general, la cartera parece ampliamente coherente en su orientación, con un número limitado de interfaces de implementación que podrían justificar una revisión más detallada a nivel espacial, hidrológico y de indicadores.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": []
@@ -5911,10 +5911,10 @@
     "NDC": {
       "storylines": [
         {
-          "name": "Climate and biodiversity enabling systems across sectors",
+          "name": "Sistemas facilitadores para el clima y la biodiversidad en todos los sectores",
           "type": "reinforcement",
-          "description": "A strong recurring pattern is alignment through legal frameworks, capacity development, finance, research, monitoring, and biodiversity mainstreaming that support delivery across land, climate, agriculture, and conservation agendas. This appears repeatedly where adaptation, biodiversity, and climate targets provide enabling systems that support implementation, reporting, and investment decisions in other documents.",
-          "pathway": "Indicator alignment and joint monitoring across NAP, NBSAP, NITIPA, ILDN, and NRVTS could be a useful starting point for reviewing how shared enabling systems are being translated into delivery.",
+          "description": "Un patrón recurrente sólido es la alineación mediante marcos jurídicos, desarrollo de capacidades, financiación, investigación, seguimiento e integración transversal de la biodiversidad que respaldan la ejecución en las agendas de tierras, clima, agricultura y conservación. Esto aparece repetidamente cuando las metas de adaptación, biodiversidad y clima proporcionan sistemas habilitadores que respaldan la implementación, la presentación de informes y las decisiones de inversión en otros documentos.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto en los NAP, NBSAP, NITIPA, ILDN y NRVTS podrían ser un punto de partida útil para examinar cómo los sistemas habilitadores compartidos se están traduciendo en la implementación.",
           "contributing_doc_pairs": [
             "ILDN<->NAP",
             "ILDN<->NBSAP",
@@ -6063,10 +6063,10 @@
           }
         },
         {
-          "name": "Climate resilient agriculture and pasture stewardship",
+          "name": "Agricultura resiliente al clima y gestión de los pastizales",
           "type": "reinforcement",
-          "description": "Several pairs align around climate-resilient agriculture, pasture carrying-capacity management, livestock quality improvement, soil protection, and anti-desertification measures. The recurring mechanism is that agricultural modernization measures are linked with adaptation, pasture governance, and land rehabilitation tools that support more sustainable production systems.",
-          "pathway": "Shared review of pasture, livestock, and soil-management indicators across FSS, NAP, NITIPA, NRVTS, and Vision 2050 could help clarify where these measures continue to pull in the same direction.",
+          "description": "Varios pares se alinean en torno a la agricultura resiliente al clima, la gestión de la capacidad de carga de los pastizales, la mejora de la calidad del ganado, la protección del suelo y las medidas de lucha contra la desertificación. El mecanismo recurrente es que las medidas de modernización agrícola están vinculadas con la adaptación, la gobernanza de los pastizales y las herramientas de rehabilitación de tierras que respaldan sistemas de producción más sostenibles.",
+          "pathway": "La revisión compartida de los indicadores de pastizales, ganado y gestión del suelo en FSS, NAP, NITIPA, NRVTS y Vision 2050 podría ayudar a aclarar en qué ámbitos estas medidas siguen orientándose en la misma dirección.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "FSS<->NITIPA",
@@ -6214,10 +6214,10 @@
           }
         },
         {
-          "name": "Land restoration and spatial planning pathways",
+          "name": "Vías para la restauración de tierras y la planificación espacial",
           "type": "reinforcement",
-          "description": "A further recurring alignment links restoration, protected areas, agroforestry, wetland stewardship, and spatial planning across land and biodiversity documents. The mechanism is consistent use of land-condition targets, restoration measures, ecosystem-service valuation, and planning tools to support coordinated action in shared landscapes.",
-          "pathway": "Joint spatial datasets and land-condition reporting across ILDN, NBSAP, NRVTS, NAP, and Vision 2050 could be worth a closer look as a basis for coordinated landscape decisions.",
+          "description": "Otra alineación recurrente adicional vincula la restauración, las áreas protegidas, la agroforestería, la gestión de los humedales y la planificación espacial en los documentos sobre tierras y biodiversidad. El mecanismo consiste en el uso coherente de metas relativas a la condición de la tierra, medidas de restauración, valoración de los servicios ecosistémicos y herramientas de planificación para apoyar una acción coordinada en paisajes compartidos.",
+          "pathway": "Los conjuntos de datos espaciales conjuntos y la presentación de informes sobre el estado de la tierra en ILDN, NBSAP, NRVTS, NAP y Vision 2050 podrían merecer un examen más detenido como base para decisiones coordinadas sobre el paisaje.",
           "contributing_doc_pairs": [
             "ILDN<->NBSAP",
             "ILDN<->NRVTS",
@@ -6362,10 +6362,10 @@
           }
         },
         {
-          "name": "Cropland and irrigation expansion in shared landscapes",
+          "name": "Expansión de las tierras de cultivo y del riego en paisajes compartidos",
           "type": "friction",
-          "description": "The most repeated potential misalignment concerns new cropland, cash crop expansion, and irrigated agriculture operating in the same land and water systems targeted for restoration, protected areas, wetlands, forests, and biodiversity corridors. Evidence tables point to this as the most consequential review pattern, with land and water the most frequently contested resources and FSS and Vision 2050 targets on crop and irrigation expansion appearing most often in review pairs.",
-          "pathway": "Joint land-use screening, zoning, and water-allocation review across FSS, SECTORAL, NBSAP, NRVTS, NAP, and ILDN could help clarify where expansion and stewardship measures may be compatible.",
+          "description": "La posible desalineación más repetida se refiere a nuevas tierras de cultivo, la expansión de cultivos comerciales y la agricultura de regadío que operan en los mismos sistemas de tierra y agua previstos para la restauración, las áreas protegidas, los humedales, los bosques y los corredores de biodiversidad. Las tablas de evidencia señalan esto como el patrón de revisión más significativo, siendo la tierra y el agua los recursos objeto de disputa con mayor frecuencia, y apareciendo con mayor frecuencia en los pares de revisión los objetivos de FSS y de Vision 2050 sobre la expansión de cultivos y del riego.",
+          "pathway": "La revisión conjunta del uso de la tierra, la zonificación y la asignación de agua en FSS, SECTORAL, NBSAP, NRVTS, NAP e ILDN podría ayudar a aclarar dónde las medidas de expansión y gestión responsable pueden ser compatibles.",
           "contributing_doc_pairs": [
             "FSS<->ILDN",
             "FSS<->NAP",
@@ -6555,10 +6555,10 @@
           }
         },
         {
-          "name": "Livestock intensification and pasture capacity limits",
+          "name": "Intensificación de la ganadería y límites de la capacidad de los pastizales",
           "type": "friction",
-          "description": "A second recurring potential misalignment concerns intensive livestock, fodder expansion, and rural agricultural relocation where these measures may increase pressure on pasture, grassland, soils, and habitats that other documents seek to manage through carrying-capacity rules, restoration, and emissions reduction pathways. This pattern is concentrated around FSS livestock support targets and appears repeatedly in pairings with climate, land, and biodiversity documents.",
-          "pathway": "A shared review of stocking thresholds, fodder support, and pasture-capacity rules across FSS, NITIPA, NRVTS, and Vision 2050 could be a practical starting point for examining delivery choices.",
+          "description": "Una segunda posible desalineación recurrente se refiere a la ganadería intensiva, la expansión de los forrajes y la reubicación agrícola rural, cuando estas medidas pueden aumentar la presión sobre los pastizales, las praderas, los suelos y los hábitats que otros documentos buscan gestionar mediante normas de capacidad de carga, restauración y trayectorias de reducción de emisiones. Este patrón se concentra en torno a las metas de apoyo ganadero del FSS y aparece repetidamente en emparejamientos con documentos sobre clima, tierra y biodiversidad.",
+          "pathway": "Una revisión compartida de los umbrales de carga ganadera, el apoyo para forraje y las normas sobre capacidad de pastoreo en FSS, NITIPA, NRVTS y Vision 2050 podría ser un punto de partida práctico para examinar las opciones de implementación.",
           "contributing_doc_pairs": [
             "FSS<->NITIPA",
             "NITIPA<->SECTORAL",
@@ -6721,10 +6721,10 @@
           }
         },
         {
-          "name": "Energy and hydropower siting near conservation areas",
+          "name": "Ubicación de proyectos energéticos e hidroeléctricos cerca de áreas de conservación",
           "type": "friction",
-          "description": "A narrower but recurring potential misalignment appears where hydropower and related energy infrastructure may overlap with forests, wetlands, river connectivity, protected areas, and biodiversity-sensitive landscapes. The review cases point mainly to siting, associated infrastructure, and shared freshwater use rather than a broad difference in overall direction.",
-          "pathway": "Basin-level spatial review and shared safeguards across NITIPA, NBSAP, NAP, and ILDN may help clarify where energy infrastructure and conservation measures can proceed together.",
+          "description": "Una posible desalineación más acotada pero recurrente aparece cuando la energía hidroeléctrica y la infraestructura energética relacionada pueden superponerse con bosques, humedales, la conectividad fluvial, áreas protegidas y paisajes sensibles para la biodiversidad. Los casos examinados apuntan principalmente al emplazamiento, la infraestructura asociada y el uso compartido del agua dulce, más que a una diferencia amplia en la orientación general.",
+          "pathway": "La revisión espacial a nivel de cuenca y las salvaguardias compartidas en NITIPA, NBSAP, NAP e ILDN pueden ayudar a aclarar dónde la infraestructura energética y las medidas de conservación pueden avanzar conjuntamente.",
           "contributing_doc_pairs": [
             "ILDN<->NITIPA",
             "NAP<->NITIPA",
@@ -6889,7 +6889,7 @@
           }
         }
       ],
-      "summary_paragraph": "Across Mongolia's policy set, the strongest recurring alignment appears in cross-cutting enabling systems, climate-resilient agriculture, and land restoration pathways. Legal frameworks, capacity development, finance, monitoring, spatial planning, and ecosystem-based land management often support implementation across adaptation, biodiversity, land degradation neutrality, climate targets, and sector strategy documents. At the same time, potential misalignment appears repeatedly where cropland, irrigation, and livestock expansion may draw on the same land, water, and pasture base targeted for restoration, protected areas, wetland stewardship, and carrying-capacity limits. A narrower possible misalignment also appears around hydropower and related infrastructure siting in biodiversity-sensitive and water-dependent landscapes, which may merit closer spatial review.",
+      "summary_paragraph": "En el conjunto de políticas de Mongolia, la alineación recurrente más sólida aparece en los sistemas habilitadores transversales, la agricultura resiliente al clima y las vías de restauración de tierras. Los marcos jurídicos, el desarrollo de capacidades, la financiación, el monitoreo, la planificación espacial y la gestión de tierras basada en ecosistemas suelen respaldar la implementación en los documentos de adaptación, biodiversidad, neutralidad de la degradación de las tierras, objetivos climáticos y estrategias sectoriales. Al mismo tiempo, la posible desalineación aparece repetidamente cuando la expansión de las tierras de cultivo, el riego y la ganadería pueden recurrir a la misma base de tierras, agua y pastizales prevista para la restauración, las áreas protegidas, la gestión de humedales y los límites de capacidad de carga. Una posible desalineación más acotada también aparece en torno a la ubicación de la energía hidroeléctrica y la infraestructura conexa en paisajes sensibles para la biodiversidad y dependientes del agua, lo que puede justificar una revisión espacial más detallada.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": []
@@ -6897,10 +6897,10 @@
     "NITIPA": {
       "storylines": [
         {
-          "name": "Climate resilient agriculture and adaptation systems",
+          "name": "Agricultura resiliente al clima y sistemas de adaptación",
           "type": "reinforcement",
-          "description": "Across the set, climate-resilient agriculture aligns with legal frameworks, capacity development, soil conservation, livestock management, and risk reduction measures that support more reliable crop and pastoral production. This pattern is especially visible where adaptation governance and agricultural modernization measures provide enabling conditions for implementation across food, climate, and long-term development documents.",
-          "pathway": "Indicator alignment and joint monitoring across FSS, NAP, NDC, and Vision 2050 could be a useful starting point for tracking how climate-resilient agriculture measures are being delivered through shared legal, training, and risk-management systems.",
+          "description": "En el conjunto, la agricultura resiliente al clima se alinea con los marcos jurídicos, el desarrollo de capacidades, la conservación del suelo, la gestión ganadera y las medidas de reducción del riesgo que respaldan una producción agrícola y pastoral más fiable. Este patrón es especialmente visible cuando la gobernanza de la adaptación y las medidas de modernización agrícola proporcionan condiciones propicias para la implementación en los documentos sobre alimentación, clima y desarrollo a largo plazo.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto en FSS, NAP, NDC y Vision 2050 podrían ser un punto de partida útil para rastrear cómo se están implementando las medidas de agricultura resiliente al clima mediante sistemas compartidos de carácter jurídico, capacitación y gestión del riesgo.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "FSS<->NDC",
@@ -7041,10 +7041,10 @@
           }
         },
         {
-          "name": "Land restoration and anti desertification delivery",
+          "name": "Restauración de tierras y aplicación de medidas contra la desertificación",
           "type": "reinforcement",
-          "description": "A strong recurring pattern links restoration, anti-desertification, reforestation, pasture governance, and land-condition monitoring across land degradation, biodiversity, adaptation, climate, and long-term development documents. The alignment often works through enabling tools such as partnerships, finance, ecosystem-service valuation, and monitoring systems that support on-the-ground restoration and sustainable land management.",
-          "pathway": "Shared land-condition metrics and coordinated reporting across ILDN, NRVTS, NBSAP, NAP, NDC, and Vision 2050 may help connect restoration finance, anti-desertification programmes, and site-level land management actions.",
+          "description": "Un sólido patrón recurrente vincula la restauración, la lucha contra la desertificación, la reforestación, la gobernanza de los pastizales y el monitoreo de la condición de la tierra en los documentos sobre degradación de la tierra, biodiversidad, adaptación, clima y desarrollo a largo plazo. La alineación suele operar mediante herramientas facilitadoras como las alianzas, la financiación, la valoración de los servicios ecosistémicos y los sistemas de monitoreo que respaldan la restauración sobre el terreno y la gestión sostenible de la tierra.",
+          "pathway": "Las métricas compartidas sobre la condición de la tierra y la presentación de informes coordinada entre ILDN, NRVTS, NBSAP, NAP, NDC y Vision 2050 pueden ayudar a conectar la financiación para la restauración, los programas de lucha contra la desertificación y las acciones de gestión de la tierra a nivel de sitio.",
           "contributing_doc_pairs": [
             "ILDN<->NAP",
             "ILDN<->NBSAP",
@@ -7199,10 +7199,10 @@
           }
         },
         {
-          "name": "Biodiversity mainstreaming through planning and governance",
+          "name": "Integración de la biodiversidad mediante la planificación y la gobernanza",
           "type": "reinforcement",
-          "description": "Several document pairs align through biodiversity mainstreaming, spatial planning, knowledge systems, and inclusive governance that support sustainable agriculture, restoration, and ecosystem resilience. This recurring mechanism appears where biodiversity and climate objectives are carried into broader planning, finance, and monitoring arrangements rather than relying on a single sector instrument.",
-          "pathway": "Joint use of planning, disclosure, and monitoring frameworks across NBSAP, NDC, ILDN, and Vision 2050 could help maintain common treatment of biodiversity considerations in land and agricultural investment decisions.",
+          "description": "Varios pares de documentos se alinean mediante la integración transversal de la biodiversidad, la planificación espacial, los sistemas de conocimiento y una gobernanza inclusiva que respaldan la agricultura sostenible, la restauración y la resiliencia de los ecosistemas. Este mecanismo recurrente aparece cuando los objetivos de biodiversidad y clima se incorporan en arreglos más amplios de planificación, financiación y seguimiento, en lugar de depender de un único instrumento sectorial.",
+          "pathway": "El uso conjunto de marcos de planificación, divulgación y seguimiento en NBSAP, NDC, ILDN y Vision 2050 podría ayudar a mantener un tratamiento común de las consideraciones sobre biodiversidad en las decisiones de inversión en tierras y agricultura.",
           "contributing_doc_pairs": [
             "ILDN<->NBSAP",
             "NAP<->NBSAP",
@@ -7352,10 +7352,10 @@
           }
         },
         {
-          "name": "Irrigated crop expansion and water allocation",
+          "name": "Expansión de cultivos de regadío y asignación de agua",
           "type": "friction",
-          "description": "The most repeated possible misalignment concerns irrigated agriculture expansion, new cropland, and cash crop growth drawing on the same land and water base used for restoration, protected areas, ecological corridors, and water security measures. Evidence tables place irrigated agriculture expansion, rice and sugar beet expansion, and new cropland among the most recurrent anchors in pairs identified for review, with land and water the most frequently named contested resources.",
-          "pathway": "Basin-level allocation and spatial screening across FSS, NDC, NBSAP, NRVTS, NAP, ILDN, and Vision 2050 could help clarify where irrigation and crop expansion may be compatible with restoration, protected-area, and ecological-flow objectives.",
+          "description": "La posible desalineación más repetida se refiere a la expansión de la agricultura de regadío, las nuevas tierras de cultivo y el crecimiento de los cultivos comerciales que recurren a la misma base de tierra y agua utilizada para la restauración, las áreas protegidas, los corredores ecológicos y las medidas de seguridad hídrica. Las tablas de evidencia sitúan la expansión de la agricultura de regadío, la expansión del arroz y la remolacha azucarera, y las nuevas tierras de cultivo entre los anclajes más recurrentes en los pares identificados para revisión, siendo la tierra y el agua los recursos en disputa mencionados con mayor frecuencia.",
+          "pathway": "La asignación a nivel de cuenca y la evaluación espacial en FSS, NDC, NBSAP, NRVTS, NAP, ILDN y Vision 2050 podrían ayudar a aclarar dónde el riego y la expansión de cultivos pueden ser compatibles con los objetivos de restauración, áreas protegidas y caudales ecológicos.",
           "contributing_doc_pairs": [
             "FSS<->NDC",
             "FSS<->NBSAP",
@@ -7551,10 +7551,10 @@
           }
         },
         {
-          "name": "Livestock intensification and protected landscape overlap",
+          "name": "Superposición entre la intensificación ganadera y los paisajes protegidos",
           "type": "friction",
-          "description": "A second recurring possible misalignment concerns intensive livestock, fodder production, wells, ponds, and grazing support measures operating in landscapes also targeted for protected areas, habitat connectivity, forest recovery, wetlands, or pasture carrying-capacity controls. The evidence tables show intensive livestock and fodder-related food strategy targets among the most recurrent anchors in reviewed pairs, and many syntheses point to overlap in rangelands, buffer zones, and shared water points.",
-          "pathway": "Area-based zoning and grazing infrastructure review across FSS, NDC, NBSAP, NRVTS, NAP, and Vision 2050 may help distinguish where livestock support measures and protected landscape objectives pull in the same direction and where siting choices matter most.",
+          "description": "Una segunda posible desalineación recurrente se refiere a las medidas de apoyo a la ganadería intensiva, la producción de forraje, los pozos, los estanques y el pastoreo que operan en paisajes también destinados a áreas protegidas, conectividad de hábitats, recuperación forestal, humedales o controles de la capacidad de carga de los pastizales. Las tablas de evidencia muestran que las metas de la estrategia alimentaria relacionadas con la ganadería intensiva y el forraje figuran entre los anclajes más recurrentes en los pares examinados, y muchas síntesis señalan la superposición en pastizales, zonas de amortiguamiento y puntos de agua compartidos.",
+          "pathway": "La revisión de la zonificación basada en áreas y de la infraestructura de pastoreo en FSS, NDC, NBSAP, NRVTS, NAP y Vision 2050 puede ayudar a distinguir dónde las medidas de apoyo a la ganadería y los objetivos de los paisajes protegidos apuntan en la misma dirección y dónde las decisiones de ubicación son más importantes.",
           "contributing_doc_pairs": [
             "NAP<->NBSAP",
             "NAP<->NDC",
@@ -7738,7 +7738,7 @@
           }
         }
       ],
-      "summary_paragraph": "The document set shows strong and repeated alignment around climate-resilient agriculture, land restoration, anti-desertification, and biodiversity mainstreaming through planning, monitoring, and governance systems. These patterns are visible across many pairs with high aligned counts, particularly where adaptation, restoration, and agricultural modernization measures support one another through shared legal, financial, and information tools. At the same time, possible misalignment appears most consistently around irrigated crop expansion and around livestock intensification or support infrastructure in landscapes also used for protected areas, restoration, ecological connectivity, and water security. The deterministic evidence suggests that land and water are the main shared resources worth a closer look, with the largest concentration of reviewed pairs involving FSS and Vision 2050 linked to expansion-oriented agricultural targets.",
+      "summary_paragraph": "El conjunto de documentos muestra una alineación sólida y reiterada en torno a la agricultura resiliente al clima, la restauración de tierras, la lucha contra la desertificación y la integración de la biodiversidad mediante sistemas de planificación, seguimiento y gobernanza. Estos patrones son visibles en numerosos pares con altos recuentos de alineación, en particular cuando las medidas de adaptación, restauración y modernización agrícola se apoyan mutuamente mediante instrumentos jurídicos, financieros y de información compartidos. Al mismo tiempo, la posible desalineación aparece de manera más consistente en torno a la expansión de cultivos de regadío y a la intensificación ganadera o la infraestructura de apoyo en paisajes que también se utilizan para áreas protegidas, restauración, conectividad ecológica y seguridad hídrica. La evidencia determinista sugiere que la tierra y el agua son los principales recursos compartidos que merecen un examen más detenido, con la mayor concentración de pares revisados que involucran FSS y Vision 2050 vinculados a metas agrícolas orientadas a la expansión.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": []
@@ -7746,10 +7746,10 @@
     "NRVTS": {
       "storylines": [
         {
-          "name": "Climate adaptation governance across sector delivery",
+          "name": "Gobernanza de la adaptación climática en la implementación sectorial",
           "type": "reinforcement",
-          "description": "A strong recurring pattern is alignment through legal frameworks, capacity development, finance, research, and monitoring that support implementation across agriculture, water, land, biodiversity, and climate agendas. This appears especially where adaptation governance and cross-sector climate capacity provide enabling conditions for sector measures, including resilient agriculture, soil conservation, restoration, and risk management.",
-          "pathway": "Indicator alignment and joint monitoring across NAP, NDC, NITIPA, Vision 2050, and ILDN could be a useful starting point for reviewing how shared legal, capacity, and financing systems support delivery.",
+          "description": "Un patrón recurrente sólido es la alineación mediante marcos jurídicos, desarrollo de capacidades, financiación, investigación y seguimiento que respaldan la implementación en las agendas de agricultura, agua, tierra, biodiversidad y clima. Esto aparece especialmente donde la gobernanza de la adaptación y la capacidad climática intersectorial proporcionan condiciones habilitantes para las medidas sectoriales, incluida la agricultura resiliente, la conservación del suelo, la restauración y la gestión del riesgo.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto en los NAP, NDC, NITIPA, Vision 2050 e ILDN podrían ser un punto de partida útil para revisar cómo los sistemas compartidos de carácter jurídico, capacidad y financiación apoyan la implementación.",
           "contributing_doc_pairs": [
             "NAP<->NDC",
             "NAP<->NITIPA",
@@ -7888,10 +7888,10 @@
           }
         },
         {
-          "name": "Climate resilient agriculture and soil stewardship",
+          "name": "Agricultura resiliente al clima y gestión responsable del suelo",
           "type": "reinforcement",
-          "description": "Several document pairs align around climate-resilient agriculture through soil conservation, climate-adapted crop practices, sustainable resource use, agricultural insurance, and eco-initiatives. The recurring mechanism is that agricultural modernization measures are linked with land protection and risk reduction tools, allowing production goals and resilience goals to pull in the same direction.",
-          "pathway": "Shared agriculture and land indicators across FSS, NAP, NDC, and Vision 2050 could help clarify where climate-smart production practices and soil stewardship are already supporting common outcomes.",
+          "description": "Varios pares de documentos se alinean en torno a una agricultura resiliente al clima mediante la conservación del suelo, prácticas de cultivo adaptadas al clima, uso sostenible de los recursos, seguros agrícolas e iniciativas ecológicas. El mecanismo recurrente es que las medidas de modernización agrícola están vinculadas con la protección de la tierra y las herramientas de reducción del riesgo, lo que permite que los objetivos de producción y los objetivos de resiliencia avancen en la misma dirección.",
+          "pathway": "Los indicadores compartidos de agricultura y uso de la tierra en FSS, NAP, NDC y Vision 2050 podrían ayudar a aclarar en qué ámbitos las prácticas de producción climáticamente inteligentes y la gestión responsable del suelo ya están respaldando resultados comunes.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "FSS<->NDC",
@@ -8030,10 +8030,10 @@
           }
         },
         {
-          "name": "Biodiversity mainstreaming with land restoration systems",
+          "name": "Integración de la biodiversidad en los sistemas de restauración de tierras",
           "type": "reinforcement",
-          "description": "Alignment is consistent where biodiversity mainstreaming, ecosystem-service valuation, restoration planning, and science-based cooperation are used as shared delivery tools across land, biodiversity, and climate documents. This is most visible where protected areas, restoration, anti-desertification action, and land-condition monitoring are connected through common planning and evidence systems.",
-          "pathway": "Joint use of spatial data, restoration metrics, and ecosystem-service valuation across ILDN, NBSAP, NAP, NDC, and Vision 2050 may be worth a closer look as a basis for coordinated land stewardship review.",
+          "description": "La alineación es coherente cuando la integración de la biodiversidad, la valoración de los servicios ecosistémicos, la planificación de la restauración y la cooperación basada en la ciencia se utilizan como instrumentos compartidos de implementación en los documentos sobre tierras, biodiversidad y clima. Esto es más visible cuando las áreas protegidas, la restauración, las medidas de lucha contra la desertificación y el monitoreo de la condición de la tierra están conectados mediante sistemas comunes de planificación y evidencia.",
+          "pathway": "El uso conjunto de datos espaciales, métricas de restauración y valoración de los servicios ecosistémicos en ILDN, NBSAP, NAP, NDC y Vision 2050 puede merecer un examen más detenido como base para una revisión coordinada de la gestión responsable de la tierra.",
           "contributing_doc_pairs": [
             "ILDN<->NBSAP",
             "ILDN<->SECTORAL",
@@ -8178,10 +8178,10 @@
           }
         },
         {
-          "name": "Agricultural expansion and protected area overlap",
+          "name": "Superposición entre la expansión agrícola y las áreas protegidas",
           "type": "friction",
-          "description": "The most repeated potential misalignment concerns cropland expansion, irrigated cash crops, and related agricultural growth measures operating in the same landscapes targeted for protected areas, ecological corridors, restoration, or land-neutrality objectives. The mechanism is usually spatial overlap on finite land and water, especially where new cultivation, irrigation, or settlement support may affect areas also identified for conservation or recovery.",
-          "pathway": "Joint spatial screening across FSS, NBSAP, ILDN, NDC, NAP, and Vision 2050 could help clarify where agricultural expansion and protected-area or restoration priorities may be compatible in the same landscapes.",
+          "description": "La posible desalineación más repetida se refiere a la expansión de las tierras de cultivo, los cultivos comerciales de regadío y las medidas conexas de crecimiento agrícola que operan en los mismos paisajes previstos para áreas protegidas, corredores ecológicos, restauración u objetivos de neutralidad de la degradación de las tierras. El mecanismo suele ser la superposición espacial sobre tierras y recursos hídricos finitos, especialmente cuando el nuevo cultivo, el riego o el apoyo a los asentamientos pueden afectar zonas también identificadas para la conservación o la recuperación.",
+          "pathway": "Un análisis espacial conjunto de FSS, NBSAP, ILDN, NDC, NAP y Vision 2050 podría ayudar a aclarar en qué lugares la expansión agrícola y las prioridades de áreas protegidas o de restauración pueden ser compatibles en los mismos paisajes.",
           "contributing_doc_pairs": [
             "FSS<->NBSAP",
             "FSS<->ILDN",
@@ -8366,10 +8366,10 @@
           }
         },
         {
-          "name": "Livestock intensification and pasture carrying capacity",
+          "name": "Intensificación de la ganadería y capacidad de carga de los pastizales",
           "type": "friction",
-          "description": "A second recurring potential misalignment concerns intensive livestock, fodder expansion, and rural agricultural relocation alongside pasture carrying-capacity limits, degraded land recovery, and agricultural emissions objectives. The review cases often point to stocking levels, grazing pressure, feed production, and land conversion as the practical channels through which implementation choices may diverge.",
-          "pathway": "Common pasture and livestock metrics across FSS, NITIPA, NAP, NDC, and Vision 2050 could help review how herd modernization, fodder support, and carrying-capacity rules interact over time.",
+          "description": "Una segunda posible desalineación recurrente se refiere a la ganadería intensiva, la expansión de los forrajes y la reubicación agrícola rural, junto con los límites de capacidad de carga de los pastizales, la recuperación de tierras degradadas y los objetivos de emisiones agrícolas. Los casos examinados suelen señalar los niveles de carga ganadera, la presión de pastoreo, la producción de piensos y la conversión de tierras como los canales prácticos a través de los cuales las decisiones de implementación pueden divergir.",
+          "pathway": "Las métricas comunes sobre pastizales y ganado en FSS, NITIPA, NAP, NDC y Vision 2050 podrían ayudar a revisar cómo la modernización del hato, el apoyo al forraje y las normas sobre capacidad de carga interactúan a lo largo del tiempo.",
           "contributing_doc_pairs": [
             "FSS<->NITIPA",
             "FSS<->SECTORAL",
@@ -8552,10 +8552,10 @@
           }
         },
         {
-          "name": "Water infrastructure and ecological flow pressures",
+          "name": "Infraestructura hídrica y presiones sobre los caudales ecológicos",
           "type": "friction",
-          "description": "Another recurring potential misalignment appears where irrigation expansion, ponds, wells, canals, and hydropower are pursued in river basins and habitats also targeted for water security, biodiversity connectivity, restoration, or ecosystem protection. The mechanism is shared demand on water and siting overlap, with possible effects on freshwater source areas, river connectivity, and biodiversity-sensitive landscapes.",
-          "pathway": "Basin-level allocation review and biodiversity-sensitive siting across NDC, NBSAP, NAP, NITIPA, and Vision 2050 could be a practical starting point for examining shared water and infrastructure pressures.",
+          "description": "Otra posible desalineación recurrente aparece cuando la expansión del riego, los estanques, los pozos, los canales y la energía hidroeléctrica se impulsan en cuencas fluviales y hábitats que también son objeto de medidas orientadas a la seguridad hídrica, la conectividad de la biodiversidad, la restauración o la protección de los ecosistemas. El mecanismo es la demanda compartida de agua y la superposición en la ubicación, con posibles efectos sobre las zonas de origen de agua dulce, la conectividad fluvial y los paisajes sensibles para la biodiversidad.",
+          "pathway": "La revisión de la asignación a nivel de cuenca y la ubicación sensible a la biodiversidad en NDC, NBSAP, NAP, NITIPA y Vision 2050 podrían ser un punto de partida práctico para examinar las presiones compartidas sobre el agua y la infraestructura.",
           "contributing_doc_pairs": [
             "NBSAP<->NDC",
             "NBSAP<->NITIPA",
@@ -8730,7 +8730,7 @@
           }
         }
       ],
-      "summary_paragraph": "Across Mongolia's policy set, the strongest recurring alignment appears in cross-sector climate and land governance, where legal frameworks, capacity development, finance, monitoring, and science-based planning support implementation across adaptation, biodiversity, land restoration, and agricultural resilience. A second broad area that aligns with this is climate-resilient agriculture and soil stewardship, alongside biodiversity mainstreaming and ecosystem-service approaches that connect sector delivery with land and ecosystem management. At the same time, several document pairs indicate potential misalignment around agricultural expansion, especially irrigated cropping and new cropland, where land and water demands may overlap with protected areas, restoration priorities, and land-neutrality objectives. Additional possible misalignment may warrant closer review in livestock intensification and water infrastructure, particularly where pasture carrying capacity, ecological flows, and biodiversity-sensitive siting depend on coordinated implementation choices.",
+      "summary_paragraph": "En el conjunto de políticas de Mongolia, la alineación recurrente más sólida aparece en la gobernanza climática y de la tierra intersectorial, donde los marcos jurídicos, el desarrollo de capacidades, la financiación, el seguimiento y la planificación basada en la ciencia respaldan la implementación en materia de adaptación, biodiversidad, restauración de tierras y resiliencia agrícola. Una segunda área amplia que se alinea con ello es la agricultura resiliente al clima y la gestión responsable de los suelos, junto con la transversalización de la biodiversidad y los enfoques de servicios ecosistémicos que conectan la ejecución sectorial con la gestión de la tierra y los ecosistemas. Al mismo tiempo, varios pares de documentos indican una posible desalineación en torno a la expansión agrícola, especialmente los cultivos de regadío y las nuevas tierras de cultivo, donde las demandas de tierra y agua pueden superponerse con las áreas protegidas, las prioridades de restauración y los objetivos de neutralidad de la degradación de las tierras. Una posible desalineación adicional puede justificar un examen más detenido en la intensificación ganadera y la infraestructura hídrica, en particular cuando la capacidad de carga de los pastizales, los caudales ecológicos y la ubicación sensible a la biodiversidad dependen de decisiones de implementación coordinadas.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": [
@@ -8741,10 +8741,10 @@
     "SECTORAL": {
       "storylines": [
         {
-          "name": "Legal, capacity, and finance delivery systems",
+          "name": "Sistemas jurídicos, de capacidad y de ejecución financiera",
           "type": "reinforcement",
-          "description": "A strong recurring pattern is alignment through enabling systems, especially legal frameworks, institutional capacity, finance mobilization, research, and knowledge access that support implementation across climate, biodiversity, land, and adaptation agendas. This appears repeatedly where broad governance and financing provisions in NAP, NDC, NITIPA, ILDN, and NBSAP support sector delivery, monitoring, and coordination rather than relying on identical on-the-ground measures.",
-          "pathway": "Indicator alignment and shared implementation tracking across NAP, NDC, NITIPA, ILDN, and NBSAP could be a useful starting point for reviewing how these enabling systems support delivery across documents.",
+          "description": "Un patrón recurrente sólido es la alineación mediante sistemas facilitadores, especialmente marcos jurídicos, capacidad institucional, movilización de financiación, investigación y acceso al conocimiento que apoyan la implementación en las agendas de clima, biodiversidad, tierra y adaptación. Esto aparece repetidamente cuando disposiciones amplias de gobernanza y financiación en NAP, NDC, NITIPA, ILDN y NBSAP apoyan la ejecución sectorial, el seguimiento y la coordinación, en lugar de depender de medidas idénticas sobre el terreno.",
+          "pathway": "La alineación de indicadores y el seguimiento compartido de la implementación en NAP, NDC, NITIPA, ILDN y NBSAP podrían ser un punto de partida útil para examinar cómo estos sistemas facilitadores apoyan la ejecución en todos los documentos.",
           "contributing_doc_pairs": [
             "ILDN<->NITIPA",
             "NAP<->NDC",
@@ -8899,10 +8899,10 @@
           }
         },
         {
-          "name": "Shared restoration and ecosystem stewardship pathways",
+          "name": "Vías compartidas para la restauración y la gestión responsable de los ecosistemas",
           "type": "reinforcement",
-          "description": "Several document pairs align around restoration, protected areas, sustainable forest management, agroforestry, grassland recovery, wetland stewardship, and nature-based solutions. The pattern is especially clear where ILDN, NRVTS, NBSAP, NAP, and NDC connect land-condition monitoring, restoration finance, and biodiversity planning with practical measures in forests, rangelands, wetlands, and protected landscapes.",
-          "pathway": "Joint use of land-condition, biodiversity, and restoration monitoring across ILDN, NRVTS, NBSAP, NAP, and NDC could help clarify where these landscape measures continue to pull in the same direction.",
+          "description": "Varios pares de documentos se alinean en torno a la restauración, las áreas protegidas, la gestión forestal sostenible, la agroforestería, la recuperación de pastizales, la gestión responsable de los humedales y las NbS. El patrón es especialmente claro cuando ILDN, NRVTS, NBSAP, NAP y NDC conectan el monitoreo de la condición de la tierra, la financiación de la restauración y la planificación de la biodiversidad con medidas prácticas en bosques, pastizales, humedales y paisajes protegidos.",
+          "pathway": "El uso conjunto del monitoreo de la condición de la tierra, la biodiversidad y la restauración en ILDN, NRVTS, NBSAP, NAP y NDC podría ayudar a aclarar en qué ámbitos estas medidas del paisaje siguen orientándose en la misma dirección.",
           "contributing_doc_pairs": [
             "ILDN<->NAP",
             "ILDN<->NBSAP",
@@ -9049,10 +9049,10 @@
           }
         },
         {
-          "name": "Sustainable agriculture within environmental management systems",
+          "name": "Agricultura sostenible dentro de los sistemas de gestión ambiental",
           "type": "reinforcement",
-          "description": "Alignment also recurs around sustainable agriculture practices linked to environmental safeguards, including soil conservation, pasture carrying-capacity management, water monitoring, agroforestry, pollution control, and biodiversity-sensitive production. This is visible where food-system and climate measures connect with broader standards, monitoring, and mainstreaming provisions in biodiversity and adaptation frameworks.",
-          "pathway": "Cross-walking agricultural practice indicators and safeguard provisions across FSS, NAP, NBSAP, NDC, and NRVTS could be worth a closer look as a starting point for reviewing this shared implementation space.",
+          "description": "La alineación también reaparece en torno a las prácticas de agricultura sostenible vinculadas a salvaguardias ambientales, incluida la conservación del suelo, la gestión de la capacidad de carga de los pastizales, el monitoreo del agua, la agroforestería, el control de la contaminación y la producción sensible a la biodiversidad. Esto es visible cuando las medidas relativas al sistema alimentario y al clima se conectan con disposiciones más amplias sobre normas, monitoreo e integración transversal en los marcos de biodiversidad y adaptación.",
+          "pathway": "Podría valer la pena examinar más de cerca la armonización cruzada de los indicadores de prácticas agrícolas y las disposiciones de salvaguardias en FSS, NAP, NBSAP, NDC y NRVTS como punto de partida para revisar este espacio compartido de implementación.",
           "contributing_doc_pairs": [
             "FSS<->NAP",
             "FSS<->NBSAP",
@@ -9209,10 +9209,10 @@
           }
         },
         {
-          "name": "Agricultural expansion and protected land overlap",
+          "name": "Superposición entre la expansión agrícola y las tierras protegidas",
           "type": "friction",
-          "description": "The most consequential possible misalignment concerns expansion of cropland, cash crops, intensive livestock, fodder production, and rural agricultural settlement in landscapes also targeted for protected areas, restoration, ecological corridors, forests, wetlands, or broader land-neutrality objectives. The evidence points repeatedly to spatial overlap and land allocation pressures, with land the most frequently contested resource across review pairs.",
-          "pathway": "Joint land-use screening and zoning across FSS, ILDN, NBSAP, NAP, NDC, and NRVTS could help clarify where agricultural expansion and protected or restored landscapes may be compatible in the same areas.",
+          "description": "La posible desalineación más trascendental se refiere a la expansión de las tierras de cultivo, los cultivos comerciales, la ganadería intensiva, la producción de forraje y el asentamiento agrícola rural en paisajes también destinados a áreas protegidas, restauración, corredores ecológicos, bosques, humedales u objetivos más amplios de neutralidad de la tierra. La evidencia apunta repetidamente a la superposición espacial y a las presiones sobre la asignación de tierras, siendo la tierra el recurso objeto de disputa con mayor frecuencia en todos los pares examinados.",
+          "pathway": "La evaluación conjunta del uso de la tierra y la zonificación en FSS, ILDN, NBSAP, NAP, NDC y NRVTS podrían ayudar a aclarar dónde la expansión agrícola y los paisajes protegidos o restaurados pueden ser compatibles en las mismas áreas.",
           "contributing_doc_pairs": [
             "FSS<->ILDN",
             "FSS<->NBSAP",
@@ -9397,10 +9397,10 @@
           }
         },
         {
-          "name": "Water infrastructure and ecosystem allocation pressures",
+          "name": "Infraestructura hídrica y presiones de asignación de los ecosistemas",
           "type": "friction",
-          "description": "A second recurring possible misalignment concerns irrigation, ponds, canals, pipelines, livestock water points, and hydropower works drawing on the same river basins, wetlands, habitats, and ecological corridors that other documents seek to conserve or restore. Water is the second most frequently contested resource in the evidence, and the review cases often turn on siting, environmental flows, and basin-level allocation choices.",
-          "pathway": "Basin-level allocation review and biodiversity-sensitive siting across NAP, NDC, NBSAP, NITIPA, ILDN, and NRVTS could be a useful starting point for examining these shared water landscapes.",
+          "description": "Una segunda posible desalineación recurrente se refiere al riego, los estanques, los canales, las tuberías, los puntos de abastecimiento de agua para el ganado y las obras hidroeléctricas que utilizan las mismas cuencas fluviales, humedales, hábitats y corredores ecológicos que otros documentos buscan conservar o restaurar. El agua es el segundo recurso más frecuentemente disputado en la evidencia, y los casos examinados a menudo dependen de decisiones sobre la ubicación, los caudales ambientales y la asignación a nivel de cuenca.",
+          "pathway": "La revisión de la asignación a nivel de cuenca y la ubicación sensible a la biodiversidad en NAP, NDC, NBSAP, NITIPA, ILDN y NRVTS podrían ser un punto de partida útil para examinar estos paisajes hídricos compartidos.",
           "contributing_doc_pairs": [
             "ILDN<->NDC",
             "ILDN<->NITIPA",
@@ -9583,10 +9583,10 @@
           }
         },
         {
-          "name": "Production input choices and safeguard compatibility",
+          "name": "Opciones de insumos de producción y compatibilidad con las salvaguardias",
           "type": "friction",
-          "description": "A narrower but repeated possible misalignment concerns how production methods are delivered, including fertiliser production, herbicide use under zero tillage, plastic film mulching, residue management, fencing, and energy supply for food production. These cases appear where productivity or climate-smart measures may operate alongside pollution reduction, pesticide norms, pasture movement, or biodiversity-sensitive management rules without fully specified safeguards.",
-          "pathway": "Technical screening of production standards and safeguard provisions across FSS, NDC, and NRVTS may be worth a closer look to identify where implementation rules could be better aligned.",
+          "description": "Una posible desalineación más acotada pero reiterada se refiere a la forma en que se implementan los métodos de producción, incluida la producción de fertilizantes, el uso de herbicidas en la labranza cero, el acolchado con película plástica, la gestión de residuos, el cercado y el suministro de energía para la producción de alimentos. Estos casos aparecen cuando las medidas de productividad o climáticamente inteligentes pueden operar junto con la reducción de la contaminación, las normas sobre plaguicidas, el desplazamiento de pastizales o las reglas de gestión sensibles a la biodiversidad sin salvaguardias plenamente especificadas.",
+          "pathway": "Podría valer la pena examinar más de cerca la evaluación técnica de las normas de producción y las disposiciones de salvaguardia en FSS, NDC y NRVTS para identificar en qué ámbitos las normas de implementación podrían estar mejor alineadas.",
           "contributing_doc_pairs": [
             "FSS<->NITIPA",
             "NDC<->NRVTS"
@@ -9744,7 +9744,7 @@
           }
         }
       ],
-      "summary_paragraph": "Across Mongolia's policy set, the strongest recurring alignment appears in cross-cutting delivery systems, restoration and ecosystem stewardship, and sustainable agriculture measures linked to monitoring, standards, and governance tools. Many document pairs pull in the same direction through legal frameworks, finance, research, biodiversity mainstreaming, and land and water management measures that support implementation across sectors. At the same time, possible misalignment appears most often where agricultural expansion, protected and restored landscapes, and shared land resources meet, and where water infrastructure or hydropower may draw on the same basins and habitats as ecosystem objectives. A smaller set of review cases also points to implementation design choices around inputs and production methods, which may merit closer examination where safeguard provisions and delivery rules intersect.",
+      "summary_paragraph": "En el conjunto de políticas de Mongolia, la alineación recurrente más sólida aparece en los sistemas transversales de implementación, la restauración y la gestión responsable de los ecosistemas, y las medidas de agricultura sostenible vinculadas al seguimiento, las normas y los instrumentos de gobernanza. Muchos pares de documentos avanzan en la misma dirección mediante marcos jurídicos, financiación, investigación, transversalización de la biodiversidad y medidas de gestión de la tierra y el agua que apoyan la implementación en todos los sectores. Al mismo tiempo, la posible desalineación aparece con mayor frecuencia allí donde coinciden la expansión agrícola, los paisajes protegidos y restaurados, y los recursos terrestres compartidos, y donde la infraestructura hídrica o la energía hidroeléctrica pueden recurrir a las mismas cuencas y hábitats que los objetivos de los ecosistemas. Un conjunto más reducido de casos examinados también apunta a decisiones de diseño de la implementación en torno a los insumos y los métodos de producción, que podrían justificar un examen más detenido allí donde se cruzan las disposiciones de salvaguardia y las normas de implementación.",
       "doc_pair_count": 21,
       "schema_version": 2,
       "validation_warnings": []
