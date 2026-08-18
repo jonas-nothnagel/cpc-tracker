@@ -541,6 +541,7 @@ export function FundingTargetGrid({
   currency,
   period,
   totals,
+  aside,
 }: {
   docs: {
     docId: string;
@@ -559,90 +560,103 @@ export function FundingTargetGrid({
     low: number;
     none: number;
   };
+  /** Extra summary content (e.g. the GLOBE spend breakdown) rendered in the
+   *  right-hand rail on desktop, below the KPI tiles. */
+  aside?: React.ReactNode;
 }) {
   const t = useTranslations("briefing.financing.targetGrid");
   const [selected, setSelected] = useState<FundingTargetRow | null>(null);
   const fmt = (v: number) => fmtMoney(v, unit, currency);
   const tierLabel = (tier: FundingTier) => t(`tier.${tier}`);
 
+  // Two-column shape on desktop: evidence (dot rows) on the left, a summary
+  // rail (provenance, KPI tiles, GLOBE rollup) on the right — the same
+  // content-beside-summary silhouette the dot-map layout had with its
+  // centerpiece, so the slide reads wide rather than tall. On mobile the rail
+  // stacks first (summary before evidence, as before).
   return (
     <div>
-      <div className="flex justify-end mb-2">
-        <DataProvenance
-          origin="mixed"
-          sources={period
-            ? [{ label: t("provenance.sourceLabel", { start: period.start, end: period.end }) }]
-            : undefined}
-          method={t("provenance.method")}
-          caveat={t("provenance.caveat")}
-        />
-      </div>
-      <section data-tour="grid-kpis" className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-caption text-[var(--undp-gray)]">
-            {t("kpi.reviewed")}
-          </p>
-          <p className="text-2xl font-semibold tabular-nums text-[var(--undp-black)]">
-            {totals.reviewed}
-          </p>
-        </div>
-        <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-caption font-medium" style={{ color: "var(--undp-green)" }}>
-            {tierLabel("high")}
-          </p>
-          <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-green)" }}>
-            {totals.high}
-          </p>
-          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.highCaption")}</p>
-        </div>
-        <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-caption font-medium" style={{ color: "var(--undp-yellow)" }}>
-            {tierLabel("low")}
-          </p>
-          <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-yellow)" }}>
-            {totals.low}
-          </p>
-          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.lowCaption")}</p>
-        </div>
-        <div className="bg-white border border-gray-100 rounded-lg p-3">
-          <p className="text-caption font-medium" style={{ color: "var(--undp-red)" }}>
-            {tierLabel("none")}
-          </p>
-          <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-red)" }}>
-            {totals.none}
-          </p>
-          <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.noneCaption")}</p>
-        </div>
-      </section>
-
-      <div>
-        <div data-tour="grid-dots" className="px-1">
-          {docs.map((d) => (
-            <DocRow
-              key={d.docId}
-              docLabel={d.docLabel}
-              rows={d.rows}
-              docSpend={d.docSpend}
-              docTotalTitle={t("docTotal")}
-              selectedId={selected?.targetId ?? null}
-              onSelect={setSelected}
-              fmt={fmt}
-              tierLabel={tierLabel}
+      <div className="lg:grid lg:grid-cols-[1fr_minmax(280px,340px)] lg:gap-8 lg:items-start">
+        <div className="mb-4 lg:mb-0 lg:order-2 lg:sticky lg:top-[124px]">
+          <div className="flex justify-end mb-2">
+            <DataProvenance
+              origin="mixed"
+              sources={period
+                ? [{ label: t("provenance.sourceLabel", { start: period.start, end: period.end }) }]
+                : undefined}
+              method={t("provenance.method")}
+              caveat={t("provenance.caveat")}
             />
-          ))}
+          </div>
+          <section data-tour="grid-kpis" className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-3">
+            <div className="bg-white border border-gray-100 rounded-lg p-3">
+              <p className="text-caption text-[var(--undp-gray)]">
+                {t("kpi.reviewed")}
+              </p>
+              <p className="text-2xl font-semibold tabular-nums text-[var(--undp-black)]">
+                {totals.reviewed}
+              </p>
+            </div>
+            <div className="bg-white border border-gray-100 rounded-lg p-3">
+              <p className="text-caption font-medium" style={{ color: "var(--undp-green)" }}>
+                {tierLabel("high")}
+              </p>
+              <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-green)" }}>
+                {totals.high}
+              </p>
+              <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.highCaption")}</p>
+            </div>
+            <div className="bg-white border border-gray-100 rounded-lg p-3">
+              <p className="text-caption font-medium" style={{ color: "var(--undp-yellow)" }}>
+                {tierLabel("low")}
+              </p>
+              <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-yellow)" }}>
+                {totals.low}
+              </p>
+              <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.lowCaption")}</p>
+            </div>
+            <div className="bg-white border border-gray-100 rounded-lg p-3">
+              <p className="text-caption font-medium" style={{ color: "var(--undp-red)" }}>
+                {tierLabel("none")}
+              </p>
+              <p className="text-2xl font-semibold tabular-nums" style={{ color: "var(--undp-red)" }}>
+                {totals.none}
+              </p>
+              <p className="text-caption text-[var(--undp-gray)] mt-1">{t("kpi.noneCaption")}</p>
+            </div>
+          </section>
+          {aside}
         </div>
-        <ColorLegend tierLabel={tierLabel} />
-        {selected && (
-          <DetailDrawer
-            key={selected.targetId}
-            row={selected}
-            onClose={() => setSelected(null)}
-            fmt={fmt}
-            tierLabel={tierLabel}
-            t={t}
-          />
-        )}
+
+        <div className="lg:order-1">
+          <div data-tour="grid-dots" className="px-1">
+            {docs.map((d) => (
+              <DocRow
+                key={d.docId}
+                docLabel={d.docLabel}
+                rows={d.rows}
+                docSpend={d.docSpend}
+                docTotalTitle={t("docTotal")}
+                selectedId={selected?.targetId ?? null}
+                onSelect={setSelected}
+                fmt={fmt}
+                tierLabel={tierLabel}
+              />
+            ))}
+          </div>
+          <ColorLegend tierLabel={tierLabel} />
+        </div>
       </div>
+      {selected && (
+        <DetailDrawer
+          key={selected.targetId}
+          row={selected}
+          onClose={() => setSelected(null)}
+          fmt={fmt}
+          tierLabel={tierLabel}
+          t={t}
+        />
+      )}
     </div>
   );
 }

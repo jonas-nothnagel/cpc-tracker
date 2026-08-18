@@ -91,16 +91,16 @@ export function FinancingSection({
   let evidence: React.ReactNode = undefined;
   if (grid) {
     evidence = (
-      <div>
-        <FundingTargetGrid
-          docs={grid.docs}
-          unit={berData?.unit ?? "million"}
-          currency={berData?.currency ?? ""}
-          period={berData?.period}
-          totals={grid.totals}
-        />
-        {globeSpend && <GlobeSpendBreakdown summary={globeSpend} />}
-      </div>
+      <FundingTargetGrid
+        docs={grid.docs}
+        unit={berData?.unit ?? "million"}
+        currency={berData?.currency ?? ""}
+        period={berData?.period}
+        totals={grid.totals}
+        // Rendered in the grid's right-hand summary rail so the slide keeps
+        // the content-beside-summary shape instead of stacking vertically.
+        aside={globeSpend ? <GlobeSpendBreakdown summary={globeSpend} /> : undefined}
+      />
     );
   } else if (coverage && coverage.byDocument.length > 0) {
     evidence = (
