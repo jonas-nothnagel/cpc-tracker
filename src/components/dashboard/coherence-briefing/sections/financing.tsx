@@ -8,7 +8,8 @@
  * upstream by `computeFundingGrid`: countryConfig.financingLayout === "grid"
  * AND the data yields funding rows — never the country id):
  *
- *   - GRID (`grid` non-null; Panama today): the `FundingTargetGrid` — every
+ *   - GRID (`grid` non-null; Mongolia and Panama today): the
+ *     `FundingTargetGrid` — every
  *     visible target is one dot, colored by aligned-spend tier (high /
  *     medium / low / none — relative volume of AI-aligned expenditure, never
  *     financing adequacy), grouped by document. Click a dot to pop open a
@@ -20,7 +21,8 @@
  *     methodology disclosure, provenance badge, and GLOBE spend breakdown
  *     (all gated on data presence, so the next BER country inherits them).
  *
- *   - DOT-MAP (`grid` null; Mongolia today): the `DocumentCoverage`
+ *   - DOT-MAP (`grid` null; the fallback when a country's budget data cannot
+ *     support spend tiers, or when it opts out): the `DocumentCoverage`
  *     dot-map — one uniform dot per target, filled = has a HIGH-confidence
  *     matching budget line, hollow = none. Opening a document shows both
  *     sides (matched + unmatched). Rationale opens in the shared
