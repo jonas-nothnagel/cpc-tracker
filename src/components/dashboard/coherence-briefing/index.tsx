@@ -115,6 +115,7 @@ import {
 import {
   computeBudgetCoverage,
   computeFinancingCoherence,
+  computeFundingGrid,
   type BudgetCoverage,
   type FinancingCoherenceSummary,
 } from "@/lib/financing-coherence";
@@ -423,6 +424,24 @@ export function CoherenceBriefing({
     }
     return computeFinancingCoherence(berData, locale);
   }, [berData, locale]);
+
+  // Wide-grid evidence for the financing slide, or null for the dot-map.
+  // Non-null only when the country opts in (countryConfig.financingLayout ===
+  // "grid") AND the data yields funding rows. Everything wide-grid about the
+  // slide — suppressed centerpiece, widened column, invisible aside, the
+  // fundingGrid tour — derives from this, never from the country id.
+  const fundingGrid = useMemo(
+    () =>
+      computeFundingGrid({
+        targets,
+        budgetAlignment,
+        berData,
+        countryConfig,
+        locale,
+      }),
+    [targets, budgetAlignment, berData, countryConfig, locale],
+  );
+  const financingUsesWideGrid = fundingGrid !== null;
 
   // Reviewed spending rolled up to the biodiversity-OUTCOME taxonomy (primary
   // GLOBE), so the centerpiece can lead with where money concentrates AND which
@@ -1419,7 +1438,7 @@ export function CoherenceBriefing({
       ? "docMatrix"
       : activeSection === FINANCING_SECTION_ID &&
           financing &&
-          countryId !== "panama"
+          !financingUsesWideGrid
         ? "financing"
         : activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster
           ? implCenterView === "flow" && institutionFlow
@@ -1445,13 +1464,14 @@ export function CoherenceBriefing({
       );
     }
     if (activeSection === FINANCING_SECTION_ID && financing) {
-      // Panama drops the centerpiece: its FundingTargetGrid stretches across
-      // both columns via `lg:w-[calc(100%+520px)]` + `lg:invisible` on the
-      // aside, so the finance-outcome centerpiece would be duplicative — the
-      // slide's own GlobeSpendBreakdown carries the GLOBE rollup there.
-      // Every other country keeps the centerpiece (the budget object itself:
-      // what it is, where money concentrates, unspent share).
-      if (countryId === "panama") return null;
+      // The wide-grid layout drops the centerpiece: the FundingTargetGrid
+      // stretches across both columns via `lg:w-[calc(100%+520px)]` +
+      // `lg:invisible` on the aside, so the finance-outcome centerpiece would
+      // be duplicative — the slide's own GlobeSpendBreakdown carries the
+      // GLOBE rollup there. Dot-map countries keep the centerpiece (the
+      // budget object itself: what it is, where money concentrates,
+      // unspent share).
+      if (financingUsesWideGrid) return null;
       return (
         <FinancingCenterpiece
           summary={financing}
@@ -1699,15 +1719,15 @@ export function CoherenceBriefing({
               <div
                 ref={setSectionRef(FINANCING_SECTION_ID)}
                 data-section-id={FINANCING_SECTION_ID}
-                // Panama has no sticky centerpiece (renderActiveCenterpiece
-                // returns null and the aside is invisible), so the
-                // FundingTargetGrid extends 520px to the right into the empty
-                // aside area (480px aside + 40px gap-x on the outer grid).
-                // Every other country keeps the normal column width with its
-                // FinancingCenterpiece on the right.
+                // The wide-grid layout has no sticky centerpiece
+                // (renderActiveCenterpiece returns null and the aside is
+                // invisible), so the FundingTargetGrid extends 520px to the
+                // right into the empty aside area (480px aside + 40px gap-x
+                // on the outer grid). Dot-map countries keep the normal
+                // column width with their FinancingCenterpiece on the right.
                 className={
                   "lg:min-h-[80vh] " +
-                  (countryId === "panama" ? "lg:w-[calc(100%+520px)]" : "")
+                  (financingUsesWideGrid ? "lg:w-[calc(100%+520px)]" : "")
                 }
               >
                 <FinancingSection
@@ -1715,10 +1735,8 @@ export function CoherenceBriefing({
                   commitmentCount={visibleTargets.length}
                   coverage={budgetCoverage}
                   countryConfig={countryConfig}
-                  countryId={countryId}
                   countryName={countryName}
-                  targets={targets}
-                  budgetAlignment={budgetAlignment}
+                  grid={fundingGrid}
                   berData={berData}
                   globeSpend={outcomeBudget}
                   onOpenBudgetPair={openBudgetPair}
@@ -1749,13 +1767,14 @@ export function CoherenceBriefing({
           {/* Sticky visual column. The doc-pairs slide swaps the wheel for
               the coherence matrix (synced with the ranked list on the left);
               where-to-focus swaps in the concentration waffle; every other
-              slide shows the wheel. On Panama the financing slide hides the
-              aside so the FundingTargetGrid can stretch into this space —
-              its per-doc dot rows already carry the doc filter implicitly. */}
+              slide shows the wheel. In the wide-grid financing layout the
+              slide hides the aside so the FundingTargetGrid can stretch into
+              this space — its per-doc dot rows already carry the doc filter
+              implicitly. */}
           <aside
             className={
               "hidden lg:block " +
-              (activeSection === FINANCING_SECTION_ID && countryId === "panama"
+              (activeSection === FINANCING_SECTION_ID && financingUsesWideGrid
                 ? "lg:invisible"
                 : "")
             }
