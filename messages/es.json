@@ -122,6 +122,10 @@
       "skip": "Omitir",
       "reopen": "Lectura guiada (1 min)"
     },
+    "nav": {
+      "prevSection": "Sección anterior: {label}",
+      "nextSection": "Sección siguiente: {label}"
+    },
     "sections": {
       "direction": "Alineación de políticas",
       "docFocus": "Un documento en foco",

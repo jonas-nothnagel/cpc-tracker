@@ -122,6 +122,10 @@
       "skip": "Алгасах",
       "reopen": "Хөтөчтэй тайлбар (1 мин)"
     },
+    "nav": {
+      "prevSection": "Өмнөх хэсэг: {label}",
+      "nextSection": "Дараагийн хэсэг: {label}"
+    },
     "sections": {
       "direction": "Бодлогын уялдаа",
       "docFocus": "Нэг баримт бичигт төвлөрөх",

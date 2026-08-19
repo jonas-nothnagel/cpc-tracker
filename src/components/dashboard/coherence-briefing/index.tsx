@@ -1991,6 +1991,63 @@ function BriefingHeader({
   );
 }
 
+/**
+ * Previous/next section pair at the right edge of the jump nav. The Sri
+ * Lanka review (Aug 2026) asked for "a back button... a way so that you
+ * move back and forth"; the chips only offer random access. Plain anchor
+ * links, like the chips, so hash history and the browser back button keep
+ * working.
+ */
+function SectionStepper({
+  active,
+  order,
+  labels,
+}: {
+  active: SectionId;
+  order: SectionId[];
+  labels: Record<SectionId, string>;
+}) {
+  const t = useTranslations("briefing.nav");
+  const index = order.indexOf(active);
+  const prev = index > 0 ? order[index - 1] : null;
+  const next =
+    index >= 0 && index < order.length - 1 ? order[index + 1] : null;
+
+  const arrow = (id: SectionId | null, dir: "prev" | "next") => {
+    const glyph = dir === "prev" ? "↑" : "↓";
+    if (!id) {
+      return (
+        <span
+          aria-hidden="true"
+          className="inline-flex h-7 w-7 items-center justify-center rounded border border-line/60 text-gray-300"
+        >
+          {glyph}
+        </span>
+      );
+    }
+    const label = t(dir === "prev" ? "prevSection" : "nextSection", {
+      label: labels[id],
+    });
+    return (
+      <a
+        href={`#${id}`}
+        aria-label={label}
+        title={label}
+        className="inline-flex h-7 w-7 items-center justify-center rounded border border-line text-[var(--undp-gray)] transition-colors hover:border-line-strong hover:text-[var(--undp-black)]"
+      >
+        <span aria-hidden="true">{glyph}</span>
+      </a>
+    );
+  };
+
+  return (
+    <div className="ml-auto flex items-center gap-1.5 self-center">
+      {arrow(prev, "prev")}
+      {arrow(next, "next")}
+    </div>
+  );
+}
+
 function JumpNav({
   active,
   order,
@@ -2030,6 +2087,9 @@ function JumpNav({
       >
         <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
           {order.map((id, i) => chip(id, i))}
+          <li className="ml-auto flex items-center">
+            <SectionStepper active={active} order={order} labels={sectionLabels} />
+          </li>
         </ul>
       </nav>
     );
@@ -2061,6 +2121,7 @@ function JumpNav({
             </ul>
           </div>
         ))}
+        <SectionStepper active={active} order={order} labels={sectionLabels} />
       </div>
       {/* One caption, for the stage the reader is currently in. Showing all
           four at once was the density the focus group was already objecting

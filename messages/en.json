@@ -122,6 +122,10 @@
       "skip": "Skip",
       "reopen": "Guided read (1 min)"
     },
+    "nav": {
+      "prevSection": "Previous section: {label}",
+      "nextSection": "Next section: {label}"
+    },
     "sections": {
       "direction": "Policy alignment",
       "docFocus": "One document in focus",
