@@ -116,6 +116,12 @@
     "header": {
       "subtitle": "{count, plural, one {# documento} other {# documentos}} comparados por pares. Desplácese para ver los hallazgos o salte a una sección."
     },
+    "guidedRead": {
+      "offerBody": "¿Primera visita? Una lectura guiada de un minuto recorre qué muestra cada parte de este informe y cómo usarlo.",
+      "start": "Iniciar la lectura guiada",
+      "skip": "Omitir",
+      "reopen": "Lectura guiada (1 min)"
+    },
     "sections": {
       "direction": "Alineación de políticas",
       "docFocus": "Documentos analizados",
@@ -188,6 +194,34 @@
     },
     "tour": {
       "openAria": "Cómo leer este gráfico",
+      "guidedRead": {
+        "steps": {
+          "purpose": {
+            "title": "Qué muestra este informe",
+            "body": "La plataforma comparó las políticas de clima, biodiversidad y uso del suelo de este país, meta contra meta, y este titular es la lectura general. Todo lo que sigue es evidencia que se puede abrir y cuestionar. Es apoyo a la decisión: la interpretación queda en sus manos."
+          },
+          "questions": {
+            "title": "Una sola página, organizada por preguntas",
+            "body": "El informe es un solo recorrido con cuatro paradas: lo que dicen las políticas, dónde se separan, financiamiento y ejecución, y un espacio para explorar. Esta barra indica dónde está y salta a cualquier parte."
+          },
+          "policies": {
+            "title": "Primero, la dirección compartida",
+            "body": "Las secciones iniciales muestran los temas que se repiten en los documentos y dónde sus metas se refuerzan entre sí: una base para la planificación y el lugar para detectar sinergias entre instrumentos."
+          },
+          "friction": {
+            "title": "Luego, los pares que merecen una mirada",
+            "body": "Las secciones intermedias agrupan los pares de metas que la IA señaló como posibles desalineaciones, según el tipo de fricción y dónde se concentra. Estas señales son avisos para revisar, no veredictos: una lista inicial para leer los documentos en conjunto."
+          },
+          "delivery": {
+            "title": "Si la ejecución acompaña a la ambición",
+            "body": "Estas secciones ponen las líneas presupuestarias y las acciones reportadas junto a los compromisos de política, mostrando dónde el financiamiento y la implementación coinciden con lo que prometen los documentos, y dónde no."
+          },
+          "explore": {
+            "title": "Haga su propia pregunta",
+            "body": "El informe termina en un espacio de trabajo: pregunte por cualquier meta, par o tema en lenguaje claro. Cada gráfico también tiene su propio recorrido rotulado, Cómo leer este gráfico, junto a su título."
+          }
+        }
+      },
       "controls": {
         "next": "Siguiente",
         "back": "Atrás",

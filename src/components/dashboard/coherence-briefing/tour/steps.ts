@@ -13,6 +13,7 @@ import type { Placement } from "./geometry";
  */
 
 export type BriefingTourId =
+  | "guidedRead"
   | "wheel"
   | "docMatrix"
   | "financing"
@@ -32,11 +33,34 @@ export interface TourStep {
   id: string;
   /** Value of the `data-tour` attribute to spotlight. */
   target: string;
+  /** Fallback `data-tour` values tried in order when `target` is not
+   *  rendered, before the step is dropped. Lets one step land on whichever
+   *  of several per-country sections a country actually has. */
+  altTargets?: string[];
   /** Preferred tooltip side; the engine flips/falls back when cramped. */
   placement?: Placement;
 }
 
 export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
+  // The product-level first read: not "how to read this chart" but what the
+  // briefing shows, why it matters, and what to do with it. Offered once to
+  // first-time visitors by GuidedReadOffer, restartable from its quiet
+  // affordance. Targets only elements that never unmount on section change
+  // (header, nav, SlideFrame headline blocks, the Explore ask dock), so the
+  // sticky centerpiece swapping while the page scrolls cannot end the tour.
+  guidedRead: [
+    { id: "purpose", target: "guided-header", placement: "bottom" },
+    { id: "questions", target: "guided-nav", placement: "bottom" },
+    { id: "policies", target: "slide-direction", placement: "bottom" },
+    { id: "friction", target: "slide-friction-types", placement: "bottom" },
+    {
+      id: "delivery",
+      target: "slide-financing",
+      altTargets: ["slide-implementation"],
+      placement: "bottom",
+    },
+    { id: "explore", target: "explore-ask", placement: "top" },
+  ],
   wheel: [
     { id: "arcs", target: "wheel-arcs" },
     { id: "ribbons", target: "wheel-ribbons" },

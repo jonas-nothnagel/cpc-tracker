@@ -84,6 +84,10 @@ import type {
 import { BriefingPanelHost } from "./briefing-panels";
 import { useBriefingPanels } from "./use-briefing-panels";
 import { DocFilterControl, DocToggleLegend } from "./doc-filter-control";
+import {
+  BRIEFING_SCOPE_ID,
+  GuidedReadOffer,
+} from "./tour/guided-read-offer";
 import { TourButton } from "./tour/tour-button";
 import type { BriefingTourId } from "./tour/steps";
 import type { PrimerHighlightPair } from "./primer-card";
@@ -1572,7 +1576,7 @@ export function CoherenceBriefing({
   // ── Render ─────────────────────────────────────────────────────
   return (
     <main className="flex-1 w-full">
-      <div className="max-w-7xl mx-auto px-6 pb-24">
+      <div id={BRIEFING_SCOPE_ID} className="max-w-7xl mx-auto px-6 pb-24">
         <BriefingHeader
           countryName={countryName}
           documentCount={documentCount}
@@ -1583,6 +1587,9 @@ export function CoherenceBriefing({
           onOpenPair={openPairFromFaultLine}
           onHighlightPair={setPrimerHighlight}
         />
+        {/* First-visit orientation: offered, never forced. Hidden when no
+            documents are visible (no sections to walk through). */}
+        {availableDocs.length > 0 && <GuidedReadOffer />}
 
         {availableDocs.length === 0 ? (
           <>
@@ -1963,7 +1970,7 @@ function BriefingHeader({
   const t = useTranslations("briefing.header");
   const tDirection = useTranslations("briefing.direction");
   return (
-    <header className="pt-10 pb-2">
+    <header className="pt-10 pb-2 scroll-mt-24" data-tour="guided-header">
       <h1
         className="text-display tracking-[-0.02em] text-[var(--undp-black)] font-semibold"
         style={{ fontFamily: HEADLINE_SERIF }}
@@ -2030,7 +2037,10 @@ function JumpNav({
   // Rollback path: with no stages the nav is the flat list it always was.
   if (!stages) {
     return (
-      <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
+      <nav
+        data-tour="guided-nav"
+        className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70"
+      >
         <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
           {order.map((id, i) => chip(id, i))}
         </ul>
@@ -2041,7 +2051,10 @@ function JumpNav({
   const activeStage = stages.find((s) => s.sections.includes(active));
 
   return (
-    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
+    <nav
+      data-tour="guided-nav"
+      className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70"
+    >
       <div className="flex items-start gap-x-6 gap-y-2 flex-wrap">
         {stages.map((stage) => (
           <div key={`${stage.id}-${stage.firstIndex}`}>

@@ -116,6 +116,12 @@
     "header": {
       "subtitle": "{count, plural, one {# document} other {# documents}} compared pairwise. Scroll for the findings or jump to a section."
     },
+    "guidedRead": {
+      "offerBody": "First visit? A one-minute guided read walks through what each part of this briefing shows and how to use it.",
+      "start": "Start the guided read",
+      "skip": "Skip",
+      "reopen": "Guided read (1 min)"
+    },
     "sections": {
       "direction": "Direction",
       "docFocus": "Doc in focus",
@@ -188,6 +194,34 @@
     },
     "tour": {
       "openAria": "How to read this chart",
+      "guidedRead": {
+        "steps": {
+          "purpose": {
+            "title": "What this briefing shows",
+            "body": "The platform compared this country's climate, biodiversity and land-use policies, target against target, and this headline is the overall read. Everything below is evidence you can open and question. It is decision support: the interpretation stays with you."
+          },
+          "questions": {
+            "title": "One page, organized by question",
+            "body": "The briefing is a single scroll through four stops: what the policies say, where they pull apart, money and delivery, and a workbench to explore. This bar tracks where you are and jumps to any part."
+          },
+          "policies": {
+            "title": "First, the shared direction",
+            "body": "The opening sections show the themes that recur across the documents and where their targets reinforce one another: a baseline for planning, and the place to spot synergies between instruments."
+          },
+          "friction": {
+            "title": "Then, the pairs worth a closer look",
+            "body": "The middle sections group the target pairs the AI flagged as potential misalignments, by what the friction is about and where it concentrates. These flags are prompts for review, not verdicts: a starting list for reading the documents side by side."
+          },
+          "delivery": {
+            "title": "Whether delivery follows ambition",
+            "body": "These sections put budget lines and reported actions next to the policy commitments, showing where money and implementation line up with what the documents promise, and where they do not."
+          },
+          "explore": {
+            "title": "Ask your own question",
+            "body": "The briefing ends in a workbench: ask about any target, pair or theme in plain language. Every chart above also has its own labelled walkthrough, How to read this chart, beside its heading."
+          }
+        }
+      },
       "controls": {
         "next": "Next",
         "back": "Back",

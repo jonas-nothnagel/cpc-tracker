@@ -65,7 +65,15 @@ export function TourOverlay({
       r.bottom <= window.innerHeight &&
       r.right <= window.innerWidth;
     if (!fullyVisible) {
-      el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      // The global reduced-motion CSS zeroes transitions but does not reach
+      // this JS-initiated scroll, so honour the preference here explicitly.
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      el.scrollIntoView({
+        block: "nearest",
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
     }
   }, [current]);
 
