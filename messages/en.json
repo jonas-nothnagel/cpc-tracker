@@ -123,10 +123,10 @@
       "reopen": "Guided read (1 min)"
     },
     "sections": {
-      "direction": "Direction",
-      "docFocus": "Doc in focus",
-      "docPairs": "Doc pairs",
-      "frictionTypes": "Friction types",
+      "direction": "Policy alignment",
+      "docFocus": "One document in focus",
+      "docPairs": "Document comparisons",
+      "frictionTypes": "Why pairs pull apart",
       "sectors": "Sectors",
       "whereToFocus": "Where to focus",
       "explore": "Explore",

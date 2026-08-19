@@ -124,9 +124,9 @@
     },
     "sections": {
       "direction": "Alineación de políticas",
-      "docFocus": "Documentos analizados",
+      "docFocus": "Un documento en foco",
       "docPairs": "Documentos comparados",
-      "frictionTypes": "Tipos de incoherencia",
+      "frictionTypes": "Por qué se separan los pares",
       "sectors": "Sectores",
       "whereToFocus": "Áreas prioritarias de acción",
       "explore": "Explorar resultados",
