@@ -42,14 +42,21 @@ export function SlideFrame({
   return (
     <section
       id={id}
-      className="scroll-mt-24 pt-2"
+      // Anchor jumps land just below the sticky app header + jump nav. The
+      // nav publishes its live height as --jump-nav-clearance (see JumpNav);
+      // the fallback covers the pre-hydration first paint.
+      className="scroll-mt-[calc(var(--jump-nav-clearance,10.25rem)+0.75rem)] pt-2"
       aria-labelledby={`${id}-heading`}
     >
       {/* The headline block doubles as the slide's guided-read anchor: a
           compact spotlight target (never the whole 80vh section). The scroll
           margin keeps it clear of the sticky app header + jump nav when the
-          tour scrolls back up the page. */}
-      <div data-tour={`slide-${id}`} className="scroll-mt-40">
+          tour scrolls the page; it tracks the nav's live height like the
+          section anchor above. */}
+      <div
+        data-tour={`slide-${id}`}
+        className="scroll-mt-[calc(var(--jump-nav-clearance,10.25rem)+0.75rem)]"
+      >
         <h2
           id={`${id}-heading`}
           className="font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium mb-4"

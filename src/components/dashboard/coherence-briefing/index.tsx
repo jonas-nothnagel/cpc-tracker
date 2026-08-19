@@ -2111,6 +2111,33 @@ function JumpNav({
   const sectionLabels = useSectionLabels();
   const t = useTranslations("briefing.stages");
   const stages = resolveStages(order);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  // Publish the sticky stack's real clearance (72px app header + this nav's
+  // current height) as a CSS variable on the briefing container. Section
+  // scroll-margins derive from it, so anchor jumps land the headline just
+  // below the nav instead of under it — at every breakpoint, however many
+  // rows the nav wraps to. A fixed margin cannot track that (the nav is
+  // ~91px on desktop and ~250px on a phone), which is why jumps used to
+  // overshoot. ResizeObserver keeps it honest when rows rewrap or the
+  // active-stage caption changes height.
+  useEffect(() => {
+    const nav = navRef.current;
+    const scope = document.getElementById(BRIEFING_SCOPE_ID);
+    if (!nav || !scope) return;
+    const publish = () =>
+      scope.style.setProperty(
+        "--jump-nav-clearance",
+        `${72 + nav.getBoundingClientRect().height}px`,
+      );
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(nav);
+    return () => {
+      observer.disconnect();
+      scope.style.removeProperty("--jump-nav-clearance");
+    };
+  }, []);
 
   const chip = (id: SectionId, index: number) => (
     <li key={id} className="flex items-center">
@@ -2135,6 +2162,7 @@ function JumpNav({
   if (!stages) {
     return (
       <nav
+        ref={navRef}
         data-tour="guided-nav"
         className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70"
       >
@@ -2152,6 +2180,7 @@ function JumpNav({
 
   return (
     <nav
+      ref={navRef}
       data-tour="guided-nav"
       className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70"
     >
