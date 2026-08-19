@@ -200,6 +200,10 @@
             "title": "Qué muestra este informe",
             "body": "La plataforma comparó las políticas de clima, biodiversidad y uso del suelo de este país, meta contra meta, y este titular es la lectura general. Todo lo que sigue es evidencia que se puede abrir y cuestionar. Es apoyo a la decisión: la interpretación queda en sus manos."
           },
+          "corpus": {
+            "title": "Los datos detrás del informe",
+            "body": "Cada cifra de esta página se remonta a estos documentos fuente. Cada entrada abre la lista completa de las metas de ese documento, de modo que los compromisos originales quedan siempre a un clic; la línea inferior ajusta qué documentos incluye el informe."
+          },
           "questions": {
             "title": "Una sola página, organizada por preguntas",
             "body": "El informe es un solo recorrido con cuatro paradas: lo que dicen las políticas, dónde se separan, financiamiento y ejecución, y un espacio para explorar. Esta barra indica dónde está y salta a cualquier parte."

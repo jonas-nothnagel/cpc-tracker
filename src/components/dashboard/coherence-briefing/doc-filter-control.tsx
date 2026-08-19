@@ -216,11 +216,6 @@ interface DocFilterControlProps extends DocControlBaseProps {
    *  still reports what it holds while the reader decides about it. */
   targetCountByDoc: Map<PolicyDocumentType, number>;
   onViewTargets: (doc: PolicyDocumentType) => void;
-  /** Start with the toggle list open. The all-documents-hidden empty state
-   *  sets this: the reader's only next action there is adding one back, and
-   *  this instance mounts fresh when that state appears, so the list would
-   *  otherwise collapse right after the reader hid the last document. */
-  initiallyExpanded?: boolean;
 }
 
 export function DocFilterControl({
@@ -232,10 +227,9 @@ export function DocFilterControl({
   onReset,
   targetCountByDoc,
   onViewTargets,
-  initiallyExpanded = false,
 }: DocFilterControlProps) {
   const t = useTranslations("briefing.docFilter");
-  const [expanded, setExpanded] = useState(initiallyExpanded);
+  const [expanded, setExpanded] = useState(false);
 
   const visibleCount = useMemo(
     () => allDocs.filter((d) => !hiddenDocs.has(d)).length,

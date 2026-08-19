@@ -1590,26 +1590,41 @@ export function CoherenceBriefing({
         {/* First-visit orientation: offered, never forced. Hidden when no
             documents are visible (no sections to walk through). */}
         {availableDocs.length > 0 && <GuidedReadOffer />}
+        {/* The uploaded data, on the first screen: which source documents the
+            briefing covers and every target in them (an explicit stakeholder
+            request — readers must always know where to reach the data). Sits
+            after the verdict so the first thing read is the finding, but
+            before the nav so data access never needs a scroll. */}
+        <div data-tour="guided-corpus" className="scroll-mt-24">
+          <TargetsBrowseBar
+            allDocs={browsableDocs}
+            countryConfig={countryConfig}
+            targetCountByDoc={browsableCountByDoc}
+            onViewTargets={openDocTargets}
+          />
+          <DocFilterControl
+            allDocs={allDocs}
+            hiddenDocs={hiddenDocs}
+            defaultHiddenDocTypes={defaultHiddenDocTypes}
+            countryConfig={countryConfig}
+            onToggle={toggleDoc}
+            onReset={resetHiddenDocs}
+            targetCountByDoc={targetCountByDoc}
+            onViewTargets={openDocTargets}
+          />
+          {storylineCaveat && (
+            <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
+              {storylineCaveat}
+            </p>
+          )}
+        </div>
 
         {availableDocs.length === 0 ? (
-          <>
-            <DocFilterControl
-              allDocs={allDocs}
-              hiddenDocs={hiddenDocs}
-              defaultHiddenDocTypes={defaultHiddenDocTypes}
-              countryConfig={countryConfig}
-              onToggle={toggleDoc}
-              onReset={resetHiddenDocs}
-              targetCountByDoc={targetCountByDoc}
-              onViewTargets={openDocTargets}
-              initiallyExpanded
-            />
-            <div className="mt-10 border-y border-gray-200 py-16 text-center">
-              <p className="text-body text-[var(--undp-gray)]">
-                {t("emptyState.allDocsHidden")}
-              </p>
-            </div>
-          </>
+          <div className="mt-10 border-y border-gray-200 py-16 text-center">
+            <p className="text-body text-[var(--undp-gray)]">
+              {t("emptyState.allDocsHidden")}
+            </p>
+          </div>
         ) : (
           <>
             <JumpNav active={activeSection} order={visibleSectionOrder} />
@@ -1634,35 +1649,6 @@ export function CoherenceBriefing({
                 onHighlightPair={setPrimerHighlight}
                 onSpotlightTheme={setThemeSpotlight}
               />
-            </div>
-            {/* The corpus behind the findings: browse the targets, adjust the
-                document set. Deliberately below the first finding rather than
-                above it (verdict-first fold, Aug 2026): these are working
-                controls, and stacking them ahead of the verdict made first-time
-                readers meet the tool's mechanics before its point. The browse
-                bar stays the front door to the targets, one scroll in. */}
-            <div>
-              <TargetsBrowseBar
-                allDocs={browsableDocs}
-                countryConfig={countryConfig}
-                targetCountByDoc={browsableCountByDoc}
-                onViewTargets={openDocTargets}
-              />
-              <DocFilterControl
-                allDocs={allDocs}
-                hiddenDocs={hiddenDocs}
-                defaultHiddenDocTypes={defaultHiddenDocTypes}
-                countryConfig={countryConfig}
-                onToggle={toggleDoc}
-                onReset={resetHiddenDocs}
-                targetCountByDoc={targetCountByDoc}
-                onViewTargets={openDocTargets}
-              />
-              {storylineCaveat && (
-                <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
-                  {storylineCaveat}
-                </p>
-              )}
             </div>
             {focusedDoc && (
               <div

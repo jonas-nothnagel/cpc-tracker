@@ -200,6 +200,10 @@
             "title": "What this briefing shows",
             "body": "The platform compared this country's climate, biodiversity and land-use policies, target against target, and this headline is the overall read. Everything below is evidence you can open and question. It is decision support: the interpretation stays with you."
           },
+          "corpus": {
+            "title": "The data behind it",
+            "body": "Every number on this page traces back to these source documents. Each entry opens the full list of that document's targets, so the underlying commitments are always one click away; the quiet line below adjusts which documents the briefing includes."
+          },
           "questions": {
             "title": "One page, organized by question",
             "body": "The briefing is a single scroll through four stops: what the policies say, where they pull apart, money and delivery, and a workbench to explore. This bar tracks where you are and jumps to any part."
