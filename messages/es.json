@@ -791,6 +791,7 @@
       "reading": "Un documento a la vez: sus <pair>parejas</pair> con los demás, y cuáles son una <potentialMisalignment>posible desalineación</potentialMisalignment>."
     },
     "direction": {
+      "themesHeadline": "Los temas que se repiten en los documentos.",
       "docPhrase": "{count, plural, one {1 documento} other {# documentos}}",
       "openingPrefix": "En {docPhrase} de {country},",
       "scoredSuffix": "pares de metas fueron evaluados.",

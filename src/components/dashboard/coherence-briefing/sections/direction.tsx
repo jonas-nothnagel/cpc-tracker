@@ -1,15 +1,15 @@
 "use client";
 
 /**
- * Direction — first scrollable section. Answers "are these policies
- * coherent with each other?" at the corpus level in one tight prose
- * block.
+ * Direction — first scrollable section: the recurring themes across the
+ * corpus. The corpus-level verdict headline and synthesis sentence that
+ * used to open this section moved up into the briefing header (Aug 2026,
+ * verdict-first fold: the first screen leads with the finding, not with
+ * utility controls); `SynthesisSentence` is exported from here for it.
  *
  * Per round-3 feedback (May 2026): the slide used to stack three
  * different formats (stats strip, AI-synthesis paragraph, storyline
  * cards). For non-technical policymakers that was overstimulating.
- * Everything now collapses into a single synthesis sentence in the
- * SlideFrame body.
  *
  * Per the theme-synthesis rework (July 2026, iterated on stakeholder
  * feedback): themes render as two side-by-side columns — top coherent
@@ -75,10 +75,6 @@ const ALIGNED_HEADER_COLOR = ALIGNED_COLOR;
 const FRICTION_HEADER_COLOR = FLAGGED_COLOR;
 
 export function DirectionSection({
-  countryName,
-  documentCount,
-  verdict,
-  concentration,
   primer,
   countryConfig,
   corpusThemes,
@@ -89,10 +85,6 @@ export function DirectionSection({
   onHighlightPair,
   onSpotlightTheme,
 }: {
-  countryName: string;
-  documentCount: number;
-  verdict: HeadlineVerdict;
-  concentration: TargetConcentration;
   primer: PrimerExamples;
   countryConfig: CountryConfig | null;
   corpusThemes: CorpusThemes | null;
@@ -122,24 +114,10 @@ export function DirectionSection({
   );
   const hiddenThemeCount = storylines.length - visibleStorylines.length;
 
-  const synthesis = (
-    <SynthesisSentence
-      countryName={countryName}
-      documentCount={documentCount}
-      verdict={verdict}
-      concentration={concentration}
-      primer={primer}
-      countryConfig={countryConfig}
-      onOpenPair={onOpenPair}
-      onHighlightPair={onHighlightPair}
-    />
-  );
-
   return (
     <SlideFrame
       id={DIRECTION_SECTION_ID}
-      headline={t(`verdict.${verdict.bucket}`)}
-      body={synthesis}
+      headline={t("themesHeadline")}
       reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         corpusThemes && storylines.length > 0 ? (
@@ -345,7 +323,12 @@ function focusClause(
 // Definitions surface in the AlignmentTermPopover; consumer reads them from
 // translations via the `t` instance passed in.
 
-function SynthesisSentence({
+/**
+ * The corpus-level verdict sentence with its example-popover terms. Rendered
+ * by the briefing header (the verdict-first fold), not by DirectionSection;
+ * it lives here because the popovers reuse the Direction primer tiles.
+ */
+export function SynthesisSentence({
   countryName,
   documentCount,
   verdict,

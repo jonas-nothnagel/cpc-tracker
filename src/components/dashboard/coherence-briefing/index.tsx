@@ -41,6 +41,7 @@ import {
 import {
   DIRECTION_SECTION_ID,
   DirectionSection,
+  SynthesisSentence,
 } from "./sections/direction";
 import type { ThemeSpotlight } from "./storyline-card";
 import {
@@ -108,9 +109,12 @@ import {
   type CorpusThemesPayload,
   type CoverageConcentrationStat,
   type FaultLine,
+  type HeadlineVerdict,
+  type PrimerExamples,
   type SectorCoherenceShareSummary,
   type SectorSynthesisPayload,
   type SectorTension,
+  type TargetConcentration,
 } from "@/lib/coherence-briefing";
 import {
   computeBudgetCoverage,
@@ -1572,38 +1576,32 @@ export function CoherenceBriefing({
         <BriefingHeader
           countryName={countryName}
           documentCount={documentCount}
-        />
-        <DocFilterControl
-          allDocs={allDocs}
-          hiddenDocs={hiddenDocs}
-          defaultHiddenDocTypes={defaultHiddenDocTypes}
+          verdict={availableDocs.length > 0 ? verdict : null}
+          concentration={targetConcentration}
+          primer={primer}
           countryConfig={countryConfig}
-          onToggle={toggleDoc}
-          onReset={resetHiddenDocs}
-          targetCountByDoc={targetCountByDoc}
-          onViewTargets={openDocTargets}
+          onOpenPair={openPairFromFaultLine}
+          onHighlightPair={setPrimerHighlight}
         />
-        {/* The front door to the commitments themselves. Every other route into
-            the targets drawer is a hover or an expand, which is why readers
-            reported they could not get at the targets in totality. */}
-        <TargetsBrowseBar
-          allDocs={browsableDocs}
-          countryConfig={countryConfig}
-          targetCountByDoc={browsableCountByDoc}
-          onViewTargets={openDocTargets}
-        />
-        {storylineCaveat && (
-          <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
-            {storylineCaveat}
-          </p>
-        )}
 
         {availableDocs.length === 0 ? (
-          <div className="mt-10 border-y border-gray-200 py-16 text-center">
-            <p className="text-body text-[var(--undp-gray)]">
-              {t("emptyState.allDocsHidden")}
-            </p>
-          </div>
+          <>
+            <DocFilterControl
+              allDocs={allDocs}
+              hiddenDocs={hiddenDocs}
+              defaultHiddenDocTypes={defaultHiddenDocTypes}
+              countryConfig={countryConfig}
+              onToggle={toggleDoc}
+              onReset={resetHiddenDocs}
+              targetCountByDoc={targetCountByDoc}
+              onViewTargets={openDocTargets}
+            />
+            <div className="mt-10 border-y border-gray-200 py-16 text-center">
+              <p className="text-body text-[var(--undp-gray)]">
+                {t("emptyState.allDocsHidden")}
+              </p>
+            </div>
+          </>
         ) : (
           <>
             <JumpNav active={activeSection} order={visibleSectionOrder} />
@@ -1618,10 +1616,6 @@ export function CoherenceBriefing({
               data-section-id={DIRECTION_SECTION_ID}
             >
               <DirectionSection
-                countryName={countryName}
-                documentCount={documentCount}
-                verdict={verdict}
-                concentration={targetConcentration}
                 primer={primer}
                 countryConfig={countryConfig}
                 corpusThemes={visibleCorpusThemes}
@@ -1632,6 +1626,35 @@ export function CoherenceBriefing({
                 onHighlightPair={setPrimerHighlight}
                 onSpotlightTheme={setThemeSpotlight}
               />
+            </div>
+            {/* The corpus behind the findings: browse the targets, adjust the
+                document set. Deliberately below the first finding rather than
+                above it (verdict-first fold, Aug 2026): these are working
+                controls, and stacking them ahead of the verdict made first-time
+                readers meet the tool's mechanics before its point. The browse
+                bar stays the front door to the targets, one scroll in. */}
+            <div>
+              <TargetsBrowseBar
+                allDocs={browsableDocs}
+                countryConfig={countryConfig}
+                targetCountByDoc={browsableCountByDoc}
+                onViewTargets={openDocTargets}
+              />
+              <DocFilterControl
+                allDocs={allDocs}
+                hiddenDocs={hiddenDocs}
+                defaultHiddenDocTypes={defaultHiddenDocTypes}
+                countryConfig={countryConfig}
+                onToggle={toggleDoc}
+                onReset={resetHiddenDocs}
+                targetCountByDoc={targetCountByDoc}
+                onViewTargets={openDocTargets}
+              />
+              {storylineCaveat && (
+                <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
+                  {storylineCaveat}
+                </p>
+              )}
             </div>
             {focusedDoc && (
               <div
@@ -1909,14 +1932,36 @@ export function CoherenceBriefing({
 
 // ─── Header + nav ────────────────────────────────────────────────
 
+/**
+ * Verdict-first header (Aug 2026): the first thing a reader meets after the
+ * country name is the corpus verdict and its synthesis sentence — the one
+ * finding that orients a first-time visitor — rather than utility controls.
+ * The Panama focus group (23 Jul 2026) showed the barrier is "quickly
+ * understanding what the results show"; the verdict is that understanding.
+ */
 function BriefingHeader({
   countryName,
   documentCount,
+  verdict,
+  concentration,
+  primer,
+  countryConfig,
+  onOpenPair,
+  onHighlightPair,
 }: {
   countryName: string;
   documentCount: number;
+  /** Corpus verdict for the visible documents. Null (the all-documents-hidden
+   *  empty state) falls back to the plain subtitle line. */
+  verdict: HeadlineVerdict | null;
+  concentration: TargetConcentration;
+  primer: PrimerExamples;
+  countryConfig: CountryConfig | null;
+  onOpenPair: (line: FaultLine) => void;
+  onHighlightPair: (pair: PrimerHighlightPair | null) => void;
 }) {
   const t = useTranslations("briefing.header");
+  const tDirection = useTranslations("briefing.direction");
   return (
     <header className="pt-10 pb-2">
       <h1
@@ -1925,9 +1970,29 @@ function BriefingHeader({
       >
         {countryName}.
       </h1>
-      <p className="mt-2 text-body text-[var(--undp-gray)]">
-        {t("subtitle", { count: documentCount })}
-      </p>
+      {verdict ? (
+        <>
+          <p className="mt-3 font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium max-w-4xl">
+            {tDirection(`verdict.${verdict.bucket}`)}
+          </p>
+          <p className="mt-3 text-body text-[var(--undp-black)] max-w-prose">
+            <SynthesisSentence
+              countryName={countryName}
+              documentCount={documentCount}
+              verdict={verdict}
+              concentration={concentration}
+              primer={primer}
+              countryConfig={countryConfig}
+              onOpenPair={onOpenPair}
+              onHighlightPair={onHighlightPair}
+            />
+          </p>
+        </>
+      ) : (
+        <p className="mt-2 text-body text-[var(--undp-gray)]">
+          {t("subtitle", { count: documentCount })}
+        </p>
+      )}
     </header>
   );
 }

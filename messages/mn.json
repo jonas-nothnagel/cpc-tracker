@@ -791,6 +791,7 @@
       "reading": "Нэг удаад нэг баримт бичиг: бусадтай үүсгэсэн <pair>хосууд</pair> болон аль нь <potentialMisalignment>болзошгүй үл нийцэл</potentialMisalignment> болох нь."
     },
     "direction": {
+      "themesHeadline": "Баримт бичгүүдэд давтагдан гарч буй сэдвүүд.",
       "docPhrase": "{count, plural, one {1 баримт бичиг} other {# баримт бичиг}}",
       "openingPrefix": "{country}-н {docPhrase} даяар,",
       "scoredSuffix": "зорилтын хосыг оноолсон.",

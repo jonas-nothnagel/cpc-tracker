@@ -791,6 +791,7 @@
       "reading": "One document at a time: its <pair>pairs</pair> with the others, and which are a <potentialMisalignment>potential misalignment</potentialMisalignment>."
     },
     "direction": {
+      "themesHeadline": "The themes that recur across the documents.",
       "docPhrase": "{count, plural, one {1 document} other {# documents}}",
       "openingPrefix": "Across {docPhrase} from {country},",
       "scoredSuffix": "target pairs were scored.",
