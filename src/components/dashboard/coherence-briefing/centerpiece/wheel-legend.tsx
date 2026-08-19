@@ -30,6 +30,10 @@ export function WheelLegend({
       <LegendDash color={ALIGNED_COLOR} label={t("aligned")} />
       <LegendDash color={FLAGGED_COLOR} label={t("flagged")} dashed />
       <span className="text-[var(--undp-gray)]/80">{t("ribbonWidth")}</span>
+      {/* The arc rule, always visible: the Sri Lanka review (Aug 2026) found
+          the segmentation unexplained; the rule lived only in the opt-in
+          walkthrough. */}
+      <span className="text-[var(--undp-gray)]/80">{t("arcShare")}</span>
       {showArcNote && <LegendGradient label={t("warmerArcHint")} />}
     </div>
   );

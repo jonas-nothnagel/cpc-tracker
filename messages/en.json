@@ -186,7 +186,8 @@
       "aligned": "Aligned",
       "flagged": "Potential misalignment",
       "warmerArcHint": "Warmer arcs mark documents with more potential misalignment.",
-      "ribbonWidth": "Ribbon width shows the number of scored pairs the two documents share."
+      "ribbonWidth": "Ribbon width shows the number of scored pairs the two documents share.",
+      "arcShare": "Each arc is one document; its length is its share of all targets, largest first."
     },
     "expand": {
       "button": "Expand",
@@ -237,7 +238,7 @@
         "steps": {
           "arcs": {
             "title": "The coloured arcs are policy documents",
-            "body": "Each arc on the outer rim is one policy document (or one sector, depending on the view). Longer arcs contain more targets."
+            "body": "Each arc on the outer rim is one policy document (or one sector, depending on the view). Arcs are sized by share: a document with a quarter of all targets fills a quarter of the circle. They run clockwise from the top, largest first."
           },
           "ribbons": {
             "title": "Ribbons connect documents",

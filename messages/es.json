@@ -186,7 +186,8 @@
       "aligned": "Alineado",
       "flagged": "Posible desalineación",
       "warmerArcHint": "Los arcos más cálidos marcan los documentos con más posible desalineación.",
-      "ribbonWidth": "El ancho de la cinta muestra el número de pares evaluados que comparten los dos documentos."
+      "ribbonWidth": "El ancho de la cinta muestra el número de pares evaluados que comparten los dos documentos.",
+      "arcShare": "Cada arco es un documento; su longitud es su proporción de todas las metas, de mayor a menor."
     },
     "expand": {
       "button": "Ampliar",
@@ -237,7 +238,7 @@
         "steps": {
           "arcs": {
             "title": "Los arcos de colores son documentos de política",
-            "body": "Cada arco del borde exterior es un documento de política (o un sector, según la vista). Los arcos más largos contienen más objetivos."
+            "body": "Cada arco del borde exterior es un documento de política (o un sector, según la vista). El tamaño de cada arco es proporcional: un documento con la cuarta parte de las metas ocupa la cuarta parte del círculo. Los arcos avanzan en sentido horario desde arriba, de mayor a menor."
           },
           "ribbons": {
             "title": "Las cintas conectan documentos",
