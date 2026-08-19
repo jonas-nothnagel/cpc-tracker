@@ -120,3 +120,23 @@ export function resolveStages<T extends string>(
 
   return resolved.sort((a, b) => a.firstIndex - b.firstIndex);
 }
+
+/**
+ * The sections that open each stage after the first, for the given visible
+ * order. The briefing renders a stage-boundary marker above each of these
+ * (Sri Lanka review, Aug 2026: readers wanted a visible transition between
+ * areas). A country whose order drops a stage's first section moves the
+ * marker to the stage's next visible section; a fully empty stage emits
+ * none; with stages rolled back (`SECTION_STAGES = null`) the map is empty
+ * and no markers render.
+ */
+export function stageMarkerSections<T extends string>(
+  order: T[],
+): Map<T, StageId> {
+  const stages = resolveStages(order);
+  const map = new Map<T, StageId>();
+  if (stages) {
+    for (const stage of stages.slice(1)) map.set(stage.sections[0], stage.id);
+  }
+  return map;
+}

@@ -95,7 +95,11 @@ import type { LensId, LensOption } from "./lens";
 import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
 import { docTierSortKey, hasDocTaxonomy } from "@/lib/doc-taxonomy";
-import { resolveStages } from "./nav-stages";
+import {
+  resolveStages,
+  stageMarkerSections,
+  type StageId,
+} from "./nav-stages";
 import { TargetsBrowseBar } from "./targets-access";
 import {
   buildSectorCoherenceShare,
@@ -627,6 +631,16 @@ export function CoherenceBriefing({
       order = order.filter((id) => id !== IMPLEMENTATION_SECTION_ID);
     return order;
   }, [financing, implementation]);
+
+  // Stage boundary markers: which section opens each stage after the first,
+  // for the visible order (a country without financing gets its "delivery"
+  // marker on Implementation; an empty stage emits none). Rendered inside the
+  // section wrappers below, so every wrapper carries a marker slot and the
+  // map decides which ones show.
+  const stageMarkerBySection = useMemo(
+    () => stageMarkerSections(visibleSectionOrder),
+    [visibleSectionOrder],
+  );
 
   // Storyline-layer selection for the current hidden set. Corpus + sector
   // storylines come from precomputed states; doc-pair storylines are filtered
@@ -1573,6 +1587,13 @@ export function CoherenceBriefing({
     !(activeSection === FINANCING_SECTION_ID && financing) &&
     !(activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster);
 
+  // Marker slot for a section wrapper; renders only where a stage begins
+  // (see stageMarkerBySection above).
+  const stageMarker = (id: SectionId) => {
+    const stageId = stageMarkerBySection.get(id);
+    return stageId ? <StageMarker stageId={stageId} /> : null;
+  };
+
   // ── Render ─────────────────────────────────────────────────────
   return (
     <main className="flex-1 w-full">
@@ -1655,6 +1676,7 @@ export function CoherenceBriefing({
                 ref={setSectionRef(DOC_FOCUS_SECTION_ID)}
                 data-section-id={DOC_FOCUS_SECTION_ID}
               >
+                {stageMarker(DOC_FOCUS_SECTION_ID)}
                 <DocFocusSection
                   targets={visibleTargets}
                   alignment={visibleAlignment}
@@ -1678,6 +1700,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(DOC_PAIRS_SECTION_ID)}
               data-section-id={DOC_PAIRS_SECTION_ID}
             >
+              {stageMarker(DOC_PAIRS_SECTION_ID)}
               <DocPairsSection
                 docPairSyntheses={visibleDocPairSyntheses}
                 countryConfig={countryConfig}
@@ -1692,6 +1715,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(FRICTION_TYPES_SECTION_ID)}
               data-section-id={FRICTION_TYPES_SECTION_ID}
             >
+              {stageMarker(FRICTION_TYPES_SECTION_ID)}
               <FrictionTypesSection
                 totals={frictionTotals}
                 onOpenType={(mechanism) =>
@@ -1703,6 +1727,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(WHERE_TO_FOCUS_SECTION_ID)}
               data-section-id={WHERE_TO_FOCUS_SECTION_ID}
             >
+              {stageMarker(WHERE_TO_FOCUS_SECTION_ID)}
               <WhereToFocusSection
                 hotspots={frictionHotspots}
                 concentration={targetConcentration}
@@ -1716,6 +1741,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(SECTORS_SECTION_ID)}
               data-section-id={SECTORS_SECTION_ID}
             >
+              {stageMarker(SECTORS_SECTION_ID)}
               <SectorsSection
                 sectorRows={sectorRows}
                 sectorShares={sectorShares}
@@ -1747,6 +1773,7 @@ export function CoherenceBriefing({
                   (financingUsesWideGrid ? "lg:w-[calc(100%+520px)]" : "")
                 }
               >
+                {stageMarker(FINANCING_SECTION_ID)}
                 <FinancingSection
                   summary={financing}
                   commitmentCount={visibleTargets.length}
@@ -1769,6 +1796,7 @@ export function CoherenceBriefing({
                 // reported-snapshot centerpiece.
                 className="lg:min-h-[80vh]"
               >
+                {stageMarker(IMPLEMENTATION_SECTION_ID)}
                 <ImplementationSection
                   coverage={implementationCoverage}
                   summary={implementation}
@@ -1872,6 +1900,7 @@ export function CoherenceBriefing({
           data-section-id={EXPLORE_SECTION_ID}
           className="mt-24"
         >
+          {stageMarker(EXPLORE_SECTION_ID)}
           <ExploreSection>
             <PolicyCoherenceExplorer {...explorerProps} variant="workbench" />
           </ExploreSection>
@@ -1988,6 +2017,30 @@ function BriefingHeader({
         </p>
       )}
     </header>
+  );
+}
+
+/**
+ * Stage boundary marker: a quiet full-width rule + the stage's name and
+ * caption, rendered where the reader crosses into a new stage. The Sri
+ * Lanka review (Aug 2026) asked for the "backdrop" to change between areas;
+ * a ground change is off the table (Paper-Is-For-Editorial rule, and the
+ * sections share one grid with the sticky aside), so the transition is
+ * marked instead, echoing the nav's stage vocabulary and styling so the
+ * two read as the same system. Three markers at most — deliberately not a
+ * per-slide eyebrow.
+ */
+function StageMarker({ stageId }: { stageId: StageId }) {
+  const t = useTranslations("briefing.stages");
+  return (
+    <div className="mb-12 border-t border-line pt-4">
+      <p className="text-[11px] uppercase tracking-wider font-semibold text-[var(--undp-gray)]">
+        {t(`${stageId}.label`)}
+      </p>
+      <p className="mt-0.5 text-caption text-[var(--undp-gray)]">
+        {t(`${stageId}.caption`)}
+      </p>
+    </div>
   );
 }
 
