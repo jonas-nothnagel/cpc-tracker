@@ -150,6 +150,7 @@ export function GuidedReadOffer() {
           onNext={handleNext}
           onBack={tour.back}
           onClose={handleClose}
+          scrollBlock="start"
         />
       )}
     </>
