@@ -1602,6 +1602,7 @@ export function CoherenceBriefing({
               onReset={resetHiddenDocs}
               targetCountByDoc={targetCountByDoc}
               onViewTargets={openDocTargets}
+              initiallyExpanded
             />
             <div className="mt-10 border-y border-gray-200 py-16 text-center">
               <p className="text-body text-[var(--undp-gray)]">
