@@ -120,7 +120,7 @@ export function DocPairsSection({
       reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         ranked.length > 0 ? (
-          <TourButton tourId="docPairs" scopeId={DOC_PAIRS_SECTION_ID} />
+          <TourButton tourId="docPairs" scopeId={DOC_PAIRS_SECTION_ID} labelled />
         ) : undefined
       }
       evidence={

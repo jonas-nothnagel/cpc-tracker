@@ -121,7 +121,7 @@ export function DirectionSection({
       reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         corpusThemes && storylines.length > 0 ? (
-          <TourButton tourId="directionThemes" scopeId={DIRECTION_SECTION_ID} />
+          <TourButton tourId="directionThemes" scopeId={DIRECTION_SECTION_ID} labelled />
         ) : undefined
       }
       evidence={

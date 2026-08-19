@@ -91,6 +91,7 @@ export function ImplementationSection({
           <TourButton
             tourId="implementationCoverage"
             scopeId={IMPLEMENTATION_SECTION_ID}
+            labelled
           />
         ) : undefined
       }

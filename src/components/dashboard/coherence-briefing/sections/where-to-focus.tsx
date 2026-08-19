@@ -55,7 +55,7 @@ export function WhereToFocusSection({
       reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         hotspots.length > 0 ? (
-          <TourButton tourId="whereToFocus" scopeId={WHERE_TO_FOCUS_SECTION_ID} />
+          <TourButton tourId="whereToFocus" scopeId={WHERE_TO_FOCUS_SECTION_ID} labelled />
         ) : undefined
       }
       evidence={
