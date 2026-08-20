@@ -1130,7 +1130,6 @@
       }
     },
     "browseTargets": {
-      "lead": "Explore los compromisos detrás de este análisis: {count, number} metas de política, más aquello con lo que se comparan.",
       "chipAria": "Ver {count, plural, one {# meta} other {# metas}} de {name}",
       "reportedAction": "Acciones reportadas (BTR)",
       "budgetLine": "Partidas presupuestarias (BER)"

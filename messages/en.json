@@ -1130,7 +1130,6 @@
       }
     },
     "browseTargets": {
-      "lead": "Browse the commitments behind this analysis — {count, number} policy targets, plus what they are compared against.",
       "chipAria": "Browse the {count, plural, one {# target} other {# targets}} in {name}",
       "reportedAction": "Reported actions (BTR)",
       "budgetLine": "Budget lines (BER)"

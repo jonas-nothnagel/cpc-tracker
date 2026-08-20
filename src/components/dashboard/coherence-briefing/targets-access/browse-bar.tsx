@@ -68,22 +68,13 @@ export function TargetsBrowseBar({
     });
   }, [allDocs, countryConfig, targetCountByDoc]);
 
-  const total = useMemo(
-    () =>
-      docs
-        .filter((d) => !(d in STAND_INS))
-        .reduce((n, d) => n + (targetCountByDoc.get(d) ?? 0), 0),
-    [docs, targetCountByDoc],
-  );
-
   if (!TARGETS_BROWSE_BAR || docs.length === 0) return null;
 
+  // No lead sentence: the overview band's corpus tile already states the
+  // totals, and the chips carry their own counts — the row introduces itself.
   return (
     <div className="mt-3">
-      <p className="text-caption text-[var(--undp-gray)]">
-        {t("lead", { count: total })}
-      </p>
-      <ul className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+      <ul className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
         {docs.map((doc) => {
           const standIn = STAND_INS[doc];
           const count = targetCountByDoc.get(doc) ?? 0;

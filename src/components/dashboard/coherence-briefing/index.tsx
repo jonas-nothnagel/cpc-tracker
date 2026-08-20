@@ -2189,25 +2189,40 @@ function JumpNav({
       data-tour="guided-nav"
       className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70"
     >
-      <div className="flex items-start gap-x-6 gap-y-2 flex-wrap">
-        {stages.map((stage) => (
-          <div key={`${stage.id}-${stage.firstIndex}`}>
-            <p
-              className={`text-[11px] uppercase tracking-wider font-semibold mb-0.5 px-2.5 transition-colors ${
-                stage === activeStage
-                  ? "text-[var(--undp-black)]"
-                  : "text-[var(--undp-gray)]/70"
-              }`}
-            >
-              {t(`${stage.id}.label`)}
-            </p>
-            <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
-              {stage.sections.map((id) =>
-                chip(id, order.indexOf(id)),
+      <div className="flex items-end gap-x-6 gap-y-2 flex-wrap">
+        {stages.map((stage) => {
+          // A one-section stage whose heading just repeats the chip's label
+          // (e.g. "Explore" over "Explore", "Explorar" over "Explorar
+          // resultados") says nothing twice on the page's densest strip —
+          // drop the heading, keep the chip. Containment, not equality:
+          // locales pad one of the two labels.
+          const only =
+            stage.sections.length === 1 ? stage.sections[0] : null;
+          const stageLabel = t(`${stage.id}.label`).trim().toLowerCase();
+          const onlyLabel =
+            only !== null ? sectionLabels[only].trim().toLowerCase() : "";
+          const redundantHeading =
+            only !== null &&
+            (onlyLabel.includes(stageLabel) || stageLabel.includes(onlyLabel));
+          return (
+            <div key={`${stage.id}-${stage.firstIndex}`}>
+              {!redundantHeading && (
+                <p
+                  className={`text-caption uppercase tracking-wider font-semibold mb-0.5 px-2.5 transition-colors ${
+                    stage === activeStage
+                      ? "text-[var(--undp-black)]"
+                      : "text-[var(--undp-gray)]/70"
+                  }`}
+                >
+                  {t(`${stage.id}.label`)}
+                </p>
               )}
-            </ul>
-          </div>
-        ))}
+              <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
+                {stage.sections.map((id) => chip(id, order.indexOf(id)))}
+              </ul>
+            </div>
+          );
+        })}
         <SectionStepper active={active} order={order} labels={sectionLabels} />
       </div>
       {/* One caption, for the stage the reader is currently in. Showing all

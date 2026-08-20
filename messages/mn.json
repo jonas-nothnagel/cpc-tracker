@@ -1130,7 +1130,6 @@
       }
     },
     "browseTargets": {
-      "lead": "Энэ шинжилгээний цаанах үүрэг амлалтуудыг үзэх: бодлогын {count, number} зорилт, мөн юутай харьцуулж байгаа нь.",
       "chipAria": "{name}-н {count, plural, one {# зорилт} other {# зорилт}}-ыг үзэх",
       "reportedAction": "Тайлагнасан арга хэмжээ (BTR)",
       "budgetLine": "Төсвийн зураас (BER)"
