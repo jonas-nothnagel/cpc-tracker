@@ -125,6 +125,28 @@ function focusAskDock() {
   }, 600);
 }
 
+/**
+ * The "Ask a question" shortcut to the Explore workbench's ask dock. Flows
+ * as the last item of the tile row — never `ml-auto`, never mounted off on
+ * its own: pushed to the container's right edge it aligned with nothing at
+ * wide viewports (the sentence far left, the tile row ending short of it)
+ * and read as floating. In flow it is always anchored to real content —
+ * inline after the last tile when the row has room, first on the next line
+ * when it does not.
+ */
+function AskExploreLink() {
+  const t = useTranslations("briefing.overview");
+  return (
+    <a
+      href={`#${EXPLORE_SECTION_ID}`}
+      onClick={focusAskDock}
+      className="flex h-full items-center gap-1.5 rounded-lg border border-line bg-white px-3.5 py-1.5 text-sm font-medium text-[var(--undp-blue)] transition-colors hover:border-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1"
+    >
+      {t("ask")} <span aria-hidden="true">→</span>
+    </a>
+  );
+}
+
 const TILE_CLASS =
   "group flex h-full max-w-[17rem] flex-col justify-center rounded-lg border border-line bg-white px-3 py-1.5 transition-colors hover:border-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1";
 
@@ -194,14 +216,8 @@ export function OverviewBand({
             </a>
           </li>
         ))}
-        <li className="ml-auto">
-          <a
-            href={`#${EXPLORE_SECTION_ID}`}
-            onClick={focusAskDock}
-            className="flex h-full items-center gap-1.5 rounded-lg border border-line bg-white px-3.5 py-1.5 text-sm font-medium text-[var(--undp-blue)] transition-colors hover:border-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1"
-          >
-            {t("ask")} <span aria-hidden="true">→</span>
-          </a>
+        <li>
+          <AskExploreLink />
         </li>
       </ul>
     </div>
