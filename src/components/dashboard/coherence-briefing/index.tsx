@@ -2183,7 +2183,8 @@ function JumpNav({
       >
         <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
           {order.map((id, i) => chip(id, i))}
-          <li className="ml-auto flex items-center">
+          <li className="ml-auto flex items-center gap-3">
+            <GuidedReadOffer variant="navButton" />
             <SectionStepper active={active} order={order} labels={sectionLabels} />
           </li>
         </ul>
@@ -2233,7 +2234,13 @@ function JumpNav({
             </div>
           );
         })}
-        <SectionStepper active={active} order={order} labels={sectionLabels} />
+        {/* Right-side controls: the tour restart lives in sticky chrome so
+            "replay the walkthrough" is one click away at any scroll position
+            and reads as a control, not an in-flow anchor link. */}
+        <div className="ml-auto flex items-center gap-3 self-center">
+          <GuidedReadOffer variant="navButton" />
+          <SectionStepper active={active} order={order} labels={sectionLabels} />
+        </div>
       </div>
     </nav>
   );

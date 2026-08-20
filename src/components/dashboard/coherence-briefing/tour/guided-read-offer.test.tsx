@@ -61,6 +61,8 @@ function Host({ anchors = ALL_ANCHORS }: { anchors?: string[] }) {
           <div key={a} data-tour={a} />
         ))}
         <GuidedReadOffer />
+        {/* The jump nav's restart pill, as the real briefing mounts it. */}
+        <GuidedReadOffer variant="navButton" />
       </div>
     </NextIntlClientProvider>
   );

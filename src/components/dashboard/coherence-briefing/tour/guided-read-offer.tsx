@@ -24,6 +24,13 @@
  * initializer, so server and first client render always agree; the strip
  * appears one frame after mount, which beats a hydration mismatch.
  *
+ * Two mount variants: the first-visit "strip" in the page flow, and the
+ * "navButton" restart pill the jump nav hosts. The restart lives in sticky
+ * chrome as a labelled pill with a play glyph because the earlier in-flow
+ * underlined text read as an anchor link, not a tutorial control — and an
+ * unlabelled icon would recreate the unlabelled-dot problem (only 6 of 11
+ * Panama participants felt they could return to the tool unaided).
+ *
  * Analytics calls are confined to this component (REMOVABLE SYSTEM:
  * src/lib/analytics/README.md).
  */
@@ -58,20 +65,27 @@ function writeSeen(): void {
   }
 }
 
-export function GuidedReadOffer() {
+export function GuidedReadOffer({
+  variant = "strip",
+}: {
+  /** "strip": the first-visit offer banner (renders nothing once seen).
+   *  "navButton": the always-available restart pill in the jump nav. */
+  variant?: "strip" | "navButton";
+}) {
   const t = useTranslations("briefing.guidedRead");
   const tour = useTour();
   // null until the seen flag resolves on the client; then offer or quiet.
   const [mode, setMode] = useState<null | "offer" | "quiet">(null);
 
   useEffect(() => {
+    if (variant !== "strip") return;
     if (readSeen()) {
       setMode("quiet");
     } else {
       setMode("offer");
       track("guided_read_offer_shown");
     }
-  }, []);
+  }, [variant]);
 
   const start = (source: "offer" | "affordance") => {
     writeSeen();
@@ -106,7 +120,7 @@ export function GuidedReadOffer() {
 
   return (
     <>
-      {mode === "offer" && (
+      {variant === "strip" && mode === "offer" && (
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 border border-line bg-white px-4 py-3.5">
           <p className="min-w-[16rem] flex-1 text-body text-[var(--undp-black)]">
             {t("offerBody")}
@@ -130,16 +144,17 @@ export function GuidedReadOffer() {
           </div>
         </div>
       )}
-      {/* The quiet affordance stays for everyone, labelled: a one-shot offer
-          would recreate the unlabelled-dot problem one level up (only 6 of 11
-          Panama participants felt they could return to the tool unaided). */}
-      {mode === "quiet" && (
+      {variant === "navButton" && (
         <button
           type="button"
           onClick={() => start("affordance")}
-          className="mt-4 text-caption text-[var(--undp-gray)] underline transition-colors hover:text-[var(--undp-black)]"
+          title={t("reopen")}
+          className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-full border border-line px-2.5 text-caption text-[var(--undp-gray)] transition-colors hover:border-[var(--undp-blue)] hover:text-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1"
         >
-          {t("reopen")}
+          <span aria-hidden="true" className="text-[10px] leading-none">
+            ▶
+          </span>
+          <span>{t("reopen")}</span>
         </button>
       )}
       {tour.active && (
