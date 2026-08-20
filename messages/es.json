@@ -107,9 +107,8 @@
       "text": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer"
     },
     "modelSelector": {
-      "label": "Modelo",
-      "caveat": "Generado por IA con {model}; ejecución de comparación, no el resultado de producción",
-      "compareLink": "Ver la comparación de modelos →"
+      "attribution": "Resultados generados por IA con",
+      "compareLink": "Comparar modelos →"
     }
   },
   "briefing": {
