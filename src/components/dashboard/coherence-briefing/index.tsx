@@ -2229,15 +2229,6 @@ function JumpNav({
         })}
         <SectionStepper active={active} order={order} labels={sectionLabels} />
       </div>
-      {/* One caption, for the stage the reader is currently in. Showing all
-          four at once was the density the focus group was already objecting
-          to; showing the current one answers "what is this group for?" as
-          they arrive in it. */}
-      {activeStage && (
-        <p className="mt-1.5 px-2.5 text-caption text-[var(--undp-gray)]">
-          {t(`${activeStage.id}.caption`)}
-        </p>
-      )}
     </nav>
   );
 }

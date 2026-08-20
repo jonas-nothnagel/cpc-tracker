@@ -152,20 +152,16 @@
     },
     "stages": {
       "policies": {
-        "label": "What the policies say",
-        "caption": "The commitments in each document, and how they sit alongside one another."
+        "label": "What the policies say"
       },
       "friction": {
-        "label": "Where they pull apart",
-        "caption": "The pairs worth reviewing: what the friction is about and where it concentrates."
+        "label": "Where they pull apart"
       },
       "delivery": {
-        "label": "Money and delivery",
-        "caption": "Which targets have budget behind them, and which have a reported action."
+        "label": "Money and delivery"
       },
       "explore": {
-        "label": "Explore",
-        "caption": "Everything the sections above do not pre-compute. Build your own view."
+        "label": "Explore"
       }
     },
     "targetQuality": {
