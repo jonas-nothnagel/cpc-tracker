@@ -116,6 +116,22 @@
     "header": {
       "subtitle": "{count, plural, one {# document} other {# documents}} compared pairwise. Scroll for the findings or jump to a section."
     },
+    "overview": {
+      "orientation": "This page reads {country}'s policy documents side by side and shows where their commitments reinforce one another and where they may pull apart. Each number below jumps to the detail behind it.",
+      "listAria": "Headline findings",
+      "corpusTargets": "{count, plural, one {target} other {targets}}",
+      "corpusDocs": "{count, plural, one {document} other {documents}}",
+      "corpusCaption": "What the briefing compares",
+      "strong": "reach strong alignment",
+      "strongCaption": "Pairs that reinforce each other",
+      "flagged": "{count, plural, one {potential misalignment} other {potential misalignments}}",
+      "flaggedCaption": "Pairs flagged for review",
+      "financeCaption": "Biodiversity Expenditure Review (BER) total",
+      "implementation": "{count, plural, one {reported action} other {reported actions}}",
+      "implementationCaption": "In the Biennial Transparency Report (BTR)",
+      "ask": "Ask a question",
+      "askCaption": "Jumps to Explore at the end of the page"
+    },
     "guidedRead": {
       "offerBody": "First visit? A one-minute guided read walks through what each part of this briefing shows and how to use it.",
       "start": "Start the guided read",
@@ -204,6 +220,10 @@
           "purpose": {
             "title": "What this briefing shows",
             "body": "The platform compared this country's climate, biodiversity and land-use policies, target against target, and this headline is the overall read. Everything below is evidence you can open and question. It is decision support: the interpretation stays with you."
+          },
+          "overview": {
+            "title": "The headline numbers",
+            "body": "Each tile is one headline count: what was compared, where policies reinforce one another, and what was flagged as possible misalignment. Selecting a tile jumps to the part of the page that explains it."
           },
           "corpus": {
             "title": "The data behind it",

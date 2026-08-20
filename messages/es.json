@@ -116,6 +116,22 @@
     "header": {
       "subtitle": "{count, plural, one {# documento} other {# documentos}} comparados por pares. Desplácese para ver los hallazgos o salte a una sección."
     },
+    "overview": {
+      "orientation": "Esta página lee en paralelo los documentos de política de {country} y muestra dónde sus compromisos se refuerzan mutuamente y dónde pueden divergir. Cada cifra siguiente lleva al detalle que la respalda.",
+      "listAria": "Hallazgos principales",
+      "corpusTargets": "{count, plural, one {meta} other {metas}}",
+      "corpusDocs": "{count, plural, one {documento} other {documentos}}",
+      "corpusCaption": "Lo que compara este informe",
+      "strong": "alcanzan alineación fuerte",
+      "strongCaption": "Pares que se refuerzan mutuamente",
+      "flagged": "{count, plural, one {posible desalineación} other {posibles desalineaciones}}",
+      "flaggedCaption": "Pares señalados para revisión",
+      "financeCaption": "Total de la Revisión del Gasto en Biodiversidad (BER)",
+      "implementation": "{count, plural, one {acción reportada} other {acciones reportadas}}",
+      "implementationCaption": "En el Informe Bienal de Transparencia (BTR)",
+      "ask": "Haga una pregunta",
+      "askCaption": "Va a Explorar, al final de la página"
+    },
     "guidedRead": {
       "offerBody": "¿Primera visita? Una lectura guiada de un minuto recorre qué muestra cada parte de este informe y cómo usarlo.",
       "start": "Iniciar la lectura guiada",
@@ -204,6 +220,10 @@
           "purpose": {
             "title": "Qué muestra este informe",
             "body": "La plataforma comparó las políticas de clima, biodiversidad y uso del suelo de este país, meta contra meta, y este titular es la lectura general. Todo lo que sigue es evidencia que se puede abrir y cuestionar. Es apoyo a la decisión: la interpretación queda en sus manos."
+          },
+          "overview": {
+            "title": "Las cifras principales",
+            "body": "Cada mosaico es un recuento principal: qué se comparó, dónde las políticas se refuerzan mutuamente y qué se señaló como posible desalineación. Al seleccionar uno, irá a la parte de la página que lo explica."
           },
           "corpus": {
             "title": "Los datos detrás del informe",

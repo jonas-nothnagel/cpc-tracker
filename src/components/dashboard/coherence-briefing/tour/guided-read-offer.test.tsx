@@ -19,6 +19,7 @@ import { BRIEFING_SCOPE_ID, GuidedReadOffer } from "./guided-read-offer";
 const SEEN_KEY = "cpc.briefing.guided-read-seen";
 const ALL_ANCHORS = [
   "guided-header",
+  "guided-overview",
   "guided-corpus",
   "guided-nav",
   "slide-direction",
@@ -92,7 +93,7 @@ describe("GuidedReadOffer", () => {
     expect(screen.getByRole("dialog")).toHaveAccessibleName(
       stepTitle("purpose"),
     );
-    expect(screen.getByText("Step 1 of 7")).toBeInTheDocument();
+    expect(screen.getByText("Step 1 of 8")).toBeInTheDocument();
     expect(window.localStorage.getItem(SEEN_KEY)).toBe("1");
     expect(track).toHaveBeenCalledWith("guided_read_started", {
       source: "offer",
@@ -127,13 +128,13 @@ describe("GuidedReadOffer", () => {
   it("tracks completion when Done finishes the last step", () => {
     render(<Host />);
     fireEvent.click(screen.getByRole("button", { name: copy.start }));
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       fireEvent.click(screen.getByRole("button", { name: "Next" }));
     }
-    expect(screen.getByText("Step 7 of 7")).toBeInTheDocument();
+    expect(screen.getByText("Step 8 of 8")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Done" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(track).toHaveBeenCalledWith("guided_read_completed", { steps: 7 });
+    expect(track).toHaveBeenCalledWith("guided_read_completed", { steps: 8 });
   });
 
   it("tracks a mid-tour close with the step it happened on", () => {
@@ -157,7 +158,7 @@ describe("GuidedReadOffer", () => {
       <Host anchors={ALL_ANCHORS.filter((a) => a !== "slide-financing")} />,
     );
     fireEvent.click(screen.getByRole("button", { name: copy.start }));
-    expect(screen.getByText("Step 1 of 7")).toBeInTheDocument();
+    expect(screen.getByText("Step 1 of 8")).toBeInTheDocument();
   });
 
   it("drops the delivery step when neither financing nor implementation renders", () => {
@@ -169,6 +170,6 @@ describe("GuidedReadOffer", () => {
       />,
     );
     fireEvent.click(screen.getByRole("button", { name: copy.start }));
-    expect(screen.getByText("Step 1 of 6")).toBeInTheDocument();
+    expect(screen.getByText("Step 1 of 7")).toBeInTheDocument();
   });
 });

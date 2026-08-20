@@ -50,6 +50,7 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
   // sticky centerpiece swapping while the page scrolls cannot end the tour.
   guidedRead: [
     { id: "purpose", target: "guided-header", placement: "bottom" },
+    { id: "overview", target: "guided-overview", placement: "bottom" },
     { id: "corpus", target: "guided-corpus", placement: "bottom" },
     { id: "questions", target: "guided-nav", placement: "bottom" },
     { id: "policies", target: "slide-direction", placement: "bottom" },

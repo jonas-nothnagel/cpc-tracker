@@ -102,6 +102,11 @@ import {
 } from "./nav-stages";
 import { TargetsBrowseBar } from "./targets-access";
 import {
+  buildOverviewTiles,
+  CORPUS_ANCHOR_ID,
+  OverviewBand,
+} from "./overview-band";
+import {
   buildSectorCoherenceShare,
   buildSectorTensionDensity,
   canonicalHiddenKey,
@@ -1608,6 +1613,20 @@ export function CoherenceBriefing({
           onOpenPair={openPairFromFaultLine}
           onHighlightPair={setPrimerHighlight}
         />
+        {/* The overview band: the high-level picture before any detail, for
+            readers who otherwise feel dropped into the deep end. */}
+        {availableDocs.length > 0 && (
+          <OverviewBand
+            countryName={countryName}
+            targetCount={visibleTargets.length}
+            documentCount={documentCount}
+            tiles={buildOverviewTiles({
+              verdict,
+              financing,
+              implementationCoverage,
+            })}
+          />
+        )}
         {/* First-visit orientation: offered, never forced. Hidden when no
             documents are visible (no sections to walk through). */}
         {availableDocs.length > 0 && <GuidedReadOffer />}
@@ -1616,7 +1635,11 @@ export function CoherenceBriefing({
             request — readers must always know where to reach the data). Sits
             after the verdict so the first thing read is the finding, but
             before the nav so data access never needs a scroll. */}
-        <div data-tour="guided-corpus" className="scroll-mt-24">
+        <div
+          id={CORPUS_ANCHOR_ID}
+          data-tour="guided-corpus"
+          className="scroll-mt-24"
+        >
           <TargetsBrowseBar
             allDocs={browsableDocs}
             countryConfig={countryConfig}
