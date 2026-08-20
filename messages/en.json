@@ -1089,7 +1089,6 @@
       "removeDoc": "Remove {name}",
       "addDoc": "Add {name}",
       "included": "{visible} of {total, plural, one {# policy document} other {# policy documents}} included.",
-      "excluded": "{names} excluded.",
       "done": "Done",
       "addOrRemove": "Inspect and adjust documents",
       "resetToDefault": "Reset to default"
@@ -1126,7 +1125,10 @@
       }
     },
     "browseTargets": {
+      "heading": "Source documents",
       "chipAria": "Browse the {count, plural, one {# target} other {# targets}} in {name}",
+      "chipAriaExcluded": "Browse the {count, plural, one {# target} other {# targets}} in {name} (excluded from the analysis)",
+      "excludedNote": "Excluded from the analysis — its targets can still be browsed",
       "reportedAction": "Reported actions (BTR)",
       "budgetLine": "Budget lines (BER)"
     },

@@ -1644,13 +1644,19 @@ export function CoherenceBriefing({
         <div
           id={CORPUS_ANCHOR_ID}
           data-tour="guided-corpus"
-          className="scroll-mt-24"
+          className="mt-6 scroll-mt-24"
         >
+          {/* Small kicker naming the block, so the chips need no prose
+              introduction and the status line below needs no re-listing. */}
+          <p className="text-caption font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+            {t("browseTargets.heading")}
+          </p>
           <TargetsBrowseBar
             allDocs={browsableDocs}
             countryConfig={countryConfig}
             targetCountByDoc={browsableCountByDoc}
             onViewTargets={openDocTargets}
+            hiddenDocs={hiddenDocs}
           />
           <DocFilterControl
             allDocs={allDocs}

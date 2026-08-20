@@ -1089,7 +1089,6 @@
       "removeDoc": "Quitar {name}",
       "addDoc": "Agregar {name}",
       "included": "{visible} de {total, plural, one {# documento de política} other {# documentos de política}} incluidos.",
-      "excluded": "{names} excluidos.",
       "done": "Listo",
       "addOrRemove": "Revisar y ajustar los documentos",
       "resetToDefault": "Restablecer valores predeterminados"
@@ -1126,7 +1125,10 @@
       }
     },
     "browseTargets": {
+      "heading": "Documentos fuente",
       "chipAria": "Ver {count, plural, one {# meta} other {# metas}} de {name}",
+      "chipAriaExcluded": "Ver {count, plural, one {# meta} other {# metas}} de {name} (excluido del análisis)",
+      "excludedNote": "Excluido del análisis — sus metas siguen pudiendo consultarse",
       "reportedAction": "Acciones reportadas (BTR)",
       "budgetLine": "Partidas presupuestarias (BER)"
     },

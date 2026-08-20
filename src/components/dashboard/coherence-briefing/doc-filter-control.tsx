@@ -247,14 +247,6 @@ export function DocFilterControl({
     () => allDocs.filter((d) => !hiddenDocs.has(d)).length,
     [allDocs, hiddenDocs],
   );
-  const excludedNames = useMemo(
-    () =>
-      allDocs
-        .filter((d) => hiddenDocs.has(d))
-        .map((d) => getDocMediumLabel(countryConfig, d)),
-    [allDocs, hiddenDocs, countryConfig],
-  );
-
   const isDefault = useMemo(() => {
     const def = new Set(defaultHiddenDocTypes);
     if (def.size !== hiddenDocs.size) return false;
@@ -266,16 +258,13 @@ export function DocFilterControl({
 
   return (
     <div className="mt-3 text-caption text-[var(--undp-gray)]">
+      {/* No excluded-name enumeration here: the browse chips above dim and
+          strike the excluded documents, so re-listing them in prose said the
+          same thing twice. */}
       <p className="leading-relaxed">
         <span>
           {t("included", { visible: visibleCount, total: allDocs.length })}
-        </span>
-        {excludedNames.length > 0 && (
-          <span className="text-[var(--undp-black)]">
-            {" "}
-            {t("excluded", { names: excludedNames.join(", ") })}
-          </span>
-        )}{" "}
+        </span>{" "}
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}

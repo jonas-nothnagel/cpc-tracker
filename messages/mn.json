@@ -1089,7 +1089,6 @@
       "removeDoc": "{name}-г хасах",
       "addDoc": "{name}-г нэмэх",
       "included": "{total, plural, one {# бодлогын баримт бичиг} other {# бодлогын баримт бичиг}}-аас {visible} оруулсан.",
-      "excluded": "{names} хассан.",
       "done": "Дууссан",
       "addOrRemove": "Баримт бичгүүдийг үзэж, тохируулах",
       "resetToDefault": "Анхдагч руу буцаах"
@@ -1126,7 +1125,10 @@
       }
     },
     "browseTargets": {
+      "heading": "Эх баримт бичгүүд",
       "chipAria": "{name}-н {count, plural, one {# зорилт} other {# зорилт}}-ыг үзэх",
+      "chipAriaExcluded": "{name}-н {count, plural, one {# зорилт} other {# зорилт}}-ыг үзэх (шинжилгээнээс хассан)",
+      "excludedNote": "Шинжилгээнээс хассан — зорилтуудыг нь үзэж болно",
       "reportedAction": "Тайлагнасан арга хэмжээ (BTR)",
       "budgetLine": "Төсвийн зураас (BER)"
     },
