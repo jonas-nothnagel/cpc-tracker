@@ -5,12 +5,14 @@
  *
  * Usability feedback asked for the Explore workbench at the top of the page;
  * the underlying need was orientation ("thrown in the deep end"), not section
- * order. This band answers that need where readers arrive: one plain-language
- * line on what the page does, then a row of factual headline tiles — corpus
- * scale, strong alignments, potential misalignments, plus the financing /
- * implementation facts when a country has that data — each deep-linking to
- * the section that explains it, closed by an "Ask a question" shortcut to the
- * Explore workbench's ask dock.
+ * order. This band answers that need where readers arrive: a row of factual
+ * headline tiles — corpus scale, strong-alignment share, potential
+ * misalignments, plus the financing / implementation facts when a country has
+ * that data — each deep-linking to the section that explains it, closed by an
+ * "Ask a question" shortcut to the Explore workbench's ask dock. The tiles
+ * are the fold's ONLY statement of these numbers (the header verdict stays
+ * qualitative; the focus sentence below the band carries the concentration
+ * insight), so nothing above the fold is said twice.
  *
  * This is a static surface, so every tile is a hard fact: the doc-filter-aware
  * counts the header verdict already uses (never the workbench's deliberately
@@ -124,15 +126,13 @@ function focusAskDock() {
 }
 
 const TILE_CLASS =
-  "flex h-full max-w-[17rem] flex-col justify-center rounded-lg border border-line bg-white px-3 py-1.5 transition-colors hover:border-[var(--undp-blue)]";
+  "group flex h-full max-w-[17rem] flex-col justify-center rounded-lg border border-line bg-white px-3 py-1.5 transition-colors hover:border-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1";
 
 export function OverviewBand({
-  countryName,
   targetCount,
   documentCount,
   tiles,
 }: {
-  countryName: string;
   targetCount: number;
   documentCount: number;
   tiles: OverviewTile[];
@@ -171,12 +171,9 @@ export function OverviewBand({
 
   return (
     <div data-tour="guided-overview" className="mt-4">
-      <p className="max-w-3xl text-body text-[var(--undp-gray)]">
-        {t("orientation", { country: countryName })}
-      </p>
       <ul
         aria-label={t("listAria")}
-        className="mt-2 flex list-none flex-wrap items-stretch gap-2 p-0"
+        className="flex list-none flex-wrap items-stretch gap-2 p-0"
       >
         {tiles.map((tile) => (
           <li key={tile.id}>
@@ -188,24 +185,22 @@ export function OverviewBand({
               <span className="text-sm text-[var(--undp-black)]">
                 {lead(tile)}
               </span>
-              <span className="mt-0.5 text-caption text-[var(--undp-gray)]">
-                {t(`${tile.id}Caption`)}
+              {/* The ↓ says "this jumps down the page" — the caption doubles
+                  as the tile's link affordance. */}
+              <span className="mt-0.5 text-caption text-[var(--undp-gray)] transition-colors group-hover:text-[var(--undp-blue)]">
+                {t(`${tile.id}Caption`)}{" "}
+                <span aria-hidden="true">↓</span>
               </span>
             </a>
           </li>
         ))}
-        <li>
+        <li className="ml-auto">
           <a
             href={`#${EXPLORE_SECTION_ID}`}
             onClick={focusAskDock}
-            className={TILE_CLASS}
+            className="flex h-full items-center gap-1.5 rounded-lg border border-line bg-white px-3.5 py-1.5 text-sm font-medium text-[var(--undp-blue)] transition-colors hover:border-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1"
           >
-            <span className="text-sm font-medium text-[var(--undp-blue)]">
-              {t("ask")} <span aria-hidden="true">→</span>
-            </span>
-            <span className="mt-0.5 text-caption text-[var(--undp-gray)]">
-              {t("askCaption")}
-            </span>
+            {t("ask")} <span aria-hidden="true">→</span>
           </a>
         </li>
       </ul>

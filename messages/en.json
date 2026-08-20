@@ -117,7 +117,6 @@
       "subtitle": "{count, plural, one {# document} other {# documents}} compared pairwise. Scroll for the findings or jump to a section."
     },
     "overview": {
-      "orientation": "This page reads {country}'s policy documents side by side and shows where their commitments reinforce one another and where they may pull apart. Each number below jumps to the detail behind it.",
       "listAria": "Headline findings",
       "corpusTargets": "{count, plural, one {target} other {targets}}",
       "corpusDocs": "{count, plural, one {document} other {documents}}",
@@ -129,8 +128,7 @@
       "financeCaption": "Biodiversity Expenditure Review (BER) total",
       "implementation": "{count, plural, one {reported action} other {reported actions}}",
       "implementationCaption": "In the Biennial Transparency Report (BTR)",
-      "ask": "Ask a question",
-      "askCaption": "Jumps to Explore at the end of the page"
+      "ask": "Ask a question"
     },
     "guidedRead": {
       "offerBody": "First visit? A one-minute guided read walks through what each part of this briefing shows and how to use it.",
@@ -855,28 +853,22 @@
     },
     "direction": {
       "themesHeadline": "The themes that recur across the documents.",
-      "docPhrase": "{count, plural, one {1 document} other {# documents}}",
-      "openingPrefix": "Across {docPhrase} from {country},",
-      "scoredSuffix": "target pairs were scored.",
-      "reach": "reach",
       "strongAlignment": "strong alignment",
       "potentialMisalignment": "potential misalignment",
-      "pairsShow": "{count, plural, one {pair shows} other {pairs show}}",
-      "alignedDefinition": "Two targets that pull in the same direction: one supports or advances the other. A real scored pair from this set:",
       "flaggedDefinition": "Two targets the AI identified as possibly working against each other: a prompt for human review, not a settled finding. A real scored pair:",
       "popoverAriaLabel": "Show an example of {term}",
       "clickToOpenPair": "Click the term to open this pair",
       "howPipelineBuilt": "How the pipeline built this view",
       "onePairFromEnd": "One scored pair from each end of the spectrum.",
       "notEnoughPairs": "Not enough scored pairs to show an underlying example.",
-      "focusConcentrated": "most of them ({pct}%) trace to just {count, plural, one {1 target} other {# targets}}",
-      "focusSpread": "they spread across {count, plural, one {1 target} other {# targets}}",
+      "focusSentenceConcentrated": "Most of the <term>potential misalignment</term> ({pct}%) traces to just {count, plural, one {1 target} other {# targets}}.",
+      "focusSentenceSpread": "The <term>potential misalignment</term> spreads across {count, plural, one {1 target} other {# targets}} rather than concentrating in a few.",
       "verdict": {
         "mostly_aligned": "Policies are largely coherent with one another.",
         "mixed": "Coherence is mixed across the policy set.",
         "lots_of_misalignment": "Substantial potential misalignment across the policy set."
       },
-      "focusConcentratedWithDoc": "most of them ({pct}%) trace to just {count, plural, one {1 target} other {# targets}}, {docCount, plural, one {1 of them} other {# of them}} in {docName}",
+      "focusSentenceConcentratedWithDoc": "Most of the <term>potential misalignment</term> ({pct}%) traces to just {count, plural, one {1 target} other {# targets}}, {docCount, plural, one {1 of them} other {# of them}} in {docName}.",
       "derivationNote": "Themes are AI-written summaries of the scored target pairs. Every count on this page is computed in the browser from those pairs for the current document selection, and each pair showing potential misalignment is counted under one theme only.",
       "groups": {
         "showMore": "{count, plural, one {+1 more theme} other {+# more themes}}",

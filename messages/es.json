@@ -117,7 +117,6 @@
       "subtitle": "{count, plural, one {# documento} other {# documentos}} comparados por pares. Desplácese para ver los hallazgos o salte a una sección."
     },
     "overview": {
-      "orientation": "Esta página lee en paralelo los documentos de política de {country} y muestra dónde sus compromisos se refuerzan mutuamente y dónde pueden divergir. Cada cifra siguiente lleva al detalle que la respalda.",
       "listAria": "Hallazgos principales",
       "corpusTargets": "{count, plural, one {meta} other {metas}}",
       "corpusDocs": "{count, plural, one {documento} other {documentos}}",
@@ -129,8 +128,7 @@
       "financeCaption": "Total de la Revisión del Gasto en Biodiversidad (BER)",
       "implementation": "{count, plural, one {acción reportada} other {acciones reportadas}}",
       "implementationCaption": "En el Informe Bienal de Transparencia (BTR)",
-      "ask": "Haga una pregunta",
-      "askCaption": "Va a Explorar, al final de la página"
+      "ask": "Haga una pregunta"
     },
     "guidedRead": {
       "offerBody": "¿Primera visita? Una lectura guiada de un minuto recorre qué muestra cada parte de este informe y cómo usarlo.",
@@ -855,28 +853,22 @@
     },
     "direction": {
       "themesHeadline": "Los temas que se repiten en los documentos.",
-      "docPhrase": "{count, plural, one {1 documento} other {# documentos}}",
-      "openingPrefix": "En {docPhrase} de {country},",
-      "scoredSuffix": "pares de metas fueron evaluados.",
-      "reach": "alcanzan",
       "strongAlignment": "alineación fuerte",
       "potentialMisalignment": "posible desalineación",
-      "pairsShow": "{count, plural, one {par muestra} other {pares muestran}}",
-      "alignedDefinition": "Dos metas que tiran en la misma dirección: una respalda o impulsa a la otra. Un par real evaluado de este conjunto:",
       "flaggedDefinition": "Dos metas que la IA identificó como posiblemente en tensión entre sí: un aviso para revisión humana, no un hallazgo definitivo. Un par real evaluado:",
       "popoverAriaLabel": "Mostrar un ejemplo de {term}",
       "clickToOpenPair": "Pulse el término para abrir este par",
       "howPipelineBuilt": "Cómo la canalización construyó esta vista",
       "onePairFromEnd": "Un par evaluado de cada extremo del espectro.",
       "notEnoughPairs": "No hay suficientes pares evaluados para mostrar un ejemplo subyacente.",
-      "focusConcentrated": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}",
-      "focusSpread": "se distribuyen en {count, plural, one {1 meta} other {# metas}}",
+      "focusSentenceConcentrated": "La mayor parte de la <term>posible desalineación</term> ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}.",
+      "focusSentenceSpread": "La <term>posible desalineación</term> se distribuye en {count, plural, one {1 meta} other {# metas}} en lugar de concentrarse en unas pocas.",
       "verdict": {
         "mostly_aligned": "Las políticas son en gran medida coherentes entre sí.",
         "mixed": "La coherencia es dispar en el conjunto de políticas.",
         "lots_of_misalignment": "Considerable posible desalineación en el conjunto de políticas."
       },
-      "focusConcentratedWithDoc": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}, {docCount, plural, one {1 de ellas} other {# de ellas}} en {docName}",
+      "focusSentenceConcentratedWithDoc": "La mayor parte de la <term>posible desalineación</term> ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}, {docCount, plural, one {1 de ellas} other {# de ellas}} en {docName}.",
       "derivationNote": "Los temas son resúmenes escritos por IA de los pares de metas evaluados. Cada cifra de esta página se calcula en el navegador a partir de esos pares para la selección actual de documentos, y cada par con posible desalineación se cuenta bajo un solo tema.",
       "groups": {
         "showMore": "{count, plural, one {+1 tema más} other {+# temas más}}",

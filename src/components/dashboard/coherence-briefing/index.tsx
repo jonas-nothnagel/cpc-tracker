@@ -41,7 +41,7 @@ import {
 import {
   DIRECTION_SECTION_ID,
   DirectionSection,
-  SynthesisSentence,
+  FocusSentence,
 } from "./sections/direction";
 import type { ThemeSpotlight } from "./storyline-card";
 import {
@@ -1607,25 +1607,31 @@ export function CoherenceBriefing({
           countryName={countryName}
           documentCount={documentCount}
           verdict={availableDocs.length > 0 ? verdict : null}
-          concentration={targetConcentration}
-          primer={primer}
-          countryConfig={countryConfig}
-          onOpenPair={openPairFromFaultLine}
-          onHighlightPair={setPrimerHighlight}
         />
         {/* The overview band: the high-level picture before any detail, for
-            readers who otherwise feel dropped into the deep end. */}
+            readers who otherwise feel dropped into the deep end. The tiles are
+            the fold's only statement of the headline numbers; the focus
+            sentence below adds the one insight they cannot carry (where the
+            flagged pairs concentrate), so nothing in the fold is said twice. */}
         {availableDocs.length > 0 && (
-          <OverviewBand
-            countryName={countryName}
-            targetCount={visibleTargets.length}
-            documentCount={documentCount}
-            tiles={buildOverviewTiles({
-              verdict,
-              financing,
-              implementationCoverage,
-            })}
-          />
+          <>
+            <OverviewBand
+              targetCount={visibleTargets.length}
+              documentCount={documentCount}
+              tiles={buildOverviewTiles({
+                verdict,
+                financing,
+                implementationCoverage,
+              })}
+            />
+            <FocusSentence
+              concentration={targetConcentration}
+              primer={primer}
+              countryConfig={countryConfig}
+              onOpenPair={openPairFromFaultLine}
+              onHighlightPair={setPrimerHighlight}
+            />
+          </>
         )}
         {/* First-visit orientation: offered, never forced. Hidden when no
             documents are visible (no sections to walk through). */}
@@ -1989,22 +1995,12 @@ function BriefingHeader({
   countryName,
   documentCount,
   verdict,
-  concentration,
-  primer,
-  countryConfig,
-  onOpenPair,
-  onHighlightPair,
 }: {
   countryName: string;
   documentCount: number;
   /** Corpus verdict for the visible documents. Null (the all-documents-hidden
    *  empty state) falls back to the plain subtitle line. */
   verdict: HeadlineVerdict | null;
-  concentration: TargetConcentration;
-  primer: PrimerExamples;
-  countryConfig: CountryConfig | null;
-  onOpenPair: (line: FaultLine) => void;
-  onHighlightPair: (pair: PrimerHighlightPair | null) => void;
 }) {
   const t = useTranslations("briefing.header");
   const tDirection = useTranslations("briefing.direction");
@@ -2017,23 +2013,9 @@ function BriefingHeader({
         {countryName}.
       </h1>
       {verdict ? (
-        <>
-          <p className="mt-3 font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium max-w-4xl">
-            {tDirection(`verdict.${verdict.bucket}`)}
-          </p>
-          <p className="mt-3 text-body text-[var(--undp-black)] max-w-prose">
-            <SynthesisSentence
-              countryName={countryName}
-              documentCount={documentCount}
-              verdict={verdict}
-              concentration={concentration}
-              primer={primer}
-              countryConfig={countryConfig}
-              onOpenPair={onOpenPair}
-              onHighlightPair={onHighlightPair}
-            />
-          </p>
-        </>
+        <p className="mt-3 font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium max-w-4xl">
+          {tDirection(`verdict.${verdict.bucket}`)}
+        </p>
       ) : (
         <p className="mt-2 text-body text-[var(--undp-gray)]">
           {t("subtitle", { count: documentCount })}

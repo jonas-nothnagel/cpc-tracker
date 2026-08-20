@@ -110,7 +110,6 @@ function renderBand({
   render(
     <NextIntlClientProvider locale="en" messages={en}>
       <OverviewBand
-        countryName="Sri Lanka"
         targetCount={128}
         documentCount={6}
         tiles={buildOverviewTiles({
@@ -135,7 +134,9 @@ describe("OverviewBand", () => {
     ]);
     expect(screen.getByText(/71%/)).toBeInTheDocument();
     expect(screen.getByText(/reach strong alignment/)).toBeInTheDocument();
-    expect(screen.getByText("Ask a question")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Ask a question/ }),
+    ).toBeInTheDocument();
   });
 
   it("uses the guardrail vocabulary for the flagged side", () => {

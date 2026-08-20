@@ -54,7 +54,6 @@ import {
   computeStorylineLiveStats,
   concentrationDocAttribution,
   type FaultLine,
-  type HeadlineVerdict,
   type PrimerExamples,
   type StorylineLiveStats,
   type TargetConcentration,
@@ -294,53 +293,22 @@ function ThemeColumn({
   );
 }
 
-function focusClause(
-  c: TargetConcentration,
-  countryConfig: CountryConfig | null,
-  t: ReturnType<typeof useTranslations<"briefing.direction">>,
-): string | null {
-  if (c.totalFlaggedPairs === 0 || c.contestedTargetCount === 0) return null;
-  const concentrated =
-    c.topCount <= Math.max(1, Math.round(c.contestedTargetCount * 0.2));
-  const sharePct = Math.round(c.coveredPairShare * 100);
-  if (!concentrated) {
-    return t("focusSpread", { count: c.contestedTargetCount });
-  }
-  // When one document dominates the concentration set, name it (documents
-  // only, never ministries).
-  const attribution = concentrationDocAttribution(c);
-  if (attribution) {
-    return t("focusConcentratedWithDoc", {
-      pct: sharePct,
-      count: c.topCount,
-      docCount: attribution.count,
-      docName: getDocFullLabel(countryConfig, attribution.doc),
-    });
-  }
-  return t("focusConcentrated", { pct: sharePct, count: c.topCount });
-}
-
-// Definitions surface in the AlignmentTermPopover; consumer reads them from
-// translations via the `t` instance passed in.
-
 /**
- * The corpus-level verdict sentence with its example-popover terms. Rendered
- * by the briefing header (the verdict-first fold), not by DirectionSection;
- * it lives here because the popovers reuse the Direction primer tiles.
+ * The fold's "where to look" line: the concentration insight the overview
+ * tiles cannot carry, with the flagged term opening its definition-and-example
+ * popover. The rest of what the old synthesis sentence said (documents,
+ * strong-alignment share, flagged count) lives in the overview tiles, exactly
+ * once. Rendered by the briefing fold, not by DirectionSection; it lives here
+ * because the popover reuses the Direction primer tiles. Renders nothing when
+ * no pairs are flagged.
  */
-export function SynthesisSentence({
-  countryName,
-  documentCount,
-  verdict,
+export function FocusSentence({
   concentration,
   primer,
   countryConfig,
   onOpenPair,
   onHighlightPair,
 }: {
-  countryName: string;
-  documentCount: number;
-  verdict: HeadlineVerdict;
   concentration: TargetConcentration;
   primer: PrimerExamples;
   countryConfig: CountryConfig | null;
@@ -348,48 +316,49 @@ export function SynthesisSentence({
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
   const t = useTranslations("briefing.direction");
-  const focusText = focusClause(concentration, countryConfig, t);
-  const docPhrase = t("docPhrase", { count: documentCount });
-  const denom = verdict.alignmentPairs + verdict.tensionPairs;
-  const reinforcePct =
-    denom > 0 ? Math.round((verdict.alignmentPairs / denom) * 100) : 0;
+  const c = concentration;
+  if (c.totalFlaggedPairs === 0 || c.contestedTargetCount === 0) return null;
+
+  const term = (chunks: ReactNode) => (
+    <AlignmentTermPopover
+      kind="flagged"
+      example={primer.tension}
+      definition={t("flaggedDefinition")}
+      countryConfig={countryConfig}
+      onOpenPair={onOpenPair}
+      onHighlightPair={onHighlightPair}
+    >
+      {chunks}
+    </AlignmentTermPopover>
+  );
+
+  const concentrated =
+    c.topCount <= Math.max(1, Math.round(c.contestedTargetCount * 0.2));
+  const sharePct = Math.round(c.coveredPairShare * 100);
+  // When one document dominates the concentration set, name it (documents
+  // only, never ministries).
+  const attribution = concentrated ? concentrationDocAttribution(c) : null;
   return (
-    <>
-      {t("openingPrefix", { docPhrase, country: countryName })}{" "}
-      <span className="tabular-nums">{verdict.signalPairs.toLocaleString()}</span>{" "}
-      {t("scoredSuffix")}{" "}
-      <span className="text-[var(--undp-black)] font-medium tabular-nums">
-        {reinforcePct}%
-      </span>{" "}
-      {t("reach")}{" "}
-      <AlignmentTermPopover
-        kind="aligned"
-        example={primer.aligned}
-        definition={t("alignedDefinition")}
-        countryConfig={countryConfig}
-        onOpenPair={onOpenPair}
-        onHighlightPair={onHighlightPair}
-      >
-        {t("strongAlignment")}
-      </AlignmentTermPopover>
-      .{" "}
-      <span className="tabular-nums">
-        {verdict.tensionPairs.toLocaleString()}
-      </span>{" "}
-      {t("pairsShow", { count: verdict.tensionPairs })}{" "}
-      <AlignmentTermPopover
-        kind="flagged"
-        example={primer.tension}
-        definition={t("flaggedDefinition")}
-        countryConfig={countryConfig}
-        onOpenPair={onOpenPair}
-        onHighlightPair={onHighlightPair}
-      >
-        {t("potentialMisalignment")}
-      </AlignmentTermPopover>
-      {focusText && <>; {focusText}</>}
-      .
-    </>
+    <p className="mt-3 max-w-prose text-body text-[var(--undp-black)]">
+      {!concentrated
+        ? t.rich("focusSentenceSpread", {
+            term,
+            count: c.contestedTargetCount,
+          })
+        : attribution
+          ? t.rich("focusSentenceConcentratedWithDoc", {
+              term,
+              pct: sharePct,
+              count: c.topCount,
+              docCount: attribution.count,
+              docName: getDocFullLabel(countryConfig, attribution.doc),
+            })
+          : t.rich("focusSentenceConcentrated", {
+              term,
+              pct: sharePct,
+              count: c.topCount,
+            })}
+    </p>
   );
 }
 
