@@ -2037,14 +2037,18 @@ function BriefingHeader({
  */
 function StageMarker({ stageId }: { stageId: StageId }) {
   const t = useTranslations("briefing.stages");
+  // The label sits ON the rule (kicker left, line running out to the right)
+  // and carries ink, so the marker reads as the opener of what follows —
+  // an all-gray label hanging under a plain top border read as the previous
+  // section's footer (Sri Lanka usability round). No caption here: the
+  // sticky nav already shows the active stage's caption a few pixels above,
+  // and at the crossing the two would print the same sentence twice.
   return (
-    <div className="mb-12 border-t border-line pt-4">
-      <p className="text-[11px] uppercase tracking-wider font-semibold text-[var(--undp-gray)]">
+    <div className="mb-12 flex items-center gap-4">
+      <p className="whitespace-nowrap text-data font-semibold uppercase tracking-wider text-[var(--undp-black)]">
         {t(`${stageId}.label`)}
       </p>
-      <p className="mt-0.5 text-caption text-[var(--undp-gray)]">
-        {t(`${stageId}.caption`)}
-      </p>
+      <div aria-hidden="true" className="h-px flex-1 bg-line" />
     </div>
   );
 }
