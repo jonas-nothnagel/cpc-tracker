@@ -166,18 +166,18 @@
     },
     "targetQuality": {
       "band": {
-        "full": "Bien definida",
-        "partial": "Parcialmente definida",
-        "broad": "Definida en términos amplios"
+        "full": "Alta",
+        "partial": "Moderada",
+        "broad": "Limitada"
       },
-      "chipLabel": "Qué tan definida:",
+      "chipLabel": "Precisión del análisis:",
       "chipScore": "{stated}/{total}",
-      "chipAria": "Calidad de la meta: {verdict}, cumple {stated} de {total} criterios. Abrir para ver el detalle.",
-      "panelAria": "Qué tan bien definida está esta meta",
-      "panelTitle": "¿Qué tan bien definida está esta meta?",
-      "panelSubtitle": "Cumple {stated} de {total} criterios para una meta que se pueda dar seguimiento.",
-      "notMet": "No se indica en la meta.",
-      "caveat": "Evaluación por IA de qué tan completa es la redacción de la meta, citando el texto que respalda cada criterio. Juzga si la meta se puede monitorear, no si la política es acertada o suficientemente ambiciosa.",
+      "chipAria": "Precisión del análisis: {verdict}. La IA encontró {stated} de {total} elementos que usa para comparar metas. Abrir para ver el detalle.",
+      "panelAria": "Qué tan preciso puede ser el análisis de esta meta",
+      "panelTitle": "¿Qué tan preciso puede ser el análisis de esta meta?",
+      "panelSubtitle": "La IA encontró {stated} de {total} elementos que utiliza al evaluar la coherencia con otras metas.",
+      "notMet": "No se encontró en la redacción de la meta.",
+      "caveat": "Nota de la IA sobre el detalle con el que puede trabajar; no es un juicio sobre la meta. Cuantos más de estos elementos indique la redacción, con mayor precisión podrá la IA evaluar la coherencia de esta meta con las demás.",
       "element": {
         "action": "Nombra una acción específica",
         "scope": "Indica dónde o para quién",
