@@ -21,13 +21,16 @@ export function ExploreSection({ children }: { children: ReactNode }) {
   // The Explore finale is a self-contained one-screen workbench: it owns its
   // own title, stat line, and controls in a top bar, so the section heading
   // and intro fold into that chrome and stay only as an accessible landmark.
-  // Height fills the viewport below the app header + section nav (~8rem) so the
+  // Height fills the viewport below the app header + section nav so the
   // whole workbench (title, wheel, ask dock) sits on one screen without the
-  // page scrolling within it. `100dvh` keeps mobile browser chrome honest.
+  // page scrolling within it. The nav publishes its live height as
+  // --jump-nav-clearance (see JumpNav), so the anchor landing and the height
+  // both track however many rows the nav currently wraps to. `100dvh` keeps
+  // mobile browser chrome honest.
   return (
     <section
       id={EXPLORE_SECTION_ID}
-      className="flex h-[calc(100dvh-8rem)] min-h-[620px] scroll-mt-[8rem] flex-col"
+      className="flex h-[calc(100dvh-var(--jump-nav-clearance,10.25rem))] min-h-[620px] scroll-mt-[var(--jump-nav-clearance,10.25rem)] flex-col"
       aria-labelledby={`${EXPLORE_SECTION_ID}-heading`}
     >
       <h2 id={`${EXPLORE_SECTION_ID}-heading`} className="sr-only">

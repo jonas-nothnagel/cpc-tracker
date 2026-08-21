@@ -125,7 +125,7 @@ export function SectorsSection({
       reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         mergedRows.length > 0 ? (
-          <TourButton tourId="sectors" scopeId={SECTORS_SECTION_ID} />
+          <TourButton tourId="sectors" scopeId={SECTORS_SECTION_ID} labelled />
         ) : undefined
       }
       controls={

@@ -107,20 +107,43 @@
       "text": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer"
     },
     "modelSelector": {
-      "label": "Modelo",
-      "caveat": "Generado por IA con {model}; ejecución de comparación, no el resultado de producción",
-      "compareLink": "Ver la comparación de modelos →"
+      "attribution": "Resultados generados por IA con",
+      "compareLink": "Comparar modelos →"
     }
   },
   "briefing": {
     "header": {
       "subtitle": "{count, plural, one {# documento} other {# documentos}} comparados por pares. Desplácese para ver los hallazgos o salte a una sección."
     },
+    "overview": {
+      "listAria": "Hallazgos principales",
+      "corpusTargets": "{count, plural, one {meta} other {metas}}",
+      "corpusDocs": "{count, plural, one {documento} other {documentos}}",
+      "corpusCaption": "Lo que compara este informe",
+      "strong": "alcanzan alineación fuerte",
+      "strongCaption": "Pares que se refuerzan mutuamente",
+      "flagged": "{count, plural, one {posible desalineación} other {posibles desalineaciones}}",
+      "flaggedCaption": "Pares señalados para revisión",
+      "financeCaption": "Total de la Revisión del Gasto en Biodiversidad (BER)",
+      "implementation": "{count, plural, one {acción reportada} other {acciones reportadas}}",
+      "implementationCaption": "En el Informe Bienal de Transparencia (BTR)",
+      "ask": "Haga una pregunta"
+    },
+    "guidedRead": {
+      "offerBody": "¿Primera visita? Una lectura guiada de un minuto recorre qué muestra cada parte de este informe y cómo usarlo.",
+      "start": "Iniciar la lectura guiada",
+      "skip": "Omitir",
+      "reopen": "Lectura guiada (1 min)"
+    },
+    "nav": {
+      "prevSection": "Sección anterior: {label}",
+      "nextSection": "Sección siguiente: {label}"
+    },
     "sections": {
       "direction": "Alineación de políticas",
-      "docFocus": "Documentos analizados",
+      "docFocus": "Un documento en foco",
       "docPairs": "Documentos comparados",
-      "frictionTypes": "Tipos de incoherencia",
+      "frictionTypes": "Por qué se separan los pares",
       "sectors": "Sectores",
       "whereToFocus": "Áreas prioritarias de acción",
       "explore": "Explorar resultados",
@@ -129,36 +152,32 @@
     },
     "stages": {
       "policies": {
-        "label": "Lo que dicen las políticas",
-        "caption": "Los compromisos de cada documento y cómo se relacionan entre sí."
+        "label": "Lo que dicen las políticas"
       },
       "friction": {
-        "label": "Dónde se separan",
-        "caption": "Las parejas que conviene revisar: el origen de la fricción y dónde se concentra."
+        "label": "Dónde se separan"
       },
       "delivery": {
-        "label": "Financiamiento y ejecución",
-        "caption": "Qué metas tienen presupuesto detrás y cuáles tienen una acción reportada."
+        "label": "Financiamiento y ejecución"
       },
       "explore": {
-        "label": "Explorar",
-        "caption": "Todo lo que las secciones anteriores no calculan de antemano. Arme su propia vista."
+        "label": "Explorar"
       }
     },
     "targetQuality": {
       "band": {
-        "full": "Bien definida",
-        "partial": "Parcialmente definida",
-        "broad": "Definida en términos amplios"
+        "full": "Alta",
+        "partial": "Moderada",
+        "broad": "Limitada"
       },
-      "chipLabel": "Qué tan definida:",
+      "chipLabel": "Precisión del análisis:",
       "chipScore": "{stated}/{total}",
-      "chipAria": "Calidad de la meta: {verdict}, cumple {stated} de {total} criterios. Abrir para ver el detalle.",
-      "panelAria": "Qué tan bien definida está esta meta",
-      "panelTitle": "¿Qué tan bien definida está esta meta?",
-      "panelSubtitle": "Cumple {stated} de {total} criterios para una meta que se pueda dar seguimiento.",
-      "notMet": "No se indica en la meta.",
-      "caveat": "Evaluación por IA de qué tan completa es la redacción de la meta, citando el texto que respalda cada criterio. Juzga si la meta se puede monitorear, no si la política es acertada o suficientemente ambiciosa.",
+      "chipAria": "Precisión del análisis: {verdict}. La IA encontró {stated} de {total} elementos que usa para comparar metas. Abrir para ver el detalle.",
+      "panelAria": "Qué tan preciso puede ser el análisis de esta meta",
+      "panelTitle": "¿Qué tan preciso puede ser el análisis de esta meta?",
+      "panelSubtitle": "La IA encontró {stated} de {total} elementos que utiliza al evaluar la coherencia con otras metas.",
+      "notMet": "No se encontró en la redacción de la meta.",
+      "caveat": "Nota de la IA sobre el detalle con el que puede trabajar; no es un juicio sobre la meta. Cuantos más de estos elementos indique la redacción, con mayor precisión podrá la IA evaluar la coherencia de esta meta con las demás.",
       "element": {
         "action": "Nombra una acción específica",
         "scope": "Indica dónde o para quién",
@@ -180,7 +199,8 @@
       "aligned": "Alineado",
       "flagged": "Posible desalineación",
       "warmerArcHint": "Los arcos más cálidos marcan los documentos con más posible desalineación.",
-      "ribbonWidth": "El ancho de la cinta muestra el número de pares evaluados que comparten los dos documentos."
+      "ribbonWidth": "El ancho de la cinta muestra el número de pares evaluados que comparten los dos documentos.",
+      "arcShare": "Cada arco es un documento; su longitud es su proporción de todas las metas, de mayor a menor."
     },
     "expand": {
       "button": "Ampliar",
@@ -188,6 +208,42 @@
     },
     "tour": {
       "openAria": "Cómo leer este gráfico",
+      "guidedRead": {
+        "steps": {
+          "purpose": {
+            "title": "Qué muestra este informe",
+            "body": "La plataforma comparó las políticas de clima, biodiversidad y uso del suelo de este país, meta contra meta, y este titular es la lectura general. Todo lo que sigue es evidencia que se puede abrir y cuestionar. Es apoyo a la decisión: la interpretación queda en sus manos."
+          },
+          "overview": {
+            "title": "Las cifras principales",
+            "body": "Cada mosaico es un recuento principal: qué se comparó, dónde las políticas se refuerzan mutuamente y qué se señaló como posible desalineación. Al seleccionar uno, irá a la parte de la página que lo explica."
+          },
+          "corpus": {
+            "title": "Los datos detrás del informe",
+            "body": "Cada cifra de esta página se remonta a estos documentos fuente. Cada entrada abre la lista completa de las metas de ese documento, de modo que los compromisos originales quedan siempre a un clic; la línea inferior ajusta qué documentos incluye el informe."
+          },
+          "questions": {
+            "title": "Una sola página, organizada por preguntas",
+            "body": "El informe es un solo recorrido con cuatro paradas: lo que dicen las políticas, dónde se separan, financiamiento y ejecución, y un espacio para explorar. Esta barra indica dónde está y salta a cualquier parte."
+          },
+          "policies": {
+            "title": "Primero, la dirección compartida",
+            "body": "Las secciones iniciales muestran los temas que se repiten en los documentos y dónde sus metas se refuerzan entre sí: una base para la planificación y el lugar para detectar sinergias entre instrumentos."
+          },
+          "friction": {
+            "title": "Luego, los pares que merecen una mirada",
+            "body": "Las secciones intermedias agrupan los pares de metas que la IA señaló como posibles desalineaciones, según el tipo de fricción y dónde se concentra. Estas señales son avisos para revisar, no veredictos: una lista inicial para leer los documentos en conjunto."
+          },
+          "delivery": {
+            "title": "Si la ejecución acompaña a la ambición",
+            "body": "Estas secciones ponen las líneas presupuestarias y las acciones reportadas junto a los compromisos de política, mostrando dónde el financiamiento y la implementación coinciden con lo que prometen los documentos, y dónde no."
+          },
+          "explore": {
+            "title": "Haga su propia pregunta",
+            "body": "El informe termina en un espacio de trabajo: pregunte por cualquier meta, par o tema en lenguaje claro. Cada gráfico también tiene su propio recorrido rotulado, Cómo leer este gráfico, junto a su título."
+          }
+        }
+      },
       "controls": {
         "next": "Siguiente",
         "back": "Atrás",
@@ -199,7 +255,7 @@
         "steps": {
           "arcs": {
             "title": "Los arcos de colores son documentos de política",
-            "body": "Cada arco del borde exterior es un documento de política (o un sector, según la vista). Los arcos más largos contienen más objetivos."
+            "body": "Cada arco del borde exterior es un documento de política (o un sector, según la vista). El tamaño de cada arco es proporcional: un documento con la cuarta parte de las metas ocupa la cuarta parte del círculo. Los arcos avanzan en sentido horario desde arriba, de mayor a menor."
           },
           "ribbons": {
             "title": "Las cintas conectan documentos",
@@ -791,28 +847,23 @@
       "reading": "Un documento a la vez: sus <pair>parejas</pair> con los demás, y cuáles son una <potentialMisalignment>posible desalineación</potentialMisalignment>."
     },
     "direction": {
-      "docPhrase": "{count, plural, one {1 documento} other {# documentos}}",
-      "openingPrefix": "En {docPhrase} de {country},",
-      "scoredSuffix": "pares de metas fueron evaluados.",
-      "reach": "alcanzan",
+      "themesHeadline": "Los temas que se repiten en los documentos.",
       "strongAlignment": "alineación fuerte",
       "potentialMisalignment": "posible desalineación",
-      "pairsShow": "{count, plural, one {par muestra} other {pares muestran}}",
-      "alignedDefinition": "Dos metas que tiran en la misma dirección: una respalda o impulsa a la otra. Un par real evaluado de este conjunto:",
       "flaggedDefinition": "Dos metas que la IA identificó como posiblemente en tensión entre sí: un aviso para revisión humana, no un hallazgo definitivo. Un par real evaluado:",
       "popoverAriaLabel": "Mostrar un ejemplo de {term}",
       "clickToOpenPair": "Pulse el término para abrir este par",
       "howPipelineBuilt": "Cómo la canalización construyó esta vista",
       "onePairFromEnd": "Un par evaluado de cada extremo del espectro.",
       "notEnoughPairs": "No hay suficientes pares evaluados para mostrar un ejemplo subyacente.",
-      "focusConcentrated": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}",
-      "focusSpread": "se distribuyen en {count, plural, one {1 meta} other {# metas}}",
+      "focusSentenceConcentrated": "La mayor parte de la <term>posible desalineación</term> ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}.",
+      "focusSentenceSpread": "La <term>posible desalineación</term> se distribuye en {count, plural, one {1 meta} other {# metas}} en lugar de concentrarse en unas pocas.",
       "verdict": {
         "mostly_aligned": "Las políticas son en gran medida coherentes entre sí.",
         "mixed": "La coherencia es dispar en el conjunto de políticas.",
         "lots_of_misalignment": "Considerable posible desalineación en el conjunto de políticas."
       },
-      "focusConcentratedWithDoc": "la mayoría ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}, {docCount, plural, one {1 de ellas} other {# de ellas}} en {docName}",
+      "focusSentenceConcentratedWithDoc": "La mayor parte de la <term>posible desalineación</term> ({pct}%) se rastrea a sólo {count, plural, one {1 meta} other {# metas}}, {docCount, plural, one {1 de ellas} other {# de ellas}} en {docName}.",
       "derivationNote": "Los temas son resúmenes escritos por IA de los pares de metas evaluados. Cada cifra de esta página se calcula en el navegador a partir de esos pares para la selección actual de documentos, y cada par con posible desalineación se cuenta bajo un solo tema.",
       "groups": {
         "showMore": "{count, plural, one {+1 tema más} other {+# temas más}}",
@@ -1038,7 +1089,6 @@
       "removeDoc": "Quitar {name}",
       "addDoc": "Agregar {name}",
       "included": "{visible} de {total, plural, one {# documento de política} other {# documentos de política}} incluidos.",
-      "excluded": "{names} excluidos.",
       "done": "Listo",
       "addOrRemove": "Revisar y ajustar los documentos",
       "resetToDefault": "Restablecer valores predeterminados"
@@ -1075,8 +1125,10 @@
       }
     },
     "browseTargets": {
-      "lead": "Explore los compromisos detrás de este análisis: {count, number} metas de política, más aquello con lo que se comparan.",
+      "heading": "Documentos fuente",
       "chipAria": "Ver {count, plural, one {# meta} other {# metas}} de {name}",
+      "chipAriaExcluded": "Ver {count, plural, one {# meta} other {# metas}} de {name} (excluido del análisis)",
+      "excludedNote": "Excluido del análisis — sus metas siguen pudiendo consultarse",
       "reportedAction": "Acciones reportadas (BTR)",
       "budgetLine": "Partidas presupuestarias (BER)"
     },

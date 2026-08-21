@@ -127,7 +127,7 @@ export function FinancingSection({
       // "financing" tour from the sticky-aside TourButton instead.
       tourButton={
         grid ? (
-          <TourButton tourId="fundingGrid" scopeId={FINANCING_SECTION_ID} />
+          <TourButton tourId="fundingGrid" scopeId={FINANCING_SECTION_ID} labelled />
         ) : undefined
       }
     />

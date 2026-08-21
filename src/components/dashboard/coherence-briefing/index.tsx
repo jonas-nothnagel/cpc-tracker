@@ -41,6 +41,7 @@ import {
 import {
   DIRECTION_SECTION_ID,
   DirectionSection,
+  FocusSentence,
 } from "./sections/direction";
 import type { ThemeSpotlight } from "./storyline-card";
 import {
@@ -83,6 +84,10 @@ import type {
 import { BriefingPanelHost } from "./briefing-panels";
 import { useBriefingPanels } from "./use-briefing-panels";
 import { DocFilterControl, DocToggleLegend } from "./doc-filter-control";
+import {
+  BRIEFING_SCOPE_ID,
+  GuidedReadOffer,
+} from "./tour/guided-read-offer";
 import { TourButton } from "./tour/tour-button";
 import type { BriefingTourId } from "./tour/steps";
 import type { PrimerHighlightPair } from "./primer-card";
@@ -90,8 +95,17 @@ import type { LensId, LensOption } from "./lens";
 import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
 import { docTierSortKey, hasDocTaxonomy } from "@/lib/doc-taxonomy";
-import { resolveStages } from "./nav-stages";
+import {
+  resolveStages,
+  stageMarkerSections,
+  type StageId,
+} from "./nav-stages";
 import { TargetsBrowseBar } from "./targets-access";
+import {
+  buildOverviewTiles,
+  CORPUS_ANCHOR_ID,
+  OverviewBand,
+} from "./overview-band";
 import {
   buildSectorCoherenceShare,
   buildSectorTensionDensity,
@@ -108,9 +122,12 @@ import {
   type CorpusThemesPayload,
   type CoverageConcentrationStat,
   type FaultLine,
+  type HeadlineVerdict,
+  type PrimerExamples,
   type SectorCoherenceShareSummary,
   type SectorSynthesisPayload,
   type SectorTension,
+  type TargetConcentration,
 } from "@/lib/coherence-briefing";
 import {
   computeBudgetCoverage,
@@ -619,6 +636,16 @@ export function CoherenceBriefing({
       order = order.filter((id) => id !== IMPLEMENTATION_SECTION_ID);
     return order;
   }, [financing, implementation]);
+
+  // Stage boundary markers: which section opens each stage after the first,
+  // for the visible order (a country without financing gets its "delivery"
+  // marker on Implementation; an empty stage emits none). Rendered inside the
+  // section wrappers below, so every wrapper carries a marker slot and the
+  // map decides which ones show.
+  const stageMarkerBySection = useMemo(
+    () => stageMarkerSections(visibleSectionOrder),
+    [visibleSectionOrder],
+  );
 
   // Storyline-layer selection for the current hidden set. Corpus + sector
   // storylines come from precomputed states; doc-pair storylines are filtered
@@ -1565,38 +1592,88 @@ export function CoherenceBriefing({
     !(activeSection === FINANCING_SECTION_ID && financing) &&
     !(activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster);
 
+  // Marker slot for a section wrapper; renders only where a stage begins
+  // (see stageMarkerBySection above).
+  const stageMarker = (id: SectionId) => {
+    const stageId = stageMarkerBySection.get(id);
+    return stageId ? <StageMarker stageId={stageId} /> : null;
+  };
+
   // ── Render ─────────────────────────────────────────────────────
   return (
     <main className="flex-1 w-full">
-      <div className="max-w-7xl mx-auto px-6 pb-24">
+      <div id={BRIEFING_SCOPE_ID} className="max-w-7xl mx-auto px-6 pb-24">
         <BriefingHeader
           countryName={countryName}
           documentCount={documentCount}
+          verdict={availableDocs.length > 0 ? verdict : null}
         />
-        <DocFilterControl
-          allDocs={allDocs}
-          hiddenDocs={hiddenDocs}
-          defaultHiddenDocTypes={defaultHiddenDocTypes}
-          countryConfig={countryConfig}
-          onToggle={toggleDoc}
-          onReset={resetHiddenDocs}
-          targetCountByDoc={targetCountByDoc}
-          onViewTargets={openDocTargets}
-        />
-        {/* The front door to the commitments themselves. Every other route into
-            the targets drawer is a hover or an expand, which is why readers
-            reported they could not get at the targets in totality. */}
-        <TargetsBrowseBar
-          allDocs={browsableDocs}
-          countryConfig={countryConfig}
-          targetCountByDoc={browsableCountByDoc}
-          onViewTargets={openDocTargets}
-        />
-        {storylineCaveat && (
-          <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
-            {storylineCaveat}
-          </p>
+        {/* The overview band: the high-level picture before any detail, for
+            readers who otherwise feel dropped into the deep end. The tiles are
+            the fold's only statement of the headline numbers; the focus
+            sentence below adds the one insight they cannot carry (where the
+            flagged pairs concentrate), so nothing in the fold is said twice. */}
+        {availableDocs.length > 0 && (
+          <>
+            <OverviewBand
+              targetCount={visibleTargets.length}
+              documentCount={documentCount}
+              tiles={buildOverviewTiles({
+                verdict,
+                financing,
+                implementationCoverage,
+              })}
+            />
+            <FocusSentence
+              concentration={targetConcentration}
+              primer={primer}
+              countryConfig={countryConfig}
+              onOpenPair={openPairFromFaultLine}
+              onHighlightPair={setPrimerHighlight}
+            />
+          </>
         )}
+        {/* First-visit orientation: offered, never forced. Hidden when no
+            documents are visible (no sections to walk through). */}
+        {availableDocs.length > 0 && <GuidedReadOffer />}
+        {/* The uploaded data, on the first screen: which source documents the
+            briefing covers and every target in them (an explicit stakeholder
+            request — readers must always know where to reach the data). Sits
+            after the verdict so the first thing read is the finding, but
+            before the nav so data access never needs a scroll. */}
+        <div
+          id={CORPUS_ANCHOR_ID}
+          data-tour="guided-corpus"
+          className="mt-6 scroll-mt-24"
+        >
+          {/* Small kicker naming the block, so the chips need no prose
+              introduction and the status line below needs no re-listing. */}
+          <p className="text-caption font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
+            {t("browseTargets.heading")}
+          </p>
+          <TargetsBrowseBar
+            allDocs={browsableDocs}
+            countryConfig={countryConfig}
+            targetCountByDoc={browsableCountByDoc}
+            onViewTargets={openDocTargets}
+            hiddenDocs={hiddenDocs}
+          />
+          <DocFilterControl
+            allDocs={allDocs}
+            hiddenDocs={hiddenDocs}
+            defaultHiddenDocTypes={defaultHiddenDocTypes}
+            countryConfig={countryConfig}
+            onToggle={toggleDoc}
+            onReset={resetHiddenDocs}
+            targetCountByDoc={targetCountByDoc}
+            onViewTargets={openDocTargets}
+          />
+          {storylineCaveat && (
+            <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
+              {storylineCaveat}
+            </p>
+          )}
+        </div>
 
         {availableDocs.length === 0 ? (
           <div className="mt-10 border-y border-gray-200 py-16 text-center">
@@ -1618,10 +1695,6 @@ export function CoherenceBriefing({
               data-section-id={DIRECTION_SECTION_ID}
             >
               <DirectionSection
-                countryName={countryName}
-                documentCount={documentCount}
-                verdict={verdict}
-                concentration={targetConcentration}
                 primer={primer}
                 countryConfig={countryConfig}
                 corpusThemes={visibleCorpusThemes}
@@ -1638,6 +1711,7 @@ export function CoherenceBriefing({
                 ref={setSectionRef(DOC_FOCUS_SECTION_ID)}
                 data-section-id={DOC_FOCUS_SECTION_ID}
               >
+                {stageMarker(DOC_FOCUS_SECTION_ID)}
                 <DocFocusSection
                   targets={visibleTargets}
                   alignment={visibleAlignment}
@@ -1661,6 +1735,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(DOC_PAIRS_SECTION_ID)}
               data-section-id={DOC_PAIRS_SECTION_ID}
             >
+              {stageMarker(DOC_PAIRS_SECTION_ID)}
               <DocPairsSection
                 docPairSyntheses={visibleDocPairSyntheses}
                 countryConfig={countryConfig}
@@ -1675,6 +1750,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(FRICTION_TYPES_SECTION_ID)}
               data-section-id={FRICTION_TYPES_SECTION_ID}
             >
+              {stageMarker(FRICTION_TYPES_SECTION_ID)}
               <FrictionTypesSection
                 totals={frictionTotals}
                 onOpenType={(mechanism) =>
@@ -1686,6 +1762,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(WHERE_TO_FOCUS_SECTION_ID)}
               data-section-id={WHERE_TO_FOCUS_SECTION_ID}
             >
+              {stageMarker(WHERE_TO_FOCUS_SECTION_ID)}
               <WhereToFocusSection
                 hotspots={frictionHotspots}
                 concentration={targetConcentration}
@@ -1699,6 +1776,7 @@ export function CoherenceBriefing({
               ref={setSectionRef(SECTORS_SECTION_ID)}
               data-section-id={SECTORS_SECTION_ID}
             >
+              {stageMarker(SECTORS_SECTION_ID)}
               <SectorsSection
                 sectorRows={sectorRows}
                 sectorShares={sectorShares}
@@ -1730,6 +1808,7 @@ export function CoherenceBriefing({
                   (financingUsesWideGrid ? "lg:w-[calc(100%+520px)]" : "")
                 }
               >
+                {stageMarker(FINANCING_SECTION_ID)}
                 <FinancingSection
                   summary={financing}
                   commitmentCount={visibleTargets.length}
@@ -1752,6 +1831,7 @@ export function CoherenceBriefing({
                 // reported-snapshot centerpiece.
                 className="lg:min-h-[80vh]"
               >
+                {stageMarker(IMPLEMENTATION_SECTION_ID)}
                 <ImplementationSection
                   coverage={implementationCoverage}
                   summary={implementation}
@@ -1855,6 +1935,7 @@ export function CoherenceBriefing({
           data-section-id={EXPLORE_SECTION_ID}
           className="mt-24"
         >
+          {stageMarker(EXPLORE_SECTION_ID)}
           <ExploreSection>
             <PolicyCoherenceExplorer {...explorerProps} variant="workbench" />
           </ExploreSection>
@@ -1909,26 +1990,129 @@ export function CoherenceBriefing({
 
 // ─── Header + nav ────────────────────────────────────────────────
 
+/**
+ * Verdict-first header (Aug 2026): the first thing a reader meets after the
+ * country name is the corpus verdict and its synthesis sentence — the one
+ * finding that orients a first-time visitor — rather than utility controls.
+ * The Panama focus group (23 Jul 2026) showed the barrier is "quickly
+ * understanding what the results show"; the verdict is that understanding.
+ */
 function BriefingHeader({
   countryName,
   documentCount,
+  verdict,
 }: {
   countryName: string;
   documentCount: number;
+  /** Corpus verdict for the visible documents. Null (the all-documents-hidden
+   *  empty state) falls back to the plain subtitle line. */
+  verdict: HeadlineVerdict | null;
 }) {
   const t = useTranslations("briefing.header");
+  const tDirection = useTranslations("briefing.direction");
   return (
-    <header className="pt-10 pb-2">
+    <header className="pt-10 pb-2 scroll-mt-24" data-tour="guided-header">
       <h1
         className="text-display tracking-[-0.02em] text-[var(--undp-black)] font-semibold"
         style={{ fontFamily: HEADLINE_SERIF }}
       >
         {countryName}.
       </h1>
-      <p className="mt-2 text-body text-[var(--undp-gray)]">
-        {t("subtitle", { count: documentCount })}
-      </p>
+      {verdict ? (
+        <p className="mt-3 font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium max-w-4xl">
+          {tDirection(`verdict.${verdict.bucket}`)}
+        </p>
+      ) : (
+        <p className="mt-2 text-body text-[var(--undp-gray)]">
+          {t("subtitle", { count: documentCount })}
+        </p>
+      )}
     </header>
+  );
+}
+
+/**
+ * Stage boundary marker: a quiet full-width rule + the stage's name and
+ * caption, rendered where the reader crosses into a new stage. The Sri
+ * Lanka review (Aug 2026) asked for the "backdrop" to change between areas;
+ * a ground change is off the table (Paper-Is-For-Editorial rule, and the
+ * sections share one grid with the sticky aside), so the transition is
+ * marked instead, echoing the nav's stage vocabulary and styling so the
+ * two read as the same system. Three markers at most — deliberately not a
+ * per-slide eyebrow.
+ */
+function StageMarker({ stageId }: { stageId: StageId }) {
+  const t = useTranslations("briefing.stages");
+  // The label sits ON the rule (kicker left, line running out to the right)
+  // and carries ink, so the marker reads as the opener of what follows —
+  // an all-gray label hanging under a plain top border read as the previous
+  // section's footer (Sri Lanka usability round). No caption here: the
+  // sticky nav already shows the active stage's caption a few pixels above,
+  // and at the crossing the two would print the same sentence twice.
+  return (
+    <div className="mb-12 flex items-center gap-4">
+      <p className="whitespace-nowrap text-data font-semibold uppercase tracking-wider text-[var(--undp-black)]">
+        {t(`${stageId}.label`)}
+      </p>
+      <div aria-hidden="true" className="h-px flex-1 bg-line" />
+    </div>
+  );
+}
+
+/**
+ * Previous/next section pair at the right edge of the jump nav. The Sri
+ * Lanka review (Aug 2026) asked for "a back button... a way so that you
+ * move back and forth"; the chips only offer random access. Plain anchor
+ * links, like the chips, so hash history and the browser back button keep
+ * working.
+ */
+function SectionStepper({
+  active,
+  order,
+  labels,
+}: {
+  active: SectionId;
+  order: SectionId[];
+  labels: Record<SectionId, string>;
+}) {
+  const t = useTranslations("briefing.nav");
+  const index = order.indexOf(active);
+  const prev = index > 0 ? order[index - 1] : null;
+  const next =
+    index >= 0 && index < order.length - 1 ? order[index + 1] : null;
+
+  const arrow = (id: SectionId | null, dir: "prev" | "next") => {
+    const glyph = dir === "prev" ? "↑" : "↓";
+    if (!id) {
+      return (
+        <span
+          aria-hidden="true"
+          className="inline-flex h-7 w-7 items-center justify-center rounded border border-line/60 text-gray-300"
+        >
+          {glyph}
+        </span>
+      );
+    }
+    const label = t(dir === "prev" ? "prevSection" : "nextSection", {
+      label: labels[id],
+    });
+    return (
+      <a
+        href={`#${id}`}
+        aria-label={label}
+        title={label}
+        className="inline-flex h-7 w-7 items-center justify-center rounded border border-line text-[var(--undp-gray)] transition-colors hover:border-line-strong hover:text-[var(--undp-black)]"
+      >
+        <span aria-hidden="true">{glyph}</span>
+      </a>
+    );
+  };
+
+  return (
+    <div className="ml-auto flex items-center gap-1.5 self-center">
+      {arrow(prev, "prev")}
+      {arrow(next, "next")}
+    </div>
   );
 }
 
@@ -1942,6 +2126,33 @@ function JumpNav({
   const sectionLabels = useSectionLabels();
   const t = useTranslations("briefing.stages");
   const stages = resolveStages(order);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  // Publish the sticky stack's real clearance (72px app header + this nav's
+  // current height) as a CSS variable on the briefing container. Section
+  // scroll-margins derive from it, so anchor jumps land the headline just
+  // below the nav instead of under it — at every breakpoint, however many
+  // rows the nav wraps to. A fixed margin cannot track that (the nav is
+  // ~91px on desktop and ~250px on a phone), which is why jumps used to
+  // overshoot. ResizeObserver keeps it honest when rows rewrap or the
+  // active-stage caption changes height.
+  useEffect(() => {
+    const nav = navRef.current;
+    const scope = document.getElementById(BRIEFING_SCOPE_ID);
+    if (!nav || !scope) return;
+    const publish = () =>
+      scope.style.setProperty(
+        "--jump-nav-clearance",
+        `${72 + nav.getBoundingClientRect().height}px`,
+      );
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(nav);
+    return () => {
+      observer.disconnect();
+      scope.style.removeProperty("--jump-nav-clearance");
+    };
+  }, []);
 
   const chip = (id: SectionId, index: number) => (
     <li key={id} className="flex items-center">
@@ -1965,9 +2176,17 @@ function JumpNav({
   // Rollback path: with no stages the nav is the flat list it always was.
   if (!stages) {
     return (
-      <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
+      <nav
+        ref={navRef}
+        data-tour="guided-nav"
+        className="sticky top-[72px] z-10 -mx-6 px-6 py-3 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70"
+      >
         <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
           {order.map((id, i) => chip(id, i))}
+          <li className="ml-auto flex items-center gap-3">
+            <GuidedReadOffer variant="navButton" />
+            <SectionStepper active={active} order={order} labels={sectionLabels} />
+          </li>
         </ul>
       </nav>
     );
@@ -1976,36 +2195,53 @@ function JumpNav({
   const activeStage = stages.find((s) => s.sections.includes(active));
 
   return (
-    <nav className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70">
-      <div className="flex items-start gap-x-6 gap-y-2 flex-wrap">
-        {stages.map((stage) => (
-          <div key={`${stage.id}-${stage.firstIndex}`}>
-            <p
-              className={`text-[11px] uppercase tracking-wider font-semibold mb-0.5 px-2.5 transition-colors ${
-                stage === activeStage
-                  ? "text-[var(--undp-black)]"
-                  : "text-[var(--undp-gray)]/70"
-              }`}
-            >
-              {t(`${stage.id}.label`)}
-            </p>
-            <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
-              {stage.sections.map((id) =>
-                chip(id, order.indexOf(id)),
+    <nav
+      ref={navRef}
+      data-tour="guided-nav"
+      className="sticky top-[72px] z-10 -mx-6 px-6 py-2.5 bg-[#ffffff]/85 backdrop-blur border-b border-gray-200/70"
+    >
+      <div className="flex items-end gap-x-6 gap-y-2 flex-wrap">
+        {stages.map((stage) => {
+          // A one-section stage whose heading just repeats the chip's label
+          // (e.g. "Explore" over "Explore", "Explorar" over "Explorar
+          // resultados") says nothing twice on the page's densest strip —
+          // drop the heading, keep the chip. Containment, not equality:
+          // locales pad one of the two labels.
+          const only =
+            stage.sections.length === 1 ? stage.sections[0] : null;
+          const stageLabel = t(`${stage.id}.label`).trim().toLowerCase();
+          const onlyLabel =
+            only !== null ? sectionLabels[only].trim().toLowerCase() : "";
+          const redundantHeading =
+            only !== null &&
+            (onlyLabel.includes(stageLabel) || stageLabel.includes(onlyLabel));
+          return (
+            <div key={`${stage.id}-${stage.firstIndex}`}>
+              {!redundantHeading && (
+                <p
+                  className={`text-caption uppercase tracking-wider font-semibold mb-0.5 px-2.5 transition-colors ${
+                    stage === activeStage
+                      ? "text-[var(--undp-black)]"
+                      : "text-[var(--undp-gray)]/70"
+                  }`}
+                >
+                  {t(`${stage.id}.label`)}
+                </p>
               )}
-            </ul>
-          </div>
-        ))}
+              <ul className="flex items-center gap-1 sm:gap-2 flex-wrap">
+                {stage.sections.map((id) => chip(id, order.indexOf(id)))}
+              </ul>
+            </div>
+          );
+        })}
+        {/* Right-side controls: the tour restart lives in sticky chrome so
+            "replay the walkthrough" is one click away at any scroll position
+            and reads as a control, not an in-flow anchor link. */}
+        <div className="ml-auto flex items-center gap-3 self-center">
+          <GuidedReadOffer variant="navButton" />
+          <SectionStepper active={active} order={order} labels={sectionLabels} />
+        </div>
       </div>
-      {/* One caption, for the stage the reader is currently in. Showing all
-          four at once was the density the focus group was already objecting
-          to; showing the current one answers "what is this group for?" as
-          they arrive in it. */}
-      {activeStage && (
-        <p className="mt-1.5 px-2.5 text-caption text-[var(--undp-gray)]">
-          {t(`${activeStage.id}.caption`)}
-        </p>
-      )}
     </nav>
   );
 }

@@ -1,26 +1,33 @@
 "use client";
 
 /**
- * How well defined a target is (removable system; see README.md).
+ * How precisely the AI can compare a target (removable system; see README.md).
  *
  * WHY: the Panama focal-group report (23 Jul 2026) asked the tool to grow
  * toward "goals, indicators, progress". A target that does not say what will
- * change, by how much, where, or by when cannot be monitored as written, and
- * telling a planner which of their targets are ready to track is the most
+ * change, by how much, where, or by when gives the coherence analysis little
+ * to work with, and showing a planner how much detail the AI found is the most
  * useful thing this analysis can add without new data.
  *
- * WHAT IT IS: an assessment of target quality against five criteria a trackable
- * target meets, with the supporting wording quoted for each one it meets.
+ * WHAT IT IS: a count of five details the AI uses when comparing targets for
+ * coherence, with the supporting wording quoted for each one it found.
  *
- * The first version of this hedged so hard it stopped saying anything — the
- * chip read "3 of 5 stated" and the caveat said it described "what the text
- * says, not how good the target is", which is a denial of the whole point.
- * Readers could not tell what was being measured. It now names the judgement.
+ * FRAMING (third iteration — the copy is deliberate, change it carefully):
+ *   v1 hedged so hard it stopped saying anything — the chip read "3 of 5
+ *   stated" and readers could not tell what was being measured.
+ *   v2 named the judgement ("How well defined: Broadly defined"), and country
+ *   feedback (Aug 2026) read that as criticism of their targets.
+ *   v3 (current) keeps the verdict but moves the measured property onto the
+ *   SYSTEM: it reports the precision of the analysis ("Analysis precision:
+ *   High / Moderate / Limited"), and the caveat tells the reader what added
+ *   detail buys — a more accurate coherence assessment. The lowest band,
+ *   "Limited", describes the analysis, not the commitment. Do not swing back
+ *   to either earlier framing.
  *
- * WHAT IT JUDGES, AND WHAT IT DOES NOT. It judges how fully a target is
- * WRITTEN — whether it can be tracked. It says nothing about whether the policy
- * is right, ambitious enough, or a priority: a broad framing principle is not a
- * bad commitment for lacking a number, and the caveat says so.
+ * WHAT IT JUDGES, AND WHAT IT DOES NOT. It reports how much of the target's
+ * wording the AI can use — not whether the policy is right, ambitious enough,
+ * or a priority: a broad framing principle is not a bad commitment for lacking
+ * a number, and the caveat says so.
  *
  * HARD RULES that survive from the original design:
  *   - Every criterion marked met carries its verbatim quote. The pipeline drops
@@ -68,9 +75,9 @@ export function statedCount(target: Pick<Target, "definition">): number {
 
 /**
  * Banded verdict on the count, so a reader gets an answer before they get a
- * number. "Broadly defined" rather than "poorly defined": it describes the
- * wording without implying the commitment behind it is careless, and keeps to
- * the house rule against a bare "low" as a label.
+ * number. The bands grade the precision of the analysis ("High" / "Moderate" /
+ * "Limited"), never the target itself, and keep to the house rule against a
+ * bare "low" as a label.
  */
 export function definitionBand(
   stated: number,

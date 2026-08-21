@@ -40,6 +40,7 @@ export function TargetsBrowseBar({
   countryConfig,
   targetCountByDoc,
   onViewTargets,
+  hiddenDocs,
 }: {
   /** Every document with rows to browse, INCLUDING the BTR / BER stand-ins.
    *  Distinct from the briefing's analytical document set on purpose: this
@@ -48,6 +49,11 @@ export function TargetsBrowseBar({
   countryConfig: CountryConfig | null;
   targetCountByDoc: Map<PolicyDocumentType, number>;
   onViewTargets: (doc: PolicyDocumentType) => void;
+  /** Documents currently excluded from the analysis. Their chips dim and
+   *  strike through (the same vocabulary as the filter's toggles) but stay
+   *  clickable — exclusion changes what gets compared, never what you can
+   *  browse. Lets the status line below skip re-listing them in prose. */
+  hiddenDocs?: Set<PolicyDocumentType>;
 }) {
   const t = useTranslations("briefing.browseTargets");
 
@@ -68,22 +74,13 @@ export function TargetsBrowseBar({
     });
   }, [allDocs, countryConfig, targetCountByDoc]);
 
-  const total = useMemo(
-    () =>
-      docs
-        .filter((d) => !(d in STAND_INS))
-        .reduce((n, d) => n + (targetCountByDoc.get(d) ?? 0), 0),
-    [docs, targetCountByDoc],
-  );
-
   if (!TARGETS_BROWSE_BAR || docs.length === 0) return null;
 
+  // No lead sentence: the overview band's corpus tile already states the
+  // totals, and the chips carry their own counts — the row introduces itself.
   return (
     <div className="mt-3">
-      <p className="text-caption text-[var(--undp-gray)]">
-        {t("lead", { count: total })}
-      </p>
-      <ul className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+      <ul className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
         {docs.map((doc) => {
           const standIn = STAND_INS[doc];
           const count = targetCountByDoc.get(doc) ?? 0;
@@ -91,25 +88,41 @@ export function TargetsBrowseBar({
             ? t(standIn === "budgetLine" ? "budgetLine" : "reportedAction")
             : getDocMediumLabel(countryConfig, doc);
           const tier = getDocTier(countryConfig, doc);
+          const excluded = !standIn && (hiddenDocs?.has(doc) ?? false);
+          const color = getDocColor(countryConfig, doc);
           return (
             <li key={doc}>
               <button
                 type="button"
                 onClick={() => onViewTargets(doc)}
-                aria-label={t("chipAria", { name: label, count })}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-2.5 py-0.5 text-caption text-[var(--undp-black)] transition-colors hover:border-[var(--undp-blue)] hover:text-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1"
+                aria-label={
+                  excluded
+                    ? t("chipAriaExcluded", { name: label, count })
+                    : t("chipAria", { name: label, count })
+                }
+                className={`inline-flex items-center gap-1.5 rounded-full border border-line-strong px-2.5 py-0.5 text-caption text-[var(--undp-black)] transition-colors hover:border-[var(--undp-blue)] hover:text-[var(--undp-blue)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--undp-blue)] focus-visible:ring-offset-1 ${
+                  excluded ? "opacity-45 hover:opacity-100" : ""
+                }`}
                 title={
-                  tier !== undefined && !standIn
-                    ? getDocMediumLabel(countryConfig, doc)
-                    : undefined
+                  excluded
+                    ? t("excludedNote")
+                    : tier !== undefined && !standIn
+                      ? getDocMediumLabel(countryConfig, doc)
+                      : undefined
                 }
               >
                 <span
                   aria-hidden="true"
                   className="inline-block h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: getDocColor(countryConfig, doc) }}
+                  style={
+                    excluded
+                      ? { boxShadow: `inset 0 0 0 1.5px ${color}` }
+                      : { backgroundColor: color }
+                  }
                 />
-                <span>{label}</span>
+                <span className={excluded ? "line-through" : undefined}>
+                  {label}
+                </span>
                 <span className="tabular-nums text-[var(--undp-gray)]">
                   {count}
                 </span>

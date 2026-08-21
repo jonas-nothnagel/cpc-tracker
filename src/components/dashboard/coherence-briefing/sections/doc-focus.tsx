@@ -133,7 +133,7 @@ export function DocFocusSection({
       headline={sentence.headline}
       body={sentence.body}
       reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
-      tourButton={<TourButton tourId="docFocus" scopeId={DOC_FOCUS_SECTION_ID} />}
+      tourButton={<TourButton tourId="docFocus" scopeId={DOC_FOCUS_SECTION_ID} labelled />}
       controls={
         <DocSwitcher
           availableDocs={availableDocs}

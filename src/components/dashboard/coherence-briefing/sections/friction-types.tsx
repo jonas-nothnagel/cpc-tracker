@@ -48,7 +48,7 @@ export function FrictionTypesSection({
       body={composeBody(totals, labels, t)}
       reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
-        <TourButton tourId="frictionTypes" scopeId={FRICTION_TYPES_SECTION_ID} />
+        <TourButton tourId="frictionTypes" scopeId={FRICTION_TYPES_SECTION_ID} labelled />
       }
       evidence={
         <FrictionTypeChart totals={totals} onSegmentClick={onOpenType} />

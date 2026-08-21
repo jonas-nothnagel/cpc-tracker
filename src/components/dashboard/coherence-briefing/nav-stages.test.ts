@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { SECTION_STAGES, resolveStages } from "./nav-stages";
+import {
+  SECTION_STAGES,
+  resolveStages,
+  stageMarkerSections,
+} from "./nav-stages";
 
 /**
  * The nav order a country actually renders. Financing drops without BER data
@@ -79,5 +83,39 @@ describe("resolveStages", () => {
         seen.add(id);
       }
     }
+  });
+});
+
+describe("stageMarkerSections", () => {
+  it("marks the first section of every stage after the first", () => {
+    expect([...stageMarkerSections(PANAMA)]).toEqual([
+      ["friction-types", "friction"],
+      ["financing", "delivery"],
+      ["explore", "explore"],
+    ]);
+  });
+
+  it("never marks the opening stage", () => {
+    expect(stageMarkerSections(PANAMA).has("direction")).toBe(false);
+  });
+
+  it("moves a marker when a stage's first section drops", () => {
+    // BTR but no BER: delivery opens at implementation instead of financing.
+    const order = PANAMA.filter((id) => id !== "financing");
+    expect(stageMarkerSections(order).get("implementation")).toBe("delivery");
+  });
+
+  it("emits no marker for a stage that empties entirely", () => {
+    // Sri Lanka: no financing, no implementation — no delivery marker at all.
+    const markers = stageMarkerSections(SRI_LANKA);
+    expect([...markers.values()]).not.toContain("delivery");
+    expect([...markers]).toEqual([
+      ["friction-types", "friction"],
+      ["explore", "explore"],
+    ]);
+  });
+
+  it("emits nothing for an empty order", () => {
+    expect(stageMarkerSections([]).size).toBe(0);
   });
 });

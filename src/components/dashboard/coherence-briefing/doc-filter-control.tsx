@@ -84,9 +84,16 @@ function TierGrouped({
   );
 }
 
-/** One document toggle: colour dot + label. Included reads solid; excluded
- *  reads dimmed with a hollow dot and a strikethrough, so it is obviously
- *  re-addable rather than gone. */
+/** One document toggle: a pill that carries the document's colour as a
+ *  low-alpha tint (the same ${color}14 fill / ${color}55 border recipe as the
+ *  theme-drawer mechanism chips), with the solid dot kept as the key to the
+ *  wheel arcs. Included reads tinted and solid; excluded reads as a hollow
+ *  white pill with a hollow dot and a strikethrough, so it is obviously
+ *  re-addable rather than gone. Why the tint: the Sri Lanka review (Aug 2026)
+ *  asked for the whole toggle to carry the colour, not just "the little tiny
+ *  circle". Doc colours are country-config data palette, not chrome, so the
+ *  One Voice rule does not apply; the fill stays low-alpha per
+ *  Flat-By-Default. */
 function DocToggleItem({
   doc,
   included,
@@ -121,11 +128,16 @@ function DocToggleItem({
           ? t("removeDoc", { name: label })
           : t("addDoc", { name: label })
       }
-      className={`inline-flex items-center gap-1.5 transition-opacity ${
+      className={`inline-flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-0.5 transition-opacity ${
         included
           ? "opacity-100 hover:opacity-80"
-          : "opacity-45 hover:opacity-75"
+          : "border-line opacity-45 hover:opacity-75"
       }`}
+      style={
+        included
+          ? { backgroundColor: `${color}14`, borderColor: `${color}55` }
+          : undefined
+      }
     >
       <span
         aria-hidden="true"
@@ -235,14 +247,6 @@ export function DocFilterControl({
     () => allDocs.filter((d) => !hiddenDocs.has(d)).length,
     [allDocs, hiddenDocs],
   );
-  const excludedNames = useMemo(
-    () =>
-      allDocs
-        .filter((d) => hiddenDocs.has(d))
-        .map((d) => getDocMediumLabel(countryConfig, d)),
-    [allDocs, hiddenDocs, countryConfig],
-  );
-
   const isDefault = useMemo(() => {
     const def = new Set(defaultHiddenDocTypes);
     if (def.size !== hiddenDocs.size) return false;
@@ -254,16 +258,13 @@ export function DocFilterControl({
 
   return (
     <div className="mt-3 text-caption text-[var(--undp-gray)]">
+      {/* No excluded-name enumeration here: the browse chips above dim and
+          strike the excluded documents, so re-listing them in prose said the
+          same thing twice. */}
       <p className="leading-relaxed">
         <span>
           {t("included", { visible: visibleCount, total: allDocs.length })}
-        </span>
-        {excludedNames.length > 0 && (
-          <span className="text-[var(--undp-black)]">
-            {" "}
-            {t("excluded", { names: excludedNames.join(", ") })}
-          </span>
-        )}{" "}
+        </span>{" "}
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
