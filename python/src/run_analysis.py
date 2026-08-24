@@ -31,7 +31,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from . import config
-from .config import ACTIVE_TAXONOMIES, CACHE_DIR, DATA_DIR, OUTPUT_DIR
+from .config import (
+    ACTIVE_TAXONOMIES,
+    CACHE_DIR,
+    DATA_DIR,
+    DEFAULT_TARGETS_FILE,
+    OUTPUT_DIR,
+    country_display_name,
+)
 from .classify import rank_classification
 from .classify_globe import (
     classify_globe_subcategories,
@@ -49,6 +56,7 @@ from .llm import (
 )
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
+from .target_quality import assess_target_quality
 from .measure_align import (
     measures_to_pseudo_targets,
     generate_measure_pairs,
@@ -64,7 +72,7 @@ from .budget_align import (
 )
 from .synthesize_doc_pairs import synthesize_doc_pairs
 from .synthesize_corpus import synthesize_corpus
-from .synthesize_by_sector import synthesize_by_sector
+from .synthesize_by_sector import build_sector_category_names, synthesize_by_sector
 from .synthesis_states import (
     canonical_hidden_key,
     filter_doc_pair_records,
@@ -170,7 +178,7 @@ def write_status(
 
 
 def load_input_data(
-    targets_file: str = "mongolia-targets.json",
+    targets_file: str = DEFAULT_TARGETS_FILE,
 ) -> tuple[list, list, list, list, list, list, list]:
     """Load targets and categories from JSON files."""
     targets = json.loads((DATA_DIR / targets_file).read_text())
@@ -262,8 +270,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run CPC analysis pipeline")
     parser.add_argument(
         "--targets-file",
-        default="mongolia-targets.json",
-        help="Name of the targets JSON file in DATA_DIR (default: mongolia-targets.json)",
+        default=DEFAULT_TARGETS_FILE,
+        help=f"Name of the targets JSON file in DATA_DIR (default: {DEFAULT_TARGETS_FILE})",
     )
     parser.add_argument(
         "--language",
@@ -281,6 +289,13 @@ def parse_args() -> argparse.Namespace:
              "<output>/<country>/<model-slug>/ so multiple model runs of the "
              "same country coexist for side-by-side comparison. Defaults to "
              "the LLM_MODEL env var.",
+    )
+    parser.add_argument(
+        "--skip-target-quality",
+        action="store_true",
+        help="Skip the target-definition-elements step. The dashboard hides "
+             "every quality affordance when target_quality.json is absent, so "
+             "this is a safe way to shorten a run.",
     )
     parser.add_argument(
         "--limit-targets",
@@ -468,6 +483,8 @@ async def main() -> None:
         t_count = sum(1 for q in quant_flags if q.get("isTimeBound"))
         logger.info(f"Saved quantitative flags: {q_count} quantitative, {t_count} time-bound")
 
+        target_quality: list = []
+
         # 3. Thematic classification against the active taxonomies
         # (config.ACTIVE_TAXONOMIES; today IPCC sectors, GLOBE, GGA).
         write_status(2, "Thematic classification", f"Classifying {len(targets)} targets against thematic taxonomies", started_at=started_at)
@@ -571,6 +588,38 @@ async def main() -> None:
         out_path = OUTPUT_DIR / "decompositions.json"
         out_path.write_text(json.dumps(decompositions, indent=2))
         logger.info(f"Saved {len(decompositions)} decompositions to {out_path}")
+
+        # 4b. Which elements each target's text states (action / scope /
+        # outcome). Element presence, never a grade — see target_quality.py.
+        # Runs here, right after decomposition, so it can pass the pipeline's
+        # own reading of each target as context and assess the same thing the
+        # rest of the run saw. Optional: the dashboard hides every quality
+        # affordance when target_quality.json is absent, so skipping costs
+        # nothing else in the run.
+        if args.skip_target_quality:
+            logger.info("Skipping target definition elements (--skip-target-quality)")
+        else:
+            write_status(
+                4,
+                "Target definition elements",
+                f"Reading which elements {len(targets)} targets state",
+                started_at=started_at,
+            )
+            logger.info("")
+            logger.info("STEP 4b: Target definition elements")
+            logger.info("-" * 40)
+            decomposition_context = {
+                tid: text
+                for tid, text in (decompositions or {}).items()
+                if isinstance(text, str)
+            }
+            target_quality = await assess_target_quality(targets, decomposition_context)
+            quality_path = OUTPUT_DIR / "target_quality.json"
+            quality_path.write_text(json.dumps(target_quality, indent=2))
+            logger.info(
+                f"Saved target definition elements for {len(target_quality)} targets "
+                f"to {quality_path}"
+            )
 
         # 6. Assess alignment
         write_status(5, "Alignment assessment", f"Assessing alignment for {len(pairs)} target pairs with Agent 2", started_at=started_at)
@@ -833,39 +882,46 @@ async def main() -> None:
         out_path.write_text(json.dumps(doc_pair_records, indent=2, ensure_ascii=False))
         logger.info(f"  Saved {len(doc_pair_records)} doc-pair syntheses to {out_path}")
 
-        country_name = "the country"
-        if config_path.exists():
-            cfg_for_name = json.loads(config_path.read_text())
-            country_name = cfg_for_name.get("name") or country_name
+        # Resolved via the shared helper (config `name`, else title-cased
+        # slug). Reaches the corpus-synthesis prompt, so it is part of the
+        # LLM cache key for corpus themes.
+        country_stem = re.sub(
+            r"-?targets$",
+            "",
+            args.targets_file[:-5]
+            if args.targets_file.endswith(".json")
+            else args.targets_file,
+        )
+        if country_stem:
+            country_name = country_display_name(country_stem)
+        else:
+            # Upload flow ("targets.json" carries no country stem): use the
+            # country the wizard stamped on the records, else stay generic.
+            country_name = (
+                targets[0].get("country") if targets else None
+            ) or "the country"
 
-        # Sector synthesis needs category-name resolution. Build it once from the
-        # taxonomies already loaded in this run plus country-specific files; it is
+        # Sector synthesis needs category-name resolution. Single shared
+        # builder with the synthesize_by_sector CLI (the two used to diverge:
+        # the CLI path was missing gga/hr names); built once from the
+        # taxonomies already loaded in this run plus country-specific files,
         # reused across every precompute state.
-        sector_category_names: dict[tuple[str, str], str] = {}
-        for cat in nbs_categories:
-            sector_category_names[("nbs", cat["id"])] = cat.get("name", cat["id"])
-        for cat in sectors:
-            sector_category_names[("sector", cat["id"])] = cat.get("name", cat["id"])
-        for cat in globe_categories:
-            sector_category_names[("globe", cat["id"])] = cat.get("name", cat["id"])
-        for cat in gga_categories:
-            sector_category_names[("gga", cat["id"])] = cat.get("name", cat["id"])
-        for cat in hr_categories:
-            sector_category_names[("hr", cat["id"])] = cat.get("name", cat["id"])
-        if config_path.exists():
-            cfg = json.loads(config_path.read_text())
-            for cat in cfg.get("countrySectors", []):
-                sector_category_names[("country", cat["id"])] = cat.get(
-                    "name", cat["id"]
-                )
-        if adp_data:
-            for g in adp_data.get("adaptationGoals", []):
-                gid = str(g["id"])
-                descr = g.get("description", gid)
-                short = descr[:80].rstrip(",.")
-                if len(descr) > 80:
-                    short = short + "…"
-                sector_category_names[("adaptation_goal", gid)] = short
+        sector_category_names = build_sector_category_names(
+            category_lists={
+                "nbs": nbs_categories,
+                "sector": sectors,
+                "globe": globe_categories,
+                "globe_sub": globe_subcategories,
+                "gga": gga_categories,
+                "hr": hr_categories,
+            },
+            country_config=(
+                json.loads(config_path.read_text())
+                if config_path.exists()
+                else None
+            ),
+            adaptation_data=adp_data,
+        )
 
         # Precompute the corpus + sector storylines for each toggle state the
         # document filter can reach: the full corpus (""), every single-doc-
@@ -1009,6 +1065,12 @@ async def main() -> None:
                     "count": len(quant_flags),
                     "avg_output_tokens": 50,
                     "avg_latency_s": 1.0,
+                },
+                {
+                    "name": "target_quality",
+                    "count": len(target_quality),
+                    "avg_output_tokens": 120,
+                    "avg_latency_s": 1.2,
                 },
                 {
                     "name": "classification",

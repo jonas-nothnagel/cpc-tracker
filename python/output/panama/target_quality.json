@@ -1,0 +1,5056 @@
+[
+  {
+    "targetId": "panama_ENR_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Restoration of lands with forestry vocation and in agricultural use.",
+      "scope": "in the territory",
+      "outcome": "generate environmental, social, and economic benefits directly in the territory"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Ecotourism.",
+      "scope": "of forests",
+      "outcome": "aimed at conserving and increasing forest carbon stocks and reducing emissions from forest loss and degradation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Design and implementation of actions in indigenous territories",
+      "scope": "in indigenous territories",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish an enabling framework for the implementation of direct interventions, seeking to modify, create, or implement adequate regulatory frameworks",
+      "scope": "of REDD+ activities",
+      "outcome": "so that direct interventions are effective and efficient"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "ecosystems and soils that have been degraded, damaged, transformed, or totally destroyed due to a disturbance44",
+      "outcome": "contribute to the conservation and increase of forest carbon stocks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design and implement agroforestry projects (silvoagricultural and silvopastoral) and forest restoration projects, combined with natural regeneration management",
+      "scope": "on lands with forestry vocation and agricultural use",
+      "outcome": "to improve access to said resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop national awareness and informal environmental education programs",
+      "scope": "with emphasis on degraded lands with forestry vocation and restoration of gallery forests, sustainable forest management, and conservation of forest resources",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish and develop forest and fruit tree nurseries, based on certified seed sources",
+      "scope": "for reforestation with commercial purposes or for restoration purposes",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Make the corresponding compensations or Payments for Results to projects developed within the scope of the National Forest Restoration Program and the REDD+ mechanism",
+      "scope": "to projects developed within the scope of the National Forest Restoration Program and the REDD+ mechanism",
+      "outcome": "contribute to climate change mitigation through greenhouse gas removals"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of greenhouse gas removals related to land restoration activities on land with forestry vocation and in agricultural use, for the purposes of Results-Based Payments, under the REDD+ mechanism, including measurement protocols for greenhouse gas removals as a result of this activity",
+      "scope": "on land with forestry vocation and in agricultural use",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Rehabilitate private and state lands with forestry vocation",
+      "scope": "private and state lands with forestry vocation",
+      "outcome": "fostering the generation of green jobs, producing forestry raw materials for national and international consumption, and contributing to the stabilization of local and global climate through the removal of atmospheric greenhouse gases"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design, establish, and manage commercial reforestation programs and projects on private and state lands, using native species (mahogany, bitter cedar, amarillo, laurel, mountain almond, cocobolo, among others) and exotic species (teak and Caribbean pine, among others)",
+      "scope": "on private and state lands",
+      "outcome": "allow financial profitability through a developed value chain"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "execute projects for the use of non-timber products in forest plantations, such as seeds, resin, bark, and essential oils from Caribbean pine and eucalyptus, among other options",
+      "scope": "in forest plantations",
+      "outcome": "can improve the income flow in areas with potential"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of greenhouse gas removals achieved through commercial reforestation activities, for the purposes of Results-Based Payments, under the REDD+ mechanism, including measurement protocols for greenhouse gas removals as a result of this activity",
+      "scope": "through commercial reforestation activities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Update existing management plans in Protected Areas, with their corresponding action plans, control and monitoring programs",
+      "scope": "within and outside protected areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement the payment for ecosystem services system for the conservation and protection of forests and biodiversity",
+      "scope": "for the conservation and protection of forests and biodiversity",
+      "outcome": "therefore the conservation of forest carbon stocks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Strengthen and update the management plans for protected areas, with their corresponding action plans, control and monitoring programs",
+      "scope": "for protected areas",
+      "outcome": "to protect natural forest and restore already affected zones"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop stricter and more specific national regulations",
+      "scope": "for mangroves located outside protected areas",
+      "outcome": "provide protection for mangroves located outside protected areas"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish forest restoration and enrichment activities in protected areas, incorporating native tree and shrub species, including fruit-bearing species",
+      "scope": "in protected areas",
+      "outcome": "attract wildlife while aiding in the natural regeneration of the forest"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implement forest management (community and on private farms), with forest certification, under group regency",
+      "scope": "(community and on private farms)",
+      "outcome": "reduce the risk of degradation and obtain Results-Based Payments for sustainable forest management projects that contribute to climate change mitigation, through the reduction of emissions and removal of greenhouse gases"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "including increasing the number of local forest rangers and park rangers, their respective provision of equipment, training, and other tools necessary for the adequate fulfillment of their functions",
+      "scope": "local forest rangers and park rangers",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Restore water easement areas that lack forest cover",
+      "scope": "water easement areas that lack forest cover",
+      "outcome": "for the protection and conservation of water resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Restore, manage, and protect the areas surrounding the headwaters of any natural watercourse, as well as the areas adjacent to lakes, lagoons, rivers, or streams",
+      "scope": "the areas surrounding the headwaters of any natural watercourse, as well as the areas adjacent to lakes, lagoons, rivers, or streams",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement actions to manage natural regeneration and enrichment of water easement zones",
+      "scope": "water easement zones",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop outreach and awareness programs among producers",
+      "scope": "among producers",
+      "outcome": "promote the creation of small biological corridors"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of greenhouse gas removals achieved through the restoration activities of water easement zones",
+      "scope": "through the restoration activities of water easement zones",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_27",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "forest carbon stocks",
+      "outcome": "reduction of greenhouse gas emissions and to the conservation of forest carbon stocks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop community tourism programs",
+      "scope": "with indigenous peoples and local communities",
+      "outcome": "for the conservation of their traditions and natural resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify and establish new areas and trails for nature tourism and agrotourism",
+      "scope": "in indigenous territories, rural communities, and protected areas",
+      "outcome": "new areas and trails for nature tourism and agrotourism"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct carrying capacity studies and assessments before implementing any ecotourism project and disseminate practices that respect the populations involved",
+      "scope": "any ecotourism project",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop training programs",
+      "scope": "for communities and small producers",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_32",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to the corresponding ecotourism projects",
+      "scope": "related to the corresponding ecotourism projects",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "promoting production under technical standards of organic agriculture",
+      "scope": "of non-forested lands",
+      "outcome": "reduce emissions from deforestation and the conservation of forest carbon stocks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop training and technical assistance programs",
+      "scope": "for communities and producers",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Carry out studies or pilot projects",
+      "scope": "on small plots of organic farms",
+      "outcome": "as models to scale up and replicate"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish centers for the promotion of organic agriculture",
+      "scope": "of organic agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_37",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design and implement certification programs under low-cost international standards, a market and commercialization network system that links producers with consumers and allows differentiation in the market",
+      "scope": "links producers with consumers",
+      "outcome": "so that consumers can identify which products are organic and cultivated with environmentally friendly techniques"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_38",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to organic agriculture projects",
+      "scope": "related to organic agriculture projects",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_39",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "through the transformation and commercialization of goods and services provided by natural and planted forests, trees outside forests, and biodiversity",
+      "scope": "provided by natural and planted forests, trees outside forests, and biodiversity",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_40",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Design and implement economic and technological incentive mechanisms",
+      "scope": "to promote biotrade",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_41",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and implement training programs on the principles and criteria of biotrade.",
+      "scope": "on the principles and criteria of biotrade",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_42",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conduct studies, inventories, and pilot projects",
+      "scope": "by comarca or indigenous territories",
+      "outcome": "to identify biocommerce potential"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_43",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a national centre for the promotion of biotrade.",
+      "scope": "for the promotion of biotrade",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_44",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design and implement certification programs under international standards, at low cost, and a biocommerce marketing network system that directly links producers with consumers.",
+      "scope": "producers with consumers",
+      "outcome": "directly links producers with consumers"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_45",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to the biotrade projects to be developed",
+      "scope": "related to the biotrade projects to be developed, for the purposes of Results-Based Payments, under the REDD+ mechanism",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_46",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_47",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and implement training programs and pilot projects",
+      "scope": "for rural communities, indigenous peoples, and producers",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_48",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt sustainable management standards",
+      "scope": "that affect natural flora and fauna populations",
+      "outcome": "to avoid unsustainable extractive practices driven by market pressure that affect natural flora and fauna populations"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_49",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop natural resource management strategies that respect ancestral techniques and targeted studies to channel their use for human benefit.",
+      "scope": "natural resource management strategies",
+      "outcome": "channel their use for human benefit"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_50",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "carry out actions aimed at managing funds for the financing of bioprospecting projects to be developed",
+      "scope": "bioprospecting projects",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_51",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to bioprospecting projects, for the purposes of Results-Based Payments under the REDD+ mechanism, including protocols for measuring emissions reduced as a result of bioprospecting.",
+      "scope": "related to bioprospecting projects, for the purposes of Results-Based Payments under the REDD+ mechanism",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_52",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through the follow-up of the eleven key points identified as priorities by these peoples for the implementation of the National REDD+ Strategy",
+      "scope": "by indigenous peoples",
+      "outcome": "contribute to counteracting the loss and deterioration of forest resources, as well as fostering the conservation and restoration of forest cover in their territories"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_53",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "including the involvement of women, youth, and older adults",
+      "scope": "of indigenous peoples in REDD+ projects",
+      "outcome": "full, effective, and equitable participation of indigenous peoples in REDD+ projects"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_54",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop community forest monitoring programs in indigenous territories, including the creation of indigenous forest ranger and park ranger positions",
+      "scope": "in indigenous territories",
+      "outcome": "aimed at overseeing, enforcing, and ensuring the conservation and sustainable use of their forests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_55",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop programs and projects for the management and sustainable use of natural resources",
+      "scope": "of indigenous peoples",
+      "outcome": "ensure the incorporation of the worldview and relationship of indigenous peoples with nature, territory, and natural resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_56",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "including the use of the Balu Wala methodology and other methodologies specific to each people",
+      "scope": "activities carried out within the framework of the National REDD+ Strategy in indigenous communities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_57",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Promote the demarcation and field verification of the boundaries of protected areas",
+      "scope": "with special emphasis on indigenous territories and protected areas",
+      "outcome": "to analyze land titling requests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_58",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establishing the necessary institutional arrangements to facilitate these processes",
+      "scope": "the territories of indigenous peoples and communities",
+      "outcome": "as a basis for the conservation, protection, and sustainable management of their forests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_59",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "all training and awareness-raising programs developed for indigenous communities are adapted to their worldview",
+      "scope": "for indigenous communities",
+      "outcome": "are adapted to their worldview"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_60",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establishing adequate enabling and facilitation frameworks",
+      "scope": "the National REDD+ Strategy",
+      "outcome": "so that direct interventions are effective and efficient"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_61",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Design and implement a communication and participation strategy",
+      "scope": "with relevant stakeholders (indigenous peoples, Afro-descendants, peasant farmers, private sector producers, among others)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_62",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify the essential elements",
+      "scope": "on REDD+ and related topics directed at the different key stakeholders",
+      "outcome": "for generating an effective and multidirectional communication process"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_63",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify the relevant platforms for REDD+ communication, as well as the mechanisms needed to stimulate the active participation of indigenous populations",
+      "scope": "of indigenous populations in the implementation process of the National REDD+ Strategy",
+      "outcome": "to stimulate the active participation of indigenous populations"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_64",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Make public and available all information related to the REDD+ program or activities, including scientific information",
+      "scope": "the specific needs of the diverse stakeholders involved (indigenous peoples, Afro-descendants, peasants, youth, women, among others)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_65",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Disseminate the initiatives, projects, and proposals associated with REDD+ through the various existing communication and participation media and spaces",
+      "scope": "through the various existing communication and participation media and spaces (e.g., community and indigenous radio stations, state radio and television systems, community digital centers, channels reaching schools and basic and secondary education teaching staff, community assemblies, civil society organizations)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_66",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish awareness campaigns",
+      "scope": "for the participation of the Panamanian population in REDD+ processes",
+      "outcome": "foster a forestry culture"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_67",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "social and environmental safeguards",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_68",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop risk and benefit analyses",
+      "scope": "in the design of initiatives and implementation of measures and actions",
+      "outcome": "mitigate and prevent potential risks and promote the delivery of benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_69",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "information on how the safeguards are being applied is gathered through the Safeguards Information System",
+      "scope": "in the implementation of REDD+ activities",
+      "outcome": "the safeguards as interpreted by the country in accordance with the regulatory and institutional framework are addressed and respected"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_70",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the formulation and implementation of deforestation reduction programmes and projects; in particular, those of indigenous peoples and communities, and local communities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_71",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "representatives of local communities and indigenous peoples",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_72",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Generate dissemination and outreach documents on the National REDD+ Strategy, safeguards and financial mechanisms, among others, in language that is understood by local communities, making them available through the MiAMBIENTE REDD+ website and using different media for dissemination: radio, telephone, social networks, and others that may be identified",
+      "scope": "to children in schools and to other audiences in different settings",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_73",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Strengthen and enhance existing national inter-institutional arrangements",
+      "scope": "existing national inter-institutional arrangements",
+      "outcome": "ensure compliance with and respect for REDD+ safeguards and the relevant applicable legal framework, as well as their knowledge by participating institutions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_74",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Strengthen and disseminate the 311 citizen service hotline as a mechanism for monitoring, feedback, and systematization of citizen services and complaint handling generated around the implementation of the National REDD+ Strategy, and link it with the SIS",
+      "scope": "around the implementation of the National REDD+ Strategy",
+      "outcome": "so that through this mechanism it is possible to identify actions related to the addressing and respect of each of the safeguards, and report on situations of conflict, disrespect, or omission of social and environmental safeguards"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_75",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop national technical and financial capacities to operate the SIS in the collection, consolidation, analysis, and dissemination of information",
+      "scope": "operate the SIS in the collection, consolidation, analysis, and dissemination of information",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_76",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Prepare summaries of safeguards information periodically at the national level, detailing national results, including information on the implementation of the National REDD+ Strategy and other associated programs and projects, and submit them to the UNFCCC, to the country, and to cooperating partners and donors",
+      "scope": "at the national level",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_77",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "gender equity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_78",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "including the participatory construction of a strategy of general principles, a gender strategy, and an action plan with specific actions and budget allocation for its implementation",
+      "scope": "women, youth, and older adults in negotiation, decision-making, and monitoring spaces",
+      "outcome": "ensure the full and effective participation of women, youth, and older adults in negotiation, decision-making, and monitoring spaces"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_79",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Train and promote the participation of women and youth in the various forest oversight and monitoring instruments, such as the traceability and forest control system and citizen oversight committees",
+      "scope": "women and youth in the various forest oversight and monitoring instruments, such as the traceability and forest control system and citizen oversight committees",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_80",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "women's access to actions that strengthen their economic autonomy through REDD+ actions",
+      "outcome": "strengthen their economic autonomy"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_81",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop or strengthen the capacities of young women for management with REDD+, including sustainable forest management modalities and the search for mechanisms to assign value to unpaid work.",
+      "scope": "young women",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_82",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Consolidate women's organizational processes",
+      "scope": "women's organizational processes",
+      "outcome": "promote their participation in these decision-making spaces"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_83",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "applying the gender equity perspective of duality and complementarity relationships",
+      "scope": "indigenous women, peasant women, and young people in local organizational structures",
+      "outcome": "Promote the participation of indigenous women, peasant women, and young people in local organizational structures"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_84",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "applicable measures that guarantee that such benefits are protected and delivered",
+      "scope": "within the framework of the National REDD+ Strategy",
+      "outcome": "environmental and social benefits that contribute to reducing gender inequalities and the specific contributions of each gender"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_85",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Make visible in REDD+ outreach actions the importance of the role of indigenous, Afro-descendant, rural, and peasant women",
+      "scope": "in REDD+ outreach actions",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_86",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "related to the legal framework, institutional arrangements, financing mechanisms, and monitoring of greenhouse gas emission reductions and removals",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_87",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adapt and update Law No. 1 of February 3, 1994 (Forestry Law)",
+      "scope": "Law No. 1 of February 3, 1994 (Forestry Law)",
+      "outcome": "strengthen forest governance, sustainably generate ecosystem goods and services, and enhance the contribution of forest resources to climate change adaptation and mitigation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_88",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and implement regulations governing carbon ownership and the right to usufruct of carbon benefits, as appropriate, and establish procedures",
+      "scope": "actions under the REDD+ mechanism related to forest carbon",
+      "outcome": "can enter the voluntary and regulated carbon market, ensuring an adequate distribution of benefits and responsibilities among forest managers"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_89",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Carry out an institutional diagnosis and analysis",
+      "scope": "implement the National REDD+ Strategy and its components, such as: the Safeguards Information System, the Multipurpose National Forest Monitoring System, and the Forest Emission Reference Levels",
+      "outcome": "establishing the institutional framework with the capacity to efficiently and effectively implement the National REDD+ Strategy and its components"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_90",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a technical regulatory mechanism with the definition of the Accounting Rules necessary for the reporting of REDD+ initiatives, linked to the National Registry of Mitigation Actions",
+      "scope": "for the reporting of REDD+ initiatives, linked to the National Registry of Mitigation Actions",
+      "outcome": "avoiding the generation of double counting"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_91",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Review and adjust policies and regulations",
+      "scope": "those that constitute perverse incentives or directly or indirectly promote deforestation and forest degradation",
+      "outcome": "identifying those that constitute perverse incentives or directly or indirectly promote deforestation and forest degradation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_92",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for the protection of forests",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_93",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adapt the relevant legal framework",
+      "scope": "territories in which REDD+ activities are carried out",
+      "outcome": "cannot be subject to mineral exploitation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_94",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish, at the national level, a REDD+ Working and Coordination Roundtable that includes REDD+ Working Groups at Level No. 8 in accordance with Article 25 of Law No. 8 of May 25, 2015",
+      "scope": "at the national level",
+      "outcome": "for the sustainable use of resources and conservation of ecosystems"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_95",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "with the Provincial Councils or Provincial Technical Boards and Environmental Advisory Commissions (at the national level), as well as those at the district and comarca levels",
+      "outcome": "in order to coordinate all matters related to REDD+ in terms of information exchange, training, experience sharing, lessons learned, systematization of information, and dissemination"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_96",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "with the REDD+ Advisory Commissions at all three levels (national, provincial, and comarca/district); as well as with all Watershed Committees; the National Climate Change Committee; the National Biodiversity Committee; the National Wetlands Committee; the Provincial Technical Boards (at the governorate level); the National Communal Joint Roundtable; the Inter-institutional Mission of the Panama Canal Watershed \u2013CICH\u2013; the Secretariat of Economic Affairs, Competitiveness and Logistics; the Social Cabinet; and the Secretariat of State Goals",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_97",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "institutions such as the Public Prosecutor's Office and the expert assessment unit of the Ministry of Environment",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_98",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Regulate the requirements and procedures for the approval of activities and projects to be developed under the REDD+ mechanism / voluntary carbon market. Additionally, define and develop the criteria and procedures that will be applied to determine the removals and/or reductions achieved by a community or participating actor in REDD+.",
+      "scope": "under the REDD+ mechanism / voluntary carbon market",
+      "outcome": "determine the removals and/or reductions achieved by a community or participating actor in REDD+"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_99",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Regulate and manage the national mechanisms, procedures, and criteria for the distribution of benefits from the results of the reduction of emissions and removals of greenhouse gases",
+      "scope": "in the implementation of REDD+ activities adopted by the country and that include all stakeholders involved, considering indigenous peoples, Afro-descendants, peasant communities, youth, and women, among others",
+      "outcome": "the distribution of benefits from the results of the reduction of emissions and removals of greenhouse gases"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_100",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Closely monitor Results-Based Payments obtained from any fund related to REDD+ climate financing and maintain the respective records on a platform",
+      "scope": "obtained from any fund related to REDD+ climate financing",
+      "outcome": "allow tracking of monetary mobilization towards REDD+"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_101",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify and manage financing sources for REDD+ activities through public, private, and international funds and other economic, market, institutional, incentive, subsidy, bonus, certification, concessional credit policy options, etc.",
+      "scope": "for REDD+ activities",
+      "outcome": "can also foster REDD+ activities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_102",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Promote the creation of REDD+ Working Groups",
+      "scope": "in the congresses of indigenous peoples, local authorities, the private sector, and civil society organizations",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_103",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of women, communities, indigenous peoples, Afro-descendants, and peasant communities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_104",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Analyze and assess the needs of key stakeholders (indigenous peoples, Afro-descendants, peasants, youth, and women, among others), and their ways of expressing and resolving conflicts regarding REDD+, with the participation of the relevant bodies.",
+      "scope": "key stakeholders (indigenous peoples, Afro-descendants, peasants, youth, and women, among others)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_105",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish means of evaluation",
+      "scope": "of the REDD+ mechanism",
+      "outcome": "ensure the effectiveness and efficiency of the REDD+ mechanism"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_106",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "\"learning by doing\" training or capacity-building programs and farmer-to-farmer teaching",
+      "scope": "farmer-to-farmer teaching",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_107",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement nationwide the National Reduce Your Footprint Program",
+      "scope": "nationwide",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_108",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "the activation of the Reforesta Panam\u00e1 Fund",
+      "scope": "for payment for ecosystem services",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_109",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "implement, progressively and gradually, the National Carbon Market",
+      "scope": "the National Carbon Market",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_110",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Update, at regular intervals, the Forest Reference Emission Level and ensure that the relevant technical resources and information are available",
+      "scope": "the Forest Reference Emission Level",
+      "outcome": "the relevant technical resources and information are available to comply with the update reports"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_111",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the Multipurpose National Forest Monitoring System",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_112",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Systematize and document the technical procedures",
+      "scope": "for the implementation of the monitoring system",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_113",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Promote institutional arrangements and legal instruments",
+      "scope": "for the institutionalization of the Multipurpose National Forest Monitoring System",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_114",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Promote and strengthen forest stewardship",
+      "scope": "established by the Forestry Directorate of the Ministry of the Environment",
+      "outcome": "to verify and certify compliance with general management plans, reforestation plans, the transport of forest products, processing and marketing plans registered and covered under Law No. 69 of 30 October 2017, and the other functions established in Resolution AG-0005-2013"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_115",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adapt and update Law No. 1 of February 3, 1994 (Forestry Law)",
+      "scope": "forest resources",
+      "outcome": "strengthen forest governance, sustainably generate ecosystem goods and services, and enhance the contribution of forest resources to climate change adaptation and mitigation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_116",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Regulate and manage the national mechanisms, procedures, and criteria for the distribution of benefits",
+      "scope": "considering indigenous peoples, Afro-descendants, peasant communities, youth, women, among others",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_117",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and implement regulations governing carbon ownership and the right to usufruct of carbon benefits, as applicable, and establish procedures",
+      "scope": "among forest managers",
+      "outcome": "so that actions under the REDD+ mechanism related to forest carbon can enter the voluntary and regulated carbon market, ensuring an adequate distribution of benefits and responsibilities among forest managers"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_118",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Carry out an institutional diagnosis and analysis",
+      "scope": "implement the National REDD+ Strategy and its components, such as: the Safeguards Information System, the Multipurpose National Forest Monitoring System, and the Forest Emission Reference Levels",
+      "outcome": "establishing the institutional framework with the capacity to efficiently and effectively implement the National REDD+ Strategy and its components"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_119",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Regulate the requirements and procedures for the approval of activities and projects to be developed under the REDD+ mechanism, for the regulated market and the voluntary carbon market, as well as define and develop the criteria and procedures",
+      "scope": "under the REDD+ mechanism, for the regulated market and the voluntary carbon market",
+      "outcome": "determine the removals and/or reductions achieved by a community or participant actor in REDD+"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_120",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a technical regulatory mechanism",
+      "scope": "in the National Registry of Mitigation Actions",
+      "outcome": "avoiding the generation of double counting"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_121",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Update, at regular intervals, the Forest Reference Emission Level and ensure that the relevant technical resources and information are available to comply with the update reports.",
+      "scope": "the Forest Reference Emission Level",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_122",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and implement training programs and pilot projects",
+      "scope": "for rural communities, indigenous peoples, and producers",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_123",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conduct studies, inventories, and pilot projects",
+      "scope": "by comarca or indigenous territories",
+      "outcome": "to identify the potential for biotrade"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_124",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Carry out studies or pilot projects",
+      "scope": "on small plots of organic farming ecological estates",
+      "outcome": "as models to scale up and replicate"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_125",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Identify and establish new areas and trails for nature tourism and agrotourism",
+      "scope": "in indigenous territories, rural communities, and protected areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_126",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish and develop forest and fruit tree nurseries, based on certified seed sources",
+      "scope": "for reforestation with commercial purposes or for restoration purposes",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_127",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "execute projects for the use of non-timber products in forest plantations, such as seeds, resin, bark, and essential oils from Caribbean pine and eucalyptus",
+      "scope": "in forest plantations",
+      "outcome": "improve the flow of income in areas with potential"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_128",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implement forest management (community and on private farms), with forest certification, under group regency",
+      "scope": "(community and on private farms)",
+      "outcome": "reduce the risk of degradation and obtain Payments for Results for sustainable forest management projects that contribute to climate change mitigation, through the reduction of emissions and removal of greenhouse gases"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_129",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "including increasing the number of local forest rangers and park rangers, their respective provision of equipment, training, and other tools necessary for the adequate fulfillment of their functions",
+      "scope": "local forest rangers and park rangers",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_130",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to the corresponding ecotourism projects, for the purposes of Payment for Results under the REDD+ mechanism, including protocols for measuring emissions reduced as a result of ecotourism.",
+      "scope": "related to the corresponding ecotourism projects",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_131",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to organic agriculture projects, for the purposes of Payment for Results under the REDD+ mechanism, including protocols for measuring emissions reduced as a result of organic agriculture.",
+      "scope": "related to organic agriculture projects",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_132",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to bioprospecting projects, for the purposes of Payment for Results under the REDD+ mechanism, including protocols for measuring emissions reduced as a result of bioprospecting.",
+      "scope": "related to bioprospecting projects",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_133",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of emission reductions related to the biocommerce projects to be developed, for the purposes of Payment for Results under the REDD+ mechanism, including protocols for measuring emissions reduced as a result of biocommerce.",
+      "scope": "related to the biocommerce projects to be developed",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_134",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement the ecosystem services payment system",
+      "scope": "for the conservation and protection of forests and biodiversity",
+      "outcome": "the conservation of forest carbon reserves"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_135",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of greenhouse gas removals related to land restoration activities on land with forestry vocation and in agricultural use, for the purposes of Payment for Results under the REDD+ mechanism, including measurement protocols for greenhouse gas removals as a result of this activity.",
+      "scope": "on land with forestry vocation and in agricultural use",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_136",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of greenhouse gas removals achieved through commercial reforestation activities, for the purposes of Results-Based Payments under the REDD+ mechanism, including protocols for measuring greenhouse gas removals as a result of this activity.",
+      "scope": "through commercial reforestation activities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_137",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of greenhouse gas emission reductions and removals achieved through natural forest conservation and sustainable management activities, for the purposes of Results-Based Payments under the REDD+ mechanism, including measurement protocols for greenhouse gas emission reductions and removals resulting from this activity.",
+      "scope": "through natural forest conservation and sustainable management activities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_138",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop community forest monitoring programs in indigenous territories, including the creation of indigenous forest ranger and park ranger positions",
+      "scope": "in indigenous territories",
+      "outcome": "aimed at overseeing, enforcing, and ensuring the conservation and sustainable use of their forests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_139",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out measurements of greenhouse gas removals achieved through the restoration activities of water easement zones, for the purposes of Payment for Results under the REDD+ mechanism, including measurement protocols for greenhouse gas removals as a result of this activity.",
+      "scope": "through the restoration activities of water easement zones",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_140",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Make the compensations or Payments for Results to projects developed within the framework of the National Forest Restoration Program and the REDD+ mechanism",
+      "scope": "to projects developed within the framework of the National Forest Restoration Program and the REDD+ mechanism",
+      "outcome": "contribute to climate change mitigation through the removal of greenhouse gases"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_141",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop stricter and more specific national regulations",
+      "scope": "for mangroves located outside protected areas",
+      "outcome": "provide protection for mangroves located outside protected areas"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_142",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop outreach and awareness programs among producers",
+      "scope": "among producers",
+      "outcome": "promote the creation of small biological corridors"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_143",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify and manage financing sources for REDD+ activities through public, private, and international funds and other economic policy, institutional market, incentive, subsidy, bonus, certification, concessional credit options, etc.",
+      "scope": "for REDD+ activities",
+      "outcome": "can also foster REDD+ activities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_144",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Closely monitor Results-Based Payments obtained from any fund related to REDD+ climate financing and maintain the respective records on a platform",
+      "scope": "from any fund related to REDD+ climate financing",
+      "outcome": "allows tracking the monetary mobilization towards REDD+"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_145",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Promote and implement \"learning by doing\" training or education programs and farmer-to-farmer teaching",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_146",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop programs and projects for the sustainable management and use of natural resources",
+      "scope": "indigenous peoples",
+      "outcome": "ensure the incorporation of the worldview and relationship of indigenous peoples with nature, territory, and natural resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_147",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establishing the necessary institutional arrangements to facilitate these processes",
+      "scope": "the territories of indigenous peoples and communities",
+      "outcome": "provide legal security to the territories of indigenous peoples and communities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_148",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "in coordination with indigenous traditional authorities",
+      "scope": "developed in indigenous communities",
+      "outcome": "are adapted to their worldview"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_149",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt sustainable management standards",
+      "scope": "natural populations of flora and fauna",
+      "outcome": "avoid unsustainable extractive practices driven by market pressure that affect natural populations of flora and fauna"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_150",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "apply FPIC to activities carried out within the framework of the National REDD+ Strategy in indigenous communities, including the use of the 'Balu Wala' methodology and other methodologies specific to each people",
+      "scope": "within the framework of the National REDD+ Strategy in indigenous communities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_151",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "link it with the SIS",
+      "scope": "around the implementation of the National REDD+ Strategy",
+      "outcome": "it is possible to identify actions related to the addressing and respect of each of the safeguards, and report on situations of conflict, disrespect, or omission of social and environmental safeguards"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_152",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Disseminate the initiatives, projects and proposals associated with REDD+, through the various existing communication and participation media and spaces",
+      "scope": "community and indigenous radio stations, state radio and television systems, community digital centers, channels that reach schools and basic and secondary education teaching staff, community assemblies, civil society organizations",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_153",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct studies and assessments on carrying capacity before implementing any ecotourism project and disseminate practices that respect the populations involved.",
+      "scope": "any ecotourism project",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_154",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop training programs",
+      "scope": "for communities and small producers in the design and operation of ecotourism projects",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_155",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of indigenous peoples in REDD+ projects, including the involvement of women, youth, and older adults",
+      "outcome": "the full, effective, and equitable participation of indigenous peoples in REDD+ projects, including the involvement of women, youth, and older adults"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_156",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the demarcation and field verification of the boundaries of protected areas",
+      "scope": "with special emphasis on indigenous territories and protected areas",
+      "outcome": "to analyze land titling requests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_157",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify the essential elements for generating an effective and multidirectional communication process",
+      "scope": "information on REDD+ and related topics",
+      "outcome": "information on REDD+ and related topics is disseminated to the different key stakeholders"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_158",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Identify the relevant platforms for REDD+ communication, as well as the mechanisms needed to stimulate the active participation of communities and indigenous peoples in the implementation process of the National REDD+ Strategy.",
+      "scope": "of communities and indigenous peoples in the implementation process of the National REDD+ Strategy",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_159",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Make public and available all information related to the REDD+ program or activities, including scientific information",
+      "scope": "the REDD+ program or activities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_160",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish awareness campaigns",
+      "scope": "the Panamanian population in REDD+ processes",
+      "outcome": "foster a forestry culture"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_161",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop risk and benefit analyses in the design of initiatives and implementation of measures and actions",
+      "scope": "in the design of initiatives and implementation of measures and actions",
+      "outcome": "mitigate and prevent potential risks and foster the delivery of benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_162",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the formulation and implementation of deforestation reduction programmes and projects; in particular, those of indigenous peoples and communities, and local communities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_163",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "representatives of local communities and indigenous peoples",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_164",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop national technical and financial capacities to operate the SIS in the collection, consolidation, analysis, and dissemination of information",
+      "scope": "national",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_165",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the implementation of REDD+ activities",
+      "outcome": "the safeguards as interpreted by the country in accordance with the regulatory and institutional framework are addressed and respected, and that information on how the safeguards are being applied is gathered through the Safeguards Information System"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_166",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Generate dissemination and outreach documents on the ENR, safeguards, and financial mechanisms, among others, in language that is understandable to local communities, make them available through the MiAMBIENTE REDD+ website, and use different media to disseminate them: radio, telephone, social networks, and any other that may be identified",
+      "scope": "to local communities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_167",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Prepare summaries of safeguards information periodically at the national level, detailing national results, including information on the implementation of the National REDD+ Strategy and other associated programs and projects, and submit them to the UNFCCC, to the country, and to cooperating partners and donors",
+      "scope": "at the national level",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_168",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "including the participatory construction of a gender equity strategy that identifies the main gender gaps and an action plan with specific actions and budget allocation for its implementation",
+      "scope": "women, young people, and older adults",
+      "outcome": "ensure the full and effective participation of women, young people, and older adults in negotiation, decision-making, and monitoring spaces"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_169",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Train and promote the participation of women and youth in the various forest oversight and monitoring instruments, such as the traceability and forest control system and citizen oversight committees.",
+      "scope": "women and youth in the various forest oversight and monitoring instruments, such as the traceability and forest control system and citizen oversight committees",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_170",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "indigenous women, peasant women, and young people in the organizational structures of governance in the territory",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_171",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "women and youth for the management of enterprises related to REDD+",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_172",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop national awareness and informal environmental education programs on the importance of forest restoration and agroforestry",
+      "scope": "with emphasis on degraded lands with forestry vocation and restoration of gallery forests, sustainable forest management, and conservation of forest resources",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_173",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Strengthen and update the management plans for protected areas, with their corresponding action plans, control and monitoring programs",
+      "scope": "for protected areas",
+      "outcome": "to protect natural forest and restore already affected zones"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_174",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "applicable measures that guarantee that such benefits are protected and delivered",
+      "scope": "within the framework of the National REDD+ Strategy",
+      "outcome": "reducing gender inequalities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_175",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Make visible in REDD+ outreach actions the importance of the role of indigenous, Afro-descendant, rural, and peasant women",
+      "scope": "in REDD+ outreach actions",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_176",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop natural resource management strategies that recover ancestral practices, with technical support and targeted studies",
+      "scope": "natural resource management",
+      "outcome": "to channel their use for human benefit"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_177",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a national centre for the promotion of biotrade.",
+      "scope": "for the promotion of biotrade",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_178",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and implement training programs on the principles and criteria of biocommerce.",
+      "scope": "on the principles and criteria of biocommerce",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_179",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop training and technical assistance programs",
+      "scope": "for communities and producers on the establishment and management of organic agriculture projects",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_180",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish centers for the promotion of organic agriculture",
+      "scope": "for the promotion of organic agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_181",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design and implement certification programs under international standards, at low cost, and a biocommerce marketing network system that directly links producers with consumers.",
+      "scope": "a biocommerce marketing network system that directly links producers with consumers",
+      "outcome": "that directly links producers with consumers"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_182",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design and implement certification programs under low-cost international standards, and a marketing and commercialization network system that links producers with consumers and allows differentiation in the market",
+      "scope": "that links producers with consumers",
+      "outcome": "allows differentiation in the market, so that consumers can identify which products are organic and cultivated with environmentally friendly techniques"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_183",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop community tourism programs",
+      "scope": "with indigenous peoples and local communities",
+      "outcome": "for the conservation of their traditions and natural resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_184",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "existing national inter-institutional arrangements",
+      "outcome": "to ensure compliance with and respect for REDD+ safeguards and the relevant applicable legal framework, as well as their knowledge by participating institutions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_185",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "women's",
+      "outcome": "strengthen their economic autonomy"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_186",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Consolidate women's own organizational processes",
+      "scope": "women's",
+      "outcome": "foster their participation in these decision-making spaces"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_187",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "community forest oversight programs",
+      "scope": "forests",
+      "outcome": "for the protection of forests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_188",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adapt the relevant legal framework",
+      "scope": "territories in which REDD+ activities are carried out",
+      "outcome": "cannot be subject to mineral deposit exploitation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_189",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish, at the national level, a REDD+ Working and Coordination Roundtable that includes REDD+ Working Groups at the local level",
+      "scope": "among public institutions",
+      "outcome": "for the sustainable use of resources and conservation of ecosystems"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_190",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "with the Provincial Councils or Provincial Technical Boards and the Environmental Advisory Commissions (at the national, district, and comarca levels)",
+      "outcome": "in order to coordinate everything related to REDD+ in terms of information exchange, training, experience sharing, lessons learned, systematization of information, and dissemination"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_191",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the Environmental Advisory Commissions, at all three levels (national, provincial, district, and comarca); as well as all Watershed Committees; the National Climate Change Committee; the National Biodiversity Committee; the National Wetlands Committee; the Provincial Technical Boards [at the governorate level]; each Communal Board per Municipality; the National Concertation Roundtable; the Inter-institutional Commission of the Panama Canal Watershed \u2013 CICH; and the Secretariat of Economic Affairs, Competitiveness, and Logistics; the Social Cabinet; and the Secretariat of State Goals",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_192",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "improvement of the budget and technical capacities of institutions such as the Public Prosecutor's Office and the expert assessment unit of the Ministry of Environment",
+      "scope": "institutions such as the Public Prosecutor's Office and the expert assessment unit of the Ministry of Environment",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_193",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "creation of REDD+ Working Groups",
+      "scope": "in the congresses of indigenous peoples, local authorities, the private sector, and civil society organizations",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_194",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "women, communities, indigenous peoples, Afro-descendants, and peasant communities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_195",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design and implement economic and technological incentive mechanisms",
+      "scope": "biocommerce projects",
+      "outcome": "promote biocommerce"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_196",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Analyze and assess the needs of key stakeholders",
+      "scope": "key stakeholders (indigenous peoples, Afro-descendants, peasants, youth, and women, among others)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_197",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish means of evaluation",
+      "scope": "of the REDD+ mechanism",
+      "outcome": "ensure the effectiveness and efficiency of the REDD+ mechanism"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_198",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of the Multipurpose National Forest Monitoring System",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_199",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Systematize and document the technical procedures",
+      "scope": "for the implementation of the monitoring system",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_200",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for the institutionalization of the Multipurpose National Forest Monitoring System",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_201",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "create economic and technological incentive mechanisms",
+      "scope": "bioprospecting projects",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_202",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "develop the legal and financing framework for payment for ecosystem services and the activation of the Reforesta Panam\u00e1 Fund",
+      "scope": "for payment for ecosystem services and the activation of the Reforesta Panam\u00e1 Fund",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_203",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Review and adjust policies and regulations that represent perverse incentives or that directly or indirectly promote deforestation and forest degradation",
+      "scope": "policies and regulations that represent perverse incentives or that directly or indirectly promote deforestation and forest degradation",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_204",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "implement, progressively and gradually, the National Carbon Market",
+      "scope": "the National Carbon Market",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_ENR_205",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement nationwide the National Reduce Your Footprint Program",
+      "scope": "nationwide",
+      "outcome": "low-carbon economic and social development"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_ENR_206",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "verify and certify compliance with general management plans, reforestation plans, the transport of forest products, processing and marketing plans registered and covered under Law No. 69 of 30 October 2017",
+      "scope": "general management plans, reforestation plans, the transport of forest products, processing and marketing plans registered and covered under Law No. 69 of 30 October 2017",
+      "outcome": "verify and certify compliance"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement pilot mitigation projects and programs in prioritized sectors (energy, waste, agriculture, and industrial processes)",
+      "scope": "in prioritized sectors (energy, waste, agriculture, and industrial processes)",
+      "outcome": "GHG reduction"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Update the National Forest Restoration Program",
+      "scope": "the corridors (Azuero, Cocl\u00e9, Veraguas)",
+      "outcome": "an increase of at least 20% in productivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Review and update the regulatory, normative, and operational framework of SINAP (National System of Protected Areas)",
+      "scope": "of SINAP (National System of Protected Areas)",
+      "outcome": "to ensure minimum standards of effective conservation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Update and validate a national list of priority native species for conservation",
+      "scope": "priority native species for conservation",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Identify and prioritize at least five regions of the country with a high incidence of illegal wildlife trafficking",
+      "scope": "at least five regions of the country with a high incidence of illegal wildlife trafficking",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Identify and prioritize, at the national level, the main pathways for the introduction of invasive alien species",
+      "scope": "at the national level",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Prioritize a limited set of watersheds and critical territories where pollution by nutrients and chemicals represents greater environmental, health, or economic risks",
+      "scope": "a limited set of watersheds and critical territories",
+      "outcome": "By 2035, Panama will reduce pollution and its cumulative effects by reducing by at least 50% the excess nutrients released into the environment and the risks associated with the use of pesticides, fungicides, and hazardous chemicals, complemented by a significant increase in the adoption of clean technologies in productive sectors."
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Define technical, social, and territorial criteria for the national prioritization of wild species amenable to sustainable management",
+      "scope": "wild species amenable to sustainable management",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out a comparative legal analysis on frameworks for access to genetic resources, DSI (Digital Sequence Information), and benefit-sharing",
+      "scope": "in Panama",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Identify and prioritize productive sectors and consumption patterns with the greatest environmental, material, and climate footprint",
+      "scope": "productive sectors and consumption patterns with the greatest environmental, material, and climate footprint",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design and validate a standardized national methodology for the characterization of urban solid waste and food waste",
+      "scope": "urban solid waste and food waste",
+      "outcome": "Consolidate the data collected into an official national baseline on the generation and composition of urban solid waste and food waste"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Operationalize the National Plastics Action Roadmap by prioritizing a focused set of high-impact and high-early-feasibility interventions",
+      "scope": "among MiAMBIENTE, municipalities, the private sector, waste managers, and base recyclers",
+      "outcome": "Panama will have reduced mismanaged plastic pollution by 50%"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Carry out an exhaustive mapping of competencies, current procedures, and regulatory gaps in biosafety",
+      "scope": "among MiAMBIENTE, MINSA, MIDA, AUPSA, and Customs",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt an official methodology for the evaluation of biodiversity impacts",
+      "scope": "including productive sectors, energy, transport, land use, and fisheries",
+      "outcome": "Implement the elimination or reform of at least 50% of the prioritized harmful incentives"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Delimit and prioritize critical territories of illegal deforestation",
+      "scope": "in the prioritized landscapes",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Build and adopt a national operational definition of \"organic soils\" for public policy and MRV (Monitoring, Reporting, and Verification) purposes",
+      "scope": "prioritized organic soils",
+      "outcome": "Develop the national baseline of organic soils and associated wetlands"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_HR_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement pilot agri-food transformation programs in the prioritized districts",
+      "scope": "the 21 priority districts",
+      "outcome": "changes in productivity, resilience, and reduction of environmental pressures"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement pilot interventions for the creation and recovery of urban green and blue spaces",
+      "scope": "in prioritized neighborhoods",
+      "outcome": "Monitor the effective increase of the surface of urban green and blue spaces"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Define the national framework of Multi-hazard Early Warning Systems, establishing standards, institutional roles, information flows, and protocols for activating anticipatory actions.",
+      "scope": "in the 10 prioritized regions",
+      "outcome": "ensuring effective coverage and use by authorities and communities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Finalize the Adaptation Plan for the Energy Sector and review the current energy-planning instruments to identify where and how climate scenarios, physical risks, and resilience criteria should be incorporated into expansion, operation, and maintenance decisions for the system.",
+      "scope": "for energy infrastructure (generation, transmission, and distribution)",
+      "outcome": "with emphasis on service continuity and reduction of systemic failures"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Technically integrate the Climate Risk Atlas and other relevant systems into OSIGA, ensuring database interoperability, common standards, and periodic information updating.",
+      "scope": "Train territorial technicians and decision-makers",
+      "outcome": "ensuring database interoperability, common standards, and periodic information updating"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Define a standardized methodology for Local and Regional Adaptation Plans, establishing minimum contents, territorial prioritization criteria, a participatory approach, gender integration and social safeguards, and alignment with development plans and watershed management.",
+      "scope": "in prioritized territories",
+      "outcome": "to validate the methodology and adjust approaches before national scale-up"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement marine-coastal adaptation interventions with NbS (Nature-based Solutions) in the prioritized zones, prioritizing the restoration of mangroves, dunes, and coastal wetlands",
+      "scope": "in the prioritized zones",
+      "outcome": "strengthening natural protection in the face of extreme events and sea-level rise"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design a national methodology for the integration of climate information into epidemiological surveillance systems, establishing roles, information flows, and use criteria for health decisions.",
+      "scope": "of prioritized health facilities",
+      "outcome": "ensuring methodological consistency and data quality in at least 80% of health facilities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Install a \"universal\" data-collection scheme (field templates and interoperable repository) to reduce duplication and standardize climate-change and Loss and Damage variables.",
+      "scope": "prioritizing indicators with yellow/red traffic-light status and those most used in public decision-making",
+      "outcome": "to reduce duplication and standardize climate-change and Loss and Damage variables"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Formally constitute the National Integrated Marine-Coastal and Wetlands Monitoring System through an administrative instrument that defines objectives, mandatory components (seagrass/reefs, wetlands, sea turtles, and marine water quality), institutional roles, data flow and custody, minimum standards, reporting frequency, and the annual operational scheme.",
+      "scope": "for marine-coastal and wetlands monitoring (governmental, academic, and NGO)",
+      "outcome": "to integrate efforts and avoid duplication"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_27",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Regulate and operationalize the Climate Risk Observatory at the national level, defining its architecture (components, tools, and dashboards), data standards, institutional roles, access rules, updating protocols, and the official set of adaptation, loss, and damage indicators",
+      "scope": "at the national level",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Review and update the operating regulations of the Fondo Reforesta to simplify processes and clarify roles, including the updating of eligibility requirements, the reduction of procedures, and the establishment of maximum evaluation and disbursement timeframes.",
+      "scope": "between the Fondo Reforesta and the Fondo Panam\u00e1 Natural",
+      "outcome": "in order to guarantee a stable, multi-source, and coordinated capitalization strategy"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Design the national mechanism for the protection of environmental defenders, defining its institutional architecture, complaint pathways, activation criteria, protection measures, and inter-institutional coordination",
+      "scope": "prioritizing territories with high socio-environmental conflict",
+      "outcome": "to guarantee effective public participation and access to environmental justice in the implementation of Nature Pledge targets"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_HR_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop, integrate, and operationalize a Nature Pledge monitoring module in the National Climate Transparency Platform",
+      "scope": "at the national level",
+      "outcome": "ensuring traceability of targets, indicators, and progress by implementation phase"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "The prospective development and integration of the National Climate Change Committee, the National Committee to Combat Drought and Desertification, and the Inter-institutional Biodiversity Commission will be promoted",
+      "scope": "among institutions and levels of government (national, comarcal, and local)",
+      "outcome": "to ensure consistent and efficient actions throughout the country, avoiding duplications and articulating agendas"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through the formalization and operationalization of watershed committees, park boards, community councils, and environmental units",
+      "scope": "local communities, producers, indigenous peoples, youth, and civil society",
+      "outcome": "guaranteeing their participation and access to information in decision-making"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "women, girls, adolescents, youth, indigenous peoples, Afro-descendant communities, local and rural communities, older persons, and persons with disabilities",
+      "outcome": "Equal opportunities and the inclusion of vulnerable groups will be ensured"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Actions will be designed to generate simultaneous co-benefits: restoring degraded lands and recovering their productivity, preserving biodiversity and ecological connectivity, improving livelihoods, especially among vulnerable populations, and increasing climate resilience by integrating mitigation and adaptation across the territory.",
+      "scope": "across the territory",
+      "outcome": "generate simultaneous co-benefits: restoring degraded lands and recovering their productivity, preserving biodiversity and ecological connectivity, improving livelihoods, especially among vulnerable populations, and increasing climate resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "from the sustainable use of biodiversity and natural resources",
+      "outcome": "the reduction of pollution, including that associated with plastics"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "monitoring and reporting systems linked to the National Climate Transparency Platform and sectoral systems",
+      "scope": "linked to the National Climate Transparency Platform and sectoral systems",
+      "outcome": "to guarantee public access to the best information and to evaluate progress, adjust measures, and ensure accountability"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_7",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the energy, agriculture, industry, and waste sectors",
+      "outcome": "reduce Greenhouse Gas emissions by 11% compared to the business-as-usual scenario"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "restore and place under effective conservation 100,000 ha, including 2,500 ha of mangrove and 25,000 ha of agroecological lands; operationalise three biological corridors (Azuerio, C\u00f3ndor, Veraguas)",
+      "scope": "including 2,500 ha of mangrove and 25,000 ha of agroecological lands; operationalise three biological corridors (Azuerio, C\u00f3ndor, Veraguas)",
+      "outcome": "accumulate at least 1 million tCO\u2082e in LULUCF, increasing the productivity of interventions by 20% and reducing by 100% unplanned agricultural expansion in corridor cycles that entail the conversion of forests to such uses"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "management plans will be developed for 10 priority watersheds",
+      "scope": "40% of terrestrial territory and 60% of marine and inland water areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through in situ and ex situ conservation programmes",
+      "scope": "in at least 5 critical areas of the country",
+      "outcome": "reduced the extinction risk of at least 10% of priority native species"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in at least 5 priority regions with high incidence",
+      "outcome": "reducing risks of zoonotic pathogen spread"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implemented effective mechanisms for the prevention and control of invasive alien species",
+      "scope": "in the country",
+      "outcome": "achieving a 10% reduction in the rate of introduction and establishment of new species in the country"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "decreasing by at least 50% the excess nutrients released into the environment and the risks associated with the use of pesticides, pesticides, and hazardous chemical substances, complemented by a significant increase in the adoption of clean technologies in productive sectors",
+      "scope": "into the environment",
+      "outcome": "reduce pollution and its cumulative effects"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implemented sustainable management for at least 20 priority wild species, integrating sustainable products and services",
+      "scope": "for at least 20 priority wild species",
+      "outcome": "generate social, economic, and environmental benefits for vulnerable populations, indigenous peoples, and local communities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "progressively integrate fair and equitable benefit-sharing mechanisms and Free, Prior and Informed Consent",
+      "scope": "all new legal, administrative, and policy frameworks related to genetic resources and digital sequence information and associated traditional knowledge",
+      "outcome": "at least 80% of these frameworks shall fully comply with the provisions of the NP and the mechanisms of the Cali Fund"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopted legal, administrative, and policy measures",
+      "scope": "at least 50% of high-impact and transnational companies",
+      "outcome": "assess and report their risks and impacts on biodiversity throughout their value chain, make transparent their compliance with access and benefit-sharing regulations, and provide public information that promotes sustainable consumption and production"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "established a national baseline for the generation and composition of urban solid waste and food waste",
+      "scope": "in households, businesses, and supply chains",
+      "outcome": "progressively reduce the amount of waste sent to final disposal and waste in households, businesses, and supply chains"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_18",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the progressive elimination of single-use plastics",
+      "scope": "",
+      "outcome": "reduced mismanaged plastic pollution by 50%"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopted a consensual national strategy to implement the Cartagena Protocol, establishing a comprehensive biosafety regulatory framework, with at least 5 specific measures for the safe management of biotechnology in operation and strengthened national capacities",
+      "scope": "for the safe management of biotechnology",
+      "outcome": "guaranteeing the fair and equitable sharing of benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "identified 100% of incentives and subsidies harmful to biodiversity and will have eliminated or reformed at least 50% of the most damaging ones",
+      "scope": "harmful to biodiversity",
+      "outcome": "increased by 30% the positive incentives that promote the conservation and sustainable use of biodiversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "driving strategies and actions that position forests as productive and environmental assets",
+      "scope": "forests",
+      "outcome": "Panama will have achieved a zero illegal deforestation rate"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through sustainable management practices, agroforestry, and wetland conservation",
+      "scope": "identified organic soils (peatlands, wetlands) and increased organic carbon content in agricultural lands and pasturelands",
+      "outcome": "Panama will have protected 70% of identified organic soils (peatlands, wetlands) and increased organic carbon content in agricultural lands and pasturelands by at least 10%"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through the integration of climate-smart practices, agroecological practices, aquaculture, agrobiodiversity and silvopastoral systems in at least 50% of priority agricultural areas",
+      "scope": "in 21 districts, including indigenous comarcas",
+      "outcome": "Panama will have transformed its agrifood systems in 21 districts, including indigenous comarcas, towards sustainable, resilient and inclusive models"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrating climate criteria, conservation and sustainable use of biodiversity into Local Land Use Plans",
+      "scope": "the urban population",
+      "outcome": "Panama will have increased the area of urban green and blue spaces by 30% with respect to the 2025 baseline"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "established operational Multi-Hazard Early Warning Systems in at least 10 vulnerable regions, linked to anticipatory action mechanisms and local climate financing",
+      "scope": "in at least 10 vulnerable regions",
+      "outcome": "information is timely, accessible, and relevant for producers, communities, and local authorities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through the incorporation of climate change scenarios into the planning and operation of the sector",
+      "scope": "the national energy system",
+      "outcome": "Panama will have strengthened the climate resilience of the national energy system"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_27",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrating data from the Climate Risk Atlas and coordinating territorially through the Agroclimatic Technical Roundtables",
+      "scope": "the Agricultural Geospatial Information System Office (OSIGA) and the National Central Platform for Agroclimatic Information Monitoring and Management",
+      "outcome": "Panama will have consolidated the Agricultural Geospatial Information System Office (OSIGA) and the National Central Platform for Agroclimatic Information Monitoring and Management"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "designed, validated, and implemented 20 Local and Regional Adaptation Plans",
+      "scope": "prioritizing watersheds, communities adjacent to national parks and protected areas, coastal zones, and indigenous territories",
+      "outcome": "formally integrated into local development plans and watershed management plans"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "incorporating green infrastructure and nature-based solutions (NbS), such as the restoration of mangroves, dunes, and coastal wetlands",
+      "scope": "in priority zones vulnerable to sea level rise, erosion, mangrove loss, and saltwater intrusion",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "incorporated climate variables and projections into the epidemiological surveillance system",
+      "scope": "in at least 80% of public health facilities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "developed and implemented the National System for Monitoring Adaptation and Loss and Damage",
+      "scope": "When the only alternative is to protect human lives",
+      "outcome": "enabling the monitoring of compliance with the national adaptation target"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_32",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "established and put into operation an Integrated National Marine-Coastal and Wetlands Monitoring System, which will include the development of the National Map of Seagrasses and Coral Reefs, the National Wetlands Inventory of Panama, and the National Sea Turtle Monitoring System",
+      "scope": "Integrated National Marine-Coastal and Wetlands Monitoring System",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopted and put into operation at least 10 units of the Climate Risk Observatory",
+      "scope": "at least 10 units of the Climate Risk Observatory",
+      "outcome": "strengthening the decentralized management of monitoring and response to climate risks"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "through the capitalization of the Panama Natural Fund and the full operation of the Reforestation Fund, financing biodiversity projects, land rehabilitation, and climate resilience; utilizing innovative mechanisms such as carbon markets, biodiversity credits, payments for ecosystem services, among others",
+      "scope": "into synergistic climate, biodiversity, and land actions",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_NP_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "will have a national protection mechanism for environmental defenders",
+      "scope": "for at least 70% of vulnerable groups",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_NP_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "approved and enacted (Official Gazette) the regulatory package to implement the Panama Pact with Nature",
+      "scope": "the Panama Pact with Nature",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Rehabilitate and build roads and major works",
+      "scope": "among major ports, airports, and free zones, as well as among provinces and zones with economic activity",
+      "outcome": "reduce dispatch times and internal transport costs"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Reactivate the Logistics Cabinet with private-sector participation and periodic meetings.",
+      "scope": "of the Panama Canal",
+      "outcome": "maintain the Canal's competitiveness, ensure water supply through the construction of the R\u00edo Indio reservoir, and mitigate the social and environmental impacts of the works"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide accompaniment to producers to facilitate exports, through training in knowledge of international markets.",
+      "scope": "to producers",
+      "outcome": "facilitate exports"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Simplify export requirements",
+      "scope": "directed at sectors of moderate and high complexity, such as those associated with medical devices, semiconductors, and pharmaceutical products",
+      "outcome": "focused on increasing productivity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PEG_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement the Comprehensive Urban Development Project of Cities with Tourism Vocation",
+      "scope": "in the places that receive travelers",
+      "outcome": "contributing to the reduction of regional inequalities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create legal frameworks for the development of new technologies linked to blockchain, fintech, agritech, and biotechnology.",
+      "scope": "the economy, public services, and the financial and tourism sectors",
+      "outcome": "drive the digital transformation of the economy, public services, and the financial and tourism sectors"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish world-class research infrastructures",
+      "scope": "strategic sectors such as logistics, agribusiness, renewable energies, and financial services",
+      "outcome": "accelerating the commercial application of research results"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Activate the one-stop window of the Micro, Small and Medium Enterprise Authority (AMPYME) for entrepreneurs, and the digital one-stop window for business development.",
+      "scope": "such as agriculture, the Col\u00f3n Free Zone, small and medium-sized enterprises, and women",
+      "outcome": "have better access to credit"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a quality early-education network, including early-stimulation centers and Comprehensive Early Childhood Care Centers (CAIPIS).",
+      "scope": "in public schools and high schools",
+      "outcome": "reducing the digital divide and facilitating access to knowledge"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PEG_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through supervised work internships, training, and certification",
+      "scope": "youth unemployment (among those aged 17 to 24)",
+      "outcome": "reduce youth unemployment"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Build, expand, and improve infrastructure at the national level \u2014 from treatment plants, water systems, and drinking-water supply systems, to wastewater treatment plants, sanitary systems, and sewers.",
+      "scope": "in urban and rural communities",
+      "outcome": "reducing the gaps between urban and rural zones"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Install photovoltaic solar-energy systems in rural areas and indigenous comarcas",
+      "scope": "in rural areas and indigenous comarcas",
+      "outcome": "to electrify these remote or hard-to-access areas"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a comprehensive care system to attend to people in situations of dependency",
+      "scope": "to people in situations of dependency",
+      "outcome": "optimizing resources and maximizing the impact on poverty reduction"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PEG_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Launch the \"Manos a la Obra\" Plan for the purchase of material and the self-construction of housing for Panamanian citizens.",
+      "scope": "for Panamanian citizens",
+      "outcome": "to reduce the housing deficit"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Build and upgrade hospitals and health centers, including the new Doctor Manuel Amador Guerrero Hospital in Col\u00f3n, the Metet\u00ed Hospital (in Dari\u00e9n), the new trauma center, and the Children's Hospital.",
+      "scope": "including the new Doctor Manuel Amador Guerrero Hospital in Col\u00f3n, the Metet\u00ed Hospital (in Dari\u00e9n)",
+      "outcome": "to improve the quality, accessibility, and efficiency of health services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Modify the Fiscal Social Responsibility Law (LRSF)",
+      "scope": "between the Executive and the National Assembly",
+      "outcome": "contain indebtedness and improve the quality of expenditure in the medium and long term"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adjust the registration and updating of taxpayer information, in addition to optimizing third-party information and expanding the use of electronic invoicing.",
+      "scope": "taxpayer information",
+      "outcome": "increase the efficiency and equity of public expenditure"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement a pilot plan to improve the process in coordination with the Panama City Mayor's Office, SERTRACEN, and ATTT.",
+      "scope": "contractors, beneficiaries of subsidies, transfers, scholarships, the state payroll, and the minutes of the Cabinet Council",
+      "outcome": "favor online procedures and access to public services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Launch a national capacity-building plan",
+      "scope": "the public service",
+      "outcome": "retain highly trained civil servants"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Reactivate community policing and the Neighborhood Watch Program",
+      "scope": "security personnel",
+      "outcome": "reduce crime and its negative effects on society"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "set up a Chamber of Constitutional Guarantees and a Judicial Administration Office",
+      "scope": "detention centers",
+      "outcome": "recidivism is reduced"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Recruit, train, and equip 300 new park rangers in the first 18 months of government, and 300 additional rangers before 2029.",
+      "scope": "all protected areas and terrestrial and marine nature reserves under the custody of MiAMBIENTE and the municipalities, including their buffer zones",
+      "outcome": "These centers will become local hubs of sustainable architecture and of training for environmental leaders and professionals."
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create biological corridors that connect protected natural areas, with emphasis on Azuero, Cocl\u00e9, and Veraguas",
+      "scope": "in the forests of the State's Forest Heritage",
+      "outcome": "thereby improving the management and protection of terrestrial and marine natural heritage"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a national map of coral reefs and seagrass meadows",
+      "scope": "marine-coastal zones",
+      "outcome": "for effective marine spatial planning"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "protecting the forests and rivers of the Canal watershed",
+      "scope": "in the metropolitan area, Col\u00f3n, and Arraij\u00e1n",
+      "outcome": "ensure the quality and availability of drinking water"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Stimulate the development of charging infrastructure",
+      "scope": "in urban hubs of Azuero, Tierras Altas, and West Panama",
+      "outcome": "to reduce the emissions of pollutants that affect the population's health and well-being"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_27",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a national accounts system that includes natural assets and ecosystem services in the country's economic accounting.",
+      "scope": "throughout the country",
+      "outcome": "There will be at least 1,000 companies throughout the country reporting and improving by 2029 at least one component of their ecological footprint."
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Support community, school, and family gardens.",
+      "scope": "in municipalities and urban centers",
+      "outcome": "for the joint execution of restoration and rural-development initiatives."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PEG_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Carry out vulnerability assessments of critical infrastructure (ports, transport and energy systems, among others)",
+      "scope": "for all Panamanians",
+      "outcome": "to adapt it to the impacts of climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PEG_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Present to the UN a unified international commitment for the protection of nature (\"Nature Pledge\")",
+      "scope": "among local communities, civil society, indigenous peoples, faith groups, and other key actors",
+      "outcome": "so that Panama is the first country in the world to do so"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PENCYT_1",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in Panama",
+      "outcome": "fostering innovation, competitiveness, and social and environmental well-being"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through the integration and articulation of the elements of the Panamanian STI (Science, Technology and Innovation) ecosystem.",
+      "scope": "Panama's challenges and demands during the 2025-2029 five-year period",
+      "outcome": "To generate high-impact solutions to Panama's challenges and demands during the 2025-2029 five-year period"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "reach 1% of GDP in public R&D investment by 2029 and implement effective incentives to stimulate private investment in innovation",
+      "scope": "public R&D investment",
+      "outcome": "stimulate private investment in innovation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "among public entities, private companies, universities, and research centers",
+      "outcome": "create a dynamic and self-sustaining innovation ecosystem"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PENCYT_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "develop world-class research infrastructures",
+      "scope": "the national human capital",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "implement research and innovation agendas adapted to the specific needs of key sectors",
+      "scope": "key sectors such as logistics, agribusiness, renewable energies, and financial services, among others",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PENCYT_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrate principles of environmental sustainability and social equity into all STI initiatives",
+      "scope": "all STI initiatives",
+      "outcome": "inclusive and environmentally responsible solutions"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establish an attractive framework of fiscal and financial incentives",
+      "scope": "business investment in R&D&I and public-private collaboration in this field",
+      "outcome": "stimulate business investment in R&D&I and public-private collaboration in this field"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "develop STI capacities in all regions of the country",
+      "scope": "in all regions of the country",
+      "outcome": "the creation of innovation hubs that leverage local strengths and opportunities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "create efficient mechanisms for the transfer of knowledge and technologies between the academic and productive sectors",
+      "scope": "between the academic and productive sectors",
+      "outcome": "accelerating the application of research results"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PENCYT_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "promote the social appropriation of scientific knowledge and citizen participation in STI activities, improving STEM education and science outreach",
+      "scope": "citizen participation in STI activities",
+      "outcome": "improving STEM education and science outreach"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_12",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "The commitment to the health system",
+      "outcome": "will be a key factor for Panama's socio-economic development"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "The integration of STI efforts to modernize the resources, processes, and solutions that help to technify rural areas and the organizations that develop the agricultural economy in Panama",
+      "scope": "rural areas and the organizations that develop the agricultural economy in Panama",
+      "outcome": "will generate an advance in the productivity and competitiveness of the value chain in the agricultural, agri-food, and fish-farming framework, in a sustainable and competitive manner"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PENCYT_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrates digital transformation across different value chains (business, institutional, academic, social, etc.), driving digitalization, automation, and modeling of digital processes",
+      "scope": "across different value chains (business, institutional, academic, social, etc.)",
+      "outcome": "to impact and generate competitiveness across all sectors of the Panamanian economy and society"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PENCYT_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrate STI-based efforts to address responsible, efficient, and planned governance and management of natural resources",
+      "scope": "natural resources",
+      "outcome": "to prevent their growing deterioration in the face of national climate scenarios"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through the incorporation of new knowledge and innovation by means of STI",
+      "scope": "organizations in the context of their service-provision processes or transformation of inputs for the production of goods",
+      "outcome": "aims at the modernization of organizations"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PENCYT_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "identifying needs and in proposing solutions with a social approach",
+      "scope": "public institutions for development",
+      "outcome": "contributes a social perspective to the change and transformation of public institutions for development"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PIOTA_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Preparation and approval of Land-Use Plans at the local level (districts and corregimientos).",
+      "scope": "at the local level (districts and corregimientos)",
+      "outcome": "Guarantee the population's access to health facilities."
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Preparation of a detailed sustainable mobility plan for the CHCP",
+      "scope": "for the CHCP (Panama Canal Watershed)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Preparation of an Integrated Sanitation Plan for the CHCP",
+      "scope": "for the CHCP",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement the Sustainable Building Regulations for the Republic of Panama",
+      "scope": "for the Republic of Panama",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Include elements and spaces (for example: childcare facilities) that facilitate free participation in assemblies and meetings",
+      "scope": "among the representatives of boards of directors and chairs of Advisory Councils and Local Committees",
+      "outcome": "facilitate free participation in assemblies and meetings"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PIOTA_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Program of regeneration and reuse of treated water for irrigation",
+      "scope": "in the CHCP reservoirs",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Monitoring and control of air quality",
+      "scope": "between the productive sector and the scientific-technological field",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PIOTA_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Awareness campaign on the rational use of energy in households",
+      "scope": "in households",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Preparation of Ecotourism and/or Agrotourism Plans for the CHCP",
+      "scope": "for the CHCP",
+      "outcome": "generate products with greater added value"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implementation of training centers and capacity-building in the western and eastern regions of the CHCP.",
+      "scope": "in the western and eastern regions of the CHCP",
+      "outcome": "developing capacity-building programs linked to that demand"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PIOTA_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Preparation of a detailed inventory of sources of Greenhouse Gas (GHG) emissions and sinks in the CHCP, capable of being updated periodically.",
+      "scope": "in the CHCP",
+      "outcome": "capable of being updated periodically"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PIOTA_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Promotion of payment-for-environmental-services schemes in the CHCP.",
+      "scope": "in the CHCP",
+      "outcome": "Conservation and increase of protective vegetation cover."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PIOTA_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establishment of protection regulations in accordance with the characteristics and category set out in Law No. 21 for the identified areas.",
+      "scope": "in populated and/or suburban areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PIOTA_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop a collaboration agreement to drive the management and conservation of protected areas.",
+      "scope": "for the CHCP's ecosystems",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNRF_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "To formulate a technical instrument",
+      "scope": "in water-producing watersheds",
+      "outcome": "restoring the country's forest cover and laying the foundations for the development of the forestry sector"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNRF_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "using the best silvicultural techniques",
+      "scope": "restoring water-producing watersheds",
+      "outcome": "positioning the forestry sector as one of the main pillars of the national economy"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNRF_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "within the national territory",
+      "outcome": "the recovery of one million hectares of degraded areas, and the conservation of natural forests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNRF_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "deforestation and forest degradation, and to recover degraded soils",
+      "outcome": "reduce the rate of deforestation and forest degradation, and to recover degraded soils"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNRF_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "ecosystem services provided by forests",
+      "outcome": "recognize and value the ecosystem services provided by forests"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNRF_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through conservation and sustainable forest management",
+      "scope": "natural forests",
+      "outcome": "safeguard natural forests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNRF_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "protection and restoration",
+      "scope": "riparian zones, water recharge zones, protected areas, their buffer zones, and biological corridors",
+      "outcome": "ensure the protection and restoration of riparian zones, water recharge zones, protected areas, their buffer zones, and biological corridors"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNRF_8",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "sourced from plantations and from the sustainable forest management of natural forests",
+      "outcome": "increase the availability of certified forestry raw material"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNRF_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the sectors of society linked to forestry activities in the country",
+      "outcome": "improve the quality of life of the sectors of society linked to forestry activities in the country"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNRF_10",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the forestry sector",
+      "outcome": "promote the development of education, innovation, and applied scientific research in the forestry sector"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNRF_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "small and medium-sized forestry industry",
+      "outcome": "drive the development of small and medium-sized forestry industry"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the coverage of water and sanitation services will progressively expand at the national level, eliminating inequalities in access in an inclusive and equitable manner",
+      "scope": "every person in this country",
+      "outcome": "every person in this country has sustained access to quality water and basic sanitation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "optimize existing infrastructure, make the operation of treatment plants more efficient, and make improvements to rural water systems in their operation and distribution of water directly to households; and to reinforce, improve, and optimize sanitary sewer services",
+      "scope": "around 1 million people across the country",
+      "outcome": "around 1 million people across the country will benefit"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the construction of new infrastructure to respond to that new demand",
+      "scope": "at the urban and rural levels in communities where service is deficient",
+      "outcome": "By 2020, drinking water supply is expected to cover 98% of the urban population and 70% of rural and indigenous areas"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "improving sanitary sewer systems in cities, eliminating latrines across the country, and expanding the existing sanitary sewer network",
+      "scope": "all households",
+      "outcome": "provide all households with basic sanitation conditions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "studies, research, and pilot projects to evaluate the behavior of supply, demand, and water-supply efficiency",
+      "scope": "at the national level",
+      "outcome": "evaluate the behavior of supply, demand, and water-supply efficiency"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_6",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in our watersheds",
+      "outcome": "provide an important basis for decision-making and ensure efficient management of these resources to meet the needs of various uses"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Studies of water balances of surface sources",
+      "scope": "surface sources",
+      "outcome": "improve water-resource monitoring capabilities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "carrying out studies and subsequently implementing projects for the use of treated wastewater in cities, improving irrigation system technology, and developing new options for reserving water",
+      "scope": "in cities",
+      "outcome": "make demand more efficient"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the construction of multipurpose reservoirs",
+      "scope": "in the metropolitan area and provincial capitals",
+      "outcome": "preventing future shortages caused by the effects of an unpredictable climate"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "take preventive measures to mitigate impacts and increase the resilience of people and infrastructure to extreme events",
+      "scope": "people and infrastructure",
+      "outcome": "mitigate impacts and increase the resilience of people and infrastructure to extreme events"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Dredging and channeling of rivers",
+      "scope": "people and public and private water and sanitation infrastructure",
+      "outcome": "mitigate the impacts of climate events, prevent them from becoming disasters, and reduce the vulnerability of people and public and private water and sanitation infrastructure"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "purchase, installation, operation, and replacement of instruments necessary to monitor climate events and their effects",
+      "scope": "in schools",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "make the structural adjustments presented in this Plan",
+      "scope": "all water users",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create and/or strengthen the operation of watershed committees",
+      "scope": "water-resource conflict resolution",
+      "outcome": "help resolve conflicts over access to water and prevent future ones"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Updating and/or development of existing regulations",
+      "scope": "the regulatory framework",
+      "outcome": "filling the legal gaps identified during the Plan's preparation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "panama_PNSH_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "capacity-building for current staff and the incorporation of new staff",
+      "scope": "current staff",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "panama_PNSH_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "The implementation of 12 investment projects has been planned, of which short-term investments will be made. Activities have been organized into two lines of action:\n- Training for better water use.\n- Research for better water management.\n- Planning and training of professionals in water (identification of technical careers).",
+      "scope": "water resources",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  }
+]

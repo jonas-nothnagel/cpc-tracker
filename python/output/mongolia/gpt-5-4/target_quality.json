@@ -1,0 +1,2494 @@
+[
+  {
+    "targetId": "NBSAP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "including all territory in spatial planning and ensuring effective management",
+      "scope": "all territory",
+      "outcome": "reduce biodiversity loss and maintain ecological integrity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "restore at least 30 percent of degraded ecosystems",
+      "scope": "degraded ecosystems",
+      "outcome": "improve ecological integrity and connectivity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "included in the special protected area network",
+      "scope": "the country's total area",
+      "outcome": "representing major ecosystem types and strengthening ecological connectivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "threatened species",
+      "outcome": "Reduce the risk of extinction of threatened species and conserve genetic diversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "register, control, and assess the impacts of invasive alien species",
+      "scope": "invasive alien species",
+      "outcome": "prevent their adverse effects"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_6",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "biodiversity and ecosystem functions and human health",
+      "outcome": "reduce pollution from all sources to levels that are not harmful to biodiversity and ecosystem functions and human health"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through mitigation, adaptation, and disaster risk reduction actions through nature-based solution and ecosystem-based approaches",
+      "scope": "on biodiversity",
+      "outcome": "minimize the impact of climate change on biodiversity and increase its resilience"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "supporting the development of sustainable, highly productive forestry and agriculture, while introducing nature-based practices",
+      "scope": "forestry and agriculture",
+      "outcome": "reduce ecosystem degradation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "to people",
+      "outcome": "increase the benefits of nature to people"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_10",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "urban green and blue infrastructure",
+      "outcome": "increase the area of urban green and blue infrastructure"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "develop a comprehensive database for genetic resources and traditional knowledge",
+      "scope": "for genetic resources and traditional knowledge",
+      "outcome": "ensure the fair and equitable sharing of benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Integrate biodiversity issues into the policies and planning of all sectors",
+      "scope": "of all sectors",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "establish systems to monitor and transparently report the impacts, risks, and outcomes of business activities regarding biodiversity",
+      "scope": "business activities regarding biodiversity",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_14",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "supporting public education on sustainable consumption",
+      "scope": "",
+      "outcome": "minimize overconsumption and waste"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_15",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for genetically modified organisms",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "reform subsidies and incentives that have negative impacts on biodiversity, while increasing environmentally positive (green) incentives",
+      "scope": "that have negative impacts on biodiversity",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_17",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "towards biodiversity conservation",
+      "outcome": "Substantially and progressively increase financial resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_18",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in biodiversity conservation",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_19",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "to decision makers, scientists and the public",
+      "outcome": "data and information relevant to biodiversity and ecosystem services are widely accessible to decision makers, scientists and the public"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_20",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of local communities, women and girls as well as youth",
+      "outcome": "full, equitable, inclusive, effective, and gender-responsive representation and participation in decision-making and implementation related to biodiversity and ensure rights over relevant resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_1",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "across all sectors",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through research, training, and information dissemination",
+      "scope": "among stakeholders",
+      "outcome": "Improve climate change adaptation knowledge and capacity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of ecosystems and biodiversity",
+      "outcome": "Improve the adaptive capacity of ecosystems and biodiversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_4",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Reduce desertification, land degradation, and permafrost loss."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_5",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a continuous water monitoring system using advanced technology",
+      "scope": "",
+      "outcome": "for sustainable management"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "conserving and restoring water resources, utilizing technology to boost surface water",
+      "scope": "water ecosystem services",
+      "outcome": "Strengthen water ecosystem services"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_7",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "natural forests",
+      "outcome": "sustainable forest management and climate-resilient natural forests and better re/afforestation capacity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_8",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "from climate change induced disasters",
+      "outcome": "Minimize risks from climate change induced disasters and improve resilience"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop multi-hazard, impact-based early warning systems",
+      "scope": "to extreme events",
+      "outcome": "enable quick and effective responses to extreme events"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_10",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "livestock management that aligns with water and pasture resources",
+      "outcome": "is climate-resilient"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "develop value chains for marketable livestock products",
+      "scope": "livestock products",
+      "outcome": "Improve livestock quality, reduce pasture overuse"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "develop high-yield crops through climate-adapted technologies and soil conservation",
+      "scope": "high-yield crops",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through climate-smart agricultural practices",
+      "scope": "soil fertility",
+      "outcome": "Protect and sustain soil fertility"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_14",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "climate-related health risks",
+      "outcome": "mitigate climate-related health risks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create social safety nets, protection systems, and insurance mechanisms",
+      "scope": "the vulnerability of communities",
+      "outcome": "reduce the vulnerability of communities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implementing unconditional measures under national and sectoral development policies and plans",
+      "scope": "under national and sectoral development policies and plans",
+      "outcome": "total GHG emissions (excluding LULUCF) could be reduced by 23.0% by 2030 and 30.3% by 2035 compared to the Business as Usual (BAU) scenario"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_29",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "forest sequestration",
+      "outcome": "it could reach -24.4 million t CO\u2082-eq. by 2035, allowing an additional approximately 3.3 million t CO\u2082-eq. to be absorbed through enhanced sequestration"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_30",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Mongolia",
+      "outcome": "Mongolia could reduce net GHG emissions by 19.3 million t CO\u2082-eq. by 2030, corresponding to a 39.8% reduction compared to the BAU scenario, and by 28.0 million t CO\u2082-eq. by 2035 corresponding to a 46.3% reduction"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "restore 10% of heavily degraded rangelands in forest-steppe and steppe ecological zones",
+      "scope": "at the national level",
+      "outcome": "an additional reduction of 1.8 million t CO\u2082-eq. by 2030 and 3.9 million t CO\u2082-eq. by 2035 could be achieved at the national level"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_32",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for ecosystems and biodiversity",
+      "outcome": "adapt to and withstand the impacts of climate change"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "enlarging the boundaries of protected areas, designating ecological corridors, and enabling species migration and movement",
+      "scope": "biodiversity vulnerable to climate change",
+      "outcome": "improve the adaptive capacity and resilience"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish long-term ecological monitoring sites and carry out targeted conservation research and actions",
+      "scope": "vulnerable and unique ecosystems",
+      "outcome": "support the regeneration of vulnerable and unique ecosystems"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_33",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the water resource sector",
+      "outcome": "reduce vulnerability and risks to ensure water security"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the sector",
+      "outcome": "Improve the policy, legal, structural, and organizational environment for the climate change adaptation of the sector"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability",
+      "scope": "the water sector",
+      "outcome": "Enhance the resilience of the water sector"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "based on sustainable forest management",
+      "scope": "forest ecosystem resilience and develop adaptive forest resources",
+      "outcome": "Protect forest ecosystem resilience and develop adaptive forest resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Protect natural forests",
+      "scope": "natural forests",
+      "outcome": "improve forest health, and enhance forest regeneration capacity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through advanced technologies and innovation",
+      "scope": "afforestation and forest restoration",
+      "outcome": "Expand the scope of afforestation and forest restoration"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a legal framework for sustainable forest management",
+      "scope": "for sustainable forest management",
+      "outcome": "improving forest ecosystem protection"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_35",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "national",
+      "outcome": "strengthen national resilience and adaptive capacity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_8",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "related to disaster risk reduction",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Strengthen early warning systems",
+      "scope": "at all levels",
+      "outcome": "reduce disaster risks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_36",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "animal husbandry",
+      "outcome": "develop a sustainable and productive animal husbandry that is aligned with the carrying capacity of pasture and water resources, based on advanced adaptation technologies, resilient to risks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "raising young livestock using advanced methods and technologies, developing biosecure compartment farming and supplying meat to target markets",
+      "scope": "to target markets",
+      "outcome": "Reduce pasture pressure"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "livestock water and feed supply, quality and management",
+      "outcome": "strengthen resilience against natural risks"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce smart technologies",
+      "scope": "in livestock production and pasture utilization",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish sustainable and rational collaborative management practices for pastures and expand the scope of pasture restoration.",
+      "scope": "for pastures",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_37",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implementing advanced adaptation technologies that preserve soil fertility",
+      "scope": "agricultural systems",
+      "outcome": "preserve soil fertility"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Expand the adoption of minimal and zero tillage technologies",
+      "scope": "across grain, fodder, and industrial crop production systems",
+      "outcome": "to conserve soil fertility and minimize moisture loss"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Integrate cutting-edge climate-smart technologies into crop production systems",
+      "scope": "into crop production systems",
+      "outcome": "to ensure consistent, sustainable high yields"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce and adapt drought, disease, and pest-resistant crop varieties.",
+      "scope": "crop varieties",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement environmentally friendly smart technologies in crop production.",
+      "scope": "in crop production",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_18",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the health care system",
+      "outcome": "early detection, warning, and response to climate change related threats to human health"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify groups most vulnerable to climate change",
+      "scope": "groups most vulnerable to climate change",
+      "outcome": "to ensure sustainable livelihoods"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_20",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "ensuring the implementation of UNFCCC, Article 12 of the Paris Agreement, and the UNFCCC Action for Climate Empowerment (ACE) framework",
+      "scope": "",
+      "outcome": "Increase climate education, green skills, and public participation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a system to protect tangible and intangible cultural heritage and traditional knowledge",
+      "scope": "tangible and intangible cultural heritage and traditional knowledge",
+      "outcome": "ensure their adaptation to climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_38",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "When implementing climate change-related goals and measures",
+      "outcome": "ensure the full participation of all stakeholders, including children, youth, vulnerable groups, and men and women, guarantee equal opportunities for everyone, and establish climate-equitable and inclusive governance"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_39",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrating gender-responsive principles into climate policy, planning, and implementation",
+      "scope": "all social groups, including men and women, persons with disabilities, vulnerable populations, youth, and the elderly",
+      "outcome": "are equally involved in climate actions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_40",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "by integrating gender-responsive approaches",
+      "scope": "in all climate adaptation and mitigation measures",
+      "outcome": "gender equality and women \u2019s rights"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_41",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "all stakeholders",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_42",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for climate change adaptation in priority sectors",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NITIPA_1",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "In the energy production and supply sector",
+      "outcome": "5,556.3 thousand tons of CO2-eq will be reduced by 2030 and 8,264.9 thousand tons of CO2-eq by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "In the agricultural sector",
+      "outcome": "reduce emissions by 5,277.7 thousand tons of CO2-eq by 2030 and 9,781.2 thousand tons of CO2-eq by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "In the industrial sector",
+      "outcome": "1,163.6 thousand tons of CO2-eq will be reduced by 2030 and 1,313 thousand tons of CO2-eq by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "In the road and transport sector",
+      "outcome": "2,762.2 thousand tons of CO2-eq will be reduced by 2030 and 3,465.9 thousand tons of CO2-eq by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "In the construction sector",
+      "outcome": "633.5 thousand tons of CO2-eq will be reduced by 2030 and 1,066.1 thousand tons of CO2-eq by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_6",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "In the waste sector",
+      "outcome": "641.6 thousand tons of CO2-eq will be reduced by 2030 and 844.4 thousand tons of CO2-eq by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "The implementation of the following hydroelectric power plant (HPP) construction projects",
+      "scope": "Energy",
+      "outcome": "will reduce emissions by 386.2 thousand tons of CO2-eq by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "By increasing energy efficiency, green buildings, and renewable energy use",
+      "scope": "Buildings",
+      "outcome": "613.9 thousand tons of CO2-eq will be reduced by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NITIPA_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "By improving livestock economic turnover, breeding, and profitability",
+      "scope": "Agriculture",
+      "outcome": "1,881.4 thousand tons of CO2-eq will be reduced by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NITIPA_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Technological innovation and the introduction of CO\u2082 capture technologies",
+      "scope": "Industry",
+      "outcome": "will reduce CO\u2082 emissions by 974.9 thousand tons by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "increasing recycling and upgrading treatment facilities",
+      "scope": "Waste",
+      "outcome": "85.7 thousand tons of CO\u2082-eq will be reduced by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_12",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Mongolia's total territory",
+      "outcome": "the carbon absorption capacity of pasture soils is being lost due to desertification, land degradation, and climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_13",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "climate change policies and programs",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NITIPA_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Mobilize national and international financial resources and establish a sustainable financing mechanism",
+      "scope": "for implementing climate change measures",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NITIPA_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement gender-sensitive climate policies",
+      "scope": "all social groups (women, children, youth, the elderly, people with disabilities, vulnerable groups, etc.)",
+      "outcome": "equally include all social groups (women, children, youth, the elderly, people with disabilities, vulnerable groups, etc.)"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NITIPA_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Expand research on climate change",
+      "scope": "on climate change",
+      "outcome": "support decision-making based on its results"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "SECTORAL_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a regionally differentiated land payment system and limit livestock numbers to match pasture carrying capacity",
+      "scope": "across ecological zones",
+      "outcome": "balancing grazing pressure across ecological zones"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Transform agriculture into an environmentally friendly, climate-change adapted, risk-resilient, socially responsive, responsible, highly productive, and sustainable leading economic sector.",
+      "scope": "agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "SECTORAL_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in agriculture",
+      "outcome": "reduce economic losses from sudden climate-related disasters"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a clear legal framework for pasture use, improvement, and protection; create a unified pasture management system",
+      "scope": "for pasture use, improvement, and protection",
+      "outcome": "reduce pasture degradation and desertification"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Set upper limits on livestock numbers, types, and composition aligned with ecology and pasture carrying capacity; combat pasture pests and rodents; and increase pasture, fodder, and water supply",
+      "scope": "livestock numbers, types, and composition aligned with ecology and pasture carrying capacity",
+      "outcome": "reduce agricultural risks"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "establishing intensified, technology-driven farming near urban areas",
+      "scope": "in rangelands while establishing intensified, technology-driven farming near urban areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "SECTORAL_7",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Mongolian crops grown in fertile soils",
+      "outcome": "increase competitiveness and value of Mongolian crops grown in fertile soils, and increase agricultural exports"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "investing in modern irrigation infrastructure and bringing fallow lands into efficient cultivation",
+      "scope": "fallow lands",
+      "outcome": "Expand irrigated agricultural production capacity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "SECTORAL_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in agriculture",
+      "outcome": "increase sustainable resource utilization"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Expand state specially protected areas to cover 30% of national territory by 2030, 33% by 2040, and 35% by 2050",
+      "scope": "of national territory",
+      "outcome": "ensuring representation of major ecosystem types and freshwater source areas"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through reforestation, supporting natural forest regeneration, and strengthening forest protection measures",
+      "scope": "of national territory",
+      "outcome": "thereby increasing carbon dioxide sequestration"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement a national programme",
+      "scope": "soil",
+      "outcome": "reduce land degradation, and combat desertification"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "SECTORAL_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Implement the Green Belt project",
+      "scope": "land degraded by mining, agriculture, infrastructure, and urban development",
+      "outcome": "increasing user accountability and restoring land for productive reuse"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "SECTORAL_14",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "ecosystem services",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "SECTORAL_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Reduce subsidies to economic activities that negatively affect ecosystems and biodiversity",
+      "scope": "economic activities that negatively affect ecosystems and biodiversity",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "draft legislation aimed at establishing a legal framework for ensuring food supply and safety, to submit the draft law to the State Great Khural during the 2022 autumn and 2023 spring ordinary sessions",
+      "scope": "the country",
+      "outcome": "reduce the country's reliance on imported food raw materials and products"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "draft and submit to the State Great Khural a bill to amend the relevant legislation",
+      "scope": "for children",
+      "outcome": "establishing an optimal system for the provision of meals and food for children"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and approve a revised methodology for calculating food safety statistical indicators, Analyse and evaluate all food-related standards, and update or newly adopt the necessary standards, technical regulations, and guidance documents on good practices for each stage of the food chain",
+      "scope": "for each stage of the food chain",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and approve a registration procedure for tracing the origin of raw materials and products of animal origin, as well as plant and plant-derived food, through to the final product, and migrate it to the unified electronic registration system.",
+      "scope": "raw materials and products of animal origin, as well as plant and plant-derived food, through to the final product",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and approve regulations on the establishment and utilisation of seasonal food reserves.",
+      "scope": "seasonal food reserves",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Determining food safety indicators, monitoring pesticide residues, veterinary drug residues, high-toxicity bacteria and heavy metal residues, and approving the control plan.",
+      "scope": "pesticide residues, veterinary drug residues, high-toxicity bacteria and heavy metal residues",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "study and resolve the issue of establishing a Food Science and Research Institute",
+      "scope": "a Food Science and Research Institute",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Enforce compliance with standard and technical regulation requirements in livestock farming, crop cultivation, food production, storage, transport, trade, food service and catering, and implement good practices in food-related activities at every stage of the food chain, Implement a control and management system, and increase the number of accredited bodies authorised to certify it.",
+      "scope": "in livestock farming, crop cultivation, food production, storage, transport, trade, food service and catering",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "enhance internal controls on whether the safety requirements for raw materials, products, and their production and supply are fully met, and to refine the external monitoring system, intensify control activities",
+      "scope": "for raw materials, products, and their production and supply",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "To restructure state-owned universities and professional-vocational training centres in the fields of food, agriculture and light industry, modernise their organisational structure, improve the quality of training, provide tuition fee support for students in these priority areas, and enhance the skills of qualified professionals, to create stable working conditions for professional personnel, and to include the necessary funding in national and local budgets.",
+      "scope": "state-owned universities and professional-vocational training centres in the fields of food, agriculture and light industry",
+      "outcome": "to create stable working conditions for professional personnel"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_11",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "ensure a stable supply of the infrastructure, energy, steam, heat and fuel sources required to guarantee food supply and safety and to increase domestic production of food products that replace imports"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "introduce traditional food preparation methods and technologies, adapted to the unique natural, geographical and climatic characteristics of Mongolia, into everyday use",
+      "scope": "adapted to the unique natural, geographical and climatic characteristics of Mongolia",
+      "outcome": "revive, promote and introduce traditional food preparation methods and technologies, adapted to the unique natural, geographical and climatic characteristics of Mongolia, into everyday use"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_13",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "citizens and businesses that have relocated from the capital to rural areas",
+      "outcome": "ensure a balance between urban and rural development and to curb centralisation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create opportunities to introduce and promote domestically produced branded products at international and regional exhibitions and trade fairs",
+      "scope": "at international and regional exhibitions and trade fairs",
+      "outcome": "establish and support the legal framework for their export"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "convert up to 200,000 hectares of newly reclaimed land into agricultural land",
+      "scope": "agricultural land",
+      "outcome": "bring the area under rotation to 1.1 million hectares, increase irrigated cropland by 5,000 hectares, and align agricultural land with the national land-use planning scheme"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establish at the national level four wheat, feed, 2 fodder, 5 vegetable, 4 potato, a total of 15 seed farms",
+      "scope": "at the national level",
+      "outcome": "Utilisation and protection of plant genetic resources, establishment of a seed reserve for locally adapted varieties, and the creation of a system for the production of seeds of cereals, potatoes, vegetables, fruits, berries and other useful crops"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "introduce advanced technologies with soil degradation reduction, fertility protection and improvement, and proper crop rotation, and carry out corresponding technical and technological modernisation",
+      "scope": "System for Agricultural Production in Mongolia",
+      "outcome": "soil degradation reduction, fertility protection and improvement"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide organisational and financial support",
+      "scope": "intensive livestock farming and auxiliary farms",
+      "outcome": "raise the domestic supply of feed required for intensive livestock farming and auxiliary farms to 1.9 million tonnes"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a 50-hectare winter greenhouse complex in areas with adequate heating supply and infrastructure.",
+      "scope": "for the population",
+      "outcome": "expanding greenhouse cultivation to 270 hectares"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "develop the technical and economic feasibility of establishing nitrogen and phosphorus fertiliser plants based on mining enterprises",
+      "scope": "based on mining enterprises",
+      "outcome": "replenish soil nutrients and increase crop quality and yield, thereby replacing imports"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establish an optimal system for financing and lending",
+      "scope": "all types of rice, sugar beet, and other cash crops",
+      "outcome": "increasing the cultivation of all types of rice, sugar beet, and other cash crops"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Increase the capacity of grain elevators meeting standard requirements by 20,000 tonnes and the capacity of mechanised warehouses and cellars for storing potatoes and vegetables by 50,000 tonnes",
+      "scope": "on a regional basis",
+      "outcome": "Increase the capacity of grain elevators meeting standard requirements by 20,000 tonnes and the capacity of mechanised warehouses and cellars for storing potatoes and vegetables by 50,000 tonnes"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_23",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "introduce advanced, environmentally friendly irrigation technology that uses water properly, and construct new irrigation systems, restore, renovate and refurbish, and establish reservoirs, ponds and dams with basins",
+      "scope": "",
+      "outcome": "To overcome the risks of climate change"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "establish 30 hectares of agroforestry in the provincial centre and 10 hectares in the district centre",
+      "scope": "in the provincial centre and 10 hectares in the district centre",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Build strategic reserves of at least 100,000 tonnes of food and seed red wheat",
+      "scope": "from each year's autumn harvest",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Collaborate with the administration and local authorities to protect animal health, increase the yield per animal, improve animal quality, and enhance the role and participation of herders.",
+      "scope": "with the administration and local authorities",
+      "outcome": "establish a proper ratio of livestock headcount to pasture capacity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_27",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "import high-yield animal embryos from abroad under a unified policy, and to introduce biotechnological advances into breeding and selection work",
+      "scope": "near towns and settlements and in agricultural regions",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "providing long-term investment and financial support",
+      "scope": "pig, poultry, and fattening lamb and cattle farms",
+      "outcome": "Increase enterprise participation in the expansion and establishment of pig, poultry, and fattening lamb and cattle farms"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_30",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "beekeeping",
+      "outcome": "increase its product output, and create opportunities for export"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "introduce advanced biopreparate production, and establish a vaccine cold chain network, strengthen diagnostic laboratories, bolster the operations of veterinary service units, and include the necessary funding in national and local budgets",
+      "scope": "in livestock and animals",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_32",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for domestically processed products that meet domestic market quality, hygiene and safety standards, and for those manufactured from food raw materials supplied by livestock farming and agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "provide financial support for the establishment and expansion of new factories for children's food, milk, vegetables, fruits, and fruit-based feeds, and for the domestic procurement and supply of their primary raw materials",
+      "scope": "for children's food, milk, vegetables, fruits, and fruit-based feeds",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "increase the meal allowances for pupils in nurseries, state schools, vocational education and training institutions, and in boarding houses in line with nutritional requirements and the rate of inflation, Ensure the supervision and involvement of parents and guardians",
+      "scope": "for pupils in nurseries, state schools, vocational education and training institutions, and in boarding houses",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a system to provide financial support for the new establishment of processing plants for dry milk, table salt, edible oils, potatoes, various types of rice and sugar.",
+      "scope": "processing plants for dry milk, table salt, edible oils, potatoes, various types of rice and sugar",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a new fleet of specialised food transport vehicles (road, rail and air) and create a system for transporting domestic and imported food raw materials and products.",
+      "scope": "domestic and imported food raw materials and products",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_37",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Store food raw materials and products in specialised warehouses and storages that meet standard requirements, establish a unified registration system, support the supply of small and medium-sized equipment for drying, freezing and preserving, and develop domestic production of food containers and packaging",
+      "scope": "food raw materials and products",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSS_38",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "modernising equipment",
+      "scope": "food processing plants",
+      "outcome": "improve product flavour and quality, improve packaging and containers, increase product variety, develop export-oriented brands, and support stable factory operations"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_39",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "dietary supplements, biologically active food products and functional foods",
+      "outcome": "increase dietary supplements, biologically active food products and functional foods"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_40",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "modernising laboratory analysis methodologies, Establish a system for pre-shipment laboratory analysis and inspection of exported and imported food raw materials and products, and take measures to strengthen border and national accredited laboratories.",
+      "scope": "nationwide",
+      "outcome": "fully define food safety indicators nationwide"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSS_41",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "organise training, publicity and educational activities on the proper, appropriate and civilised consumption of food and drink.",
+      "scope": "on the proper, appropriate and civilised consumption of food and drink",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Reduce deforestation and forest degradation",
+      "scope": "the forest area",
+      "outcome": "reach 9% of the total area by 2030 compared to 7.85% in 2015"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Reforestation",
+      "scope": "land affected by forest fire, pest insect and deforestation",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "monitoring and prevention system",
+      "scope": "Forest fire",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Forest cleaning and weeding",
+      "scope": "Forest",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "urban",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Amend, if necessary newly develop standards and norms for reforestation",
+      "scope": "for reforestation",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establishing a gene bank",
+      "scope": "for major wood species",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Amend current forest sector policy to oblige forest user groups to conduct reforestation activities",
+      "scope": "forest user groups",
+      "outcome": "conduct reforestation activities on at least 30% of total forest area used by forest user groups"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Integrate greening programs into the urban development planning process",
+      "scope": "urban development planning process",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_10",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "grassland",
+      "outcome": "stop further grassland degradation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Recover the traditional seasonal rotational pasture system",
+      "scope": "the traditional seasonal rotational pasture system",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Air seeding, sowing of perennial grasses",
+      "scope": "in areas where gradual grassland decline",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Developing a system for silvo-pastoral animal husbandry",
+      "scope": "in steppe and forest steppe regions",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Integrate grassland planning into the regional land use plans",
+      "scope": "the regional land use plans",
+      "outcome": "Integrate grassland planning into the regional land use plans"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop legal instruments and/or establish mechanism",
+      "scope": "for sustainable pastureland use",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_16",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "suitable for traditional ways of nomadic pasture use",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_17",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "agricultural",
+      "outcome": "Increase agricultural yields by 2.5 t/ha per annum by 2030 compared to 1.6 t/ha per annum in 2015."
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Developing agroforestry including shelter belt system development",
+      "scope": "agroforestry",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_19",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Decrease in use of pesticides"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Erosion prevention",
+      "scope": "in agriculture",
+      "outcome": "Erosion prevention"
+    },
+    "confidence": "low"
+  },
+  {
+    "targetId": "NRVTS_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Amend soil protection and desertification prevention law",
+      "scope": "in croplands",
+      "outcome": "support the concept on erosion prevention in croplands"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Revise current norms and standards on use of pesticides",
+      "scope": "in agricultural sector",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_23",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "wetlands",
+      "outcome": "no net loss of wetlands by 2030 compared to 2015 (3963.3 sq. km)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Expanding the national network of special protected areas",
+      "scope": "the national network of special protected areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NRVTS_25",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "wetland ecosystems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop the suitable system on payment for ecosystem services",
+      "scope": "in headwaters and wetlands",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NRVTS_27",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "ILDN_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "incorporating mitigation hierarchy and offset for land degradation into the landscape level planning and management",
+      "scope": "on rangelands in the western mountain and steppe region",
+      "outcome": "reduce negative impacts of mining on rangelands in the western mountain and steppe region"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "ILDN_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Sustainable forest management",
+      "scope": "in Mongolia's forest landscape",
+      "outcome": "secures the flow of multiple ecosystem services and benefits, including biological diversity, reduced degradation, and carbon storage, while enhancing resilience to climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "ILDN_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establishment of a network of managed resource protected areas",
+      "scope": "in under-represented terrestrial ecosystems",
+      "outcome": "biodiversity conservation and livelihood enhancement"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "ILDN_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "setting targets and establishing the level of ambition",
+      "scope": "LDN targets",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "ILDN_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "LDN",
+      "outcome": "multiple benefits that LDN provides from climate change mitigation and adaptation to poverty reduction"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "ILDN_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "rationalizing engagement with partners, overcoming fragmentation and systematically tapping into increasing finance opportunities, including climate finance",
+      "scope": "with partners",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "ILDN_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "designing and implementing bold LDN transformative projects",
+      "scope": "LDN",
+      "outcome": "deliver multiple benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "ILDN_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Monitoring and reporting",
+      "scope": "the LDN targets",
+      "outcome": "tracking progress towards achieving the LDN targets"
+    },
+    "confidence": "medium"
+  }
+]

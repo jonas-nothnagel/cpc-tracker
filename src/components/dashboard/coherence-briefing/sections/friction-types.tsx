@@ -13,6 +13,7 @@
 
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { FrictionTypeChart } from "../centerpiece/friction-type-chart";
 import { TourButton } from "../tour/tour-button";
 import type { FrictionTypeTotals } from "@/lib/coherence-briefing";
@@ -45,8 +46,9 @@ export function FrictionTypesSection({
       id={FRICTION_TYPES_SECTION_ID}
       headline={composeHeadline(totals, t)}
       body={composeBody(totals, labels, t)}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
-        <TourButton tourId="frictionTypes" scopeId={FRICTION_TYPES_SECTION_ID} />
+        <TourButton tourId="frictionTypes" scopeId={FRICTION_TYPES_SECTION_ID} labelled />
       }
       evidence={
         <FrictionTypeChart totals={totals} onSegmentClick={onOpenType} />

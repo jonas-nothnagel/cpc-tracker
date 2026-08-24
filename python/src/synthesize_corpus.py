@@ -38,7 +38,7 @@ import re
 from collections import Counter
 from typing import Any, Callable
 
-from .config import ACTIVE_TAXONOMIES, DATA_DIR, OUTPUT_DIR
+from .config import ACTIVE_TAXONOMIES, DATA_DIR, OUTPUT_DIR, country_display_name
 from .llm import call_llm
 from .synthesis_states import (
     canonical_hidden_key,
@@ -1009,11 +1009,7 @@ async def _cli_run(country: str, hidden_key: str = "") -> None:
         raise SystemExit(
             f"Missing {in_path}. Run synthesize_doc_pairs first."
         )
-    config_path = DATA_DIR / f"{country}-country-config.json"
-    country_name = country.capitalize()
-    if config_path.exists():
-        config = json.loads(config_path.read_text())
-        country_name = config.get("name", country_name)
+    country_name = country_display_name(country)
 
     syntheses = json.loads(in_path.read_text())
     targets, alignment, classifications = _load_country_inputs(country)

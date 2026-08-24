@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   computeBudgetCoverage,
   computeFinancingCoherence,
+  computeFundingGrid,
   computeFundingTargetRows,
   dedupeContributorSpend,
   formatBerMoney,
@@ -13,6 +14,7 @@ import type {
   AlignmentResult,
   BerBudgetProgram,
   BerData,
+  CountryConfig,
   Target,
 } from "@/types";
 
@@ -548,5 +550,114 @@ describe("groupFundingRowsByDoc", () => {
     expect(nbsap.rows.reduce((s, r) => s + r.alignedSpend, 0)).toBe(20); // overlap preserved per target
     expect(nap.docSpend).toBe(5);
     expect(nap.docProgrammeCount).toBe(1);
+  });
+});
+
+describe("computeFundingGrid", () => {
+  function target(id: string, doc: string): Target {
+    return {
+      id,
+      text: `${id} text`,
+      sourceDocument: doc,
+      sourceLabel: id,
+      country: "Testland",
+      isQuantitative: false,
+      isTimeBound: false,
+    };
+  }
+  function align(
+    a: string,
+    b: string,
+    level: AlignmentResult["alignment"],
+  ): AlignmentResult {
+    return { targetAId: a, targetBId: b, alignment: level, description: "" };
+  }
+  const docType = (id: string) => ({
+    id,
+    shortLabel: id,
+    mediumLabel: id,
+    fullLabel: id,
+    color: "#000000",
+  });
+  const gridConfig: CountryConfig = {
+    financingLayout: "grid",
+    documentTypes: [docType("NBSAP")],
+  };
+  const berData: BerData = {
+    programs: [
+      { code: "P1", name: "P1", description: "", type: "environmental" },
+    ],
+    expenditure: [{ code: "P1", name: "P1", values: { "2020": 10 } }],
+    currency: "PAB",
+    unit: "million",
+    period: { start: 2020, end: 2020 },
+  };
+  const targets = [target("T1", "NBSAP")];
+  const budgetAlignment = [align("BER_P1", "T1", "high")];
+
+  it("returns the grid when the country opts in and the data yields rows", () => {
+    const grid = computeFundingGrid({
+      targets,
+      budgetAlignment,
+      berData,
+      countryConfig: gridConfig,
+      locale: "en",
+    });
+    expect(grid).not.toBeNull();
+    expect(grid!.totals.reviewed).toBe(1);
+    expect(grid!.docs.map((d) => d.docId)).toEqual(["NBSAP"]);
+  });
+
+  it("returns null without config opt-in, even when the data could build a grid", () => {
+    // Mongolia today: BER + budget alignment exist, but its BER is framed as
+    // a snapshot review, so the country keeps the dot-map unless the config
+    // says otherwise.
+    for (const countryConfig of [
+      null,
+      { documentTypes: [docType("NBSAP")] } as CountryConfig,
+      { financingLayout: "dotmap", documentTypes: [docType("NBSAP")] } as CountryConfig,
+    ]) {
+      expect(
+        computeFundingGrid({
+          targets,
+          budgetAlignment,
+          berData,
+          countryConfig,
+          locale: "en",
+        }),
+      ).toBeNull();
+    }
+  });
+
+  it("fails soft to null when opted in but the data yields no rows", () => {
+    // Missing berData / alignment.
+    expect(
+      computeFundingGrid({
+        targets,
+        budgetAlignment: null,
+        berData,
+        countryConfig: gridConfig,
+        locale: "en",
+      }),
+    ).toBeNull();
+    expect(
+      computeFundingGrid({
+        targets,
+        budgetAlignment,
+        berData: null,
+        countryConfig: gridConfig,
+        locale: "en",
+      }),
+    ).toBeNull();
+    // No visible targets → zero rows.
+    expect(
+      computeFundingGrid({
+        targets: [],
+        budgetAlignment,
+        berData,
+        countryConfig: gridConfig,
+        locale: "en",
+      }),
+    ).toBeNull();
   });
 });

@@ -32,6 +32,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { DocInfoPopover } from "../doc-meta-card";
 import { ViewTargetsAction } from "../view-targets-action";
 import { TourButton } from "../tour/tour-button";
@@ -50,6 +51,7 @@ import {
   getDocMeta,
   type DocMeta,
 } from "@/lib/utils";
+import { getDocClass } from "@/lib/doc-taxonomy";
 import { useContradictionTypeLabels } from "@/lib/labels";
 import type {
   AlignmentMechanism,
@@ -130,7 +132,8 @@ export function DocFocusSection({
       id={DOC_FOCUS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
-      tourButton={<TourButton tourId="docFocus" scopeId={DOC_FOCUS_SECTION_ID} />}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
+      tourButton={<TourButton tourId="docFocus" scopeId={DOC_FOCUS_SECTION_ID} labelled />}
       controls={
         <DocSwitcher
           availableDocs={availableDocs}
@@ -301,6 +304,7 @@ function DocFocusEvidence({
         }
         meta={meta}
         color={getDocColor(countryConfig, focusedDoc)}
+        docClass={getDocClass(countryConfig, focusedDoc)}
         deadlineCoverage={deadlineCoverage}
       >
         <span className="text-caption text-[var(--undp-gray)] leading-snug group-hover:underline underline-offset-2 decoration-1">

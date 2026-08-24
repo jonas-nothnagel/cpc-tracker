@@ -50,15 +50,55 @@ CACHE_NAMESPACE = "sector_synthesis"
 
 # Explicit taxonomy allowlist for sector-level synthesis. It must list every
 # taxonomy whose sector cards should appear: the active ranked lenses (`sector`,
-# `globe`, `gga`, `hr`) plus the country-specific and paused lenses (`country`,
-# `adaptation_goal`, `nbs`) that may still carry classifications in a given
-# country's output. `globe_sub` is deliberately absent: 49 subcategories produce
-# too many thin pools to be useful at the section-2 sector-card level, and that
-# drilldown belongs on a different surface. Keep this in sync with
-# `config.ACTIVE_TAXONOMIES` whenever a ranked lens is added or paused (adding a
-# lens also needs a name entry in run_analysis.py's `sector_category_names`).
-# Override via the function arg for a different set.
-DEFAULT_TAXONOMY_ALLOWLIST = ("nbs", "sector", "globe", "gga", "hr", "country", "adaptation_goal")
+# `globe`, `gga`, `hr`) plus the country-specific lenses (`country`,
+# `adaptation_goal`). `nbs` was dropped when the paused taxonomy's stale
+# classification records were stripped from the committed outputs — restore it
+# here together with config.ACTIVE_TAXONOMIES if NBS is ever reactivated.
+# `globe_sub` is deliberately absent: 49 subcategories produce too many thin
+# pools to be useful at the section-2 sector-card level, and that drilldown
+# belongs on a different surface. Keep this in sync with
+# `config.ACTIVE_TAXONOMIES` whenever a ranked lens is added or paused (name
+# resolution comes from build_sector_category_names below, shared with
+# run_analysis). Override via the function arg for a different set.
+DEFAULT_TAXONOMY_ALLOWLIST = ("sector", "globe", "gga", "hr", "country", "adaptation_goal")
+
+
+def build_sector_category_names(
+    *,
+    category_lists: dict[str, list[dict]],
+    country_config: dict | None = None,
+    adaptation_data: dict | None = None,
+) -> dict[tuple[str, str], str]:
+    """(taxonomyType, categoryId) -> display name, for sector synthesis.
+
+    The single builder shared by run_analysis (categories already in memory)
+    and this module's CLI (categories loaded from disk). The two used to
+    build divergent maps — the CLI path had no `gga`/`hr` names, so sector
+    syntheses produced via `python -m src.synthesize_by_sector` rendered raw
+    GGA/HR category ids instead of names.
+
+    `category_lists` maps taxonomy type (nbs, sector, globe, globe_sub, gga,
+    hr) to its category dicts ({id, name}). Country-specific lenses come from
+    `country_config` (countrySectors -> "country") and `adaptation_data`
+    (adaptationGoals -> "adaptation_goal", description truncated to 80 chars
+    because BTR Table III.9 goals have no short labels).
+    """
+    names: dict[tuple[str, str], str] = {}
+    for taxonomy, cats in category_lists.items():
+        for c in cats:
+            names[(taxonomy, c["id"])] = c.get("name", c["id"])
+    if country_config:
+        for c in country_config.get("countrySectors", []):
+            names[("country", c["id"])] = c.get("name", c["id"])
+    if adaptation_data:
+        for g in adaptation_data.get("adaptationGoals", []):
+            gid = str(g["id"])
+            descr = g.get("description", gid)
+            short = descr[:80].rstrip(",.")
+            if len(descr) > 80:
+                short = short + "…"
+            names[("adaptation_goal", gid)] = short
+    return names
 
 
 SYSTEM_PROMPT = (
@@ -396,40 +436,36 @@ async def synthesize_by_sector(
 def _load_category_names(country: str) -> dict[tuple[str, str], str]:
     """Build category name lookup from the country's data files.
 
-    Standard taxonomies (nbs, sector, globe, globe_sub) come from
-    `python/data/categories.json`. Country-specific categories (countrySectors,
-    adaptation goals) come from country-specific files.
+    Thin disk loader around `build_sector_category_names`, which is the
+    single source for the (taxonomyType, categoryId) -> display-name map.
     """
-    names: dict[tuple[str, str], str] = {}
+    cats: dict = {}
     cats_path = DATA_DIR / "categories.json"
     if cats_path.exists():
         cats = json.loads(cats_path.read_text())
-        for c in cats.get("nbs_categories", []):
-            names[("nbs", c["id"])] = c.get("name", c["id"])
-        for c in cats.get("ipcc_sectors", []):
-            names[("sector", c["id"])] = c.get("name", c["id"])
-        for c in cats.get("globe_categories", []):
-            names[("globe", c["id"])] = c.get("name", c["id"])
-        for c in cats.get("globe_subcategories", []):
-            names[("globe_sub", c["id"])] = c.get("name", c["id"])
 
+    cfg = None
     cfg_path = DATA_DIR / f"{country}-country-config.json"
     if cfg_path.exists():
         cfg = json.loads(cfg_path.read_text())
-        for c in cfg.get("countrySectors", []):
-            names[("country", c["id"])] = c.get("name", c["id"])
 
+    adp = None
     adp_path = DATA_DIR / f"{country}-btr-adaptation.json"
     if adp_path.exists():
         adp = json.loads(adp_path.read_text())
-        for g in adp.get("adaptationGoals", []):
-            gid = str(g["id"])
-            descr = g.get("description", gid)
-            short = descr[:80].rstrip(",.")
-            if len(descr) > 80:
-                short = short + "…"
-            names[("adaptation_goal", gid)] = short
-    return names
+
+    return build_sector_category_names(
+        category_lists={
+            "nbs": cats.get("nbs_categories", []),
+            "sector": cats.get("ipcc_sectors", []),
+            "globe": cats.get("globe_categories", []),
+            "globe_sub": cats.get("globe_subcategories", []),
+            "gga": cats.get("gga_categories", []),
+            "hr": cats.get("hr_categories", []),
+        },
+        country_config=cfg,
+        adaptation_data=adp,
+    )
 
 
 async def _cli_run(country: str) -> None:

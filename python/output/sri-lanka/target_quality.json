@@ -1,0 +1,5658 @@
+[
+  {
+    "targetId": "LDN_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Increase forest cover from 29% to 32%",
+      "scope": "forest cover",
+      "outcome": "from 29% to 32%"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "wetlands",
+      "outcome": "Minimize the conversion of wetlands to other land cover classes"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "soil",
+      "outcome": "improve land productivity and Soil Organic Carbon stocks"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "land cultivated with annual and plantation crops",
+      "outcome": "Reduce soil erosion"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Restore degraded terrestrial, freshwater, marine and coastal ecosystems",
+      "scope": "degraded terrestrial, freshwater, marine and coastal ecosystems",
+      "outcome": "enhance nature\u2019s contributions to people and the planet"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Incorporate, biodiversity considerations into national policies, plans, and decision-making and integrate nature-based approaches into spatial and urban planning",
+      "scope": "into national policies, plans, and decision-making and integrate nature-based approaches into spatial and urban planning",
+      "outcome": "to prevent loss of biodiversity and enhance human well-being"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conserve 30% of the island\u2019s land and inland waters, and 10% of the coastal and marine areas including areas outside the protected areas by mainstreaming OECMs and other national approaches.",
+      "scope": "the island\u2019s land and inland waters, and 10% of the coastal and marine areas including areas outside the protected areas",
+      "outcome": "Conserve 30% of the island\u2019s land and inland waters, and 10% of the coastal and marine areas including areas outside the protected areas"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_4",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "manage human-wildlife conflict",
+      "scope": "",
+      "outcome": "Halt species extinction, protect genetic diversity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "wild species",
+      "outcome": "providing benefits to people and the planet"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_6",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Invasive Alien Species (IAS)",
+      "outcome": "enhanced biosecurity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_7",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "biodiversity and ecosystem functions and services",
+      "outcome": "Reduce pollution to levels that are not harmful to biodiversity and ecosystem functions and services."
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_8",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "on biodiversity",
+      "outcome": "build resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_9",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "reduce waste and overconsumption"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_10",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in agriculture, aquaculture, fisheries, forestry and tourism",
+      "outcome": "Enhance sustainability"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "businesses",
+      "outcome": "mitigate risks and negative impacts on biodiversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBSAP_12",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "biosafety",
+      "outcome": "accruing the benefits of biotechnology"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_13",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "from biological resources, related digital sequence information, and traditional knowledge",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_14",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "relating to biodiversity",
+      "outcome": "Decision-making is based on best possible available data and participatory approach"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_15",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "at all levels",
+      "outcome": "effective implementation of the NBSAP to achieve the NBTs by 2030"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBSAP_16",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for biodiversity conservation, management and sustainable use",
+      "outcome": "Ensure gender equality and a gender-responsive approach"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_1",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "into agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_2",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and strengthen National Weather and Climate Platform",
+      "scope": "",
+      "outcome": "for early warning and risk management"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Revising the Agro-ecological Map of Sri Lanka considering current and future scenarios",
+      "scope": "of Sri Lanka",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Development and promotion of Integrated Plant Nutrition Management Systems (IPNS) and Integrated Pest Management (IPM)",
+      "scope": "in all crop production systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_5",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "improved production & productivity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_6",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of crops in a changing climate",
+      "outcome": "Reduce post-harvest losses"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_7",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of crops",
+      "outcome": "Reduce post-harvest losses"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_8",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "crop",
+      "outcome": "Increase crop productivity and production"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for crop farming and processing",
+      "outcome": "Improve the adoption of renewable energy"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identification, mapping and management of areas that are highly vulnerable to adverse impacts of climate change, including the restoration of degraded areas inside and outside of the protected areas (PAs) network",
+      "scope": "areas that are highly vulnerable to adverse impacts of climate change, including the restoration of degraded areas inside and outside of the protected areas (PAs) network",
+      "outcome": "to conserve habitats"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through landscape and seascape approaches",
+      "scope": "in the zones that will be subjected to climate-driven changes according to current predictions",
+      "outcome": "Increase connectivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Expansion of protected area (PA) extent",
+      "scope": "of the PA network",
+      "outcome": "enhance the ability of the PA network to function as an additional area to build resilience to climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_13",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "climate-vulnerable taxa",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_14",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Invasive Alien Species (IAS)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Review and modify/update existing policies, laws, and regulations related to biodiversity and natural resources",
+      "scope": "related to biodiversity and natural resources",
+      "outcome": "incorporate climate change adaptation considerations"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_16",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "towards biodiversity",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop an accurate forecasting system for sea level rise and establish a sea level database in Sri Lanka",
+      "scope": "in Sri Lanka",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Coastal hazard and vulnerability mapping",
+      "scope": "the entire coastal belt of the country",
+      "outcome": "to cover the entire coastal belt of the country"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Incorporate climate change information into the coastal zone management plan (CZMP)",
+      "scope": "the coastal zone management plan (CZMP)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify, designate, and prioritize climate-sensitive coastal and marine areas, and prepare management plans",
+      "scope": "climate-sensitive coastal and marine areas",
+      "outcome": "enhancing resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Restore coastal ecosystems (e.g. coral reefs, mangrove, sand dunes) and improve conservation actions for marine mammals and other threatened species",
+      "scope": "coastal ecosystems (e.g. coral reefs, mangrove, sand dunes)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "increasing Solar PV, Wind, Hydro and Sustainable Biomass based electricity generation",
+      "scope": "the national electricity generation mix",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduction of grid integrated energy storage systems such as Pumped Storage and Battery Energy Storage Systems (BESS)",
+      "scope": "grid integrated energy storage systems",
+      "outcome": "increase absorption of renewable energy and reduce thermal generation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "promoting energy-efficient equipment, technologies, and system improvements",
+      "scope": "covering commercial, institutional, and residential sectors",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conversion of existing fuel oil-based combined cycle power plants to Natural Gas (NG) and establishment of new NG plants",
+      "scope": "existing fuel oil-based combined cycle power plants",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conduct R&D activities and other necessary studies",
+      "scope": "clean energy technologies and other grid supporting infrastructure",
+      "outcome": "increase readiness to deploy such technologies in the future"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_27",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Ecosystem-based approach to fisheries management (EAFM) in already identified high vulnerability areas will be extended to identify more areas of vulnerability",
+      "scope": "in already identified high vulnerability areas",
+      "outcome": "enhance resilience"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify and expand sustainable fisheries, aquaculture and culture-based fisheries",
+      "scope": "sustainable fisheries, aquaculture and culture-based fisheries",
+      "outcome": "address food security issues relating to climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_29",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop climatic-resilient varieties, and farming and breeding technologies",
+      "scope": "",
+      "outcome": "increase resilience in a changing climate"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Evaluate the production capabilities of fisheries and aquatic resources",
+      "scope": "in climate vulnerable lagoons",
+      "outcome": "maintain sustainable and stable productivity levels"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop technologies to predict changing weather conditions and enhance safety at sea",
+      "scope": "in coastal fisheries",
+      "outcome": "predict changing weather conditions and enhance safety at sea"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_32",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conduct fisheries and aquatic research",
+      "scope": "",
+      "outcome": "identify climatic change-driven impacts that affect production"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_33",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce alternative livelihoods",
+      "scope": "",
+      "outcome": "reduce climate vulnerability"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Sustainable management of forests and the restoration of other degraded lands",
+      "scope": "forests and the restoration of other degraded lands",
+      "outcome": "at least 32% by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Expansion, restoration, and sustainable management of trees outside forest (TROF)",
+      "scope": "trees outside forest (TROF)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "tree planting",
+      "scope": "in major rivers",
+      "outcome": "catchment protection"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_37",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conservation and enhancement",
+      "scope": "blue carbon ecosystems including mangroves, sea grass, salt marshes",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_38",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "integrated into all related sectors",
+      "scope": "the health sector",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_39",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "non-communicable diseases (NCDs) and health conditions directly attributable to climate change",
+      "outcome": "Improved capacity to manage non-communicable diseases (NCDs) and health conditions directly attributable to climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_40",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "malnutrition due to climate change",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_41",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "surveillance and management of climate-sensitive vector-borne and zoonotic diseases",
+      "scope": "climate-sensitive vector-borne and zoonotic diseases (dengue, malaria, filariasis, leishmaniasis and leptospirosis)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_42",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "extreme weather/climate events and other climate-related emergencies",
+      "outcome": "Reduce morbidity and mortality resulting from extreme weather/climate events and other climate-related emergencies"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_43",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "application of energy efficiency practices",
+      "scope": "across the industry sector, with a particular focus on energy-intensive industries",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_44",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integration of renewable energy technologies",
+      "scope": "within industrial energy usage",
+      "outcome": "expand the proportion of renewable energy within industrial energy usage"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_45",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "applying Resource Efficient and Cleaner Production (RECP), Life Cycle Analysis (LCA), Circular Economy, Sustainable Consumption and Production (SCP), industrial symbiosis, eco labelling and green reporting in industries",
+      "scope": "in industries",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_46",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish eco-industrial parks and networks",
+      "scope": "eco-industrial parks and networks",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_47",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implementation of measures",
+      "scope": "under the Industrial Processes and Product Use (IPPU) category",
+      "outcome": "mitigate GHG emissions"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_48",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conversion of industry refrigeration and commercial refrigeration systems to low-GWP alternative technology",
+      "scope": "industry refrigeration and commercial refrigeration systems",
+      "outcome": "to low-GWP alternative technology"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_49",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in industrial decarbonization",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_50",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "National level stocktaking and progress reviewing on Loss and Damage",
+      "scope": "related to all sectors such as but not exclusive to - power and energy, industries, telecommunication, agriculture, livestock and fisheries, biodiversity and forestry, housing, coastal and marine infrastructure, transport, education, water, health, tourism, gender and child protection, social protection",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_51",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the existing weather and climate forecasting system including extreme weather and slow onset events and encompassing economic and non-economic impacts",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_52",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the integrated data management system for losses and damages",
+      "outcome": "for evidence-based policymaking"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_53",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish an overarching, nationally appropriate, functional and coordinated institutional mechanism for L&D",
+      "scope": "for L&D",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_54",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop a Risk Management Framework covering social, economic, physical and ecological risks due to climate change related and extreme disaster events",
+      "scope": "covering social, economic, physical and ecological risks due to climate change related and extreme disaster events",
+      "outcome": "enabling climate/disaster risk financing"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_55",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "introducing Good Animal Husbandry practices (GAHP) in consideration of managing herds, herd health, feed and by improving animal comfort and welfare",
+      "scope": "dairy sector",
+      "outcome": "Improve dairy sector productivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_56",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "by GAHP such as improving genetics, feed efficiency, animal health, comfort and welfare",
+      "scope": "Monogastrics",
+      "outcome": "Improve the productivity of Monogastrics"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_57",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt renewable energy",
+      "scope": "for livestock and poultry applications",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_58",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce adaptation measures, particularly genetic improvement, disease surveillance and forage improvement strategies",
+      "scope": "on ruminant livestock",
+      "outcome": "to address climate impacts on ruminant livestock"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_59",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce technological innovations and interventions, especially by improved feeding, disease surveillance and management strategies",
+      "scope": "in poultry and swine farming",
+      "outcome": "to build resilience in poultry and swine farming"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_60",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for climate change adaptation",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_61",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "sustainable tourism practices and awareness",
+      "scope": "in destinations of high climate change vulnerability",
+      "outcome": "improved risk preparedness"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_62",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce risk reduction and risk transfer mechanisms",
+      "scope": "affecting tourism",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_63",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "introducing green building design to all new constructions and refurbishments",
+      "scope": "in the tourism sector",
+      "outcome": "Promote climate resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_64",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the tourism sector",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_65",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Transport sector",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_66",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "public passenger transport",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_67",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Shift freight to efficient modes",
+      "scope": "freight",
+      "outcome": "to efficient modes"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_68",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_69",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "vehicle fleet",
+      "outcome": "Improve vehicle fleet efficiency"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_70",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "built environment related to transport systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_71",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "mainstreaming climate change adaptation into national, regional and local level physical planning processes",
+      "scope": "human settlements and infrastructure",
+      "outcome": "Enhance the resilience of human settlements and infrastructure"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_72",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Incorporate Disaster Risk Reduction (DRR) into the urban and human settlement planning/implementation",
+      "scope": "the urban and human settlement planning/implementation in areas of high vulnerability to climate change risks",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_73",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "coastal settlements and urban heat islands (UHIs)",
+      "outcome": "Minimize the impact of slow onset climate events"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_74",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Demonstrate \u201cCircular economy\u2019\u2019 practices",
+      "scope": "across solid waste sources",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_75",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "through biological treatments and other means",
+      "scope": "biodegradable solid waste component",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_76",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce energy recovery using non-compostable, non-reusable and non-recyclable waste",
+      "scope": "non-compostable, non-reusable and non-recyclable waste",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_77",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Use of sanitary and engineered landfills for the disposal of solid waste",
+      "scope": "solid waste",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_78",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement and promote sustainable wastewater management systems",
+      "scope": "in urban and rural areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_79",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Destruction of industrial hazardous waste and infectious waste via incineration processes that does not involve material and energy recovery",
+      "scope": "industrial hazardous waste and infectious waste",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_80",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_81",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Integrated River Basin Management (IRBM) approach adopted",
+      "scope": "in Sri Lanka",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_82",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Groundwater and surface water monitoring and vulnerability assessment in highly sensitive and drought-prone areas of the country and implementing remedial measures",
+      "scope": "in highly sensitive and drought-prone areas of the country",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_83",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "implement climate-resilient water supply & sanitation",
+      "scope": "water supply & sanitation",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_84",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "the re-use of treated wastewater for other purposes",
+      "scope": "water",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_85",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish and improve salinity barriers",
+      "scope": "in rivers where intakes are subjected to climate induced saline water intrusion during the drought season",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_86",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Capacity building for water, health and educational sectors and public awareness",
+      "scope": "for water, health and educational sectors",
+      "outcome": "building resilience to climate change"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_87",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Restoration, rehabilitation, and augmentation of existing irrigation systems",
+      "scope": "existing irrigation systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_88",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in irrigation schemes",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_89",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Assess river floods and adopt mitigation measures and early warning systems",
+      "scope": "for priority basins",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_90",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "(2026-2035)",
+      "outcome": "20.09% total GHG reduction vs BAU (2026-2035)"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_91",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in electricity generation",
+      "outcome": "70% renewable energy in electricity generation by 2030"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "PPPP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "adequate measures taken for the conservation and assurance of their sustainability",
+      "scope": "unique environmental settings, water resources, natural ecosystems and cultural landscapes in all development activities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "PPPP_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the planning of human settlements",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "PPPP_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in future development activities",
+      "outcome": "fulfilling Sustainable Development Goals declared by the UnitedNations"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "PPPP_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the locations with human resource: wherepopulations with various skills and education levels are available; other resources:such as natural reserves and scenic settings; and in-built potentials such as areaswith competitive advantage for diversified developments",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adhering to sustainable and eco-friendly agriculture practices",
+      "scope": "agriculture practices",
+      "outcome": "Double the resource-productivity (compared to 2020 estimates)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "farmers/agri-producers",
+      "outcome": "Double the economic profitability of farmers/agri-producers (compared to estimates of 2020)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the Agri-Food System",
+      "outcome": "Increase the contribution of the Agri-Food System upto 15% of the National Economy"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "along the agri-food value chain",
+      "outcome": "by a minimum of 50% from the present status"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the national requirement",
+      "outcome": "by 50% of the national requirement"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Increase the eco - friendly inputs application",
+      "scope": "in crop production",
+      "outcome": "upto 100% of the requirement"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Supply safe and quality food and feed",
+      "scope": "in compliance with food and feed control regulations of the country",
+      "outcome": "safe and quality food and feed"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a government-regulated food and feed control system",
+      "scope": "food and feed control system",
+      "outcome": "supporting certification, standardization, and other logistics"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish farmer/agri-producer groups",
+      "scope": "farmer/agri-producer groups",
+      "outcome": "with Agri-entrepreneurship capacity, coupled with efficient market systems"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a constituted role and mandatory participation of farmers/agri-producers",
+      "scope": "farmers/agri-producers",
+      "outcome": "mandatory participation of farmers/agri-producers in the process of decision-making"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Build an agri-food system",
+      "scope": "in Sri Lanka",
+      "outcome": "that is resilient to climatic and other disasters"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a system of transparent, accountable, responsible and participatory governance",
+      "scope": "for decision making",
+      "outcome": "transparent, accountable, responsible and participatory governance"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through a well-organized agricultural production system while harnessing the agro-ecological potential and strengthening the food system",
+      "scope": "food and feed crops",
+      "outcome": "Improve production and productivity of food and feed crops"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Prepare, approve and adopt guidelines for Good Agricultural Practices (GAP)",
+      "scope": "for all crops and farming systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt need-based Crop Prioritization (national and provincial needs, environmental concerns/agro- ecology, productivity, return to investment, export) and Crop Zoning",
+      "scope": "national and provincial needs, environmental concerns/agro- ecology, productivity, return to investment, export",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_16",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce measures to minimize temporal variation in productivity with appropriate varieties, production technologies and Agro-met Advisories (AMAs) based on climate forecasting",
+      "scope": "",
+      "outcome": "minimize temporal variation in productivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_17",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt measures to produce more with less inputs",
+      "scope": "",
+      "outcome": "produce more with less inputs (enhance input/land productivity)"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt Precision Agriculture systems (e.g., new technologies for higher fertilizer use efficiency, soil test- based fertilizer application)",
+      "scope": "to ecosystem",
+      "outcome": "enhance productivity and minimize negative impacts to ecosystem"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_19",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_20",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "focusing on the food systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_21",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "scientifically-valid population control of animals",
+      "scope": "agriculture and natural ecosystems",
+      "outcome": "minimize their impact"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "assured financial assistance to smallholders",
+      "scope": "existing farm units",
+      "outcome": "Improve productivity of existing farm units"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce low-interest loan schemes (credit)",
+      "scope": "agricultural production and productivity",
+      "outcome": "facilitate agricultural production and productivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish private-public-producer partnerships (PPPP) for machinery use",
+      "scope": "for machinery use",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_26",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "provide higher returns to the investment"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_27",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "home gardening",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "different production technologies (e.g., vertical farming, family farming, rooftop gardening, community garders)",
+      "scope": "urban and peri-urban food systems and metro agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and implement a national cropping plan for priority crops",
+      "scope": "national cropping plan for priority crops",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_30",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Allocation of an adequate budget",
+      "scope": "operations of seed certification process",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_32",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Timely supply and/or production of quality inputs including seeds and planting material, at affordable prices",
+      "scope": "",
+      "outcome": "at affordable prices"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a mechanism through PPP",
+      "scope": "quality seed and planting material",
+      "outcome": "ensure availability of quality seed and planting material on timely basis"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Decentralize and strengthen seed certification process at provincial level",
+      "scope": "seed certification process at provincial level",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish regional level supply/service/renting machinery centers through PPP",
+      "scope": "regional level",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish village seed banks",
+      "scope": "village seed banks",
+      "outcome": "conservation and sustainable utilization of traditional germplasm"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_37",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in Sri Lanka",
+      "outcome": "local production of agricultural machinery and further improvement of agricultural tools in Sri Lanka"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_38",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a mechanism to certify machinery and other agricultural inputs",
+      "scope": "to be used in Sri Lanka",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_39",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a mechanism/system for production of fertilizer, stimulants, and soil conditioners, and plant protection technologies",
+      "scope": "to meet the national needs",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_40",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Take periodic measures to establish, re-visit, assess and recommend measures",
+      "scope": "for fertilizer",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_41",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Enforce a regulatory framework",
+      "scope": "for organic/bio fertilizer production",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_42",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Provide authority to FOs, FPOs and FPCs to initiate actions for access of such technologies and adoption",
+      "scope": "to FOs, FPOs and FPCs",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_43",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "involved in fertilizer import/production and distribution of quality-assured fertilizer",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_44",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a mechanism to provide organized skilled-labour supply and contract farming",
+      "scope": "skilled-labour supply and contract farming",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_45",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Enforce regulations strictly",
+      "scope": "in import, production and use of agricultural inputs",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_46",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "optimum use of inputs and far-sighted management while safeguarding farming community andthe environment",
+      "scope": "arable Lands",
+      "outcome": "Improve productivity and sustainability of arable Lands"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_47",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_48",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt measures to optimize the use of fertilizer",
+      "scope": "the use of fertilizer",
+      "outcome": "obtain higher productivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_49",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce and adopt new and appropriate technologies",
+      "scope": "nutrient use efficiency (NUE) and fertilizer use efficiency (FUE)",
+      "outcome": "increase nutrient use efficiency (NUE) and fertilizer use efficiency (FUE)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_50",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a productivity-based and priority-based incentive mechanism",
+      "scope": "application of plant nutrients",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_51",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce incentive-based mechanism",
+      "scope": "from all sectors",
+      "outcome": "gradual replacement of fertilizer subsidy from all sectors"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_52",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Enforce regulatory measures",
+      "scope": "ecosystem services",
+      "outcome": "safeguard ecosystem services"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_53",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a prescription-based sale and use of pesticides \u2013 with the involvement of Agrarian Service Centers and Farmer Cooperatives or establishment of Kiosks",
+      "scope": "with the involvement of Agrarian Service Centers and Farmer Cooperatives or establishment of Kiosks",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_54",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a system to promote integrated pest/weed management approaches",
+      "scope": "plant protection technologies",
+      "outcome": "facilitate multiple use of plant protection technologies"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_55",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce and promote adoption of novel and appropriate eco-friendly pest/weed control techniques (including bio-pesticides/botanicals/predator mites, etc.)",
+      "scope": "pest/weed control techniques",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_56",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and implement plans to increase the extent of land with organic ameliorations by providing an appropriate incentive package",
+      "scope": "land with organic ameliorations",
+      "outcome": "increase the extent of land with organic ameliorations"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_57",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce and increase the use of Precision agriculture systems (e.g., new technologies for higher fertilizer use efficiency, soil test-based fertilizer application)",
+      "scope": "Precision agriculture systems",
+      "outcome": "enhance productivity and minimize negative impacts to ecosystem"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_58",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct Continuing Professional Development (CPD) programs",
+      "scope": "for agricultural extension officers and ARPAs",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_59",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "from agricultural production",
+      "outcome": "minimize abandoned lands from agricultural production"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_60",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement a social audit system",
+      "scope": "in all incentive-based projects and programmes in agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_61",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish agro-industrial zones using farmer cluster approach with agribusiness ventures and appropriate economic incentives",
+      "scope": "using farmer cluster approach with agribusiness ventures",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_62",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Provide economic incentives based on cluster approach",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_63",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through participatory management",
+      "scope": "irrigation water",
+      "outcome": "improve the irrigation water use efficiency"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_64",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Take appropriate regulatory measures",
+      "scope": "ground water",
+      "outcome": "avoid excessive use of ground water"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_65",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for agricultural purposes",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_66",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt water-saving technologies such as drip-irrigation",
+      "scope": "in agro- ecosystems where applicable",
+      "outcome": "enhance irrigation water productivity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_67",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt soil and water conservations measures",
+      "scope": "",
+      "outcome": "to control soil erosion and land degradation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_68",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "effective implementation of the Soil Conservation Act",
+      "scope": "catchment",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_69",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt third season cultivation in paddy fields using residual moisture",
+      "scope": "in paddy fields",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_70",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Rehabilitate reservoirs and irrigation systems with the support of line agencies",
+      "scope": "to agricultural lands",
+      "outcome": "ensure efficient irrigation water supply to agricultural lands"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_71",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in reservoirs",
+      "outcome": "ensure fish farming in reservoirs take place in collaboration and coordination of all related local associations/societies"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_72",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "during pre- and post-harvest management",
+      "outcome": "for sustainableagricultural production"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_73",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a formal and a well-coordinated mechanism",
+      "scope": "all stakeholders",
+      "outcome": "effectively engage all stakeholders for technology development"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_74",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide financial and institutional support",
+      "scope": "using locally-available resources",
+      "outcome": "develop cost-effective technology using locally-available resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_75",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Upgrade the system of crop production forecasting with the support of national and international development partners",
+      "scope": "crop production forecasting",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_76",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for perishables",
+      "outcome": "adoption of technologies targeting value addition for perishables"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_77",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt correct harvest and pre-harvest technologies, including packaging",
+      "scope": "",
+      "outcome": "improve postharvest quality"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_78",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "technology transfer mechanisms",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_79",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Re-visit and restructure existing authoritative body responsible for agriculture research",
+      "scope": "existing authoritative body responsible for agriculture research",
+      "outcome": "focus on establishing an Agriculture Research and Development/Extension Council"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_80",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "ICT-based agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_81",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through field validation",
+      "scope": "into the sector",
+      "outcome": "Introduce proven and appropriate technology into the sector"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_82",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "food and feed",
+      "outcome": "to safeguard human and animal health"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_83",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and adopt regulations",
+      "scope": "in both locally produced and imported food products",
+      "outcome": "ensure food and feed safety"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_84",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "GAP/Organic agriculture /Ecological agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_85",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish state of the art laboratories",
+      "scope": "to monitor food and feed standards (quality control)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_86",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and strictly adopt food safety standards",
+      "scope": "food safety standards",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_87",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt standard process control measures for food product quality",
+      "scope": "for food product quality",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_88",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a stringent labeling system for food products",
+      "scope": "for food products",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_89",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Revisit village fair/farmers market system",
+      "scope": "village fair/farmers market system",
+      "outcome": "providing good quality, standard food products to consumers"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_90",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "non-traditional food resources",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_91",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in agriculture development",
+      "outcome": "safeguarding ecosystem services"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_92",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce and adopt eco-friendly agricultural practices",
+      "scope": "across agro-ecosystems",
+      "outcome": "to support environmental conservation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_93",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the establishment of focused breeding programs using traditional germplasm",
+      "scope": "using traditional germplasm",
+      "outcome": "Ensure availability of locally improved seed and planting material"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_94",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish village seeds banks",
+      "scope": "village seeds banks",
+      "outcome": "germplasm conservation and sustainable utilization of traditional germplasm especially focusing on organic agriculture"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_95",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce and adopt modern eco-friendly input management techniques (including soil-test based fertilizer application, organic matter application, use of bio-pesticides/botanicals/predators for pests and disease control)",
+      "scope": "arable land",
+      "outcome": "enhance productivity of arable land and safeguard ecosystem services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_96",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt a mechanism to have a mandatory involvement of multinational agencies",
+      "scope": "multinational agencies",
+      "outcome": "mandatory involvement of multinational agencies in promoting eco- friendly agricultural activities in Sri Lanka"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_97",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "strengthening facilities at the NPQS and enforcing related regulations",
+      "scope": "at the NPQS",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_98",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a well-organized surveillance system",
+      "scope": "for early-warning of new pest emergence and pest resurgence",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_99",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "financial incentives to access solar-energy and wind powered technology/battery-powered technology for irrigation, temperature and RH-controlled -storage systems) and use of biogas",
+      "scope": "in agriculture",
+      "outcome": "increase the use of renewable energy in agriculture"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_100",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "farming systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_101",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt mechanisms to ensure conformity of agricultural practices to the environmental standards and safeguards",
+      "scope": "agricultural practices",
+      "outcome": "ensure conformity of agricultural practices to the environmental standards and safeguards, including conservation and sustainable utilization of biodiversity of the country"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_102",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "among the value chain actors, especially focusing on value added products, targeting domestic and International markets",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_103",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish an effective Agriculture Enterprise Resource Planning (ERP) \u2013 a systems approach, includingnational and export market information/intelligence, climate/weather information through environmental impact analysis and economic and financial analysis",
+      "scope": "Agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_104",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a market-oriented production system",
+      "scope": "production system",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_105",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a marketing network through the Agrarian Service Centers and the DECs",
+      "scope": "through the Agrarian Service Centers and the DECs",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_106",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a market mechanism",
+      "scope": "to producers who follow GAP",
+      "outcome": "ensure higher returns and profits to producers who follow GAP"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_107",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a minimum price for staple crop products",
+      "scope": "for staple crop products",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_108",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide seed-funds and enhance management capacity of farmer producer organizations",
+      "scope": "of farmer producer organizations",
+      "outcome": "reducing input costs, maximizing profits, strengthening farmer producer organizations as economic units"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_109",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify niche markets",
+      "scope": "products originated from traditional germplasm",
+      "outcome": "promote products originated from traditional germplasm"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_110",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Build capacity of the FOs/FPOs, SMEs and existing market players on value addition",
+      "scope": "of the FOs/FPOs, SMEs and existing market players",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_111",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create and strengthen value chains of priority crops",
+      "scope": "of priority crops",
+      "outcome": "to connect farmers to numerous markets"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_112",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a target-based supply chain management system",
+      "scope": "for registered market players",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_113",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and adopt regulatory measures",
+      "scope": "for fresh and value-added products",
+      "outcome": "implement standards for fresh and value-added products"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_114",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce and adopt appropriate and modern technologies",
+      "scope": "",
+      "outcome": "develop competitive value-added food products"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_115",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for value addition of agricultural produce",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_116",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt a well-planned demand-oriented cultivation system targeting the markets",
+      "scope": "with special attention to perishable crops",
+      "outcome": "to avoid seasonal gluts"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_117",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Introduce and adopt measures",
+      "scope": "inter-institutional linkages",
+      "outcome": "providing agro-based employment and more value addition opportunities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_118",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Ensure availability of credit facilities for agricultural produce across the value chain",
+      "scope": "for agricultural produce across the value chain",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_119",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "through Farmer Producer Organizations, FOs and Farmer Federations",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_120",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish regional-level common processing facilities",
+      "scope": "regional-level common processing facilities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_121",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "with appropriate logistic services in compliance with national and international standards",
+      "scope": "the domestic and international market systems",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_122",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Take appropriate measures to strengthen logistics management through PPP (e.g., product transport systems, product unloading systems, etc.)",
+      "scope": "logistics management",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_123",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduce and adopt mechanisms and technology for traceability (e.g., Blockchain systems)",
+      "scope": "for traceability",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_124",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt warehouse receipting system for durables (e.g., grain crops)",
+      "scope": "for durables (e.g., grain crops)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_125",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish temperature- and RH-controlled storage and cold chain facilities for perishables through PPP",
+      "scope": "for perishables",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_126",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt systems to promote branding at farm-gate level",
+      "scope": "at farm-gate level",
+      "outcome": "to support marketing of agricultural produce and products"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_127",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "District Economic Centers (DECs)",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_128",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for farming and rural community",
+      "outcome": "to acquire agricultural expertise and make appropriate decisions tobecome economically independent"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_129",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish farmer producer organizations leading to a farmer federation",
+      "scope": "farmer producer organizations",
+      "outcome": "to transform such organizations as empowered social enterprises to handle agri-businesses"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_130",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Create awareness among farming community on cost: benefit, advantages/disadvantages of locally produced seeds and other inputs",
+      "scope": "among farming community",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_131",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish farmer-oriented banking system (e.g., Farmers\u2019 Bank)",
+      "scope": "for agriculturaloperations and ventures",
+      "outcome": "for dedicated support for agriculturaloperations and ventures"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_132",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Re-orient and strengthen the development bank system",
+      "scope": "actors in the agriculture value chain",
+      "outcome": "to support and develop actors in the agriculture value chain"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_133",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a mechanism to register and recognize fulltime farmers as agri-entrepreneurs",
+      "scope": "fulltime farmers",
+      "outcome": "to support organized operations in agriculture"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_134",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a strong network of Agrarian Centers, Farmer Producer Organizations (FPOs), FOs, Cooperatives, Farmer Companies, etc.",
+      "scope": "Agrarian Centers, Farmer Producer Organizations (FPOs), FOs, Cooperatives, Farmer Companies, etc.",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_135",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish agro-industrial zones using farmer-cluster approach with agribusiness ventures through private-public-partnership (PPP)",
+      "scope": "agro-industrial zones",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_136",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a mechanism to ensure farmers access new technology at affordable price",
+      "scope": "farmers",
+      "outcome": "reduce cost of production and enhance resource productivity and profit"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_137",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish an agricultural product procuring and distribution system (e.g., registered agents; auction system) through the engagement of FOs/FPOs",
+      "scope": "through the engagement of FOs/FPOs",
+      "outcome": "enhance marketability of farmer produce and increase farm-gate prices for fresh and value-added agricultural products"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_138",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a mechanism to fully utilize agriculture diploma holders and agriculture graduates in the national development agenda, especially in the field of agriculture, and agri-business at various levels and establish a continuous learning platform for farmers",
+      "scope": "for farmers",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_139",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "support for mechanization,access to modern technologies, and productivity-based incentive systems",
+      "scope": "youth and women in agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_140",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "capacity building for employment and change management",
+      "scope": "in agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_141",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "adoption of modern technologies and digitalization and access to finance",
+      "scope": "youth engagement in agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_142",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Promote adoption of appropriate adaptation and mitigation measures",
+      "scope": "of the agriculture systems",
+      "outcome": "increaseclimate-resilience of the agriculture systems"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_143",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Design and adopt weather index-based climate risk management tools",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_144",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a seasonal Agro-met Advisory (AMA) issuing mechanism with a minimum lead time of onemonth before the start of each season in collaboration with the Department of Meteorology and other relevant line agencies",
+      "scope": "in collaboration with the Department of Meteorology and other relevant line agencies",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_145",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adhere to the actions related to agriculture identified in the National Adaptation Plan (NAP) for Climate Change and Nationally Determined Contributions (NDC)",
+      "scope": "related to agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_146",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "breeding programmes and technological development",
+      "scope": "for abiotic and biotic stresses",
+      "outcome": "support climate resilient agriculture"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_147",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Propose and adopt financial incentives",
+      "scope": "in agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_148",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Take measures to discourage burning of crop biomass and encourage transforming them into compost",
+      "scope": "crop biomass",
+      "outcome": "discourage burning of crop biomass and encourage transforming them into compost"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_149",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "connecting urban and rural communities",
+      "scope": "urban and rural communities",
+      "outcome": "to tackleclimate shocks and other disasters"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_150",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt crisis management mechanisms",
+      "scope": "especially in city regions",
+      "outcome": "meet the food demand under special situations especially in city regions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_151",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify and strengthen critical nodes of the city region food system",
+      "scope": "of the city region food system",
+      "outcome": "strengthen the connectivity between the rural and urban communities"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_152",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish an inter-ministerial core group including central, provincial and district level administration",
+      "scope": "including central, provincial and district level administration",
+      "outcome": "support city region food systems"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_153",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Constitute a centrally-controlled information development and dissemination system",
+      "scope": "related to the agriculture sector",
+      "outcome": "to manage research, development and extension systems, andrecruitment related to the agriculture sector"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_154",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a demand-driven agriculture research program",
+      "scope": "agriculture research program",
+      "outcome": "aching national development goals"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_155",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide appropriate incentives (financial & physical)",
+      "scope": "for technology development",
+      "outcome": "promote R&D for technology development"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_156",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Invest on research and development",
+      "scope": "of priority crops",
+      "outcome": "produce hybrids and high yielding varieties of priority crops"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_157",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "at primary, secondary and tertiary levels",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_158",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish real-time agriculture data base with continuous updating and easy public access",
+      "scope": "agriculture",
+      "outcome": "real-time agriculture data base with continuous updating and easy public access"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_159",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Incorporate agriculture progressively as a compulsory subject at least until GCE O/L examination",
+      "scope": "at least until GCE O/L examination",
+      "outcome": "agriculture progressively as a compulsory subject at least until GCE O/L examination"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_160",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Incorporate more skills development in ancient agriculture technologies and modern on a need-based approach to the agriculture curricular in diploma and undergraduate levels",
+      "scope": "in diploma and undergraduate levels",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_161",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt a market oriented agricultural extension system",
+      "scope": "agricultural extension system",
+      "outcome": "a market oriented agricultural extension system"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_162",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "to the producers",
+      "outcome": "effective information dissemination to the producers"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_163",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a centrally coordinated agriculture extension system with a stronger link between the DOA, PDOA, Mahaweli Authority of Sri Lanka and Private Sector extension setup",
+      "scope": "between the DOA, PDOA, Mahaweli Authority of Sri Lanka and Private Sector extension setup",
+      "outcome": "a centrally coordinated agriculture extension system with a stronger link between the DOA, PDOA, Mahaweli Authority of Sri Lanka and Private Sector extension setup"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_164",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "fresh recruitment of extension officers at grass root level/village level",
+      "scope": "at grass root level/village level",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_165",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "use of mobile/data-tabs technologies for information dissemination and real-time feedback",
+      "scope": "For AIs, ARPAs, Presidents of FarmerCommittees at ASCs",
+      "outcome": "information dissemination and real-time feedback"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_166",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide advisory and advocacy",
+      "scope": "of farmers",
+      "outcome": "evidence-based decision making of farmers"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_167",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Institute a market-oriented agriculture extension system",
+      "scope": "agriculture extension system",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_168",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt an efficient system for dissemination of market information",
+      "scope": "for dissemination of market information",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_169",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Build knowledge on judicious use of fertilizer and pesticides",
+      "scope": "on judicious use of fertilizer and pesticides",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_170",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct knowledge building programs",
+      "scope": "of officers in the extension system",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_171",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and adopt recruitment criteria",
+      "scope": "to agriculture related employment opportunities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_172",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and establish a mechanism",
+      "scope": "in agriculture",
+      "outcome": "increase the involvement of skilled labour in agriculture"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_173",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conduct outreach programs",
+      "scope": "among producers",
+      "outcome": "build knowledge among producers on novel and appropriatetechnologies"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_174",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop a mechanism for progressive allocation of finances for agriculture research based on country priorities.",
+      "scope": "for agriculture research based on country priorities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_175",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop and implement training programs",
+      "scope": "in using agricultural technologies",
+      "outcome": "to minimize occupational hazards in using agricultural technologies"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_176",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt farmer field schools (FFS) approach",
+      "scope": "",
+      "outcome": "effective information dissemination"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_177",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "at national and local government levels with wider stakeholder participation for sustainable agricultural development",
+      "outcome": "for sustainable agricultural development"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_178",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a policy implementation, and monitoring and evaluation (M&E) committee/national policy management body (with a TOR) including linkages with provincial and local government set up",
+      "scope": "including linkages with provincial and local government set up",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_179",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish an effective coordination mechanism among line agencies of Ministries",
+      "scope": "among line agencies of Ministries",
+      "outcome": "to ensure compliance with the agriculture policy and enhance consumer and producer profitability"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_180",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Adopt a stable taxation and fiscal policy system",
+      "scope": "to the producers and consumers",
+      "outcome": "to provide price support to the producers and consumers"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_181",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Regulate imports based on annual/seasonal production targets",
+      "scope": "imports",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_182",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Re-define mandatory functions of line agencies to complement each other",
+      "scope": "of line agencies",
+      "outcome": "to support implementation of the agriculture policy and rational decision making"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_183",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a mechanism for policy integration through the intervention of the Department of National Planning",
+      "scope": "through the intervention of the Department of National Planning",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_184",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a performance-based work evaluation",
+      "scope": "of the state involvement in the food system",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_185",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Update/develop and implement relevant Acts/ordinances and regulations, including empowerment of agencies to coordinate in implementation such regulation",
+      "scope": "agencies",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_186",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt participatory approaches involving engagement of farmers, scientists, academia, private sector, non-governmental Organization (NGOs)/Community-based Organizations (CBOs)",
+      "scope": "farmers, scientists, academia, private sector, non-governmental Organization (NGOs)/Community-based Organizations (CBOs) in the national, regional and local level decision-making process in agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_187",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Impose regulations including punitive actions for violation of laws related to agriculture",
+      "scope": "laws related to agriculture",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_188",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Constitute the involvement of private sector and development partners in decision making related to agriculture",
+      "scope": "private sector and development partners in decision making related to agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_189",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt a mechanism to implement professional development",
+      "scope": "of the private sector agencies in the agriculture sector",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_190",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Institute a performance-based reward system",
+      "scope": "in agriculture across sub-sectors",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NAP_191",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "agricultural development",
+      "outcome": "remove financial and regulatory constraints that hamper agricultural development, especially on use of new machinery and technologies"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NAP_192",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Harmonize with agriculture related acts and other policies",
+      "scope": "agriculture related acts and other policies",
+      "outcome": "effective implementation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NFAP_1",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "regional and international obligations",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "marine fisheries",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "aquaculture and inland fisheries",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_5",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Minimized post-harvest losses and increased value addition"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_6",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Increased per capita consumption of fish"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_7",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Increased export earnings"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_8",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Improved opportunities for leisure, employment and enterprises development"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NFAP_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the fisher community",
+      "outcome": "Improved socio-economic conditions of the fisher community"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Construct a constantly updated national inventory of mineral resources",
+      "scope": "national inventory of mineral resources",
+      "outcome": "a constantly updated national inventory of mineral resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "mineral resources",
+      "outcome": "sustainable utilization of mineral resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the nation",
+      "outcome": "optimal benefits to the nation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "mineral resources",
+      "outcome": "the balance between environmental conservation and the sustainable use of mineral resources for economic development"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_5",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "providing a conducive regulatory framework and adopting good governance in the mineral sector",
+      "scope": "in the mineral sector",
+      "outcome": "Promote mineral investment"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_7",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in Mineral Industry",
+      "outcome": "resolve land related matters in Mineral Industry"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "will be integrated to formulate a detailed database and updated information system",
+      "scope": "of the mineral resources of the country, including basic geological data",
+      "outcome": "A national inventory of the mineral resources of the country, including basic geological data, will be made available with regular updates"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "A suitable institutional monitoring system will be developed",
+      "scope": "the mineral resources",
+      "outcome": "continually evaluate the current status of the mineral resources and possible mineable quantities and report the development of those resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "The government authorities shall be authorized for scientific study of minerals within the state\u2019s jurisdiction",
+      "scope": "within the state\u2019s jurisdiction",
+      "outcome": "to evaluate the nation\u2019s mineral wealth"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "related to mineral exploration or mining beyond national jurisdictions",
+      "outcome": "effective participation in global ocean governance"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Mining of minerals will be permitted if minerals are utilized appropriately",
+      "scope": "Mining of minerals",
+      "outcome": "preventing any potential underuse that could degrade the value of the minerals"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "will be given mining preference",
+      "scope": "The entities that utilize minerals in a way that will be most beneficial for the nation",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "will evaluate the activities of existing entities, including private companies and State-Owned Enterprises (SOEs)",
+      "scope": "existing entities, including private companies and State-Owned Enterprises (SOEs)",
+      "outcome": "to ensure the generation of maximum benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "should be identified and zoned for future utilization",
+      "scope": "The areas with a high mineral potential",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "necessary base data(environmental, geological, etc.) will be collected",
+      "scope": "Before the start of any mineral mining",
+      "outcome": "good health of the mines should be maintained with minimal negative impact on the surrounding environment"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "To develop infrastructure facilities",
+      "scope": "in remote rural areas where large or small-scale mining operations have been established",
+      "outcome": "to help the economic upliftment of the local population"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "will be assessed",
+      "scope": "local minerals",
+      "outcome": "to maximize economic benefits"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Market opportunities and market intelligence will be gathered",
+      "scope": "from the export of minerals in value-added form",
+      "outcome": "appropriate international market-based export values are obtained"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_20",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "mineral wastes",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "made available on a competitive basis following a careful analysis of the benefits to the country",
+      "scope": "quality mineral reserves",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "creating a competitive base for investors",
+      "scope": "for investors",
+      "outcome": "Processing and value-addition norms will be promoted"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the minerals may be imported and re-exported",
+      "scope": "the state",
+      "outcome": "overall gain to the state from mineral exports"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "prohibit the export of minerals in a minimal or non-value-added form",
+      "scope": "the local value-added industry",
+      "outcome": "adversely impact the sustenance and growth of the local value-added industry"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_25",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "both private enterprises and SOEs engaged in the mineral sector",
+      "outcome": "protect and minimize adverse impacts on the environment and society"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "following a comprehensive evaluation of its economic viability and potential environmental impacts, and is subject to close monitoring",
+      "scope": "in restricted areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_27",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "related to mining activities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Prior approval will be obtained",
+      "scope": "to operate mineral-based industries, including mining, in environmentally sensitive areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "sustainably manage the coastal resources within the Coastal Zone",
+      "scope": "within the Coastal Zone",
+      "outcome": "maintain the stability of the coastal ecosystem"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "use contemporary technology and efficient mining techniques",
+      "scope": "mining techniques",
+      "outcome": "address environmental issues and maintain the quality of raw materials"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "human resources development and training",
+      "scope": "in the mineral industry",
+      "outcome": "adopt available and advanced technologies to evolve a competitive edge in the mineral industry"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_32",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Restoration and rehabilitation will be essential components of the mining plan, which will be closely monitored and evaluated by the relevant authorities",
+      "scope": "of the mining plan",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_33",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Standard operating procedures will be developed",
+      "scope": "",
+      "outcome": "to prevent mineral contamination and infestation with unknown invasive species, harmful toxic chemicals, and radioactive or other biological, physical, or chemical means"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "The requirement for R&D activities will be identified",
+      "scope": "aligned with the national mineral policy's policy grounds, goals, and objectives",
+      "outcome": "facilitate the allocation of dedicated funding and resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Periodic assessments will be conducted",
+      "scope": "in the dynamics of the mineral industry",
+      "outcome": "identify priority areas for research in the dynamics of the mineral industry"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "The research will concentrate on the development of viable and affordable processing techniques and mineral value addition under local conditions",
+      "scope": "under local conditions",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_37",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "between government agencies, research institutions, industries, and other stakeholders",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_38",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Research will be developed",
+      "scope": "among the relevant entities",
+      "outcome": "to share expertise, information, and facilities among the relevant entities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_39",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in R&D activities related to mineral resources including minerals beyond national jurisdiction",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_40",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Appropriate mechanisms will be developed",
+      "scope": "among stakeholders",
+      "outcome": "to disseminate the research and development information and data among stakeholders"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_41",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "giving preference to advanced technologies and value addition processes",
+      "scope": "with both local and foreign investors, are promoted for industrial investments",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_42",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Existing Acts, regulations, guidelines, administrative frameworks, and fiscal norms shall be examined",
+      "scope": "Existing Acts, regulations, guidelines, administrative frameworks, and fiscal norms",
+      "outcome": "to align such tools with policy principles and goals"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_43",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of the mineral sector",
+      "outcome": "to facilitate the exploration, mining, and efficient supply of minerals for industries"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_44",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "with the assistance of relevant authorities",
+      "outcome": "to acquire due remittance to the State"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_45",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implementation of necessary legal and administrative norms",
+      "scope": "in the mineral sector",
+      "outcome": "Good governance in the mineral sector will be ensured"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_46",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "reviewed periodically and harmonized with the relevant policies governing industrial activity",
+      "scope": "the relevant policies governing industrial activity",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_47",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Market-based instruments (i.e. Polluter Pay System) are enforced",
+      "scope": "the mineral sector",
+      "outcome": "the sustainability of the mineral sector"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_48",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Development activities shall be limited to the lands with high mineral potential",
+      "scope": "the lands with high mineral potential",
+      "outcome": "enabling the mining of those mineral resources when and where needed"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NMP_49",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "capacity-building initiatives",
+      "scope": "implementation and enforcement of legislative and fiscal norms",
+      "outcome": "strengthen the implementation and enforcement of legislative and fiscal norms"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_50",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "indigenous rights",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_51",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Identification of spatial distribution of economically viable mineral occurrences",
+      "scope": "within Sri Lankan jurisdiction",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_52",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish mechanism for strategic assessment of optimum land use with the consultation of relevant stakeholders",
+      "scope": "in certain area",
+      "outcome": "utilize of minerals in certain area will be prioritized over other land uses"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_53",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "lands for future mineral investment projects",
+      "outcome": "availability of lands for future mineral investment projects"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_54",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Declaring cleared ready-to-investment mineral deposits by gazettes",
+      "scope": "cleared ready-to-investment mineral deposits",
+      "outcome": "ready-to-investment mineral deposits"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NMP_55",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "healthy mine closure and effective rehabilitation",
+      "scope": "mine closure",
+      "outcome": "effective land use"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_1",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for domestic, national food security and environmental needs including wildlife",
+      "outcome": "ensuring optimal water resources for domestic, national food security and environmental needs including wildlife as primary requirements"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Assess Basin wise and Aquifer wise water availability",
+      "scope": "in each sector",
+      "outcome": "provide optimal water allocation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conserve and establish the rightful value of the water and watershed resources",
+      "scope": "the water and watershed resources",
+      "outcome": "the rightful value of the water and watershed resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish water quality standards for different sources and uses",
+      "scope": "for different sources and uses",
+      "outcome": "upon improvement of the water quality of respective rivers"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_5",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "propose suitable institutional mechanism and identify the strategies for implementation",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "List out water related laws and identify the gaps",
+      "scope": "water related laws",
+      "outcome": "for a smooth implementation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Ensure flexible water allocation criteria",
+      "scope": "among competing water resource users",
+      "outcome": "promote social harmony among competing water resource users"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introduction of water conservation techniques",
+      "scope": "during period of crisis",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Recognize water rights of past, current and new users amicably",
+      "scope": "past, current and new users",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Identify riparian rights.",
+      "scope": "new users",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_11",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for various water users",
+      "outcome": "maintenance of quality of all water"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Monitor the water quality by using Water Quality Index in rivers and open water bodies.",
+      "scope": "in rivers and open water bodies",
+      "outcome": "upon improvement of the water quality in respective rivers periodically"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Promote sustainable management practices on surface water on the basis of river basin plans",
+      "scope": "on surface water",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop appropriate river basin plans based on current and future needs. \u2022 Catchment area and reservation protection, \u2022 Monitoring, regulating of effluent discharges",
+      "scope": "river basin",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "formulating appropriate land use plans",
+      "scope": "aquifers",
+      "outcome": "conserve aquifers"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Preparation of appropriate development plans at the divisional level with the participation of community and development stakeholders \u2022 Identification of activities related to conservation of catchment areas during the preparation of development plans and during implementation stages \u2022 Regulate the conservation, development and management of water resources in accordance with the appropriate land use policies without any prejudice to beneficiaries",
+      "scope": "at the divisional level",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Conserve the upper watersheds, wetlands, riverine systems",
+      "scope": "the upper watersheds, wetlands, riverine systems",
+      "outcome": "ensuring sustainability of water sources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Prepare appropriate guidelines for upper watershed management",
+      "scope": "for upper watershed management",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "combined use of surface and groundwater",
+      "scope": "surface and groundwater",
+      "outcome": "for optimum benefits"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop aquifer basin plans and identify re-charge zones. \u2022 Regular monitoring and baseline data development.",
+      "scope": "on the basis of identified aquifers",
+      "outcome": "preventing over exploitation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Identify Climate Change impacts on the water sector and review planning and management strategies periodically",
+      "scope": "the water sector",
+      "outcome": "to ensure mitigation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct action research and identify vulnerability on water sector due to Climate Change. \u2022 Identify and implement mitigatory measures which can be in-built in all short-term, medium term and long-term action plans or projects",
+      "scope": "on water sector",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_23",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "national, provincial and local interests",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "sharing water among basins",
+      "scope": "in line with river basins or sharing water among basins",
+      "outcome": "for both flood and drought management"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Highlight the economic value of water",
+      "scope": "of water",
+      "outcome": "to prevent wastage and inefficient use"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Make aware the users, beneficiaries and general public over the capital investment made by the state on development activities and more specifically on operation, maintenance and rehabilitation costs of the infrastructure",
+      "scope": "the users, beneficiaries and general public",
+      "outcome": "for society to appreciate the value of this eco system services"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_27",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Recognize traditions and customs when planning water resource conservation and development activities",
+      "scope": "when planning water resource conservation and development activities",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Take necessary action to promote local technology and traditional water management systems",
+      "scope": "local level stakeholder participation in development and management activities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt the current international policies, practices, benchmarks, development goals and management principles that are accepted by the Government of Sri Lanka in all future strategic planning",
+      "scope": "that are accepted by the Government of Sri Lanka in all future strategic planning",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_30",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Develop regular interactions with international professional institutions, UN agencies and International development partners and research institutions",
+      "scope": "water resource users and water managers",
+      "outcome": "to acquire updated information and knowledge on international policies, benchmarks and best practices"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_31",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in conservation, development and management of water resources",
+      "outcome": "to ensure good governance"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NWRP_32",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Institutionalize committees at various levels",
+      "scope": "at various levels",
+      "outcome": "to make decisions on water related issues and to recognize all relevant stakeholders"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NWRP_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Introducing modern water technical methods as per the international c o n s u m i n g standards following an extensive study of water consumption",
+      "scope": "while carrying out agricultural needs",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  }
+]

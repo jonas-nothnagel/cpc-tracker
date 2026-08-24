@@ -1,15 +1,15 @@
 "use client";
 
 /**
- * Direction — first scrollable section. Answers "are these policies
- * coherent with each other?" at the corpus level in one tight prose
- * block.
+ * Direction — first scrollable section: the recurring themes across the
+ * corpus. The corpus-level verdict headline and synthesis sentence that
+ * used to open this section moved up into the briefing header (Aug 2026,
+ * verdict-first fold: the first screen leads with the finding, not with
+ * utility controls); `SynthesisSentence` is exported from here for it.
  *
  * Per round-3 feedback (May 2026): the slide used to stack three
  * different formats (stats strip, AI-synthesis paragraph, storyline
  * cards). For non-technical policymakers that was overstimulating.
- * Everything now collapses into a single synthesis sentence in the
- * SlideFrame body.
  *
  * Per the theme-synthesis rework (July 2026, iterated on stakeholder
  * feedback): themes render as two side-by-side columns — top coherent
@@ -36,6 +36,7 @@ import { useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import {
   PrimerCard,
   PrimerCardBody,
@@ -53,7 +54,6 @@ import {
   computeStorylineLiveStats,
   concentrationDocAttribution,
   type FaultLine,
-  type HeadlineVerdict,
   type PrimerExamples,
   type StorylineLiveStats,
   type TargetConcentration,
@@ -74,10 +74,6 @@ const ALIGNED_HEADER_COLOR = ALIGNED_COLOR;
 const FRICTION_HEADER_COLOR = FLAGGED_COLOR;
 
 export function DirectionSection({
-  countryName,
-  documentCount,
-  verdict,
-  concentration,
   primer,
   countryConfig,
   corpusThemes,
@@ -88,10 +84,6 @@ export function DirectionSection({
   onHighlightPair,
   onSpotlightTheme,
 }: {
-  countryName: string;
-  documentCount: number;
-  verdict: HeadlineVerdict;
-  concentration: TargetConcentration;
   primer: PrimerExamples;
   countryConfig: CountryConfig | null;
   corpusThemes: CorpusThemes | null;
@@ -121,27 +113,14 @@ export function DirectionSection({
   );
   const hiddenThemeCount = storylines.length - visibleStorylines.length;
 
-  const synthesis = (
-    <SynthesisSentence
-      countryName={countryName}
-      documentCount={documentCount}
-      verdict={verdict}
-      concentration={concentration}
-      primer={primer}
-      countryConfig={countryConfig}
-      onOpenPair={onOpenPair}
-      onHighlightPair={onHighlightPair}
-    />
-  );
-
   return (
     <SlideFrame
       id={DIRECTION_SECTION_ID}
-      headline={t(`verdict.${verdict.bucket}`)}
-      body={synthesis}
+      headline={t("themesHeadline")}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         corpusThemes && storylines.length > 0 ? (
-          <TourButton tourId="directionThemes" scopeId={DIRECTION_SECTION_ID} />
+          <TourButton tourId="directionThemes" scopeId={DIRECTION_SECTION_ID} labelled />
         ) : undefined
       }
       evidence={
@@ -314,48 +293,22 @@ function ThemeColumn({
   );
 }
 
-function focusClause(
-  c: TargetConcentration,
-  countryConfig: CountryConfig | null,
-  t: ReturnType<typeof useTranslations<"briefing.direction">>,
-): string | null {
-  if (c.totalFlaggedPairs === 0 || c.contestedTargetCount === 0) return null;
-  const concentrated =
-    c.topCount <= Math.max(1, Math.round(c.contestedTargetCount * 0.2));
-  const sharePct = Math.round(c.coveredPairShare * 100);
-  if (!concentrated) {
-    return t("focusSpread", { count: c.contestedTargetCount });
-  }
-  // When one document dominates the concentration set, name it (documents
-  // only, never ministries).
-  const attribution = concentrationDocAttribution(c);
-  if (attribution) {
-    return t("focusConcentratedWithDoc", {
-      pct: sharePct,
-      count: c.topCount,
-      docCount: attribution.count,
-      docName: getDocFullLabel(countryConfig, attribution.doc),
-    });
-  }
-  return t("focusConcentrated", { pct: sharePct, count: c.topCount });
-}
-
-// Definitions surface in the AlignmentTermPopover; consumer reads them from
-// translations via the `t` instance passed in.
-
-function SynthesisSentence({
-  countryName,
-  documentCount,
-  verdict,
+/**
+ * The fold's "where to look" line: the concentration insight the overview
+ * tiles cannot carry, with the flagged term opening its definition-and-example
+ * popover. The rest of what the old synthesis sentence said (documents,
+ * strong-alignment share, flagged count) lives in the overview tiles, exactly
+ * once. Rendered by the briefing fold, not by DirectionSection; it lives here
+ * because the popover reuses the Direction primer tiles. Renders nothing when
+ * no pairs are flagged.
+ */
+export function FocusSentence({
   concentration,
   primer,
   countryConfig,
   onOpenPair,
   onHighlightPair,
 }: {
-  countryName: string;
-  documentCount: number;
-  verdict: HeadlineVerdict;
   concentration: TargetConcentration;
   primer: PrimerExamples;
   countryConfig: CountryConfig | null;
@@ -363,48 +316,49 @@ function SynthesisSentence({
   onHighlightPair?: (pair: PrimerHighlightPair | null) => void;
 }) {
   const t = useTranslations("briefing.direction");
-  const focusText = focusClause(concentration, countryConfig, t);
-  const docPhrase = t("docPhrase", { count: documentCount });
-  const denom = verdict.alignmentPairs + verdict.tensionPairs;
-  const reinforcePct =
-    denom > 0 ? Math.round((verdict.alignmentPairs / denom) * 100) : 0;
+  const c = concentration;
+  if (c.totalFlaggedPairs === 0 || c.contestedTargetCount === 0) return null;
+
+  const term = (chunks: ReactNode) => (
+    <AlignmentTermPopover
+      kind="flagged"
+      example={primer.tension}
+      definition={t("flaggedDefinition")}
+      countryConfig={countryConfig}
+      onOpenPair={onOpenPair}
+      onHighlightPair={onHighlightPair}
+    >
+      {chunks}
+    </AlignmentTermPopover>
+  );
+
+  const concentrated =
+    c.topCount <= Math.max(1, Math.round(c.contestedTargetCount * 0.2));
+  const sharePct = Math.round(c.coveredPairShare * 100);
+  // When one document dominates the concentration set, name it (documents
+  // only, never ministries).
+  const attribution = concentrated ? concentrationDocAttribution(c) : null;
   return (
-    <>
-      {t("openingPrefix", { docPhrase, country: countryName })}{" "}
-      <span className="tabular-nums">{verdict.signalPairs.toLocaleString()}</span>{" "}
-      {t("scoredSuffix")}{" "}
-      <span className="text-[var(--undp-black)] font-medium tabular-nums">
-        {reinforcePct}%
-      </span>{" "}
-      {t("reach")}{" "}
-      <AlignmentTermPopover
-        kind="aligned"
-        example={primer.aligned}
-        definition={t("alignedDefinition")}
-        countryConfig={countryConfig}
-        onOpenPair={onOpenPair}
-        onHighlightPair={onHighlightPair}
-      >
-        {t("strongAlignment")}
-      </AlignmentTermPopover>
-      .{" "}
-      <span className="tabular-nums">
-        {verdict.tensionPairs.toLocaleString()}
-      </span>{" "}
-      {t("pairsShow", { count: verdict.tensionPairs })}{" "}
-      <AlignmentTermPopover
-        kind="flagged"
-        example={primer.tension}
-        definition={t("flaggedDefinition")}
-        countryConfig={countryConfig}
-        onOpenPair={onOpenPair}
-        onHighlightPair={onHighlightPair}
-      >
-        {t("potentialMisalignment")}
-      </AlignmentTermPopover>
-      {focusText && <>; {focusText}</>}
-      .
-    </>
+    <p className="mt-3 max-w-prose text-body text-[var(--undp-black)]">
+      {!concentrated
+        ? t.rich("focusSentenceSpread", {
+            term,
+            count: c.contestedTargetCount,
+          })
+        : attribution
+          ? t.rich("focusSentenceConcentratedWithDoc", {
+              term,
+              pct: sharePct,
+              count: c.topCount,
+              docCount: attribution.count,
+              docName: getDocFullLabel(countryConfig, attribution.doc),
+            })
+          : t.rich("focusSentenceConcentrated", {
+              term,
+              pct: sharePct,
+              count: c.topCount,
+            })}
+    </p>
   );
 }
 

@@ -1,0 +1,5612 @@
+{
+  "storylines": [
+    {
+      "name": "Sistemas habilitadores compartidos para una resiliencia integrada",
+      "type": "reinforcement",
+      "description": "En los documentos sobre clima, adaptación, biodiversidad y tierras, la alineación reaparece a través de la gobernanza, la financiación, el fortalecimiento de capacidades, la información sobre riesgos climáticos y los mecanismos de coordinación que apoyan la implementación en múltiples sectores. La codificación presupuestaria, los sistemas de información, la capacitación y la cooperación entre actores aparecen repetidamente como mecanismos que ayudan a que estas agendas avancen en la misma dirección.",
+      "pathway": "La alineación de indicadores y el seguimiento conjunto en CCS, NDC, NBSAP, NAP y LDN podrían ser un punto de partida útil para rastrear cómo las finanzas, los datos y las herramientas de coordinación compartidos apoyan la implementación.",
+      "contributing_doc_pairs": [
+        "CCS<->LDN",
+        "CCS<->NAP",
+        "CCS<->NBSAP",
+        "CCS<->NDC",
+        "LDN<->NBSAP",
+        "LDN<->NDC",
+        "NAP<->NBSAP",
+        "NBSAP<->NDC"
+      ],
+      "anchor_target_ids": [
+        "CCS_19",
+        "CCS_20",
+        "CCS_12",
+        "NBSAP_12",
+        "NBSAP_17",
+        "LDN_9"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 7365,
+      "spans_documents": [
+        "CCS",
+        "LDN",
+        "NAP",
+        "NBSAP",
+        "NDC"
+      ],
+      "aggregates": {
+        "pair_total": 7365,
+        "doc_shares": [
+          {
+            "doc": "NDC",
+            "count": 4846,
+            "share": 0.658
+          },
+          {
+            "doc": "CCS",
+            "count": 3706,
+            "share": 0.5032
+          },
+          {
+            "doc": "NBSAP",
+            "count": 3089,
+            "share": 0.4194
+          },
+          {
+            "doc": "LDN",
+            "count": 1745,
+            "share": 0.2369
+          },
+          {
+            "doc": "NAP",
+            "count": 1344,
+            "share": 0.1825
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NBSAP_4",
+            "count": 183
+          },
+          {
+            "id": "NBSAP_11",
+            "count": 181
+          },
+          {
+            "id": "CCS_19",
+            "count": 180
+          },
+          {
+            "id": "NBSAP_9",
+            "count": 180
+          },
+          {
+            "id": "CCS_20",
+            "count": 176
+          },
+          {
+            "id": "CCS_12",
+            "count": 174
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 58
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 47
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 42
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 63
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_5",
+            "count": 52
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 50
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_information_education",
+            "count": 34
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_indigenous_local_communities",
+            "count": 24
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_participation",
+            "count": 13
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 104
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 43
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_agriculture",
+            "count": 39
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vías para la restauración de tierras y la gestión de ecosistemas",
+      "type": "reinforcement",
+      "description": "Un patrón recurrente sólido vincula la restauración, la gestión sostenible de la tierra, la recuperación forestal y los enfoques basados en la naturaleza en los documentos sobre tierra, biodiversidad, clima y adaptación. Estas medidas se alinean mediante acciones prácticas como la forestación, la restauración de tierras degradadas, la protección de cuencas hidrográficas, la rehabilitación de manglares y zonas costeras, y el mantenimiento de los servicios ecosistémicos.",
+      "pathway": "La planificación espacial compartida y el seguimiento de la restauración en LDN, NBSAP, CCS y NDC podrían ayudar a mantener la visibilidad sobre dónde las medidas relativas a la tierra y los ecosistemas apoyan múltiples objetivos.",
+      "contributing_doc_pairs": [
+        "CCS<->LDN",
+        "CCS<->NBSAP",
+        "LDN<->NAP",
+        "LDN<->NBSAP",
+        "LDN<->NDC",
+        "NBSAP<->NDC"
+      ],
+      "anchor_target_ids": [
+        "NBSAP_4",
+        "NBSAP_9",
+        "LDN_3",
+        "LDN_5",
+        "LDN_6",
+        "NBSAP_11"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 4369,
+      "spans_documents": [
+        "CCS",
+        "LDN",
+        "NAP",
+        "NBSAP",
+        "NDC"
+      ],
+      "aggregates": {
+        "pair_total": 4369,
+        "doc_shares": [
+          {
+            "doc": "NDC",
+            "count": 2717,
+            "share": 0.6219
+          },
+          {
+            "doc": "NBSAP",
+            "count": 2485,
+            "share": 0.5688
+          },
+          {
+            "doc": "LDN",
+            "count": 2222,
+            "share": 0.5086
+          },
+          {
+            "doc": "CCS",
+            "count": 837,
+            "share": 0.1916
+          },
+          {
+            "doc": "NAP",
+            "count": 477,
+            "share": 0.1092
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "LDN_5",
+            "count": 176
+          },
+          {
+            "id": "LDN_6",
+            "count": 170
+          },
+          {
+            "id": "LDN_3",
+            "count": 162
+          },
+          {
+            "id": "LDN_9",
+            "count": 159
+          },
+          {
+            "id": "LDN_14",
+            "count": 157
+          },
+          {
+            "id": "LDN_8",
+            "count": 154
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 58
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 47
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 42
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 63
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_5",
+            "count": 52
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 50
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_information_education",
+            "count": 34
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_indigenous_local_communities",
+            "count": 24
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_participation",
+            "count": 13
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 104
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 43
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_agriculture",
+            "count": 39
+          }
+        ]
+      }
+    },
+    {
+      "name": "Planificación del riesgo hídrico e información climática",
+      "type": "reinforcement",
+      "description": "Los documentos suelen alinearse en torno a la planificación de cuencas, la preparación frente a sequías e inundaciones, las redes meteorológicas, la alerta temprana y las evaluaciones del riesgo climático vinculadas a la agricultura y la seguridad hídrica. Este patrón es especialmente visible allí donde los datos hidrológicos, la planificación local y la integración de la adaptación apoyan sistemas resilientes de agua y alimentos.",
+      "pathway": "Una revisión común de los indicadores de cuenca y del uso de la información climática en CCS, NAP, NDC y LDN puede ayudar a aclarar cómo las herramientas compartidas de riesgo hídrico apoyan la implementación en las mismas geografías.",
+      "contributing_doc_pairs": [
+        "CCS<->NAP",
+        "CCS<->NDC",
+        "LDN<->NAP",
+        "NAP<->NDC"
+      ],
+      "anchor_target_ids": [
+        "CCS_23",
+        "LDN_6",
+        "NAP_30",
+        "LDN_5"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 5641,
+      "spans_documents": [
+        "CCS",
+        "LDN",
+        "NAP",
+        "NDC"
+      ],
+      "aggregates": {
+        "pair_total": 5641,
+        "doc_shares": [
+          {
+            "doc": "NDC",
+            "count": 4424,
+            "share": 0.7843
+          },
+          {
+            "doc": "NAP",
+            "count": 3512,
+            "share": 0.6226
+          },
+          {
+            "doc": "CCS",
+            "count": 2869,
+            "share": 0.5086
+          },
+          {
+            "doc": "LDN",
+            "count": 477,
+            "share": 0.0846
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NAP_30",
+            "count": 143
+          },
+          {
+            "id": "CCS_19",
+            "count": 142
+          },
+          {
+            "id": "CCS_20",
+            "count": 140
+          },
+          {
+            "id": "CCS_12",
+            "count": 138
+          },
+          {
+            "id": "NAP_22",
+            "count": 134
+          },
+          {
+            "id": "NAP_33",
+            "count": 126
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 47
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 42
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 36
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 60
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 47
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_5",
+            "count": 46
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_information_education",
+            "count": 31
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_indigenous_local_communities",
+            "count": 19
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_disabilities",
+            "count": 13
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 91
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_agriculture",
+            "count": 39
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "Demanda de agua agrícola y límites de la cuenca",
+      "type": "friction",
+      "description": "La posible desalineación más recurrente se refiere al acceso al riego, el desarrollo hídrico en zonas no irrigadas y el riego solar ampliado, cuando las mismas cuencas también están sujetas a la planificación de la sequía, la protección de las fuentes, el hábitat acuático o objetivos más amplios de servicios hídricos. Las tablas de evidencia señalan al agua como el principal recurso en disputa, y las metas involucradas con mayor frecuencia son NAP_20, NAP_5 y NDC_16.",
+      "pathway": "Una revisión conjunta de la asignación por cuenca en los NAP, NDC, CCS y LDN podría ayudar a examinar cómo la expansión del riego, los controles de extracción y la planificación de la sequía interactúan en cuencas fluviales y zonas de aguas subterráneas superpuestas.",
+      "contributing_doc_pairs": [
+        "CCS<->NAP",
+        "CCS<->NDC",
+        "LDN<->NAP",
+        "LDN<->NDC",
+        "NAP<->NDC"
+      ],
+      "anchor_target_ids": [
+        "NAP_20",
+        "NAP_5",
+        "NDC_16",
+        "CCS_6",
+        "NAP_35",
+        "LDN_6"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 23,
+      "spans_documents": [
+        "CCS",
+        "LDN",
+        "NAP",
+        "NDC"
+      ],
+      "aggregates": {
+        "pair_total": 23,
+        "doc_shares": [
+          {
+            "doc": "NAP",
+            "count": 20,
+            "share": 0.8696
+          },
+          {
+            "doc": "NDC",
+            "count": 12,
+            "share": 0.5217
+          },
+          {
+            "doc": "CCS",
+            "count": 9,
+            "share": 0.3913
+          },
+          {
+            "doc": "LDN",
+            "count": 5,
+            "share": 0.2174
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NAP_20",
+            "count": 7
+          },
+          {
+            "id": "NDC_16",
+            "count": 5
+          },
+          {
+            "id": "NAP_1",
+            "count": 4
+          },
+          {
+            "id": "NAP_5",
+            "count": 4
+          },
+          {
+            "id": "LDN_6",
+            "count": 3
+          },
+          {
+            "id": "CCS_3",
+            "count": 2
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 8
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 7
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_water",
+            "count": 5
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 13
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_8",
+            "count": 4
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 2
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_indigenous_local_communities",
+            "count": 3
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_children_youth",
+            "count": 1
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_gender_equality",
+            "count": 1
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_agriculture",
+            "count": 7
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 7
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 6
+          }
+        ],
+        "contested_resources": [
+          {
+            "resource": "water",
+            "count": 17
+          },
+          {
+            "resource": "land",
+            "count": 3
+          },
+          {
+            "resource": "forest",
+            "count": 1
+          },
+          {
+            "resource": "waterway",
+            "count": 1
+          }
+        ],
+        "mechanisms": {
+          "resource_competition": 19,
+          "delivery_friction": 4
+        }
+      }
+    },
+    {
+      "name": "Salvaguardias de biodiversidad en el riego y la agricultura",
+      "type": "friction",
+      "description": "Una segunda posible desalineación recurrente aparece cuando el desarrollo hídrico agrícola y algunas medidas de intensificación agrícola pueden superponerse con la planificación espacial inclusiva de la biodiversidad, las aguas continentales protegidas o conservadas, las áreas de restauración y los esfuerzos de reducción de la contaminación. El patrón se concentra en las vinculaciones entre adaptación y biodiversidad, y varios casos examinados también señalan posibles implicaciones para la calidad del agua derivadas del uso de insumos.",
+      "pathway": "La revisión de límites y la alineación de indicadores entre el NAP y el NBSAP podrían ayudar a aclarar dónde coinciden las medidas de riego, las prácticas relativas a los insumos agrícolas, la conservación de las aguas continentales y las medidas de restauración.",
+      "contributing_doc_pairs": [
+        "NAP<->NBSAP"
+      ],
+      "anchor_target_ids": [
+        "NAP_20",
+        "NAP_5",
+        "NBSAP_1",
+        "NBSAP_3",
+        "NBSAP_14",
+        "NAP_1"
+      ],
+      "confidence": "high",
+      "unknown_doc_pairs": [],
+      "pair_count": 7,
+      "spans_documents": [
+        "NAP",
+        "NBSAP"
+      ],
+      "aggregates": {
+        "pair_total": 7,
+        "doc_shares": [
+          {
+            "doc": "NBSAP",
+            "count": 7,
+            "share": 1.0
+          },
+          {
+            "doc": "NAP",
+            "count": 7,
+            "share": 1.0
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NAP_5",
+            "count": 3
+          },
+          {
+            "id": "NAP_20",
+            "count": 3
+          },
+          {
+            "id": "NBSAP_1",
+            "count": 2
+          },
+          {
+            "id": "NBSAP_3",
+            "count": 2
+          },
+          {
+            "id": "NBSAP_14",
+            "count": 2
+          },
+          {
+            "id": "NBSAP_2",
+            "count": 1
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 4
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_agriculture_food",
+            "count": 3
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_9",
+            "count": 3
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_6",
+            "count": 1
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_7",
+            "count": 1
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_participation",
+            "count": 2
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_children_youth",
+            "count": 1
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_agriculture",
+            "count": 3
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 3
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 1
+          }
+        ],
+        "contested_resources": [
+          {
+            "resource": "water",
+            "count": 5
+          },
+          {
+            "resource": "land",
+            "count": 3
+          }
+        ],
+        "mechanisms": {
+          "delivery_friction": 4,
+          "resource_competition": 3
+        }
+      }
+    },
+    {
+      "name": "Trazado del transporte en ecosistemas sensibles",
+      "type": "friction",
+      "description": "Una posible desalineación más limitada pero recurrente se refiere a las carreteras, los ferrocarriles, los corredores eléctricos y el transporte por vías navegables interiores, cuando el trazado, la ubicación o las obras de navegación pueden cruzarse con áreas protegidas, paisajes de alta biodiversidad, restauración de aguas interiores o zonas de recuperación forestal. El patrón es más acotado que la cuestión de la asignación del agua, pero aparece en las articulaciones entre clima y biodiversidad y puede ser importante en geografías compartidas.",
+      "pathway": "La evaluación espacial temprana en CCS, NBSAP y NDC puede merecer un examen más detenido cuando los corredores de transporte o las propuestas de transporte por vías navegables interiores se superponen con áreas de conservación y restauración.",
+      "contributing_doc_pairs": [
+        "CCS<->NBSAP",
+        "NBSAP<->NDC"
+      ],
+      "anchor_target_ids": [
+        "NDC_85",
+        "NBSAP_1",
+        "NBSAP_3",
+        "NBSAP_2"
+      ],
+      "confidence": "medium",
+      "unknown_doc_pairs": [],
+      "pair_count": 6,
+      "spans_documents": [
+        "CCS",
+        "NBSAP",
+        "NDC"
+      ],
+      "aggregates": {
+        "pair_total": 6,
+        "doc_shares": [
+          {
+            "doc": "NBSAP",
+            "count": 6,
+            "share": 1.0
+          },
+          {
+            "doc": "NDC",
+            "count": 5,
+            "share": 0.8333
+          },
+          {
+            "doc": "CCS",
+            "count": 1,
+            "share": 0.1667
+          }
+        ],
+        "top_targets": [
+          {
+            "id": "NDC_85",
+            "count": 4
+          },
+          {
+            "id": "NBSAP_1",
+            "count": 2
+          },
+          {
+            "id": "NBSAP_3",
+            "count": 2
+          },
+          {
+            "id": "NDC_76",
+            "count": 1
+          },
+          {
+            "id": "NBSAP_2",
+            "count": 1
+          },
+          {
+            "id": "NBSAP_8",
+            "count": 1
+          }
+        ],
+        "sector_tags": [
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_ecosystems_biodiversity",
+            "count": 4
+          },
+          {
+            "taxonomy": "gga",
+            "category_id": "gga_infrastructure_settlements",
+            "count": 3
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_4",
+            "count": 3
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_7",
+            "count": 1
+          },
+          {
+            "taxonomy": "globe",
+            "category_id": "globe_8",
+            "count": 1
+          },
+          {
+            "taxonomy": "hr",
+            "category_id": "hr_participation",
+            "count": 2
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_lulucf",
+            "count": 3
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_transport",
+            "count": 2
+          },
+          {
+            "taxonomy": "sector",
+            "category_id": "sector_other",
+            "count": 2
+          }
+        ],
+        "contested_resources": [
+          {
+            "resource": "waterway",
+            "count": 2
+          },
+          {
+            "resource": "land",
+            "count": 1
+          }
+        ],
+        "mechanisms": {
+          "delivery_friction": 6
+        }
+      }
+    }
+  ],
+  "summary_paragraph": "El panorama general es de una fuerte coherencia entre los documentos de Country X sobre clima, adaptación, biodiversidad y tierras, con proporciones muy bajas de pares puntuados identificados para revisión y grandes volúmenes de pares alineados en cada emparejamiento principal de documentos. Los patrones comunes más claros son los sistemas facilitadores compartidos, las vías de restauración y gestión de ecosistemas, y la planificación del riesgo hídrico respaldada por información climática y enfoques de cuenca. La posible desalineación aparece de manera más selectiva, encabezada por la demanda agrícola de agua en cuencas propensas a la sequía o ecológicamente sensibles, seguida de salvaguardias de biodiversidad en torno al riego y las prácticas agrícolas, y de un conjunto más limitado de cuestiones de trazado del transporte en ecosistemas sensibles. Estos patrones parecen concentrarse en los detalles de implementación y en geografías compartidas, más que en la orientación estratégica más amplia, que en gran medida avanza en la misma dirección en todo el conjunto de documentos.",
+  "doc_pair_count": 10,
+  "schema_version": 2,
+  "validation_warnings": [],
+  "states": {
+    "": {
+      "storylines": [
+        {
+          "name": "Sistemas habilitadores compartidos para una resiliencia integrada",
+          "type": "reinforcement",
+          "description": "En los documentos sobre clima, adaptación, biodiversidad y tierras, la alineación reaparece a través de la gobernanza, la financiación, el fortalecimiento de capacidades, la información sobre riesgos climáticos y los mecanismos de coordinación que respaldan la implementación en múltiples sectores. La codificación presupuestaria, los sistemas de información, la capacitación y la cooperación entre actores aparecen repetidamente como mecanismos que ayudan a que estas agendas avancen en la misma dirección.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto en CCS, NDC, NBSAP, NAP y LDN podrían ser un punto de partida útil para rastrear cómo las finanzas, los datos y las herramientas de coordinación compartidos apoyan la implementación.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NAP",
+            "CCS<->NBSAP",
+            "CCS<->NDC",
+            "LDN<->NBSAP",
+            "LDN<->NDC",
+            "NAP<->NBSAP",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_19",
+            "CCS_20",
+            "CCS_12",
+            "NBSAP_12",
+            "NBSAP_17",
+            "LDN_9"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 7365,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 7365,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 4846,
+                "share": 0.658
+              },
+              {
+                "doc": "CCS",
+                "count": 3706,
+                "share": 0.5032
+              },
+              {
+                "doc": "NBSAP",
+                "count": 3089,
+                "share": 0.4194
+              },
+              {
+                "doc": "LDN",
+                "count": 1745,
+                "share": 0.2369
+              },
+              {
+                "doc": "NAP",
+                "count": 1344,
+                "share": 0.1825
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 183
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 181
+              },
+              {
+                "id": "CCS_19",
+                "count": 180
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 180
+              },
+              {
+                "id": "CCS_20",
+                "count": 176
+              },
+              {
+                "id": "CCS_12",
+                "count": 174
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 58
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 63
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 52
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 50
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 34
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 24
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 104
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 43
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              }
+            ]
+          }
+        },
+        {
+          "name": "Vías para la restauración de tierras y la gestión de ecosistemas",
+          "type": "reinforcement",
+          "description": "Un patrón sólido y recurrente vincula la restauración, la gestión sostenible de la tierra, la recuperación forestal y los enfoques basados en la naturaleza en los documentos sobre tierra, biodiversidad, clima y adaptación. Estas medidas se alinean mediante acciones prácticas como la forestación, la restauración de tierras degradadas, la protección de cuencas hidrográficas, la rehabilitación de manglares y zonas costeras, y el mantenimiento de los servicios ecosistémicos.",
+          "pathway": "La planificación espacial compartida y el seguimiento de la restauración en LDN, NBSAP, CCS y NDC podrían ayudar a mantener la visibilidad sobre dónde las medidas relativas a la tierra y los ecosistemas apoyan múltiples objetivos.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NBSAP",
+            "LDN<->NAP",
+            "LDN<->NBSAP",
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBSAP_4",
+            "NBSAP_9",
+            "LDN_3",
+            "LDN_5",
+            "LDN_6",
+            "NBSAP_11"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 4369,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 4369,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 2717,
+                "share": 0.6219
+              },
+              {
+                "doc": "NBSAP",
+                "count": 2485,
+                "share": 0.5688
+              },
+              {
+                "doc": "LDN",
+                "count": 2222,
+                "share": 0.5086
+              },
+              {
+                "doc": "CCS",
+                "count": 837,
+                "share": 0.1916
+              },
+              {
+                "doc": "NAP",
+                "count": 477,
+                "share": 0.1092
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_5",
+                "count": 176
+              },
+              {
+                "id": "LDN_6",
+                "count": 170
+              },
+              {
+                "id": "LDN_3",
+                "count": 162
+              },
+              {
+                "id": "LDN_9",
+                "count": 159
+              },
+              {
+                "id": "LDN_14",
+                "count": 157
+              },
+              {
+                "id": "LDN_8",
+                "count": 154
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 58
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 63
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 52
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 50
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 34
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 24
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 104
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 43
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              }
+            ]
+          }
+        },
+        {
+          "name": "Planificación del riesgo hídrico e información climática",
+          "type": "reinforcement",
+          "description": "Los documentos suelen alinearse en torno a la planificación de cuencas, la preparación frente a sequías e inundaciones, las redes meteorológicas, la alerta temprana y las evaluaciones del riesgo climático vinculadas a la agricultura y la seguridad hídrica. Este patrón es especialmente visible allí donde los datos hidrológicos, la planificación local y la integración de la adaptación apoyan sistemas resilientes de agua y alimentos.",
+          "pathway": "Un examen común de los indicadores de cuenca y del uso de la información climática en CCS, NAP, NDC y LDN puede ayudar a aclarar cómo las herramientas compartidas de riesgo hídrico apoyan la implementación en las mismas geografías.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "CCS<->NDC",
+            "LDN<->NAP",
+            "NAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_23",
+            "LDN_6",
+            "NAP_30",
+            "LDN_5"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 5641,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 5641,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 4424,
+                "share": 0.7843
+              },
+              {
+                "doc": "NAP",
+                "count": 3512,
+                "share": 0.6226
+              },
+              {
+                "doc": "CCS",
+                "count": 2869,
+                "share": 0.5086
+              },
+              {
+                "doc": "LDN",
+                "count": 477,
+                "share": 0.0846
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_30",
+                "count": 143
+              },
+              {
+                "id": "CCS_19",
+                "count": 142
+              },
+              {
+                "id": "CCS_20",
+                "count": 140
+              },
+              {
+                "id": "CCS_12",
+                "count": 138
+              },
+              {
+                "id": "NAP_22",
+                "count": 134
+              },
+              {
+                "id": "NAP_33",
+                "count": 126
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 36
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 60
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 47
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 46
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 31
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 19
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 91
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 34
+              }
+            ]
+          }
+        },
+        {
+          "name": "Demanda de agua agrícola y límites de la cuenca",
+          "type": "friction",
+          "description": "La posible desalineación más recurrente se refiere al acceso al riego, al desarrollo hídrico en zonas no irrigadas y al riego solar ampliado, cuando las mismas cuencas también están sujetas a la planificación de la sequía, la protección de las fuentes, el hábitat acuático o objetivos más amplios de servicios hídricos. Las tablas de evidencia señalan al agua como el principal recurso en disputa, y las metas involucradas con mayor frecuencia son NAP_20, NAP_5 y NDC_16.",
+          "pathway": "Una revisión conjunta de la asignación por cuenca en los NAP, NDC, CCS y LDN podría ayudar a examinar cómo la expansión del riego, los controles de extracción y la planificación de la sequía interactúan en cuencas fluviales y zonas de aguas subterráneas superpuestas.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "CCS<->NDC",
+            "LDN<->NAP",
+            "LDN<->NDC",
+            "NAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NAP_5",
+            "NDC_16",
+            "CCS_6",
+            "NAP_35",
+            "LDN_6"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 23,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 23,
+            "doc_shares": [
+              {
+                "doc": "NAP",
+                "count": 20,
+                "share": 0.8696
+              },
+              {
+                "doc": "NDC",
+                "count": 12,
+                "share": 0.5217
+              },
+              {
+                "doc": "CCS",
+                "count": 9,
+                "share": 0.3913
+              },
+              {
+                "doc": "LDN",
+                "count": 5,
+                "share": 0.2174
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_20",
+                "count": 7
+              },
+              {
+                "id": "NDC_16",
+                "count": 5
+              },
+              {
+                "id": "NAP_1",
+                "count": 4
+              },
+              {
+                "id": "NAP_5",
+                "count": 4
+              },
+              {
+                "id": "LDN_6",
+                "count": 3
+              },
+              {
+                "id": "CCS_3",
+                "count": 2
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 8
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 7
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_water",
+                "count": 5
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 13
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 4
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 2
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 3
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_children_youth",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_gender_equality",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 7
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 7
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 6
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 17
+              },
+              {
+                "resource": "land",
+                "count": 3
+              },
+              {
+                "resource": "forest",
+                "count": 1
+              },
+              {
+                "resource": "waterway",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 19,
+              "delivery_friction": 4
+            }
+          }
+        },
+        {
+          "name": "Salvaguardias de biodiversidad en el riego y la agricultura",
+          "type": "friction",
+          "description": "Una segunda posible desalineación recurrente aparece cuando el desarrollo hídrico agrícola y algunas medidas de intensificación agrícola pueden superponerse con la planificación espacial inclusiva de la biodiversidad, las aguas continentales protegidas o conservadas, las áreas de restauración y los esfuerzos de reducción de la contaminación. El patrón se concentra en las vinculaciones entre adaptación y biodiversidad, y varios casos examinados también señalan posibles implicaciones para la calidad del agua derivadas del uso de insumos.",
+          "pathway": "La revisión de límites y la alineación de indicadores entre el NAP y el NBSAP podrían ayudar a aclarar dónde coinciden las medidas de riego, las prácticas relativas a los insumos agrícolas, la conservación de las aguas continentales y las medidas de restauración.",
+          "contributing_doc_pairs": [
+            "NAP<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NAP_5",
+            "NBSAP_1",
+            "NBSAP_3",
+            "NBSAP_14",
+            "NAP_1"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 7,
+          "spans_documents": [
+            "NAP",
+            "NBSAP"
+          ],
+          "aggregates": {
+            "pair_total": 7,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 7,
+                "share": 1.0
+              },
+              {
+                "doc": "NAP",
+                "count": 7,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_5",
+                "count": 3
+              },
+              {
+                "id": "NAP_20",
+                "count": 3
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_14",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_children_youth",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 1
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 5
+              },
+              {
+                "resource": "land",
+                "count": 3
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 4,
+              "resource_competition": 3
+            }
+          }
+        },
+        {
+          "name": "Trazado del transporte en ecosistemas sensibles",
+          "type": "friction",
+          "description": "Una posible desalineación más limitada pero recurrente se refiere a las carreteras, los ferrocarriles, los corredores eléctricos y el transporte fluvial interior, cuando el trazado, la ubicación o las obras de navegación pueden coincidir con áreas protegidas, paisajes de alta biodiversidad, restauración de aguas continentales o zonas de recuperación forestal. El patrón es más acotado que la cuestión de la asignación del agua, pero aparece en las articulaciones entre clima y biodiversidad y puede ser importante en geografías compartidas.",
+          "pathway": "La evaluación espacial temprana en CCS, NBSAP y NDC puede merecer un examen más detenido cuando los corredores de transporte o las propuestas de transporte por vías navegables interiores se superponen con áreas de conservación y restauración.",
+          "contributing_doc_pairs": [
+            "CCS<->NBSAP",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NDC_85",
+            "NBSAP_1",
+            "NBSAP_3",
+            "NBSAP_2"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 6,
+          "spans_documents": [
+            "CCS",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 6,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 6,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 5,
+                "share": 0.8333
+              },
+              {
+                "doc": "CCS",
+                "count": 1,
+                "share": 0.1667
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NDC_85",
+                "count": 4
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 2
+              },
+              {
+                "id": "NDC_76",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_8",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_transport",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 2
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "waterway",
+                "count": 2
+              },
+              {
+                "resource": "land",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 6
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "El panorama general es de una fuerte coherencia entre los documentos de Country X sobre clima, adaptación, biodiversidad y tierras, con proporciones muy bajas de pares puntuados identificados para revisión y grandes volúmenes de pares alineados en cada emparejamiento principal de documentos. Los patrones comunes más claros son los sistemas facilitadores compartidos, las vías de restauración y gestión de ecosistemas, y la planificación del riesgo hídrico respaldada por información climática y enfoques de cuenca. La posible desalineación aparece de manera más selectiva, encabezada por la demanda agrícola de agua en cuencas propensas a la sequía o ecológicamente sensibles, seguida de salvaguardias de biodiversidad en torno al riego y las prácticas agrícolas, y de un conjunto más reducido de cuestiones de trazado del transporte en ecosistemas sensibles. Estos patrones parecen concentrarse en los detalles de implementación y en geografías compartidas, más que en la orientación estratégica más amplia, que en gran medida avanza en la misma dirección en todo el conjunto de documentos.",
+      "doc_pair_count": 10,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "CCS": {
+      "storylines": [
+        {
+          "name": "Planificación resiliente al clima de la tierra y el agua",
+          "type": "reinforcement",
+          "description": "Un patrón sólido y recurrente vincula la gestión de la sequía, la integración de la adaptación, la gestión sostenible de la tierra y la planificación para la seguridad alimentaria y el acceso al agua. Esto se observa con mayor claridad allí donde las medidas de LDN, NAP y NDC conectan la restauración de tierras, los servicios climáticos, la alerta temprana, la planificación de cuencas y el apoyo a las comunidades vulnerables en los mismos paisajes propensos a la sequía.",
+          "pathway": "La alineación conjunta de indicadores entre LDN, NAP y NDC sobre la sequía, el acceso al agua y el estado de la tierra podría ser un punto de partida útil para la revisión continua de la coherencia.",
+          "contributing_doc_pairs": [
+            "LDN<->NAP",
+            "LDN<->NDC",
+            "NAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_5",
+            "LDN_6",
+            "LDN_14",
+            "NAP_30"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3858,
+          "spans_documents": [
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 3858,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 3381,
+                "share": 0.8764
+              },
+              {
+                "doc": "NAP",
+                "count": 2772,
+                "share": 0.7185
+              },
+              {
+                "doc": "LDN",
+                "count": 1563,
+                "share": 0.4051
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_5",
+                "count": 126
+              },
+              {
+                "id": "LDN_6",
+                "count": 121
+              },
+              {
+                "id": "NAP_30",
+                "count": 114
+              },
+              {
+                "id": "LDN_14",
+                "count": 114
+              },
+              {
+                "id": "LDN_3",
+                "count": 112
+              },
+              {
+                "id": "LDN_9",
+                "count": 111
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 42
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 32
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 30
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 52
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 40
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 38
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 27
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 16
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 12
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 75
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 35
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 30
+              }
+            ]
+          }
+        },
+        {
+          "name": "Restauración de ecosistemas y planificación espacial inclusiva de la biodiversidad",
+          "type": "reinforcement",
+          "description": "Los documentos suelen alinearse mediante la restauración de ecosistemas degradados, la planificación espacial que incorpora la biodiversidad y la gestión sostenible de los paisajes productivos. Este patrón es especialmente visible cuando LDN y NBSAP conectan la restauración y la planificación del uso de la tierra, y cuando NBSAP y NDC vinculan los enfoques basados en la naturaleza, la integración de la biodiversidad y los servicios ecosistémicos.",
+          "pathway": "La planificación espacial compartida y el seguimiento de la restauración entre LDN, NBSAP y NDC podrían ayudar a mantener una base empírica común en paisajes superpuestos.",
+          "contributing_doc_pairs": [
+            "LDN<->NBSAP",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBSAP_1",
+            "NBSAP_4",
+            "NBSAP_9",
+            "NBSAP_11"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1969,
+          "spans_documents": [
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 1969,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 1969,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 1631,
+                "share": 0.8283
+              },
+              {
+                "doc": "LDN",
+                "count": 338,
+                "share": 0.1717
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 118
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 116
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 115
+              },
+              {
+                "id": "NBSAP_12",
+                "count": 109
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 101
+              },
+              {
+                "id": "NBSAP_17",
+                "count": 100
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 52
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 27
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_livelihoods",
+                "count": 21
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 44
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 37
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 26
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 21
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 20
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 76
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 37
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 13
+              }
+            ]
+          }
+        },
+        {
+          "name": "Sistemas de capacidad, conocimiento y participación",
+          "type": "reinforcement",
+          "description": "Se observa un patrón habilitador transversal en torno a la investigación, las plataformas de información, la sensibilización, la transferencia de tecnología y la participación inclusiva. Estos mecanismos apoyan la implementación en las agendas de biodiversidad, tierra y clima, incluida la capacidad de adaptación de las comunidades, la gestión del conocimiento y la toma de decisiones basada en las partes interesadas.",
+          "pathway": "Una revisión ligera de las plataformas compartidas de seguimiento y conocimiento en LDN, NBSAP, NAP y NDC puede ayudar a aclarar en qué ámbitos los sistemas habilitadores existentes ya respaldan múltiples objetivos.",
+          "contributing_doc_pairs": [
+            "LDN<->NBSAP",
+            "LDN<->NDC",
+            "NAP<->NBSAP",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBSAP_12",
+            "NBSAP_17",
+            "LDN_8",
+            "LDN_9"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3659,
+          "spans_documents": [
+            "LDN",
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 3659,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 2717,
+                "share": 0.7426
+              },
+              {
+                "doc": "NBSAP",
+                "count": 2573,
+                "share": 0.7032
+              },
+              {
+                "doc": "LDN",
+                "count": 1424,
+                "share": 0.3892
+              },
+              {
+                "doc": "NAP",
+                "count": 604,
+                "share": 0.1651
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 154
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 152
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 151
+              },
+              {
+                "id": "NBSAP_12",
+                "count": 141
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 135
+              },
+              {
+                "id": "NBSAP_17",
+                "count": 135
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 54
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 42
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 30
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 55
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 46
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 41
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 30
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 21
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 88
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 35
+              }
+            ]
+          }
+        },
+        {
+          "name": "Demandas de riego agrícola sobre recursos hídricos escasos",
+          "type": "friction",
+          "description": "La posible desalineación más recurrente se refiere al acceso al riego, el desarrollo hídrico en zonas no irrigadas y la ampliación del riego solar en áreas donde el agua ya es limitada. En todos los pares examinados, estas medidas pueden competir con los objetivos de resiliencia frente a la sequía, gestión de cuencas, restauración de tierras y acceso al agua que dependen del mismo recurso finito.",
+          "pathway": "Una revisión conjunta de cuencas en los NAP, NDC y LDN podría ayudar a examinar los supuestos sobre asignación de agua, ubicación y eficiencia cuando la expansión del riego se superpone con zonas propensas a la sequía.",
+          "contributing_doc_pairs": [
+            "NAP<->NDC",
+            "LDN<->NAP",
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NAP_5",
+            "NDC_16",
+            "LDN_6"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 14,
+          "spans_documents": [
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 14,
+            "doc_shares": [
+              {
+                "doc": "NAP",
+                "count": 13,
+                "share": 0.9286
+              },
+              {
+                "doc": "NDC",
+                "count": 10,
+                "share": 0.7143
+              },
+              {
+                "doc": "LDN",
+                "count": 5,
+                "share": 0.3571
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_20",
+                "count": 5
+              },
+              {
+                "id": "NDC_16",
+                "count": 4
+              },
+              {
+                "id": "LDN_6",
+                "count": 3
+              },
+              {
+                "id": "NAP_1",
+                "count": 2
+              },
+              {
+                "id": "NDC_28",
+                "count": 2
+              },
+              {
+                "id": "NAP_5",
+                "count": 2
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 7
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 5
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_water",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 10
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 3
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_gender_equality",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_children_youth",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 6
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 4
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 10
+              },
+              {
+                "resource": "land",
+                "count": 2
+              },
+              {
+                "resource": "waterway",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 12,
+              "delivery_friction": 2
+            }
+          }
+        },
+        {
+          "name": "Desarrollo hídrico cerca de zonas interiores sensibles para la biodiversidad",
+          "type": "friction",
+          "description": "Una segunda posible desalineación recurrente aparece allí donde el riego y el desarrollo hídrico agrícola se superponen con la planificación espacial inclusiva de la biodiversidad, las aguas continentales protegidas o conservadas, las áreas de restauración, los hábitats acuáticos y los esfuerzos de reducción de la contaminación. El mecanismo es principalmente la superposición geográfica en las mismas cuencas hidrográficas y sistemas de aguas continentales, con posibles efectos sobre el estado de los hábitats y la calidad del agua.",
+          "pathway": "La revisión de límites y la evaluación a nivel de cuenca hidrográfica entre el NAP y el NBSAP podrían merecer un examen más detenido cuando el acceso al riego o el desarrollo hídrico se cruza con áreas de conservación y restauración de aguas continentales.",
+          "contributing_doc_pairs": [
+            "NAP<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NAP_5",
+            "NBSAP_1",
+            "NBSAP_3",
+            "NBSAP_14",
+            "NBSAP_2"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 7,
+          "spans_documents": [
+            "NAP",
+            "NBSAP"
+          ],
+          "aggregates": {
+            "pair_total": 7,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 7,
+                "share": 1.0
+              },
+              {
+                "doc": "NAP",
+                "count": 7,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_5",
+                "count": 3
+              },
+              {
+                "id": "NAP_20",
+                "count": 3
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_14",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_children_youth",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 1
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 5
+              },
+              {
+                "resource": "land",
+                "count": 3
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 4,
+              "resource_competition": 3
+            }
+          }
+        },
+        {
+          "name": "Transporte por vías navegables interiores y salvaguardias de la biodiversidad",
+          "type": "friction",
+          "description": "Una posible desalineación más específica se refiere a la ampliación del transporte por vías navegables interiores y a las obras conexas de trazado o navegación en zonas identificadas para la planificación espacial inclusiva de la biodiversidad, la restauración de aguas interiores o la conservación. Los casos examinados señalan vías navegables compartidas y zonas de alta biodiversidad en las que el desarrollo del transporte y los objetivos ecológicos pueden requerir una coordinación más estrecha.",
+          "pathway": "Una evaluación espacial temprana entre la NBSAP y la NDC utilizando datos compartidos sobre biodiversidad y cursos de agua podría ayudar a aclarar dónde las medidas de trazado y restauración podrían requerir una alineación más estrecha.",
+          "contributing_doc_pairs": [
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NDC_85",
+            "NBSAP_1",
+            "NBSAP_3"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 5,
+          "spans_documents": [
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 5,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 5,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 5,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NDC_85",
+                "count": 4
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 2
+              },
+              {
+                "id": "NDC_76",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_8",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 2
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 2
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_transport",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 1
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "waterway",
+                "count": 2
+              },
+              {
+                "resource": "land",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 5
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "En general, el conjunto de documentos parece presentar una fuerte coherencia, con proporciones muy bajas de pares puntuados identificados para revisión y grandes volúmenes de pares alineados en las seis combinaciones de documentos. Los temas de alineación recurrentes más claros se refieren a la planificación resiliente al clima de la tierra y el agua, la restauración de ecosistemas con planificación espacial inclusiva de la biodiversidad, y sistemas habilitadores compartidos como el conocimiento, la capacidad y la participación. Las principales áreas que merecen un examen más detenido se relacionan con la asignación de agua y la ubicación de infraestructuras cuando la expansión del riego o el desarrollo agrícola del agua se superponen con los objetivos de resiliencia a la sequía, restauración de tierras o biodiversidad de las aguas continentales. También aparece una posible desalineación más acotada en torno al transporte por aguas continentales en vías navegables sensibles para la biodiversidad, aunque este patrón es más limitado que los temas más amplios relacionados con el agua.",
+      "doc_pair_count": 6,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "LDN": {
+      "storylines": [
+        {
+          "name": "Gobernanza climática, financiación y sistemas de planificación",
+          "type": "reinforcement",
+          "description": "En los documentos sobre clima, adaptación y biodiversidad, la alineación reaparece a través de la capacidad de gobernanza, la incorporación transversal en los planes y presupuestos, la financiación climática y la codificación presupuestaria, y la integración de la biodiversidad en la toma de decisiones. Estos sistemas habilitadores respaldan la implementación en los ámbitos del agua, la agricultura, los ecosistemas, la reducción del riesgo de desastres y la implementación a nivel local.",
+          "pathway": "La alineación de indicadores entre CCS, NDC, NAP y NBSAP podría ser un punto de partida útil para hacer seguimiento de cómo las medidas de planificación, financiación y gobernanza apoyan resultados compartidos.",
+          "contributing_doc_pairs": [
+            "CCS<->NDC",
+            "CCS<->NBSAP",
+            "NAP<->NBSAP",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_19",
+            "CCS_12",
+            "CCS_20",
+            "NBSAP_11",
+            "NBSAP_12",
+            "NBSAP_17"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 4880,
+          "spans_documents": [
+            "CCS",
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 4880,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 3760,
+                "share": 0.7705
+              },
+              {
+                "doc": "NBSAP",
+                "count": 2751,
+                "share": 0.5637
+              },
+              {
+                "doc": "CCS",
+                "count": 2645,
+                "share": 0.542
+              },
+              {
+                "doc": "NAP",
+                "count": 604,
+                "share": 0.1238
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 167
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 165
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 164
+              },
+              {
+                "id": "NBSAP_12",
+                "count": 151
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 148
+              },
+              {
+                "id": "NBSAP_17",
+                "count": 147
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 46
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 63
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 50
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 40
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 33
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 21
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 95
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 36
+              }
+            ]
+          }
+        },
+        {
+          "name": "Información sobre el riesgo hídrico y gestión de cuencas",
+          "type": "reinforcement",
+          "description": "Varios pares de documentos avanzan en la misma dirección mediante sistemas de datos hidrológicos, redes meteorológicas, evaluaciones del riesgo climático, sistemas de alerta temprana y planificación a nivel de cuenca para sequías e inundaciones. Estos mecanismos conectan la planificación de la resiliencia con la seguridad hídrica, la preparación ante desastres y la gestión del agua con conciencia de los ecosistemas.",
+          "pathway": "El seguimiento compartido entre CCS, NAP y NDC puede ayudar a mantener la coherencia entre la planificación de cuencas, la información sobre riesgos y las acciones de seguridad hídrica.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "CCS<->NDC",
+            "NAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_23",
+            "NAP_22",
+            "NAP_30",
+            "NBSAP_4"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 5164,
+          "spans_documents": [
+            "CCS",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 5164,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 4424,
+                "share": 0.8567
+              },
+              {
+                "doc": "NAP",
+                "count": 3035,
+                "share": 0.5877
+              },
+              {
+                "doc": "CCS",
+                "count": 2869,
+                "share": 0.5556
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "CCS_19",
+                "count": 142
+              },
+              {
+                "id": "CCS_20",
+                "count": 140
+              },
+              {
+                "id": "CCS_12",
+                "count": 138
+              },
+              {
+                "id": "NAP_30",
+                "count": 127
+              },
+              {
+                "id": "CCS_17",
+                "count": 125
+              },
+              {
+                "id": "CCS_23",
+                "count": 125
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 46
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 25
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 60
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 47
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 34
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 30
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 16
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 82
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 27
+              }
+            ]
+          }
+        },
+        {
+          "name": "Restauración basada en la naturaleza y producción sostenible",
+          "type": "reinforcement",
+          "description": "La alineación también se repite cuando los objetivos climáticos y de biodiversidad se materializan mediante la restauración forestal, las soluciones basadas en la naturaleza, la rehabilitación de las aguas costeras y continentales, y prácticas más sostenibles de agricultura, pesca y silvicultura. La planificación espacial y la gestión de la tierra y el agua que incorpora la biodiversidad aparecen como mecanismos prácticos que vinculan los resultados de resiliencia y conservación.",
+          "pathway": "La revisión conjunta de los indicadores de restauración y producción sostenible en los NBSAP, NDC, CCS y NAP podría ayudar a mantener los objetivos de los ecosistemas y los medios de vida avanzando en la misma dirección.",
+          "contributing_doc_pairs": [
+            "CCS<->NBSAP",
+            "NAP<->NBSAP",
+            "NBSAP<->NDC",
+            "CCS<->NAP"
+          ],
+          "anchor_target_ids": [
+            "NBSAP_9",
+            "NBSAP_5",
+            "NBSAP_4",
+            "NBSAP_1",
+            "NBSAP_14"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3491,
+          "spans_documents": [
+            "CCS",
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 3491,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 2751,
+                "share": 0.788
+              },
+              {
+                "doc": "NDC",
+                "count": 1631,
+                "share": 0.4672
+              },
+              {
+                "doc": "NAP",
+                "count": 1344,
+                "share": 0.385
+              },
+              {
+                "doc": "CCS",
+                "count": 1256,
+                "share": 0.3598
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 167
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 165
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 164
+              },
+              {
+                "id": "NBSAP_12",
+                "count": 151
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 148
+              },
+              {
+                "id": "NBSAP_17",
+                "count": 147
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 46
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 63
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 50
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 40
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 33
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 21
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 95
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 36
+              }
+            ]
+          }
+        },
+        {
+          "name": "Expansión del agua agrícola y protección de cuencas",
+          "type": "friction",
+          "description": "La posible desalineación más recurrente se refiere al acceso al riego y al desarrollo hídrico para la agricultura cuando las mismas cuencas también incluyen la planificación de la sequía, controles de extracción, fuentes de agua protegidas, restauración de hábitats acuáticos u objetivos de reducción de la contaminación. Las tablas de evidencia señalan al agua como el recurso objeto de disputa con mayor frecuencia, y los puntos de referencia de revisión más recurrentes son NAP_20 y NAP_5.",
+          "pathway": "Una revisión conjunta de la asignación a nivel de cuenca en los CCS, NAP, NDC y NBSAP podría ayudar a aclarar cómo la expansión del riego y el desarrollo de los recursos hídricos pueden secuenciarse con la protección de las fuentes y las salvaguardias de los ecosistemas.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "NAP<->NBSAP",
+            "NAP<->NDC",
+            "CCS<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NAP_5",
+            "NDC_16",
+            "CCS_6",
+            "CCS_7",
+            "NAP_35"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 25,
+          "spans_documents": [
+            "CCS",
+            "NAP",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 25,
+            "doc_shares": [
+              {
+                "doc": "NAP",
+                "count": 23,
+                "share": 0.92
+              },
+              {
+                "doc": "NDC",
+                "count": 11,
+                "share": 0.44
+              },
+              {
+                "doc": "CCS",
+                "count": 9,
+                "share": 0.36
+              },
+              {
+                "doc": "NBSAP",
+                "count": 7,
+                "share": 0.28
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_20",
+                "count": 7
+              },
+              {
+                "id": "NAP_5",
+                "count": 6
+              },
+              {
+                "id": "NAP_1",
+                "count": 4
+              },
+              {
+                "id": "NDC_16",
+                "count": 4
+              },
+              {
+                "id": "NDC_28",
+                "count": 2
+              },
+              {
+                "id": "NAP_35",
+                "count": 2
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 9
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 8
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_water",
+                "count": 5
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 14
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 3
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_children_youth",
+                "count": 2
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 8
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 8
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 6
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 17
+              },
+              {
+                "resource": "land",
+                "count": 6
+              },
+              {
+                "resource": "waterway",
+                "count": 1
+              },
+              {
+                "resource": "forest",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 17,
+              "delivery_friction": 8
+            }
+          }
+        },
+        {
+          "name": "Trazado del transporte en zonas sensibles para la biodiversidad",
+          "type": "friction",
+          "description": "Una segunda posible desalineación recurrente aparece cuando nuevas carreteras, ferrocarriles, corredores eléctricos o transporte por vías navegables interiores se cruzan con áreas protegidas, paisajes de alta biodiversidad, restauración de aguas continentales o aguas continentales conservadas. El patrón es más acotado que en los casos relacionados con el agua, pero aparece en las vinculaciones entre clima y biodiversidad, con una preocupación compartida en torno al emplazamiento, el trazado y las obras de navegación.",
+          "pathway": "La evaluación espacial temprana utilizando datos compartidos sobre biodiversidad y corredores en CCS, NBSAP y NDC puede merecer un examen más detenido para las propuestas de transporte e infraestructura.",
+          "contributing_doc_pairs": [
+            "CCS<->NBSAP",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NDC_85",
+            "NBSAP_1",
+            "NBSAP_3"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 6,
+          "spans_documents": [
+            "CCS",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 6,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 6,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 5,
+                "share": 0.8333
+              },
+              {
+                "doc": "CCS",
+                "count": 1,
+                "share": 0.1667
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NDC_85",
+                "count": 4
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 2
+              },
+              {
+                "id": "NDC_76",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_8",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_transport",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 2
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "waterway",
+                "count": 2
+              },
+              {
+                "resource": "land",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 6
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "En general, los cuatro documentos parecen presentar una fuerte coherencia, con proporciones muy bajas de pares puntuados identificados para revisión y una alineación sustancial en torno a los sistemas facilitadores, la gestión del riesgo hídrico y las vías de resiliencia vinculadas a la naturaleza. La alineación recurrente es especialmente visible en los arreglos de gobernanza y financiación, los sistemas de información sobre clima y biodiversidad, la planificación de cuencas y las medidas de restauración o producción sostenible que apoyan tanto la resiliencia como los resultados de los ecosistemas. El principal ámbito que merece un examen más detenido es el uso de agua finita y, en menor medida, del espacio terrestre y de las vías navegables, en particular cuando el riego y el desarrollo hídrico agrícola se superponen con la protección de cuencas, los ecosistemas acuáticos o la planificación espacial inclusiva de la biodiversidad. También aparece una posible desalineación más acotada en torno al trazado del transporte y la infraestructura en áreas sensibles para la biodiversidad, más que como un patrón amplio entre sistemas.",
+      "doc_pair_count": 6,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "NAP": {
+      "storylines": [
+        {
+          "name": "Sistemas habilitadores compartidos para una resiliencia integrada",
+          "type": "reinforcement",
+          "description": "En todos los documentos sobre clima, tierra y naturaleza, la alineación se repite a través de mecanismos de financiación, codificación presupuestaria, coordinación de la gobernanza, desarrollo de capacidades, sensibilización y participación con perspectiva de género. Estos sistemas habilitadores se vinculan repetidamente con la implementación en la restauración de tierras, la acción en materia de biodiversidad, la planificación de la adaptación y la resiliencia comunitaria.",
+          "pathway": "Un examen transversal de los arreglos de financiación, coordinación y seguimiento en CCS, LDN, NBSAP y NDC podría ayudar a aclarar en qué ámbitos los sistemas habilitadores comunes ya respaldan la implementación conjunta.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NBSAP",
+            "CCS<->NDC",
+            "LDN<->NBSAP",
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_19",
+            "CCS_20",
+            "CCS_12",
+            "NBSAP_12",
+            "LDN_9",
+            "CCS_17"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 6021,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 6021,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 4846,
+                "share": 0.8048
+              },
+              {
+                "doc": "CCS",
+                "count": 2966,
+                "share": 0.4926
+              },
+              {
+                "doc": "NBSAP",
+                "count": 2485,
+                "share": 0.4127
+              },
+              {
+                "doc": "LDN",
+                "count": 1745,
+                "share": 0.2898
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 147
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 145
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 144
+              },
+              {
+                "id": "CCS_19",
+                "count": 144
+              },
+              {
+                "id": "LDN_5",
+                "count": 140
+              },
+              {
+                "id": "CCS_20",
+                "count": 140
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 56
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 39
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 24
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 50
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 46
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 34
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 25
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 23
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 92
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 41
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 17
+              }
+            ]
+          }
+        },
+        {
+          "name": "Vías para la restauración de tierras y la gestión de ecosistemas",
+          "type": "reinforcement",
+          "description": "Los documentos a menudo avanzan en la misma dirección cuando los objetivos climáticos y de biodiversidad se cumplen mediante la restauración forestal, la gestión sostenible de la tierra, la recuperación de ecosistemas degradados y los enfoques basados en la naturaleza. Este patrón aparece de manera consistente en los vínculos entre la neutralidad de la degradación de las tierras, la conservación de la biodiversidad y las medidas de adaptación o mitigación climática.",
+          "pathway": "El seguimiento conjunto de los resultados de la restauración, la gestión sostenible de la tierra y los servicios ecosistémicos en CCS, LDN, NBSAP y NDC puede ser un punto de partida útil para mantener la coherencia en los paisajes compartidos.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NBSAP",
+            "LDN<->NBSAP",
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBSAP_4",
+            "NBSAP_9",
+            "LDN_3",
+            "LDN_5",
+            "LDN_6",
+            "NBSAP_11"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 3892,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 3892,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 2717,
+                "share": 0.6981
+              },
+              {
+                "doc": "NBSAP",
+                "count": 2485,
+                "share": 0.6385
+              },
+              {
+                "doc": "LDN",
+                "count": 1745,
+                "share": 0.4484
+              },
+              {
+                "doc": "CCS",
+                "count": 837,
+                "share": 0.2151
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 147
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 145
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 144
+              },
+              {
+                "id": "LDN_5",
+                "count": 140
+              },
+              {
+                "id": "LDN_6",
+                "count": 136
+              },
+              {
+                "id": "NBSAP_12",
+                "count": 135
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 56
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 39
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 24
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 50
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 46
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 34
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 25
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 23
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 92
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 41
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 17
+              }
+            ]
+          }
+        },
+        {
+          "name": "Planificación espacial e información sobre riesgos climáticos",
+          "type": "reinforcement",
+          "description": "Una alineación recurrente vincula la planificación espacial, la evaluación del riesgo climático, el seguimiento del uso de la tierra y la toma de decisiones que incluye la biodiversidad. Estas herramientas respaldan decisiones prácticas sobre el agua, los bosques, las costas y las zonas vulnerables, y aparecen tanto en las medidas habilitadoras como en las medidas de ejecución sectorial.",
+          "pathway": "La alineación de indicadores entre la planificación espacial, la cartografía de riesgos y los sistemas de información sobre el uso de la tierra en CCS, NBSAP, LDN y NDC podría ayudar a mantener las vías de implementación avanzando en la misma dirección.",
+          "contributing_doc_pairs": [
+            "CCS<->NBSAP",
+            "CCS<->NDC",
+            "LDN<->NBSAP",
+            "LDN<->NDC",
+            "NBSAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NBSAP_1",
+            "NBSAP_11",
+            "CCS_23",
+            "CCS_12"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 5700,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 5700,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 4846,
+                "share": 0.8502
+              },
+              {
+                "doc": "CCS",
+                "count": 2645,
+                "share": 0.464
+              },
+              {
+                "doc": "NBSAP",
+                "count": 2485,
+                "share": 0.436
+              },
+              {
+                "doc": "LDN",
+                "count": 1424,
+                "share": 0.2498
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 147
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 145
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 144
+              },
+              {
+                "id": "NBSAP_12",
+                "count": 135
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 130
+              },
+              {
+                "id": "NBSAP_17",
+                "count": 128
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 56
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 39
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 24
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 50
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 46
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 34
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 25
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 23
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 92
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 41
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 17
+              }
+            ]
+          }
+        },
+        {
+          "name": "Trazado del transporte en zonas interiores sensibles para la biodiversidad",
+          "type": "friction",
+          "description": "La posible desalineación más recurrente se refiere al nuevo transporte por vías navegables interiores y, en algunos casos, a la infraestructura vial que se cruza con áreas protegidas, zonas de alta biodiversidad, restauración de aguas continentales o gestión de especies invasoras. El mecanismo parece ser una geografía compartida, en la que el trazado, la ubicación, las obras de navegación o el aumento del movimiento de embarcaciones pueden complicar los resultados de conservación, a menos que la planificación se coordine desde una etapa temprana.",
+          "pathway": "La evaluación espacial conjunta de los corredores de transporte, las obras en aguas continentales y las prioridades de biodiversidad en NBSAP<->NDC y CCS<->NBSAP puede merecer un examen más detenido.",
+          "contributing_doc_pairs": [
+            "NBSAP<->NDC",
+            "CCS<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "NDC_85",
+            "NBSAP_1",
+            "NBSAP_3",
+            "NBSAP_2",
+            "NBSAP_8"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 6,
+          "spans_documents": [
+            "CCS",
+            "NBSAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 6,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 6,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 5,
+                "share": 0.8333
+              },
+              {
+                "doc": "CCS",
+                "count": 1,
+                "share": 0.1667
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NDC_85",
+                "count": 4
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 2
+              },
+              {
+                "id": "NDC_76",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_8",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_transport",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 2
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "waterway",
+                "count": 2
+              },
+              {
+                "resource": "land",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 6
+            }
+          }
+        },
+        {
+          "name": "Asignación de agua en el marco de las medidas de expansión del riego",
+          "type": "friction",
+          "description": "Una segunda posible desalineación aparece en torno a la resiliencia a la sequía y la gestión integrada del agua, por un lado, y la ampliación del riego solar, por otro. El punto de revisión no es una oposición general entre documentos, sino la posibilidad de que la expansión del riego pueda competir por el agua escasa en cuencas afectadas por la sequía si los controles de extracción, las medidas de eficiencia y la planificación de cuencas no están alineados.",
+          "pathway": "La revisión a nivel de cuenca de las normas de extracción, la implementación del riego y las medidas de resiliencia a la sequía en CCS<->NDC y LDN<->NDC podría ayudar a aclarar la secuenciación y las salvaguardias.",
+          "contributing_doc_pairs": [
+            "CCS<->NDC",
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NDC_16",
+            "CCS_6",
+            "LDN_6"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 3,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 3,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 3,
+                "share": 1.0
+              },
+              {
+                "doc": "CCS",
+                "count": 2,
+                "share": 0.6667
+              },
+              {
+                "doc": "LDN",
+                "count": 1,
+                "share": 0.3333
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NDC_16",
+                "count": 2
+              },
+              {
+                "id": "LDN_6",
+                "count": 1
+              },
+              {
+                "id": "CCS_6",
+                "count": 1
+              },
+              {
+                "id": "CCS_8",
+                "count": 1
+              },
+              {
+                "id": "NDC_76",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 2
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 1
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 2
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 2
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 2
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 1
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 2
+              },
+              {
+                "resource": "forest",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 2,
+              "delivery_friction": 1
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "En general, el conjunto de documentos parece presentar una fuerte coherencia, con proporciones muy bajas de pares identificados para revisión y grandes volúmenes de pares alineados en los cuatro documentos. Las fortalezas recurrentes más claras son los sistemas habilitadores compartidos, las vías de restauración de tierras y ecosistemas, y el uso de herramientas de planificación e información sobre riesgos que apoyan los objetivos climáticos, de biodiversidad y de tierras en la misma dirección. La posible desalineación es comparativamente limitada y se concentra en un pequeño número de ámbitos de implementación, especialmente el trazado del transporte en zonas interiores sensibles para la biodiversidad y la asignación de agua cuando la expansión del riego coincide con la gestión de la sequía y de las extracciones. Estos patrones sugieren una amplia alineación estratégica, junto con algunas cuestiones de ejecución basadas en el territorio que podrían justificar una coordinación más estrecha.",
+      "doc_pair_count": 6,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "NBSAP": {
+      "storylines": [
+        {
+          "name": "Gobernanza climática, financiación y sistemas de coordinación",
+          "type": "reinforcement",
+          "description": "Un patrón recurrente sólido es el uso de herramientas de gobernanza transversales, financiación climática, codificación presupuestaria, sensibilización, capacitación y plataformas de coordinación en todos los documentos relacionados con el clima y la tierra. Estos instrumentos se alinean con la implementación en adaptación, restauración de tierras, seguridad hídrica y resiliencia comunitaria, y aparecen repetidamente en las combinaciones alineadas de mayor volumen.",
+          "pathway": "La alineación de indicadores y el seguimiento conjunto periódico en CCS, NDC, LDN y NAP podrían ayudar a mantener la visibilidad sobre cómo los instrumentos de gobernanza y financiación apoyan la implementación en todos los sectores.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NAP",
+            "CCS<->NDC",
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_19",
+            "CCS_20",
+            "CCS_12",
+            "LDN_9",
+            "LDN_8",
+            "CCS_17"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 4276,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 4276,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 3215,
+                "share": 0.7519
+              },
+              {
+                "doc": "CCS",
+                "count": 3190,
+                "share": 0.746
+              },
+              {
+                "doc": "LDN",
+                "count": 1407,
+                "share": 0.329
+              },
+              {
+                "doc": "NAP",
+                "count": 740,
+                "share": 0.1731
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "CCS_19",
+                "count": 158
+              },
+              {
+                "id": "CCS_20",
+                "count": 156
+              },
+              {
+                "id": "CCS_12",
+                "count": 152
+              },
+              {
+                "id": "CCS_23",
+                "count": 138
+              },
+              {
+                "id": "CCS_17",
+                "count": 134
+              },
+              {
+                "id": "CCS_14",
+                "count": 133
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 36
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 60
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 47
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 46
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 31
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 19
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 91
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 34
+              }
+            ]
+          }
+        },
+        {
+          "name": "Información sobre el riesgo hídrico y planificación de cuencas",
+          "type": "reinforcement",
+          "description": "Los documentos a menudo avanzan en la misma dirección mediante evaluaciones del riesgo climático, información meteorológica e hidrológica, sistemas de alerta temprana y planificación de sequías o inundaciones a nivel de cuenca. Esta arquitectura compartida respalda la seguridad hídrica, la preparación ante desastres y la planificación de la adaptación en la agricultura, los asentamientos y los ecosistemas.",
+          "pathway": "Los mecanismos de seguimiento compartidos entre CCS, NAP y NDC pueden proporcionar un punto de partida práctico para vincular los planes de cuenca, los indicadores de alerta temprana y los servicios de información climática.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "CCS<->NDC",
+            "LDN<->NAP",
+            "NAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_23",
+            "CCS_14",
+            "NAP_22",
+            "CCS_6",
+            "NAP_30",
+            "LDN_6"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 5641,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 5641,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 4424,
+                "share": 0.7843
+              },
+              {
+                "doc": "NAP",
+                "count": 3512,
+                "share": 0.6226
+              },
+              {
+                "doc": "CCS",
+                "count": 2869,
+                "share": 0.5086
+              },
+              {
+                "doc": "LDN",
+                "count": 477,
+                "share": 0.0846
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_30",
+                "count": 143
+              },
+              {
+                "id": "CCS_19",
+                "count": 142
+              },
+              {
+                "id": "CCS_20",
+                "count": 140
+              },
+              {
+                "id": "CCS_12",
+                "count": 138
+              },
+              {
+                "id": "NAP_22",
+                "count": 134
+              },
+              {
+                "id": "NAP_33",
+                "count": 126
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 36
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 60
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 47
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 46
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 31
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 19
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 91
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 34
+              }
+            ]
+          }
+        },
+        {
+          "name": "Prácticas agrícolas y de gestión de la tierra resilientes al clima",
+          "type": "reinforcement",
+          "description": "Otro patrón recurrente es la alineación en torno a la agricultura climáticamente inteligente, la gestión sostenible de la tierra, la resiliencia a la sequía, la restauración y la seguridad alimentaria en zonas vulnerables. Estas medidas conectan acciones prácticas a nivel de explotación agrícola y de paisaje con objetivos más amplios de integración de la adaptación y resiliencia en todo el conjunto de documentos.",
+          "pathway": "La revisión conjunta de los indicadores de tierras, agricultura y sequía en LDN, NAP, CCS y NDC podría ayudar a mantener estas vías de implementación avanzando en la misma dirección.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NAP",
+            "LDN<->NAP",
+            "LDN<->NDC",
+            "NAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "LDN_5",
+            "LDN_3",
+            "LDN_14",
+            "LDN_6",
+            "CCS_12"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 4919,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 4919,
+            "doc_shares": [
+              {
+                "doc": "NAP",
+                "count": 3512,
+                "share": 0.714
+              },
+              {
+                "doc": "NDC",
+                "count": 3381,
+                "share": 0.6873
+              },
+              {
+                "doc": "LDN",
+                "count": 1884,
+                "share": 0.383
+              },
+              {
+                "doc": "CCS",
+                "count": 1061,
+                "share": 0.2157
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_5",
+                "count": 155
+              },
+              {
+                "id": "LDN_6",
+                "count": 149
+              },
+              {
+                "id": "NAP_30",
+                "count": 143
+              },
+              {
+                "id": "LDN_3",
+                "count": 141
+              },
+              {
+                "id": "LDN_9",
+                "count": 137
+              },
+              {
+                "id": "LDN_14",
+                "count": 136
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 47
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 42
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 36
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 60
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 47
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 46
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 31
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 19
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_disabilities",
+                "count": 13
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 91
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 39
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 34
+              }
+            ]
+          }
+        },
+        {
+          "name": "Demanda de riego agrícola y asignación de agua",
+          "type": "friction",
+          "description": "La posible desalineación recurrente más clara se refiere a la expansión del riego y al desarrollo hídrico agrícola en contextos donde el agua ya está sometida a presión. Los casos examinados señalan repetidamente una posible competencia con la planificación frente a la sequía, las fuentes de agua protegidas, la gestión integrada de los recursos hídricos y las necesidades hídricas de los ecosistemas, y el agua se menciona en la mayoría de los pares identificados para revisión.",
+          "pathway": "Una revisión conjunta de la asignación de cuencas en CCS, NAP, LDN y NDC podría ayudar a conectar las metas de expansión del riego con los controles de extracción, las medidas de eficiencia y la planificación de la sequía.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "LDN<->NAP",
+            "LDN<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NDC_16",
+            "NAP_5",
+            "LDN_6",
+            "CCS_6",
+            "CCS_3"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 12,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 12,
+            "doc_shares": [
+              {
+                "doc": "NAP",
+                "count": 11,
+                "share": 0.9167
+              },
+              {
+                "doc": "CCS",
+                "count": 7,
+                "share": 0.5833
+              },
+              {
+                "doc": "LDN",
+                "count": 5,
+                "share": 0.4167
+              },
+              {
+                "doc": "NDC",
+                "count": 1,
+                "share": 0.0833
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_20",
+                "count": 5
+              },
+              {
+                "id": "NAP_5",
+                "count": 3
+              },
+              {
+                "id": "LDN_6",
+                "count": 3
+              },
+              {
+                "id": "CCS_3",
+                "count": 2
+              },
+              {
+                "id": "NAP_1",
+                "count": 2
+              },
+              {
+                "id": "CCS_7",
+                "count": 2
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 5
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 5
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_water",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 8
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 4
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 4
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 11
+              },
+              {
+                "resource": "land",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 11,
+              "delivery_friction": 1
+            }
+          }
+        },
+        {
+          "name": "Acceso al agua, hábitats acuáticos y usos de las cuencas",
+          "type": "friction",
+          "description": "Una segunda posible desalineación aparece cuando las medidas relacionadas con el acceso al agua para la agricultura y el riego se superponen con la restauración de hábitats acuáticos, los objetivos pesqueros, los servicios de agua por tubería o metas más amplias de gestión de cuencas. La evidencia de la revisión sugiere que estas cuestiones surgen en cuencas fluviales y sistemas hídricos compartidos, más que como una divergencia amplia en la dirección general.",
+          "pathway": "El examen a nivel de cuenca de los objetivos superpuestos de agua, pesca y prestación de servicios de los NAP y NDC puede merecer un análisis más detenido cuando los mismos cuerpos de agua sustentan múltiples usos.",
+          "contributing_doc_pairs": [
+            "NAP<->NDC"
+          ],
+          "anchor_target_ids": [
+            "NAP_1",
+            "NAP_20",
+            "NAP_35",
+            "NDC_16",
+            "NAP_5"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 9,
+          "spans_documents": [
+            "NAP",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 9,
+            "doc_shares": [
+              {
+                "doc": "NDC",
+                "count": 9,
+                "share": 1.0
+              },
+              {
+                "doc": "NAP",
+                "count": 9,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NDC_16",
+                "count": 3
+              },
+              {
+                "id": "NAP_1",
+                "count": 2
+              },
+              {
+                "id": "NDC_28",
+                "count": 2
+              },
+              {
+                "id": "NAP_20",
+                "count": 2
+              },
+              {
+                "id": "NDC_85",
+                "count": 1
+              },
+              {
+                "id": "NAP_3",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 5
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_water",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 10
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 2
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_gender_equality",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_children_youth",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 4
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 3
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 5
+              },
+              {
+                "resource": "land",
+                "count": 2
+              },
+              {
+                "resource": "waterway",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 7,
+              "delivery_friction": 2
+            }
+          }
+        },
+        {
+          "name": "Ubicación de infraestructuras y presiones sobre los paisajes forestales",
+          "type": "friction",
+          "description": "Un conjunto más reducido de casos examinados apunta a una posible desalineación cuando la expansión de la infraestructura, incluidas las carreteras o la infraestructura hídrica agrícola, se superpone con áreas de protección forestal, restauración o forestación. La evidencia indica que esto es limitado en frecuencia y parece estar vinculado a ubicaciones específicas y decisiones de emplazamiento, más que a un patrón de alcance sistémico.",
+          "pathway": "La evaluación espacial entre CCS y NDC, y cuando proceda CCS y NAP, podría ayudar a aclarar la ubicación de corredores e instalaciones en paisajes forestales y de restauración.",
+          "contributing_doc_pairs": [
+            "CCS<->NDC"
+          ],
+          "anchor_target_ids": [
+            "CCS_8",
+            "NDC_28",
+            "CCS_7",
+            "NAP_20"
+          ],
+          "confidence": "low",
+          "unknown_doc_pairs": [],
+          "pair_count": 2,
+          "spans_documents": [
+            "CCS",
+            "NDC"
+          ],
+          "aggregates": {
+            "pair_total": 2,
+            "doc_shares": [
+              {
+                "doc": "CCS",
+                "count": 2,
+                "share": 1.0
+              },
+              {
+                "doc": "NDC",
+                "count": 2,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "CCS_6",
+                "count": 1
+              },
+              {
+                "id": "NDC_16",
+                "count": 1
+              },
+              {
+                "id": "CCS_8",
+                "count": 1
+              },
+              {
+                "id": "NDC_76",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 1
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_water",
+                "count": 1
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 2
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 1
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 1
+              },
+              {
+                "resource": "forest",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 1,
+              "delivery_friction": 1
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "En los documentos de Country X sobre clima, adaptación, degradación de las tierras y NDC, el panorama general es de una fuerte alineación, con proporciones muy bajas de pares puntuados identificados para revisión y grandes volúmenes de pares alineados en cada emparejamiento de documentos. Los patrones comunes más consistentes se refieren a los sistemas de gobernanza y financiación, la información sobre riesgos climáticos e hídricos, la planificación de cuencas y las prácticas de uso de la tierra y agrícolas resilientes al clima que apoyan la adaptación y la resiliencia de los ecosistemas. La principal posible desalineación recurrente es más acotada y se centra en la asignación del agua, especialmente cuando la expansión del riego o el desarrollo agrícola del agua pueden superponerse con la gestión de la sequía, las fuentes protegidas, los hábitats acuáticos u otros usos de la cuenca. Un número menor de casos también sugiere posibles cuestiones específicas de ubicación relativas al emplazamiento de tierras y bosques en torno a la infraestructura y los paisajes de restauración.",
+      "doc_pair_count": 6,
+      "schema_version": 2,
+      "validation_warnings": []
+    },
+    "NDC": {
+      "storylines": [
+        {
+          "name": "Planificación integrada de la restauración de tierras y la resiliencia de los ecosistemas",
+          "type": "reinforcement",
+          "description": "En CCS, LDN, NAP y NBSAP, la restauración de tierras, la gestión sostenible de la tierra, la resiliencia a la sequía y la protección de los servicios ecosistémicos suelen avanzar en la misma dirección. Los mecanismos recurrentes incluyen la restauración de tierras degradadas y bosques, la planificación de cuencas hidrográficas y cuencas, la adaptación climática en paisajes productivos y medidas de planificación que conectan la productividad de la tierra con la resiliencia de los ecosistemas.",
+          "pathway": "La planificación conjunta y la alineación de indicadores entre CCS, LDN, NAP y NBSAP podrían ayudar a mantener la visibilidad sobre cómo se están logrando los objetivos de restauración, resiliencia a la sequía y servicios ecosistémicos en los mismos paisajes.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NBSAP",
+            "LDN<->NAP",
+            "LDN<->NBSAP",
+            "NAP<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "LDN_5",
+            "LDN_3",
+            "LDN_6",
+            "NBSAP_4",
+            "NBSAP_9",
+            "NBSAP_2"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 2256,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NBSAP"
+          ],
+          "aggregates": {
+            "pair_total": 2256,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 1458,
+                "share": 0.6463
+              },
+              {
+                "doc": "LDN",
+                "count": 1136,
+                "share": 0.5035
+              },
+              {
+                "doc": "NAP",
+                "count": 1081,
+                "share": 0.4792
+              },
+              {
+                "doc": "CCS",
+                "count": 837,
+                "share": 0.371
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "LDN_5",
+                "count": 86
+              },
+              {
+                "id": "LDN_3",
+                "count": 84
+              },
+              {
+                "id": "LDN_6",
+                "count": 83
+              },
+              {
+                "id": "LDN_9",
+                "count": 81
+              },
+              {
+                "id": "NBSAP_4",
+                "count": 81
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 81
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 39
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 29
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 15
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 40
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 26
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 16
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 17
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 12
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 50
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 26
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 22
+              }
+            ]
+          }
+        },
+        {
+          "name": "Sistemas habilitadores compartidos para la implementación intersectorial",
+          "type": "reinforcement",
+          "description": "Un segundo patrón recurrente es el uso de instrumentos habilitadores que apoyan la implementación en todos los sectores, incluidos la financiación y la codificación presupuestaria, la transferencia de tecnología, la sensibilización y el fortalecimiento de capacidades, la gobernanza participativa, la divulgación empresarial y la coordinación entre múltiples actores. Estos mecanismos se alinean con la integración de la biodiversidad, la acción contra la degradación de las tierras y la adaptación al cambio climático cuando la implementación depende de sistemas comunes de planificación e información.",
+          "pathway": "Un marco compartido de seguimiento y presentación de informes en CCS, LDN y NBSAP puede merecer un examen más detenido para hacer un seguimiento de cómo las finanzas, la participación, la divulgación y las herramientas de información apoyan múltiples objetivos a la vez.",
+          "contributing_doc_pairs": [
+            "CCS<->LDN",
+            "CCS<->NBSAP",
+            "LDN<->NBSAP",
+            "NAP<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "LDN_9",
+            "LDN_15",
+            "LDN_8",
+            "NBSAP_11",
+            "NBSAP_17",
+            "NBSAP_1"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1779,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NBSAP"
+          ],
+          "aggregates": {
+            "pair_total": 1779,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 1458,
+                "share": 0.8196
+              },
+              {
+                "doc": "CCS",
+                "count": 837,
+                "share": 0.4705
+              },
+              {
+                "doc": "LDN",
+                "count": 659,
+                "share": 0.3704
+              },
+              {
+                "doc": "NAP",
+                "count": 604,
+                "share": 0.3395
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NBSAP_4",
+                "count": 81
+              },
+              {
+                "id": "NBSAP_9",
+                "count": 81
+              },
+              {
+                "id": "NBSAP_11",
+                "count": 81
+              },
+              {
+                "id": "NBSAP_5",
+                "count": 80
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 79
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 79
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 39
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 29
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 15
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 40
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 26
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 16
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 17
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 12
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 50
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 26
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 22
+              }
+            ]
+          }
+        },
+        {
+          "name": "Trayectorias de adaptación hídrica y agrícola climáticamente inteligentes",
+          "type": "reinforcement",
+          "description": "CCS y NAP suelen alinearse en torno a las evaluaciones del riesgo climático, las redes meteorológicas, los sistemas de alerta temprana, el acceso al riego, las variedades mejoradas y la agricultura climáticamente inteligente, mientras que los vínculos relacionados con LDN y NBSAP conectan estas medidas con la resiliencia a la sequía y la gestión sostenible de los sistemas de tierras y aguas. El mecanismo común es la planificación de la adaptación que combina información climática con medidas prácticas en la agricultura, las cuencas hidrográficas y la gestión de las aguas continentales.",
+          "pathway": "La alineación de indicadores entre CCS, NAP, LDN y NBSAP podría ayudar a aclarar en qué ámbitos la información climática, la eficiencia del riego y las medidas relativas a las cuencas hidrográficas están respaldando los mismos resultados de adaptación.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "LDN<->NAP",
+            "NAP<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "LDN_14",
+            "LDN_2",
+            "NBSAP_5",
+            "NBSAP_1",
+            "LDN_6"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 1821,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP",
+            "NBSAP"
+          ],
+          "aggregates": {
+            "pair_total": 1821,
+            "doc_shares": [
+              {
+                "doc": "NAP",
+                "count": 1821,
+                "share": 1.0
+              },
+              {
+                "doc": "CCS",
+                "count": 740,
+                "share": 0.4064
+              },
+              {
+                "doc": "NBSAP",
+                "count": 604,
+                "share": 0.3317
+              },
+              {
+                "doc": "LDN",
+                "count": 477,
+                "share": 0.2619
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_30",
+                "count": 66
+              },
+              {
+                "id": "NAP_11",
+                "count": 65
+              },
+              {
+                "id": "NAP_2",
+                "count": 64
+              },
+              {
+                "id": "NAP_22",
+                "count": 64
+              },
+              {
+                "id": "NAP_29",
+                "count": 64
+              },
+              {
+                "id": "NAP_35",
+                "count": 63
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 39
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 29
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 15
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 40
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 26
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 16
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_information_education",
+                "count": 17
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 12
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 5
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 50
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 26
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 22
+              }
+            ]
+          }
+        },
+        {
+          "name": "Expansión del agua para la agricultura y necesidades hídricas de los ecosistemas",
+          "type": "friction",
+          "description": "La posible desalineación más recurrente se refiere a la expansión del riego y al desarrollo hídrico, especialmente en torno a las metas del NAP sobre el acceso al riego y los recursos hídricos en zonas no irrigadas. Estas medidas pueden competir con las fuentes de agua protegidas, la gestión de la sequía en las cuencas, la restauración de hábitats acuáticos y la restauración de tierras cuando se depende de los mismos recursos hídricos finitos.",
+          "pathway": "Una revisión conjunta de la asignación a nivel de cuenca en CCS, NAP y LDN podría ayudar a examinar cómo se secuencian el acceso al riego y el desarrollo hídrico junto con la protección de las fuentes, la planificación de la sequía y las necesidades hídricas de los ecosistemas.",
+          "contributing_doc_pairs": [
+            "CCS<->NAP",
+            "LDN<->NAP"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NAP_5",
+            "CCS_7",
+            "LDN_6",
+            "LDN_4",
+            "NAP_1"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 11,
+          "spans_documents": [
+            "CCS",
+            "LDN",
+            "NAP"
+          ],
+          "aggregates": {
+            "pair_total": 11,
+            "doc_shares": [
+              {
+                "doc": "NAP",
+                "count": 11,
+                "share": 1.0
+              },
+              {
+                "doc": "CCS",
+                "count": 7,
+                "share": 0.6364
+              },
+              {
+                "doc": "LDN",
+                "count": 4,
+                "share": 0.3636
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_20",
+                "count": 5
+              },
+              {
+                "id": "NAP_5",
+                "count": 3
+              },
+              {
+                "id": "CCS_3",
+                "count": 2
+              },
+              {
+                "id": "NAP_1",
+                "count": 2
+              },
+              {
+                "id": "CCS_7",
+                "count": 2
+              },
+              {
+                "id": "LDN_6",
+                "count": 2
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 5
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_water",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 7
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_8",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_5",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_indigenous_local_communities",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 4
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 4
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 4
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 10
+              },
+              {
+                "resource": "land",
+                "count": 1
+              }
+            ],
+            "mechanisms": {
+              "resource_competition": 10,
+              "delivery_friction": 1
+            }
+          }
+        },
+        {
+          "name": "Desarrollo del riego dentro de las áreas de planificación de la biodiversidad",
+          "type": "friction",
+          "description": "Una posible desalineación relacionada aparece cuando el acceso al riego, el desarrollo hídrico agrícola y, en algunos casos, la agricultura de precisión podrían superponerse con la planificación espacial inclusiva de la biodiversidad, las aguas continentales protegidas o conservadas, las áreas de restauración y los objetivos de reducción de la contaminación. El mecanismo se relaciona menos con la orientación general de las políticas que con la forma en que la intensificación agrícola se diseña y se ubica en paisajes y aguas sensibles.",
+          "pathway": "La zonificación conjunta y la alineación de salvaguardias entre el NAP y el NBSAP pueden merecer un examen más detenido cuando el riego, la conservación de las aguas continentales y la gestión de insumos agrícolas coinciden en las mismas zonas.",
+          "contributing_doc_pairs": [
+            "NAP<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "NAP_20",
+            "NAP_5",
+            "NBSAP_3",
+            "NBSAP_1",
+            "NBSAP_14"
+          ],
+          "confidence": "high",
+          "unknown_doc_pairs": [],
+          "pair_count": 7,
+          "spans_documents": [
+            "NAP",
+            "NBSAP"
+          ],
+          "aggregates": {
+            "pair_total": 7,
+            "doc_shares": [
+              {
+                "doc": "NBSAP",
+                "count": 7,
+                "share": 1.0
+              },
+              {
+                "doc": "NAP",
+                "count": 7,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "NAP_5",
+                "count": 3
+              },
+              {
+                "id": "NAP_20",
+                "count": 3
+              },
+              {
+                "id": "NBSAP_1",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_14",
+                "count": 2
+              },
+              {
+                "id": "NBSAP_2",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 4
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_agriculture_food",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_9",
+                "count": 3
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_6",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 2
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_children_youth",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_agriculture",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 3
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 1
+              }
+            ],
+            "contested_resources": [
+              {
+                "resource": "water",
+                "count": 5
+              },
+              {
+                "resource": "land",
+                "count": 3
+              }
+            ],
+            "mechanisms": {
+              "delivery_friction": 4,
+              "resource_competition": 3
+            }
+          }
+        },
+        {
+          "name": "Ubicación de infraestructuras cerca de áreas de conservación protegidas",
+          "type": "friction",
+          "description": "Una posible desalineación más específica se refiere a la adaptación al clima de carreteras principales, ferrocarriles y líneas eléctricas, cuando el trazado podría intersectar con áreas protegidas u otras medidas de conservación basadas en áreas. La evidencia indica un problema de implementación vinculado a la ubicación y la evaluación previa, más que un patrón recurrente más amplio en el conjunto de documentos.",
+          "pathway": "La evaluación espacial entre CCS y NBSAP podría ayudar a examinar las opciones de trazado de infraestructuras junto con los límites de las áreas protegidas y conservadas.",
+          "contributing_doc_pairs": [
+            "CCS<->NBSAP"
+          ],
+          "anchor_target_ids": [
+            "CCS_22",
+            "NBSAP_3"
+          ],
+          "confidence": "medium",
+          "unknown_doc_pairs": [],
+          "pair_count": 1,
+          "spans_documents": [
+            "CCS",
+            "NBSAP"
+          ],
+          "aggregates": {
+            "pair_total": 1,
+            "doc_shares": [
+              {
+                "doc": "CCS",
+                "count": 1,
+                "share": 1.0
+              },
+              {
+                "doc": "NBSAP",
+                "count": 1,
+                "share": 1.0
+              }
+            ],
+            "top_targets": [
+              {
+                "id": "CCS_22",
+                "count": 1
+              },
+              {
+                "id": "NBSAP_3",
+                "count": 1
+              }
+            ],
+            "sector_tags": [
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_ecosystems_biodiversity",
+                "count": 1
+              },
+              {
+                "taxonomy": "gga",
+                "category_id": "gga_infrastructure_settlements",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_7",
+                "count": 1
+              },
+              {
+                "taxonomy": "globe",
+                "category_id": "globe_4",
+                "count": 1
+              },
+              {
+                "taxonomy": "hr",
+                "category_id": "hr_participation",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_lulucf",
+                "count": 1
+              },
+              {
+                "taxonomy": "sector",
+                "category_id": "sector_other",
+                "count": 1
+              }
+            ],
+            "contested_resources": [],
+            "mechanisms": {
+              "delivery_friction": 1
+            }
+          }
+        }
+      ],
+      "summary_paragraph": "El conjunto de documentos muestra una sólida coherencia general, con proporciones muy bajas de pares puntuados identificados para revisión en los cuatro documentos y grandes volúmenes de pares alineados en cada emparejamiento principal. Los temas de alineación recurrentes más claros se refieren a la restauración integrada de tierras y la resiliencia de los ecosistemas, a sistemas habilitadores compartidos como la financiación, la planificación, la participación y las herramientas de información, y a vías de adaptación climáticamente inteligentes que vinculan la agricultura, el agua y la información sobre riesgos. El principal ámbito que merece un examen más detenido es el agua, en particular allí donde el acceso al riego y el desarrollo hídrico agrícola pueden cruzarse con fuentes protegidas, ecosistemas sensibles a la sequía, la conservación de las aguas continentales y los objetivos de restauración. También aparece una posible desalineación más acotada en torno a la ubicación de infraestructuras en relación con áreas protegidas o conservadas, aunque esto parece más limitado en alcance que los patrones relacionados con el agua.",
+      "doc_pair_count": 6,
+      "schema_version": 2,
+      "validation_warnings": []
+    }
+  }
+}

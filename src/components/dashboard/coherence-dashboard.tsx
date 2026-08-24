@@ -93,15 +93,23 @@ function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
     ? String(t.sourceLabelOriginal)
     : undefined;
   const language = t.language ? String(t.language) : undefined;
-  // When the target's original-language text matches the active locale, show
-  // it instead of the English translation. For genuinely sourced originals
-  // (textOriginalSource !== "machine") this is the real document wording; for
-  // machine back-translations (e.g. the Mongolian targets) it surfaces the
-  // machine text under the global machine-translation caveat on the language
-  // switcher. Either way the chip's "original" is now redundant (already shown),
-  // so drop it; the verify-translation chip is separately suppressed for
-  // machine originals in OriginalLanguageChip.
-  if (locale && language === locale && textOriginal) {
+  // Locale swap for MACHINE back-translations only (the Mongolian targets):
+  // there is no genuine source-language text to compare against, so the
+  // machine text simply replaces the English under the global
+  // machine-translation caveat on the language switcher, and the chip's
+  // "original" would be redundant.
+  //
+  // Genuinely sourced originals (Panama's Spanish) are swapped SERVER-SIDE by
+  // `src/lib/locale-text` instead, which keeps the English analysis text in
+  // `textTranslation` so the language chip can still show both sides. Doing it
+  // here as well would swap twice and, because this function whitelists the
+  // fields it returns, would drop the English on the floor.
+  if (
+    locale &&
+    language === locale &&
+    textOriginal &&
+    t.textOriginalSource === "machine"
+  ) {
     text = textOriginal;
     if (sourceLabelOriginal) sourceLabel = sourceLabelOriginal;
     textOriginal = undefined;
@@ -125,6 +133,17 @@ function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
       t.textOriginalSource === "machine" || t.textOriginalSource === "source"
         ? t.textOriginalSource
         : undefined,
+    // Written server-side by src/lib/locale-text when the text was swapped onto
+    // its source language: the English the analysis ran on, kept reachable
+    // behind the language chip. This whitelist is why they must be listed —
+    // anything not named here never reaches the UI.
+    textTranslation: t.textTranslation ? String(t.textTranslation) : undefined,
+    sourceLabelTranslation: t.sourceLabelTranslation
+      ? String(t.sourceLabelTranslation)
+      : undefined,
+    textLocale: t.textLocale ? String(t.textLocale) : undefined,
+    // Which elements the target's text states (src/.../target-quality).
+    definition: (t.definition as Target["definition"]) ?? undefined,
     actionType:
       t.actionType === "mitigation" || t.actionType === "adaptation"
         ? t.actionType
@@ -319,9 +338,13 @@ export function CoherenceDashboard({
         availableModels={data.availableModels}
         selectedModel={data.model}
         onChange={handleModelChange}
-        // The comparison page is a Mongolia-only route for now (the only
-        // country with multiple per-model runs on disk).
-        comparisonHref={country === "mongolia" ? "/mongolia/model-comparison" : undefined}
+        // Comparing needs something to compare: the link appears for any
+        // country with more than one per-model run on disk.
+        comparisonHref={
+          country && data.availableModels.length > 1
+            ? `/${country}/model-comparison`
+            : undefined
+        }
       />
 
       <CoherenceBriefing

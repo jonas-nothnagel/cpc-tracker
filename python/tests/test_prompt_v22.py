@@ -27,7 +27,6 @@ from src.measure_align import (
     MEASURE_CACHE_NAMESPACE,
     MEASURE_INTRO_FRAMING,
 )
-from src.nr7_align import NR7_CACHE_NAMESPACE, NR7_INTRO_FRAMING
 
 _DUMMY_FIELDS = dict(
     intro_framing="",
@@ -97,7 +96,6 @@ def test_no_banned_vocabulary_in_prompt():
         ADVISOR_USER_TEMPLATE,
         MEASURE_INTRO_FRAMING,
         BUDGET_INTRO_FRAMING,
-        NR7_INTRO_FRAMING,
     ):
         assert not re.search(r"tension|contradict", template, re.IGNORECASE)
 
@@ -116,13 +114,11 @@ def test_cache_namespaces_bumped_for_v22():
         "alignment_v2",
         "measure_alignment_v3",
         "budget_alignment_v2",
-        "nr7_alignment_v2",
     }
     current = {
         ALIGNMENT_CACHE_NAMESPACE,
         MEASURE_CACHE_NAMESPACE,
         BUDGET_CACHE_NAMESPACE,
-        NR7_CACHE_NAMESPACE,
     }
     assert current.isdisjoint(retired)
-    assert len(current) == 4
+    assert len(current) == 3

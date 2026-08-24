@@ -1658,7 +1658,11 @@ function ChatBar({
         {prominent ? (
           // Explorer B dock: a single embedded bar — lead label, search input,
           // filled Ask button — so the chat reads as part of the canvas.
-          <div className="flex items-center gap-3 rounded-2xl border border-line bg-white px-3.5 py-2.5 shadow-sm">
+          // data-tour: the briefing's guided first read ends on this dock.
+          <div
+            data-tour="explore-ask"
+            className="scroll-mt-40 flex items-center gap-3 rounded-2xl border border-line bg-white px-3.5 py-2.5 shadow-sm"
+          >
             <span className="hidden max-w-[54px] shrink-0 text-caption font-medium leading-[1.15] text-[var(--undp-gray)] sm:block">
               {t("askPoliciesLabel")}
             </span>
@@ -5653,7 +5657,7 @@ export function PolicyCoherenceExplorer({
                 </button>
                 {budgetShadingActive && (
                   <p className="text-caption text-[var(--undp-gray)] leading-snug">
-                    {t("budget.mongoliaNote", {
+                    {t("budget.berNote", {
                       start: budgetSummary.period.start,
                       end: budgetSummary.period.end,
                     })}

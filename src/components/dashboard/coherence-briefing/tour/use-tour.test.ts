@@ -45,6 +45,30 @@ describe("resolveSteps", () => {
   });
 });
 
+describe("resolveSteps with altTargets", () => {
+  const FALLBACK_STEPS: TourStep[] = [
+    { id: "delivery", target: "t-primary", altTargets: ["t-alt-a", "t-alt-b"] },
+  ];
+
+  it("prefers the primary target even when fallbacks are rendered", () => {
+    const root = host(["t-alt-a", "t-primary"]);
+    const resolved = resolveSteps(FALLBACK_STEPS, root);
+    expect(resolved).toHaveLength(1);
+    expect(resolved[0].el.getAttribute("data-tour")).toBe("t-primary");
+  });
+
+  it("falls back through altTargets in declared order", () => {
+    const root = host(["t-alt-b", "t-alt-a"]);
+    const resolved = resolveSteps(FALLBACK_STEPS, root);
+    expect(resolved).toHaveLength(1);
+    expect(resolved[0].el.getAttribute("data-tour")).toBe("t-alt-a");
+  });
+
+  it("drops the step when neither primary nor fallbacks resolve", () => {
+    expect(resolveSteps(FALLBACK_STEPS, host(["t-unrelated"]))).toEqual([]);
+  });
+});
+
 describe("useTour", () => {
   it("stays idle when no targets resolve", () => {
     const { result } = renderHook(() => useTour());

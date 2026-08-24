@@ -1,0 +1,2928 @@
+[
+  {
+    "targetId": "NDC_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "increasing the use of LPG and through the adoption of improved biomass stoves",
+      "scope": "household access to clean cooking",
+      "outcome": "Increase household access to clean cooking"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_2",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "households' access to clean and affordable solutions",
+      "outcome": "Achieve 70% penetration of LPG by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_3",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "households",
+      "outcome": "Reduce forest pressure and CH4 emissions; CO2"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "biomass energy",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "transition to LED lighting",
+      "scope": "in the residential sector",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Achieve 100% of inefficient lamps removed from the market in C\u00f4te d'Ivoire by 2035",
+      "scope": "from the market in C\u00f4te d'Ivoire",
+      "outcome": "100% of inefficient lamps removed from the market in C\u00f4te d'Ivoire by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide the FONAME with at least $5,000,000 by 2035",
+      "scope": "the FONAME",
+      "outcome": "reduction of greenhouse gas emissions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through incentive financial mechanisms",
+      "scope": "households",
+      "outcome": "Achieve 100% of households equipped with high-performance LED technology for lighting by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the residential sector (household appliances)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_10",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "household appliances marketed in C\u00f4te d'Ivoire",
+      "outcome": "100% of household appliances marketed compliant with MEPS and energy labeling by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through accompanying mechanisms via FONAME subsidies",
+      "scope": "beneficiary households",
+      "outcome": "Reach at least 70% of beneficiary households by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_12",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the public and commercial sectors",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "conducted periodic energy audits in compliance with regulations",
+      "scope": "public and commercial buildings",
+      "outcome": "100% of public and commercial buildings will have conducted periodic energy audits in compliance with regulations by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "effectively rehabilitated",
+      "scope": "10 public administrative buildings",
+      "outcome": "10 public buildings effectively rehabilitated"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_15",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the tertiary sector",
+      "outcome": "Reduce the energy intensity of the tertiary sector by 30% by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "100% use of energy-efficient lamps",
+      "scope": "public lighting",
+      "outcome": "78% reduction in the energy intensity of public lighting by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_17",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and implement at least 40 Energy Performance Contracts (EPCs) by 2035.",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_18",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "industrial sector",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_19",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "industrial sites",
+      "outcome": "Achieve 100% of audited industrial sites by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_20",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the industrial sector",
+      "outcome": "Reduce the average energy intensity of the industrial sector by less than 30% by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_21",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "within large industries",
+      "outcome": "Achieve 20% of industries with an operational energy management system by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_22",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in oil and gas operations",
+      "outcome": "eliminate fugitive methane emissions"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Conduct a comprehensive mapping of potential emission sites",
+      "scope": "in the hydrocarbons sector in C\u00f4te d'Ivoire.",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_24",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "production, transport, and storage sites",
+      "outcome": "Achieve 100% of production, transport, and storage sites assessed by 2035."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_25",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the hydrocarbons sector",
+      "outcome": "Establish a reliable and up-to-date database of fugitive methane emissions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopting high-efficiency carbonization processes and structuring value chains",
+      "scope": "the charcoal supply chain",
+      "outcome": "Modernize the charcoal supply chain"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_27",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Achieve at least 45% of national charcoal production from improved kilns by 2030",
+      "scope": "national charcoal production",
+      "outcome": "at least 45% of national charcoal production from improved kilns by 2030"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "accompanying the implementation of pilot programs and mobilizing support from Non-Governmental Organizations and local organizations",
+      "scope": "national charcoal production",
+      "outcome": "Achieve at least 45% of national charcoal production carried out with improved kilns by 2031"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "organizing producers into cooperatives and establishing a quality certification mechanism",
+      "scope": "the wood-energy sector",
+      "outcome": "Achieve at least 50% of wood-energy producers organized into cooperatives and certified by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_30",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the national electricity mix",
+      "outcome": "46.3% in the national electricity mix by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_31",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in photovoltaic solar energy",
+      "outcome": "Achieve an installed capacity of 1074 Megawatts in photovoltaic solar energy by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_32",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of photovoltaic solar capacity",
+      "outcome": "Achieve an installed capacity of 1299 Megawatts of photovoltaic solar capacity by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Add 1031 Megawatts of self-consumed PV capacity from businesses and industries",
+      "scope": "from businesses and industries",
+      "outcome": "Reduce emissions from the industrial sector"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "installing 150 Megawatts of wind power by 2035",
+      "scope": "from the energy sector",
+      "outcome": "reduce greenhouse gas emissions from the energy sector and diversify the national electricity mix"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "installing 122 Megawatts of electricity generation capacity from biomass by 2035",
+      "scope": "local biomass resources",
+      "outcome": "Enhance local biomass resources"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_36",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "agricultural and forestry residues",
+      "outcome": "Increase the energy valorization of agricultural and forestry residues"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_37",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "national electricity production capacity",
+      "outcome": "Increase national electricity production capacity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_38",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in solar photovoltaic mini-grids",
+      "outcome": "enhancing access to decarbonized electricity for areas not connected to the national grid"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_39",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Dispatch the power plants as follows: Solar (Full Capacity); all categories of Independent Power Producer (priority 1); Hydro (priority 2); Thermal power plants (priority 3)",
+      "scope": "the power plants",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_40",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "urban mobility",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_41",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "1 operational line by 2030 and 1 additional operational line by 2035",
+      "scope": "",
+      "outcome": "1 operational line by 2030 and 1 additional operational line by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_42",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "1 urban railway line by 2030",
+      "scope": "urban",
+      "outcome": "1 urban railway line by 2030"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_43",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "lagoon transport",
+      "outcome": "10% of the lagoon fleet uses renewable energy by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_44",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Major production agglomerations",
+      "outcome": "Major production agglomerations are connected by rail by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_45",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement the vehicle fleet renewal and scrapping program.",
+      "scope": "vehicle fleet",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_46",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "vehicle fleet",
+      "outcome": "100% of the vehicle fleet is renewed (no more than five years old) by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_47",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Ensure, by 2030, the national production of low-sulfur fuels, in alignment with international standards (\u2264 50 ppm).",
+      "scope": "the national production of low-sulfur fuels",
+      "outcome": "the national production of low-sulfur fuels, in alignment with international standards (\u2264 50 ppm)"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_48",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "transport vehicles",
+      "outcome": "50,000 transport vehicles to be renewed by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_49",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "renewed through the scrappage incentive mechanism",
+      "scope": "of the vehicle fleet",
+      "outcome": "10% of the vehicle fleet is renewed through the scrappage incentive mechanism by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_50",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the vehicle fleet",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_51",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Incentive measures are implemented by the end of 2026",
+      "scope": "",
+      "outcome": "Incentive measures are implemented by the end of 2026"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_52",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "from SOTRA buses",
+      "outcome": "5% of the SOTRA bus fleet is electric by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_53",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the vehicle fleet",
+      "outcome": "0.5% of EVs in the vehicle fleet are assembled in CI by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_54",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Install 100 charging stations",
+      "scope": "",
+      "outcome": "Install 100 charging stations"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_55",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Achieve 2000 stations by (2035)"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_56",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the peri-urban areas of C\u00f4te d'Ivoire",
+      "outcome": "Achieve 5,000 electric 2 and 3-wheeled vehicles by 2028"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_57",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Achieve 5080 EVs by 2030"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_58",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "urban mobility",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_59",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": "Achieve 5% incorporation (2030)"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_60",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "25% of the SOTRA bus fleet runs on biodiesel by 2035",
+      "scope": "the SOTRA bus fleet",
+      "outcome": "Reduce diesel consumption and Greenhouse Gas (CO2) emissions"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_61",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "1 Framework decree on the development of green hydrogen and its implementing texts 1 Specific decree on the use of green hydrogen in the transport sector",
+      "scope": "for urban transport",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_62",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_63",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the official adoption and entry into force of a national regulatory framework specific to Sustainable Aviation Fuel (SAF), aligned with international standards",
+      "scope": "in C\u00f4te d'Ivoire",
+      "outcome": "allowing for the certification of the production and use of SAF in C\u00f4te d'Ivoire, with at least one national or regional operator on the path to compliance"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_64",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for national aviation",
+      "outcome": "Achieve 5% of SAF used by aircraft by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_65",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "control and phased reduction of Hydrofluorocarbons used in air conditioning and refrigeration equipment",
+      "scope": "used in air conditioning and refrigeration equipment",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_66",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "promote their substitution with ecological alternatives",
+      "scope": "",
+      "outcome": "Reduce the consumption of Hydrofluorocarbons by 30% by 2035 compared to 2021 levels"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_67",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through incentives, subsidies, or technical partnerships",
+      "scope": "in the total stock of refrigeration and air conditioning equipment",
+      "outcome": "Achieve a share of 35% of equipment using refrigerants with low Global Warming Potential in the total stock of refrigeration and air conditioning equipment by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_68",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "gradual phase-out of high climate impact refrigerants (Hydrofluorocarbons with high Global Warming Potential) used in air conditioning and refrigeration equipment",
+      "scope": "used in air conditioning and refrigeration equipment",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_69",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "from non-combustible uses of fossil products and solvents",
+      "outcome": "Achieve a data availability rate of 90% for the activity data necessary for estimating Greenhouse Gas emissions across all key sectors by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_70",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "prioritizing low-emission and high-efficiency technologies",
+      "scope": "30% of industrial facilities",
+      "outcome": "allowing for a reduction of at least 30% in specific CO2 emissions per ton produced"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_71",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrating the principles of circular economy",
+      "scope": "in the industrial sector",
+      "outcome": "allowing for at least a 30% reduction in specific CO2 emissions per ton produced"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_72",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement sustainable and climate-smart farming practices",
+      "scope": "farming",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_73",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Achieve a recovery rate of at least 50% of organic waste of animal origin for energy, agricultural, or industrial purposes by 2035",
+      "scope": "of organic waste of animal origin for energy, agricultural, or industrial purposes",
+      "outcome": "Achieve a recovery rate of at least 50%"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_74",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopted semi-intensive or intensive low-emission systems",
+      "scope": "50% of livestock farms",
+      "outcome": "50% of livestock farms should have adopted semi-intensive or intensive low-emission systems"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_75",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Adopt climate-smart rice production practices",
+      "scope": "rice production",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_76",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "alternate wetting and drying irrigation techniques",
+      "scope": "in irrigated areas",
+      "outcome": "Achieve a 50% adoption rate of the alternate wetting and drying irrigation technique in irrigated rice farms by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_77",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "crop rotation or intercropping systems",
+      "scope": "among rice farms",
+      "outcome": "Achieve a 60% adoption rate of crop rotation or intercropping systems among rice farms by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_78",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Optimize the use of organic nitrogen fertilizers",
+      "scope": "in agricultural systems",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_79",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "50% of farmers must produce and use compost",
+      "scope": "50% of farmers",
+      "outcome": "By 2035, 50% of farmers must produce and use compost"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_80",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrated organic fertilization management",
+      "scope": "existing technical route sheets",
+      "outcome": "Achieve a rate of 70% of existing technical route sheets that have integrated organic fertilization management by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_81",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "optimizing the timing and quantity of application",
+      "scope": "among agricultural producers",
+      "outcome": "Achieve a 70% dissemination rate of application calendars among agricultural producers by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_82",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "apply this innovative technique of direct incorporation of organic fertilizers",
+      "scope": "65% of agricultural operations",
+      "outcome": "Reduce losses of macronutrients and micronutrients through volatilization in the environment and improve fertilizer efficiency in the soil"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_83",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Gradually prohibit open burning of agricultural residues",
+      "scope": "agricultural residues",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_84",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establishing local valorization units producing compost, biochar, or briquettes",
+      "scope": "in the intervention areas",
+      "outcome": "Achieve a valorization rate of at least 70% of the available agricultural residues in the intervention areas by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_85",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establishing local collection and temporary storage platforms",
+      "scope": "for agricultural residues",
+      "outcome": "By 2035, have 80% of the collection and storage platforms for agricultural residues operational."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_86",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrated the ban on burning into their village development plans and agricultural planning",
+      "scope": "100% of targeted local communities",
+      "outcome": "Preserve soil biological diversity, limit fire risks, and establish more sustainable agricultural practices"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_87",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "forest cover and biological diversity",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_88",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in classified forests of category C1, covering a total area of 112,000 hectares",
+      "outcome": "Maintain the average forest cover rate in classified forests of category C1, covering a total area of 112,000 hectares, at a level above 75% from 2025 to 2035."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_89",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "within the network of parks and reserves",
+      "outcome": "Achieve a net zero deforestation rate"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_90",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create and operationalize 15 new Voluntary Nature Reserves (VNR) from 2025 to 2035",
+      "scope": "",
+      "outcome": "15 new Voluntary Nature Reserves (VNR)"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_91",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "10,000,000 hectares of territory covered by a jurisdictional REDD+ program",
+      "outcome": "Achieve at least 10,000,000 hectares of territory covered by a jurisdictional REDD+ program"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_92",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Rehabilitate and expand forest areas",
+      "scope": "forest areas",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_93",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create 200,000 hectares of high-density reforestation for the sustainable production of timber from 2025-2035",
+      "scope": "",
+      "outcome": "200,000 hectares of high-density reforestation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_94",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Create 50,000 hectares of forests dedicated to the sustainable production of wood energy from 2025 to 2035",
+      "scope": "",
+      "outcome": "50,000 hectares of forests dedicated to the sustainable production of wood energy"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_95",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish 1,100,000 hectares of low-density reforestation in partnership with the private sector from 2025-2035",
+      "scope": "in partnership with the private sector",
+      "outcome": "1,100,000 hectares of low-density reforestation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_96",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Restore 150,000 hectares of degraded forests through assisted natural regeneration and protection from 2025-2035",
+      "scope": "150,000 hectares of degraded forests",
+      "outcome": "150,000 hectares of degraded forests"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_97",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Restore 2,000 hectares of mangrove ecosystems 2025-2035",
+      "scope": "mangrove ecosystems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_98",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "transform agricultural lands of the main sectors (cocoa, cashew, oil palm, rubber, and food crops) into resilient and sustainable agroforestry systems",
+      "scope": "agricultural lands of the main sectors (cocoa, cashew, oil palm, rubber, and food crops)",
+      "outcome": "resilient and sustainable agroforestry systems"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_99",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "2,100,000 hectares of agricultural land transformed into sustainable agroforestry systems from 2025-2035",
+      "scope": "agricultural land",
+      "outcome": "increase carbon sequestration in biomass and soils, while improving the resilience of farms to climate change and diversifying producers' incomes"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_100",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "400,000 hectares of agricultural land transformed into sustainable agroforestry systems from 2025 to 2035",
+      "scope": "agricultural land",
+      "outcome": "increase carbon sequestration in biomass and soils, while enhancing the resilience of farms to climate change and diversifying producers' incomes"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_101",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "municipal solid waste and similar (MSW)",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_102",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "10 operational landfills",
+      "scope": "",
+      "outcome": "Reduce open burning of uncollected waste; Reduce health risks and prevent pollution"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_103",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Equip municipalities with modern infrastructure",
+      "scope": "municipalities",
+      "outcome": "Ensure sustainable management through sorting and recovery"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_104",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "3 additional CVETs",
+      "scope": "",
+      "outcome": "Reduce regional access inequalities; Expand territorial coverage"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_105",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "collected and treated sustainably within an organized and regulated national system",
+      "scope": "Waste Electrical and Electronic Equipment generated",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_106",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "a circular economy",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_107",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "recovered, flared, or utilized",
+      "scope": "from organic waste in the Technical Recovery and Landfill Centers (Technical Recovery and Landfill Centers) and at the Akou\u00e9do landfill",
+      "outcome": "Reduce greenhouse gas emissions and enhance energy resources"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_108",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "valued through composting",
+      "scope": "in intervention areas",
+      "outcome": "Produce natural fertilizers that improve soil fertility"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_109",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "processed in integrated waste sorting, treatment, and recovery centers",
+      "scope": "municipal solid waste and similar waste produced in large cities",
+      "outcome": "Reduce the volumes of municipal solid waste and similar waste sent to landfills and limit air pollution"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_110",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Developing anaerobic digestion units",
+      "scope": "for the valorization of organic waste",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_111",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "5,000 operational biodigesters",
+      "scope": "in rural and semi-urban areas",
+      "outcome": "Produce biogas for small-scale cooking; Reduce dependence on wood"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_112",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "Priority large urban areas Integration with Recovery and Technical Landfill Centers",
+      "outcome": "Produce renewable biogas; Create compost and fertilizer"
+    },
+    "confidence": "low"
+  },
+  {
+    "targetId": "NDC_113",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "wastewater and excreta treatment systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_114",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Treat urban wastewater",
+      "scope": "urban wastewater",
+      "outcome": "70% of households connected to the DAA, Extension of 100 kilometers of network, 10 pumping stations"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_115",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Treat collected waters before discharge",
+      "scope": "Abidjan",
+      "outcome": "20% of wastewater DAA treated"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_116",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Treat collected sludge",
+      "scope": "urban sludge",
+      "outcome": "36 operational STBVs, 70% of urban sludge treated"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_117",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "50,000 double-pit latrines",
+      "scope": "rural households",
+      "outcome": "Eliminate open defecation"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_118",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "150,000 family latrines, 20,000 prefabricated biodigesters",
+      "scope": "rural households",
+      "outcome": "Produce domestic biogas"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_119",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "7,000 school latrines, 7,000 health center latrines",
+      "scope": "school latrines, 7,000 health center latrines",
+      "outcome": "Protect vulnerable populations"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_120",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "climate-smart agricultural production systems",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_121",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "sustainable land tenure security arrangements",
+      "scope": "28% of rural areas",
+      "outcome": "Achieve a coverage rate of at least 28% of rural areas by sustainable land tenure security arrangements by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_122",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adopt sustainable agricultural practices that integrate the conservation of biological diversity and circularity",
+      "scope": "40% of targeted agricultural operations",
+      "outcome": "40% of targeted agricultural operations must adopt sustainable agricultural practices that integrate the conservation of biological diversity and circularity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_123",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "benefit from effective index insurance coverage against climate risks",
+      "scope": "10% of targeted farms",
+      "outcome": "10% of targeted farms will benefit from effective index insurance coverage against climate risks"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_124",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrate nature-based solutions and supplementary irrigation technologies",
+      "scope": "75% of new or rehabilitated facilities",
+      "outcome": "75% of new or rehabilitated facilities must integrate nature-based solutions and supplementary irrigation technologies"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_125",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "use resilient varieties",
+      "scope": "50% of farmers",
+      "outcome": "50% of farmers use resilient varieties"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_126",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "take into account the soil fertility map",
+      "scope": "50% of farmers using fertilizers",
+      "outcome": "50% of farmers using fertilizers take into account the soil fertility map"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_127",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "adoption rate of SRP standards",
+      "scope": "among irrigated rice farms",
+      "outcome": "Achieve a 50% adoption rate of SRP standards among irrigated rice farms by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_128",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the adoption of differentiated sustainable practices for conservation, storage, and processing",
+      "scope": "in priority agricultural value chains",
+      "outcome": "Reduce post-harvest losses in priority agricultural value chains by at least 40% by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_129",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "disseminating drought-tolerant, flood-tolerant, and pest-resistant rice varieties",
+      "scope": "70% of rice-growing areas",
+      "outcome": "70% of rice-growing areas must be cultivated with varieties resistant to major climate hazards"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_130",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "marine and freshwater fishery resources",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_131",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "covered by an operational fisheries monitoring and control system",
+      "scope": "targeted marine and freshwater fishing areas",
+      "outcome": "prevent overexploitation and promote the regeneration of aquatic ecosystems"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_132",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the measures outlined in the participatory fisheries management plans",
+      "scope": "fishery resources",
+      "outcome": "preserve stocks, strengthen local governance, and improve livelihoods while integrating the principles of the circular economy"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_133",
+    "elements": {
+      "action": false,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_134",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "created, equipped, and managed sustainably",
+      "scope": "protected marine and terrestrial areas",
+      "outcome": "50,000 hectares of protected marine and terrestrial areas must be created, equipped, and managed sustainably"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_135",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "forest resources",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_136",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "covered by an enhanced monitoring system",
+      "scope": "agroforests, classified forests, and rural domain forests",
+      "outcome": "Achieve 100% of agroforests, classified forests, and rural domain forests covered by an enhanced monitoring system from 2025-2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_137",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "The BIS is 100% operational and covers the entire territory by 2030",
+      "scope": "covers the entire territory",
+      "outcome": "The BIS is 100% operational and covers the entire territory by 2030"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_138",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Achieve 100% \"zero-deforestation\" traceability for major agricultural export sectors (cocoa, coffee, rubber, palm oil, cashew) from 2025-2035.",
+      "scope": "major agricultural export sectors (cocoa, coffee, rubber, palm oil, cashew)",
+      "outcome": "100% \"zero-deforestation\" traceability"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_139",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "marketed forest products",
+      "outcome": "100% of marketed forest products from verified legal and sustainable sources by 2025-2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_140",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "The national early warning system is 100% operational and covers the entire territory by 2035.",
+      "scope": "covers the entire territory",
+      "outcome": "The national early warning system is 100% operational and covers the entire territory by 2035."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_141",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Achieve an annual production capacity of 40 million high-quality plants, with a participation rate of 60% from businesses led by women or youth from 2025-2035.",
+      "scope": "businesses led by women or youth",
+      "outcome": "an annual production capacity of 40 million high-quality plants, with a participation rate of 60% from businesses led by women or youth"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_142",
+    "elements": {
+      "action": true,
+      "scope": false,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement integrated water resource management approaches resilient to climate change.",
+      "scope": "",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_143",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "priority areas",
+      "outcome": "Achieve at least 80% coverage of priority areas with sustainable hydraulic infrastructures by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_144",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "catchment areas and strategic water sources",
+      "outcome": "Reduce the rate of degradation of catchment areas and strategic water sources by at least 40% by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_145",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "installed, operational, and integrated into an innovative national data monitoring and dissemination system",
+      "scope": "planned hydro-climatic stations",
+      "outcome": "90% of planned hydro-climatic stations must be installed, operational, and integrated into an innovative national data monitoring and dissemination system"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_146",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in urban and peri-urban areas equipped with stormwater management devices that meet appropriate technical standards",
+      "outcome": "Reduce the rate of recurrent flooding or overflow in urban and peri-urban areas equipped with stormwater management devices that meet appropriate technical standards by at least 60% by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_147",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "water resources and hydraulic works",
+      "outcome": "Increase by 40% the number of water resources and hydraulic works with land tenure status"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_148",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "the governance bodies for water resource management as provided by the water code",
+      "outcome": "By 2035, 50% of the governance bodies for water resource management as provided by the water code are functional"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_149",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "for climate-sensitive diseases differentiated by gender and age",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_150",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "of high vulnerability areas",
+      "outcome": "Achieve a coverage rate of at least 25% of high vulnerability areas by functional epidemiological surveillance systems that integrate climate risks by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_151",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "built, rehabilitated, or equipped according to standards of equity, sustainability, and climate resilience",
+      "scope": "of health facilities",
+      "outcome": "Achieve a rate of at least 25% of health facilities built, rehabilitated, or equipped according to standards of equity, sustainability, and climate resilience by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_152",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "utilization rate of at least 50% of available health, climate, and environmental data in the development and updating of the Country Profile",
+      "scope": "in the development and updating of the Country Profile",
+      "outcome": "Achieve a utilization rate of at least 50% of available health, climate, and environmental data in the development and updating of the Country Profile by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_153",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "in the 10 Regional Health Excellence Hubs",
+      "outcome": "Achieve a continuous availability rate of at least 30% of air quality data in the 10 Regional Health Excellence Hubs by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_154",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "health facilities",
+      "outcome": "resilient and sustainable health facilities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_155",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "rehabilitation interventions that meet resilient construction standards",
+      "scope": "priority health centers",
+      "outcome": "Achieve a coverage rate of at least 50% of priority health centers through rehabilitation interventions that meet resilient construction standards by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_156",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through renewable energy sources (solar, biomass)",
+      "scope": "health facilities",
+      "outcome": "Achieve at least 50% of health facilities with partial or total energy autonomy through renewable energy sources (solar, biomass) by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_157",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "with a biomedical waste management system that complies with environmental and health standards",
+      "scope": "healthcare facilities",
+      "outcome": "Achieve a coverage rate of at least 80% of healthcare facilities with a biomedical waste management system that complies with environmental and health standards by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_158",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement ecosystem restoration solutions for mangroves, defense structures, and early warning mechanisms",
+      "scope": "in vulnerable coastal areas",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_159",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "operational monitoring and alert systems for climate risks and extreme events",
+      "scope": "the Ivorian coastline",
+      "outcome": "To achieve a coverage rate of at least 90% of the Ivorian coastline by operational monitoring and alert systems for climate risks and extreme events by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_160",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "by combining nature-based solutions and appropriate gray infrastructure",
+      "scope": "targeted vulnerable coastal areas",
+      "outcome": "Achieve a rate of at least 35% of targeted vulnerable coastal areas adopting nature-based solutions and circulation to combat climate risks and invasive alien species by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_161",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "functional and sustainably managed Marine Protected Areas (MPAs)",
+      "scope": "sensitive marine areas",
+      "outcome": "Achieve a coverage rate of at least 30% of sensitive marine areas by functional and sustainably managed Marine Protected Areas (MPAs) by 2035."
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_162",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the measures outlined in the management plans",
+      "scope": "the Convention on Wetlands of International Importance sites",
+      "outcome": "Achieve an effective implementation rate of at least 60% of the measures outlined in the management plans of the Convention on Wetlands of International Importance sites by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_163",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "a sustainable blue economy",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_164",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the development of sustainable aquaculture (freshwater fish farming and mariculture) as an alternative to overfishing",
+      "scope": "wild fish stocks",
+      "outcome": "Increase the pressure on wild fish stocks by at least 40% by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_165",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "port infrastructures",
+      "outcome": "Achieve a rate of at least 70% of sustainable port infrastructures by 2035."
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_166",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "sustainable blue activities owned by men and women (ecotourism, sustainable fishing, ecological aquaculture, marine energies)",
+      "scope": "local community income in coastal areas",
+      "outcome": "Raise the contribution of sustainable blue activities owned by men and women (ecotourism, sustainable fishing, ecological aquaculture, marine energies) to local community income in coastal areas to at least 25% by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_167",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "road infrastructure and buildings",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_168",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "newly constructed or rehabilitated road infrastructure",
+      "scope": "in flood-prone areas",
+      "outcome": "By 2035, at least 60% of newly constructed or rehabilitated road infrastructure in flood-prone areas is passable"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_169",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "integrate bioclimatic standards",
+      "scope": "new public buildings",
+      "outcome": "70% of new public buildings constructed must integrate bioclimatic standards"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_170",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop at least 60% of urban parks",
+      "scope": "in major urban areas of the country",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_171",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "public infrastructure projects assessed for climate vulnerability before implementation",
+      "scope": "public infrastructure projects",
+      "outcome": "Achieve a rate of at least 80% of public infrastructure projects assessed for climate vulnerability before implementation by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_172",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Integrate the principle of climate resilience into the master plans of communities.",
+      "scope": "the master plans of communities",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_173",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "existing master plans revised to integrate a climate risk analysis and adaptation measures that incorporate gender issues",
+      "scope": "existing master plans",
+      "outcome": "Achieve a rate of at least 75% of existing master plans revised to integrate a climate risk analysis and adaptation measures that incorporate gender issues by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_174",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "communities",
+      "outcome": "Achieve a rate of 90% of communities having a planning document by 2030"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_175",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "communities",
+      "outcome": "Achieve a rate of 100% of communities having methodological guides for the development of planning documents that incorporate gender concepts and climate resilience"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_176",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "equipped with a fully functional monitoring and evaluation system",
+      "scope": "targeted communities",
+      "outcome": "Achieve at least 75% of targeted communities equipped with a fully functional monitoring and evaluation system by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_177",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "women and girls",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_178",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Reach at least 600,000 women from women's cooperatives in the green, blue, and technology sectors by 2035",
+      "scope": "women from women's cooperatives in the green, blue, and technology sectors",
+      "outcome": "Reach at least 600,000 women from women's cooperatives in the green, blue, and technology sectors by 2035"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_179",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Reach at least 200,000 women and girls engaged in sustainable natural resource management activities by 2035",
+      "scope": "women and girls in the sectors of agroforestry, fishing, aquaculture, and renewable energies",
+      "outcome": "Reach at least 200,000 women and girls engaged in sustainable natural resource management activities by 2035"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NDC_180",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Achieve at least 500 women participating in decision-making bodies primarily in rural areas by 2030",
+      "scope": "national, sectoral, and local committees for natural disaster response",
+      "outcome": "Achieve at least 500 women participating in decision-making bodies primarily in rural areas by 2030"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NDC_181",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "young girls involved in climate change resilience sectors",
+      "outcome": "Achieve at least 100,000 young girls employed and/or business leaders in green, blue, renewable energy, and technology sectors"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBT_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "enacting legal frameworks to regulate the use of modern biotechnologies",
+      "scope": "the use of modern biotechnologies",
+      "outcome": "Risks associated with biotechnology are better mitigated, the use of biotechnology is made safer, and the sharing of its benefits is strengthened"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "actively involving women, youth, and local communities in the design, implementation, monitoring, and evaluation of biodiversity-related policies, plans, and programs",
+      "scope": "biodiversity-related policies, plans, and programs",
+      "outcome": "Governance and decision-making related to biodiversity are inclusive, equitable, and incorporate gender considerations"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "involving women and girls in all actions related to the management of biological resources and decision-making regarding biodiversity",
+      "scope": "the management of biological resources and decision-making regarding biodiversity",
+      "outcome": "Women and girls are fully included in the management, decision-making, and sharing of benefits related to biodiversity, ensuring gender equality"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "wildlife",
+      "outcome": "meeting the needs of local communities"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBT_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "integrated into policies, strategies, and plans",
+      "scope": "at the national and local levels",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBT_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through effective management measures",
+      "scope": "identified threatened species",
+      "outcome": "The extinction of identified threatened species is reduced, and their recovery is strengthened"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Green and blue spaces are being developed and better integrated into urban environments",
+      "scope": "into urban environments",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBT_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "benefits from integrated spatial planning",
+      "scope": "10% of the national territory",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_9",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "ecosystems and human health",
+      "outcome": "Various forms of pollution are reduced by at least 10%, thereby limiting their impacts on ecosystems and human health"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBT_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "A political, legal, and institutional framework is in place",
+      "scope": "genetic resources (ABS, Access and Benefit Sharing), digital sequencing information, and associated traditional knowledge",
+      "outcome": "ensure the fair and equitable sharing of benefits arising from genetic resources (ABS, Access and Benefit Sharing), digital sequencing information, and associated traditional knowledge"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBT_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "through the adoption of nature-based solutions and ecosystem-based approaches",
+      "scope": "Ecosystem services",
+      "outcome": "Ecosystem services are maintained"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_12",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "stakeholders at all levels (governments, communities, and the private sector)",
+      "outcome": "Stakeholders have enhanced capacities and better access to data, information, and innovative technologies for the conservation and sustainable use of biodiversity"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "NBT_13",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "increasing the number and total area of protected areas",
+      "scope": "30% of terrestrial and marine areas",
+      "outcome": "enhance biodiversity conservation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "mitigation and adaptation measures that promote the conservation, restoration, and sustainable use of biodiversity",
+      "scope": "human populations",
+      "outcome": "Biodiversity and communities are more resilient to the impacts of climate change"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "reduce food waste and limit waste generation",
+      "scope": "the people of C\u00f4te d\u2019Ivoire",
+      "outcome": "Sustainable production and consumption patterns are being adopted on a large scale"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "identifying and eliminating incentives and subsidies that harm the environment",
+      "scope": "in C\u00f4te d'Ivoire",
+      "outcome": "Incentives and subsidies that are harmful to biodiversity are reduced, while positive incentives promote the conservation and sustainable use of biodiversity"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "implement measures to curb their spread and limit their harmful impacts on biodiversity and local ecosystems",
+      "scope": "biodiversity and local ecosystems",
+      "outcome": "Invasive alien species have a reduced impact of at least 5% on biodiversity, and the introduction of new species is controlled"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the implementation of policies and laws to ensure that SMEs (Small and Medium-Sized Enterprises) take ecosystem conservation into account in their business activities and adopt supply chains that minimize negative impacts on biodiversity",
+      "scope": "SMEs (Small and Medium-Sized Enterprises)",
+      "outcome": "The private sector\u2019s commitment to biodiversity is strengthened and translated into concrete actions"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "taking measures to protect and regenerate natural habitats",
+      "scope": "ecologically important areas",
+      "outcome": "Biodiversity in ecologically important areas is restored"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "the adoption of biodiversity-friendly practices, such as agroecology, sustainable intensification, and other innovative approaches",
+      "scope": "Agricultural, fisheries, aquaculture, and forestry areas",
+      "outcome": "increased productivity and competitiveness"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "NBT_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "the implementation of environmental taxation",
+      "scope": "National and international funding",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "restoring 100% of degraded lands and increasing forest cover by 5 million hectares",
+      "scope": "C\u00f4te d'Ivoire",
+      "outcome": "achieve LDN"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Increase forest cover by 3 million hectares",
+      "scope": "forest cover",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Limiting forest conversion to other forms of land use to 1%",
+      "scope": "forest conversion to other forms of land use",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_4",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "2 million hectares of existing forests showing a decrease in net productivity",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_5",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "800,000 hectares of agricultural land experiencing a decrease in net productivity",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "LDN_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Recover 7200 hectares of bare land for agricultural production",
+      "scope": "7200 hectares of bare land",
+      "outcome": "for agricultural production"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "LDN_7",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Sequester 50,000 tons of carbon emitted into the atmosphere.",
+      "scope": "into the atmosphere",
+      "outcome": "50,000 tons of carbon"
+    },
+    "confidence": "medium"
+  }
+]

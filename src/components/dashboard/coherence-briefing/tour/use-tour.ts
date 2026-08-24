@@ -47,8 +47,13 @@ export function resolveSteps(steps: TourStep[], root: Element | null): ResolvedS
   if (!root) return [];
   const resolved: ResolvedStep[] = [];
   for (const step of steps) {
-    const el = root.querySelector(`[data-tour="${step.target}"]`);
-    if (el) resolved.push({ step, el });
+    for (const target of [step.target, ...(step.altTargets ?? [])]) {
+      const el = root.querySelector(`[data-tour="${target}"]`);
+      if (el) {
+        resolved.push({ step, el });
+        break;
+      }
+    }
   }
   return resolved;
 }

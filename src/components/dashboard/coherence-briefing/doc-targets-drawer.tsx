@@ -27,12 +27,21 @@ import {
 } from "react";
 import { useTranslations } from "next-intl";
 import { DrawerHeader } from "@/components/ui/drawer-shell";
-import { getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
+import {
+  getDocColor,
+  getDocFullLabel,
+  getDocMediumLabel,
+  getDocMeta,
+} from "@/lib/utils";
+import { getDocClass } from "@/lib/doc-taxonomy";
+import { DocMetaCard } from "./doc-meta-card";
 import {
   ActivitiesActions,
   OriginalLanguageChip,
   TargetTextWithHighlights,
 } from "@/components/viz/target-text";
+import { DefinitionChip, DefinitionSummary } from "./target-quality";
+import { TargetProvenance } from "./targets-access";
 import {
   buildDocTargetHaystacks,
   countDocTargetFilters,
@@ -226,6 +235,17 @@ export function DocTargetsDrawer({
           {" · "}
           {t("subtitle", { count: docTargets.length })}
         </p>
+        {/* The document's own reference card — kind, publisher, date, and the
+            link to the official copy — so a reader can place the instrument and
+            open it without going back out to the wheel legend to find it. */}
+        <div className="mt-2.5">
+          <DocMetaCard
+            meta={getDocMeta(countryConfig, doc)}
+            color={getDocColor(countryConfig, doc)}
+            docClass={getDocClass(countryConfig, doc)}
+            hideDot
+          />
+        </div>
       </DrawerHeader>
 
       <div className="px-6 py-5">
@@ -272,6 +292,7 @@ export function DocTargetsDrawer({
                 <TargetRow
                   key={target.id}
                   target={target}
+                  countryConfig={countryConfig}
                   flaggedCount={flaggedCountByTargetId.get(target.id) ?? 0}
                   onOpenProfile={() => onOpenTargetProfile(target.id)}
                 />
@@ -335,10 +356,12 @@ function StatusLine({
 
 function TargetRow({
   target,
+  countryConfig,
   flaggedCount,
   onOpenProfile,
 }: {
   target: Target;
+  countryConfig: CountryConfig | null;
   flaggedCount: number;
   onOpenProfile: () => void;
 }) {
@@ -399,11 +422,23 @@ function TargetRow({
             {target.text}
           </span>
         )}
-        {!open && flags.length > 0 && (
-          <span className="mt-1 block pl-4 text-caption text-[var(--undp-gray)]">
-            {flags.join(" · ")}
-          </span>
-        )}
+        {/* The quality verdict rides on the collapsed row, not just inside it:
+            a reader scanning a 206-target list should see which targets are
+            written tightly enough to track without opening each one. It
+            replaces the quantitative / time-bound badges rather than sitting
+            beside them, because those two ARE criteria in the score. */}
+        {!open &&
+          (target.definition?.elements ? (
+            <span className="mt-1 block pl-4">
+              <DefinitionSummary target={target} />
+            </span>
+          ) : (
+            flags.length > 0 && (
+              <span className="mt-1 block pl-4 text-caption text-[var(--undp-gray)]">
+                {flags.join(" · ")}
+              </span>
+            )
+          ))}
       </button>
 
       {open && (
@@ -421,6 +456,7 @@ function TargetRow({
               </span>
             )}
             <OriginalLanguageChip target={target} />
+            <DefinitionChip target={target} />
           </div>
           <ActivitiesActions target={target} />
           {source?.section && (
@@ -439,17 +475,10 @@ function TargetRow({
             </div>
           )}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-0.5">
-            {source?.url && (
-              <a
-                href={source.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-caption font-medium text-[var(--undp-blue)] hover:underline"
-              >
-                {t("openSource")}
-                <span aria-hidden="true"> ↗</span>
-              </a>
-            )}
+            {/* Resolved rather than `source.url` raw: most of Panama's spans
+                point at UNDP SharePoint, which is a sign-in wall for the people
+                this is built for. See targets-access/public-source-url.ts. */}
+            <TargetProvenance target={target} countryConfig={countryConfig} />
             {flaggedCount > 0 && (
               <button
                 type="button"

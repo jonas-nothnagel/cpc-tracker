@@ -33,14 +33,32 @@ import {
   getDocMeta,
   type DocMeta,
 } from "@/lib/utils";
+import { getDocClass, type DocClass } from "@/lib/doc-taxonomy";
 import type { CountryConfig, PolicyDocumentType } from "@/types";
 
 const HEADLINE_SERIF = "var(--font-display)";
+
+/**
+ * The class chip and the sourced `docKind` describe the same thing at different
+ * resolutions: the chip is the normalised, comparable label, `docKind` is the
+ * document's own wording. Where the two say the same thing ("Government
+ * strategic plan" under a "GOVERNMENT STRATEGIC PLAN" chip) showing both reads
+ * as a stutter, so the prose is dropped and the chip stands alone. Where the
+ * prose carries more (PENCYT's "National strategic plan (science, technology
+ * and innovation)") both are kept: the chip for comparison, the prose for the
+ * specifics, which is the sourced value we must not lose.
+ */
+function saysMoreThanClass(docKind: string, classLabel: string): boolean {
+  const normalise = (s: string) =>
+    s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  return normalise(docKind) !== normalise(classLabel);
+}
 
 export function DocMetaCard({
   meta,
   color,
   fullTitle,
+  docClass,
   deadlineCoverage,
   hideDot = false,
   footer,
@@ -50,6 +68,11 @@ export function DocMetaCard({
   color: string;
   /** Shown only in the hover card, where the title isn't already on screen. */
   fullTitle?: string;
+  /** Normalised instrument kind from `@/lib/doc-taxonomy`. Rendered as a chip
+   *  above the sourced `docKind` prose: the chip is comparable across documents
+   *  (which is what lets a reader rank them), the prose carries the specifics.
+   *  Omit and the card renders exactly as it did before the taxonomy existed. */
+  docClass?: DocClass;
   /** When provided and non-empty, shows the time-bound coverage sliver + count. */
   deadlineCoverage?: { total: number; timeBound: number };
   /** Hide the leading colour dot when the context already shows it (overview rows). */
@@ -61,7 +84,14 @@ export function DocMetaCard({
   footer?: ReactNode;
 }) {
   const t = useTranslations("briefing.docFocus");
+  const tLabels = useTranslations("labels");
   const factLine = [meta.published, meta.author].filter(Boolean).join(" · ");
+  const classLabel = docClass
+    ? tLabels(`docClass.${docClass}` as "docClass.commitment")
+    : null;
+  const showDocKind = Boolean(
+    meta.docKind && (!classLabel || saysMoreThanClass(meta.docKind, classLabel)),
+  );
   const showDeadlines = Boolean(deadlineCoverage && deadlineCoverage.total > 0);
   const pct =
     deadlineCoverage && deadlineCoverage.total > 0
@@ -77,7 +107,7 @@ export function DocMetaCard({
           {fullTitle}
         </p>
       )}
-      {meta.docKind && (
+      {(meta.docKind || docClass) && (
         <p className="flex items-start gap-1.5 text-caption font-medium text-[var(--undp-black)] leading-snug">
           {!hideDot && (
             <span
@@ -86,7 +116,17 @@ export function DocMetaCard({
               style={{ backgroundColor: color }}
             />
           )}
-          <span>{meta.docKind}</span>
+          <span>
+            {docClass && (
+              <span
+                className="mr-1.5 inline-block rounded border border-line-strong px-1.5 py-px text-[11px] font-semibold uppercase tracking-wide text-[var(--undp-gray)] align-[2px]"
+                title={tLabels("docTierHint")}
+              >
+                {classLabel}
+              </span>
+            )}
+            {showDocKind && meta.docKind}
+          </span>
         </p>
       )}
       {factLine && (
@@ -276,6 +316,7 @@ export function DocHoverCard({
               meta={meta}
               color={color}
               fullTitle={fullTitle}
+              docClass={getDocClass(countryConfig, doc)}
               footer={
                 footer && (
                   <span onClick={() => setCoords(null)}>{footer}</span>
@@ -297,12 +338,15 @@ export function DocHoverCard({
 export function DocInfoPopover({
   meta,
   color,
+  docClass,
   deadlineCoverage,
   footer,
   children,
 }: {
   meta: DocMeta;
   color: string;
+  /** Passed through to the card. Optional, like every taxonomy field. */
+  docClass?: DocClass;
   deadlineCoverage?: { total: number; timeBound: number };
   /** An extra action inside the card. Legitimate here, unlike in the hover
    *  card, because this popover opens on click and stays until dismissed. */
@@ -393,6 +437,7 @@ export function DocInfoPopover({
             <DocMetaCard
               meta={meta}
               color={color}
+              docClass={docClass}
               deadlineCoverage={deadlineCoverage}
               footer={
                 footer && (
