@@ -1115,15 +1115,17 @@ async def main() -> None:
             component = "user_pipeline" if run_source == "user_pipeline" else "dev_pipeline"
             run_id = os.getenv("CPC_RUN_ID")
             # Country identity comes from the targets filename (the same
-            # derivation as the output dir), never from path components: the
-            # old path heuristic recorded the model slug as the country for
-            # model-comparison runs under <country>/<model-slug>/ whenever the
-            # output root was repointed (4 historical ledger rows, ~28 kWh,
-            # repaired 2026-08-10). Upload runs (CPC_OUTPUT_DIR set) keep
-            # country=None: their targets file carries no country identity.
-            country = None
-            if not os.getenv("CPC_OUTPUT_DIR"):
-                country = derive_country_slug(args.targets_file)
+            # derivation as the output dir), never from output-path
+            # components: the pre-2026-08 code used the leaf directory name
+            # (`OUTPUT_DIR.name`), which recorded the model slug as the
+            # country for model-comparison runs under <country>/<model-slug>/
+            # (4 historical ledger rows, ~28 kWh, repaired 2026-08-10). The
+            # filename derivation also holds when CPC_OUTPUT_DIR repoints the
+            # output root, so no env gate is needed: the upload flow's generic
+            # "targets.json" yields None on its own (its records carry a
+            # wizard-stamped display country, but the ledger keeps slugs, so
+            # upload rows stay country=None for now).
+            country = derive_country_slug(args.targets_file)
             zone = electricity_zone()
             # Per-model rows when measured; otherwise one row from the flat total
             # (an estimated, fully-cached run has no by_model breakdown).
@@ -1144,7 +1146,11 @@ async def main() -> None:
                     water_ml=float(row.get("water_ml", 0) or 0),
                     co2_geq=float(row.get("co2_geq", 0) or 0),
                     minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
-                    source=footprint.get("source", "unavailable"),
+                    # The bucket's own source, not the run-level one: a mixed
+                    # run classifies flat as "mixed", which is outside the
+                    # ledger's source vocabulary, while each per-model bucket
+                    # carries its true measured/estimated label.
+                    source=row.get("source") or footprint.get("source", "unavailable"),
                     energy_wh_min=row.get("energy_wh_min"),
                     energy_wh_max=row.get("energy_wh_max"),
                     water_ml_min=row.get("water_ml_min"),

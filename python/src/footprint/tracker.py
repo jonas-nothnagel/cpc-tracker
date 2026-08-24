@@ -392,12 +392,18 @@ class FootprintTracker:
         self._totals.minerals_ugsbeq += float(initial.get("minerals_ugsbeq", 0) or 0)
         # Older footprint.json files carry no bounds: their flat midpoint feeds
         # both, keeping the envelope conservative rather than inventing width.
+        # Only an ABSENT (or null) bound falls back to the midpoint -- a stored
+        # bound of exactly 0.0 is a real lower bound and must be honoured, so
+        # no truthiness (`or`) fallback here.
         for base in ("energy_wh", "water_ml", "co2_geq", "minerals_ugsbeq"):
             mid = float(initial.get(base, 0) or 0)
             for bound in ("min", "max"):
                 key = f"{base}_{bound}"
+                value = initial.get(key)
                 current = getattr(self._totals, key)
-                setattr(self._totals, key, current + float(initial.get(key, mid) or mid))
+                setattr(
+                    self._totals, key, current + (mid if value is None else float(value))
+                )
         self._totals.call_count += int(initial.get("call_count", 0) or 0)
         self._totals.tracked_call_count += int(
             initial.get("tracked_call_count", 0) or 0

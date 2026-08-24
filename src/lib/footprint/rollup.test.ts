@@ -84,6 +84,18 @@ describe("rollUp", () => {
     expect(r.envelope.energy_wh).toEqual({ min: 3, max: 3 });
     expect(r.envelope.bounded_share).toBe(0);
   });
+
+  it("does not count zero-width bounds as a modelled range", () => {
+    // Schema-2 writers record min == max == midpoint for coefficient
+    // estimates and seeded totals; those rows carry keys but no range and
+    // must not inflate bounded_share.
+    const r = rollUp([
+      ev({ co2_geq: 9, co2_geq_min: 9, co2_geq_max: 9, schema: 2 }),
+      ev({ co2_geq: 1, co2_geq_min: 0.5, co2_geq_max: 2, schema: 2 }),
+    ]);
+    expect(r.envelope.co2_geq).toEqual({ min: 9.5, max: 11 });
+    expect(r.envelope.bounded_share).toBeCloseTo(1 / 10);
+  });
 });
 
 describe("cumulativeByComponent", () => {

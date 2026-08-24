@@ -108,6 +108,59 @@ def test_different_metrics_are_distinct_events():
     assert len(merged) == 2
 
 
+def test_seed_row_gaining_bounds_still_supersedes_volume_copy():
+    # A historical event re-emitted with schema-2 bounds in the seed must still
+    # match the volume's bound-less copy: bounds are outside the identity.
+    enriched = row(
+        ts="2026-07-04T09:00:00Z",
+        run_id=None,
+        component="dev_pipeline",
+        country="mongolia",
+        schema=2,
+        co2_geq_min=400.0,
+        co2_geq_max=550.0,
+    )
+    stale = row(
+        ts="2026-07-04T09:00:00Z",
+        run_id=None,
+        component="dev_pipeline",
+        country="mongolia",
+    )
+    assert merge_ledger.merge_rows([enriched], [stale]) == [enriched]
+
+
+def test_distinct_volume_events_differing_only_in_run_id_are_kept():
+    # Two fully-cached uploads finishing in the same second have byte-identical
+    # coefficient-derived metrics; only run_id separates them. Both are real
+    # events and both must survive the reconcile.
+    a = row(
+        ts="2026-08-20T10:00:00Z",
+        run_id="run-a",
+        component="user_pipeline",
+        source="estimated",
+    )
+    b = dict(a, run_id="run-b")
+    merged = merge_ledger.merge_rows([], [a, b])
+    assert len(merged) == 2
+
+
+def test_ratings_rows_keep_country_as_identity():
+    # merge_ledger also reconciles ratings-ledger.jsonl (see start.sh), where
+    # rows have no "schema" key and country IS identity: two countries' ratings
+    # must never collapse into one.
+    mongolia = {
+        "country": "mongolia",
+        "pairKey": "T_1::T_2",
+        "rating": "real",
+        "note": "",
+        "ts": 1782830689740,
+    }
+    panama = dict(mongolia, country="panama")
+    merged = merge_ledger.merge_rows([mongolia], [panama])
+    assert len(merged) == 2
+    assert panama in merged
+
+
 def test_merge_sorts_by_ts():
     seed = [row(ts="2026-06-03T00:00:00Z", run_id=None)]
     vol = [row(ts="2026-06-01T00:00:00Z", run_id=None, co2_geq=9.0)]

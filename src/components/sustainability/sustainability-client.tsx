@@ -123,6 +123,17 @@ const CSV_COLUMNS = [
   "water_ml",
   "co2_geq",
   "minerals_ugsbeq",
+  // Schema-2 bounds: empty cells on rows recorded before August 2026. The
+  // CSV is the full ledger, so the range shown on the tiles must be
+  // reproducible from it.
+  "energy_wh_min",
+  "energy_wh_max",
+  "water_ml_min",
+  "water_ml_max",
+  "co2_geq_min",
+  "co2_geq_max",
+  "minerals_ugsbeq_min",
+  "minerals_ugsbeq_max",
   "source",
 ] as const;
 
@@ -198,7 +209,10 @@ function envelopeRange(
   if ((max - min) / midpoint < 0.02) return undefined;
   const lo = fmt(min);
   const hi = fmt(max);
-  return label(`${lo.value} ${lo.unit}`, `${hi.value} ${hi.unit}`);
+  // One shared unit reads as one range ("0.9 to 1.5 kg CO2e"); only a range
+  // that genuinely straddles a unit boundary keeps both units spelled out.
+  const minText = lo.unit === hi.unit ? lo.value : `${lo.value} ${lo.unit}`;
+  return label(minText, `${hi.value} ${hi.unit}`);
 }
 
 // Everyday anchors round to one decimal while small, whole numbers once large.
@@ -214,11 +228,16 @@ function EquivalentsStrip({
   const t = useTranslations("sustainability");
   if (!equivalentsMeaningful(totals)) return null;
   const eq = everydayEquivalents(totals);
-  const items = [
-    t("equivalents.ev", { count: eqRound(eq.evCharges) }),
-    t("equivalents.petrol", { count: eqRound(eq.petrolLitres) }),
-    t("equivalents.bathtubs", { count: eqRound(eq.bathtubs) }),
-  ];
+  // The meaningfulness gate ORs the three anchors, so one can be legible
+  // while another still rounds to 0 -- and "about 0 full charges" informs
+  // nobody. Show only the anchors that survive rounding.
+  const anchors = [
+    { key: "ev", count: eqRound(eq.evCharges) },
+    { key: "petrol", count: eqRound(eq.petrolLitres) },
+    { key: "bathtubs", count: eqRound(eq.bathtubs) },
+  ].filter((a) => a.count > 0);
+  if (anchors.length === 0) return null;
+  const items = anchors.map((a) => t(`equivalents.${a.key}`, { count: a.count }));
   return (
     <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg px-5 py-4">
       <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
@@ -229,9 +248,14 @@ function EquivalentsStrip({
           <span key={item}>
             {item}
             {i < items.length - 1 && (
-              <span aria-hidden="true" className="text-[var(--undp-gray)] mx-2">
-                &middot;
-              </span>
+              <>
+                {/* Visual separator is aria-hidden; assistive tech gets a
+                    comma so the three claims do not run together. */}
+                <span className="sr-only">, </span>
+                <span aria-hidden="true" className="text-[var(--undp-gray)] mx-2">
+                  &middot;
+                </span>
+              </>
             )}
           </span>
         ))}

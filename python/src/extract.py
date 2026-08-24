@@ -2754,7 +2754,9 @@ async def main_async(args: argparse.Namespace) -> int:
                 water_ml=float(row.get("water_ml", 0) or 0),
                 co2_geq=float(row.get("co2_geq", 0) or 0),
                 minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
-                source=footprint.get("source", "unavailable"),
+                # Per-bucket source: the run-level label can be "mixed",
+                # which is outside the ledger's source vocabulary.
+                source=row.get("source") or footprint.get("source", "unavailable"),
                 energy_wh_min=row.get("energy_wh_min"),
                 energy_wh_max=row.get("energy_wh_max"),
                 water_ml_min=row.get("water_ml_min"),

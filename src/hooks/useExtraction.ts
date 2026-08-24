@@ -22,6 +22,17 @@ interface ExtractionFootprint {
   water_ml: number;
   co2_geq: number;
   minerals_ugsbeq: number;
+  // Modelled-uncertainty bounds (ledger schema 2). Accumulated alongside the
+  // midpoints so the analysis run's seed keeps the measured envelope instead
+  // of collapsing it to zero width.
+  energy_wh_min: number;
+  energy_wh_max: number;
+  water_ml_min: number;
+  water_ml_max: number;
+  co2_geq_min: number;
+  co2_geq_max: number;
+  minerals_ugsbeq_min: number;
+  minerals_ugsbeq_max: number;
   call_count: number;
   tracked_call_count: number;
   cached_call_count: number;
@@ -32,6 +43,14 @@ const EMPTY_FOOTPRINT: ExtractionFootprint = {
   water_ml: 0,
   co2_geq: 0,
   minerals_ugsbeq: 0,
+  energy_wh_min: 0,
+  energy_wh_max: 0,
+  water_ml_min: 0,
+  water_ml_max: 0,
+  co2_geq_min: 0,
+  co2_geq_max: 0,
+  minerals_ugsbeq_min: 0,
+  minerals_ugsbeq_max: 0,
   call_count: 0,
   tracked_call_count: 0,
   cached_call_count: 0,
@@ -102,6 +121,18 @@ export function useExtraction() {
             co2_geq: prev.co2_geq + (fp.co2_geq ?? 0),
             minerals_ugsbeq:
               prev.minerals_ugsbeq + (fp.minerals_ugsbeq ?? 0),
+            // A run without bounds contributes its midpoint to both ends,
+            // mirroring the tracker's conservative seeding rule.
+            energy_wh_min: prev.energy_wh_min + (fp.energy_wh_min ?? fp.energy_wh ?? 0),
+            energy_wh_max: prev.energy_wh_max + (fp.energy_wh_max ?? fp.energy_wh ?? 0),
+            water_ml_min: prev.water_ml_min + (fp.water_ml_min ?? fp.water_ml ?? 0),
+            water_ml_max: prev.water_ml_max + (fp.water_ml_max ?? fp.water_ml ?? 0),
+            co2_geq_min: prev.co2_geq_min + (fp.co2_geq_min ?? fp.co2_geq ?? 0),
+            co2_geq_max: prev.co2_geq_max + (fp.co2_geq_max ?? fp.co2_geq ?? 0),
+            minerals_ugsbeq_min:
+              prev.minerals_ugsbeq_min + (fp.minerals_ugsbeq_min ?? fp.minerals_ugsbeq ?? 0),
+            minerals_ugsbeq_max:
+              prev.minerals_ugsbeq_max + (fp.minerals_ugsbeq_max ?? fp.minerals_ugsbeq ?? 0),
             call_count: prev.call_count + (fp.call_count ?? 0),
             tracked_call_count:
               prev.tracked_call_count + (fp.tracked_call_count ?? 0),

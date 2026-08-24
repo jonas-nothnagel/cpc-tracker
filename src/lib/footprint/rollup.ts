@@ -62,8 +62,12 @@ const METRIC_KEYS = [
  * Sum the modelled-uncertainty bounds across events. Rows without bounds
  * (recorded before schema 2) contribute their midpoint to both ends, so the
  * envelope only ever understates the uncertainty. `bounded_share` reports how
- * much of the carbon midpoint total genuinely carries bounds, so the UI can
- * decide whether the envelope is worth showing.
+ * much of the carbon midpoint total genuinely carries a modelled RANGE, so
+ * the UI can decide whether the envelope is worth showing. Key presence alone
+ * is not enough: schema-2 writers also record min == max == midpoint for
+ * coefficient estimates and seeded totals, and those rows carry no modelled
+ * range -- counting them would let a ledger of pinned estimates unlock the
+ * range display.
  */
 function computeEnvelope(events: LedgerEvent[]): FootprintEnvelope {
   const env: FootprintEnvelope = {
@@ -81,7 +85,11 @@ function computeEnvelope(events: LedgerEvent[]): FootprintEnvelope {
       env[key].max += e[`${key}_max`] ?? e[key];
     }
     co2Total += e.co2_geq;
-    if (e.co2_geq_min !== undefined && e.co2_geq_max !== undefined) {
+    if (
+      e.co2_geq_min !== undefined &&
+      e.co2_geq_max !== undefined &&
+      e.co2_geq_max > e.co2_geq_min
+    ) {
       co2Bounded += e.co2_geq;
     }
   }

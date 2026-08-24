@@ -75,7 +75,10 @@ export interface FootprintEnvelope {
   water_ml: { min: number; max: number };
   co2_geq: { min: number; max: number };
   minerals_ugsbeq: { min: number; max: number };
-  /** Share (0..1) of the co2 midpoint total carried by rows with bounds. */
+  /**
+   * Share (0..1) of the co2 midpoint total carried by rows with a real
+   * modelled range (max > min); zero-width bounds do not count.
+   */
   bounded_share: number;
 }
 

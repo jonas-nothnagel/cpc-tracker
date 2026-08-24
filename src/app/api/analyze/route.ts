@@ -46,6 +46,16 @@ interface AnalyzeRequest {
     water_ml: number;
     co2_geq: number;
     minerals_ugsbeq: number;
+    // Modelled-uncertainty bounds (ledger schema 2); the tracker seeds
+    // midpoints on both ends when they are absent.
+    energy_wh_min?: number;
+    energy_wh_max?: number;
+    water_ml_min?: number;
+    water_ml_max?: number;
+    co2_geq_min?: number;
+    co2_geq_max?: number;
+    minerals_ugsbeq_min?: number;
+    minerals_ugsbeq_max?: number;
     call_count: number;
     tracked_call_count: number;
     cached_call_count: number;

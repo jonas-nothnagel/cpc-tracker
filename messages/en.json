@@ -1583,9 +1583,9 @@
     "equivalents": {
       "title": "In everyday terms",
       "ev": "{count, plural, one {about one full charge of a long-range electric car} other {about # full charges of a long-range electric car}}",
-      "petrol": "{count, plural, one {the carbon of about one litre of petrol} other {the carbon of about # litres of petrol}}",
+      "petrol": "{count, plural, one {the carbon of burning about one litre of petrol} other {the carbon of burning about # litres of petrol}}",
       "bathtubs": "{count, plural, one {about one bathtub of cooling water} other {about # bathtubs of cooling water}}",
-      "note": "Illustrative comparisons: US EPA conversion factors (August 2026), a 75 to 100 kWh electric car battery, a 155-litre bathtub."
+      "note": "Illustrative comparisons: United States Environmental Protection Agency (EPA) petrol combustion factor (August 2026), a 75 to 100 kWh electric car battery, a 155-litre bathtub."
     },
     "charts": {
       "carbonOverTime": "Carbon over time",

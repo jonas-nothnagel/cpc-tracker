@@ -253,6 +253,19 @@ def test_seed_with_bounds_carries_them():
     assert s["energy_wh_max"] == 8
 
 
+def test_seed_honours_a_zero_lower_bound():
+    """A stored bound of exactly 0.0 is real data, not a missing value.
+
+    EcoLogits ranges can start at zero (e.g. an adpe floor); collapsing a
+    0.0 bound to the midpoint would silently narrow the envelope.
+    """
+    t = FootprintTracker()
+    t.seed({"minerals_ugsbeq": 12.5, "minerals_ugsbeq_min": 0.0, "minerals_ugsbeq_max": 25.0})
+    s = t.snapshot()
+    assert s["minerals_ugsbeq_min"] == 0.0
+    assert s["minerals_ugsbeq_max"] == 25.0
+
+
 def test_by_model_impacts_mirror_flat_total():
     """Measured impacts land in both the flat total and the per-model bucket."""
     t = FootprintTracker()

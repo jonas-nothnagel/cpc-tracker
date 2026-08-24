@@ -9,6 +9,10 @@ import type { FootprintMetrics } from "./types";
  * Factor provenance (verified 2026-08-09):
  * - Petrol: US EPA greenhouse gas equivalencies calculator, 8,887 g CO2 per
  *   US gallon of gasoline (joint EPA/DOT 2010 factor) = 2,347.7 g per litre.
+ *   NOTE: this is combustion (tailpipe) CO2 only, while the totals are
+ *   EcoLogits life-cycle CO2e -- so the litre figure errs on the high side
+ *   (never understates the footprint), and the copy says "burning" to keep
+ *   the comparison honest.
  * - Electric car: long-range battery packs span roughly 75 to 100 kWh; we use
  *   the midpoint (87.5 kWh) and say "long-range" in the copy.
  * - Bathtub: a full tub holds roughly 155 litres.

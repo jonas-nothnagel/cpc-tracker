@@ -93,12 +93,18 @@ Row schema (`schema: 2`; schema 1 rows lack the optional bounds and stay valid):
 | `source` | measured, estimated, api, or unavailable (see below). |
 
 The `country` tag is derived from the targets filename (the same derivation as
-the output directory), never from output-path components: a path heuristic once
-recorded the model slug as the country for model-comparison runs under
-`<country>/<model-slug>/` (4 rows, ~28 kWh, repaired 2026-08-10). The deploy
-reconcile (`python/scripts/merge_ledger.py`) de-duplicates rows on identity
-(everything except `country`, `run_id` and `schema`), so seed-side metadata
-corrections supersede stale volume copies instead of double-counting.
+the output directory), never from output-path components: the pre-2026-08 code
+used the output leaf directory name, which recorded the model slug as the
+country for model-comparison runs under `<country>/<model-slug>/` (4 rows,
+~28 kWh, repaired 2026-08-10). The deploy reconcile
+(`python/scripts/merge_ledger.py`) matches volume rows against seed rows on a
+whitelist of event-defining fields (timestamp, component, provider, model,
+region, token/call counts, the four impact midpoints, source), so seed-side
+corrections to metadata outside the whitelist (`country`, `run_id`, `schema`,
+bounds) supersede stale volume copies instead of double-counting; volume rows
+are only deduplicated against each other when byte-identical, so distinct
+live events are never collapsed. Ratings-ledger rows (no `schema` key) keep
+exact-row identity: there `country` is identity, not metadata.
 
 `source` values: `measured` (live EcoLogits on Python responses), `estimated`
 (computed from call counts when a run was fully cache-served), `api` (hosted
@@ -146,11 +152,13 @@ reports near-zero new impact.
 The dashboard translates the running totals into three everyday anchors, each
 tied to exactly one metric so energy-based and carbon-based framings never
 blend: full charges of a long-range electric car (energy, 75-100 kWh pack,
-midpoint 87.5 kWh), litres of petrol with the same carbon (US EPA factor,
-8,887 g CO2 per US gallon, verified August 2026), and bathtubs of cooling
-water (155 litres). Factors live in `src/lib/footprint/equivalents.ts` with
-their provenance; the strip is labelled illustrative and hidden while totals
-are too small for the anchors to be legible.
+midpoint 87.5 kWh), litres of petrol whose combustion releases the same CO2
+(US EPA combustion factor, 8,887 g CO2 per US gallon, verified August 2026;
+the totals are life-cycle CO2e, so the litre figure errs on the high side),
+and bathtubs of cooling water (155 litres). Factors live in
+`src/lib/footprint/equivalents.ts` with their provenance; the strip is
+labelled illustrative, hidden while totals are too small for the anchors to
+be legible, and shows only the anchors that do not round to zero.
 
 ## 9. Data sovereignty
 
