@@ -18,25 +18,23 @@ export const EXPLORE_SECTION_ID = "explore";
 
 export function ExploreSection({ children }: { children: ReactNode }) {
   const t = useTranslations("briefing.explore");
-  // The Explore finale is a self-contained one-screen workbench: it owns its
-  // own title, stat line, and controls in a top bar, so the section heading
-  // and intro fold into that chrome and stay only as an accessible landmark.
-  // Height fills the viewport below the app header + section nav so the
-  // whole workbench (title, wheel, ask dock) sits on one screen without the
-  // page scrolling within it. The nav publishes its live height as
-  // --jump-nav-clearance (see JumpNav), so the anchor landing and the height
-  // both track however many rows the nav currently wraps to. `100dvh` keeps
-  // mobile browser chrome honest.
+  // The Explore finale is a self-contained workbench: it owns its own title,
+  // stat line, and controls in a top bar, so the section heading and intro
+  // fold into that chrome and stay only as an accessible landmark. Height is
+  // content-driven (the wheel sizes by width, capped), so the section can be
+  // taller than one screen on laptops; a bigger wheel beats a one-screen fit.
+  // The nav publishes its live height as --jump-nav-clearance (see JumpNav),
+  // so the anchor landing tracks however many rows the nav currently wraps to.
   return (
     <section
       id={EXPLORE_SECTION_ID}
-      className="flex h-[calc(100dvh-var(--jump-nav-clearance,10.25rem))] min-h-[620px] scroll-mt-[var(--jump-nav-clearance,10.25rem)] flex-col"
+      className="scroll-mt-[var(--jump-nav-clearance,10.25rem)]"
       aria-labelledby={`${EXPLORE_SECTION_ID}-heading`}
     >
       <h2 id={`${EXPLORE_SECTION_ID}-heading`} className="sr-only">
         {t("heading")}
       </h2>
-      <div className="min-h-0 flex-1">{children}</div>
+      {children}
     </section>
   );
 }

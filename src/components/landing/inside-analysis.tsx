@@ -58,23 +58,24 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
   const countryIds = useMemo(() => countries.map((c) => c.id), [countries]);
   const { data, failed } = useWheelPreview({ countries: countryIds, selected, locale });
 
-  // Drop documents the country soft-hides by default (e.g. Panama's ENR) so the
-  // landing wheel matches the dashboard's default view. The dashboard applies the
-  // same filter from countryConfig.defaultHiddenDocTypes; the landing has no
-  // toggle, so it just honours the default hidden set.
+  // Drop documents the country soft-hides by default so the landing wheel
+  // matches the briefing's default view: the briefing seeds its hidden set
+  // from countryConfig.defaultHiddenDocTypes plus secondaryDocTypes (e.g.
+  // Panama's ENR and its tier-2 documents); the landing has no toggle, so it
+  // honours the same default set.
   const visible = useMemo(() => {
     if (!data) return null;
-    const hidden = new Set(data.countryConfig?.defaultHiddenDocTypes ?? []);
+    const hidden = new Set([
+      ...(data.countryConfig?.defaultHiddenDocTypes ?? []),
+      ...(data.countryConfig?.secondaryDocTypes ?? []),
+    ]);
     if (hidden.size === 0) return data;
     const targets = data.targets.filter((t) => !hidden.has(t.sourceDocument));
     const ids = new Set(targets.map((t) => t.id));
     const alignments = data.alignments.filter(
       (a) => ids.has(a.targetAId) && ids.has(a.targetBId),
     );
-    const classifications = data.classifications.filter((c) =>
-      ids.has(c.targetId),
-    );
-    return { ...data, targets, alignments, classifications };
+    return { ...data, targets, alignments };
   }, [data]);
 
   const selectedName = countries.find((c) => c.id === selected)?.name;
@@ -175,7 +176,8 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
                   <Centerpiece
                     targets={visible.targets}
                     alignments={visible.alignments}
-                    classifications={visible.classifications}
+                    // The landing groups by document, which reads no classifications.
+                    classifications={[]}
                     countryConfig={visible.countryConfig}
                     state={WHEEL_STATE}
                     showPicker={false}

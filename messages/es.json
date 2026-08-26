@@ -29,7 +29,8 @@
       "home": "Inicio",
       "uploadData": "Cargar datos",
       "prototypes": "prototipos",
-      "howItWorks": "Cómo funciona"
+      "howItWorks": "Cómo funciona",
+      "explore": "Explorar"
     }
   },
   "footer": {},
@@ -1752,7 +1753,7 @@
       "label": "Presupuesto de biodiversidad",
       "onTitle": "Apagar el sombreado de Presupuesto de Biodiversidad. La rueda mantiene la agrupación por biodiversidad.",
       "offTitle": "Cambiar a la vista de Presupuesto de Biodiversidad: agrupa los arcos por categoría de biodiversidad y sombrea cada uno según su proporción del gasto BER etiquetado.",
-      "berNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
+      "berNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start}-{end}. Subconjunto del gasto nacional.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% del BER etiquetado)",
       "fallbackAmount": "0 MNT"
     },
@@ -1834,7 +1835,7 @@
       "closeAria": "Cerrar categoría",
       "taggedBerSpend": "Gasto BER etiquetado",
       "shareSuffix": " · {pct}% de proporción",
-      "periodSuffix": " ({start, number}-{end, number})",
+      "periodSuffix": " ({start}-{end})",
       "policyTargets": "Metas de política",
       "policyTargetsShareSuffix": " · {pct}% de proporción",
       "contributingProgrammes": "Programas contribuyentes",
@@ -1866,7 +1867,7 @@
       "thinking": "Pensando…",
       "insight": "Observación",
       "showMe": "Mostrar en la rueda",
-      "surpriseMe": "Mostrar otra observación",
+      "surpriseMe": "Mostrar una observación",
       "openEntityTitle": "Abrir {id}",
       "requestFailed": "Solicitud fallida ({status, number})",
       "genericError": "No se pudo completar la solicitud. Inténtelo de nuevo.",
@@ -1877,7 +1878,6 @@
       "askPoliciesLabel": "Pregunte a las políticas"
     },
     "workbench": {
-      "viewLabel": "Vista",
       "viewCoherence": "Coherencia",
       "viewFinance": "Finanzas · BER",
       "groupByLabel": "Agrupar los arcos por",
@@ -1894,21 +1894,11 @@
       "statContext": "{country}, {targets, number} metas en {docs, number} documentos",
       "statFinanceLead": "{spend} de gasto etiquetado · {funded, number}/{total, number} categorías financiadas",
       "statFinanceScope": "Gasto en biodiversidad revisado, no el presupuesto total del país",
-      "share": "Compartir esta vista",
-      "shareCopied": "Enlace copiado ✓",
       "answerEyebrow": "Respuesta · Generada por IA",
-      "answersHandle": "{count, plural, =0 {Respuestas} other {Respuestas · #}}",
-      "answersTitle": "Mostrar u ocultar las respuestas y el detalle",
-      "answersClose": "Contraer",
-      "answersEmpty": "Haga una pregunta, abra una meta o pruebe Sorpréndame. Las respuestas y el detalle aparecen aquí.",
-      "statCoherence": "{country} · {targets, number} metas",
-      "statFinance": "{country} · {targets, number} metas · gasto en biodiversidad examinado por categoría",
+      "answerCaveat": "Generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
       "finance": {
         "budgetLabel": "Presupuesto",
-        "periodLabel": "BER {start, number}-{end, number}",
-        "tileTaggedSpend": "Gasto etiquetado",
-        "tileFundedCategories": "Categorías financiadas",
-        "tileFundedValue": "{funded, number}/{total, number}",
+        "periodLabel": "BER {start}-{end}",
         "scaleLabel": "Escalar los arcos por",
         "scaleByTargets": "Metas",
         "scaleBySpend": "Gasto",
@@ -1916,7 +1906,11 @@
         "helperNote": "La profundidad de cada cuña muestra la parte del gasto en biodiversidad etiquetado de cada categoría, leída frente a dónde se sitúan las posibles desalineaciones.",
         "scopeCaveat": "Parte del gasto en biodiversidad revisado, no del presupuesto total del país."
       },
-      "footerCaveat": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo. Las preguntas se guardan de forma anónima para mejorar la herramienta."
+      "backToSummary": "Volver al resumen",
+      "detailTargetEyebrow": "Meta seleccionada",
+      "detailGroupEyebrow": "Grupo seleccionado",
+      "insightEyebrow": "Observación · Generada por IA",
+      "viewLabel": "Vista"
     },
     "questions": {
       "coherence": {

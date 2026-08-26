@@ -29,7 +29,8 @@
       "home": "Нүүр",
       "uploadData": "Өгөгдөл оруулах",
       "prototypes": "прототипүүд",
-      "howItWorks": "Хэрхэн ажилладаг вэ"
+      "howItWorks": "Хэрхэн ажилладаг вэ",
+      "explore": "Судлах"
     }
   },
   "footer": {},
@@ -1752,7 +1753,7 @@
       "label": "Биологийн төрөл зүйлийн төсөв",
       "onTitle": "Биологийн төрөл зүйлийн төсвийн сүүдэрлэлтийг унтраах. Хүрд биологийн төрөл зүйлийн бүлэглэлийг хадгална.",
       "offTitle": "Биологийн төрөл зүйлийн төсвийн харагдац руу шилжих: нумыг биологийн төрөл зүйлийн ангиллаар бүлэглэж, тэмдэглэсэн BER зарлагад эзлэх хувиар тус бүрийг сүүдэрлэнэ.",
-      "berNote": "BER (Биологийн төрөл зүйлийн зарлагын тойм), {start, number}-{end, number} нийт дүн. Үндэсний зарлагын дэд хэсэг.",
+      "berNote": "BER (Биологийн төрөл зүйлийн зарлагын тойм), {start}-{end} нийт дүн. Үндэсний зарлагын дэд хэсэг.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} (тэмдэглэсэн BER-н {pct}%)",
       "fallbackAmount": "0 төгрөг"
     },
@@ -1834,7 +1835,7 @@
       "closeAria": "Ангилал хаах",
       "taggedBerSpend": "Тэмдэглэсэн BER зарлага",
       "shareSuffix": " · {pct}% эзлэх хувь",
-      "periodSuffix": " ({start, number}-{end, number})",
+      "periodSuffix": " ({start}-{end})",
       "policyTargets": "Бодлогын зорилтууд",
       "policyTargetsShareSuffix": " · {pct}% эзлэх хувь",
       "contributingProgrammes": "Хувь нэмэр оруулсан хөтөлбөрүүд",
@@ -1866,7 +1867,7 @@
       "thinking": "Бодож байна…",
       "insight": "Ойлголт",
       "showMe": "Хүрд дээр харуулах",
-      "surpriseMe": "Өөр ойлголт харуулах",
+      "surpriseMe": "Ойлголт харуулах",
       "openEntityTitle": "{id}-г нээх",
       "requestFailed": "Хүсэлт амжилтгүй боллоо ({status, number})",
       "genericError": "Хүсэлтийг гүйцэтгэж чадсангүй. Дахин оролдоно уу.",
@@ -1877,7 +1878,6 @@
       "askPoliciesLabel": "Бодлогоос асуух"
     },
     "workbench": {
-      "viewLabel": "Харагдац",
       "viewCoherence": "Уялдаа",
       "viewFinance": "Санхүү · BER",
       "groupByLabel": "Нуман хаалтыг бүлэглэх",
@@ -1894,21 +1894,11 @@
       "statContext": "{country}, {docs, number} баримт дахь {targets, number} зорилт",
       "statFinanceLead": "{spend} тэмдэглэсэн зарлага · {funded, number}/{total, number} санхүүжсэн ангилал",
       "statFinanceScope": "Хянасан биологийн төрөл зүйлийн зарлага, улсын нийт төсөв биш",
-      "share": "Энэ харагдацыг хуваалцах",
-      "shareCopied": "Холбоос хуулагдлаа ✓",
       "answerEyebrow": "Хариулт · Хиймэл оюунаар үүсгэсэн",
-      "answersHandle": "{count, plural, =0 {Хариултууд} other {Хариултууд · #}}",
-      "answersTitle": "Хариулт болон дэлгэрэнгүйг харуулах/нуух",
-      "answersClose": "Хураах",
-      "answersEmpty": "Асуулт асууж, зорилт нээж, эсвэл Гайхуулаач товчийг туршина уу. Хариулт болон дэлгэрэнгүй энд гарч ирнэ.",
-      "statCoherence": "{country} · {targets, number} зорилт",
-      "statFinance": "{country} · {targets, number} зорилт · ангиллаар нь хянасан биологийн төрөл зүйлийн зарлага",
+      "answerCaveat": "AI-аар үүсгэсэн. Эцсийн дүгнэлт биш, нягтлах сэрэмж гэж үзнэ үү.",
       "finance": {
         "budgetLabel": "Төсөв",
-        "periodLabel": "BER {start, number}-{end, number}",
-        "tileTaggedSpend": "Тэмдэглэсэн зарлага",
-        "tileFundedCategories": "Санхүүжсэн ангилал",
-        "tileFundedValue": "{funded, number}/{total, number}",
+        "periodLabel": "BER {start}-{end}",
         "scaleLabel": "Нуман хаалтын хэмжээ",
         "scaleByTargets": "Зорилт",
         "scaleBySpend": "Зарлага",
@@ -1916,7 +1906,11 @@
         "helperNote": "Нуман хаалт бүрийн гүн нь тухайн ангиллын тэмдэглэсэн биологийн төрөл зүйлийн зарлагад эзлэх хувийг харуулна; үүнийг болзошгүй үл нийцэл хаана байгаатай харьцуулан уншина уу.",
         "scopeCaveat": "Улсын нийт төсөв биш, хянасан биологийн төрөл зүйлийн зарлагын хувь."
       },
-      "footerCaveat": "AI-аар үүсгэсэн дүн шинжилгээ. Эцсийн дүгнэлт биш, нягтлах сэрэмж гэж үзнэ үү. Асуултууд хэрэгслийг сайжруулах зорилгоор нэргүйгээр хадгалагдана."
+      "backToSummary": "Товч тойм руу буцах",
+      "detailTargetEyebrow": "Сонгосон зорилт",
+      "detailGroupEyebrow": "Сонгосон бүлэг",
+      "insightEyebrow": "Ойлголт · Хиймэл оюунаар үүсгэсэн",
+      "viewLabel": "Харагдац"
     },
     "questions": {
       "coherence": {

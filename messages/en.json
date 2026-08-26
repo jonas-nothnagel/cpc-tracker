@@ -29,7 +29,8 @@
       "home": "Home",
       "uploadData": "Upload Data",
       "prototypes": "prototypes",
-      "howItWorks": "How it works"
+      "howItWorks": "How it works",
+      "explore": "Explore"
     }
   },
   "footer": {},
@@ -1752,7 +1753,7 @@
       "label": "Biodiversity Budget",
       "onTitle": "Turn off the Biodiversity Budget shading. The wheel keeps the biodiversity grouping.",
       "offTitle": "Switch to the Biodiversity Budget view: groups arcs by biodiversity category and shades each by its share of tagged BER spend.",
-      "berNote": "BER (Biodiversity Expenditure Review), {start, number}-{end, number} totals. Subset of national expenditure.",
+      "berNote": "BER (Biodiversity Expenditure Review), {start}-{end} totals. Subset of national expenditure.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% of tagged BER)",
       "fallbackAmount": "0 MNT"
     },
@@ -1834,7 +1835,7 @@
       "closeAria": "Close category",
       "taggedBerSpend": "Tagged BER spend",
       "shareSuffix": " · {pct}% share",
-      "periodSuffix": " ({start, number}-{end, number})",
+      "periodSuffix": " ({start}-{end})",
       "policyTargets": "Policy targets",
       "policyTargetsShareSuffix": " · {pct}% share",
       "contributingProgrammes": "Contributing programmes",
@@ -1866,7 +1867,7 @@
       "thinking": "Thinking…",
       "insight": "Insight",
       "showMe": "Show on the wheel",
-      "surpriseMe": "Show another insight",
+      "surpriseMe": "Show an insight",
       "openEntityTitle": "Open {id}",
       "requestFailed": "Request failed ({status, number})",
       "genericError": "The request could not be completed. Please try again.",
@@ -1877,7 +1878,6 @@
       "askPoliciesLabel": "Ask the policies"
     },
     "workbench": {
-      "viewLabel": "View",
       "viewCoherence": "Coherence",
       "viewFinance": "Finance · BER",
       "groupByLabel": "Group the arcs by",
@@ -1894,21 +1894,11 @@
       "statContext": "{country}, {targets, number} targets across {docs, number} documents",
       "statFinanceLead": "{spend} tagged spend · {funded, number}/{total, number} categories funded",
       "statFinanceScope": "Reviewed biodiversity spending, not the country's full budget",
-      "share": "Share this view",
-      "shareCopied": "Link copied ✓",
       "answerEyebrow": "Answer · AI-generated",
-      "answersHandle": "{count, plural, =0 {Answers} other {Answers · #}}",
-      "answersTitle": "Show or hide answers and detail",
-      "answersClose": "Collapse",
-      "answersEmpty": "Ask a question, open a target, or try Surprise me. Answers and detail show up here.",
-      "statCoherence": "{country} · {targets, number} targets",
-      "statFinance": "{country} · {targets, number} targets · reviewed biodiversity spend by category",
+      "answerCaveat": "AI-generated. Treat as a prompt to review, not a settled finding.",
       "finance": {
         "budgetLabel": "Budget",
-        "periodLabel": "BER {start, number}-{end, number}",
-        "tileTaggedSpend": "Tagged spend",
-        "tileFundedCategories": "Funded categories",
-        "tileFundedValue": "{funded, number}/{total, number}",
+        "periodLabel": "BER {start}-{end}",
         "scaleLabel": "Scale the arcs by",
         "scaleByTargets": "Targets",
         "scaleBySpend": "Spend",
@@ -1916,7 +1906,11 @@
         "helperNote": "Wedge depth shows each category's share of tagged biodiversity spend, read against where the potential misalignments sit.",
         "scopeCaveat": "Share of reviewed biodiversity spending, not the country's full budget."
       },
-      "footerCaveat": "AI-generated analysis. Treat as a prompt to review, not a settled finding. Questions are stored anonymously to improve the tool."
+      "backToSummary": "Back to summary",
+      "detailTargetEyebrow": "Selected target",
+      "detailGroupEyebrow": "Selected group",
+      "insightEyebrow": "Insight · AI-generated",
+      "viewLabel": "View"
     },
     "questions": {
       "coherence": {
