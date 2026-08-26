@@ -210,6 +210,16 @@ def derive_country_file(targets_file: str, suffix: str) -> str:
     return f"{prefix}-{suffix}.json" if prefix else f"{suffix}.json"
 
 
+def derive_country_slug(targets_file: str) -> str | None:
+    """Country identity from the targets filename ("mongolia-targets.json" → "mongolia").
+
+    Single source of truth for both the output-dir layout and the footprint
+    ledger's ``country`` tag. None for the generic upload-flow "targets.json".
+    """
+    stem = targets_file[:-5] if targets_file.endswith(".json") else targets_file
+    return re.sub(r"-?targets$", "", stem) or None
+
+
 def slugify_model(model: str) -> str:
     """Filesystem-safe slug for a model name used as an output subdir.
 
@@ -249,8 +259,7 @@ def derive_output_dir(
     if os.getenv("CPC_OUTPUT_DIR"):
         # Upload flow: env var already points at the correct per-analysis path.
         return base_output_dir
-    stem = targets_file[:-5] if targets_file.endswith(".json") else targets_file
-    country_stem = re.sub(r"-?targets$", "", stem)
+    country_stem = derive_country_slug(targets_file)
     country_dir = base_output_dir / country_stem if country_stem else base_output_dir
     if model:
         return country_dir / slugify_model(model)
@@ -1105,18 +1114,18 @@ async def main() -> None:
             run_source = os.getenv("CPC_RUN_SOURCE", "dev")
             component = "user_pipeline" if run_source == "user_pipeline" else "dev_pipeline"
             run_id = os.getenv("CPC_RUN_ID")
-            # Model-subdir runs write to <root>/<country>/<model-slug>/, so the
-            # country is the first path component under the output root, not
-            # the leaf directory name. relative_to() yields Path(".") (empty
-            # .parts) when OUTPUT_DIR IS the root (flat-fallback layout), and
-            # raises ValueError when it is outside the root entirely.
-            country = None
-            if not os.getenv("CPC_OUTPUT_DIR"):
-                try:
-                    rel_parts = OUTPUT_DIR.relative_to(config.OUTPUT_DIR).parts
-                except ValueError:
-                    rel_parts = ()
-                country = rel_parts[0] if rel_parts else OUTPUT_DIR.name
+            # Country identity comes from the targets filename (the same
+            # derivation as the output dir), never from output-path
+            # components: the pre-2026-08 code used the leaf directory name
+            # (`OUTPUT_DIR.name`), which recorded the model slug as the
+            # country for model-comparison runs under <country>/<model-slug>/
+            # (4 historical ledger rows, ~28 kWh, repaired 2026-08-10). The
+            # filename derivation also holds when CPC_OUTPUT_DIR repoints the
+            # output root, so no env gate is needed: the upload flow's generic
+            # "targets.json" yields None on its own (its records carry a
+            # wizard-stamped display country, but the ledger keeps slugs, so
+            # upload rows stay country=None for now).
+            country = derive_country_slug(args.targets_file)
             zone = electricity_zone()
             # Per-model rows when measured; otherwise one row from the flat total
             # (an estimated, fully-cached run has no by_model breakdown).
@@ -1137,7 +1146,19 @@ async def main() -> None:
                     water_ml=float(row.get("water_ml", 0) or 0),
                     co2_geq=float(row.get("co2_geq", 0) or 0),
                     minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
-                    source=footprint.get("source", "unavailable"),
+                    # The bucket's own source, not the run-level one: a mixed
+                    # run classifies flat as "mixed", which is outside the
+                    # ledger's source vocabulary, while each per-model bucket
+                    # carries its true measured/estimated label.
+                    source=row.get("source") or footprint.get("source", "unavailable"),
+                    energy_wh_min=row.get("energy_wh_min"),
+                    energy_wh_max=row.get("energy_wh_max"),
+                    water_ml_min=row.get("water_ml_min"),
+                    water_ml_max=row.get("water_ml_max"),
+                    co2_geq_min=row.get("co2_geq_min"),
+                    co2_geq_max=row.get("co2_geq_max"),
+                    minerals_ugsbeq_min=row.get("minerals_ugsbeq_min"),
+                    minerals_ugsbeq_max=row.get("minerals_ugsbeq_max"),
                 )
         except Exception as e:
             logger.warning(f"Could not append footprint ledger rows: {e}")

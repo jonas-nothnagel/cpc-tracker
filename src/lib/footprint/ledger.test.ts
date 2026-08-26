@@ -49,7 +49,7 @@ describe("footprint ledger", () => {
     appendEvent(base);
     const events = readLedger();
     expect(events).toHaveLength(1);
-    expect(events[0].schema).toBe(1);
+    expect(events[0].schema).toBe(2);
     expect(events[0].component).toBe("chat");
     expect(events[0].co2_geq).toBe(3);
     expect(events[0].ts).toMatch(/T\d{2}:\d{2}:\d{2}Z$/);

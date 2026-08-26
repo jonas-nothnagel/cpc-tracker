@@ -51,6 +51,18 @@ class FootprintTotals:
     water_ml: float = 0.0
     co2_geq: float = 0.0
     minerals_ugsbeq: float = 0.0
+    # Sum of EcoLogits' per-call min/max bounds. The flat values above are
+    # midpoints; these keep the modelled uncertainty envelope. Calls without a
+    # range (per-token estimates, seeded totals) contribute their midpoint to
+    # both bounds, so the envelope understates rather than invents uncertainty.
+    energy_wh_min: float = 0.0
+    energy_wh_max: float = 0.0
+    water_ml_min: float = 0.0
+    water_ml_max: float = 0.0
+    co2_geq_min: float = 0.0
+    co2_geq_max: float = 0.0
+    minerals_ugsbeq_min: float = 0.0
+    minerals_ugsbeq_max: float = 0.0
     call_count: int = 0  # total call_llm invocations (incl. cached)
     tracked_call_count: int = 0  # non-cached calls where impacts were captured
     estimated_call_count: int = 0  # calls where impacts were approximated via per-token coefficients
@@ -86,6 +98,26 @@ def _impact_value(field: Any) -> float:
         return float(value)
     except (TypeError, ValueError):
         return 0.0
+
+
+def _impact_range(field: Any) -> tuple[float, float, float]:
+    """Extract (midpoint, min, max) from an EcoLogits impact field.
+
+    Scalar values collapse to (v, v, v); missing fields to zeros.
+    """
+    if field is None:
+        return 0.0, 0.0, 0.0
+    value = getattr(field, "value", None)
+    if value is None:
+        return 0.0, 0.0, 0.0
+    if hasattr(value, "min") and hasattr(value, "max"):
+        lo, hi = float(value.min), float(value.max)
+        return (lo + hi) / 2, lo, hi
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return 0.0, 0.0, 0.0
+    return v, v, v
 
 
 def _normalise_model_name(model: str) -> str:
@@ -168,25 +200,42 @@ class FootprintTracker:
             target.water_ml += _ESTIMATE_WATER_ML_PER_KTOK * ktok
             target.co2_geq += _ESTIMATE_CO2_GEQ_PER_KTOK * ktok
             target.minerals_ugsbeq += _ESTIMATE_MINERALS_UGSBEQ_PER_KTOK * ktok
+            # No modelled range for coefficient estimates: midpoint on both bounds.
+            target.energy_wh_min += _ESTIMATE_ENERGY_WH_PER_KTOK * ktok
+            target.energy_wh_max += _ESTIMATE_ENERGY_WH_PER_KTOK * ktok
+            target.water_ml_min += _ESTIMATE_WATER_ML_PER_KTOK * ktok
+            target.water_ml_max += _ESTIMATE_WATER_ML_PER_KTOK * ktok
+            target.co2_geq_min += _ESTIMATE_CO2_GEQ_PER_KTOK * ktok
+            target.co2_geq_max += _ESTIMATE_CO2_GEQ_PER_KTOK * ktok
+            target.minerals_ugsbeq_min += _ESTIMATE_MINERALS_UGSBEQ_PER_KTOK * ktok
+            target.minerals_ugsbeq_max += _ESTIMATE_MINERALS_UGSBEQ_PER_KTOK * ktok
 
     def _add_impacts(self, impacts: Any, *targets: FootprintTotals) -> None:
         """Add one response's impacts to each target (the flat total + its model bucket)."""
         # energy: kWh → Wh
-        energy_wh = _impact_value(getattr(impacts, "energy", None)) * 1000
+        energy, energy_lo, energy_hi = _impact_range(getattr(impacts, "energy", None))
         # gwp: kgCO2eq → gCO2eq
-        co2_geq = _impact_value(getattr(impacts, "gwp", None)) * 1000
+        co2, co2_lo, co2_hi = _impact_range(getattr(impacts, "gwp", None))
         # adpe: kgSbeq → ugSbeq
-        minerals_ugsbeq = _impact_value(getattr(impacts, "adpe", None)) * 1e9
+        adpe, adpe_lo, adpe_hi = _impact_range(getattr(impacts, "adpe", None))
         # water consumption footprint is on the usage phase; wcf: L → mL
         usage = getattr(impacts, "usage", None)
-        water_ml = (
-            _impact_value(getattr(usage, "wcf", None)) * 1000 if usage is not None else 0.0
+        water, water_lo, water_hi = (
+            _impact_range(getattr(usage, "wcf", None)) if usage is not None else (0.0, 0.0, 0.0)
         )
         for target in targets:
-            target.energy_wh += energy_wh
-            target.co2_geq += co2_geq
-            target.minerals_ugsbeq += minerals_ugsbeq
-            target.water_ml += water_ml
+            target.energy_wh += energy * 1000
+            target.energy_wh_min += energy_lo * 1000
+            target.energy_wh_max += energy_hi * 1000
+            target.co2_geq += co2 * 1000
+            target.co2_geq_min += co2_lo * 1000
+            target.co2_geq_max += co2_hi * 1000
+            target.minerals_ugsbeq += adpe * 1e9
+            target.minerals_ugsbeq_min += adpe_lo * 1e9
+            target.minerals_ugsbeq_max += adpe_hi * 1e9
+            target.water_ml += water * 1000
+            target.water_ml_min += water_lo * 1000
+            target.water_ml_max += water_hi * 1000
 
     async def record_response(
         self,
@@ -341,6 +390,20 @@ class FootprintTracker:
         self._totals.water_ml += float(initial.get("water_ml", 0) or 0)
         self._totals.co2_geq += float(initial.get("co2_geq", 0) or 0)
         self._totals.minerals_ugsbeq += float(initial.get("minerals_ugsbeq", 0) or 0)
+        # Older footprint.json files carry no bounds: their flat midpoint feeds
+        # both, keeping the envelope conservative rather than inventing width.
+        # Only an ABSENT (or null) bound falls back to the midpoint -- a stored
+        # bound of exactly 0.0 is a real lower bound and must be honoured, so
+        # no truthiness (`or`) fallback here.
+        for base in ("energy_wh", "water_ml", "co2_geq", "minerals_ugsbeq"):
+            mid = float(initial.get(base, 0) or 0)
+            for bound in ("min", "max"):
+                key = f"{base}_{bound}"
+                value = initial.get(key)
+                current = getattr(self._totals, key)
+                setattr(
+                    self._totals, key, current + (mid if value is None else float(value))
+                )
         self._totals.call_count += int(initial.get("call_count", 0) or 0)
         self._totals.tracked_call_count += int(
             initial.get("tracked_call_count", 0) or 0
@@ -407,11 +470,7 @@ def estimate_footprint_from_counts(
         }
 
     normalised = _normalise_model_name(model)
-    total_energy_wh = 0.0
-    total_water_ml = 0.0
-    total_co2_geq = 0.0
-    total_minerals_ugsbeq = 0.0
-    total_calls = 0
+    totals = FootprintTotals(model=model)
 
     for group in call_groups:
         count = int(group.get("count", 0))
@@ -434,24 +493,31 @@ def estimate_footprint_from_counts(
             continue
         if _impacts_are_empty(impacts):
             continue
-        total_energy_wh += _impact_value(getattr(impacts, "energy", None)) * 1000 * count
-        total_co2_geq += _impact_value(getattr(impacts, "gwp", None)) * 1000 * count
-        total_minerals_ugsbeq += _impact_value(getattr(impacts, "adpe", None)) * 1e9 * count
+        energy, energy_lo, energy_hi = _impact_range(getattr(impacts, "energy", None))
+        co2, co2_lo, co2_hi = _impact_range(getattr(impacts, "gwp", None))
+        adpe, adpe_lo, adpe_hi = _impact_range(getattr(impacts, "adpe", None))
         usage = getattr(impacts, "usage", None)
-        if usage is not None:
-            total_water_ml += _impact_value(getattr(usage, "wcf", None)) * 1000 * count
-        total_calls += count
+        water, water_lo, water_hi = (
+            _impact_range(getattr(usage, "wcf", None)) if usage is not None else (0.0, 0.0, 0.0)
+        )
+        totals.energy_wh += energy * 1000 * count
+        totals.energy_wh_min += energy_lo * 1000 * count
+        totals.energy_wh_max += energy_hi * 1000 * count
+        totals.co2_geq += co2 * 1000 * count
+        totals.co2_geq_min += co2_lo * 1000 * count
+        totals.co2_geq_max += co2_hi * 1000 * count
+        totals.minerals_ugsbeq += adpe * 1e9 * count
+        totals.minerals_ugsbeq_min += adpe_lo * 1e9 * count
+        totals.minerals_ugsbeq_max += adpe_hi * 1e9 * count
+        totals.water_ml += water * 1000 * count
+        totals.water_ml_min += water_lo * 1000 * count
+        totals.water_ml_max += water_hi * 1000 * count
+        totals.call_count += count
 
     return {
-        "energy_wh": total_energy_wh,
-        "water_ml": total_water_ml,
-        "co2_geq": total_co2_geq,
-        "minerals_ugsbeq": total_minerals_ugsbeq,
-        "call_count": total_calls,
-        "tracked_call_count": 0,
-        "cached_call_count": total_calls,
-        "model": model,
-        "available": total_calls > 0
-        and (total_energy_wh > 0 or total_co2_geq > 0),
+        **asdict(totals),
+        "cached_call_count": totals.call_count,
+        "available": totals.call_count > 0
+        and (totals.energy_wh > 0 or totals.co2_geq > 0),
         "source": "estimated",
     }

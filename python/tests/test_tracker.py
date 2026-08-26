@@ -186,6 +186,86 @@ def test_mixed_source_when_measured_and_estimated_in_same_run():
     assert per_model["Phi-4"]["source"] == "estimated"
 
 
+def _fake_range_response(*, energy_kwh: tuple, gwp_kg: tuple, adpe_kg: tuple, water_l: tuple):
+    """Response whose impact fields carry EcoLogits RangeValue-style bounds."""
+
+    def rng(lo, hi):
+        return SimpleNamespace(value=SimpleNamespace(min=lo, max=hi))
+
+    impacts = SimpleNamespace(
+        energy=rng(*energy_kwh),
+        gwp=rng(*gwp_kg),
+        adpe=rng(*adpe_kg),
+        usage=SimpleNamespace(wcf=rng(*water_l)),
+    )
+    return SimpleNamespace(impacts=impacts, usage=SimpleNamespace(completion_tokens=10))
+
+
+def test_range_bounds_accumulate_alongside_midpoints():
+    """RangeValue impacts feed the flat midpoint AND the min/max envelope."""
+    t = FootprintTracker()
+    resp = _fake_range_response(
+        energy_kwh=(0.001, 0.003),  # midpoint 0.002 kWh -> 2 Wh
+        gwp_kg=(0.002, 0.006),  # midpoint 0.004 kg -> 4 g
+        adpe_kg=(0.0, 0.0),
+        water_l=(0.004, 0.006),  # midpoint 0.005 L -> 5 mL
+    )
+    asyncio.run(t.record_response(resp, "gpt-5.4"))
+    snap = t.snapshot()
+    assert snap["energy_wh"] == pytest.approx(2.0)
+    assert snap["energy_wh_min"] == pytest.approx(1.0)
+    assert snap["energy_wh_max"] == pytest.approx(3.0)
+    assert snap["co2_geq"] == pytest.approx(4.0)
+    assert snap["co2_geq_min"] == pytest.approx(2.0)
+    assert snap["co2_geq_max"] == pytest.approx(6.0)
+    assert snap["water_ml_min"] == pytest.approx(4.0)
+    assert snap["water_ml_max"] == pytest.approx(6.0)
+    bucket = snap["by_model"][0]
+    assert bucket["energy_wh_min"] == pytest.approx(1.0)
+    assert bucket["energy_wh_max"] == pytest.approx(3.0)
+
+
+def test_scalar_impacts_collapse_bounds_to_midpoint():
+    """Scalar (non-range) impacts leave a zero-width envelope, not zero bounds."""
+    t = FootprintTracker()
+    resp = _fake_response(energy_kwh=0.001, gwp_kg=0.002, adpe_kg=0.0, water_l=0.005)
+    asyncio.run(t.record_response(resp, "gpt-5.4"))
+    snap = t.snapshot()
+    assert snap["energy_wh_min"] == snap["energy_wh_max"] == snap["energy_wh"] == 1.0
+    assert snap["co2_geq_min"] == snap["co2_geq_max"] == snap["co2_geq"] == 2.0
+
+
+def test_seed_without_bounds_contributes_midpoint_to_envelope():
+    """Old footprint.json files (no bounds) seed min == max == midpoint."""
+    t = FootprintTracker()
+    t.seed({"energy_wh": 5, "co2_geq": 2, "call_count": 3})
+    s = t.snapshot()
+    assert s["energy_wh_min"] == s["energy_wh_max"] == 5
+    assert s["co2_geq_min"] == s["co2_geq_max"] == 2
+
+
+def test_seed_with_bounds_carries_them():
+    t = FootprintTracker()
+    t.seed({"energy_wh": 5, "energy_wh_min": 3, "energy_wh_max": 8})
+    s = t.snapshot()
+    assert s["energy_wh"] == 5
+    assert s["energy_wh_min"] == 3
+    assert s["energy_wh_max"] == 8
+
+
+def test_seed_honours_a_zero_lower_bound():
+    """A stored bound of exactly 0.0 is real data, not a missing value.
+
+    EcoLogits ranges can start at zero (e.g. an adpe floor); collapsing a
+    0.0 bound to the midpoint would silently narrow the envelope.
+    """
+    t = FootprintTracker()
+    t.seed({"minerals_ugsbeq": 12.5, "minerals_ugsbeq_min": 0.0, "minerals_ugsbeq_max": 25.0})
+    s = t.snapshot()
+    assert s["minerals_ugsbeq_min"] == 0.0
+    assert s["minerals_ugsbeq_max"] == 25.0
+
+
 def test_by_model_impacts_mirror_flat_total():
     """Measured impacts land in both the flat total and the per-model bucket."""
     t = FootprintTracker()

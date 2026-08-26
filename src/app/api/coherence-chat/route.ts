@@ -1371,6 +1371,14 @@ export async function POST(req: Request) {
           co2_geq: impacts.co2_geq,
           minerals_ugsbeq: impacts.minerals_ugsbeq,
           source: impacts.source,
+          energy_wh_min: impacts.energy_wh_min,
+          energy_wh_max: impacts.energy_wh_max,
+          water_ml_min: impacts.water_ml_min,
+          water_ml_max: impacts.water_ml_max,
+          co2_geq_min: impacts.co2_geq_min,
+          co2_geq_max: impacts.co2_geq_max,
+          minerals_ugsbeq_min: impacts.minerals_ugsbeq_min,
+          minerals_ugsbeq_max: impacts.minerals_ugsbeq_max,
         }),
       )
       .catch(() => {});
