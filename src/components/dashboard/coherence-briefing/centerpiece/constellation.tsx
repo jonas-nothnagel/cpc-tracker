@@ -28,9 +28,6 @@ import {
 } from "d3-force";
 import { ALIGNMENT_COLORS, getDocColor } from "@/lib/utils";
 import { isContradiction } from "@/types";
-
-/** The constellation also shades by manageability, which the wheel slice may omit. */
-type ConstellationAlignment = WheelAlignment & Pick<AlignmentResult, "manageability">;
 import type {
   AlignmentResult,
   CountryConfig,
@@ -39,6 +36,15 @@ import type {
   WheelTarget,
 } from "@/types";
 import type { WheelState } from "./wheel";
+
+/**
+ * The constellation also shades flagged pairs by manageability and draws
+ * `low` pairs, neither of which the landing's wheel slice carries; it must be
+ * fed the full alignment set. (`manageability` is optional on
+ * `AlignmentResult`, so this intersection documents the need rather than
+ * enforcing it.)
+ */
+type ConstellationAlignment = WheelAlignment & Pick<AlignmentResult, "manageability">;
 
 const VB_W = 760;
 const VB = 620;

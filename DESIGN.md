@@ -139,7 +139,7 @@ Semantic status only. Not decoration, not framework colour.
 
 **The Legible-Axis Rule.** Red/green is allowed as the intuitive encoding for the alignment axis in data visualization (wheel ribbons, share bars, matrices, status dots): green reads as reinforcing, red as a possible misalignment worth a second look. Two conditions keep it honest. First, colour is never the sole channel: pair red/green with a pattern (hatching or dashed) or a text label so it survives colour-blindness. Second, the no-blame line is carried by neutral language and framing, and colour never sharpens into a whole-surface "alert" wash or a fault signal against a ministry or actor. Outside data visualization, red stays conventional error/negative status. (This supersedes the earlier no-red-for-flagged rule: for a non-technical audience, the legibility of red/green won.)
 
-**The One Ground Rule.** White is the only page ground, landing included; Surface Light marks grouped regions inside it. No warm or tinted bands anywhere: a cream band reads as generated decoration, not as the product.
+**The One Ground Rule.** White is the only page ground, landing included; Surface Light marks grouped regions inside it, and on the landing a full-width Surface Light section with a hairline may separate one section from the next. No warm or tinted bands anywhere: a cream band reads as generated decoration, not as the product.
 
 ## 3. Typography
 
