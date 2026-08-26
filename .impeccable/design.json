@@ -210,8 +210,8 @@
         "section": "colors"
       },
       {
-        "name": "The Paper-Is-For-Editorial Rule",
-        "body": "Editorial Paper (#faf8f4) is confined to landing / editorial bands. Product surfaces default to White or Surface Light. Warm cream never becomes the ambient background of the tool.",
+        "name": "The One Ground Rule",
+        "body": "White is the only page ground, landing included; Surface Light marks grouped regions inside it. No warm or tinted bands anywhere.",
         "section": "colors"
       },
       {
@@ -239,7 +239,7 @@
       "Do expand every abbreviation on first use or attach an InfoBox; no bare acronyms.",
       "Do keep body text at Ink (#232e3d) or Muted Slate (#55606e); if contrast is even close, move toward Ink.",
       "Do honour prefers-reduced-motion; every animation has a static fallback and reveals enhance already-visible content.",
-      "Do reserve Editorial Paper (#faf8f4) for landing / editorial bands; product surfaces default to White or Surface Light."
+      "Do keep every surface, landing included, on White with Surface Light for grouped regions; no tinted bands."
     ],
     "donts": [
       "Don't ship auto-generated consultancy-dashboard output: no extended AI-written narrative, no gradient hero-metric templates, no generative filler.",

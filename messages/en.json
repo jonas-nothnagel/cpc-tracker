@@ -53,7 +53,8 @@
         "wheelAriaWithCountry": "Live preview of the policy coherence wheel for {name}: aligned and potentially misaligned target pairs across national policy documents.",
         "wheelAria": "Live preview of the policy coherence wheel: aligned and potentially misaligned target pairs across national policy documents.",
         "openDashboardWithCountry": "Open the {name} dashboard",
-        "openDashboard": "Open the full dashboard"
+        "openDashboard": "Open the full dashboard",
+        "unavailable": "Preview not available for {name} right now."
       }
     },
     "howItWorks": {

@@ -28,11 +28,15 @@ import {
 } from "d3-force";
 import { ALIGNMENT_COLORS, getDocColor } from "@/lib/utils";
 import { isContradiction } from "@/types";
+
+/** The constellation also shades by manageability, which the wheel slice may omit. */
+type ConstellationAlignment = WheelAlignment & Pick<AlignmentResult, "manageability">;
 import type {
   AlignmentResult,
   CountryConfig,
   PolicyDocumentType,
-  Target,
+  WheelAlignment,
+  WheelTarget,
 } from "@/types";
 import type { WheelState } from "./wheel";
 
@@ -53,9 +57,9 @@ interface LayoutResult {
   clusterCenters: Map<PolicyDocumentType, { x: number; y: number }>;
 }
 
-function buildLayout(targets: Target[]): LayoutResult {
+function buildLayout(targets: WheelTarget[]): LayoutResult {
   // 1. Group by document.
-  const byDoc = new Map<PolicyDocumentType, Target[]>();
+  const byDoc = new Map<PolicyDocumentType, WheelTarget[]>();
   for (const t of targets) {
     const list = byDoc.get(t.sourceDocument) ?? [];
     list.push(t);
@@ -122,8 +126,8 @@ function buildLayout(targets: Target[]): LayoutResult {
 }
 
 export interface ConstellationCenterpieceProps {
-  targets: Target[];
-  alignments: AlignmentResult[];
+  targets: WheelTarget[];
+  alignments: ConstellationAlignment[];
   countryConfig: CountryConfig | null;
   state?: WheelState;
 }
@@ -141,8 +145,8 @@ export function ConstellationCenterpiece({
   );
 
   const ordered = useMemo(() => {
-    const aligns: AlignmentResult[] = [];
-    const tensions: AlignmentResult[] = [];
+    const aligns: ConstellationAlignment[] = [];
+    const tensions: ConstellationAlignment[] = [];
     for (const a of alignments) {
       if (a.alignment === "none") continue;
       if (!positions.has(a.targetAId) || !positions.has(a.targetBId)) continue;

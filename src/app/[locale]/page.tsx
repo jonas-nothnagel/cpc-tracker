@@ -45,7 +45,7 @@ export default async function Home({
         </div>
       </HeroVideo>
 
-      {/* Inside the analysis — live coherence wheel on warm paper ground */}
+      {/* Inside the analysis — live coherence wheel */}
       <InsideAnalysis
         countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
       />

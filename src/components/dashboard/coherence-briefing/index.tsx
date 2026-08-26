@@ -2035,7 +2035,7 @@ function BriefingHeader({
  * Stage boundary marker: a quiet full-width rule + the stage's name and
  * caption, rendered where the reader crosses into a new stage. The Sri
  * Lanka review (Aug 2026) asked for the "backdrop" to change between areas;
- * a ground change is off the table (Paper-Is-For-Editorial rule, and the
+ * a ground change is off the table (One Ground rule: white only, and the
  * sections share one grid with the sticky aside), so the transition is
  * marked instead, echoing the nav's stage vocabulary and styling so the
  * two read as the same system. Three markers at most — deliberately not a

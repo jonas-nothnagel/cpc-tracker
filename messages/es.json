@@ -53,7 +53,8 @@
         "wheelAriaWithCountry": "Vista previa en vivo de la rueda de coherencia de políticas para {name}: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
         "wheelAria": "Vista previa en vivo de la rueda de coherencia de políticas: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
         "openDashboardWithCountry": "Abrir el panel de {name}",
-        "openDashboard": "Abrir el panel completo"
+        "openDashboard": "Abrir el panel completo",
+        "unavailable": "La vista previa de {name} no está disponible en este momento."
       }
     },
     "howItWorks": {

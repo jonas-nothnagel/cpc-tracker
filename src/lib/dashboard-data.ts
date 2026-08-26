@@ -904,6 +904,47 @@ export function assembleDashboardData(
   };
 }
 
+/**
+ * The slice of a country payload the landing wheel needs: enough to draw one
+ * wheel grouped by document (`Centerpiece` reads only `id` and `sourceDocument`
+ * from a target and only the pair ids and level from an alignment, and never
+ * draws `none` or `low` pairs). Serving this instead of the full payload takes
+ * the landing's per-country download from megabytes to a few hundred KB.
+ */
+export interface WheelSliceResponse {
+  targets: { id: string; sourceDocument: string }[];
+  alignment: { targetAId: string; targetBId: string; alignment: string }[];
+  classifications: never[];
+  countryConfig: Record<string, unknown> | null;
+}
+
+const WHEEL_LEVELS = new Set(["high", "medium", "flagged"]);
+
+export function projectWheelSlice(
+  data: Pick<DashboardResponse, "targets" | "alignment" | "classifications" | "countryConfig">,
+): WheelSliceResponse {
+  const targets: WheelSliceResponse["targets"] = [];
+  for (const raw of data.targets) {
+    const t = raw as { id?: unknown; sourceDocument?: unknown };
+    if (typeof t.id === "string" && typeof t.sourceDocument === "string") {
+      targets.push({ id: t.id, sourceDocument: t.sourceDocument });
+    }
+  }
+  const alignment: WheelSliceResponse["alignment"] = [];
+  for (const raw of data.alignment) {
+    const a = raw as { targetAId?: unknown; targetBId?: unknown; alignment?: unknown };
+    if (
+      typeof a.targetAId === "string" &&
+      typeof a.targetBId === "string" &&
+      typeof a.alignment === "string" &&
+      WHEEL_LEVELS.has(a.alignment)
+    ) {
+      alignment.push({ targetAId: a.targetAId, targetBId: a.targetBId, alignment: a.alignment });
+    }
+  }
+  return { targets, alignment, classifications: [], countryConfig: data.countryConfig ?? null };
+}
+
 /** A cached country payload: the assembled data plus its serialized + gzipped
  *  forms, so repeat API hits skip disk reads, JSON.stringify, and compression. */
 export interface CountryPayload {
@@ -959,5 +1000,38 @@ export function getCountryDashboardPayload(
   const json = JSON.stringify(assembled.data);
   const payload: CountryPayload = { data: assembled.data, json, gzip: gzipSync(json) };
   countryPayloadCache.set(key, payload);
+  return { kind: "ok", payload };
+}
+
+/** Serialized + gzipped wheel slice, cached per (country, locale). */
+export interface SerializedPayload {
+  json: string;
+  gzip: Uint8Array;
+}
+
+export type WheelPayloadResult =
+  | { kind: "ok"; payload: SerializedPayload }
+  | { kind: "error"; status: 400 | 404; error: string; missing?: string[] };
+
+const wheelPayloadCache = new Map<string, SerializedPayload>();
+
+/**
+ * The landing wheel's slice of a country payload, derived from the cached full
+ * payload (so it shares its validation and assembly) and cached in its own
+ * serialized form. Locale matters because document labels in `countryConfig`
+ * are localized at assembly time.
+ */
+export function getCountryWheelPayload(country: string, locale?: string): WheelPayloadResult {
+  const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
+  const localeKey = locale && locale !== "en" ? `:${locale}` : "";
+  const key = `${canonical}${localeKey}`;
+  const cached = wheelPayloadCache.get(key);
+  if (cached) return { kind: "ok", payload: cached };
+
+  const full = getCountryDashboardPayload(country, locale, null);
+  if (full.kind === "error") return full;
+  const json = JSON.stringify(projectWheelSlice(full.payload.data));
+  const payload: SerializedPayload = { json, gzip: gzipSync(json) };
+  wheelPayloadCache.set(key, payload);
   return { kind: "ok", payload };
 }

@@ -30,6 +30,8 @@ import type {
   SectorSynthesis,
   Target,
   ThematicClassification,
+  WheelAlignment,
+  WheelTarget,
 } from "@/types";
 
 // ─── Headline verdict ───────────────────────────────────────────────
@@ -857,8 +859,8 @@ export interface DocCoherenceEdge {
  * separation and filament weight.
  */
 export function buildDocCoherenceGraph(
-  alignment: AlignmentResult[],
-  targets: Target[],
+  alignment: WheelAlignment[],
+  targets: WheelTarget[],
   countryConfig: CountryConfig | null,
 ): { nodes: DocCoherenceNode[]; edges: DocCoherenceEdge[] } {
   const targetMap = new Map(targets.map((t) => [t.id, t]));
@@ -951,8 +953,8 @@ export interface DocFrictionShares {
  * its own arc without being penalised merely for being large.
  */
 export function buildDocFrictionShares(
-  alignment: AlignmentResult[],
-  targets: Target[],
+  alignment: WheelAlignment[],
+  targets: WheelTarget[],
   countryConfig: CountryConfig | null,
 ): DocFrictionShares {
   const { edges } = buildDocCoherenceGraph(alignment, targets, countryConfig);
