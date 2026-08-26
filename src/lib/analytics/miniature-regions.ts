@@ -320,14 +320,14 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
     },
     {
       id: "answers",
-      name: "The answers panel",
-      // explorer.workbench.answersHandle ("Answers · N") / answersClose
+      name: "The answers rail",
+      // explorer.workbench.answersHeading (top-bar recall) / backToSummary
       match: either(
         (label) =>
           label.startsWith("Answers") ||
           label.startsWith("Respuestas") ||
           label.startsWith("Хариултууд"),
-        exact("Collapse", "Contraer", "Хураах"),
+        exact("Back to summary", "Volver al resumen", "Товч тойм руу буцах"),
       ),
     },
     OTHER,

@@ -1,24 +1,31 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { pillClass, SEGMENT_CLASS } from "./pill";
 
 type ViewMode = "coherence" | "finance";
 
 /**
  * Explorer flagship canvas — a single, non-scrolling screen.
  *
- * Three grid rows fill the height the briefing finale gives it:
- *   1. Top bar      — title, live stat line, share / country / view switch.
- *   2. Stage        — lens rail (left) + the wheel (right), with the answer
- *                     as a *floating overlay* that never reflows the wheel.
- *   3. Ask dock     — always visible so the question box and its toggles stay
- *                     on screen while an answer plays out on the wheel.
+ * Three grid rows fill the height the host gives it (the briefing finale or
+ * the standalone explore page):
+ *   1. Top bar        — title, live stat line, answers recall / share /
+ *                       country / view switch.
+ *   2. Controls strip — group-by, the alignment filter, the legend.
+ *   3. Stage          — the wheel (left, full remaining height) and the
+ *                       persistent rail (right): the corpus summary and the
+ *                       ask bar at rest, the answer or the selected detail
+ *                       otherwise. Below `lg` the rail stacks under the wheel
+ *                       as a definite 2/5 track with its own scroll, so there
+ *                       is always exactly one rail (and one ask input) in the
+ *                       DOM.
  *
- * `minmax(0,1fr)` on the middle row lets it shrink below its content so the
- * wheel scales down on short viewports instead of pushing the dock off-screen.
- * Purely presentational: every interactive piece is built by the parent and
- * passed in; the top-bar controls are the one exception, rendered here so the
- * one-screen chrome stays in one place.
+ * `minmax(0,1fr)` on the stage row lets it shrink below its content so the
+ * wheel scales down on short viewports. Purely presentational: every
+ * interactive piece is built by the parent and passed in; the top-bar controls
+ * are the one exception, rendered here so the one-screen chrome stays in one
+ * place.
  */
 export function WorkbenchStage({
   title,
@@ -34,15 +41,12 @@ export function WorkbenchStage({
   onViewChange,
   viewCoherenceLabel,
   viewFinanceLabel,
-  lensPane,
+  controls,
   wheel,
-  answerOpen,
-  answerCard,
+  rail,
   answersAvailable,
   onShowAnswers,
   answersLabel,
-  dock,
-  footerCaveat,
   modal,
 }: {
   title: string;
@@ -59,29 +63,17 @@ export function WorkbenchStage({
   onViewChange: (view: ViewMode) => void;
   viewCoherenceLabel: string;
   viewFinanceLabel: string;
-  lensPane: ReactNode;
+  controls: ReactNode;
   wheel: ReactNode;
-  /** Whether the floating answer card is showing (slides the wheel left). */
-  answerOpen: boolean;
-  answerCard: ReactNode;
-  /** An answer exists but the card is collapsed: offer a way back to it. */
+  rail: ReactNode;
+  /** An answer exists but the rail shows the summary: offer a way back to it. */
   answersAvailable: boolean;
   onShowAnswers: () => void;
   answersLabel: string;
-  /** AI-generated label + confidence caveat + question-storage notice. */
-  footerCaveat: string;
-  dock: ReactNode;
   modal?: ReactNode;
 }) {
-  const pill = (active: boolean, activeBg: string) =>
-    `cursor-pointer whitespace-nowrap rounded-full px-3.5 py-1.5 text-data font-medium transition-colors ${
-      active
-        ? `${activeBg} text-white`
-        : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
-    }`;
-
   return (
-    <div className="grid h-full w-full min-w-0 grid-cols-1 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden bg-white">
+    <div className="grid h-full w-full min-w-0 grid-cols-1 grid-rows-[auto_auto_minmax(0,1fr)] overflow-hidden bg-white">
       {/* ── Row 1 · Top bar ─────────────────────────────────────────── */}
       <div className="flex items-center justify-between gap-4 border-b border-line bg-white px-5 py-2.5 sm:px-6">
         <div className="min-w-0 flex-1">
@@ -99,9 +91,9 @@ export function WorkbenchStage({
           </p>
         </div>
         <div className="flex flex-none items-center gap-2.5">
-          {/* Reachability: while the answer card is collapsed but an answer is
-              still available, this brings it back (the old drawer handle). */}
-          {answersAvailable && !answerOpen && (
+          {/* Reachability: while the rail shows the summary but an answer is
+              still available, this brings it back. */}
+          {answersAvailable && (
             <button
               type="button"
               onClick={onShowAnswers}
@@ -125,12 +117,12 @@ export function WorkbenchStage({
             {countryName}
           </span>
           {showViewSwitch && (
-            <div className="inline-flex items-center gap-0.5 rounded-full border border-line-strong bg-white p-[3px]">
+            <div className={SEGMENT_CLASS}>
               <button
                 type="button"
                 onClick={() => onViewChange("coherence")}
                 aria-pressed={view === "coherence"}
-                className={pill(view === "coherence", "bg-[var(--undp-black)]")}
+                className={pillClass(view === "coherence", "bg-[var(--undp-black)]")}
               >
                 {viewCoherenceLabel}
               </button>
@@ -138,7 +130,7 @@ export function WorkbenchStage({
                 type="button"
                 onClick={() => onViewChange("finance")}
                 aria-pressed={view === "finance"}
-                className={pill(view === "finance", "bg-[#0e7490]")}
+                className={pillClass(view === "finance", "bg-[#0e7490]")}
               >
                 {viewFinanceLabel}
               </button>
@@ -147,71 +139,15 @@ export function WorkbenchStage({
         </div>
       </div>
 
-      {/* ── Row 2 · Stage (lens rail + wheel with floating answer) ───── */}
-      <div className="grid min-h-0 min-w-0 grid-cols-1 gap-3.5 px-4 py-2 sm:px-6 lg:grid-cols-[224px_minmax(0,1fr)]">
-        {/* Lens rail — hidden on narrow screens where the wheel needs the room. */}
-        <div className="hidden min-h-0 self-start lg:block lg:max-h-full lg:overflow-y-auto lg:overflow-x-hidden [scrollbar-width:thin]">
-          {lensPane}
-        </div>
+      {/* ── Row 2 · Controls strip ──────────────────────────────────── */}
+      {controls}
 
-        {/* Wheel stage. The wheel is centred and glides left when an answer is
-            open; the answer card floats over the right, never reflowing it. */}
+      {/* ── Row 3 · Stage (wheel + rail) ────────────────────────────── */}
+      <div className="grid min-h-0 min-w-0 grid-cols-1 grid-rows-[minmax(0,3fr)_minmax(0,2fr)] gap-3.5 px-4 py-2 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:grid-rows-1 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="relative flex min-h-0 min-w-0 items-center justify-center">
-          <div
-            className="flex h-full w-full min-w-0 items-center justify-center transition-transform duration-500 [transition-timing-function:var(--ease-out)] motion-reduce:transition-none"
-            style={{
-              transform: answerOpen
-                ? "translateX(clamp(-150px, -13%, -80px))"
-                : "translateX(0)",
-            }}
-          >
-            {wheel}
-          </div>
-
-          {/* No -translate-y-1/2 class on the card: Tailwind v4 compiles it to
-              the standalone `translate` property, which composes with the
-              inline `transform` rather than being overridden by it, so the card
-              would sit a full 100% up. The inline transform owns centring. */}
-          <div
-            aria-hidden={!answerOpen}
-            // inert while closed: the card keeps its content in the DOM so it
-            // can fade, but opacity/pointer-events alone leave its buttons in
-            // the tab order — keyboard focus would land on an invisible card,
-            // and focusable children inside aria-hidden is an ARIA violation.
-            inert={!answerOpen}
-            className="pointer-events-none absolute right-0 top-1/2 z-10 flex max-h-[calc(100%-1.5rem)] w-[min(344px,86%)] transition-[opacity,transform] duration-500 [transition-timing-function:var(--ease-out)] motion-reduce:transition-none"
-            style={{
-              opacity: answerOpen ? 1 : 0,
-              transform: answerOpen
-                ? "translate(0, -50%)"
-                : "translate(26px, -50%)",
-            }}
-          >
-            {/* min-h-0 (not max-h-full): a percentage max-height would resolve
-                against an auto-height parent and compute to `none`, letting a
-                long answer grow past the stage and slide under the top bar.
-                Stretching a shrinkable flex item keeps it inside the cap. */}
-            <div
-              className={`flex min-h-0 w-full ${answerOpen ? "pointer-events-auto" : ""}`}
-            >
-              {answerCard}
-            </div>
-          </div>
+          {wheel}
         </div>
-      </div>
-
-      {/* ── Row 3 · Ask dock ────────────────────────────────────────── */}
-      <div className="flex flex-col items-center px-4 pb-3 pt-1 sm:px-6">
-        <div className="w-full max-w-[860px]">
-          {dock}
-          {/* Always-visible caveat: labels the analysis as AI-generated with its
-              confidence caveat, and carries the notice that questions are
-              stored. Both must stay on the face, not behind a click. */}
-          <p className="mt-2 flex items-start gap-2 text-caption leading-snug text-[var(--undp-gray)]">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--undp-yellow)]" />
-            {footerCaveat}
-          </p>
-        </div>
+        <div className="min-h-0 min-w-0">{rail}</div>
       </div>
 
       {modal}

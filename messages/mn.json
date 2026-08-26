@@ -29,7 +29,8 @@
       "home": "Нүүр",
       "uploadData": "Өгөгдөл оруулах",
       "prototypes": "прототипүүд",
-      "howItWorks": "Хэрхэн ажилладаг вэ"
+      "howItWorks": "Хэрхэн ажилладаг вэ",
+      "explore": "Судлах"
     }
   },
   "footer": {},
@@ -1877,7 +1878,6 @@
       "askPoliciesLabel": "Бодлогоос асуух"
     },
     "workbench": {
-      "viewLabel": "Харагдац",
       "viewCoherence": "Уялдаа",
       "viewFinance": "Санхүү · BER",
       "groupByLabel": "Нуман хаалтыг бүлэглэх",
@@ -1897,18 +1897,9 @@
       "share": "Энэ харагдацыг хуваалцах",
       "shareCopied": "Холбоос хуулагдлаа ✓",
       "answerEyebrow": "Хариулт · Хиймэл оюунаар үүсгэсэн",
-      "answersHandle": "{count, plural, =0 {Хариултууд} other {Хариултууд · #}}",
-      "answersTitle": "Хариулт болон дэлгэрэнгүйг харуулах/нуух",
-      "answersClose": "Хураах",
-      "answersEmpty": "Асуулт асууж, зорилт нээж, эсвэл Гайхуулаач товчийг туршина уу. Хариулт болон дэлгэрэнгүй энд гарч ирнэ.",
-      "statCoherence": "{country} · {targets, number} зорилт",
-      "statFinance": "{country} · {targets, number} зорилт · ангиллаар нь хянасан биологийн төрөл зүйлийн зарлага",
       "finance": {
         "budgetLabel": "Төсөв",
-        "periodLabel": "BER {start, number}-{end, number}",
-        "tileTaggedSpend": "Тэмдэглэсэн зарлага",
-        "tileFundedCategories": "Санхүүжсэн ангилал",
-        "tileFundedValue": "{funded, number}/{total, number}",
+        "periodLabel": "BER {start}-{end}",
         "scaleLabel": "Нуман хаалтын хэмжээ",
         "scaleByTargets": "Зорилт",
         "scaleBySpend": "Зарлага",
@@ -1916,7 +1907,10 @@
         "helperNote": "Нуман хаалт бүрийн гүн нь тухайн ангиллын тэмдэглэсэн биологийн төрөл зүйлийн зарлагад эзлэх хувийг харуулна; үүнийг болзошгүй үл нийцэл хаана байгаатай харьцуулан уншина уу.",
         "scopeCaveat": "Улсын нийт төсөв биш, хянасан биологийн төрөл зүйлийн зарлагын хувь."
       },
-      "footerCaveat": "AI-аар үүсгэсэн дүн шинжилгээ. Эцсийн дүгнэлт биш, нягтлах сэрэмж гэж үзнэ үү. Асуултууд хэрэгслийг сайжруулах зорилгоор нэргүйгээр хадгалагдана."
+      "footerCaveat": "AI-аар үүсгэсэн дүн шинжилгээ. Эцсийн дүгнэлт биш, нягтлах сэрэмж гэж үзнэ үү. Асуултууд хэрэгслийг сайжруулах зорилгоор нэргүйгээр хадгалагдана.",
+      "backToSummary": "Товч тойм руу буцах",
+      "detailTargetEyebrow": "Сонгосон зорилт",
+      "detailGroupEyebrow": "Сонгосон бүлэг"
     },
     "questions": {
       "coherence": {

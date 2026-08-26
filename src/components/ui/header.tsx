@@ -31,14 +31,25 @@ export function Header({
   const t = useTranslations("header");
   const showSwitcher = currentCountryId && countries && countries.length > 1;
 
+  // Explore has a country-scoped route only, so the item appears wherever a
+  // country is known (standalone routes via basePath, the demo dashboard via
+  // currentCountryId) and not on country-less pages.
+  const exploreHref = basePath
+    ? `${basePath}/explore`
+    : currentCountryId
+      ? `/${currentCountryId}/explore`
+      : null;
+  const exploreItem = exploreHref ? [{ href: exploreHref, label: t("nav.explore") }] : [];
   const navItems = basePath
     ? [
         { href: basePath, label: t("nav.home") },
+        ...exploreItem,
         { href: "/methodology", label: t("nav.howItWorks") },
         { href: `${basePath}/upload`, label: t("nav.uploadData") },
       ]
     : [
         { href: "/", label: t("nav.home") },
+        ...exploreItem,
         { href: "/methodology", label: t("nav.howItWorks") },
         { href: "/upload", label: t("nav.uploadData") },
       ];

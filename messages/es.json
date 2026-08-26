@@ -29,7 +29,8 @@
       "home": "Inicio",
       "uploadData": "Cargar datos",
       "prototypes": "prototipos",
-      "howItWorks": "Cómo funciona"
+      "howItWorks": "Cómo funciona",
+      "explore": "Explorar"
     }
   },
   "footer": {},
@@ -1877,7 +1878,6 @@
       "askPoliciesLabel": "Pregunte a las políticas"
     },
     "workbench": {
-      "viewLabel": "Vista",
       "viewCoherence": "Coherencia",
       "viewFinance": "Finanzas · BER",
       "groupByLabel": "Agrupar los arcos por",
@@ -1897,18 +1897,9 @@
       "share": "Compartir esta vista",
       "shareCopied": "Enlace copiado ✓",
       "answerEyebrow": "Respuesta · Generada por IA",
-      "answersHandle": "{count, plural, =0 {Respuestas} other {Respuestas · #}}",
-      "answersTitle": "Mostrar u ocultar las respuestas y el detalle",
-      "answersClose": "Contraer",
-      "answersEmpty": "Haga una pregunta, abra una meta o pruebe Sorpréndame. Las respuestas y el detalle aparecen aquí.",
-      "statCoherence": "{country} · {targets, number} metas",
-      "statFinance": "{country} · {targets, number} metas · gasto en biodiversidad examinado por categoría",
       "finance": {
         "budgetLabel": "Presupuesto",
-        "periodLabel": "BER {start, number}-{end, number}",
-        "tileTaggedSpend": "Gasto etiquetado",
-        "tileFundedCategories": "Categorías financiadas",
-        "tileFundedValue": "{funded, number}/{total, number}",
+        "periodLabel": "BER {start}-{end}",
         "scaleLabel": "Escalar los arcos por",
         "scaleByTargets": "Metas",
         "scaleBySpend": "Gasto",
@@ -1916,7 +1907,10 @@
         "helperNote": "La profundidad de cada cuña muestra la parte del gasto en biodiversidad etiquetado de cada categoría, leída frente a dónde se sitúan las posibles desalineaciones.",
         "scopeCaveat": "Parte del gasto en biodiversidad revisado, no del presupuesto total del país."
       },
-      "footerCaveat": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo. Las preguntas se guardan de forma anónima para mejorar la herramienta."
+      "footerCaveat": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo. Las preguntas se guardan de forma anónima para mejorar la herramienta.",
+      "backToSummary": "Volver al resumen",
+      "detailTargetEyebrow": "Meta seleccionada",
+      "detailGroupEyebrow": "Grupo seleccionado"
     },
     "questions": {
       "coherence": {
