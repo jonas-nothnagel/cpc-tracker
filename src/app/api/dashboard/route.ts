@@ -4,6 +4,7 @@
  * Two addressing modes:
  *   - ?analysisId=xxx (upload flow) → reads python/analyses/{id}/   — never cached
  *   - ?country=<id>   (pilot flow)  → reads python/data/ + python/output/{id}/ — cached + gzipped
+ *   - ?country=<id>&slice=wheel     → the landing wheel's slim projection of the same payload
  *
  * Precedence: analysisId wins when both are present. Unknown or malformed
  * country params are rejected with 400 BEFORE any filesystem access — the
@@ -21,6 +22,7 @@ import {
   derivePaths,
   assembleDashboardData,
   getCountryDashboardPayload,
+  getCountryWheelPayload,
 } from "@/lib/dashboard-data";
 
 // Re-exported for the path-derivation unit test, which imports it from here.
@@ -55,6 +57,8 @@ export async function GET(request: NextRequest) {
   // Optional ?model= picks a per-model output subdir (Mongolia model-comparison).
   // Validation lives in derivePaths so callers can't bypass the slug allow-list.
   const model = request.nextUrl.searchParams.get("model");
+  // Optional ?slice=wheel serves only what the landing wheel draws.
+  const slice = request.nextUrl.searchParams.get("slice");
   const acceptsGzip = (request.headers.get("accept-encoding") ?? "").includes("gzip");
 
   // Upload flow: per-analysis data is dynamic and may still be processing, so
@@ -73,6 +77,20 @@ export async function GET(request: NextRequest) {
     }
     const json = JSON.stringify(assembled.data);
     return buildJsonResponse(json, acceptsGzip ? gzipSync(json) : null, "no-store");
+  }
+
+  if (slice && slice !== "wheel") {
+    return NextResponse.json({ error: `Unknown slice: ${slice}` }, { status: 400, headers: NO_STORE_HEADERS });
+  }
+  if (slice === "wheel") {
+    const wheel = getCountryWheelPayload(country ?? "", locale);
+    if (wheel.kind === "error") {
+      return NextResponse.json(
+        wheel.missing ? { error: wheel.error, missing: wheel.missing } : { error: wheel.error },
+        { status: wheel.status, headers: NO_STORE_HEADERS },
+      );
+    }
+    return buildJsonResponse(wheel.payload.json, acceptsGzip ? wheel.payload.gzip : null, COUNTRY_CACHE_CONTROL);
   }
 
   // Pilot flow: assembled once per container, then served from the cached

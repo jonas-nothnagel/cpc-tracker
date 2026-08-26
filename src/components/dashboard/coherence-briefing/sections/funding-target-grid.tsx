@@ -239,8 +239,8 @@ function ContributorRow({
         className={
           "w-full flex items-start gap-2 text-left text-caption py-1 rounded transition-colors " +
           (expanded
-            ? "bg-[var(--undp-paper)]"
-            : "hover:bg-[var(--undp-paper)]/60 focus:bg-[var(--undp-paper)]/60")
+            ? "bg-[var(--undp-light)]"
+            : "hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)]")
         }
       >
         <span

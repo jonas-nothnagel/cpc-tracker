@@ -8,7 +8,6 @@ colors:
   ink: "#232e3d"
   muted: "#55606e"
   surface-light: "#f7f7f7"
-  paper: "#faf8f4"
   border: "#e5e7eb"
   white: "#ffffff"
   success: "#59ba47"
@@ -132,7 +131,6 @@ Semantic status only. Not decoration, not framework colour.
 - **Ink** (`#232e3d`): Primary text on light. The default for body and headlines; contrast is roughly 13:1 on white.
 - **Muted Slate** (`#55606e`): Secondary text, captions, labels, eyebrows. ~7:1 on white — the floor for legible muted text; never go lighter for "elegance".
 - **Surface Light** (`#f7f7f7`): The second neutral layer — panels, toolbars, hover fills, grouped regions inside a white page.
-- **Editorial Paper** (`#faf8f4`): A warm off-white reserved for editorial bands on the landing / brand surface only.
 - **Hairline** (`#e5e7eb`): Borders, dividers, table rules.
 - **White** (`#ffffff`): The default product ground and the surface of floating layers.
 
@@ -141,7 +139,7 @@ Semantic status only. Not decoration, not framework colour.
 
 **The Legible-Axis Rule.** Red/green is allowed as the intuitive encoding for the alignment axis in data visualization (wheel ribbons, share bars, matrices, status dots): green reads as reinforcing, red as a possible misalignment worth a second look. Two conditions keep it honest. First, colour is never the sole channel: pair red/green with a pattern (hatching or dashed) or a text label so it survives colour-blindness. Second, the no-blame line is carried by neutral language and framing, and colour never sharpens into a whole-surface "alert" wash or a fault signal against a ministry or actor. Outside data visualization, red stays conventional error/negative status. (This supersedes the earlier no-red-for-flagged rule: for a non-technical audience, the legibility of red/green won.)
 
-**The Paper-Is-For-Editorial Rule.** Editorial Paper (`#faf8f4`) is confined to the landing and other brand/editorial bands. Product surfaces (dashboard, upload, methodology, analysis) default to White or Surface Light. Warm cream must never become the ambient background of the tool — that is the cream-everywhere tell, and this palette resists it.
+**The One Ground Rule.** White is the only page ground, landing included; Surface Light marks grouped regions inside it. No warm or tinted bands anywhere: a cream band reads as generated decoration, not as the product.
 
 ## 3. Typography
 
@@ -221,7 +219,7 @@ The `(i)` **InfoBox** is the system's answer to the "expand every abbreviation, 
 - **Do** expand every abbreviation on first use or attach an InfoBox; no bare acronyms.
 - **Do** keep body text at Ink (`#232e3d`) or Muted Slate (`#55606e`); if contrast is even close, move toward Ink. Legibility beats "elegant" light gray, always.
 - **Do** honour `prefers-reduced-motion` (already global): every animation has a static fallback, and reveals enhance already-visible content — never gate content on a transition.
-- **Do** reserve Editorial Paper (`#faf8f4`) for landing/editorial bands; product surfaces default to White or Surface Light.
+- **Do** keep every surface, landing included, on White with Surface Light for grouped regions; no tinted bands.
 
 ### Don't:
 - **Don't** ship auto-generated consultancy-dashboard output: no extended AI-written narrative reports, no gradient hero-metric templates, no generative filler presented as analysis.

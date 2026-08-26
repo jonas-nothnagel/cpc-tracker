@@ -51,6 +51,7 @@ import {
 } from "./target-text";
 import { WorkbenchStage } from "./explorer-workbench/workbench-stage";
 import { LensPane } from "./explorer-workbench/lens-pane";
+import { ambientRibbonInk } from "./explorer-workbench/ribbon-density";
 import type {
   BerData,
   BtrData,
@@ -3321,14 +3322,17 @@ export function PolicyCoherenceExplorer({
   // Must match the selected filter so users see what they asked for
   const ambientConns = useMemo(() => filtered, [filtered]);
 
-  // Scale ambient opacity inversely with edge count so dense views stay readable
-  const ambientOpacity = useMemo(() => {
-    const n = ambientConns.length;
-    if (n <= 50) return 0.25;
-    if (n >= 1000) return 0.03;
-    const t = (n - 50) / (1000 - 50);
-    return 0.25 - t * 0.22;
-  }, [ambientConns.length]);
+  // Scale ambient ink inversely with edge count so dense views stay readable.
+  // The same rule applies in every filter state; the "potential misalignment
+  // only" state used to bypass it and draw every dashed ribbon at full ink.
+  const ambientInk = useMemo(
+    () =>
+      ambientRibbonInk(
+        ambientConns.length,
+        filter === "contradictions" ? "flagged" : "default",
+      ),
+    [ambientConns.length, filter],
+  );
 
   // Connections for the active node (from filtered set)
   const activeConns = useMemo(() => {
@@ -4504,7 +4508,6 @@ export function PolicyCoherenceExplorer({
                   }
                   const key = `amb-${[conn.targetAId, conn.targetBId].sort().join("__")}`;
                   const contra = isContradiction(conn.alignment);
-                  const isContraMode = filter === "contradictions";
                   // In group focus mode, give the surviving edges a bit more
                   // presence — the noise is gone so they can carry weight.
                   const opacity = scanning
@@ -4513,16 +4516,12 @@ export function PolicyCoherenceExplorer({
                       ? contra
                         ? 0.7
                         : 0.55
-                      : isContraMode
-                        ? 0.55
-                        : ambientOpacity;
+                      : ambientInk.opacity;
                   const strokeWidth = isGroupFocus
                     ? contra || conn.alignment === "high"
                       ? 1.8
                       : 1.2
-                    : isContraMode
-                      ? 2
-                      : 1;
+                    : ambientInk.strokeWidth;
                   return (
                     <path
                       key={key}

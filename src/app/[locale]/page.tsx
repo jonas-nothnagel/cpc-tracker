@@ -45,13 +45,15 @@ export default async function Home({
         </div>
       </HeroVideo>
 
-      {/* Inside the analysis — live coherence wheel on warm paper ground */}
+      {/* Inside the analysis — live coherence wheel */}
       <InsideAnalysis
         countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
       />
 
-      {/* How it works */}
-      <section className="bg-white py-20 md:py-28">
+      {/* How it works: on Surface Light with a hairline so it reads as its
+          own band after the white wheel section (One Ground rule: white page,
+          Surface Light for grouped regions, no tinted bands). */}
+      <section className="border-t border-line bg-[var(--undp-light)] py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="font-display mb-12 text-headline font-semibold text-[var(--undp-black)] md:text-headline-lg">
             {t("howItWorks.title")}

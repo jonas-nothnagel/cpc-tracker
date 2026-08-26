@@ -9,8 +9,10 @@
  * read as one product. Country-agnostic: every visible pilot is an equal toggle
  * and the starting country is picked at random on mount, so the landing never
  * structurally favours one country. Sits below the fold, so it fetches
- * client-side (the dashboard payload is large; keeping it out of the
- * server-rendered HTML keeps the hero fast). On failure it renders nothing.
+ * client-side through `useWheelPreview` (a slim per-country wheel slice, cached
+ * and prefetched; see that hook). While a country loads the wheel column shows
+ * its skeleton; if a country's data is unavailable the band stays, with a short
+ * caption in place of the wheel, so the other pills keep working.
  *
  * Documents a country soft-hides by default (countryConfig.defaultHiddenDocTypes,
  * e.g. Panama's ENR) are filtered out here too, so the landing wheel matches the
@@ -18,19 +20,14 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
   Centerpiece,
   WheelLegend,
 } from "@/components/dashboard/coherence-briefing/centerpiece";
 import type { WheelState } from "@/components/dashboard/coherence-briefing/centerpiece/wheel";
-import type {
-  AlignmentResult,
-  CountryConfig,
-  Target,
-  ThematicClassification,
-} from "@/types";
+import { useWheelPreview } from "./use-wheel-preview";
 
 // Group by document, no focus/filter.
 const WHEEL_STATE: WheelState = {
@@ -39,13 +36,6 @@ const WHEEL_STATE: WheelState = {
   filter: "all",
 };
 
-interface WheelData {
-  targets: Target[];
-  alignments: AlignmentResult[];
-  classifications: ThematicClassification[];
-  countryConfig: CountryConfig | null;
-}
-
 export interface PreviewCountry {
   id: string;
   name: string;
@@ -53,9 +43,8 @@ export interface PreviewCountry {
 
 export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
   const t = useTranslations("landing.inside");
+  const locale = useLocale();
   const [selected, setSelected] = useState<string | null>(null);
-  const [data, setData] = useState<WheelData | null>(null);
-  const [failed, setFailed] = useState(false);
 
   // Pick the starting country at random on mount (client-only) so neither pilot
   // is structurally favoured. SSR renders the skeleton.
@@ -66,30 +55,8 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
     setSelected(pick);
   }, [countries]);
 
-  useEffect(() => {
-    if (!selected) return;
-    let active = true;
-    // Clear any prior error when the country changes.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFailed(false);
-    fetch(`/api/dashboard?country=${selected}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((d: Record<string, unknown>) => {
-        if (!active) return;
-        setData({
-          targets: (d.targets ?? []) as Target[],
-          alignments: (d.alignment ?? []) as AlignmentResult[],
-          classifications: (d.classifications ?? []) as ThematicClassification[],
-          countryConfig: (d.countryConfig ?? null) as CountryConfig | null,
-        });
-      })
-      .catch(() => {
-        if (active) setFailed(true);
-      });
-    return () => {
-      active = false;
-    };
-  }, [selected]);
+  const countryIds = useMemo(() => countries.map((c) => c.id), [countries]);
+  const { data, failed } = useWheelPreview({ countries: countryIds, selected, locale });
 
   // Drop documents the country soft-hides by default (e.g. Panama's ENR) so the
   // landing wheel matches the dashboard's default view. The dashboard applies the
@@ -110,12 +77,10 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
     return { ...data, targets, alignments, classifications };
   }, [data]);
 
-  if (failed) return null;
-
   const selectedName = countries.find((c) => c.id === selected)?.name;
 
   return (
-    <section className="bg-[var(--undp-paper)] py-20 md:py-28">
+    <section className="border-t border-line bg-white py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         {countries.length > 1 ? (
           <div
@@ -134,7 +99,7 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
                   className={`rounded-full border px-3.5 py-1 text-caption font-medium transition-colors ${
                     isActive
                       ? "border-[var(--undp-black)] bg-[var(--undp-black)] text-white"
-                      : "border-gray-300 bg-white/70 text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
+                      : "border-gray-300 bg-white text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
                   }`}
                 >
                   {c.name}
@@ -181,9 +146,23 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
           {/* Right column: the wheel */}
           <div>
             {!visible ? (
-              <div className="mx-auto aspect-square w-full max-w-[560px] animate-pulse rounded-full bg-[var(--undp-black)]/[0.04]" />
+              <div aria-busy={!failed}>
+                <div
+                  className={`mx-auto aspect-square w-full max-w-[560px] rounded-full bg-[var(--undp-black)]/[0.04] ${failed ? "" : "animate-pulse"}`}
+                />
+                {failed && selectedName ? (
+                  <p
+                    role="status"
+                    className="mt-6 text-center text-caption text-[var(--undp-gray)]"
+                  >
+                    {t("preview.unavailable", { name: selectedName })}
+                  </p>
+                ) : null}
+              </div>
             ) : (
               <div
+                // Keyed by country so the enter animation replays on a switch.
+                key={selected ?? "none"}
                 className="wheel-enter"
                 role="img"
                 aria-label={

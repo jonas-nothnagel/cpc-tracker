@@ -42,11 +42,12 @@ import {
 } from "@/lib/utils";
 import { isContradiction } from "@/types";
 import type {
-  AlignmentResult,
   CountryConfig,
   PolicyDocumentType,
   Target,
   ThematicClassification,
+  WheelAlignment,
+  WheelTarget,
 } from "@/types";
 import { cellColor } from "./doc-coherence-matrix";
 import {
@@ -137,7 +138,7 @@ interface ArcInfo {
 
 interface NodePos {
   id: string;
-  target: Target;
+  target: WheelTarget;
   arcId: string;
   angle: number;
   x: number;
@@ -184,7 +185,7 @@ interface Bucket {
   /** Full label including any trailing parenthetical, used as the SVG aria title. */
   fullLabel: string;
   color: string;
-  targets: Target[];
+  targets: WheelTarget[];
 }
 
 /**
@@ -202,10 +203,10 @@ function prettyDocLabel(
 }
 
 function bucketByDocument(
-  targets: Target[],
+  targets: WheelTarget[],
   countryConfig: CountryConfig | null,
 ): Bucket[] {
-  const byDoc = new Map<string, Target[]>();
+  const byDoc = new Map<string, WheelTarget[]>();
   for (const t of targets) {
     const list = byDoc.get(t.sourceDocument) ?? [];
     list.push(t);
@@ -228,7 +229,7 @@ function bucketByDocument(
 }
 
 function bucketBySector(
-  targets: Target[],
+  targets: WheelTarget[],
   classifications: ThematicClassification[],
   sectorCategories: SectorCategoryRef[],
   sectorTaxonomyType: string,
@@ -239,7 +240,7 @@ function bucketBySector(
     if (!c.isPrimary || c.taxonomyType !== sectorTaxonomyType) continue;
     primaryByTarget.set(c.targetId, c.categoryId);
   }
-  const byCat = new Map<string, Target[]>();
+  const byCat = new Map<string, WheelTarget[]>();
   for (const t of targets) {
     const cid = primaryByTarget.get(t.id) ?? UNCLASSIFIED_BUCKET_ID;
     const list = byCat.get(cid) ?? [];
@@ -271,7 +272,7 @@ function bucketBySector(
 }
 
 function buildLayout(args: {
-  targets: Target[];
+  targets: WheelTarget[];
   countryConfig: CountryConfig | null;
   classifications: ThematicClassification[];
   groupBy: WheelGroupBy;
@@ -358,7 +359,7 @@ interface ArcPairAggregate {
 }
 
 function aggregateByArcPair(
-  alignment: AlignmentResult[],
+  alignment: WheelAlignment[],
   nodeMap: Map<string, NodePos>,
 ): Map<string, ArcPairAggregate> {
   const out = new Map<string, ArcPairAggregate>();
@@ -395,8 +396,8 @@ function aggregateByArcPair(
 // ─── Component ──────────────────────────────────────────────────────
 
 export interface WheelCenterpieceProps {
-  targets: Target[];
-  alignments: AlignmentResult[];
+  targets: WheelTarget[];
+  alignments: WheelAlignment[];
   classifications?: ThematicClassification[];
   countryConfig: CountryConfig | null;
   state: WheelState;
