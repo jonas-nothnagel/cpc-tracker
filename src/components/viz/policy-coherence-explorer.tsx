@@ -1736,7 +1736,9 @@ function ChatBar({
         </p>
       )}
 
-      {chat.loading && (
+      {/* With hideReply the host renders the reply (and its own thinking
+          line) elsewhere, so this one would double up. */}
+      {chat.loading && !hideReply && (
         <div className="text-caption text-[var(--undp-gray)] px-1">
           {t("thinking")}
         </div>
@@ -5273,36 +5275,63 @@ export function PolicyCoherenceExplorer({
     // the reply, the surfaced insight or the thinking line and, for a
     // selection, the detail panel beneath it, so a live reply stacks above
     // the detail as it did in the overlay.
-    const railBody =
-      railMode === "summary" ? (
-        <GlanceSummary
-          targets={visibleTargets}
-          alignment={filtered}
-          filter={filter}
-          onSelectTarget={handleNodeClick}
-          onSelectPair={handleSelectPair}
-          onSetFilter={setFilter}
-          countryConfig={countryConfig}
-          showHeading={false}
-        />
-      ) : (
-        <>
-          {chat.loading && (
-            <p className="text-caption text-[var(--undp-gray)]">
-              {t("chat.thinking")}
-            </p>
-          )}
-          <ChatOutput
-            chat={chat}
-            currentInsight={currentInsight}
-            canShowMe={canShowMe}
-            onApplyHook={onApplyHook}
-            onSelectChatEntity={handleChatEntityClick}
-            hideInsights={railMode === "detail"}
+    //
+    // The summary stays mounted (hidden) outside its mode: its rankings are
+    // three passes over every pair, and an open stat drill remembers the
+    // wheel filter it replaced, so unmounting on every node click would both
+    // recompute the rankings and leave the wheel locked to the drill's filter
+    // with no tile marked active on "Back to summary".
+    const hasAnswerContent = !!chat.reply || !!chat.error || chat.loading;
+    const showsInsight =
+      railMode === "answer" && !hasAnswerContent && currentInsight != null;
+    const railBody = (
+      <>
+        <div hidden={railMode !== "summary"} className="space-y-5">
+          <GlanceSummary
+            targets={visibleTargets}
+            alignment={filtered}
+            filter={filter}
+            onSelectTarget={handleNodeClick}
+            onSelectPair={handleSelectPair}
+            onSetFilter={setFilter}
+            countryConfig={countryConfig}
+            showHeading={false}
           />
-          {railMode === "detail" && railPanel(closeRail)}
-        </>
-      );
+        </div>
+        {railMode !== "summary" && (
+          <>
+            {/* In detail mode the rail eyebrow names the selection, so a reply
+                stacked above the detail carries its own AI-generated label. */}
+            {railMode === "detail" && hasAnswerContent && (
+              <p className="text-caption font-medium text-[var(--undp-blue)]">
+                {t("workbench.answerEyebrow")}
+              </p>
+            )}
+            {chat.loading && (
+              <p className="text-caption text-[var(--undp-gray)]">
+                {t("chat.thinking")}
+              </p>
+            )}
+            <ChatOutput
+              chat={chat}
+              currentInsight={currentInsight}
+              canShowMe={canShowMe}
+              onApplyHook={onApplyHook}
+              onSelectChatEntity={handleChatEntityClick}
+              hideInsights={railMode === "detail"}
+            />
+            {/* Confidence caveat on the face, next to whatever AI text is
+                showing (the label alone lives on the eyebrow). */}
+            {((!chat.loading && (!!chat.reply || !!chat.error)) || showsInsight) && (
+              <p className="text-caption text-[var(--undp-gray)]">
+                {t("workbench.answerCaveat")}
+              </p>
+            )}
+            {railMode === "detail" && railPanel(closeRail)}
+          </>
+        )}
+      </>
+    );
 
     // The ask bar lives in the rail's pinned footer: example questions while
     // the summary is on, the server follow-ups otherwise (ChatBar renders

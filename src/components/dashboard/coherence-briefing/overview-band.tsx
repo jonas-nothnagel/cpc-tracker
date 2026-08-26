@@ -113,15 +113,17 @@ function Num({ children }: { children: ReactNode }) {
   );
 }
 
-/** After the hash jump lands the workbench, put the caret in the ask dock.
+/** After the hash jump lands the workbench, put the caret in the ask bar.
  *  Progressive enhancement: if the selector misses, the plain anchor still
- *  landed the dock on screen (the Explore section is one viewport tall). */
+ *  landed the section. The ask bar is the rail's footer at the bottom of a
+ *  content-sized stage, which can sit below the fold on a laptop, so focus is
+ *  allowed its minimal scroll rather than landing on an off-screen input. */
 function focusAskDock() {
   track("overview_tile_click", { tile: "ask" });
   window.setTimeout(() => {
     document
       .querySelector<HTMLInputElement>('[data-tour="explore-ask"] input')
-      ?.focus({ preventScroll: true });
+      ?.focus();
   }, 600);
 }
 

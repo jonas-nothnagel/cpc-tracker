@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { getDocColor, getDocFriendlyName, getDocFullLabel } from "@/lib/utils";
 import type { CategoryBudgetSummary } from "@/lib/coherence-budget";
 import type { CountryConfig } from "@/types";
-import { pillClass, SEGMENT_CLASS } from "./pill";
+import { EYEBROW, pillClass, SEGMENT_CLASS } from "./pill";
 
 type GroupMode = "document" | "sector" | "globe" | "gga" | "hr";
 type AlignFilter =
@@ -15,9 +15,6 @@ type AlignFilter =
   | "contradictions";
 type ViewMode = "coherence" | "finance";
 type ScaleMode = "targets" | "spend";
-
-// House label grammar: plain sentence-case captions, no uppercase-tracked eyebrows.
-const EYEBROW = "text-caption font-medium text-[var(--undp-gray)]";
 
 // Cycle order for the "Show" control: strong + potential misalignment ->
 // potential misalignments only -> strong alignments only.

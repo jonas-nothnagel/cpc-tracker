@@ -1753,7 +1753,7 @@
       "label": "Presupuesto de biodiversidad",
       "onTitle": "Apagar el sombreado de Presupuesto de Biodiversidad. La rueda mantiene la agrupación por biodiversidad.",
       "offTitle": "Cambiar a la vista de Presupuesto de Biodiversidad: agrupa los arcos por categoría de biodiversidad y sombrea cada uno según su proporción del gasto BER etiquetado.",
-      "berNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start, number}-{end, number}. Subconjunto del gasto nacional.",
+      "berNote": "BER (Revisión del Gasto en Biodiversidad), totales de {start}-{end}. Subconjunto del gasto nacional.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% del BER etiquetado)",
       "fallbackAmount": "0 MNT"
     },
@@ -1835,7 +1835,7 @@
       "closeAria": "Cerrar categoría",
       "taggedBerSpend": "Gasto BER etiquetado",
       "shareSuffix": " · {pct}% de proporción",
-      "periodSuffix": " ({start, number}-{end, number})",
+      "periodSuffix": " ({start}-{end})",
       "policyTargets": "Metas de política",
       "policyTargetsShareSuffix": " · {pct}% de proporción",
       "contributingProgrammes": "Programas contribuyentes",
@@ -1895,6 +1895,7 @@
       "statFinanceLead": "{spend} de gasto etiquetado · {funded, number}/{total, number} categorías financiadas",
       "statFinanceScope": "Gasto en biodiversidad revisado, no el presupuesto total del país",
       "answerEyebrow": "Respuesta · Generada por IA",
+      "answerCaveat": "Generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
       "finance": {
         "budgetLabel": "Presupuesto",
         "periodLabel": "BER {start}-{end}",

@@ -21,7 +21,7 @@ const DAY_MS = 24 * 60 * 60_000;
 /** Dwell samples above this are parked tabs, not reading (cap, not drop). */
 const SECTION_DWELL_MAX_MS = 15 * 60_000;
 /** Routes where the coherence dashboard (and its sections) renders. */
-const DASHBOARD_ROUTES = new Set(["/dashboard", "/[country]"]);
+const DASHBOARD_ROUTES = new Set(["/dashboard", "/[country]", "/[country]/explore"]);
 
 export function aggregate(
   events: AnalyticsEvent[],

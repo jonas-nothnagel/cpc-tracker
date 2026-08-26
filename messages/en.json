@@ -1753,7 +1753,7 @@
       "label": "Biodiversity Budget",
       "onTitle": "Turn off the Biodiversity Budget shading. The wheel keeps the biodiversity grouping.",
       "offTitle": "Switch to the Biodiversity Budget view: groups arcs by biodiversity category and shades each by its share of tagged BER spend.",
-      "berNote": "BER (Biodiversity Expenditure Review), {start, number}-{end, number} totals. Subset of national expenditure.",
+      "berNote": "BER (Biodiversity Expenditure Review), {start}-{end} totals. Subset of national expenditure.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} ({pct}% of tagged BER)",
       "fallbackAmount": "0 MNT"
     },
@@ -1835,7 +1835,7 @@
       "closeAria": "Close category",
       "taggedBerSpend": "Tagged BER spend",
       "shareSuffix": " · {pct}% share",
-      "periodSuffix": " ({start, number}-{end, number})",
+      "periodSuffix": " ({start}-{end})",
       "policyTargets": "Policy targets",
       "policyTargetsShareSuffix": " · {pct}% share",
       "contributingProgrammes": "Contributing programmes",
@@ -1895,6 +1895,7 @@
       "statFinanceLead": "{spend} tagged spend · {funded, number}/{total, number} categories funded",
       "statFinanceScope": "Reviewed biodiversity spending, not the country's full budget",
       "answerEyebrow": "Answer · AI-generated",
+      "answerCaveat": "AI-generated. Treat as a prompt to review, not a settled finding.",
       "finance": {
         "budgetLabel": "Budget",
         "periodLabel": "BER {start}-{end}",

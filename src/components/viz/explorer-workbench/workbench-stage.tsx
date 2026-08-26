@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { pillClass, SEGMENT_CLASS } from "./pill";
+import { EYEBROW, pillClass, SEGMENT_CLASS } from "./pill";
 
 type ViewMode = "coherence" | "finance";
 
@@ -103,9 +103,7 @@ export function WorkbenchStage({
               such: a labelled, larger segmented pill. */}
           {showViewSwitch && (
             <div className="flex items-center gap-2.5">
-              <span className="text-caption font-medium text-[var(--undp-gray)]">
-                {viewLabel}
-              </span>
+              <span className={EYEBROW}>{viewLabel}</span>
               <div className={SEGMENT_CLASS} role="group" aria-label={viewLabel}>
                 <button
                   type="button"

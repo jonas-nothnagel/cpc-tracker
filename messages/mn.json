@@ -1753,7 +1753,7 @@
       "label": "Биологийн төрөл зүйлийн төсөв",
       "onTitle": "Биологийн төрөл зүйлийн төсвийн сүүдэрлэлтийг унтраах. Хүрд биологийн төрөл зүйлийн бүлэглэлийг хадгална.",
       "offTitle": "Биологийн төрөл зүйлийн төсвийн харагдац руу шилжих: нумыг биологийн төрөл зүйлийн ангиллаар бүлэглэж, тэмдэглэсэн BER зарлагад эзлэх хувиар тус бүрийг сүүдэрлэнэ.",
-      "berNote": "BER (Биологийн төрөл зүйлийн зарлагын тойм), {start, number}-{end, number} нийт дүн. Үндэсний зарлагын дэд хэсэг.",
+      "berNote": "BER (Биологийн төрөл зүйлийн зарлагын тойм), {start}-{end} нийт дүн. Үндэсний зарлагын дэд хэсэг.",
       "wedgeTooltip": "{label}{hasAmount, select, 1 { · {amount}} other {}} (тэмдэглэсэн BER-н {pct}%)",
       "fallbackAmount": "0 төгрөг"
     },
@@ -1835,7 +1835,7 @@
       "closeAria": "Ангилал хаах",
       "taggedBerSpend": "Тэмдэглэсэн BER зарлага",
       "shareSuffix": " · {pct}% эзлэх хувь",
-      "periodSuffix": " ({start, number}-{end, number})",
+      "periodSuffix": " ({start}-{end})",
       "policyTargets": "Бодлогын зорилтууд",
       "policyTargetsShareSuffix": " · {pct}% эзлэх хувь",
       "contributingProgrammes": "Хувь нэмэр оруулсан хөтөлбөрүүд",
@@ -1895,6 +1895,7 @@
       "statFinanceLead": "{spend} тэмдэглэсэн зарлага · {funded, number}/{total, number} санхүүжсэн ангилал",
       "statFinanceScope": "Хянасан биологийн төрөл зүйлийн зарлага, улсын нийт төсөв биш",
       "answerEyebrow": "Хариулт · Хиймэл оюунаар үүсгэсэн",
+      "answerCaveat": "AI-аар үүсгэсэн. Эцсийн дүгнэлт биш, нягтлах сэрэмж гэж үзнэ үү.",
       "finance": {
         "budgetLabel": "Төсөв",
         "periodLabel": "BER {start}-{end}",

@@ -81,7 +81,12 @@ export function CoherenceDashboard({
   if (!data) {
     return (
       <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#ffffff" }}>
-        <Header subtitle={t("loading.subtitle")} basePath={basePath} />
+        <Header
+          subtitle={t("loading.subtitle")}
+          currentCountryId={country}
+          basePath={basePath}
+          model={selectedModel}
+        />
         <main className="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
           <div className="h-8 w-72 bg-gray-100 rounded animate-pulse mb-3" />
           <div className="h-4 w-96 bg-gray-100 rounded animate-pulse mb-10" />
@@ -122,6 +127,7 @@ export function CoherenceDashboard({
         currentCountryId={country}
         countries={basePath ? undefined : listVisibleCountries().map((c) => ({ id: c.id, name: c.name }))}
         basePath={basePath}
+        model={selectedModel}
       />
 
       <ModelSelector

@@ -7,17 +7,23 @@
  * instead of living only as the last section of the briefing.
  */
 
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { getCountry } from "@/config/countries";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
+import { EXPLORE_SECTION_ID } from "./coherence-briefing/sections/explore";
 import { explorerPropsFromDashboardData, useDashboardData } from "./use-dashboard-data";
 
 export function ExplorePage({ country, basePath }: { country: string; basePath: string }) {
   const t = useTranslations("dashboard");
-  // No model selector on this page, and no search params (shared Header rule).
-  const { data, error } = useDashboardData({ country, model: null });
+  // No model selector on this page, but the briefing's `?model=` is honoured
+  // (the Header carries it onto the Explore link) so the two surfaces never
+  // show different model runs for the same country.
+  const searchParams = useSearchParams();
+  const selectedModel = searchParams.get("model");
+  const { data, error } = useDashboardData({ country, model: selectedModel });
   const countryName =
     getCountry(country)?.name ?? data?.targets[0]?.country ?? t("loading.subtitle");
 
@@ -40,9 +46,17 @@ export function ExplorePage({ country, basePath }: { country: string; basePath: 
 
   return (
     <div className="flex min-h-[100dvh] flex-col bg-white">
-      <Header subtitle={countryName} currentCountryId={country} basePath={basePath} />
-      {/* pb-10 keeps the fixed footprint chip off the rail's bottom edge. */}
-      <main className="flex-1 px-4 pb-10 pt-3 sm:px-6">
+      <Header
+        subtitle={countryName}
+        currentCountryId={country}
+        basePath={basePath}
+        model={selectedModel}
+      />
+      {/* pb-10 keeps the fixed footprint chip off the rail's bottom edge.
+          data-section-id: the usage analytics attribute clicks to the nearest
+          section, so the standalone workbench counts under "explore" like the
+          briefing's finale does. */}
+      <main className="flex-1 px-4 pb-10 pt-3 sm:px-6" data-section-id={EXPLORE_SECTION_ID}>
         {data ? (
           <PolicyCoherenceExplorer
             key={country}

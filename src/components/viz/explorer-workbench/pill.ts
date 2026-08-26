@@ -6,6 +6,9 @@ export function pillClass(active: boolean, activeBg: string, size: "sm" | "md" =
   }`;
 }
 
+/** Caption before a control group: plain sentence case, no tracked uppercase. */
+export const EYEBROW = "text-caption font-medium text-[var(--undp-gray)]";
+
 /** The pill container: a hairline ring around the segments. */
 export const SEGMENT_CLASS =
   "inline-flex items-center gap-0.5 rounded-full border border-line-strong bg-white p-[3px]";

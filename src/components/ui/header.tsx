@@ -17,6 +17,9 @@ interface HeaderProps {
    *  Side pages (e.g. "/prototypes") pass their own so switching country
    *  keeps the user on the same view. */
   switcherPath?: string;
+  /** Per-model run the current page shows (`?model=`), carried onto the
+   *  Explore link so both surfaces read the same outputs. */
+  model?: string | null;
 }
 
 export function Header({
@@ -25,6 +28,7 @@ export function Header({
   countries,
   basePath,
   switcherPath = "/dashboard",
+  model,
 }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -34,11 +38,13 @@ export function Header({
   // Explore has a country-scoped route only, so the item appears wherever a
   // country is known (standalone routes via basePath, the demo dashboard via
   // currentCountryId) and not on country-less pages.
-  const exploreHref = basePath
+  const explorePath = basePath
     ? `${basePath}/explore`
     : currentCountryId
       ? `/${currentCountryId}/explore`
       : null;
+  const exploreHref =
+    explorePath && model ? `${explorePath}?model=${encodeURIComponent(model)}` : explorePath;
   const exploreItem = exploreHref ? [{ href: exploreHref, label: t("nav.explore") }] : [];
   const navItems = basePath
     ? [
