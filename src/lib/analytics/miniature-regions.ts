@@ -313,7 +313,7 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
         frag("Ask the assistant", "Pregunte al asistente", "туслахаас асуух"),
         exact(
           "Ask →", "Preguntar →", "Асуух →",
-          "Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах",
+          "Show an insight", "Mostrar una observación", "Ойлголт харуулах",
           "Show on the wheel", "Mostrar en la rueda", "Хүрд дээр харуулах",
         ),
       ),

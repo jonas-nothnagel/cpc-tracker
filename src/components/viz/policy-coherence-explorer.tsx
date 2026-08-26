@@ -1469,7 +1469,6 @@ function ChatOutput({
   onApplyHook,
   onSelectChatEntity,
   hideInsights = false,
-  insightOnly = false,
 }: {
   chat: ChatStatus;
   currentInsight: Insight | null;
@@ -1477,19 +1476,17 @@ function ChatOutput({
   onApplyHook: () => void;
   onSelectChatEntity: (targetId: string) => void;
   hideInsights?: boolean;
-  /** Render only the insight callout, even while a (dismissed) reply exists.
-   *  The workbench rail's summary uses this so a closed answer never
-   *  resurfaces under the rankings. */
-  insightOnly?: boolean;
 }) {
   const t = useTranslations("explorer.chat");
   const ti = useTranslations("explorer.insights");
   const showInsight =
     !hideInsights &&
     !!currentInsight &&
-    (insightOnly || (!chat.reply && !chat.loading && !chat.error));
-  const showReply = !insightOnly && !!chat.reply && !chat.loading;
-  const showError = !insightOnly && !!chat.error && !chat.loading;
+    !chat.reply &&
+    !chat.loading &&
+    !chat.error;
+  const showReply = !!chat.reply && !chat.loading;
+  const showError = !!chat.error && !chat.loading;
   const typedReply = useTypedBody(showReply ? chat.reply ?? "" : "");
 
   // Prefer the localized insight message (es/mn: explorer.insights.<pattern>.*)
@@ -1690,7 +1687,14 @@ function ChatBar({
               disabled={chat.loading}
               className="min-w-0 flex-1 bg-transparent text-data text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none disabled:opacity-50"
               aria-label={t("askAriaProminent")}
+              // The question-storage disclosure stays attached to the input
+              // (tooltip + screen readers) now that the rail carries no caveat line.
+              title={t("storageNotice")}
+              aria-describedby="explore-ask-notice"
             />
+            <span id="explore-ask-notice" className="sr-only">
+              {t("storageNotice")}
+            </span>
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
@@ -2205,8 +2209,6 @@ type GlanceSummaryProps = Pick<
   | "onSetFilter"
   | "countryConfig"
 > & {
-  /** Single-column rankings for a narrow host (the workbench rail). */
-  dense?: boolean;
   /** Suppress the "At a glance" eyebrow when the host already carries it. */
   showHeading?: boolean;
 };
@@ -2224,7 +2226,6 @@ function GlanceSummary({
   onSelectPair,
   onSetFilter,
   countryConfig,
-  dense = false,
   showHeading = true,
 }: GlanceSummaryProps) {
   const t = useTranslations("explorer.empty");
@@ -2334,7 +2335,7 @@ function GlanceSummary({
     </div>
 
     {statView === "overview" ? (
-      <div className={dense ? "grid grid-cols-1 gap-5" : "grid grid-cols-1 sm:grid-cols-2 gap-5"}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <Section title={t("strongestAlignments")}>
           {connRanks.length > 0 ? (
             <ul className="space-y-0.5">
@@ -3465,6 +3466,9 @@ export function PolicyCoherenceExplorer({
   // ~10 detectors the user has to rotate that many times before seeing a
   // repeat, which is fine. Session-scoped, resets on page reload.
   const [insightIdx, setInsightIdx] = useState(0);
+  // True between "Show an insight" and the next interaction that replaces it
+  // (a question, a selection, a view/grouping change, or closing the rail).
+  const [insightSurfaced, setInsightSurfaced] = useState(false);
 
   // Clear the chat reply when the user manually navigates away from it (clicks
   // a target / arc / empty area, closes a panel). Also resets history so the
@@ -3486,6 +3490,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory((prev) => (prev.length > 0 ? [] : prev));
+    setInsightSurfaced(false);
   }, []);
 
   // Returns the panel to the country's load-time defaults: clears any
@@ -3541,6 +3546,7 @@ export function PolicyCoherenceExplorer({
     setPreviewGroupId(null);
     setSelectedId((prev) => (prev === id ? null : id));
     setAnswersCollapsed(false);
+    setInsightSurfaced(false);
     // Chat is NOT cleared on selection: in the workbench the chat is a
     // persistent rail header, so its reply must survive node clicks. (In the
     // standalone "dashboard" variant the chat lives in the idle EmptyPanel,
@@ -3650,6 +3656,7 @@ export function PolicyCoherenceExplorer({
     async (query: string) => {
       setPreviewGroupId(null);
       setAnswersCollapsed(false);
+      setInsightSurfaced(false);
       setChat({
         loading: true,
         reply: null,
@@ -3909,6 +3916,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory([]);
+    setInsightSurfaced(true);
     setAnswersCollapsed(false);
   }, [insights.length]);
 
@@ -5219,6 +5227,7 @@ export function PolicyCoherenceExplorer({
       hasReply: !!chat.reply,
       hasError: !!chat.error,
       loading: chat.loading,
+      hasInsight: insightSurfaced && currentInsight != null,
       dismissed: answersCollapsed,
     });
 
@@ -5231,6 +5240,7 @@ export function PolicyCoherenceExplorer({
       setComparedPair(null);
       setFocalGroupId(null);
       setPreviewGroupId(null);
+      setInsightSurfaced(false);
       setAnswersCollapsed(true);
     };
 
@@ -5264,38 +5274,30 @@ export function PolicyCoherenceExplorer({
       railMode === "summary"
         ? t("empty.atAGlance")
         : railMode === "answer"
-          ? t("workbench.answerEyebrow")
+          ? chat.reply || chat.error || chat.loading
+            ? t("workbench.answerEyebrow")
+            : t("workbench.insightEyebrow")
           : selectedNode
             ? t("workbench.detailTargetEyebrow")
             : t("workbench.detailGroupEyebrow");
 
-    // Rail body. Summary: the corpus at a glance plus the rotating insight
-    // (AI-generated, labelled). Answer / detail: the reply (or the thinking
-    // line) and, for a selection, the detail panel beneath it, so a live reply
-    // stacks above the detail as it did in the overlay.
+    // Rail body. Summary: the corpus at a glance, nothing else (an insight
+    // appears only after "Show an insight", as an answer). Answer / detail:
+    // the reply, the surfaced insight or the thinking line and, for a
+    // selection, the detail panel beneath it, so a live reply stacks above
+    // the detail as it did in the overlay.
     const railBody =
       railMode === "summary" ? (
-        <>
-          <GlanceSummary
-            targets={visibleTargets}
-            alignment={filtered}
-            filter={filter}
-            onSelectTarget={handleNodeClick}
-            onSelectPair={handleSelectPair}
-            onSetFilter={setFilter}
-            countryConfig={countryConfig}
-            dense
-            showHeading={false}
-          />
-          <ChatOutput
-            chat={chat}
-            currentInsight={currentInsight}
-            canShowMe={canShowMe}
-            onApplyHook={onApplyHook}
-            onSelectChatEntity={handleChatEntityClick}
-            insightOnly
-          />
-        </>
+        <GlanceSummary
+          targets={visibleTargets}
+          alignment={filtered}
+          filter={filter}
+          onSelectTarget={handleNodeClick}
+          onSelectPair={handleSelectPair}
+          onSetFilter={setFilter}
+          countryConfig={countryConfig}
+          showHeading={false}
+        />
       ) : (
         <>
           {chat.loading && (
@@ -5317,22 +5319,15 @@ export function PolicyCoherenceExplorer({
 
     // The ask bar lives in the rail's pinned footer: example questions while
     // the summary is on, the server follow-ups otherwise (ChatBar renders
-    // those itself). The AI-generated caveat and the question-storage notice
-    // stay on the face, not behind a click.
-    const railFooter = (
-      <>
-        {workbenchChat(
-          railMode !== "summary",
-          true,
-          false,
-          true,
-          railMode === "summary" ? dockQuestions : [],
-        )}
-        <p className="mt-2 flex items-start gap-2 text-caption leading-snug text-[var(--undp-gray)]">
-          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--undp-yellow)]" />
-          {t("workbench.footerCaveat")}
-        </p>
-      </>
+    // those itself). "Show an insight" stays available outside the detail
+    // mode. The AI-generated label lives on the rail eyebrows; the
+    // question-storage disclosure sits on the input itself.
+    const railFooter = workbenchChat(
+      railMode === "detail",
+      true,
+      false,
+      true,
+      railMode === "summary" ? dockQuestions : [],
     );
 
     return (

@@ -160,7 +160,7 @@ describe("locale lock against messages/*.json", () => {
     ["explorer.chat.askAriaProminent", (m) => m.explorer.chat.askAriaProminent,
       ["Ask the assistant", "Pregunte al asistente", "туслахаас асуух"]],
     ["explorer.chat.surpriseMe", (m) => m.explorer.chat.surpriseMe,
-      ["Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах"]],
+      ["Show an insight", "Mostrar una observación", "Ойлголт харуулах"]],
     ["explorer.workbench.answersHeading", (m) => m.explorer.workbench.answersHeading,
       ["Answers", "Respuestas", "Хариултууд"]],
     ["explorer.workbench.backToSummary", (m) => m.explorer.workbench.backToSummary,

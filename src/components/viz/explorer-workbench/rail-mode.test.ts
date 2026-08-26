@@ -6,6 +6,7 @@ const idle: RailSignals = {
   hasReply: false,
   hasError: false,
   loading: false,
+  hasInsight: false,
   dismissed: false,
 };
 
@@ -32,6 +33,12 @@ describe("resolveRailMode", () => {
     expect(resolveRailMode({ ...idle, hasSelection: true })).toBe("detail");
     expect(resolveRailMode({ ...idle, hasSelection: true, hasReply: true })).toBe("detail");
     expect(resolveRailMode({ ...idle, hasSelection: true, loading: true })).toBe("detail");
+  });
+
+  it("shows a surfaced insight as an answer until it is dismissed", () => {
+    expect(resolveRailMode({ ...idle, hasInsight: true })).toBe("answer");
+    expect(resolveRailMode({ ...idle, hasInsight: true, dismissed: true })).toBe("summary");
+    expect(resolveRailMode({ ...idle, hasInsight: true, hasSelection: true })).toBe("detail");
   });
 
   it("keeps the detail even after an answer was dismissed", () => {

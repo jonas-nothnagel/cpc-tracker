@@ -1867,7 +1867,7 @@
       "thinking": "Pensando…",
       "insight": "Observación",
       "showMe": "Mostrar en la rueda",
-      "surpriseMe": "Mostrar otra observación",
+      "surpriseMe": "Mostrar una observación",
       "openEntityTitle": "Abrir {id}",
       "requestFailed": "Solicitud fallida ({status, number})",
       "genericError": "No se pudo completar la solicitud. Inténtelo de nuevo.",
@@ -1907,10 +1907,10 @@
         "helperNote": "La profundidad de cada cuña muestra la parte del gasto en biodiversidad etiquetado de cada categoría, leída frente a dónde se sitúan las posibles desalineaciones.",
         "scopeCaveat": "Parte del gasto en biodiversidad revisado, no del presupuesto total del país."
       },
-      "footerCaveat": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo. Las preguntas se guardan de forma anónima para mejorar la herramienta.",
       "backToSummary": "Volver al resumen",
       "detailTargetEyebrow": "Meta seleccionada",
-      "detailGroupEyebrow": "Grupo seleccionado"
+      "detailGroupEyebrow": "Grupo seleccionado",
+      "insightEyebrow": "Observación · Generada por IA"
     },
     "questions": {
       "coherence": {

@@ -1867,7 +1867,7 @@
       "thinking": "Thinking…",
       "insight": "Insight",
       "showMe": "Show on the wheel",
-      "surpriseMe": "Show another insight",
+      "surpriseMe": "Show an insight",
       "openEntityTitle": "Open {id}",
       "requestFailed": "Request failed ({status, number})",
       "genericError": "The request could not be completed. Please try again.",
@@ -1907,10 +1907,10 @@
         "helperNote": "Wedge depth shows each category's share of tagged biodiversity spend, read against where the potential misalignments sit.",
         "scopeCaveat": "Share of reviewed biodiversity spending, not the country's full budget."
       },
-      "footerCaveat": "AI-generated analysis. Treat as a prompt to review, not a settled finding. Questions are stored anonymously to improve the tool.",
       "backToSummary": "Back to summary",
       "detailTargetEyebrow": "Selected target",
-      "detailGroupEyebrow": "Selected group"
+      "detailGroupEyebrow": "Selected group",
+      "insightEyebrow": "Insight · AI-generated"
     },
     "questions": {
       "coherence": {

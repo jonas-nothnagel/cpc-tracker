@@ -3,7 +3,8 @@
  *
  * - `summary`: the corpus at a glance (stat tiles, strongest alignments, most
  *   conflicted targets, the rotating insight). The idle state.
- * - `answer`: a chat reply, an error, or a question still in flight.
+ * - `answer`: a chat reply, an error, a question still in flight, or an
+ *   insight the user surfaced with "Show an insight".
  * - `detail`: a selected target or category; a live reply still stacks above
  *   it, matching the pre-rail "answers + detail" pairing.
  *
@@ -21,11 +22,15 @@ export interface RailSignals {
   hasReply: boolean;
   hasError: boolean;
   loading: boolean;
+  /** The user asked for an insight and has not dismissed it. */
+  hasInsight: boolean;
   dismissed: boolean;
 }
 
 export function resolveRailMode(s: RailSignals): RailMode {
   if (s.hasSelection) return "detail";
-  if (!s.dismissed && (s.hasReply || s.hasError || s.loading)) return "answer";
+  if (!s.dismissed && (s.hasReply || s.hasError || s.loading || s.hasInsight)) {
+    return "answer";
+  }
   return "summary";
 }
