@@ -45,9 +45,31 @@ describe("ambientRibbonInk (flagged mode)", () => {
   });
 });
 
-describe("ambientRibbonInk (both modes)", () => {
+describe("ambientRibbonInk (focus modes: a hovered legend row or a focal arc)", () => {
+  it("keeps a small focused web prominent", () => {
+    expect(ambientRibbonInk(20, "focus")).toEqual({ opacity: 0.55, strokeWidth: 1.2 });
+    expect(ambientRibbonInk(20, "focusFlagged")).toEqual({ opacity: 0.7, strokeWidth: 1.8 });
+  });
+
+  it("thins a document's hundreds of edges instead of drawing them all at full ink", () => {
+    const ndc = ambientRibbonInk(600, "focus");
+    expect(ndc.opacity).toBeLessThan(0.3);
+    expect(ndc.strokeWidth).toBe(1);
+    expect(ambientRibbonInk(1200, "focusFlagged")).toEqual({ opacity: 0.1, strokeWidth: 1 });
+  });
+
+  it("gives dashed red more presence than solid green at the same count", () => {
+    for (const n of [0, 100, 400, 900]) {
+      expect(ambientRibbonInk(n, "focusFlagged").opacity).toBeGreaterThan(
+        ambientRibbonInk(n, "focus").opacity,
+      );
+    }
+  });
+});
+
+describe("ambientRibbonInk (all modes)", () => {
   it("never gets darker as the edge count grows", () => {
-    for (const mode of ["default", "flagged"] as const) {
+    for (const mode of ["default", "flagged", "focus", "focusFlagged"] as const) {
       let prev = ambientRibbonInk(0, mode);
       for (let n = 1; n <= 1500; n += 7) {
         const cur = ambientRibbonInk(n, mode);

@@ -109,13 +109,20 @@ export function ControlsStrip({
     onFilter(FILTER_CYCLE[(i + 1) % FILTER_CYCLE.length] ?? "high_contra");
   };
 
-  const groupOptions = [
-    ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
-    ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
-    ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
-    ...(hasGga ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")]] : []),
-    ...(hasHr ? [["hr", t("controls.groupHr"), t("controls.groupHrTitle")]] : []),
-  ] as [GroupMode, string, string][];
+  const financeMode = view === "finance" && !!budgetSummary;
+  // Finance: tagged spend exists for the GLOBE (biodiversity) lens only, so
+  // the other groupings are not offered there.
+  const groupOptions = (
+    financeMode
+      ? [["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")]]
+      : [
+          ["document", t("controls.groupDocuments"), t("controls.groupDocumentsTitle")],
+          ["globe", t("controls.groupGlobe"), t("controls.groupGlobeTitle")],
+          ["sector", t("controls.groupSectors"), t("controls.groupSectorsTitle")],
+          ...(hasGga ? [["gga", t("controls.groupGga"), t("controls.groupGgaTitle")]] : []),
+          ...(hasHr ? [["hr", t("controls.groupHr"), t("controls.groupHrTitle")]] : []),
+        ]
+  ) as [GroupMode, string, string][];
 
   const legendHeading = isDocGroup
     ? t("workbench.documentsLabel")
@@ -160,7 +167,7 @@ export function ControlsStrip({
 
       {/* Contextual: Coherence cycles the alignment filter; Finance shows the
           period and the GLOBE-only arc-scale control. */}
-      {view === "coherence" || !budgetSummary ? (
+      {!financeMode ? (
         <div className="flex flex-wrap items-center gap-2.5">
           <span className={EYEBROW}>{t("workbench.showLabel")}</span>
           <button type="button" onClick={cycleFilter} className={OUTLINE_PILL}>

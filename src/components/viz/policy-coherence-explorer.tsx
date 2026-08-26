@@ -3071,11 +3071,6 @@ export function PolicyCoherenceExplorer({
   // user surfaces an insight, so output is never hidden behind the ask dock.
   const [answersCollapsed, setAnswersCollapsed] = useState(true);
 
-  // "Share this view" transient confirmation ("Link copied ✓"). Timer is held
-  // in a ref so a rapid re-click resets the countdown cleanly.
-  const [copied, setCopied] = useState(false);
-  const copyTimer = useRef<number | null>(null);
-
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
   // wheel and the panel shows target detail; closing the target falls back to
@@ -3509,28 +3504,6 @@ export function PolicyCoherenceExplorer({
     setAnswersCollapsed(true);
   }, [countryConfig, clearChat]);
 
-  // "Share this view" — copies the current URL and flips the button to a
-  // confirmation for ~1.8s. A rapid re-click restarts the timer cleanly.
-  const share = useCallback(() => {
-    if (copyTimer.current) window.clearTimeout(copyTimer.current);
-    try {
-      // .catch as well as try/catch: writeText rejects asynchronously when the
-      // document lacks focus or clipboard permission, which try/catch misses
-      // and which would surface as an unhandled rejection.
-      void navigator.clipboard?.writeText(window.location.href).catch(() => {});
-    } catch {
-      /* clipboard may be unavailable (insecure context); copy is best-effort */
-    }
-    setCopied(true);
-    copyTimer.current = window.setTimeout(() => setCopied(false), 1800);
-  }, []);
-  useEffect(
-    () => () => {
-      if (copyTimer.current) window.clearTimeout(copyTimer.current);
-    },
-    [],
-  );
-
   // Legend hover-preview setter. Suppressed while an answer or a detail panel
   // is open so the answer's own wheel focus is not fought by an idle hover.
   const handlePreviewGroup = useCallback(
@@ -3647,6 +3620,24 @@ export function PolicyCoherenceExplorer({
     for (const n of nodes) if (n.groupId === effectiveFocalGroupId) ids.add(n.id);
     return ids;
   }, [nodes, effectiveFocalGroupId]);
+
+  // Edges that survive a group focus, counted so their ink ramps with their
+  // own number (a document such as an NDC can still touch hundreds of pairs).
+  const focusEdgeCount = useMemo(() => {
+    if (!focalGroupTargetIds) return 0;
+    let n = 0;
+    for (const c of ambientConns) {
+      if (focalGroupTargetIds.has(c.targetAId) || focalGroupTargetIds.has(c.targetBId)) n++;
+    }
+    return n;
+  }, [ambientConns, focalGroupTargetIds]);
+  const focusInk = useMemo(
+    () => ({
+      plain: ambientRibbonInk(focusEdgeCount, "focus"),
+      flagged: ambientRibbonInk(focusEdgeCount, "focusFlagged"),
+    }),
+    [focusEdgeCount],
+  );
 
   const handleAsk = useCallback(
     async (query: string) => {
@@ -4331,7 +4322,7 @@ export function PolicyCoherenceExplorer({
   const wheelSvg = (
             <svg
               viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
-              className={isWorkbench ? "h-full w-full" : "w-full"}
+              className="w-full"
               preserveAspectRatio="xMidYMid meet"
               style={{
                 maxHeight: isWorkbench
@@ -4579,20 +4570,20 @@ export function PolicyCoherenceExplorer({
                   }
                   const key = `amb-${[conn.targetAId, conn.targetBId].sort().join("__")}`;
                   const contra = isContradiction(conn.alignment);
-                  // In group focus mode, give the surviving edges a bit more
-                  // presence — the noise is gone so they can carry weight.
+                  // In group focus mode the noise is gone, so the surviving
+                  // edges start with more presence; they still thin with
+                  // their own count instead of staying at full ink.
+                  const ink = isGroupFocus
+                    ? contra || conn.alignment === "high"
+                      ? focusInk.flagged
+                      : focusInk.plain
+                    : ambientInk;
                   const opacity = scanning
                     ? 0.05
-                    : isGroupFocus
-                      ? contra
-                        ? 0.7
-                        : 0.55
-                      : ambientInk.opacity;
-                  const strokeWidth = isGroupFocus
-                    ? contra || conn.alignment === "high"
-                      ? 1.8
-                      : 1.2
-                    : ambientInk.strokeWidth;
+                    : isGroupFocus && !contra
+                      ? focusInk.plain.opacity
+                      : ink.opacity;
+                  const strokeWidth = ink.strokeWidth;
                   return (
                     <path
                       key={key}
@@ -5332,11 +5323,8 @@ export function PolicyCoherenceExplorer({
         statLead={statLead}
         statFlagged={statFlagged}
         statTail={statTail}
-        onShare={share}
-        shareLabel={copied ? t("workbench.shareCopied") : t("workbench.share")}
-        shareCopied={copied}
-        countryName={countryName}
         showViewSwitch={!!budgetSummary}
+        viewLabel={t("workbench.viewLabel")}
         view={view}
         onViewChange={handleWorkbenchViewChange}
         viewCoherenceLabel={t("workbench.viewCoherence")}

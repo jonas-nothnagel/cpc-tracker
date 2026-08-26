@@ -39,10 +39,10 @@ export function ExplorePage({ country, basePath }: { country: string; basePath: 
   }
 
   return (
-    <div className="flex h-[100dvh] flex-col bg-white">
+    <div className="flex min-h-[100dvh] flex-col bg-white">
       <Header subtitle={countryName} currentCountryId={country} basePath={basePath} />
-      {/* pb-10 keeps the fixed footprint chip off the rail's caveat line. */}
-      <main className="min-h-0 flex-1 px-4 pb-10 pt-3 sm:px-6">
+      {/* pb-10 keeps the fixed footprint chip off the rail's bottom edge. */}
+      <main className="flex-1 px-4 pb-10 pt-3 sm:px-6">
         {data ? (
           <PolicyCoherenceExplorer
             key={country}
@@ -50,7 +50,7 @@ export function ExplorePage({ country, basePath }: { country: string; basePath: 
             variant="workbench"
           />
         ) : (
-          <div className="flex h-full items-center justify-center" aria-busy="true">
+          <div className="flex min-h-[70vh] items-center justify-center" aria-busy="true">
             <div className="h-[420px] w-[420px] max-w-full rounded-full border border-gray-100 bg-gray-50 animate-pulse" />
           </div>
         )}

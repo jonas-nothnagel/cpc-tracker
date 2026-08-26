@@ -10,35 +10,34 @@ type ViewMode = "coherence" | "finance";
  *
  * Three grid rows fill the height the host gives it (the briefing finale or
  * the standalone explore page):
- *   1. Top bar        — title, live stat line, answers recall / share /
- *                       country / view switch.
+ *   1. Top bar        — title, live stat line, answers recall and the
+ *                       Coherence / Finance view switch.
  *   2. Controls strip — group-by, the alignment filter, the legend.
- *   3. Stage          — the wheel (left, full remaining height) and the
- *                       persistent rail (right): the corpus summary and the
- *                       ask bar at rest, the answer or the selected detail
- *                       otherwise. Below `lg` the rail stacks under the wheel
- *                       as a definite 2/5 track with its own scroll, so there
- *                       is always exactly one rail (and one ask input) in the
- *                       DOM.
+ *   3. Stage          — the wheel (left, about two thirds of the width,
+ *                       sized by that width) and the persistent rail (right):
+ *                       the corpus summary and the ask bar at rest, the answer
+ *                       or the selected detail otherwise. The rail is absolutely
+ *                       positioned inside its cell so the wheel alone sets the
+ *                       row height and the rail scrolls within it. Below `lg`
+ *                       the rail stacks under the wheel at a fixed height, so
+ *                       there is always exactly one rail (and one ask input)
+ *                       in the DOM.
  *
- * `minmax(0,1fr)` on the stage row lets it shrink below its content so the
- * wheel scales down on short viewports. Purely presentational: every
- * interactive piece is built by the parent and passed in; the top-bar controls
- * are the one exception, rendered here so the one-screen chrome stays in one
- * place.
+ * Height is content-driven (the page scrolls on short viewports), the way the
+ * standalone explorer always sized: a bigger wheel beats a one-screen fit.
+ * Purely presentational: every interactive piece is built by the parent and
+ * passed in; the top-bar controls are the one exception, rendered here so the
+ * chrome stays in one place.
  */
 export function WorkbenchStage({
   title,
   statLead,
   statFlagged,
   statTail,
-  onShare,
-  shareLabel,
-  shareCopied,
-  countryName,
   showViewSwitch,
   view,
   onViewChange,
+  viewLabel,
   viewCoherenceLabel,
   viewFinanceLabel,
   controls,
@@ -54,11 +53,9 @@ export function WorkbenchStage({
   statLead: string;
   statFlagged: string;
   statTail: string;
-  onShare: () => void;
-  shareLabel: string;
-  shareCopied: boolean;
-  countryName: string;
   showViewSwitch: boolean;
+  /** Eyebrow before the view switch ("View"). */
+  viewLabel: string;
   view: ViewMode;
   onViewChange: (view: ViewMode) => void;
   viewCoherenceLabel: string;
@@ -73,7 +70,7 @@ export function WorkbenchStage({
   modal?: ReactNode;
 }) {
   return (
-    <div className="grid h-full w-full min-w-0 grid-cols-1 grid-rows-[auto_auto_minmax(0,1fr)] overflow-hidden bg-white">
+    <div className="grid w-full min-w-0 grid-cols-1 bg-white">
       {/* ── Row 1 · Top bar ─────────────────────────────────────────── */}
       <div className="flex items-center justify-between gap-4 border-b border-line bg-white px-5 py-2.5 sm:px-6">
         <div className="min-w-0 flex-1">
@@ -102,38 +99,31 @@ export function WorkbenchStage({
               {answersLabel}
             </button>
           )}
-          <button
-            type="button"
-            onClick={onShare}
-            className={`hidden items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-caption transition-colors sm:inline-flex ${
-              shareCopied
-                ? "border-[var(--undp-blue)] text-[var(--undp-blue)]"
-                : "border-line-strong text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-            }`}
-          >
-            {shareLabel}
-          </button>
-          <span className="hidden items-center gap-1.5 rounded-full border border-line-strong bg-white px-3.5 py-1.5 text-[0.78rem] font-medium text-[var(--undp-black)] md:inline-flex">
-            {countryName}
-          </span>
+          {/* The view switch is the top bar's one control, so it reads as
+              such: a labelled, larger segmented pill. */}
           {showViewSwitch && (
-            <div className={SEGMENT_CLASS}>
-              <button
-                type="button"
-                onClick={() => onViewChange("coherence")}
-                aria-pressed={view === "coherence"}
-                className={pillClass(view === "coherence", "bg-[var(--undp-black)]")}
-              >
-                {viewCoherenceLabel}
-              </button>
-              <button
-                type="button"
-                onClick={() => onViewChange("finance")}
-                aria-pressed={view === "finance"}
-                className={pillClass(view === "finance", "bg-[#0e7490]")}
-              >
-                {viewFinanceLabel}
-              </button>
+            <div className="flex items-center gap-2.5">
+              <span className="text-caption font-medium text-[var(--undp-gray)]">
+                {viewLabel}
+              </span>
+              <div className={SEGMENT_CLASS} role="group" aria-label={viewLabel}>
+                <button
+                  type="button"
+                  onClick={() => onViewChange("coherence")}
+                  aria-pressed={view === "coherence"}
+                  className={pillClass(view === "coherence", "bg-[var(--undp-black)]", "md")}
+                >
+                  {viewCoherenceLabel}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onViewChange("finance")}
+                  aria-pressed={view === "finance"}
+                  className={pillClass(view === "finance", "bg-[#0e7490]", "md")}
+                >
+                  {viewFinanceLabel}
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -143,11 +133,15 @@ export function WorkbenchStage({
       {controls}
 
       {/* ── Row 3 · Stage (wheel + rail) ────────────────────────────── */}
-      <div className="grid min-h-0 min-w-0 grid-cols-1 grid-rows-[minmax(0,3fr)_minmax(0,2fr)] gap-3.5 px-4 py-2 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:grid-rows-1 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="relative flex min-h-0 min-w-0 items-center justify-center">
-          {wheel}
+      <div className="grid min-w-0 grid-cols-1 gap-4 px-4 py-3 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,32%)] xl:grid-cols-[minmax(0,1fr)_minmax(380px,34%)]">
+        <div className="flex min-w-0 items-center justify-center">{wheel}</div>
+        {/* The rail is absolute inside its cell: the cell stretches to the
+            wheel's row height without adding its own, so the rail scrolls
+            within the wheel's height on lg+. Stacked below lg it gets a fixed
+            height instead. */}
+        <div className="relative h-[520px] min-w-0 lg:h-auto lg:min-h-[560px]">
+          <div className="absolute inset-0">{rail}</div>
         </div>
-        <div className="min-h-0 min-w-0">{rail}</div>
       </div>
 
       {modal}

@@ -1894,8 +1894,6 @@
       "statContext": "{country}, {targets, number} targets across {docs, number} documents",
       "statFinanceLead": "{spend} tagged spend · {funded, number}/{total, number} categories funded",
       "statFinanceScope": "Reviewed biodiversity spending, not the country's full budget",
-      "share": "Share this view",
-      "shareCopied": "Link copied ✓",
       "answerEyebrow": "Answer · AI-generated",
       "finance": {
         "budgetLabel": "Budget",
@@ -1910,7 +1908,8 @@
       "backToSummary": "Back to summary",
       "detailTargetEyebrow": "Selected target",
       "detailGroupEyebrow": "Selected group",
-      "insightEyebrow": "Insight · AI-generated"
+      "insightEyebrow": "Insight · AI-generated",
+      "viewLabel": "View"
     },
     "questions": {
       "coherence": {

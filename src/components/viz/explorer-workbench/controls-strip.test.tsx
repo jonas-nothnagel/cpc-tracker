@@ -103,6 +103,14 @@ describe("ControlsStrip", () => {
     expect(onHide).toHaveBeenCalledWith(true);
   });
 
+  it("in Finance offers only the Biodiversity grouping", () => {
+    renderStrip({ view: "finance", budgetSummary: BUDGET, groupMode: "globe", hasGga: true, hasHr: true });
+    expect(screen.getByRole("button", { name: L.groupGlobe }).getAttribute("aria-pressed")).toBe("true");
+    expect(screen.queryByRole("button", { name: L.groupDocuments })).toBeNull();
+    expect(screen.queryByRole("button", { name: L.groupSectors })).toBeNull();
+    expect(screen.queryByRole("button", { name: L.groupHr })).toBeNull();
+  });
+
   it("in Finance shows the period and, on the GLOBE lens only, the arc-scale control", () => {
     renderStrip({ view: "finance", budgetSummary: BUDGET, groupMode: "document" });
     expect(screen.getByText(/2020/)).toBeTruthy();

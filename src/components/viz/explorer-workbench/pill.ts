@@ -1,6 +1,7 @@
 /** Segmented-control pill grammar shared by the workbench top bar and its controls strip. */
-export function pillClass(active: boolean, activeBg: string): string {
-  return `cursor-pointer whitespace-nowrap rounded-full px-3.5 py-1.5 text-data font-medium transition-colors ${
+export function pillClass(active: boolean, activeBg: string, size: "sm" | "md" = "sm"): string {
+  const pad = size === "md" ? "px-4 py-2 text-body" : "px-3.5 py-1.5 text-data";
+  return `cursor-pointer whitespace-nowrap rounded-full ${pad} font-medium transition-colors ${
     active ? `${activeBg} text-white` : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
   }`;
 }
