@@ -3613,10 +3613,6 @@ export function PolicyCoherenceExplorer({
     resetView();
   }, [resetView]);
 
-  const closeCategory = useCallback(() => {
-    resetView();
-  }, [resetView]);
-
   /**
    * Open the pair-compare view directly. Mirrors the chat's select_pair
    * action so a click in the CategoryPanel's pair list jumps straight to
