@@ -5,29 +5,30 @@
  *
  * One slim request per country (`/api/dashboard?slice=wheel`: target ids and
  * documents, drawable pairs, the country config), cached in memory for the
- * life of the page so switching back to a country is instant. Once the first
- * wheel is on screen the remaining pilots are fetched during idle time, so
- * every later pill click is a cache hit; the prefetch is skipped when the
- * browser signals a data-saver preference.
+ * life of the mounted landing so switching back to a country is instant. Once
+ * the first wheel is on screen the remaining pilots are fetched during idle
+ * time, so every later pill click is a cache hit; the prefetch is skipped when
+ * the browser signals a data-saver preference.
  *
  * The hook derives `data` from the cache for the *currently* selected country
  * only: the moment the selection changes, the previous country's wheel is
  * gone and the caller shows its loading state, instead of leaving the old
- * wheel on screen until the new payload lands.
+ * wheel on screen until the new payload lands. A country whose last attempt
+ * failed is retried the next time it is selected, so a transient error (a
+ * container restart, a brief offline moment during the idle prefetch) does
+ * not stick for the life of the page.
+ *
+ * The locale is fixed for a mounted landing (a language switch navigates to a
+ * new `[locale]` segment and remounts), so the cache is keyed by country only.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type {
-  CountryConfig,
-  ThematicClassification,
-  WheelAlignment,
-  WheelTarget,
-} from "@/types";
+import type { CountryConfig, WheelAlignment, WheelTarget } from "@/types";
+import { saveDataRequested } from "./save-data";
 
 export interface WheelPreviewData {
   targets: WheelTarget[];
   alignments: WheelAlignment[];
-  classifications: ThematicClassification[];
   countryConfig: CountryConfig | null;
 }
 
@@ -49,7 +50,6 @@ async function loadSlice(country: string, locale: string): Promise<CacheEntry> {
       data: {
         targets: (d.targets ?? []) as WheelTarget[],
         alignments: (d.alignment ?? []) as WheelAlignment[],
-        classifications: (d.classifications ?? []) as ThematicClassification[],
         countryConfig: (d.countryConfig ?? null) as CountryConfig | null,
       },
     };
@@ -74,65 +74,73 @@ function scheduleIdle(cb: () => void): () => void {
   return () => clearTimeout(id);
 }
 
-function saveDataRequested(): boolean {
-  const conn = (navigator as Navigator & { connection?: { saveData?: boolean } })
-    .connection;
-  return conn?.saveData === true;
-}
-
 export function useWheelPreview({
   countries,
   selected,
   locale,
   prefetch = true,
 }: {
-  /** Every country the pills can select; prefetched after the first load. */
+  /** Every country the pills can select; prefetched after the first load.
+   *  Callers keep the array identity stable (memoised) between renders. */
   countries: string[];
   selected: string | null;
   locale: string;
   prefetch?: boolean;
 }): { data: WheelPreviewData | null; failed: boolean } {
   const [cache, setCache] = useState<ReadonlyMap<string, CacheEntry>>(() => new Map());
+  // Mirror of `cache` for effects and callbacks, so they can read the latest
+  // entries without re-running on every insert. Written only via `commit`.
+  const cacheRef = useRef(cache);
   // Requests in flight; only touched from effects and callbacks.
   const inflight = useRef(new Set<string>());
 
-  const keyFor = useCallback((country: string) => `${locale}:${country}`, [locale]);
+  const commit = useCallback((mutate: (next: Map<string, CacheEntry>) => void) => {
+    const next = new Map(cacheRef.current);
+    mutate(next);
+    cacheRef.current = next;
+    setCache(next);
+  }, []);
 
   const load = useCallback(
     async (country: string) => {
-      const key = keyFor(country);
-      if (inflight.current.has(key)) return;
-      inflight.current.add(key);
+      if (inflight.current.has(country)) return;
+      inflight.current.add(country);
       const entry = await loadSlice(country, locale);
-      inflight.current.delete(key);
-      setCache((prev) => (prev.has(key) ? prev : new Map(prev).set(key, entry)));
+      inflight.current.delete(country);
+      commit((next) => {
+        next.set(country, entry);
+      });
     },
-    [keyFor, locale],
+    [locale, commit],
   );
 
   useEffect(() => {
-    // `load` only sets state after its fetch resolves, never synchronously in
-    // the effect; the lint rule cannot see past the await.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (selected && !cache.has(keyFor(selected))) void load(selected);
-  }, [selected, cache, keyFor, load]);
+    if (!selected) return;
+    const entry = cacheRef.current.get(selected);
+    if (entry?.kind === "ok") return;
+    if (entry?.kind === "failed") {
+      // Retry on re-selection: clear the stale failure so the caller shows the
+      // loading state while the new attempt runs.
+      commit((next) => {
+        next.delete(selected);
+      });
+    }
+    void load(selected);
+  }, [selected, load, commit]);
 
-  const selectedEntry = selected ? cache.get(keyFor(selected)) : undefined;
+  const selectedEntry = selected ? cache.get(selected) : undefined;
   const selectedReady = selectedEntry?.kind === "ok";
 
-  // A stable key so a freshly mapped `countries` array does not restart the
-  // idle timer on every render.
-  const countryKey = countries.join("|");
   useEffect(() => {
     if (!prefetch || !selectedReady || saveDataRequested()) return;
-    const rest = countryKey
-      .split("|")
-      .filter((c) => c && !cache.has(keyFor(c)) && !inflight.current.has(keyFor(c)));
+    const rest = countries.filter(
+      (c) => !cacheRef.current.has(c) && !inflight.current.has(c),
+    );
     if (rest.length === 0) return;
     return scheduleIdle(() => {
       for (const c of rest) void load(c);
     });
-  }, [prefetch, selectedReady, countryKey, cache, keyFor, load]);
+  }, [prefetch, selectedReady, countries, load]);
 
   return {
     data: selectedEntry?.kind === "ok" ? selectedEntry.data : null,

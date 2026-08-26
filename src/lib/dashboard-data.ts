@@ -20,6 +20,8 @@ import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { join } from "path";
 import { gzipSync } from "node:zlib";
 import { getCountry, isValidCountryId } from "@/config/countries";
+import { routing } from "@/i18n/routing";
+import { WHEEL_DRAWN_LEVELS } from "@/types";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
 import {
@@ -34,6 +36,7 @@ import {
   unclassifiedCategory,
 } from "@/lib/unclassified-bucket";
 import type {
+  AlignmentLevel,
   BlindEvaluationReport,
   BlindPairSample,
   ModelAgreementSummary,
@@ -906,22 +909,21 @@ export function assembleDashboardData(
 
 /**
  * The slice of a country payload the landing wheel needs: enough to draw one
- * wheel grouped by document (`Centerpiece` reads only `id` and `sourceDocument`
- * from a target and only the pair ids and level from an alignment, and never
- * draws `none` or `low` pairs). Serving this instead of the full payload takes
- * the landing's per-country download from megabytes to a few hundred KB.
+ * wheel grouped by document. The wheel variant of `Centerpiece` reads only
+ * `id` and `sourceDocument` from a target, only the pair ids and level from an
+ * alignment, and never draws a pair outside `WHEEL_DRAWN_LEVELS` (the
+ * constellation variant does draw `low`, so it must not be fed this slice).
+ * Serving this instead of the full payload takes the landing's per-country
+ * download from megabytes to a few hundred KB.
  */
 export interface WheelSliceResponse {
   targets: { id: string; sourceDocument: string }[];
   alignment: { targetAId: string; targetBId: string; alignment: string }[];
-  classifications: never[];
   countryConfig: Record<string, unknown> | null;
 }
 
-const WHEEL_LEVELS = new Set(["high", "medium", "flagged"]);
-
 export function projectWheelSlice(
-  data: Pick<DashboardResponse, "targets" | "alignment" | "classifications" | "countryConfig">,
+  data: Pick<DashboardResponse, "targets" | "alignment" | "countryConfig">,
 ): WheelSliceResponse {
   const targets: WheelSliceResponse["targets"] = [];
   for (const raw of data.targets) {
@@ -937,25 +939,81 @@ export function projectWheelSlice(
       typeof a.targetAId === "string" &&
       typeof a.targetBId === "string" &&
       typeof a.alignment === "string" &&
-      WHEEL_LEVELS.has(a.alignment)
+      WHEEL_DRAWN_LEVELS.has(a.alignment as AlignmentLevel)
     ) {
       alignment.push({ targetAId: a.targetAId, targetBId: a.targetBId, alignment: a.alignment });
     }
   }
-  return { targets, alignment, classifications: [], countryConfig: data.countryConfig ?? null };
+  return { targets, alignment, countryConfig: data.countryConfig ?? null };
 }
 
-/** A cached country payload: the assembled data plus its serialized + gzipped
- *  forms, so repeat API hits skip disk reads, JSON.stringify, and compression. */
-export interface CountryPayload {
-  data: DashboardResponse;
+/** A serialized payload plus its gzipped form, so repeat API hits skip
+ *  JSON.stringify and compression. */
+export interface SerializedPayload {
   json: string;
   // Typed as Uint8Array (not Buffer) so it satisfies NextResponse's BodyInit;
   // gzipSync returns a Buffer, which is a Uint8Array subclass.
   gzip: Uint8Array;
 }
 
-// Keyed by canonical country id. Held for the container's lifetime; a deploy
+/** A cached country payload: the assembled data plus its serialized forms. */
+export interface CountryPayload extends SerializedPayload {
+  data: DashboardResponse;
+}
+
+function serializePayload(value: unknown): SerializedPayload {
+  const json = JSON.stringify(value);
+  return { json, gzip: gzipSync(json) };
+}
+
+/**
+ * Locale as it participates in cache keys and assembly. Anything outside the
+ * routing table falls back to English, so an arbitrary `?locale=` value can
+ * neither create its own container-lifetime cache entry nor change what is
+ * assembled (assembly already reads English for unknown locales).
+ */
+function normalizeLocale(locale: string | undefined): string | undefined {
+  if (!locale || locale === routing.defaultLocale) return undefined;
+  return (routing.locales as readonly string[]).includes(locale) ? locale : undefined;
+}
+
+type CountryCacheKeyResult =
+  | { kind: "ok"; key: string; paths: DerivedPaths; locale: string | undefined }
+  | { kind: "error"; status: 400 | 404; error: string };
+
+/**
+ * Validate a country request (registry, model slug, paths) and derive the key
+ * every per-country cache shares: canonical id, then `@model` when a per-model
+ * subdir resolved, then `:locale` for non-English locales. Each combination
+ * produces a distinct payload (different narratives, different alignment
+ * outputs), so each gets its own entry.
+ */
+function resolveCountryCacheKey(
+  country: string,
+  locale: string | undefined,
+  model: string | null | undefined,
+): CountryCacheKeyResult {
+  const result = derivePaths(null, country, model ?? null);
+  if (result.kind === "error") {
+    return { kind: "error", status: result.status, error: result.error };
+  }
+  if (result.kind !== "country") {
+    return { kind: "error", status: 400, error: "Expected a country param" };
+  }
+  // Canonical id from the registry (derivePaths already validated it exists).
+  const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
+  const normalizedLocale = normalizeLocale(locale);
+  const modelKey = result.paths.model ? `@${result.paths.model}` : "";
+  const localeKey = normalizedLocale ? `:${normalizedLocale}` : "";
+  return {
+    kind: "ok",
+    key: `${canonical}${modelKey}${localeKey}`,
+    paths: result.paths,
+    locale: normalizedLocale,
+  };
+}
+
+// Keyed by resolveCountryCacheKey. Held for the container's lifetime; a deploy
 // restarts the container (fresh image, fresh map). Never holds analysis payloads.
 const countryPayloadCache = new Map<string, CountryPayload>();
 
@@ -973,65 +1031,56 @@ export function getCountryDashboardPayload(
   locale?: string,
   model?: string | null,
 ): CountryPayloadResult {
-  const result = derivePaths(null, country, model ?? null);
-  if (result.kind === "error") {
-    return { kind: "error", status: result.status, error: result.error };
-  }
-  if (result.kind !== "country") {
-    return { kind: "error", status: 400, error: "Expected a country param" };
-  }
-
-  // Canonical id from the registry (derivePaths already validated it exists).
-  // The cache key is per-locale AND per-model: each combination produces a
-  // distinct payload (different narratives, different alignment outputs).
-  const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
-  const resolvedModel = result.paths.model;
-  const localeKey = locale && locale !== "en" ? `:${locale}` : "";
-  const modelKey = resolvedModel ? `@${resolvedModel}` : "";
-  const key = `${canonical}${modelKey}${localeKey}`;
-  const cached = countryPayloadCache.get(key);
+  const resolved = resolveCountryCacheKey(country, locale, model);
+  if (resolved.kind === "error") return resolved;
+  const cached = countryPayloadCache.get(resolved.key);
   if (cached) return { kind: "ok", payload: cached };
 
-  const assembled = assembleDashboardData(result.paths, "country", locale);
+  const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale);
   if (assembled.kind === "error") {
     return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
   }
 
-  const json = JSON.stringify(assembled.data);
-  const payload: CountryPayload = { data: assembled.data, json, gzip: gzipSync(json) };
-  countryPayloadCache.set(key, payload);
+  const payload: CountryPayload = { data: assembled.data, ...serializePayload(assembled.data) };
+  countryPayloadCache.set(resolved.key, payload);
   return { kind: "ok", payload };
-}
-
-/** Serialized + gzipped wheel slice, cached per (country, locale). */
-export interface SerializedPayload {
-  json: string;
-  gzip: Uint8Array;
 }
 
 export type WheelPayloadResult =
   | { kind: "ok"; payload: SerializedPayload }
   | { kind: "error"; status: 400 | 404; error: string; missing?: string[] };
 
+// Slim entries only (tens to hundreds of KB each), in the same key space as
+// the full-payload cache.
 const wheelPayloadCache = new Map<string, SerializedPayload>();
 
 /**
- * The landing wheel's slice of a country payload, derived from the cached full
- * payload (so it shares its validation and assembly) and cached in its own
- * serialized form. Locale matters because document labels in `countryConfig`
- * are localized at assembly time.
+ * The landing wheel's slice of a country payload, validated and keyed exactly
+ * like the full payload (so `?model=` and `?locale=` behave the same on both
+ * routes) and cached in its own serialized form. When the full payload is
+ * already cached the slice is projected from it; otherwise the data is
+ * assembled once and only the slim slice is retained, so the landing's idle
+ * prefetch of every pilot does not pin every full payload in memory.
  */
-export function getCountryWheelPayload(country: string, locale?: string): WheelPayloadResult {
-  const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
-  const localeKey = locale && locale !== "en" ? `:${locale}` : "";
-  const key = `${canonical}${localeKey}`;
-  const cached = wheelPayloadCache.get(key);
+export function getCountryWheelPayload(
+  country: string,
+  locale?: string,
+  model?: string | null,
+): WheelPayloadResult {
+  const resolved = resolveCountryCacheKey(country, locale, model);
+  if (resolved.kind === "error") return resolved;
+  const cached = wheelPayloadCache.get(resolved.key);
   if (cached) return { kind: "ok", payload: cached };
 
-  const full = getCountryDashboardPayload(country, locale, null);
-  if (full.kind === "error") return full;
-  const json = JSON.stringify(projectWheelSlice(full.payload.data));
-  const payload: SerializedPayload = { json, gzip: gzipSync(json) };
-  wheelPayloadCache.set(key, payload);
+  let data = countryPayloadCache.get(resolved.key)?.data;
+  if (!data) {
+    const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale);
+    if (assembled.kind === "error") {
+      return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
+    }
+    data = assembled.data;
+  }
+  const payload = serializePayload(projectWheelSlice(data));
+  wheelPayloadCache.set(resolved.key, payload);
   return { kind: "ok", payload };
 }

@@ -8,7 +8,6 @@ function slice(id: string) {
   return {
     targets: [{ id: `${id}-t1`, sourceDocument: "NDC" }],
     alignment: [{ targetAId: `${id}-t1`, targetBId: `${id}-t2`, alignment: "high" }],
-    classifications: [],
     countryConfig: { id },
   };
 }
@@ -107,6 +106,28 @@ describe("useWheelPreview", () => {
     rerender({ selected: "mongolia" });
     expect(result.current.failed).toBe(false);
     await waitFor(() => expect(result.current.data?.targets[0]?.id).toBe("mongolia-t1"));
+  });
+
+  it("retries a country whose earlier attempt failed when it is selected again", async () => {
+    const { result, rerender } = renderHook(
+      (p: { selected: string }) =>
+        useWheelPreview({ countries: COUNTRIES, selected: p.selected, locale: "en", prefetch: false }),
+      { initialProps: { selected: "panama" } },
+    );
+    await waitFor(() => expect(result.current.failed).toBe(true));
+    rerender({ selected: "mongolia" });
+    await waitFor(() => expect(result.current.data).not.toBeNull());
+
+    // The server has recovered by the time the user comes back to Panama.
+    fetchMock.mockImplementation(async (url: string) => ({
+      ok: true,
+      status: 200,
+      json: async () => slice(countryOf(url)),
+    }));
+    rerender({ selected: "panama" });
+    await waitFor(() => expect(result.current.failed).toBe(false));
+    await waitFor(() => expect(result.current.data?.targets[0]?.id).toBe("panama-t1"));
+    expect(callsFor("panama")).toBe(2);
   });
 
   it("prefetches the other countries once the first wheel is on screen", async () => {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { projectWheelSlice } from "./dashboard-data";
+import { WHEEL_DRAWN_LEVELS, type AlignmentLevel } from "@/types";
 
 // The landing wheel groups by document and aggregates ribbons per document
 // pair; it reads nothing else from a target or a pair. The slice exists so the
@@ -19,7 +20,6 @@ const input = {
     { targetAId: "NDC_1", targetBId: "NBSAP_4", alignment: "low", description: "…" },
     { targetAId: "NDC_1", targetBId: "NBSAP_5", alignment: "none", description: "…" },
   ],
-  classifications: [{ targetId: "NDC_1", taxonomy: "ipcc", primary: "energy" }],
   countryConfig,
 };
 
@@ -39,10 +39,9 @@ describe("projectWheelSlice", () => {
       { targetAId: "NDC_1", targetBId: "NBSAP_2", alignment: "medium" },
       { targetAId: "NDC_1", targetBId: "NBSAP_3", alignment: "flagged" },
     ]);
-  });
-
-  it("sends no classifications, since the landing wheel groups by document", () => {
-    expect(projectWheelSlice(input).classifications).toEqual([]);
+    // The projection and the wheel agree on one shared set of drawn levels.
+    for (const a of out.alignment) expect(WHEEL_DRAWN_LEVELS.has(a.alignment as AlignmentLevel)).toBe(true);
+    expect(out).not.toHaveProperty("classifications");
   });
 
   it("passes the country config through unchanged", () => {
