@@ -117,6 +117,12 @@ function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
     timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
+    // `activitySources` is the gate `itemisedActivities()` reads (viz/target-text):
+    // without it a target's listed activities collapse into one paragraph and
+    // "Activities & Actions (1)". `sources` feeds the document drawer's verbatim
+    // quote and the public source links. Both are arrays the API already ships.
+    activitySources: Array.isArray(t.activitySources) ? t.activitySources : undefined,
+    sources: Array.isArray(t.sources) ? (t.sources as Target["sources"]) : undefined,
     textOriginal,
     sourceLabelOriginal,
     textOriginalSource:
