@@ -14,6 +14,8 @@ import { randomUUID } from "crypto";
 const PROJECT_ROOT = process.cwd();
 const IS_SERVERLESS =
   !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+// Cap upload size before buffering the whole file into memory (DoS / zip-bomb).
+const MAX_XLSX_SIZE = 15 * 1024 * 1024; // 15 MB
 
 export async function POST(request: NextRequest) {
   if (IS_SERVERLESS) {
@@ -35,6 +37,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "Expected an Excel file (.xlsx)" },
       { status: 400 }
+    );
+  }
+
+  if (file.size > MAX_XLSX_SIZE) {
+    const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+    return NextResponse.json(
+      { error: `File too large (${sizeMb} MB). Maximum allowed is 15 MB.` },
+      { status: 413 }
     );
   }
 

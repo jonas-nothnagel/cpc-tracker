@@ -1082,14 +1082,30 @@ const ACTION_ORDER: Record<ChatAction["type"], number> = {
   noop: 6,
 };
 
+// The client-supplied context blob (target index + rationales + synthesis) is
+// large but bounded; cap the whole body before buffering, plus the free-text
+// fields, so an unauthenticated caller can't drive unbounded LLM cost.
+const MAX_BODY_BYTES = 2 * 1024 * 1024; // 2 MB
+const MAX_QUERY_CHARS = 4_000;
+const MAX_HISTORY_CONTENT_CHARS = 8_000;
+
 export async function POST(req: Request) {
+  const declaredLength = Number(req.headers.get("content-length"));
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Body too large" }, { status: 413 });
+  }
+  const rawText = await req.text();
+  if (rawText.length > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Body too large" }, { status: 413 });
+  }
+
   let body: {
     query?: string;
     context?: ChatContext;
     history?: HistoryTurn[];
   };
   try {
-    body = (await req.json()) as {
+    body = JSON.parse(rawText) as {
       query?: string;
       context?: ChatContext;
       history?: HistoryTurn[];
@@ -1099,9 +1115,17 @@ export async function POST(req: Request) {
   }
   const query = (body.query ?? "").trim();
   const context = body.context;
-  const history = (body.history ?? []).slice(-3); // cap at 3 turns
+  const history = (body.history ?? [])
+    .slice(-3) // cap at 3 turns
+    .map((t) => ({
+      role: t.role,
+      content: (t.content ?? "").slice(0, MAX_HISTORY_CONTENT_CHARS),
+    }));
   if (!query) {
     return NextResponse.json({ error: "Empty query" }, { status: 400 });
+  }
+  if (query.length > MAX_QUERY_CHARS) {
+    return NextResponse.json({ error: "Query too long" }, { status: 413 });
   }
   if (!context) {
     return NextResponse.json({ error: "Missing context" }, { status: 400 });

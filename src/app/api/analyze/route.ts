@@ -16,6 +16,10 @@ import type { PolicyDocumentType, TargetSource, TextCleanup } from "@/types";
  */
 
 const MAX_TARGETS = 150;
+// Cap concurrent detached pipeline runs so an unauthenticated flood (or a burst
+// of legitimate uploads) can't spawn unbounded Python processes / LLM cost.
+const MAX_CONCURRENT_ANALYSES = 3;
+let inFlightAnalyses = 0;
 const IS_SERVERLESS = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
 
 interface AnalyzeRequest {
@@ -95,8 +99,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  if (inFlightAnalyses >= MAX_CONCURRENT_ANALYSES) {
+    return NextResponse.json(
+      { error: "The analysis service is busy. Please try again shortly." },
+      { status: 429 }
+    );
+  }
+
   try {
-    const id = randomUUID().slice(0, 8);
+    // Full UUID (128-bit), not an 8-char slice: makes analysis IDs unguessable
+    // so results can't be read by enumeration (defence-in-depth behind auth).
+    const id = randomUUID();
     const inputDir = join(ANALYSES_DIR, id, "input");
     const outputDir = join(ANALYSES_DIR, id, "output");
     mkdirSync(inputDir, { recursive: true });
@@ -216,6 +229,19 @@ export async function POST(request: NextRequest) {
         detached: true,
       }
     );
+    // Occupy an in-flight slot now that the child exists (no await between the
+    // guard check above and here, so the count stays accurate). Release it
+    // exactly once when the pipeline finishes or fails to start.
+    inFlightAnalyses++;
+    let released = false;
+    const release = () => {
+      if (!released) {
+        released = true;
+        inFlightAnalyses--;
+      }
+    };
+    child.on("exit", release);
+    child.on("error", release);
     child.unref();
 
     return NextResponse.json({ analysisId: id });
