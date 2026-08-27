@@ -84,25 +84,6 @@ describe("ControlsStrip", () => {
     expect(props.onToggleDoc).toHaveBeenCalledWith("NDC");
   });
 
-  it("shows the hide-unclassified toggle only when the grouping has unplaced targets", () => {
-    renderStrip();
-    expect(screen.queryByRole("button", { pressed: false, name: /no clear/i })).toBeNull();
-    cleanup();
-    const onHide = vi.fn();
-    renderStrip({
-      groupMode: "hr",
-      hasHr: true,
-      canHideUnclassified: true,
-      hideUnclassified: false,
-      onHideUnclassifiedChange: onHide,
-      unclassifiedCount: 348,
-    });
-    const toggle = screen.getByRole("button", { name: /348/ });
-    expect(toggle.getAttribute("aria-pressed")).toBe("false");
-    fireEvent.click(toggle);
-    expect(onHide).toHaveBeenCalledWith(true);
-  });
-
   it("in Finance offers only the Biodiversity grouping", () => {
     renderStrip({ view: "finance", budgetSummary: BUDGET, groupMode: "globe", hasGga: true, hasHr: true });
     expect(screen.getByRole("button", { name: L.groupGlobe }).getAttribute("aria-pressed")).toBe("true");

@@ -33,7 +33,6 @@ import {
 } from "@/lib/locale-text";
 import {
   applyUnclassifiedBuckets,
-  unclassifiedCategory,
 } from "@/lib/unclassified-bucket";
 import type {
   AlignmentLevel,
@@ -804,11 +803,12 @@ export function assembleDashboardData(
       )
     : classifications;
 
-  // Route targets with no relevant category into an explicit "no clear theme"
-  // bucket rather than letting a sub-threshold primary read as a real one.
-  // Display-only and derived here, never in categories.json — see
-  // `lib/unclassified-bucket.ts` for why.
-  const { classifications: finalClassifications, bucketed } =
+  // Mark targets with no relevant category with a derived "no clear theme"
+  // primary rather than letting a sub-threshold primary read as a real one.
+  // The marker is never listed as a category: lens surfaces exclude the marked
+  // targets and state the lens scope. Derived here, never in categories.json;
+  // see `lib/unclassified-bucket.ts` for why.
+  const { classifications: finalClassifications } =
     applyUnclassifiedBuckets(
       (visibleClassifications ?? []) as Record<string, unknown>[],
     );
@@ -883,10 +883,7 @@ export function assembleDashboardData(
         locale,
       ),
       hrCategories: localizeCategories(
-        [
-          ...((categories.hr_categories ?? []) as Record<string, unknown>[]),
-          ...(bucketed.has("hr") ? [unclassifiedCategory("hr")] : []),
-        ],
+        (categories.hr_categories ?? []) as Record<string, unknown>[],
         locale,
       ),
       classifications: finalClassifications,

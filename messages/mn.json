@@ -767,8 +767,7 @@
         "singleHeadline": "{name} нь ангилагдсан {total, number} зорилтын {pct}%-г эзэлнэ.",
         "everyHeadline": "Ангилагдсан {total, number} зорилт бүх {sectors, number} {nounPlural}-д тархсан, ихэнх нь {name}.",
         "topHeadline": "{list} нь ангилагдсан {total, number} зорилтын {pct}%-г эзэлнэ.",
-        "unclassifiedNote": "{total, number} зорилтоос {count, number} нь эдгээр {nounPlural}-тэй тодорхой нийцэхгүй байна.",
-        "noneClassifiedHeadline": "Эдгээр {nounPlural}-тэй тодорхой нийцэх зорилт алга."
+        "lensScope": "{total, number} зорилтоос {placed, number} нь эдгээр {nounPlural}-ийн аль нэгтэй холбогдож байна; үлдсэн нь энэ хүрээний хамрах хүрээнээс гадуур байна."
       },
       "flag": {
         "none": "Энэ ангиллын хүрээнд хянагдсан хамаарал одоогоор алга.",
@@ -782,7 +781,6 @@
       "flagAriaValue": "хянагдсан хамаарлын {pct, number}% нь болзошгүй үл нийцэл",
       "flagAriaNone": "энэ ангиллын хүрээнд хянагдсан хамаарал алга",
       "primaryCount": "{count, number} үндсэн",
-      "hideUnclassified": "Тодорхой сэдэвгүй {count, number} зорилтыг нуух",
       "reading": "<target>Зорилт</target> бүр өөрийн <primaryTheme>үндсэн сэдвийн</primaryTheme> дор нэг удаа тоологдоно. Харьцаа бүр салбарыг өөрийнх нь хосуудтай харьцуулна."
     },
     "docPairs": {
@@ -1738,8 +1736,7 @@
       "groupGgaTitle": "Уур амьсгалын тэсвэрлэлтийн сэдвээр бүлэглэх (Дасан зохицох дэлхийн зорилго, 2/CMA.5 шийдвэр)",
       "groupHrTitle": "Хүний эрхийн сэдвээр бүлэглэх (НҮБХХ-ийн удирдамж; хянагдаж буй төсөл)",
       "groupOptionGga": "Уур амьсгалын дасан зохицлоор",
-      "groupOptionHr": "Хүний эрхээр",
-      "hideUnclassified": "Тодорхой сэдэвгүй {count, number}-г нуух"
+      "groupOptionHr": "Хүний эрхээр"
     },
     "doc": {
       "mitigation": "Бууруулалт",
@@ -1778,7 +1775,8 @@
       "centerScanning": "Уншиж байна…",
       "centerScanningDetail": "{targets, number} зорилт · {docs, number} баримт",
       "legendResilience": "Уур амьсгалын дасан зохицол",
-      "legendHumanRights": "Хүний эрхийн сэдэв"
+      "legendHumanRights": "Хүний эрхийн сэдэв",
+      "lensScope": "Энэ бүлэглэл нийт {total, number} зорилтоос {placed, number}-ыг хамарна; үлдсэн нь түүний хамрах хүрээнээс гадуур байна."
     },
     "detailPanel": {
       "closeAria": "Зорилтын дэлгэрэнгүйг хаах",
@@ -1795,7 +1793,6 @@
         "heading": "Энэ зорилтыг {category}-д яагаад хамруулсан бэ",
         "headingGeneric": "Энэ зорилтыг яагаад энд хамруулсан бэ",
         "score": "· хамаарал {score}",
-        "unmatched": "Энэ зорилтын хувьд ямар ч сэдэв хамаарлын босгод хүрсэнгүй. Энэ нь эдгээр сэдэвтэй холбоотой байж болох ч шинжилгээгээр тодорхой нийцэл олдсонгүй.",
         "aiDisclaimer": "Хиймэл оюунаар үүсгэсэн ангилал. Эцсийн дүгнэлт бус, хянан үзэх эхлэл болгон авч үзнэ үү."
       }
     },

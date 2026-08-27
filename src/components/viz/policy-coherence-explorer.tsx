@@ -19,7 +19,10 @@ import {
   type Nr7Status,
 } from "@/lib/labels";
 import { track } from "@/lib/analytics/client";
-import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
+import {
+  isUnclassifiedCategoryId,
+  unclassifiedTargetIds,
+} from "@/lib/unclassified-bucket";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -433,9 +436,9 @@ function splitSourceLabel(label: string): { code: string | null; title: string }
  * finding.
  *
  * Renders nothing when grouping by document (no taxonomy involved) or when no
- * record carries reasoning. For the derived "no clear theme" bucket there is no
- * per-target sentence by construction — the target matched nothing — so we say
- * that plainly instead.
+ * record carries reasoning. Targets with no clear theme never become nodes
+ * under a taxonomy grouping (see `unplacedTargetIds`), so there is no bucket
+ * case to explain here.
  */
 function ClassificationReason({
   targetId,
@@ -465,8 +468,7 @@ function ClassificationReason({
 
   if (!groupMode || groupMode === "document") return null;
 
-  const isBucket = isUnclassifiedCategoryId(categoryId);
-  if (!isBucket && !record?.reasoning) return null;
+  if (!record?.reasoning) return null;
 
   const score = typeof record?.score === "number" ? record.score : null;
 
@@ -476,14 +478,14 @@ function ClassificationReason({
         {categoryLabel
           ? t("classification.heading", { category: categoryLabel })
           : t("classification.headingGeneric")}
-        {score !== null && !isBucket ? (
+        {score !== null ? (
           <span className="ml-1.5 font-normal">
             {t("classification.score", { score: score.toFixed(2) })}
           </span>
         ) : null}
       </p>
       <p className="mt-1 text-caption text-[var(--undp-black)] leading-relaxed">
-        {isBucket ? t("classification.unmatched") : record?.reasoning}
+        {record?.reasoning}
       </p>
       <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
         {t("classification.aiDisclaimer")}
@@ -3149,48 +3151,43 @@ export function PolicyCoherenceExplorer({
     return map;
   }, [nr7Data]);
 
-  // Targets the ACTIVE grouping could not place in any real category — they sit
-  // in the derived "no clear theme" bucket. Empty for groupings without one.
-  const unclassifiedTargetIds = useMemo(() => {
-    const ids = new Set<string>();
-    if (groupMode === "document") return ids;
-    for (const c of classifications) {
-      if (
-        c.isPrimary &&
-        c.taxonomyType === groupMode &&
-        isUnclassifiedCategoryId(c.categoryId)
-      ) {
-        ids.add(c.targetId);
-      }
-    }
-    return ids;
-  }, [classifications, groupMode]);
+  // Targets the ACTIVE grouping could not place in any real category: their
+  // primary carries the derived "no clear theme" marker (see
+  // lib/unclassified-bucket.ts). Empty for the document grouping and for
+  // groupings without a marker.
+  const unplacedTargetIds = useMemo(
+    () =>
+      groupMode === "document"
+        ? new Set<string>()
+        : unclassifiedTargetIds(classifications, groupMode),
+    [classifications, groupMode],
+  );
 
-  // Opt-in focus mode; off by default so the wheel never quietly understates
-  // how much of the corpus the active lens does not cover.
-  const [hideUnclassified, setHideUnclassified] = useState(false);
-  const canHideUnclassified = unclassifiedTargetIds.size > 0;
-  const hidingUnclassified = hideUnclassified && canHideUnclassified;
-
-  const visibleTargets = useMemo(
+  const docVisibleTargets = useMemo(
     () =>
       targets.filter((t) => {
         if (hiddenDocs.has(t.sourceDocument)) return false;
-        if (hidingUnclassified && unclassifiedTargetIds.has(t.id)) return false;
         // Type filter only affects BTR pseudo-targets (which carry actionType).
         // Policy targets are always shown regardless of this filter.
         if (actionTypeFilter === "all") return true;
         if (t.actionType === undefined) return true;
         return t.actionType === actionTypeFilter;
       }),
-    [
-      targets,
-      hiddenDocs,
-      actionTypeFilter,
-      hidingUnclassified,
-      unclassifiedTargetIds,
-    ],
+    [targets, hiddenDocs, actionTypeFilter],
   );
+  // A grouping never lists the absence of a theme as a group: unplaced targets
+  // leave the wheel, and the legend states the grouping's scope instead.
+  const visibleTargets = useMemo(
+    () =>
+      unplacedTargetIds.size
+        ? docVisibleTargets.filter((t) => !unplacedTargetIds.has(t.id))
+        : docVisibleTargets,
+    [docVisibleTargets, unplacedTargetIds],
+  );
+  const lensScope =
+    visibleTargets.length < docVisibleTargets.length
+      ? { placed: visibleTargets.length, total: docVisibleTargets.length }
+      : null;
 
   // Whether any adaptation actions are present in the data at all. Used to
   // hide the Mit/Adp filter toggle when adaptation wasn't loaded — keeps the
@@ -3213,7 +3210,10 @@ export function PolicyCoherenceExplorer({
   const hasHr = useMemo(
     () =>
       classifications.some(
-        (c) => c.taxonomyType === "hr" && c.isPrimary === true,
+        (c) =>
+          c.taxonomyType === "hr" &&
+          c.isPrimary === true &&
+          !isUnclassifiedCategoryId(c.categoryId),
       ),
     [classifications],
   );
@@ -5376,10 +5376,6 @@ export function PolicyCoherenceExplorer({
             countryConfig={countryConfig}
             hasGga={hasGga}
             hasHr={hasHr}
-            canHideUnclassified={canHideUnclassified}
-            hideUnclassified={hidingUnclassified}
-            onHideUnclassifiedChange={setHideUnclassified}
-            unclassifiedCount={unclassifiedTargetIds.size}
           />
         }
         wheel={wheelSvg}
@@ -5791,6 +5787,11 @@ export function PolicyCoherenceExplorer({
                 <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
                   {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : groupMode === "hr" ? t("wheel.legendHumanRights") : t("wheel.legendSector")}
                 </p>
+                {lensScope && (
+                  <p className="text-caption text-[var(--undp-gray)] mb-1.5">
+                    {t("wheel.lensScope", lensScope)}
+                  </p>
+                )}
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (
                     <span key={arc.id} className="flex items-center gap-1.5">

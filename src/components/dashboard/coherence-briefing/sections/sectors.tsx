@@ -53,10 +53,8 @@ export function SectorsSection({
   onLensChange,
   onOpenSector,
   onHoverSector,
-  canHideUnclassified = false,
-  hideUnclassified = false,
-  onHideUnclassifiedChange,
-  unclassifiedCount = 0,
+  corpusTargetCount = 0,
+  unplacedCount = 0,
 }: {
   sectorRows: SectorTension[];
   sectorShares: SectorCoherenceShareSummary | null;
@@ -71,11 +69,12 @@ export function SectorsSection({
     taxonomyType: string;
   }) => void;
   onHoverSector?: (categoryId: string | null) => void;
-  /** True when the active lens has targets it could not place in any theme. */
-  canHideUnclassified?: boolean;
-  hideUnclassified?: boolean;
-  onHideUnclassifiedChange?: (next: boolean) => void;
-  unclassifiedCount?: number;
+  /** Targets in the corpus the lens is applied to (all visible targets). */
+  corpusTargetCount?: number;
+  /** Targets the lens could not place in any theme. When above zero the
+   *  coverage body states the lens scope ("N of the M targets connect to
+   *  one of these themes") instead of listing the absence as a row. */
+  unplacedCount?: number;
 }) {
   const t = useTranslations("briefing.sectors");
   const [sortMode, setSortMode] = useState<SectorSortMode>("coverage");
@@ -106,6 +105,8 @@ export function SectorsSection({
     mergedRows,
     midShare,
     taxonomyType,
+    corpusTargetCount,
+    unplacedCount,
     t,
   });
   const maxTargetCount = mergedRows.reduce(
@@ -129,24 +130,11 @@ export function SectorsSection({
         ) : undefined
       }
       controls={
-        <div>
-          <LensChipRow
-            availableLenses={availableLenses}
-            activeLensId={activeLensId}
-            onLensChange={onLensChange}
-          />
-          {canHideUnclassified && onHideUnclassifiedChange && (
-            <label className="mt-2 flex items-center gap-2 text-caption text-[var(--undp-gray)] cursor-pointer">
-              <input
-                type="checkbox"
-                checked={hideUnclassified}
-                onChange={(e) => onHideUnclassifiedChange(e.target.checked)}
-                className="h-3.5 w-3.5 accent-[var(--undp-blue)] cursor-pointer"
-              />
-              {t("hideUnclassified", { count: unclassifiedCount })}
-            </label>
-          )}
-        </div>
+        <LensChipRow
+          availableLenses={availableLenses}
+          activeLensId={activeLensId}
+          onLensChange={onLensChange}
+        />
       }
       evidence={
         mergedRows.length === 0 ? (
@@ -385,44 +373,43 @@ function composeCoverageSentence({
   mergedRows,
   midShare,
   taxonomyType,
+  corpusTargetCount,
+  unplacedCount,
   t,
 }: {
   coverageConcentration: CoverageConcentrationStat;
   mergedRows: MergedSectorRow[];
   midShare: number;
   taxonomyType: string;
+  corpusTargetCount: number;
+  unplacedCount: number;
   t: ReturnType<typeof useTranslations<"briefing.sectors">>;
 }): CoverageSentence {
   const nounStyle = nounStyleFor(taxonomyType);
   const noun = t(`noun.${nounStyle}.singular`);
   const nounPlural = t(`noun.${nounStyle}.plural`);
-  const { populatedSectors, totalTargets, topNames, share, unclassifiedTargets } =
+  const { populatedSectors, totalTargets, topNames, share } =
     coverageConcentration;
-
-  // The derived "no clear theme" bucket is reported as its own sentence rather
-  // than ranked among the themes — it is the absence of a theme, so naming it
-  // as a concentration peak would misstate what the analysis found.
-  const unclassifiedNote =
-    unclassifiedTargets > 0
-      ? t("coverage.unclassifiedNote", {
-          count: unclassifiedTargets,
-          total: totalTargets + unclassifiedTargets,
-          nounPlural,
-        })
-      : "";
 
   if (totalTargets === 0 || populatedSectors === 0) {
     return {
-      headline:
-        unclassifiedTargets > 0
-          ? t("coverage.noneClassifiedHeadline", {
-              count: unclassifiedTargets,
-              nounPlural,
-            })
-          : t("coverage.emptyHeadline", { noun }),
-      body: unclassifiedTargets > 0 ? unclassifiedNote : t("coverage.emptyBody", { noun }),
+      headline: t("coverage.emptyHeadline", { noun }),
+      body: t("coverage.emptyBody", { noun }),
     };
   }
+
+  // Targets the lens could not place are not a theme, so they are neither
+  // ranked among the rows nor named as a concentration peak. The body states
+  // the lens scope instead, which keeps the corpus magnitude visible without
+  // implying that every target ought to carry one of these themes.
+  const scopeNote =
+    unplacedCount > 0
+      ? t("coverage.lensScope", {
+          placed: totalTargets,
+          total: corpusTargetCount,
+          nounPlural,
+        })
+      : "";
 
   const sharePct = Math.round(share * 100);
   const list = formatList(topNames, t);
@@ -451,7 +438,7 @@ function composeCoverageSentence({
   const flagBody = composeFlagBody({ mergedRows, midShare, nounPlural, t });
   return {
     headline,
-    body: unclassifiedNote ? `${unclassifiedNote} ${flagBody}` : flagBody,
+    body: scopeNote ? `${scopeNote} ${flagBody}` : flagBody,
   };
 }
 
