@@ -78,6 +78,10 @@ function normalizeTarget(t: Record<string, unknown>): Target {
     timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
+    // Same as use-dashboard-data.ts: the itemised-activities gate and the
+    // source quotes are arrays the API ships and this whitelist must name.
+    activitySources: Array.isArray(t.activitySources) ? t.activitySources : undefined,
+    sources: Array.isArray(t.sources) ? (t.sources as Target["sources"]) : undefined,
     // Translation originals pass through for countries whose source data is not
     // in English (e.g. Panama). textOriginalSource distinguishes a genuine
     // source-language original from a machine back-translation, so the
