@@ -10,6 +10,8 @@ fabricated claim.
 from __future__ import annotations
 
 from src.extract import (
+    EXTRACT_SYSTEM,
+    EXTRACT_USER,
     _extract_claims,
     _log_unsourced_activities,
     _log_unsourced_claims,
@@ -18,6 +20,14 @@ from src.extract import (
     _parse_sources,
     validate_claim_grounding,
 )
+
+
+def test_extract_prompt_treats_document_as_untrusted():
+    # Security invariant: the document body is fenced with --- in the user
+    # prompt, and the system prompt tells the model to treat that delimited text
+    # as untrusted data, never as instructions (prompt-injection defence).
+    assert "---\n{text}\n---" in EXTRACT_USER
+    assert "untrusted" in EXTRACT_SYSTEM.lower()
 
 
 # ---------------------------------------------------------------------------

@@ -19,6 +19,7 @@ from src.align import (
     ADVISOR_SYSTEM,
     ADVISOR_USER_TEMPLATE,
     ALIGNMENT_CACHE_NAMESPACE,
+    ANALYST_SYSTEM,
     PROMPT_VERSION,
 )
 from src.budget_align import BUDGET_CACHE_NAMESPACE, BUDGET_INTRO_FRAMING
@@ -51,7 +52,15 @@ _RETURN_LINES = [
 
 
 def test_prompt_version_is_stamped():
-    assert PROMPT_VERSION == "2.2"
+    assert PROMPT_VERSION == "2.3"
+
+
+def test_prompt_injection_instruction_present():
+    # v2.3 security invariant: the analyst/advisor system prompts must instruct
+    # the model to treat user-provided target text as untrusted data, not
+    # instructions. This survives future prompt tuning.
+    for prompt in (ANALYST_SYSTEM, ADVISOR_SYSTEM):
+        assert "untrusted" in prompt.lower()
 
 
 def test_return_format_lines_unchanged():
