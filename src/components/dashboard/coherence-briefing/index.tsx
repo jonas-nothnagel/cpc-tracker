@@ -894,28 +894,10 @@ export function CoherenceBriefing({
         : visibleTargets,
     [unclassifiedIds, visibleTargets],
   );
-  // Pairs with both ends placed: what the lens-grouped wheel draws, so what is
-  // drawn equals what is counted. The table statistics keep `visibleAlignment`
-  // so a placed target's relationship with an unplaced one still counts for
-  // the placed theme, as it always did.
-  const lensAlignment = useMemo(
-    () =>
-      unclassifiedIds.size
-        ? visibleAlignment.filter(
-            (a) =>
-              !unclassifiedIds.has(a.targetAId) &&
-              !unclassifiedIds.has(a.targetBId),
-          )
-        : visibleAlignment,
-    [unclassifiedIds, visibleAlignment],
-  );
-  const lensClassifications = useMemo(
-    () =>
-      unclassifiedIds.size
-        ? visibleClassifications.filter((c) => !unclassifiedIds.has(c.targetId))
-        : visibleClassifications,
-    [unclassifiedIds, visibleClassifications],
-  );
+  // Pairs and classification records need no separate filtering: the sector
+  // builders skip records whose target is not in `targets`, and the wheel
+  // drops any pair whose endpoint is not a node, so leaving a target out of
+  // `lensTargets` already removes it from the counts and the ribbons.
   const lensCategories = useMemo(() => lens?.categories ?? [], [lens]);
 
   const sectorRows = useMemo<SectorTension[]>(() => {
@@ -923,7 +905,7 @@ export function CoherenceBriefing({
     const density = buildSectorTensionDensity({
       targets: lensTargets,
       alignment: visibleAlignment,
-      classifications: lensClassifications,
+      classifications: visibleClassifications,
       categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
@@ -933,18 +915,18 @@ export function CoherenceBriefing({
       }
       return b.targetCount - a.targetCount;
     });
-  }, [lens, lensTargets, visibleAlignment, lensClassifications, lensCategories]);
+  }, [lens, lensTargets, visibleAlignment, visibleClassifications, lensCategories]);
 
   const sectorShares = useMemo<SectorCoherenceShareSummary | null>(() => {
     if (!lens) return null;
     return buildSectorCoherenceShare({
       targets: lensTargets,
       alignment: visibleAlignment,
-      classifications: lensClassifications,
+      classifications: visibleClassifications,
       categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
-  }, [lens, lensTargets, visibleAlignment, lensClassifications, lensCategories]);
+  }, [lens, lensTargets, visibleAlignment, visibleClassifications, lensCategories]);
 
   const sectorSynthesesIndex = useMemo(
     () => indexSectorSyntheses(visibleSectorSyntheses),
@@ -1537,10 +1519,8 @@ export function CoherenceBriefing({
       <>
         <WheelCenterpiece
           targets={lensGrouped ? lensTargets : visibleTargets}
-          alignments={lensGrouped ? lensAlignment : visibleAlignment}
-          classifications={
-            lensGrouped ? lensClassifications : visibleClassifications
-          }
+          alignments={visibleAlignment}
+          classifications={visibleClassifications}
           countryConfig={countryConfig}
           state={wheelState}
           sectorCategories={sectorCategories}
