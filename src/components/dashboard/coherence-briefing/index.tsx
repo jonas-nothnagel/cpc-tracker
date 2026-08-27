@@ -92,7 +92,7 @@ import { TourButton } from "./tour/tour-button";
 import type { BriefingTourId } from "./tour/steps";
 import type { PrimerHighlightPair } from "./primer-card";
 import type { LensId, LensOption } from "./lens";
-import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
+import { unclassifiedTargetIds } from "@/lib/unclassified-bucket";
 import { getDocTypeOrder } from "@/lib/utils";
 import { docTierSortKey, hasDocTaxonomy } from "@/lib/doc-taxonomy";
 import {
@@ -246,9 +246,6 @@ const HR_LENS_COLORS: Record<string, string> = {
   hr_defenders: "#dc2626",
   hr_business: "#64748b",
   hr_disabilities: "#0891b2",
-  // Derived "no clear theme" bucket: deliberately neutral grey so it reads as
-  // an absence of signal rather than as another theme competing for attention.
-  hr_unclassified: "#cbd5e1",
 };
 
 interface CoherenceBriefingProps {
@@ -877,73 +874,55 @@ export function CoherenceBriefing({
     return availableLenses[0];
   }, [availableLenses, activeLensId]);
 
-  // Targets the active lens could not place in any real category (they sit in
-  // the derived "no clear theme" bucket). Empty for lenses without a bucket.
-  const unclassifiedTargetIds = useMemo(() => {
-    const ids = new Set<string>();
-    if (!lens) return ids;
-    for (const c of visibleClassifications) {
-      if (
-        c.isPrimary &&
-        c.taxonomyType === lens.taxonomyType &&
-        isUnclassifiedCategoryId(c.categoryId)
-      ) {
-        ids.add(c.targetId);
-      }
-    }
-    return ids;
-  }, [lens, visibleClassifications]);
-
-  // Opt-in focus mode: drop those targets from this lens's views so the
-  // remaining themes can be compared without the bucket dominating. Off by
-  // default — hiding them by default would understate how much of the corpus
-  // the lens does not actually cover.
-  const [hideUnclassified, setHideUnclassified] = useState(false);
-  const canHideUnclassified = unclassifiedTargetIds.size > 0;
-  const hidingUnclassified = hideUnclassified && canHideUnclassified;
-
+  // Targets the active lens could not place in any real theme: their primary
+  // for this taxonomy is the derived "no clear theme" marker (see
+  // lib/unclassified-bucket.ts). Lens-grouped views leave them out and the
+  // Sectors coverage sentence states the lens scope instead, so an absence of
+  // a theme is never listed as if it were one. Empty for lenses without a
+  // marker.
+  const unclassifiedIds = useMemo(
+    () =>
+      lens
+        ? unclassifiedTargetIds(visibleClassifications, lens.taxonomyType)
+        : new Set<string>(),
+    [lens, visibleClassifications],
+  );
   const lensTargets = useMemo(
     () =>
-      hidingUnclassified
-        ? visibleTargets.filter((t) => !unclassifiedTargetIds.has(t.id))
+      unclassifiedIds.size
+        ? visibleTargets.filter((t) => !unclassifiedIds.has(t.id))
         : visibleTargets,
-    [hidingUnclassified, visibleTargets, unclassifiedTargetIds],
+    [unclassifiedIds, visibleTargets],
   );
+  // Pairs with both ends placed: what the lens-grouped wheel draws, so what is
+  // drawn equals what is counted. The table statistics keep `visibleAlignment`
+  // so a placed target's relationship with an unplaced one still counts for
+  // the placed theme, as it always did.
   const lensAlignment = useMemo(
     () =>
-      hidingUnclassified
+      unclassifiedIds.size
         ? visibleAlignment.filter(
             (a) =>
-              !unclassifiedTargetIds.has(a.targetAId) &&
-              !unclassifiedTargetIds.has(a.targetBId),
+              !unclassifiedIds.has(a.targetAId) &&
+              !unclassifiedIds.has(a.targetBId),
           )
         : visibleAlignment,
-    [hidingUnclassified, visibleAlignment, unclassifiedTargetIds],
+    [unclassifiedIds, visibleAlignment],
   );
   const lensClassifications = useMemo(
     () =>
-      hidingUnclassified
-        ? visibleClassifications.filter(
-            (c) => !unclassifiedTargetIds.has(c.targetId),
-          )
+      unclassifiedIds.size
+        ? visibleClassifications.filter((c) => !unclassifiedIds.has(c.targetId))
         : visibleClassifications,
-    [hidingUnclassified, visibleClassifications, unclassifiedTargetIds],
+    [unclassifiedIds, visibleClassifications],
   );
-  const lensCategories = useMemo(
-    () =>
-      hidingUnclassified
-        ? (lens?.categories ?? []).filter(
-            (c) => !isUnclassifiedCategoryId(c.id),
-          )
-        : (lens?.categories ?? []),
-    [hidingUnclassified, lens],
-  );
+  const lensCategories = useMemo(() => lens?.categories ?? [], [lens]);
 
   const sectorRows = useMemo<SectorTension[]>(() => {
     if (!lens) return [];
     const density = buildSectorTensionDensity({
       targets: lensTargets,
-      alignment: lensAlignment,
+      alignment: visibleAlignment,
       classifications: lensClassifications,
       categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
@@ -954,18 +933,18 @@ export function CoherenceBriefing({
       }
       return b.targetCount - a.targetCount;
     });
-  }, [lens, lensTargets, lensAlignment, lensClassifications, lensCategories]);
+  }, [lens, lensTargets, visibleAlignment, lensClassifications, lensCategories]);
 
   const sectorShares = useMemo<SectorCoherenceShareSummary | null>(() => {
     if (!lens) return null;
     return buildSectorCoherenceShare({
       targets: lensTargets,
-      alignment: lensAlignment,
+      alignment: visibleAlignment,
       classifications: lensClassifications,
       categories: lensCategories.map((c) => ({ id: c.id, name: c.name })),
       taxonomyType: lens.taxonomyType,
     });
-  }, [lens, lensTargets, lensAlignment, lensClassifications, lensCategories]);
+  }, [lens, lensTargets, visibleAlignment, lensClassifications, lensCategories]);
 
   const sectorSynthesesIndex = useMemo(
     () => indexSectorSyntheses(visibleSectorSyntheses),
@@ -1551,12 +1530,17 @@ export function CoherenceBriefing({
         </div>
       );
     }
+    // Only the Sectors section groups the wheel by lens; every other section
+    // groups by document and keeps showing the whole visible corpus.
+    const lensGrouped = wheelState.groupBy === "sector";
     return (
       <>
         <WheelCenterpiece
-          targets={lensTargets}
-          alignments={lensAlignment}
-          classifications={lensClassifications}
+          targets={lensGrouped ? lensTargets : visibleTargets}
+          alignments={lensGrouped ? lensAlignment : visibleAlignment}
+          classifications={
+            lensGrouped ? lensClassifications : visibleClassifications
+          }
           countryConfig={countryConfig}
           state={wheelState}
           sectorCategories={sectorCategories}
@@ -1787,10 +1771,8 @@ export function CoherenceBriefing({
                 onLensChange={handleLensChange}
                 onOpenSector={openSectorDrawer}
                 onHoverSector={setSectorHoverId}
-                canHideUnclassified={canHideUnclassified}
-                hideUnclassified={hidingUnclassified}
-                onHideUnclassifiedChange={setHideUnclassified}
-                unclassifiedCount={unclassifiedTargetIds.size}
+                corpusTargetCount={visibleTargets.length}
+                unplacedCount={unclassifiedIds.size}
               />
             </div>
             {financing && (

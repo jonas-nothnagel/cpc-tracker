@@ -22,9 +22,6 @@ const FILTER_CYCLE: AlignFilter[] = ["high_contra", "contradictions", "high"];
 
 const OUTLINE_PILL =
   "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-line-strong bg-white px-3.5 py-1.5 text-caption text-[var(--undp-black)] transition-colors hover:border-[var(--undp-black)]";
-const OUTLINE_PILL_ON =
-  "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--undp-black)] bg-[var(--undp-black)] px-3.5 py-1.5 text-caption text-white transition-colors";
-
 function Divider() {
   return <span aria-hidden="true" className="hidden h-4 w-px bg-line lg:block" />;
 }
@@ -61,10 +58,6 @@ export function ControlsStrip({
   countryConfig,
   hasGga,
   hasHr,
-  canHideUnclassified,
-  hideUnclassified,
-  onHideUnclassifiedChange,
-  unclassifiedCount,
 }: {
   view: ViewMode;
   groupMode: GroupMode;
@@ -86,11 +79,6 @@ export function ControlsStrip({
   hasGga?: boolean;
   /** Whether the data carries any primary human rights classification. */
   hasHr?: boolean;
-  /** True when the active grouping has targets it could not place in any theme. */
-  canHideUnclassified?: boolean;
-  hideUnclassified?: boolean;
-  onHideUnclassifiedChange?: (next: boolean) => void;
-  unclassifiedCount?: number;
 }) {
   const t = useTranslations("explorer");
   const isDocGroup = groupMode === "document";
@@ -137,8 +125,6 @@ export function ControlsStrip({
     ? t("workbench.legendHintDocuments")
     : t("workbench.legendHintGroups");
 
-  const hiding = hideUnclassified ?? false;
-
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-line px-5 py-2 sm:px-6">
       {/* Group by */}
@@ -173,16 +159,6 @@ export function ControlsStrip({
               ⇄
             </span>
           </button>
-          {canHideUnclassified && onHideUnclassifiedChange && (
-            <button
-              type="button"
-              aria-pressed={hiding}
-              onClick={() => onHideUnclassifiedChange(!hiding)}
-              className={hiding ? OUTLINE_PILL_ON : OUTLINE_PILL}
-            >
-              {t("controls.hideUnclassified", { count: unclassifiedCount ?? 0 })}
-            </button>
-          )}
         </div>
       ) : (
         <div className="flex flex-wrap items-center gap-2.5">

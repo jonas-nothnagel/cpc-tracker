@@ -767,8 +767,7 @@
         "singleHeadline": "{name} concentra el {pct}% de los {total, number} objetivos clasificados.",
         "everyHeadline": "Los {total, number} objetivos clasificados abarcan los {sectors, number} {nounPlural}, sobre todo en {name}.",
         "topHeadline": "{list} concentran el {pct}% de los {total, number} objetivos clasificados.",
-        "unclassifiedNote": "{count, number} de {total, number} objetivos no coinciden claramente con {nounPlural}.",
-        "noneClassifiedHeadline": "Ningún objetivo coincide claramente con {nounPlural}."
+        "lensScope": "{placed, number} de los {total, number} objetivos se relacionan con alguno de estos {nounPlural}; el resto queda fuera del alcance de esta lente."
       },
       "flag": {
         "none": "Aún no hay relaciones revisadas bajo esta lente.",
@@ -782,7 +781,6 @@
       "flagAriaValue": "{pct, number}% de las relaciones revisadas son una posible desalineación",
       "flagAriaNone": "sin relaciones revisadas bajo esta lente",
       "primaryCount": "{count, number} primarios",
-      "hideUnclassified": "Ocultar los {count, number} objetivos sin tema claro",
       "reading": "Cada <target>meta</target> cuenta una vez, bajo su <primaryTheme>tema principal</primaryTheme>. Cada proporción compara un sector con sus propias parejas."
     },
     "docPairs": {
@@ -1738,8 +1736,7 @@
       "groupGgaTitle": "Agrupar por tema de resiliencia climática (Objetivo Mundial de Adaptación, decisión 2/CMA.5)",
       "groupHrTitle": "Agrupar por tema de derechos humanos (orientación del PNUD; borrador en revisión)",
       "groupOptionGga": "Por adaptación climática",
-      "groupOptionHr": "Por Derechos Humanos",
-      "hideUnclassified": "Ocultar los {count, number} sin tema claro"
+      "groupOptionHr": "Por Derechos Humanos"
     },
     "doc": {
       "mitigation": "Mitigación",
@@ -1778,7 +1775,8 @@
       "centerScanning": "Leyendo…",
       "centerScanningDetail": "{targets, number} metas · {docs, number} documentos",
       "legendResilience": "Adaptación climática",
-      "legendHumanRights": "Tema de derechos humanos"
+      "legendHumanRights": "Tema de derechos humanos",
+      "lensScope": "Esta agrupación abarca {placed, number} de los {total, number} objetivos; el resto queda fuera de su alcance."
     },
     "detailPanel": {
       "closeAria": "Cerrar detalle de la meta",
@@ -1795,7 +1793,6 @@
         "heading": "Por qué este objetivo se agrupa en {category}",
         "headingGeneric": "Por qué este objetivo se agrupa aquí",
         "score": "· relevancia {score}",
-        "unmatched": "Ningún tema alcanzó el umbral de relevancia para este objetivo. Puede que aun así se relacione con estos temas; el análisis no encontró una coincidencia clara.",
         "aiDisclaimer": "Clasificación generada por IA. Trátela como un punto de partida para revisar, no como una conclusión."
       }
     },

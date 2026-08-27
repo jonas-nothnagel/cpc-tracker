@@ -17,7 +17,6 @@
 import { isContradiction } from "@/types";
 import { getDocColor, getDocMediumLabel } from "@/lib/utils";
 import { aggregateAnchorCoverage } from "@/lib/vision-anchor";
-import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
 import type {
   AlignmentLevel,
   AlignmentMechanism,
@@ -648,11 +647,6 @@ export interface CoverageConcentrationStat {
   topNames: string[];
   /** Share of all targets concentrated in `topNames` (0..1). */
   share: number;
-  /** Targets in the derived "no clear theme" bucket. Excluded from every field
-   *  above: the bucket is the ABSENCE of a theme, so folding it into a
-   *  concentration statistic would read as "the corpus is concentrated in
-   *  having no theme". Reported separately by the coverage sentence. */
-  unclassifiedTargets: number;
 }
 
 /**
@@ -666,14 +660,7 @@ export function computeCoverageConcentration(
   sectorRows: SectorTension[],
   targetShare = 0.7,
 ): CoverageConcentrationStat {
-  // The derived "no clear theme" bucket is not a theme — keep it out of the
-  // concentration maths and surface its size on its own.
-  const unclassifiedTargets = sectorRows
-    .filter((r) => isUnclassifiedCategoryId(r.categoryId))
-    .reduce((s, r) => s + r.targetCount, 0);
-  const populated = sectorRows.filter(
-    (r) => r.targetCount > 0 && !isUnclassifiedCategoryId(r.categoryId),
-  );
+  const populated = sectorRows.filter((r) => r.targetCount > 0);
   const totalTargets = populated.reduce((s, r) => s + r.targetCount, 0);
   if (totalTargets === 0) {
     return {
@@ -681,7 +668,6 @@ export function computeCoverageConcentration(
       totalTargets: 0,
       topNames: [],
       share: 0,
-      unclassifiedTargets,
     };
   }
   const sorted = [...populated].sort((a, b) => b.targetCount - a.targetCount);
@@ -698,7 +684,6 @@ export function computeCoverageConcentration(
     totalTargets,
     topNames,
     share: running / totalTargets,
-    unclassifiedTargets,
   };
 }
 
@@ -1922,6 +1907,10 @@ export function buildFlagSubsetProfile(args: {
   for (const c of classifications) {
     if (!c.isPrimary || c.taxonomyType !== taxonomyType) continue;
     if (!targetMap.has(c.targetId)) continue;
+    // Only the lens's own themes: a derived "no clear theme" marker, or an id
+    // from another sector list sharing this taxonomyType, is not a theme and
+    // must never surface as a raw id.
+    if (!catNameById.has(c.categoryId)) continue;
     primaryByTarget.set(c.targetId, c.categoryId);
   }
 
@@ -1974,7 +1963,7 @@ export function buildFlagSubsetProfile(args: {
   const byTheme = [...themeCounts.entries()]
     .map(([categoryId, count]) => ({
       categoryId,
-      categoryName: catNameById.get(categoryId) ?? categoryId,
+      categoryName: catNameById.get(categoryId)!,
       count,
     }))
     .sort((x, y) =>

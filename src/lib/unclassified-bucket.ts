@@ -1,5 +1,5 @@
 /**
- * Explicit "no clear theme" bucket for ranked taxonomy lenses.
+ * "No clear theme" marker for ranked taxonomy lenses.
  *
  * WHY THIS EXISTS
  * `rank_classification` (python/src/classify.py) marks the highest-scoring
@@ -18,12 +18,21 @@
  *
  * WHAT THIS DOES
  * For each configured taxonomy, a target whose records contain no `isRelevant`
- * entry is moved out of its weak primary and into a derived bucket category.
- * The bucket is display-only: it is NEVER written to `categories.json` (which is
- * a pipeline input read by `load_input_data`, so a synthetic category there
- * would be fed to the classifier as if it were source-traced) and never sent to
- * an LLM. Derived records carry `derived: true` so they are distinguishable from
- * pipeline output.
+ * entry has its weak primary demoted and receives a derived
+ * `<taxonomy>_unclassified` primary record instead, so it never counts inside
+ * a real theme. The marker is display-side only: it is NEVER written to
+ * `categories.json` (a pipeline input read by `load_input_data`, so a synthetic
+ * category there would be fed to the classifier as if it were source-traced)
+ * and never sent to an LLM. Derived records carry `derived: true` so they are
+ * distinguishable from pipeline output.
+ *
+ * The marker is NOT listed as a category. Until Aug 2026 the dashboard
+ * appended a "No clear human rights theme" row to the lens, which a
+ * stakeholder review read as though every target ought to carry a rights
+ * theme. Lens surfaces now exclude the marked targets (via
+ * `unclassifiedTargetIds`) and state the lens scope in their coverage
+ * sentence ("N of the M targets connect to one of these themes"), which keeps
+ * the magnitude honest without presenting an absence as a theme.
  *
  * SCOPE
  * Enabled for `hr` only. The same latent issue exists on `nbs` (31 such items)
@@ -43,31 +52,40 @@ export const unclassifiedIdFor = (taxonomyType: string): string =>
 export const isUnclassifiedCategoryId = (categoryId: string): boolean =>
   categoryId.endsWith("_unclassified");
 
-/**
- * English display names for the derived buckets. Project-defined UI copy, not
- * source-traced taxonomy text — deliberately factual about the analysis rather
- * than about the country: a target here may still touch the theme, the analysis
- * simply found no clear match. es/mn live in `category-translations.ts`.
- */
-export const UNCLASSIFIED_NAMES: Record<string, string> = {
-  hr: "No clear human rights theme",
-};
-
-export const UNCLASSIFIED_DESCRIPTIONS: Record<string, string> = {
-  hr:
-    "Targets where no human rights theme scored at or above the relevance " +
-    "threshold. These targets may still touch on human rights; the analysis " +
-    "did not find a clear match to one of the nine themes.",
-};
-
 type Rec = Record<string, unknown>;
 
 /**
- * Move targets with no relevant category into the derived bucket.
+ * Targets whose primary for `taxonomyType` is the derived marker, i.e. the
+ * targets a lens must leave out of its grouped views. Empty for taxonomies
+ * without a marker.
+ */
+export function unclassifiedTargetIds(
+  classifications: ReadonlyArray<{
+    targetId?: unknown;
+    categoryId?: unknown;
+    taxonomyType?: unknown;
+    isPrimary?: unknown;
+  }>,
+  taxonomyType: string,
+): Set<string> {
+  const ids = new Set<string>();
+  for (const c of classifications) {
+    if (
+      c.isPrimary === true &&
+      c.taxonomyType === taxonomyType &&
+      isUnclassifiedCategoryId(String(c.categoryId ?? ""))
+    ) {
+      ids.add(String(c.targetId ?? ""));
+    }
+  }
+  return ids;
+}
+
+/**
+ * Move targets with no relevant category onto the derived marker.
  *
  * Returns the rewritten classification list plus the set of taxonomies that
- * actually needed a bucket, so callers only append the bucket category where it
- * has content (matching how every lens is data-gated).
+ * actually needed a marker.
  */
 export function applyUnclassifiedBuckets(
   classifications: Rec[],
@@ -123,14 +141,4 @@ export function applyUnclassifiedBuckets(
     demote.has(c) ? { ...c, isPrimary: false } : c,
   );
   return { classifications: [...rewritten, ...added], bucketed };
-}
-
-/** The derived bucket category to append to a lens's category list. */
-export function unclassifiedCategory(taxonomyType: string): Rec {
-  return {
-    id: unclassifiedIdFor(taxonomyType),
-    name: UNCLASSIFIED_NAMES[taxonomyType] ?? "No clear theme",
-    description: UNCLASSIFIED_DESCRIPTIONS[taxonomyType] ?? "",
-    derived: true,
-  };
 }
