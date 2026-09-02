@@ -1072,27 +1072,11 @@ export function CoherenceBriefing({
     [openPanel],
   );
 
-  /** Targets per document, over the whole corpus rather than the visible
-   *  subset: an excluded document still shows its real count, because that is
-   *  what the reader needs in order to decide whether to bring it back in. */
-  const targetCountByDoc = useMemo(() => {
-    const counts = new Map<PolicyDocumentType, number>();
-    for (const target of targets) {
-      counts.set(
-        target.sourceDocument,
-        (counts.get(target.sourceDocument) ?? 0) + 1,
-      );
-    }
-    return counts;
-  }, [targets]);
-
   /** EVERYTHING the analysis touches, including the BTR reported-action and BER
    *  budget-line stand-ins that the analytical views deliberately exclude.
-   *
-   *  Feeds the browse bar and the targets drawer ONLY. This widens what a reader
-   *  can open and read; it never changes what the briefing compares, which stays
-   *  on the filtered `targets`. Without this the BTR chip would open an empty
-   *  drawer, because `targets` has both stand-in kinds filtered out upstream. */
+   *  Used to build the browsable doc list, and — for the stand-in chips only —
+   *  the drawer contents below. It never changes what the briefing compares,
+   *  which stays on the filtered `targets`. */
   const browsableTargets = useMemo<Target[]>(() => {
     const byId = new Map<string, Target>();
     for (const target of explorerData) byId.set(target.id, target);
@@ -1102,16 +1086,30 @@ export function CoherenceBriefing({
     return [...byId.values()];
   }, [explorerData, budgetPairTargets]);
 
-  const browsableCountByDoc = useMemo(() => {
+  /** The single set the doc headers COUNT and the doc drawer LISTS, so the two
+   *  never drift — a document's header must equal what its "view targets" drawer
+   *  shows. A real policy document shows only its policy `targets` (its real
+   *  count, over the whole corpus so an excluded doc still shows a real number);
+   *  only the BTR/BER stand-in chips — documents with no policy targets of their
+   *  own — contribute their browsable stand-ins, so those chips still open a
+   *  non-empty drawer. */
+  const drawerTargets = useMemo<Target[]>(() => {
+    const standIns = browsableTargets.filter(
+      (t) => !allDocs.includes(t.sourceDocument),
+    );
+    return [...targets, ...standIns];
+  }, [targets, browsableTargets, allDocs]);
+
+  const displayCountByDoc = useMemo(() => {
     const counts = new Map<PolicyDocumentType, number>();
-    for (const target of browsableTargets) {
+    for (const target of drawerTargets) {
       counts.set(
         target.sourceDocument,
         (counts.get(target.sourceDocument) ?? 0) + 1,
       );
     }
     return counts;
-  }, [browsableTargets]);
+  }, [drawerTargets]);
 
   const browsableDocs = useMemo<PolicyDocumentType[]>(() => {
     const extra = new Set<PolicyDocumentType>();
@@ -1618,7 +1616,7 @@ export function CoherenceBriefing({
           <TargetsBrowseBar
             allDocs={browsableDocs}
             countryConfig={countryConfig}
-            targetCountByDoc={browsableCountByDoc}
+            targetCountByDoc={displayCountByDoc}
             onViewTargets={openDocTargets}
             hiddenDocs={hiddenDocs}
           />
@@ -1629,7 +1627,7 @@ export function CoherenceBriefing({
             countryConfig={countryConfig}
             onToggle={toggleDoc}
             onReset={resetHiddenDocs}
-            targetCountByDoc={targetCountByDoc}
+            targetCountByDoc={displayCountByDoc}
             onViewTargets={openDocTargets}
           />
           {storylineCaveat && (
@@ -1837,7 +1835,7 @@ export function CoherenceBriefing({
                   hiddenDocs={hiddenDocs}
                   countryConfig={countryConfig}
                   onToggle={toggleDoc}
-                  targetCountByDoc={targetCountByDoc}
+                  targetCountByDoc={displayCountByDoc}
                   onViewTargets={openDocTargets}
                 />
               </div>
@@ -1924,7 +1922,7 @@ export function CoherenceBriefing({
         sectorSynthesesIndex={sectorSynthesesIndex}
         totalFlagged={frictionTotals.total}
         totalDocCount={documentCount}
-        allTargets={browsableTargets}
+        allTargets={drawerTargets}
         hiddenDocs={hiddenDocs}
       />
       {/* Expand the active centerpiece to a large overlay so relationships are
