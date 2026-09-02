@@ -61,10 +61,7 @@ import {
   WhereToFocusSection,
 } from "./sections/where-to-focus";
 import { EXPLORE_SECTION_ID, ExploreSection } from "./sections/explore";
-import {
-  FINANCING_SECTION_ID,
-  FinancingSection,
-} from "./sections/financing";
+import { FINANCING_SECTION_ID } from "./sections/financing";
 import {
   IMPLEMENTATION_SECTION_ID,
   ImplementationSection,
@@ -76,6 +73,7 @@ import { DeliveryRoster } from "./centerpiece/delivery-roster";
 import { InstitutionFlow } from "./centerpiece/institution-flow";
 import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
+import { FinancingCoherence } from "@/components/viz/financing-coherence";
 import type {
   WheelFilter,
   WheelFocus,
@@ -1769,17 +1767,23 @@ export function CoherenceBriefing({
                 }
               >
                 {stageMarker(FINANCING_SECTION_ID)}
-                <FinancingSection
-                  summary={financing}
-                  commitmentCount={visibleTargets.length}
-                  coverage={budgetCoverage}
-                  countryConfig={countryConfig}
-                  countryName={countryName}
-                  grid={fundingGrid}
-                  berData={berData}
-                  globeSpend={outcomeBudget}
-                  onOpenBudgetPair={openBudgetPair}
-                />
+                {/* Restored to the data-first "Budget & Financing Coherence"
+                    table (BER expenditure by GLOBE subcategory) per country-
+                    office feedback (Lea, Aug 2026): show the actual budget data
+                    rather than the alignment-inference framing. */}
+                {berData && (
+                  <FinancingCoherence
+                    berData={berData}
+                    targets={targets}
+                    classifications={classifications}
+                    budgetAlignment={budgetAlignment ?? []}
+                    globeCategories={globeCategories}
+                    globeSubcategories={globeSubcategories}
+                    sectors={sectors}
+                    countryConfig={countryConfig}
+                    embedded
+                  />
+                )}
               </div>
             )}
             {implementation && implementationCoverage && (
