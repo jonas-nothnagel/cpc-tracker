@@ -723,13 +723,37 @@ export function assembleDashboardData(
       )
     : null;
 
-  const allTargets = measurePseudoTargets
-    ? [...enrichedTargets, ...measurePseudoTargets]
-    : enrichedTargets;
+  // NR7 (7th National Report to the CBD) pseudo-targets + alignment — the
+  // Level-3 biodiversity-implementation analogue of the BTR measures above.
+  // Inert until a run with `--nr7-file` produces these files, so the merge is a
+  // no-op for every country that has not run the (billable, calibration-pending)
+  // NR7 pass. Reported actions carry sourceDocument="NR7" so the implementation
+  // coverage view groups them exactly like BTR actions.
+  const nr7PseudoTargets = readJson<Record<string, unknown>[]>(
+    join(outputDir, "nr7_pseudo_targets.json")
+  );
+  const nr7AlignmentRaw = readJson<Record<string, unknown>[]>(
+    join(outputDir, "nr7_alignment.json")
+  );
+  const nr7Alignment = nr7AlignmentRaw
+    ? applyAlignmentTranslations(
+        migrateLegacyAlignmentRecords(nr7AlignmentRaw),
+        rationaleOverlay("nr7_alignment.json"),
+        locale,
+      )
+    : null;
 
-  const allAlignment = measureAlignment
-    ? [...(alignment as unknown[]), ...measureAlignment]
-    : alignment;
+  const allTargets = [
+    ...enrichedTargets,
+    ...(measurePseudoTargets ?? []),
+    ...(nr7PseudoTargets ?? []),
+  ];
+
+  const allAlignment = [
+    ...(alignment as unknown[]),
+    ...(measureAlignment ?? []),
+    ...(nr7Alignment ?? []),
+  ];
 
   // Budget alignment (BER data)
   const budgetPseudoTargets = readJson<Record<string, unknown>[]>(
