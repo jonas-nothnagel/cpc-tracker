@@ -146,6 +146,8 @@ import {
   computeActionPlanAlignment,
   computeDeliveryRoster,
   computeImplementationCoverage,
+  selectReportedSources,
+  type ReportedActionSource,
   computeInstitutionFlow,
   type ActionPlanAlignmentSummary,
   type DeliveryRosterModel,
@@ -553,26 +555,35 @@ export function CoherenceBriefing({
   // Empty until confirmed against the BTR's own abbreviations list (raw render).
   const orgMap = useMemo(() => orgAcronymsFor(countryId), [countryId]);
 
-  const hasReportedActions = Boolean(
-    btrData?.mitigationMeasures?.length || nr7PseudoTargets?.length,
-  );
+  const hasBtr = Boolean(btrData?.mitigationMeasures?.length);
   const nr7Actions = useMemo(() => nr7PseudoTargets ?? [], [nr7PseudoTargets]);
+  const hasReportedActions = hasBtr || nr7Actions.length > 0;
   const implementationAlignment = useMemo(
     () => (nr7Alignment?.length ? [...alignment, ...nr7Alignment] : alignment),
     [alignment, nr7Alignment],
+  );
+
+  // Reader's source switch (both / BTR only / NR7 only). Only meaningful when
+  // a country has both reports; otherwise the reads always take what exists.
+  const [implSource, setImplSource] = useState<ReportedActionSource>("both");
+  const hasBothSources = hasBtr && nr7Actions.length > 0;
+  const effectiveSource: ReportedActionSource = hasBothSources ? implSource : "both";
+  const implInputs = useMemo(
+    () => selectReportedSources(effectiveSource, btrData, nr7Actions),
+    [effectiveSource, btrData, nr7Actions],
   );
 
   const implementation = useMemo<ActionPlanAlignmentSummary | null>(() => {
     if (!hasReportedActions) return null;
     return computeActionPlanAlignment(
       implementationAlignment,
-      btrData,
+      implInputs.btrData,
       visibleTargets,
       5,
       orgMap,
-      nr7Actions,
+      implInputs.nr7PseudoTargets,
     );
-  }, [hasReportedActions, implementationAlignment, btrData, visibleTargets, orgMap, nr7Actions]);
+  }, [hasReportedActions, implementationAlignment, implInputs, visibleTargets, orgMap]);
 
   // Coverage: which visible targets have >= 1 strongly aligned reported
   // action (the slide's lead story, mirroring the Financing dot-map).
@@ -580,12 +591,12 @@ export function CoherenceBriefing({
     if (!hasReportedActions) return null;
     return computeImplementationCoverage(
       implementationAlignment,
-      btrData,
+      implInputs.btrData,
       visibleTargets,
       orgMap,
-      nr7Actions,
+      implInputs.nr7PseudoTargets,
     );
-  }, [hasReportedActions, implementationAlignment, btrData, visibleTargets, orgMap, nr7Actions]);
+  }, [hasReportedActions, implementationAlignment, implInputs, visibleTargets, orgMap]);
 
   // The report object for the right column: who is named on the reported
   // actions, with each institution's actions as status-coloured dots.
@@ -1512,7 +1523,13 @@ export function CoherenceBriefing({
         />
       );
     }
-    if (activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster) {
+    // The roster / flow column is built on the BTR's named institutions, so
+    // it steps aside when the reader has switched the slide to NR7 only.
+    if (
+      activeSection === IMPLEMENTATION_SECTION_ID &&
+      deliveryRoster &&
+      effectiveSource !== "nr7"
+    ) {
       return (
         <div>
           {/* Toggle the reported-snapshot column between WHO delivers
@@ -1842,6 +1859,8 @@ export function CoherenceBriefing({
                 <ImplementationSection
                   coverage={implementationCoverage}
                   summary={implementation}
+                  source={effectiveSource}
+                  onSourceChange={hasBothSources ? setImplSource : undefined}
                   nr7Data={nr7Data}
                   countryName={countryName}
                   countryConfig={countryConfig}

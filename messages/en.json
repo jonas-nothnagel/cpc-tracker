@@ -1042,6 +1042,7 @@
       "footer": {
         "sources": "Evidence: {country}'s Biennial Transparency Report (BTR). One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
         "sourcesWithNr7": "Evidence: {country}'s Biennial Transparency Report (BTR) and 7th National Report (NR7) to the CBD. One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
+        "sourcesNr7Only": "Evidence: {country}'s 7th National Report (NR7) to the CBD. One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
         "notIncluded": "Not yet included: indicator time series, budget execution, project-level delivery reporting."
       },
       "misalignment": {
@@ -1056,7 +1057,16 @@
         "implemented": "Implemented"
       },
       "reading": "One dot per <target>target</target>. Filled means the <btr>BTR</btr> reports an action supporting it, not that the target is met.",
-      "readingWithNr7": "One dot per <target>target</target>. Filled means the <btr>BTR</btr> or the <nr7>NR7</nr7> reports an action supporting it, not that the target is met."
+      "readingWithNr7": "One dot per <target>target</target>. Filled means the <btr>BTR</btr> or the <nr7>NR7</nr7> reports an action supporting it, not that the target is met.",
+      "readingNr7Only": "One dot per <target>target</target>. Filled means the <nr7>NR7</nr7> reports an action supporting it, not that the target is met.",
+      "source": {
+        "label": "Evidence from",
+        "both": "Both reports",
+        "btr": "BTR only",
+        "nr7": "NR7 only",
+        "btrTitle": "Biennial Transparency Report",
+        "nr7Title": "7th National Report to the Convention on Biological Diversity"
+      }
     },
     "implementationCenter": {
       "header": {

@@ -35,6 +35,7 @@ import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { TourButton } from "../tour/tour-button";
 import {
   nr7StatusByNbsapTarget,
+  type ReportedActionSource,
   type ActionCoverageDoc,
   type ActionPlanAlignmentSummary,
   type ImplementationCoverage,
@@ -62,6 +63,8 @@ const STATUS_KEYS = ["planned", "adopted", "ongoing", "implemented"];
 export function ImplementationSection({
   coverage,
   summary,
+  source,
+  onSourceChange,
   nr7Data,
   countryName,
   countryConfig,
@@ -69,6 +72,10 @@ export function ImplementationSection({
 }: {
   coverage: ImplementationCoverage;
   summary: ActionPlanAlignmentSummary;
+  /** Which report(s) the numbers on this slide draw on. */
+  source: ReportedActionSource;
+  /** Present only when the country has both reports, so a switch makes sense. */
+  onSourceChange?: (source: ReportedActionSource) => void;
   nr7Data: Nr7Data | null;
   countryName: string;
   countryConfig: CountryConfig | null;
@@ -77,7 +84,21 @@ export function ImplementationSection({
   const t = useTranslations("briefing.implementation");
 
   const sentence = composeSentence(coverage, countryName, t);
-  const hasNr7 = Boolean(nr7Data && nr7Data.progressItems.length > 0);
+  // Which report(s) the reading line and footer should name: what the slide
+  // is currently drawing on, not everything the country has.
+  const usesBtr = coverage.btrActions > 0;
+  const usesNr7 = coverage.nr7Actions > 0;
+  const hasNr7 =
+    Boolean(nr7Data && nr7Data.progressItems.length > 0) || usesNr7;
+  const readingKey = usesNr7 && usesBtr ? "readingWithNr7" : usesNr7 ? "readingNr7Only" : "reading";
+  // With a source selected, the footer names that report alone (the NR7
+  // self-assessment notes on NBSAP rows stay, with their own tooltip).
+  const footerKey =
+    source === "nr7"
+      ? "footer.sourcesNr7Only"
+      : source === "btr" || !hasNr7
+        ? "footer.sources"
+        : "footer.sourcesWithNr7";
   const nr7Status = useMemo(
     () => nr7StatusByNbsapTarget(nr7Data?.progressItems ?? []),
     [nr7Data],
@@ -88,11 +109,7 @@ export function ImplementationSection({
       id={IMPLEMENTATION_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
-      reading={
-        <ReadingLine>
-          {t.rich(coverage.nr7Actions > 0 ? "readingWithNr7" : "reading", glossaryTags())}
-        </ReadingLine>
-      }
+      reading={<ReadingLine>{t.rich(readingKey, glossaryTags())}</ReadingLine>}
       tourButton={
         coverage.hasMeasureAlignment ? (
           <TourButton
@@ -103,22 +120,27 @@ export function ImplementationSection({
         ) : undefined
       }
       evidence={
-        coverage.hasMeasureAlignment ? (
-          <CoverageByDocument
-            coverage={coverage}
-            summary={summary}
-            nr7Status={nr7Status}
-            countryConfig={countryConfig}
-            onOpenActionPair={onOpenActionPair}
-          />
+        coverage.hasMeasureAlignment || onSourceChange ? (
+          <div>
+            {onSourceChange && (
+              <SourceToggle source={source} onChange={onSourceChange} />
+            )}
+            {coverage.hasMeasureAlignment && (
+              <CoverageByDocument
+                coverage={coverage}
+                summary={summary}
+                nr7Status={nr7Status}
+                countryConfig={countryConfig}
+                onOpenActionPair={onOpenActionPair}
+              />
+            )}
+          </div>
         ) : undefined
       }
       disclosure={
         <div className="space-y-1.5">
           <p className="text-caption text-[var(--undp-gray)] max-w-prose">
-            {hasNr7
-              ? t("footer.sourcesWithNr7", { country: countryName })
-              : t("footer.sources", { country: countryName })}
+            {t(footerKey, { country: countryName })}
           </p>
           <p className="text-caption text-[var(--undp-gray)] max-w-prose">
             {t("footer.notIncluded")}
@@ -126,6 +148,52 @@ export function ImplementationSection({
         </div>
       }
     />
+  );
+}
+
+/** Reader's switch between the two self-reported sources. Pills, like the
+ *  roster / flow switch in the centerpiece column; the abbreviations carry
+ *  their full names as tooltips. Every number on the slide follows it. */
+function SourceToggle({
+  source,
+  onChange,
+}: {
+  source: ReportedActionSource;
+  onChange: (source: ReportedActionSource) => void;
+}) {
+  const t = useTranslations("briefing.implementation");
+  const options: { value: ReportedActionSource; label: string; title?: string }[] = [
+    { value: "both", label: t("source.both") },
+    { value: "btr", label: t("source.btr"), title: t("source.btrTitle") },
+    { value: "nr7", label: t("source.nr7"), title: t("source.nr7Title") },
+  ];
+  return (
+    <div
+      role="group"
+      aria-label={t("source.label")}
+      className="flex flex-wrap items-center gap-1.5 mb-3"
+      data-tour="coverage-source"
+    >
+      <span className="text-caption text-[var(--undp-gray)] mr-1">
+        {t("source.label")}
+      </span>
+      {options.map((o) => (
+        <button
+          key={o.value}
+          type="button"
+          onClick={() => onChange(o.value)}
+          aria-pressed={source === o.value}
+          title={o.title}
+          className={`text-caption px-2.5 py-0.5 rounded-full border transition-colors ${
+            source === o.value
+              ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
+              : "text-[var(--undp-gray)] border-gray-300 hover:text-[var(--undp-black)]"
+          }`}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
   );
 }
 

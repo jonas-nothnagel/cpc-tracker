@@ -1042,6 +1042,7 @@
       "footer": {
         "sources": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country}. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
         "sourcesWithNr7": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country} y su 7.º Informe Nacional (NR7) al CDB. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
+        "sourcesNr7Only": "Evidencia: el 7.º Informe Nacional (NR7) de {country} al CDB. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
         "notIncluded": "Aún no incluido: series temporales de indicadores, ejecución presupuestaria, reportes de entrega a nivel de proyecto."
       },
       "misalignment": {
@@ -1056,7 +1057,16 @@
         "implemented": "Implementada"
       },
       "reading": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> reporta una acción que la apoya, no que la meta se haya cumplido.",
-      "readingWithNr7": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> o el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido."
+      "readingWithNr7": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> o el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
+      "readingNr7Only": "Un punto por <target>meta</target>. Relleno significa que el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
+      "source": {
+        "label": "Evidencia de",
+        "both": "Ambos informes",
+        "btr": "Solo BTR",
+        "nr7": "Solo NR7",
+        "btrTitle": "Informe Bienal de Transparencia",
+        "nr7Title": "7.º Informe Nacional al Convenio sobre la Diversidad Biológica"
+      }
     },
     "implementationCenter": {
       "header": {
