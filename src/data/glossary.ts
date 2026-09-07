@@ -43,6 +43,8 @@ export const GLOSSARY_TERMS = [
   "btr",
   /** Level 2 source. */
   "ber",
+  /** Level 3 source, biodiversity side. */
+  "nr7",
 ] as const;
 
 export type GlossaryTermId = (typeof GLOSSARY_TERMS)[number];

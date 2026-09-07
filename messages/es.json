@@ -608,6 +608,9 @@
           "empty": "No hay pares de metas para mostrar."
         },
         "reportedActionTag": "Acción reportada (BTR)",
+        "nr7ActionTag": "Acción reportada (NR7)",
+        "nr7Status": "Autoevaluación del país: {status}",
+        "nr7ReportedUnder": "Reportada bajo la meta nacional {id}: {text}",
         "budgetLineTag": "Línea presupuestaria (BER)",
         "feedback": {
           "prompt": "¿Le resultó útil esta evaluación?",
@@ -1017,6 +1020,8 @@
       },
       "body": {
         "coverage": "El Informe Bienal de Transparencia (BTR) recoge {actions, plural, one {# acción reportada} other {# acciones reportadas}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada, y en {underWay} de ellas esa acción ya está en curso o implementada; {outsideReach} no tienen ninguna en este informe.",
+        "coverageWithNr7": "El Informe Bienal de Transparencia (BTR) recoge {btrActions, plural, one {# acción reportada} other {# acciones reportadas}} y el 7.º Informe Nacional al CDB (NR7) añade {nr7Actions, plural, one {# más} other {# más}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada en cualquiera de los dos informes, y en {underWay} de ellas el país reporta esa acción como en curso, implementada o con avances; {outsideReach} no tienen ninguna en ninguno de los dos.",
+        "coverageNr7Only": "El 7.º Informe Nacional al CDB (NR7) recoge {nr7Actions, plural, one {# acción reportada} other {# acciones reportadas}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada, y en {underWay} de ellas el país reporta avances en esa acción; {outsideReach} no tienen ninguna en este informe.",
         "noCoverage": "La correspondencia entre acciones y metas aún no se ha calculado para este corpus. La columna derecha muestra el contenido del informe: qué acciones, en qué sectores y con qué estado reportado por el país."
       },
       "dotMap": {
@@ -1041,6 +1046,7 @@
       },
       "misalignment": {
         "lead": "{actions, plural, one {# acción reportada muestra} other {# acciones reportadas muestran}} posible desalineación con {commitments, plural, one {# compromiso de política} other {# compromisos de política}}; {underWay, plural, =0 {ninguna está aún en curso} one {# de ellas ya está en curso o implementada} other {# de ellas ya están en curso o implementadas}}. Una meta puede estar abordada por una acción reportada mientras otra va en su contra; si esa acción sigue avanzando, el compromiso puede volverse más difícil de alcanzar.",
+        "leadWithNr7": "{actions, plural, one {# acción reportada muestra} other {# acciones reportadas muestran}} posible desalineación con {commitments, plural, one {# compromiso de política} other {# compromisos de política}}; {underWay, plural, =0 {ninguna de ellas se reporta aún en movimiento} one {# de ellas se reporta en curso, implementada o con avances} other {# de ellas se reportan en curso, implementadas o con avances}}. Una meta puede estar abordada por una acción reportada mientras otra va en su contra; si esa acción sigue avanzando, el compromiso puede volverse más difícil de alcanzar.",
         "pullHeading": "Una acción reportada podría ir en contra"
       },
       "status": {
@@ -1049,7 +1055,8 @@
         "ongoing": "En curso",
         "implemented": "Implementada"
       },
-      "reading": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> reporta una acción que la apoya, no que la meta se haya cumplido."
+      "reading": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> reporta una acción que la apoya, no que la meta se haya cumplido.",
+      "readingWithNr7": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> o el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido."
     },
     "implementationCenter": {
       "header": {
@@ -2635,6 +2642,10 @@
     "ber": {
       "term": "BER",
       "definition": "Revisión del Gasto en Biodiversidad: un análisis de en qué se gastó efectivamente el dinero público destinado a biodiversidad."
+    },
+    "nr7": {
+      "term": "NR7",
+      "definition": "7.º Informe Nacional: el informe que un país presenta ante la convención de biodiversidad de la ONU (CDB) describiendo el avance en sus metas nacionales de biodiversidad."
     }
   }
 }

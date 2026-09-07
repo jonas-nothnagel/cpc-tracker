@@ -1,16 +1,18 @@
 import { describe, it, expect } from "vitest";
 import {
   buildActionMeta,
+  buildReportedActionMeta,
   computeActionPlanAlignment,
   computeDeliveryRoster,
   computeImplementationCoverage,
   computeInstitutionFlow,
+  isNr7UnderWay,
   isUnderWay,
   normalizeOrg,
   nr7StatusByNbsapTarget,
   orgLabelsFor,
 } from "./implementation-coherence";
-import type { AlignmentResult, BTRAction, BtrData, Target } from "@/types";
+import type { AlignmentResult, BTRAction, BtrData, Nr7PseudoTarget, Target } from "@/types";
 
 function mit(name: string, overrides: Partial<BTRAction> = {}): BTRAction {
   return {
@@ -772,5 +774,227 @@ describe("computeInstitutionFlow", () => {
     expect(r.totalSupportedTargets).toBe(0);
     expect(r.coordinationTargets).toBe(0);
     expect(r.bundledInstitutions).toBe(0);
+  });
+});
+
+// ── NR7 reported actions: the second self-reported source ────────────────────
+
+function nr7(
+  id: string,
+  measureStatus: string,
+  overrides: Partial<Nr7PseudoTarget> = {},
+): Nr7PseudoTarget {
+  return {
+    id,
+    text: `${id} narrative`,
+    sourceDocument: "NR7",
+    sourceLabel: `${id} narrative...`,
+    country: "Testland",
+    isQuantitative: false,
+    isTimeBound: false,
+    actionType: "nr7",
+    measureStatus,
+    nbsapTargetId: "NBT_1",
+    nr7ParentTargetId: "NT01",
+    nr7ParentTargetText: "By 2030, parent target",
+    ...overrides,
+  };
+}
+
+describe("isNr7UnderWay", () => {
+  it("reads reported progress (on_track, limited) as under way, nothing else", () => {
+    expect(isNr7UnderWay("on_track")).toBe(true);
+    expect(isNr7UnderWay("limited")).toBe(true);
+    expect(isNr7UnderWay(" Limited ")).toBe(true);
+    expect(isNr7UnderWay("no_progress")).toBe(false);
+    expect(isNr7UnderWay("unknown")).toBe(false);
+    expect(isNr7UnderWay("")).toBe(false);
+  });
+});
+
+describe("buildReportedActionMeta", () => {
+  it("folds BTR measures and NR7 pseudo-targets into one registry keyed by id", () => {
+    const meta = buildReportedActionMeta(
+      btr([mit("Solar", { status: "Ongoing" })]),
+      [nr7("NR7_1", "limited"), nr7("NR7_2", "no_progress")],
+    );
+    expect([...meta.keys()]).toEqual(["BTR_1", "NR7_1", "NR7_2"]);
+    expect(meta.get("BTR_1")).toMatchObject({
+      actionType: "mitigation",
+      status: "Ongoing",
+      underWay: true,
+      institutionLabels: ["Ministry of Energy"],
+    });
+    expect(meta.get("NR7_1")).toMatchObject({
+      name: "NR7_1 narrative...",
+      actionType: "nr7",
+      status: "limited",
+      underWay: true,
+      institutionLabels: [],
+    });
+    expect(meta.get("NR7_2")).toMatchObject({ underWay: false });
+  });
+
+  it("works with either source absent", () => {
+    expect(buildReportedActionMeta(null, [nr7("NR7_1", "on_track")]).size).toBe(1);
+    expect(buildReportedActionMeta(btr([mit("A")]), []).size).toBe(1);
+    expect(buildReportedActionMeta(null, []).size).toBe(0);
+  });
+
+  it("ranks an under-way NR7 action with 'ongoing' and a stalled one below 'planned'", () => {
+    const meta = buildReportedActionMeta(
+      btr([mit("Planned one", { status: "Planned" })]),
+      [nr7("NR7_1", "on_track"), nr7("NR7_2", "unknown")],
+    );
+    expect(meta.get("NR7_1")!.stageRank).toBe(2);
+    expect(meta.get("NR7_2")!.stageRank).toBeLessThan(meta.get("BTR_1")!.stageRank);
+  });
+
+  it("ignores rows that are not NR7 pseudo-targets", () => {
+    const stray = { ...nr7("X_1", "limited"), sourceDocument: "NBSAP" } as unknown as Nr7PseudoTarget;
+    expect(buildReportedActionMeta(null, [stray]).size).toBe(0);
+  });
+});
+
+describe("computeImplementationCoverage with NR7", () => {
+  const targets = [target("NBSAP_1", "NBSAP"), target("NBSAP_2", "NBSAP"), target("NDC_1", "NDC")];
+
+  it("counts an NR7 high pair as coverage with the NR7 status vocabulary on the link", () => {
+    const cov = computeImplementationCoverage(
+      [high("NR7_1", "NBSAP_1")],
+      null,
+      targets,
+      {},
+      [nr7("NR7_1", "limited")],
+    );
+    expect(cov.reached).toBe(1);
+    expect(cov.reachedUnderWay).toBe(1);
+    expect(cov.totalActions).toBe(1);
+    expect(cov.btrActions).toBe(0);
+    expect(cov.nr7Actions).toBe(1);
+    expect(cov.hasMeasureAlignment).toBe(true);
+    const link = cov.byDocument.find((d) => d.doc === "NBSAP")!.links[0];
+    expect(link).toMatchObject({
+      actionId: "NR7_1",
+      actionType: "nr7",
+      actionStatus: "limited",
+      actionUnderWay: true,
+      institutionLabels: [],
+    });
+  });
+
+  it("tallies BTR and NR7 actions separately and together", () => {
+    const cov = computeImplementationCoverage(
+      [],
+      btr([mit("A"), adapt("ADP_1", "B")]),
+      targets,
+      {},
+      [nr7("NR7_1", "on_track"), nr7("NR7_2", "unknown")],
+    );
+    expect(cov.totalActions).toBe(4);
+    expect(cov.btrActions).toBe(2);
+    expect(cov.mitigationActions).toBe(1);
+    expect(cov.adaptationActions).toBe(1);
+    expect(cov.nr7Actions).toBe(2);
+  });
+
+  it("picks the most advanced evidence across sources: implemented BTR beats NR7, NR7 under way beats planned BTR", () => {
+    const cov = computeImplementationCoverage(
+      [
+        high("NR7_1", "NBSAP_1"),
+        high("BTR_1", "NBSAP_1"),
+        high("NR7_1", "NBSAP_2"),
+        high("BTR_2", "NBSAP_2"),
+      ],
+      btr([mit("Done", { status: "Implemented" }), mit("Paper", { status: "Planned" })]),
+      targets,
+      {},
+      [nr7("NR7_1", "on_track")],
+    );
+    const links = cov.byDocument.find((d) => d.doc === "NBSAP")!.links;
+    expect(links.find((l) => l.targetId === "NBSAP_1")!.actionId).toBe("BTR_1");
+    expect(links.find((l) => l.targetId === "NBSAP_2")!.actionId).toBe("NR7_1");
+  });
+
+  it("a stalled NR7 action still covers the target but does not count as under way", () => {
+    const cov = computeImplementationCoverage(
+      [high("NR7_1", "NBSAP_1")],
+      null,
+      targets,
+      {},
+      [nr7("NR7_1", "no_progress")],
+    );
+    expect(cov.reached).toBe(1);
+    expect(cov.reachedUnderWay).toBe(0);
+  });
+
+  it("attaches an NR7 flagged pair to the target's misalignments", () => {
+    const cov = computeImplementationCoverage(
+      [flag("NR7_1", "NDC_1", "fundamental", "why")],
+      null,
+      targets,
+      {},
+      [nr7("NR7_1", "limited")],
+    );
+    expect(cov.targetsWithMisalignment).toBe(1);
+    const ndc = cov.byDocument.find((d) => d.doc === "NDC")!;
+    expect(ndc.flaggedTargets).toBe(1);
+    expect(ndc.uncovered[0].misalignments[0]).toMatchObject({
+      actionId: "NR7_1",
+      actionType: "nr7",
+      actionStatus: "limited",
+      actionUnderWay: true,
+      manageability: "fundamental",
+      rationale: "why",
+    });
+  });
+
+  it("ignores NR7 ids that no pseudo-target explains", () => {
+    const cov = computeImplementationCoverage([high("NR7_9", "NBSAP_1")], null, targets, {}, []);
+    expect(cov.reached).toBe(0);
+    expect(cov.hasMeasureAlignment).toBe(true);
+  });
+
+  it("is unchanged for a BTR-only country (no NR7 argument)", () => {
+    const withDefault = computeImplementationCoverage([high("BTR_1", "NBSAP_1")], btr([mit("A")]), targets);
+    expect(withDefault.reached).toBe(1);
+    expect(withDefault.nr7Actions).toBe(0);
+    expect(withDefault.btrActions).toBe(1);
+  });
+});
+
+describe("computeActionPlanAlignment with NR7", () => {
+  const targets = [target("NBSAP_1", "NBSAP"), target("NDC_1", "NDC")];
+
+  it("ranks NR7 flagged actions alongside BTR ones, with the NR7 status and no institutions", () => {
+    const s = computeActionPlanAlignment(
+      [flag("NR7_1", "NBSAP_1", "manageable"), flag("NR7_1", "NDC_1"), flag("BTR_1", "NDC_1")],
+      btr([mit("Coal", { status: "Ongoing" })]),
+      targets,
+      5,
+      {},
+      [nr7("NR7_1", "no_progress")],
+    );
+    expect(s.totalActions).toBe(2);
+    expect(s.totalFlaggedPairs).toBe(3);
+    expect(s.actionsWithPotentialMisalignment).toBe(2);
+    expect(s.rankedActions[0]).toMatchObject({
+      actionId: "NR7_1",
+      actionType: "nr7",
+      status: "no_progress",
+      underWay: false,
+      potentialMisalignmentCount: 2,
+      institutionLabels: [],
+    });
+    expect(s.actionsUnderWayWithMisalignment).toBe(1); // the ongoing BTR action only
+    expect(s.flaggedCommitments).toBe(2);
+  });
+
+  it("works with no BTR at all", () => {
+    const s = computeActionPlanAlignment([flag("NR7_1", "NBSAP_1")], null, targets, 5, {}, [
+      nr7("NR7_1", "limited"),
+    ]);
+    expect(s.totalActions).toBe(1);
+    expect(s.rankedActions[0].underWay).toBe(true);
   });
 });

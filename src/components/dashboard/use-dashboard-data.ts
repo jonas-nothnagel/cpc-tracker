@@ -23,6 +23,7 @@ import type {
   BtrData,
   BerData,
   Nr7Data,
+  Nr7PseudoTarget,
   CountryConfig,
   DocPairSynthesis,
   SectorSynthesis,
@@ -49,6 +50,11 @@ export interface DashboardData {
   berData: BerData | null;
   budgetAlignment: AlignmentResult[] | null;
   budgetPseudoTargets: Target[] | null;
+  /** NR7 reported actions as pseudo-targets + their alignment against the
+   *  policy targets. Own keys (the budget pattern), never merged into
+   *  `targets`/`alignment`; null for a country without an NR7 run. */
+  nr7Alignment: AlignmentResult[] | null;
+  nr7PseudoTargets: Nr7PseudoTarget[] | null;
   footprint: FootprintSnapshot | null;
   docPairSynthesis: DocPairSynthesis[];
   // Raw payloads carrying the `states` map for the document toggle; the
@@ -75,6 +81,11 @@ function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
   const extras: Record<string, unknown> = {};
   if (t.measureStatus !== undefined) extras.measureStatus = t.measureStatus;
   if (t.expenditure !== undefined) extras.expenditure = t.expenditure;
+  // NR7 reported-action provenance (Nr7PseudoTarget): the parent national
+  // target the narrative was filed under, shown on the pair drawer card.
+  for (const key of ["nbsapTargetId", "nr7ParentTargetId", "nr7ParentTargetText"]) {
+    if (typeof t[key] === "string") extras[key] = t[key];
+  }
 
   let text = String(t.text);
   let sourceLabel = String(t.sourceLabel);
@@ -141,7 +152,9 @@ function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
     // Which elements the target's text states (src/.../target-quality).
     definition: (t.definition as Target["definition"]) ?? undefined,
     actionType:
-      t.actionType === "mitigation" || t.actionType === "adaptation"
+      t.actionType === "mitigation" ||
+      t.actionType === "adaptation" ||
+      t.actionType === "nr7"
         ? t.actionType
         : undefined,
     ...extras,
@@ -180,6 +193,11 @@ export function normalize(raw: DashboardResponse, locale?: string): DashboardDat
     budgetPseudoTargets:
       (r.budgetPseudoTargets as Record<string, unknown>[] | null)?.map((t) =>
         normalizeTarget(t, locale),
+      ) ?? null,
+    nr7Alignment: (r.nr7Alignment as AlignmentResult[] | null) ?? null,
+    nr7PseudoTargets:
+      (r.nr7PseudoTargets as Record<string, unknown>[] | null)?.map(
+        (t) => normalizeTarget(t, locale) as Nr7PseudoTarget,
       ) ?? null,
     footprint: (r.footprint as FootprintSnapshot | null) ?? null,
     docPairSynthesis: (r.docPairSynthesis as DocPairSynthesis[] | null) ?? [],

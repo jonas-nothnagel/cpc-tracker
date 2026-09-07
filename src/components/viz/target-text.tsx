@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import type { Target, BTRActionType, MitigationMeasure } from "@/types";
+import type { Target, ReportedActionType, MitigationMeasure } from "@/types";
 import type { TargetRow } from "@/lib/csv-parser";
 
 /**
@@ -265,7 +265,9 @@ export function MeasureLanguageChip({
  * Small badge labeling a BTR row as "Mitigation" or "Adaptation". Shown next to
  * the BTR source label wherever BTR pseudo-targets appear in lists, so users can
  * tell at a glance whether an action is a mitigation measure (CTF Table 5) or
- * an adaptation action (Table III.9). Returns null for policy targets (no badge).
+ * an adaptation action (Table III.9). Returns null for policy targets (no badge)
+ * and for NR7 reported actions, whose "NR7 Action" doc chip already says what
+ * they are (a second badge would only repeat it).
  *
  * Colors: mitigation uses purple (matches BTR document color `#7c3aed`);
  * adaptation uses fuchsia to avoid clashing with NBSAP teal elsewhere in the
@@ -273,9 +275,9 @@ export function MeasureLanguageChip({
  */
 export { BTR_MITIGATION_COLOR, BTR_ADAPTATION_COLOR } from "@/lib/utils";
 
-export function ActionTypeBadge({ actionType }: { actionType?: BTRActionType }) {
+export function ActionTypeBadge({ actionType }: { actionType?: ReportedActionType }) {
   const t = useTranslations("viz.targetText");
-  if (!actionType) return null;
+  if (!actionType || actionType === "nr7") return null;
   const isAdaptation = actionType === "adaptation";
   const label = isAdaptation ? t("actionType.adaptation") : t("actionType.mitigation");
   // Generic tooltip — country-specific source citations live on the BTR

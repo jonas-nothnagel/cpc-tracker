@@ -1,11 +1,21 @@
 /**
- * Implementation coherence (Level 3) — what the BTR self-reports against the
- * plan.
+ * Implementation coherence (Level 3) — what the country's own reports
+ * (BTR, and where run, NR7) self-report against the plan.
  *
- * FRAMING (hard rule): this is the BTR lens, NOT "the implementation picture".
- * The Biennial Transparency Report is a partial, country-self-reported
- * document. Everything here describes what the BTR reports; copy must stay
- * source-anchored, with the one-lens caveat.
+ * FRAMING (hard rule): this is the self-reported lens, NOT "the implementation
+ * picture". The Biennial Transparency Report and the 7th National Report to
+ * the CBD are partial, country-self-reported documents. Everything here
+ * describes what those reports say; copy must stay source-anchored, with the
+ * one-lens caveat.
+ *
+ * TWO SOURCES, ONE REGISTRY: `buildReportedActionMeta` folds the BTR measures
+ * (`buildActionMeta`) and the NR7 reported-action pseudo-targets into one map
+ * keyed by pseudo-target id, so the coverage map and the review list treat a
+ * reported action the same way whichever report it came from. NR7 carries no
+ * lifecycle stage and names no institutions: its `status` is the country's
+ * self-assessed progress on the parent national target, and "under way" is
+ * derived from that (see `isNr7UnderWay`). The roster and the institution
+ * flow stay BTR-only because they are built on named institutions.
  *
  * THE MESSAGE this powers (one coverage map carrying BOTH readings): which
  * parts of the policy plan have at least one strongly aligned reported action,
@@ -27,6 +37,8 @@ import type {
   BTRAction,
   BTRActionType,
   BtrData,
+  Nr7PseudoTarget,
+  ReportedActionType,
   Target,
 } from "@/types";
 
@@ -46,11 +58,13 @@ export interface StrainedCommitment {
 
 /** A reported action with >= 1 potential misalignment against the plan. */
 export interface StrainedAction {
-  /** Pseudo-target id: "BTR_3" (mitigation, positional) | "ADP_3_1_1" (adaptation). */
+  /** Pseudo-target id: "BTR_3" (mitigation, positional) | "ADP_3_1_1"
+   *  (adaptation) | "NR7_3" (NR7 reported action). */
   actionId: string;
   actionName: string;
-  actionType: BTRActionType;
-  /** Country-reported status (raw string, e.g. "Ongoing"). */
+  actionType: ReportedActionType;
+  /** Country-reported status, raw: a BTR lifecycle stage ("Ongoing") or, for
+   *  NR7, the self-assessed progress key on the parent target ("limited"). */
   status: string;
   /** True when the action is reported as ongoing or implemented. */
   underWay: boolean;
@@ -67,7 +81,8 @@ export interface StrainedAction {
 }
 
 export interface ActionPlanAlignmentSummary {
-  /** Reported actions in the BTR (mitigation + adaptation). */
+  /** Reported actions across the sources present (BTR mitigation + adaptation,
+   *  plus NR7 when run). */
   totalActions: number;
   /** Reported actions with >= 1 flagged action↔commitment pair. */
   actionsWithPotentialMisalignment: number;
@@ -89,7 +104,12 @@ export interface ActionPlanAlignmentSummary {
   actionsToHalf: number;
 }
 
+/** BTR pseudo-target ids (mitigation, adaptation fallback, hand-curated
+ *  adaptation). Used by the BTR-only reads (roster, institution flow). */
 const BTR_ID = /^(BTR|BTRA|ADP)_/;
+/** Any reported-action pseudo-target id, BTR or NR7. Used by the coverage and
+ *  review reads, which take both sources. */
+const REPORTED_ACTION_ID = /^(BTR|BTRA|ADP|NR7)_/;
 
 /**
  * Mirror of the pipeline's id assignment in `measures_to_pseudo_targets`
@@ -128,6 +148,79 @@ export function buildActionMeta(
   return map;
 }
 
+/** One reported action from any self-reported source, normalised for the
+ *  coverage and review reads. */
+export interface ReportedActionMeta {
+  name: string;
+  actionType: ReportedActionType;
+  /** Raw country-reported string: a BTR lifecycle stage ("Ongoing") or, for
+   *  NR7, the self-assessed progress key on the parent national target
+   *  ("limited"). Different vocabularies; the UI localises each by type. */
+  status: string;
+  /** True when the report says this action is moving, not only on paper. */
+  underWay: boolean;
+  /** Cross-source stage rank, used only to pick ONE evidence link per target
+   *  (most advanced wins). BTR uses the lifecycle index; an NR7 action ranks
+   *  with "ongoing" when under way, below "planned" otherwise. */
+  stageRank: number;
+  /** Institutions named on the action (BTR only; NR7 names none). */
+  institutionLabels: string[];
+}
+
+/**
+ * "Under way" for an NR7 reported action. NR7 has no per-action lifecycle:
+ * the pseudo-target's status is the country's self-assessed progress on the
+ * PARENT national target. Progress reported (`on_track`, `limited`) reads as
+ * under way; `no_progress` and `unknown` conservatively do not, so a
+ * narrative filed under a target the country itself rates "no progress"
+ * never counts as delivery in motion.
+ */
+export const isNr7UnderWay = (status: string): boolean => {
+  const k = status.trim().toLowerCase();
+  return k === "on_track" || k === "limited";
+};
+
+/**
+ * The reported-action registry: BTR measures (via `buildActionMeta`, so the
+ * id rules stay in one place) plus NR7 reported-action pseudo-targets, keyed
+ * by pseudo-target id. Either source may be absent; a country with only one
+ * report gets a registry of that report alone.
+ */
+export function buildReportedActionMeta(
+  btrData: BtrData | null,
+  nr7PseudoTargets: readonly Nr7PseudoTarget[] = [],
+  sourcedMap: Record<string, string> = SOURCED_ORG_EXPANSIONS,
+): Map<string, ReportedActionMeta> {
+  const map = new Map<string, ReportedActionMeta>();
+  if (btrData) {
+    for (const [id, meta] of buildActionMeta(btrData)) {
+      const status = (meta.measure.status ?? "").trim();
+      map.set(id, {
+        name: meta.name,
+        actionType: meta.actionType,
+        status,
+        underWay: isUnderWay(status),
+        stageRank: statusRank(status),
+        institutionLabels: orgLabelsFor(meta.measure, sourcedMap),
+      });
+    }
+  }
+  for (const pt of nr7PseudoTargets) {
+    if (pt.sourceDocument !== "NR7" || !pt.id) continue;
+    const status = (pt.measureStatus ?? "").trim();
+    const underWay = isNr7UnderWay(status);
+    map.set(pt.id, {
+      name: pt.sourceLabel || pt.id,
+      actionType: "nr7",
+      status,
+      underWay,
+      stageRank: underWay ? statusRank("ongoing") : -1,
+      institutionLabels: [],
+    });
+  }
+  return map;
+}
+
 function worstManageability(
   a: AlignmentManageability | null,
   b: AlignmentManageability | null,
@@ -139,12 +232,13 @@ function worstManageability(
 
 export function computeActionPlanAlignment(
   alignment: AlignmentResult[],
-  btrData: BtrData,
+  btrData: BtrData | null,
   policyTargets: Target[],
   cap = 5,
   sourcedMap: Record<string, string> = SOURCED_ORG_EXPANSIONS,
+  nr7PseudoTargets: readonly Nr7PseudoTarget[] = [],
 ): ActionPlanAlignmentSummary {
-  const actionMeta = buildActionMeta(btrData);
+  const actionMeta = buildReportedActionMeta(btrData, nr7PseudoTargets, sourcedMap);
   const policyById = new Map(policyTargets.map((t) => [t.id, t]));
 
   const perAction = new Map<
@@ -162,11 +256,11 @@ export function computeActionPlanAlignment(
 
   for (const pair of alignment) {
     if (pair.alignment !== "flagged") continue;
-    const aBtr = BTR_ID.test(pair.targetAId);
-    const bBtr = BTR_ID.test(pair.targetBId);
-    if (aBtr === bBtr) continue; // exactly one BTR side
-    const actionId = aBtr ? pair.targetAId : pair.targetBId;
-    const policyId = aBtr ? pair.targetBId : pair.targetAId;
+    const aAct = REPORTED_ACTION_ID.test(pair.targetAId);
+    const bAct = REPORTED_ACTION_ID.test(pair.targetBId);
+    if (aAct === bAct) continue; // exactly one reported-action side
+    const actionId = aAct ? pair.targetAId : pair.targetBId;
+    const policyId = aAct ? pair.targetBId : pair.targetAId;
     const policy = policyById.get(policyId);
     if (!policy) continue;
     if (!actionMeta.has(actionId)) continue;
@@ -204,17 +298,16 @@ export function computeActionPlanAlignment(
   const rankedActions: StrainedAction[] = [...perAction.entries()]
     .map(([actionId, e]) => {
       const meta = actionMeta.get(actionId)!;
-      const status = (meta.measure.status ?? "").trim();
       return {
         actionId,
         actionName: meta.name,
         actionType: meta.actionType,
-        status,
-        underWay: isUnderWay(status),
+        status: meta.status,
+        underWay: meta.underWay,
         potentialMisalignmentCount: e.pairs,
         manageableCount: e.manageable,
         fundamentalCount: e.fundamental,
-        institutionLabels: orgLabelsFor(meta.measure, sourcedMap),
+        institutionLabels: meta.institutionLabels,
         commitments: [...e.commitments.values()].sort(rankByManageabilityThenLabel),
       };
     })
@@ -345,8 +438,9 @@ export const isUnderWay = (s: string): boolean => {
 export interface TargetMisalignmentLink {
   actionId: string;
   actionName: string;
-  actionType: BTRActionType;
-  /** Country-reported status of the action (raw string, e.g. "Ongoing"). */
+  actionType: ReportedActionType;
+  /** Country-reported status, raw: a BTR stage ("Ongoing") or, for NR7, the
+   *  self-assessed progress key on the parent target ("limited"). */
   actionStatus: string;
   /** True when the action is reported as ongoing or implemented. */
   actionUnderWay: boolean;
@@ -362,11 +456,12 @@ export interface ActionCoverageLink {
   targetLabel: string;
   /** Full commitment text (tooltip / detail). */
   targetText: string;
-  /** Pseudo-target id of the reported action ("BTR_3" | "ADP_3_1_1"). */
+  /** Pseudo-target id of the reported action ("BTR_3" | "ADP_3_1_1" | "NR7_3"). */
   actionId: string;
   actionName: string;
-  actionType: BTRActionType;
-  /** Country-reported status of the action (raw string, e.g. "Ongoing"). */
+  actionType: ReportedActionType;
+  /** Country-reported status, raw: a BTR stage ("Ongoing") or, for NR7, the
+   *  self-assessed progress key on the parent target ("limited"). */
   actionStatus: string;
   /** True when the action is reported as ongoing or implemented. */
   actionUnderWay: boolean;
@@ -411,12 +506,17 @@ export interface ImplementationCoverage {
   total: number;
   /** Visible targets with none in this report (= total - reached). */
   outsideReach: number;
-  /** Distinct reported actions in the BTR (mitigation + adaptation). */
+  /** Distinct reported actions across the sources present (BTR mitigation +
+   *  adaptation, plus NR7 when run). */
   totalActions: number;
   mitigationActions: number;
   adaptationActions: number;
+  /** BTR reported actions (mitigation + adaptation); 0 without a BTR. */
+  btrActions: number;
+  /** NR7 reported actions; 0 for a country without an NR7 alignment run. */
+  nr7Actions: number;
   /**
-   * True when the alignment array carries ANY measure↔target pair (at any
+   * True when the alignment array carries ANY action↔target pair (at any
    * level). False means the action-to-target match has not been computed for
    * this corpus (possible on the upload path) — distinct from "computed, zero
    * strong matches", which is a real finding.
@@ -429,8 +529,8 @@ export interface ImplementationCoverage {
 }
 
 /**
- * How far the BTR's reported actions REACH into the policy plan, via the
- * pipeline's measure↔target alignment. We count only HIGH links — medium marks
+ * How far the reported actions (BTR, and NR7 where run) REACH into the policy
+ * plan, via the pipeline's action↔target alignment. We count only HIGH links — medium marks
  * ~99% of targets in both pilot corpora and would wash out the signal (same
  * rule as `computeBudgetCoverage`). So a target is "addressed" when at least
  * one reported action aligns HIGH with it. This says a reported action EXISTS
@@ -443,11 +543,12 @@ export interface ImplementationCoverage {
  */
 export function computeImplementationCoverage(
   alignment: AlignmentResult[],
-  btrData: BtrData,
+  btrData: BtrData | null,
   visibleTargets: Target[],
   sourcedMap: Record<string, string> = SOURCED_ORG_EXPANSIONS,
+  nr7PseudoTargets: readonly Nr7PseudoTarget[] = [],
 ): ImplementationCoverage {
-  const actionMeta = buildActionMeta(btrData);
+  const actionMeta = buildReportedActionMeta(btrData, nr7PseudoTargets, sourcedMap);
   const targetById = new Map(visibleTargets.map((t) => [t.id, t]));
 
   // Best high link per covered target: the aligned action with the most
@@ -456,21 +557,21 @@ export function computeImplementationCoverage(
   // collects the counter-current read: flagged pairs, i.e. reported actions
   // that may pull AGAINST a target (deduped per action, worst manageability).
   const linkByTarget = new Map<string, ActionCoverageLink>();
+  const existingRank = new Map<string, number>();
   const flaggedByTarget = new Map<string, Map<string, TargetMisalignmentLink>>();
   let hasMeasureAlignment = false;
   for (const pair of alignment) {
-    const aBtr = BTR_ID.test(pair.targetAId);
-    const bBtr = BTR_ID.test(pair.targetBId);
-    if (aBtr === bBtr) continue; // exactly one measure side
+    const aAct = REPORTED_ACTION_ID.test(pair.targetAId);
+    const bAct = REPORTED_ACTION_ID.test(pair.targetBId);
+    if (aAct === bAct) continue; // exactly one reported-action side
     hasMeasureAlignment = true;
     if (pair.alignment !== "high" && pair.alignment !== "flagged") continue;
-    const actionId = aBtr ? pair.targetAId : pair.targetBId;
-    const policyId = aBtr ? pair.targetBId : pair.targetAId;
+    const actionId = aAct ? pair.targetAId : pair.targetBId;
+    const policyId = aAct ? pair.targetBId : pair.targetAId;
     const meta = actionMeta.get(actionId);
     if (!meta) continue;
     const target = targetById.get(policyId);
     if (!target) continue;
-    const status = (meta.measure.status ?? "").trim();
 
     if (pair.alignment === "flagged") {
       let perTarget = flaggedByTarget.get(policyId);
@@ -483,8 +584,8 @@ export function computeImplementationCoverage(
         actionId,
         actionName: meta.name,
         actionType: meta.actionType,
-        actionStatus: status,
-        actionUnderWay: isUnderWay(status),
+        actionStatus: meta.status,
+        actionUnderWay: meta.underWay,
         manageability: worstManageability(
           prev?.manageability ?? null,
           pair.manageability ?? null,
@@ -494,9 +595,10 @@ export function computeImplementationCoverage(
       continue;
     }
 
+    // Most advanced stage wins across sources (see `ReportedActionMeta.stageRank`).
     const existing = linkByTarget.get(policyId);
-    if (existing && statusRank(existing.actionStatus) >= statusRank(status))
-      continue;
+    if (existing && existingRank.get(policyId)! >= meta.stageRank) continue;
+    existingRank.set(policyId, meta.stageRank);
     linkByTarget.set(policyId, {
       targetId: policyId,
       targetLabel: target.sourceLabel ?? policyId,
@@ -504,10 +606,10 @@ export function computeImplementationCoverage(
       actionId,
       actionName: meta.name,
       actionType: meta.actionType,
-      actionStatus: status,
-      actionUnderWay: isUnderWay(status),
+      actionStatus: meta.status,
+      actionUnderWay: meta.underWay,
       rationale: pair.description ?? "",
-      institutionLabels: orgLabelsFor(meta.measure, sourcedMap),
+      institutionLabels: meta.institutionLabels,
       misalignments: [],
     });
   }
@@ -571,8 +673,10 @@ export function computeImplementationCoverage(
 
   let mitigationActions = 0;
   let adaptationActions = 0;
+  let nr7Actions = 0;
   for (const meta of actionMeta.values()) {
-    if (meta.actionType === "adaptation") adaptationActions += 1;
+    if (meta.actionType === "nr7") nr7Actions += 1;
+    else if (meta.actionType === "adaptation") adaptationActions += 1;
     else mitigationActions += 1;
   }
 
@@ -589,6 +693,8 @@ export function computeImplementationCoverage(
     totalActions: actionMeta.size,
     mitigationActions,
     adaptationActions,
+    btrActions: mitigationActions + adaptationActions,
+    nr7Actions,
     hasMeasureAlignment,
     targetsWithMisalignment,
     byDocument,

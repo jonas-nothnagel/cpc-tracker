@@ -30,6 +30,8 @@ import {
 import {
   useAlignmentLabels,
   useContradictionTypeLabels,
+  useNr7BadgeLabels,
+  type Nr7Status,
 } from "@/lib/labels";
 import { DrawerHeader } from "@/components/ui/drawer-shell";
 import { isContradiction } from "@/types";
@@ -42,6 +44,7 @@ import type {
   AlignmentResult,
   CountryConfig,
   DocPairSynthesis,
+  Nr7PseudoTarget,
   Target,
 } from "@/types";
 
@@ -247,13 +250,23 @@ function TargetCard({
   const docLabel = getDocMediumLabel(countryConfig, target.sourceDocument);
   const docFull = getDocFullLabel(countryConfig, target.sourceDocument);
   // Reported-action and budget-line stand-ins carry reserved doc tokens ("BTR"
-  // / "BER"), set both by the pipeline's pseudo-targets and by the briefing's
-  // synthetic stand-ins; policy documents never use them. An explicit field
-  // beats id-prefix sniffing, which would misfire on uploaded document
-  // abbreviations (e.g. "ADP") or hand-curated action ids.
+  // / "NR7" / "BER"), set both by the pipeline's pseudo-targets and by the
+  // briefing's synthetic stand-ins; policy documents never use them. An
+  // explicit field beats id-prefix sniffing, which would misfire on uploaded
+  // document abbreviations (e.g. "ADP") or hand-curated action ids.
   const isReportedAction = target.sourceDocument === "BTR";
+  const isNr7Action = target.sourceDocument === "NR7";
   const isBudgetLine = target.sourceDocument === "BER";
-  const isStandIn = isReportedAction || isBudgetLine;
+  const isStandIn = isReportedAction || isNr7Action || isBudgetLine;
+  // The NR7 stand-in IS the pipeline's pseudo-target: `measureStatus` is the
+  // country's self-assessment on the parent national target (not a lifecycle
+  // stage), and the parent target itself is named under the narrative.
+  const nr7 = isNr7Action ? (target as Nr7PseudoTarget) : null;
+  const nr7Labels = useNr7BadgeLabels();
+  const nr7StatusKey = (nr7?.measureStatus ?? "").trim().toLowerCase();
+  const nr7StatusLabel = nr7
+    ? (nr7Labels[nr7StatusKey as Nr7Status] ?? nr7.measureStatus)
+    : "";
   const standInColor = getDocColor(countryConfig, target.sourceDocument);
   // The reported-action stand-in's sourceLabel carries the country-reported
   // status; localize the four known stages so the card matches the slide's
@@ -264,9 +277,16 @@ function TargetCard({
     : target.sourceLabel;
   const tagLine = isReportedAction
     ? [t("reportedActionTag"), actionStatusLabel].filter(Boolean).join(" · ")
-    : isBudgetLine
-      ? [t("budgetLineTag"), target.sourceLabel].filter(Boolean).join(" · ")
-      : `${docLabel} · ${target.sourceLabel}`;
+    : isNr7Action
+      ? [
+          t("nr7ActionTag"),
+          nr7StatusLabel ? t("nr7Status", { status: nr7StatusLabel }) : "",
+        ]
+          .filter(Boolean)
+          .join(" · ")
+      : isBudgetLine
+        ? [t("budgetLineTag"), target.sourceLabel].filter(Boolean).join(" · ")
+        : `${docLabel} · ${target.sourceLabel}`;
   return (
     <div
       className="rounded-md border p-4"
@@ -290,6 +310,14 @@ function TargetCard({
       <p className="text-body text-[var(--undp-black)] leading-relaxed">
         {target.text}
       </p>
+      {nr7?.nr7ParentTargetText && (
+        <p className="mt-2 text-caption text-[var(--undp-gray)] leading-relaxed">
+          {t("nr7ReportedUnder", {
+            id: nr7.nr7ParentTargetId ?? "",
+            text: nr7.nr7ParentTargetText.replace(/\s+/g, " ").trim(),
+          })}
+        </p>
+      )}
       {/* The elements chip already reports measurable and deadline among its
           five, so it replaces the two badges rather than sitting beside them.
           Stand-ins (BTR / BER) and countries with no target_quality.json carry

@@ -132,10 +132,11 @@ export interface Target {
   /** Set alongside `textTranslation`: the language `text` is currently in. */
   textLocale?: string;
   /**
-   * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
-   * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
+   * For reported-action pseudo-targets: a BTR mitigation measure, a BTR
+   * adaptation action, or an NR7 reported action. Undefined for policy targets
+   * (NDC/NBSAP/NAP/...).
    */
-  actionType?: BTRActionType;
+  actionType?: ReportedActionType;
   /**
    * Verbatim source span(s) this target was extracted from. At least one entry expected for
    * targets that went through the extraction pipeline; legacy entries pre-dating the schema
@@ -149,6 +150,11 @@ export interface Target {
 
 /** Kind of reported action from a Biennial Transparency Report. */
 export type BTRActionType = "mitigation" | "adaptation";
+
+/** Kind of reported action across the self-reported implementation sources:
+ *  the BTR's mitigation / adaptation rows, or a reported action from the 7th
+ *  National Report to the CBD (NR7). */
+export type ReportedActionType = BTRActionType | "nr7";
 
 /**
  * Provenance for a data point — cited to a primary document so users can audit it.
@@ -1216,6 +1222,24 @@ export interface Nr7Data {
   country: string;
   reportingPeriod: string;
   progressItems: Nr7ProgressItem[];
+}
+
+/**
+ * One NR7 reported action as a pseudo-target (python/src/nr7_align.py
+ * `nr7_actions_to_pseudo_targets`). Ships on its own payload key
+ * (`nr7PseudoTargets`), never inside `targets`, so it is not counted as a
+ * policy target. `measureStatus` is the country's self-assessed progress on
+ * the PARENT national target, not a lifecycle stage of the action itself.
+ */
+export interface Nr7PseudoTarget extends Target {
+  sourceDocument: "NR7";
+  actionType: "nr7";
+  measureStatus: Nr7ProgressItem["progressStatus"] | string;
+  /** NBSAP target the parent national target maps to (e.g. "NBT_3"). */
+  nbsapTargetId?: string;
+  /** The NR7's own id for the parent national target (e.g. "NT03"). */
+  nr7ParentTargetId?: string;
+  nr7ParentTargetText?: string;
 }
 
 

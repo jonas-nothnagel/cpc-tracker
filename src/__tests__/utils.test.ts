@@ -162,6 +162,14 @@ describe("getDocLabel", () => {
     expect(getDocLabel(mongoliaConfig, "BTR_ADP")).toBe("BTR Adaptation");
   });
 
+  it("returns the reserved NR7 short label for NR7 reported-action stand-ins", () => {
+    expect(getDocLabel(null, "NR7")).toBe("NR7 Action");
+    expect(getDocLabel(mongoliaConfig, "NR7")).toBe("NR7 Action");
+    // Reserved tokens order after every country document: BTR, BTR_ADP, NR7, OTHER.
+    expect(getDocTypeOrder(null, "NR7")).toBeGreaterThan(getDocTypeOrder(null, "BTR_ADP"));
+    expect(getDocTypeOrder(null, "NR7")).toBeLessThan(getDocTypeOrder(null, "OTHER"));
+  });
+
   it("returns the reserved OTHER short label even without a country config", () => {
     expect(getDocLabel(null, "OTHER")).toBe("Other");
     expect(getDocLabel(mongoliaConfig, "OTHER")).toBe("Other");
