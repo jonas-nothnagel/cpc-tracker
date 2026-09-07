@@ -434,6 +434,13 @@ export interface DashboardResponse {
   berData: unknown;
   budgetAlignment: unknown[] | null;
   budgetPseudoTargets: Record<string, unknown>[] | null;
+  /** NR7 reported actions + their alignment (Level-3 biodiversity
+   *  implementation). Separate keys like budget, NOT merged into `targets`:
+   *  the frontend's reported-action test is `sourceDocument === "BTR"`, so a
+   *  merged NR7 row would be counted as a policy target. Null until a run
+   *  with scripts/run_nr7_alignment.py produces the files. */
+  nr7Alignment: unknown[] | null;
+  nr7PseudoTargets: Record<string, unknown>[] | null;
   footprint: Record<string, unknown> | null;
   docPairSynthesis: unknown[];
   corpusThemes: Record<string, unknown> | null;
@@ -725,10 +732,10 @@ export function assembleDashboardData(
 
   // NR7 (7th National Report to the CBD) pseudo-targets + alignment — the
   // Level-3 biodiversity-implementation analogue of the BTR measures above.
-  // Inert until a run with `--nr7-file` produces these files, so the merge is a
-  // no-op for every country that has not run the (billable, calibration-pending)
-  // NR7 pass. Reported actions carry sourceDocument="NR7" so the implementation
-  // coverage view groups them exactly like BTR actions.
+  // Exposed as their own payload keys (the budget pattern) rather than merged
+  // into `targets`/`alignment`: 29 frontend sites test "reported action" as
+  // `sourceDocument === "BTR"`, so a merged NR7 row would be miscounted as a
+  // policy target. Null for every country without an NR7 run.
   const nr7PseudoTargets = readJson<Record<string, unknown>[]>(
     join(outputDir, "nr7_pseudo_targets.json")
   );
@@ -746,13 +753,11 @@ export function assembleDashboardData(
   const allTargets = [
     ...enrichedTargets,
     ...(measurePseudoTargets ?? []),
-    ...(nr7PseudoTargets ?? []),
   ];
 
   const allAlignment = [
     ...(alignment as unknown[]),
     ...(measureAlignment ?? []),
-    ...(nr7Alignment ?? []),
   ];
 
   // Budget alignment (BER data)
@@ -917,6 +922,8 @@ export function assembleDashboardData(
       berData: berData ?? null,
       budgetAlignment: budgetAlignment ?? null,
       budgetPseudoTargets: budgetPseudoTargets ?? null,
+      nr7Alignment: nr7Alignment ?? null,
+      nr7PseudoTargets: nr7PseudoTargets ?? null,
       footprint: footprint ?? null,
       docPairSynthesis: docPairSynthesis ?? [],
       corpusThemes: corpusThemes ?? null,
