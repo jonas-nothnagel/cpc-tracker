@@ -19,10 +19,17 @@ CALIBRATION TODO (Julien): the biodiversity-specific framing below
 (`NR7_INTRO_FRAMING`) has NOT been calibrated against expert-rated NR7 pairs the
 way the BTR/target-target prompts were (prompt v2.2 round-2). Before any results
 from this module are surfaced as anything other than a clearly-labelled scaffold
-preview, run a calibration pass on a sample of Mongolia NR7 pairs and record the
-outcome (mirror `project_prompt_v22_calibration`). The cache namespace is
-deliberately fresh (`nr7_alignment_v1`) so a post-calibration wording change can
-bump it without touching any other cache.
+preview, run a calibration pass on a sample of Mongolia NR7 pairs
+(`scripts/run_nr7_alignment.py --actions NT01,NT03,...`) and record the outcome
+(mirror `project_prompt_v22_calibration`). Open decision for that pass: whether
+one national target's Main Actions Summary is one reported action (the current
+input, python/src/nr7_ort.py) or should be split into several.
+
+Cost note (2026-09): the NR7 prompt is the measure advisor prompt with the pair
+moved to the END (`NR7_ADVISOR_USER_TEMPLATE`), so provider prompt caching can
+discount the ~75% of every call that is the unchanged rubric. The cache
+namespace is `nr7_alignment_v2` for that reordering; v1 holds the 2026-09-07
+run on the PDF-scraped input. Bump again whenever the wording changes.
 """
 
 from __future__ import annotations
@@ -50,11 +57,10 @@ logger = logging.getLogger(__name__)
 # NR7 alignment prompt configuration
 # ---------------------------------------------------------------------------
 
-# Fresh namespace: no NR7 alignment cache has ever existed. Bump this (v2, ...)
-# whenever the NR7 framing wording below changes so responses from different
-# revisions never share a cache dir. See the CALIBRATION TODO in the module
-# docstring before the first production run.
-NR7_CACHE_NAMESPACE = "nr7_alignment_v1"
+# v1: first run (2026-09-07), pair-in-the-middle prompt, PDF-scraped input.
+# v2: rubric-first prompt (see NR7_ADVISOR_USER_TEMPLATE). Bump whenever the
+# prompt wording or order changes so revisions never share a cache dir.
+NR7_CACHE_NAMESPACE = "nr7_alignment_v2"
 
 NR7_ADVISOR_SYSTEM = (
     "You are an Implementation Alignment Advisor, ensuring factual, graded "
@@ -91,6 +97,94 @@ NR7_INTRO_FRAMING = (
     'action" or "the action". Never call the reported action a target, and never '
     'write "both targets".\n'
 )
+
+
+# ---------------------------------------------------------------------------
+# Rubric-first advisor prompt (provider prompt-cache friendly)
+# ---------------------------------------------------------------------------
+#
+# The measure advisor template puts the pair in the MIDDLE: ~2.3k chars of role
+# text, then the two decompositions, then ~14.5k chars of rubric and worked
+# examples. Provider prompt caching (OpenAI / Azure OpenAI) discounts only an
+# identical prefix of at least 1,024 tokens, so with the pair in the middle no
+# call qualifies and the same rubric is billed in full on every one of
+# thousands of calls (the 2026-09-07 run: ~5.2k input tokens per pair, 76% of
+# them the rubric).
+#
+# The NR7 prompt therefore moves the pair to the END. The rubric wording is
+# untouched (pinned by tests/test_nr7_align.py); the only project-defined edits
+# are the one-line pointer that replaces step 1's inline pair and the
+# "The pair:" heading. The reported action is listed BEFORE the policy target
+# so that, with calls grouped action by action (generate_nr7_pairs), everything
+# except the target decomposition is a shared prefix across each group of
+# len(targets) calls.
+_MEASURE_PAIR_BLOCK = (
+    "    1. Analyze the following pair (structured analysis from Target Analyst):\n"
+    "       - {target_1_type}: {target_1_decomp}\n"
+    "       - {target_2_type}: {target_2_decomp}\n"
+)
+_NR7_PAIR_POINTER = (
+    '    1. Analyze the pair given under "The pair" at the end of this message '
+    "(structured analysis from Target Analyst).\n"
+)
+_NR7_PAIR_TAIL = (
+    "\n    The pair:\n"
+    "       - {target_2_type}: {target_2_decomp}\n"
+    "       - {target_1_type}: {target_1_decomp}\n"
+)
+if _MEASURE_PAIR_BLOCK not in MEASURE_ADVISOR_USER_TEMPLATE:
+    raise RuntimeError(
+        "measure_align.MEASURE_ADVISOR_USER_TEMPLATE no longer contains the pair "
+        "block nr7_align relocates; update _MEASURE_PAIR_BLOCK to match"
+    )
+NR7_ADVISOR_USER_TEMPLATE = (
+    MEASURE_ADVISOR_USER_TEMPLATE.replace(_MEASURE_PAIR_BLOCK, _NR7_PAIR_POINTER)
+    + _NR7_PAIR_TAIL
+)
+
+
+def render_nr7_prompt(
+    target: dict[str, Any],
+    action: dict[str, Any],
+    decompositions: dict[str, str],
+    doc_type_labels: dict[str, str] | None = None,
+) -> str:
+    """The user message for one policy-target × NR7-action pair."""
+    labels = doc_type_labels or DOC_TYPE_LABELS
+    return NR7_ADVISOR_USER_TEMPLATE.format(
+        intro_framing=NR7_INTRO_FRAMING,
+        target_1_type=_nr7_side_label(target, labels),
+        target_1_decomp=decompositions.get(target["id"], ""),
+        target_2_type=_nr7_side_label(action, labels),
+        target_2_decomp=decompositions.get(action["id"], ""),
+    )
+
+
+def nr7_prompt_shared_prefix(rendered: str, target: dict[str, Any], doc_type_labels: dict[str, str] | None = None) -> int:
+    """Chars of `rendered` that are identical for every pair sharing the same
+    action: everything before the policy-target line of the tail."""
+    labels = doc_type_labels or DOC_TYPE_LABELS
+    marker = f"       - {_nr7_side_label(target, labels)}: "
+    idx = rendered.rfind(marker)
+    return idx if idx >= 0 else 0
+
+
+def warm_up_order(action_ids: list[str]) -> tuple[list[int], list[int]]:
+    """Split call indices into (one call per distinct action, the rest).
+
+    Provider prompt caches are seeded by the first completed call carrying a
+    prefix; running the first pair of every action group on its own first means
+    the other len(targets)-1 calls in the group arrive to a warm cache instead
+    of racing each other as cold misses under the concurrency limit."""
+    seen: set[str] = set()
+    warm: list[int] = []
+    for i, aid in enumerate(action_ids):
+        if aid not in seen:
+            seen.add(aid)
+            warm.append(i)
+    warm_set = set(warm)
+    rest = [i for i in range(len(action_ids)) if i not in warm_set]
+    return warm, rest
 
 
 # ---------------------------------------------------------------------------
@@ -256,29 +350,29 @@ async def assess_nr7_alignment(
     """Run adapted Agent 2 on policy-target × NR7-action pairs."""
     logger.info(f"Assessing NR7 implementation alignment for {len(pairs)} pairs")
 
-    labels = doc_type_labels or DOC_TYPE_LABELS
     calls = []
     pair_keys: list[tuple[str, str]] = []
 
     for target, action in pairs:
-        decomp_t = decompositions.get(target["id"], "")
-        decomp_a = decompositions.get(action["id"], "")
-
-        user = MEASURE_ADVISOR_USER_TEMPLATE.format(
-            intro_framing=NR7_INTRO_FRAMING,
-            target_1_type=_nr7_side_label(target, labels),
-            target_1_decomp=decomp_t,
-            target_2_type=_nr7_side_label(action, labels),
-            target_2_decomp=decomp_a,
-        )
+        user = render_nr7_prompt(target, action, decompositions, doc_type_labels)
         calls.append({"system": NR7_ADVISOR_SYSTEM, "user": user})
         pair_keys.append((target["id"], action["id"]))
 
-    results = await call_llm_batch(
-        calls,
-        cache_namespace=NR7_CACHE_NAMESPACE,
-        desc="NR7 alignment",
-    )
+    # Two batches: seed the provider prompt cache with one call per action,
+    # then the rest. Results are reassembled in pair order. Local cache hits
+    # are unaffected either way.
+    warm, rest = warm_up_order([aid for _, aid in pair_keys])
+    results: list[str] = [""] * len(calls)
+    for desc, idx in (("NR7 alignment (cache warm-up)", warm), ("NR7 alignment", rest)):
+        if not idx:
+            continue
+        out = await call_llm_batch(
+            [calls[i] for i in idx],
+            cache_namespace=NR7_CACHE_NAMESPACE,
+            desc=desc,
+        )
+        for i, raw in zip(idx, out):
+            results[i] = raw
 
     alignment_results = []
     level_counts: dict[str, int] = {}
