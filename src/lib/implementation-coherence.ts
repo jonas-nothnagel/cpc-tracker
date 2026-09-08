@@ -1101,15 +1101,14 @@ const nr7ProgressRank = (s: string) => {
 };
 
 /**
- * Map the NR7 self-assessment onto the NBSAP target ids used in the corpus
- * (`nbsapTargetId` "NBT_3" → target id "NBSAP_3"; verified 20/20 on the
- * Mongolia data, where NBT_3 carries two national targets and collapses to
- * the least-progress status). Rendered as a quiet one-line annotation on the
- * matching target rows of the coverage detail — contextual, never a separate
- * block.
+ * Map the NR7 self-assessment onto the NBSAP target ids used in the corpus.
+ * ORT-sourced files (python/src/nr7_ort.py) carry the corpus id directly
+ * ("NBSAP_3"); the older PDF-scraped file carried "NBT_3", which is rewritten
+ * here. Rendered as a quiet one-line annotation on the matching target rows
+ * of the coverage detail — contextual, never a separate block.
  */
 export function nr7StatusByNbsapTarget(
-  progressItems: { progressStatus: string; nbsapTargetId?: string }[],
+  progressItems: { progressStatus: string; nbsapTargetId?: string | null }[],
 ): Map<string, string> {
   const map = new Map<string, string>();
   for (const it of progressItems) {

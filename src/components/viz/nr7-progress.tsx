@@ -36,7 +36,7 @@ function Nr7TargetCard({
 }) {
   const t = useTranslations("viz.nr7Progress");
   const displayLabel = item.nbsapTargetId
-    ? `NBSAP ${item.nbsapTargetId.replace("NBT_", "")}`
+    ? `NBSAP ${item.nbsapTargetId.replace(/^(NBT|NBSAP)_/, "")}`
     : item.targetId;
   const hasDetail = item.progressSummary || item.challenges || item.examples;
   const cleanSummary = item.progressSummary?.replace(/\n/g, " ") ?? null;

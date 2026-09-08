@@ -1,0 +1,1 @@
+Raw NR7 exports for Mongolia from the CBD Online Reporting Tool (public API), fetched 2026-09-08 by scripts/fetch_nr7_ort.py. section3.csv feeds nr7_mng.json; headline.csv (indicator time series) and binary.csv (GBF questionnaire) are kept for provenance and future use.

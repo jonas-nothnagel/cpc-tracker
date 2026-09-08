@@ -1210,18 +1210,46 @@ export interface Nr7ProgressItem {
   targetId: string;
   targetText: string;
   progressStatus: "on_track" | "limited" | "no_progress" | "unknown";
+  /** The report's own six-level "Level of Progress" wording, when sourced
+   *  from the CBD Online Reporting Tool (python/src/nr7_ort.py). */
+  levelOfProgress?: string | null;
+  /** What the NR7 alignment pairs against policy targets. From the ORT
+   *  source this is the Main Actions Summary, one entry per national target
+   *  until the splitting rule is calibrated. */
   reportedActions: string[];
+  /** The report's four narratives, kept separate (ORT source). */
+  mainActionsSummary?: string | null;
   progressSummary?: string | null;
+  keyChallengesSummary?: string | null;
+  actionEffectivenessSummary?: string | null;
+  /** Legacy aliases read by the NR7 progress panel: challenges = key
+   *  challenges summary, examples = action effectiveness summary. */
   challenges?: string | null;
   examples?: string | null;
-  /** Maps to an NBSAP target (e.g. "NBT_1") for direct lookup */
-  nbsapTargetId?: string;
+  /** Corpus id of the NBSAP target this national target restates (e.g.
+   *  "NBSAP_4"), matched by text. Files from the 2026-03 PDF scrape carry
+   *  "NBT_n" instead; readers accept both. */
+  nbsapTargetId?: string | null;
+  /** Text-similarity score behind `nbsapTargetId` (0..1). */
+  nbsapMatchScore?: number;
+  ortUniqueId?: string | null;
+  publishedOn?: string | null;
 }
 
 export interface Nr7Data {
   country: string;
+  /** Shown as the citation "NR7 (…)": the report's publication year. */
   reportingPeriod: string;
   progressItems: Nr7ProgressItem[];
+  iso3?: string;
+  /** Where the file came from (ORT source only). */
+  source?: {
+    name: string;
+    url: string;
+    section?: string;
+    publishedOn?: string | null;
+    fetchedAt: string;
+  };
 }
 
 /**
@@ -1235,7 +1263,8 @@ export interface Nr7PseudoTarget extends Target {
   sourceDocument: "NR7";
   actionType: "nr7";
   measureStatus: Nr7ProgressItem["progressStatus"] | string;
-  /** NBSAP target the parent national target maps to (e.g. "NBT_3"). */
+  /** NBSAP corpus target the parent national target restates (e.g.
+   *  "NBSAP_4"; runs on the older PDF-scraped file carry "NBT_3"). */
   nbsapTargetId?: string;
   /** The NR7's own id for the parent national target (e.g. "NT03"). */
   nr7ParentTargetId?: string;
