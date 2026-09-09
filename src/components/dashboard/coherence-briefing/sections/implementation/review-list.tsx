@@ -311,7 +311,7 @@ function BiodiversityGroup({
       showAll={showAll}
       onToggleShowAll={() => setShowAll((v) => !v)}
     >
-      {rows.map((signal) => {
+      {rows.map(({ signal }) => {
         const key = `${signal.rule}-${signal.targetId ?? signal.indicatorId}`;
         return (
           <Nr7ReviewRow

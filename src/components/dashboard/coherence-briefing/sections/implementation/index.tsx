@@ -169,7 +169,9 @@ function composeSentence(
   }
   const actions = groups.climate?.total ?? 0;
   const checks = groups.biodiversity?.total ?? 0;
-  const headline = t(`headline.${groups.sentenceKey}`, { actions, checks, country: countryName });
+  // Interim until the per-report sentences land: name the sentence by what is flagged.
+  const sentenceKey = actions > 0 && checks > 0 ? "reviewBoth" : actions > 0 ? "reviewClimate" : checks > 0 ? "reviewBiodiversity" : "nothingFlagged";
+  const headline = t(`headline.${sentenceKey}`, { actions, checks, country: countryName });
   const counts = {
     btrActions: coverage.btrActions,
     nr7Actions: coverage.nr7Actions,
