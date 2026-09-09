@@ -524,8 +524,7 @@
         "sector": "Volver a {name}",
         "frictionType": "Volver a {name}",
         "target": "Volver a {name}",
-        "docTargets": "Volver a las metas de {name}",
-        "nr7Report": "Volver al detalle del NR7"
+        "docTargets": "Volver a las metas de {name}"
       },
       "flagProfile": {
         "closeAria": "Cerrar perfil",
@@ -1138,11 +1137,6 @@
       }
     },
     "nr7Report": {
-      "line": {
-        "prefix": "Autoevaluación NR7:",
-        "closerLook": "{count, plural, one {# cruce que merece una mirada} other {# cruces que merecen una mirada}}",
-        "open": "Detalle del NR7"
-      },
       "closerLook": {
         "heading": "Merece una mirada más atenta",
         "caption": "Cruces entre la propia calificación, el cuestionario y los indicadores del informe. Calculados, no redactados por IA.",
@@ -1163,20 +1157,6 @@
         "partially": "Parcialmente",
         "underDevelopment": "En desarrollo",
         "no": "No"
-      },
-      "drawer": {
-        "eyebrow": "7.º Informe Nacional al CDB (NR7)",
-        "title": "7.º Informe Nacional de {country}",
-        "subtitle": "Publicado {date} · Herramienta de Reporte en Línea del CDB (pública)",
-        "subtitleUndated": "Herramienta de Reporte en Línea del CDB (pública)",
-        "dialogAria": "Detalle del NR7: {country}",
-        "closeAria": "Cerrar el detalle del NR7",
-        "viewGroupAria": "Elegir una vista",
-        "view": {
-          "targets": "Por meta nacional ({count})",
-          "indicators": "Todos los indicadores ({count})"
-        },
-        "footer": "Fuente: 7.º Informe Nacional de {country}, Herramienta de Reporte en Línea del CDB (pública). Las calificaciones, respuestas y valores son del propio país; la herramienta solo calcula recuentos y direcciones."
       },
       "targets": {
         "heading": "Metas nacionales ({count})",

@@ -524,8 +524,7 @@
         "sector": "Back to {name}",
         "frictionType": "Back to {name}",
         "target": "Back to {name}",
-        "docTargets": "Back to {name} targets",
-        "nr7Report": "Back to the NR7 detail"
+        "docTargets": "Back to {name} targets"
       },
       "flagProfile": {
         "closeAria": "Close profile",
@@ -1138,11 +1137,6 @@
       }
     },
     "nr7Report": {
-      "line": {
-        "prefix": "NR7 self-rating:",
-        "closerLook": "{count, plural, one {# cross-check worth a closer look} other {# cross-checks worth a closer look}}",
-        "open": "NR7 detail"
-      },
       "closerLook": {
         "heading": "Worth a closer look",
         "caption": "Cross-checks between the report's own rating, questionnaire and indicators. Computed, not AI-written.",
@@ -1163,20 +1157,6 @@
         "partially": "Partially",
         "underDevelopment": "Under development",
         "no": "No"
-      },
-      "drawer": {
-        "eyebrow": "7th National Report to the CBD (NR7)",
-        "title": "{country}'s 7th National Report",
-        "subtitle": "Published {date} · CBD Online Reporting Tool (public)",
-        "subtitleUndated": "CBD Online Reporting Tool (public)",
-        "dialogAria": "NR7 detail: {country}",
-        "closeAria": "Close the NR7 detail",
-        "viewGroupAria": "Choose a view",
-        "view": {
-          "targets": "By national target ({count})",
-          "indicators": "All indicators ({count})"
-        },
-        "footer": "Source: {country}'s 7th National Report, CBD Online Reporting Tool (public). Ratings, answers and values are the country's own; the tool computes counts and directions only."
       },
       "targets": {
         "heading": "National targets ({count})",

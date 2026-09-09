@@ -38,9 +38,7 @@ export type BriefingPanel =
    *  one document's cross-document pairs. */
   | { kind: "friction-type"; mechanism: AlignmentMechanism; doc?: PolicyDocumentType }
   | { kind: "target-profile"; targetId: string }
-  | { kind: "doc-targets"; doc: PolicyDocumentType }
-  /** The country's 7th National Report to the CBD in full (nr7-report/). */
-  | { kind: "nr7-report" };
+  | { kind: "doc-targets"; doc: PolicyDocumentType };
 
 /**
  * Stable identity of a panel. Drives duplicate detection, React keys, and the
@@ -72,8 +70,6 @@ export function panelKey(panel: BriefingPanel): string {
       return `target-profile:${panel.targetId}`;
     case "doc-targets":
       return `doc-targets:${panel.doc}`;
-    case "nr7-report":
-      return "nr7-report";
   }
 }
 
@@ -131,8 +127,6 @@ export function backLabelKey(panel: BriefingPanel): string {
       return "target";
     case "doc-targets":
       return "docTargets";
-    case "nr7-report":
-      return "nr7Report";
   }
 }
 

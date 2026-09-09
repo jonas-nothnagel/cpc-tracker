@@ -9,7 +9,6 @@ import {
   isNr7UnderWay,
   isUnderWay,
   normalizeOrg,
-  selectReportedSources,
   nr7StatusByNbsapTarget,
   orgLabelsFor,
 } from "./implementation-coherence";
@@ -997,26 +996,5 @@ describe("computeActionPlanAlignment with NR7", () => {
     ]);
     expect(s.totalActions).toBe(1);
     expect(s.rankedActions[0].underWay).toBe(true);
-  });
-});
-
-describe("selectReportedSources", () => {
-  const b = btr([mit("A")]);
-  const n = [nr7("NR7_1", "limited")];
-  it("keeps both by default, drops the other source when one is selected", () => {
-    expect(selectReportedSources("both", b, n)).toEqual({ btrData: b, nr7PseudoTargets: n });
-    expect(selectReportedSources("btr", b, n)).toEqual({ btrData: b, nr7PseudoTargets: [] });
-    expect(selectReportedSources("nr7", b, n)).toEqual({ btrData: null, nr7PseudoTargets: n });
-  });
-  it("a source selection removes that source's evidence from the coverage read", () => {
-    const targets = [target("NBSAP_1", "NBSAP"), target("NDC_1", "NDC")];
-    const pairs = [high("BTR_1", "NBSAP_1"), high("NR7_1", "NDC_1")];
-    const only = (s: "both" | "btr" | "nr7") => {
-      const sel = selectReportedSources(s, b, n);
-      return computeImplementationCoverage(pairs, sel.btrData, targets, {}, sel.nr7PseudoTargets);
-    };
-    expect(only("both").reached).toBe(2);
-    expect(only("btr")).toMatchObject({ reached: 1, btrActions: 1, nr7Actions: 0 });
-    expect(only("nr7")).toMatchObject({ reached: 1, btrActions: 0, nr7Actions: 1 });
   });
 });

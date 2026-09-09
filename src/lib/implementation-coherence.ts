@@ -221,26 +221,6 @@ export function buildReportedActionMeta(
   return map;
 }
 
-/** Which self-reported source(s) the implementation reads draw on. */
-export type ReportedActionSource = "both" | "btr" | "nr7";
-
-/**
- * Narrow the two sources to the reader's selection before the coverage and
- * review reads run. Pairs need no filtering: a pair whose action is not in
- * the registry is skipped by every read, so dropping the source's actions
- * drops its evidence.
- */
-export function selectReportedSources(
-  source: ReportedActionSource,
-  btrData: BtrData | null,
-  nr7PseudoTargets: readonly Nr7PseudoTarget[],
-): { btrData: BtrData | null; nr7PseudoTargets: readonly Nr7PseudoTarget[] } {
-  return {
-    btrData: source === "nr7" ? null : btrData,
-    nr7PseudoTargets: source === "btr" ? [] : nr7PseudoTargets,
-  };
-}
-
 function worstManageability(
   a: AlignmentManageability | null,
   b: AlignmentManageability | null,

@@ -52,8 +52,6 @@ export const DRAWER_KIND_SECTION: Record<string, string> = {
   theme: "direction",
   storylines: "direction",
   "doc-pair": "doc-pairs",
-  // Opens from the Implementation slide's NR7 card only (nr7-report/).
-  "nr7-report": "implementation",
 };
 
 /** Plain-English page names for the analytics UI (route pattern → name). */

@@ -2000,8 +2000,6 @@ export function CoherenceBriefing({
         totalDocCount={documentCount}
         allTargets={drawerTargets}
         hiddenDocs={hiddenDocs}
-        nr7Report={nr7Report}
-        countryName={countryName}
       />
       {/* Expand the active centerpiece to a large overlay so relationships are
           explorable at size; the same graphic + legend renders bigger here. */}

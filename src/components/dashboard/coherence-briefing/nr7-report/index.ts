@@ -10,6 +10,3 @@ export { IndicatorsView } from "./indicators-view";
 export { IndicatorCard } from "./indicator-card";
 export { QuestionnaireTable } from "./questionnaire-table";
 export { NR7_COLORS, NR7_STATUS_ORDER } from "./nr7-colors";
-export { Nr7ReportDrawer } from "./nr7-report-drawer";
-export { Nr7ReportLine } from "./nr7-report-line";
-export { DEFAULT_NR7_REPORT_VIEW, type Nr7ReportView } from "./view";
