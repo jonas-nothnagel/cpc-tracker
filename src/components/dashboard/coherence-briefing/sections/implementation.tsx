@@ -43,7 +43,7 @@ import {
 } from "@/lib/implementation-coherence";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocMediumLabel } from "@/lib/utils";
-import { Nr7ReportsStrip, type Nr7ReportModel } from "../nr7-report";
+import { Nr7ReportLine, type Nr7ReportModel } from "../nr7-report";
 import type { CountryConfig, Nr7Data, ReportedActionType } from "@/types";
 
 export const IMPLEMENTATION_SECTION_ID = "implementation";
@@ -68,7 +68,6 @@ export function ImplementationSection({
   onSourceChange,
   nr7Data,
   nr7Report = null,
-  btrCoverage = null,
   onOpenNr7Report,
   countryName,
   countryConfig,
@@ -81,11 +80,9 @@ export function ImplementationSection({
   /** Present only when the country has both reports, so a switch makes sense. */
   onSourceChange?: (source: ReportedActionSource) => void;
   nr7Data: Nr7Data | null;
-  /** The NR7 self-report model for the two-report strip (nr7-report/);
-   *  null hides the strip. */
+  /** The NR7 self-report model for the line beside the source switch
+   *  (nr7-report/); null hides it. */
   nr7Report?: Nr7ReportModel | null;
-  /** BTR-only coverage for the strip's climate card. */
-  btrCoverage?: ImplementationCoverage | null;
   onOpenNr7Report?: () => void;
   countryName: string;
   countryConfig: CountryConfig | null;
@@ -132,15 +129,17 @@ export function ImplementationSection({
       evidence={
         coverage.hasMeasureAlignment || onSourceChange || nr7Report ? (
           <div>
-            {nr7Report && onOpenNr7Report && (
-              <Nr7ReportsStrip
-                model={nr7Report}
-                btrCoverage={btrCoverage}
-                onOpenNr7Report={onOpenNr7Report}
-              />
-            )}
-            {onSourceChange && (
-              <SourceToggle source={source} onChange={onSourceChange} />
+            {/* The source switch is the one BTR / NR7 separation on the slide;
+                the NR7 line beside it is the only NR7 presence on the face. */}
+            {(onSourceChange || (nr7Report && onOpenNr7Report)) && (
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 mb-3">
+                {onSourceChange && (
+                  <SourceToggle source={source} onChange={onSourceChange} />
+                )}
+                {nr7Report && onOpenNr7Report && source !== "btr" && (
+                  <Nr7ReportLine model={nr7Report} onOpenNr7Report={onOpenNr7Report} />
+                )}
+              </div>
             )}
             {coverage.hasMeasureAlignment && (
               <CoverageByDocument
@@ -188,7 +187,7 @@ function SourceToggle({
     <div
       role="group"
       aria-label={t("source.label")}
-      className="flex flex-wrap items-center gap-1.5 mb-3"
+      className="flex flex-wrap items-center gap-1.5"
       data-tour="coverage-source"
     >
       <span className="text-caption text-[var(--undp-gray)] mr-1">

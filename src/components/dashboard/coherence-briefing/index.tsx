@@ -599,20 +599,6 @@ export function CoherenceBriefing({
     );
   }, [hasReportedActions, implementationAlignment, implInputs, visibleTargets, orgMap]);
 
-  // BTR-only coverage for the two-report strip's climate card (nr7-report/),
-  // whatever the source switch says.
-  const btrCoverage = useMemo<ImplementationCoverage | null>(() => {
-    if (!hasBtr) return null;
-    const sel = selectReportedSources("btr", btrData, nr7Actions);
-    return computeImplementationCoverage(
-      implementationAlignment,
-      sel.btrData,
-      visibleTargets,
-      orgMap,
-      sel.nr7PseudoTargets,
-    );
-  }, [hasBtr, implementationAlignment, btrData, nr7Actions, visibleTargets, orgMap]);
-
   // The report object for the right column: who is named on the reported
   // actions, with each institution's actions as status-coloured dots.
   // Neutral involvement as stated by the report, never a strain ranking.
@@ -1892,7 +1878,6 @@ export function CoherenceBriefing({
                   onSourceChange={hasBothSources ? setImplSource : undefined}
                   nr7Data={nr7Data}
                   nr7Report={nr7Report}
-                  btrCoverage={btrCoverage}
                   onOpenNr7Report={openNr7Report}
                   countryName={countryName}
                   countryConfig={countryConfig}

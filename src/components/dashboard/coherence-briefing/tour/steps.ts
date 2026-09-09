@@ -130,9 +130,9 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "list", target: "hotspot-list", placement: "top" },
   ],
   implementationCoverage: [
-    // The two-report strip (nr7-report/); dropped silently for countries
-    // without an NR7, since its anchor is not rendered there.
-    { id: "reports", target: "coverage-reports", placement: "bottom" },
+    // The source switch plus the NR7 line (nr7-report/); dropped silently for
+    // countries with one report, since the switch is not rendered there.
+    { id: "reports", target: "coverage-source", placement: "bottom" },
     { id: "legend", target: "coverage-legend", placement: "bottom" },
     { id: "dots", target: "coverage-dots", placement: "bottom" },
     { id: "review", target: "coverage-review", placement: "bottom" },

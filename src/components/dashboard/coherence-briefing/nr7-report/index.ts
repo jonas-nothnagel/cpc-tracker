@@ -4,5 +4,5 @@
  */
 export { buildNr7Report, type Nr7ReportModel, type Nr7Signal } from "./nr7-self-report";
 export { Nr7ReportDrawer } from "./nr7-report-drawer";
-export { Nr7ReportsStrip } from "./reports-strip";
+export { Nr7ReportLine } from "./nr7-report-line";
 export { DEFAULT_NR7_REPORT_VIEW, type Nr7ReportView } from "./view";

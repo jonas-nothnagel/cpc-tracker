@@ -464,8 +464,8 @@
       "implementationCoverage": {
         "steps": {
           "reports": {
-            "title": "Dos informes, dos lentes",
-            "body": "El informe climático (BTR) y el informe de biodiversidad (NR7) se resumen lado a lado. Abre el detalle del NR7 para ver sus autoevaluaciones, respuestas del cuestionario e indicadores."
+            "title": "Dos informes, un selector",
+            "body": "Cambia el mapa de cobertura entre el informe climático (BTR), el informe de biodiversidad (NR7) o ambos. La línea del NR7 junto a él abre las autoevaluaciones, las respuestas del cuestionario y los indicadores del país."
           },
           "legend": {
             "title": "Cómo leer los puntos",
@@ -1065,7 +1065,7 @@
       "readingWithNr7": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> o el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
       "readingNr7Only": "Un punto por <target>meta</target>. Relleno significa que el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
       "source": {
-        "label": "El mapa de cobertura se basa en",
+        "label": "Evidencia de",
         "both": "Ambos informes",
         "btr": "Solo BTR",
         "nr7": "Solo NR7",
@@ -1108,28 +1108,14 @@
       }
     },
     "nr7Report": {
-      "strip": {
-        "eyebrow": "Los dos autoinformes del país",
-        "btr": {
-          "title": "Clima: <btr>BTR</btr>",
-          "actions": "{count, plural, one {# acción reportada} other {# acciones reportadas}}",
-          "addressed": "{reached} de {total} metas abordadas",
-          "toReview": "{count, plural, =0 {ninguna por revisar} one {# meta por revisar} other {# metas por revisar}}",
-          "detailNote": "Detalle: el mapa de cobertura más abajo y la columna de entrega."
-        },
-        "nr7": {
-          "title": "Biodiversidad: <nr7>NR7</nr7>",
-          "published": "Publicado {date}",
-          "targets": "{count, plural, one {# meta nacional} other {# metas nacionales}}, autoevaluadas",
-          "questionnaire": "{answered} respuestas del cuestionario sobre {targets} de {total} metas",
-          "indicators": "{withValues} de {total} indicadores con valores",
-          "open": "Abrir el detalle del NR7"
-        }
+      "line": {
+        "prefix": "Autoevaluación NR7:",
+        "closerLook": "{count, plural, one {# cruce que merece una mirada} other {# cruces que merecen una mirada}}",
+        "open": "Detalle del NR7"
       },
       "closerLook": {
         "heading": "Merece una mirada más atenta",
         "caption": "Cruces entre la propia calificación, el cuestionario y los indicadores del informe. Calculados, no redactados por IA.",
-        "more": "{count, plural, one {# más en el detalle.} other {# más en el detalle.}}",
         "lead": "Puntos en los que las propias declaraciones del informe apuntan en direcciones distintas. Pueden reflejar fechas o definiciones de reporte más que la ejecución; la narrativa de la meta es el lugar donde comprobarlo."
       },
       "signals": {

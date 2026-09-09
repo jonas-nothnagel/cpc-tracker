@@ -464,8 +464,8 @@
       "implementationCoverage": {
         "steps": {
           "reports": {
-            "title": "Two reports, two lenses",
-            "body": "The climate report (BTR) and the biodiversity report (NR7) are summarised side by side. Open the NR7 detail for its self-ratings, questionnaire answers and indicators."
+            "title": "Two reports, one switch",
+            "body": "Switch the coverage map between the climate report (BTR), the biodiversity report (NR7) or both. The NR7 line beside it opens the country's self-ratings, questionnaire answers and indicators."
           },
           "legend": {
             "title": "Reading the dots",
@@ -1065,7 +1065,7 @@
       "readingWithNr7": "One dot per <target>target</target>. Filled means the <btr>BTR</btr> or the <nr7>NR7</nr7> reports an action supporting it, not that the target is met.",
       "readingNr7Only": "One dot per <target>target</target>. Filled means the <nr7>NR7</nr7> reports an action supporting it, not that the target is met.",
       "source": {
-        "label": "Coverage map draws on",
+        "label": "Evidence from",
         "both": "Both reports",
         "btr": "BTR only",
         "nr7": "NR7 only",
@@ -1108,28 +1108,14 @@
       }
     },
     "nr7Report": {
-      "strip": {
-        "eyebrow": "The country's two self-reports",
-        "btr": {
-          "title": "Climate: <btr>BTR</btr>",
-          "actions": "{count, plural, one {# reported action} other {# reported actions}}",
-          "addressed": "{reached} of {total} targets addressed",
-          "toReview": "{count, plural, =0 {none to review} one {# target to review} other {# targets to review}}",
-          "detailNote": "Detail: the coverage map below and the delivery column."
-        },
-        "nr7": {
-          "title": "Biodiversity: <nr7>NR7</nr7>",
-          "published": "Published {date}",
-          "targets": "{count, plural, one {# national target} other {# national targets}}, self-rated",
-          "questionnaire": "{answered} questionnaire answers on {targets} of {total} targets",
-          "indicators": "{withValues} of {total} indicators with values",
-          "open": "Open the NR7 detail"
-        }
+      "line": {
+        "prefix": "NR7 self-rating:",
+        "closerLook": "{count, plural, one {# cross-check worth a closer look} other {# cross-checks worth a closer look}}",
+        "open": "NR7 detail"
       },
       "closerLook": {
         "heading": "Worth a closer look",
         "caption": "Cross-checks between the report's own rating, questionnaire and indicators. Computed, not AI-written.",
-        "more": "{count, plural, one {# more in the detail.} other {# more in the detail.}}",
         "lead": "Places where the report's own statements point in different directions. They may reflect reporting dates or definitions rather than delivery; the target's narrative is the place to check."
       },
       "signals": {
