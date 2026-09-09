@@ -1236,6 +1236,58 @@ export interface Nr7ProgressItem {
   publishedOn?: string | null;
 }
 
+/** One answer in the NR7's GBF binary-indicator questionnaire. */
+export interface Nr7QuestionnaireAnswer {
+  /** National target the question was answered under (e.g. "NT12"). */
+  targetId: string;
+  indicatorCode: string | null;
+  indicatorTitle: string | null;
+  questionNumber: string;
+  /** The question as worded by the reporting tool; null when the export
+   *  carried no wording (the UI then shows the number only). */
+  questionTitle: string | null;
+  /** The answer as recorded, verbatim. */
+  response: string;
+  /** Standard four-step scale, or null for enum / free-text answers. */
+  responseValue: "yes" | "partially" | "under_development" | "no" | null;
+  ortUniqueId?: string | null;
+  publishedOn?: string | null;
+}
+
+export interface Nr7IndicatorPoint {
+  year: number;
+  /** Numeric value, or null when the cell was non-numeric (see valueText). */
+  value: number | null;
+  valueText: string | null;
+  footnote: string | null;
+}
+
+/** One series of an indicator: the whole indicator, or one disaggregation
+ *  of it (a biome, a taxon, terrestrial vs OECM). Unit is per series. */
+export interface Nr7IndicatorSeries {
+  disaggregation: string | null;
+  unit: string | null;
+  points: Nr7IndicatorPoint[];
+}
+
+export interface Nr7Indicator {
+  /** GBF code when there is one ("3.1", "A.CT.10"), else a slug of the title. */
+  id: string;
+  code: string | null;
+  name: string;
+  /** Verbatim title from the reporting tool. */
+  title: string;
+  indicatorType: "headline" | "component" | "national" | string | null;
+  /** National targets the indicator is reported under; [] when detached. */
+  targetIds: string[];
+  /** The country's comment, usually why no value was reported. */
+  comments: string | null;
+  ortUniqueId?: string | null;
+  publishedOn?: string | null;
+  /** Empty when the country reported no values. */
+  series: Nr7IndicatorSeries[];
+}
+
 export interface Nr7Data {
   country: string;
   /** Shown as the citation "NR7 (…)": the report's publication year. */
@@ -1247,9 +1299,14 @@ export interface Nr7Data {
     name: string;
     url: string;
     section?: string;
+    sections?: string[];
     publishedOn?: string | null;
     fetchedAt: string;
   };
+  /** GBF questionnaire answers (ORT source only). */
+  questionnaire?: { answers: Nr7QuestionnaireAnswer[] };
+  /** Indicator series (ORT source only). */
+  indicators?: Nr7Indicator[];
 }
 
 /**
