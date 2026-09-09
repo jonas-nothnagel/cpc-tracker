@@ -10,28 +10,26 @@ import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { IndicatorCard } from "./indicator-card";
 import type { Nr7IndicatorGroup, Nr7ReportModel } from "./nr7-self-report";
-import type { Nr7ReportView } from "./view";
 
 const GROUPS: Nr7IndicatorGroup[] = ["headline", "other", "noValues"];
 
 export function IndicatorsView({
   model,
-  view,
-  onViewChange,
+  focusIndicatorId,
+  onOpenTarget,
 }: {
   model: Nr7ReportModel;
-  view: Nr7ReportView;
-  onViewChange: (next: Nr7ReportView) => void;
+  /** Card to scroll to and outline after a chip or signal click. */
+  focusIndicatorId: string | null;
+  /** A target chip on a card: jump to that national target. */
+  onOpenTarget: (targetId: string) => void;
 }) {
   const t = useTranslations("briefing.nr7Report.indicators");
 
   useEffect(() => {
-    if (!view.focusIndicatorId) return;
-    document.getElementById(`nr7-ind-${view.focusIndicatorId}`)?.scrollIntoView?.({ block: "start", behavior: "smooth" });
-  }, [view.focusIndicatorId]);
-
-  const openTarget = (targetId: string) =>
-    onViewChange({ ...view, tab: "targets", expandedTargetId: targetId, focusIndicatorId: null });
+    if (!focusIndicatorId) return;
+    document.getElementById(`nr7-ind-${focusIndicatorId}`)?.scrollIntoView?.({ block: "start", behavior: "smooth" });
+  }, [focusIndicatorId]);
 
   return (
     <div className="space-y-6">
@@ -56,8 +54,8 @@ export function IndicatorsView({
                 <IndicatorCard
                   key={ind.id}
                   indicator={ind}
-                  focused={view.focusIndicatorId === ind.id}
-                  onOpenTarget={openTarget}
+                  focused={focusIndicatorId === ind.id}
+                  onOpenTarget={onOpenTarget}
                 />
               ))}
             </div>

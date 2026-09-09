@@ -11,13 +11,11 @@ import { useNr7BadgeLabels } from "@/lib/labels";
 import { MixBar } from "./mix-bar";
 import { NR7_COLORS, NR7_STATUS_ORDER } from "./nr7-colors";
 import { Nr7TargetRow } from "./target-row";
-import type { Nr7ReportModel, Nr7Signal } from "./nr7-self-report";
-import type { Nr7ReportView } from "./view";
+import type { Nr7ReportModel } from "./nr7-self-report";
+import { SignalLine } from "./signal-line";
 
-export function SignalLine({ signal }: { signal: Nr7Signal }) {
-  const t = useTranslations("briefing.nr7Report.signals");
-  return <>{t(signal.rule, signal.params)}</>;
-}
+export { SignalLine };
+import type { Nr7ReportView } from "./view";
 
 export function TargetsView({
   model,

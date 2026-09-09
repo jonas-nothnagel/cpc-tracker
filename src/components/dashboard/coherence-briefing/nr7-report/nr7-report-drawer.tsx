@@ -86,7 +86,13 @@ export function Nr7ReportDrawer({
             onOpenPair={onOpenPair}
           />
         ) : (
-          <IndicatorsView model={model} view={view} onViewChange={onViewChange} />
+          <IndicatorsView
+            model={model}
+            focusIndicatorId={view.focusIndicatorId}
+            onOpenTarget={(targetId) =>
+              onViewChange({ ...view, tab: "targets", expandedTargetId: targetId, focusIndicatorId: null })
+            }
+          />
         )}
         <p className="border-t border-line-soft pt-4 text-caption text-[var(--undp-gray)] leading-relaxed">
           {t("footer", { country: countryName })}
