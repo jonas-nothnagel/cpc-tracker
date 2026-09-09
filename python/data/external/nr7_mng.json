@@ -6,8 +6,13 @@
     "name": "CBD Online Reporting Tool (ORT), 7th National Report",
     "url": "https://api.cbd.int/api/v2022/documents/schemas/nationalReport7/download",
     "section": "Section III (national targets)",
+    "sections": [
+      "Section III (national targets)",
+      "Headline and other indicators",
+      "Binary indicators (questionnaire)"
+    ],
     "publishedOn": "2026-02-28",
-    "fetchedAt": "2026-09-08T15:30:18+00:00"
+    "fetchedAt": "2026-09-09T08:40:33+00:00"
   },
   "progressItems": [
     {
@@ -389,6 +394,2770 @@
       "nbsapMatchScore": 1.0,
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
+    }
+  ],
+  "questionnaire": {
+    "answers": [
+      {
+        "targetId": "NT01",
+        "indicatorCode": "1.b",
+        "indicatorTitle": "1.b Number of countries using participatory, integrated and biodiversity-inclusive spatial planning and/or effective management processes addressing land- and sea-use change to bring the loss of areas of high biodiversity importance close to zero by 2030",
+        "questionNumber": "1",
+        "questionTitle": "Is your country landlocked?",
+        "response": "Yes",
+        "responseValue": "yes",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT01",
+        "indicatorCode": "1.b",
+        "indicatorTitle": "1.b Number of countries using participatory, integrated and biodiversity-inclusive spatial planning and/or effective management processes addressing land- and sea-use change to bring the loss of areas of high biodiversity importance close to zero by 2030",
+        "questionNumber": "1.2",
+        "questionTitle": "If the answer to any of the questions in 1.1 is not “No”, were the plans created using a participatory process? (Select all that apply, noting that, if your country is a landlocked State, marine spatial planning will be considered as not relevant)",
+        "response": "forTerrestrialPlanning",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT01",
+        "indicatorCode": "1.b",
+        "indicatorTitle": "1.b Number of countries using participatory, integrated and biodiversity-inclusive spatial planning and/or effective management processes addressing land- and sea-use change to bring the loss of areas of high biodiversity importance close to zero by 2030",
+        "questionNumber": "1 (a)",
+        "questionTitle": "Address land-use (terrestrial) change?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT01",
+        "indicatorCode": "1.b",
+        "indicatorTitle": "1.b Number of countries using participatory, integrated and biodiversity-inclusive spatial planning and/or effective management processes addressing land- and sea-use change to bring the loss of areas of high biodiversity importance close to zero by 2030",
+        "questionNumber": "1 (b)",
+        "questionTitle": "Address land-use (inland water) change?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT05",
+        "indicatorCode": "6.b",
+        "indicatorTitle": "6.b Number of countries adopting relevant regulations, processes and measures to reduce the impact of invasive alien species",
+        "questionNumber": "6.1",
+        "questionTitle": "Does your country have regulations and processes empowering relevant institutions to implement the measures necessary for a reduction in the introduction and impact of invasive alien species?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT05",
+        "indicatorCode": "6.b",
+        "indicatorTitle": "6.b Number of countries adopting relevant regulations, processes and measures to reduce the impact of invasive alien species",
+        "questionNumber": "6.2",
+        "questionTitle": "Does your country have measures in place for preventing the introduction and establishment of invasive alien species?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT05",
+        "indicatorCode": "6.b",
+        "indicatorTitle": "6.b Number of countries adopting relevant regulations, processes and measures to reduce the impact of invasive alien species",
+        "questionNumber": "6.3",
+        "questionTitle": "Does your country have measures in place for eradicating or controlling invasive alien species?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT06",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.1",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the maintenance, enhancement and restoration of nature's contributions to people, including of ecosystem functions and services?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT06",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.2",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the sustainable use of biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT06",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.3",
+        "questionTitle": "Does your country monitor the sustainable use of biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT06",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.4",
+        "questionTitle": "Does your country monitor the maintenance, restoration and enhancement of nature's contributions to people, including ecosystem functions and services for the benefit of present and future generations?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.1",
+        "questionTitle": "Does your country’s national biodiversity strategy and action plan include actions to prevent or minimize the impacts of the following (select all that apply):",
+        "response": "climateChange",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.2",
+        "questionTitle": "Do your country’s climate change policies address the impacts of climate change on biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.3",
+        "questionTitle": "Do your country’s other policies address the impacts of climate change on biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.4",
+        "questionTitle": "Do your country’s other policies address the impacts of ocean acidification on biodiversity?",
+        "response": "No",
+        "responseValue": "no",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.5",
+        "questionTitle": "Are the impacts of climate change on biodiversity monitored and reported on?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.6",
+        "questionTitle": "Are the impact of ocean acidification on biodiversity monitored and reported on?",
+        "response": "No",
+        "responseValue": "no",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.7",
+        "questionTitle": "Do your country’s policies or action plans on the impact of climate change and ocean acidification contain the following types of actions designed to increase biodiversity resilience or reduce impacts (select all that apply):",
+        "response": "mitigation; adaptation; disasterRiskReduction",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.8",
+        "questionTitle": "Are measures included in your country’s policies or actions plans to minimize the negative impacts of climate actions on biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT07",
+        "indicatorCode": "8.b",
+        "indicatorTitle": "8.b Number of countries with policies to minimize the impact of climate change and ocean acidification on biodiversity and to minimize negative and foster positive impacts of climate action on biodiversity",
+        "questionNumber": "8.9",
+        "questionTitle": "Are measures included in your country’s policies or actions plans to foster positive impacts of climate actions on biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT08",
+        "indicatorCode": "5.b",
+        "indicatorTitle": "5.b Number of countries with legal instruments or other policy frameworks for regulating trade in wild species",
+        "questionNumber": "5.1",
+        "questionTitle": "Does your country have legal instruments or other policy frameworks to regulate trade in wild species? (Select all that apply)",
+        "response": "terrestrialSpecies; internationalTrade",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT08",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.1",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the maintenance, enhancement and restoration of nature's contributions to people, including of ecosystem functions and services?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT08",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.2",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the sustainable use of biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT08",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.3",
+        "questionTitle": "Does your country monitor the sustainable use of biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT08",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.4",
+        "questionTitle": "Does your country monitor the maintenance, restoration and enhancement of nature's contributions to people, including ecosystem functions and services for the benefit of present and future generations?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "9.b",
+        "indicatorTitle": "9.b Number or countries with policies to manage the use of wild species sustainably, providing social, economic and environmental benefits for people, and to protect and encourage customary sustainable use by indigenous peoples and local communities",
+        "questionNumber": "9.1",
+        "questionTitle": "Does your country have legal instruments or other policy frameworks or administrative measures for the sustainable management and use of wild species?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "9.b",
+        "indicatorTitle": "9.b Number or countries with policies to manage the use of wild species sustainably, providing social, economic and environmental benefits for people, and to protect and encourage customary sustainable use by indigenous peoples and local communities",
+        "questionNumber": "9.2",
+        "questionTitle": "Does your country monitor the sustainable management and use of wild species?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "9.b",
+        "indicatorTitle": "9.b Number or countries with policies to manage the use of wild species sustainably, providing social, economic and environmental benefits for people, and to protect and encourage customary sustainable use by indigenous peoples and local communities",
+        "questionNumber": "9.3",
+        "questionTitle": "Does your country monitor the social, economic and environmental benefits derived from the use of wild species for people, in particular those in vulnerable situations and most dependent on biodiversity? (Select all that apply)",
+        "response": "underDevelopment",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "9.b",
+        "indicatorTitle": "9.b Number or countries with policies to manage the use of wild species sustainably, providing social, economic and environmental benefits for people, and to protect and encourage customary sustainable use by indigenous peoples and local communities",
+        "questionNumber": "9.4",
+        "questionTitle": "Does your country have legal instruments or other policy frameworks to protect and encourage the customary sustainable use of biodiversity by indigenous peoples and local communities, for example, the plan of action on customary sustainable use of biological diversity or other relevant initiatives?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "12.b",
+        "indicatorTitle": "12.b Number of countries with biodiversity-inclusive urban planning referring to green or blue urban spaces",
+        "questionNumber": "12.1",
+        "questionTitle": "Does your country have urban areas under biodiversity-inclusive urban planning that incorporates the management of green or blue spaces for the conservation and sustainable use of biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "12.b",
+        "indicatorTitle": "12.b Number of countries with biodiversity-inclusive urban planning referring to green or blue urban spaces",
+        "questionNumber": "12.2",
+        "questionTitle": "Does your country have urban areas under biodiversity-inclusive urban planning incorporating the management of green or blue spaces for ecosystem services and nature’s contributions to people?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.1",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the maintenance, enhancement and restoration of nature's contributions to people, including of ecosystem functions and services?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.2",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the sustainable use of biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.3",
+        "questionTitle": "Does your country monitor the sustainable use of biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT09",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.4",
+        "questionTitle": "Does your country monitor the maintenance, restoration and enhancement of nature's contributions to people, including ecosystem functions and services for the benefit of present and future generations?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT10",
+        "indicatorCode": "12.b",
+        "indicatorTitle": "12.b Number of countries with biodiversity-inclusive urban planning referring to green or blue urban spaces",
+        "questionNumber": "12.1",
+        "questionTitle": "Does your country have urban areas under biodiversity-inclusive urban planning that incorporates the management of green or blue spaces for the conservation and sustainable use of biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT10",
+        "indicatorCode": "12.b",
+        "indicatorTitle": "12.b Number of countries with biodiversity-inclusive urban planning referring to green or blue urban spaces",
+        "questionNumber": "12.2",
+        "questionTitle": "Does your country have urban areas under biodiversity-inclusive urban planning incorporating the management of green or blue spaces for ecosystem services and nature’s contributions to people?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT10",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.1",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the maintenance, enhancement and restoration of nature's contributions to people, including of ecosystem functions and services?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT10",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.2",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the sustainable use of biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT10",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.3",
+        "questionTitle": "Does your country monitor the sustainable use of biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT10",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.4",
+        "questionTitle": "Does your country monitor the maintenance, restoration and enhancement of nature's contributions to people, including ecosystem functions and services for the benefit of present and future generations?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "13.b",
+        "indicatorTitle": "13.b Number of countries that have taken effective legal, policy, administrative and capacity-building measures at all levels, as appropriate, to ensure the fair and equitable sharing of benefits from the utilization of genetic resources and from digital sequence information on genetic resources, as well as traditional knowledge associated with genetic resources",
+        "questionNumber": "13.1",
+        "questionTitle": "Does your country have effective legal, administrative and policy measures to ensure the fair and equitable sharing of benefits that arise from the utilization of genetic resources?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "13.b",
+        "indicatorTitle": "13.b Number of countries that have taken effective legal, policy, administrative and capacity-building measures at all levels, as appropriate, to ensure the fair and equitable sharing of benefits from the utilization of genetic resources and from digital sequence information on genetic resources, as well as traditional knowledge associated with genetic resources",
+        "questionNumber": "13.2",
+        "questionTitle": "Does your country have capacity-building measures to ensure the fair and equitable sharing of benefits that arise from the utilization of genetic resources?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "13.b",
+        "indicatorTitle": "13.b Number of countries that have taken effective legal, policy, administrative and capacity-building measures at all levels, as appropriate, to ensure the fair and equitable sharing of benefits from the utilization of genetic resources and from digital sequence information on genetic resources, as well as traditional knowledge associated with genetic resources",
+        "questionNumber": "13.3",
+        "questionTitle": "Has your country taken administrative, policy or legislative measures pursuant to the operationalization of the multilateral mechanism in decision 16/2?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "13.b",
+        "indicatorTitle": "13.b Number of countries that have taken effective legal, policy, administrative and capacity-building measures at all levels, as appropriate, to ensure the fair and equitable sharing of benefits from the utilization of genetic resources and from digital sequence information on genetic resources, as well as traditional knowledge associated with genetic resources",
+        "questionNumber": "13.4",
+        "questionTitle": "Do the measures mentioned in questions 13.1 and 13.2 include the utilization of traditional knowledge associated with genetic resources?",
+        "response": "Yes",
+        "responseValue": "yes",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "13.b",
+        "indicatorTitle": "13.b Number of countries that have taken effective legal, policy, administrative and capacity-building measures at all levels, as appropriate, to ensure the fair and equitable sharing of benefits from the utilization of genetic resources and from digital sequence information on genetic resources, as well as traditional knowledge associated with genetic resources",
+        "questionNumber": "13.5",
+        "questionTitle": "Does your country monitor the monetary benefits received from the utilization of genetic resources and/or traditional knowledge associated with genetic resources that were accessed from your country?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "13.b",
+        "indicatorTitle": "13.b Number of countries that have taken effective legal, policy, administrative and capacity-building measures at all levels, as appropriate, to ensure the fair and equitable sharing of benefits from the utilization of genetic resources and from digital sequence information on genetic resources, as well as traditional knowledge associated with genetic resources",
+        "questionNumber": "13.6",
+        "questionTitle": "Does your country monitor the non-monetary benefits received from the utilization of genetic resources and/or traditional knowledge associated with genetic resources that were accessed from your country?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "13.b",
+        "indicatorTitle": "13.b Number of countries that have taken effective legal, policy, administrative and capacity-building measures at all levels, as appropriate, to ensure the fair and equitable sharing of benefits from the utilization of genetic resources and from digital sequence information on genetic resources, as well as traditional knowledge associated with genetic resources",
+        "questionNumber": "13.7",
+        "questionTitle": "Does your country have measures to ensure the fair and equitable benefit-sharing arising from the utilization of genetic resources and/or traditional knowledge associated with genetic resources that were accessed in another country?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.1",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the maintenance, enhancement and restoration of nature's contributions to people, including of ecosystem functions and services?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.2",
+        "questionTitle": "Does your country have policies and/or action plans aimed at ensuring the sustainable use of biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.3",
+        "questionTitle": "Does your country monitor the sustainable use of biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT11",
+        "indicatorCode": "B.b",
+        "indicatorTitle": "B.b Number of countries with policies or actions for implementing and monitoring the sustainable use of biodiversity and the maintenance and enhancement of nature’s contributions to people, including ecosystem functions and services",
+        "questionNumber": "B.4",
+        "questionTitle": "Does your country monitor the maintenance, restoration and enhancement of nature's contributions to people, including ecosystem functions and services for the benefit of present and future generations?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT12",
+        "indicatorCode": "14.b",
+        "indicatorTitle": "14.b Number of countries integrating biodiversity and its multiple values into policies, regulations, planning, development processes, poverty eradication strategies and, as appropriate, national accounts, within and across all levels and across all sectors, and progressively aligning all relevant public and private activities and fiscal and financial flows with the goals and targets of the Framework",
+        "questionNumber": "14.1",
+        "questionTitle": "Does your country integrate biodiversity and its multiple values into policies, regulations, planning, development processes and poverty eradication strategies at all levels of government?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT12",
+        "indicatorCode": "14.b",
+        "indicatorTitle": "14.b Number of countries integrating biodiversity and its multiple values into policies, regulations, planning, development processes, poverty eradication strategies and, as appropriate, national accounts, within and across all levels and across all sectors, and progressively aligning all relevant public and private activities and fiscal and financial flows with the goals and targets of the Framework",
+        "questionNumber": "14.2",
+        "questionTitle": "Does your country use environmental economic accounting to quantify the monetary and non-monetary values of biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT12",
+        "indicatorCode": "14.b",
+        "indicatorTitle": "14.b Number of countries integrating biodiversity and its multiple values into policies, regulations, planning, development processes, poverty eradication strategies and, as appropriate, national accounts, within and across all levels and across all sectors, and progressively aligning all relevant public and private activities and fiscal and financial flows with the goals and targets of the Framework",
+        "questionNumber": "14.3",
+        "questionTitle": "Does your country integrate biodiversity and its multiple values into policies, regulations, plans and strategies across all sectors to ensure their mainstreaming?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT12",
+        "indicatorCode": "14.b",
+        "indicatorTitle": "14.b Number of countries integrating biodiversity and its multiple values into policies, regulations, planning, development processes, poverty eradication strategies and, as appropriate, national accounts, within and across all levels and across all sectors, and progressively aligning all relevant public and private activities and fiscal and financial flows with the goals and targets of the Framework",
+        "questionNumber": "14.4",
+        "questionTitle": "Does your country have policies, regulations, strategies or plans in place to progressively align all relevant public and private activities with the goals and targets of the Framework?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT12",
+        "indicatorCode": "14.b",
+        "indicatorTitle": "14.b Number of countries integrating biodiversity and its multiple values into policies, regulations, planning, development processes, poverty eradication strategies and, as appropriate, national accounts, within and across all levels and across all sectors, and progressively aligning all relevant public and private activities and fiscal and financial flows with the goals and targets of the Framework",
+        "questionNumber": "14.5",
+        "questionTitle": "Are policies, regulations, strategies or plans in place to progressively align fiscal and financial flows with the goals and targets of the Framework?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT13",
+        "indicatorCode": "15.b",
+        "indicatorTitle": "15.b Number of countries with legal, administrative or policy measures aimed at encouraging and enabling business and financial institutions, and in particular for large and transnational companies and financial institutions, to progressively reduce their negative impacts on biodiversity, increase their positive impacts, reduce their biodiversity-related risks and promote actions to ensure sustainable patterns of production",
+        "questionNumber": "15.1",
+        "questionTitle": "Has your country put in place legal, administrative or policy measures to ensure that large and transnational companies and financial institutions monitor, assess and transparently disclose their risks, dependencies and impacts on biodiversity along their operations, supply and value chains, and portfolios?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT13",
+        "indicatorCode": "15.b",
+        "indicatorTitle": "15.b Number of countries with legal, administrative or policy measures aimed at encouraging and enabling business and financial institutions, and in particular for large and transnational companies and financial institutions, to progressively reduce their negative impacts on biodiversity, increase their positive impacts, reduce their biodiversity-related risks and promote actions to ensure sustainable patterns of production",
+        "questionNumber": "15.2",
+        "questionTitle": "Has your country put in place measures to ensure that large and transnational companies and financial institutions provide relevant information to consumers to promote sustainable consumption patterns?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT13",
+        "indicatorCode": "15.b",
+        "indicatorTitle": "15.b Number of countries with legal, administrative or policy measures aimed at encouraging and enabling business and financial institutions, and in particular for large and transnational companies and financial institutions, to progressively reduce their negative impacts on biodiversity, increase their positive impacts, reduce their biodiversity-related risks and promote actions to ensure sustainable patterns of production",
+        "questionNumber": "15.3",
+        "questionTitle": "Has your country put in place measures to ensure that large and transnational companies and financial institutions report on compliance with access and benefit-sharing regulations?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT13",
+        "indicatorCode": "15.b",
+        "indicatorTitle": "15.b Number of countries with legal, administrative or policy measures aimed at encouraging and enabling business and financial institutions, and in particular for large and transnational companies and financial institutions, to progressively reduce their negative impacts on biodiversity, increase their positive impacts, reduce their biodiversity-related risks and promote actions to ensure sustainable patterns of production",
+        "questionNumber": "15.4",
+        "questionTitle": "Has your country put in place measures to ensure that large and transnational companies and financial institutions progressively reduce their negative impacts on biodiversity and increase their positive impacts?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT13",
+        "indicatorCode": "15.b",
+        "indicatorTitle": "15.b Number of countries with legal, administrative or policy measures aimed at encouraging and enabling business and financial institutions, and in particular for large and transnational companies and financial institutions, to progressively reduce their negative impacts on biodiversity, increase their positive impacts, reduce their biodiversity-related risks and promote actions to ensure sustainable patterns of production",
+        "questionNumber": "15.5",
+        "questionTitle": "Does your country monitor whether negative impacts from business on biodiversity have progressively decreased?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT14",
+        "indicatorCode": "16.b",
+        "indicatorTitle": "16.b Number of countries developing, adopting or implementing policy instruments aimed at encouraging and enabling people to make sustainable consumption choices",
+        "questionNumber": "16.1",
+        "questionTitle": "Has your country established mechanisms, policy or legislative or regulatory frameworks aimed at supporting sustainable consumption?",
+        "response": "No",
+        "responseValue": "no",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT14",
+        "indicatorCode": "16.b",
+        "indicatorTitle": "16.b Number of countries developing, adopting or implementing policy instruments aimed at encouraging and enabling people to make sustainable consumption choices",
+        "questionNumber": "16.2",
+        "questionTitle": "Has your country adopted mechanisms to improve awareness or education with regard to the impacts of consumption on biodiversity and access to relevant and accurate information or alternatives supporting sustainable consumption?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT14",
+        "indicatorCode": "16.b",
+        "indicatorTitle": "16.b Number of countries developing, adopting or implementing policy instruments aimed at encouraging and enabling people to make sustainable consumption choices",
+        "questionNumber": "16.3",
+        "questionTitle": "Has your country adopted or implemented policy instruments aimed at encouraging and enabling people to make sustainable consumption choices, including by reducing food waste, over consumption and waste generation?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT15",
+        "indicatorCode": "17.b",
+        "indicatorTitle": "17.b Number of countries that have taken action to implement biosafety measures as set out in Article 8(g) of the Convention and measures for the handling of biotechnology and the distribution of its benefits as set out in Article 19",
+        "questionNumber": "17.1",
+        "questionTitle": "Has your country established biosafety-related policy, legal, administrative and other measures as set out in Article 8(g) of the Convention?",
+        "response": "No",
+        "responseValue": "no",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT15",
+        "indicatorCode": "17.b",
+        "indicatorTitle": "17.b Number of countries that have taken action to implement biosafety measures as set out in Article 8(g) of the Convention and measures for the handling of biotechnology and the distribution of its benefits as set out in Article 19",
+        "questionNumber": "17.2",
+        "questionTitle": "Does your country implement biosafety measures as set out in Article 8(g) of the Convention?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT15",
+        "indicatorCode": "17.b",
+        "indicatorTitle": "17.b Number of countries that have taken action to implement biosafety measures as set out in Article 8(g) of the Convention and measures for the handling of biotechnology and the distribution of its benefits as set out in Article 19",
+        "questionNumber": "17.3",
+        "questionTitle": "Has your country taken legislative, administrative or policy measures, as appropriate, to provide for the effective participation in biotechnological research activities by those Parties, especially developing countries, that provide the genetic resources for such research, as set out in paragraph 1 of Article 19 of the Convention?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT15",
+        "indicatorCode": "17.b",
+        "indicatorTitle": "17.b Number of countries that have taken action to implement biosafety measures as set out in Article 8(g) of the Convention and measures for the handling of biotechnology and the distribution of its benefits as set out in Article 19",
+        "questionNumber": "17.4",
+        "questionTitle": "Has your country taken practicable measures to promote and advance priority access on a fair and equitable basis by Parties, especially developing countries, to the results and benefits arising from biotechnologies based on genetic resources provided by those Parties, as set out in paragraph 2 of Article 19 of the Convention?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT15",
+        "indicatorCode": "17.b",
+        "indicatorTitle": "17.b Number of countries that have taken action to implement biosafety measures as set out in Article 8(g) of the Convention and measures for the handling of biotechnology and the distribution of its benefits as set out in Article 19",
+        "questionNumber": "17.5",
+        "questionTitle": "Does your country carry out scientifically sound risk assessments on the use and release of living modified organisms?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT15",
+        "indicatorCode": "17.b",
+        "indicatorTitle": "17.b Number of countries that have taken action to implement biosafety measures as set out in Article 8(g) of the Convention and measures for the handling of biotechnology and the distribution of its benefits as set out in Article 19",
+        "questionNumber": "17.6",
+        "questionTitle": "Does your country provide access to biosafety-related information for the safe transfer, handling and use of living modified organisms?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT18",
+        "indicatorCode": "20.b",
+        "indicatorTitle": "20.b Number of countries that have taken significant action to strengthen capacity-building and development and access to and transfer of technology, and to promote the development of and access to innovation and technical and scientific cooperation",
+        "questionNumber": "20.1",
+        "questionTitle": "Does your country have plans, policies or instruments for addressing capacity-building and development needs for biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT18",
+        "indicatorCode": "20.b",
+        "indicatorTitle": "20.b Number of countries that have taken significant action to strengthen capacity-building and development and access to and transfer of technology, and to promote the development of and access to innovation and technical and scientific cooperation",
+        "questionNumber": "20.2",
+        "questionTitle": "Does your country have measures to ensure the full and effective participation of indigenous peoples and local communities, women and girls, children and youth and people with disabilities in capacity-building and development for the conservation and sustainable use of biodiversity? (Select all that apply)",
+        "response": "indigenousPeoplesLocalCommunities",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT18",
+        "indicatorCode": "20.b",
+        "indicatorTitle": "20.b Number of countries that have taken significant action to strengthen capacity-building and development and access to and transfer of technology, and to promote the development of and access to innovation and technical and scientific cooperation",
+        "questionNumber": "20.3",
+        "questionTitle": "Has your country undertaken a national capacity self-assessment or other processes for assessing the capacity needs for the conservation and sustainable use of biodiversity?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT18",
+        "indicatorCode": "20.b",
+        "indicatorTitle": "20.b Number of countries that have taken significant action to strengthen capacity-building and development and access to and transfer of technology, and to promote the development of and access to innovation and technical and scientific cooperation",
+        "questionNumber": "20.4",
+        "questionTitle": "Has your country undertaken a national assessment of the capacity-building and development needs of indigenous peoples and local communities, women and girls, children and youth and people with disabilities for the conservation and sustainable use of biodiversity? (Select all that apply)",
+        "response": "none",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT18",
+        "indicatorCode": "20.b",
+        "indicatorTitle": "20.b Number of countries that have taken significant action to strengthen capacity-building and development and access to and transfer of technology, and to promote the development of and access to innovation and technical and scientific cooperation",
+        "questionNumber": "20.5",
+        "questionTitle": "Has your country established partnerships to foster joint technology development and joint scientific research programmes for the conservation and sustainable use of biodiversity and strengthening scientific research and monitoring capabilities, including through South-South, North-South and triangular cooperation?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT18",
+        "indicatorCode": "20.b",
+        "indicatorTitle": "20.b Number of countries that have taken significant action to strengthen capacity-building and development and access to and transfer of technology, and to promote the development of and access to innovation and technical and scientific cooperation",
+        "questionNumber": "20.5.1",
+        "questionTitle": "Specify for each type of partnership (optional)",
+        "response": "Mongolia has established and is implementing partnerships that foster joint technology development and joint scientific research programmes for the conservation and sustainable use of biodiversity, and that strengthen national scientific research and monitoring capabilities. These partnerships are enabled through national laws and policies supporting science, innovation and technology transfer, and are implemented through a mix of South–South, North–South and triangular/multilateral cooperation mechanisms. Mongolia participates in joint international research projects and programmes with multiple partner countries and institutions, and contributes to—and benefits from—global biodiversity data infrastructure and capacity-building initiatives to improve biodiversity information management, monitoring and evidence-based decision-making.",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "20.5.1 (a)",
+        "questionTitle": "Ensure full, equitable, inclusive, effective and gender-responsive representation and participation in biodiversity decision-making related to biodiversity of the following (select all that apply):",
+        "response": "other",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.1(a)(other)",
+        "questionTitle": "Please specify",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.1(a)(other) (b)",
+        "questionTitle": "Respect the following rights and cultures of indigenous peoples and local communities (select all that apply):",
+        "response": "rightsOverTraditionalKnowledge",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.1(a)(other) (c)",
+        "questionTitle": "Ensure the full protection of environmental human rights defenders?",
+        "response": "Yes",
+        "responseValue": "yes",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.1(a)(other) (d)",
+        "questionTitle": "Ensure public access to information related to biodiversity for the following (select all that apply):",
+        "response": "other",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.1(d)(other)",
+        "questionTitle": "Please specify",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.1(d)(other) (e)",
+        "questionTitle": "Provide access to justice for one or more of the following categories (select all that apply):",
+        "response": "womenGirls; childrenYouth; indigenousPeoplesLocalCommunities",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.2",
+        "questionTitle": "Does your country have operational frameworks and mechanisms related to the policy, legislative and administrative frameworks listed under question 22.1?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.2 (a)",
+        "questionTitle": "The full, equitable, inclusive, effective and gender-responsive representation and participation in biodiversity decision-making of the following (select all that apply):",
+        "response": "other",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.3(a)(other)",
+        "questionTitle": "Please specify",
+        "response": "NA",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.3(a)(other) (b)",
+        "questionTitle": "The following culture and rights of indigenous peoples and local communities (select all that apply):",
+        "response": "notApplicable",
+        "responseValue": null,
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "22.b",
+        "indicatorTitle": "22.b Number of countries taking action towards the full, equitable, inclusive, effective and gender responsive representation and participation in decision-making, and access to justice and information related to biodiversity by indigenous peoples and local communities, respecting their cultures and their rights over lands, territories, resources and traditional knowledge, as well as by women and girls, children and youth, and persons with disabilities, and the full protection of environmental human rights defenders",
+        "questionNumber": "22.3(a)(other) (c)",
+        "questionTitle": "The full protection of environmental human rights defenders?",
+        "response": "Yes",
+        "responseValue": "yes",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "23.b",
+        "indicatorTitle": "23.b Number of countries with legal, administrative or policy frameworks, inter alia, to implement the Gender Plan of Action (2023–2030), to ensure that all women and girls have equal opportunity and capacity to contribute to the three objectives of the Convention, including by ensuring women’s equal rights and access to land and natural resources",
+        "questionNumber": "23.1",
+        "questionTitle": "Does your country have mechanisms for facilitating the full, equitable, meaningful and informed participation and leadership of all women and girls at all levels of action, engagement, policy and decision-making related to biodiversity?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "23.b",
+        "indicatorTitle": "23.b Number of countries with legal, administrative or policy frameworks, inter alia, to implement the Gender Plan of Action (2023–2030), to ensure that all women and girls have equal opportunity and capacity to contribute to the three objectives of the Convention, including by ensuring women’s equal rights and access to land and natural resources",
+        "questionNumber": "23.2",
+        "questionTitle": "Has your country adopted legal, administrative or policy measures that explicitly recognize and protect the rights and access of all women and girls to land and natural resources?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "23.b",
+        "indicatorTitle": "23.b Number of countries with legal, administrative or policy frameworks, inter alia, to implement the Gender Plan of Action (2023–2030), to ensure that all women and girls have equal opportunity and capacity to contribute to the three objectives of the Convention, including by ensuring women’s equal rights and access to land and natural resources",
+        "questionNumber": "23.3",
+        "questionTitle": "Does your country explicitly apply a gender-responsive approach and recognize the contributions and roles of women and girls in its implementation of the Framework through its national reports or its national biodiversity strategy and action plan?",
+        "response": "Partially",
+        "responseValue": "partially",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      },
+      {
+        "targetId": "NT20",
+        "indicatorCode": "23.b",
+        "indicatorTitle": "23.b Number of countries with legal, administrative or policy frameworks, inter alia, to implement the Gender Plan of Action (2023–2030), to ensure that all women and girls have equal opportunity and capacity to contribute to the three objectives of the Convention, including by ensuring women’s equal rights and access to land and natural resources",
+        "questionNumber": "23.4",
+        "questionTitle": "Does your country conduct sex-disaggregated data collection and analyses to assess the differential impacts of biodiversity policies and programmes?",
+        "response": "Under development",
+        "responseValue": "under_development",
+        "ortUniqueId": "ORT-NR7BID-MN-288706-1",
+        "publishedOn": "2026-02-28"
+      }
+    ]
+  },
+  "indicators": [
+    {
+      "id": "1.1",
+      "code": "1.1",
+      "name": "Percentage of land and sea area covered by biodiversity-inclusive spatial plans",
+      "title": "1.1 Percentage of land and sea area covered by biodiversity-inclusive spatial plans",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT01"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288689-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": null,
+          "unit": "Percent",
+          "points": [
+            {
+              "year": 2024,
+              "value": 20.9,
+              "valueText": null,
+              "footnote": "https://www.gazar.gov.mn/post/sumyn-nutag-devsgerijn-h-gzhlijn-t-l-vl-g-gezh-yuu-ve"
+            },
+            {
+              "year": 2025,
+              "value": 49.0,
+              "valueText": null,
+              "footnote": "https://www.gazar.gov.mn/post/sumyn-nutag-devsgerijn-h-gzhlijn-t-l-vl-g-gezh-yuu-ve"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2.1",
+      "code": "2.1",
+      "name": "Area under restoration",
+      "title": "2.1 Area under restoration",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT02",
+        "NT07"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288681-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "F1 Rivers and streams biome",
+          "unit": "ha",
+          "points": [
+            {
+              "year": 2021,
+              "value": 58600.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 14841.3,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 26020.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 56517.78,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "T2 Temperate-boreal forests and woodlands biome",
+          "unit": "ha",
+          "points": [
+            {
+              "year": 2021,
+              "value": 61500.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 55773.2,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 98544.86,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 246253.77,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "T4 Savannas and grasslands biome",
+          "unit": "ha",
+          "points": [
+            {
+              "year": 2021,
+              "value": 2704400.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 1351896.8,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 3541990.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 3167790.0,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "T7 Intensive land-use biome",
+          "unit": "ha",
+          "points": [
+            {
+              "year": 2021,
+              "value": 393200.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 121943.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 229199.3,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 201916.0,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3.1",
+      "code": "3.1",
+      "name": "Coverage of protected areas and other effective area-based conservation measures",
+      "title": "3.1 Coverage of protected areas and other effective area-based conservation measures",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT03"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288683-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "Coverage of protected areas (terrestrial areas)",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2020,
+              "value": 20.77,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2021,
+              "value": 20.77,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 20.77,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 20.77,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 20.77,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2025,
+              "value": 20.77,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "Other effective area-based conservation measures",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2020,
+              "value": 15.01,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2021,
+              "value": 16.94,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 17.55,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 18.03,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 18.31,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2025,
+              "value": 18.9,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5.1",
+      "code": "5.1",
+      "name": "Proportion of fish stocks within biologically sustainable levels",
+      "title": "5.1 Proportion of fish stocks within biologically sustainable levels",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288698-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "6.1",
+      "code": "6.1",
+      "name": "Rate of invasive alien species establishment",
+      "title": "6.1 Rate of invasive alien species establishment",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT05"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288682-2",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "Fish",
+          "unit": "number of species",
+          "points": [
+            {
+              "year": 2024,
+              "value": 13.0,
+              "valueText": null,
+              "footnote": "Based on available national data on alien fish species; represents species inventory rather than modelled establishment rate."
+            }
+          ]
+        },
+        {
+          "disaggregation": "Flora",
+          "unit": "number of species",
+          "points": [
+            {
+              "year": 2024,
+              "value": 154.0,
+              "valueText": null,
+              "footnote": "Based on national compilation of alien flora; this represents species inventory rather than modelled establishment rate. Source: Gundegmaa et al. (2024)."
+            }
+          ]
+        },
+        {
+          "disaggregation": "Fungi",
+          "unit": "number of species",
+          "points": [
+            {
+              "year": 2024,
+              "value": 18.0,
+              "valueText": null,
+              "footnote": "Based on global database of alien macrofungi; represents species inventory rather than modelled establishment rate. Source: Monteiro et al."
+            }
+          ]
+        },
+        {
+          "disaggregation": "Insects",
+          "unit": "number of species",
+          "points": [
+            {
+              "year": 2010,
+              "value": 27.0,
+              "valueText": null,
+              "footnote": "Based on national literature on agricultural pests; represents species inventory rather than modelled establishment rate. Source: Chuluunjav (2010)."
+            }
+          ]
+        },
+        {
+          "disaggregation": "Mammals",
+          "unit": "number of species",
+          "points": [
+            {
+              "year": 2013,
+              "value": 5.0,
+              "valueText": null,
+              "footnote": "Based on published assessment of alien mammals in Mongolia; represents species inventory rather than modelled establishment rate. Source: Shar et al. (2013)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "7.1",
+      "code": "7.1",
+      "name": "Index of coastal eutrophication",
+      "title": "7.1 Index of coastal eutrophication",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288697-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "7.2",
+      "code": "7.2",
+      "name": "Pesticide environment concentration and/or aggregated total applied toxicity",
+      "title": "7.2 Pesticide environment concentration and/or aggregated total applied toxicity",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288696-2",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "9.1",
+      "code": "9.1",
+      "name": "Benefits from the sustainable use of wild species",
+      "title": "9.1 Benefits from the sustainable use of wild species",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288695-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "9.2",
+      "code": "9.2",
+      "name": "Percentage of the population in traditional occupations",
+      "title": "9.2 Percentage of the population in traditional occupations",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT09"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288694-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": null,
+          "unit": "%",
+          "points": [
+            {
+              "year": 2020,
+              "value": 14.4,
+              "valueText": null,
+              "footnote": "Same methodology as above."
+            },
+            {
+              "year": 2021,
+              "value": 14.6,
+              "valueText": null,
+              "footnote": "Same methodology as above."
+            },
+            {
+              "year": 2022,
+              "value": 14.4,
+              "valueText": null,
+              "footnote": "Same methodology as above."
+            },
+            {
+              "year": 2023,
+              "value": 13.5,
+              "valueText": null,
+              "footnote": "Same methodology as above."
+            },
+            {
+              "year": 2024,
+              "value": 13.9,
+              "valueText": null,
+              "footnote": "Calculated by comparing the population aged 18 and above with the number of herders. Source: Introduction to the Livestock Sector, 2019–2023."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "10.1",
+      "code": "10.1",
+      "name": "Proportion of agricultural area under productive and sustainable agriculture",
+      "title": "10.1 Proportion of agricultural area under productive and sustainable agriculture",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": "Mongolia has identified the global SDG indicator 2.4.1 – Proportion of agricultural area under productive and sustainable agriculture in its national SDG monitoring framework, with multiple ministries (including the Administration of Land Affairs, Geodesy and Cartography; the Ministry of Environment and Tourism; and the Ministry of Food, Agriculture and Light Industry) designated as responsible for data collection.",
+      "ortUniqueId": "ORT-NR7ID-MN-288673-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "10.2",
+      "code": "10.2",
+      "name": "Progress towards sustainable forest management",
+      "title": "10.2 Progress towards sustainable forest management",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT08"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288693-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "Above-ground biomass stock in forest",
+          "unit": "tonnes/ha",
+          "points": [
+            {
+              "year": 2010,
+              "value": 54.9,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2015,
+              "value": 54.9,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2020,
+              "value": 54.9,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2025,
+              "value": 54.9,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "Annual forest area change rate",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2010,
+              "value": -0.06,
+              "valueText": null,
+              "footnote": "For 2000-2010"
+            },
+            {
+              "year": 2015,
+              "value": -0.01,
+              "valueText": null,
+              "footnote": "For 2010-2025"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Proportion of forest area located within legally established protected areas",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2010,
+              "value": 16.96,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2015,
+              "value": 20.99,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2020,
+              "value": 20.99,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2025,
+              "value": 20.99,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "Proportion of forest area under long-term forest management plan",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2000,
+              "value": 100.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2010,
+              "value": 100.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2015,
+              "value": 100.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2020,
+              "value": 100.0,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12.1",
+      "code": "12.1",
+      "name": "Average share of the built-up area of cities that is green or blue space for public use for all",
+      "title": "12.1 Average share of the built-up area of cities that is green or blue space for public use for all",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT09",
+        "NT10"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288687-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "green space",
+          "unit": "m²/person",
+          "points": [
+            {
+              "year": 2016,
+              "value": 1.7,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2017,
+              "value": 2.4,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2018,
+              "value": 3.2,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2019,
+              "value": 4.1,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2021,
+              "value": 5.1,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 6.5,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "15.1",
+      "code": "15.1",
+      "name": "Number of companies disclosing their biodiversity-related risks, dependencies and impacts",
+      "title": "15.1 Number of companies disclosing their biodiversity-related risks, dependencies and impacts",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT13"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288692-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": null,
+          "unit": "number of companies",
+          "points": [
+            {
+              "year": 2022,
+              "value": 20.0,
+              "valueText": null,
+              "footnote": "Source: Mongolian Stock Exchange Annual Report (2022). 24 listed companies disclosed environmental information. Note: Not all disclosures are biodiversity-specific."
+            },
+            {
+              "year": 2023,
+              "value": 21.0,
+              "valueText": null,
+              "footnote": "Source: Mongolian Stock Exchange Annual Report (2022). 24 listed companies disclosed environmental information. Note: Not all disclosures are biodiversity-specific."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "18.1",
+      "code": "18.1",
+      "name": "Positive incentives in place to promote biodiversity conservation and sustainable use",
+      "title": "18.1 Positive incentives in place to promote biodiversity conservation and sustainable use",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT16"
+      ],
+      "comments": "Data for this indicator were obtained from the OECD Policy Instruments for the Environment (PINE) database.",
+      "ortUniqueId": "ORT-NR7ID-MN-288691-2",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "18.2",
+      "code": "18.2",
+      "name": "Value of subsidies and other incentives harmful to biodiversity",
+      "title": "18.2 Value of subsidies and other incentives harmful to biodiversity",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": "A national analytical screening conducted under the UNDP–BIOFIN subsidy repurposing methodology assessed government subsidies and incentives during 2020–2024. The rapid assessment identified approximately MNT 1.96 trillion (equivalent to approximately USD 551.2 million at 1 USD = 3,557 MNT ) in subsidies across agriculture, energy, transport, infrastructure and urban development sectors that may be harmful or potentially harmful to biodiversity. Within agriculture alone, 10 major subsidy instruments accounted for MNT 552.2 billion during 2020–2024. The assessment identified 50 subsidy instruments in total: 29 classified as clearly harmful (24 in agriculture), 21 classified as potentially harmful (16 in agriculture). These figures represent cumulative estimates for 2020–2024 and are derived from national fiscal data screened under BIOFIN methodology. They have not yet been formally adopted as official harmful subsidy accounting in national budget statistics. Annual disaggregated values are not available.",
+      "ortUniqueId": "ORT-NR7ID-MN-288685-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "21.1",
+      "code": "21.1",
+      "name": "Indicator on biodiversity information for monitoring the Kunming-Montreal Global Biodiversity Framework",
+      "title": "21.1 Indicator on biodiversity information for monitoring the Kunming-Montreal Global Biodiversity Framework",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": "Mongolia has established and expanded national biodiversity information systems (including the Environmental Information Database with multiple biodiversity-related sub-databases and monitoring modules, and the egazar.gov.mn “Biodiversity Statistics” platform). However, biodiversity data remain distributed across multiple systems with uneven updating, interoperability limitations, and incomplete integration of research and international datasets.",
+      "ortUniqueId": "ORT-NR7ID-MN-288679-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "22.1",
+      "code": "22.1",
+      "name": "Land-use change and land tenure in the traditional territories of indigenous peoples and local communities",
+      "title": "22.1 Land-use change and land tenure in the traditional territories of indigenous peoples and local communities",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": "Target 22 (respecting the traditional culture and rights of Indigenous Peoples and local communities) has not yet been fully mainstreamed into core national development policy packages (e.g., “Vision 2050”), which complicates establishing a single, standardized national reporting approach for “traditional territories” and tenure security under 22.1.",
+      "ortUniqueId": "ORT-NR7ID-MN-288676-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "A.1",
+      "code": "A.1",
+      "name": "Red List of Ecosystems",
+      "title": "A.1 Red List of Ecosystems",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288705-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "A.2",
+      "code": "A.2",
+      "name": "Extent of natural ecosystems",
+      "title": "A.2 Extent of natural ecosystems",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT01",
+        "NT02",
+        "NT03",
+        "NT04",
+        "NT05",
+        "NT06"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288688-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "F1 Rivers and streams biome",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2021,
+              "value": 0.1,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 0.1,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 0.2,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 0.2,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "F2 Lakes biome",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2021,
+              "value": 0.3,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 0.3,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 9.0,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "T2 Temperate-boreal forests and woodlands biome",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2021,
+              "value": 24.5,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 24.5,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 13.3,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 13.3,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "T4 Savannas and grasslands biome",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2021,
+              "value": 73.9,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 73.6,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 84.0,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 84.0,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "T7 Intensive land-use biome",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2021,
+              "value": 2.9,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 3.3,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 2.4,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 2.4,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        },
+        {
+          "disaggregation": "TF1 Palustrine wetlands biome",
+          "unit": "%",
+          "points": [
+            {
+              "year": 2023,
+              "value": 1.1,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 1.1,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A.3",
+      "code": "A.3",
+      "name": "Red List Index",
+      "title": "A.3 Red List Index",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT01",
+        "NT02",
+        "NT03",
+        "NT04",
+        "NT05",
+        "NT06"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288704-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": null,
+          "unit": "index",
+          "points": [
+            {
+              "year": 1993,
+              "value": 0.965334310308466,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 1994,
+              "value": 0.964957474400314,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 1995,
+              "value": 0.964499802777778,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 1996,
+              "value": 0.963900405741422,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 1997,
+              "value": 0.9633195,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 1998,
+              "value": 0.962705480555555,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 1999,
+              "value": 0.962091461111111,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2000,
+              "value": 0.961572822222222,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2001,
+              "value": 0.961149563888889,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2002,
+              "value": 0.960706438888889,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2003,
+              "value": 0.960441163888889,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2004,
+              "value": 0.959947594444444,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2005,
+              "value": 0.959492311111111,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2006,
+              "value": 0.959121654166667,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2007,
+              "value": 0.958676066666667,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2008,
+              "value": 0.958220972692014,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2009,
+              "value": 0.957933274602852,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2010,
+              "value": 0.95762681305512,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2011,
+              "value": 0.957290743199054,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2012,
+              "value": 0.956965047401357,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2013,
+              "value": 0.956544400301044,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2014,
+              "value": 0.956201844037837,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2015,
+              "value": 0.955850953791408,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2016,
+              "value": 0.955471897323639,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2017,
+              "value": 0.95511281320708,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2018,
+              "value": 0.954886194027913,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2019,
+              "value": 0.954554834450205,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2020,
+              "value": 0.954307313659456,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2021,
+              "value": 0.953980828293696,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 0.95379517042556,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2023,
+              "value": 0.953533068766272,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2024,
+              "value": 0.953211011358951,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A.4",
+      "code": "A.4",
+      "name": "Proportion of populations within species with an effective population size greater than 500",
+      "title": "A.4 Proportion of populations within species with an effective population size greater than 500",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT01",
+        "NT02",
+        "NT03",
+        "NT04",
+        "NT05",
+        "NT06"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288684-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "Mongolian gazelle (Procapra gutturosa)",
+          "unit": "Proportion (0–1)",
+          "points": [
+            {
+              "year": 2021,
+              "value": 0.5,
+              "valueText": null,
+              "footnote": "[1]"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Mongolian saiga (Saiga tatarica mongolica)",
+          "unit": "Proportion (0–1)",
+          "points": [
+            {
+              "year": 2020,
+              "value": 1.0,
+              "valueText": null,
+              "footnote": "[2]"
+            },
+            {
+              "year": 2021,
+              "value": 1.0,
+              "valueText": null,
+              "footnote": "[2]"
+            },
+            {
+              "year": 2022,
+              "value": 1.0,
+              "valueText": null,
+              "footnote": "[2]"
+            },
+            {
+              "year": 2023,
+              "value": 1.0,
+              "valueText": null,
+              "footnote": "[2]"
+            },
+            {
+              "year": 2024,
+              "value": 1.0,
+              "valueText": null,
+              "footnote": "[2]"
+            },
+            {
+              "year": 2025,
+              "value": 1.0,
+              "valueText": null,
+              "footnote": "[2]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A.CT.10",
+      "code": "A.CT.10",
+      "name": "Living Planet Index",
+      "title": "A.CT.10 Living Planet Index",
+      "indicatorType": "component",
+      "targetIds": [
+        "NT04"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288674-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": null,
+          "unit": "percent",
+          "points": [
+            {
+              "year": 2020,
+              "value": -45.0,
+              "valueText": null,
+              "footnote": "Asia-Pacific Living Planet Index Trends"
+            },
+            {
+              "year": 2022,
+              "value": -55.0,
+              "valueText": null,
+              "footnote": "Asia-Pacific Living Planet Index Trends"
+            },
+            {
+              "year": 2024,
+              "value": -60.0,
+              "valueText": null,
+              "footnote": "Asia-Pacific Living Planet Index Trends"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B.1",
+      "code": "B.1",
+      "name": "Services provided by ecosystems",
+      "title": "B.1 Services provided by ecosystems",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288702-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "C.1",
+      "code": "C.1",
+      "name": "Monetary benefits received in accordance with applicable internationally agreed access and benefit-sharing instruments",
+      "title": "C.1 Monetary benefits received in accordance with applicable internationally agreed access and benefit-sharing instruments",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288701-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "C.2",
+      "code": "C.2",
+      "name": "Non-monetary benefits arising from applicable international access and benefit-sharing instruments",
+      "title": "C.2 Non-monetary benefits arising from applicable international access and benefit-sharing instruments",
+      "indicatorType": "headline",
+      "targetIds": [],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288700-1",
+      "publishedOn": "2026-02-28",
+      "series": []
+    },
+    {
+      "id": "D.1",
+      "code": "D.1",
+      "name": "International public funding, including official development assistance for conservation and sustainable use of biodiversity and ecosystems",
+      "title": "D.1 International public funding, including official development assistance for conservation and sustainable use of biodiversity and ecosystems",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT12",
+        "NT13",
+        "NT14",
+        "NT15",
+        "NT16",
+        "NT17",
+        "NT18",
+        "NT19",
+        "NT20"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288703-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "Recipient",
+          "unit": "USD (millions)",
+          "points": [
+            {
+              "year": 2015,
+              "value": 15.00203,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2016,
+              "value": 10.43476,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2017,
+              "value": 7.44569,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2018,
+              "value": 25.36342,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2019,
+              "value": 23.10579,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2020,
+              "value": 8.36801,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2021,
+              "value": 7.28156,
+              "valueText": null,
+              "footnote": null
+            },
+            {
+              "year": 2022,
+              "value": 17.2364,
+              "valueText": null,
+              "footnote": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D.2",
+      "code": "D.2",
+      "name": "Domestic public funding on conservation and sustainable use of biodiversity and ecosystems",
+      "title": "D.2 Domestic public funding on conservation and sustainable use of biodiversity and ecosystems",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT12",
+        "NT13",
+        "NT14",
+        "NT15",
+        "NT16",
+        "NT17",
+        "NT18",
+        "NT19",
+        "NT20"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288699-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": null,
+          "unit": "billion tugrik",
+          "points": [
+            {
+              "year": 2020,
+              "value": 355.0,
+              "valueText": null,
+              "footnote": "Environmental Protection Expenditure Account and Environmental Subsidies Account."
+            },
+            {
+              "year": 2021,
+              "value": 242.9,
+              "valueText": null,
+              "footnote": "Environmental Protection Expenditure Account and Environmental Subsidies Account."
+            },
+            {
+              "year": 2022,
+              "value": 309.6,
+              "valueText": null,
+              "footnote": "Environmental Protection Expenditure Account and Environmental Subsidies Account."
+            },
+            {
+              "year": 2023,
+              "value": 258.0,
+              "valueText": null,
+              "footnote": "Environmental Protection Expenditure Account and Environmental Subsidies Account."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D.3",
+      "code": "D.3",
+      "name": "Private funding (domestic and international) on conservation and sustainable use of biodiversity and ecosystems",
+      "title": "D.3 Private funding (domestic and international) on conservation and sustainable use of biodiversity and ecosystems",
+      "indicatorType": "headline",
+      "targetIds": [
+        "NT12",
+        "NT13",
+        "NT14",
+        "NT15",
+        "NT16",
+        "NT17",
+        "NT18",
+        "NT19",
+        "NT20"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288680-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": null,
+          "unit": "million USD",
+          "points": [
+            {
+              "year": 2020,
+              "value": 270.03,
+              "valueText": null,
+              "footnote": "In analyzing private sector biodiversity-related expenditures, data collection focused on the Top 100 companies identified by the Mongolian National Chamber of Commerce and Industry, as well as major mining companies. The combined revenues of Mongolia’s Top 100 enterprises account for approximately 70 percent of national GDP, indicating a high level of representativeness relative to the population of approximately 87,000 active legal entities as of 2024. Data on biodiversity-related expenditures were collected through a review of corporate social responsibility and sustainability reports, as well as publicly available information disclosed through media sources. Where such information was not available, standardized questionnaires were distributed to enterprises to collect data on biodiversity- and environment-related expenditures."
+            },
+            {
+              "year": 2021,
+              "value": 296.99,
+              "valueText": null,
+              "footnote": "In analyzing private sector biodiversity-related expenditures, data collection focused on the Top 100 companies identified by the Mongolian National Chamber of Commerce and Industry, as well as major mining companies. The combined revenues of Mongolia’s Top 100 enterprises account for approximately 70 percent of national GDP, indicating a high level of representativeness relative to the population of approximately 87,000 active legal entities as of 2024. Data on biodiversity-related expenditures were collected through a review of corporate social responsibility and sustainability reports, as well as publicly available information disclosed through media sources. Where such information was not available, standardized questionnaires were distributed to enterprises to collect data on biodiversity- and environment-related expenditures."
+            },
+            {
+              "year": 2022,
+              "value": 783.21,
+              "valueText": null,
+              "footnote": "In analyzing private sector biodiversity-related expenditures, data collection focused on the Top 100 companies identified by the Mongolian National Chamber of Commerce and Industry, as well as major mining companies. The combined revenues of Mongolia’s Top 100 enterprises account for approximately 70 percent of national GDP, indicating a high level of representativeness relative to the population of approximately 87,000 active legal entities as of 2024. Data on biodiversity-related expenditures were collected through a review of corporate social responsibility and sustainability reports, as well as publicly available information disclosed through media sources. Where such information was not available, standardized questionnaires were distributed to enterprises to collect data on biodiversity- and environment-related expenditures."
+            },
+            {
+              "year": 2023,
+              "value": 782.01,
+              "valueText": null,
+              "footnote": "In analyzing private sector biodiversity-related expenditures, data collection focused on the Top 100 companies identified by the Mongolian National Chamber of Commerce and Industry, as well as major mining companies. The combined revenues of Mongolia’s Top 100 enterprises account for approximately 70 percent of national GDP, indicating a high level of representativeness relative to the population of approximately 87,000 active legal entities as of 2024. Data on biodiversity-related expenditures were collected through a review of corporate social responsibility and sustainability reports, as well as publicly available information disclosed through media sources. Where such information was not available, standardized questionnaires were distributed to enterprises to collect data on biodiversity- and environment-related expenditures."
+            },
+            {
+              "year": 2024,
+              "value": 766.29,
+              "valueText": null,
+              "footnote": "In analyzing private sector biodiversity-related expenditures, data collection focused on the Top 100 companies identified by the Mongolian National Chamber of Commerce and Industry, as well as major mining companies. The combined revenues of Mongolia’s Top 100 enterprises account for approximately 70 percent of national GDP, indicating a high level of representativeness relative to the population of approximately 87,000 active legal entities as of 2024. Data on biodiversity-related expenditures were collected through a review of corporate social responsibility and sustainability reports, as well as publicly available information disclosed through media sources. Where such information was not available, standardized questionnaires were distributed to enterprises to collect data on biodiversity- and environment-related expenditures."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ecosystem-category-wwf-mongolia",
+      "code": null,
+      "name": "Ecosystem Category (WWF Mongolia)",
+      "title": "Ecosystem Category (WWF Mongolia)",
+      "indicatorType": "national",
+      "targetIds": [
+        "NT01"
+      ],
+      "comments": null,
+      "ortUniqueId": "ORT-NR7ID-MN-288690-1",
+      "publishedOn": "2026-02-28",
+      "series": [
+        {
+          "disaggregation": "Agriculture",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 1268506.5,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Alpine meadow",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 5464042.9,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Depressions and salt marshes",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 3463984.7,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Desert steppe",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 30293371.2,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Dry steppe",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 23222677.4,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Ephemeral rivers and dry beds",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 586282.7,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Extreme arid desert",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 5596946.9,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Freshwater lakes",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 1288129.2,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "High mountain alpine",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 1626076.0,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "High mountain steppe",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 4129235.4,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Meadow steppe",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 16678504.3,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Mixed forest",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 6738796.6,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Mountain taiga",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 2785863.7,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Permanent rivers and floodplains",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 7052707.8,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Permanent snow/glaciers",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 94907.5,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Sand dunes",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 3314182.2,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Semi-dry steppe",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 17183524.3,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Settlement areas",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 825418.1,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Steppe-desert",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 11641030.2,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "Sub-alpine sparse forest",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 2335709.2,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        },
+        {
+          "disaggregation": "True desert",
+          "unit": "hectares",
+          "points": [
+            {
+              "year": 2020,
+              "value": 12101045.8,
+              "valueText": null,
+              "footnote": "Ecosystem classes, WWF Mongolia"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

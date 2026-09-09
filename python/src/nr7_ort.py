@@ -98,10 +98,31 @@ ORT_SECTIONS: dict[str, dict[str, Any]] = {
             "indicator": "Indicator",
             "indicatorCode": "Indicator Code",
             "questionNumber": "Question Number",
+            # The questionnaire wording, from the reporting tool itself. It is
+            # the only source of question text this project uses; nothing is
+            # typed by hand (verified to be returned, 2026-09-09).
+            "questionTitle": "Question",
             "responseTitle": "Response",
         },
     },
 }
+
+# Questionnaire answers on the standard four-step scale, as the tool spells
+# them (one export used the camelCase key). Anything else (enum keys such as
+# "forTerrestrialPlanning", free text) keeps its raw response and no scale
+# value; the UI shows those verbatim under "other answers".
+RESPONSE_VALUES: dict[str, str] = {
+    "yes": "yes",
+    "partially": "partially",
+    "under development": "under_development",
+    "underdevelopment": "under_development",
+    "no": "no",
+}
+
+# GBF indicator codes as they lead the ORT title: "3.1 Coverage of ...",
+# "A.3 Red List Index", "A.CT.10 Living Planet Index". National indicators
+# ("Ecosystem Category (WWF Mongolia)") carry no code.
+_INDICATOR_CODE_RE = re.compile(r"^([A-D]\.(?:CT\.)?\d+|\d+\.\d+)\s+(.*)$", re.S)
 
 # ORT "Level of Progress" (six levels) -> the four-level vocabulary the UI has
 # labels and colours for (src/lib/labels.ts). "Achieved" folds into on_track
@@ -253,6 +274,199 @@ def build_progress_items(
     return items
 
 
+# ---------------------------------------------------------------------------
+# Questionnaire (binary indicators) and indicator series (headline export)
+# ---------------------------------------------------------------------------
+
+
+def normalise_response(raw: Any) -> str | None:
+    """Standard-scale answer key, or None for enum / free-text answers."""
+    key = _WS.sub(" ", str(raw or "")).strip().lower()
+    return RESPONSE_VALUES.get(key)
+
+
+def split_indicator(title: Any) -> tuple[str | None, str]:
+    """'3.1 Coverage of protected areas' -> ('3.1', 'Coverage of protected areas');
+    a title with no GBF code -> (None, title)."""
+    text = _clean(title) or ""
+    m = _INDICATOR_CODE_RE.match(text)
+    if not m:
+        return None, text
+    return m.group(1), _WS.sub(" ", m.group(2)).strip()
+
+
+def slugify(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "indicator"
+
+
+def parse_value(raw: Any) -> float | None:
+    """Numeric value of an indicator cell; None for blanks and non-numbers
+    (the raw text is kept separately as `valueText`)."""
+    s = str(raw if raw is not None else "").replace("\xa0", "").strip()
+    if not s or s.lower() in ("nan", "na", "n/a"):
+        return None
+    s = s.replace(" ", "").replace(",", "")
+    try:
+        return float(s)
+    except ValueError:
+        return None
+
+
+def _target_id_of(row: dict[str, str]) -> str | None:
+    target = (row.get("Target") or "").strip()
+    if not target:
+        return None
+    try:
+        return split_target(target)[0]
+    except ValueError:
+        return None
+
+
+def _int_year(raw: Any) -> int | None:
+    s = str(raw if raw is not None else "").strip()
+    if not s:
+        return None
+    try:
+        return int(float(s))
+    except ValueError:
+        return None
+
+
+def build_questionnaire(binary_rows: list[dict[str, str]]) -> dict[str, Any]:
+    """The GBF binary-indicator questionnaire: one answer per (target,
+    indicator, question), latest revision wins, wording verbatim from the
+    export's Question column when the tool returned it."""
+    best: dict[tuple[str, str, str], dict[str, str]] = {}
+    for row in binary_rows:
+        number = (row.get("Question Number") or "").strip()
+        target_id = _target_id_of(row)
+        if not number or not target_id:
+            continue
+        key = (target_id, (row.get("Indicator Code") or "").strip(), number)
+        cur = best.get(key)
+        if cur is None or (_published(row) or datetime.min) >= (_published(cur) or datetime.min):
+            best[key] = row
+    answers: list[dict[str, Any]] = []
+    for (target_id, code, number), row in best.items():
+        published = _published(row)
+        response = _clean(row.get("Response")) or ""
+        answers.append(
+            {
+                "targetId": target_id,
+                "indicatorCode": code or None,
+                "indicatorTitle": _clean(row.get("Indicator")),
+                "questionNumber": number,
+                "questionTitle": _clean(row.get("Question")),
+                "response": response,
+                "responseValue": normalise_response(response),
+                "ortUniqueId": (row.get("Unique ID") or "").strip() or None,
+                "publishedOn": published.date().isoformat() if published else None,
+            }
+        )
+    answers.sort(key=lambda a: (a["targetId"], _question_sort_key(a["questionNumber"])))
+    return {"answers": answers}
+
+
+def _question_sort_key(number: str) -> tuple:
+    parts = re.findall(r"[A-Za-z]+|\d+", number)
+    return tuple((0, int(p)) if p.isdigit() else (1, p.lower()) for p in parts)
+
+
+def build_indicators(headline_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
+    """Indicator series from the headline export.
+
+    The export repeats every (indicator, disaggregation, year) point once per
+    national target the indicator is attached to and once per revision, so
+    points are deduped on that triple (latest revision wins, a conflicting
+    value at the same revision is logged) and the attachments are collected
+    into `targetIds`. Disaggregations are series of their own, each with its
+    own unit (indicator 10.2 mixes tonnes/ha and %). Rows with no year and no
+    value are the "no data reported" case and keep only the country comment.
+    """
+    groups: dict[str, list[dict[str, str]]] = {}
+    for row in headline_rows:
+        title = _clean(row.get("Indicator"))
+        if not title:
+            continue
+        groups.setdefault(title, []).append(row)
+
+    out: list[dict[str, Any]] = []
+    for title, rows in groups.items():
+        code, name = split_indicator(title)
+        target_ids: list[str] = []
+        for row in rows:
+            tid = _target_id_of(row)
+            if tid and tid not in target_ids:
+                target_ids.append(tid)
+        target_ids.sort()
+        types = [t for t in ((r.get("Indicator Type") or "").strip().lower() for r in rows) if t]
+        # A blank type in the export is a headline indicator (the ORT only
+        # labels the component and national ones).
+        indicator_type = types[0] if types else "headline"
+        comments = next((_clean(r.get("Comments")) for r in rows if _clean(r.get("Comments"))), None)
+        latest_row = max(rows, key=lambda r: _published(r) or datetime.min)
+        latest_pub = _published(latest_row)
+
+        best_point: dict[tuple[str | None, int], dict[str, str]] = {}
+        for row in rows:
+            year = _int_year(row.get("Year"))
+            if year is None:
+                if (row.get("Year") or "").strip():
+                    logger.warning(f"{title}: dropping row with non-integer year {row.get('Year')!r}")
+                continue
+            disagg = _clean(row.get("Disaggregation"))
+            key = (disagg, year)
+            cur = best_point.get(key)
+            if cur is None:
+                best_point[key] = row
+                continue
+            cur_pub, row_pub = _published(cur) or datetime.min, _published(row) or datetime.min
+            if row_pub > cur_pub:
+                best_point[key] = row
+            elif row_pub == cur_pub and (row.get("Value") or "") != (cur.get("Value") or ""):
+                logger.warning(
+                    f"{title} / {disagg or 'total'} / {year}: conflicting values "
+                    f"{cur.get('Value')!r} vs {row.get('Value')!r}; keeping the first"
+                )
+
+        by_series: dict[str | None, list[dict[str, Any]]] = {}
+        units: dict[str | None, str] = {}
+        for (disagg, year), row in best_point.items():
+            raw = row.get("Value")
+            value = parse_value(raw)
+            value_text = _clean(raw) if value is None and _clean(raw) else None
+            if value is None and value_text is None:
+                continue
+            by_series.setdefault(disagg, []).append(
+                {"year": year, "value": value, "valueText": value_text, "footnote": _clean(row.get("Footnote"))}
+            )
+            unit = _clean(row.get("Unit"))
+            if unit and disagg not in units:
+                units[disagg] = unit
+        series = [
+            {"disaggregation": disagg, "unit": units.get(disagg), "points": sorted(pts, key=lambda p: p["year"])}
+            for disagg, pts in by_series.items()
+        ]
+        series.sort(key=lambda s: (s["disaggregation"] is not None, s["disaggregation"] or ""))
+
+        out.append(
+            {
+                "id": code or slugify(title),
+                "code": code,
+                "name": name,
+                "title": title,
+                "indicatorType": indicator_type,
+                "targetIds": target_ids,
+                "comments": comments,
+                "ortUniqueId": (latest_row.get("Unique ID") or "").strip() or None,
+                "publishedOn": latest_pub.date().isoformat() if latest_pub else None,
+                "series": series,
+            }
+        )
+    out.sort(key=lambda i: (i["code"] is None, _question_sort_key(i["code"] or ""), i["title"]))
+    return out
+
+
 def build_nr7_data(
     country: str,
     iso3: str,
@@ -260,11 +474,18 @@ def build_nr7_data(
     nbsap_targets: list[dict[str, Any]],
     fetched_at: datetime | None = None,
     threshold: float = 0.85,
+    headline_rows: list[dict[str, str]] | None = None,
+    binary_rows: list[dict[str, str]] | None = None,
 ) -> dict[str, Any]:
     items = build_progress_items(section3_rows, nbsap_targets, threshold)
     published = sorted(p for p in (i["publishedOn"] for i in items) if p)
     latest = published[-1] if published else None
     fetched = (fetched_at or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    sections = ["Section III (national targets)"]
+    if headline_rows:
+        sections.append("Headline and other indicators")
+    if binary_rows:
+        sections.append("Binary indicators (questionnaire)")
     return {
         "country": country,
         "iso3": iso3.upper(),
@@ -274,10 +495,14 @@ def build_nr7_data(
             "name": ORT_SOURCE_NAME,
             "url": ORT_URL,
             "section": "Section III (national targets)",
+            "sections": sections,
             "publishedOn": latest,
             "fetchedAt": fetched.replace(microsecond=0).isoformat(),
         },
         "progressItems": items,
+        # Always present so the client shape is stable; empty without the exports.
+        "questionnaire": build_questionnaire(binary_rows or []),
+        "indicators": build_indicators(headline_rows or []),
     }
 
 
