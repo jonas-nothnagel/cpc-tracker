@@ -463,17 +463,21 @@
       },
       "implementationCoverage": {
         "steps": {
-          "review": {
-            "title": "What needs a look, first",
-            "body": "Each row is one reported action that may pull against policy targets, or one place where the biodiversity report's own statements disagree. The top five per report show first; open a row for the evidence."
+          "toggle": {
+            "title": "One report at a time",
+            "body": "The climate report (BTR) and the biodiversity report (NR7) are separate self-reports. Switch between them here; the headline, the visual and the folded sections follow."
           },
-          "rows": {
+          "visual": {
+            "title": "The takeaways",
+            "body": "Climate: one bar per reported action, its length the policy commitments it may pull against, darker for design-level pairs. Biodiversity: the report's own rating beside the evidence that disagrees with it."
+          },
+          "row": {
             "title": "Opening a row",
-            "body": "A climate row lists the commitments the action may pull against and why (AI-estimated); a biodiversity row shows the answers or indicator values the report gave. Links open the pair or the national target."
+            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated); a biodiversity row shows the answers or indicator values the report gave. Links open the pair or the national target."
           },
           "fullPicture": {
             "title": "The full picture",
-            "body": "Below the list, three sections fold out: coverage by document (which targets have an aligned reported action), the biodiversity report by national target, and all its indicators."
+            "body": "Below the visual, the folded sections hold the rest of the report on screen: coverage by document for the climate report, every national target and indicator for the biodiversity one."
           }
         }
       }
@@ -1009,17 +1013,10 @@
     },
     "implementation": {
       "headline": {
-        "noCoverage": "{country} reports {count, plural, one {# action} other {# actions}}; their match to the plan is not yet computed.",
-        "reviewBoth": "{actions, plural, one {# reported action} other {# reported actions}} and {checks, plural, one {# self-report cross-check} other {# self-report cross-checks}} are worth a closer look.",
-        "reviewClimate": "{actions, plural, one {# reported action is} other {# reported actions are}} worth a closer look against the policy targets.",
-        "reviewBiodiversity": "{checks, plural, one {# cross-check in {country}'s biodiversity report is} other {# cross-checks in {country}'s biodiversity report are}} worth a closer look.",
-        "nothingFlagged": "Nothing in {country}'s reported actions stands out for a closer look."
+        "noCoverage": "{country} reports {count, plural, one {# action} other {# actions}}; their match to the plan is not yet computed."
       },
       "body": {
-        "noCoverage": "The action-to-target match has not been computed for this corpus yet. The right column shows what the report contains: which actions, in which sectors, at which country-reported status.",
-        "reviewBoth": "The climate report (BTR) lists {btrActions, plural, one {# action} other {# actions}}; the biodiversity report (NR7) lists {nr7Actions}. {reached} of {total} policy targets have a strongly aligned reported action; {outsideReach} have none. Matches and review prompts are AI-estimated.",
-        "reviewClimate": "The climate report (BTR) lists {actions, plural, one {# reported action} other {# reported actions}}. {reached} of {total} policy targets have a strongly aligned action, {underWay} of them under way or implemented; {outsideReach} have none. Matches are AI-estimated.",
-        "reviewBiodiversity": "The biodiversity report (NR7) lists {nr7Actions, plural, one {# reported action} other {# reported actions}}. {reached} of {total} policy targets have a strongly aligned action; {outsideReach} have none. Cross-checks are computed from the report's own statements."
+        "noCoverage": "The action-to-target match has not been computed for this corpus yet. The right column shows what the report contains: which actions, in which sectors, at which country-reported status."
       },
       "dotMap": {
         "disclaimer": "AI-estimated and indicative. Addressed means at least one reported action aligns at high confidence; it does not mean the target is on track."
@@ -1051,20 +1048,7 @@
         "ongoing": "Ongoing",
         "implemented": "Implemented"
       },
-      "reading": "Each row is a <btr>BTR</btr> action that may pull against a policy <target>target</target>. Open a row for the evidence.",
-      "readingWithNr7": "Rows are <btr>BTR</btr> actions that may pull against a <target>target</target>, or places where the <nr7>NR7</nr7>'s own statements disagree. Open one for the evidence.",
-      "readingNr7Only": "Each row is a place where the <nr7>NR7</nr7>'s own rating, answers and indicators disagree. Open a row for the report's evidence.",
-      "group": {
-        "climate": {
-          "heading": "Climate report (Biennial Transparency Report, BTR)",
-          "caption": "{flagged, plural, one {# of {total} reported actions shows} other {# of {total} reported actions show}} potential misalignment with policy targets; {underWay, plural, =0 {none is under way yet} one {# is under way or implemented} other {# are under way or implemented}}. AI-estimated review prompts, not findings.",
-          "empty": "No reported climate action shows potential misalignment with the policy targets."
-        },
-        "biodiversity": {
-          "heading": "Biodiversity report (7th National Report to the CBD, NR7)",
-          "empty": "The report's rating, questionnaire answers and indicators agree on every national target."
-        }
-      },
+      "reading": "One bar per <btr>BTR</btr> action; its length is the policy <target>targets</target> it may pull against. Open a bar for the evidence.",
       "row": {
         "climate": {
           "commitments": "{count, plural, one {# commitment} other {# commitments}} across {docs}",
@@ -1100,6 +1084,48 @@
           "summary": "All NR7 indicators",
           "count": "{withValues} of {total} with reported values"
         }
+      },
+      "readingNr7": "One row per cross-check: the <nr7>NR7</nr7>'s own rating beside the evidence that disagrees with it. Open a row for the detail.",
+      "toggle": {
+        "climate": "Climate report (BTR)",
+        "biodiversity": "Biodiversity report (NR7)",
+        "aria": "Choose a report"
+      },
+      "climate": {
+        "headline": "{actions, plural, one {# reported climate action may} other {# reported climate actions may}} pull against {commitments, plural, one {# policy commitment} other {# policy commitments}}.",
+        "headlineNone": "No reported climate action shows potential misalignment with the policy targets.",
+        "body": "{half, plural, one {# of them carries} other {# of them carry}} half of the flagged pairs, and {underWay, plural, =0 {none is under way yet} one {# is already under way} other {# are already under way}}. Most flags fall on {docs} targets. AI-estimated review prompts, not findings.",
+        "bodyNone": "{reached} of {total} policy targets have a strongly aligned reported action; {outsideReach} have none. Matches are AI-estimated.",
+        "docsPair": "{a} and {b}",
+        "legend": {
+          "design": "design-level",
+          "coordination": "coordination-level"
+        },
+        "bar": {
+          "aria": "{name}: {count, plural, one {# flagged pair} other {# flagged pairs}}, {design} design-level"
+        }
+      },
+      "biodiversity": {
+        "headline": "{checks, plural, one {# place} other {# places}} where {country}'s biodiversity report disagrees with itself.",
+        "headlineNone": "{country}'s biodiversity report agrees with itself on every national target.",
+        "caveat": "Computed from the report's own statements.",
+        "join": "; ",
+        "row": {
+          "aria": "{target}: rated {rating}; {evidence}"
+        },
+        "evidence": {
+          "answers": "{notInPlace} of {answered} not yet in place",
+          "flat": "unchanged since {from}",
+          "values": "{count, plural, one {# value reported} other {# values reported}}",
+          "reach": "{count, plural, one {# policy target aligned} other {# policy targets aligned}}",
+          "falling": "{first} to {last} {unit}"
+        }
+      },
+      "frag": {
+        "ratingVsAnswers": "{count, plural, one {# on-track target has} other {# on-track targets have}} most enabling conditions not yet in place",
+        "flatWhileOnTrack": "target {n}'s indicator unchanged since {from}",
+        "unknownWithData": "{count, plural, one {# target} other {# targets}} rated unknown despite reported values",
+        "reachWhileNoChange": "{count, plural, one {# target with no change is} other {# targets with no change are}} among the most-connected in the plan"
       }
     },
     "implementationCenter": {
@@ -1214,8 +1240,7 @@
           "down": "falling",
           "flat": "unchanged"
         }
-      },
-      "sourceNote": "Source: {country}'s 7th National Report, CBD Online Reporting Tool (public). Ratings, answers and values are the country's own; the tool computes counts and directions only."
+      }
     },
     "docFilter": {
       "removeDoc": "Remove {name}",

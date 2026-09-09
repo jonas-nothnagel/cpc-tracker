@@ -130,8 +130,9 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "list", target: "hotspot-list", placement: "top" },
   ],
   implementationCoverage: [
-    { id: "review", target: "review-groups", placement: "bottom" },
-    { id: "rows", target: "review-row", placement: "bottom" },
+    { id: "toggle", target: "report-toggle", placement: "bottom" },
+    { id: "visual", target: "review-visual", placement: "bottom" },
+    { id: "row", target: "review-row", placement: "bottom" },
     { id: "fullPicture", target: "full-picture", placement: "top" },
   ],
 };

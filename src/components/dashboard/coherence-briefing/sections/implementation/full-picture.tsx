@@ -1,8 +1,9 @@
 "use client";
 
 /**
- * FullPicture — everything below the review list, folded closed: coverage by
- * document (the dot-map), the NR7 by national target, and all NR7 indicators.
+ * FullPicture — everything below the review visual, folded closed, for the
+ * report on screen: coverage by document (the dot-map) for the climate report,
+ * the NR7 by national target and all NR7 indicators for the biodiversity one.
  * Each is a details/summary block; the review rows can open one at a given
  * target or indicator through `useNr7FullPicture`, and the NR7 sections
  * cross-link the same way (indicator chips in a target row, target chips on an
@@ -14,6 +15,7 @@ import { useTranslations } from "next-intl";
 import type { ActionPlanAlignmentSummary, ImplementationCoverage } from "@/lib/implementation-coherence";
 import { IndicatorsView, Nr7TargetsList, type Nr7PairRef, type Nr7ReportModel } from "../../nr7-report";
 import { CoverageByDocument } from "./coverage-by-document";
+import type { ImplementationReport } from "./report-toggle";
 import type { CountryConfig } from "@/types";
 
 export interface Nr7FullPictureState {
@@ -92,6 +94,7 @@ export function FullPictureSection({
 }
 
 export function FullPicture({
+  report,
   state,
   coverage,
   summary,
@@ -103,6 +106,8 @@ export function FullPicture({
   onOpenActionPair,
   onOpenTarget,
 }: {
+  /** Which report is on screen; each section belongs to one of them. */
+  report: ImplementationReport;
   state: Nr7FullPictureState;
   coverage: ImplementationCoverage;
   summary: ActionPlanAlignmentSummary;
@@ -117,7 +122,7 @@ export function FullPicture({
   const t = useTranslations("briefing.implementation.fullPicture");
   return (
     <div data-tour="full-picture" className="divide-y divide-line-soft">
-      {coverage.hasMeasureAlignment && (
+      {report === "btr" && coverage.hasMeasureAlignment && (
         <FullPictureSection
           id="full-picture-coverage"
           tour="full-picture-coverage"
@@ -135,7 +140,7 @@ export function FullPicture({
           />
         </FullPictureSection>
       )}
-      {nr7Report && (
+      {report === "nr7" && nr7Report && (
         <FullPictureSection
           id="full-picture-nr7-targets"
           tour="full-picture-nr7-targets"
@@ -156,7 +161,7 @@ export function FullPicture({
           />
         </FullPictureSection>
       )}
-      {nr7Report && (
+      {report === "nr7" && nr7Report && (
         <FullPictureSection
           id="full-picture-nr7-indicators"
           tour="full-picture-nr7-indicators"

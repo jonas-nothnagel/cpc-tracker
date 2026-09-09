@@ -19,11 +19,12 @@ const coverage = {
 } as unknown as ImplementationCoverage;
 const summary = { totalFlaggedPairs: 0 } as ActionPlanAlignmentSummary;
 
-function Harness({ withNr7 = true, onState }: { withNr7?: boolean; onState?: (s: ReturnType<typeof useNr7FullPicture>) => void }) {
+function Harness({ report = "nr7", withNr7 = true, onState }: { report?: "btr" | "nr7"; withNr7?: boolean; onState?: (s: ReturnType<typeof useNr7FullPicture>) => void }) {
   const state = useNr7FullPicture();
   onState?.(state);
   return (
     <FullPicture
+      report={report}
       state={state}
       coverage={coverage}
       summary={summary}
@@ -41,14 +42,23 @@ function Harness({ withNr7 = true, onState }: { withNr7?: boolean; onState?: (s:
 const wrap = (ui: React.ReactElement) => render(<NextIntlClientProvider locale="en" messages={en}>{ui}</NextIntlClientProvider>);
 
 describe("FullPicture", () => {
-  it("folds three sections closed by default, with counts in their summaries", () => {
-    wrap(<Harness />);
+  it("folds the two NR7 sections closed under the biodiversity report, with counts in their summaries", () => {
+    wrap(<Harness report="nr7" />);
     const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
-    expect(details).toHaveLength(3);
+    expect(details).toHaveLength(2);
     expect(details.every((d) => !d.open)).toBe(true);
-    expect(screen.getByText("3 of 4 targets have an aligned reported action")).toBeInTheDocument();
     expect(screen.getByText("4 national targets, 2 rated on track")).toBeInTheDocument();
     expect(screen.getByText("4 of 5 with reported values")).toBeInTheDocument();
+    expect(screen.queryByText("Coverage by document")).toBeNull();
+  });
+
+  it("folds only the coverage section under the climate report, legend and disclaimer inside", () => {
+    wrap(<Harness report="btr" />);
+    const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
+    expect(details).toHaveLength(1);
+    expect(details[0].open).toBe(false);
+    expect(screen.getByText("3 of 4 targets have an aligned reported action")).toBeInTheDocument();
+    expect(screen.queryByText("NR7 by national target")).toBeNull();
     // The dot-map keeps its legend and disclaimer inside the folded section.
     expect(screen.getByText("has an aligned reported action")).toBeInTheDocument();
     expect(screen.getByText(/AI-estimated and indicative/)).toBeInTheDocument();
@@ -65,10 +75,9 @@ describe("FullPicture", () => {
     expect(document.getElementById("nr7-ind-A.3")!.className).toContain("ring-1");
   });
 
-  it("shows only the coverage section without an NR7", () => {
-    wrap(<Harness withNr7={false} />);
-    expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(1);
-    expect(screen.queryByText("NR7 by national target")).toBeNull();
+  it("renders nothing for the biodiversity report without an NR7", () => {
+    wrap(<Harness report="nr7" withNr7={false} />);
+    expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(0);
   });
 
   it("the hook toggles a target off again", () => {

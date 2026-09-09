@@ -18,16 +18,19 @@ words and never carries a suggestion (see CLAUDE.md, pathway rules).
 
 ## What renders (all inline on the Implementation slide, no drawer)
 
-- The cross-check signals are the slide's biodiversity review group
-  (`sections/implementation/review-list.tsx` renders `SignalLine` rows that
-  expand to `QuestionnaireTable` / `IndicatorCard` evidence).
+- The cross-check signals are the slide's biodiversity view
+  (`sections/implementation/nr7-cross-checks.tsx`: rating chip beside the
+  disagreeing evidence as a glyph, rows expand to `QuestionnaireTable` /
+  `IndicatorCard`), shown while the reader has the NR7 selected; their
+  takeaway sentence is assembled by the slide from `review-groups.ts`.
 - `Nr7TargetsList` (rating mix + twenty expandable `Nr7TargetRow`s) and
   `IndicatorsView` (every indicator, sparklines, small multiples for
   disaggregations, the country's note where no value was reported) render
-  inside the slide's folded "full picture" sections.
+  inside the slide's folded "full picture" sections under the NR7 view.
 - `nr7PairByTarget` tells the slide which national targets can open a
   reported-action pair.
-- Countries without NR7 data render nothing from this module.
+- Countries without NR7 data render nothing from this module and get no
+  report toggle.
 
 ## Rules ("worth a closer look")
 
@@ -80,10 +83,10 @@ grep -rn "nr7-report\|Nr7Report\|nr7Report\|nr7PairTargets" src messages
 ```
 
 Then delete every hit: the `nr7Report` and `nr7PairTargets` memos and the
-two props in `index.tsx`; the NR7 group, rows and folded sections in
+two props in `index.tsx`; the NR7 view, its rows and folded sections in
 `sections/implementation/` (`review-groups.ts` keeps a null biodiversity
-group when the model is null, so the slide degrades to the climate group
-alone once the imports are gone); the `briefing.nr7Report` block in all three
-locale files. `npx tsc --noEmit && pnpm test` point at anything left. The
+group when the model is null, so the slide degrades to the climate view
+alone, toggle hidden, once the imports are gone); the `briefing.nr7Report`
+block in all three locale files. `npx tsc --noEmit && pnpm test` point at anything left. The
 additive `Nr7*` types, `src/components/ui/sparkline.tsx` and the Python side
 may stay.

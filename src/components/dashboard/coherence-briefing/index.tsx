@@ -65,6 +65,7 @@ import { FINANCING_SECTION_ID } from "./sections/financing";
 import {
   IMPLEMENTATION_SECTION_ID,
   ImplementationSection,
+  type ImplementationReport,
 } from "./sections/implementation";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { WheelLegend } from "./centerpiece/wheel-legend";
@@ -605,6 +606,9 @@ export function CoherenceBriefing({
     if (!btrData || !btrData.mitigationMeasures?.length) return null;
     return computeInstitutionFlow(alignment, btrData, visibleTargets, orgMap);
   }, [btrData, alignment, visibleTargets, orgMap]);
+  // Which self-report the Implementation slide shows; the roster / flow
+  // column is built on the BTR, so it steps aside while the NR7 is on screen.
+  const [implReport, setImplReport] = useState<ImplementationReport>(hasBtr ? "btr" : "nr7");
   const [implCenterView, setImplCenterView] = useState<"roster" | "flow">(
     "roster",
   );
@@ -1492,7 +1496,7 @@ export function CoherenceBriefing({
           financing &&
           !financingUsesWideGrid
         ? "financing"
-        : activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster
+        : activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster
           ? implCenterView === "flow" && institutionFlow
             ? "institutionFlow"
             : "deliveryRoster"
@@ -1539,7 +1543,7 @@ export function CoherenceBriefing({
     }
     // The roster / flow column is built on the BTR's named institutions, so
     // it steps aside when the reader has switched the slide to NR7 only.
-    if (activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster) {
+    if (activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster) {
       return (
         <div>
           {/* Toggle the reported-snapshot column between WHO delivers
@@ -1620,7 +1624,7 @@ export function CoherenceBriefing({
   const wheelIsActiveCenterpiece =
     activeSection !== DOC_PAIRS_SECTION_ID &&
     !(activeSection === FINANCING_SECTION_ID && financing) &&
-    !(activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster);
+    !(activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster);
 
   // Marker slot for a section wrapper; renders only where a stage begins
   // (see stageMarkerBySection above).
@@ -1871,6 +1875,8 @@ export function CoherenceBriefing({
                   nr7Report={nr7Report}
                   nr7PairTargets={nr7PairTargets}
                   visibleTargetIds={visibleTargetIds}
+                  report={implReport}
+                  onReportChange={setImplReport}
                   countryName={countryName}
                   countryConfig={countryConfig}
                   onOpenActionPair={openActionPair}
