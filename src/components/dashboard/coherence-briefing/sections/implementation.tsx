@@ -43,6 +43,7 @@ import {
 } from "@/lib/implementation-coherence";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocMediumLabel } from "@/lib/utils";
+import { Nr7ReportsStrip, type Nr7ReportModel } from "../nr7-report";
 import type { CountryConfig, Nr7Data, ReportedActionType } from "@/types";
 
 export const IMPLEMENTATION_SECTION_ID = "implementation";
@@ -66,6 +67,9 @@ export function ImplementationSection({
   source,
   onSourceChange,
   nr7Data,
+  nr7Report = null,
+  btrCoverage = null,
+  onOpenNr7Report,
   countryName,
   countryConfig,
   onOpenActionPair,
@@ -77,6 +81,12 @@ export function ImplementationSection({
   /** Present only when the country has both reports, so a switch makes sense. */
   onSourceChange?: (source: ReportedActionSource) => void;
   nr7Data: Nr7Data | null;
+  /** The NR7 self-report model for the two-report strip (nr7-report/);
+   *  null hides the strip. */
+  nr7Report?: Nr7ReportModel | null;
+  /** BTR-only coverage for the strip's climate card. */
+  btrCoverage?: ImplementationCoverage | null;
+  onOpenNr7Report?: () => void;
   countryName: string;
   countryConfig: CountryConfig | null;
   onOpenActionPair: (actionId: string, targetId: string) => void;
@@ -120,8 +130,15 @@ export function ImplementationSection({
         ) : undefined
       }
       evidence={
-        coverage.hasMeasureAlignment || onSourceChange ? (
+        coverage.hasMeasureAlignment || onSourceChange || nr7Report ? (
           <div>
+            {nr7Report && onOpenNr7Report && (
+              <Nr7ReportsStrip
+                model={nr7Report}
+                btrCoverage={btrCoverage}
+                onOpenNr7Report={onOpenNr7Report}
+              />
+            )}
             {onSourceChange && (
               <SourceToggle source={source} onChange={onSourceChange} />
             )}

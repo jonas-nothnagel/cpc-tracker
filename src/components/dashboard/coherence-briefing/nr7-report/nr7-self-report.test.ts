@@ -161,9 +161,9 @@ describe("detectSignals and the report model", () => {
     expect(byRule("ratingVsAnswers").map((s) => s.targetId)).toEqual(["NT01"]);
     expect(byRule("ratingVsAnswers")[0].params).toMatchObject({ id: "NT01", n: "1", notInPlace: 2, answered: 3 });
     expect(byRule("flatWhileOnTrack").map((s) => [s.targetId, s.indicatorId])).toEqual([["NT02", "2.1"]]);
-    expect(byRule("flatWhileOnTrack")[0].params).toMatchObject({ indicator: "2.1 Indicator 2.1 (Terrestrial)", value: "20.77", unit: "%", from: 2020, to: 2023 });
+    expect(byRule("flatWhileOnTrack")[0].params).toMatchObject({ indicator: "2.1 Indicator 2.1 (Terrestrial)", value: "20.77", unit: "%", from: "2020", to: "2023" });
     expect(byRule("unknownWithData").map((s) => s.targetId)).toEqual(["NT03"]);
-    expect(byRule("unknownWithData")[0].params).toMatchObject({ indicator: "6.1 Indicator 6.1", points: 3, from: 2020, to: 2022 });
+    expect(byRule("unknownWithData")[0].params).toMatchObject({ indicator: "6.1 Indicator 6.1", points: 3, from: "2020", to: "2022" });
     expect(byRule("reachWhileNoChange").map((s) => s.targetId)).toEqual(["NT04"]);
     expect(byRule("sharedIndicatorDeclining").map((s) => s.indicatorId)).toEqual(["D.2"]);
     expect(byRule("sharedIndicatorDeclining")[0]).toMatchObject({ cardEligible: false, params: { targets: 4, onTrack: 2, first: "355", last: "258" } });

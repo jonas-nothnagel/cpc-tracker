@@ -32,6 +32,12 @@ import {
   type DocTargetsView,
 } from "./doc-targets-drawer";
 import { FlagProfileDrawer, type FlagProfileSubject } from "./flag-profile";
+import {
+  DEFAULT_NR7_REPORT_VIEW,
+  Nr7ReportDrawer,
+  type Nr7ReportModel,
+  type Nr7ReportView,
+} from "./nr7-report";
 import { PairDrawer, type PairDrawerData } from "./pair-drawer";
 import { SectorDrawer } from "./sector-drawer";
 import { ThemeDrawer } from "./theme-drawer";
@@ -101,6 +107,10 @@ export interface BriefingPanelHostProps {
    *  the browser is how they decide whether to bring one back in. */
   allTargets: Target[];
   hiddenDocs: Set<string>;
+
+  /** The NR7 self-report model (nr7-report/); null without NR7 data. */
+  nr7Report: Nr7ReportModel | null;
+  countryName: string;
 }
 
 export function BriefingPanelHost(props: BriefingPanelHostProps) {
@@ -128,14 +138,42 @@ export function BriefingPanelHost(props: BriefingPanelHostProps) {
   const [docTargetsView, setDocTargetsView] = useState<
     Record<string, DocTargetsView>
   >({});
+  // The NR7 drawer's view (tab, open target, focused indicator) likewise
+  // survives a drill into a target profile or a pair and back.
+  const [nr7View, setNr7View] = useState<Nr7ReportView>(DEFAULT_NR7_REPORT_VIEW);
 
   // Closing discards what the browser had set up, so reopening a document is a
   // fresh look. This mirrors opening from the page, which starts a fresh trail
   // rather than resuming the last one.
   const closeAll = useCallback(() => {
     setDocTargetsView({});
+    setNr7View(DEFAULT_NR7_REPORT_VIEW);
     close();
   }, [close]);
+
+  // Which reported-action pair an NR7 national target can open: the first
+  // NR7 pseudo-target filed under it that has a scored pair with its NBSAP
+  // target. Keyed on nr7ParentTargetId, which both the PDF-era and the ORT
+  // pseudo-targets carry.
+  const nr7PairByTarget = useMemo(() => {
+    const map = new Map<string, { actionId: string; nbsapId: string }>();
+    if (!props.nr7Report) return map;
+    const matches = (aId: string, bId: string) => (p: AlignmentResult) =>
+      (p.targetAId === aId && p.targetBId === bId) ||
+      (p.targetAId === bId && p.targetBId === aId);
+    for (const row of props.nr7Report.targets) {
+      if (!row.nbsapTargetId || !props.targetMap.has(row.nbsapTargetId)) continue;
+      for (const stand of props.actionPairTargets.values()) {
+        if (stand.actionType !== "nr7") continue;
+        if ((stand as { nr7ParentTargetId?: string }).nr7ParentTargetId !== row.targetId) continue;
+        if (props.alignment.some(matches(stand.id, row.nbsapTargetId))) {
+          map.set(row.targetId, { actionId: stand.id, nbsapId: row.nbsapTargetId });
+          break;
+        }
+      }
+    }
+    return map;
+  }, [props.nr7Report, props.targetMap, props.actionPairTargets, props.alignment]);
 
   // A subject that stopped resolving (a document toggle removed its pair) must
   // not leave an empty panel on screen.
@@ -246,6 +284,21 @@ export function BriefingPanelHost(props: BriefingPanelHostProps) {
           }
         />
       )}
+      {resolved.kind === "nr7-report" && (
+        <Nr7ReportDrawer
+          model={resolved.model}
+          view={nr7View}
+          onViewChange={setNr7View}
+          countryName={props.countryName}
+          canOpenNbsap={(id) => props.targetMap.has(id)}
+          canOpenPair={(targetId) => nr7PairByTarget.has(targetId)}
+          onOpenNbsap={(id) => push({ kind: "target-profile", targetId: id })}
+          onOpenPair={(targetId) => {
+            const pair = nr7PairByTarget.get(targetId);
+            if (pair) push({ kind: "target-pair", aId: pair.actionId, bId: pair.nbsapId });
+          }}
+        />
+      )}
     </DrawerShell>
   );
 }
@@ -261,7 +314,8 @@ type ResolvedPanel =
     }
   | { kind: "sector"; briefing: SectorBriefing; synthesis: SectorSynthesis | null }
   | { kind: "flag-profile"; subject: FlagProfileSubject }
-  | { kind: "doc-targets"; doc: PolicyDocumentType };
+  | { kind: "doc-targets"; doc: PolicyDocumentType }
+  | { kind: "nr7-report"; model: Nr7ReportModel };
 
 function useResolvedPanel(
   panel: BriefingPanel | null,
@@ -279,6 +333,7 @@ function useResolvedPanel(
     docPairSyntheses,
     corpusThemes,
     sectorSynthesesIndex,
+    nr7Report,
   } = props;
 
   // Reported-action and budget-line stand-ins live outside the visible policy
@@ -395,6 +450,8 @@ function useResolvedPanel(
         // nothing to fail to resolve, and a document with no targets has its
         // own empty state rather than a missing panel.
         return { kind: "doc-targets", doc: panel.doc };
+      case "nr7-report":
+        return nr7Report ? { kind: "nr7-report", model: nr7Report } : null;
     }
   }, [
     panel,
@@ -406,6 +463,7 @@ function useResolvedPanel(
     docPairSyntheses,
     corpusThemes,
     sectorSynthesesIndex,
+    nr7Report,
   ]);
 }
 
@@ -457,6 +515,8 @@ function useBackLabel(
       return t(key, {
         name: getDocMediumLabel(countryConfig, previous.doc),
       });
+    case "nr7-report":
+      return t(key);
   }
 }
 
@@ -466,6 +526,7 @@ function useDialogLabels() {
   const tTheme = useTranslations("briefing.drawer.theme");
   const tSector = useTranslations("briefing.drawer.sector");
   const tFlag = useTranslations("briefing.drawer.flagProfile");
+  const tNr7 = useTranslations("briefing.nr7Report.drawer");
   const mechanismLabels = useContradictionTypeLabels();
 
   return (panel: BriefingPanel, props: BriefingPanelHostProps) => {
@@ -513,6 +574,11 @@ function useDialogLabels() {
         return {
           dialog: getDocFullLabel(props.countryConfig, panel.doc),
           close: tPair("closeAria"),
+        };
+      case "nr7-report":
+        return {
+          dialog: tNr7("dialogAria", { country: props.countryName }),
+          close: tNr7("closeAria"),
         };
     }
   };

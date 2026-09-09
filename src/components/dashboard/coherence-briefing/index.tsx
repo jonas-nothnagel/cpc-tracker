@@ -154,6 +154,7 @@ import {
   type ImplementationCoverage,
   type InstitutionFlowModel,
 } from "@/lib/implementation-coherence";
+import { buildNr7Report } from "./nr7-report";
 import { orgAcronymsFor } from "@/data/org-acronyms";
 import type {
   AlignmentResult,
@@ -598,6 +599,20 @@ export function CoherenceBriefing({
     );
   }, [hasReportedActions, implementationAlignment, implInputs, visibleTargets, orgMap]);
 
+  // BTR-only coverage for the two-report strip's climate card (nr7-report/),
+  // whatever the source switch says.
+  const btrCoverage = useMemo<ImplementationCoverage | null>(() => {
+    if (!hasBtr) return null;
+    const sel = selectReportedSources("btr", btrData, nr7Actions);
+    return computeImplementationCoverage(
+      implementationAlignment,
+      sel.btrData,
+      visibleTargets,
+      orgMap,
+      sel.nr7PseudoTargets,
+    );
+  }, [hasBtr, implementationAlignment, btrData, nr7Actions, visibleTargets, orgMap]);
+
   // The report object for the right column: who is named on the reported
   // actions, with each institution's actions as status-coloured dots.
   // Neutral involvement as stated by the report, never a strain ranking.
@@ -811,6 +826,14 @@ export function CoherenceBriefing({
         (a) => targetMap.has(a.targetAId) && targetMap.has(a.targetBId),
       ),
     [visibleAlignment, targetMap],
+  );
+
+  // The NR7 self-report read three ways and joined to the coherence map
+  // (nr7-report/). Null without NR7 data, so the strip and drawer self-hide.
+  // Policy reach follows the document toggle like every other number here.
+  const nr7Report = useMemo(
+    () => buildNr7Report(nr7Data, policyAlignment, targetMap),
+    [nr7Data, policyAlignment, targetMap],
   );
   const frictionTotals = useMemo(
     () => frictionTypeTotalsFromAlignment(policyAlignment),
@@ -1049,6 +1072,12 @@ export function CoherenceBriefing({
       openPanel({ kind: "target-pair", aId: actionId, bId: targetId });
     },
     [targetMap, actionPairTargets, implementationAlignment, openPanel],
+  );
+
+  // The NR7 card's one button: the whole report as a panel (nr7-report/).
+  const openNr7Report = useCallback(
+    () => openPanel({ kind: "nr7-report" }),
+    [openPanel],
   );
 
   // Financing drill-down (non-Panama DocumentCoverage layout): open a
@@ -1862,6 +1891,9 @@ export function CoherenceBriefing({
                   source={effectiveSource}
                   onSourceChange={hasBothSources ? setImplSource : undefined}
                   nr7Data={nr7Data}
+                  nr7Report={nr7Report}
+                  btrCoverage={btrCoverage}
+                  onOpenNr7Report={openNr7Report}
                   countryName={countryName}
                   countryConfig={countryConfig}
                   onOpenActionPair={openActionPair}
@@ -1990,6 +2022,8 @@ export function CoherenceBriefing({
         totalDocCount={documentCount}
         allTargets={drawerTargets}
         hiddenDocs={hiddenDocs}
+        nr7Report={nr7Report}
+        countryName={countryName}
       />
       {/* Expand the active centerpiece to a large overlay so relationships are
           explorable at size; the same graphic + legend renders bigger here. */}

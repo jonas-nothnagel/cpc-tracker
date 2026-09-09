@@ -311,6 +311,11 @@ function shortText(text: string, max = 48): string {
   return `${(space > 24 ? cut.slice(0, space) : cut).replace(/[,.;:]$/, "")}…`;
 }
 
+/** Years travel as strings so the message formatter never groups them. */
+function yr(n: number | null): string {
+  return n === null ? "" : String(n);
+}
+
 function fmt(n: number | null): string {
   if (n === null) return "";
   // Three decimals: the Red List Index moves in the third place.
@@ -423,8 +428,8 @@ export function detectSignals(rows: Nr7TargetRow[], indicators: Nr7IndicatorView
             indicator: flat.label,
             value: fmt(flat.last),
             unit: flat.unit ?? "",
-            from: flat.fromYear ?? "",
-            to: flat.toYear ?? "",
+            from: yr(flat.fromYear),
+            to: yr(flat.toYear),
           },
           strength: flat.points,
         });
@@ -457,8 +462,8 @@ export function detectSignals(rows: Nr7TargetRow[], indicators: Nr7IndicatorView
             ...base,
             indicator: ind ? indicatorLabel(ind) : best.label,
             points: best.points,
-            from: best.from ?? "",
-            to: best.to ?? "",
+            from: yr(best.from),
+            to: yr(best.to),
           },
           strength: best.points,
         });
@@ -496,8 +501,8 @@ export function detectSignals(rows: Nr7TargetRow[], indicators: Nr7IndicatorView
         first: fmt(total.first),
         last: fmt(total.last),
         unit: total.unit ?? "",
-        from: total.fromYear ?? "",
-        to: total.toYear ?? "",
+        from: yr(total.fromYear),
+        to: yr(total.toYear),
         targets: ind.targetIds.length,
         onTrack,
       },

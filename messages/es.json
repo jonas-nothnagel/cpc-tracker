@@ -463,6 +463,10 @@
       },
       "implementationCoverage": {
         "steps": {
+          "reports": {
+            "title": "Dos informes, dos lentes",
+            "body": "El informe climático (BTR) y el informe de biodiversidad (NR7) se resumen lado a lado. Abre el detalle del NR7 para ver sus autoevaluaciones, respuestas del cuestionario e indicadores."
+          },
           "legend": {
             "title": "Cómo leer los puntos",
             "body": "Cada punto es un objetivo de un documento: relleno significa que al menos una acción reportada se asoció a él; hueco significa que ninguna. Estas asociaciones son estimaciones de IA."
@@ -524,7 +528,8 @@
         "sector": "Volver a {name}",
         "frictionType": "Volver a {name}",
         "target": "Volver a {name}",
-        "docTargets": "Volver a las metas de {name}"
+        "docTargets": "Volver a las metas de {name}",
+        "nr7Report": "Volver al detalle del NR7"
       },
       "flagProfile": {
         "closeAria": "Cerrar perfil",
@@ -1060,7 +1065,7 @@
       "readingWithNr7": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> o el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
       "readingNr7Only": "Un punto por <target>meta</target>. Relleno significa que el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
       "source": {
-        "label": "Evidencia de",
+        "label": "El mapa de cobertura se basa en",
         "both": "Ambos informes",
         "btr": "Solo BTR",
         "nr7": "Solo NR7",
@@ -1100,6 +1105,119 @@
         "detailCount": "{count, plural, one {# meta} other {# metas}}",
         "caveat": "Participación según la nombra el informe (un único lente autoreportado); alineación estimada por IA. Una meta nombrada por varias instituciones cuenta en cada una.",
         "empty": "No hay acciones reportadas con alineación fuerte para mostrar en la selección actual."
+      }
+    },
+    "nr7Report": {
+      "strip": {
+        "eyebrow": "Los dos autoinformes del país",
+        "btr": {
+          "title": "Clima: <btr>BTR</btr>",
+          "actions": "{count, plural, one {# acción reportada} other {# acciones reportadas}}",
+          "addressed": "{reached} de {total} metas abordadas",
+          "toReview": "{count, plural, =0 {ninguna por revisar} one {# meta por revisar} other {# metas por revisar}}",
+          "detailNote": "Detalle: el mapa de cobertura más abajo y la columna de entrega."
+        },
+        "nr7": {
+          "title": "Biodiversidad: <nr7>NR7</nr7>",
+          "published": "Publicado {date}",
+          "targets": "{count, plural, one {# meta nacional} other {# metas nacionales}}, autoevaluadas",
+          "questionnaire": "{answered} respuestas del cuestionario sobre {targets} de {total} metas",
+          "indicators": "{withValues} de {total} indicadores con valores",
+          "open": "Abrir el detalle del NR7"
+        }
+      },
+      "closerLook": {
+        "heading": "Merece una mirada más atenta",
+        "caption": "Cruces entre la propia calificación, el cuestionario y los indicadores del informe. Calculados, no redactados por IA.",
+        "more": "{count, plural, one {# más en el detalle.} other {# más en el detalle.}}",
+        "lead": "Puntos en los que las propias declaraciones del informe apuntan en direcciones distintas. Pueden reflejar fechas o definiciones de reporte más que la ejecución; la narrativa de la meta es el lugar donde comprobarlo."
+      },
+      "signals": {
+        "ratingVsAnswers": "Meta nacional {n} ({text}): calificada en curso; {notInPlace} de {answered} respuestas del cuestionario son \"en desarrollo\" o \"no\".",
+        "flatWhileOnTrack": "Meta nacional {n} ({text}): calificada en curso; el indicador {indicator} se mantiene sin cambios en {value} {unit} de {from} a {to}.",
+        "unknownWithData": "Meta nacional {n} ({text}): progreso calificado como desconocido; el indicador {indicator} reporta {points, plural, one {# valor} other {# valores}} ({from}–{to}).",
+        "reachWhileNoChange": "Meta nacional {n} ({text}): se reporta sin cambios significativos; {reach, plural, one {# meta de política está} other {# metas de política están}} fuertemente alineadas con la meta NBSAP correspondiente.",
+        "sharedIndicatorDeclining": "{indicator}: de {first} a {last} {unit} ({from}–{to}); reportado bajo {targets, plural, one {# meta} other {# metas}}, {onTrack} de ellas calificadas en curso."
+      },
+      "rating": {
+        "legendAria": "Progreso autoevaluado en {count} metas nacionales"
+      },
+      "answers": {
+        "yes": "Sí",
+        "partially": "Parcialmente",
+        "underDevelopment": "En desarrollo",
+        "no": "No"
+      },
+      "drawer": {
+        "eyebrow": "7.º Informe Nacional al CDB (NR7)",
+        "title": "7.º Informe Nacional de {country}",
+        "subtitle": "Publicado {date} · Herramienta de Reporte en Línea del CDB (pública)",
+        "subtitleUndated": "Herramienta de Reporte en Línea del CDB (pública)",
+        "dialogAria": "Detalle del NR7: {country}",
+        "closeAria": "Cerrar el detalle del NR7",
+        "viewGroupAria": "Elegir una vista",
+        "view": {
+          "targets": "Por meta nacional ({count})",
+          "indicators": "Todos los indicadores ({count})"
+        },
+        "footer": "Fuente: 7.º Informe Nacional de {country}, Herramienta de Reporte en Línea del CDB (pública). Las calificaciones, respuestas y valores son del propio país; la herramienta solo calcula recuentos y direcciones."
+      },
+      "targets": {
+        "heading": "Metas nacionales ({count})",
+        "row": {
+          "questionnaire": "{yes} sí · {partially} parcialmente · {underDevelopment} en desarrollo · {no} no",
+          "noQuestionnaire": "Sin respuestas del cuestionario para esta meta",
+          "indicators": "{count, plural, =0 {sin indicadores} one {# indicador} other {# indicadores}}",
+          "reach": "{count, plural, one {# meta de política} other {# metas de política}} fuertemente alineadas con la NBSAP {n}",
+          "reachNone": "Sin meta NBSAP correspondiente"
+        },
+        "expand": {
+          "level": "Nivel de progreso, según se reporta: {level}",
+          "progress": "Resumen del progreso (textual)",
+          "readMore": "Leer más",
+          "readLess": "Leer menos",
+          "questionnaire": "Cuestionario",
+          "answersAria": "{count} respuestas del cuestionario",
+          "questionNumber": "N.º",
+          "question": "Pregunta",
+          "questionUnnamed": "Pregunta {n}",
+          "answer": "Respuesta",
+          "otherAnswers": "Otras respuestas, tal como se registraron en la herramienta de reporte",
+          "indicators": "Indicadores reportados bajo esta meta",
+          "noIndicators": "Sin indicadores específicos de la meta",
+          "sharedIndicators": "También reportados aquí, compartidos con otras metas:",
+          "sharedAcross": "compartido entre {count} metas",
+          "vsNarrative": "Los valores de los indicadores y la narrativa pueden usar fechas o definiciones distintas; ambos se muestran tal como se reportaron.",
+          "openNbsap": "Abrir la meta NBSAP {n}",
+          "openPair": "Acción reportada y meta NBSAP lado a lado"
+        }
+      },
+      "indicators": {
+        "summary": "{total} indicadores: {withValues} con valores, {without} sin valores ({withNote} con una nota del país).",
+        "group": {
+          "headline": "Indicadores principales",
+          "other": "Indicadores de componente y nacionales",
+          "noValues": "Sin valores reportados"
+        },
+        "card": {
+          "targets": "Reportado bajo",
+          "noTargets": "No vinculado a una meta nacional",
+          "targetChipAria": "Abrir la meta nacional {n}",
+          "range": "{first} → {last} {unit} ({from}–{to})",
+          "single": "{value} {unit} ({year})",
+          "textValue": "{value} ({year})",
+          "total": "Total",
+          "noValues": "Sin valores reportados",
+          "countryNote": "Nota del país",
+          "footnote": "Nota:",
+          "moreSeries": "Mostrar {count} más",
+          "lessSeries": "Mostrar menos"
+        },
+        "direction": {
+          "up": "en aumento",
+          "down": "en descenso",
+          "flat": "sin cambios"
+        }
       }
     },
     "docFilter": {

@@ -25,6 +25,7 @@ const ALL_KINDS: BriefingPanel[] = [
   { kind: "friction-type", mechanism: "goal_conflict" },
   { kind: "target-profile", targetId: "NAP_3" },
   { kind: "doc-targets", doc: "NAP" },
+  { kind: "nr7-report" },
 ];
 
 describe("panelKey", () => {

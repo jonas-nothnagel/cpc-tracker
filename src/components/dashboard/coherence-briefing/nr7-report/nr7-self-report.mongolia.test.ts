@@ -41,7 +41,7 @@ describe.skipIf(!present)("NR7 self-report model on the Mongolia data", () => {
   it("NT03 (protected areas) is on track while the terrestrial coverage series is flat", () => {
     const s = rule("flatWhileOnTrack");
     expect(s.map((x) => [x.targetId, x.indicatorId])).toEqual([["NT03", "3.1"]]);
-    expect(s[0].params).toMatchObject({ value: "20.77", unit: "%", from: 2020, to: 2025 });
+    expect(s[0].params).toMatchObject({ value: "20.77", unit: "%", from: "2020", to: "2025" });
     expect(String(s[0].params.indicator)).toContain("terrestrial");
   });
 
@@ -51,7 +51,7 @@ describe.skipIf(!present)("NR7 self-report model on the Mongolia data", () => {
     // exists where the assessment does not.
     const s = rule("unknownWithData");
     expect(s.map((x) => [x.targetId, x.indicatorId])).toEqual([["NT05", "6.1"]]);
-    expect(s[0].params).toMatchObject({ points: 5, from: 2010, to: 2024 });
+    expect(s[0].params).toMatchObject({ points: 5, from: "2010", to: "2024" });
   });
 
   it("NT07 carries high policy reach with no significant change; NT06 and NT18 do not fire", () => {
@@ -63,8 +63,8 @@ describe.skipIf(!present)("NR7 self-report model on the Mongolia data", () => {
     const s = rule("sharedIndicatorDeclining");
     expect(s.map((x) => x.indicatorId)).toEqual(["D.2", "A.3"]); // strongest decline first
     expect(s.every((x) => !x.cardEligible)).toBe(true);
-    expect(s[0].params).toMatchObject({ first: "355", last: "258", from: 2020, to: 2023, targets: 9, onTrack: 4 });
-    expect(s[1].params).toMatchObject({ first: "0.965", last: "0.953", from: 1993, to: 2024, targets: 6 });
+    expect(s[0].params).toMatchObject({ first: "355", last: "258", from: "2020", to: "2023", targets: 9, onTrack: 4 });
+    expect(s[1].params).toMatchObject({ first: "0.965", last: "0.953", from: "1993", to: "2024", targets: 6 });
   });
 
   it("the card shows three signals of three distinct rules", () => {
