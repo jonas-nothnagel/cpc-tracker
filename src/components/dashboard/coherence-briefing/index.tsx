@@ -146,15 +146,13 @@ import {
   computeActionPlanAlignment,
   computeDeliveryRoster,
   computeImplementationCoverage,
-  selectReportedSources,
-  type ReportedActionSource,
   computeInstitutionFlow,
   type ActionPlanAlignmentSummary,
   type DeliveryRosterModel,
   type ImplementationCoverage,
   type InstitutionFlowModel,
 } from "@/lib/implementation-coherence";
-import { buildNr7Report } from "./nr7-report";
+import { buildNr7Report, nr7PairByTarget } from "./nr7-report";
 import { orgAcronymsFor } from "@/data/org-acronyms";
 import type {
   AlignmentResult,
@@ -564,27 +562,19 @@ export function CoherenceBriefing({
     [alignment, nr7Alignment],
   );
 
-  // Reader's source switch (both / BTR only / NR7 only). Only meaningful when
-  // a country has both reports; otherwise the reads always take what exists.
-  const [implSource, setImplSource] = useState<ReportedActionSource>("both");
-  const hasBothSources = hasBtr && nr7Actions.length > 0;
-  const effectiveSource: ReportedActionSource = hasBothSources ? implSource : "both";
-  const implInputs = useMemo(
-    () => selectReportedSources(effectiveSource, btrData, nr7Actions),
-    [effectiveSource, btrData, nr7Actions],
-  );
-
+  // Both self-reports always feed the reads; the slide ranks what needs a
+  // look per report itself (sections/implementation/review-groups.ts).
   const implementation = useMemo<ActionPlanAlignmentSummary | null>(() => {
     if (!hasReportedActions) return null;
     return computeActionPlanAlignment(
       implementationAlignment,
-      implInputs.btrData,
+      btrData,
       visibleTargets,
       5,
       orgMap,
-      implInputs.nr7PseudoTargets,
+      nr7Actions,
     );
-  }, [hasReportedActions, implementationAlignment, implInputs, visibleTargets, orgMap]);
+  }, [hasReportedActions, implementationAlignment, btrData, visibleTargets, orgMap, nr7Actions]);
 
   // Coverage: which visible targets have >= 1 strongly aligned reported
   // action (the slide's lead story, mirroring the Financing dot-map).
@@ -592,12 +582,12 @@ export function CoherenceBriefing({
     if (!hasReportedActions) return null;
     return computeImplementationCoverage(
       implementationAlignment,
-      implInputs.btrData,
+      btrData,
       visibleTargets,
       orgMap,
-      implInputs.nr7PseudoTargets,
+      nr7Actions,
     );
-  }, [hasReportedActions, implementationAlignment, implInputs, visibleTargets, orgMap]);
+  }, [hasReportedActions, implementationAlignment, btrData, visibleTargets, orgMap, nr7Actions]);
 
   // The report object for the right column: who is named on the reported
   // actions, with each institution's actions as status-coloured dots.
@@ -820,6 +810,12 @@ export function CoherenceBriefing({
   const nr7Report = useMemo(
     () => buildNr7Report(nr7Data, policyAlignment, targetMap),
     [nr7Data, policyAlignment, targetMap],
+  );
+  // Which NR7 national targets can open a reported-action pair (keyed on the
+  // pseudo-targets' parent id, so it survives the alignment re-run).
+  const nr7PairTargets = useMemo(
+    () => nr7PairByTarget(nr7Report, targetMap, actionPairTargets, implementationAlignment),
+    [nr7Report, targetMap, actionPairTargets, implementationAlignment],
   );
   const frictionTotals = useMemo(
     () => frictionTypeTotalsFromAlignment(policyAlignment),
@@ -1060,10 +1056,13 @@ export function CoherenceBriefing({
     [targetMap, actionPairTargets, implementationAlignment, openPanel],
   );
 
-  // The NR7 card's one button: the whole report as a panel (nr7-report/).
-  const openNr7Report = useCallback(
-    () => openPanel({ kind: "nr7-report" }),
-    [openPanel],
+  // A target's profile panel, from the Where to Focus rows and the NR7 review
+  // rows alike. Silently ignores targets outside the visible corpus.
+  const openTargetProfile = useCallback(
+    (targetId: string) => {
+      if (targetMap.has(targetId)) openPanel({ kind: "target-profile", targetId });
+    },
+    [targetMap, openPanel],
   );
 
   // Financing drill-down (non-Panama DocumentCoverage layout): open a
@@ -1540,11 +1539,7 @@ export function CoherenceBriefing({
     }
     // The roster / flow column is built on the BTR's named institutions, so
     // it steps aside when the reader has switched the slide to NR7 only.
-    if (
-      activeSection === IMPLEMENTATION_SECTION_ID &&
-      deliveryRoster &&
-      effectiveSource !== "nr7"
-    ) {
+    if (activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster) {
       return (
         <div>
           {/* Toggle the reported-snapshot column between WHO delivers
@@ -1802,9 +1797,7 @@ export function CoherenceBriefing({
                 hotspots={frictionHotspots}
                 concentration={targetConcentration}
                 countryConfig={countryConfig}
-                onOpenTarget={(target) =>
-                  openPanel({ kind: "target-profile", targetId: target.id })
-                }
+                onOpenTarget={(target) => openTargetProfile(target.id)}
               />
             </div>
             <div
@@ -1874,14 +1867,14 @@ export function CoherenceBriefing({
                 <ImplementationSection
                   coverage={implementationCoverage}
                   summary={implementation}
-                  source={effectiveSource}
-                  onSourceChange={hasBothSources ? setImplSource : undefined}
                   nr7Data={nr7Data}
                   nr7Report={nr7Report}
-                  onOpenNr7Report={openNr7Report}
+                  nr7PairTargets={nr7PairTargets}
+                  visibleTargetIds={visibleTargetIds}
                   countryName={countryName}
                   countryConfig={countryConfig}
                   onOpenActionPair={openActionPair}
+                  onOpenTarget={openTargetProfile}
                 />
               </div>
             )}

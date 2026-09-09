@@ -101,19 +101,6 @@ export function CoverageByDocument({
         )}
       </div>
 
-      {/* The counter-current read: one short insight line; the affected
-          documents carry a red "to review" count; the detail sits inside
-          each document, top of the list. */}
-      {hasFlags && (
-        <p className="mt-3 text-data leading-relaxed text-[var(--undp-black)] max-w-prose">
-          {t(coverage.nr7Actions > 0 ? "misalignment.leadWithNr7" : "misalignment.lead", {
-            actions: summary.actionsWithPotentialMisalignment,
-            commitments: summary.flaggedCommitments,
-            underWay: summary.actionsUnderWayWithMisalignment,
-          })}
-        </p>
-      )}
-
       <p className="mt-3 text-caption text-[var(--undp-gray)] max-w-prose">
         {t("dotMap.disclaimer")}
       </p>

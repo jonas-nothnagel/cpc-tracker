@@ -463,21 +463,17 @@
       },
       "implementationCoverage": {
         "steps": {
-          "reports": {
-            "title": "Dos informes, un selector",
-            "body": "Cambia el mapa de cobertura entre el informe climático (BTR), el informe de biodiversidad (NR7) o ambos. La línea del NR7 junto a él abre las autoevaluaciones, las respuestas del cuestionario y los indicadores del país."
-          },
-          "legend": {
-            "title": "Cómo leer los puntos",
-            "body": "Cada punto es un objetivo de un documento: relleno significa que al menos una acción reportada se asoció a él; hueco significa que ninguna. Estas asociaciones son estimaciones de IA."
-          },
-          "dots": {
-            "title": "Un mapa por documento",
-            "body": "Cada documento muestra sus objetivos como puntos en su propio color. Haga clic en un documento para expandirlo y leer las acciones asociadas, las brechas y los pares por revisar."
-          },
           "review": {
-            "title": "El carril rojo de revisión",
-            "body": "Una barra roja y un número aparecen cuando acciones reportadas podrían ir en contra de algunos objetivos de este documento. Son avisos estimados por IA para la revisión, no conclusiones."
+            "title": "Lo que merece una mirada, primero",
+            "body": "Cada fila es una acción reportada que podría ir contra metas de política, o un punto donde las propias declaraciones del informe de biodiversidad no coinciden. Las cinco principales de cada informe aparecen primero; abre una fila para ver la evidencia."
+          },
+          "rows": {
+            "title": "Abrir una fila",
+            "body": "Una fila climática lista los compromisos contra los que la acción podría ir y por qué (estimado por IA); una fila de biodiversidad muestra las respuestas o los valores de indicadores que dio el informe. Los enlaces abren el par o la meta nacional."
+          },
+          "fullPicture": {
+            "title": "La imagen completa",
+            "body": "Debajo de la lista se despliegan tres secciones: cobertura por documento (qué metas tienen una acción reportada alineada), el informe de biodiversidad por meta nacional y todos sus indicadores."
           }
         }
       }
@@ -1014,20 +1010,17 @@
     },
     "implementation": {
       "headline": {
-        "coverage": "Las acciones reportadas por {country} abordan {share} las metas de política.",
-        "noCoverage": "{country} reporta {count, plural, one {# acción} other {# acciones}}; su correspondencia con el plan aún no se ha calculado."
-      },
-      "share": {
-        "most": "la mayoría de",
-        "aboutHalf": "cerca de la mitad de",
-        "underHalf": "menos de la mitad de",
-        "few": "pocas de"
+        "noCoverage": "{country} reporta {count, plural, one {# acción} other {# acciones}}; su correspondencia con el plan aún no se ha calculado.",
+        "reviewBoth": "{actions, plural, one {# acción reportada} other {# acciones reportadas}} y {checks, plural, one {# cruce del autoinforme} other {# cruces del autoinforme}} merecen una mirada más atenta.",
+        "reviewClimate": "{actions, plural, one {# acción reportada merece} other {# acciones reportadas merecen}} una mirada más atenta frente a las metas de política.",
+        "reviewBiodiversity": "{checks, plural, one {# cruce del informe de biodiversidad de {country} merece} other {# cruces del informe de biodiversidad de {country} merecen}} una mirada más atenta.",
+        "nothingFlagged": "Nada en las acciones reportadas de {country} destaca para una mirada más atenta."
       },
       "body": {
-        "coverage": "El Informe Bienal de Transparencia (BTR) recoge {actions, plural, one {# acción reportada} other {# acciones reportadas}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada, y en {underWay} de ellas esa acción ya está en curso o implementada; {outsideReach} no tienen ninguna en este informe.",
-        "coverageWithNr7": "El Informe Bienal de Transparencia (BTR) recoge {btrActions, plural, one {# acción reportada} other {# acciones reportadas}} y el 7.º Informe Nacional al CDB (NR7) añade {nr7Actions, plural, one {# más} other {# más}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada en cualquiera de los dos informes, y en {underWay} de ellas el país reporta esa acción como en curso, implementada o con avances; {outsideReach} no tienen ninguna en ninguno de los dos.",
-        "coverageNr7Only": "El 7.º Informe Nacional al CDB (NR7) recoge {nr7Actions, plural, one {# acción reportada} other {# acciones reportadas}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada, y en {underWay} de ellas el país reporta avances en esa acción; {outsideReach} no tienen ninguna en este informe.",
-        "noCoverage": "La correspondencia entre acciones y metas aún no se ha calculado para este corpus. La columna derecha muestra el contenido del informe: qué acciones, en qué sectores y con qué estado reportado por el país."
+        "noCoverage": "La correspondencia entre acciones y metas aún no se ha calculado para este corpus. La columna derecha muestra el contenido del informe: qué acciones, en qué sectores y con qué estado reportado por el país.",
+        "reviewBoth": "El informe climático (BTR) recoge {btrActions, plural, one {# acción} other {# acciones}}; el informe de biodiversidad (NR7), {nr7Actions}. {reached} de {total} metas de política tienen una acción reportada fuertemente alineada; {outsideReach} no tienen ninguna. Las correspondencias y señales de revisión son estimadas por IA.",
+        "reviewClimate": "El informe climático (BTR) recoge {actions, plural, one {# acción reportada} other {# acciones reportadas}}. {reached} de {total} metas de política tienen una acción fuertemente alineada, {underWay} de ellas en curso o implementada; {outsideReach} no tienen ninguna. Las correspondencias son estimadas por IA.",
+        "reviewBiodiversity": "El informe de biodiversidad (NR7) recoge {nr7Actions, plural, one {# acción reportada} other {# acciones reportadas}}. {reached} de {total} metas de política tienen una acción fuertemente alineada; {outsideReach} no tienen ninguna. Los cruces se calculan a partir de las propias declaraciones del informe."
       },
       "dotMap": {
         "disclaimer": "Estimado por IA e indicativo. Abordada significa que al menos una acción reportada se alinea con confianza alta; no significa que la meta avance según lo previsto."
@@ -1051,8 +1044,6 @@
         "notIncluded": "Aún no incluido: series temporales de indicadores, ejecución presupuestaria, reportes de entrega a nivel de proyecto."
       },
       "misalignment": {
-        "lead": "{actions, plural, one {# acción reportada muestra} other {# acciones reportadas muestran}} posible desalineación con {commitments, plural, one {# compromiso de política} other {# compromisos de política}}; {underWay, plural, =0 {ninguna está aún en curso} one {# de ellas ya está en curso o implementada} other {# de ellas ya están en curso o implementadas}}. Una meta puede estar abordada por una acción reportada mientras otra va en su contra; si esa acción sigue avanzando, el compromiso puede volverse más difícil de alcanzar.",
-        "leadWithNr7": "{actions, plural, one {# acción reportada muestra} other {# acciones reportadas muestran}} posible desalineación con {commitments, plural, one {# compromiso de política} other {# compromisos de política}}; {underWay, plural, =0 {ninguna de ellas se reporta aún en movimiento} one {# de ellas se reporta en curso, implementada o con avances} other {# de ellas se reportan en curso, implementadas o con avances}}. Una meta puede estar abordada por una acción reportada mientras otra va en su contra; si esa acción sigue avanzando, el compromiso puede volverse más difícil de alcanzar.",
         "pullHeading": "Una acción reportada podría ir en contra"
       },
       "status": {
@@ -1061,16 +1052,55 @@
         "ongoing": "En curso",
         "implemented": "Implementada"
       },
-      "reading": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> reporta una acción que la apoya, no que la meta se haya cumplido.",
-      "readingWithNr7": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> o el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
-      "readingNr7Only": "Un punto por <target>meta</target>. Relleno significa que el <nr7>NR7</nr7> reporta una acción que la apoya, no que la meta se haya cumplido.",
-      "source": {
-        "label": "Evidencia de",
-        "both": "Ambos informes",
-        "btr": "Solo BTR",
-        "nr7": "Solo NR7",
-        "btrTitle": "Informe Bienal de Transparencia",
-        "nr7Title": "7.º Informe Nacional al Convenio sobre la Diversidad Biológica"
+      "reading": "Cada fila es una acción del <btr>BTR</btr> que podría ir contra una <target>meta</target>. Abre una fila para ver la evidencia.",
+      "readingWithNr7": "Cada fila: una acción del <btr>BTR</btr> que podría ir contra una <target>meta</target>, o declaraciones del <nr7>NR7</nr7> que no coinciden. Ábrela para ver la evidencia.",
+      "readingNr7Only": "Cada fila es un punto donde la calificación, las respuestas y los indicadores del propio <nr7>NR7</nr7> no coinciden. Ábrela para ver la evidencia del informe.",
+      "group": {
+        "climate": {
+          "heading": "Informe climático (Informe Bienal de Transparencia, BTR)",
+          "caption": "{flagged, plural, one {# de {total} acciones reportadas muestra} other {# de {total} acciones reportadas muestran}} posible desalineación con metas de política; {underWay, plural, =0 {ninguna está aún en curso} one {# está en curso o implementada} other {# están en curso o implementadas}}. Señales de revisión estimadas por IA, no hallazgos.",
+          "empty": "Ninguna acción climática reportada muestra posible desalineación con las metas de política."
+        },
+        "biodiversity": {
+          "heading": "Informe de biodiversidad (7.º Informe Nacional al CDB, NR7)",
+          "empty": "La calificación, las respuestas del cuestionario y los indicadores del informe coinciden en todas las metas nacionales."
+        }
+      },
+      "row": {
+        "climate": {
+          "commitments": "{count, plural, one {# compromiso} other {# compromisos}} en {docs}",
+          "designLevel": "{count, plural, one {# de diseño} other {# de diseño}}",
+          "adaptation": "acción de adaptación",
+          "pairsSuffix": "pares",
+          "ariaLabel": "{name}, {status}: podría ir contra {count, plural, one {# compromiso de política} other {# compromisos de política}}",
+          "rationaleHeading": "Por qué se señaló (estimado por IA)",
+          "openPair": "Abrir el par",
+          "namedOn": "Mencionados en esta acción:"
+        },
+        "nr7": {
+          "sharedAcross": "{count, plural, one {# meta nacional} other {# metas nacionales}}",
+          "seeTarget": "Ver la meta nacional",
+          "seeIndicator": "Ver el indicador",
+          "evidence": {
+            "answers": "Respuestas aún no implementadas ({notInPlace} de {answered})"
+          }
+        }
+      },
+      "showAll": "Mostrar las {count}",
+      "showFewer": "Mostrar menos",
+      "fullPicture": {
+        "coverage": {
+          "summary": "Cobertura por documento",
+          "count": "{reached} de {total} metas tienen una acción reportada alineada"
+        },
+        "nr7Targets": {
+          "summary": "NR7 por meta nacional",
+          "count": "{count, plural, one {# meta nacional} other {# metas nacionales}}, {onTrack} calificadas en curso"
+        },
+        "nr7Indicators": {
+          "summary": "Todos los indicadores del NR7",
+          "count": "{withValues} de {total} con valores reportados"
+        }
       }
     },
     "implementationCenter": {
@@ -1204,7 +1234,8 @@
           "down": "en descenso",
           "flat": "sin cambios"
         }
-      }
+      },
+      "sourceNote": "Fuente: 7.º Informe Nacional de {country}, Herramienta de Reporte en Línea del CDB (pública). Las calificaciones, respuestas y valores son del propio país; la herramienta solo calcula recuentos y direcciones."
     },
     "docFilter": {
       "removeDoc": "Quitar {name}",
