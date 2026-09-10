@@ -12,6 +12,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useManageabilityLabels } from "@/lib/labels";
+import { transitionName, withViewTransition } from "@/lib/view-transition";
 import { FLAGGED_COLOR, MECHANISM_COLORS, getDocColor } from "@/lib/utils";
 import type { StrainedAction } from "@/lib/implementation-coherence";
 import { statusWord } from "./coverage-by-document";
@@ -46,7 +47,7 @@ export function ClimateStrainChart({
             maxCount={group.maxCount}
             countryConfig={countryConfig}
             expanded={expandedId === action.actionId}
-            onToggle={() => setExpandedId((cur) => (cur === action.actionId ? null : action.actionId))}
+            onToggle={() => withViewTransition(() => setExpandedId((cur) => (cur === action.actionId ? null : action.actionId)))}
             onOpenActionPair={onOpenActionPair}
             first={i === 0}
           />
@@ -101,7 +102,7 @@ function StrainBar({
   const status = statusWord(action.status, t);
 
   return (
-    <li className="border-t border-line-soft">
+    <li className="border-t border-line-soft" style={{ viewTransitionName: transitionName("strain", action.actionId) }}>
       <button
         type="button"
         onClick={onToggle}

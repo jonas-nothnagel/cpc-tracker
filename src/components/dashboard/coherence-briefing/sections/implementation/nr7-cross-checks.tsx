@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Sparkline } from "@/components/ui/sparkline";
 import { useNr7BadgeLabels } from "@/lib/labels";
+import { transitionName, withViewTransition } from "@/lib/view-transition";
 import { IndicatorCard, NR7_COLORS, QuestionnaireTable, type Nr7PairRef, type Nr7ReportModel } from "../../nr7-report";
 import { ANSWER_COLORS, ANSWER_ORDER, NR7_SERIES_COLOR } from "../../nr7-report/nr7-colors";
 import type { BiodiversityReviewGroup, Nr7Evidence, Nr7ReviewItem } from "./review-groups";
@@ -54,7 +55,7 @@ export function Nr7CrossChecks(props: Nr7CrossChecksProps) {
               key={key}
               item={item}
               expanded={expandedKey === key}
-              onToggle={() => setExpandedKey((cur) => (cur === key ? null : key))}
+              onToggle={() => withViewTransition(() => setExpandedKey((cur) => (cur === key ? null : key)))}
               first={i === 0}
               {...props}
             />
@@ -150,11 +151,16 @@ function CrossCheckRow({
   const { signal, row, indicator, evidence } = item;
   const bodyId = `cross-check-${signal.rule}-${signal.targetId ?? signal.indicatorId}`;
   const pair = row ? nr7PairTargets.get(row.targetId) : undefined;
-  const subject = row ? `${row.number} · ${shortText(row.targetText)}` : indicator ? indicator.title : "";
+  const fullText = (row ? row.targetText : indicator?.title ?? "").replace(/\s+/g, " ").trim();
+  const subject = row ? `${row.number} · ${expanded ? fullText : shortText(row.targetText)}` : fullText;
   const rating = row ? ratingLabels[row.status] : "";
+  // One name per moving part, so the view transition glides each from its
+  // closed place to its open one (the subject unfolds in place; the rating
+  // and the evidence drop straight down their own columns).
+  const name = transitionName("cc", signal.rule, signal.targetId ?? signal.indicatorId ?? "");
 
   return (
-    <li className="border-t border-line-soft">
+    <li className="border-t border-line-soft" style={{ viewTransitionName: name }}>
       <button
         type="button"
         onClick={onToggle}
@@ -162,17 +168,22 @@ function CrossCheckRow({
         aria-controls={bodyId}
         aria-label={t("biodiversity.row.aria", { target: subject, rating, evidence: evidenceText(evidence, tEv) })}
         data-tour={first ? "review-row" : undefined}
-        className="w-full text-left grid grid-cols-[minmax(0,12rem)_6.5rem_1fr] items-center gap-3 px-1 py-2 rounded hover:bg-black/[0.03] text-caption"
+        className="w-full text-left grid grid-cols-[minmax(0,12rem)_6.5rem_1fr] items-center gap-x-3 gap-y-1.5 px-1 py-2 rounded hover:bg-black/[0.03] text-caption"
       >
-        {/* Once the row is open the subject is stated in full below, so the
-            truncated face copy steps back to grey (colour transition only). */}
+        {/* Closed: one truncated line in its column. Open: the same element
+            spans the row and wraps to the full text; nothing is repeated. */}
         <span
-          className={`text-data leading-snug truncate transition-colors duration-150 ${expanded ? "text-[var(--undp-gray)]" : "text-[var(--undp-black)]"}`}
-          title={row?.targetText ?? indicator?.title}
+          className={`text-data text-[var(--undp-black)] leading-snug ${expanded ? "col-span-3 whitespace-normal max-w-prose font-medium" : "truncate"}`}
+          title={expanded ? undefined : fullText}
+          style={{ viewTransitionName: `${name}-subject` }}
+          data-testid="cross-check-subject"
         >
           {subject}
         </span>
-        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+        <span
+          className={`inline-flex items-center gap-1.5 whitespace-nowrap ${expanded ? "col-start-2" : ""}`}
+          style={{ viewTransitionName: `${name}-rating` }}
+        >
           {row ? (
             <>
               <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: NR7_COLORS[row.status] }} />
@@ -182,20 +193,12 @@ function CrossCheckRow({
             <span className="text-[var(--undp-gray)]">{indicator ? t("row.nr7.sharedAcross", { count: indicator.targetIds.length }) : ""}</span>
           )}
         </span>
-        <span className="text-[var(--undp-black)] min-w-0">
+        <span className="text-[var(--undp-black)] min-w-0" style={{ viewTransitionName: `${name}-evidence` }}>
           <EvidenceGlyph evidence={evidence} />
         </span>
       </button>
       {expanded && (
         <div id={bodyId} className="pb-4 pl-1 pr-1 space-y-3 disclosure-enter">
-          {/* The face truncates the target; the open row leads with it in
-              full, in the same title style the indicator card uses for its
-              own heading (indicator rows get that card, so no line here). */}
-          {row && (
-            <p className="text-data text-[var(--undp-black)] font-medium leading-snug max-w-prose" data-testid="cross-check-subject">
-              {row.targetText.replace(/\s+/g, " ").trim()}
-            </p>
-          )}
           {signal.rule === "ratingVsAnswers" && row && (
             <div>
               <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">

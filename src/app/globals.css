@@ -188,6 +188,22 @@ body {
 .disclosure-enter {
   animation: disclosureEnter 180ms ease-out both;
 }
+/* Where view transitions exist, the row's own glide (src/lib/view-transition.ts)
+   carries the opening; the page-wide crossfade and the per-element moves stay
+   short. The keyframe above then serves only browsers without the API. */
+@supports (view-transition-name: none) {
+  .disclosure-enter {
+    animation: none;
+  }
+  ::view-transition-group(*) {
+    animation-duration: 220ms;
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 160ms;
+  }
+}
 
 /* Landing ambient motion. Both collapse to static under the
    prefers-reduced-motion rule above (durations forced to ~0). */
