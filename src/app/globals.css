@@ -172,6 +172,23 @@ body {
   font-synthesis-style: none;
 }
 
+/* A review row's opened body (Implementation slide): settles in from a
+   few pixels above rather than popping. Collapses to static under the
+   prefers-reduced-motion rule above. */
+@keyframes disclosureEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.disclosure-enter {
+  animation: disclosureEnter 180ms ease-out both;
+}
+
 /* Landing ambient motion. Both collapse to static under the
    prefers-reduced-motion rule above (durations forced to ~0). */
 @keyframes wheelEnter {

@@ -164,7 +164,12 @@ function CrossCheckRow({
         data-tour={first ? "review-row" : undefined}
         className="w-full text-left grid grid-cols-[minmax(0,12rem)_6.5rem_1fr] items-center gap-3 px-1 py-2 rounded hover:bg-black/[0.03] text-caption"
       >
-        <span className="text-data text-[var(--undp-black)] leading-snug truncate" title={row?.targetText ?? indicator?.title}>
+        {/* Once the row is open the subject is stated in full below, so the
+            truncated face copy steps back to grey (colour transition only). */}
+        <span
+          className={`text-data leading-snug truncate transition-colors duration-150 ${expanded ? "text-[var(--undp-gray)]" : "text-[var(--undp-black)]"}`}
+          title={row?.targetText ?? indicator?.title}
+        >
           {subject}
         </span>
         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
@@ -182,13 +187,15 @@ function CrossCheckRow({
         </span>
       </button>
       {expanded && (
-        <div id={bodyId} className="pb-4 pl-1 pr-1 space-y-3">
-          {/* The face truncates the subject; the open row states it in full,
-              one quiet line, so the evidence below reads against the actual
-              wording of the target (or the indicator, for shared declines). */}
-          <p className="text-caption text-[var(--undp-black)] leading-snug max-w-prose" data-testid="cross-check-subject">
-            {(row ? row.targetText : indicator?.title ?? "").replace(/\s+/g, " ").trim()}
-          </p>
+        <div id={bodyId} className="pb-4 pl-1 pr-1 space-y-3 disclosure-enter">
+          {/* The face truncates the target; the open row leads with it in
+              full, in the same title style the indicator card uses for its
+              own heading (indicator rows get that card, so no line here). */}
+          {row && (
+            <p className="text-data text-[var(--undp-black)] font-medium leading-snug max-w-prose" data-testid="cross-check-subject">
+              {row.targetText.replace(/\s+/g, " ").trim()}
+            </p>
+          )}
           {signal.rule === "ratingVsAnswers" && row && (
             <div>
               <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">

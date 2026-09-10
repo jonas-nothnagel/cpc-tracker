@@ -123,7 +123,7 @@ function StrainBar({
         <span className="text-caption tabular-nums text-[var(--undp-black)] text-right">{action.potentialMisalignmentCount}</span>
       </button>
       {expanded && (
-        <div id={bodyId} className="pb-4 pl-1 pr-1 space-y-3">
+        <div id={bodyId} className="pb-4 pl-1 pr-1 space-y-3 disclosure-enter">
           <p className="text-caption text-[var(--undp-gray)]">
             {status}
             {action.actionType === "adaptation" && (
