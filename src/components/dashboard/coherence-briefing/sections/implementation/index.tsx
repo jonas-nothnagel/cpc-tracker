@@ -8,9 +8,11 @@
  * is in the snapshot and what is not yet.
  *
  * Order of the slide (decided with the product owner, 2026-09-09):
- *   1. The headline is the finding for the report on screen; the body is the
- *      takeaways in one or two sentences, templated from the data, ending
- *      with the caveat. No LLM anywhere on this slide.
+ *   1. The headline is the finding for the report on screen, with its
+ *      denominator; the body says what was found in two plain sentences;
+ *      a "Where to start" block says what to do with the visual below and
+ *      how, ending with the caveat. All templated from the data. No LLM
+ *      anywhere on this slide.
  *   2. One control: which report (./report-toggle.tsx), only when both exist.
  *   3. The takeaways as a visual: ranked two-tone bars for the climate report
  *      (./climate-strain-chart.tsx), rating-versus-evidence rows for the
@@ -26,9 +28,8 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../../slide-frame";
-import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { TourButton } from "../../tour/tour-button";
-import { getDocMediumLabel } from "@/lib/utils";
+import { getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
 import {
   nr7StatusByNbsapTarget,
   type ActionPlanAlignmentSummary,
@@ -99,7 +100,7 @@ export function ImplementationSection({
 
   const sentence =
     shown === "nr7" && groups.biodiversity
-      ? biodiversitySentence(groups.biodiversity, countryName, t)
+      ? biodiversitySentence(groups.biodiversity, nr7Report?.totals.targets ?? 0, countryName, t)
       : climateSentence(groups.climate, coverage, countryName, countryConfig, t);
   const footerKey = shown === "nr7" ? "footer.sourcesNr7Only" : hasNr7 ? "footer.sourcesWithNr7" : "footer.sources";
 
@@ -108,7 +109,7 @@ export function ImplementationSection({
       id={IMPLEMENTATION_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
-      reading={<ReadingLine>{t.rich(shown === "nr7" ? "readingNr7" : "reading", glossaryTags())}</ReadingLine>}
+      reading={sentence.start ? <WhereToStart heading={t("startHeading")} text={sentence.start} caveat={sentence.startCaveat} /> : undefined}
       controls={showToggle ? <ReportToggle report={shown} onChange={onReportChange!} /> : undefined}
       tourButton={
         showEvidence ? (
@@ -163,12 +164,40 @@ export function ImplementationSection({
 interface Sentence {
   headline: string;
   body: string;
+  /** What to do with the visual below and how; absent when there is nothing to open. */
+  start?: string;
+  startCaveat?: string;
+}
+
+/** The slide's one process pointer: how to use the visual, in the same
+ *  left-ruled shape as the theme drawer's "AI-suggested starting point". */
+function WhereToStart({ heading, text, caveat }: { heading: string; text: string; caveat?: string }) {
+  return (
+    <section className="flex gap-2.5 border-l border-line-strong pl-3 max-w-prose mb-6" data-tour="where-to-start">
+      <span aria-hidden="true" className="mt-px text-body leading-none text-[var(--undp-gray)]">↳</span>
+      <div>
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">{heading}</p>
+        <p className="text-data text-[var(--undp-black)] leading-relaxed">{text}</p>
+        {caveat && <p className="mt-1.5 text-caption text-[var(--undp-gray)] leading-relaxed">{caveat}</p>}
+      </div>
+    </section>
+  );
+}
+
+/** A document named in running text: the full name with its short form in
+ *  brackets, so the abbreviation is expanded on first use. A full label's own
+ *  bracketed suffix (resolution numbers, years) is dropped for the sentence. */
+function docInProse(countryConfig: CountryConfig | null, docId: string): string {
+  const medium = getDocMediumLabel(countryConfig, docId);
+  const full = getDocFullLabel(countryConfig, docId).replace(/\s*\(.*\)\s*$/, "").trim();
+  return full && full !== medium ? `${full} (${medium})` : medium;
 }
 
 type T = ReturnType<typeof useTranslations<"briefing.implementation">>;
 
-/** Climate report: headline = the flagged-action count; body = concentration,
- *  status and the documents most flags fall on, then the AI caveat. */
+/** Climate report: headline = flagged actions over all reported actions;
+ *  body = how many are under way and which documents the targets sit in;
+ *  start = the bars that hold half of the concerns and what opening one shows. */
 export function climateSentence(
   group: ClimateReviewGroup | null,
   coverage: ImplementationCoverage,
@@ -190,25 +219,30 @@ export function climateSentence(
       body: t("climate.bodyNone", { reached: coverage.reached, total: coverage.total, outsideReach: coverage.outsideReach }),
     };
   }
-  const docs = group.topDocs.slice(0, 2).map((d) => getDocMediumLabel(countryConfig, d));
+  const docs = group.topDocs.slice(0, 2).map((d) => docInProse(countryConfig, d));
   return {
-    headline: t("climate.headline", { actions: group.total, commitments: group.flaggedCommitments }),
+    headline: t("climate.headline", { actions: group.total, totalActions: group.totalActions, country: countryName }),
     body: t("climate.body", {
-      half: group.actionsToHalf,
+      actions: group.total,
       underWay: group.underWay,
       docs: docs.length === 2 ? t("climate.docsPair", { a: docs[0], b: docs[1] }) : docs[0] ?? "",
     }),
+    start: t("climate.start", { half: group.actionsToHalf }),
+    startCaveat: t("climate.startCaveat"),
   };
 }
 
-/** Biodiversity report: headline = the cross-check count; body = one clause
- *  per rule present (at most three), then the computed-not-written caveat. */
-export function biodiversitySentence(group: BiodiversityReviewGroup, countryName: string, t: T): Sentence {
+/** Biodiversity report: headline = the cross-check count; body = what the
+ *  report gives per target and that these are the places it does not agree;
+ *  start = open a row, then settle which side is right. */
+export function biodiversitySentence(group: BiodiversityReviewGroup, targets: number, countryName: string, t: T): Sentence {
   if (group.total === 0) {
-    return { headline: t("biodiversity.headlineNone", { country: countryName }), body: t("biodiversity.caveat") };
+    return { headline: t("biodiversity.headlineNone", { country: countryName }), body: t("biodiversity.startCaveat") };
   }
-  const clauses = group.fragments.map((f) => t(`frag.${f.rule}`, f.params));
-  const joined = clauses.join(t("biodiversity.join"));
-  const body = joined ? `${joined.charAt(0).toUpperCase()}${joined.slice(1)}. ${t("biodiversity.caveat")}` : t("biodiversity.caveat");
-  return { headline: t("biodiversity.headline", { checks: group.total, country: countryName }), body };
+  return {
+    headline: t("biodiversity.headline", { checks: group.total, country: countryName }),
+    body: t("biodiversity.body", { targets, checks: group.total }),
+    start: t("biodiversity.start"),
+    startCaveat: t("biodiversity.startCaveat"),
+  };
 }

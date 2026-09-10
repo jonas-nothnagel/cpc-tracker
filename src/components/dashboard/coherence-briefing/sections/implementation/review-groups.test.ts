@@ -59,7 +59,7 @@ describe("buildReviewGroups", () => {
     expect(capped.biodiversity!.rest.map((i) => i.signal.rule)).toEqual(["reachWhileNoChange", "sharedIndicatorDeclining"]);
   });
 
-  it("gives every cross-check the evidence its glyph prints, and the body its fragments", () => {
+  it("gives every cross-check the evidence its glyph prints", () => {
     const g = buildReviewGroups({ summary: null, nr7Report, btrActions: 0 });
     const by = (rule: string) => g.biodiversity!.items.find((i) => i.signal.rule === rule)!;
     expect(by("ratingVsAnswers").evidence).toMatchObject({ kind: "answers", notInPlace: 2, answered: 3 });
@@ -68,11 +68,6 @@ describe("buildReviewGroups", () => {
     expect(by("unknownWithData").evidence).toMatchObject({ kind: "values", count: 2, from: "2010", to: "2024" });
     expect(by("reachWhileNoChange").evidence).toMatchObject({ kind: "reach", count: 3, max: 3 });
     expect(by("sharedIndicatorDeclining").evidence).toMatchObject({ kind: "series", direction: "down", first: 0.965, last: 0.953, unit: "index" });
-    expect(g.biodiversity!.fragments).toEqual([
-      { rule: "ratingVsAnswers", params: { count: 1 } },
-      { rule: "flatWhileOnTrack", params: { n: "2", from: "2020" } },
-      { rule: "unknownWithData", params: { count: 1 } },
-    ]); // capped at three: reachWhileNoChange is present but not a fragment
   });
 
   it("yields empty groups, not missing ones, when nothing is flagged", () => {
@@ -80,7 +75,7 @@ describe("buildReviewGroups", () => {
     const quiet: Nr7Data = { ...FIXTURE_NR7, questionnaire: { answers: [] }, indicators: [], progressItems: FIXTURE_NR7.progressItems.map((i) => ({ ...i, progressStatus: "limited" })) };
     const g = buildReviewGroups({ summary: empty, nr7Report: buildNr7Report(quiet, [], FIXTURE_TARGETS), btrActions: 1 });
     expect(g.climate).toMatchObject({ total: 0, actionsToHalf: 0, topDocs: [] });
-    expect(g.biodiversity).toMatchObject({ total: 0, fragments: [] });
+    expect(g.biodiversity).toMatchObject({ total: 0, hidden: 0 });
     // A BTR summary with no BTR actions (NR7-only country) yields no climate group.
     expect(buildReviewGroups({ summary, nr7Report, btrActions: 0 }).climate).toBeNull();
   });
@@ -112,11 +107,6 @@ describe.skipIf(!present)("buildReviewGroups on the Mongolia data", () => {
   it("leads the biodiversity group with the five reviewed rules and holds the funding decline back", () => {
     expect(g.biodiversity!.top.map((i) => i.signal.targetId)).toEqual(["NT12", "NT15", "NT05", "NT03", "NT07"]);
     expect(g.biodiversity!.rest.map((i) => i.signal.indicatorId)).toEqual(["D.2", "A.3"]);
-    expect(g.biodiversity!.fragments.map((f) => [f.rule, f.params])).toEqual([
-      ["ratingVsAnswers", { count: 2 }],
-      ["flatWhileOnTrack", { n: "3", from: "2020" }],
-      ["unknownWithData", { count: 1 }],
-    ]);
     expect(g.biodiversity!.items.find((i) => i.signal.targetId === "NT12")!.evidence).toMatchObject({ kind: "answers", notInPlace: 4, answered: 5 });
     expect(g.biodiversity!.items.find((i) => i.signal.targetId === "NT07")!.evidence).toMatchObject({ kind: "reach", count: 38, max: 60 });
     expect(g.climate!.actionsToHalf).toBeGreaterThan(0);

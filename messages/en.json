@@ -1012,6 +1012,7 @@
       }
     },
     "implementation": {
+      "startHeading": "Where to start",
       "headline": {
         "noCoverage": "{country} reports {count, plural, one {# action} other {# actions}}; their match to the plan is not yet computed."
       },
@@ -1048,7 +1049,6 @@
         "ongoing": "Ongoing",
         "implemented": "Implemented"
       },
-      "reading": "One bar per <btr>BTR</btr> action; its length is the policy <target>targets</target> it may pull against. Open a bar for the evidence.",
       "row": {
         "climate": {
           "commitments": "{count, plural, one {# commitment} other {# commitments}} across {docs}",
@@ -1085,47 +1085,43 @@
           "count": "{withValues} of {total} with reported values"
         }
       },
-      "readingNr7": "One row per cross-check: the <nr7>NR7</nr7>'s own rating beside the evidence that disagrees with it. Open a row for the detail.",
       "toggle": {
         "climate": "Climate report (BTR)",
         "biodiversity": "Biodiversity report (NR7)",
         "aria": "Choose a report"
       },
       "climate": {
-        "headline": "{actions, plural, one {# reported climate action may} other {# reported climate actions may}} pull against {commitments, plural, one {# policy commitment} other {# policy commitments}}.",
-        "headlineNone": "No reported climate action shows potential misalignment with the policy targets.",
-        "body": "{half, plural, one {# of them carries} other {# of them carry}} half of the flagged pairs, and {underWay, plural, =0 {none is under way yet} one {# is already under way} other {# are already under way}}. Most flags fall on {docs} targets. AI-estimated review prompts, not findings.",
+        "headline": "{actions} of {country}'s {totalActions} reported climate actions may work against targets in its other plans.",
+        "headlineNone": "None of {country}'s reported climate actions appears to work against targets in its other plans.",
+        "body": "{actions, plural, one {{underWay, plural, =0 {It is not under way yet} other {It is already under way}}} other {{underWay, plural, =0 {None of these {actions} is under way yet} one {# of these {actions} is already under way} other {# of these {actions} are already under way}}}}. Most of the targets involved are in the {docs}.",
         "bodyNone": "{reached} of {total} policy targets have a strongly aligned reported action; {outsideReach} have none. Matches are AI-estimated.",
-        "docsPair": "{a} and {b}",
+        "docsPair": "{a} and the {b}",
         "legend": {
           "design": "design-level",
           "coordination": "coordination-level"
         },
         "bar": {
           "aria": "{name}: {count, plural, one {# flagged pair} other {# flagged pairs}}, {design} design-level"
-        }
+        },
+        "start": "Start with the top {half, plural, one {bar: on its own it holds} other {# bars: together they hold}} half of the concerns. Open one to see the targets the action may work against and the AI's reason, then judge whether the concern holds.",
+        "startCaveat": "AI-estimated review prompts, not findings. Bar length is the number of targets involved."
       },
       "biodiversity": {
-        "headline": "{checks, plural, one {# place} other {# places}} where {country}'s biodiversity report disagrees with itself.",
-        "headlineNone": "{country}'s biodiversity report agrees with itself on every national target.",
-        "caveat": "Computed from the report's own statements.",
-        "join": "; ",
+        "headline": "In {checks, plural, one {# place} other {# places}}, {country}'s biodiversity report rates a target one way while its own evidence points another.",
+        "headlineNone": "Every rating in {country}'s biodiversity report matches its own evidence.",
         "row": {
           "aria": "{target}: rated {rating}; {evidence}"
         },
         "evidence": {
-          "answers": "{notInPlace} of {answered} not yet in place",
-          "flat": "unchanged since {from}",
-          "values": "{count, plural, one {# value reported} other {# values reported}}",
-          "reach": "{count, plural, one {# policy target aligned} other {# policy targets aligned}}",
+          "answers": "{notInPlace} of {answered} building blocks not yet in place",
+          "flat": "figure unchanged since {from}",
+          "values": "{count, plural, one {# figure reported} other {# figures reported}}, no rating",
+          "reach": "linked to {count, plural, one {# policy target} other {# policy targets}}",
           "falling": "{first} to {last} {unit}"
-        }
-      },
-      "frag": {
-        "ratingVsAnswers": "{count, plural, one {# on-track target has} other {# on-track targets have}} most enabling conditions not yet in place",
-        "flatWhileOnTrack": "target {n}'s indicator unchanged since {from}",
-        "unknownWithData": "{count, plural, one {# target} other {# targets}} rated unknown despite reported values",
-        "reachWhileNoChange": "{count, plural, one {# target with no change is} other {# targets with no change are}} among the most-connected in the plan"
+        },
+        "body": "The report rates progress on {targets} national targets and also gives questionnaire answers and figures for them. In these {checks, plural, one {# place} other {# places}} a rating and that evidence do not match. No AI is involved.",
+        "start": "Open a row to see the rating beside the evidence, in the report's own words and numbers. Each is a question to settle before the next report: is the rating right, or is the evidence?",
+        "startCaveat": "Computed from the report's own statements. Nothing on this tab is AI-generated."
       }
     },
     "implementationCenter": {

@@ -111,7 +111,7 @@ function StrainBar({
         data-tour={first ? "review-row" : undefined}
         className="w-full text-left grid grid-cols-[minmax(0,14rem)_1fr_3rem] items-center gap-3 px-1 py-2 rounded hover:bg-black/[0.03]"
       >
-        <span className="text-data text-[var(--undp-black)] leading-snug truncate" title={action.actionName}>
+        <span className="text-data text-[var(--undp-black)] leading-snug line-clamp-2" title={action.actionName}>
           {action.actionName}
         </span>
         <span className="block h-2 rounded-full overflow-hidden bg-[var(--color-line)]" aria-hidden="true">

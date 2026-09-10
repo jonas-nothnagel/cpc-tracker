@@ -1012,6 +1012,7 @@
       }
     },
     "implementation": {
+      "startHeading": "Por dónde empezar",
       "headline": {
         "noCoverage": "{country} reporta {count, plural, one {# acción} other {# acciones}}; su correspondencia con el plan aún no se ha calculado."
       },
@@ -1048,7 +1049,6 @@
         "ongoing": "En curso",
         "implemented": "Implementada"
       },
-      "reading": "Una barra por acción del <btr>BTR</btr>; su largo son las <target>metas</target> contra las que podría ir. Abre una barra para ver la evidencia.",
       "row": {
         "climate": {
           "commitments": "{count, plural, one {# compromiso} other {# compromisos}} en {docs}",
@@ -1085,16 +1085,15 @@
           "count": "{withValues} de {total} con valores reportados"
         }
       },
-      "readingNr7": "Una fila por verificación: la calificación del propio <nr7>NR7</nr7> junto a la evidencia que no coincide. Abre una fila para el detalle.",
       "toggle": {
         "climate": "Informe climático (BTR)",
         "biodiversity": "Informe de biodiversidad (NR7)",
         "aria": "Elige un informe"
       },
       "climate": {
-        "headline": "{actions, plural, one {# acción climática reportada podría} other {# acciones climáticas reportadas podrían}} ir contra {commitments, plural, one {# compromiso de política} other {# compromisos de política}}.",
-        "headlineNone": "Ninguna acción climática reportada muestra posible desalineación con las metas de política.",
-        "body": "{half, plural, one {# de ellas concentra} other {# de ellas concentran}} la mitad de los pares señalados; {underWay, plural, =0 {ninguna está en marcha aún} one {# ya está en marcha} other {# ya están en marcha}}. La mayoría recae en metas de {docs}. Estimado por IA, no son hallazgos.",
+        "headline": "{actions} de las {totalActions} acciones climáticas reportadas por {country} podrían ir contra metas de sus otros planes.",
+        "headlineNone": "Ninguna acción climática reportada por {country} parece ir contra metas de sus otros planes.",
+        "body": "{actions, plural, one {{underWay, plural, =0 {Aún no está en marcha} other {Ya está en marcha}}} other {{underWay, plural, =0 {Ninguna de estas {actions} está en marcha aún} one {# de estas {actions} ya está en marcha} other {# de estas {actions} ya están en marcha}}}}. La mayoría de las metas afectadas pertenecen a {docs}.",
         "bodyNone": "{reached} de {total} metas de política tienen una acción reportada fuertemente alineada; {outsideReach} no tienen ninguna. Las correspondencias son estimadas por IA.",
         "docsPair": "{a} y {b}",
         "legend": {
@@ -1103,29 +1102,26 @@
         },
         "bar": {
           "aria": "{name}: {count, plural, one {# par señalado} other {# pares señalados}}, {design} de diseño"
-        }
+        },
+        "start": "Empieza por {half, plural, one {la barra superior: por sí sola concentra} other {las # barras superiores: juntas concentran}} la mitad de las alertas. Abre una para ver las metas contra las que podría ir la acción y la razón de la IA, y juzga si la alerta se sostiene.",
+        "startCaveat": "Avisos de revisión estimados por IA, no hallazgos. El largo de la barra es el número de metas afectadas."
       },
       "biodiversity": {
-        "headline": "{checks, plural, one {# punto} other {# puntos}} donde el informe de biodiversidad de {country} no coincide consigo mismo.",
-        "headlineNone": "El informe de biodiversidad de {country} coincide consigo mismo en todas las metas nacionales.",
-        "caveat": "Calculado con las propias declaraciones del informe.",
-        "join": "; ",
+        "headline": "En {checks, plural, one {# punto} other {# puntos}}, el informe de biodiversidad de {country} califica una meta de una manera mientras su propia evidencia apunta a otra.",
+        "headlineNone": "Cada calificación del informe de biodiversidad de {country} coincide con su propia evidencia.",
         "row": {
           "aria": "{target}: calificada {rating}; {evidence}"
         },
         "evidence": {
-          "answers": "{notInPlace} de {answered} aún no establecidas",
-          "flat": "sin cambio desde {from}",
-          "values": "{count, plural, one {# valor reportado} other {# valores reportados}}",
-          "reach": "{count, plural, one {# meta de política alineada} other {# metas de política alineadas}}",
+          "answers": "{notInPlace} de {answered} condiciones básicas aún no establecidas",
+          "flat": "cifra sin cambio desde {from}",
+          "values": "{count, plural, one {# cifra reportada} other {# cifras reportadas}}, sin calificación",
+          "reach": "vinculada a {count, plural, one {# meta de política} other {# metas de política}}",
           "falling": "de {first} a {last} {unit}"
-        }
-      },
-      "frag": {
-        "ratingVsAnswers": "{count, plural, one {# meta en curso con} other {# metas en curso con}} la mayoría de condiciones habilitantes pendientes",
-        "flatWhileOnTrack": "indicador de la meta {n} sin cambio desde {from}",
-        "unknownWithData": "{count, plural, one {# meta desconocida} other {# metas desconocidas}} pese a valores reportados",
-        "reachWhileNoChange": "{count, plural, one {# meta sin cambio está} other {# metas sin cambio están}} entre las más conectadas del plan"
+        },
+        "body": "El informe califica el avance de {targets} metas nacionales y además da respuestas de cuestionario y cifras sobre ellas. En estos {checks, plural, one {# punto} other {# puntos}} la calificación y esa evidencia no coinciden. No interviene la IA.",
+        "start": "Abre una fila para ver la calificación junto a la evidencia, con las palabras y cifras del propio informe. Cada una es una pregunta por resolver antes del próximo informe: ¿es correcta la calificación, o la evidencia?",
+        "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA."
       }
     },
     "implementationCenter": {

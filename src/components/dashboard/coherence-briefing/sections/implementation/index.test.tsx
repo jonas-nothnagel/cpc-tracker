@@ -62,13 +62,17 @@ function renderSlide(opts: { report?: ImplementationReport; withBtr?: boolean; w
 
 const headline = () => screen.getByRole("heading", { level: 2 }).textContent ?? "";
 const body = () => screen.getByRole("heading", { level: 2 }).nextElementSibling?.textContent ?? "";
+const start = () => document.querySelector('[data-tour="where-to-start"]')?.textContent ?? "";
 
 describe("ImplementationSection", () => {
-  it("climate report: the finding, a short takeaway body, the bars and one folded section", () => {
+  it("climate report: the finding, a plain body, where to start, the bars and one folded section", () => {
     renderSlide({ report: "btr" });
-    expect(headline()).toBe("6 reported climate actions may pull against 3 policy commitments.");
-    expect(body()).toBe("2 of them carry half of the flagged pairs, and 2 are already under way. Most flags fall on NDC and NAP targets. AI-estimated review prompts, not findings.");
+    expect(headline()).toBe("6 of Testland's 6 reported climate actions may work against targets in its other plans.");
+    expect(body()).toBe("2 of these 6 are already under way. Most of the targets involved are in the NDC and the NAP.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
+    expect(start()).toContain("Where to start");
+    expect(start()).toContain("Start with the top 2 bars: together they hold half of the concerns.");
+    expect(start()).toContain("AI-estimated review prompts, not findings.");
     expect(screen.getByRole("group", { name: "Choose a report" })).toBeInTheDocument();
     expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(5);
     expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(1);
@@ -76,11 +80,14 @@ describe("ImplementationSection", () => {
     expect(screen.getByText(/Evidence: Testland's Biennial Transparency Report \(BTR\) and 7th National Report/)).toBeInTheDocument();
   });
 
-  it("biodiversity report: the finding, a computed takeaway body, the rows and two folded sections", () => {
+  it("biodiversity report: the finding, a plain body, where to start, the rows and two folded sections", () => {
     renderSlide({ report: "nr7" });
-    expect(headline()).toBe("5 places where Testland's biodiversity report disagrees with itself.");
-    expect(body()).toBe("1 on-track target has most enabling conditions not yet in place; target 2's indicator unchanged since 2020; 1 target rated unknown despite reported values. Computed from the report's own statements.");
+    expect(headline()).toBe("In 5 places, Testland's biodiversity report rates a target one way while its own evidence points another.");
+    expect(body()).toBe("The report rates progress on 4 national targets and also gives questionnaire answers and figures for them. In these 5 places a rating and that evidence do not match. No AI is involved.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
+    expect(start()).toContain("Where to start");
+    expect(start()).toContain("is the rating right, or is the evidence?");
+    expect(start()).toContain("Nothing on this tab is AI-generated.");
     // Four eligible cross-checks on the face; the held-back one sits behind "Show all".
     expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(4);
     expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(2);
@@ -106,17 +113,17 @@ describe("ImplementationSection", () => {
     cleanup();
     renderSlide({ report: "btr", withBtr: false });
     expect(screen.queryByRole("group", { name: "Choose a report" })).toBeNull();
-    expect(headline()).toMatch(/biodiversity report disagrees/);
+    expect(headline()).toMatch(/biodiversity report rates a target/);
   });
 
-  it.each(["es", "mn"] as const)("%s keeps both takeaway bodies under 35 words", (locale) => {
+  it.each(["es", "mn"] as const)("%s keeps both bodies under 35 words and every template filled", (locale) => {
     renderSlide({ report: "btr", locale });
     expect(wordCount(body())).toBeLessThanOrEqual(35);
-    expect(body()).not.toMatch(/\{|\}/);
+    expect(`${headline()} ${body()} ${start()}`).not.toMatch(/\{|\}/);
     cleanup();
     renderSlide({ report: "nr7", locale });
     expect(wordCount(body())).toBeLessThanOrEqual(35);
-    expect(body()).not.toMatch(/\{|\}/);
+    expect(`${headline()} ${body()} ${start()}`).not.toMatch(/\{|\}/);
   });
 
   it("keeps the faces factual in every locale", () => {

@@ -21,7 +21,7 @@
 
 import type { ActionPlanAlignmentSummary, StrainedAction } from "@/lib/implementation-coherence";
 import type { Nr7ReportModel, Nr7Signal, Nr7TargetRowModel } from "../../nr7-report";
-import type { Nr7AnswerMix, Nr7IndicatorView, Nr7SignalRule } from "../../nr7-report/nr7-self-report";
+import type { Nr7AnswerMix, Nr7IndicatorView } from "../../nr7-report/nr7-self-report";
 
 /** Rows shown before "Show all", per group (same cap as Where to Focus). */
 export const REVIEW_CAP = 5;
@@ -73,12 +73,6 @@ export interface Nr7ReviewItem {
   evidence: Nr7Evidence | null;
 }
 
-/** One takeaway clause per rule present among the eligible signals. */
-export interface Nr7Fragment {
-  rule: Nr7SignalRule;
-  params: Record<string, string | number>;
-}
-
 export interface BiodiversityReviewGroup {
   /** Card-eligible signals first (existing order), then the rest. */
   items: Nr7ReviewItem[];
@@ -86,8 +80,6 @@ export interface BiodiversityReviewGroup {
   rest: Nr7ReviewItem[];
   total: number;
   hidden: number;
-  /** Rule order, at most three, so the takeaway body stays short. */
-  fragments: Nr7Fragment[];
 }
 
 export interface ReviewGroups {
@@ -143,9 +135,6 @@ function climateGroup(summary: ActionPlanAlignmentSummary, btrActions: number, c
   };
 }
 
-const FRAGMENT_ORDER: Nr7SignalRule[] = ["ratingVsAnswers", "flatWhileOnTrack", "unknownWithData", "reachWhileNoChange"];
-const MAX_FRAGMENTS = 3;
-
 function evidenceFor(signal: Nr7Signal, row: Nr7TargetRowModel | null, indicator: Nr7IndicatorView | null, maxReach: number): Nr7Evidence | null {
   switch (signal.rule) {
     case "ratingVsAnswers":
@@ -180,24 +169,6 @@ function evidenceFor(signal: Nr7Signal, row: Nr7TargetRowModel | null, indicator
   }
 }
 
-function fragmentsFor(items: Nr7ReviewItem[]): Nr7Fragment[] {
-  const out: Nr7Fragment[] = [];
-  for (const rule of FRAGMENT_ORDER) {
-    const hits = items.filter((i) => i.signal.rule === rule && i.signal.cardEligible);
-    if (hits.length === 0) continue;
-    if (rule === "flatWhileOnTrack") {
-      const ev = hits[0].evidence;
-      // Name the target, not the indicator: indicator titles run to a dozen
-      // words and the row below names it anyway.
-      out.push({ rule, params: { n: hits[0].row?.number ?? "", from: ev?.kind === "series" ? ev.from : String(hits[0].signal.params.from ?? "") } });
-    } else {
-      out.push({ rule, params: { count: hits.length } });
-    }
-    if (out.length === MAX_FRAGMENTS) break;
-  }
-  return out;
-}
-
 function biodiversityGroup(model: Nr7ReportModel, cap: number): BiodiversityReviewGroup {
   // Signals held back from the face (e.g. the unreviewed funding series) are
   // never in the top slice, even when it has room: they show only after
@@ -213,5 +184,5 @@ function biodiversityGroup(model: Nr7ReportModel, cap: number): BiodiversityRevi
   const top = eligible.slice(0, cap);
   const rest = [...eligible.slice(cap), ...heldBack];
   const items = [...top, ...rest];
-  return { items, top, rest, total: model.signals.length, hidden: rest.length, fragments: fragmentsFor(items) };
+  return { items, top, rest, total: model.signals.length, hidden: rest.length };
 }

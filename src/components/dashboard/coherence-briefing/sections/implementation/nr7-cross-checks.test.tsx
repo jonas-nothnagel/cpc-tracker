@@ -45,15 +45,15 @@ describe("Nr7CrossChecks", () => {
     const rows = screen.getAllByRole("listitem");
     expect(rows).toHaveLength(5);
     expect(rowButton(0)).toHaveAttribute("data-tour", "review-row");
-    expect(rowButton(0).getAttribute("aria-label")).toMatch(/^1 · .*: rated On track; 2 of 3 not yet in place$/);
+    expect(rowButton(0).getAttribute("aria-label")).toMatch(/^1 · .*: rated On track; 2 of 3 building blocks not yet in place$/);
     expect(within(rows[0]).getByText("On track")).toBeInTheDocument();
-    expect(within(rows[0]).getByText("2 of 3 not yet in place")).toBeInTheDocument();
+    expect(within(rows[0]).getByText("2 of 3 building blocks not yet in place")).toBeInTheDocument();
     expect(within(rows[1]).getByText("Unknown")).toBeInTheDocument();
-    expect(within(rows[1]).getByText("2 values reported")).toBeInTheDocument();
-    expect(within(rows[2]).getByText("unchanged since 2020")).toBeInTheDocument();
+    expect(within(rows[1]).getByText("2 figures reported, no rating")).toBeInTheDocument();
+    expect(within(rows[2]).getByText("figure unchanged since 2020")).toBeInTheDocument();
     expect(within(rows[2]).getByRole("img", { name: "unchanged" })).toBeInTheDocument();
     expect(within(rows[3]).getByText("No progress")).toBeInTheDocument();
-    expect(within(rows[3]).getByText("3 policy targets aligned")).toBeInTheDocument();
+    expect(within(rows[3]).getByText("linked to 3 policy targets")).toBeInTheDocument();
     // The held-back shared decline sits last, labelled by how many targets share it.
     expect(within(rows[4]).getByText("4 national targets")).toBeInTheDocument();
     expect(within(rows[4]).getByText("0.965 to 0.953 index")).toBeInTheDocument();
