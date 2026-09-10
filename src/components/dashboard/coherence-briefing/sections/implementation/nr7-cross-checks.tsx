@@ -183,6 +183,12 @@ function CrossCheckRow({
       </button>
       {expanded && (
         <div id={bodyId} className="pb-4 pl-1 pr-1 space-y-3">
+          {/* The face truncates the subject; the open row states it in full,
+              one quiet line, so the evidence below reads against the actual
+              wording of the target (or the indicator, for shared declines). */}
+          <p className="text-caption text-[var(--undp-black)] leading-snug max-w-prose" data-testid="cross-check-subject">
+            {(row ? row.targetText : indicator?.title ?? "").replace(/\s+/g, " ").trim()}
+          </p>
           {signal.rule === "ratingVsAnswers" && row && (
             <div>
               <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">

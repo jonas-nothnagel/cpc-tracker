@@ -71,6 +71,8 @@ describe("Nr7CrossChecks", () => {
     fireEvent.click(rowButton(0));
     expect(rowButton(0)).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByText("Answers not yet in place (2 of 3)")).toBeInTheDocument();
+    // The face truncates the target; the open row states it in full.
+    expect(screen.getByTestId("cross-check-subject")).toHaveTextContent("By 2030, mainstream biodiversity into all sectors.");
     expect(screen.getByRole("table")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /See the national target/ }));
     expect(onFocusNr7Target).toHaveBeenCalledWith("NT01");
