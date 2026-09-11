@@ -71,6 +71,8 @@ import { WheelCenterpiece } from "./centerpiece/wheel";
 import { WheelLegend } from "./centerpiece/wheel-legend";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
 import { DeliveryRoster } from "./centerpiece/delivery-roster";
+import { Nr7TargetLinks } from "./centerpiece/nr7-target-links";
+import { rankPolicyLinkCandidates } from "./sections/implementation/review-groups";
 import { InstitutionFlow } from "./centerpiece/institution-flow";
 import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
@@ -612,6 +614,14 @@ export function CoherenceBriefing({
   const [implCenterView, setImplCenterView] = useState<"roster" | "flow">(
     "roster",
   );
+  // The policy-link row the reader opened on the NR7 view; the column shows
+  // that national target's links (the top-ranked one until a row is open).
+  // Owned here like hoveredDocPairKey; cleared when the report switches.
+  const [focusedNr7TargetId, setFocusedNr7TargetId] = useState<string | null>(null);
+  const handleImplReportChange = useCallback((report: ImplementationReport) => {
+    setImplReport(report);
+    setFocusedNr7TargetId(null);
+  }, []);
   // Pop the active centerpiece into a large overlay so relationships are
   // explorable at size (the sticky column is only ~480px wide).
   const [expanded, setExpanded] = useState(false);
@@ -815,6 +825,15 @@ export function CoherenceBriefing({
     () => buildNr7Report(nr7Data, policyAlignment, targetMap, { policyLinkDoc: countryConfig?.nr7PolicyLinkDocType }),
     [nr7Data, policyAlignment, targetMap, countryConfig?.nr7PolicyLinkDocType],
   );
+  // The national target the NR7 column shows: the opened row, else the
+  // top-ranked target behind schedule. Null without links (the wheel stays).
+  const nr7CenterRow = useMemo(() => {
+    if (!nr7Report) return null;
+    const ranked = rankPolicyLinkCandidates(nr7Report);
+    if (!ranked) return null;
+    const focused = focusedNr7TargetId ? ranked.items.find((i) => i.row.targetId === focusedNr7TargetId)?.row ?? null : null;
+    return { row: focused ?? ranked.items[0].row, isDefault: focused === null };
+  }, [nr7Report, focusedNr7TargetId]);
   // Which NR7 national targets can open a reported-action pair (keyed on the
   // pseudo-targets' parent id, so it survives the alignment re-run).
   const nr7PairTargets = useMemo(
@@ -1500,7 +1519,9 @@ export function CoherenceBriefing({
           ? implCenterView === "flow" && institutionFlow
             ? "institutionFlow"
             : "deliveryRoster"
-          : "wheel";
+          : activeSection === IMPLEMENTATION_SECTION_ID && implReport === "nr7" && nr7CenterRow
+            ? "nr7TargetLinks"
+            : "wheel";
 
   // renders both inline (the ~480px column) and inside the expand overlay; the
   // only difference is the wheel's height cap.
@@ -1582,6 +1603,19 @@ export function CoherenceBriefing({
         </div>
       );
     }
+    // The NR7 view: the opened national target's links to the other plans.
+    if (activeSection === IMPLEMENTATION_SECTION_ID && implReport === "nr7" && nr7CenterRow) {
+      return (
+        <Nr7TargetLinks
+          row={nr7CenterRow.row}
+          isDefault={nr7CenterRow.isDefault}
+          countryConfig={countryConfig}
+          countryName={countryName}
+          visibleTargetIds={visibleTargetIds}
+          onOpenTarget={openTargetProfile}
+        />
+      );
+    }
     // Only the Sectors section groups the wheel by lens; every other section
     // groups by document and keeps showing the whole visible corpus.
     const lensGrouped = wheelState.groupBy === "sector";
@@ -1624,7 +1658,8 @@ export function CoherenceBriefing({
   const wheelIsActiveCenterpiece =
     activeSection !== DOC_PAIRS_SECTION_ID &&
     !(activeSection === FINANCING_SECTION_ID && financing) &&
-    !(activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster);
+    !(activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster) &&
+    !(activeSection === IMPLEMENTATION_SECTION_ID && implReport === "nr7" && nr7CenterRow);
 
   // Marker slot for a section wrapper; renders only where a stage begins
   // (see stageMarkerBySection above).
@@ -1876,11 +1911,13 @@ export function CoherenceBriefing({
                   nr7PairTargets={nr7PairTargets}
                   visibleTargetIds={visibleTargetIds}
                   report={implReport}
-                  onReportChange={setImplReport}
+                  onReportChange={handleImplReportChange}
                   countryName={countryName}
                   countryConfig={countryConfig}
                   onOpenActionPair={openActionPair}
                   onOpenTarget={openTargetProfile}
+                  focusedNr7TargetId={focusedNr7TargetId}
+                  onFocusNr7Target={setFocusedNr7TargetId}
                 />
               </div>
             )}

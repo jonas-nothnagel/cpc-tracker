@@ -35,13 +35,22 @@ export interface Nr7PolicyLinkRowsProps {
   visibleTargetIds: ReadonlySet<string>;
   onOpenTarget: (targetId: string) => void;
   onFocusNr7Target: (targetId: string) => void;
+  /** The open row, when the host owns it (its sticky column follows the
+   *  selection). Absent: the rows keep their own. */
+  selectedId?: string | null;
+  onSelect?: (targetId: string | null) => void;
 }
 
 export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
-  const { group } = props;
+  const { group, selectedId, onSelect } = props;
   const t = useTranslations("briefing.implementation");
   const [showAll, setShowAll] = useState(false);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [localId, setLocalId] = useState<string | null>(null);
+  const expandedId = selectedId !== undefined ? selectedId : localId;
+  const select = (id: string | null) => {
+    setLocalId(id);
+    onSelect?.(id);
+  };
   if (group.total === 0) return null;
   const rows = showAll ? group.items : group.top;
   return (
@@ -52,7 +61,7 @@ export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
             key={item.row.targetId}
             item={item}
             expanded={expandedId === item.row.targetId}
-            onToggle={() => withViewTransition(() => setExpandedId((cur) => (cur === item.row.targetId ? null : item.row.targetId)))}
+            onToggle={() => withViewTransition(() => select(expandedId === item.row.targetId ? null : item.row.targetId))}
             first={i === 0}
             {...props}
           />
@@ -97,7 +106,7 @@ function PolicyLinkRow({
   visibleTargetIds,
   onOpenTarget,
   onFocusNr7Target,
-}: { item: Nr7PolicyLinkItem; expanded: boolean; onToggle: () => void; first: boolean } & Omit<Nr7PolicyLinkRowsProps, "group">) {
+}: { item: Nr7PolicyLinkItem; expanded: boolean; onToggle: () => void; first: boolean } & Omit<Nr7PolicyLinkRowsProps, "group" | "selectedId" | "onSelect">) {
   const t = useTranslations("briefing.implementation");
   const tPl = useTranslations("briefing.implementation.biodiversity.policyLinks");
   const tNr7 = useTranslations("briefing.nr7Report");

@@ -69,10 +69,16 @@ export function ImplementationSection({
   countryConfig,
   onOpenActionPair,
   onOpenTarget,
+  focusedNr7TargetId,
+  onFocusNr7Target,
 }: {
   coverage: ImplementationCoverage;
   summary: ActionPlanAlignmentSummary;
   nr7Data: Nr7Data | null;
+  /** The open policy-link row, when the host owns it so its sticky column
+   *  can show that target's links. */
+  focusedNr7TargetId?: string | null;
+  onFocusNr7Target?: (targetId: string | null) => void;
   /** The NR7 self-report model (nr7-report/); null without an NR7. */
   nr7Report?: Nr7ReportModel | null;
   /** Which national targets can open a reported-action pair. */
@@ -138,6 +144,8 @@ export function ImplementationSection({
             visibleTargetIds={visibleTargetIds}
             onOpenTarget={onOpenTarget}
             onFocusNr7Target={fullPicture.focusTarget}
+            selectedId={focusedNr7TargetId}
+            onSelect={onFocusNr7Target}
           />
         ) : showEvidence && shown === "nr7" && groups.biodiversity && nr7Report ? (
           <Nr7CrossChecks

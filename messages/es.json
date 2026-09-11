@@ -480,6 +480,22 @@
             "body": "Debajo del visual, las secciones plegadas guardan el resto del informe en pantalla: cobertura por documento para el informe climático, cada meta nacional e indicador para el de biodiversidad."
           }
         }
+      },
+      "nr7TargetLinks": {
+        "steps": {
+          "bars": {
+            "title": "Una barra por documento",
+            "body": "Cada barra cuenta las metas de política de ese documento que la IA juzgó fuertemente alineadas con la meta nacional abierta a la izquierda. Barras más largas: más de ese plan se alinea con ella."
+          },
+          "docs": {
+            "title": "Las metas alineadas",
+            "body": "Abre un documento para listar las metas una por una; un punto rojo y las palabras \"posible desalineación\" marcan un par señalado para revisión. Haz clic en una meta para leerla."
+          },
+          "caveat": {
+            "title": "Lo que esto no es",
+            "body": "Los vínculos son alineación entre textos de metas, estimada por la IA y filtrada por los documentos que muestras. No dicen que una meta ejecute ni financie a otra."
+          }
+        }
       }
     },
     "explorer": {
@@ -1173,6 +1189,29 @@
         "detailCount": "{count, plural, one {# meta} other {# metas}}",
         "caveat": "Participación según la nombra el informe (un único lente autoreportado); alineación estimada por IA. Una meta nombrada por varias instituciones cuenta en cada una.",
         "empty": "No hay acciones reportadas con alineación fuerte para mostrar en la selección actual."
+      },
+      "nr7Links": {
+        "header": {
+          "eyebrow": "Alineación entre los planes",
+          "title": "Qué se alinea con la meta nacional {n}",
+          "subtitle": "{country} · Séptimo Informe Nacional (NR7) frente a las metas de política"
+        },
+        "mixLine": "{count, plural, one {# meta de política} other {# metas de política}} en {docs, plural, one {# otro documento} other {# otros documentos}} se alinean fuertemente con ella; {flagged, plural, =0 {sin posibles desalineaciones} one {# posible desalineación} other {# posibles desalineaciones}}.",
+        "defaultNote": "La meta mejor clasificada de la diapositiva. Abre otra fila para cambiarla.",
+        "bars": {
+          "heading": "Por documento",
+          "note": "Largo de la barra: cuántas metas de ese documento juzgó la IA fuertemente alineadas con la meta nacional {n}."
+        },
+        "flagged": {
+          "heading": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}:",
+          "word": "posible desalineación"
+        },
+        "targets": {
+          "heading": "Las metas alineadas",
+          "count": "{high}{flagged, plural, =0 {} other { + # por revisar}}",
+          "more": "+ {count} más"
+        },
+        "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par."
       }
     },
     "nr7Report": {

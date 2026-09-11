@@ -20,6 +20,7 @@ export type BriefingTourId =
   | "fundingGrid"
   | "deliveryRoster"
   | "institutionFlow"
+  | "nr7TargetLinks"
   | "frictionTypes"
   | "directionThemes"
   | "docFocus"
@@ -92,6 +93,11 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "statusKey", target: "roster-status-key", placement: "bottom" },
     { id: "rows", target: "roster-rows", placement: "left" },
     { id: "caveat", target: "roster-caveat", placement: "top" },
+  ],
+  nr7TargetLinks: [
+    { id: "bars", target: "nr7-links-bars", placement: "left" },
+    { id: "docs", target: "nr7-links-docs", placement: "left" },
+    { id: "caveat", target: "nr7-links-caveat", placement: "top" },
   ],
   institutionFlow: [
     { id: "institutions", target: "flow-institutions", placement: "right" },

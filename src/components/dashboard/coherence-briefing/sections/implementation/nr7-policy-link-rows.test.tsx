@@ -87,6 +87,28 @@ describe("Nr7PolicyLinkRows", () => {
     expect(within(row).getByTitle(/GBF\) target 11:/)).toHaveTextContent("GBF T11");
   });
 
+  it("hands the open row to the host when the host owns it", () => {
+    const group = rankPolicyLinkCandidates(buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!)!;
+    const onSelect = vi.fn();
+    const { rerender } = render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7PolicyLinkRows group={group} countryConfig={null} visibleTargetIds={new Set()} onOpenTarget={vi.fn()} onFocusNr7Target={vi.fn()} selectedId={null} onSelect={onSelect} />
+      </NextIntlClientProvider>,
+    );
+    fireEvent.click(rowButton(1));
+    expect(onSelect).toHaveBeenCalledWith("NT04");
+    // Controlled: nothing opens until the host passes the id back.
+    expect(rowButton(1)).toHaveAttribute("aria-expanded", "false");
+    rerender(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7PolicyLinkRows group={group} countryConfig={null} visibleTargetIds={new Set()} onOpenTarget={vi.fn()} onFocusNr7Target={vi.fn()} selectedId="NT04" onSelect={onSelect} />
+      </NextIntlClientProvider>,
+    );
+    expect(rowButton(1)).toHaveAttribute("aria-expanded", "true");
+    fireEvent.click(rowButton(1));
+    expect(onSelect).toHaveBeenLastCalledWith(null);
+  });
+
   it("folds the rest behind Show all and never claims a suggestion on the face", () => {
     renderRows(FIXTURE_ALIGNMENT, 2);
     expect(rows()).toHaveLength(2);

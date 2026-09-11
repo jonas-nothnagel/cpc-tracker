@@ -37,6 +37,13 @@ AI-estimated.
   most aligned counterparts, the potential misalignments and the report's
   own Key Challenges text. When no such target has a link (no policy
   alignment visible) the cross-checks are the view, as before.
+- The briefing's sticky column follows the opened policy-link row
+  (`centerpiece/nr7-target-links.tsx`): that national target's links to the
+  other plans, one bar per document (strong alignment only), the potential
+  misalignments named by document, and the aligned targets listed per
+  document with links into the target profile. The top-ranked target stands
+  in until a row is opened. Tour `nr7TargetLinks`; copy under
+  `briefing.implementationCenter.nr7Links`.
 - The cross-check signals (`sections/implementation/nr7-cross-checks.tsx`:
   rating chip beside the disagreeing evidence as a glyph, rows expand to
   `QuestionnaireTable` / `IndicatorCard`) fold into the full picture under
@@ -112,6 +119,9 @@ config key carries `PolicyLink`, so
 `grep -rni "policylink" src messages python/data/*country-config.json`
 lists it; delete `sections/implementation/nr7-policy-link-rows.tsx` and its
 test, then each hit (the slide falls back to the cross-checks by itself).
+The column alone: `grep -rni "nr7targetlinks\|nr7Links\|focusedNr7TargetId" src messages`
+(`centerpiece/nr7-target-links.tsx` + test, the host state and branches,
+the tour id and its copy); the wheel returns by itself.
 The GBF grouping alone: `grep -rni "gbf" src messages` (`gbf-chip.tsx`,
 `gbf-groups.ts`, the `gbfTargets` row field, `briefing.nr7Report.gbf`).
 

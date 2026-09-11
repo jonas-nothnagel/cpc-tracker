@@ -89,6 +89,15 @@ takeaways first.
 - (2026-09-11) National targets group under the GBF global target the
   country filed each under (from the reporting tool), the axis that stays
   the same across countries.
+- (2026-09-11) The sticky column follows the NR7 view: while the
+  biodiversity report is on screen it shows the opened policy-link row's
+  national target and its links to the other plans, one bar per document
+  and the aligned targets listed (`centerpiece/nr7-target-links.tsx`); the
+  top-ranked target stands in until a row is opened. The host owns the open
+  row (`focusedNr7TargetId`, cleared on a report switch), like
+  `hoveredDocPairKey`; the rows fall back to their own state when the host
+  does not pass one. The column is desktop-only, so the open row keeps the
+  same information inline.
 
 - One report at a time; the reader switches. Group headings, captions and
   the both-reports sentences are gone.
@@ -115,7 +124,7 @@ takeaways first.
 `git rm -r` this directory and restore the pre-redesign slide from history
 (`git show bbc7f1f^:src/components/dashboard/coherence-briefing/sections/implementation/index.tsx`
 and its sibling `coverage-by-document.tsx`), then
-`grep -rn "review-groups\|full-picture\|nr7PairTargets\|openTargetProfile\|implReport\|ImplementationReport\|PolicyLink" src messages`
+`grep -rn "review-groups\|full-picture\|nr7PairTargets\|openTargetProfile\|implReport\|ImplementationReport\|PolicyLink\|Nr7TargetLinks\|nr7TargetLinks\|nr7Links" src messages`
 and remove the `index.tsx` memos, state and props, the tour steps `toggle`,
 `visual`, `row`, `fullPicture` (and their copy in three locales), and the
 `briefing.implementation` keys `toggle`, `startHeading`, `climate`,
