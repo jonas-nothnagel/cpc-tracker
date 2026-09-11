@@ -149,9 +149,11 @@ function PolicyLinkRow({
           <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: NR7_COLORS[row.status] }} />
           <span className="font-medium" style={{ color: NR7_COLORS[row.status] }}>{rating}</span>
         </span>
+        {/* The label wraps rather than truncates: the document count is the
+            point, and the slide column is narrow. */}
         <span className="inline-flex items-center gap-2 min-w-0 text-[var(--undp-black)]" style={{ viewTransitionName: `${name}-evidence` }}>
           <LinkBar item={item} countryConfig={countryConfig} />
-          <span className="truncate">{evidenceLabel}</span>
+          <span className="leading-snug">{evidenceLabel}</span>
         </span>
       </button>
       {expanded && (
