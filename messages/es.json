@@ -1154,7 +1154,8 @@
           "flagged": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, sobre todo con {doc}",
           "challengesHeading": "Qué dice el informe que la frena (palabras del informe, textual)",
           "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
-          "fewer": "Mostrar menos"
+          "fewer": "Mostrar menos",
+          "reviewWord": "posible desalineación"
         }
       }
     },
@@ -1210,9 +1211,9 @@
         },
         "targets": {
           "heading": "Las metas alineadas",
-          "count": "{high}{flagged, plural, =0 {} other { + # por revisar}}",
           "more": "+ {count} más",
-          "fewer": "Mostrar menos"
+          "fewer": "Mostrar menos",
+          "toReview": "+ {count} por revisar"
         },
         "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par."
       }

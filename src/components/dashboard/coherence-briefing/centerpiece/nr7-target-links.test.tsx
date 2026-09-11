@@ -64,8 +64,11 @@ describe("Nr7TargetLinks", () => {
     expect(docs[0]).toHaveTextContent("2 + 1 to review");
     fireEvent.click(within(docs[0]).getByText("NDC"));
     const items = within(docs[0].querySelector("details > ul")!).getAllByRole("listitem");
-    expect(items.map((li) => li.textContent?.trim())).toEqual(["NDC_1", "NDC_2", "NDC_1potential misalignment"]);
-    fireEvent.click(within(items[0]).getByRole("button", { name: "NDC_1" }));
+    // The pair to review comes first, tinted and left-ruled, with the word as a pill.
+    expect(items.map((li) => li.textContent?.trim())).toEqual(["NDC_1potential misalignment", "NDC_1", "NDC_2"]);
+    expect(items[0].querySelector('[data-review="true"]')).not.toBeNull();
+    expect(items[1].querySelector('[data-review="true"]')).toBeNull();
+    fireEvent.click(within(items[1]).getByRole("button", { name: "NDC_1" }));
     expect(onOpenTarget).toHaveBeenCalledWith("NDC_1");
     // A counterpart hidden by the document toggle is text, not a link.
     fireEvent.click(within(docs[1]).getByText("NAP"));

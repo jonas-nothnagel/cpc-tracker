@@ -20,7 +20,8 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
-import { getDocColor, getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
+import { FLAGGED_COLOR, getDocColor, getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
+import { ReviewMark } from "../../centerpiece/nr7-target-links";
 import { transitionName, withViewTransition } from "@/lib/view-transition";
 import { GbfChip, NR7_COLORS, shortNr7Text, type Nr7PolicyLink } from "../../nr7-report";
 import type { Nr7PolicyLinkGroup, Nr7PolicyLinkItem } from "./review-groups";
@@ -107,6 +108,7 @@ function CounterpartList({
   onOpenTarget,
   moreLabel,
   fewerLabel,
+  flaggedWord,
 }: {
   links: Nr7PolicyLink[];
   docLabel: (doc: string) => string;
@@ -114,23 +116,26 @@ function CounterpartList({
   onOpenTarget: (targetId: string) => void;
   moreLabel: (n: number) => string;
   fewerLabel: string;
+  /** Given for the flagged list: every entry is marked as a pair to review. */
+  flaggedWord?: string;
 }) {
   const [showAll, setShowAll] = useState(false);
   const shown = showAll ? links : links.slice(0, COUNTERPARTS_SHOWN);
   const more = links.length - shown.length;
   return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-caption">
+    <ul className={`text-caption ${flaggedWord ? "space-y-1" : "flex flex-wrap gap-x-4 gap-y-1"}`}>
       {shown.map((l) => {
         const label = `${docLabel(l.doc)} · ${l.label}`;
+        const link = visibleTargetIds.has(l.targetId) ? (
+          <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
+            {label} <span aria-hidden="true">›</span>
+          </button>
+        ) : (
+          <span title={l.text}>{label}</span>
+        );
         return (
           <li key={l.targetId}>
-            {visibleTargetIds.has(l.targetId) ? (
-              <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
-                {label} <span aria-hidden="true">›</span>
-              </button>
-            ) : (
-              <span title={l.text}>{label}</span>
-            )}
+            {flaggedWord ? <ReviewMark flagged word={flaggedWord}>{link}</ReviewMark> : link}
           </li>
         );
       })}
@@ -232,9 +237,12 @@ function PolicyLinkRow({
             <CounterpartList links={links.high} docLabel={docLabel} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} moreLabel={(n) => tPl("more", { count: n })} fewerLabel={tPl("fewer")} />
           </section>
           {links.flagged.length > 0 && mostFlaggedDoc && (
-            <p className="text-caption text-[var(--undp-black)]">
-              {tPl("flagged", { count: links.flagged.length, doc: docLabel(mostFlaggedDoc.doc) })}
-            </p>
+            <section className="rounded-r px-2.5 py-2 -ml-0.5" style={{ backgroundColor: `${FLAGGED_COLOR}14`, borderLeft: `2px solid ${FLAGGED_COLOR}` }} data-testid="policy-link-review">
+              <p className="text-caption font-medium mb-1" style={{ color: FLAGGED_COLOR }}>
+                {tPl("flagged", { count: links.flagged.length, doc: docLabel(mostFlaggedDoc.doc) })}
+              </p>
+              <CounterpartList links={links.flagged} docLabel={docLabel} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} moreLabel={(n) => tPl("more", { count: n })} fewerLabel={tPl("fewer")} flaggedWord={tPl("reviewWord")} />
+            </section>
           )}
           <section>
             <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">{tPl("challengesHeading")}</p>

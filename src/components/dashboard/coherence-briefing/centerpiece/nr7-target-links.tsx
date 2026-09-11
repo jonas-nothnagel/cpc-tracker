@@ -52,8 +52,9 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
   const flaggedDocs = docs.filter((d) => d.flagged > 0).sort((a, b) => b.flagged - a.flagged || a.doc.localeCompare(b.doc));
   const label = (doc: string) => getDocMediumLabel(countryConfig, doc);
   const title = (doc: string) => getDocFullLabel(countryConfig, doc);
+  // Per document, the pairs to review first, then the aligned ones.
   const byDoc = new Map<string, Nr7PolicyLink[]>();
-  for (const l of [...links.high, ...links.flagged]) byDoc.set(l.doc, [...(byDoc.get(l.doc) ?? []), l]);
+  for (const l of [...links.flagged, ...links.high]) byDoc.set(l.doc, [...(byDoc.get(l.doc) ?? []), l]);
 
   return (
     <div className="px-1 space-y-6" data-testid="nr7-target-links">
@@ -126,7 +127,13 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
                       <span aria-hidden="true" className="text-[var(--undp-gray)]/50 text-[11px] hidden group-open:inline">−</span>
                     </span>
                     <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
-                      {t("targets.count", { high: d.high, flagged: d.flagged })}
+                      {d.high}
+                      {d.flagged > 0 && (
+                        <span className="font-medium" style={{ color: FLAGGED_COLOR }}>
+                          {" "}
+                          {t("targets.toReview", { count: d.flagged })}
+                        </span>
+                      )}
                     </span>
                   </summary>
                   <TargetList list={list} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} flaggedWord={t("flagged.word")} moreLabel={(n) => t("targets.more", { count: n })} fewerLabel={t("targets.fewer")} />
@@ -139,6 +146,32 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
 
       <p className="text-[11px] text-[var(--undp-gray)] leading-snug" data-tour="nr7-links-caveat">{t("caveat")}</p>
     </div>
+  );
+}
+
+/** A pair to review stands out: a tinted, left-ruled line in the flagged
+ *  colour with the word beside the target; an aligned pair is a plain line
+ *  with a grey dot. Colour is never the only channel. */
+export function ReviewMark({ flagged, word, children }: { flagged: boolean; word: string; children: React.ReactNode }) {
+  if (!flagged) {
+    return (
+      <span className="flex items-start gap-1.5 text-[11.5px] leading-snug">
+        <span aria-hidden="true" className="mt-1.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 bg-[var(--undp-gray)]" />
+        {children}
+      </span>
+    );
+  }
+  return (
+    <span
+      className="flex items-start gap-1.5 text-[11.5px] leading-snug rounded-r px-1.5 py-0.5 -ml-0.5"
+      style={{ backgroundColor: `${FLAGGED_COLOR}14`, borderLeft: `2px solid ${FLAGGED_COLOR}` }}
+      data-review="true"
+    >
+      {children}
+      <span className="shrink-0 rounded-full px-1.5 text-[10px] font-medium leading-4 text-white" style={{ backgroundColor: FLAGGED_COLOR }}>
+        {word}
+      </span>
+    </span>
   );
 }
 
@@ -163,16 +196,16 @@ function TargetList({
   return (
     <ul className="mt-1.5 space-y-0.5 max-h-44 overflow-y-auto pr-1">
       {shown.map((l) => (
-        <li key={`${l.level}-${l.targetId}`} className="flex items-start gap-1.5 text-[11.5px] leading-snug">
-          <span aria-hidden="true" className="mt-1.5 inline-block w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: l.level === "flagged" ? FLAGGED_COLOR : "var(--undp-gray)" }} />
-          {visibleTargetIds.has(l.targetId) ? (
-            <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-left text-[var(--undp-blue)] hover:underline min-w-0">
-              {l.label}
-            </button>
-          ) : (
-            <span title={l.text} className="min-w-0">{l.label}</span>
-          )}
-          {l.level === "flagged" && <span className="shrink-0 text-[10.5px]" style={{ color: FLAGGED_COLOR }}>{flaggedWord}</span>}
+        <li key={`${l.level}-${l.targetId}`}>
+          <ReviewMark flagged={l.level === "flagged"} word={flaggedWord}>
+            {visibleTargetIds.has(l.targetId) ? (
+              <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-left text-[var(--undp-blue)] hover:underline min-w-0">
+                {l.label}
+              </button>
+            ) : (
+              <span title={l.text} className="min-w-0">{l.label}</span>
+            )}
+          </ReviewMark>
         </li>
       ))}
       {(more > 0 || showAll) && (

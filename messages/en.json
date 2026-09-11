@@ -1154,7 +1154,8 @@
           "flagged": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, mostly with the {doc}",
           "challengesHeading": "What the report says holds it back (the report's words, verbatim)",
           "noChallenges": "The report gives no key-challenges text for this target.",
-          "fewer": "Show fewer"
+          "fewer": "Show fewer",
+          "reviewWord": "potential misalignment"
         }
       }
     },
@@ -1210,9 +1211,9 @@
         },
         "targets": {
           "heading": "The aligned targets",
-          "count": "{high}{flagged, plural, =0 {} other { + # to review}}",
           "more": "+ {count} more",
-          "fewer": "Show fewer"
+          "fewer": "Show fewer",
+          "toReview": "+ {count} to review"
         },
         "caveat": "AI-estimated alignment between target texts, for the documents shown. A prompt for review, not a record of delivery or funding. Open a target to read the pair."
       }

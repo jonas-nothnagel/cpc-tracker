@@ -83,6 +83,11 @@ describe("Nr7PolicyLinkRows", () => {
     fireEvent.click(rowButton(0));
     const row = rows()[0];
     expect(within(row).getByText("1 potential misalignment, mostly with the NDC")).toBeInTheDocument();
+    // The flagged pair is listed in the highlighted block, marked by word, and opens the target.
+    const review = within(row).getByTestId("policy-link-review");
+    expect(review.querySelector('[data-review="true"]')).not.toBeNull();
+    expect(review).toHaveTextContent("NDC · NDC_1");
+    expect(review).toHaveTextContent("potential misalignment");
     expect(within(row).getByText("Monitoring stations cover only the capital.")).toBeInTheDocument();
     expect(within(row).getByTitle(/GBF\) target 11:/)).toHaveTextContent("GBF T11");
   });
