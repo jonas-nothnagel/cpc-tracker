@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { buildReviewGroups, REVIEW_CAP } from "./review-groups";
+import { buildReviewGroups, rankPolicyLinkCandidates, REVIEW_CAP } from "./review-groups";
 import { computeActionPlanAlignment } from "@/lib/implementation-coherence";
 import { buildNr7Report } from "../../nr7-report";
 import { FIXTURE_ALIGNMENT, FIXTURE_NR7, FIXTURE_TARGETS } from "../../nr7-report/test-fixture";
@@ -70,6 +70,36 @@ describe("buildReviewGroups", () => {
     expect(by("sharedIndicatorDeclining").evidence).toMatchObject({ kind: "series", direction: "down", first: 0.965, last: 0.953, unit: "index" });
   });
 
+  it("ranks targets rated behind schedule by their HIGH links to other documents", () => {
+    // NT01 limited (3 links, 2 docs), NT02 limited (1 link), NT03 unknown (never), NT04 no progress (3 links, 2 docs).
+    const behind: Nr7Data = { ...FIXTURE_NR7, progressItems: FIXTURE_NR7.progressItems.map((i) => (i.targetId === "NT01" || i.targetId === "NT02" ? { ...i, progressStatus: "limited" as const } : i)) };
+    const g = buildReviewGroups({ summary: null, nr7Report: buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS), btrActions: 0 });
+    const pl = g.biodiversity!.policyLinks!;
+    // NT01 and NT04 tie on links and documents (no flagged links either): the lower number leads.
+    expect(pl.items.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02"]);
+    expect(pl).toMatchObject({ total: 3, hidden: 0, candidates: 3, maxCount: 3, topMin: 1 });
+    expect(pl.items[0].evidence).toEqual({ kind: "policyLinks", count: 3, max: 3, docs: 2, flagged: 0, byDoc: [{ doc: "NDC", high: 2 }, { doc: "NAP", high: 1 }] });
+    // A flagged link breaks the tie in favour of the more contested target.
+    const contested = [...FIXTURE_ALIGNMENT, flag("NBSAP_4", "NDC_1")];
+    const g2 = rankPolicyLinkCandidates(buildNr7Report(behind, contested, FIXTURE_TARGETS)!);
+    expect(g2!.items.map((i) => i.row.targetId)).toEqual(["NT04", "NT01", "NT02"]);
+    expect(g2!.items[0].evidence.flagged).toBe(1);
+    // The cap folds the rest behind "Show all"; topMin follows the last shown row.
+    const capped = rankPolicyLinkCandidates(buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!, 2);
+    expect(capped).toMatchObject({ hidden: 1, topMin: 3 });
+    expect(capped!.rest.map((i) => i.row.targetId)).toEqual(["NT02"]);
+    // The stock fixture: only NT04 is behind schedule with a link.
+    expect(g.biodiversity!.policyLinks!.items).toHaveLength(3);
+    expect(buildReviewGroups({ summary: null, nr7Report, btrActions: 0 }).biodiversity!.policyLinks!.items.map((i) => i.row.targetId)).toEqual(["NT04"]);
+  });
+
+  it("has no policy-link group when nothing behind schedule is linked", () => {
+    const onTrack: Nr7Data = { ...FIXTURE_NR7, progressItems: FIXTURE_NR7.progressItems.map((i) => ({ ...i, progressStatus: "on_track" as const })) };
+    expect(buildReviewGroups({ summary: null, nr7Report: buildNr7Report(onTrack, FIXTURE_ALIGNMENT, FIXTURE_TARGETS), btrActions: 0 }).biodiversity!.policyLinks).toBeNull();
+    // Behind schedule, but no policy alignment visible: null as well, so the slide falls back to the cross-checks.
+    expect(buildReviewGroups({ summary: null, nr7Report: buildNr7Report(FIXTURE_NR7, [], FIXTURE_TARGETS), btrActions: 0 }).biodiversity!.policyLinks).toBeNull();
+  });
+
   it("yields empty groups, not missing ones, when nothing is flagged", () => {
     const empty = computeActionPlanAlignment([], btr([mit("A")]), policy, 5, {}, []);
     const quiet: Nr7Data = { ...FIXTURE_NR7, questionnaire: { answers: [] }, indicators: [], progressItems: FIXTURE_NR7.progressItems.map((i) => ({ ...i, progressStatus: "limited" })) };
@@ -111,5 +141,13 @@ describe.skipIf(!present)("buildReviewGroups on the Mongolia data", () => {
     expect(g.biodiversity!.items.find((i) => i.signal.targetId === "NT07")!.evidence).toMatchObject({ kind: "reach", count: 38, max: 60 });
     expect(g.climate!.actionsToHalf).toBeGreaterThan(0);
     expect(g.climate!.topDocs.length).toBeGreaterThan(0);
+  });
+
+  it("leads the policy-link rows with agriculture, land restoration and spatial planning", () => {
+    const pl = g.biodiversity!.policyLinks!;
+    expect(pl.top.map((i) => i.row.targetId)).toEqual(["NT08", "NT02", "NT01"]);
+    expect(pl).toMatchObject({ candidates: 13, total: 13, hidden: 10, maxCount: 51, topMin: 39 });
+    expect(pl.items[0].evidence).toMatchObject({ count: 51, docs: 6, flagged: 11 });
+    expect(pl.items[0].evidence.byDoc.slice(0, 3)).toEqual([{ doc: "NDC", high: 16 }, { doc: "NRVTS", high: 12 }, { doc: "SECTORAL", high: 9 }]);
   });
 });

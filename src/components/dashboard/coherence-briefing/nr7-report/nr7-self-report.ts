@@ -4,10 +4,12 @@
  *
  * Everything here is arithmetic on what the country itself reported: the
  * progress rating per national target, the GBF questionnaire answers, and
- * the indicator series. No model is involved. The one number that is ours
- * is "policy reach": how many policy targets in the corpus align HIGH with
- * the NBSAP target a national target restates (from the pipeline's
- * target × target alignment, which the reader's document toggle filters).
+ * the indicator series. The only AI-derived numbers are the "policy links":
+ * the policy targets in other documents that the pipeline's target × target
+ * alignment rated HIGH (or flagged) against the NBSAP target a national
+ * target restates, kept with their document and counterpart so the slide
+ * can say which plans share the aim. The reader's document toggle filters
+ * them like every other coherence number; "policy reach" is their count.
  *
  * "Worth a closer look" signals are places where the report's own statements
  * point in different directions. They are review prompts, never verdicts:
@@ -17,14 +19,21 @@
  */
 
 import type {
+  AlignmentMechanism,
   AlignmentResult,
   Nr7Data,
+  Nr7GbfTargetRef,
   Nr7Indicator,
   Nr7IndicatorSeries,
   Nr7ProgressItem,
   Nr7QuestionnaireAnswer,
   Target,
 } from "@/types";
+
+/** Default `sourceDocument` of the corpus targets the NR7 national targets
+ *  restate. Countries override it with `nr7PolicyLinkDocType` in their
+ *  country config. */
+export const NR7_POLICY_LINK_DOC = "NBSAP";
 
 export const NR7_RULES = {
   /** ratingVsAnswers: share of scale answers that are under development or no. */
@@ -76,6 +85,33 @@ export interface Nr7SeriesRead {
 
 export type Nr7IndicatorGroup = "headline" | "other" | "noValues";
 
+/** One policy target in another document that the pipeline aligned with
+ *  the NBSAP target a national target restates. Never the NBSAP side. */
+export interface Nr7PolicyLink {
+  targetId: string;
+  /** `Target.sourceDocument` of the counterpart. */
+  doc: string;
+  /** `Target.sourceLabel` ("Target 4.2", "Unconditional target"). */
+  label: string;
+  /** `Target.text`, for titles and the open state. */
+  text: string;
+  level: "high" | "flagged";
+  /** Kind of friction; flagged links only. */
+  mechanism: AlignmentMechanism | null;
+}
+
+/** All cross-document links of one NBSAP target, split by level. */
+export interface Nr7PolicyLinks {
+  /** Aligned HIGH, most frequent document first, then by label. */
+  high: Nr7PolicyLink[];
+  /** Flagged (potential misalignment), same order. */
+  flagged: Nr7PolicyLink[];
+  /** Per document: high desc, then flagged desc, then document id. */
+  byDoc: { doc: string; high: number; flagged: number }[];
+  /** Distinct documents with at least one HIGH link. */
+  docs: number;
+}
+
 export interface Nr7IndicatorView extends Nr7Indicator {
   hasValues: boolean;
   /** One read per series, series order. */
@@ -106,8 +142,15 @@ export interface Nr7TargetRow {
   sharedIndicatorIds: string[];
   /** Reads of the target-specific indicators' series. */
   reads: Nr7SeriesRead[];
-  /** Policy targets aligned HIGH with the NBSAP target; null when unmatched. */
+  /** Policy targets aligned HIGH with the NBSAP target; null when unmatched.
+   *  Always `policyLinks.high.length` when matched. */
   policyReach: number | null;
+  /** The HIGH and flagged cross-document links behind the reach; null when
+   *  no NBSAP target matched. */
+  policyLinks: Nr7PolicyLinks | null;
+  /** GBF global target(s) the report files this target under; [] on files
+   *  that predate the field. */
+  gbfTargets: Nr7GbfTargetRef[];
   progressSummary: string | null;
   mainActionsSummary: string | null;
   keyChallengesSummary: string | null;
@@ -234,23 +277,73 @@ export function readSeries(indicator: Nr7Indicator, series: Nr7IndicatorSeries):
   return { ...base, direction, first: first.value, last: last.value, fromYear: first.year, toYear: last.year };
 }
 
-/** HIGH pairs between an NBSAP target and any other policy target, counted
- *  per NBSAP corpus id. Both sides must be in `targetMap` (visible targets). */
-export function policyReachByNbsap(
+/** HIGH and flagged pairs between a target of `restatedDoc` (the NBSAP) and
+ *  a policy target in any OTHER document, kept per NBSAP corpus id with the
+ *  counterpart, its document and the level. Both sides must be in
+ *  `targetMap` (visible targets), so the links follow the document toggle. */
+export function policyLinksByNbsap(
   policyAlignment: AlignmentResult[],
   targetMap: Map<string, Target>,
-): Map<string, number> {
-  const reach = new Map<string, number>();
+  restatedDoc: string = NR7_POLICY_LINK_DOC,
+): Map<string, Nr7PolicyLinks> {
+  const raw = new Map<string, Nr7PolicyLink[]>();
   for (const pair of policyAlignment) {
-    if (pair.alignment !== "high") continue;
+    if (pair.alignment !== "high" && pair.alignment !== "flagged") continue;
     const a = targetMap.get(pair.targetAId);
     const b = targetMap.get(pair.targetBId);
     if (!a || !b) continue;
-    const aN = a.sourceDocument === "NBSAP";
-    const bN = b.sourceDocument === "NBSAP";
+    const aN = a.sourceDocument === restatedDoc;
+    const bN = b.sourceDocument === restatedDoc;
     if (aN === bN) continue;
-    const id = aN ? a.id : b.id;
-    reach.set(id, (reach.get(id) ?? 0) + 1);
+    const own = aN ? a : b;
+    const other = aN ? b : a;
+    const list = raw.get(own.id) ?? [];
+    list.push({
+      targetId: other.id,
+      doc: other.sourceDocument,
+      label: other.sourceLabel,
+      text: other.text,
+      level: pair.alignment,
+      mechanism: pair.alignment === "flagged" ? (pair.mechanism ?? null) : null,
+    });
+    raw.set(own.id, list);
+  }
+  const out = new Map<string, Nr7PolicyLinks>();
+  for (const [id, links] of raw) {
+    const counts = new Map<string, { high: number; flagged: number }>();
+    for (const l of links) {
+      const c = counts.get(l.doc) ?? { high: 0, flagged: 0 };
+      c[l.level] += 1;
+      counts.set(l.doc, c);
+    }
+    const byDoc = [...counts.entries()]
+      .map(([doc, c]) => ({ doc, ...c }))
+      .sort((x, y) => y.high - x.high || y.flagged - x.flagged || x.doc.localeCompare(y.doc));
+    const rank = new Map(byDoc.map((d, i) => [d.doc, i]));
+    const order = (x: Nr7PolicyLink, y: Nr7PolicyLink) =>
+      (rank.get(x.doc) ?? 0) - (rank.get(y.doc) ?? 0) ||
+      x.label.localeCompare(y.label, undefined, { numeric: true }) ||
+      x.targetId.localeCompare(y.targetId, undefined, { numeric: true });
+    out.set(id, {
+      high: links.filter((l) => l.level === "high").sort(order),
+      flagged: links.filter((l) => l.level === "flagged").sort(order),
+      byDoc,
+      docs: byDoc.filter((d) => d.high > 0).length,
+    });
+  }
+  return out;
+}
+
+/** HIGH pairs between an NBSAP target and any other policy target, counted
+ *  per NBSAP corpus id: the `high` length of `policyLinksByNbsap`. */
+export function policyReachByNbsap(
+  policyAlignment: AlignmentResult[],
+  targetMap: Map<string, Target>,
+  restatedDoc: string = NR7_POLICY_LINK_DOC,
+): Map<string, number> {
+  const reach = new Map<string, number>();
+  for (const [id, links] of policyLinksByNbsap(policyAlignment, targetMap, restatedDoc)) {
+    if (links.high.length > 0) reach.set(id, links.high.length);
   }
   return reach;
 }
@@ -324,6 +417,8 @@ function fmt(n: number | null): string {
 
 // ── Model ───────────────────────────────────────────────────────────────────
 
+const EMPTY_LINKS: Nr7PolicyLinks = { high: [], flagged: [], byDoc: [], docs: 0 };
+
 function buildIndicatorViews(indicators: Nr7Indicator[]): Nr7IndicatorView[] {
   return indicators
     .map((ind) => {
@@ -346,7 +441,7 @@ function buildTargetRows(
   items: Nr7ProgressItem[],
   answers: Nr7QuestionnaireAnswer[],
   indicators: Nr7IndicatorView[],
-  reach: Map<string, number>,
+  links: Map<string, Nr7PolicyLinks>,
 ): Nr7TargetRow[] {
   const answersByTarget = new Map<string, Nr7QuestionnaireAnswer[]>();
   for (const a of answers) {
@@ -364,6 +459,7 @@ function buildTargetRows(
       const specific = attached.filter((ind) => ind.isSpecific);
       const shared = attached.filter((ind) => ind.isShared);
       const nbsapId = normaliseNbsapId(item.nbsapTargetId);
+      const ownLinks = nbsapId ? (links.get(nbsapId) ?? EMPTY_LINKS) : null;
       return {
         targetId: item.targetId,
         number: targetNumber(item.targetId),
@@ -381,7 +477,9 @@ function buildTargetRows(
         specificIndicatorIds: specific.map((ind) => ind.id),
         sharedIndicatorIds: shared.map((ind) => ind.id),
         reads: specific.flatMap((ind) => ind.reads),
-        policyReach: nbsapId ? (reach.get(nbsapId) ?? 0) : null,
+        policyReach: ownLinks ? ownLinks.high.length : null,
+        policyLinks: ownLinks,
+        gbfTargets: item.gbfTargets ?? [],
         progressSummary: item.progressSummary ?? null,
         mainActionsSummary: item.mainActionsSummary ?? null,
         keyChallengesSummary: item.keyChallengesSummary ?? null,
@@ -549,12 +647,13 @@ export function buildNr7Report(
   nr7Data: Nr7Data | null | undefined,
   policyAlignment: AlignmentResult[],
   targetMap: Map<string, Target>,
+  options: { policyLinkDoc?: string | null } = {},
 ): Nr7ReportModel | null {
   if (!nr7Data || !nr7Data.progressItems || nr7Data.progressItems.length === 0) return null;
   const answers = nr7Data.questionnaire?.answers ?? [];
   const indicators = buildIndicatorViews(nr7Data.indicators ?? []);
-  const reach = policyReachByNbsap(policyAlignment, targetMap);
-  const targets = buildTargetRows(nr7Data.progressItems, answers, indicators, reach);
+  const links = policyLinksByNbsap(policyAlignment, targetMap, options.policyLinkDoc ?? NR7_POLICY_LINK_DOC);
+  const targets = buildTargetRows(nr7Data.progressItems, answers, indicators, links);
   const signals = detectSignals(targets, indicators);
   const cardSignals = pickCardSignals(signals);
 

@@ -6,10 +6,10 @@ export const FIXTURE_NR7: Nr7Data = {
   reportingPeriod: "2026",
   source: { name: "CBD Online Reporting Tool (ORT), 7th National Report", url: "x", fetchedAt: "2026-09-09T00:00:00Z", publishedOn: "2026-02-28" },
   progressItems: [
-    { targetId: "NT01", targetText: "By 2030, mainstream biodiversity into all sectors.", progressStatus: "on_track", levelOfProgress: "On track to achieve target", reportedActions: [], nbsapTargetId: "NBSAP_1", progressSummary: "Mainstreaming has advanced through the planning law.\nA second paragraph." },
-    { targetId: "NT02", targetText: "By 2030, protect 30% of the territory.", progressStatus: "on_track", levelOfProgress: "On track to achieve target", reportedActions: [], nbsapTargetId: "NBSAP_2", progressSummary: "Coverage reached 21%." },
-    { targetId: "NT03", targetText: "By 2030, control invasive alien species.", progressStatus: "unknown", levelOfProgress: "Unknown", reportedActions: [], nbsapTargetId: "NBSAP_3" },
-    { targetId: "NT04", targetText: "By 2030, reduce pollution.", progressStatus: "no_progress", levelOfProgress: "No significant change", reportedActions: [], nbsapTargetId: "NBSAP_4" },
+    { targetId: "NT01", targetText: "By 2030, mainstream biodiversity into all sectors.", progressStatus: "on_track", levelOfProgress: "On track to achieve target", reportedActions: [], nbsapTargetId: "NBSAP_1", progressSummary: "Mainstreaming has advanced through the planning law.\nA second paragraph.", gbfTargets: [{ id: "T14", code: "GBF-T14", title: "The multiple values of biodiversity are integrated into decision-making at all levels" }] },
+    { targetId: "NT02", targetText: "By 2030, protect 30% of the territory.", progressStatus: "on_track", levelOfProgress: "On track to achieve target", reportedActions: [], nbsapTargetId: "NBSAP_2", progressSummary: "Coverage reached 21%.", gbfTargets: [{ id: "T03", code: "GBF-T03", title: "30% of areas are effectively conserved" }] },
+    { targetId: "NT03", targetText: "By 2030, control invasive alien species.", progressStatus: "unknown", levelOfProgress: "Unknown", reportedActions: [], nbsapTargetId: "NBSAP_3", gbfTargets: [{ id: "T06", code: "GBF-T06", title: "Reduce rates of introduction and establishment of invasive alien species by 50%" }] },
+    { targetId: "NT04", targetText: "By 2030, reduce pollution.", progressStatus: "no_progress", levelOfProgress: "No significant change", reportedActions: [], nbsapTargetId: "NBSAP_4", keyChallengesSummary: "Monitoring stations cover only the capital.", gbfTargets: [{ id: "T07", code: "GBF-T07", title: "Pollution reduced, halving nutrient loss and pesticide risk" }, { id: "T11", code: "GBF-T11", title: "Nature’s contributions to people are restored, maintained and enhanced" }] },
   ],
   questionnaire: {
     answers: [

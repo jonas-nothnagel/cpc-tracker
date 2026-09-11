@@ -812,8 +812,8 @@ export function CoherenceBriefing({
   // (nr7-report/). Null without NR7 data, so the strip and drawer self-hide.
   // Policy reach follows the document toggle like every other number here.
   const nr7Report = useMemo(
-    () => buildNr7Report(nr7Data, policyAlignment, targetMap),
-    [nr7Data, policyAlignment, targetMap],
+    () => buildNr7Report(nr7Data, policyAlignment, targetMap, { policyLinkDoc: countryConfig?.nr7PolicyLinkDocType }),
+    [nr7Data, policyAlignment, targetMap, countryConfig?.nr7PolicyLinkDocType],
   );
   // Which NR7 national targets can open a reported-action pair (keyed on the
   // pseudo-targets' parent id, so it survives the alignment re-run).

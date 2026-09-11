@@ -1102,6 +1102,14 @@ export interface CountryConfig {
    */
   anchorDocType?: string;
   /**
+   * `sourceDocument` id of the corpus targets the NR7 national targets
+   * restate (the NBSAP, by default "NBSAP"). The biodiversity view counts
+   * each national target's cross-document policy links through that
+   * document's targets. The Python side (`fetch_nr7_ort.py --nbsap-doc`)
+   * must agree, and ids still take the `NBSAP_n` prefix it writes.
+   */
+  nr7PolicyLinkDocType?: string;
+  /**
    * Which evidence layout the financing (Level 2) slide should use.
    * - `"dotmap"` (default): the DocumentCoverage dot-map — one uniform dot per
    *   target, filled when a HIGH-confidence budget line matches. The fallback

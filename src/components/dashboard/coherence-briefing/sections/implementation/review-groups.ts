@@ -20,11 +20,18 @@
  */
 
 import type { ActionPlanAlignmentSummary, StrainedAction } from "@/lib/implementation-coherence";
-import type { Nr7ReportModel, Nr7Signal, Nr7TargetRowModel } from "../../nr7-report";
-import type { Nr7AnswerMix, Nr7IndicatorView } from "../../nr7-report/nr7-self-report";
+import type { Nr7PolicyLinks, Nr7ReportModel, Nr7Signal, Nr7TargetRowModel } from "../../nr7-report";
+import type { Nr7AnswerMix, Nr7IndicatorView, Nr7Status } from "../../nr7-report/nr7-self-report";
 
 /** Rows shown before "Show all", per group (same cap as Where to Focus). */
 export const REVIEW_CAP = 5;
+
+/** Policy-link rows shown before "Show all" on the biodiversity view. */
+export const POLICY_LINK_CAP = 3;
+
+/** "Behind schedule" in the report's own rating: progress at an insufficient
+ *  rate, or no significant change. Unknown is not a rating of progress. */
+export const POLICY_LINK_STATUSES: ReadonlySet<Nr7Status> = new Set<Nr7Status>(["limited", "no_progress"]);
 
 export interface ClimateReviewGroup {
   /** BTR actions with >= 1 flagged pair, most flagged pairs first. */
@@ -63,7 +70,30 @@ export type Nr7Evidence =
       unit: string;
     }
   | { kind: "values"; count: number; from: string; to: string }
-  | { kind: "reach"; count: number; max: number };
+  | { kind: "reach"; count: number; max: number }
+  | { kind: "policyLinks"; count: number; max: number; docs: number; flagged: number; byDoc: { doc: string; high: number }[] };
+
+/** One national target rated behind schedule, with its cross-document links. */
+export interface Nr7PolicyLinkItem {
+  row: Nr7TargetRowModel;
+  links: Nr7PolicyLinks;
+  evidence: Extract<Nr7Evidence, { kind: "policyLinks" }>;
+}
+
+export interface Nr7PolicyLinkGroup {
+  /** Most HIGH links first; ties by distinct documents, flagged links, target number. */
+  items: Nr7PolicyLinkItem[];
+  top: Nr7PolicyLinkItem[];
+  rest: Nr7PolicyLinkItem[];
+  total: number;
+  hidden: number;
+  /** National targets rated behind schedule (the caption's denominator). */
+  candidates: number;
+  /** Largest HIGH-link count in the group (bar scale). */
+  maxCount: number;
+  /** Fewest HIGH links among the top rows (the headline's "N or more"). */
+  topMin: number;
+}
 
 export interface Nr7ReviewItem {
   signal: Nr7Signal;
@@ -80,6 +110,9 @@ export interface BiodiversityReviewGroup {
   rest: Nr7ReviewItem[];
   total: number;
   hidden: number;
+  /** Targets rated behind schedule ranked by their links to other documents;
+   *  null when none has a HIGH link (no policy alignment, or none visible). */
+  policyLinks: Nr7PolicyLinkGroup | null;
 }
 
 export interface ReviewGroups {
@@ -94,16 +127,59 @@ export function buildReviewGroups({
   nr7Report,
   btrActions,
   cap = REVIEW_CAP,
+  policyLinkCap = POLICY_LINK_CAP,
 }: {
   summary: ActionPlanAlignmentSummary | null;
   nr7Report: Nr7ReportModel | null;
   /** BTR reported actions in the report; 0 when the country has none. */
   btrActions: number;
   cap?: number;
+  policyLinkCap?: number;
 }): ReviewGroups {
   const climate = summary && btrActions > 0 ? climateGroup(summary, btrActions, cap) : null;
-  const biodiversity = nr7Report ? biodiversityGroup(nr7Report, cap) : null;
+  const biodiversity = nr7Report ? biodiversityGroup(nr7Report, cap, policyLinkCap) : null;
   return { climate, biodiversity };
+}
+
+/** National targets the report rates behind schedule, ranked by how many
+ *  policy targets in other documents align HIGH with the NBSAP target they
+ *  restate. Null when no candidate has a HIGH link. Deterministic. */
+export function rankPolicyLinkCandidates(model: Nr7ReportModel, cap: number = POLICY_LINK_CAP): Nr7PolicyLinkGroup | null {
+  const candidates = model.targets.filter((r) => POLICY_LINK_STATUSES.has(r.status));
+  const linked = candidates.filter((r): r is Nr7TargetRowModel & { policyLinks: Nr7PolicyLinks } => Boolean(r.policyLinks && r.policyLinks.high.length > 0));
+  if (linked.length === 0) return null;
+  const ranked = [...linked].sort(
+    (a, b) =>
+      b.policyLinks.high.length - a.policyLinks.high.length ||
+      b.policyLinks.docs - a.policyLinks.docs ||
+      b.policyLinks.flagged.length - a.policyLinks.flagged.length ||
+      Number(a.number) - Number(b.number) ||
+      a.targetId.localeCompare(b.targetId),
+  );
+  const maxCount = ranked[0].policyLinks.high.length;
+  const items: Nr7PolicyLinkItem[] = ranked.map((row) => ({
+    row,
+    links: row.policyLinks,
+    evidence: {
+      kind: "policyLinks",
+      count: row.policyLinks.high.length,
+      max: maxCount,
+      docs: row.policyLinks.docs,
+      flagged: row.policyLinks.flagged.length,
+      byDoc: row.policyLinks.byDoc.filter((d) => d.high > 0).map((d) => ({ doc: d.doc, high: d.high })),
+    },
+  }));
+  const top = items.slice(0, cap);
+  return {
+    items,
+    top,
+    rest: items.slice(cap),
+    total: items.length,
+    hidden: Math.max(0, items.length - cap),
+    candidates: candidates.length,
+    maxCount,
+    topMin: top[top.length - 1].evidence.count,
+  };
 }
 
 function climateGroup(summary: ActionPlanAlignmentSummary, btrActions: number, cap: number): ClimateReviewGroup {
@@ -169,7 +245,7 @@ function evidenceFor(signal: Nr7Signal, row: Nr7TargetRowModel | null, indicator
   }
 }
 
-function biodiversityGroup(model: Nr7ReportModel, cap: number): BiodiversityReviewGroup {
+function biodiversityGroup(model: Nr7ReportModel, cap: number, policyLinkCap: number = POLICY_LINK_CAP): BiodiversityReviewGroup {
   // Signals held back from the face (e.g. the unreviewed funding series) are
   // never in the top slice, even when it has room: they show only after
   // "Show all", after the remaining eligible ones. No rule name is known here.
@@ -184,5 +260,5 @@ function biodiversityGroup(model: Nr7ReportModel, cap: number): BiodiversityRevi
   const top = eligible.slice(0, cap);
   const rest = [...eligible.slice(cap), ...heldBack];
   const items = [...top, ...rest];
-  return { items, top, rest, total: model.signals.length, hidden: rest.length };
+  return { items, top, rest, total: model.signals.length, hidden: rest.length, policyLinks: rankPolicyLinkCandidates(model, policyLinkCap) };
 }

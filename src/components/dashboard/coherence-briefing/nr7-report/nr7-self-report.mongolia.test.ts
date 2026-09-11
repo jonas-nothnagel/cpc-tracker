@@ -67,6 +67,29 @@ describe.skipIf(!present)("NR7 self-report model on the Mongolia data", () => {
     expect(s[1].params).toMatchObject({ first: "0.965", last: "0.953", from: "1993", to: "2024", targets: 6 });
   });
 
+  it("keeps every cross-document link behind the reach, so the slide can name the documents", () => {
+    const row = (id: string) => model.targets.find((t) => t.targetId === id)!;
+    expect(model.targets.every((t) => t.policyReach === (t.policyLinks?.high.length ?? null))).toBe(true);
+    expect(row("NT08").policyLinks).toMatchObject({ docs: 6 });
+    expect(row("NT08").policyLinks!.high).toHaveLength(51);
+    expect(row("NT08").policyLinks!.flagged).toHaveLength(11);
+    expect(row("NT08").policyLinks!.byDoc.slice(0, 3).map((d) => [d.doc, d.high])).toEqual([["NDC", 16], ["NRVTS", 12], ["SECTORAL", 9]]);
+    expect(row("NT02").policyLinks!.flagged).toHaveLength(21);
+    expect(row("NT03").policyLinks!.flagged).toHaveLength(38);
+    // Never the NBSAP side, and every counterpart is a visible target.
+    expect(model.targets.every((t) => (t.policyLinks?.high ?? []).every((l) => l.doc !== "NBSAP" && targetMap.has(l.targetId)))).toBe(true);
+  });
+
+  it("files every national target under the GBF target the country chose", () => {
+    const row = (id: string) => model.targets.find((t) => t.targetId === id)!;
+    expect(row("NT03").gbfTargets.map((g) => g.id)).toEqual(["T03"]);
+    expect(row("NT03").gbfTargets[0].title).toBe("30% of areas are effectively conserved");
+    expect(row("NT09").gbfTargets.map((g) => g.id)).toEqual(["T11", "T12", "T09"]);
+    const covered = new Set(model.targets.flatMap((t) => t.gbfTargets.map((g) => g.id)));
+    expect(covered.size).toBe(23);
+    expect(model.targets.every((t) => t.gbfTargets.length > 0)).toBe(true);
+  });
+
   it("the card shows three signals of three distinct rules", () => {
     expect(model.cardSignals.map((s) => [s.rule, s.targetId])).toEqual([
       ["ratingVsAnswers", "NT12"],

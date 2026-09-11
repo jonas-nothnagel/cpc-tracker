@@ -18,6 +18,7 @@
   },
   "_documentTypesComment": "Mongolia's document-type registry. These entries MUST reproduce the labels and colors that were previously hardcoded in src/lib/utils.ts (DOC_LABELS/DOC_COLORS/DOC_MEDIUM_LABELS/DOC_FULL_LABELS) verbatim so Mongolia's dashboard display is unchanged after the open-PolicyDocumentType migration. BTR and OTHER are reserved tokens with universal fallbacks in src/lib/utils.ts but are declared here explicitly for clarity. Order: anchor (Vision 2050) first; BTR last among country-declared docs (OTHER catch-all comes after).",
   "anchorDocType": "SECTORAL",
+  "nr7PolicyLinkDocType": "NBSAP",
   "_financingLayoutComment": "The financing (Level 2) slide uses the FundingTargetGrid wide-grid layout, same as Panama, so the section reads consistently across BER countries. Mongolia's BER supports it: 153 of 178 targets carry aligned spend with a wide range (65-890bn MNT, so relative-volume tiers are meaningful) and per-year executed expenditure (2020-2024) for the drill-down chart. Known degradation: BER programmes carry no institution field, so the drawer's grouped-by-institution expansion collapses into the single fallback bucket; the flat contributor list is unaffected. Set to 'dotmap' (or remove) to restore the DocumentCoverage matched/unmatched view.",
   "financingLayout": "grid",
   "defaultHiddenDocTypes": [],

@@ -7,6 +7,7 @@ import {
   detectSignals,
   humaniseAnswerCode,
   pickCardSignals,
+  policyLinksByNbsap,
   policyReachByNbsap,
   readSeries,
   type Nr7Signal,
@@ -110,6 +111,38 @@ describe("policyReachByNbsap", () => {
   });
 });
 
+describe("policyLinksByNbsap", () => {
+  const flagged = (a: string, b: string): AlignmentResult => ({ targetAId: a, targetBId: b, alignment: "flagged", description: "", mechanism: "delivery_friction", manageability: "manageable" });
+  const pairs = [
+    high("NBSAP_1", "NDC_1"), high("NDC_2", "NBSAP_1"), high("NBSAP_1", "NAP_1"), flagged("NAP_1", "NBSAP_1"),
+    high("NBSAP_1", "NBSAP_2"), { ...high("NBSAP_1", "NDC_1"), alignment: "medium" as const },
+    high("NBSAP_2", "HIDDEN_1"), flagged("NBSAP_3", "NDC_1"),
+  ];
+
+  it("keeps the counterpart, its document and the level, most frequent document first", () => {
+    const links = policyLinksByNbsap(pairs, TARGETS);
+    const one = links.get("NBSAP_1")!;
+    expect(one.high.map((l) => [l.targetId, l.doc, l.level])).toEqual([["NDC_1", "NDC", "high"], ["NDC_2", "NDC", "high"], ["NAP_1", "NAP", "high"]]);
+    expect(one.flagged).toEqual([{ targetId: "NAP_1", doc: "NAP", label: "NAP_1", text: "NAP_1", level: "flagged", mechanism: "delivery_friction" }]);
+    expect(one.byDoc).toEqual([{ doc: "NDC", high: 2, flagged: 0 }, { doc: "NAP", high: 1, flagged: 1 }]);
+    expect(one.docs).toBe(2);
+    // NBSAP-to-NBSAP, medium and hidden counterparts never count.
+    expect(links.get("NBSAP_2")).toBeUndefined();
+    // A target with flagged links only has no HIGH document.
+    expect(links.get("NBSAP_3")).toMatchObject({ high: [], docs: 0, byDoc: [{ doc: "NDC", high: 0, flagged: 1 }] });
+  });
+
+  it("is the reach's source of truth and can count from another restated document", () => {
+    const links = policyLinksByNbsap(pairs, TARGETS);
+    const reach = policyReachByNbsap(pairs, TARGETS);
+    for (const [id, l] of links) expect(reach.get(id) ?? 0).toBe(l.high.length);
+    // Counted from the NDC side: NDC_1 has NBSAP_1 (high) and NBSAP_3 (flagged).
+    const fromNdc = policyLinksByNbsap(pairs, TARGETS, "NDC");
+    expect(fromNdc.get("NDC_1")).toMatchObject({ high: [{ targetId: "NBSAP_1" }], flagged: [{ targetId: "NBSAP_3" }] });
+    expect(fromNdc.get("NBSAP_1")).toBeUndefined();
+  });
+});
+
 describe("humaniseAnswerCode", () => {
   it("splits API codes into words and semicolon lists into commas, keeps free text", () => {
     expect(humaniseAnswerCode("forTerrestrialPlanning")).toBe("for terrestrial planning");
@@ -196,6 +229,13 @@ describe("detectSignals and the report model", () => {
     const nt03 = model.targets[2];
     expect(nt03.nbsapTargetId).toBe("NBSAP_3"); // "NBT_3" rewritten
     expect(model.targets[4].policyReach).toBeNull();
+    expect(model.targets[4].policyLinks).toBeNull();
+    // Reach is the HIGH link count; a matched target with no pairs carries empty links, not null.
+    expect(model.targets[3].policyLinks).toMatchObject({ docs: 2, byDoc: [{ doc: "NDC", high: 2, flagged: 0 }, { doc: "NAP", high: 1, flagged: 0 }] });
+    expect(model.targets.every((t) => t.policyReach === (t.policyLinks?.high.length ?? null))).toBe(true);
+    expect(nt03.policyLinks).toEqual({ high: [], flagged: [], byDoc: [], docs: 0 });
+    // A file without the GBF field yields an empty list, never undefined.
+    expect(nt01.gbfTargets).toEqual([]);
   });
 
   it("groups indicators and counts the totals", () => {
