@@ -5,6 +5,7 @@
 export {
   buildNr7Report,
   NR7_POLICY_LINK_DOC,
+  shortText as shortNr7Text,
   type Nr7PolicyLink,
   type Nr7PolicyLinks,
   type Nr7ReportModel,
@@ -18,3 +19,5 @@ export { IndicatorsView } from "./indicators-view";
 export { IndicatorCard } from "./indicator-card";
 export { QuestionnaireTable } from "./questionnaire-table";
 export { NR7_COLORS, NR7_STATUS_ORDER } from "./nr7-colors";
+export { GbfChip, gbfNumber } from "./gbf-chip";
+export { groupRowsByGbfTarget, GBF_TARGET_COUNT, type GbfGroup } from "./gbf-groups";

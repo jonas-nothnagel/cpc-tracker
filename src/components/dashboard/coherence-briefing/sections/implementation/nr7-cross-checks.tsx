@@ -36,17 +36,20 @@ export interface Nr7CrossChecksProps {
   onOpenTarget: (targetId: string) => void;
   onFocusNr7Target: (targetId: string) => void;
   onFocusNr7Indicator: (indicatorId: string) => void;
+  /** Rendered inside the folded full picture (the policy-link rows lead the
+   *  slide): no tour anchors, the tour points at the visual above. */
+  folded?: boolean;
 }
 
 export function Nr7CrossChecks(props: Nr7CrossChecksProps) {
-  const { group } = props;
+  const { group, folded = false } = props;
   const t = useTranslations("briefing.implementation");
   const [showAll, setShowAll] = useState(false);
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
   if (group.total === 0) return null;
   const rows = showAll ? group.items : group.top;
   return (
-    <div data-tour="review-visual">
+    <div data-tour={folded ? undefined : "review-visual"} data-testid="cross-check-rows">
       <ol className="border-b border-line-soft">
         {rows.map((item, i) => {
           const key = `${item.signal.rule}-${item.signal.targetId ?? item.signal.indicatorId}`;
@@ -56,7 +59,7 @@ export function Nr7CrossChecks(props: Nr7CrossChecksProps) {
               item={item}
               expanded={expandedKey === key}
               onToggle={() => withViewTransition(() => setExpandedKey((cur) => (cur === key ? null : key)))}
-              first={i === 0}
+              first={i === 0 && !folded}
               {...props}
             />
           );
@@ -106,6 +109,9 @@ function EvidenceGlyph({ evidence }: { evidence: Nr7Evidence | null }) {
       );
     case "values":
       return <span className="truncate">{t("values", { count: evidence.count })}</span>;
+    case "policyLinks":
+      // Policy links are the policy-link rows' evidence, never a cross-check's.
+      return null;
     case "reach": {
       const width = evidence.max > 0 ? Math.max(6, (evidence.count / evidence.max) * 100) : 0;
       return (
@@ -129,6 +135,7 @@ function evidenceText(evidence: Nr7Evidence | null, t: EvidenceT): string {
     case "series": return evidence.direction === "flat" ? t("flat", { from: evidence.from }) : t("falling", { first: fmt(evidence.first), last: fmt(evidence.last), unit: evidence.unit });
     case "values": return t("values", { count: evidence.count });
     case "reach": return t("reach", { count: evidence.count });
+    case "policyLinks": return "";
   }
 }
 
@@ -143,7 +150,7 @@ function CrossCheckRow({
   onOpenTarget,
   onFocusNr7Target,
   onFocusNr7Indicator,
-}: { item: Nr7ReviewItem; expanded: boolean; onToggle: () => void; first: boolean } & Omit<Nr7CrossChecksProps, "group" | "model">) {
+}: { item: Nr7ReviewItem; expanded: boolean; onToggle: () => void; first: boolean } & Omit<Nr7CrossChecksProps, "group" | "model" | "folded">) {
   const t = useTranslations("briefing.implementation");
   const tEv = useTranslations("briefing.implementation.biodiversity.evidence");
   const tNr7 = useTranslations("briefing.nr7Report");

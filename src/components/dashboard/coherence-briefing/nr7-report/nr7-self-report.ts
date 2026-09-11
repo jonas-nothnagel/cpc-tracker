@@ -396,7 +396,8 @@ function quantile(values: number[], q: number): number | null {
   return sorted[idx];
 }
 
-function shortText(text: string, max = 48): string {
+/** The first words of a target, cut at a word boundary with an ellipsis. */
+export function shortText(text: string, max = 48): string {
   const clean = text.replace(/\s+/g, " ").trim();
   if (clean.length <= max) return clean;
   const cut = clean.slice(0, max);
@@ -568,9 +569,12 @@ export function detectSignals(rows: Nr7TargetRow[], indicators: Nr7IndicatorView
       }
     }
 
+    // Reach of zero says nothing (no policy alignment visible at all), even
+    // when every matched target sits at zero and the quantile is zero too.
     if (
       row.status === "no_progress" &&
       row.policyReach !== null &&
+      row.policyReach > 0 &&
       reachCut !== null &&
       row.policyReach >= reachCut
     ) {

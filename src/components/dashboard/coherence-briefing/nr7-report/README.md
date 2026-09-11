@@ -8,25 +8,48 @@ The country's 7th National Report to the Convention on Biological Diversity
   under development / no, wording from the reporting tool),
 - its **indicator series** (headline, component and national indicators,
   one series per disaggregation),
-- plus **policy reach**: how many policy targets in the corpus align HIGH
-  with the NBSAP target the national target restates (from the visible
-  target × target alignment, so it follows the document toggle).
+- plus its **policy links**: the policy targets in OTHER documents that the
+  pipeline's target × target alignment rated HIGH (or flagged) against the
+  NBSAP target the national target restates, kept with their document and
+  counterpart (`policyLinksByNbsap`); **policy reach** is their HIGH count.
+  Both follow the document toggle. The restated document is `NBSAP` unless
+  the country config sets `nr7PolicyLinkDocType`.
+- and the **GBF global target(s)** the country filed each national target
+  under (`gbfTargets`, from the reporting tool, with the CBD's heading
+  verbatim): the axis that is the same for every country, so the targets
+  list groups by it (`gbf-groups.ts`, `GbfChip`).
 
-No model is involved anywhere in this module. Every number is arithmetic on
-the country's own statements; the copy states numbers, years and the report's
-words and never carries a suggestion (see CLAUDE.md, pathway rules).
+The only AI-derived numbers in this module are the policy links, from the
+pipeline's alignment; everything else is arithmetic on the country's own
+statements. The copy states numbers, years and the report's words and never
+carries a suggestion (see CLAUDE.md, pathway rules); the slide's hedged
+"Where to start" pointer is the one exception, and it names the links as
+AI-estimated.
 
 ## What renders (all inline on the Implementation slide, no drawer)
 
-- The cross-check signals are the slide's biodiversity view
-  (`sections/implementation/nr7-cross-checks.tsx`: rating chip beside the
-  disagreeing evidence as a glyph, rows expand to `QuestionnaireTable` /
-  `IndicatorCard`), shown while the reader has the NR7 selected; their
-  takeaway sentence is assembled by the slide from `review-groups.ts`.
-- `Nr7TargetsList` (rating mix + twenty expandable `Nr7TargetRow`s) and
-  `IndicatorsView` (every indicator, sparklines, small multiples for
-  disaggregations, the country's note where no value was reported) render
-  inside the slide's folded "full picture" sections under the NR7 view.
+- The slide's biodiversity view (decided 2026-09-11, Julien's and Reina's
+  feedback of 10 Sep) is the **policy-link rows**
+  (`sections/implementation/nr7-policy-link-rows.tsx`): the national targets
+  the report rates behind schedule (insufficient rate, no significant
+  change), ranked by `rankPolicyLinkCandidates` in `review-groups.ts` on
+  their HIGH links to other documents; a row opens to the documents, the
+  most aligned counterparts, the potential misalignments and the report's
+  own Key Challenges text. When no such target has a link (no policy
+  alignment visible) the cross-checks are the view, as before.
+- The cross-check signals (`sections/implementation/nr7-cross-checks.tsx`:
+  rating chip beside the disagreeing evidence as a glyph, rows expand to
+  `QuestionnaireTable` / `IndicatorCard`) fold into the full picture under
+  "Ratings that do not match their own evidence" while the policy-link rows
+  lead; their takeaway sentence is assembled by the slide from
+  `review-groups.ts`.
+- `Nr7TargetsList` (rating mix + twenty expandable `Nr7TargetRow`s grouped
+  under GBF target headings, a chip for any further GBF target a row is
+  filed under, and a line naming GBF targets no national target is filed
+  under) and `IndicatorsView` (every indicator, sparklines, small multiples
+  for disaggregations, the country's note where no value was reported)
+  render inside the slide's folded "full picture" sections under the NR7
+  view.
 - `nr7PairByTarget` tells the slide which national targets can open a
   reported-action pair.
 - Countries without NR7 data render nothing from this module and get no
@@ -41,7 +64,7 @@ Thresholds live in `NR7_RULES` (`nr7-self-report.ts`).
 | `ratingVsAnswers` | rated on track, at least 3 scale answers, half or more of them "under development" or "no" | eligible |
 | `flatWhileOnTrack` | rated on track, a target-specific series (indicator on at most 3 targets) with at least 3 numeric points is unchanged (within 1% of its first value) | eligible |
 | `unknownWithData` | rated unknown while the report carries values for a target-specific indicator | eligible |
-| `reachWhileNoChange` | no significant change, policy reach at or above the 75th percentile of matched targets | eligible |
+| `reachWhileNoChange` | no significant change, policy reach above zero and at or above the 75th percentile of matched targets | eligible |
 | `sharedIndicatorDeclining` | an indicator on 4 or more targets whose series with 3+ points all fall; once per indicator | **not eligible** until the reading of the funding series is reviewed (decision 2026-09-09) |
 
 `cardEligible` is what the slide's review group orders by: eligible signals
@@ -49,7 +72,13 @@ first, the held-back one after "Show all". `cardSignals` (one per rule in
 priority order, then fill, cap three) stays in the model, unused by the
 current slide. Deterministic.
 
-Mongolia (Sept 2026): NT12 (4 of 5 answers under development, reach 60),
+Policy-link ranking, Mongolia (Sept 2026): NT08 sustainable agriculture
+(51 HIGH links in 6 documents, 11 flagged), NT02 land restoration (44, 21
+flagged), NT01 spatial planning (39, 24 flagged) lead the 13 targets rated
+behind schedule. Mongolia files its 20 national targets under all 23 GBF
+targets (NT07, NT08, NT09 and NT20 under two or three).
+
+Cross-checks, Mongolia (Sept 2026): NT12 (4 of 5 answers under development, reach 60),
 NT05 (rated unknown, 5 values reported), NT03 (terrestrial protected-area
 coverage flat at 20.77% 2020–2025 while the narrative says 21%; both are
 shown, the tool does not arbitrate), NT07 (reach 38, no change), and
@@ -71,15 +100,26 @@ Red List Index (0.965 to 0.953).
 ## Data
 
 `python/scripts/fetch_nr7_ort.py` writes `python/data/external/nr7_{iso3}.json`
-with `progressItems`, `questionnaire.answers` and `indicators` from the CBD
-reporting tool's public API (`python/src/nr7_ort.py`). The raw exports sit in
+with `progressItems` (each with its `gbfTargets`), `questionnaire.answers`
+and `indicators` from the CBD reporting tool's public API
+(`python/src/nr7_ort.py`). The raw exports sit in
 `python/data/external/nr7_ort/{iso3}/`.
 
 ## Removal
 
+The policy-link addition alone: every identifier, file, message key and
+config key carries `PolicyLink`, so
+`grep -rni "policylink" src messages python/data/*country-config.json`
+lists it; delete `sections/implementation/nr7-policy-link-rows.tsx` and its
+test, then each hit (the slide falls back to the cross-checks by itself).
+The GBF grouping alone: `grep -rni "gbf" src messages` (`gbf-chip.tsx`,
+`gbf-groups.ts`, the `gbfTargets` row field, `briefing.nr7Report.gbf`).
+
+The whole module:
+
 ```
 git rm -r src/components/dashboard/coherence-briefing/nr7-report
-grep -rn "nr7-report\|Nr7Report\|nr7Report\|nr7PairTargets" src messages
+grep -rn "nr7-report\|Nr7Report\|nr7Report\|nr7PairTargets\|PolicyLink" src messages
 ```
 
 Then delete every hit: the `nr7Report` and `nr7PairTargets` memos and the

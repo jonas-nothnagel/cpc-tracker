@@ -469,11 +469,11 @@
           },
           "visual": {
             "title": "Las conclusiones",
-            "body": "Clima: una barra por acción reportada, su largo los compromisos de política contra los que podría ir, más oscura para los pares de diseño. Biodiversidad: la calificación del propio informe junto a la evidencia que no coincide."
+            "body": "Clima: una barra por acción reportada, su largo los compromisos de política contra los que podría ir, más oscura para los pares de diseño. Biodiversidad: las metas nacionales que el informe califica como rezagadas, cada barra las metas de otros planes que la IA juzgó fuertemente alineadas con ella."
           },
           "row": {
             "title": "Abrir una fila",
-            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA); una fila de biodiversidad muestra las respuestas o los valores de indicadores que dio el informe. Los enlaces abren el par o la meta nacional."
+            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA); una fila de biodiversidad muestra en qué documentos están esas metas alineadas y qué dice el propio informe que frena la meta. Los enlaces abren la meta o la meta nacional."
           },
           "fullPicture": {
             "title": "La imagen completa",
@@ -1083,6 +1083,10 @@
         "nr7Indicators": {
           "summary": "Todos los indicadores del NR7",
           "count": "{withValues} de {total} con valores reportados"
+        },
+        "nr7CrossChecks": {
+          "summary": "Calificaciones que no coinciden con su propia evidencia",
+          "count": "{count, plural, one {# punto} other {# puntos}}, sin IA"
         }
       },
       "toggle": {
@@ -1121,7 +1125,20 @@
         },
         "body": "El informe califica el avance de {targets} metas nacionales y además da respuestas de cuestionario y cifras sobre ellas. En estos {checks, plural, one {# punto} other {# puntos}} la calificación y esa evidencia no coinciden. No interviene la IA.",
         "start": "Abre una fila para ver la calificación junto a la evidencia, con las palabras y cifras del propio informe. Cada una es una pregunta por resolver antes del próximo informe: ¿es correcta la calificación, o la evidencia?",
-        "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA."
+        "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA.",
+        "policyLinks": {
+          "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas. {top, plural, one {Una de ellas se alinea} other {# de ellas se alinean}} fuertemente con {min} o más metas de otros planes nacionales.",
+          "body": "Rezagada es la calificación del propio informe: avance a un ritmo insuficiente, o sin cambio significativo. Cada barra cuenta las metas de otros documentos que la IA juzgó fuertemente alineadas con esa meta nacional.",
+          "start": "Abre la meta nacional {n} ({text}): calificada {rating}, aunque {count} metas de {docs} otros documentos se alinean fuertemente con ella. Vale la pena mirar de cerca qué dice el informe que la frena y cuáles de esos planes comparten el objetivo.",
+          "startCaveat": "Las calificaciones, respuestas y cifras son del propio informe. Los vínculos con otros documentos son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
+          "evidence": "alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# documento} other {# documentos}}",
+          "byDocument": "Metas alineadas por documento (estimado por IA)",
+          "counterparts": "Metas más alineadas en otros documentos (estimado por IA)",
+          "more": "+ {count} más",
+          "flagged": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, sobre todo con {doc}",
+          "challengesHeading": "Qué dice el informe que la frena (palabras del informe, textual)",
+          "noChallenges": "El informe no da texto de desafíos clave para esta meta."
+        }
       }
     },
     "implementationCenter": {
@@ -1236,6 +1253,14 @@
           "down": "en descenso",
           "flat": "sin cambios"
         }
+      },
+      "gbf": {
+        "chip": "GBF T{n}",
+        "chipTitle": "Meta {n} del Marco Mundial de Biodiversidad (GBF): {title}",
+        "groupHeading": "Meta GBF {n} · {title}",
+        "ungrouped": "Sin meta GBF asignada",
+        "groupedBy": "Agrupadas por la meta del Marco Mundial de Biodiversidad de Kunming-Montreal (GBF) bajo la que el país registró cada meta nacional, con el encabezado de la CBD.",
+        "uncovered": "Ninguna meta nacional está registrada bajo {count, plural, one {la meta GBF} other {las metas GBF}} {list}."
       }
     },
     "docFilter": {

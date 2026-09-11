@@ -469,11 +469,11 @@
           },
           "visual": {
             "title": "The takeaways",
-            "body": "Climate: one bar per reported action, its length the policy commitments it may pull against, darker for design-level pairs. Biodiversity: the report's own rating beside the evidence that disagrees with it."
+            "body": "Climate: one bar per reported action, its length the policy commitments it may pull against, darker for design-level pairs. Biodiversity: the national targets the report rates behind schedule, each bar the targets in other plans the AI judged strongly aligned with it."
           },
           "row": {
             "title": "Opening a row",
-            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated); a biodiversity row shows the answers or indicator values the report gave. Links open the pair or the national target."
+            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated); a biodiversity row shows which documents those aligned targets sit in and what the report itself says holds the target back. Links open the target or the national target."
           },
           "fullPicture": {
             "title": "The full picture",
@@ -1083,6 +1083,10 @@
         "nr7Indicators": {
           "summary": "All NR7 indicators",
           "count": "{withValues} of {total} with reported values"
+        },
+        "nr7CrossChecks": {
+          "summary": "Ratings that do not match their own evidence",
+          "count": "{count, plural, one {# place} other {# places}}, no AI involved"
         }
       },
       "toggle": {
@@ -1121,7 +1125,20 @@
         },
         "body": "The report rates progress on {targets} national targets and also gives questionnaire answers and figures for them. In these {checks, plural, one {# place} other {# places}} a rating and that evidence do not match. No AI is involved.",
         "start": "Open a row to see the rating beside the evidence, in the report's own words and numbers. Each is a question to settle before the next report: is the rating right, or is the evidence?",
-        "startCaveat": "Computed from the report's own statements. Nothing on this tab is AI-generated."
+        "startCaveat": "Computed from the report's own statements. Nothing on this tab is AI-generated.",
+        "policyLinks": {
+          "headline": "{country}'s biodiversity report rates {behind} of {targets} national targets behind schedule. {top, plural, one {One of them aligns} other {# of them align}} strongly with {min} or more targets in other national plans.",
+          "body": "Behind schedule is the report's own rating: an insufficient rate, or no significant change. Each bar counts the targets in other documents the AI judged strongly aligned with that national target.",
+          "start": "Open national target {n} ({text}): rated {rating}, yet {count} targets across {docs} other documents align strongly with it. Worth a closer look at what the report says holds it back, and which of those plans share the aim.",
+          "startCaveat": "Ratings, answers and figures are the report's own. Links to other documents are AI-estimated alignment between target texts: a prompt for review, not a record of delivery or funding.",
+          "evidence": "aligned with {count, plural, one {# target} other {# targets}} in {docs, plural, one {# document} other {# documents}}",
+          "byDocument": "Aligned targets by document (AI-estimated)",
+          "counterparts": "Most aligned targets in other documents (AI-estimated)",
+          "more": "+ {count} more",
+          "flagged": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, mostly with the {doc}",
+          "challengesHeading": "What the report says holds it back (the report's words, verbatim)",
+          "noChallenges": "The report gives no key-challenges text for this target."
+        }
       }
     },
     "implementationCenter": {
@@ -1236,6 +1253,14 @@
           "down": "falling",
           "flat": "unchanged"
         }
+      },
+      "gbf": {
+        "chip": "GBF T{n}",
+        "chipTitle": "Global Biodiversity Framework (GBF) target {n}: {title}",
+        "groupHeading": "GBF target {n} · {title}",
+        "ungrouped": "Not filed under a GBF target",
+        "groupedBy": "Grouped by the Kunming-Montreal Global Biodiversity Framework (GBF) target the country filed each national target under, with the CBD's heading for it.",
+        "uncovered": "No national target is filed under {count, plural, one {GBF target} other {GBF targets}} {list}."
       }
     },
     "docFilter": {

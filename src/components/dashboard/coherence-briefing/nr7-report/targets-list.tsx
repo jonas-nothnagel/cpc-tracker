@@ -3,16 +3,21 @@
 /**
  * Nr7TargetsList — the NR7 by national target: the rating mix, then the
  * twenty targets as expandable rows (rating, questionnaire, target-specific
- * indicators, links). One row open at a time; the caller owns which.
+ * indicators, links), grouped under the GBF global target the country filed
+ * each under (the axis that is the same for every country). One row open at
+ * a time; the caller owns which. Files without the GBF field keep the flat
+ * list.
  */
 
 import { useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
+import { gbfNumber } from "./gbf-chip";
+import { groupRowsByGbfTarget } from "./gbf-groups";
 import { MixBar } from "./mix-bar";
 import { NR7_COLORS, NR7_STATUS_ORDER } from "./nr7-colors";
 import { Nr7TargetRow } from "./target-row";
-import type { Nr7ReportModel } from "./nr7-self-report";
+import type { Nr7ReportModel, Nr7TargetRow as Row } from "./nr7-self-report";
 import type { Nr7PairRef } from "./pair-by-target";
 
 export function Nr7TargetsList({
@@ -37,6 +42,7 @@ export function Nr7TargetsList({
   const t = useTranslations("briefing.nr7Report");
   const statusLabels = useNr7BadgeLabels();
   const indicatorsById = useMemo(() => new Map(model.indicators.map((i) => [i.id, i])), [model.indicators]);
+  const grouped = useMemo(() => groupRowsByGbfTarget(model.targets), [model.targets]);
 
   // Land on the target a signal or a chip pointed at.
   useEffect(() => {
@@ -51,23 +57,45 @@ export function Nr7TargetsList({
         height="h-4"
         segments={NR7_STATUS_ORDER.map((s) => ({ key: s, label: statusLabels[s], count: model.totals.byStatus[s], color: NR7_COLORS[s] }))}
       />
-      <ul>
-        {model.targets.map((row) => {
-          const pair = pairByTarget.get(row.targetId);
-          return (
-            <Nr7TargetRow
-              key={row.targetId}
-              row={row}
-              expanded={expandedTargetId === row.targetId}
-              onToggle={() => onToggleTarget(row.targetId)}
-              indicatorsById={indicatorsById}
-              onFocusIndicator={onFocusIndicator}
-              onOpenNbsap={row.nbsapTargetId && canOpenNbsap(row.nbsapTargetId) ? () => onOpenNbsap(row.nbsapTargetId!) : undefined}
-              onOpenPair={pair ? () => onOpenPair(pair.actionId, pair.nbsapId) : undefined}
-            />
-          );
-        })}
-      </ul>
+      {grouped.hasGbf ? (
+        <>
+          <p className="text-caption text-[var(--undp-gray)] leading-snug max-w-prose">
+            {t("gbf.groupedBy")}
+            {grouped.uncovered.length > 0 && (
+              <> {t("gbf.uncovered", { count: grouped.uncovered.length, list: grouped.uncovered.map((id) => `T${gbfNumber(id)}`).join(", ") })}</>
+            )}
+          </p>
+          <div className="space-y-4" data-testid="nr7-gbf-groups">
+            {grouped.groups.map((group) => (
+              <section key={group.id ?? "none"}>
+                <h4 className="text-caption font-medium text-[var(--undp-gray)] mb-1">
+                  {group.id ? t("gbf.groupHeading", { n: gbfNumber(group.id), title: group.title ?? "" }) : t("gbf.ungrouped")}
+                </h4>
+                <ul>{group.rows.map((row) => renderRow(row, group.id ? 1 : 0))}</ul>
+              </section>
+            ))}
+          </div>
+        </>
+      ) : (
+        <ul>{model.targets.map((row) => renderRow(row, 0))}</ul>
+      )}
     </div>
   );
+
+  function renderRow(row: Row, gbfChipsFrom: number) {
+    const pair = pairByTarget.get(row.targetId);
+    return (
+      <Nr7TargetRow
+        key={row.targetId}
+        row={row}
+        expanded={expandedTargetId === row.targetId}
+        onToggle={() => onToggleTarget(row.targetId)}
+        indicatorsById={indicatorsById}
+        onFocusIndicator={onFocusIndicator}
+        onOpenNbsap={row.nbsapTargetId && canOpenNbsap(row.nbsapTargetId) ? () => onOpenNbsap(row.nbsapTargetId!) : undefined}
+        onOpenPair={pair ? () => onOpenPair(pair.actionId, pair.nbsapId) : undefined}
+        gbfChipsFrom={gbfChipsFrom}
+      />
+    );
+  }
 }

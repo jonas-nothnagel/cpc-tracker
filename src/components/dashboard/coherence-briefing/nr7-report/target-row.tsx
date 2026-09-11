@@ -11,6 +11,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
+import { GbfChip } from "./gbf-chip";
 import { IndicatorCard } from "./indicator-card";
 import { MixBar } from "./mix-bar";
 import { ANSWER_COLORS, ANSWER_ORDER, NR7_COLORS } from "./nr7-colors";
@@ -25,6 +26,7 @@ export function Nr7TargetRow({
   onFocusIndicator,
   onOpenNbsap,
   onOpenPair,
+  gbfChipsFrom = 0,
 }: {
   row: Row;
   expanded: boolean;
@@ -35,6 +37,9 @@ export function Nr7TargetRow({
   onOpenNbsap?: () => void;
   /** Absent when no reported-action pair exists for this target. */
   onOpenPair?: () => void;
+  /** Index of the first GBF target to show as a chip: 1 when the row sits
+   *  under a GBF heading that already names the first. */
+  gbfChipsFrom?: number;
 }) {
   const t = useTranslations("briefing.nr7Report.targets");
   const statusLabels = useNr7BadgeLabels();
@@ -84,6 +89,9 @@ export function Nr7TargetRow({
             ) : (
               <span>{t("row.noQuestionnaire")}</span>
             )}
+            {row.gbfTargets.slice(gbfChipsFrom).map((g) => (
+              <GbfChip key={g.id} target={g} />
+            ))}
             <span>{t("row.indicators", { count: row.specificIndicatorIds.length + row.sharedIndicatorIds.length })}</span>
             <span>
               {row.nbsapNumber !== null && row.policyReach !== null

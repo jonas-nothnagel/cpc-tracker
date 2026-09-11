@@ -2,12 +2,13 @@
 
 /**
  * FullPicture — everything below the review visual, folded closed, for the
- * report on screen: coverage by document (the dot-map) for the climate report,
- * the NR7 by national target and all NR7 indicators for the biodiversity one.
- * Each is a details/summary block; the review rows can open one at a given
- * target or indicator through `useNr7FullPicture`, and the NR7 sections
- * cross-link the same way (indicator chips in a target row, target chips on an
- * indicator card).
+ * report on screen: coverage by document (the dot-map) for the climate report;
+ * for the biodiversity one the rating-vs-evidence cross-checks (when the
+ * policy-link rows lead the slide), the NR7 by national target grouped by
+ * GBF target, and all NR7 indicators. Each is a details/summary block; the
+ * review rows can open one at a given target or indicator through
+ * `useNr7FullPicture`, and the NR7 sections cross-link the same way
+ * (indicator chips in a target row, target chips on an indicator card).
  */
 
 import { useCallback, useState } from "react";
@@ -15,16 +16,20 @@ import { useTranslations } from "next-intl";
 import type { ActionPlanAlignmentSummary, ImplementationCoverage } from "@/lib/implementation-coherence";
 import { IndicatorsView, Nr7TargetsList, type Nr7PairRef, type Nr7ReportModel } from "../../nr7-report";
 import { CoverageByDocument } from "./coverage-by-document";
+import { Nr7CrossChecks } from "./nr7-cross-checks";
 import type { ImplementationReport } from "./report-toggle";
+import type { BiodiversityReviewGroup } from "./review-groups";
 import type { CountryConfig } from "@/types";
 
 export interface Nr7FullPictureState {
   coverageOpen: boolean;
+  crossChecksOpen: boolean;
   nr7TargetsOpen: boolean;
   nr7IndicatorsOpen: boolean;
   expandedTargetId: string | null;
   focusIndicatorId: string | null;
   setCoverageOpen: (open: boolean) => void;
+  setCrossChecksOpen: (open: boolean) => void;
   setNr7TargetsOpen: (open: boolean) => void;
   setNr7IndicatorsOpen: (open: boolean) => void;
   toggleTarget: (targetId: string) => void;
@@ -36,6 +41,7 @@ export interface Nr7FullPictureState {
 
 export function useNr7FullPicture(): Nr7FullPictureState {
   const [coverageOpen, setCoverageOpen] = useState(false);
+  const [crossChecksOpen, setCrossChecksOpen] = useState(false);
   const [nr7TargetsOpen, setNr7TargetsOpen] = useState(false);
   const [nr7IndicatorsOpen, setNr7IndicatorsOpen] = useState(false);
   const [expandedTargetId, setExpandedTargetId] = useState<string | null>(null);
@@ -51,8 +57,8 @@ export function useNr7FullPicture(): Nr7FullPictureState {
     setFocusIndicatorId(id);
   }, []);
   return {
-    coverageOpen, nr7TargetsOpen, nr7IndicatorsOpen, expandedTargetId, focusIndicatorId,
-    setCoverageOpen, setNr7TargetsOpen, setNr7IndicatorsOpen, toggleTarget, focusTarget, focusIndicator,
+    coverageOpen, crossChecksOpen, nr7TargetsOpen, nr7IndicatorsOpen, expandedTargetId, focusIndicatorId,
+    setCoverageOpen, setCrossChecksOpen, setNr7TargetsOpen, setNr7IndicatorsOpen, toggleTarget, focusTarget, focusIndicator,
   };
 }
 
@@ -101,6 +107,7 @@ export function FullPicture({
   nr7Status,
   nr7Report,
   nr7PairTargets,
+  crossChecks = null,
   visibleTargetIds,
   countryConfig,
   onOpenActionPair,
@@ -114,6 +121,9 @@ export function FullPicture({
   nr7Status: Map<string, string>;
   nr7Report: Nr7ReportModel | null;
   nr7PairTargets: Map<string, Nr7PairRef>;
+  /** The rating-vs-evidence cross-checks, folded here when the policy-link
+   *  rows lead the slide; null when they are the slide's visual instead. */
+  crossChecks?: BiodiversityReviewGroup | null;
   visibleTargetIds: ReadonlySet<string>;
   countryConfig: CountryConfig | null;
   onOpenActionPair: (actionId: string, targetId: string) => void;
@@ -137,6 +147,28 @@ export function FullPicture({
             nr7Status={nr7Status}
             countryConfig={countryConfig}
             onOpenActionPair={onOpenActionPair}
+          />
+        </FullPictureSection>
+      )}
+      {report === "nr7" && nr7Report && crossChecks && crossChecks.total > 0 && (
+        <FullPictureSection
+          id="full-picture-nr7-cross-checks"
+          tour="full-picture-nr7-cross-checks"
+          open={state.crossChecksOpen}
+          onOpenChange={state.setCrossChecksOpen}
+          label={t("nr7CrossChecks.summary")}
+          count={t("nr7CrossChecks.count", { count: crossChecks.total })}
+        >
+          <Nr7CrossChecks
+            group={crossChecks}
+            model={nr7Report}
+            nr7PairTargets={nr7PairTargets}
+            visibleTargetIds={visibleTargetIds}
+            onOpenActionPair={onOpenActionPair}
+            onOpenTarget={onOpenTarget}
+            onFocusNr7Target={state.focusTarget}
+            onFocusNr7Indicator={state.focusIndicator}
+            folded
           />
         </FullPictureSection>
       )}

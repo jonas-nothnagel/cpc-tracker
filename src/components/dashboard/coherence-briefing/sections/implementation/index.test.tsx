@@ -34,10 +34,13 @@ const btrData = btr(measures);
 const summary = computeActionPlanAlignment(pairs, btrData, policy, 5, {});
 const coverage = computeImplementationCoverage(pairs, btrData, policy);
 const nr7Report = buildNr7Report(FIXTURE_NR7, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!;
+// The same report with no policy alignment visible: no target behind schedule
+// has a link, so the cross-checks lead the biodiversity view instead.
+const nr7ReportUnlinked = buildNr7Report(FIXTURE_NR7, [], FIXTURE_TARGETS)!;
 
 const wordCount = (s: string) => s.trim().split(/\s+/).length;
 
-function renderSlide(opts: { report?: ImplementationReport; withBtr?: boolean; withNr7?: boolean; locale?: "en" | "es" | "mn"; onReportChange?: (r: ImplementationReport) => void } = {}) {
+function renderSlide(opts: { report?: ImplementationReport; withBtr?: boolean; withNr7?: boolean; linked?: boolean; locale?: "en" | "es" | "mn"; onReportChange?: (r: ImplementationReport) => void } = {}) {
   const withBtr = opts.withBtr ?? true;
   const withNr7 = opts.withNr7 ?? true;
   const messages = { en, es, mn }[opts.locale ?? "en"];
@@ -47,7 +50,7 @@ function renderSlide(opts: { report?: ImplementationReport; withBtr?: boolean; w
         coverage={withBtr ? coverage : { ...coverage, btrActions: 0, totalActions: 0 }}
         summary={summary}
         nr7Data={withNr7 ? FIXTURE_NR7 : null}
-        nr7Report={withNr7 ? nr7Report : null}
+        nr7Report={withNr7 ? (opts.linked === false ? nr7ReportUnlinked : nr7Report) : null}
         visibleTargetIds={new Set(FIXTURE_TARGETS.keys())}
         report={opts.report ?? "btr"}
         onReportChange={opts.onReportChange ?? vi.fn()}
@@ -80,19 +83,41 @@ describe("ImplementationSection", () => {
     expect(screen.getByText(/Evidence: Testland's Biennial Transparency Report \(BTR\) and 7th National Report/)).toBeInTheDocument();
   });
 
-  it("biodiversity report: the finding, a plain body, where to start, the rows and two folded sections", () => {
+  it("biodiversity report: the finding, a plain body, where to start, the policy-link rows and three folded sections", () => {
     renderSlide({ report: "nr7" });
-    expect(headline()).toBe("In 5 places, Testland's biodiversity report rates a target one way while its own evidence points another.");
-    expect(body()).toBe("The report rates progress on 4 national targets and also gives questionnaire answers and figures for them. In these 5 places a rating and that evidence do not match. No AI is involved.");
+    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule. One of them aligns strongly with 3 or more targets in other national plans.");
+    expect(body()).toBe("Behind schedule is the report's own rating: an insufficient rate, or no significant change. Each bar counts the targets in other documents the AI judged strongly aligned with that national target.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
     expect(start()).toContain("Where to start");
-    expect(start()).toContain("is the rating right, or is the evidence?");
-    expect(start()).toContain("Nothing on this tab is AI-generated.");
-    // Four eligible cross-checks on the face; the held-back one sits behind "Show all".
-    expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(4);
-    expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(2);
+    expect(start()).toContain("Open national target 4 (By 2030, reduce pollution.): rated no progress, yet 3 targets across 2 other documents align strongly with it.");
+    expect(start()).toContain("Worth a closer look");
+    expect(start()).toContain("AI-estimated alignment between target texts");
+    expect(start()).not.toContain("Nothing on this tab is AI-generated.");
+    // One target behind schedule with links: one row leads the slide.
+    expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(1);
+    expect(screen.getByTestId("policy-link-rows")).toBeInTheDocument();
+    // The cross-checks fold below, with the two NR7 sections.
+    const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
+    expect(details).toHaveLength(3);
+    expect(details.every((d) => !d.open)).toBe(true);
+    expect(screen.getByText("Ratings that do not match their own evidence")).toBeInTheDocument();
+    expect(screen.getByText("5 places, no AI involved")).toBeInTheDocument();
+    expect(screen.getByTestId("cross-check-rows").closest("details")).toBe(details[0]);
     expect(screen.queryByText("Coverage by document")).toBeNull();
     expect(screen.getByText(/Evidence: Testland's 7th National Report \(NR7\)/)).toBeInTheDocument();
+  });
+
+  it("biodiversity report without visible policy alignment: the cross-checks lead, as before", () => {
+    renderSlide({ report: "nr7", linked: false });
+    expect(headline()).toBe("In 4 places, Testland's biodiversity report rates a target one way while its own evidence points another.");
+    expect(body()).toBe("The report rates progress on 4 national targets and also gives questionnaire answers and figures for them. In these 4 places a rating and that evidence do not match. No AI is involved.");
+    expect(wordCount(body())).toBeLessThanOrEqual(35);
+    expect(start()).toContain("is the rating right, or is the evidence?");
+    expect(start()).toContain("Nothing on this tab is AI-generated.");
+    // Three eligible cross-checks on the face (the reach rule needs alignment); the held-back one sits behind "Show all".
+    expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(3);
+    expect(screen.queryByTestId("policy-link-rows")).toBeNull();
+    expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(2);
   });
 
   it("the toggle hands the switch to the host", () => {
@@ -113,7 +138,7 @@ describe("ImplementationSection", () => {
     cleanup();
     renderSlide({ report: "btr", withBtr: false });
     expect(screen.queryByRole("group", { name: "Choose a report" })).toBeNull();
-    expect(headline()).toMatch(/biodiversity report rates a target/);
+    expect(headline()).toMatch(/biodiversity report rates 1 of 4 national targets behind schedule/);
   });
 
   it.each(["es", "mn"] as const)("%s keeps both bodies under 35 words and every template filled", (locale) => {
@@ -124,13 +149,19 @@ describe("ImplementationSection", () => {
     renderSlide({ report: "nr7", locale });
     expect(wordCount(body())).toBeLessThanOrEqual(35);
     expect(`${headline()} ${body()} ${start()}`).not.toMatch(/\{|\}/);
+    cleanup();
+    renderSlide({ report: "nr7", locale, linked: false });
+    expect(wordCount(body())).toBeLessThanOrEqual(35);
+    expect(`${headline()} ${body()} ${start()}`).not.toMatch(/\{|\}/);
   });
 
   it("keeps the faces factual in every locale", () => {
     for (const report of ["btr", "nr7"] as const) {
-      renderSlide({ report });
-      expect(document.body.textContent).not.toMatch(/\b(should|must|responsible|blame|ministry|contradict|tension)\b/i);
-      cleanup();
+      for (const linked of [true, false]) {
+        renderSlide({ report, linked });
+        expect(document.body.textContent).not.toMatch(/\b(should|must|responsible|blame|ministry|contradict|tension)\b/i);
+        cleanup();
+      }
     }
   });
 });

@@ -15,11 +15,15 @@
  *      anywhere on this slide.
  *   2. One control: which report (./report-toggle.tsx), only when both exist.
  *   3. The takeaways as a visual: ranked two-tone bars for the climate report
- *      (./climate-strain-chart.tsx), rating-versus-evidence rows for the
- *      biodiversity report (./nr7-cross-checks.tsx); both ranked by
- *      ./review-groups.ts, top five first, rows open inline.
+ *      (./climate-strain-chart.tsx); for the biodiversity report the national
+ *      targets rated behind schedule ranked by their links to other plans
+ *      (./nr7-policy-link-rows.tsx, decided 2026-09-11), or, when no such
+ *      target has a link, the rating-versus-evidence rows
+ *      (./nr7-cross-checks.tsx); all ranked by ./review-groups.ts, rows open
+ *      inline.
  *   4. The full picture folds closed below for that report only
- *      (./full-picture.tsx), then the source and not-yet-included captions.
+ *      (./full-picture.tsx; the cross-checks fold here when the policy-link
+ *      rows lead), then the source and not-yet-included captions.
  *
  * Right column (DeliveryRoster): who is named on the BTR actions; the host
  * shows it only while the climate report is on screen.
@@ -29,17 +33,20 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../../slide-frame";
 import { TourButton } from "../../tour/tour-button";
+import { useNr7BadgeLabels } from "@/lib/labels";
 import { getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
 import {
   nr7StatusByNbsapTarget,
   type ActionPlanAlignmentSummary,
   type ImplementationCoverage,
 } from "@/lib/implementation-coherence";
-import type { Nr7PairRef, Nr7ReportModel } from "../../nr7-report";
-import { buildReviewGroups, type BiodiversityReviewGroup, type ClimateReviewGroup } from "./review-groups";
+import { shortNr7Text, type Nr7PairRef, type Nr7ReportModel } from "../../nr7-report";
+import type { Nr7Status } from "../../nr7-report/nr7-self-report";
+import { buildReviewGroups, POLICY_LINK_STATUSES, type BiodiversityReviewGroup, type ClimateReviewGroup } from "./review-groups";
 import { ReportToggle, type ImplementationReport } from "./report-toggle";
 import { ClimateStrainChart } from "./climate-strain-chart";
 import { Nr7CrossChecks } from "./nr7-cross-checks";
+import { Nr7PolicyLinkRows } from "./nr7-policy-link-rows";
 import { FullPicture, useNr7FullPicture } from "./full-picture";
 import type { CountryConfig, Nr7Data } from "@/types";
 
@@ -81,6 +88,7 @@ export function ImplementationSection({
   onOpenTarget: (targetId: string) => void;
 }) {
   const t = useTranslations("briefing.implementation");
+  const ratingLabels = useNr7BadgeLabels();
   const groups = useMemo(
     () => buildReviewGroups({ summary, nr7Report, btrActions: coverage.btrActions }),
     [summary, nr7Report, coverage.btrActions],
@@ -98,9 +106,13 @@ export function ImplementationSection({
   const shown: ImplementationReport = report === "nr7" && hasNr7 ? "nr7" : hasBtr ? "btr" : hasNr7 ? "nr7" : "btr";
   const showEvidence = shown === "btr" ? coverage.hasMeasureAlignment : hasNr7;
 
+  // The policy-link rows lead the biodiversity view; the cross-checks fold
+  // below them. Without a linked target behind schedule (no policy
+  // alignment, or none visible) the cross-checks are the view, as before.
+  const policyLinks = groups.biodiversity?.policyLinks ?? null;
   const sentence =
     shown === "nr7" && groups.biodiversity
-      ? biodiversitySentence(groups.biodiversity, nr7Report?.totals.targets ?? 0, countryName, t)
+      ? biodiversitySentence(groups.biodiversity, nr7Report?.totals ?? null, countryName, ratingLabels, t)
       : climateSentence(groups.climate, coverage, countryName, countryConfig, t);
   const footerKey = shown === "nr7" ? "footer.sourcesNr7Only" : hasNr7 ? "footer.sourcesWithNr7" : "footer.sources";
 
@@ -119,6 +131,14 @@ export function ImplementationSection({
       evidence={
         showEvidence && shown === "btr" && groups.climate ? (
           <ClimateStrainChart group={groups.climate} countryConfig={countryConfig} onOpenActionPair={onOpenActionPair} />
+        ) : showEvidence && shown === "nr7" && policyLinks ? (
+          <Nr7PolicyLinkRows
+            group={policyLinks}
+            countryConfig={countryConfig}
+            visibleTargetIds={visibleTargetIds}
+            onOpenTarget={onOpenTarget}
+            onFocusNr7Target={fullPicture.focusTarget}
+          />
         ) : showEvidence && shown === "nr7" && groups.biodiversity && nr7Report ? (
           <Nr7CrossChecks
             group={groups.biodiversity}
@@ -143,6 +163,7 @@ export function ImplementationSection({
               nr7Status={nr7Status}
               nr7Report={nr7Report}
               nr7PairTargets={nr7PairTargets}
+              crossChecks={policyLinks ? groups.biodiversity : null}
               visibleTargetIds={visibleTargetIds}
               countryConfig={countryConfig}
               onOpenActionPair={onOpenActionPair}
@@ -232,16 +253,44 @@ export function climateSentence(
   };
 }
 
-/** Biodiversity report: headline = the cross-check count; body = what the
- *  report gives per target and that these are the places it does not agree;
- *  start = open a row, then settle which side is right. */
-export function biodiversitySentence(group: BiodiversityReviewGroup, targets: number, countryName: string, t: T): Sentence {
+/** Biodiversity report. With policy-link rows: headline = how many targets
+ *  the report rates behind schedule and how many of those align with other
+ *  plans; body = what "behind schedule" and the bars mean; start = the top
+ *  target, hedged, with the caveat that the links are AI-estimated.
+ *  Without them (no policy alignment visible): headline = the cross-check
+ *  count; body = what the report gives per target and that these are the
+ *  places it does not agree; start = open a row, then settle which side is
+ *  right. */
+export function biodiversitySentence(
+  group: BiodiversityReviewGroup,
+  totals: { targets: number; byStatus: Record<Nr7Status, number> } | null,
+  countryName: string,
+  ratingLabels: Record<Nr7Status, string>,
+  t: T,
+): Sentence {
+  const links = group.policyLinks;
+  if (links && totals) {
+    const lead = links.top[0];
+    const behind = [...POLICY_LINK_STATUSES].reduce((n, s) => n + (totals.byStatus[s] ?? 0), 0);
+    return {
+      headline: t("biodiversity.policyLinks.headline", { country: countryName, behind, targets: totals.targets, top: links.top.length, min: links.topMin }),
+      body: t("biodiversity.policyLinks.body"),
+      start: t("biodiversity.policyLinks.start", {
+        n: lead.row.number,
+        text: shortNr7Text(lead.row.targetText, 60),
+        rating: ratingLabels[lead.row.status].toLocaleLowerCase(),
+        count: lead.evidence.count,
+        docs: lead.evidence.docs,
+      }),
+      startCaveat: t("biodiversity.policyLinks.startCaveat"),
+    };
+  }
   if (group.total === 0) {
     return { headline: t("biodiversity.headlineNone", { country: countryName }), body: t("biodiversity.startCaveat") };
   }
   return {
     headline: t("biodiversity.headline", { checks: group.total, country: countryName }),
-    body: t("biodiversity.body", { targets, checks: group.total }),
+    body: t("biodiversity.body", { targets: totals?.targets ?? 0, checks: group.total }),
     start: t("biodiversity.start"),
     startCaveat: t("biodiversity.startCaveat"),
   };

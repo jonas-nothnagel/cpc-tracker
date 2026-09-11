@@ -198,6 +198,8 @@ describe("detectSignals and the report model", () => {
     expect(byRule("unknownWithData").map((s) => s.targetId)).toEqual(["NT03"]);
     expect(byRule("unknownWithData")[0].params).toMatchObject({ indicator: "6.1 Indicator 6.1", points: 3, from: "2020", to: "2022" });
     expect(byRule("reachWhileNoChange").map((s) => s.targetId)).toEqual(["NT04"]);
+    // With no policy alignment visible every reach is zero, and zero says nothing.
+    expect(buildNr7Report(data, [], TARGETS)!.signals.some((s) => s.rule === "reachWhileNoChange")).toBe(false);
     expect(byRule("sharedIndicatorDeclining").map((s) => s.indicatorId)).toEqual(["D.2"]);
     expect(byRule("sharedIndicatorDeclining")[0]).toMatchObject({ cardEligible: false, params: { targets: 4, onTrack: 2, first: "355", last: "258" } });
   });

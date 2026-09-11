@@ -155,6 +155,12 @@ function SeriesRow({
     summary = t("card.noValues");
   }
 
+  // A lone series gets room to read (the small multiples stay small) and
+  // its first and last year printed under the line's ends, so the reader
+  // does not have to find them in the text.
+  const width = multiple ? 64 : 160;
+  const height = multiple ? 18 : 36;
+  const years = !multiple && numeric.length >= 2 ? [String(numeric[0].year), String(numeric[numeric.length - 1].year)] : null;
   return (
     <li className="flex items-center gap-2 text-caption">
       {multiple && (
@@ -162,13 +168,21 @@ function SeriesRow({
           {series.disaggregation ?? t("card.total")}
         </span>
       )}
-      <Sparkline
-        data={numeric.map((p) => ({ year: String(p.year), value: p.value }))}
-        color={NR7_SERIES_COLOR}
-        width={multiple ? 64 : 120}
-        height={multiple ? 18 : 28}
-        title={directionWord ? `${directionWord}: ${summary}` : undefined}
-      />
+      <span className="inline-flex flex-col shrink-0">
+        <Sparkline
+          data={numeric.map((p) => ({ year: String(p.year), value: p.value }))}
+          color={NR7_SERIES_COLOR}
+          width={width}
+          height={height}
+          title={directionWord ? `${directionWord}: ${summary}` : undefined}
+        />
+        {years && (
+          <span className="flex justify-between text-[10px] leading-none text-[var(--undp-gray)] tabular-nums" style={{ width }} aria-hidden="true">
+            <span>{years[0]}</span>
+            <span>{years[1]}</span>
+          </span>
+        )}
+      </span>
       <span className="text-[var(--undp-black)] tabular-nums leading-snug">
         {summary}
         {directionWord && <span className="sr-only"> ({directionWord})</span>}
