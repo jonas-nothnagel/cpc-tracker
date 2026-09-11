@@ -20,6 +20,7 @@ from src.nr7_ort import (
     map_level,
     match_nbsap,
     normalise_response,
+    parse_gbf_targets,
     parse_ort_csv,
     parse_value,
     split_indicator,
@@ -29,18 +30,21 @@ from src.nr7_ort import (
 _CSV = (
     "﻿\"Published on\",\"Unique ID\",\"Target\",\"Main Actions Summary\","
     "\"Progress Summary\",\"Key Challenges Summary\",\"Action Effectiveness Summary\","
-    "\"Level of Progress\"\n"
+    "\"Level of Progress\",\"GBF Targets\"\n"
     '"28-Feb-2026 18:58","ORT-NR7-MN-1-2","NT03. By 2030, 30% of the country\'s total area '
     'will be included in the protected area network.","Expanded the network by 1.2 million ha.\xa0'
     'Launched a finance mechanism.","Coverage reached 21%.","Remaining gap of 14 million ha.",'
-    '"SMART monitoring on 21 areas.","On track to achieve target "\n'
+    '"SMART monitoring on 21 areas.","On track to achieve target ",'
+    '"GBF-T03. 30% of areas are effectively conserved"\n'
     '"10-Jan-2026 09:00","ORT-NR7-MN-1-1","NT03. By 2030, 30% of the country\'s total area '
-    'will be included in the protected area network.","OLD DRAFT","","","","Unknown"\n'
+    'will be included in the protected area network.","OLD DRAFT","","","","Unknown",""\n'
     '"28-Feb-2026 18:58","ORT-NR7-MN-2-1","NT04. By 2030, reduce the risk of extinction of '
     'threatened species.","Gene bank established.","","","",'
-    '"Progress towards target but at an  insufficient rate"\n'
+    '"Progress towards target but at an  insufficient rate",'
+    '"GBF-T04. Threatened species are recovering; GBF-T11. Nature\u2019s contributions to people '
+    'are restored"\n'
     '"28-Feb-2026 18:58","ORT-NR7-MN-3-1","NT06. By 2030, reduce pollution from all sources.",'
-    '"","No change reported.","","","No significant change"\n'
+    '"","No change reported.","","","No significant change",""\n'
 )
 
 _NBSAP = [
@@ -108,6 +112,24 @@ def test_build_progress_items_keeps_narratives_separate_and_actions_as_reported_
     assert nt06["reportedActions"] == []  # no actions narrative -> nothing to align
     assert nt06["mainActionsSummary"] is None
     assert nt06["progressSummary"] == "No change reported."
+
+
+def test_gbf_targets_come_from_the_tool_verbatim_and_tolerate_blanks():
+    """The GBF axis is the country's own filing, never a hand map: one target,
+    a "; "-joined pair (kept in filed order), a blank cell, and a cell the
+    parser does not recognise (skipped, not invented)."""
+    items = build_progress_items(parse_ort_csv(_CSV), _NBSAP)
+    assert items[0]["gbfTargets"] == [
+        {"id": "T03", "code": "GBF-T03", "title": "30% of areas are effectively conserved"}
+    ]
+    assert [g["id"] for g in items[1]["gbfTargets"]] == ["T04", "T11"]
+    assert items[1]["gbfTargets"][1]["title"] == "Nature\u2019s contributions to people are restored"
+    assert items[2]["gbfTargets"] == []
+    assert parse_gbf_targets(None) == []
+    assert parse_gbf_targets("GBF-T3 Heading without the dot") == [
+        {"id": "T03", "code": "GBF-T03", "title": "Heading without the dot"}
+    ]
+    assert parse_gbf_targets("Target 3 conserved") == []
 
 
 def test_build_nr7_data_carries_provenance_and_frontend_shape():

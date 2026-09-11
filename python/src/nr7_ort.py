@@ -32,6 +32,10 @@ Design notes
   reader accepts both.
 - The ORT six-level progress scale is mapped onto the four-level vocabulary
   the UI has labels for; the raw level is preserved in `levelOfProgress`.
+- `gbfTargets` is the Kunming-Montreal GBF global target(s) the country filed
+  each national target under, with the CBD's heading text verbatim. It is
+  the country-agnostic axis the UI groups national targets by; nothing is
+  mapped by hand here.
 """
 
 from __future__ import annotations
@@ -73,6 +77,10 @@ ORT_SECTIONS: dict[str, dict[str, Any]] = {
             "keyChallengesSummary": "Key Challenges Summary",
             "actionEffectivenessSummary": "Action Effectiveness Summary",
             "levelOfProgress": "Level of Progress",
+            # The GBF global target(s) the country itself filed the national
+            # target under, as the tool's own "GBF-T03. <heading>" strings
+            # (several are "; "-joined). Verified returned 2026-09-11.
+            "globalTargets": "GBF Targets",
         },
     },
     "headline": {
@@ -175,6 +183,36 @@ def split_target(target: Any) -> tuple[str, str]:
     return m.group(1), _clean(m.group(2)) or ""
 
 
+# One GBF global target as the ORT writes it: "GBF-T03. 30% of areas are
+# effectively conserved". The heading is the CBD's own wording, kept verbatim.
+_GBF_TARGET_RE = re.compile(r"GBF-T(\d{1,2})\.?\s*")
+
+
+def parse_gbf_targets(raw: Any) -> list[dict[str, str]]:
+    """The "GBF Targets" cell -> [{id: "T03", code: "GBF-T03", title: ...}],
+    in the order filed; [] for a blank cell. A "; " joins several targets
+    (Mongolia's NT09 sits under T11 and T12)."""
+    text = _clean(raw) or ""
+    out: list[dict[str, str]] = []
+    for part in text.split(";"):
+        part = part.strip()
+        if not part:
+            continue
+        m = _GBF_TARGET_RE.match(part)
+        if not m:
+            logger.warning(f"Unrecognised GBF target cell {part!r}; skipped")
+            continue
+        number = int(m.group(1))
+        out.append(
+            {
+                "id": f"T{number:02d}",
+                "code": f"GBF-T{number:02d}",
+                "title": _WS.sub(" ", part[m.end() :]).strip(),
+            }
+        )
+    return out
+
+
 def parse_ort_csv(csv_text: str) -> list[dict[str, str]]:
     """Rows of an ORT CSV export (BOM-tolerant)."""
     return list(csv.DictReader(io.StringIO(csv_text.lstrip("﻿"))))
@@ -267,6 +305,9 @@ def build_progress_items(
                 "examples": effectiveness,
                 "nbsapTargetId": nbsap_id,
                 "nbsapMatchScore": score,
+                # The GBF global target(s) the report files this national
+                # target under (the country's own alignment, from the tool).
+                "gbfTargets": parse_gbf_targets(row.get("GBF Targets")),
                 "ortUniqueId": (row.get("Unique ID") or "").strip() or None,
                 "publishedOn": published.date().isoformat() if published else None,
             }

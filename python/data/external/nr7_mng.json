@@ -12,7 +12,7 @@
       "Binary indicators (questionnaire)"
     ],
     "publishedOn": "2026-02-28",
-    "fetchedAt": "2026-09-09T08:40:33+00:00"
+    "fetchedAt": "2026-09-11T15:43:22+00:00"
   },
   "progressItems": [
     {
@@ -31,6 +31,13 @@
       "examples": "With the introduction of the Methodology for the General Land-Use Plan of Aimag and Capital City and the Methodology for Soum Territorial Development Planning, it has become possible to conserve, monitor, and assess ecosystem integrity, as well as the distribution, abundance, and habitats of flora and fauna. In particular, the General Authority for Land Administration, Geodesy and Cartography has developed and manages the platform Egazar , within which a dedicated sub-database titled “Biodiversity Statistics” has been established. This database currently records and spatially visualizes species distribution ranges, key habitats, ecological corridors, breeding areas, and mating grounds for wildlife. At present, the distribution ranges of 145 animal species are displayed based on International Union for Conservation of Nature (IUCN) distribution data. In addition, key habitats and ecological corridors for six priority species —the Mongolian saiga, goitered gazelle, Mongolian gazelle, Gobi bear, khulan, and snow leopard—have been identified and mapped separately. In addition, a research report initiated by DBHS on the distribution and ecological corridors of rare and migratory wildlife in Mongolia has been produced. This study is expected to make a significant contribution to the further enrichment and updating of the above-mentioned databases in 2026. According to IUCN data (2022), 17% of the world's land and 8% of the oceans are under protection; Mongolia's land protection level is above the global average. However, there is a need to balance diverse ecosystems and representative natural features. Studies show that 13.7% of high-mountain ecosystems, 6.0% of forest-steppes, 6.0% of steppes, 23.5% of desert ecosystems, and approximately 40% of the distribution areas of endangered species are covered by state special protection. Conversely, steppe and peatland ecosystems have very low coverage, and river headwaters and certain forest zones remain outside protection boundaries. National land-use planning made more transparent and actionable ( EGAZAR platform ): Mongolia operationalized an online land-use planning system where approved plans can be viewed at national/aimag/soum levels and draft plans can receive public input—supporting whole-of-territory planning and accountability. Biodiversity monitoring mainstreamed into government practice ( BIOSAN → national system ): The protected and conserved area biodiversity monitoring database BIOSAN was upgraded and officially handed over to the responsible ministry, strengthening standardized field monitoring and data use for management decisions.",
       "nbsapTargetId": "NBSAP_1",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T01",
+          "code": "GBF-T01",
+          "title": "All areas are planned or managed to bring loss of areas of high biodiversity importance close to zero"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -50,6 +57,13 @@
       "examples": "Through the introduction of sustainable practices based on rangeland regeneration capacity and the implementation of measures to enhance accountability in livestock production, 20.6 million hectares of degraded pastureland have been restored nationwide over the past five years. This demonstrates the vital importance of collaborating with herders and pasture users to promote sustainable utilization of pastureland. In addition to forestry activities aimed at increasing forest cover, numerous initiatives outlined in the \"One Billion Trees\" national movement strategy are being implemented. Within this framework, spring and autumn tree-planting events are organized, reforestation and forest restoration works are conducted, and efforts to develop agro-forestry and expand urban green spaces are underway. These initiatives are increasing multi-stakeholder participation and improving ecological education among citizens. A key example of this progress is the \"One Billion Trees Fund\" initiated by banking and financial institutions, which has supported projects to expand green spaces and forested areas (selecting projects annually since 2022). In 2023 alone, 34 projects were implemented with 1.3 billion MNT in non-reimbursable financing, providing ecological education to 800,000 people, establishing over 20,000 square meters of green space, planting 105,000 trees, and completing reforestation and forest restoration on 37 hectares. The main cause of forest cover loss is forest insect pests and diseases. Consequently, in 2022, the \"Technical Regulations for Combating Forest Pests and Diseases\" were approved, leading to active prevention and control measures. In 2024, pest control operations were carried out across 243,000 hectares using state funding, with 100,000 hectares treated by aircraft and 143,000 hectares managed via backpack sprayers and mechanical methods. The volume of timber harvested from forests reached 696,400 cubic meters in 2023, a decrease of 27.1% compared to 2020. This decline reflects insufficient sustainable forest management activities and an unstable value-added chain for forest products, which in turn hinders the sustainable development of the forestry sector. Therefore, while expanding forest cover is essential, focusing on integrated management within the forest fund is more effective for increasing forest sustainability and climate resilience. As of 2020, the area of degraded forest land stood at 2.7 million hectares, making the supply of seedlings, saplings, and seeds critical for restoration. By 2024, a reserve of 63 million seedlings and saplings had been established. Furthermore, the \"Erdenet Forest Genetic Resource Center,\" established in 2022, was storing 660 kg of seeds and cuttings from four species as of 2023, with the goal of growing 100 million trees across 13 provinces.",
       "nbsapTargetId": "NBSAP_2",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T02",
+          "code": "GBF-T02",
+          "title": "30% of degraded areas are under effective restoration"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -69,6 +83,13 @@
       "examples": "Under Target 3, Mongolia has advanced implementation by combining protected-area expansion, strengthened management effectiveness, and sustainable financing mechanisms. For example, the Eternal Mongolia Project Finance for Permanence (PFP) launched in April 2024 mobilizes long-term financing and policy commitments to help achieve Mongolia’s 30×30 objectives and strengthen protected area management. In addition, a major ecosystem resilience programme reported bringing 1.2 million hectares across 20 sites under state protection, directly expanding the national protected-area network toward the 2030 target . Management effectiveness has also been strengthened through wider use of monitoring tools: WWF reports that, as of 2024, the SMART approach is used to monitor 13,067,489 ha across 21 protected areas, supporting improved enforcement and adaptive management. As of the current state, 20.8% (31.3 million hectares) of Mongolia’s total territory is under special protection . There are a total of 120 State Protected Areas across 102 locations, consisting of 22 strictly protected areas, 37 national parks, 47 nature reserves, and 14 monuments. Legend * Category Number of Protected Areas Area Size (million ha) Percentage of Mongolia's total territory Strictly Protected Area 22 13.8 8.8 National Park 37 13.5 8.6 Nature Reserve 48 5.3 3.4 Natural Monument 13 0.1 0.1 Total 120 32.7 21 Under the 1994 legal regulation , in addition to State Protected Areas, Article 3.2 of the same law stipulates that “Aimags may take specific territories within their jurisdictions under local special protection”. According to this provision, as of 2025, a total of 1,369 sites covering 30.3 million hectares have been taken under local special protection by decisions of soums and districts, as registered in the database of the Mineral Resources and Petroleum Authority. Between 2017 and 2020, it was estimated that 3 billion MNT in additional funding would be required in the event of expanded protection administrations and staffing related to the extension of the protected area network. The capacity to improve protection and intensify law enforcement activities within protected areas remains limited, and violations such as illegal mining and poaching continue to occur. Therefore, to effectively resolve issues such as the lack of equipment and fuel required for boundary marking and law enforcement inspections, it is necessary to implement measures to create a legal environment that develops investment and cooperation through concessions, partnerships, and cooperatives. These local protected areas were registered as natural monuments, national parks, or nature reserves within the framework of decisions issued by the respective soums and districts. These local protected areas were registered as natural monuments, national parks, or nature reserves within the framework of decisions issued by the respective soums and districts.",
       "nbsapTargetId": "NBSAP_3",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T03",
+          "code": "GBF-T03",
+          "title": "30% of areas are effectively conserved"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -88,6 +109,13 @@
       "examples": "To reach this goal, the following steps have been taken: The Minister of Environment and Tourism signed Order A/208 on April 18, 2025, giving the green light to the National Plan for the Conservation of Critically Endangered and Endangered Species. As part of this plan, surveys were done on the size, abundance, and distribution of significant species, such as the Gobi bear ( Ursus arctos gobiensis ), Snow leopard ( Panthera uncia ), Przewalski’s horse ( Equus ferus przewalskii ), Khulan ( Equus hemionus ), Argali ( Ovis ammon ), Musk deer ( Moschus moschiferus ), Mongolian saiga ( Saiga tatarica mongolica ), Bactrian Camel ( Camelus ferus ), and Red deer ( Cervus elaphus ). A new breeding center was built outside of the Bactrian camel's natural habitat to help the population recover. These centers now have breeding herds of about 40 animals each, which helps the population develop and the species recover . The biological resources of about 300 species of vascular plants were looked at in the Khangai , Khentei, and Mongolian Daura regions as part of the Government Action Programs 2020–2024 and 2024–2028. Additionally, genetic, morphological, and distribution research was performed on highly endangered plant species, including Adonis mongolica, Fritillaria dagana, Saussurea involucrata , and Allium altaicum , leading to the formulation of conservation recommendations based on the results. Under the “Sustainable Landscape and Biodiversity Conservation of the Dry Steppe of Eastern Mongolia” project (2021–2026) , conservation actions were implemented for critically endangered and endangered species such as the Mongolian gazelle, goitered gazelle, and white-naped crane. The \" Ensuring Mongolia's Native Ecosystem Resilience and Stability (Ensure)\" project (2019–2025) also preserved the habitats of severely endangered and endangered species such the musk deer ( Moschus moschiferus ), red deer ( Cervus elaphus ), Mongolian marmot ( Marmota sibirica ) , and Rheum ribes . Between 2018 and 2025 , the “Future of Snow Leopard Landscapes” Project implemented by the World Wide Fund for Nature (WWF) focused on protecting the habitat of snow leopards in the Darviin Mountains and Khasagt Khairkhan areas of Gobi-Altai Province, increasing the populations of prey species, and reducing illegal hunting and wildlife trade. Under the project, activities were successfully carried out with the involvement of local communities and herders, including the deployment of livestock Bankhar dogs, installation of wildlife-friendly enclosures, implementation of sustainable pasture management, protection of springs and water sources, and reintroduction of marmots. These measures reduced livestock losses and increased populations of wild animals, leading to improved snow leopard habitat, enhanced tourism opportunities, and a comprehensive program supporting sustainable local development, community livelihoods, and ecosystem connectivity. Under the “Chuluut Tul” Project , implemented to restore fish populations, over an eight-year period, 3,030,000 juvenile lenok and Mongolian grayling ( Thymallus brevirostris ) were bred and released into their natural habitats. Since 2019, M ongolian and Swedish researchers have conducted the first study of Mongolian grayling migration in Khar Us Lake and have been working to develop policies to protect the habitats and migratory corridors of migratory fish species, including taimen, lenok and pike in the Nomrog and Onon river basins. The “eZagas” electronic system , which consolidates information on fishing permits and approved fishing zones, has been introduced and implemented in 31 soums of Khentii and Khuvsgul provinces . Within the framework of snow leopard conservation activities, organizations including the Snow Leopard Trust, Snow Leopard Mongolia Center, WWF Mongolia Program, Wildlife Conservation Society, and the Institute of Biology of the Mongolian Academy of Sciences, together with local communities and herder cooperatives, have been implementing initiatives to strengthen local capacities, support livelihoods, and enhance knowledge and awareness.",
       "nbsapTargetId": "NBSAP_4",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T04",
+          "code": "GBF-T04",
+          "title": "Threatened species are recovering, genetic diversity is being maintained and human-wildlife conflict is being managed"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -107,6 +135,13 @@
       "examples": "To achieve this objective, the following measures have been implemented. Mongolia has established a legal framework that allows for the integration of provisions related to alien species into national legislation by adhering to the IPPC in 1997 and the CBD in 2015. The publication of a list of alien plant species was the result of the initiation of initiatives at the national level in 2021 to record alien plant species, compile national lists, and identify their distribution . All aimags contain 29 of the 154 recorded alien plant species, which are considered invasive. Darkhan-Uul (130 species), Selenge (119 species), Ulaanbaatar (110 species), and Tuv (102 species) are agriculturally developed regions that are particularly replete with alien plants. Additionally, Mongolia has documented 74–85 alien plant species by consulting international databases    that document alien animals, plants, and microorganisms. For instance, the iNaturalist platform has collected data on 80 alien plant species, corresponding to 1,085 plots . Currently, the National University of Mongolia (UBU) herbarium contains 194 herbariums of desiccated specimens of 62 alien plant species . The following plant species have been collected multiple times: Setaria viridis (43 herbariums), Cannabis sativa (29), Amaranthus retroflexus (19), Xanthium strumarium (13), Brassica campestris (11), Chloris virgata (11). These collections serve as a crucial foundation for the development of policy and management planning, as well as for the further ecological and biological studies of alien species.",
       "nbsapTargetId": "NBSAP_5",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T06",
+          "code": "GBF-T06",
+          "title": "Reduce rates of introduction and establishment of invasive alien species by 50%"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -126,6 +161,13 @@
       "examples": "Under a project implemented by the Institute of Chemistry and Chemical Technology, Mongolian Academy of Sciences in cooperation with the Ministry of Environment and Tourism, with funding from the United Nations Environment Programme, a training and seminar was held on 20 October 2023 with the participation of more than 90 national and local representatives. This activity strengthened knowledge and capacity on the classification, analysis, and oversight of hazardous waste. The database of toxic and hazardous chemicals has been digitalized, improving transparency and providing a foundation for strengthening permitting and compliance processes. In 2023, 196 enterprises and organizations obtained special permits for toxic and hazardous chemicals through the “e-Mongolia” system. With financing from the EU SWITCH-Asia II Programme, the project “ Ensuring Sustainable Plastic Recycling in Mongolia ” was implemented to reduce waste generation in target areas and improve waste management through “ source separation and recycling ”, including by establishing a sustainably operating central hub. Recycling companies actively participating in the project collected and recycled a total of 30,745 tons of waste during 2020–2024. The designation of “World Environment Day 2025” as a call for solutions to plastic pollution is further contributing momentum to achieving this target. By the joint order of the Minister of Environment and Tourism, the Minister of Food, Agriculture and Light Industry, and the Minister of Health dated 26 February 2024 (Joint Orders A/96, A/104 and A/81), the list and application rates of 252 types of pesticides used in agriculture (57 insecticides, 128 herbicides, 62 fungicides, and 5 rodenticides) and 62 types of chemical fertilizers were approved. This provides a policy basis for standardizing pesticide and fertilizer use in agriculture and reducing risks of soil and water pollution arising from over-application. Based on the results of surface water quality monitoring conducted during 2021–2023 at 193 monitoring points across 94 rivers and 19 lakes nationwide, 28–45% of the monitored rivers and lakes were classified as “very clean”, 43–62% as “clean”, 5–12% as “slightly polluted”, 2–3% as “polluted”, 1–2% as “dirty”, and 2–3% as “heavily polluted”. Sites classified as “polluted” included Songino, Khadan Khiasaa and Altanbulag along the Tuul River; Khiagt in the Selenge River basin; and the Khangal River in Orkhon Province. Sites classified as “slightly polluted” included Shuvuun Fabrik, Selbe and Dundgol on the Tuul River system; Khangal and Chingel (Erdenet); and areas around Lun along the Tuul River. Major sources of pollution include the Central Wastewater Treatment Plant in Songino (impacting the Tuul River), cross-border sources affecting the Khiagt River, and wastewater treatment facilities affecting the Khangal River. Sediment cleaning works have been organized along the Tuul River channel downstream of the central wastewater treatment plant. Efforts are also underway to recycle effluent from the central wastewater treatment plant and reuse it for industrial purposes at Thermal Power Plants III and IV, including through construction of a wastewater recycling and supply facility together with the associated conveyance infrastructure. In addition, projects such as “Protecting Ganga Lake from pollution and drying”, “Assessment of pollution risks to the ecosystem of Lake Khövsgöl” and “Phase II implementation to protect Ögii Lake from pollution and drying and to improve inflows” are being implemented successfully. With support from the World Wide Fund for Nature (WWF) under the “100, 1000, 10000” initiative, a “Unified methodology for fencing and protecting spring sources” was developed, and the sources of 137 springs were fenced nationwide. This has delivered direct results by reducing contamination of local water sources and protecting habitats of small aquatic ecosystems. The air quality monitoring network has been expanded to all 21 aimags, with automatic monitoring stations installed. In Ulaanbaatar, the use of processed coal for household heating has contributed to a reduction in air pollution.",
       "nbsapTargetId": "NBSAP_6",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T07",
+          "code": "GBF-T07",
+          "title": "Pollution reduced, halving nutrient loss and pesticide risk"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -145,6 +187,18 @@
       "examples": "With financing from the International Climate Initiative of the Federal Ministry for Economic Affairs and Climate Action, the Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) is implementing the project “Support for the Paris Agreement Implementation (SPA).” In the context of advancing and updating Mongolia’s Nationally Determined Contribution (NDC), the project is supporting the Government of Mongolia in developing a document roadmap and in strengthening sectoral mitigation targets across five sectors. Mongolia’s “First Biennial Update Report” is a report that communicates to the institutions of the global community Mongolia’s efforts to reduce greenhouse gas emissions following the submission on 24 September 2015 of the document “Mongolia’s Intended Nationally Determined Contribution (INDC) to the global effort to mitigate climate change” to the Convention. The project “Improving Adaptive Capacity and Risk Management of Rural Communities in Mongolia ( ADAPT )” is implementing policies, projects, and programmes aimed at reducing greenhouse gas emissions, improving climate risk assessment and monitoring, protecting and restoring vulnerable ecosystems such as water, rangelands, and forests, strengthening disaster risk management and early warning systems, and enhancing the adaptive capacity of local communities. In the area of afforestation and increasing carbon sequestration, the President of Mongolia, Ukhnaa Khurelsukh, issued a decree on 4 October 2021 to launch the One Billion Trees National Movement, followed by Government-level measures to organize implementation. According to official information, an inventory and stock assessment of nurseries conducted in 2023 covered 452 nurseries and identified 62,978,816 seedlings and saplings available for planting, indicating increased capacity to scale up afforestation. Information from 2024 further indicates that seed and seedling stocks have continued to grow, strengthening preparedness to meet afforestation targets, with the aim of increasing carbon sequestration through afforestation and restoration. Because Mongolia’s rangelands cover a large share of the national territory, effective management has significant potential to increase soil organic carbon (SOC). Reducing rangeland degradation and restoring rangelands can therefore serve as a solution to enhance carbon sequestration. In this context, under the FAO SCALA Programme, policy recommendations were developed on increasing rangeland carbon sequestration and on domestic market considerations. One of the fastest and most effective approaches to strengthen adaptive capacity is to improve risk assessment and early warning. Mongolia’s overall disaster risk assessment coverage for administrative units was 8% in 2016; as the legal framework and institutional arrangements improved, this rose to 71% in 2019 and reached 100% in 2020, indicating rapid expansion of risk information and planning coverage. The National Agency for Meteorology and Environmental Monitoring (NAMEM) conducts continuous monitoring of weather and hazardous events. Since 2010, permafrost observations have been carried out at 13 sites, expanded to 27 sites (including 14 additional sites since 2013), and baseline studies on data collection and processing have been conducted in collaboration with the Institute of Geography and Geoecology, Mongolian Academy of Sciences. Under early warning services, the “Tsag Agaar” mobile application has been available to the public since September 2019. In a study of the 2023–2024 dzud , 81% of surveyed herder households reported having received dzud and weather early warnings in advance, demonstrating progress. Due to historically high reliance on raw coal for urban heating, a policy was implemented in Ulaanbaatar to prohibit household-level use of raw coal from 15 May 2019 and replace it with briquetted fuel. Research articles (including on particulate matter concentrations) report that measurable improvements were observed after the ban, indicating that policy measures can yield impacts within a relatively short period.",
       "nbsapTargetId": "NBSAP_7",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T08",
+          "code": "GBF-T08",
+          "title": "Minimize impacts of climate change and ocean acidification including through nature-based solutions and/or ecosystem-based approaches"
+        },
+        {
+          "id": "T02",
+          "code": "GBF-T02",
+          "title": "30% of degraded areas are under effective restoration"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -164,6 +218,18 @@
       "examples": "In several soums of Arkhangai aimag, the implementation of the Responsible Nomadic Good Practices standard has begun to demonstrate that it is possible to adjust livestock numbers to rangeland carrying capacity without reducing herders’ income, thereby increasing the value of livestock products—a promising practice. At present, Mongolia is establishing forest shelterbelts at aimag and soum levels. For example, under the One Billion Trees National Campaign, 41 km of protective forest belts were established on cropland in Khongor soum, Darkhan-Uul aimag [1], and 3 km in Tsagaannuur soum, Selenge aimag [2], serving as practical examples. Nationally, from 2010 to 2020, an average of 658.6 hectares of forest shelterbelts per year were established [3]. These forest shelterbelts have improved soil fertility, increased yield per unit area, reduced land-use changes, and created conditions to protect biodiversity. [1] https://darkhan.gov.mn/ [2] https://montsame.mn/mn/read/366957 [3] One Billion Trees” National Movement Strategy and Implementation Action Plan, 2023",
       "nbsapTargetId": "NBSAP_8",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T10",
+          "code": "GBF-T10",
+          "title": "Areas under agriculture, aquaculture, fisheries and forestry are managed sustainably"
+        },
+        {
+          "id": "T05",
+          "code": "GBF-T05",
+          "title": "Use, harvesting and trade of wild species is sustainable, safe and legal"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -183,6 +249,23 @@
       "examples": "If Mongolia can expand the protected area network while appropriately reducing grazing pressure, restoring water sources, and effectively enforcing the legal framework for damage assessment and compensation, the foundation for achieving the target of restoring and enhancing ecosystem services will be substantially strengthened. Under the project “Ensuring the resilience and stability of Mongolia’s native ecosystems,” the values of ecosystem services in selected priority areas were assessed and mapped. Baseline information was compiled to support a development model in which aimags and soums use natural resources efficiently and sustainably, sustain ecosystem services, reduce greenhouse gas emissions and waste, ensure social participation, and contribute to poverty reduction. At the local level, this created an initial pilot model for developing organic policy solutions and alternatives—grounded in green development principles aligned with local carrying capacity—prioritizing tourism and livestock-based livelihoods while avoiding mining-based pathways. Building on the ecosystem service valuation and mapping baseline, Zavkhan Province prepared its medium-term local development planning document, the “Five-year Strategic Directions for Developing Zavkhan Aimag (2021–2025).” The national air quality monitoring network has been expanded, with automatic monitoring stations installed across all 21 aimags, enabling continuous monitoring and assessment. In Ulaanbaatar, the ban on household use of raw coal (Government Resolution No. 62 of 2018) and the introduction of improved processed fuel have produced tangible progress in reducing pollution from household fuel combustion, and a downward trend in air pollution levels has been observed.",
       "nbsapTargetId": "NBSAP_9",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T11",
+          "code": "GBF-T11",
+          "title": "Nature’s contributions to people are restored, maintained and enhanced"
+        },
+        {
+          "id": "T12",
+          "code": "GBF-T12",
+          "title": "Urban green and blue spaces enhanced for human well-being"
+        },
+        {
+          "id": "T09",
+          "code": "GBF-T09",
+          "title": "Management of wild species is sustainable and benefits people"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -202,6 +285,13 @@
       "examples": "Within the framework of the \"One Billion Trees\" national movement, strategic plans are underway to plant 130 million trees to expand urban green spaces and 209 million trees to establish green infrastructure . By organizing spring and autumn planting events (2 times per year), the movement is successfully increasing urban greenery, fostering multistakeholder participation, and enhancing the ecological awareness of the public. A notable example of these efforts is the \"One Billion Trees\" Fund, initiated by the banking and financial sector . Since 2022, this fund has annually selected and supported projects to increase green space; in 2023 alone, it facilitated the creation of over 20,000 square meters of green space and the planting of 105,000 trees. In addition, to improve air and environmental quality while mitigating flood risks, Mongolia has also begun establishing reservoirs, ponds, and man-made lakes in urban areas. A key project is the 300,000 cubic meter reservoir in the Sanzai valley of Ulaanbaatar, which is currently utilized for recreation, tourism, and educational purposes .",
       "nbsapTargetId": "NBSAP_10",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T12",
+          "code": "GBF-T12",
+          "title": "Urban green and blue spaces enhanced for human well-being"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -221,6 +311,13 @@
       "examples": "In order to achieve this national objective, one of the successful measures implemented by Mongolia has been the establishment of gene banks and the initiation of systematic conservation and registration of genetic resources. This is summarized below. Table 11. Types and quantities of source materials conserved in genetic resource banks (as of 2025) No Types and quantities of source materials locations 1 Natural plant 120,000 vascular plant specimens, 4,500 algae specimens, 4,000 fungal specimens, 14,500 lichen specimens, 19,500 bryophyte specimens Botanic garden and research institute, Mongolian academy of sciences,   National university of Mongolia 2 Tree plant 600 kg seed “Erdenet” Forest Genetic Resources Center 3 Microorganism 10000 culture Institute of Biology, Mongolian academy of sciences 4 Cereal crops, legumes, vegetables, oilseed crops, and industrial and fodder crops 2 1,000 variety samples of approximately 70 cultivated crops; 3,353 plants representing 131 varieties of 62 species of perennial fruit and berry plants, medicinal plants, ornamental plants, and rare and economically valuable plant species maintained under field-grown conditions Institute of Plant and Agricultural Sciences 5 Feed plant 3,641 samples of 394 species belonging to 46 families Research institute of animal husbandry 6 Certified breed and strains 13,653 semen doses from rams of 16 sheep breeds and strains; 3,803 semen doses from bucks of 8 meat- and cashmere-oriented goat breeds and strains; 6,563 semen doses of semen from domestic bulls; 4,870 semen doses from imported bulls of 7 breeds National Livestock Gene Bank Center In addition, the Natural History Museum of Mongolia holds a collection of 13,000 specimens representing biological diversity, including plants, insects, marine organisms, fish, amphibians and reptiles, birds, and mammals. The natural plant information database has been converted into a digital repository in line with international standards, comprising 10,000 pages of plant-related data.",
       "nbsapTargetId": "NBSAP_11",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T13",
+          "code": "GBF-T13",
+          "title": "Fair and equitable sharing of benefits from genetic resources, digital sequence information and associated traditional knowledge"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -240,6 +337,13 @@
       "examples": "The Law on Fees for the Use of Natural Resources includes provisions on funding sources for environmental protection . In 2024–2025, cross-sectoral consultations are being conducted with the support of the Ministry of Environment and Climate Change, UNDP, and the Global Environment Facility (GEF).",
       "nbsapTargetId": "NBSAP_12",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T14",
+          "code": "GBF-T14",
+          "title": "The multiple values of biodiversity are integrated into decision-making at all levels"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -259,6 +363,13 @@
       "examples": "According to the 2022 Green Economy Assessment , the average profitability of enterprises that adopted environmentally friendly practices increased by 15–20%, demonstrating the potential to combine environmental and economic benefits.",
       "nbsapTargetId": "NBSAP_13",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T15",
+          "code": "GBF-T15",
+          "title": "Businesses assess and disclose biodiversity dependencies, impacts and risks, and reduce negative impacts"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -278,6 +389,13 @@
       "examples": "A key example is the Education for Sustainable Development (ESD) project, which reached 468,000 students and trained over 42,000 education professionals and local officials across two phases (2015–2022). This demonstrates the effectiveness of long-term, system-based educational reform in embedding sustainable consumption behaviors. Another example is the project “Ensuring the Sustainability of Plastic Waste Recycling in Mongolia” (EU SWITCH-Asia, 2020–2024), implemented in Ulaanbaatar and Bulgan province. The project strengthened local waste management capacity and contributed to the adoption of national standards MNS ISO 15270:2024 and MNS ISO 16869:2024, demonstrating measurable policy and institutional impact,",
       "nbsapTargetId": "NBSAP_14",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T16",
+          "code": "GBF-T16",
+          "title": "Sustainable consumption choices are enabled, and food waste reduced by half"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -297,6 +415,13 @@
       "examples": "As a result of the measures implemented to achieve this national target, the Institute of Biology of the Mongolian Academy of Sciences detected certain genetically modified crop plants, including rapeseed and oats, that are being cultivated in Mongolia. In addition, the National Reference Laboratory for Food Safety (NRLFS) has begun conducting analysis to detect GMO-derived ingredients in food products. At the national level, successful capacity-building efforts have been undertaken to strengthen human resources. These efforts focused on training and enhancing the capacity of personnel to use the national Biosafety Clearing-House information system and the BCH platform. For example, in 2019, under the UNEP-GEF project “BCH-III: Strengthening Capacity for Effective Participation in the Biosafety Clearing-House” , specialists were trained through the program “Strengthening the Capacity of Professional Inspection Officers in the Use of the Biosafety Clearing-House Mechanism.” In addition, nationwide training sessions on the use of the BCH platform were conducted to further strengthen capacity.",
       "nbsapTargetId": "NBSAP_15",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T17",
+          "code": "GBF-T17",
+          "title": "Strengthen biosafety and distribute benefits of biotechnology"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -316,6 +441,13 @@
       "examples": "Under the BIOFIN II project, alternative models for redesigning dairy subsidies were developed, taking into account the potential to reduce pasture degradation and greenhouse gas emissions caused by livestock population growth, while transitioning to productivity- and quality-based incentives. This serves as a practical example, demonstrating that such a model can reduce negative environmental impacts while maintaining sustainable income for herders. Transparent information on subsidies in the public transport, energy, and agriculture sectors, along with audit findings and policy review studies (e.g., Think Mongol’s policy review), have communicated issues of subsidy data, transparency, and impacts to the public in an understandable way, contributing to the creation of an enabling environment for policy reform.",
       "nbsapTargetId": "NBSAP_16",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T18",
+          "code": "GBF-T18",
+          "title": "Reduce harmful incentives by at least $500 billion per year"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -335,6 +467,13 @@
       "examples": "As a result of the BIOFIN project, spending of NRUF revenues increased and environmental financing improved. A 2022 Government Resolution enabled the digitalization of reporting on environmental fee expenditures, creating conditions for regular monitoring. The targets for 2016–2018 and 2022–2025 can be considered largely achieved based on available evidence. However, for the 2019–2021 period, concrete and measurable evaluation data are limited, indicating the need for more detailed research based on additional sources. In the environment and climate sectors, 28 projects and programs are currently being implemented with total funding of USD 182.4 million. According to data from the Environmental Information Database , between 1998 and 2023, 107 projects and programs have been approved and implemented, with approximately USD 360 million spent . Source: MECC Of this, one-third of the total financing has been allocated to projects and programs implemented in protected areas. Approximately 24% has been spent on climate change initiatives. The reason for the higher funding in protected areas is that international biodiversity-focused donor organizations prefer to finance measures that provide long-term sustainable benefits, such as protected areas and conservation activities. As of 2024, 28 projects are being implemented with funding from international organizations including the Global Environment Facility, South Korea, Germany, the Green Climate Fund, the European Union, Japan, and the Asian Development Bank. In terms of financing and investment: “Eternal Mongolia” Program: The Government of Mongolia provided USD 127 million and international donors USD 71 million to co-finance a 15-year project under the “Project Finance for Permanence” model to expand conservation and the national protected area network BIOFIN Phase II (UNDP’s Biodiversity Finance Initiative) : Implemented from 2019 to 2030 to bridge the biodiversity finance gap. To date, a total of USD 71,002,466 has been invested, with the project starting at USD 4.85 million in 2019 and continuing at USD 6.15 million in 2024. Natural Resource Use Fees (NRUF): Revenues allocated to conservation reached USD 11.9 million in 2023, a 170% increase compared to the 2016–2021 average, with further increases expected in 2024. Green Climate Fund Financing: Between 2021 and 2025, projects and programs totaling USD 436 million were approved, of which USD 70 million is allocated for restoration and USD 23 million for climate adaptation measures. “Green Loan” interest subsidy: In 2024, 1.5 billion MNT has been allocated in the budget for interest subsidies. Discounted loans are being provided to individuals and businesses for energy-saving and environmentally friendly products.",
       "nbsapTargetId": "NBSAP_17",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T19",
+          "code": "GBF-T19",
+          "title": "Financial resources increased to $200 billion per year, including $ 30 billion through international finance"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -354,6 +493,13 @@
       "examples": "Under the Government of Mongolia’s “Priority Directions for Innovation Activities (2020–2025) ”, measures such as the Mon-X program to support citizens’ innovation initiatives, and the revision of the procedure for financing innovation projects and awarding grants, have been implemented. These efforts contribute to supporting innovative solutions through government funding, streamlining the selection process, improving the innovation environment, and strengthening public-private cooperation [1] . Several major projects with multi-stakeholder collaboration are being implemented in Mongolia to conserve biodiversity. The 15-year conservation project in the Onon-Balj Protected Area strengthens cooperation among international funds, NGOs, and government agencies, protecting ecosystem sustainability with approximately USD 1 million in annual funding. The BIOFIN Phase II project establishes new mechanisms for biodiversity finance. The “Biodiversity Conservation and Climate Change Adaptation” project introduces new community-based conservation practices. Additionally, the joint research project between the National University of Mongolia and South Korea implements activities that enhance scientific knowledge and strengthen the foundation for biodiversity management. To promote open sharing of biodiversity data and expand scientific collaboration, Mongolia joined the Global Biodiversity Information Facility (GBIF) in 2019 . Developed with the participation of the Ministry of Environment and Climate Change , the Mongolian Academy of Sciences and its affiliated institutes, and other international organizations, the database now contains over 850,000 records. As part of this effort, a unified data repository has been established, and training on data sharing and capacity building has been conducted. In addition, over 300 publications have been produced using data from Mongolia. For example, in 2025, the article “ iNaturalist projects represent a valuable resource for aggregating plant observations and engaging society: A case study of the Flora of Mongolia project” [2] was published. Figure: Number of records on the GBIF platform (Source: https://www.gbif.org/country/MN/about ) [1] Monitoring and Evaluation Report on the Implementation of Legislation and Government Resolutions under the Ministry of Digital Development, Innovation and Communications — First Half of 2025 [2] Baasanmunkh, S. , et al. ( 2025 ). iNaturalist projects represent a valuable resource for aggregating plant observations and engaging society: A case study of the Flora of Mongolia project . Plants, People, Planet ,",
       "nbsapTargetId": "NBSAP_18",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T20",
+          "code": "GBF-T20",
+          "title": "Capacity-building and development, technology transfer, and technical and scientific cooperation for implementation is strengthened"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -373,6 +519,13 @@
       "examples": "Implementing each program objective has led to the following anticipated results. Between 2016 and 2018, the types, content, and collection methods for information indicating the state of environmental education were defined. Furthermore, tools were integrated into the editorial policies of media outlets to systematically disseminate information regarding the value and significance of environmental education. Between 2019 and 2021, the capacity for synthesizing, processing, quality control, and the distribution of data entering the information database was enhanced. From 2022 to 2025, the environmental education information system will be fully modernized and improved. Based on the indicators, the following results have been achieved: The number and scope of media activities supporting sustainable development; Books, handbooks, reports, and assessment sheets regarding ESD: 28 Digital news, internet, and social media: 56 digital information units Books, methodologies, posters, handouts, lectures, and training materials: 76 TV programs, documentaries, interviews, and podcasts: 85 A total of 245 products were produced. A total of 130 main and sub-projects were implemented (1,046 million MNT). Within the framework of the ESD project, a total of 66,698 people participated in training. 44% of these were students. The integration of sustainable development content into the curricula and textbooks of general education, universities, colleges, and technical and vocational education and training centers: The curricula of all 628 general education schools (Grades 1–12) in Mongolia were revised to incorporate ESD content. Education for Sustainable Development content is included in higher education curricula. In 2022, Khovd University (now part of the National University of Mongolia) developed an ESD course curriculum for undergraduate-level education. Table. Performance Indicators for Objective 1 of the \"National Program on ESD\" Indicators Baseline Target 2017 2020 2022 Number of educational curricula integrating ESD content and methodology 143 148 155 Percentage of education sector human resources enrolled in specialized ESD training 50 70 100 Number of pre-school and general education institutions participating in the International Eco-Schools Program 255 350 450 Number of higher education and TVET (Technical and Vocational Education and Training) institutions implementing international \"Green\" initiatives - 5 10 Number of educational institutions attaining \"Eco\" or \"Green\" certifications 45 60 80 Percentage of students holding a \"Green Passport\" - 20 30",
       "nbsapTargetId": "NBSAP_19",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T21",
+          "code": "GBF-T21",
+          "title": "Data, information and knowledge for decision-making is available"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     },
@@ -392,6 +545,18 @@
       "examples": "The Government of Mongolia has demonstrated a progressive commitment to gender mainstreaming, implementing a phased increase in policy prioritization and resource allocation for gender equality within its national development and environmental agendas. The institutional foundation was established in 2002 through the establishment of the National Committee on Gender Equality (NCGE) under the then Ministry of Labor and Social Protection. A critical milestone was achieved in 2011 with the enactment of the Law on Ensuring Gender Equality , establishing a legal framework to advance gender equality across political, legal, social, cultural, and familial spheres. In line with principles of transparency and accountability, the Government regularly submits biennial implementation and progress reports on this law to the State Great Hural. To enhance women's participation in public and political life a candidate mandate quota for women in political parties was instituted, set at 30% as of 2023 and 40% in the 2028 regular election, must be representatives of either gender. This decisive action aligns directly with GBF Target 22, which calls for ensuring gender equality in the implementation of the Framework through a full, equitable, inclusive, and gender-responsive approach. The institutional framework for gender equality has been further reinforced, with the NCGE operating since 2018 as an independent body directly under the Prime Minister, thereby strengthening its coordinating mandate [1] . Furthermore, to ensure nationwide policy implementation, gender councils, sectoral committees, and dedicated gender focal units have been established within line ministries and across all 21 provinces ( aimags ), creating a decentralized mechanism for gender mainstreaming. In addition to improving the legal environment, the following activities have been successfully implemented , including: A 2021 national discussion on \"Assessment of the Impact of the COVID-19 Pandemic on Women-Owned Informal, Micro, and Small Businesses in Mongolia\" supporting GBF Target 14 on integrating biodiversity into business and production practices. A 2022 \"Morning Meeting\" for women entrepreneurs, co-organized with the Mongolian National Chamber of Commerce and Industry (MNCCI), fostering private sector engagement. The \"Women's Political Leadership: Accelerating the Movement\" forum. A bi-weekly webinar series, \"The Path Forward,\" hosted by the Women's Leadership Network to enhance capacity and networking. Launch of the integrated digital platform tentsuu.mn under the project \"Promoting Gender Equality and Women's Participation in Decision-Making,\" facilitating knowledge sharing and access to information. Regular quarterly meetings to strengthen leadership commitment to and accountability for gender equality among directors of Ministry Policy and Planning Departments. Integration of Gender Equality in Climate and Biodiversity Action The fifth objective of the Sectoral Strategic Plan for Ensuring Gender Equality (2022–2031) aims to ensure equitable gender participation in climate change mitigation and adaptation. It outlines three sub-o bjectives : 1) implementing climate policies and governance in a gender-sensitive a pproach ; 2) ensuring gender-equitable participation in nature conservation and green job creation; and 3) strengthening the climate resilience of w omen, men and other social groups. The Plan outlines 27 specific activities and details clear responsibilities to 12 ministries and two professional organizations, emphasizing the participation crucial role of civil society and local administrations. Several activities are synergized with other strategic goals to reduce gender-specific vulnerabilities by supporting the livelihoods of rural women and girls. Key events advancing the gender-climate nexus include [3] : The 2018 international workshop \"Sustainable Development Goals: Gender and Development,\" which produced the Ulaanbaatar Declaration for a Sustainable Future. The successful convening of the World Women’s Conference for a Green Future in 2024. The organization of the international conference on \"Gender Equality and Climate Change\" in 2025. Significant efforts have been made to enhance gender awareness and strengthen capacity: Within the framework of implementing the National Programme on Gender Equality (2017–2021), approximately 45% of all civil servants (101,000 individuals) and 50% of managerial staff (6,000 individuals) received training. The Cross-Sectoral Strategy (2022–2031) sets ambitious targets to train 85% of civil servants and 75% of managers (12,635 individuals) by 2026 . [1] Promoting Gender Equality and Women's Participation in Decision-Making: Project Report (2021–2025). Ulaanbaatar: KOICA and United Nations Development Programme (UNDP). [2] 2024 Annual report, National Center for Gender Equality, 2024 [3] IMPLEMENTATION AND RESULTS OF ACTIVITIES TO ENSURE GENDER EQUALITY, REPORT OF THE GOVERNMENT OF MONGOLIA, 2023",
       "nbsapTargetId": "NBSAP_20",
       "nbsapMatchScore": 1.0,
+      "gbfTargets": [
+        {
+          "id": "T22",
+          "code": "GBF-T22",
+          "title": "Ensure participation, justice, and rights for indigenous peoples and local communities, women, youth persons with disabilities and environmental defenders"
+        },
+        {
+          "id": "T23",
+          "code": "GBF-T23",
+          "title": "Implementation follows a gender-responsive approach"
+        }
+      ],
       "ortUniqueId": "ORT-NR7-MN-288707-2",
       "publishedOn": "2026-02-28"
     }

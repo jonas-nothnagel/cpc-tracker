@@ -1232,8 +1232,19 @@ export interface Nr7ProgressItem {
   nbsapTargetId?: string | null;
   /** Text-similarity score behind `nbsapTargetId` (0..1). */
   nbsapMatchScore?: number;
+  /** The Kunming-Montreal GBF global target(s) the country filed this
+   *  national target under, from the reporting tool: id "T03", code
+   *  "GBF-T03", and the CBD's heading verbatim. Several when the country
+   *  filed it under more than one; absent on files older than 2026-09-11. */
+  gbfTargets?: Nr7GbfTargetRef[];
   ortUniqueId?: string | null;
   publishedOn?: string | null;
+}
+
+export interface Nr7GbfTargetRef {
+  id: string;
+  code: string;
+  title: string;
 }
 
 /** One answer in the NR7's GBF binary-indicator questionnaire. */
