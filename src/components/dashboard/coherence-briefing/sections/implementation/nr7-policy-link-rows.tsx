@@ -22,11 +22,11 @@ import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { getDocColor, getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
 import { transitionName, withViewTransition } from "@/lib/view-transition";
-import { GbfChip, NR7_COLORS, shortNr7Text } from "../../nr7-report";
+import { GbfChip, NR7_COLORS, shortNr7Text, type Nr7PolicyLink } from "../../nr7-report";
 import type { Nr7PolicyLinkGroup, Nr7PolicyLinkItem } from "./review-groups";
 import type { CountryConfig } from "@/types";
 
-/** Counterpart targets listed in an open row before "+ N more". */
+/** Counterpart targets listed in an open row before "+ N more" unfolds the rest. */
 export const COUNTERPARTS_SHOWN = 3;
 
 export interface Nr7PolicyLinkRowsProps {
@@ -97,6 +97,54 @@ function LinkBar({ item, countryConfig }: { item: Nr7PolicyLinkItem; countryConf
   );
 }
 
+/** The most aligned counterparts, the first few then "+ N more" unfolding
+ *  the rest (and folding back). Mounted only while the row is open, so it
+ *  starts folded each time. */
+function CounterpartList({
+  links,
+  docLabel,
+  visibleTargetIds,
+  onOpenTarget,
+  moreLabel,
+  fewerLabel,
+}: {
+  links: Nr7PolicyLink[];
+  docLabel: (doc: string) => string;
+  visibleTargetIds: ReadonlySet<string>;
+  onOpenTarget: (targetId: string) => void;
+  moreLabel: (n: number) => string;
+  fewerLabel: string;
+}) {
+  const [showAll, setShowAll] = useState(false);
+  const shown = showAll ? links : links.slice(0, COUNTERPARTS_SHOWN);
+  const more = links.length - shown.length;
+  return (
+    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-caption">
+      {shown.map((l) => {
+        const label = `${docLabel(l.doc)} · ${l.label}`;
+        return (
+          <li key={l.targetId}>
+            {visibleTargetIds.has(l.targetId) ? (
+              <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
+                {label} <span aria-hidden="true">›</span>
+              </button>
+            ) : (
+              <span title={l.text}>{label}</span>
+            )}
+          </li>
+        );
+      })}
+      {(more > 0 || showAll) && (
+        <li>
+          <button type="button" onClick={() => setShowAll((v) => !v)} className="text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums">
+            {showAll ? fewerLabel : moreLabel(more)}
+          </button>
+        </li>
+      )}
+    </ul>
+  );
+}
+
 function PolicyLinkRow({
   item,
   expanded,
@@ -122,7 +170,6 @@ function PolicyLinkRow({
   const docLabel = (doc: string) => getDocMediumLabel(countryConfig, doc);
   const docTitle = (doc: string) => getDocFullLabel(countryConfig, doc);
   const mostFlaggedDoc = [...links.byDoc].sort((a, b) => b.flagged - a.flagged || a.doc.localeCompare(b.doc))[0];
-  const counterparts = links.high.slice(0, COUNTERPARTS_SHOWN);
   const challenges = row.keyChallengesSummary ?? row.progressSummary;
 
   return (
@@ -182,25 +229,7 @@ function PolicyLinkRow({
           </section>
           <section>
             <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">{tPl("counterparts")}</p>
-            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-caption">
-              {counterparts.map((l) => {
-                const label = `${docLabel(l.doc)} · ${l.label}`;
-                return (
-                  <li key={l.targetId}>
-                    {visibleTargetIds.has(l.targetId) ? (
-                      <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
-                        {label} <span aria-hidden="true">›</span>
-                      </button>
-                    ) : (
-                      <span title={l.text}>{label}</span>
-                    )}
-                  </li>
-                );
-              })}
-              {links.high.length > counterparts.length && (
-                <li className="text-[var(--undp-gray)]">{tPl("more", { count: links.high.length - counterparts.length })}</li>
-              )}
-            </ul>
+            <CounterpartList links={links.high} docLabel={docLabel} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} moreLabel={(n) => tPl("more", { count: n })} fewerLabel={tPl("fewer")} />
           </section>
           {links.flagged.length > 0 && mostFlaggedDoc && (
             <p className="text-caption text-[var(--undp-black)]">

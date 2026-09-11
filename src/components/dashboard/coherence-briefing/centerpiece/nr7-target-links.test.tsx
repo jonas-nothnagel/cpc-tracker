@@ -90,6 +90,24 @@ describe("Nr7TargetLinks", () => {
     expect([...document.querySelectorAll('[data-tour="nr7-links-docs"] > li > details > summary > span:last-child')].map((s) => s.textContent?.trim())).toEqual(["1", "0 + 1 to review"]);
   });
 
+  it("unfolds a long document list on \"+ N more\" and folds it back", () => {
+    const high = Array.from({ length: 8 }, (_, i) => ({ targetId: `NDC_${i + 1}`, doc: "NDC", label: `NDC ${i + 1}`, text: "t", level: "high" as const, mechanism: null }));
+    const row = { ...nt04, policyLinks: { high, flagged: [], byDoc: [{ doc: "NDC", high: 8, flagged: 0 }], docs: 1 } };
+    render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7TargetLinks row={row} isDefault={false} countryConfig={null} countryName="T" visibleTargetIds={new Set()} onOpenTarget={vi.fn()} />
+      </NextIntlClientProvider>,
+    );
+    const doc = document.querySelector('[data-tour="nr7-links-docs"] > li')!;
+    const items = () => [...doc.querySelectorAll("details > ul > li")].map((li) => li.textContent?.trim());
+    expect(items()).toHaveLength(7); // six targets and the "+ 2 more" button
+    fireEvent.click(within(doc as HTMLElement).getByRole("button", { name: "+ 2 more" }));
+    expect(items()).toHaveLength(9);
+    expect(items().at(-1)).toBe("Show fewer");
+    fireEvent.click(within(doc as HTMLElement).getByRole("button", { name: "Show fewer" }));
+    expect(items()).toHaveLength(7);
+  });
+
   it("renders nothing for a target with no NBSAP match", () => {
     const { container } = render(
       <NextIntlClientProvider locale="en" messages={en}>

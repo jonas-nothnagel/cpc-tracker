@@ -1153,7 +1153,8 @@
           "more": "+ {count} more",
           "flagged": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, mostly with the {doc}",
           "challengesHeading": "What the report says holds it back (the report's words, verbatim)",
-          "noChallenges": "The report gives no key-challenges text for this target."
+          "noChallenges": "The report gives no key-challenges text for this target.",
+          "fewer": "Show fewer"
         }
       }
     },
@@ -1175,7 +1176,8 @@
         "heading": "Institutions named on the reported actions",
         "involvementNote": "An action naming several institutions counts once for each, so counts read as involvement, not shares of a whole.",
         "noInstitution": "{count, plural, one {# reported action names no institution.} other {# reported actions name no institution.}}",
-        "moreInstitutions": "{count, plural, one {# more institution with fewer actions.} other {# more institutions with fewer actions.}}"
+        "moreInstitutions": "{count, plural, one {# more institution with fewer actions.} other {# more institutions with fewer actions.}}",
+        "fewerInstitutions": "Show fewer institutions"
       },
       "flow": {
         "toggleRoster": "Who delivers",
@@ -1209,7 +1211,8 @@
         "targets": {
           "heading": "The aligned targets",
           "count": "{high}{flagged, plural, =0 {} other { + # to review}}",
-          "more": "+ {count} more"
+          "more": "+ {count} more",
+          "fewer": "Show fewer"
         },
         "caveat": "AI-estimated alignment between target texts, for the documents shown. A prompt for review, not a record of delivery or funding. Open a target to read the pair."
       }

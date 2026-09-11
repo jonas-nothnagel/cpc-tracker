@@ -109,6 +109,26 @@ describe("Nr7PolicyLinkRows", () => {
     expect(onSelect).toHaveBeenLastCalledWith(null);
   });
 
+  it("unfolds the counterparts past the first three on \"+ N more\"", () => {
+    // A fourth document target aligned with NBSAP_1.
+    const targets = new Map(FIXTURE_TARGETS);
+    targets.set("NAP_2", { id: "NAP_2", text: "NAP_2 text", sourceDocument: "NAP", sourceLabel: "NAP_2", country: "Testland", isQuantitative: false, isTimeBound: false });
+    const group = rankPolicyLinkCandidates(buildNr7Report(behind, [...FIXTURE_ALIGNMENT, { targetAId: "NBSAP_1", targetBId: "NAP_2", alignment: "high", description: "" }], targets)!)!;
+    render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7PolicyLinkRows group={group} countryConfig={null} visibleTargetIds={new Set(targets.keys())} onOpenTarget={vi.fn()} onFocusNr7Target={vi.fn()} />
+      </NextIntlClientProvider>,
+    );
+    fireEvent.click(rowButton(0));
+    const row = rows()[0];
+    // NAP and NDC tie on two links each and sort by id, so the fourth counterpart is NDC_2.
+    expect(within(row).queryByRole("button", { name: "NDC · NDC_2" })).toBeNull();
+    fireEvent.click(within(row).getByRole("button", { name: "+ 1 more" }));
+    expect(within(row).getByRole("button", { name: "NDC · NDC_2" })).toBeInTheDocument();
+    fireEvent.click(within(row).getByRole("button", { name: "Show fewer" }));
+    expect(within(row).queryByRole("button", { name: "NDC · NDC_2" })).toBeNull();
+  });
+
   it("folds the rest behind Show all and never claims a suggestion on the face", () => {
     renderRows(FIXTURE_ALIGNMENT, 2);
     expect(rows()).toHaveLength(2);

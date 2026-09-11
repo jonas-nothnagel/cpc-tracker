@@ -1153,7 +1153,8 @@
           "more": "+ {count} más",
           "flagged": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, sobre todo con {doc}",
           "challengesHeading": "Qué dice el informe que la frena (palabras del informe, textual)",
-          "noChallenges": "El informe no da texto de desafíos clave para esta meta."
+          "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
+          "fewer": "Mostrar menos"
         }
       }
     },
@@ -1175,7 +1176,8 @@
         "heading": "Instituciones mencionadas en las acciones reportadas",
         "involvementNote": "Una acción que menciona varias instituciones cuenta una vez por cada una, así que las cifras se leen como participación, no como partes de un todo.",
         "noInstitution": "{count, plural, one {# acción reportada no menciona ninguna institución.} other {# acciones reportadas no mencionan ninguna institución.}}",
-        "moreInstitutions": "{count, plural, one {# institución más con menos acciones.} other {# instituciones más con menos acciones.}}"
+        "moreInstitutions": "{count, plural, one {# institución más con menos acciones.} other {# instituciones más con menos acciones.}}",
+        "fewerInstitutions": "Mostrar menos instituciones"
       },
       "flow": {
         "toggleRoster": "Quién ejecuta",
@@ -1209,7 +1211,8 @@
         "targets": {
           "heading": "Las metas alineadas",
           "count": "{high}{flagged, plural, =0 {} other { + # por revisar}}",
-          "more": "+ {count} más"
+          "more": "+ {count} más",
+          "fewer": "Mostrar menos"
         },
         "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par."
       }

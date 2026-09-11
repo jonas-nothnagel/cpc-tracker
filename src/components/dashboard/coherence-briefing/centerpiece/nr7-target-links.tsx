@@ -19,13 +19,14 @@
  * "delivers" or "funds".
  */
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
 import { GbfChip, NR7_COLORS, shortNr7Text, type Nr7PolicyLink, type Nr7TargetRowModel } from "../nr7-report";
 import type { CountryConfig } from "@/types";
 
-/** Counterparts listed per document before "Show all". */
+/** Counterparts listed per document before "+ N more" unfolds the rest. */
 const PER_DOC_SHOWN = 6;
 
 export interface Nr7TargetLinksProps {
@@ -128,7 +129,7 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
                       {t("targets.count", { high: d.high, flagged: d.flagged })}
                     </span>
                   </summary>
-                  <TargetList list={list} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} flaggedWord={t("flagged.word")} moreLabel={(n) => t("targets.more", { count: n })} />
+                  <TargetList list={list} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} flaggedWord={t("flagged.word")} moreLabel={(n) => t("targets.more", { count: n })} fewerLabel={t("targets.fewer")} />
                 </details>
               </li>
             );
@@ -147,14 +148,17 @@ function TargetList({
   onOpenTarget,
   flaggedWord,
   moreLabel,
+  fewerLabel,
 }: {
   list: Nr7PolicyLink[];
   visibleTargetIds: ReadonlySet<string>;
   onOpenTarget: (targetId: string) => void;
   flaggedWord: string;
   moreLabel: (n: number) => string;
+  fewerLabel: string;
 }) {
-  const shown = list.slice(0, PER_DOC_SHOWN);
+  const [showAll, setShowAll] = useState(false);
+  const shown = showAll ? list : list.slice(0, PER_DOC_SHOWN);
   const more = list.length - shown.length;
   return (
     <ul className="mt-1.5 space-y-0.5 max-h-44 overflow-y-auto pr-1">
@@ -171,7 +175,13 @@ function TargetList({
           {l.level === "flagged" && <span className="shrink-0 text-[10.5px]" style={{ color: FLAGGED_COLOR }}>{flaggedWord}</span>}
         </li>
       ))}
-      {more > 0 && <li className="text-[11px] text-[var(--undp-gray)]">{moreLabel(more)}</li>}
+      {(more > 0 || showAll) && (
+        <li>
+          <button type="button" onClick={() => setShowAll((v) => !v)} className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums">
+            {showAll ? fewerLabel : moreLabel(more)}
+          </button>
+        </li>
+      )}
     </ul>
   );
 }
