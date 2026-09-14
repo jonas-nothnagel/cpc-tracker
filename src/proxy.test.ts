@@ -11,7 +11,10 @@ const { default: proxy } = await import("./proxy");
 
 const TOKEN = "test-token-xyz";
 
-function req(path: string, init?: RequestInit): NextRequest {
+function req(
+  path: string,
+  init?: ConstructorParameters<typeof NextRequest>[1],
+): NextRequest {
   return new NextRequest(new URL(path, "http://localhost:3000"), init);
 }
 
