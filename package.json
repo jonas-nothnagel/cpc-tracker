@@ -14,34 +14,42 @@
     "deploy": "./scripts/deploy.sh"
   },
   "dependencies": {
-    "countries-and-timezones": "^3.9.0",
+    "countries-and-timezones": "^3.10.0",
     "d3-chord": "^3.0.1",
     "d3-force": "^3.0.0",
     "d3-shape": "^3.2.0",
-    "next": "16.1.6",
-    "next-intl": "^4.13.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "recharts": "^3.7.0"
+    "next": "16.2.12",
+    "next-intl": "^4.14.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@eslint/eslintrc": "^3.3.6",
+    "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/d3-chord": "^3.0.6",
     "@types/d3-force": "^3.0.10",
-    "@types/d3-shape": "^3.1.8",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^5.1.4",
-    "eslint": "^9",
+    "@types/d3-shape": "^3.2.0",
+    "@types/node": "^20.19.43",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint": "^9.39.5",
     "eslint-config-next": "16.1.6",
     "jsdom": "^28.1.0",
-    "postcss": "^8",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "vitest": "^4.0.18"
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vite": "7.3.6",
+    "vitest": "^4.1.11"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.28.1",
+      "postcss": "8.5.26",
+      "sharp": "0.35.4"
+    }
   }
 }
