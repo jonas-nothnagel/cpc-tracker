@@ -4,6 +4,8 @@
  * Two addressing modes:
  *   - ?analysisId=xxx (upload flow) → reads python/analyses/{id}/   — never cached
  *   - ?country=<id>   (pilot flow)  → reads python/data/ + python/output/{id}/ — cached + gzipped
+ *   - ?country=<id>&slice=wheel     → the landing wheel's slim projection of the same payload
+ *                                     (country mode only; honours ?model= and ?locale= like the full payload)
  *
  * Precedence: analysisId wins when both are present. Unknown or malformed
  * country params are rejected with 400 BEFORE any filesystem access — the
@@ -21,6 +23,7 @@ import {
   derivePaths,
   assembleDashboardData,
   getCountryDashboardPayload,
+  getCountryWheelPayload,
 } from "@/lib/dashboard-data";
 
 // Re-exported for the path-derivation unit test, which imports it from here.
@@ -48,6 +51,18 @@ function buildJsonResponse(json: string, gzip: Uint8Array | null, cacheControl: 
   return new NextResponse(json, { status: 200, headers });
 }
 
+/** Error body for a failed country lookup: `missing` only when assembly named files. */
+function countryErrorResponse(result: {
+  status: 400 | 404;
+  error: string;
+  missing?: string[];
+}): NextResponse {
+  return NextResponse.json(
+    result.missing ? { error: result.error, missing: result.missing } : { error: result.error },
+    { status: result.status, headers: NO_STORE_HEADERS },
+  );
+}
+
 export async function GET(request: NextRequest) {
   const analysisId = request.nextUrl.searchParams.get("analysisId");
   const country = request.nextUrl.searchParams.get("country");
@@ -55,7 +70,14 @@ export async function GET(request: NextRequest) {
   // Optional ?model= picks a per-model output subdir (Mongolia model-comparison).
   // Validation lives in derivePaths so callers can't bypass the slug allow-list.
   const model = request.nextUrl.searchParams.get("model");
+  // Optional ?slice=wheel serves only what the landing wheel draws.
+  const slice = request.nextUrl.searchParams.get("slice");
   const acceptsGzip = (request.headers.get("accept-encoding") ?? "").includes("gzip");
+
+  // Only the wheel slice exists; reject anything else before any other work.
+  if (slice && slice !== "wheel") {
+    return NextResponse.json({ error: `Unknown slice: ${slice}` }, { status: 400, headers: NO_STORE_HEADERS });
+  }
 
   // Upload flow: per-analysis data is dynamic and may still be processing, so
   // it is never cached. analysisId wins over country when both are present.
@@ -75,18 +97,17 @@ export async function GET(request: NextRequest) {
     return buildJsonResponse(json, acceptsGzip ? gzipSync(json) : null, "no-store");
   }
 
+  if (slice === "wheel") {
+    const wheel = getCountryWheelPayload(country ?? "", locale, model);
+    if (wheel.kind === "error") return countryErrorResponse(wheel);
+    return buildJsonResponse(wheel.payload.json, acceptsGzip ? wheel.payload.gzip : null, COUNTRY_CACHE_CONTROL);
+  }
+
   // Pilot flow: assembled once per container, then served from the cached
   // (and pre-gzipped) payload. Each (country, locale, model) combination
   // gets its own cache entry.
   const payloadResult = getCountryDashboardPayload(country ?? "", locale, model);
-  if (payloadResult.kind === "error") {
-    return NextResponse.json(
-      payloadResult.missing
-        ? { error: payloadResult.error, missing: payloadResult.missing }
-        : { error: payloadResult.error },
-      { status: payloadResult.status, headers: NO_STORE_HEADERS },
-    );
-  }
+  if (payloadResult.kind === "error") return countryErrorResponse(payloadResult);
   const { json, gzip } = payloadResult.payload;
   return buildJsonResponse(json, acceptsGzip ? gzip : null, COUNTRY_CACHE_CONTROL);
 }

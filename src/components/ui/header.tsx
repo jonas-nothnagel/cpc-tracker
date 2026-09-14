@@ -17,6 +17,9 @@ interface HeaderProps {
    *  Side pages (e.g. "/prototypes") pass their own so switching country
    *  keeps the user on the same view. */
   switcherPath?: string;
+  /** Per-model run the current page shows (`?model=`), carried onto the
+   *  Explore link so both surfaces read the same outputs. */
+  model?: string | null;
 }
 
 export function Header({
@@ -25,20 +28,34 @@ export function Header({
   countries,
   basePath,
   switcherPath = "/dashboard",
+  model,
 }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const t = useTranslations("header");
   const showSwitcher = currentCountryId && countries && countries.length > 1;
 
+  // Explore has a country-scoped route only, so the item appears wherever a
+  // country is known (standalone routes via basePath, the demo dashboard via
+  // currentCountryId) and not on country-less pages.
+  const explorePath = basePath
+    ? `${basePath}/explore`
+    : currentCountryId
+      ? `/${currentCountryId}/explore`
+      : null;
+  const exploreHref =
+    explorePath && model ? `${explorePath}?model=${encodeURIComponent(model)}` : explorePath;
+  const exploreItem = exploreHref ? [{ href: exploreHref, label: t("nav.explore") }] : [];
   const navItems = basePath
     ? [
         { href: basePath, label: t("nav.home") },
+        ...exploreItem,
         { href: "/methodology", label: t("nav.howItWorks") },
         { href: `${basePath}/upload`, label: t("nav.uploadData") },
       ]
     : [
         { href: "/", label: t("nav.home") },
+        ...exploreItem,
         { href: "/methodology", label: t("nav.howItWorks") },
         { href: "/upload", label: t("nav.uploadData") },
       ];

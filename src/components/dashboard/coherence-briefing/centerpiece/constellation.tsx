@@ -32,9 +32,19 @@ import type {
   AlignmentResult,
   CountryConfig,
   PolicyDocumentType,
-  Target,
+  WheelAlignment,
+  WheelTarget,
 } from "@/types";
 import type { WheelState } from "./wheel";
+
+/**
+ * The constellation also shades flagged pairs by manageability and draws
+ * `low` pairs, neither of which the landing's wheel slice carries; it must be
+ * fed the full alignment set. (`manageability` is optional on
+ * `AlignmentResult`, so this intersection documents the need rather than
+ * enforcing it.)
+ */
+type ConstellationAlignment = WheelAlignment & Pick<AlignmentResult, "manageability">;
 
 const VB_W = 760;
 const VB = 620;
@@ -53,9 +63,9 @@ interface LayoutResult {
   clusterCenters: Map<PolicyDocumentType, { x: number; y: number }>;
 }
 
-function buildLayout(targets: Target[]): LayoutResult {
+function buildLayout(targets: WheelTarget[]): LayoutResult {
   // 1. Group by document.
-  const byDoc = new Map<PolicyDocumentType, Target[]>();
+  const byDoc = new Map<PolicyDocumentType, WheelTarget[]>();
   for (const t of targets) {
     const list = byDoc.get(t.sourceDocument) ?? [];
     list.push(t);
@@ -122,8 +132,8 @@ function buildLayout(targets: Target[]): LayoutResult {
 }
 
 export interface ConstellationCenterpieceProps {
-  targets: Target[];
-  alignments: AlignmentResult[];
+  targets: WheelTarget[];
+  alignments: ConstellationAlignment[];
   countryConfig: CountryConfig | null;
   state?: WheelState;
 }
@@ -141,8 +151,8 @@ export function ConstellationCenterpiece({
   );
 
   const ordered = useMemo(() => {
-    const aligns: AlignmentResult[] = [];
-    const tensions: AlignmentResult[] = [];
+    const aligns: ConstellationAlignment[] = [];
+    const tensions: ConstellationAlignment[] = [];
     for (const a of alignments) {
       if (a.alignment === "none") continue;
       if (!positions.has(a.targetAId) || !positions.has(a.targetBId)) continue;

@@ -414,6 +414,27 @@ export interface AlignmentResult {
   sharedContext?: string;
 }
 
+/**
+ * What the coherence wheel reads from a target: a full `Target` satisfies it,
+ * and so does the landing's slim wheel slice (`/api/dashboard?slice=wheel`).
+ */
+export type WheelTarget = Pick<Target, "id" | "sourceDocument">;
+
+/** What the coherence wheel reads from a pair; see `WheelTarget`. */
+export type WheelAlignment = Pick<AlignmentResult, "targetAId" | "targetBId" | "alignment">;
+
+/**
+ * Alignment levels the wheel variant draws as ribbons. `none` carries no
+ * signal and `low` never forms a ribbon (an arc pair with only `low` pairs has
+ * total 0 and is skipped), so a wheel-only payload can omit both. The
+ * constellation variant does draw `low`, so this set is not sufficient for it.
+ */
+export const WHEEL_DRAWN_LEVELS: ReadonlySet<AlignmentLevel> = new Set<AlignmentLevel>([
+  "high",
+  "medium",
+  "flagged",
+]);
+
 /** Whether an alignment level represents a flagged pair (negative side of the scale). */
 export function isContradiction(level: AlignmentLevel): boolean {
   return level === "flagged";

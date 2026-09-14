@@ -51,9 +51,14 @@ There are three call paths, all the same methodology:
    reach, so it calls the hosted endpoint
    `POST https://api.ecologits.ai/v1beta/estimations`.
 
-Impact fields are reported by EcoLogits as min/max ranges. We take the midpoint
-so running totals stay single-valued. Water is read from the usage phase
-(`impacts.usage.wcf`) in every path for consistency.
+Impact fields are reported by EcoLogits as min/max ranges. Headline totals use
+the midpoint so running totals stay single-valued; since August 2026 the
+min/max bounds are also accumulated and persisted (ledger schema 2), so the
+modelled-uncertainty envelope is not lost. Calls that carry no range (per-token
+coefficient estimates, totals seeded from older files) contribute their
+midpoint to both bounds, which means the envelope only ever understates the
+uncertainty. Water is read from the usage phase (`impacts.usage.wcf`) in every
+path for consistency.
 
 ## 4. Region and grid intensity
 
@@ -73,7 +78,7 @@ Every component appends one row to a single append-only JSONL file,
 run per model (a run makes thousands of calls, so per-call rows would be absurd).
 Chat writes one row per message.
 
-Row schema (`schema: 1`):
+Row schema (`schema: 2`; schema 1 rows lack the optional bounds and stay valid):
 
 | Field | Notes |
 | --- | --- |
@@ -83,8 +88,23 @@ Row schema (`schema: 1`):
 | `run_id`, `country` | analysis id and country where applicable, else null. |
 | `input_tokens`, `output_tokens` | chat only; pipeline rows leave them null. |
 | `call_count`, `cached_call_count` | total calls and cache hits (cache hits add no marginal footprint). |
-| `energy_wh`, `water_ml`, `co2_geq`, `minerals_ugsbeq` | impacts in base units. |
+| `energy_wh`, `water_ml`, `co2_geq`, `minerals_ugsbeq` | impacts in base units (midpoints). |
+| `*_min`, `*_max` per metric | optional modelled-uncertainty bounds (schema 2, August 2026 onward). |
 | `source` | measured, estimated, api, or unavailable (see below). |
+
+The `country` tag is derived from the targets filename (the same derivation as
+the output directory), never from output-path components: the pre-2026-08 code
+used the output leaf directory name, which recorded the model slug as the
+country for model-comparison runs under `<country>/<model-slug>/` (4 rows,
+~28 kWh, repaired 2026-08-10). The deploy reconcile
+(`python/scripts/merge_ledger.py`) matches volume rows against seed rows on a
+whitelist of event-defining fields (timestamp, component, provider, model,
+region, token/call counts, the four impact midpoints, source), so seed-side
+corrections to metadata outside the whitelist (`country`, `run_id`, `schema`,
+bounds) supersede stale volume copies instead of double-counting; volume rows
+are only deduplicated against each other when byte-identical, so distinct
+live events are never collapsed. Ratings-ledger rows (no `schema` key) keep
+exact-row identity: there `country` is identity, not metadata.
 
 `source` values: `measured` (live EcoLogits on Python responses), `estimated`
 (computed from call counts when a run was fully cache-served), `api` (hosted
@@ -118,10 +138,27 @@ reports near-zero new impact.
 
 - Estimates, not meter readings. EcoLogits models energy from public model
   characteristics; closed models (for example gpt-5.x) are approximated.
-- Ranges. Underlying values are ranges; we report midpoints.
+- Ranges. Underlying values are ranges; headline figures are midpoints. Since
+  August 2026 the bounds are persisted per row, and the dashboard shows the
+  summed envelope once enough of the recorded footprint carries bounds (rows
+  recorded before then count their midpoint on both ends, so the shown range
+  is a floor on the true uncertainty, never an exaggeration).
 - Reasoning tokens. Models that reason before answering may use more compute
   than the visible output tokens imply.
 - Always label outputs as AI-estimated with the EcoLogits basis.
+
+## 8b. Everyday equivalences
+
+The dashboard translates the running totals into three everyday anchors, each
+tied to exactly one metric so energy-based and carbon-based framings never
+blend: full charges of a long-range electric car (energy, 75-100 kWh pack,
+midpoint 87.5 kWh), litres of petrol whose combustion releases the same CO2
+(US EPA combustion factor, 8,887 g CO2 per US gallon, verified August 2026;
+the totals are life-cycle CO2e, so the litre figure errs on the high side),
+and bathtubs of cooling water (155 litres). Factors live in
+`src/lib/footprint/equivalents.ts` with their provenance; the strip is
+labelled illustrative, hidden while totals are too small for the anchors to
+be legible, and shows only the anchors that do not round to zero.
 
 ## 9. Data sovereignty
 

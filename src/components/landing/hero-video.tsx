@@ -15,6 +15,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { saveDataRequested } from "./save-data";
 
 interface HeroVideoProps {
   poster: string;
@@ -33,10 +34,7 @@ export function HeroVideo({ poster, mp4, webm, children }: HeroVideoProps) {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const small = window.matchMedia("(max-width: 767px)").matches;
-    const conn = (
-      navigator as Navigator & { connection?: { saveData?: boolean } }
-    ).connection;
-    const saveData = conn?.saveData === true;
+    const saveData = saveDataRequested();
     // Intentional client-only upgrade: SSR renders the poster (showVideo=false)
     // and we only opt into the video once we can read the user's environment.
     // eslint-disable-next-line react-hooks/set-state-in-effect

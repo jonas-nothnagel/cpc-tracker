@@ -160,11 +160,11 @@ describe("locale lock against messages/*.json", () => {
     ["explorer.chat.askAriaProminent", (m) => m.explorer.chat.askAriaProminent,
       ["Ask the assistant", "Pregunte al asistente", "туслахаас асуух"]],
     ["explorer.chat.surpriseMe", (m) => m.explorer.chat.surpriseMe,
-      ["Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах"]],
-    ["explorer.workbench.answersHandle", (m) => m.explorer.workbench.answersHandle,
+      ["Show an insight", "Mostrar una observación", "Ойлголт харуулах"]],
+    ["explorer.workbench.answersHeading", (m) => m.explorer.workbench.answersHeading,
       ["Answers", "Respuestas", "Хариултууд"]],
-    ["explorer.workbench.answersClose", (m) => m.explorer.workbench.answersClose,
-      ["Collapse", "Contraer", "Хураах"]],
+    ["explorer.workbench.backToSummary", (m) => m.explorer.workbench.backToSummary,
+      ["Back to summary", "Volver al resumen", "Товч тойм руу буцах"]],
   ];
 
   it.each(LOCKS)("%s", (_desc, select, fragments) => {

@@ -6,6 +6,7 @@ import {
   buildDocFrictionShares,
   buildFlagSubsetProfile,
   buildSectorCoherenceShare,
+  buildSectorTensionDensity,
   buildStorylineProfile,
   buildTargetFrictionTree,
   canonicalHiddenKey,
@@ -697,6 +698,46 @@ describe("buildFlagSubsetProfile", () => {
     expect(p.byDocPair.length).toBeLessThanOrEqual(1);
     expect(p.byTheme.length).toBeLessThanOrEqual(1);
     expect(p.recurringTargets.length).toBeLessThanOrEqual(1);
+  });
+
+  it("skips a primary whose category is not in the lens list", () => {
+    // A derived "no clear theme" bucket id (or an id from another sector
+    // list) is not a lens theme: it must never surface as a raw id.
+    const p = buildFlagSubsetProfile({
+      pairs,
+      targets,
+      classifications: [
+        makeClassification("A", "cat1", "globe"),
+        makeClassification("B", "globe_unclassified", "globe"),
+        makeClassification("C", "cat2", "globe"),
+        makeClassification("D", "cat2", "globe"),
+      ],
+      taxonomyType: "globe",
+      categories,
+    });
+    expect(p.byTheme.map((t) => t.categoryId)).not.toContain(
+      "globe_unclassified",
+    );
+    expect(p.byTheme.every((t) => t.categoryName !== t.categoryId)).toBe(true);
+    // cat1: A-B, A-C, A-D (B no longer counts for anything); cat2: A-C, A-D, B-D.
+    expect(p.byTheme.find((t) => t.categoryId === "cat1")?.count).toBe(3);
+    expect(p.byTheme.find((t) => t.categoryId === "cat2")?.count).toBe(3);
+  });
+});
+
+describe("buildSectorTensionDensity", () => {
+  it("emits rows only for listed categories, so a bucket primary never becomes a row", () => {
+    const rows = buildSectorTensionDensity({
+      targets: [makeTarget("A", "NDC"), makeTarget("B", "NAP")],
+      alignment: [makeFlagged("A", "B", "goal_conflict")],
+      classifications: [
+        makeClassification("A", "hr_participation", "hr"),
+        makeClassification("B", "hr_unclassified", "hr"),
+      ],
+      categories: [{ id: "hr_participation", name: "Participation" }],
+      taxonomyType: "hr",
+    });
+    expect(rows.map((r) => r.categoryId)).toEqual(["hr_participation"]);
   });
 });
 

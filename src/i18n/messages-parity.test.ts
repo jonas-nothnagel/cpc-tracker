@@ -136,6 +136,19 @@ describe("full message-catalog parity (en/es/mn)", () => {
   }
 });
 
+describe("year arguments are never number-formatted", () => {
+  // `{start, number}` runs Intl.NumberFormat with grouping, so a year renders
+  // as "2,020" in en and mn. Period messages must interpolate years plainly.
+  for (const l of LOCALES) {
+    it(`${l} has no {start, number} / {end, number} args`, () => {
+      const offenders = Object.entries(flat[l])
+        .filter(([, v]) => /\{(start|end)\s*,\s*number\b/.test(v))
+        .map(([k]) => k);
+      expect(offenders).toEqual([]);
+    });
+  }
+});
+
 describe("taxonomy category translation coverage (es/mn)", () => {
   // The display names the dashboard renders come from these four arrays in
   // categories.json. globe_subcategories are intentionally not localized.

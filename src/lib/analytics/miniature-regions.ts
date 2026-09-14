@@ -313,21 +313,21 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
         frag("Ask the assistant", "Pregunte al asistente", "туслахаас асуух"),
         exact(
           "Ask →", "Preguntar →", "Асуух →",
-          "Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах",
+          "Show an insight", "Mostrar una observación", "Ойлголт харуулах",
           "Show on the wheel", "Mostrar en la rueda", "Хүрд дээр харуулах",
         ),
       ),
     },
     {
       id: "answers",
-      name: "The answers panel",
-      // explorer.workbench.answersHandle ("Answers · N") / answersClose
+      name: "The answers rail",
+      // explorer.workbench.answersHeading (top-bar recall) / backToSummary
       match: either(
         (label) =>
           label.startsWith("Answers") ||
           label.startsWith("Respuestas") ||
           label.startsWith("Хариултууд"),
-        exact("Collapse", "Contraer", "Хураах"),
+        exact("Back to summary", "Volver al resumen", "Товч тойм руу буцах"),
       ),
     },
     OTHER,

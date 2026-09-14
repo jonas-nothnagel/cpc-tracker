@@ -19,7 +19,10 @@ import {
   type Nr7Status,
 } from "@/lib/labels";
 import { track } from "@/lib/analytics/client";
-import { isUnclassifiedCategoryId } from "@/lib/unclassified-bucket";
+import {
+  isUnclassifiedCategoryId,
+  unclassifiedTargetIds,
+} from "@/lib/unclassified-bucket";
 import { InfoBox } from "@/components/ui/info-box";
 import { Modal } from "@/components/ui/modal";
 import { isContradiction } from "@/types";
@@ -50,7 +53,10 @@ import {
   OriginalLanguageChip,
 } from "./target-text";
 import { WorkbenchStage } from "./explorer-workbench/workbench-stage";
-import { LensPane } from "./explorer-workbench/lens-pane";
+import { ControlsStrip } from "./explorer-workbench/controls-strip";
+import { WorkbenchRail } from "./explorer-workbench/workbench-rail";
+import { resolveRailMode } from "./explorer-workbench/rail-mode";
+import { ambientRibbonInk } from "./explorer-workbench/ribbon-density";
 import type {
   BerData,
   BtrData,
@@ -430,9 +436,9 @@ function splitSourceLabel(label: string): { code: string | null; title: string }
  * finding.
  *
  * Renders nothing when grouping by document (no taxonomy involved) or when no
- * record carries reasoning. For the derived "no clear theme" bucket there is no
- * per-target sentence by construction — the target matched nothing — so we say
- * that plainly instead.
+ * record carries reasoning. Targets with no clear theme never become nodes
+ * under a taxonomy grouping (see `unplacedTargetIds`), so there is no bucket
+ * case to explain here.
  */
 function ClassificationReason({
   targetId,
@@ -462,8 +468,7 @@ function ClassificationReason({
 
   if (!groupMode || groupMode === "document") return null;
 
-  const isBucket = isUnclassifiedCategoryId(categoryId);
-  if (!isBucket && !record?.reasoning) return null;
+  if (!record?.reasoning) return null;
 
   const score = typeof record?.score === "number" ? record.score : null;
 
@@ -473,14 +478,14 @@ function ClassificationReason({
         {categoryLabel
           ? t("classification.heading", { category: categoryLabel })
           : t("classification.headingGeneric")}
-        {score !== null && !isBucket ? (
+        {score !== null ? (
           <span className="ml-1.5 font-normal">
             {t("classification.score", { score: score.toFixed(2) })}
           </span>
         ) : null}
       </p>
       <p className="mt-1 text-caption text-[var(--undp-black)] leading-relaxed">
-        {isBucket ? t("classification.unmatched") : record?.reasoning}
+        {record?.reasoning}
       </p>
       <p className="mt-1.5 text-caption text-[var(--undp-gray)]">
         {t("classification.aiDisclaimer")}
@@ -1584,6 +1589,7 @@ function ChatBar({
   hideReply = false,
   surprisePool,
   surpriseFills = false,
+  compact = false,
 }: {
   onAsk: (query: string) => void;
   chat: ChatStatus;
@@ -1613,6 +1619,8 @@ function ChatBar({
   /** Explorer B behaviour: Surprise me fills the input with a random question
    *  from surprisePool instead of rotating a data-derived insight. */
   surpriseFills?: boolean;
+  /** Rail-width variant of the prominent bar: no lead label, tighter padding. */
+  compact?: boolean;
 }) {
   const t = useTranslations("explorer.chat");
   const [query, setQuery] = useState("");
@@ -1661,11 +1669,15 @@ function ChatBar({
           // data-tour: the briefing's guided first read ends on this dock.
           <div
             data-tour="explore-ask"
-            className="scroll-mt-40 flex items-center gap-3 rounded-2xl border border-line bg-white px-3.5 py-2.5 shadow-sm"
+            className={`scroll-mt-40 flex items-center gap-3 rounded-2xl border border-line bg-white shadow-sm ${
+              compact ? "px-3 py-2" : "px-3.5 py-2.5"
+            }`}
           >
-            <span className="hidden max-w-[54px] shrink-0 text-caption font-medium leading-[1.15] text-[var(--undp-gray)] sm:block">
-              {t("askPoliciesLabel")}
-            </span>
+            {!compact && (
+              <span className="hidden max-w-[54px] shrink-0 text-caption font-medium leading-[1.15] text-[var(--undp-gray)] sm:block">
+                {t("askPoliciesLabel")}
+              </span>
+            )}
             <span aria-hidden="true" className="text-body text-gray-300">
               ⌕
             </span>
@@ -1677,11 +1689,20 @@ function ChatBar({
               disabled={chat.loading}
               className="min-w-0 flex-1 bg-transparent text-data text-[var(--undp-black)] placeholder:text-[var(--undp-gray)] focus:outline-none disabled:opacity-50"
               aria-label={t("askAriaProminent")}
+              // The question-storage disclosure stays attached to the input
+              // (tooltip + screen readers) now that the rail carries no caveat line.
+              title={t("storageNotice")}
+              aria-describedby="explore-ask-notice"
             />
+            <span id="explore-ask-notice" className="sr-only">
+              {t("storageNotice")}
+            </span>
             <button
               type="submit"
               disabled={chat.loading || query.trim().length === 0}
-              className="shrink-0 rounded-full bg-[var(--undp-blue)] px-5 py-2 text-data font-semibold text-white transition-colors disabled:opacity-40"
+              className={`shrink-0 rounded-full bg-[var(--undp-blue)] py-2 text-data font-semibold text-white transition-colors disabled:opacity-40 ${
+                compact ? "px-3.5" : "px-5"
+              }`}
             >
               {chat.loading ? t("loading") : t("askProminent")}
             </button>
@@ -1717,7 +1738,9 @@ function ChatBar({
         </p>
       )}
 
-      {chat.loading && (
+      {/* With hideReply the host renders the reply (and its own thinking
+          line) elsewhere, so this one would double up. */}
+      {chat.loading && !hideReply && (
         <div className="text-caption text-[var(--undp-gray)] px-1">
           {t("thinking")}
         </div>
@@ -2179,25 +2202,36 @@ function StatBrowseView({
   return null;
 }
 
-function EmptyPanel({
+/** Props GlanceSummary needs from the EmptyPanel contract, plus its own layout switches. */
+type GlanceSummaryProps = Pick<
+  EmptyPanelProps,
+  | "targets"
+  | "alignment"
+  | "filter"
+  | "onSelectTarget"
+  | "onSelectPair"
+  | "onSetFilter"
+  | "countryConfig"
+> & {
+  /** Suppress the "At a glance" eyebrow when the host already carries it. */
+  showHeading?: boolean;
+};
+
+/**
+ * The corpus at a glance: three clickable stat tiles (each opens a drill list
+ * in place of the rankings), then the six most-aligned and six most-conflicted
+ * targets. Shared by the standalone EmptyPanel card and the workbench rail.
+ */
+function GlanceSummary({
   targets,
   alignment,
   filter,
   onSelectTarget,
   onSelectPair,
-  onAsk,
-  chat,
   onSetFilter,
   countryConfig,
-  exampleQueries,
-  onRotateInsight,
-  currentInsight,
-  onApplyHook,
-  canShowMe,
-  onSelectChatEntity,
-  showChat,
-  embed,
-}: EmptyPanelProps) {
+  showHeading = true,
+}: GlanceSummaryProps) {
   const t = useTranslations("explorer.empty");
   // Stats are interactive: clicking a stat sets the wheel filter AND swaps
   // the middle section to a full list of that kind of item (targets, strong
@@ -2270,94 +2304,130 @@ function EmptyPanel({
   const tensMax = tensRanks[0]?.count ?? 1;
 
   return (
+    <>
+    <div>
+      {showHeading && (
+        <p className="text-caption font-medium text-[var(--undp-gray)] mb-3">
+          {t("atAGlance")}
+        </p>
+      )}
+      <div className="grid grid-cols-3 gap-4">
+        <Stat
+          label={t("statTargets")}
+          value={targets.length}
+          onClick={() => toggleStatView("targets", "high_contra")}
+          title={t("statTargetsTitle")}
+          active={statView === "targets"}
+        />
+        <Stat
+          label={t("statAlignments")}
+          value={totalAligned}
+          accent="green"
+          onClick={() => toggleStatView("alignments", "high")}
+          title={t("statAlignmentsTitle")}
+          active={statView === "alignments"}
+        />
+        <Stat
+          label={t("statMisalignments")}
+          value={totalContra}
+          accent="red"
+          onClick={() => toggleStatView("tensions", "contradictions")}
+          title={t("statMisalignmentsTitle")}
+          active={statView === "tensions"}
+        />
+      </div>
+    </div>
+
+    {statView === "overview" ? (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <Section title={t("strongestAlignments")}>
+          {connRanks.length > 0 ? (
+            <ul className="space-y-0.5">
+              {connRanks.map(({ target, count }) => (
+                <BarRow
+                  key={target.id}
+                  target={target}
+                  count={count}
+                  max={connMax}
+                  onClick={() => onSelectTarget(target.id)}
+                  countryConfig={countryConfig}
+                  tone="neutral"
+                />
+              ))}
+            </ul>
+          ) : (
+            <p className="text-caption text-[var(--undp-gray)] leading-snug">
+              {t("noStrongAlignments")}
+            </p>
+          )}
+        </Section>
+        <Section title={t("mostConflictedTargets")}>
+          {tensRanks.length > 0 ? (
+            <ul className="space-y-0.5">
+              {tensRanks.map(({ target, count, severity }) => (
+                <BarRow
+                  key={target.id}
+                  target={target}
+                  count={count}
+                  max={tensMax}
+                  onClick={() => onSelectTarget(target.id)}
+                  countryConfig={countryConfig}
+                  tone="red"
+                  severity={severity}
+                />
+              ))}
+            </ul>
+          ) : (
+            <p className="text-caption text-[var(--undp-gray)] leading-snug">
+              {t("noTensions")}
+            </p>
+          )}
+        </Section>
+      </div>
+    ) : (
+      <StatBrowseView
+        stat={stat}
+        onSelectTarget={onSelectTarget}
+        onSelectPair={onSelectPair}
+        getTarget={(id) => targetMap.get(id)}
+        countryConfig={countryConfig}
+      />
+    )}
+    </>
+  );
+}
+
+function EmptyPanel({
+  targets,
+  alignment,
+  filter,
+  onSelectTarget,
+  onSelectPair,
+  onAsk,
+  chat,
+  onSetFilter,
+  countryConfig,
+  exampleQueries,
+  onRotateInsight,
+  currentInsight,
+  onApplyHook,
+  canShowMe,
+  onSelectChatEntity,
+  showChat,
+  embed,
+}: EmptyPanelProps) {
+  return (
     <div className={`flex flex-col h-full overflow-hidden ${embed ? "bg-white/55 border border-line/70 rounded-2xl" : "bg-white border border-line-soft rounded-lg"}`}>
       <div className="p-5 overflow-y-auto flex-1 space-y-6">
-        <div>
-          <p className="text-caption font-medium text-[var(--undp-gray)] mb-3">
-            {t("atAGlance")}
-          </p>
-          <div className="grid grid-cols-3 gap-4">
-            <Stat
-              label={t("statTargets")}
-              value={targets.length}
-              onClick={() => toggleStatView("targets", "high_contra")}
-              title={t("statTargetsTitle")}
-              active={statView === "targets"}
-            />
-            <Stat
-              label={t("statAlignments")}
-              value={totalAligned}
-              accent="green"
-              onClick={() => toggleStatView("alignments", "high")}
-              title={t("statAlignmentsTitle")}
-              active={statView === "alignments"}
-            />
-            <Stat
-              label={t("statMisalignments")}
-              value={totalContra}
-              accent="red"
-              onClick={() => toggleStatView("tensions", "contradictions")}
-              title={t("statMisalignmentsTitle")}
-              active={statView === "tensions"}
-            />
-          </div>
-        </div>
-
-        {statView === "overview" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <Section title={t("strongestAlignments")}>
-              {connRanks.length > 0 ? (
-                <ul className="space-y-0.5">
-                  {connRanks.map(({ target, count }) => (
-                    <BarRow
-                      key={target.id}
-                      target={target}
-                      count={count}
-                      max={connMax}
-                      onClick={() => onSelectTarget(target.id)}
-                      countryConfig={countryConfig}
-                      tone="neutral"
-                    />
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-caption text-[var(--undp-gray)] leading-snug">
-                  {t("noStrongAlignments")}
-                </p>
-              )}
-            </Section>
-            <Section title={t("mostConflictedTargets")}>
-              {tensRanks.length > 0 ? (
-                <ul className="space-y-0.5">
-                  {tensRanks.map(({ target, count, severity }) => (
-                    <BarRow
-                      key={target.id}
-                      target={target}
-                      count={count}
-                      max={tensMax}
-                      onClick={() => onSelectTarget(target.id)}
-                      countryConfig={countryConfig}
-                      tone="red"
-                      severity={severity}
-                    />
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-caption text-[var(--undp-gray)] leading-snug">
-                  {t("noTensions")}
-                </p>
-              )}
-            </Section>
-          </div>
-        ) : (
-          <StatBrowseView
-            stat={stat}
-            onSelectTarget={onSelectTarget}
-            onSelectPair={onSelectPair}
-            getTarget={(id) => targetMap.get(id)}
-            countryConfig={countryConfig}
-          />
-        )}
+        <GlanceSummary
+          targets={targets}
+          alignment={alignment}
+          filter={filter}
+          onSelectTarget={onSelectTarget}
+          onSelectPair={onSelectPair}
+          onSetFilter={onSetFilter}
+          countryConfig={countryConfig}
+        />
 
         {showChat && (
           <ChatBar
@@ -3005,11 +3075,6 @@ export function PolicyCoherenceExplorer({
   // user surfaces an insight, so output is never hidden behind the ask dock.
   const [answersCollapsed, setAnswersCollapsed] = useState(true);
 
-  // "Share this view" transient confirmation ("Link copied ✓"). Timer is held
-  // in a ref so a rapid re-click resets the countdown cleanly.
-  const [copied, setCopied] = useState(false);
-  const copyTimer = useRef<number | null>(null);
-
   // Focal group: a category arc the user has clicked to drill into. Independent
   // of the target selection — when both are set, target focus dominates the
   // wheel and the panel shows target detail; closing the target falls back to
@@ -3086,48 +3151,43 @@ export function PolicyCoherenceExplorer({
     return map;
   }, [nr7Data]);
 
-  // Targets the ACTIVE grouping could not place in any real category — they sit
-  // in the derived "no clear theme" bucket. Empty for groupings without one.
-  const unclassifiedTargetIds = useMemo(() => {
-    const ids = new Set<string>();
-    if (groupMode === "document") return ids;
-    for (const c of classifications) {
-      if (
-        c.isPrimary &&
-        c.taxonomyType === groupMode &&
-        isUnclassifiedCategoryId(c.categoryId)
-      ) {
-        ids.add(c.targetId);
-      }
-    }
-    return ids;
-  }, [classifications, groupMode]);
+  // Targets the ACTIVE grouping could not place in any real category: their
+  // primary carries the derived "no clear theme" marker (see
+  // lib/unclassified-bucket.ts). Empty for the document grouping and for
+  // groupings without a marker.
+  const unplacedTargetIds = useMemo(
+    () =>
+      groupMode === "document"
+        ? new Set<string>()
+        : unclassifiedTargetIds(classifications, groupMode),
+    [classifications, groupMode],
+  );
 
-  // Opt-in focus mode; off by default so the wheel never quietly understates
-  // how much of the corpus the active lens does not cover.
-  const [hideUnclassified, setHideUnclassified] = useState(false);
-  const canHideUnclassified = unclassifiedTargetIds.size > 0;
-  const hidingUnclassified = hideUnclassified && canHideUnclassified;
-
-  const visibleTargets = useMemo(
+  const docVisibleTargets = useMemo(
     () =>
       targets.filter((t) => {
         if (hiddenDocs.has(t.sourceDocument)) return false;
-        if (hidingUnclassified && unclassifiedTargetIds.has(t.id)) return false;
         // Type filter only affects BTR pseudo-targets (which carry actionType).
         // Policy targets are always shown regardless of this filter.
         if (actionTypeFilter === "all") return true;
         if (t.actionType === undefined) return true;
         return t.actionType === actionTypeFilter;
       }),
-    [
-      targets,
-      hiddenDocs,
-      actionTypeFilter,
-      hidingUnclassified,
-      unclassifiedTargetIds,
-    ],
+    [targets, hiddenDocs, actionTypeFilter],
   );
+  // A grouping never lists the absence of a theme as a group: unplaced targets
+  // leave the wheel, and the legend states the grouping's scope instead.
+  const visibleTargets = useMemo(
+    () =>
+      unplacedTargetIds.size
+        ? docVisibleTargets.filter((t) => !unplacedTargetIds.has(t.id))
+        : docVisibleTargets,
+    [docVisibleTargets, unplacedTargetIds],
+  );
+  const lensScope =
+    visibleTargets.length < docVisibleTargets.length
+      ? { placed: visibleTargets.length, total: docVisibleTargets.length }
+      : null;
 
   // Whether any adaptation actions are present in the data at all. Used to
   // hide the Mit/Adp filter toggle when adaptation wasn't loaded — keeps the
@@ -3150,7 +3210,10 @@ export function PolicyCoherenceExplorer({
   const hasHr = useMemo(
     () =>
       classifications.some(
-        (c) => c.taxonomyType === "hr" && c.isPrimary === true,
+        (c) =>
+          c.taxonomyType === "hr" &&
+          c.isPrimary === true &&
+          !isUnclassifiedCategoryId(c.categoryId),
       ),
     [classifications],
   );
@@ -3321,14 +3384,17 @@ export function PolicyCoherenceExplorer({
   // Must match the selected filter so users see what they asked for
   const ambientConns = useMemo(() => filtered, [filtered]);
 
-  // Scale ambient opacity inversely with edge count so dense views stay readable
-  const ambientOpacity = useMemo(() => {
-    const n = ambientConns.length;
-    if (n <= 50) return 0.25;
-    if (n >= 1000) return 0.03;
-    const t = (n - 50) / (1000 - 50);
-    return 0.25 - t * 0.22;
-  }, [ambientConns.length]);
+  // Scale ambient ink inversely with edge count so dense views stay readable.
+  // The same rule applies in every filter state; the "potential misalignment
+  // only" state used to bypass it and draw every dashed ribbon at full ink.
+  const ambientInk = useMemo(
+    () =>
+      ambientRibbonInk(
+        ambientConns.length,
+        filter === "contradictions" ? "flagged" : "default",
+      ),
+    [ambientConns.length, filter],
+  );
 
   // Connections for the active node (from filtered set)
   const activeConns = useMemo(() => {
@@ -3397,6 +3463,9 @@ export function PolicyCoherenceExplorer({
   // ~10 detectors the user has to rotate that many times before seeing a
   // repeat, which is fine. Session-scoped, resets on page reload.
   const [insightIdx, setInsightIdx] = useState(0);
+  // True between "Show an insight" and the next interaction that replaces it
+  // (a question, a selection, a view/grouping change, or closing the rail).
+  const [insightSurfaced, setInsightSurfaced] = useState(false);
 
   // Clear the chat reply when the user manually navigates away from it (clicks
   // a target / arc / empty area, closes a panel). Also resets history so the
@@ -3418,6 +3487,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory((prev) => (prev.length > 0 ? [] : prev));
+    setInsightSurfaced(false);
   }, []);
 
   // Returns the panel to the country's load-time defaults: clears any
@@ -3436,28 +3506,6 @@ export function PolicyCoherenceExplorer({
     setAnswersCollapsed(true);
   }, [countryConfig, clearChat]);
 
-  // "Share this view" — copies the current URL and flips the button to a
-  // confirmation for ~1.8s. A rapid re-click restarts the timer cleanly.
-  const share = useCallback(() => {
-    if (copyTimer.current) window.clearTimeout(copyTimer.current);
-    try {
-      // .catch as well as try/catch: writeText rejects asynchronously when the
-      // document lacks focus or clipboard permission, which try/catch misses
-      // and which would surface as an unhandled rejection.
-      void navigator.clipboard?.writeText(window.location.href).catch(() => {});
-    } catch {
-      /* clipboard may be unavailable (insecure context); copy is best-effort */
-    }
-    setCopied(true);
-    copyTimer.current = window.setTimeout(() => setCopied(false), 1800);
-  }, []);
-  useEffect(
-    () => () => {
-      if (copyTimer.current) window.clearTimeout(copyTimer.current);
-    },
-    [],
-  );
-
   // Legend hover-preview setter. Suppressed while an answer or a detail panel
   // is open so the answer's own wheel focus is not fought by an idle hover.
   const handlePreviewGroup = useCallback(
@@ -3473,6 +3521,7 @@ export function PolicyCoherenceExplorer({
     setPreviewGroupId(null);
     setSelectedId((prev) => (prev === id ? null : id));
     setAnswersCollapsed(false);
+    setInsightSurfaced(false);
     // Chat is NOT cleared on selection: in the workbench the chat is a
     // persistent rail header, so its reply must survive node clicks. (In the
     // standalone "dashboard" variant the chat lives in the idle EmptyPanel,
@@ -3539,10 +3588,6 @@ export function PolicyCoherenceExplorer({
     resetView();
   }, [resetView]);
 
-  const closeCategory = useCallback(() => {
-    resetView();
-  }, [resetView]);
-
   /**
    * Open the pair-compare view directly. Mirrors the chat's select_pair
    * action so a click in the CategoryPanel's pair list jumps straight to
@@ -3578,10 +3623,29 @@ export function PolicyCoherenceExplorer({
     return ids;
   }, [nodes, effectiveFocalGroupId]);
 
+  // Edges that survive a group focus, counted so their ink ramps with their
+  // own number (a document such as an NDC can still touch hundreds of pairs).
+  const focusEdgeCount = useMemo(() => {
+    if (!focalGroupTargetIds) return 0;
+    let n = 0;
+    for (const c of ambientConns) {
+      if (focalGroupTargetIds.has(c.targetAId) || focalGroupTargetIds.has(c.targetBId)) n++;
+    }
+    return n;
+  }, [ambientConns, focalGroupTargetIds]);
+  const focusInk = useMemo(
+    () => ({
+      plain: ambientRibbonInk(focusEdgeCount, "focus"),
+      flagged: ambientRibbonInk(focusEdgeCount, "focusFlagged"),
+    }),
+    [focusEdgeCount],
+  );
+
   const handleAsk = useCallback(
     async (query: string) => {
       setPreviewGroupId(null);
       setAnswersCollapsed(false);
+      setInsightSurfaced(false);
       setChat({
         loading: true,
         reply: null,
@@ -3841,6 +3905,7 @@ export function PolicyCoherenceExplorer({
         : prev,
     );
     setHistory([]);
+    setInsightSurfaced(true);
     setAnswersCollapsed(false);
   }, [insights.length]);
 
@@ -4233,11 +4298,14 @@ export function PolicyCoherenceExplorer({
     hideInsights = false,
     hideReply = false,
     surpriseFills = false,
+    compact = false,
+    exampleQueries: string[] = dockQuestions,
   ) => (
     <ChatBar
       onAsk={handleAsk}
       chat={chat}
-      exampleQueries={dockQuestions}
+      exampleQueries={exampleQueries}
+      compact={compact}
       onRotateInsight={rotateInsight}
       currentInsight={currentInsight}
       onApplyHook={onApplyHook}
@@ -4256,7 +4324,7 @@ export function PolicyCoherenceExplorer({
   const wheelSvg = (
             <svg
               viewBox={`${-VB_W / 2} ${-VB / 2} ${VB_W} ${VB}`}
-              className={isWorkbench ? "h-full w-full" : "w-full"}
+              className="w-full"
               preserveAspectRatio="xMidYMid meet"
               style={{
                 maxHeight: isWorkbench
@@ -4504,25 +4572,20 @@ export function PolicyCoherenceExplorer({
                   }
                   const key = `amb-${[conn.targetAId, conn.targetBId].sort().join("__")}`;
                   const contra = isContradiction(conn.alignment);
-                  const isContraMode = filter === "contradictions";
-                  // In group focus mode, give the surviving edges a bit more
-                  // presence — the noise is gone so they can carry weight.
+                  // In group focus mode the noise is gone, so the surviving
+                  // edges start with more presence; they still thin with
+                  // their own count instead of staying at full ink.
+                  const ink = isGroupFocus
+                    ? contra || conn.alignment === "high"
+                      ? focusInk.flagged
+                      : focusInk.plain
+                    : ambientInk;
                   const opacity = scanning
                     ? 0.05
-                    : isGroupFocus
-                      ? contra
-                        ? 0.7
-                        : 0.55
-                      : isContraMode
-                        ? 0.55
-                        : ambientOpacity;
-                  const strokeWidth = isGroupFocus
-                    ? contra || conn.alignment === "high"
-                      ? 1.8
-                      : 1.2
-                    : isContraMode
-                      ? 2
-                      : 1;
+                    : isGroupFocus && !contra
+                      ? focusInk.plain.opacity
+                      : ink.opacity;
+                  const strokeWidth = ink.strokeWidth;
                   return (
                     <path
                       key={key}
@@ -5031,13 +5094,13 @@ export function PolicyCoherenceExplorer({
               )}
             </svg>
   );
-  const railPanel = (
+  const railPanel = (onClosePanel: () => void) => (
           selectedNode ? (
               <DetailPanel
                 key={selectedNode.id}
                 node={selectedNode}
                 connections={selectedConns}
-                onClose={closeDetail}
+                onClose={onClosePanel}
                 onSelectPair={(r) => {
                   const otherId =
                     r.targetAId === selectedId ? r.targetBId : r.targetAId;
@@ -5061,7 +5124,7 @@ export function PolicyCoherenceExplorer({
                 arcs={arcs}
                 alignment={filtered}
                 filter={filter}
-                onClose={closeCategory}
+                onClose={onClosePanel}
                 onSelectTarget={handleNodeClick}
                 onSelectPair={handleSelectPair}
                 onSelectCategory={handleArcClick}
@@ -5145,36 +5208,37 @@ export function PolicyCoherenceExplorer({
           docs: availableDocs.length,
         });
 
-    // The floating answer overlay is open whenever there is something to show:
-    // a resolved answer, an error, an insight the user surfaced, or a selected
-    // target / category. During a FRESH ask (nothing already open) it stays
-    // closed while the wheel scans, then slides in when the answer resolves;
-    // when a panel is already open, it stays put and the answer stacks in.
-    const overlayOpen =
-      !answersCollapsed &&
-      (selectedNode != null ||
-        focalGroup != null ||
-        !!chat.reply ||
-        !!chat.error ||
-        (!!currentInsight && !scanning));
+    // What the rail shows (rail-mode.ts): a selected target / category wins,
+    // then a reply / error / question in flight unless the user dismissed it,
+    // else the corpus summary.
+    const railMode = resolveRailMode({
+      hasSelection: selectedNode != null || focalGroup != null,
+      hasReply: !!chat.reply,
+      hasError: !!chat.error,
+      loading: chat.loading,
+      hasInsight: insightSurfaced && currentInsight != null,
+      dismissed: answersCollapsed,
+    });
 
-    // Close the overlay: drop the target / category selection and re-centre the
-    // wheel. The chat reply is deliberately NOT cleared — closing the card is a
-    // "get this out of my way" gesture, not "discard the answer", so the reply
-    // stays reachable through the top-bar Answers control (matching the old
-    // collapsible drawer, which kept its contents when collapsed).
-    const closeOverlay = () => {
+    // Back to the summary: drop the target / category selection. The chat
+    // reply is deliberately NOT cleared — this is a "get this out of my way"
+    // gesture, not "discard the answer", so the reply stays reachable through
+    // the top-bar Answers control.
+    const closeRail = () => {
       setSelectedId(null);
       setComparedPair(null);
       setFocalGroupId(null);
       setPreviewGroupId(null);
+      setInsightSurfaced(false);
       setAnswersCollapsed(true);
     };
 
-    // Is there an answer to come back to while the card is collapsed? Only a
-    // real reply / error counts: a passive rotating insight is not something
-    // the user asked for, so it must not put a blue control in the top bar.
-    const hasAnswerToShow = !!chat.reply || !!chat.error;
+    // Is there an answer to come back to while the rail shows the summary?
+    // Only a real reply / error counts: a passive rotating insight is not
+    // something the user asked for, so it must not put a blue control in the
+    // top bar.
+    const hasAnswerToShow =
+      railMode === "summary" && (!!chat.reply || !!chat.error);
 
     // Switching views resets any open answer (handoff behaviour); setView also
     // snaps grouping (Finance → GLOBE, Coherence → Documents).
@@ -5188,48 +5252,98 @@ export function PolicyCoherenceExplorer({
       setAnswersCollapsed(true);
     };
 
-    // Legend rows for the non-document groupings (GLOBE / sectors / GGA).
+    // Legend rows for the non-document groupings (GLOBE / sectors / GGA / HR).
     const categoryLegend = arcs.map((a) => ({
       id: a.id,
       label: a.label,
       color: a.color,
     }));
 
-    // One floating card: the AI answer (chat reply / surfaced insight) stacks
-    // above any selected target / category detail, matching the pre-rework
-    // "answers + detail" pairing but presented as an overlay. A single header
-    // close clears the whole overlay; insight bubbles are suppressed while a
-    // detail panel owns the card so the two don't compete.
-    const answerCard = (
-      <div className="flex min-h-0 w-full flex-col overflow-hidden rounded-xl border border-line bg-white/95 shadow-[var(--shadow-pop)] backdrop-blur">
-        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-line-soft px-4 py-2.5">
-          <span className="text-caption font-medium text-[var(--undp-blue)]">
-            {t("workbench.answerEyebrow")}
-          </span>
-          <button
-            type="button"
-            onClick={closeOverlay}
-            aria-label={t("workbench.answersClose")}
-            className="px-1 text-base leading-none text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-black)]"
-          >
-            ✕
-          </button>
-        </div>
-        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3.5 py-3.5 [scrollbar-width:thin]">
-          <ChatOutput
-            chat={chat}
-            currentInsight={currentInsight}
-            canShowMe={canShowMe}
-            onApplyHook={onApplyHook}
-            onSelectChatEntity={handleChatEntityClick}
-            hideInsights={selectedNode != null || focalGroup != null}
+    const railEyebrow =
+      railMode === "summary"
+        ? t("empty.atAGlance")
+        : railMode === "answer"
+          ? chat.reply || chat.error || chat.loading
+            ? t("workbench.answerEyebrow")
+            : t("workbench.insightEyebrow")
+          : selectedNode
+            ? t("workbench.detailTargetEyebrow")
+            : t("workbench.detailGroupEyebrow");
+
+    // Rail body. Summary: the corpus at a glance, nothing else (an insight
+    // appears only after "Show an insight", as an answer). Answer / detail:
+    // the reply, the surfaced insight or the thinking line and, for a
+    // selection, the detail panel beneath it, so a live reply stacks above
+    // the detail as it did in the overlay.
+    //
+    // The summary stays mounted (hidden) outside its mode: its rankings are
+    // three passes over every pair, and an open stat drill remembers the
+    // wheel filter it replaced, so unmounting on every node click would both
+    // recompute the rankings and leave the wheel locked to the drill's filter
+    // with no tile marked active on "Back to summary".
+    const hasAnswerContent = !!chat.reply || !!chat.error || chat.loading;
+    const showsInsight =
+      railMode === "answer" && !hasAnswerContent && currentInsight != null;
+    const railBody = (
+      <>
+        <div hidden={railMode !== "summary"} className="space-y-5">
+          <GlanceSummary
+            targets={visibleTargets}
+            alignment={filtered}
+            filter={filter}
+            onSelectTarget={handleNodeClick}
+            onSelectPair={handleSelectPair}
+            onSetFilter={setFilter}
+            countryConfig={countryConfig}
+            showHeading={false}
           />
-          {/* Only the detail rail (a selected target / category) belongs in the
-              card. The idle "At a glance" EmptyPanel is suppressed — it is not
-              an answer and reads as a nested card inside the overlay. */}
-          {(selectedNode != null || focalGroup != null) && railPanel}
         </div>
-      </div>
+        {railMode !== "summary" && (
+          <>
+            {/* In detail mode the rail eyebrow names the selection, so a reply
+                stacked above the detail carries its own AI-generated label. */}
+            {railMode === "detail" && hasAnswerContent && (
+              <p className="text-caption font-medium text-[var(--undp-blue)]">
+                {t("workbench.answerEyebrow")}
+              </p>
+            )}
+            {chat.loading && (
+              <p className="text-caption text-[var(--undp-gray)]">
+                {t("chat.thinking")}
+              </p>
+            )}
+            <ChatOutput
+              chat={chat}
+              currentInsight={currentInsight}
+              canShowMe={canShowMe}
+              onApplyHook={onApplyHook}
+              onSelectChatEntity={handleChatEntityClick}
+              hideInsights={railMode === "detail"}
+            />
+            {/* Confidence caveat on the face, next to whatever AI text is
+                showing (the label alone lives on the eyebrow). */}
+            {((!chat.loading && (!!chat.reply || !!chat.error)) || showsInsight) && (
+              <p className="text-caption text-[var(--undp-gray)]">
+                {t("workbench.answerCaveat")}
+              </p>
+            )}
+            {railMode === "detail" && railPanel(closeRail)}
+          </>
+        )}
+      </>
+    );
+
+    // The ask bar lives in the rail's pinned footer: example questions while
+    // the summary is on, the server follow-ups otherwise (ChatBar renders
+    // those itself). "Show an insight" stays available outside the detail
+    // mode. The AI-generated label lives on the rail eyebrows; the
+    // question-storage disclosure sits on the input itself.
+    const railFooter = workbenchChat(
+      railMode === "detail",
+      true,
+      false,
+      true,
+      railMode === "summary" ? dockQuestions : [],
     );
 
     return (
@@ -5238,25 +5352,14 @@ export function PolicyCoherenceExplorer({
         statLead={statLead}
         statFlagged={statFlagged}
         statTail={statTail}
-        onShare={share}
-        shareLabel={copied ? t("workbench.shareCopied") : t("workbench.share")}
-        shareCopied={copied}
-        countryName={countryName}
         showViewSwitch={!!budgetSummary}
+        viewLabel={t("workbench.viewLabel")}
         view={view}
         onViewChange={handleWorkbenchViewChange}
         viewCoherenceLabel={t("workbench.viewCoherence")}
         viewFinanceLabel={t("workbench.viewFinance")}
-        wheel={wheelSvg}
-        answerOpen={overlayOpen}
-        answerCard={answerCard}
-        answersAvailable={hasAnswerToShow}
-        onShowAnswers={() => setAnswersCollapsed(false)}
-        answersLabel={t("workbench.answersHeading")}
-        dock={workbenchChat(false, true, true)}
-        footerCaveat={t("workbench.footerCaveat")}
-        lensPane={
-          <LensPane
+        controls={
+          <ControlsStrip
             view={view}
             groupMode={groupMode}
             onGroupChange={handleGroupChange}
@@ -5273,12 +5376,22 @@ export function PolicyCoherenceExplorer({
             countryConfig={countryConfig}
             hasGga={hasGga}
             hasHr={hasHr}
-            canHideUnclassified={canHideUnclassified}
-            hideUnclassified={hidingUnclassified}
-            onHideUnclassifiedChange={setHideUnclassified}
-            unclassifiedCount={unclassifiedTargetIds.size}
           />
         }
+        wheel={wheelSvg}
+        rail={
+          <WorkbenchRail
+            mode={railMode}
+            eyebrow={railEyebrow}
+            onBack={closeRail}
+            backLabel={t("workbench.backToSummary")}
+            body={railBody}
+            footer={railFooter}
+          />
+        }
+        answersAvailable={hasAnswerToShow}
+        onShowAnswers={() => setAnswersCollapsed(false)}
+        answersLabel={t("workbench.answersHeading")}
         modal={
           <PairDetailModal
             open={comparedPair != null}
@@ -5674,6 +5787,11 @@ export function PolicyCoherenceExplorer({
                 <p className="text-caption font-medium text-[var(--undp-gray)] mb-1.5">
                   {groupMode === "document" ? t("wheel.legendDocument") : groupMode === "globe" ? t("wheel.legendBiodiversity") : groupMode === "gga" ? t("wheel.legendResilience") : groupMode === "hr" ? t("wheel.legendHumanRights") : t("wheel.legendSector")}
                 </p>
+                {lensScope && (
+                  <p className="text-caption text-[var(--undp-gray)] mb-1.5">
+                    {t("wheel.lensScope", lensScope)}
+                  </p>
+                )}
                 <div className="flex flex-col gap-1">
                   {arcs.map((arc) => (
                     <span key={arc.id} className="flex items-center gap-1.5">
@@ -5716,7 +5834,7 @@ export function PolicyCoherenceExplorer({
         {railVisible && (
         <div className="min-w-0 lg:col-span-4 flex flex-col gap-4">
           <div className="flex-1 min-h-0">
-          {railPanel}
+          {railPanel(closeDetail)}
           </div>
         </div>
         )}

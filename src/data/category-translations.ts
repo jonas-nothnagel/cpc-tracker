@@ -224,12 +224,6 @@ export const CATEGORY_TRANSLATIONS: Record<string, CategoryTranslationEntry> = {
     es: { name: "Derechos de las personas con discapacidad" },
     mn: { name: "Хөгжлийн бэрхшээлтэй хүмүүсийн эрх" },
   },
-  // Derived display-only bucket (see lib/unclassified-bucket.ts), not a
-  // taxonomy category — it has no entry in categories.json.
-  hr_unclassified: {
-    es: { name: "Sin tema de derechos humanos claro" },
-    mn: { name: "Тодорхой хүний эрхийн сэдэвгүй" },
-  },
 };
 
 /**

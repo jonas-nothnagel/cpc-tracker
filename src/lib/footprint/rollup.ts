@@ -1,4 +1,5 @@
 import type {
+  FootprintEnvelope,
   FootprintMetrics,
   FootprintRollup,
   LedgerEvent,
@@ -50,6 +51,52 @@ function bucketBy(
 
 const byCo2Desc = (a: RollupBucket, b: RollupBucket) => b.co2_geq - a.co2_geq;
 
+const METRIC_KEYS = [
+  "energy_wh",
+  "water_ml",
+  "co2_geq",
+  "minerals_ugsbeq",
+] as const satisfies readonly (keyof FootprintMetrics)[];
+
+/**
+ * Sum the modelled-uncertainty bounds across events. Rows without bounds
+ * (recorded before schema 2) contribute their midpoint to both ends, so the
+ * envelope only ever understates the uncertainty. `bounded_share` reports how
+ * much of the carbon midpoint total genuinely carries a modelled RANGE, so
+ * the UI can decide whether the envelope is worth showing. Key presence alone
+ * is not enough: schema-2 writers also record min == max == midpoint for
+ * coefficient estimates and seeded totals, and those rows carry no modelled
+ * range -- counting them would let a ledger of pinned estimates unlock the
+ * range display.
+ */
+function computeEnvelope(events: LedgerEvent[]): FootprintEnvelope {
+  const env: FootprintEnvelope = {
+    energy_wh: { min: 0, max: 0 },
+    water_ml: { min: 0, max: 0 },
+    co2_geq: { min: 0, max: 0 },
+    minerals_ugsbeq: { min: 0, max: 0 },
+    bounded_share: 0,
+  };
+  let co2Total = 0;
+  let co2Bounded = 0;
+  for (const e of events) {
+    for (const key of METRIC_KEYS) {
+      env[key].min += e[`${key}_min`] ?? e[key];
+      env[key].max += e[`${key}_max`] ?? e[key];
+    }
+    co2Total += e.co2_geq;
+    if (
+      e.co2_geq_min !== undefined &&
+      e.co2_geq_max !== undefined &&
+      e.co2_geq_max > e.co2_geq_min
+    ) {
+      co2Bounded += e.co2_geq;
+    }
+  }
+  env.bounded_share = co2Total > 0 ? co2Bounded / co2Total : 0;
+  return env;
+}
+
 export function rollUp(events: LedgerEvent[]): FootprintRollup {
   const totals = {
     energy_wh: 0,
@@ -72,6 +119,7 @@ export function rollUp(events: LedgerEvent[]): FootprintRollup {
 
   return {
     totals,
+    envelope: computeEnvelope(events),
     byModel: bucketBy(events, (e) => e.model).sort(byCo2Desc),
     byComponent: bucketBy(events, (e) => e.component).sort(byCo2Desc),
     byRegion: bucketBy(events, (e) => e.region).sort(byCo2Desc),

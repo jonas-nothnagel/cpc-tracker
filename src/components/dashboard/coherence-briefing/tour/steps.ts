@@ -61,7 +61,7 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
       altTargets: ["slide-implementation"],
       placement: "bottom",
     },
-    { id: "explore", target: "explore-ask", placement: "top" },
+    { id: "explore", target: "explore-ask", placement: "left" },
   ],
   wheel: [
     { id: "arcs", target: "wheel-arcs" },

@@ -14,6 +14,7 @@ export const ROUTE_PATTERNS = new Set([
   "/[country]/upload",
   "/[country]/model-comparison",
   "/[country]/model-evaluation",
+  "/[country]/explore",
   "/upload",
   "/analysis/[id]",
   "/methodology",
@@ -32,7 +33,7 @@ const STATIC_ROUTES = new Set([
 ]);
 
 /** Second path segments that resolve to a per-country sub-page pattern. */
-const COUNTRY_SUBPAGES = new Set(["upload", "model-comparison", "model-evaluation"]);
+const COUNTRY_SUBPAGES = new Set(["upload", "model-comparison", "model-evaluation", "explore"]);
 
 export function toRoutePattern(pathname: string): string {
   const path = pathname.replace(/\/+$/, "") || "/";

@@ -111,7 +111,10 @@ async def backfill(targets_file: str, force: bool, model_dir: str | None) -> Non
             model=LLM_MODEL,
             region=electricity_zone(),
             run_id=None,
-            country=stem,
+            # None (not "") for a generic targets.json, matching
+            # derive_country_slug in run_analysis and the country: string|null
+            # contract of the TS ledger reader.
+            country=stem or None,
             call_count=int(snap.get("call_count", 0) or 0),
             cached_call_count=int(snap.get("cached_call_count", 0) or 0),
             energy_wh=float(snap.get("energy_wh", 0) or 0),
@@ -119,6 +122,17 @@ async def backfill(targets_file: str, force: bool, model_dir: str | None) -> Non
             co2_geq=float(snap.get("co2_geq", 0) or 0),
             minerals_ugsbeq=float(snap.get("minerals_ugsbeq", 0) or 0),
             source=snap.get("source", "unavailable"),
+            # Live calls carry real EcoLogits ranges; without these the row is
+            # written schema-2 with no bounds and its carbon counts as
+            # unbounded in the dashboard envelope.
+            energy_wh_min=snap.get("energy_wh_min"),
+            energy_wh_max=snap.get("energy_wh_max"),
+            water_ml_min=snap.get("water_ml_min"),
+            water_ml_max=snap.get("water_ml_max"),
+            co2_geq_min=snap.get("co2_geq_min"),
+            co2_geq_max=snap.get("co2_geq_max"),
+            minerals_ugsbeq_min=snap.get("minerals_ugsbeq_min"),
+            minerals_ugsbeq_max=snap.get("minerals_ugsbeq_max"),
         )
         print(f"[{stem}/{out_dir.name}] appended footprint ledger row ({snap.get('source')})")
 

@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   applyUnclassifiedBuckets,
-  unclassifiedCategory,
   unclassifiedIdFor,
+  unclassifiedTargetIds,
 } from "./unclassified-bucket";
 
 type Rec = Record<string, unknown>;
@@ -113,13 +113,26 @@ describe("applyUnclassifiedBuckets", () => {
     expect(classifications).toEqual([]);
     expect(bucketed.size).toBe(0);
   });
+});
 
-  it("marks the bucket category as derived so it is never mistaken for source data", () => {
-    const cat = unclassifiedCategory("hr");
-    expect(cat.derived).toBe(true);
-    expect(cat.id).toBe("hr_unclassified");
-    // Copy is about the analysis, not about the country's rights record.
-    expect(String(cat.name)).toMatch(/no clear/i);
-    expect(String(cat.description)).toMatch(/may still touch/i);
+describe("unclassifiedTargetIds", () => {
+  it("returns the targets whose primary for the taxonomy is the derived bucket", () => {
+    const { classifications } = applyUnclassifiedBuckets([
+      rec("t1", "hr_business", "hr", 0.2, { isPrimary: true }),
+      rec("t2", "hr_participation", "hr", 0.8, {
+        isPrimary: true,
+        isRelevant: true,
+      }),
+    ]);
+    expect([...unclassifiedTargetIds(classifications, "hr")]).toEqual(["t1"]);
+  });
+
+  it("is scoped to the taxonomy and empty when nothing was bucketed", () => {
+    const { classifications } = applyUnclassifiedBuckets([
+      rec("t1", "hr_business", "hr", 0.2, { isPrimary: true }),
+      rec("t1", "globe_1", "globe", 0.2, { isPrimary: true }),
+    ]);
+    expect(unclassifiedTargetIds(classifications, "globe").size).toBe(0);
+    expect(unclassifiedTargetIds([], "hr").size).toBe(0);
   });
 });

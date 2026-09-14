@@ -164,7 +164,7 @@ export function DocCoherenceMatrix({
                       // First diagonal cell anchors the guided-tour step.
                       data-tour={ri === 0 && ci === 0 ? "matrix-diagonal" : undefined}
                       className="rounded-md border border-dashed border-gray-200"
-                      style={{ height: CELL, backgroundColor: "#faf9f6", ...anim }}
+                      style={{ height: CELL, backgroundColor: "var(--undp-light)", ...anim }}
                     />
                   );
                 }
