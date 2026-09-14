@@ -4,8 +4,11 @@ import { routing } from "./i18n/routing";
 import { gateBypassed, hasValidAuth } from "./lib/auth/token";
 
 // Next 16 renamed `middleware.ts` to `proxy.ts`. This wraps the next-intl
-// locale middleware with a shared-token authentication gate that covers pages,
-// `/api/*`, and `/analytics`. See src/lib/auth/token.ts for the token model.
+// locale middleware with a shared-token authentication gate that covers ONLY
+// the document-upload flow: the upload wizard pages and the API routes that
+// accept uploaded files or start an analysis from them. Every other page and
+// API route (pilot-country dashboards, briefings, chat, viewing a finished
+// analysis, analytics) is open. See src/lib/auth/token.ts for the token model.
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -17,6 +20,22 @@ const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const STATIC_EXT_RE =
   /\.(?:js|mjs|css|png|jpg|jpeg|gif|svg|ico|webp|avif|woff|woff2|ttf|eot|map|xml|txt|webmanifest)$/i;
 
+// API routes that ingest uploaded documents or spend LLM budget on them.
+// `/api/analyze` is the exact POST that starts a run; `/api/analyze/<id>/status`
+// (polling a run that already started) stays open, like viewing the result.
+const GATED_API_PATHS = new Set([
+  "/api/extract",
+  "/api/parse-btr",
+  "/api/parse-excel-targets",
+  "/api/analyze",
+  "/api/extraction-review",
+]);
+
+// Upload wizard pages: /upload, /es/upload, /mn/upload, /panama/upload,
+// /es/panama/upload. Matching on the trailing segment keeps every locale and
+// country variant covered without enumerating them.
+const UPLOAD_PAGE_RE = /^(?:\/[^/]+){0,2}\/upload\/?$/;
+
 function isApiPath(pathname: string): boolean {
   return pathname === "/api" || pathname.startsWith("/api/");
 }
@@ -25,12 +44,11 @@ function isAnalyticsPath(pathname: string): boolean {
   return pathname === "/analytics" || pathname.startsWith("/analytics/");
 }
 
-// Reachable without authentication.
-function isPublicPath(pathname: string): boolean {
-  if (pathname === "/api/auth" || pathname === "/api/health") return true;
-  // /login and locale-prefixed variants (/es/login, /mn/login)
-  if (pathname === "/login" || /^\/[a-z]{2}\/login$/.test(pathname)) return true;
-  return false;
+/** True for the upload wizard and the API routes it calls. */
+export function isGatedPath(pathname: string): boolean {
+  const normalised = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+  if (GATED_API_PATHS.has(normalised)) return true;
+  return UPLOAD_PAGE_RE.test(pathname);
 }
 
 // CSRF defence-in-depth: reject cross-site state-changing requests to the API.
@@ -68,7 +86,7 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.json({ error: "Cross-site request blocked" }, { status: 403 });
   }
 
-  if (!isPublicPath(pathname) && !gateBypassed()) {
+  if (isGatedPath(pathname) && !gateBypassed()) {
     if (!(await hasValidAuth(req))) {
       if (api) {
         return NextResponse.json({ error: "Authentication required" }, { status: 401 });

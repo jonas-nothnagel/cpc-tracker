@@ -1,22 +1,26 @@
-# Signing in, upload limits, and safe handling of documents
+# Signing in to upload, upload limits, and safe handling of documents
 
-*Written for the security fixes merged from `chore/dep-vuln-remediation` (August 2026). Last verified against `src/proxy.ts`, `src/lib/auth/token.ts`, and the API routes at commit `3d9b256`. Re-verify when the sign-in flow or any limit changes.*
+*Written for the security fixes merged from `chore/dep-vuln-remediation` (August 2026); the sign-in gate was narrowed to the upload flow on 2026-09-14. Last verified against `src/proxy.ts`, `src/lib/auth/token.ts`, and the API routes on the `fix/gate-upload-only` branch. Re-verify when the sign-in flow or any limit changes.*
 
 A security review in August 2026 found that the app had no sign-in, no size limits on uploads, and no protection against instructions hidden inside uploaded documents. This guide explains what changed for the people who use the tool, the person who runs the deployment, and anyone calling the API from a script.
 
-Nothing about the analysis itself changed. The dashboards, the briefing, and the upload wizard work as before once you are signed in.
+Nothing about the analysis itself changed. The dashboards and the briefing open without signing in. Only uploading documents and starting a new analysis ask for the access token.
 
 ---
 
 ## 1. For people using the tool
 
-### You now sign in with an access token
+### Browsing needs no sign-in
 
-The whole app is behind one shared access token. The UNDP team member who runs the deployment hands it to you. There are no personal accounts yet.
+The country dashboards, the coherence briefing, the chat, and any finished analysis open directly. Share those links freely; nobody needs a credential to read them.
 
-1. Open the app. If you are not signed in you land on the sign-in page.
+### Uploading documents needs an access token
+
+Uploading your own documents or spreadsheets and running a new analysis is behind one shared access token. The UNDP team member who runs the deployment hands it to you. There are no personal accounts yet.
+
+1. Press **Upload documents** (or open `/upload`). If you have not signed in on this browser you land on the sign-in page.
 2. Paste the access token into the field and press **Sign in**.
-3. You are returned to the page you originally asked for.
+3. You are returned to the upload page.
 
 If the page says **"That access token was not recognised"**, the token was mistyped or has been changed since you received it. Ask the person who gave it to you for the current one.
 
@@ -24,15 +28,17 @@ The sign-in page is currently in English only, whatever language the rest of the
 
 ### How long you stay signed in
 
-A sign-in lasts seven days on that browser. After that you are asked for the token again. Closing the browser does not sign you out.
+A sign-in lasts seven days on that browser. After that the upload page asks for the token again. Closing the browser does not sign you out.
+
+If the sign-in runs out while you are part-way through the upload wizard, the next upload or **Run analysis** shows **"Your sign-in has expired."** Open `/login` in a new tab, enter the token, and retry in the original tab. The documents and targets already in the wizard are kept.
 
 There is no sign-out button yet. If you used a shared or public computer, clear the site's cookies in that browser before you leave. A sign-out button is on the list of follow-ups.
 
 ### Sharing links with colleagues
 
-Links to dashboards and analyses still work, but the person opening a link must sign in too. A link on its own does not grant access.
+Links to dashboards and analyses open for anyone with the link. Only the upload page asks for the token.
 
-Links to a new analysis are now long, of the form `/analysis/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13`. This makes them impossible to guess. Analyses started before the change keep their old short links and still open.
+Links to a new analysis are long, of the form `/analysis/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13`. This makes them impossible to guess, which is what protects an analysis you ran from your own documents. Analyses started before the change keep their old short links and still open. Treat an analysis link like the documents behind it: share it only with the people who may see them.
 
 The app can no longer be shown inside another website or a Teams or SharePoint tab. Open it directly in a browser.
 
@@ -75,9 +81,15 @@ Because this changed the wording of the alignment prompt, it is recorded as prom
 
 ### Set the access token before deploying
 
-The gate is controlled by one environment variable, `APP_ACCESS_TOKEN`.
+The gate is controlled by one environment variable, `APP_ACCESS_TOKEN`. It protects only the upload flow:
 
-- In **production** the app refuses every request until the token is set. A missing token does not open the app; it locks it.
+| Behind the token | Open to everyone |
+| --- | --- |
+| The upload wizard (`/upload`, `/<country>/upload`, and their language variants) | The landing page, country dashboards, briefings, and chat |
+| `/api/extract`, `/api/parse-btr`, `/api/parse-excel-targets` (file uploads) | Viewing a finished analysis and polling its status |
+| `/api/analyze` (start a run), `/api/extraction-review` (record the review of extracted targets) | `/api/dashboard`, `/api/sustainability`, ratings, feedback, `/analytics` |
+
+- In **production** the app refuses uploads and new analysis runs until the token is set. A missing token does not open uploads; it disables them. The rest of the app keeps serving.
 - In **local development** with no token set, the gate is off and nothing asks you to sign in. Set a token locally when you want to test the sign-in page.
 
 Generate a strong value and set it as an application setting on the Azure App Service, not in a file in the repo:
@@ -90,15 +102,19 @@ Then hand the value to users over a channel you trust. Treat it as a password.
 
 ### Changing the token
 
-Set a new value in the App Service settings and restart the app. Every signed-in browser is signed out at once and must enter the new token. Do this whenever someone who had the token leaves the project, or if you suspect it has been shared too widely.
+Set a new value in the App Service settings and restart the app. Every signed-in browser is signed out at once and must enter the new token before its next upload. Do this whenever someone who had the token leaves the project, or if you suspect it has been shared too widely.
 
 ### Health checks
 
-The path `/api/health` answers without a token so the platform's health probe keeps working. Point the App Service health check at it. Everything else, including all other `/api/` paths, needs the token.
+The path `/api/health` answers without a token, as do all the read-only routes. Point the App Service health check at it.
 
 ### The analytics dashboard
 
-The internal `/analytics` page is now behind both the app token and its own `ANALYTICS_DASHBOARD_TOKEN`. A visitor needs to be signed in and to add `?key=<dashboard token>` to the address. See `src/lib/analytics/README.md`.
+The internal `/analytics` page is behind its own `ANALYTICS_DASHBOARD_TOKEN`, not the upload token. A visitor adds `?key=<dashboard token>` to the address. See `src/lib/analytics/README.md`.
+
+### What is open, and why that is acceptable
+
+The pilot dashboards are built from public policy documents and are meant to be read by country offices and partners without a credential. The chat and the storyline synthesis make AI calls, so they still carry their own size caps and the per-process concurrency limits described below. If AI spend from open pages becomes a concern, the routes to bring behind the token are listed in `src/proxy.ts`.
 
 ### Response headers
 
@@ -112,15 +128,19 @@ This is a single shared token, not per-person accounts. UNDP single sign-on, per
 
 ## 3. For scripts and automation
 
-Any script that calls the API must send the token in an `Authorization` header. Browsers use a cookie instead, but scripts do not need to.
+A script that uploads a document or starts an analysis must send the token in an `Authorization` header. Browsers use a cookie instead, but scripts do not need to. Read-only routes need no header.
 
 ```bash
 # Check the service is up (no token needed)
 curl https://<host>/api/health
 
-# Call a protected route
+# Poll a run (no token needed)
+curl https://<host>/api/analyze/<analysis-id>/status
+
+# Upload a document for extraction (token needed)
 curl -H "Authorization: Bearer $APP_ACCESS_TOKEN" \
-     https://<host>/api/analyze/<analysis-id>/status
+     -F "file=@policy.pdf" -F "docType=policy" -F "sourceDocument=NDC 3.0" \
+     https://<host>/api/extract
 ```
 
 A browser can also end its own session with a `DELETE` to `/api/auth`, which clears the cookie. That call only affects the browser that sends it, so it is not a way to sign out other people; change the token for that (section 2).
@@ -129,7 +149,7 @@ What the status codes mean:
 
 | Code | Meaning | What to do |
 | --- | --- | --- |
-| 401 | No token, or the wrong token | Check the header and the current token value |
+| 401 | No token, or the wrong token, on an upload route | Check the header and the current token value |
 | 403 "Cross-site request blocked" | A POST, PUT, PATCH, or DELETE arrived with an `Origin` header from another site | Drop the `Origin` header in scripts; browsers should only call the API from the app's own pages |
 | 413 | The body or file is over its limit (see the tables above) | Send a smaller file or shorter text |
 | 429 | Three analyses are already running, or five started in the last minute | Wait and retry |

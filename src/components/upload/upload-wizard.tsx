@@ -152,6 +152,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
       form.append("type", detectBtrType(file.name));
       fetch("/api/parse-btr", { method: "POST", body: form })
         .then(async (res) => {
+          if (res.status === 401) throw new Error(t("errors.signInExpired"));
           if (!res.ok) {
             const body = await res.json();
             throw new Error(body.error || t("errors.parseBtr"));
@@ -188,6 +189,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
       form.append("file", file);
       fetch("/api/parse-excel-targets", { method: "POST", body: form })
         .then(async (res) => {
+          if (res.status === 401) throw new Error(t("errors.signInExpired"));
           if (!res.ok) {
             const body = await res.json();
             throw new Error(body.error || t("errors.parseExcel"));
@@ -365,6 +367,7 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
             : {}),
         }),
       });
+      if (res.status === 401) throw new Error(t("errors.signInExpired"));
       if (!res.ok) {
         const body = await res.json();
         throw new Error(body.error || t("errors.startAnalysis"));

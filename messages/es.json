@@ -1219,6 +1219,7 @@
       "unknownCountry": "Desconocido",
       "errors": {
         "parseBtr": "Fallo al analizar el archivo BTR",
+        "signInExpired": "Su sesión ha caducado. Abra /login en una pestaña nueva, vuelva a introducir el token de acceso y reintente aquí. No se pierde nada de este asistente.",
         "parseExcel": "Fallo al analizar el archivo Excel",
         "noTargets": "No se encontraron metas en el archivo",
         "noTargetsExcel": "No se encontraron metas en el archivo Excel",

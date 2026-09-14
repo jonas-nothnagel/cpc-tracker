@@ -1219,6 +1219,7 @@
       "unknownCountry": "Unknown",
       "errors": {
         "parseBtr": "Failed to parse BTR file",
+        "signInExpired": "Your sign-in has expired. Open /login in a new tab, enter the access token again, then retry here. Nothing in this wizard is lost.",
         "parseExcel": "Failed to parse Excel file",
         "noTargets": "No targets found in file",
         "noTargetsExcel": "No targets found in Excel file",
