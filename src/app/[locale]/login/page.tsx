@@ -3,13 +3,14 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-// Admin login: exchange the shared access token for a session cookie via
-// /api/auth, then return to the originally requested page.
+// Upload sign-in: exchange the shared access token for a session cookie via
+// /api/auth, then return to the upload page that asked for it. Only the
+// document-upload flow is behind this; the rest of the app is open.
 
 /** Only allow same-origin relative return paths (no open redirect). */
 function safeReturnPath(raw: string | null): string {
-  if (!raw) return "/";
-  if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
+  if (!raw) return "/upload";
+  if (!raw.startsWith("/") || raw.startsWith("//")) return "/upload";
   return raw;
 }
 
@@ -57,7 +58,10 @@ function LoginForm() {
       >
         <div className="space-y-1">
           <h1 className="text-xl font-semibold text-gray-900">Nature–Climate Policy Tracker</h1>
-          <p className="text-sm text-gray-500">Enter your access token to continue.</p>
+          <p className="text-sm text-gray-500">
+            Uploading documents and running a new analysis needs an access token.
+            Browsing the existing dashboards does not.
+          </p>
         </div>
 
         <div className="space-y-1">

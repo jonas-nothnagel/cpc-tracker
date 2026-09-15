@@ -100,6 +100,7 @@ export function useExtraction() {
 
       try {
         const res = await fetch("/api/extract", { method: "POST", body: form });
+        if (res.status === 401) throw new Error(tErrors("signInExpired"));
         if (!res.ok) {
           const body = await res.json();
           if (body.errorCode === "NO_TEXT_LAYER") {
