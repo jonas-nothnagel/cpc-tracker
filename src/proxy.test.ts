@@ -124,8 +124,43 @@ describe("proxy auth gate", () => {
     const res = await proxy(
       req("/api/coherence-chat", {
         method: "POST",
-        headers: { origin: "https://evil.example" },
+        headers: { origin: "https://evil.example", host: "app.example.org" },
       }),
+    );
+    expect(res.status).toBe(403);
+  });
+
+  it("accepts a same-origin POST behind a reverse proxy (Host header, not listen address)", async () => {
+    // In production the container listens on localhost:3000 while the public
+    // hostname arrives in Host / X-Forwarded-Host. Origin must be compared to
+    // those, or every browser POST is rejected as cross-site.
+    const viaHost = await proxy(
+      req("/api/auth", {
+        method: "POST",
+        headers: {
+          origin: "https://cpc-tracker-c657.azurewebsites.net",
+          host: "cpc-tracker-c657.azurewebsites.net",
+        },
+      }),
+    );
+    expect(viaHost.status).not.toBe(403);
+
+    const viaForwarded = await proxy(
+      req("/api/coherence-chat", {
+        method: "POST",
+        headers: {
+          origin: "https://cpc-tracker-c657.azurewebsites.net",
+          host: "localhost:3000",
+          "x-forwarded-host": "cpc-tracker-c657.azurewebsites.net",
+        },
+      }),
+    );
+    expect(viaForwarded.status).not.toBe(403);
+  });
+
+  it("treats a malformed Origin on a mutation as cross-site", async () => {
+    const res = await proxy(
+      req("/api/coherence-chat", { method: "POST", headers: { origin: "not a url" } }),
     );
     expect(res.status).toBe(403);
   });
