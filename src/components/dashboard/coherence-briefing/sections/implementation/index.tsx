@@ -15,10 +15,11 @@
  *      anywhere on this slide.
  *   2. One control: which report (./report-toggle.tsx), only when both exist.
  *   3. The takeaways as a visual: ranked two-tone bars for the climate report
- *      (./climate-strain-chart.tsx); for the biodiversity report the national
- *      targets rated behind schedule ranked by their links to other plans
- *      (./nr7-policy-link-rows.tsx, decided 2026-09-11), or, when no such
- *      target has a link, the rating-versus-evidence rows
+ *      (./climate-strain-chart.tsx); for the biodiversity report every
+ *      national target, the ones rated behind schedule first, ranked by their
+ *      links to other plans, five at a time (./nr7-policy-link-rows.tsx,
+ *      decided 2026-09-11 and 2026-09-15), or, when no target behind
+ *      schedule has a link, the rating-versus-evidence rows
  *      (./nr7-cross-checks.tsx); all ranked by ./review-groups.ts, rows open
  *      inline.
  *   4. The full picture folds closed below for that report only
@@ -263,8 +264,10 @@ export function climateSentence(
 
 /** Biodiversity report. With policy-link rows: headline = how many targets
  *  the report rates behind schedule and how many of those align with other
- *  plans; body = what "behind schedule" and the bars mean; start = the top
- *  target, hedged, with the caveat that the links are AI-estimated.
+ *  plans; body = how the rows below are ordered (behind schedule first, then
+ *  by aligned targets in other plans); start = the top target, hedged, its
+ *  potential misalignments named when it has any, with the caveat that the
+ *  links are AI-estimated.
  *  Without them (no policy alignment visible): headline = the cross-check
  *  count; body = what the report gives per target and that these are the
  *  places it does not agree; start = open a row, then settle which side is
@@ -278,17 +281,20 @@ export function biodiversitySentence(
 ): Sentence {
   const links = group.policyLinks;
   if (links && totals) {
-    const lead = links.top[0];
+    const lead = links.lead[0];
     const behind = [...POLICY_LINK_STATUSES].reduce((n, s) => n + (totals.byStatus[s] ?? 0), 0);
     return {
-      headline: t("biodiversity.policyLinks.headline", { country: countryName, behind, targets: totals.targets, top: links.top.length, min: links.topMin }),
-      body: t("biodiversity.policyLinks.body"),
-      start: t("biodiversity.policyLinks.start", {
+      headline: t("biodiversity.policyLinks.headline", { country: countryName, behind, targets: totals.targets, top: links.topLead.length, min: links.topMin }),
+      body: t("biodiversity.policyLinks.body", { limited: ratingLabels.limited, noProgress: ratingLabels.no_progress }),
+      // With potential misalignments on the top target, the pointer names
+      // them too: hedged ("worth a closer look at whether"), no cause claimed.
+      start: t(lead.evidence.flagged > 0 ? "biodiversity.policyLinks.startFlagged" : "biodiversity.policyLinks.start", {
         n: lead.row.number,
         text: shortNr7Text(lead.row.targetText, 60),
         rating: ratingLabels[lead.row.status].toLocaleLowerCase(),
         count: lead.evidence.count,
         docs: lead.evidence.docs,
+        flagged: lead.evidence.flagged,
       }),
       startCaveat: t("biodiversity.policyLinks.startCaveat"),
     };

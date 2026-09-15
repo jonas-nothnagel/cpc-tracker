@@ -70,27 +70,36 @@ describe("buildReviewGroups", () => {
     expect(by("sharedIndicatorDeclining").evidence).toMatchObject({ kind: "series", direction: "down", first: 0.965, last: 0.953, unit: "index" });
   });
 
-  it("ranks targets rated behind schedule by their HIGH links to other documents", () => {
-    // NT01 limited (3 links, 2 docs), NT02 limited (1 link), NT03 unknown (never), NT04 no progress (3 links, 2 docs).
+  it("lists every national target, the ones rated behind schedule first, each block by HIGH links to other documents", () => {
+    // NT01 limited (3 links, 2 docs), NT02 limited (1 link), NT03 unknown (no link), NT04 no progress (3 links, 2 docs).
     const behind: Nr7Data = { ...FIXTURE_NR7, progressItems: FIXTURE_NR7.progressItems.map((i) => (i.targetId === "NT01" || i.targetId === "NT02" ? { ...i, progressStatus: "limited" as const } : i)) };
     const g = buildReviewGroups({ summary: null, nr7Report: buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS), btrActions: 0 });
     const pl = g.biodiversity!.policyLinks!;
-    // NT01 and NT04 tie on links and documents (no flagged links either): the lower number leads.
-    expect(pl.items.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02"]);
-    expect(pl).toMatchObject({ total: 3, hidden: 0, candidates: 3, maxCount: 3, topMin: 1 });
+    // NT01 and NT04 tie on links and documents (no flagged links either): the lower number leads. NT03 is not behind schedule: last.
+    expect(pl.items.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02", "NT03"]);
+    expect(pl.items.map((i) => i.behind)).toEqual([true, true, true, false]);
+    expect(pl).toMatchObject({ total: 4, hidden: 0, candidates: 3, maxCount: 3, topMin: 1 });
+    expect(pl.lead.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02"]);
+    expect(pl.topLead).toHaveLength(3);
     expect(pl.items[0].evidence).toEqual({ kind: "policyLinks", count: 3, max: 3, docs: 2, flagged: 0, byDoc: [{ doc: "NDC", high: 2 }, { doc: "NAP", high: 1 }] });
+    // No NBSAP match for NT03: empty links, a zero count on the same scale.
+    expect(pl.items[3].evidence).toEqual({ kind: "policyLinks", count: 0, max: 3, docs: 0, flagged: 0, byDoc: [] });
     // A flagged link breaks the tie in favour of the more contested target.
     const contested = [...FIXTURE_ALIGNMENT, flag("NBSAP_4", "NDC_1")];
     const g2 = rankPolicyLinkCandidates(buildNr7Report(behind, contested, FIXTURE_TARGETS)!);
-    expect(g2!.items.map((i) => i.row.targetId)).toEqual(["NT04", "NT01", "NT02"]);
+    expect(g2!.items.map((i) => i.row.targetId)).toEqual(["NT04", "NT01", "NT02", "NT03"]);
     expect(g2!.items[0].evidence.flagged).toBe(1);
-    // The cap folds the rest behind "Show all"; topMin follows the last shown row.
+    // The cap folds the rest behind "Show all"; topMin follows the last lead row among the shown ones.
     const capped = rankPolicyLinkCandidates(buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!, 2);
-    expect(capped).toMatchObject({ hidden: 1, topMin: 3 });
-    expect(capped!.rest.map((i) => i.row.targetId)).toEqual(["NT02"]);
-    // The stock fixture: only NT04 is behind schedule with a link.
-    expect(g.biodiversity!.policyLinks!.items).toHaveLength(3);
-    expect(buildReviewGroups({ summary: null, nr7Report, btrActions: 0 }).biodiversity!.policyLinks!.items.map((i) => i.row.targetId)).toEqual(["NT04"]);
+    expect(capped).toMatchObject({ hidden: 2, topMin: 3 });
+    expect(capped!.topLead.map((i) => i.row.targetId)).toEqual(["NT01", "NT04"]);
+    expect(capped!.rest.map((i) => i.row.targetId)).toEqual(["NT02", "NT03"]);
+    // The stock fixture: only NT04 is behind schedule with a link; the on-track
+    // targets follow it in link order, so the headline speaks of one target.
+    const stock = buildReviewGroups({ summary: null, nr7Report, btrActions: 0 }).biodiversity!.policyLinks!;
+    expect(stock.items.map((i) => i.row.targetId)).toEqual(["NT04", "NT01", "NT02", "NT03"]);
+    expect(stock.lead.map((i) => i.row.targetId)).toEqual(["NT04"]);
+    expect(stock.topLead).toHaveLength(1);
   });
 
   it("has no policy-link group when nothing behind schedule is linked", () => {
@@ -143,10 +152,16 @@ describe.skipIf(!present)("buildReviewGroups on the Mongolia data", () => {
     expect(g.climate!.topDocs.length).toBeGreaterThan(0);
   });
 
-  it("leads the policy-link rows with agriculture, land restoration and spatial planning", () => {
+  it("leads the policy-link rows with agriculture, land restoration and spatial planning, then the other targets", () => {
     const pl = g.biodiversity!.policyLinks!;
-    expect(pl.top.map((i) => i.row.targetId)).toEqual(["NT08", "NT02", "NT01"]);
-    expect(pl).toMatchObject({ candidates: 13, total: 13, hidden: 10, maxCount: 51, topMin: 39 });
+    expect(pl.top.map((i) => i.row.targetId)).toEqual(["NT08", "NT02", "NT01", "NT07", "NT18"]);
+    // All 20 national targets: the 13 rated behind schedule first (every one linked), then the 7 others.
+    expect(pl).toMatchObject({ candidates: 13, total: 20, hidden: 15, maxCount: 60, topMin: 25 });
+    expect(pl.lead).toHaveLength(13);
+    expect(pl.items.slice(0, 13).every((i) => i.behind)).toBe(true);
+    expect(pl.items.slice(13).every((i) => !i.behind)).toBe(true);
+    // The most linked target of all is rated on track (mainstreaming): it leads the second block and sets the bar scale.
+    expect(pl.items[13]).toMatchObject({ row: { targetId: "NT12", status: "on_track" }, evidence: { count: 60 } });
     expect(pl.items[0].evidence).toMatchObject({ count: 51, docs: 6, flagged: 11 });
     expect(pl.items[0].evidence.byDoc.slice(0, 3)).toEqual([{ doc: "NDC", high: 16 }, { doc: "NRVTS", high: 12 }, { doc: "SECTORAL", high: 9 }]);
   });

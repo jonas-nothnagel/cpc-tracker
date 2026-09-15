@@ -86,15 +86,16 @@ describe("ImplementationSection", () => {
   it("biodiversity report: the finding, a plain body, where to start, the policy-link rows and three folded sections", () => {
     renderSlide({ report: "nr7" });
     expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule. One of them aligns strongly with 3 or more targets in other national plans.");
-    expect(body()).toBe("Behind schedule is the report's own rating: an insufficient rate, or no significant change. Each bar counts the targets in other documents the AI judged strongly aligned with that national target.");
+    expect(body()).toBe("Targets the report rates Limited progress or No progress come first, ordered by how many targets in other national plans the AI judged strongly aligned with them. The rest follow in the same order.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
     expect(start()).toContain("Where to start");
     expect(start()).toContain("Open national target 4 (By 2030, reduce pollution.): rated no progress, yet 3 targets across 2 other documents align strongly with it.");
     expect(start()).toContain("Worth a closer look");
     expect(start()).toContain("AI-estimated alignment between target texts");
     expect(start()).not.toContain("Nothing on this tab is AI-generated.");
-    // One target behind schedule with links: one row leads the slide.
-    expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(1);
+    // All four national targets, the one behind schedule with links first; the headline counts that one.
+    expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(4);
+    expect(document.querySelector('[data-tour="review-row"]')?.getAttribute("aria-label")).toMatch(/^4 · /);
     expect(screen.getByTestId("policy-link-rows")).toBeInTheDocument();
     // The cross-checks fold below, with the two NR7 sections.
     const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
@@ -105,6 +106,19 @@ describe("ImplementationSection", () => {
     expect(screen.getByTestId("cross-check-rows").closest("details")).toBe(details[0]);
     expect(screen.queryByText("Coverage by document")).toBeNull();
     expect(screen.getByText(/Evidence: Testland's 7th National Report \(NR7\)/)).toBeInTheDocument();
+  });
+
+  it("biodiversity report: where to start names the top target's potential misalignments when it has any, hedged", () => {
+    const contested = buildNr7Report(FIXTURE_NR7, [...FIXTURE_ALIGNMENT, flag("NBSAP_4", "NDC_1", "manageable")], FIXTURE_TARGETS)!;
+    render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <ImplementationSection coverage={coverage} summary={summary} nr7Data={FIXTURE_NR7} nr7Report={contested} visibleTargetIds={new Set(FIXTURE_TARGETS.keys())} report="nr7" onReportChange={vi.fn()} countryName="Testland" countryConfig={null} onOpenActionPair={vi.fn()} onOpenTarget={vi.fn()} />
+      </NextIntlClientProvider>,
+    );
+    expect(start()).toContain("align strongly with it, and 1 pair is flagged as potential misalignments.");
+    expect(start()).toContain("Worth a closer look at whether those pairs bear on what the report says holds it back");
+    expect(screen.getByTestId("policy-link-flagged-face")).toHaveTextContent("1 potential misalignment");
+    expect(document.body.textContent).not.toMatch(/\b(should|must|because|responsible|blame|ministry|contradict|tension)\b/i);
   });
 
   it("biodiversity report without visible policy alignment: the cross-checks lead, as before", () => {

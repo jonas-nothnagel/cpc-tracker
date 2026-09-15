@@ -27,7 +27,7 @@ import type { Nr7AnswerMix, Nr7IndicatorView, Nr7Status } from "../../nr7-report
 export const REVIEW_CAP = 5;
 
 /** Policy-link rows shown before "Show all" on the biodiversity view. */
-export const POLICY_LINK_CAP = 3;
+export const POLICY_LINK_CAP = 5;
 
 /** "Behind schedule" in the report's own rating: progress at an insufficient
  *  rate, or no significant change. Unknown is not a rating of progress. */
@@ -73,25 +73,36 @@ export type Nr7Evidence =
   | { kind: "reach"; count: number; max: number }
   | { kind: "policyLinks"; count: number; max: number; docs: number; flagged: number; byDoc: { doc: string; high: number }[] };
 
-/** One national target rated behind schedule, with its cross-document links. */
+/** One national target with its cross-document links (empty when the
+ *  report's target restates no policy target in the corpus). */
 export interface Nr7PolicyLinkItem {
   row: Nr7TargetRowModel;
   links: Nr7PolicyLinks;
+  /** True when the report rates the target behind schedule. */
+  behind: boolean;
   evidence: Extract<Nr7Evidence, { kind: "policyLinks" }>;
 }
 
 export interface Nr7PolicyLinkGroup {
-  /** Most HIGH links first; ties by distinct documents, flagged links, target number. */
+  /** Every national target in the report: the ones rated behind schedule
+   *  first, then the rest; within each block most HIGH links first, ties by
+   *  distinct documents, flagged links, target number. */
   items: Nr7PolicyLinkItem[];
+  /** The rows shown before "Show all" (`cap` rows). */
   top: Nr7PolicyLinkItem[];
   rest: Nr7PolicyLinkItem[];
   total: number;
   hidden: number;
-  /** National targets rated behind schedule (the caption's denominator). */
+  /** National targets rated behind schedule (the headline's "behind"). */
   candidates: number;
-  /** Largest HIGH-link count in the group (bar scale). */
+  /** Targets rated behind schedule with >= 1 HIGH link, ranked: the rows
+   *  the headline and "Where to start" speak about. Never empty. */
+  lead: Nr7PolicyLinkItem[];
+  /** The lead rows among `top` (the headline's "N of them"). */
+  topLead: Nr7PolicyLinkItem[];
+  /** Largest HIGH-link count over every row (bar scale). */
   maxCount: number;
-  /** Fewest HIGH links among the top rows (the headline's "N or more"). */
+  /** Fewest HIGH links among `topLead` (the headline's "N or more"). */
   topMin: number;
 }
 
@@ -141,35 +152,46 @@ export function buildReviewGroups({
   return { climate, biodiversity };
 }
 
-/** National targets the report rates behind schedule, ranked by how many
- *  policy targets in other documents align HIGH with the NBSAP target they
- *  restate. Null when no candidate has a HIGH link. Deterministic. */
+const NO_LINKS: Nr7PolicyLinks = { high: [], flagged: [], byDoc: [], docs: 0 };
+
+/** Every national target in the report, the ones rated behind schedule
+ *  first, each block ranked by how many policy targets in other documents
+ *  align HIGH with the NBSAP target it restates. Null when no target behind
+ *  schedule has a HIGH link (the slide then falls back to the cross-checks).
+ *  Deterministic. */
 export function rankPolicyLinkCandidates(model: Nr7ReportModel, cap: number = POLICY_LINK_CAP): Nr7PolicyLinkGroup | null {
   const candidates = model.targets.filter((r) => POLICY_LINK_STATUSES.has(r.status));
-  const linked = candidates.filter((r): r is Nr7TargetRowModel & { policyLinks: Nr7PolicyLinks } => Boolean(r.policyLinks && r.policyLinks.high.length > 0));
-  if (linked.length === 0) return null;
-  const ranked = [...linked].sort(
+  if (!candidates.some((r) => r.policyLinks && r.policyLinks.high.length > 0)) return null;
+  const linksOf = (r: Nr7TargetRowModel) => r.policyLinks ?? NO_LINKS;
+  const ranked = [...model.targets].sort(
     (a, b) =>
-      b.policyLinks.high.length - a.policyLinks.high.length ||
-      b.policyLinks.docs - a.policyLinks.docs ||
-      b.policyLinks.flagged.length - a.policyLinks.flagged.length ||
+      Number(POLICY_LINK_STATUSES.has(b.status)) - Number(POLICY_LINK_STATUSES.has(a.status)) ||
+      linksOf(b).high.length - linksOf(a).high.length ||
+      linksOf(b).docs - linksOf(a).docs ||
+      linksOf(b).flagged.length - linksOf(a).flagged.length ||
       Number(a.number) - Number(b.number) ||
       a.targetId.localeCompare(b.targetId),
   );
-  const maxCount = ranked[0].policyLinks.high.length;
-  const items: Nr7PolicyLinkItem[] = ranked.map((row) => ({
-    row,
-    links: row.policyLinks,
-    evidence: {
-      kind: "policyLinks",
-      count: row.policyLinks.high.length,
-      max: maxCount,
-      docs: row.policyLinks.docs,
-      flagged: row.policyLinks.flagged.length,
-      byDoc: row.policyLinks.byDoc.filter((d) => d.high > 0).map((d) => ({ doc: d.doc, high: d.high })),
-    },
-  }));
+  const maxCount = ranked.reduce((m, r) => Math.max(m, linksOf(r).high.length), 0);
+  const items: Nr7PolicyLinkItem[] = ranked.map((row) => {
+    const links = linksOf(row);
+    return {
+      row,
+      links,
+      behind: POLICY_LINK_STATUSES.has(row.status),
+      evidence: {
+        kind: "policyLinks",
+        count: links.high.length,
+        max: maxCount,
+        docs: links.docs,
+        flagged: links.flagged.length,
+        byDoc: links.byDoc.filter((d) => d.high > 0).map((d) => ({ doc: d.doc, high: d.high })),
+      },
+    };
+  });
+  const lead = items.filter((i) => i.behind && i.evidence.count > 0);
   const top = items.slice(0, cap);
+  const topLead = top.filter((i) => i.behind && i.evidence.count > 0);
   return {
     items,
     top,
@@ -177,8 +199,10 @@ export function rankPolicyLinkCandidates(model: Nr7ReportModel, cap: number = PO
     total: items.length,
     hidden: Math.max(0, items.length - cap),
     candidates: candidates.length,
+    lead,
+    topLead,
     maxCount,
-    topMin: top[top.length - 1].evidence.count,
+    topMin: topLead[topLead.length - 1].evidence.count,
   };
 }
 

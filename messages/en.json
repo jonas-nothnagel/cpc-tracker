@@ -1144,7 +1144,7 @@
         "startCaveat": "Computed from the report's own statements. Nothing on this tab is AI-generated.",
         "policyLinks": {
           "headline": "{country}'s biodiversity report rates {behind} of {targets} national targets behind schedule. {top, plural, one {One of them aligns} other {# of them align}} strongly with {min} or more targets in other national plans.",
-          "body": "Behind schedule is the report's own rating: an insufficient rate, or no significant change. Each bar counts the targets in other documents the AI judged strongly aligned with that national target.",
+          "body": "Targets the report rates {limited} or {noProgress} come first, ordered by how many targets in other national plans the AI judged strongly aligned with them. The rest follow in the same order.",
           "start": "Open national target {n} ({text}): rated {rating}, yet {count} targets across {docs} other documents align strongly with it. Worth a closer look at what the report says holds it back, and which of those plans share the aim.",
           "startCaveat": "Ratings, answers and figures are the report's own. Links to other documents are AI-estimated alignment between target texts: a prompt for review, not a record of delivery or funding.",
           "evidence": "aligned with {count, plural, one {# target} other {# targets}} in {docs, plural, one {# document} other {# documents}}",
@@ -1155,7 +1155,11 @@
           "challengesHeading": "What the report says holds it back (the report's words, verbatim)",
           "noChallenges": "The report gives no key-challenges text for this target.",
           "fewer": "Show fewer",
-          "reviewWord": "potential misalignment"
+          "reviewWord": "potential misalignment",
+          "noLinks": "no strongly aligned targets in other documents",
+          "restHeading": "Rated on track, or unknown",
+          "flaggedShort": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
+          "startFlagged": "Open national target {n} ({text}): rated {rating}, yet {count} targets across {docs} other documents align strongly with it, and {flagged, plural, one {# pair is} other {# pairs are}} flagged as potential misalignments. Worth a closer look at whether those pairs bear on what the report says holds it back, and which plans share the aim."
         }
       }
     },
@@ -1215,7 +1219,8 @@
           "fewer": "Show fewer",
           "toReview": "+ {count} to review"
         },
-        "caveat": "AI-estimated alignment between target texts, for the documents shown. A prompt for review, not a record of delivery or funding. Open a target to read the pair."
+        "caveat": "AI-estimated alignment between target texts, for the documents shown. A prompt for review, not a record of delivery or funding. Open a target to read the pair.",
+        "noLinks": "No policy target in the other documents was judged strongly aligned with it."
       }
     },
     "nr7Report": {

@@ -36,9 +36,9 @@ const rows = () => [...document.querySelectorAll('[data-testid="policy-link-rows
 const rowButton = (i: number) => within(rows()[i]).getAllByRole("button")[0];
 
 describe("Nr7PolicyLinkRows", () => {
-  it("shows the ranked targets: number and text, the GBF chip, the rating word and the link count", () => {
+  it("shows every target: number and text, the GBF chip, the rating word and the link count, behind schedule first", () => {
     renderRows();
-    expect(rows()).toHaveLength(3);
+    expect(rows()).toHaveLength(4);
     expect(rowButton(0)).toHaveAttribute("data-tour", "review-row");
     expect(rowButton(0).getAttribute("aria-label")).toBe("1 · By 2030, mainstream biodiversity into all…: rated Limited progress; aligned with 3 targets in 2 documents");
     expect(within(rows()[0]).getByText("Limited progress")).toBeInTheDocument();
@@ -46,8 +46,27 @@ describe("Nr7PolicyLinkRows", () => {
     expect(within(rows()[0]).getByTitle("Global Biodiversity Framework (GBF) target 14: The multiple values of biodiversity are integrated into decision-making at all levels")).toHaveTextContent("GBF T14");
     expect(within(rows()[1]).getByText("No progress")).toBeInTheDocument();
     expect(within(rows()[2]).getByText("aligned with 1 target in 1 document")).toBeInTheDocument();
+    // The one target not rated behind schedule comes last, under a caption, with no link to count.
+    expect(screen.getAllByTestId("policy-link-rest-heading")).toHaveLength(1);
+    expect(within(rows()[3]).getByTestId("policy-link-rest-heading")).toHaveTextContent("Rated on track, or unknown");
+    expect(within(rows()[3]).getByText("Unknown")).toBeInTheDocument();
+    expect(within(rows()[3]).getByText("no strongly aligned targets in other documents")).toBeInTheDocument();
     expect(document.querySelector('[data-tour="review-visual"]')).not.toBeNull();
+    // Four rows fit under the cap of five: nothing to unfold.
     expect(screen.queryByRole("button", { name: /Show all/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Show fewer" })).toBeNull();
+  });
+
+  it("opens a target without links to the report's words and the links onward only", () => {
+    const { onFocusNr7Target } = renderRows();
+    fireEvent.click(rowButton(3));
+    const row = rows()[3];
+    expect(rowButton(3)).toHaveAttribute("aria-expanded", "true");
+    expect(within(row).queryByText("Aligned targets by document (AI-estimated)")).toBeNull();
+    expect(within(row).queryByText("Most aligned targets in other documents (AI-estimated)")).toBeNull();
+    expect(within(row).getByText("The report gives no key-challenges text for this target.")).toBeInTheDocument();
+    fireEvent.click(within(row).getByRole("button", { name: "See the national target" }));
+    expect(onFocusNr7Target).toHaveBeenCalledWith("NT03");
   });
 
   it("opens a row to the documents, the counterparts, the report's own words and the links onward", () => {
@@ -78,8 +97,14 @@ describe("Nr7PolicyLinkRows", () => {
 
   it("names the potential misalignments and their main document, and the key challenges when the report gives them", () => {
     renderRows([...FIXTURE_ALIGNMENT, flagged]);
-    // The flagged link lifts NT04 to the top.
-    expect(rowButton(0).getAttribute("aria-label")).toMatch(/^4 · /);
+    // The flagged link lifts NT04 to the top, and shows on the closed row: a second bar and the count in words.
+    expect(rowButton(0).getAttribute("aria-label")).toBe("4 · By 2030, reduce pollution.: rated No progress; aligned with 3 targets in 2 documents; 1 potential misalignment");
+    const face = within(rows()[0]).getByTestId("policy-link-flagged-face");
+    expect(face).toHaveTextContent("1 potential misalignment");
+    // Both bars share the scale (largest aligned count, 3): one flagged pair is a third of the aligned bar.
+    expect((within(face).getByTestId("policy-link-flagged-bar").firstElementChild as HTMLElement).style.width).toBe("33.33333333333333%");
+    // A target without flagged pairs has no second line.
+    expect(within(rows()[1]).queryByTestId("policy-link-flagged-face")).toBeNull();
     fireEvent.click(rowButton(0));
     const row = rows()[0];
     expect(within(row).getByText("1 potential misalignment, mostly with the NDC")).toBeInTheDocument();
@@ -134,10 +159,14 @@ describe("Nr7PolicyLinkRows", () => {
     expect(within(row).queryByRole("button", { name: "NDC · NDC_2" })).toBeNull();
   });
 
-  it("folds the rest behind Show all and never claims a suggestion on the face", () => {
-    renderRows(FIXTURE_ALIGNMENT, 2);
-    expect(rows()).toHaveLength(2);
-    fireEvent.click(screen.getByRole("button", { name: "Show all 3" }));
+  it("folds the rest behind Show all, folds back, and never claims a suggestion on the face", () => {
+    renderRows(FIXTURE_ALIGNMENT, 3);
+    expect(rows()).toHaveLength(3);
+    expect(screen.queryByTestId("policy-link-rest-heading")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Show all 4" }));
+    expect(rows()).toHaveLength(4);
+    expect(screen.getByTestId("policy-link-rest-heading")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show fewer" }));
     expect(rows()).toHaveLength(3);
     expect(document.body.textContent).not.toMatch(/\b(should|must|responsible|blame|ministry|contradict|tension)\b/i);
   });

@@ -111,12 +111,19 @@ describe("Nr7TargetLinks", () => {
     expect(items()).toHaveLength(7);
   });
 
-  it("renders nothing for a target with no NBSAP match", () => {
-    const { container } = render(
-      <NextIntlClientProvider locale="en" messages={en}>
-        <Nr7TargetLinks row={{ ...nt04, policyLinks: null }} isDefault={false} countryConfig={null} countryName="T" visibleTargetIds={new Set()} onOpenTarget={vi.fn()} />
-      </NextIntlClientProvider>,
-    );
-    expect(container).toBeEmptyDOMElement();
+  it("keeps the header and says so for a target with no NBSAP match or no links", () => {
+    for (const policyLinks of [null, { high: [], flagged: [], byDoc: [], docs: 0 }]) {
+      render(
+        <NextIntlClientProvider locale="en" messages={en}>
+          <Nr7TargetLinks row={{ ...nt04, policyLinks }} isDefault={false} countryConfig={null} countryName="T" visibleTargetIds={new Set()} onOpenTarget={vi.fn()} />
+        </NextIntlClientProvider>,
+      );
+      expect(screen.getByText("What lines up with national target 4")).toBeInTheDocument();
+      expect(screen.getByText("No progress")).toBeInTheDocument();
+      expect(screen.getByTestId("nr7-links-none")).toHaveTextContent("No policy target in the other documents was judged strongly aligned with it.");
+      expect(document.querySelector('[data-tour="nr7-links-bars"]')).toBeNull();
+      expect(screen.queryByText(/align strongly with it/)).toBeNull();
+      cleanup();
+    }
   });
 });

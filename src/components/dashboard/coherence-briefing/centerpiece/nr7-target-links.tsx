@@ -41,9 +41,19 @@ export interface Nr7TargetLinksProps {
 
 export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, visibleTargetIds, onOpenTarget }: Nr7TargetLinksProps) {
   const t = useTranslations("briefing.implementationCenter.nr7Links");
-  const ratingLabels = useNr7BadgeLabels();
   const links = row.policyLinks;
-  if (!links) return null;
+  const hasLinks = Boolean(links && (links.high.length > 0 || links.flagged.length > 0));
+  // A target without links (nothing in the corpus restates it, or nothing
+  // aligns) keeps the header and says so; the bars and lists need links.
+  if (!links || !hasLinks) {
+    return (
+      <div className="px-1 space-y-6" data-testid="nr7-target-links">
+        <TargetHeader row={row} isDefault={isDefault} countryName={countryName} />
+        <p className="text-[11.5px] text-[var(--undp-black)] leading-snug" data-testid="nr7-links-none">{t("noLinks")}</p>
+        <p className="text-[11px] text-[var(--undp-gray)] leading-snug" data-tour="nr7-links-caveat">{t("caveat")}</p>
+      </div>
+    );
+  }
   const docs = links.byDoc.filter((d) => d.high > 0 || d.flagged > 0);
   // Bars count strong alignment only; a document with nothing but flagged
   // pairs keeps its place in the misalignment line and the target list.
@@ -58,28 +68,11 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
 
   return (
     <div className="px-1 space-y-6" data-testid="nr7-target-links">
-      {/* Which national target, as the report rates it. */}
-      <div>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">{t("header.eyebrow")}</p>
-        <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">{t("header.title", { n: row.number })}</p>
-        <p className="text-[11.5px] text-[var(--undp-gray)] mt-0.5">{t("header.subtitle", { country: countryName })}</p>
-        <p className="text-[12px] text-[var(--undp-black)] leading-snug mt-1.5" title={row.targetText}>
-          {shortNr7Text(row.targetText, 110)}
-        </p>
-        <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11.5px]">
-          <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-            <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: NR7_COLORS[row.status] }} />
-            <span className="font-medium" style={{ color: NR7_COLORS[row.status] }}>{ratingLabels[row.status]}</span>
-          </span>
-          {row.gbfTargets.map((g) => (
-            <GbfChip key={g.id} target={g} />
-          ))}
-        </p>
+      <TargetHeader row={row} isDefault={isDefault} countryName={countryName}>
         <p className="text-[11.5px] text-[var(--undp-black)] mt-1.5">
           {t("mixLine", { count: links.high.length, docs: links.docs, flagged: links.flagged.length })}
         </p>
-        {isDefault && <p className="text-[11px] text-[var(--undp-gray)] mt-1" data-testid="nr7-links-default">{t("defaultNote")}</p>}
-      </div>
+      </TargetHeader>
 
       {/* One bar per document: how many of its targets align strongly. */}
       <div>
@@ -145,6 +138,34 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
       </div>
 
       <p className="text-[11px] text-[var(--undp-gray)] leading-snug" data-tour="nr7-links-caveat">{t("caveat")}</p>
+    </div>
+  );
+}
+
+/** Which national target, as the report rates it; the link count line (when
+ *  there are links) slots in before the default note. */
+function TargetHeader({ row, isDefault, countryName, children }: { row: Nr7TargetRowModel; isDefault: boolean; countryName: string; children?: React.ReactNode }) {
+  const t = useTranslations("briefing.implementationCenter.nr7Links");
+  const ratingLabels = useNr7BadgeLabels();
+  return (
+    <div>
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">{t("header.eyebrow")}</p>
+      <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">{t("header.title", { n: row.number })}</p>
+      <p className="text-[11.5px] text-[var(--undp-gray)] mt-0.5">{t("header.subtitle", { country: countryName })}</p>
+      <p className="text-[12px] text-[var(--undp-black)] leading-snug mt-1.5" title={row.targetText}>
+        {shortNr7Text(row.targetText, 110)}
+      </p>
+      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11.5px]">
+        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+          <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: NR7_COLORS[row.status] }} />
+          <span className="font-medium" style={{ color: NR7_COLORS[row.status] }}>{ratingLabels[row.status]}</span>
+        </span>
+        {row.gbfTargets.map((g) => (
+          <GbfChip key={g.id} target={g} />
+        ))}
+      </p>
+      {children}
+      {isDefault && <p className="text-[11px] text-[var(--undp-gray)] mt-1" data-testid="nr7-links-default">{t("defaultNote")}</p>}
     </div>
   );
 }

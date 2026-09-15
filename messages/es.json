@@ -1144,7 +1144,7 @@
         "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA.",
         "policyLinks": {
           "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas. {top, plural, one {Una de ellas se alinea} other {# de ellas se alinean}} fuertemente con {min} o más metas de otros planes nacionales.",
-          "body": "Rezagada es la calificación del propio informe: avance a un ritmo insuficiente, o sin cambio significativo. Cada barra cuenta las metas de otros documentos que la IA juzgó fuertemente alineadas con esa meta nacional.",
+          "body": "Primero van las metas que el informe califica como {limited} o {noProgress}, ordenadas por cuántas metas de otros planes la IA juzgó fuertemente alineadas con ellas. Las demás siguen en el mismo orden.",
           "start": "Abre la meta nacional {n} ({text}): calificada {rating}, aunque {count} metas de {docs} otros documentos se alinean fuertemente con ella. Vale la pena mirar de cerca qué dice el informe que la frena y cuáles de esos planes comparten el objetivo.",
           "startCaveat": "Las calificaciones, respuestas y cifras son del propio informe. Los vínculos con otros documentos son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
           "evidence": "alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# documento} other {# documentos}}",
@@ -1155,7 +1155,11 @@
           "challengesHeading": "Qué dice el informe que la frena (palabras del informe, textual)",
           "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
           "fewer": "Mostrar menos",
-          "reviewWord": "posible desalineación"
+          "reviewWord": "posible desalineación",
+          "noLinks": "sin metas fuertemente alineadas en otros documentos",
+          "restHeading": "Calificadas en curso, o desconocidas",
+          "flaggedShort": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
+          "startFlagged": "Abre la meta nacional {n} ({text}): calificada {rating}, aunque {count} metas de {docs} otros documentos se alinean fuertemente con ella, y {flagged, plural, one {# par está señalado} other {# pares están señalados}} como posibles desalineaciones. Vale la pena mirar de cerca si esos pares tienen que ver con lo que el informe dice que la frena, y qué planes comparten el objetivo."
         }
       }
     },
@@ -1215,7 +1219,8 @@
           "fewer": "Mostrar menos",
           "toReview": "+ {count} por revisar"
         },
-        "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par."
+        "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par.",
+        "noLinks": "Ninguna meta de política de los otros documentos se juzgó fuertemente alineada con ella."
       }
     },
     "nr7Report": {

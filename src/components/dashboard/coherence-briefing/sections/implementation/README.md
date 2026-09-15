@@ -19,9 +19,10 @@ takeaways first.
    data (`climateSentence` / `biodiversitySentence` in `index.tsx`), never
    authored per country and never by a model. Climate: how many of the
    flagged actions are under way, and which documents (full name, short form
-   in brackets) most of the targets sit in. Biodiversity: what "behind
-   schedule" means in the report's own rating and what the bars count (the
-   AI-judged aligned targets in other documents); in the fallback, what the
+   in brackets) most of the targets sit in. Biodiversity: how the rows below
+   are ordered (targets rated Limited progress or No progress first, then by
+   how many targets in other plans the AI judged strongly aligned with them,
+   the rest in the same order); in the fallback, what the
    report gives per national target and that these are the places it does
    not agree with itself, "No AI is involved." Under 35 words in all three
    locales (`index.test.tsx`).
@@ -31,9 +32,11 @@ takeaways first.
    targets and the AI's reason, judge whether the concern holds; caveat
    "AI-estimated review prompts, not findings." Biodiversity: open the
    top-ranked national target (number, short text, its rating, how many
-   targets in how many other documents align with it), "worth a closer
-   look" at what the report says holds it back and which plans share the
-   aim; caveat that ratings and figures are the report's own while the
+   targets in how many other documents align with it, and how many pairs
+   are flagged when any are), "worth a closer look" at what the report says
+   holds it back (whether the flagged pairs bear on it, when there are
+   any) and which plans share the aim, never a cause asserted; caveat
+   that ratings and figures are the report's own while the
    links are AI-estimated alignment between target texts, not delivery or
    funding. In the fallback: open a row, then settle which side is right;
    caveat "Nothing on this tab is AI-generated." Tool guidance and a hedged
@@ -50,16 +53,27 @@ takeaways first.
      the AI rationale under "Why it was flagged (AI-estimated)", the status
      word, the institutions named on the action (verbatim, neutral) and "Open
      the pair".
-   - *Biodiversity* (`nr7-policy-link-rows.tsx`, top three first): one row
-     per national target the report rates behind schedule, ranked by its
-     HIGH links to other documents (`rankPolicyLinkCandidates`): the target
-     with its GBF chip, the rating as a chip (dot + word), and a bar split by
+   - *Biodiversity* (`nr7-policy-link-rows.tsx`, top five first): one row
+     per national target in the report, the ones rated behind schedule
+     first, each block ranked by its HIGH links to other documents
+     (`rankPolicyLinkCandidates`); a caption ("Rated on track, or unknown")
+     marks where the second block begins. "Show all N" unfolds the rest,
+     "Show fewer" folds back. Each row: the target with
+     its GBF chip, the rating as a chip (dot + word), and a bar split by
      document in the document colours with "aligned with {n} targets in {d}
-     documents" beside it. A row opens to the documents with counts, the
-     three most aligned counterparts (open the target profile), the
-     potential-misalignment count with its main document, the report's Key
-     Challenges text labelled verbatim, and the links onward. When no target
-     behind schedule has a link, the cross-check rows below are the visual.
+     documents" beside it (or "no strongly aligned targets in other
+     documents"; the bar scale is the largest count in the whole list), and
+     under it, when the target has any, a second bar in the flagged colour
+     with "{n} potential misalignments" in words, on the same scale, so a
+     target that is behind and contested reads as such on the face. A
+     row opens to the documents with counts, the three most aligned
+     counterparts (open the target profile), the potential-misalignment
+     count with its main document, the report's Key Challenges text
+     labelled verbatim, and the links onward; a row without links opens to
+     the report's words and the links onward only. The headline and "Where
+     to start" speak only of the targets rated behind schedule with a link
+     (`lead` / `topLead`). When no such target exists, the cross-check rows
+     below are the visual.
    - *Biodiversity cross-checks* (`nr7-cross-checks.tsx`, folded under the
      full picture while the policy-link rows lead): one row per cross-check
      between the country's own rating, questionnaire answers and indicators
@@ -89,6 +103,22 @@ takeaways first.
 - (2026-09-11) National targets group under the GBF global target the
   country filed each under (from the reporting tool), the axis that stays
   the same across countries.
+- (2026-09-15) The policy-link rows list every national target, not only
+  the ones rated behind schedule with a link, five on the face and the rest
+  behind one "Show all": the reader wanted the whole report reachable from
+  the slide and, above all, the order explained. Behind schedule still comes first and the
+  headline still counts only those; the body says the order rule in plain
+  words instead of defining "behind schedule" by quoting the reporting
+  tool's option labels. The sticky column keeps its header for a target
+  without links and says there are none.
+- (2026-09-15) Potential misalignments show on the row face, not only in
+  the open row: a second bar in the flagged colour with the count in
+  words, on the same scale as the aligned bar. The reader wanted to see at
+  a glance when a target that is behind is also contested. The face states
+  the two counts; whether the flagged pairs have anything to do with the
+  rating is left to the reader, with a hedged "worth a closer look at
+  whether" in "Where to start" only (guardrail: no cause asserted on a
+  static surface, no actor named).
 - (2026-09-11) The sticky column follows the NR7 view: while the
   biodiversity report is on screen it shows the opened policy-link row's
   national target and its links to the other plans, one bar per document
