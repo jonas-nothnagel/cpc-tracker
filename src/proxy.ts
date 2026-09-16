@@ -51,6 +51,22 @@ export function isGatedPath(pathname: string): boolean {
   return UPLOAD_PAGE_RE.test(pathname);
 }
 
+// The hostnames this request was addressed to, as the browser saw them.
+// Behind a reverse proxy (Azure App Service) `req.nextUrl.host` is the
+// container's listen address (localhost:3000), not the public hostname, so
+// comparing Origin against it rejected every same-origin browser POST in
+// production. Host and X-Forwarded-Host are what the proxy forwards; a
+// cross-site page cannot set either from the browser.
+function requestHosts(req: NextRequest): Set<string> {
+  const hosts = new Set<string>();
+  const forwarded = req.headers.get("x-forwarded-host");
+  if (forwarded) hosts.add(forwarded.split(",")[0].trim().toLowerCase());
+  const host = req.headers.get("host");
+  if (host) hosts.add(host.trim().toLowerCase());
+  hosts.add(req.nextUrl.host.toLowerCase());
+  return hosts;
+}
+
 // CSRF defence-in-depth: reject cross-site state-changing requests to the API.
 // The SameSite=Lax session cookie already blocks cross-site POSTs; this also
 // covers Bearer-authenticated clients. Same-origin browsers send a matching
@@ -60,7 +76,7 @@ function isCrossSiteMutation(req: NextRequest): boolean {
   const origin = req.headers.get("origin");
   if (!origin) return false;
   try {
-    return new URL(origin).host !== req.nextUrl.host;
+    return !requestHosts(req).has(new URL(origin).host.toLowerCase());
   } catch {
     return true;
   }
