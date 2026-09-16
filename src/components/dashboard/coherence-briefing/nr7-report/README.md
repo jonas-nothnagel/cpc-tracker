@@ -16,8 +16,10 @@ The country's 7th National Report to the Convention on Biological Diversity
   the country config sets `nr7PolicyLinkDocType`.
 - and the **GBF global target(s)** the country filed each national target
   under (`gbfTargets`, from the reporting tool, with the CBD's heading
-  verbatim): the axis that is the same for every country, so the targets
-  list groups by it (`gbf-groups.ts`, `GbfChip`).
+  verbatim): the axis that is the same for every country, shown as a chip
+  with the abbreviation expanded where it first appears (`GbfChip`;
+  `gbf-groups.ts` groups rows by it and is kept for any list that wants
+  that order).
 
 The only AI-derived numbers in this module are the policy links, from the
 pipeline's alignment; everything else is arithmetic on the country's own
@@ -29,34 +31,35 @@ AI-estimated.
 ## What renders (all inline on the Implementation slide, no drawer)
 
 - The slide's biodiversity view (decided 2026-09-11, Julien's and Reina's
-  feedback of 10 Sep) is the **policy-link rows**
-  (`sections/implementation/nr7-policy-link-rows.tsx`): the national targets
-  the report rates behind schedule (insufficient rate, no significant
-  change), ranked by `rankPolicyLinkCandidates` in `review-groups.ts` on
-  their HIGH links to other documents; a row opens to the documents, the
-  most aligned counterparts, the potential misalignments and the report's
-  own Key Challenges text. When no such target has a link (no policy
-  alignment visible) the cross-checks are the view, as before.
+  feedback of 10 Sep; simplified 2026-09-16 after a design audit) is the
+  **policy-link rows** (`sections/implementation/nr7-policy-link-rows.tsx`):
+  every national target, the ones the report rates behind schedule
+  (insufficient rate, no significant change) first, ranked by
+  `rankPolicyLinkCandidates` in `review-groups.ts` on their HIGH links to
+  other documents; a row opens to the report's own Key Challenges text, the
+  aligned count, the potential misalignments, the GBF filing and the
+  report's full entry (`Nr7TargetDetail`, `target-detail.tsx`: rating
+  wording, narrative, questionnaire, indicators). `stripDeadlinePrefix`
+  (`nr7-self-report.ts`) drops the "By 2030," every target opens with, for
+  display only. When no such target has a link (no policy alignment
+  visible) the cross-checks are the view, as before.
 - The briefing's sticky column follows the opened policy-link row
   (`centerpiece/nr7-target-links.tsx`): that national target's links to the
-  other plans, one bar per document (strong alignment only), the potential
-  misalignments named by document, and the aligned targets listed per
-  document with links into the target profile. The top-ranked target stands
-  in until a row is opened. Tour `nr7TargetLinks`; copy under
-  `briefing.implementationCenter.nr7Links`.
+  other plans, one line per document (aligned count, count to review), and
+  the aligned targets listed per document with links into the target
+  profile. The top row stands in until a row is opened. Tour
+  `nr7TargetLinks`; copy under `briefing.implementationCenter.nr7Links`.
 - The cross-check signals (`sections/implementation/nr7-cross-checks.tsx`:
   rating chip beside the disagreeing evidence as a glyph, rows expand to
   `QuestionnaireTable` / `IndicatorCard`) fold into the full picture under
   "Ratings that do not match their own evidence" while the policy-link rows
   lead; their takeaway sentence is assembled by the slide from
   `review-groups.ts`.
-- `Nr7TargetsList` (rating mix + twenty expandable `Nr7TargetRow`s grouped
-  under GBF target headings, a chip for any further GBF target a row is
-  filed under, and a line naming GBF targets no national target is filed
-  under) and `IndicatorsView` (every indicator, sparklines, small multiples
-  for disaggregations, the country's note where no value was reported)
-  render inside the slide's folded "full picture" sections under the NR7
-  view.
+- `IndicatorsView` (every indicator, sparklines, small multiples for
+  disaggregations, the country's note where no value was reported) renders
+  inside the slide's folded "full picture" under the NR7 view; a target
+  chip on a card opens that target's row. There is no separate list of the
+  national targets since 2026-09-16: the rows are that list.
 - `nr7PairByTarget` tells the slide which national targets can open a
   reported-action pair.
 - Countries without NR7 data render nothing from this module and get no
@@ -122,8 +125,11 @@ test, then each hit (the slide falls back to the cross-checks by itself).
 The column alone: `grep -rni "nr7targetlinks\|nr7Links\|focusedNr7TargetId" src messages`
 (`centerpiece/nr7-target-links.tsx` + test, the host state and branches,
 the tour id and its copy); the wheel returns by itself.
-The GBF grouping alone: `grep -rni "gbf" src messages` (`gbf-chip.tsx`,
+The GBF chips alone: `grep -rni "gbf" src messages` (`gbf-chip.tsx`,
 `gbf-groups.ts`, the `gbfTargets` row field, `briefing.nr7Report.gbf`).
+The colour ramp is imported by `src/components/viz/nr7-progress.tsx` and
+`sections/implementation/coverage-by-document.tsx` too; restore their local
+maps if the module goes.
 
 The whole module:
 

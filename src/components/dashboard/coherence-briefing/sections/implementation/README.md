@@ -6,73 +6,72 @@ takeaways first.
 
 ## What renders, top to bottom
 
-1. **Headline = the finding for the report on screen, with its
-   denominator.** Climate: "{n} of {country}'s {total} reported climate
-   actions may work against targets in its other plans." Biodiversity:
-   "{country}'s biodiversity report rates {b} of {total} national targets
-   behind schedule. {k} of them carry potential misalignments with other
-   national plans." (when no target behind schedule has a link: "In
+1. **Two tabs, only when the country has both reports**
+   (`report-toggle.tsx`): "Climate report (BTR)" / "Biodiversity report
+   (NR7)", above the headline through the frame's `controlsFirst` slot,
+   because everything below is about the chosen report. The host owns the
+   state so its right-hand column can follow.
+2. **Headline = the finding for the report on screen, with its
+   denominator, one number.** Climate: "{n} of {country}'s {total} reported
+   climate actions may work against targets in its other plans."
+   Biodiversity: "{country}'s biodiversity report rates {b} of {total}
+   national targets behind schedule." (fallback without policy links: "In
    {k} places, {country}'s biodiversity report rates a target one way while
    its own evidence points another."; variants for nothing flagged and for
    a match not computed).
-2. **Body = what was found, in two plain sentences**, templated from the
-   data (`climateSentence` / `biodiversitySentence` in `index.tsx`), never
+3. **Body = two plain sentences**, templated from the data
+   (`climateSentence` / `biodiversitySentence` in `index.tsx`), never
    authored per country and never by a model. Climate: how many of the
-   flagged actions are under way, and which documents (full name, short form
-   in brackets) most of the targets sit in. Biodiversity: how the rows below
-   are ordered (targets rated Limited progress or No progress first) and
-   what each row says (flagged pairs and the plan most are in); in the fallback, what the
-   report gives per national target and that these are the places it does
-   not agree with itself, "No AI is involved." Under 35 words in all three
-   locales (`index.test.tsx`).
-3. **"Where to start"** (`WhereToStart` in `index.tsx`, the theme drawer's
-   left-ruled shape): what to do with the visual below and how. Climate:
-   start with the bars that hold half of the concerns, open one for the
-   targets and the AI's reason, judge whether the concern holds; caveat
-   "AI-estimated review prompts, not findings." Biodiversity: open the
-   top-ranked national target (number, short text, its rating, and its
-   row's words for the flagged pairs), "worth a closer look" at what the
-   report says holds it back (whether the flagged pairs bear on it, when
-   there are any), pointing at the column beside for the plans that share
-   the aim and where the pairs repeat, never a cause asserted; caveat
-   that ratings and figures are the report's own while the
-   links are AI-estimated alignment between target texts, not delivery or
-   funding. In the fallback: open a row, then settle which side is right;
-   caveat "Nothing on this tab is AI-generated." Tool guidance and a hedged
-   process pointer, never a policy suggestion, no actors named.
-4. **One control** (`report-toggle.tsx`): pills "Climate report (BTR)" /
-   "Biodiversity report (NR7)". Only when the country has both; the host owns
-   the state so its right-hand column can follow.
+   flagged actions are under way, and which documents (full name, short
+   form in brackets) most of the targets sit in. Biodiversity: what a row
+   shows (rating, count of linked pairs flagged for review) and the one
+   document most flagged pairs are with (`topFlaggedDoc` in
+   `review-groups.ts`; said here once, never on the rows). Under 35 words
+   in all three locales (`index.test.tsx`).
+4. **"Where to start"** (`WhereToStart` in `index.tsx`, the theme drawer's
+   left-ruled shape), one line. Climate: start with the bars that hold half
+   of the concerns, open one, judge whether the concern holds; caveat
+   "AI-estimated review prompts, not findings." Biodiversity: "Start with
+   the top row: what the report says holds it back, then whether the linked
+   plans bear on it." No caveat here (the rows carry it). Tool guidance and
+   a hedged process pointer, never a policy suggestion, no actors named.
 5. **The takeaways as a visual** (ranked by `review-groups.ts`, top five
    first, "Show all" for the rest, rows open inline, one at a time):
    - *Climate* (`climate-strain-chart.tsx`): one bar per reported action, its
      length the policy commitments it may pull against, split design-level
      (`FLAGGED_COLOR`) / coordination-level (`MECHANISM_COLORS.delivery_friction`),
-     the count as text and a word legend; action names wrap to two lines. A bar opens to the commitments with
-     the AI rationale under "Why it was flagged (AI-estimated)", the status
-     word, the institutions named on the action (verbatim, neutral) and "Open
-     the pair".
-   - *Biodiversity* (`nr7-policy-link-rows.tsx`, top five first): one row
-     per national target in the report, the ones rated behind schedule
-     first, each block ranked by its HIGH links to other documents
-     (`rankPolicyLinkCandidates`); a caption ("Rated on track, or unknown")
-     marks where the second block begins. "Show all N" unfolds the rest,
-     "Show fewer" folds back. One line per row: the target, the rating as
-     a chip (dot + word), and the potential misalignments in words with a
-     mark in the flagged colour ("11 potential misalignments, mostly with
-     the FSS"; "with the" when one document; "no potential misalignments").
-     No aligned count, bar or GBF chip on the face. A row opens to the GBF
-     chip, the report's Key Challenges text labelled verbatim FIRST
-     (clamped to three lines), one line with the aligned count ("Aligned
-     strongly with 51 targets in 6 other documents; the column beside lists
-     them"), then the flagged pairs under "Flagged as potential
-     misalignments (AI-estimated)", and the links onward. The per-document
-     bars and the aligned counterparts are the sticky column's. "Where to
-     start" speaks of the top target rated behind schedule with a link
-     (`lead`), with the same words for its potential misalignments as its
-     row; the headline counts the targets behind schedule with a flagged
-     pair (`behindFlagged`). When no target behind schedule has a link,
-     the cross-check rows below are the visual.
+     the count as text and a word legend; action names wrap to two lines. A
+     bar opens to the commitments with the AI rationale under "Why it was
+     flagged (AI-estimated)", the status word, the institutions named on the
+     action (verbatim, neutral) and "Open the pair".
+   - *Biodiversity* (`nr7-policy-link-rows.tsx`): one row per national
+     target in the report, the ones rated behind schedule first, each block
+     ranked by its HIGH links to other documents (`rankPolicyLinkCandidates`);
+     a caption ("Rated on track, or unknown") marks where the second block
+     begins. "Show all N" unfolds the rest, "Show fewer" folds back. The face:
+     the target's number and text with its deadline prefix dropped
+     (`stripNr7Deadline`; the raw text is the tooltip; two lines at most),
+     the rating as a chip (dot + word), and a count in the flagged colour
+     ("11 to review") or grey "none to review". No document on the face, no
+     aligned count, no bar, no GBF chip. On a phone the row stacks. A row
+     opens, in this order: what the report says holds it back (labelled the
+     report's words, clamped to three lines), one line with the aligned count
+     ("Aligned strongly with 51 targets in 6 other documents."), the flagged
+     pairs under "Flagged pairs (11)" as a plain list (`+ N more`), the GBF
+     target it is filed under with the abbreviation expanded, one "Full
+     report entry" disclosure (`nr7-report/target-detail.tsx`: rating
+     wording, narrative, questionnaire, indicators, shared-indicator chips
+     that open the indicators fold), and one link "The target in the
+     biodiversity plan (NBSAP n)". **The view's one caveat** sits under the
+     list ("Ratings and the report's words are the report's own. Links to
+     other plans are AI-estimated alignment between target texts: a prompt
+     for review, not a record of delivery or funding."); nothing inside a
+     row, the column or the folds repeats it (`index.test.tsx` counts one).
+     A national target named below the rows (a cross-check row, a target
+     chip on an indicator card) asks the rows to open it through the
+     `rowRequest` channel in `full-picture.tsx` (unfolding "Show all" when
+     needed, with the full entry when asked); without rows on the slide
+     those links are not offered.
    - *Biodiversity cross-checks* (`nr7-cross-checks.tsx`, folded under the
      full picture while the policy-link rows lead): one row per cross-check
      between the country's own rating, questionnaire answers and indicators
@@ -80,17 +79,61 @@ takeaways first.
      word), and the disagreeing evidence as a glyph with a short label: an
      answer-mix bar, a sparkline (titled with the direction word), a reach bar
      or a value count. A row opens to the report's own evidence and links.
+     When no target behind schedule has a link, these rows are the visual
+     and carry their own caveat.
 6. **The full picture, folded** (`full-picture.tsx`), for that report only:
    Coverage by document (the dot-map, `coverage-by-document.tsx`) under the
-   climate report; Ratings that do not match their own evidence (the
-   cross-checks), NR7 by national target (grouped under GBF target headings)
-   and All NR7 indicators under the biodiversity one. Closed by default;
-   review rows and NR7 chips open them at a target or an indicator.
-7. Two caption lines: the source of the report on screen, and what is not
-   yet included.
+   climate report; under the biodiversity one, in this order: Pairs that
+   repeat across targets (`nr7-recurring-counterparts.tsx`: the flagged
+   pairs turned round, one counterpart in another plan per item with the
+   national targets it is flagged against by name, number, short text and
+   rating word, each opening its row; only counterparts on two or more
+   targets), Ratings that do not match their own evidence (the
+   cross-checks), and All NR7 indicators. Closed by default. There is no
+   second list of the national targets: the rows are that list.
+7. Two caption lines: the source of the report on screen ("Evidence: …
+   One self-reported lens, not a complete audit."), and what is not yet
+   included. Neither repeats the caveat.
 
-## Decisions (2026-09-09 and 2026-09-11, with the product owner)
+**The sticky column** (`centerpiece/nr7-target-links.tsx`, desktop only)
+follows the biodiversity view: the opened row's national target (the top
+row until one is opened, with a note saying so), one line per document
+("16 aligned", and "1 to review" in the flagged colour when any), then the
+aligned targets per document, the flagged pairs marked by colour and word,
+and "on N targets" on a flagged pair whose counterpart repeats. No bars, no
+count sentence, no caveat. The host owns the open row (`focusedNr7TargetId`,
+cleared on a report switch); the rows fall back to their own state when the
+host does not pass one.
 
+## Decisions (2026-09-09 to 2026-09-16, with the product owner)
+
+- (2026-09-16, after a design audit of the Mongolia NR7 view) The view was
+  making three arguments at once (the report's rating, the AI flag count,
+  the turned-round counterparts) with about 530 words and four caveats on
+  the first desktop screen, the flag count said up to six times with a row
+  open, subjects truncated to "By 2030, reduce ecosystem de…", and a row
+  grid that clipped on a phone. The one function to lead with, from the
+  10 Sep call: for the targets the country itself rates behind schedule,
+  what the report says holds them back, then which other plans share the
+  aim. So: tabs above the headline; a one-number headline (the flag count
+  is a row attribute, never fused with the rating in the headline, since
+  the Mongolia read below shows the two are unrelated); the document most
+  flagged pairs are with named once in the body, not on every row; a
+  one-line "Where to start"; one caveat under the rows and none anywhere
+  else on the view (the footer keeps the source only); the deadline prefix
+  dropped from row subjects; the flag cell a count; the open row in the
+  reader's order with the flagged pairs as a plain list (no pill per line);
+  GBF expanded on first use; the "NR7 by national target" fold removed and
+  the report's entry opened inside the row instead (one list of targets,
+  not two); the recurring counterparts demoted from the column's default
+  view to a fold under the rows, with target names instead of numbered
+  chips; the column's bars (the aligned count is context, not a finding)
+  replaced by a per-document line; and the rating colours made a
+  sequential ramp app-wide so "No progress" and "potential misalignment"
+  no longer share one red (the questionnaire "no" moved off red too, since
+  it now sits in the same open row as the flagged box). The three product
+  calls (entry inside the row, counterparts to a fold, colours app-wide)
+  were the user's; es/mn copy was drafted in-session for native review.
 - (2026-09-11, after the 10 Sep call with Julien and Reina) The biodiversity
   view leads with the targets rated behind schedule and their links to
   other plans, not with the cross-checks: the reader wanted one
@@ -184,9 +227,12 @@ takeaways first.
 `git rm -r` this directory and restore the pre-redesign slide from history
 (`git show bbc7f1f^:src/components/dashboard/coherence-briefing/sections/implementation/index.tsx`
 and its sibling `coverage-by-document.tsx`), then
-`grep -rn "review-groups\|full-picture\|nr7PairTargets\|openTargetProfile\|implReport\|ImplementationReport\|PolicyLink\|Nr7TargetLinks\|nr7TargetLinks\|nr7Links" src messages`
-and remove the `index.tsx` memos, state and props, the tour steps `toggle`,
-`visual`, `row`, `fullPicture` (and their copy in three locales), and the
+`grep -rn "review-groups\|full-picture\|nr7PairTargets\|openTargetProfile\|implReport\|ImplementationReport\|PolicyLink\|Nr7TargetLinks\|nr7TargetLinks\|nr7Links\|controlsFirst\|rowRequest\|stripNr7Deadline\|stripDeadlinePrefix\|nr7Recurring\|topFlaggedDoc\|Nr7TargetDetail" src messages`
+and remove the `index.tsx` memos, state and props, the frame's
+`controlsFirst` slot, the tour steps `toggle`, `visual`, `row`,
+`fullPicture` (and their copy in three locales), and the
 `briefing.implementation` keys `toggle`, `startHeading`, `climate`,
-`biodiversity`, `row`, `showAll`, `showFewer`, `fullPicture`. `npx tsc --noEmit
-&& pnpm test` point at anything left.
+`biodiversity`, `row`, `showAll`, `showFewer`, `fullPicture`. The NR7
+colour ramp (`nr7-report/nr7-colors.ts`) and `target-detail.tsx` belong to
+the nr7-report module and stay. `npx tsc --noEmit && pnpm test` point at
+anything left.
