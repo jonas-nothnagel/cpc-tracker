@@ -6,6 +6,7 @@ import en from "../../../../../messages/en.json";
 vi.mock("@/lib/analytics/client", () => ({ track: vi.fn() }));
 
 import { Nr7TargetLinks } from "./nr7-target-links";
+import { rankPolicyLinkCandidates } from "../sections/implementation/review-groups";
 import { buildNr7Report } from "../nr7-report";
 import { FIXTURE_ALIGNMENT, FIXTURE_NR7, FIXTURE_TARGETS } from "../nr7-report/test-fixture";
 import type { AlignmentResult } from "@/types";
@@ -35,8 +36,37 @@ function renderColumn(opts: { isDefault?: boolean; visible?: string[] } = {}) {
 }
 
 describe("Nr7TargetLinks", () => {
-  it("names the target, its rating and GBF filing, and counts the links in words", () => {
+  it("shows where the flagged pairs repeat while no row is opened, and the opened target's links otherwise", () => {
+    // NDC_1 flagged against NT04 and NT01: it repeats.
+    const m = buildNr7Report(FIXTURE_NR7, [...FIXTURE_ALIGNMENT, flagged, flag("NBSAP_1", "NDC_1")], FIXTURE_TARGETS)!;
+    const recurring = rankPolicyLinkCandidates(m)!.recurring!;
+    const row = m.targets.find((t) => t.targetId === "NT04")!;
+    const onOpenRow = vi.fn();
+    const { rerender } = render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7TargetLinks row={row} isDefault countryConfig={null} countryName="Testland" visibleTargetIds={new Set()} onOpenTarget={vi.fn()} recurring={recurring} onOpenRow={onOpenRow} />
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByTestId("recurring-counterparts")).toHaveTextContent("on 2 of 4 national targets, 1 behind schedule");
+    expect(screen.queryByText("What lines up with national target 4")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "National target 4: rated No progress" }));
+    expect(onOpenRow).toHaveBeenCalledWith("NT04");
+    // A row opened: the target's links, with the repeating counterpart marked on its flagged pair.
+    rerender(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7TargetLinks row={row} isDefault={false} countryConfig={null} countryName="Testland" visibleTargetIds={new Set()} onOpenTarget={vi.fn()} recurring={recurring} onOpenRow={onOpenRow} />
+      </NextIntlClientProvider>,
+    );
+    expect(screen.queryByTestId("recurring-counterparts")).toBeNull();
+    expect(screen.getByText("What lines up with national target 4")).toBeInTheDocument();
+    expect(screen.getByTestId("nr7-links-repeats")).toHaveTextContent("on 2 targets");
+    expect(screen.getByTestId("nr7-links-repeats").closest('[data-review="true"]')).not.toBeNull();
+  });
+
+  it("names the target, its rating and GBF filing, and counts the links in words, standing in when nothing repeats", () => {
     renderColumn({ isDefault: true });
+    expect(screen.queryByTestId("recurring-counterparts")).toBeNull();
+    expect(screen.queryByTestId("nr7-links-repeats")).toBeNull();
     expect(screen.getByText("What lines up with national target 4")).toBeInTheDocument();
     expect(screen.getByText("No progress")).toBeInTheDocument();
     expect(screen.getByText("GBF T7")).toBeInTheDocument();

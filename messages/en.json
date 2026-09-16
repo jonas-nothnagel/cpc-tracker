@@ -1143,23 +1143,23 @@
         "start": "Open a row to see the rating beside the evidence, in the report's own words and numbers. Each is a question to settle before the next report: is the rating right, or is the evidence?",
         "startCaveat": "Computed from the report's own statements. Nothing on this tab is AI-generated.",
         "policyLinks": {
-          "headline": "{country}'s biodiversity report rates {behind} of {targets} national targets behind schedule. {top, plural, one {One of them aligns} other {# of them align}} strongly with {min} or more targets in other national plans.",
-          "body": "Targets the report rates {limited} or {noProgress} come first, ordered by how many targets in other national plans the AI judged strongly aligned with them. The rest follow in the same order.",
-          "start": "Open national target {n} ({text}): rated {rating}, yet {count} targets across {docs} other documents align strongly with it. Worth a closer look at what the report says holds it back, and which of those plans share the aim.",
+          "headline": "{country}'s biodiversity report rates {behind} of {targets} national targets behind schedule. {flagged, plural, =0 {None of them carries} one {One of them carries} other {# of them carry}} potential misalignments with other national plans.",
+          "body": "Targets the report rates {limited} or {noProgress} come first. Each row says how many pairs the AI flagged as potential misalignments and which plan most of them are in.",
+          "start": "Open national target {n} ({text}): rated {rating}, {flaggedLine}. Worth a closer look at what the report says holds it back; the column beside shows which plans share the aim.",
+          "startFlagged": "Open national target {n} ({text}): rated {rating}, {flaggedLine}. Worth a closer look at whether those pairs bear on what the report says holds it back; the column beside lists the targets in other plans those pairs repeat on.",
           "startCaveat": "Ratings, answers and figures are the report's own. Links to other documents are AI-estimated alignment between target texts: a prompt for review, not a record of delivery or funding.",
-          "evidence": "aligned with {count, plural, one {# target} other {# targets}} in {docs, plural, one {# document} other {# documents}}",
-          "byDocument": "Aligned targets by document (AI-estimated)",
-          "counterparts": "Most aligned targets in other documents (AI-estimated)",
-          "more": "+ {count} more",
-          "flagged": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, mostly with the {doc}",
+          "flaggedFace": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, mostly with the {doc}",
+          "flaggedFaceOne": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, with the {doc}",
+          "noneFlagged": "no potential misalignments",
+          "flaggedHeading": "Flagged as potential misalignments (AI-estimated)",
+          "reach": "Aligned strongly with {count, plural, one {# target} other {# targets}} in {docs, plural, one {# other document} other {# other documents}} (AI-estimated); the column beside lists them.",
+          "noLinks": "No target in the other documents was judged strongly aligned with it (AI-estimated).",
           "challengesHeading": "What the report says holds it back (the report's words, verbatim)",
           "noChallenges": "The report gives no key-challenges text for this target.",
+          "more": "+ {count} more",
           "fewer": "Show fewer",
           "reviewWord": "potential misalignment",
-          "noLinks": "no strongly aligned targets in other documents",
-          "restHeading": "Rated on track, or unknown",
-          "flaggedShort": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
-          "startFlagged": "Open national target {n} ({text}): rated {rating}, yet {count} targets across {docs} other documents align strongly with it, and {flagged, plural, one {# pair is} other {# pairs are}} flagged as potential misalignments. Worth a closer look at whether those pairs bear on what the report says holds it back, and which plans share the aim."
+          "restHeading": "Rated on track, or unknown"
         }
       }
     },
@@ -1217,10 +1217,22 @@
           "heading": "The aligned targets",
           "more": "+ {count} more",
           "fewer": "Show fewer",
-          "toReview": "+ {count} to review"
+          "toReview": "+ {count} to review",
+          "repeats": "on {count} targets"
         },
         "caveat": "AI-estimated alignment between target texts, for the documents shown. A prompt for review, not a record of delivery or funding. Open a target to read the pair.",
-        "noLinks": "No policy target in the other documents was judged strongly aligned with it."
+        "noLinks": "No policy target in the other documents was judged strongly aligned with it.",
+        "recurring": {
+          "eyebrow": "Pairs to review",
+          "title": "Where the pairs to review repeat",
+          "intro": "{toHalf, plural, one {One target} other {# targets}} in other national plans {toHalf, plural, one {carries} other {carry}} half of the {pairs} pairs the AI flagged across the rows. A target listed here is the same pair to review on every national target beside it.",
+          "introNoHalf": "The {pairs} pairs the AI flagged across the rows repeat on the targets below. A target listed here is the same pair to review on every national target beside it.",
+          "note": "Open a row on the slide to see that target's links instead.",
+          "count": "on {count} of {targets} national targets{behind, plural, =0 {} other {, # behind schedule}}",
+          "hitsLabel": "National targets this is flagged against",
+          "hit": "National target {n}: rated {rating}",
+          "showAll": "Show all {count}"
+        }
       }
     },
     "nr7Report": {

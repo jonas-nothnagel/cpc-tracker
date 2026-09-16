@@ -85,12 +85,12 @@ describe("ImplementationSection", () => {
 
   it("biodiversity report: the finding, a plain body, where to start, the policy-link rows and three folded sections", () => {
     renderSlide({ report: "nr7" });
-    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule. One of them aligns strongly with 3 or more targets in other national plans.");
-    expect(body()).toBe("Targets the report rates Limited progress or No progress come first, ordered by how many targets in other national plans the AI judged strongly aligned with them. The rest follow in the same order.");
+    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule. None of them carries potential misalignments with other national plans.");
+    expect(body()).toBe("Targets the report rates Limited progress or No progress come first. Each row says how many pairs the AI flagged as potential misalignments and which plan most of them are in.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
     expect(start()).toContain("Where to start");
-    expect(start()).toContain("Open national target 4 (By 2030, reduce pollution.): rated no progress, yet 3 targets across 2 other documents align strongly with it.");
-    expect(start()).toContain("Worth a closer look");
+    expect(start()).toContain("Open national target 4 (By 2030, reduce pollution.): rated no progress, no potential misalignments.");
+    expect(start()).toContain("Worth a closer look at what the report says holds it back; the column beside shows which plans share the aim.");
     expect(start()).toContain("AI-estimated alignment between target texts");
     expect(start()).not.toContain("Nothing on this tab is AI-generated.");
     // All four national targets, the one behind schedule with links first; the headline counts that one.
@@ -115,9 +115,12 @@ describe("ImplementationSection", () => {
         <ImplementationSection coverage={coverage} summary={summary} nr7Data={FIXTURE_NR7} nr7Report={contested} visibleTargetIds={new Set(FIXTURE_TARGETS.keys())} report="nr7" onReportChange={vi.fn()} countryName="Testland" countryConfig={null} onOpenActionPair={vi.fn()} onOpenTarget={vi.fn()} />
       </NextIntlClientProvider>,
     );
-    expect(start()).toContain("align strongly with it, and 1 pair is flagged as potential misalignments.");
-    expect(start()).toContain("Worth a closer look at whether those pairs bear on what the report says holds it back");
-    expect(screen.getByTestId("policy-link-flagged-face")).toHaveTextContent("1 potential misalignment");
+    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule. One of them carries potential misalignments with other national plans.");
+    expect(start()).toContain("rated no progress, 1 potential misalignment, with the NDC.");
+    expect(start()).toContain("Worth a closer look at whether those pairs bear on what the report says holds it back; the column beside lists the targets in other plans those pairs repeat on.");
+    expect(screen.getAllByTestId("policy-link-flagged-face")[0]).toHaveTextContent("1 potential misalignment, with the NDC");
+    // Where the pairs repeat is the sticky column's business, never a second list on the slide.
+    expect(screen.queryByTestId("recurring-counterparts")).toBeNull();
     expect(document.body.textContent).not.toMatch(/\b(should|must|because|responsible|blame|ministry|contradict|tension)\b/i);
   });
 

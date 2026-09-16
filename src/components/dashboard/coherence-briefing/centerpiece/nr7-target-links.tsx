@@ -2,11 +2,14 @@
 
 /**
  * Nr7TargetLinks — the sticky column while the biodiversity report (NR7) is
- * on the Implementation slide: for the national target the reader opened
- * (or the top-ranked one until they open a row), the policy targets in
- * OTHER documents the pipeline judged strongly aligned with the NBSAP target
- * it restates, one bar per document, then the aligned targets themselves,
- * with the potential misalignments marked by colour AND word.
+ * on the Implementation slide. Until a row is opened it shows where the
+ * flagged pairs repeat across the rows (./nr7-recurring-counterparts.tsx;
+ * the top-ranked target stands in only when nothing repeats). For the
+ * national target the reader opened: the policy targets in OTHER documents
+ * the pipeline judged strongly aligned with the NBSAP target it restates,
+ * one bar per document, then the aligned targets themselves, with the
+ * potential misalignments marked by colour AND word, and, on each flagged
+ * pair whose counterpart repeats, how many national targets it is on.
  *
  * The reading it supports: these are the targets the report rates behind
  * schedule that the most other plans line up with, so movement there could
@@ -24,6 +27,8 @@ import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
 import { GbfChip, NR7_COLORS, shortNr7Text, type Nr7PolicyLink, type Nr7TargetRowModel } from "../nr7-report";
+import { Nr7RecurringCounterparts } from "./nr7-recurring-counterparts";
+import type { Nr7RecurringGroup } from "../sections/implementation/review-groups";
 import type { CountryConfig } from "@/types";
 
 /** Counterparts listed per document before "+ N more" unfolds the rest. */
@@ -37,10 +42,19 @@ export interface Nr7TargetLinksProps {
   countryName: string;
   visibleTargetIds: ReadonlySet<string>;
   onOpenTarget: (targetId: string) => void;
+  /** Where the flagged pairs repeat; shown while no row is opened, and
+   *  marks the repeating counterparts in an opened target's list. */
+  recurring?: Nr7RecurringGroup | null;
+  /** Opens a policy-link row on the slide (the chips of the default view). */
+  onOpenRow?: (targetId: string) => void;
 }
 
-export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, visibleTargetIds, onOpenTarget }: Nr7TargetLinksProps) {
+export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, visibleTargetIds, onOpenTarget, recurring = null, onOpenRow }: Nr7TargetLinksProps) {
   const t = useTranslations("briefing.implementationCenter.nr7Links");
+  if (isDefault && recurring) {
+    return <Nr7RecurringCounterparts group={recurring} countryConfig={countryConfig} countryName={countryName} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} onOpenRow={onOpenRow} />;
+  }
+  const repeats = new Map((recurring?.items ?? []).map((c) => [c.targetId, c.count]));
   const links = row.policyLinks;
   const hasLinks = Boolean(links && (links.high.length > 0 || links.flagged.length > 0));
   // A target without links (nothing in the corpus restates it, or nothing
@@ -129,7 +143,7 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
                       )}
                     </span>
                   </summary>
-                  <TargetList list={list} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} flaggedWord={t("flagged.word")} moreLabel={(n) => t("targets.more", { count: n })} fewerLabel={t("targets.fewer")} />
+                  <TargetList list={list} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} flaggedWord={t("flagged.word")} moreLabel={(n) => t("targets.more", { count: n })} fewerLabel={t("targets.fewer")} repeats={repeats} repeatsLabel={(n) => t("targets.repeats", { count: n })} />
                 </details>
               </li>
             );
@@ -203,6 +217,8 @@ function TargetList({
   flaggedWord,
   moreLabel,
   fewerLabel,
+  repeats,
+  repeatsLabel,
 }: {
   list: Nr7PolicyLink[];
   visibleTargetIds: ReadonlySet<string>;
@@ -210,6 +226,10 @@ function TargetList({
   flaggedWord: string;
   moreLabel: (n: number) => string;
   fewerLabel: string;
+  /** Counterpart id -> national targets it is flagged against, for the
+   *  repeating ones. */
+  repeats: Map<string, number>;
+  repeatsLabel: (n: number) => string;
 }) {
   const [showAll, setShowAll] = useState(false);
   const shown = showAll ? list : list.slice(0, PER_DOC_SHOWN);
@@ -225,6 +245,11 @@ function TargetList({
               </button>
             ) : (
               <span title={l.text} className="min-w-0">{l.label}</span>
+            )}
+            {l.level === "flagged" && (repeats.get(l.targetId) ?? 0) > 1 && (
+              <span className="text-[10.5px] text-[var(--undp-gray)] whitespace-nowrap" data-testid="nr7-links-repeats">
+                {repeatsLabel(repeats.get(l.targetId)!)}
+              </span>
             )}
           </ReviewMark>
         </li>

@@ -78,9 +78,8 @@ describe("buildReviewGroups", () => {
     // NT01 and NT04 tie on links and documents (no flagged links either): the lower number leads. NT03 is not behind schedule: last.
     expect(pl.items.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02", "NT03"]);
     expect(pl.items.map((i) => i.behind)).toEqual([true, true, true, false]);
-    expect(pl).toMatchObject({ total: 4, hidden: 0, candidates: 3, maxCount: 3, topMin: 1 });
+    expect(pl).toMatchObject({ total: 4, hidden: 0, candidates: 3, maxCount: 3, behindFlagged: 0 });
     expect(pl.lead.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02"]);
-    expect(pl.topLead).toHaveLength(3);
     expect(pl.items[0].evidence).toEqual({ kind: "policyLinks", count: 3, max: 3, docs: 2, flagged: 0, byDoc: [{ doc: "NDC", high: 2 }, { doc: "NAP", high: 1 }] });
     // No NBSAP match for NT03: empty links, a zero count on the same scale.
     expect(pl.items[3].evidence).toEqual({ kind: "policyLinks", count: 0, max: 3, docs: 0, flagged: 0, byDoc: [] });
@@ -89,17 +88,42 @@ describe("buildReviewGroups", () => {
     const g2 = rankPolicyLinkCandidates(buildNr7Report(behind, contested, FIXTURE_TARGETS)!);
     expect(g2!.items.map((i) => i.row.targetId)).toEqual(["NT04", "NT01", "NT02", "NT03"]);
     expect(g2!.items[0].evidence.flagged).toBe(1);
-    // The cap folds the rest behind "Show all"; topMin follows the last lead row among the shown ones.
+    expect(g2!.behindFlagged).toBe(1);
+    // The cap folds the rest behind "Show all".
     const capped = rankPolicyLinkCandidates(buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!, 2);
-    expect(capped).toMatchObject({ hidden: 2, topMin: 3 });
-    expect(capped!.topLead.map((i) => i.row.targetId)).toEqual(["NT01", "NT04"]);
+    expect(capped).toMatchObject({ hidden: 2 });
+    expect(capped!.top.map((i) => i.row.targetId)).toEqual(["NT01", "NT04"]);
     expect(capped!.rest.map((i) => i.row.targetId)).toEqual(["NT02", "NT03"]);
     // The stock fixture: only NT04 is behind schedule with a link; the on-track
     // targets follow it in link order, so the headline speaks of one target.
     const stock = buildReviewGroups({ summary: null, nr7Report, btrActions: 0 }).biodiversity!.policyLinks!;
     expect(stock.items.map((i) => i.row.targetId)).toEqual(["NT04", "NT01", "NT02", "NT03"]);
     expect(stock.lead.map((i) => i.row.targetId)).toEqual(["NT04"]);
-    expect(stock.topLead).toHaveLength(1);
+  });
+
+  it("turns the flagged pairs round: counterparts flagged against two or more national targets, most first", () => {
+    const behind: Nr7Data = { ...FIXTURE_NR7, progressItems: FIXTURE_NR7.progressItems.map((i) => (i.targetId === "NT01" || i.targetId === "NT02" ? { ...i, progressStatus: "limited" as const } : i)) };
+    // One flagged pair on one row is that row's business: no recurring group.
+    const single = rankPolicyLinkCandidates(buildNr7Report(behind, [...FIXTURE_ALIGNMENT, flag("NBSAP_4", "NDC_1")], FIXTURE_TARGETS)!)!;
+    expect(single.recurring).toBeNull();
+    // NDC_1 flagged against NBSAP_1 (NT01, limited) and NBSAP_4 (NT04, no progress); NAP_1 against NBSAP_2 only;
+    // a duplicate NDC_1 × NBSAP_4 pair in the file counts as a pair but not as a second hit.
+    const pairs = [...FIXTURE_ALIGNMENT, flag("NBSAP_4", "NDC_1"), flag("NBSAP_1", "NDC_1"), flag("NDC_1", "NBSAP_4"), flag("NBSAP_2", "NAP_1")];
+    const g = rankPolicyLinkCandidates(buildNr7Report(behind, pairs, FIXTURE_TARGETS)!)!;
+    expect(g.recurring).toMatchObject({ total: 1, hidden: 0, totalPairs: 4, coveredPairs: 2, toHalf: 1, targets: 4 });
+    expect(g.recurring!.items[0]).toMatchObject({ targetId: "NDC_1", doc: "NDC", label: "NDC_1", text: "NDC_1 text", count: 2, behindCount: 2 });
+    expect(g.recurring!.items[0].hits).toEqual([
+      { targetId: "NT01", number: "1", status: "limited", behind: true },
+      { targetId: "NT04", number: "4", status: "no_progress", behind: true },
+    ]);
+    // Hits list the targets rated behind schedule first, then by number.
+    const onTrackFirst = rankPolicyLinkCandidates(buildNr7Report(FIXTURE_NR7, pairs, FIXTURE_TARGETS)!)!;
+    expect(onTrackFirst.recurring!.items[0].hits.map((h) => h.targetId)).toEqual(["NT04", "NT01"]);
+    expect(onTrackFirst.recurring!.items[0].behindCount).toBe(1);
+    // toHalf is zero when the listed counterparts do not reach half of the pairs.
+    const thin = rankPolicyLinkCandidates(buildNr7Report(behind, [...pairs, flag("NBSAP_2", "NDC_2"), flag("NBSAP_1", "NAP_1")], FIXTURE_TARGETS)!)!;
+    expect(thin.recurring).toMatchObject({ total: 2, totalPairs: 6, coveredPairs: 4, toHalf: 2 });
+    expect(thin.recurring!.items.map((c) => c.targetId)).toEqual(["NAP_1", "NDC_1"]);
   });
 
   it("has no policy-link group when nothing behind schedule is linked", () => {
@@ -156,7 +180,8 @@ describe.skipIf(!present)("buildReviewGroups on the Mongolia data", () => {
     const pl = g.biodiversity!.policyLinks!;
     expect(pl.top.map((i) => i.row.targetId)).toEqual(["NT08", "NT02", "NT01", "NT07", "NT18"]);
     // All 20 national targets: the 13 rated behind schedule first (every one linked), then the 7 others.
-    expect(pl).toMatchObject({ candidates: 13, total: 20, hidden: 15, maxCount: 60, topMin: 25 });
+    // Nine of the thirteen carry at least one flagged pair.
+    expect(pl).toMatchObject({ candidates: 13, total: 20, hidden: 15, maxCount: 60, behindFlagged: 9 });
     expect(pl.lead).toHaveLength(13);
     expect(pl.items.slice(0, 13).every((i) => i.behind)).toBe(true);
     expect(pl.items.slice(13).every((i) => !i.behind)).toBe(true);
@@ -164,5 +189,20 @@ describe.skipIf(!present)("buildReviewGroups on the Mongolia data", () => {
     expect(pl.items[13]).toMatchObject({ row: { targetId: "NT12", status: "on_track" }, evidence: { count: 60 } });
     expect(pl.items[0].evidence).toMatchObject({ count: 51, docs: 6, flagged: 11 });
     expect(pl.items[0].evidence.byDoc.slice(0, 3)).toEqual([{ doc: "NDC", high: 16 }, { doc: "NRVTS", high: 12 }, { doc: "SECTORAL", high: 9 }]);
+  });
+
+  it("concentrates the 168 flagged pairs on a few expansion targets: nine carry half, the top five hit 10 to 12 national targets each", () => {
+    const r = g.biodiversity!.policyLinks!.recurring!;
+    expect(r).toMatchObject({ total: 26, hidden: 21, totalPairs: 168, coveredPairs: 152, toHalf: 9, targets: 20 });
+    expect(r.top.map((c) => [c.targetId, c.count, c.behindCount])).toEqual([
+      ["SECTORAL_8", 12, 8],
+      ["FSS_15", 11, 7],
+      ["NITIPA_7", 11, 6],
+      ["FSS_21", 10, 7],
+      ["NDC_4", 10, 6],
+    ]);
+    expect(r.top[0]).toMatchObject({ doc: "SECTORAL", label: "Irrigated agriculture expansion" });
+    // Behind schedule first, then by number.
+    expect(r.top[0].hits.map((h) => h.number)).toEqual(["1", "2", "4", "6", "7", "8", "14", "16", "3", "9", "12", "17"]);
   });
 });

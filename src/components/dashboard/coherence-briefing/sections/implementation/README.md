@@ -10,8 +10,8 @@ takeaways first.
    denominator.** Climate: "{n} of {country}'s {total} reported climate
    actions may work against targets in its other plans." Biodiversity:
    "{country}'s biodiversity report rates {b} of {total} national targets
-   behind schedule. {k} of them align strongly with {m} or more targets in
-   other national plans." (when no target behind schedule has a link: "In
+   behind schedule. {k} of them carry potential misalignments with other
+   national plans." (when no target behind schedule has a link: "In
    {k} places, {country}'s biodiversity report rates a target one way while
    its own evidence points another."; variants for nothing flagged and for
    a match not computed).
@@ -20,9 +20,8 @@ takeaways first.
    authored per country and never by a model. Climate: how many of the
    flagged actions are under way, and which documents (full name, short form
    in brackets) most of the targets sit in. Biodiversity: how the rows below
-   are ordered (targets rated Limited progress or No progress first, then by
-   how many targets in other plans the AI judged strongly aligned with them,
-   the rest in the same order); in the fallback, what the
+   are ordered (targets rated Limited progress or No progress first) and
+   what each row says (flagged pairs and the plan most are in); in the fallback, what the
    report gives per national target and that these are the places it does
    not agree with itself, "No AI is involved." Under 35 words in all three
    locales (`index.test.tsx`).
@@ -31,11 +30,11 @@ takeaways first.
    start with the bars that hold half of the concerns, open one for the
    targets and the AI's reason, judge whether the concern holds; caveat
    "AI-estimated review prompts, not findings." Biodiversity: open the
-   top-ranked national target (number, short text, its rating, how many
-   targets in how many other documents align with it, and how many pairs
-   are flagged when any are), "worth a closer look" at what the report says
-   holds it back (whether the flagged pairs bear on it, when there are
-   any) and which plans share the aim, never a cause asserted; caveat
+   top-ranked national target (number, short text, its rating, and its
+   row's words for the flagged pairs), "worth a closer look" at what the
+   report says holds it back (whether the flagged pairs bear on it, when
+   there are any), pointing at the column beside for the plans that share
+   the aim and where the pairs repeat, never a cause asserted; caveat
    that ratings and figures are the report's own while the
    links are AI-estimated alignment between target texts, not delivery or
    funding. In the fallback: open a row, then settle which side is right;
@@ -58,22 +57,22 @@ takeaways first.
      first, each block ranked by its HIGH links to other documents
      (`rankPolicyLinkCandidates`); a caption ("Rated on track, or unknown")
      marks where the second block begins. "Show all N" unfolds the rest,
-     "Show fewer" folds back. Each row: the target with
-     its GBF chip, the rating as a chip (dot + word), and a bar split by
-     document in the document colours with "aligned with {n} targets in {d}
-     documents" beside it (or "no strongly aligned targets in other
-     documents"; the bar scale is the largest count in the whole list), and
-     under it, when the target has any, a second bar in the flagged colour
-     with "{n} potential misalignments" in words, on the same scale, so a
-     target that is behind and contested reads as such on the face. A
-     row opens to the documents with counts, the three most aligned
-     counterparts (open the target profile), the potential-misalignment
-     count with its main document, the report's Key Challenges text
-     labelled verbatim, and the links onward; a row without links opens to
-     the report's words and the links onward only. The headline and "Where
-     to start" speak only of the targets rated behind schedule with a link
-     (`lead` / `topLead`). When no such target exists, the cross-check rows
-     below are the visual.
+     "Show fewer" folds back. One line per row: the target, the rating as
+     a chip (dot + word), and the potential misalignments in words with a
+     mark in the flagged colour ("11 potential misalignments, mostly with
+     the FSS"; "with the" when one document; "no potential misalignments").
+     No aligned count, bar or GBF chip on the face. A row opens to the GBF
+     chip, the report's Key Challenges text labelled verbatim FIRST
+     (clamped to three lines), one line with the aligned count ("Aligned
+     strongly with 51 targets in 6 other documents; the column beside lists
+     them"), then the flagged pairs under "Flagged as potential
+     misalignments (AI-estimated)", and the links onward. The per-document
+     bars and the aligned counterparts are the sticky column's. "Where to
+     start" speaks of the top target rated behind schedule with a link
+     (`lead`), with the same words for its potential misalignments as its
+     row; the headline counts the targets behind schedule with a flagged
+     pair (`behindFlagged`). When no target behind schedule has a link,
+     the cross-check rows below are the visual.
    - *Biodiversity cross-checks* (`nr7-cross-checks.tsx`, folded under the
      full picture while the policy-link rows lead): one row per cross-check
      between the country's own rating, questionnaire answers and indicators
@@ -112,22 +111,53 @@ takeaways first.
   tool's option labels. The sticky column keeps its header for a target
   without links and says there are none.
 - (2026-09-15) Potential misalignments show on the row face, not only in
-  the open row: a second bar in the flagged colour with the count in
-  words, on the same scale as the aligned bar. The reader wanted to see at
-  a glance when a target that is behind is also contested. The face states
+  the open row: a mark in the flagged colour with the count in words and
+  the document most of the pairs come from. The reader wanted to see at a
+  glance when a target that is behind is also contested. The face states
   the two counts; whether the flagged pairs have anything to do with the
   rating is left to the reader, with a hedged "worth a closer look at
   whether" in "Where to start" only (guardrail: no cause asserted on a
   static surface, no actor named).
-- (2026-09-11) The sticky column follows the NR7 view: while the
-  biodiversity report is on screen it shows the opened policy-link row's
-  national target and its links to the other plans, one bar per document
-  and the aligned targets listed (`centerpiece/nr7-target-links.tsx`); the
-  top-ranked target stands in until a row is opened. The host owns the open
-  row (`focusedNr7TargetId`, cleared on a report switch), like
+- (2026-09-15, from a read of the Mongolia data) The flag count is not
+  drawn as a bar on the aligned scale, the open row leads with the
+  report's own reason, and the pairs are also listed per counterpart. On
+  Mongolia the number of flagged pairs on a national target has no
+  relation to its rating (the most flagged target is rated on track; four
+  targets behind schedule have none), because eight expansion targets in
+  other plans (new cropland, fodder, irrigation, a dam) account for nearly
+  half of the 168 pairs and hit 8 to 12 national targets each: the count
+  measures how much land a target touches, not how it is doing. Where the
+  report itself names cross-sector coherence as the obstacle (NT01, NT02,
+  NT16), the flagged pairs are that obstacle made concrete; elsewhere the
+  reported obstacles are data gaps, an unapproved law, financing. So: a
+  fixed mark plus the document instead of a comparable length; the
+  challenges text before the links so the pairs read beside the country's
+  reason, never as the reason; and the counterpart list, where one review
+  covers every national target the counterpart is listed against. Not
+  built: any automatic match between the challenges text and the pair
+  rationales (it would hold on four or five targets and need keyword rules
+  or another model pass); the text and the pairs sit side by side and the
+  reader judges.
+- (2026-09-15, same day) The slide grew too dense with the rows and the
+  counterpart list under them, so: one line per row (rating and the
+  flagged words only; the aligned count moved into the open row, the
+  per-document bars and aligned counterparts left to the column), and the
+  counterpart list moved into the sticky column as its default view, where
+  its chips open the matching row. The slide keeps one list; the column
+  carries the turned-round read. Mobile (no column) keeps the rows only.
+- (2026-09-11, revised 2026-09-15) The sticky column follows the NR7
+  view: while the biodiversity report is on screen and no row is opened it
+  shows where the flagged pairs repeat (`centerpiece/nr7-recurring-counterparts.tsx`,
+  see below; the top-ranked target stands in only when nothing repeats);
+  for the opened policy-link row it shows that national target's links to
+  the other plans, one bar per document and the aligned targets listed,
+  each repeating counterpart marked "on N targets"
+  (`centerpiece/nr7-target-links.tsx`). The host owns the open row
+  (`focusedNr7TargetId`, cleared on a report switch), like
   `hoveredDocPairKey`; the rows fall back to their own state when the host
-  does not pass one. The column is desktop-only, so the open row keeps the
-  same information inline.
+  does not pass one. The column is desktop-only; the open row keeps the
+  report's words, the aligned count and the flagged pairs inline, and
+  points at the column for the rest.
 
 - One report at a time; the reader switches. Group headings, captions and
   the both-reports sentences are gone.

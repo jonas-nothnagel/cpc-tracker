@@ -825,14 +825,15 @@ export function CoherenceBriefing({
     () => buildNr7Report(nr7Data, policyAlignment, targetMap, { policyLinkDoc: countryConfig?.nr7PolicyLinkDocType }),
     [nr7Data, policyAlignment, targetMap, countryConfig?.nr7PolicyLinkDocType],
   );
-  // The national target the NR7 column shows: the opened row, else the
-  // top-ranked target behind schedule. Null without links (the wheel stays).
+  // The NR7 column: the opened row's national target, else (default) where
+  // the flagged pairs repeat, with the top-ranked target behind schedule
+  // standing in when nothing repeats. Null without links (the wheel stays).
   const nr7CenterRow = useMemo(() => {
     if (!nr7Report) return null;
     const ranked = rankPolicyLinkCandidates(nr7Report);
     if (!ranked) return null;
     const focused = focusedNr7TargetId ? ranked.items.find((i) => i.row.targetId === focusedNr7TargetId)?.row ?? null : null;
-    return { row: focused ?? ranked.items[0].row, isDefault: focused === null };
+    return { row: focused ?? ranked.items[0].row, isDefault: focused === null, recurring: ranked.recurring };
   }, [nr7Report, focusedNr7TargetId]);
   // Which NR7 national targets can open a reported-action pair (keyed on the
   // pseudo-targets' parent id, so it survives the alignment re-run).
@@ -1613,6 +1614,8 @@ export function CoherenceBriefing({
           countryName={countryName}
           visibleTargetIds={visibleTargetIds}
           onOpenTarget={openTargetProfile}
+          recurring={nr7CenterRow.recurring}
+          onOpenRow={setFocusedNr7TargetId}
         />
       );
     }

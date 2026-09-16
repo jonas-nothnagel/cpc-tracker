@@ -1143,23 +1143,23 @@
         "start": "Abre una fila para ver la calificación junto a la evidencia, con las palabras y cifras del propio informe. Cada una es una pregunta por resolver antes del próximo informe: ¿es correcta la calificación, o la evidencia?",
         "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA.",
         "policyLinks": {
-          "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas. {top, plural, one {Una de ellas se alinea} other {# de ellas se alinean}} fuertemente con {min} o más metas de otros planes nacionales.",
-          "body": "Primero van las metas que el informe califica como {limited} o {noProgress}, ordenadas por cuántas metas de otros planes la IA juzgó fuertemente alineadas con ellas. Las demás siguen en el mismo orden.",
-          "start": "Abre la meta nacional {n} ({text}): calificada {rating}, aunque {count} metas de {docs} otros documentos se alinean fuertemente con ella. Vale la pena mirar de cerca qué dice el informe que la frena y cuáles de esos planes comparten el objetivo.",
+          "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas. {flagged, plural, =0 {Ninguna de ellas presenta} one {Una de ellas presenta} other {# de ellas presentan}} posibles desalineaciones con otros planes nacionales.",
+          "body": "Primero van las metas que el informe califica como {limited} o {noProgress}. Cada fila dice cuántos pares señaló la IA como posibles desalineaciones y en qué plan está la mayoría.",
+          "start": "Abre la meta nacional {n} ({text}): calificada {rating}, {flaggedLine}. Vale la pena mirar de cerca qué dice el informe que la frena; la columna de al lado muestra qué planes comparten el objetivo.",
+          "startFlagged": "Abre la meta nacional {n} ({text}): calificada {rating}, {flaggedLine}. Vale la pena mirar de cerca si esos pares tienen que ver con lo que el informe dice que la frena; la columna de al lado lista las metas de otros planes en las que esos pares se repiten.",
           "startCaveat": "Las calificaciones, respuestas y cifras son del propio informe. Los vínculos con otros documentos son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
-          "evidence": "alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# documento} other {# documentos}}",
-          "byDocument": "Metas alineadas por documento (estimado por IA)",
-          "counterparts": "Metas más alineadas en otros documentos (estimado por IA)",
-          "more": "+ {count} más",
-          "flagged": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, sobre todo con {doc}",
+          "flaggedFace": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, sobre todo con {doc}",
+          "flaggedFaceOne": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, con {doc}",
+          "noneFlagged": "sin posibles desalineaciones",
+          "flaggedHeading": "Señaladas como posibles desalineaciones (estimado por IA)",
+          "reach": "Fuertemente alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# otro documento} other {# otros documentos}} (estimado por IA); la columna de al lado las lista.",
+          "noLinks": "Ninguna meta de los otros documentos se juzgó fuertemente alineada con ella (estimado por IA).",
           "challengesHeading": "Qué dice el informe que la frena (palabras del informe, textual)",
           "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
+          "more": "+ {count} más",
           "fewer": "Mostrar menos",
           "reviewWord": "posible desalineación",
-          "noLinks": "sin metas fuertemente alineadas en otros documentos",
-          "restHeading": "Calificadas en curso, o desconocidas",
-          "flaggedShort": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
-          "startFlagged": "Abre la meta nacional {n} ({text}): calificada {rating}, aunque {count} metas de {docs} otros documentos se alinean fuertemente con ella, y {flagged, plural, one {# par está señalado} other {# pares están señalados}} como posibles desalineaciones. Vale la pena mirar de cerca si esos pares tienen que ver con lo que el informe dice que la frena, y qué planes comparten el objetivo."
+          "restHeading": "Calificadas en curso, o desconocidas"
         }
       }
     },
@@ -1217,10 +1217,22 @@
           "heading": "Las metas alineadas",
           "more": "+ {count} más",
           "fewer": "Mostrar menos",
-          "toReview": "+ {count} por revisar"
+          "toReview": "+ {count} por revisar",
+          "repeats": "en {count} metas"
         },
         "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par.",
-        "noLinks": "Ninguna meta de política de los otros documentos se juzgó fuertemente alineada con ella."
+        "noLinks": "Ninguna meta de política de los otros documentos se juzgó fuertemente alineada con ella.",
+        "recurring": {
+          "eyebrow": "Pares por revisar",
+          "title": "Dónde se repiten los pares por revisar",
+          "intro": "{toHalf, plural, one {Una meta} other {# metas}} de otros planes nacionales {toHalf, plural, one {concentra} other {concentran}} la mitad de los {pairs} pares que la IA señaló en las filas. Una meta listada aquí es el mismo par por revisar en cada meta nacional a su lado.",
+          "introNoHalf": "Los {pairs} pares que la IA señaló en las filas se repiten en las metas de abajo. Una meta listada aquí es el mismo par por revisar en cada meta nacional a su lado.",
+          "note": "Abre una fila en la diapositiva para ver los vínculos de esa meta.",
+          "count": "en {count} de {targets} metas nacionales{behind, plural, =0 {} other {, # rezagadas}}",
+          "hitsLabel": "Metas nacionales frente a las que está señalada",
+          "hit": "Meta nacional {n}: calificada {rating}",
+          "showAll": "Mostrar las {count}"
+        }
       }
     },
     "nr7Report": {

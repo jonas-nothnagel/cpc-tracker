@@ -17,8 +17,8 @@
  *   3. The takeaways as a visual: ranked two-tone bars for the climate report
  *      (./climate-strain-chart.tsx); for the biodiversity report every
  *      national target, the ones rated behind schedule first, ranked by their
- *      links to other plans, five at a time (./nr7-policy-link-rows.tsx,
- *      decided 2026-09-11 and 2026-09-15), or, when no target behind
+ *      links to other plans, one line each, five at a time
+ *      (./nr7-policy-link-rows.tsx, decided 2026-09-11 and 2026-09-15), or, when no target behind
  *      schedule has a link, the rating-versus-evidence rows
  *      (./nr7-cross-checks.tsx); all ranked by ./review-groups.ts, rows open
  *      inline.
@@ -47,7 +47,7 @@ import { buildReviewGroups, POLICY_LINK_STATUSES, type BiodiversityReviewGroup, 
 import { ReportToggle, type ImplementationReport } from "./report-toggle";
 import { ClimateStrainChart } from "./climate-strain-chart";
 import { Nr7CrossChecks } from "./nr7-cross-checks";
-import { Nr7PolicyLinkRows } from "./nr7-policy-link-rows";
+import { flaggedLine, Nr7PolicyLinkRows } from "./nr7-policy-link-rows";
 import { FullPicture, useNr7FullPicture } from "./full-picture";
 import type { CountryConfig, Nr7Data } from "@/types";
 
@@ -119,7 +119,7 @@ export function ImplementationSection({
   const policyLinks = groups.biodiversity?.policyLinks ?? null;
   const sentence =
     shown === "nr7" && groups.biodiversity
-      ? biodiversitySentence(groups.biodiversity, nr7Report?.totals ?? null, countryName, ratingLabels, t)
+      ? biodiversitySentence(groups.biodiversity, nr7Report?.totals ?? null, countryName, countryConfig, ratingLabels, t)
       : climateSentence(groups.climate, coverage, countryName, countryConfig, t);
   const footerKey = shown === "nr7" ? "footer.sourcesNr7Only" : hasNr7 ? "footer.sourcesWithNr7" : "footer.sources";
 
@@ -263,11 +263,12 @@ export function climateSentence(
 }
 
 /** Biodiversity report. With policy-link rows: headline = how many targets
- *  the report rates behind schedule and how many of those align with other
- *  plans; body = how the rows below are ordered (behind schedule first, then
- *  by aligned targets in other plans); start = the top target, hedged, its
- *  potential misalignments named when it has any, with the caveat that the
- *  links are AI-estimated.
+ *  the report rates behind schedule and how many of those carry potential
+ *  misalignments with other plans; body = how the rows below are ordered
+ *  and what each row says; start = the top target, hedged, with the same
+ *  words for its potential misalignments as its row, pointing at the
+ *  column beside for the plans that share the aim and where the pairs
+ *  repeat, with the caveat that the links are AI-estimated.
  *  Without them (no policy alignment visible): headline = the cross-check
  *  count; body = what the report gives per target and that these are the
  *  places it does not agree; start = open a row, then settle which side is
@@ -276,6 +277,7 @@ export function biodiversitySentence(
   group: BiodiversityReviewGroup,
   totals: { targets: number; byStatus: Record<Nr7Status, number> } | null,
   countryName: string,
+  countryConfig: CountryConfig | null,
   ratingLabels: Record<Nr7Status, string>,
   t: T,
 ): Sentence {
@@ -283,18 +285,18 @@ export function biodiversitySentence(
   if (links && totals) {
     const lead = links.lead[0];
     const behind = [...POLICY_LINK_STATUSES].reduce((n, s) => n + (totals.byStatus[s] ?? 0), 0);
+    const flagged = flaggedLine(lead, countryConfig);
     return {
-      headline: t("biodiversity.policyLinks.headline", { country: countryName, behind, targets: totals.targets, top: links.topLead.length, min: links.topMin }),
+      headline: t("biodiversity.policyLinks.headline", { country: countryName, behind, targets: totals.targets, flagged: links.behindFlagged }),
       body: t("biodiversity.policyLinks.body", { limited: ratingLabels.limited, noProgress: ratingLabels.no_progress }),
-      // With potential misalignments on the top target, the pointer names
-      // them too: hedged ("worth a closer look at whether"), no cause claimed.
-      start: t(lead.evidence.flagged > 0 ? "biodiversity.policyLinks.startFlagged" : "biodiversity.policyLinks.start", {
+      // With potential misalignments on the top target, the pointer says the
+      // row's words for them: hedged ("worth a closer look at whether"), no
+      // cause claimed.
+      start: t(flagged.key === "noneFlagged" ? "biodiversity.policyLinks.start" : "biodiversity.policyLinks.startFlagged", {
         n: lead.row.number,
         text: shortNr7Text(lead.row.targetText, 60),
         rating: ratingLabels[lead.row.status].toLocaleLowerCase(),
-        count: lead.evidence.count,
-        docs: lead.evidence.docs,
-        flagged: lead.evidence.flagged,
+        flaggedLine: t(`biodiversity.policyLinks.${flagged.key}`, flagged.values),
       }),
       startCaveat: t("biodiversity.policyLinks.startCaveat"),
     };

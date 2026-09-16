@@ -29,6 +29,13 @@ export const REVIEW_CAP = 5;
 /** Policy-link rows shown before "Show all" on the biodiversity view. */
 export const POLICY_LINK_CAP = 5;
 
+/** A counterpart flagged against at least this many national targets is
+ *  recurring: one review of it covers every one of those targets. */
+export const RECURRING_MIN_TARGETS = 2;
+
+/** Recurring counterparts shown before "Show all". */
+export const RECURRING_CAP = 5;
+
 /** "Behind schedule" in the report's own rating: progress at an insufficient
  *  rate, or no significant change. Unknown is not a rating of progress. */
 export const POLICY_LINK_STATUSES: ReadonlySet<Nr7Status> = new Set<Nr7Status>(["limited", "no_progress"]);
@@ -83,11 +90,58 @@ export interface Nr7PolicyLinkItem {
   evidence: Extract<Nr7Evidence, { kind: "policyLinks" }>;
 }
 
+/** One national target a recurring counterpart is flagged against. */
+export interface Nr7RecurringHit {
+  targetId: string;
+  /** "12" for NT12. */
+  number: string;
+  status: Nr7Status;
+  behind: boolean;
+}
+
+/** One policy target in another document flagged against several national
+ *  targets' NBSAP counterparts: the same pair to review, repeated down the
+ *  rows. Never the NBSAP side. */
+export interface Nr7RecurringCounterpart {
+  targetId: string;
+  doc: string;
+  label: string;
+  text: string;
+  /** National targets it is flagged against, behind schedule first, then by number. */
+  hits: Nr7RecurringHit[];
+  /** `hits.length`. */
+  count: number;
+  /** Hits rated behind schedule. */
+  behindCount: number;
+}
+
+/** Where the flagged pairs across the rows concentrate. Null when no
+ *  counterpart is flagged against RECURRING_MIN_TARGETS targets or more. */
+export interface Nr7RecurringGroup {
+  /** Counterparts flagged against >= RECURRING_MIN_TARGETS national targets,
+   *  most first; ties by behind-schedule hits, document, label. */
+  items: Nr7RecurringCounterpart[];
+  top: Nr7RecurringCounterpart[];
+  rest: Nr7RecurringCounterpart[];
+  total: number;
+  hidden: number;
+  /** Flagged pairs over every row (each pair once). */
+  totalPairs: number;
+  /** Of those, the pairs the listed counterparts carry. */
+  coveredPairs: number;
+  /** Fewest listed counterparts whose pairs reach half of `totalPairs`. */
+  toHalf: number;
+  /** National targets in the report (the denominator of "N of T"). */
+  targets: number;
+}
+
 export interface Nr7PolicyLinkGroup {
   /** Every national target in the report: the ones rated behind schedule
    *  first, then the rest; within each block most HIGH links first, ties by
    *  distinct documents, flagged links, target number. */
   items: Nr7PolicyLinkItem[];
+  /** The counterparts the flagged pairs repeat on; null when none repeats. */
+  recurring: Nr7RecurringGroup | null;
   /** The rows shown before "Show all" (`cap` rows). */
   top: Nr7PolicyLinkItem[];
   rest: Nr7PolicyLinkItem[];
@@ -96,14 +150,13 @@ export interface Nr7PolicyLinkGroup {
   /** National targets rated behind schedule (the headline's "behind"). */
   candidates: number;
   /** Targets rated behind schedule with >= 1 HIGH link, ranked: the rows
-   *  the headline and "Where to start" speak about. Never empty. */
+   *  "Where to start" speaks about. Never empty. */
   lead: Nr7PolicyLinkItem[];
-  /** The lead rows among `top` (the headline's "N of them"). */
-  topLead: Nr7PolicyLinkItem[];
-  /** Largest HIGH-link count over every row (bar scale). */
+  /** Targets rated behind schedule with >= 1 flagged link (the headline's
+   *  "N of them"). */
+  behindFlagged: number;
+  /** Largest HIGH-link count over every row. */
   maxCount: number;
-  /** Fewest HIGH links among `topLead` (the headline's "N or more"). */
-  topMin: number;
 }
 
 export interface Nr7ReviewItem {
@@ -190,19 +243,69 @@ export function rankPolicyLinkCandidates(model: Nr7ReportModel, cap: number = PO
     };
   });
   const lead = items.filter((i) => i.behind && i.evidence.count > 0);
-  const top = items.slice(0, cap);
-  const topLead = top.filter((i) => i.behind && i.evidence.count > 0);
   return {
     items,
-    top,
+    recurring: recurringCounterparts(items),
+    top: items.slice(0, cap),
     rest: items.slice(cap),
     total: items.length,
     hidden: Math.max(0, items.length - cap),
     candidates: candidates.length,
     lead,
-    topLead,
+    behindFlagged: items.filter((i) => i.behind && i.evidence.flagged > 0).length,
     maxCount,
-    topMin: topLead[topLead.length - 1].evidence.count,
+  };
+}
+
+/** The flagged pairs across the rows, turned round: per counterpart in
+ *  another document, the national targets it is flagged against. A handful
+ *  of expansion targets can account for most of the pairs (Mongolia: eight
+ *  counterparts hold nearly half of 168), so one review of a counterpart
+ *  settles the same question on every row it appears in. Only counterparts
+ *  on RECURRING_MIN_TARGETS targets or more are listed; a pair on one row
+ *  is that row's business. Deterministic. */
+export function recurringCounterparts(items: Nr7PolicyLinkItem[], cap: number = RECURRING_CAP, min: number = RECURRING_MIN_TARGETS): Nr7RecurringGroup | null {
+  const byCounterpart = new Map<string, Nr7RecurringCounterpart>();
+  let totalPairs = 0;
+  for (const item of items) {
+    const hit: Nr7RecurringHit = { targetId: item.row.targetId, number: item.row.number, status: item.row.status, behind: item.behind };
+    // A counterpart flagged twice against one NBSAP target (two pairs in the
+    // alignment file) still hits that national target once.
+    const seen = new Set<string>();
+    for (const link of item.links.flagged) {
+      totalPairs += 1;
+      if (seen.has(link.targetId)) continue;
+      seen.add(link.targetId);
+      const entry = byCounterpart.get(link.targetId) ?? { targetId: link.targetId, doc: link.doc, label: link.label, text: link.text, hits: [], count: 0, behindCount: 0 };
+      entry.hits.push(hit);
+      byCounterpart.set(link.targetId, entry);
+    }
+  }
+  const byBehindThenNumber = (a: Nr7RecurringHit, b: Nr7RecurringHit) =>
+    Number(b.behind) - Number(a.behind) || Number(a.number) - Number(b.number) || a.targetId.localeCompare(b.targetId);
+  const recurring = [...byCounterpart.values()]
+    .map((c) => ({ ...c, hits: [...c.hits].sort(byBehindThenNumber), count: c.hits.length, behindCount: c.hits.filter((h) => h.behind).length }))
+    .filter((c) => c.count >= min)
+    .sort((a, b) => b.count - a.count || b.behindCount - a.behindCount || a.doc.localeCompare(b.doc) || a.label.localeCompare(b.label, undefined, { numeric: true }));
+  if (recurring.length === 0) return null;
+  const coveredPairs = recurring.reduce((s, c) => s + c.count, 0);
+  let cumulative = 0;
+  let toHalf = 0;
+  for (const c of recurring) {
+    if (cumulative >= totalPairs / 2) break;
+    cumulative += c.count;
+    toHalf += 1;
+  }
+  return {
+    items: recurring,
+    top: recurring.slice(0, cap),
+    rest: recurring.slice(cap),
+    total: recurring.length,
+    hidden: Math.max(0, recurring.length - cap),
+    totalPairs,
+    coveredPairs,
+    toHalf: cumulative >= totalPairs / 2 ? toHalf : 0,
+    targets: items.length,
   };
 }
 
