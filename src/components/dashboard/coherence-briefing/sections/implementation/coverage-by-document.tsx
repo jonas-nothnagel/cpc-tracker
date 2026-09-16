@@ -27,18 +27,12 @@ import type {
 } from "@/lib/implementation-coherence";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocMediumLabel } from "@/lib/utils";
+import { NR7_COLORS } from "../../nr7-report/nr7-colors";
+import type { Nr7Status } from "../../nr7-report/nr7-self-report";
 import type { CountryConfig, ReportedActionType } from "@/types";
 
 // Canonical potential-misalignment red (matches the wheel / matrix encoding).
 const FLAG_RED = FLAGGED_COLOR;
-
-// Country self-assessment statuses (NR7), the country's own judgement colours.
-const NR7_COLORS: Record<string, string> = {
-  on_track: "#16a34a",
-  limited: "#d97706",
-  no_progress: "#dc2626",
-  unknown: "#9ca3af",
-};
 
 const STATUS_KEYS = ["planned", "adopted", "ongoing", "implemented"];
 
@@ -470,7 +464,7 @@ function Nr7Note({
   const badgeLabels = useNr7BadgeLabels();
   const status = nr7Status.get(targetId);
   if (!status) return null;
-  const color = NR7_COLORS[status] ?? NR7_COLORS.unknown;
+  const color = NR7_COLORS[status as Nr7Status] ?? NR7_COLORS.unknown;
   const label = badgeLabels[status as keyof typeof badgeLabels] ?? status;
   return (
     <span
