@@ -95,6 +95,8 @@ export interface Nr7RecurringHit {
   targetId: string;
   /** "12" for NT12. */
   number: string;
+  /** The target's text, for the fold to name it by. */
+  text: string;
   status: Nr7Status;
   behind: boolean;
 }
@@ -285,7 +287,7 @@ export function recurringCounterparts(items: Nr7PolicyLinkItem[], cap: number = 
   const byCounterpart = new Map<string, Nr7RecurringCounterpart>();
   let totalPairs = 0;
   for (const item of items) {
-    const hit: Nr7RecurringHit = { targetId: item.row.targetId, number: item.row.number, status: item.row.status, behind: item.behind };
+    const hit: Nr7RecurringHit = { targetId: item.row.targetId, number: item.row.number, text: item.row.targetText, status: item.row.status, behind: item.behind };
     // A counterpart flagged twice against one NBSAP target (two pairs in the
     // alignment file) still hits that national target once.
     const seen = new Set<string>();

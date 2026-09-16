@@ -1092,13 +1092,22 @@
           "summary": "Coverage by document",
           "count": "{reached} of {total} targets have an aligned reported action"
         },
-        "nr7Indicators": {
-          "summary": "All NR7 indicators",
-          "count": "{withValues} of {total} with reported values"
+        "nr7Recurring": {
+          "summary": "Pairs that repeat across targets",
+          "count": "{count, plural, one {# target in another plan} other {# targets in other plans}}, each flagged on two or more national targets",
+          "hitsLabel": "National targets this is flagged against",
+          "hit": "National target {n}: rated {rating}",
+          "showAll": "Show all {count}",
+          "showFewer": "Show fewer",
+          "pairCount": "on {count} of {targets} national targets{behind, plural, =0 {} other {, # behind schedule}}"
         },
         "nr7CrossChecks": {
           "summary": "Ratings that do not match their own evidence",
           "count": "{count, plural, one {# place} other {# places}}, no AI involved"
+        },
+        "nr7Indicators": {
+          "summary": "All NR7 indicators",
+          "count": "{withValues} of {total} with reported values"
         }
       },
       "toggle": {
@@ -1219,18 +1228,7 @@
           "repeats": "on {count} targets"
         },
         "caveat": "AI-estimated alignment between target texts, for the documents shown. A prompt for review, not a record of delivery or funding. Open a target to read the pair.",
-        "noLinks": "No policy target in the other documents was judged strongly aligned with it.",
-        "recurring": {
-          "eyebrow": "Pairs to review",
-          "title": "Where the pairs to review repeat",
-          "intro": "{toHalf, plural, one {One target} other {# targets}} in other national plans {toHalf, plural, one {carries} other {carry}} half of the {pairs} pairs the AI flagged across the rows. A target listed here is the same pair to review on every national target beside it.",
-          "introNoHalf": "The {pairs} pairs the AI flagged across the rows repeat on the targets below. A target listed here is the same pair to review on every national target beside it.",
-          "note": "Open a row on the slide to see that target's links instead.",
-          "count": "on {count} of {targets} national targets{behind, plural, =0 {} other {, # behind schedule}}",
-          "hitsLabel": "National targets this is flagged against",
-          "hit": "National target {n}: rated {rating}",
-          "showAll": "Show all {count}"
-        }
+        "noLinks": "No policy target in the other documents was judged strongly aligned with it."
       }
     },
     "nr7Report": {

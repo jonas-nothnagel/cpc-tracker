@@ -116,8 +116,8 @@ describe("buildReviewGroups", () => {
     expect(g.recurring).toMatchObject({ total: 1, hidden: 0, totalPairs: 4, coveredPairs: 2, toHalf: 1, targets: 4 });
     expect(g.recurring!.items[0]).toMatchObject({ targetId: "NDC_1", doc: "NDC", label: "NDC_1", text: "NDC_1 text", count: 2, behindCount: 2 });
     expect(g.recurring!.items[0].hits).toEqual([
-      { targetId: "NT01", number: "1", status: "limited", behind: true },
-      { targetId: "NT04", number: "4", status: "no_progress", behind: true },
+      { targetId: "NT01", number: "1", text: "By 2030, mainstream biodiversity into all sectors.", status: "limited", behind: true },
+      { targetId: "NT04", number: "4", text: "By 2030, reduce pollution.", status: "no_progress", behind: true },
     ]);
     // Hits list the targets rated behind schedule first, then by number.
     const onTrackFirst = rankPolicyLinkCandidates(buildNr7Report(FIXTURE_NR7, pairs, FIXTURE_TARGETS)!)!;

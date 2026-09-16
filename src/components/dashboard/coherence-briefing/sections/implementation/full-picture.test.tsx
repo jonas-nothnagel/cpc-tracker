@@ -8,7 +8,8 @@ vi.mock("@/lib/analytics/client", () => ({ track: vi.fn() }));
 import { FullPicture, useNr7FullPicture } from "./full-picture";
 import { buildReviewGroups } from "./review-groups";
 import { buildNr7Report } from "../../nr7-report";
-import { FIXTURE_ALIGNMENT, FIXTURE_NR7, FIXTURE_TARGETS } from "../../nr7-report/test-fixture";
+import { FIXTURE_ALIGNMENT, FIXTURE_NR7, FIXTURE_TARGETS, RECURRING_NR7, RECURRING_PAIRS } from "../../nr7-report/test-fixture";
+import { rankPolicyLinkCandidates } from "./review-groups";
 import type { ActionPlanAlignmentSummary, ImplementationCoverage } from "@/lib/implementation-coherence";
 
 afterEach(cleanup);
@@ -22,7 +23,9 @@ const summary = { totalFlaggedPairs: 0 } as ActionPlanAlignmentSummary;
 
 const crossChecks = buildReviewGroups({ summary: null, nr7Report, btrActions: 0 }).biodiversity!;
 
-function Harness({ report = "nr7", withNr7 = true, folded = false, onState, onOpenRowDetail }: { report?: "btr" | "nr7"; withNr7?: boolean; folded?: boolean; onState?: (s: ReturnType<typeof useNr7FullPicture>) => void; onOpenRowDetail?: (targetId: string) => void }) {
+const recurring = rankPolicyLinkCandidates(buildNr7Report(RECURRING_NR7, RECURRING_PAIRS, FIXTURE_TARGETS)!)!.recurring!;
+
+function Harness({ report = "nr7", withNr7 = true, folded = false, withRecurring = false, onState, onOpenRowDetail, onSelectRow }: { report?: "btr" | "nr7"; withNr7?: boolean; folded?: boolean; withRecurring?: boolean; onState?: (s: ReturnType<typeof useNr7FullPicture>) => void; onOpenRowDetail?: (targetId: string) => void; onSelectRow?: (targetId: string) => void }) {
   const state = useNr7FullPicture();
   onState?.(state);
   return (
@@ -35,11 +38,13 @@ function Harness({ report = "nr7", withNr7 = true, folded = false, onState, onOp
       nr7Report={withNr7 ? nr7Report : null}
       nr7PairTargets={new Map()}
       crossChecks={folded ? crossChecks : null}
+      recurring={withRecurring ? recurring : null}
       visibleTargetIds={new Set(FIXTURE_TARGETS.keys())}
       countryConfig={null}
       onOpenActionPair={vi.fn()}
       onOpenTarget={vi.fn()}
       onOpenRowDetail={onOpenRowDetail}
+      onSelectRow={onSelectRow}
     />
   );
 }
@@ -66,6 +71,20 @@ describe("FullPicture", () => {
     expect(screen.getByText("5 places, no AI involved")).toBeInTheDocument();
     expect(within(details[0]).getAllByRole("listitem")).toHaveLength(4);
     expect(details[0].querySelector('[data-tour="review-visual"], [data-tour="review-row"]')).toBeNull();
+  });
+
+  it("folds the pairs that repeat first, closed, with the count in the summary; a target's name asks the rows to open it", () => {
+    const onSelectRow = vi.fn();
+    let latest: ReturnType<typeof useNr7FullPicture> | undefined;
+    wrap(<Harness folded withRecurring onSelectRow={onSelectRow} onState={(s) => { latest = s; }} />);
+    const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
+    expect(details.map((d) => d.id)).toEqual(["full-picture-nr7-recurring", "full-picture-nr7-cross-checks", "full-picture-nr7-indicators"]);
+    expect(details[0].open).toBe(false);
+    expect(screen.getByText("Pairs that repeat across targets")).toBeInTheDocument();
+    expect(screen.getByText("2 targets in other plans, each flagged on two or more national targets")).toBeInTheDocument();
+    act(() => latest!.setRecurringOpen(true));
+    fireEvent.click(within(details[0]).getByRole("button", { name: "National target 4: rated No progress" }));
+    expect(onSelectRow).toHaveBeenCalledWith("NT04");
   });
 
   it("folds only the coverage section under the climate report, legend and disclaimer inside", () => {

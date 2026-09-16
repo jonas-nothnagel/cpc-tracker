@@ -1092,13 +1092,22 @@
           "summary": "Cobertura por documento",
           "count": "{reached} de {total} metas tienen una acción reportada alineada"
         },
-        "nr7Indicators": {
-          "summary": "Todos los indicadores del NR7",
-          "count": "{withValues} de {total} con valores reportados"
+        "nr7Recurring": {
+          "summary": "Pares que se repiten entre metas",
+          "count": "{count, plural, one {# meta de otro plan} other {# metas de otros planes}}, cada una señalada en dos o más metas nacionales",
+          "hitsLabel": "Metas nacionales frente a las que está señalada",
+          "hit": "Meta nacional {n}: calificada {rating}",
+          "showAll": "Mostrar las {count}",
+          "showFewer": "Mostrar menos",
+          "pairCount": "en {count} de {targets} metas nacionales{behind, plural, =0 {} other {, # rezagadas}}"
         },
         "nr7CrossChecks": {
           "summary": "Calificaciones que no coinciden con su propia evidencia",
           "count": "{count, plural, one {# punto} other {# puntos}}, sin IA"
+        },
+        "nr7Indicators": {
+          "summary": "Todos los indicadores del NR7",
+          "count": "{withValues} de {total} con valores reportados"
         }
       },
       "toggle": {
@@ -1219,18 +1228,7 @@
           "repeats": "en {count} metas"
         },
         "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par.",
-        "noLinks": "Ninguna meta de política de los otros documentos se juzgó fuertemente alineada con ella.",
-        "recurring": {
-          "eyebrow": "Pares por revisar",
-          "title": "Dónde se repiten los pares por revisar",
-          "intro": "{toHalf, plural, one {Una meta} other {# metas}} de otros planes nacionales {toHalf, plural, one {concentra} other {concentran}} la mitad de los {pairs} pares que la IA señaló en las filas. Una meta listada aquí es el mismo par por revisar en cada meta nacional a su lado.",
-          "introNoHalf": "Los {pairs} pares que la IA señaló en las filas se repiten en las metas de abajo. Una meta listada aquí es el mismo par por revisar en cada meta nacional a su lado.",
-          "note": "Abre una fila en la diapositiva para ver los vínculos de esa meta.",
-          "count": "en {count} de {targets} metas nacionales{behind, plural, =0 {} other {, # rezagadas}}",
-          "hitsLabel": "Metas nacionales frente a las que está señalada",
-          "hit": "Meta nacional {n}: calificada {rating}",
-          "showAll": "Mostrar las {count}"
-        }
+        "noLinks": "Ninguna meta de política de los otros documentos se juzgó fuertemente alineada con ella."
       }
     },
     "nr7Report": {

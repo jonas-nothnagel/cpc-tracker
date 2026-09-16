@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../../../messages/en.json";
 import es from "../../../../../../messages/es.json";
@@ -122,9 +122,28 @@ describe("ImplementationSection", () => {
     expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. Most flagged pairs are with the NDC.");
     expect(start()).toContain("Start with the top row");
     expect(screen.getAllByTestId("policy-link-flagged-face")[0]).toHaveTextContent("1 to review");
-    // Where the pairs repeat is the sticky column's business, never a second list on the slide.
-    expect(screen.queryByTestId("recurring-counterparts")).toBeNull();
+    // One flagged pair on one row is that row's business: no fold for the pairs that repeat.
+    expect(screen.queryByText("Pairs that repeat across targets")).toBeNull();
     expect(document.body.textContent).not.toMatch(/\b(should|must|because|responsible|blame|ministry|contradict|tension)\b/i);
+  });
+
+  it("biodiversity report: a counterpart flagged on two rows gets the fold of pairs that repeat, first among the folds", () => {
+    const repeating = buildNr7Report(FIXTURE_NR7, [...FIXTURE_ALIGNMENT, flag("NBSAP_4", "NDC_1", "manageable"), flag("NBSAP_1", "NDC_1", "manageable")], FIXTURE_TARGETS)!;
+    render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <ImplementationSection coverage={coverage} summary={summary} nr7Data={FIXTURE_NR7} nr7Report={repeating} visibleTargetIds={new Set(FIXTURE_TARGETS.keys())} report="nr7" onReportChange={vi.fn()} countryName="Testland" countryConfig={null} onOpenActionPair={vi.fn()} onOpenTarget={vi.fn()} />
+      </NextIntlClientProvider>,
+    );
+    const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
+    expect(details.map((d) => d.id)).toEqual(["full-picture-nr7-recurring", "full-picture-nr7-cross-checks", "full-picture-nr7-indicators"]);
+    expect(screen.getByText("1 target in another plan, each flagged on two or more national targets")).toBeInTheDocument();
+    // A target's name in the fold opens its row on the slide.
+    details[0].open = true;
+    fireEvent(details[0], new Event("toggle"));
+    fireEvent.click(within(details[0]).getByRole("button", { name: "National target 1: rated On track" }));
+    const rows = [...document.querySelectorAll('[data-testid="policy-link-rows"] > ol > li')] as HTMLElement[];
+    const open = rows.find((r) => within(r).getAllByRole("button")[0].getAttribute("aria-expanded") === "true")!;
+    expect(within(open).getByTestId("policy-link-subject")).toHaveTextContent("1 · Mainstream biodiversity into all sectors.");
   });
 
   it("biodiversity report without visible policy alignment: the cross-checks lead, as before", () => {

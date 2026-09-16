@@ -52,3 +52,20 @@ export const FIXTURE_ALIGNMENT: AlignmentResult[] = [
   high("NBSAP_4", "NDC_1"), high("NBSAP_4", "NDC_2"), high("NBSAP_4", "NAP_1"),
   high("NBSAP_2", "NDC_1"),
 ];
+
+/** NT01 rated behind schedule beside NT04, for the pairs that repeat. */
+export const RECURRING_NR7: Nr7Data = {
+  ...FIXTURE_NR7,
+  progressItems: FIXTURE_NR7.progressItems.map((i) => (i.targetId === "NT01" ? { ...i, progressStatus: "limited" as const } : i)),
+};
+
+const recurringFlag = (a: string, b: string): AlignmentResult => ({ targetAId: a, targetBId: b, alignment: "flagged", description: "why", mechanism: "delivery_friction", manageability: "manageable" });
+
+/** NDC_1 flagged against NT01 (limited), NT02 (on track) and NT04 (no progress);
+ *  NAP_1 against NT01 and NT02; NDC_2 against NT04 only. */
+export const RECURRING_PAIRS: AlignmentResult[] = [
+  ...FIXTURE_ALIGNMENT,
+  recurringFlag("NBSAP_1", "NDC_1"), recurringFlag("NBSAP_2", "NDC_1"), recurringFlag("NBSAP_4", "NDC_1"),
+  recurringFlag("NBSAP_1", "NAP_1"), recurringFlag("NBSAP_2", "NAP_1"),
+  recurringFlag("NBSAP_4", "NDC_2"),
+];

@@ -123,6 +123,7 @@ export function ImplementationSection({
   // card) opens its row with its full entry; without rows on the slide
   // those links are not offered.
   const openRowDetail = policyLinks ? (targetId: string) => fullPicture.requestRow(targetId, true) : undefined;
+  const selectRow = policyLinks ? (targetId: string) => fullPicture.requestRow(targetId, false) : undefined;
   const sentence =
     shown === "nr7" && groups.biodiversity
       ? biodiversitySentence(groups.biodiversity, nr7Report?.totals ?? null, countryName, countryConfig, t)
@@ -181,11 +182,13 @@ export function ImplementationSection({
               nr7Report={nr7Report}
               nr7PairTargets={nr7PairTargets}
               crossChecks={policyLinks ? groups.biodiversity : null}
+              recurring={policyLinks?.recurring ?? null}
               visibleTargetIds={visibleTargetIds}
               countryConfig={countryConfig}
               onOpenActionPair={onOpenActionPair}
               onOpenTarget={onOpenTarget}
               onOpenRowDetail={openRowDetail}
+              onSelectRow={selectRow}
             />
           )}
           <div className="space-y-1.5">

@@ -27,7 +27,7 @@ import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
 import { GbfChip, NR7_COLORS, shortNr7Text, type Nr7PolicyLink, type Nr7TargetRowModel } from "../nr7-report";
-import { Nr7RecurringCounterparts } from "./nr7-recurring-counterparts";
+import { Nr7RecurringCounterparts } from "../sections/implementation/nr7-recurring-counterparts";
 import type { Nr7RecurringGroup } from "../sections/implementation/review-groups";
 import type { CountryConfig } from "@/types";
 
@@ -52,7 +52,7 @@ export interface Nr7TargetLinksProps {
 export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, visibleTargetIds, onOpenTarget, recurring = null, onOpenRow }: Nr7TargetLinksProps) {
   const t = useTranslations("briefing.implementationCenter.nr7Links");
   if (isDefault && recurring) {
-    return <Nr7RecurringCounterparts group={recurring} countryConfig={countryConfig} countryName={countryName} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} onOpenRow={onOpenRow} />;
+    return <Nr7RecurringCounterparts group={recurring} countryConfig={countryConfig} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} onSelectRow={onOpenRow} />;
   }
   const repeats = new Map((recurring?.items ?? []).map((c) => [c.targetId, c.count]));
   const links = row.policyLinks;
