@@ -6,61 +6,50 @@
  * schedule first, each block ranked by how many policy targets in OTHER
  * documents the pipeline judged strongly aligned with the NBSAP target it
  * restates. Five rows at first; "Show all N" unfolds the rest and "Show
- * fewer" folds back (decided 2026-09-15: the reader wanted the whole list
- * reachable, and the order explained). A caption marks where the targets
- * not rated behind schedule begin.
+ * fewer" folds back. A caption marks where the targets not rated behind
+ * schedule begin.
  *
- * One line per row (2026-09-15, after the slide grew too dense): the
- * target, the country's own rating as a chip, and the potential
- * misalignments in words with the document most of them come from, or "no
- * potential misalignments". No bar and no count of aligned targets on the
- * face: the Mongolia read showed neither number tracks how a target is
- * doing, so they are context, not a finding. The aligned count moves into
- * the open row as one line; the per-document bars and the aligned
- * counterparts live in the sticky column and the target profile.
+ * One line per row: the target (its deadline prefix dropped so the words
+ * that tell targets apart show; two lines at most), the country's own
+ * rating as a chip, and how many linked pairs are flagged for review
+ * ("11 to review", or "none to review"). The document most flagged pairs
+ * are with is the slide body's business, said once; a count with no
+ * document is the row's.
  *
- * A row opens inline to what the report itself says holds the target back,
- * in its own words, FIRST (the country's reason leads), then the aligned
- * count, then the potential misalignments listed after the report's words
- * so they read as pairs to review beside that reason, never as the reason.
- * Words carry every colour.
+ * A row opens inline, in this order: what the report itself says holds the
+ * target back, in its own words, FIRST (the country's reason leads); one
+ * line with the aligned count; the flagged pairs as a plain list; the GBF
+ * target the country filed it under, expanded; the full report entry
+ * (questionnaire, indicators, narrative) behind one disclosure; one link to
+ * the target in the biodiversity plan. Words carry every colour.
  *
- * The rating and the challenges text are the report's; the links are
- * AI-estimated alignment between target texts (labelled as such, never
- * "delivers" or "funds"). No suggestion is made here: the hedged pointer is
- * the slide's "Where to start" block.
+ * The rating and the report's words are the report's; the links are
+ * AI-estimated alignment between target texts. The view's one caveat sits
+ * under the list; nothing inside a row repeats it. No suggestion is made
+ * here: the hedged pointer is the slide's "Where to start" block.
  */
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocMediumLabel } from "@/lib/utils";
-import { ReviewMark } from "../../centerpiece/nr7-target-links";
 import { transitionName, withViewTransition } from "@/lib/view-transition";
-import { GbfChip, NR7_COLORS, shortNr7Text, type Nr7PolicyLink } from "../../nr7-report";
+import { GbfChip, NR7_COLORS, Nr7TargetDetail, stripNr7Deadline, type Nr7PolicyLink, type Nr7ReportModel } from "../../nr7-report";
 import type { Nr7PolicyLinkGroup, Nr7PolicyLinkItem } from "./review-groups";
 import type { CountryConfig } from "@/types";
 
 /** Counterpart targets listed in an open row before "+ N more" unfolds the rest. */
 export const COUNTERPARTS_SHOWN = 3;
 
-/** The words for a row's potential misalignments: the count and the
- *  document most of them come from ("mostly with" when several documents
- *  are involved, "with" when one), or none. Keyed under
- *  `briefing.implementation.biodiversity.policyLinks`; the slide's "Where
- *  to start" says the same words for the top target. */
-export function flaggedLine(item: Nr7PolicyLinkItem, countryConfig: CountryConfig | null): { key: "flaggedFace" | "flaggedFaceOne" | "noneFlagged"; values: Record<string, string | number> } {
-  const docs = item.links.byDoc.filter((d) => d.flagged > 0).sort((a, b) => b.flagged - a.flagged || a.doc.localeCompare(b.doc));
-  if (item.evidence.flagged === 0 || !docs[0]) return { key: "noneFlagged", values: {} };
-  return { key: docs.length > 1 ? "flaggedFace" : "flaggedFaceOne", values: { count: item.evidence.flagged, doc: getDocMediumLabel(countryConfig, docs[0].doc) } };
-}
-
 export interface Nr7PolicyLinkRowsProps {
   group: Nr7PolicyLinkGroup;
+  /** The report model, for the full entry an open row can unfold. */
+  model: Nr7ReportModel;
   countryConfig: CountryConfig | null;
   visibleTargetIds: ReadonlySet<string>;
   onOpenTarget: (targetId: string) => void;
-  onFocusNr7Target: (targetId: string) => void;
+  /** A shared-indicator chip in the full entry points at that indicator. */
+  onFocusIndicator: (indicatorId: string) => void;
   /** The open row, when the host owns it (its sticky column follows the
    *  selection). Absent: the rows keep their own. */
   selectedId?: string | null;
@@ -68,11 +57,12 @@ export interface Nr7PolicyLinkRowsProps {
 }
 
 export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
-  const { group, selectedId, onSelect } = props;
+  const { group, model, selectedId, onSelect } = props;
   const t = useTranslations("briefing.implementation");
   const tPl = useTranslations("briefing.implementation.biodiversity.policyLinks");
   const [showAll, setShowAll] = useState(false);
   const [localId, setLocalId] = useState<string | null>(null);
+  const indicatorsById = useMemo(() => new Map(model.indicators.map((i) => [i.id, i])), [model.indicators]);
   const expandedId = selectedId !== undefined ? selectedId : localId;
   const select = (id: string | null) => {
     setLocalId(id);
@@ -93,6 +83,7 @@ export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
             onToggle={() => withViewTransition(() => select(expandedId === item.row.targetId ? null : item.row.targetId))}
             first={i === 0}
             caption={i === restStart ? tPl("restHeading") : undefined}
+            indicatorsById={indicatorsById}
             {...props}
           />
         ))}
@@ -115,9 +106,10 @@ export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
   );
 }
 
-/** The flagged counterparts, the first few then "+ N more" unfolding the
- *  rest (and folding back). Mounted only while the row is open, so it
- *  starts folded each time. Every entry is marked as a pair to review. */
+/** The flagged counterparts as a plain list (the box they sit in already
+ *  says what they are), the first few then "+ N more" unfolding the rest
+ *  (and folding back). Mounted only while the row is open, so it starts
+ *  folded each time. */
 function FlaggedList({
   links,
   docLabel,
@@ -125,7 +117,6 @@ function FlaggedList({
   onOpenTarget,
   moreLabel,
   fewerLabel,
-  flaggedWord,
 }: {
   links: Nr7PolicyLink[];
   docLabel: (doc: string) => string;
@@ -133,7 +124,6 @@ function FlaggedList({
   onOpenTarget: (targetId: string) => void;
   moreLabel: (n: number) => string;
   fewerLabel: string;
-  flaggedWord: string;
 }) {
   const [showAll, setShowAll] = useState(false);
   const shown = showAll ? links : links.slice(0, COUNTERPARTS_SHOWN);
@@ -142,16 +132,16 @@ function FlaggedList({
     <ul className="text-caption space-y-1">
       {shown.map((l) => {
         const label = `${docLabel(l.doc)} · ${l.label}`;
-        const link = visibleTargetIds.has(l.targetId) ? (
-          <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
-            {label} <span aria-hidden="true">›</span>
-          </button>
-        ) : (
-          <span title={l.text}>{label}</span>
-        );
         return (
-          <li key={l.targetId}>
-            <ReviewMark flagged word={flaggedWord}>{link}</ReviewMark>
+          <li key={l.targetId} className="flex items-start gap-1.5">
+            <span aria-hidden="true" className="mt-1.5 inline-block w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: FLAGGED_COLOR }} />
+            {visibleTargetIds.has(l.targetId) ? (
+              <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
+                {label} <span aria-hidden="true">›</span>
+              </button>
+            ) : (
+              <span title={l.text}>{label}</span>
+            )}
           </li>
         );
       })}
@@ -172,35 +162,45 @@ function PolicyLinkRow({
   onToggle,
   first,
   caption,
+  indicatorsById,
   countryConfig,
   visibleTargetIds,
   onOpenTarget,
-  onFocusNr7Target,
-}: { item: Nr7PolicyLinkItem; expanded: boolean; onToggle: () => void; first: boolean; caption?: string } & Omit<Nr7PolicyLinkRowsProps, "group" | "selectedId" | "onSelect">) {
+  onFocusIndicator,
+}: {
+  item: Nr7PolicyLinkItem;
+  expanded: boolean;
+  onToggle: () => void;
+  first: boolean;
+  caption?: string;
+  indicatorsById: Map<string, Nr7ReportModel["indicators"][number]>;
+} & Omit<Nr7PolicyLinkRowsProps, "group" | "model" | "selectedId" | "onSelect">) {
   const t = useTranslations("briefing.implementation");
   const tPl = useTranslations("briefing.implementation.biodiversity.policyLinks");
   const tNr7 = useTranslations("briefing.nr7Report");
   const ratingLabels = useNr7BadgeLabels();
   const [readMore, setReadMore] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
   const { row, links, evidence } = item;
   const bodyId = `policy-link-${row.targetId}`;
-  const fullText = row.targetText.replace(/\s+/g, " ").trim();
-  const subject = `${row.number} · ${expanded ? fullText : shortNr7Text(row.targetText, 44)}`;
+  const fullText = stripNr7Deadline(row.targetText);
+  const subject = `${row.number} · ${fullText}`;
   const rating = ratingLabels[row.status];
   const docLabel = (doc: string) => getDocMediumLabel(countryConfig, doc);
-  const flagged = flaggedLine(item, countryConfig);
-  const flaggedLabel = tPl(flagged.key, flagged.values);
-  const hasFlags = flagged.key !== "noneFlagged";
+  const hasFlags = evidence.flagged > 0;
+  const flaggedLabel = hasFlags ? tPl("flaggedFaceCount", { count: evidence.flagged }) : tPl("noneFlagged");
   const name = transitionName("pl", row.targetId);
   const challenges = row.keyChallengesSummary ?? row.progressSummary;
 
   return (
-    <li className="border-t border-line-soft" style={{ viewTransitionName: name }}>
+    <li id={`policy-link-row-${row.targetId}`} className="border-t border-line-soft" style={{ viewTransitionName: name }}>
       {caption && (
         <p className="pt-3 pb-1 px-1 text-caption font-medium text-[var(--undp-gray)]" data-testid="policy-link-rest-heading">
           {caption}
         </p>
       )}
+      {/* One column on a phone (subject, then rating and count on a line);
+          three at sm+, the subject taking the room. */}
       <button
         type="button"
         onClick={onToggle}
@@ -208,27 +208,26 @@ function PolicyLinkRow({
         aria-controls={bodyId}
         aria-label={t("biodiversity.row.aria", { target: subject, rating, evidence: flaggedLabel })}
         data-tour={first ? "review-row" : undefined}
-        className="w-full text-left grid grid-cols-[minmax(0,12rem)_6.5rem_1fr] items-center gap-x-3 gap-y-1.5 px-1 py-2 rounded hover:bg-black/[0.03] text-caption"
+        className="w-full text-left grid grid-cols-[1fr_auto] sm:grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-4 gap-y-1 px-1 py-2 rounded hover:bg-black/[0.03] text-caption"
       >
         <span
-          className={`text-data text-[var(--undp-black)] leading-snug min-w-0 ${expanded ? "col-span-3 whitespace-normal font-medium max-w-prose" : "truncate"}`}
+          className={`text-data text-[var(--undp-black)] leading-snug min-w-0 col-span-2 sm:col-span-1 ${expanded ? "sm:col-span-3 font-medium max-w-prose" : "line-clamp-2"}`}
           style={{ viewTransitionName: `${name}-subject` }}
-          title={expanded ? undefined : fullText}
+          title={expanded ? undefined : row.targetText}
           data-testid="policy-link-subject"
         >
           {subject}
         </span>
         <span
-          className={`inline-flex items-center gap-1.5 whitespace-nowrap ${expanded ? "col-start-2" : ""}`}
+          className={`inline-flex items-center gap-1.5 whitespace-nowrap ${expanded ? "sm:col-start-2" : ""}`}
           style={{ viewTransitionName: `${name}-rating` }}
         >
           <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: NR7_COLORS[row.status] }} />
           <span className="font-medium" style={{ color: NR7_COLORS[row.status] }}>{rating}</span>
         </span>
-        {/* The words wrap rather than truncate: the count and the document
-            are the point. A mark in the flagged colour, the same for one
-            pair or forty (presence, not magnitude), when there are any. */}
-        <span className="inline-flex items-center gap-2 min-w-0 leading-snug" style={{ viewTransitionName: `${name}-evidence` }} data-testid="policy-link-flagged-face">
+        {/* A mark in the flagged colour, the same for one pair or forty
+            (presence, not magnitude), with the count; grey when none. */}
+        <span className="inline-flex items-center gap-1.5 whitespace-nowrap tabular-nums justify-self-end sm:justify-self-auto" style={{ viewTransitionName: `${name}-evidence` }} data-testid="policy-link-flagged-face">
           {hasFlags && <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: FLAGGED_COLOR }} data-testid="policy-link-flagged-mark" />}
           <span className={hasFlags ? "font-medium" : "text-[var(--undp-gray)]"} style={hasFlags ? { color: FLAGGED_COLOR } : undefined}>
             {flaggedLabel}
@@ -237,16 +236,11 @@ function PolicyLinkRow({
       </button>
       {expanded && (
         <div id={bodyId} className="pb-4 pl-1 pr-1 space-y-3 disclosure-enter">
-          {row.gbfTargets.length > 0 && (
-            <p className="flex flex-wrap gap-1.5">
-              {row.gbfTargets.map((g) => (
-                <GbfChip key={g.id} target={g} />
-              ))}
-            </p>
-          )}
           {/* The report's own reason leads; the AI-estimated links follow it. */}
           <section>
-            <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">{tPl("challengesHeading")}</p>
+            <p className="text-caption font-medium text-[var(--undp-gray)] mb-1">
+              {tPl("challengesHeading")} <span className="font-normal">({tPl("reportWordsLabel")})</span>
+            </p>
             {challenges ? (
               <>
                 <p className={`text-data text-[var(--undp-black)] leading-relaxed whitespace-pre-line max-w-prose ${readMore ? "" : "line-clamp-3"}`}>
@@ -265,23 +259,47 @@ function PolicyLinkRow({
           </p>
           {links.flagged.length > 0 && hasFlags && (
             <section className="rounded-r px-2.5 py-2 -ml-0.5" style={{ backgroundColor: `${FLAGGED_COLOR}14`, borderLeft: `2px solid ${FLAGGED_COLOR}` }} data-testid="policy-link-review">
-              <p className="text-caption font-medium mb-0.5" style={{ color: FLAGGED_COLOR }}>
-                {tPl("flaggedHeading")}
+              <p className="text-caption font-medium mb-1" style={{ color: FLAGGED_COLOR }}>
+                {tPl("flaggedHeading", { count: links.flagged.length })}
               </p>
-              <p className="text-caption text-[var(--undp-black)] mb-1">{flaggedLabel}</p>
-              <FlaggedList links={links.flagged} docLabel={docLabel} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} moreLabel={(n) => tPl("more", { count: n })} fewerLabel={tPl("fewer")} flaggedWord={tPl("reviewWord")} />
+              <FlaggedList links={links.flagged} docLabel={docLabel} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} moreLabel={(n) => tPl("more", { count: n })} fewerLabel={tPl("fewer")} />
             </section>
           )}
-          <p className="flex flex-wrap gap-x-4 gap-y-1 text-caption">
-            <button type="button" onClick={() => onFocusNr7Target(row.targetId)} className="text-[var(--undp-blue)] hover:underline">
-              {t("row.nr7.seeTarget")} <span aria-hidden="true">›</span>
+          {row.gbfTargets.length > 0 && (
+            <p className="flex flex-wrap items-center gap-1.5 text-caption text-[var(--undp-gray)]" data-testid="policy-link-gbf">
+              <span>{tPl("gbfLeadIn", { count: row.gbfTargets.length })}</span>
+              {row.gbfTargets.map((g) => (
+                <GbfChip key={g.id} target={g} />
+              ))}
+            </p>
+          )}
+          {/* The report's entry for this target, folded: the rows are the
+              list of national targets; this is where each one's questionnaire
+              and indicators live. */}
+          <div data-testid="policy-link-detail">
+            <button
+              type="button"
+              onClick={() => setDetailOpen((v) => !v)}
+              aria-expanded={detailOpen}
+              aria-controls={`${bodyId}-detail`}
+              className="inline-flex items-baseline gap-1.5 text-caption text-[var(--undp-blue)] hover:underline"
+            >
+              <span aria-hidden="true" className={`inline-block transition-transform ${detailOpen ? "rotate-90" : ""}`}>›</span>
+              {tPl("fullEntry")}
             </button>
-            {row.nbsapTargetId && row.nbsapNumber !== null && visibleTargetIds.has(row.nbsapTargetId) && (
-              <button type="button" onClick={() => onOpenTarget(row.nbsapTargetId!)} className="text-[var(--undp-blue)] hover:underline">
-                {tNr7("targets.expand.openNbsap", { n: row.nbsapNumber })} <span aria-hidden="true">›</span>
-              </button>
+            {detailOpen && (
+              <div id={`${bodyId}-detail`} className="mt-2 pl-3 border-l border-line-soft">
+                <Nr7TargetDetail row={row} indicatorsById={indicatorsById} onFocusIndicator={onFocusIndicator} />
+              </div>
             )}
-          </p>
+          </div>
+          {row.nbsapTargetId && row.nbsapNumber !== null && visibleTargetIds.has(row.nbsapTargetId) && (
+            <p className="text-caption">
+              <button type="button" onClick={() => onOpenTarget(row.nbsapTargetId!)} className="text-[var(--undp-blue)] hover:underline">
+                {tPl("openNbsap", { n: row.nbsapNumber })} <span aria-hidden="true">›</span>
+              </button>
+            </p>
+          )}
         </div>
       )}
     </li>

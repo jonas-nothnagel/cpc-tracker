@@ -6,6 +6,7 @@ export {
   buildNr7Report,
   NR7_POLICY_LINK_DOC,
   shortText as shortNr7Text,
+  stripDeadlinePrefix as stripNr7Deadline,
   type Nr7PolicyLink,
   type Nr7PolicyLinks,
   type Nr7ReportModel,

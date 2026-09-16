@@ -405,6 +405,18 @@ export function shortText(text: string, max = 48): string {
   return `${(space > 24 ? cut.slice(0, space) : cut).replace(/[,.;:]$/, "")}…`;
 }
 
+/** A target's text without its leading deadline ("By 2030, …", "Para 2030,
+ *  …", "Hasta 2030 …"), which nearly every national target opens with and
+ *  which hides the words that tell targets apart in a short line. The
+ *  first character is upper-cased so the line reads as a sentence; any
+ *  other opening is left alone. Display-only; the report's text is never
+ *  stored this way. */
+export function stripDeadlinePrefix(text: string): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  const rest = clean.replace(/^(?:By|Para|Hasta)\s+\d{4},?\s*/i, "");
+  return rest ? rest.charAt(0).toLocaleUpperCase() + rest.slice(1) : clean;
+}
+
 /** Years travel as strings so the message formatter never groups them. */
 function yr(n: number | null): string {
   return n === null ? "" : String(n);

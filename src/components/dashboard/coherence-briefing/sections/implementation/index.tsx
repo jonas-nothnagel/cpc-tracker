@@ -141,10 +141,11 @@ export function ImplementationSection({
         ) : showEvidence && shown === "nr7" && policyLinks ? (
           <Nr7PolicyLinkRows
             group={policyLinks}
+            model={nr7Report!}
             countryConfig={countryConfig}
             visibleTargetIds={visibleTargetIds}
             onOpenTarget={onOpenTarget}
-            onFocusNr7Target={fullPicture.focusTarget}
+            onFocusIndicator={fullPicture.focusIndicator}
             selectedId={focusedNr7TargetId}
             onSelect={onFocusNr7Target}
           />

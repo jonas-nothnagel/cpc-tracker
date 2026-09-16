@@ -469,11 +469,11 @@
           },
           "visual": {
             "title": "Las conclusiones",
-            "body": "Clima: una barra por acción reportada, su largo los compromisos de política contra los que podría ir, más oscura para los pares de diseño. Biodiversidad: las metas nacionales que el informe califica como rezagadas, cada barra las metas de otros planes que la IA juzgó fuertemente alineadas con ella."
+            "body": "Clima: una barra por acción reportada, su largo los compromisos de política contra los que podría ir, más oscura para los pares de diseño. Biodiversidad: una fila por meta nacional, primero las que el informe califica como rezagadas, con su calificación y cuántos pares vinculados están señalados para revisar."
           },
           "row": {
             "title": "Abrir una fila",
-            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA); una fila de biodiversidad muestra en qué documentos están esas metas alineadas y qué dice el propio informe que frena la meta. Los enlaces abren la meta o la meta nacional."
+            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA). Una fila de biodiversidad se abre a lo que el propio informe dice que frena la meta, los pares señalados y la entrada completa del informe; la columna de al lado lista los planes que comparten el objetivo."
           },
           "fullPicture": {
             "title": "La imagen completa",
@@ -1148,17 +1148,19 @@
           "bodyNoFlagged": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados señaló la IA como posibles desalineaciones. Ninguno está señalado.",
           "start": "Empieza por la primera fila: qué dice el informe que la frena y, luego, si los planes vinculados tienen que ver con ello.",
           "caveat": "Las calificaciones y las palabras del informe son del propio informe. Los vínculos con otros planes son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
-          "flaggedFace": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, sobre todo con {doc}",
-          "flaggedFaceOne": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, con {doc}",
-          "noneFlagged": "sin posibles desalineaciones",
-          "flaggedHeading": "Señaladas como posibles desalineaciones (estimado por IA)",
-          "reach": "Fuertemente alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# otro documento} other {# otros documentos}} (estimado por IA); la columna de al lado las lista.",
-          "noLinks": "Ninguna meta de los otros documentos se juzgó fuertemente alineada con ella (estimado por IA).",
-          "challengesHeading": "Qué dice el informe que la frena (palabras del informe, textual)",
+          "flaggedFaceCount": "{count} por revisar",
+          "noneFlagged": "ninguno por revisar",
+          "flaggedHeading": "Pares señalados ({count})",
+          "reach": "Fuertemente alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# otro documento} other {# otros documentos}}.",
+          "noLinks": "Ninguna meta de los otros documentos se juzgó fuertemente alineada con ella.",
+          "challengesHeading": "Qué dice el informe que la frena",
+          "reportWordsLabel": "palabras del informe",
           "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
+          "gbfLeadIn": "Registrada bajo {count, plural, one {la meta} other {las metas}} del Marco Mundial de Biodiversidad (GBF)",
+          "fullEntry": "Entrada completa del informe",
+          "openNbsap": "La meta en el plan de biodiversidad (NBSAP {n})",
           "more": "+ {count} más",
           "fewer": "Mostrar menos",
-          "reviewWord": "posible desalineación",
           "restHeading": "Calificadas en curso, o desconocidas"
         }
       }

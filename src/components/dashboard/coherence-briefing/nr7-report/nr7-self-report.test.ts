@@ -11,6 +11,7 @@ import {
   policyReachByNbsap,
   readSeries,
   type Nr7Signal,
+  stripDeadlinePrefix,
 } from "./nr7-self-report";
 import type {
   AlignmentResult,
@@ -140,6 +141,21 @@ describe("policyLinksByNbsap", () => {
     const fromNdc = policyLinksByNbsap(pairs, TARGETS, "NDC");
     expect(fromNdc.get("NDC_1")).toMatchObject({ high: [{ targetId: "NBSAP_1" }], flagged: [{ targetId: "NBSAP_3" }] });
     expect(fromNdc.get("NBSAP_1")).toBeUndefined();
+  });
+});
+
+describe("stripDeadlinePrefix", () => {
+  it("drops a leading deadline in the three forms the reports use and reads on as a sentence", () => {
+    expect(stripDeadlinePrefix("By 2030, reduce ecosystem degradation.")).toBe("Reduce ecosystem degradation.");
+    expect(stripDeadlinePrefix("By  2030 Reduce the risk of extinction")).toBe("Reduce the risk of extinction");
+    expect(stripDeadlinePrefix("Para 2030, restaurar el 30%.")).toBe("Restaurar el 30%.");
+    expect(stripDeadlinePrefix("Hasta 2030 conservar áreas.")).toBe("Conservar áreas.");
+  });
+
+  it("leaves any other opening alone and is idempotent", () => {
+    expect(stripDeadlinePrefix("Substantially and progressively reduce pollution")).toBe("Substantially and progressively reduce pollution");
+    expect(stripDeadlinePrefix("By 2030")).toBe("By 2030");
+    expect(stripDeadlinePrefix(stripDeadlinePrefix("By 2030, reduce pollution."))).toBe("Reduce pollution.");
   });
 });
 

@@ -22,14 +22,15 @@ const flag = (a: string, b: string): AlignmentResult => ({ targetAId: a, targetB
 const flagged = flag("NBSAP_4", "NDC_1");
 
 function renderRows(alignment: AlignmentResult[] = FIXTURE_ALIGNMENT, cap?: number, targets: Map<string, Target> = FIXTURE_TARGETS) {
-  const group = rankPolicyLinkCandidates(buildNr7Report(behind, alignment, targets)!, cap)!;
-  const spies = { onOpenTarget: vi.fn(), onFocusNr7Target: vi.fn() };
+  const model = buildNr7Report(behind, alignment, targets)!;
+  const group = rankPolicyLinkCandidates(model, cap)!;
+  const spies = { onOpenTarget: vi.fn(), onFocusIndicator: vi.fn() };
   render(
     <NextIntlClientProvider locale="en" messages={en}>
-      <Nr7PolicyLinkRows group={group} countryConfig={null} visibleTargetIds={new Set(targets.keys())} {...spies} />
+      <Nr7PolicyLinkRows group={group} model={model} countryConfig={null} visibleTargetIds={new Set(targets.keys())} {...spies} />
     </NextIntlClientProvider>,
   );
-  return { group, ...spies };
+  return { group, model, ...spies };
 }
 
 // Top-level rows only: an open row's flagged list adds nested list items.
@@ -37,15 +38,17 @@ const rows = () => [...document.querySelectorAll('[data-testid="policy-link-rows
 const rowButton = (i: number) => within(rows()[i]).getAllByRole("button")[0];
 
 describe("Nr7PolicyLinkRows", () => {
-  it("shows every target on one line: number and text, the rating word and the potential misalignments in words, behind schedule first", () => {
+  it("shows every target on one line: number and text without its deadline, the rating word and the count to review, behind schedule first", () => {
     renderRows();
     expect(rows()).toHaveLength(4);
     expect(rowButton(0)).toHaveAttribute("data-tour", "review-row");
-    expect(rowButton(0).getAttribute("aria-label")).toBe("1 · By 2030, mainstream biodiversity into all…: rated Limited progress; no potential misalignments");
+    // The deadline prefix is dropped so the words that tell targets apart show; the raw text stays as the tooltip.
+    expect(rowButton(0).getAttribute("aria-label")).toBe("1 · Mainstream biodiversity into all sectors.: rated Limited progress; none to review");
+    expect(within(rows()[0]).getByTestId("policy-link-subject")).toHaveAttribute("title", "By 2030, mainstream biodiversity into all sectors.");
     expect(within(rows()[0]).getByText("Limited progress")).toBeInTheDocument();
-    expect(within(rows()[0]).getByTestId("policy-link-flagged-face")).toHaveTextContent("no potential misalignments");
+    expect(within(rows()[0]).getByTestId("policy-link-flagged-face")).toHaveTextContent("none to review");
     expect(within(rows()[0]).queryByTestId("policy-link-flagged-mark")).toBeNull();
-    // No aligned count, no bar and no GBF chip on the face.
+    // No aligned count, no bar, no document and no GBF chip on the face.
     expect(within(rows()[0]).queryByText(/aligned with/)).toBeNull();
     expect(rows()[0].querySelector("[style*='width']")).toBeNull();
     expect(within(rows()[0]).queryByText("GBF T14")).toBeNull();
@@ -58,89 +61,102 @@ describe("Nr7PolicyLinkRows", () => {
     // Four rows fit under the cap of five: nothing to unfold.
     expect(screen.queryByRole("button", { name: /Show all/ })).toBeNull();
     expect(screen.queryByRole("button", { name: "Show fewer" })).toBeNull();
+    // The view's one caveat sits under the list; no "(AI-estimated)" inside the rows.
+    expect(screen.getByTestId("policy-link-caveat")).toHaveTextContent("Links to other plans are AI-estimated alignment between target texts");
+    expect(document.body.textContent!.match(/AI-estimated/g)).toHaveLength(1);
   });
 
-  it("opens a target without links to the report's words, the no-links line and the links onward only", () => {
-    const { onFocusNr7Target } = renderRows();
+  it("opens a target without links to the report's words, the no-links line and the full entry", () => {
+    renderRows();
     fireEvent.click(rowButton(3));
     const row = rows()[3];
     expect(rowButton(3)).toHaveAttribute("aria-expanded", "true");
     expect(within(row).getByText("The report gives no key-challenges text for this target.")).toBeInTheDocument();
-    expect(within(row).getByTestId("policy-link-reach")).toHaveTextContent("No target in the other documents was judged strongly aligned with it (AI-estimated).");
+    expect(within(row).getByTestId("policy-link-reach")).toHaveTextContent("No target in the other documents was judged strongly aligned with it.");
     expect(within(row).queryByTestId("policy-link-review")).toBeNull();
-    fireEvent.click(within(row).getByRole("button", { name: "See the national target" }));
-    expect(onFocusNr7Target).toHaveBeenCalledWith("NT03");
+    expect(within(row).getByText("Full report entry")).toBeInTheDocument();
+    expect(within(row).queryByRole("button", { name: /See the national target/ })).toBeNull();
   });
 
-  it("opens a row to the GBF chip, the report's own words, one line for the aligned count, and the links onward", () => {
-    const { onOpenTarget, onFocusNr7Target } = renderRows();
+  it("opens a row in order: the report's words, the aligned count, the GBF target expanded, the full entry, one link to the plan", () => {
+    const { onOpenTarget, onFocusIndicator } = renderRows();
     fireEvent.click(rowButton(0));
     const row = rows()[0];
     expect(rowButton(0)).toHaveAttribute("aria-expanded", "true");
-    expect(within(row).getByTitle(/GBF\) target 14:/)).toHaveTextContent("GBF T14");
+    expect(within(row).getByTestId("policy-link-subject")).toHaveTextContent("1 · Mainstream biodiversity into all sectors.");
     // NT01 has no key-challenges text; the progress summary stands in, labelled as the report's words.
-    expect(within(row).getByText("What the report says holds it back (the report's words, verbatim)")).toBeInTheDocument();
+    expect(within(row).getByText("What the report says holds it back")).toBeInTheDocument();
+    expect(within(row).getByText("(the report's words)")).toBeInTheDocument();
     expect(within(row).getByText(/Mainstreaming has advanced through the planning law/)).toBeInTheDocument();
-    expect(within(row).getByTestId("policy-link-reach")).toHaveTextContent("Aligned strongly with 3 targets in 2 other documents (AI-estimated); the column beside lists them.");
+    expect(within(row).getByTestId("policy-link-reach")).toHaveTextContent("Aligned strongly with 3 targets in 2 other documents.");
+    expect(within(row).getByTestId("policy-link-reach")).not.toHaveTextContent(/column/);
+    // The abbreviation is expanded where the chip first appears.
+    expect(within(row).getByTestId("policy-link-gbf")).toHaveTextContent("Filed under Global Biodiversity Framework (GBF) target");
+    expect(within(row).getByTitle(/GBF\) target 14:/)).toHaveTextContent("GBF T14");
     // The per-document counts and the aligned counterparts live in the column, not here.
     expect(within(row).queryByText(/by document/i)).toBeNull();
     expect(within(row).queryByRole("button", { name: "NDC · NDC_1" })).toBeNull();
     // No flagged links on this target: no review block.
     expect(within(row).queryByTestId("policy-link-review")).toBeNull();
-    fireEvent.click(within(row).getByRole("button", { name: "See the national target" }));
-    expect(onFocusNr7Target).toHaveBeenCalledWith("NT01");
-    fireEvent.click(within(row).getByRole("button", { name: "Open NBSAP target 1" }));
+    const at = (text: string) => row.textContent!.indexOf(text);
+    expect(at("What the report says holds it back")).toBeLessThan(at("Aligned strongly with 3 targets"));
+    expect(at("Aligned strongly with 3 targets")).toBeLessThan(at("Filed under"));
+    expect(at("Filed under")).toBeLessThan(at("Full report entry"));
+    // The full entry unfolds the questionnaire and indicators; a shared-indicator chip hands off.
+    expect(within(row).queryByTestId("nr7-target-detail")).toBeNull();
+    fireEvent.click(within(row).getByRole("button", { name: "Full report entry" }));
+    const detail = within(row).getByTestId("nr7-target-detail");
+    expect(within(detail).getByText("Questionnaire")).toBeInTheDocument();
+    fireEvent.click(within(detail).getByRole("button", { name: "A.3" }));
+    expect(onFocusIndicator).toHaveBeenCalledWith("A.3");
+    // One link onward: the target in the biodiversity plan, abbreviation expanded.
+    fireEvent.click(within(row).getByRole("button", { name: "The target in the biodiversity plan (NBSAP 1)" }));
     expect(onOpenTarget).toHaveBeenCalledWith("NBSAP_1");
+    expect(within(row).queryByRole("button", { name: /Open NBSAP target/ })).toBeNull();
     // Opening another row closes this one.
     fireEvent.click(rowButton(1));
     expect(rowButton(0)).toHaveAttribute("aria-expanded", "false");
     expect(rowButton(1)).toHaveAttribute("aria-expanded", "true");
   });
 
-  it("names the potential misalignments and their document on the face, as a mark and words, never a bar", () => {
-    renderRows([...FIXTURE_ALIGNMENT, flagged]);
-    // The flagged link lifts NT04 to the top, and shows on the closed row: a fixed mark and the count with its document.
-    expect(rowButton(0).getAttribute("aria-label")).toBe("4 · By 2030, reduce pollution.: rated No progress; 1 potential misalignment, with the NDC");
+  it("counts the pairs to review on the face, as a mark and a number, and lists them plainly in the open row after the report's words", () => {
+    renderRows([...FIXTURE_ALIGNMENT, flagged, { ...flagged, targetBId: "NDC_2" }, { ...flagged, targetBId: "NAP_1" }]);
+    // The flagged links lift NT04 to the top; the face says how many, never which document (the body says that once).
+    expect(rowButton(0).getAttribute("aria-label")).toBe("4 · Reduce pollution.: rated No progress; 3 to review");
     const face = within(rows()[0]).getByTestId("policy-link-flagged-face");
-    expect(face).toHaveTextContent("1 potential misalignment, with the NDC");
+    expect(face).toHaveTextContent("3 to review");
+    expect(face).not.toHaveTextContent(/NDC|mostly/);
     expect(within(face).getByTestId("policy-link-flagged-mark")).toBeInTheDocument();
     expect(face.querySelector("[style*='width']")).toBeNull();
     fireEvent.click(rowButton(0));
     const row = rows()[0];
-    // The report's own reason leads, then the aligned count, then the flagged pairs.
     const at = (text: string) => row.textContent!.indexOf(text);
     expect(at("What the report says holds it back")).toBeLessThan(at("Aligned strongly with 3 targets"));
-    expect(at("Aligned strongly with 3 targets")).toBeLessThan(at("Flagged as potential misalignments (AI-estimated)"));
+    expect(at("Aligned strongly with 3 targets")).toBeLessThan(at("Flagged pairs (3)"));
     const review = within(row).getByTestId("policy-link-review");
-    expect(within(review).getByText("1 potential misalignment, with the NDC")).toBeInTheDocument();
-    expect(review.querySelector('[data-review="true"]')).not.toBeNull();
-    expect(review).toHaveTextContent("NDC · NDC_1");
+    expect(within(review).getByRole("button", { name: "NDC · NDC_1" })).toBeInTheDocument();
+    // A plain list: the box says what they are, no pill repeats it on every line.
+    expect(within(review).queryByText("potential misalignment")).toBeNull();
+    expect(review.querySelector('[data-review="true"]')).toBeNull();
     expect(within(row).getByText("Monitoring stations cover only the capital.")).toBeInTheDocument();
     expect(within(row).getByTitle(/GBF\) target 11:/)).toHaveTextContent("GBF T11");
   });
 
-  it("says \"mostly with\" when the flagged pairs come from more than one document", () => {
-    renderRows([...FIXTURE_ALIGNMENT, flagged, { ...flagged, targetBId: "NDC_2" }, { ...flagged, targetBId: "NAP_1" }]);
-    expect(within(rows()[0]).getByTestId("policy-link-flagged-face")).toHaveTextContent("3 potential misalignments, mostly with the NDC");
-  });
-
   it("hands the open row to the host when the host owns it", () => {
-    const group = rankPolicyLinkCandidates(buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!)!;
+    const model = buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!;
+    const group = rankPolicyLinkCandidates(model)!;
     const onSelect = vi.fn();
-    const { rerender } = render(
+    const ui = (selectedId: string | null) => (
       <NextIntlClientProvider locale="en" messages={en}>
-        <Nr7PolicyLinkRows group={group} countryConfig={null} visibleTargetIds={new Set()} onOpenTarget={vi.fn()} onFocusNr7Target={vi.fn()} selectedId={null} onSelect={onSelect} />
-      </NextIntlClientProvider>,
+        <Nr7PolicyLinkRows group={group} model={model} countryConfig={null} visibleTargetIds={new Set()} onOpenTarget={vi.fn()} onFocusIndicator={vi.fn()} selectedId={selectedId} onSelect={onSelect} />
+      </NextIntlClientProvider>
     );
+    const { rerender } = render(ui(null));
     fireEvent.click(rowButton(1));
     expect(onSelect).toHaveBeenCalledWith("NT04");
     // Controlled: nothing opens until the host passes the id back.
     expect(rowButton(1)).toHaveAttribute("aria-expanded", "false");
-    rerender(
-      <NextIntlClientProvider locale="en" messages={en}>
-        <Nr7PolicyLinkRows group={group} countryConfig={null} visibleTargetIds={new Set()} onOpenTarget={vi.fn()} onFocusNr7Target={vi.fn()} selectedId="NT04" onSelect={onSelect} />
-      </NextIntlClientProvider>,
-    );
+    rerender(ui("NT04"));
     expect(rowButton(1)).toHaveAttribute("aria-expanded", "true");
     fireEvent.click(rowButton(1));
     expect(onSelect).toHaveBeenLastCalledWith(null);

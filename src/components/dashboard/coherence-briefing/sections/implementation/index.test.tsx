@@ -120,7 +120,7 @@ describe("ImplementationSection", () => {
     expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule.");
     expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. Most flagged pairs are with the NDC.");
     expect(start()).toContain("Start with the top row");
-    expect(screen.getAllByTestId("policy-link-flagged-face")[0]).toHaveTextContent("1 potential misalignment, with the NDC");
+    expect(screen.getAllByTestId("policy-link-flagged-face")[0]).toHaveTextContent("1 to review");
     // Where the pairs repeat is the sticky column's business, never a second list on the slide.
     expect(screen.queryByTestId("recurring-counterparts")).toBeNull();
     expect(document.body.textContent).not.toMatch(/\b(should|must|because|responsible|blame|ministry|contradict|tension)\b/i);

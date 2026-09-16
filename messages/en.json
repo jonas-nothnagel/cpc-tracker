@@ -469,11 +469,11 @@
           },
           "visual": {
             "title": "The takeaways",
-            "body": "Climate: one bar per reported action, its length the policy commitments it may pull against, darker for design-level pairs. Biodiversity: the national targets the report rates behind schedule, each bar the targets in other plans the AI judged strongly aligned with it."
+            "body": "Climate: one bar per reported action, its length the policy commitments it may pull against, darker for design-level pairs. Biodiversity: one row per national target, the ones the report rates behind schedule first, with its rating and how many linked pairs are flagged for review."
           },
           "row": {
             "title": "Opening a row",
-            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated); a biodiversity row shows which documents those aligned targets sit in and what the report itself says holds the target back. Links open the target or the national target."
+            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated). A biodiversity row opens to what the report itself says holds the target back, the flagged pairs, and the full report entry; the column beside lists the plans that share the aim."
           },
           "fullPicture": {
             "title": "The full picture",
@@ -1148,17 +1148,19 @@
           "bodyNoFlagged": "Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. None is flagged.",
           "start": "Start with the top row: what the report says holds it back, then whether the linked plans bear on it.",
           "caveat": "Ratings and the report's words are the report's own. Links to other plans are AI-estimated alignment between target texts: a prompt for review, not a record of delivery or funding.",
-          "flaggedFace": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, mostly with the {doc}",
-          "flaggedFaceOne": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, with the {doc}",
-          "noneFlagged": "no potential misalignments",
-          "flaggedHeading": "Flagged as potential misalignments (AI-estimated)",
-          "reach": "Aligned strongly with {count, plural, one {# target} other {# targets}} in {docs, plural, one {# other document} other {# other documents}} (AI-estimated); the column beside lists them.",
-          "noLinks": "No target in the other documents was judged strongly aligned with it (AI-estimated).",
-          "challengesHeading": "What the report says holds it back (the report's words, verbatim)",
+          "flaggedFaceCount": "{count} to review",
+          "noneFlagged": "none to review",
+          "flaggedHeading": "Flagged pairs ({count})",
+          "reach": "Aligned strongly with {count, plural, one {# target} other {# targets}} in {docs, plural, one {# other document} other {# other documents}}.",
+          "noLinks": "No target in the other documents was judged strongly aligned with it.",
+          "challengesHeading": "What the report says holds it back",
+          "reportWordsLabel": "the report's words",
           "noChallenges": "The report gives no key-challenges text for this target.",
+          "gbfLeadIn": "Filed under Global Biodiversity Framework (GBF) {count, plural, one {target} other {targets}}",
+          "fullEntry": "Full report entry",
+          "openNbsap": "The target in the biodiversity plan (NBSAP {n})",
           "more": "+ {count} more",
           "fewer": "Show fewer",
-          "reviewWord": "potential misalignment",
           "restHeading": "Rated on track, or unknown"
         }
       }
