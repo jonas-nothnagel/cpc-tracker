@@ -16,6 +16,7 @@
  * implemented (done). Green marks factual completion only.
  */
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 import type {
@@ -51,7 +52,9 @@ export function DeliveryRoster({
     return key in STATUS_DOTS ? t(`status.${key}`) : status;
   };
 
-  const shown = roster.institutions.slice(0, MAX_INSTITUTIONS);
+  // The first ten by involvement, "N more" unfolding the rest.
+  const [showAll, setShowAll] = useState(false);
+  const shown = showAll ? roster.institutions : roster.institutions.slice(0, MAX_INSTITUTIONS);
   const more = roster.institutions.length - shown.length;
 
   return (
@@ -137,10 +140,14 @@ export function DeliveryRoster({
             </li>
           ))}
         </ul>
-        {more > 0 && (
-          <p className="mt-2 text-[11px] text-[var(--undp-gray)]">
-            {t("roster.moreInstitutions", { count: more })}
-          </p>
+        {(more > 0 || showAll) && (
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="mt-2 text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums text-left"
+          >
+            {showAll ? t("roster.fewerInstitutions") : t("roster.moreInstitutions", { count: more })}
+          </button>
         )}
         {roster.actionsWithoutInstitution > 0 && (
           <p className="mt-1.5 text-[11px] text-[var(--undp-gray)]">

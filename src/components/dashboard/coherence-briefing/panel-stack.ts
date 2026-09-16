@@ -20,8 +20,12 @@ import type { AlignmentMechanism, PolicyDocumentType } from "@/types";
 
 export type BriefingPanel =
   /** One target compared with one other. Order is the reading order the opener
-   *  chose (reported action first, budget line first) and is never normalised. */
-  | { kind: "target-pair"; aId: string; bId: string }
+   *  chose (reported action first, budget line first) and is never normalised.
+   *  `nr7TargetId` is set when the pair was opened from a national target on
+   *  the biodiversity report's rows: the drawer then leads with that target's
+   *  rating and the report's words, so the same pair reached from the wheel is
+   *  a different panel. */
+  | { kind: "target-pair"; aId: string; bId: string; nr7TargetId?: string }
   | { kind: "doc-pair"; docA: PolicyDocumentType; docB: PolicyDocumentType }
   | { kind: "theme"; name: string }
   /** Dormant: the Direction slide lists every theme inline, so nothing opens
@@ -53,7 +57,7 @@ export type BriefingPanel =
 export function panelKey(panel: BriefingPanel): string {
   switch (panel.kind) {
     case "target-pair":
-      return `target-pair:${panel.aId}|${panel.bId}`;
+      return `target-pair:${panel.aId}|${panel.bId}${panel.nr7TargetId ? `|from:${panel.nr7TargetId}` : ""}`;
     case "doc-pair": {
       const [a, b] = [panel.docA, panel.docB].sort();
       return `doc-pair:${a}|${b}`;

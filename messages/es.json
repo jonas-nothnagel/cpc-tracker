@@ -463,17 +463,33 @@
       },
       "implementationCoverage": {
         "steps": {
-          "legend": {
-            "title": "Cómo leer los puntos",
-            "body": "Cada punto es un objetivo de un documento: relleno significa que al menos una acción reportada se asoció a él; hueco significa que ninguna. Estas asociaciones son estimaciones de IA."
+          "toggle": {
+            "title": "Un informe a la vez",
+            "body": "El informe climático (BTR) y el informe de biodiversidad (NR7) son autoinformes separados. Cámbialos aquí; el titular, el visual y las secciones plegadas los siguen."
           },
-          "dots": {
-            "title": "Un mapa por documento",
-            "body": "Cada documento muestra sus objetivos como puntos en su propio color. Haga clic en un documento para expandirlo y leer las acciones asociadas, las brechas y los pares por revisar."
+          "visual": {
+            "title": "Las conclusiones",
+            "body": "Clima: una barra por acción reportada, su largo los compromisos de política contra los que podría ir, más oscura para los pares de diseño. Biodiversidad: una fila por meta nacional, primero las que el informe califica como rezagadas, con su calificación y cuántos pares vinculados están señalados para revisar."
           },
-          "review": {
-            "title": "El carril rojo de revisión",
-            "body": "Una barra roja y un número aparecen cuando acciones reportadas podrían ir en contra de algunos objetivos de este documento. Son avisos estimados por IA para la revisión, no conclusiones."
+          "row": {
+            "title": "Abrir una fila",
+            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA). Una fila de biodiversidad se abre a lo que el propio informe dice que frena la meta, los pares señalados (cada uno abre por qué se señaló) y la entrada completa del informe; la columna de al lado lista los planes que comparten el objetivo."
+          },
+          "fullPicture": {
+            "title": "La imagen completa",
+            "body": "Debajo de las filas, las secciones plegadas guardan el resto del informe en pantalla: cobertura por documento para el informe climático; para el de biodiversidad, los lugares donde una calificación y la propia evidencia del informe difieren, y cada indicador."
+          }
+        }
+      },
+      "nr7TargetLinks": {
+        "steps": {
+          "list": {
+            "title": "Una línea por documento",
+            "body": "Para cada plan, cuántas de sus metas juzgó la IA fuertemente alineadas con la meta nacional abierta a la izquierda, y cuántos de esos pares están señalados para revisar."
+          },
+          "docs": {
+            "title": "Las metas alineadas",
+            "body": "Abre un plan para listar las metas una por una; un punto rojo y las palabras \"posible desalineación\" marcan un par señalado para revisión, y \"en N metas\" un par que se repite en otras metas nacionales. Haz clic en una meta para leerla."
           }
         }
       }
@@ -608,6 +624,17 @@
           "empty": "No hay pares de metas para mostrar."
         },
         "reportedActionTag": "Acción reportada (BTR)",
+        "nr7ActionTag": "Acción reportada (NR7)",
+        "nr7Status": "Autoevaluación del país: {status}",
+        "nr7ReportedUnder": "Reportada bajo la meta nacional {id}: {text}",
+        "nr7Context": {
+          "from": "Desde la meta nacional {n}",
+          "challenges": "Qué dice el informe que la frena",
+          "reportWords": "palabras del informe",
+          "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
+          "repeats": "Las filas del informe de biodiversidad señalan esta meta frente a {count, plural, one {# meta nacional} other {# metas nacionales}}.",
+          "seeAll": "Todos sus pares señalados"
+        },
         "budgetLineTag": "Línea presupuestaria (BER)",
         "feedback": {
           "prompt": "¿Le resultó útil esta evaluación?",
@@ -1005,18 +1032,11 @@
       }
     },
     "implementation": {
+      "startHeading": "Por dónde empezar",
       "headline": {
-        "coverage": "Las acciones reportadas por {country} abordan {share} las metas de política.",
         "noCoverage": "{country} reporta {count, plural, one {# acción} other {# acciones}}; su correspondencia con el plan aún no se ha calculado."
       },
-      "share": {
-        "most": "la mayoría de",
-        "aboutHalf": "cerca de la mitad de",
-        "underHalf": "menos de la mitad de",
-        "few": "pocas de"
-      },
       "body": {
-        "coverage": "El Informe Bienal de Transparencia (BTR) recoge {actions, plural, one {# acción reportada} other {# acciones reportadas}}. De {total, plural, one {# meta de política} other {# metas de política}} en {docCount, plural, one {# documento} other {# documentos}}, {reached} cuentan con al menos una acción reportada fuertemente alineada, y en {underWay} de ellas esa acción ya está en curso o implementada; {outsideReach} no tienen ninguna en este informe.",
         "noCoverage": "La correspondencia entre acciones y metas aún no se ha calculado para este corpus. La columna derecha muestra el contenido del informe: qué acciones, en qué sectores y con qué estado reportado por el país."
       },
       "dotMap": {
@@ -1035,12 +1055,12 @@
         "short": "NR7: {status}"
       },
       "footer": {
-        "sources": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country}. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
-        "sourcesWithNr7": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country} y su 7.º Informe Nacional (NR7) al CDB. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
+        "sources": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country}. Una lente autorreportada, no una auditoría completa.",
+        "sourcesWithNr7": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country} y su 7.º Informe Nacional (NR7) al CDB. Una lente autorreportada, no una auditoría completa.",
+        "sourcesNr7Only": "Evidencia: el 7.º Informe Nacional (NR7) de {country} al CDB. Una lente autorreportada, no una auditoría completa.",
         "notIncluded": "Aún no incluido: series temporales de indicadores, ejecución presupuestaria, reportes de entrega a nivel de proyecto."
       },
       "misalignment": {
-        "lead": "{actions, plural, one {# acción reportada muestra} other {# acciones reportadas muestran}} posible desalineación con {commitments, plural, one {# compromiso de política} other {# compromisos de política}}; {underWay, plural, =0 {ninguna está aún en curso} one {# de ellas ya está en curso o implementada} other {# de ellas ya están en curso o implementadas}}. Una meta puede estar abordada por una acción reportada mientras otra va en su contra; si esa acción sigue avanzando, el compromiso puede volverse más difícil de alcanzar.",
         "pullHeading": "Una acción reportada podría ir en contra"
       },
       "status": {
@@ -1049,7 +1069,110 @@
         "ongoing": "En curso",
         "implemented": "Implementada"
       },
-      "reading": "Un punto por <target>meta</target>. Relleno significa que el <btr>BTR</btr> reporta una acción que la apoya, no que la meta se haya cumplido."
+      "row": {
+        "climate": {
+          "commitments": "{count, plural, one {# compromiso} other {# compromisos}} en {docs}",
+          "designLevel": "{count, plural, one {# de diseño} other {# de diseño}}",
+          "adaptation": "acción de adaptación",
+          "pairsSuffix": "pares",
+          "ariaLabel": "{name}, {status}: podría ir contra {count, plural, one {# compromiso de política} other {# compromisos de política}}",
+          "rationaleHeading": "Por qué se señaló (estimado por IA)",
+          "openPair": "Abrir el par",
+          "namedOn": "Mencionados en esta acción:"
+        },
+        "nr7": {
+          "sharedAcross": "{count, plural, one {# meta nacional} other {# metas nacionales}}",
+          "seeTarget": "Ver la meta nacional",
+          "seeIndicator": "Ver el indicador",
+          "evidence": {
+            "answers": "Respuestas aún no implementadas ({notInPlace} de {answered})"
+          }
+        }
+      },
+      "showAll": "Mostrar las {count}",
+      "showFewer": "Mostrar menos",
+      "fullPicture": {
+        "coverage": {
+          "summary": "Cobertura por documento",
+          "count": "{reached} de {total} metas tienen una acción reportada alineada"
+        },
+        "nr7Recurring": {
+          "summary": "Pares que se repiten entre metas",
+          "count": "{count, plural, one {# meta de otro plan} other {# metas de otros planes}}, cada una señalada en dos o más metas nacionales",
+          "hitsLabel": "Metas nacionales frente a las que está señalada",
+          "hit": "Meta nacional {n}: calificada {rating}",
+          "showAll": "Mostrar las {count}",
+          "showFewer": "Mostrar menos",
+          "pairCount": "Señalada frente a {count} de las {targets} metas nacionales{behind, plural, =0 {} one {, una de ellas calificada como rezagada} other {, # de ellas calificadas como rezagadas}}"
+        },
+        "nr7CrossChecks": {
+          "summary": "Calificaciones que no coinciden con su propia evidencia",
+          "count": "{count, plural, one {# punto} other {# puntos}}, sin IA"
+        },
+        "nr7Indicators": {
+          "summary": "Todos los indicadores del NR7",
+          "count": "{withValues} de {total} con valores reportados"
+        }
+      },
+      "toggle": {
+        "climate": "Informe climático (BTR)",
+        "biodiversity": "Informe de biodiversidad (NR7)",
+        "aria": "Elige un informe"
+      },
+      "climate": {
+        "headline": "{actions} de las {totalActions} acciones climáticas reportadas por {country} podrían ir contra metas de sus otros planes.",
+        "headlineNone": "Ninguna acción climática reportada por {country} parece ir contra metas de sus otros planes.",
+        "body": "{actions, plural, one {{underWay, plural, =0 {Aún no está en marcha} other {Ya está en marcha}}} other {{underWay, plural, =0 {Ninguna de estas {actions} está en marcha aún} one {# de estas {actions} ya está en marcha} other {# de estas {actions} ya están en marcha}}}}. La mayoría de las metas afectadas pertenecen a {docs}.",
+        "bodyNone": "{reached} de {total} metas de política tienen una acción reportada fuertemente alineada; {outsideReach} no tienen ninguna. Las correspondencias son estimadas por IA.",
+        "docsPair": "{a} y {b}",
+        "legend": {
+          "design": "de diseño",
+          "coordination": "de coordinación"
+        },
+        "bar": {
+          "aria": "{name}: {count, plural, one {# par señalado} other {# pares señalados}}, {design} de diseño"
+        },
+        "start": "Empieza por {half, plural, one {la barra superior: por sí sola concentra} other {las # barras superiores: juntas concentran}} la mitad de las alertas. Abre una para ver las metas contra las que podría ir la acción y la razón de la IA, y juzga si la alerta se sostiene.",
+        "startCaveat": "Avisos de revisión estimados por IA, no hallazgos. El largo de la barra es el número de metas afectadas."
+      },
+      "biodiversity": {
+        "headline": "En {checks, plural, one {# punto} other {# puntos}}, el informe de biodiversidad de {country} califica una meta de una manera mientras su propia evidencia apunta a otra.",
+        "headlineNone": "Cada calificación del informe de biodiversidad de {country} coincide con su propia evidencia.",
+        "row": {
+          "aria": "{target}: calificada {rating}; {evidence}"
+        },
+        "evidence": {
+          "answers": "{notInPlace} de {answered} condiciones básicas aún no establecidas",
+          "flat": "cifra sin cambio desde {from}",
+          "values": "{count, plural, one {# cifra reportada} other {# cifras reportadas}}, sin calificación",
+          "reach": "vinculada a {count, plural, one {# meta de política} other {# metas de política}}",
+          "falling": "de {first} a {last} {unit}"
+        },
+        "body": "El informe califica el avance de {targets} metas nacionales y además da respuestas de cuestionario y cifras sobre ellas. En estos {checks, plural, one {# punto} other {# puntos}} la calificación y esa evidencia no coinciden. No interviene la IA.",
+        "start": "Abre una fila para ver la calificación junto a la evidencia, con las palabras y cifras del propio informe. Cada una es una pregunta por resolver antes del próximo informe: ¿es correcta la calificación, o la evidencia?",
+        "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA.",
+        "policyLinks": {
+          "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas.",
+          "body": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados señaló la IA como posibles desalineaciones. La mayoría de los pares señalados son con {doc}.",
+          "bodyNoFlagged": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados señaló la IA como posibles desalineaciones. Ninguno está señalado.",
+          "start": "Empieza por la primera fila: qué dice el informe que la frena y, luego, si los planes vinculados tienen que ver con ello.",
+          "caveat": "Las calificaciones y las palabras del informe son del propio informe. Los vínculos con otros planes son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
+          "flaggedFaceCount": "{count} por revisar",
+          "noneFlagged": "ninguno por revisar",
+          "flaggedHeading": "Pares señalados ({count})",
+          "reach": "Fuertemente alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# otro documento} other {# otros documentos}}.",
+          "noLinks": "Ninguna meta de los otros documentos se juzgó fuertemente alineada con ella.",
+          "challengesHeading": "Qué dice el informe que la frena",
+          "reportWordsLabel": "palabras del informe",
+          "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
+          "gbfLeadIn": "Registrada bajo {count, plural, one {la meta} other {las metas}} del Marco Mundial de Biodiversidad (GBF)",
+          "fullEntry": "Entrada completa del informe",
+          "openNbsap": "La meta en el plan de biodiversidad (NBSAP {n})",
+          "more": "+ {count} más",
+          "fewer": "Mostrar menos",
+          "restHeading": "Calificadas en curso, o desconocidas"
+        }
+      }
     },
     "implementationCenter": {
       "header": {
@@ -1069,7 +1192,8 @@
         "heading": "Instituciones mencionadas en las acciones reportadas",
         "involvementNote": "Una acción que menciona varias instituciones cuenta una vez por cada una, así que las cifras se leen como participación, no como partes de un todo.",
         "noInstitution": "{count, plural, one {# acción reportada no menciona ninguna institución.} other {# acciones reportadas no mencionan ninguna institución.}}",
-        "moreInstitutions": "{count, plural, one {# institución más con menos acciones.} other {# instituciones más con menos acciones.}}"
+        "moreInstitutions": "{count, plural, one {# institución más con menos acciones.} other {# instituciones más con menos acciones.}}",
+        "fewerInstitutions": "Mostrar menos instituciones"
       },
       "flow": {
         "toggleRoster": "Quién ejecuta",
@@ -1083,6 +1207,109 @@
         "detailCount": "{count, plural, one {# meta} other {# metas}}",
         "caveat": "Participación según la nombra el informe (un único lente autoreportado); alineación estimada por IA. Una meta nombrada por varias instituciones cuenta en cada una.",
         "empty": "No hay acciones reportadas con alineación fuerte para mostrar en la selección actual."
+      },
+      "nr7Links": {
+        "header": {
+          "eyebrow": "Alineación entre los planes",
+          "title": "Qué se alinea con la meta nacional {n}",
+          "subtitle": "{country} · Séptimo Informe Nacional (NR7) frente a las metas de política"
+        },
+        "defaultNote": "La primera fila de la diapositiva. Abre otra fila para cambiarla.",
+        "list": {
+          "heading": "Por documento",
+          "aligned": "{count} alineadas",
+          "flagged": "{count} por revisar"
+        },
+        "flagged": {
+          "word": "posible desalineación"
+        },
+        "targets": {
+          "heading": "Las metas alineadas",
+          "more": "+ {count} más",
+          "fewer": "Mostrar menos",
+          "repeats": "en {count} metas"
+        },
+        "noLinks": "Ninguna meta de política de los otros documentos se juzgó fuertemente alineada con ella."
+      }
+    },
+    "nr7Report": {
+      "closerLook": {
+        "heading": "Merece una mirada más atenta",
+        "caption": "Cruces entre la propia calificación, el cuestionario y los indicadores del informe. Calculados, no redactados por IA.",
+        "lead": "Puntos en los que las propias declaraciones del informe apuntan en direcciones distintas. Pueden reflejar fechas o definiciones de reporte más que la ejecución; la narrativa de la meta es el lugar donde comprobarlo."
+      },
+      "signals": {
+        "ratingVsAnswers": "Meta nacional {n} ({text}): calificada en curso; {notInPlace} de {answered} respuestas del cuestionario son \"en desarrollo\" o \"no\".",
+        "flatWhileOnTrack": "Meta nacional {n} ({text}): calificada en curso; el indicador {indicator} se mantiene sin cambios en {value} {unit} de {from} a {to}.",
+        "unknownWithData": "Meta nacional {n} ({text}): progreso calificado como desconocido; el indicador {indicator} reporta {points, plural, one {# valor} other {# valores}} ({from}–{to}).",
+        "reachWhileNoChange": "Meta nacional {n} ({text}): se reporta sin cambios significativos; {reach, plural, one {# meta de política está} other {# metas de política están}} fuertemente alineadas con la meta NBSAP correspondiente.",
+        "sharedIndicatorDeclining": "{indicator}: de {first} a {last} {unit} ({from}–{to}); reportado bajo {targets, plural, one {# meta} other {# metas}}, {onTrack} de ellas calificadas en curso."
+      },
+      "rating": {
+        "legendAria": "Progreso autoevaluado en {count} metas nacionales"
+      },
+      "answers": {
+        "yes": "Sí",
+        "partially": "Parcialmente",
+        "underDevelopment": "En desarrollo",
+        "no": "No"
+      },
+      "targets": {
+        "row": {
+          "noQuestionnaire": "Sin respuestas del cuestionario para esta meta",
+          "reach": "{count, plural, one {# meta de política} other {# metas de política}} fuertemente alineadas con la NBSAP {n}"
+        },
+        "expand": {
+          "level": "Nivel de progreso, según se reporta: {level}",
+          "progress": "Resumen del progreso (textual)",
+          "readMore": "Leer más",
+          "readLess": "Leer menos",
+          "questionnaire": "Cuestionario",
+          "answersAria": "{count} respuestas del cuestionario",
+          "questionNumber": "N.º",
+          "question": "Pregunta",
+          "questionUnnamed": "Pregunta {n}",
+          "answer": "Respuesta",
+          "otherAnswers": "Otras respuestas, tal como se registraron en la herramienta de reporte",
+          "indicators": "Indicadores reportados bajo esta meta",
+          "noIndicators": "Sin indicadores específicos de la meta",
+          "sharedIndicators": "También reportados aquí, compartidos con otras metas:",
+          "sharedAcross": "compartido entre {count} metas",
+          "vsNarrative": "Los valores de los indicadores y la narrativa pueden usar fechas o definiciones distintas; ambos se muestran tal como se reportaron.",
+          "openNbsap": "Abrir la meta NBSAP {n}",
+          "openPair": "Acción reportada y meta NBSAP lado a lado"
+        }
+      },
+      "indicators": {
+        "summary": "{total} indicadores: {withValues} con valores, {without} sin valores ({withNote} con una nota del país).",
+        "group": {
+          "headline": "Indicadores principales",
+          "other": "Indicadores de componente y nacionales",
+          "noValues": "Sin valores reportados"
+        },
+        "card": {
+          "targets": "Reportado bajo",
+          "noTargets": "No vinculado a una meta nacional",
+          "targetChipAria": "Abrir la meta nacional {n}",
+          "range": "{first} → {last} {unit} ({from}–{to})",
+          "single": "{value} {unit} ({year})",
+          "textValue": "{value} ({year})",
+          "total": "Total",
+          "noValues": "Sin valores reportados",
+          "countryNote": "Nota del país",
+          "footnote": "Nota:",
+          "moreSeries": "Mostrar {count} más",
+          "lessSeries": "Mostrar menos"
+        },
+        "direction": {
+          "up": "en aumento",
+          "down": "en descenso",
+          "flat": "sin cambios"
+        }
+      },
+      "gbf": {
+        "chip": "GBF T{n}",
+        "chipTitle": "Meta {n} del Marco Mundial de Biodiversidad (GBF): {title}"
       }
     },
     "docFilter": {
@@ -2635,6 +2862,10 @@
     "ber": {
       "term": "BER",
       "definition": "Revisión del Gasto en Biodiversidad: un análisis de en qué se gastó efectivamente el dinero público destinado a biodiversidad."
+    },
+    "nr7": {
+      "term": "NR7",
+      "definition": "7.º Informe Nacional: el informe que un país presenta ante la convención de biodiversidad de la ONU (CDB) describiendo el avance en sus metas nacionales de biodiversidad."
     }
   }
 }

@@ -1,180 +1,42 @@
 "use client";
 
 /**
- * Implementation — the Level 3 slide.
+ * Coverage by document — the Implementation slide's full picture: one dot per
+ * policy target per document, filled when a strongly aligned reported action
+ * exists, hollow when none, with a red "to review" lane for targets a reported
+ * action may pull against. Moved verbatim out of the slide file when the slide
+ * was restructured to lead with what needs a look; the map now sits in a
+ * collapsed section below the review list.
  *
- * FRAMING (hard rule): the BTR lens, never "the implementation picture". See
- * `feedback_btr_one_lens_framing`. The footer names what is in the snapshot
- * and what is not yet; further sources slot in as they become available.
- *
- * Round-4 design contract (non-technical reader first):
  *   - DOTS ARE BINARY. Filled = the target has at least one strongly aligned
- *     reported action; hollow = none in this report. No stage shading, no
- *     ring overlays — one glance, one meaning. Delivery stage lives in the
- *     body copy and in the drill-down rows.
- *   - The counter-current read appears as a small red "to review" count on
- *     the affected documents plus one short insight line; nothing else
- *     competes on the map.
+ *     reported action; hollow = none in this report.
  *   - The drill-down is a clean, priority-sorted list (to review first, then
  *     no action yet, then addressed), one compact row per target. Clicking a
- *     row opens the SAME PairDrawer used across the briefing — full texts and
- *     the AI rationale live there, never as inline paragraph walls.
+ *     row opens the SAME PairDrawer used across the briefing.
  *   - NBSAP rows carry the country's own NR7 self-assessment as a small
  *     right-aligned note (contextual, no separate block).
- *
- * Right column (DeliveryRoster): who is named on the reported actions.
  */
 
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { SlideFrame } from "../slide-frame";
-import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
-import { TourButton } from "../tour/tour-button";
-import {
-  nr7StatusByNbsapTarget,
-  type ActionCoverageDoc,
-  type ActionPlanAlignmentSummary,
-  type ImplementationCoverage,
-  type TargetMisalignmentLink,
+import type {
+  ActionCoverageDoc,
+  ActionPlanAlignmentSummary,
+  ImplementationCoverage,
+  TargetMisalignmentLink,
 } from "@/lib/implementation-coherence";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocMediumLabel } from "@/lib/utils";
-import type { CountryConfig, Nr7Data } from "@/types";
-
-export const IMPLEMENTATION_SECTION_ID = "implementation";
+import { NR7_COLORS } from "../../nr7-report/nr7-colors";
+import type { Nr7Status } from "../../nr7-report/nr7-self-report";
+import type { CountryConfig, ReportedActionType } from "@/types";
 
 // Canonical potential-misalignment red (matches the wheel / matrix encoding).
 const FLAG_RED = FLAGGED_COLOR;
 
-// Country self-assessment statuses (NR7), the country's own judgement colours.
-const NR7_COLORS: Record<string, string> = {
-  on_track: "#16a34a",
-  limited: "#d97706",
-  no_progress: "#dc2626",
-  unknown: "#9ca3af",
-};
-
 const STATUS_KEYS = ["planned", "adopted", "ongoing", "implemented"];
 
-export function ImplementationSection({
-  coverage,
-  summary,
-  nr7Data,
-  countryName,
-  countryConfig,
-  onOpenActionPair,
-}: {
-  coverage: ImplementationCoverage;
-  summary: ActionPlanAlignmentSummary;
-  nr7Data: Nr7Data | null;
-  countryName: string;
-  countryConfig: CountryConfig | null;
-  onOpenActionPair: (actionId: string, targetId: string) => void;
-}) {
-  const t = useTranslations("briefing.implementation");
-
-  const sentence = composeSentence(coverage, countryName, t);
-  const hasNr7 = Boolean(nr7Data && nr7Data.progressItems.length > 0);
-  const nr7Status = useMemo(
-    () => nr7StatusByNbsapTarget(nr7Data?.progressItems ?? []),
-    [nr7Data],
-  );
-
-  return (
-    <SlideFrame
-      id={IMPLEMENTATION_SECTION_ID}
-      headline={sentence.headline}
-      body={sentence.body}
-      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
-      tourButton={
-        coverage.hasMeasureAlignment ? (
-          <TourButton
-            tourId="implementationCoverage"
-            scopeId={IMPLEMENTATION_SECTION_ID}
-            labelled
-          />
-        ) : undefined
-      }
-      evidence={
-        coverage.hasMeasureAlignment ? (
-          <CoverageByDocument
-            coverage={coverage}
-            summary={summary}
-            nr7Status={nr7Status}
-            countryConfig={countryConfig}
-            onOpenActionPair={onOpenActionPair}
-          />
-        ) : undefined
-      }
-      disclosure={
-        <div className="space-y-1.5">
-          <p className="text-caption text-[var(--undp-gray)] max-w-prose">
-            {hasNr7
-              ? t("footer.sourcesWithNr7", { country: countryName })
-              : t("footer.sources", { country: countryName })}
-          </p>
-          <p className="text-caption text-[var(--undp-gray)] max-w-prose">
-            {t("footer.notIncluded")}
-          </p>
-        </div>
-      }
-    />
-  );
-}
-
-interface Sentence {
-  headline: string;
-  body: string;
-}
-
-// "most of" / "about half" / "under half of" / "few of" — same share buckets as
-// the Financing slide so L2 and L3 headlines read alike. The body carries the
-// exact counts plus the delivery stage (the stage is copy, not dot shading).
-function coverageWord(
-  share: number,
-  t: ReturnType<typeof useTranslations<"briefing.implementation">>,
-): string {
-  if (share >= 0.6) return t("share.most");
-  if (share >= 0.4) return t("share.aboutHalf");
-  if (share >= 0.2) return t("share.underHalf");
-  return t("share.few");
-}
-
-function composeSentence(
-  coverage: ImplementationCoverage,
-  countryName: string,
-  t: ReturnType<typeof useTranslations<"briefing.implementation">>,
-): Sentence {
-  // Action-to-target matching not computed for this corpus (possible on the
-  // upload path). Name the report; do not headline a number.
-  if (!coverage.hasMeasureAlignment) {
-    return {
-      headline: t("headline.noCoverage", {
-        country: countryName,
-        count: coverage.totalActions,
-      }),
-      body: t("body.noCoverage"),
-    };
-  }
-
-  const share = coverage.total > 0 ? coverage.reached / coverage.total : 0;
-  return {
-    headline: t("headline.coverage", {
-      country: countryName,
-      share: coverageWord(share, t),
-    }),
-    body: t("body.coverage", {
-      actions: coverage.totalActions,
-      total: coverage.total,
-      docCount: coverage.byDocument.length,
-      reached: coverage.reached,
-      underWay: coverage.reachedUnderWay,
-      outsideReach: coverage.outsideReach,
-    }),
-  };
-}
-
-function CoverageByDocument({
+export function CoverageByDocument({
   coverage,
   summary,
   nr7Status,
@@ -233,19 +95,6 @@ function CoverageByDocument({
         )}
       </div>
 
-      {/* The counter-current read: one short insight line; the affected
-          documents carry a red "to review" count; the detail sits inside
-          each document, top of the list. */}
-      {hasFlags && (
-        <p className="mt-3 text-data leading-relaxed text-[var(--undp-black)] max-w-prose">
-          {t("misalignment.lead", {
-            actions: summary.actionsWithPotentialMisalignment,
-            commitments: summary.flaggedCommitments,
-            underWay: summary.actionsUnderWayWithMisalignment,
-          })}
-        </p>
-      )}
-
       <p className="mt-3 text-caption text-[var(--undp-gray)] max-w-prose">
         {t("dotMap.disclaimer")}
       </p>
@@ -265,6 +114,7 @@ function DocCoverageRow({
   onOpenActionPair: (actionId: string, targetId: string) => void;
 }) {
   const t = useTranslations("briefing.implementation");
+  const statusFor = useActionStatusWord();
   const label = getDocMediumLabel(countryConfig, doc.doc);
   const color = getDocColor(countryConfig, doc.doc);
 
@@ -422,7 +272,7 @@ function DocCoverageRow({
                     />
                   }
                   label={e.targetLabel}
-                  secondary={`${e.actionName} · ${statusWord(e.actionStatus, t)}`}
+                  secondary={`${e.actionName} · ${statusFor(e.actionType, e.actionStatus)}`}
                   title={e.targetText}
                   nr7Note={<Nr7Note targetId={e.targetId} nr7Status={nr7Status} />}
                   onClick={() => onOpenActionPair(e.actionId, e.targetId)}
@@ -438,7 +288,7 @@ function DocCoverageRow({
 
 /** Country-reported status word; raw string when it is not one of the four
  *  known stages. */
-function statusWord(
+export function statusWord(
   status: string,
   t: ReturnType<typeof useTranslations<"briefing.implementation">>,
 ): string {
@@ -446,6 +296,27 @@ function statusWord(
   return STATUS_KEYS.includes(key)
     ? t(`status.${key as "planned" | "adopted" | "ongoing" | "implemented"}`)
     : status;
+}
+
+/** The status word for a reported action, by source vocabulary: a BTR
+ *  lifecycle stage, or for NR7 the country's self-assessment on the parent
+ *  target ("NR7: Limited progress"), so the two never read as one scale. */
+export function useActionStatusWord(): (
+  actionType: ReportedActionType,
+  status: string,
+) => string {
+  const t = useTranslations("briefing.implementation");
+  const nr7Labels = useNr7BadgeLabels();
+  return useCallback(
+    (actionType, status) => {
+      if (actionType === "nr7") {
+        const key = status.trim().toLowerCase() as keyof typeof nr7Labels;
+        return t("nr7.short", { status: nr7Labels[key] ?? status });
+      }
+      return statusWord(status, t);
+    },
+    [t, nr7Labels],
+  );
 }
 
 function TargetGroup({
@@ -552,11 +423,11 @@ function ReviewRow({
   nr7Status: Map<string, string>;
   onOpenActionPair: (actionId: string, targetId: string) => void;
 }) {
-  const t = useTranslations("briefing.implementation");
+  const statusFor = useActionStatusWord();
   const first = misalignments[0];
   const moreCount = misalignments.length - 1;
   const secondary =
-    `${first.actionName} · ${statusWord(first.actionStatus, t)}` +
+    `${first.actionName} · ${statusFor(first.actionType, first.actionStatus)}` +
     (moreCount > 0 ? ` · +${moreCount}` : "");
   return (
     <TargetRow
@@ -593,7 +464,7 @@ function Nr7Note({
   const badgeLabels = useNr7BadgeLabels();
   const status = nr7Status.get(targetId);
   if (!status) return null;
-  const color = NR7_COLORS[status] ?? NR7_COLORS.unknown;
+  const color = NR7_COLORS[status as Nr7Status] ?? NR7_COLORS.unknown;
   const label = badgeLabels[status as keyof typeof badgeLabels] ?? status;
   return (
     <span

@@ -20,6 +20,7 @@ export type BriefingTourId =
   | "fundingGrid"
   | "deliveryRoster"
   | "institutionFlow"
+  | "nr7TargetLinks"
   | "frictionTypes"
   | "directionThemes"
   | "docFocus"
@@ -93,6 +94,10 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "rows", target: "roster-rows", placement: "left" },
     { id: "caveat", target: "roster-caveat", placement: "top" },
   ],
+  nr7TargetLinks: [
+    { id: "list", target: "nr7-links-list", placement: "left" },
+    { id: "docs", target: "nr7-links-docs", placement: "left" },
+  ],
   institutionFlow: [
     { id: "institutions", target: "flow-institutions", placement: "right" },
     { id: "ribbons", target: "flow-ribbons" },
@@ -130,8 +135,9 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "list", target: "hotspot-list", placement: "top" },
   ],
   implementationCoverage: [
-    { id: "legend", target: "coverage-legend", placement: "bottom" },
-    { id: "dots", target: "coverage-dots", placement: "bottom" },
-    { id: "review", target: "coverage-review", placement: "bottom" },
+    { id: "toggle", target: "report-toggle", placement: "bottom" },
+    { id: "visual", target: "review-visual", placement: "bottom" },
+    { id: "row", target: "review-row", placement: "bottom" },
+    { id: "fullPicture", target: "full-picture", placement: "top" },
   ],
 };

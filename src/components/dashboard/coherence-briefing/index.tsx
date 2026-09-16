@@ -61,21 +61,22 @@ import {
   WhereToFocusSection,
 } from "./sections/where-to-focus";
 import { EXPLORE_SECTION_ID, ExploreSection } from "./sections/explore";
-import {
-  FINANCING_SECTION_ID,
-  FinancingSection,
-} from "./sections/financing";
+import { FINANCING_SECTION_ID } from "./sections/financing";
 import {
   IMPLEMENTATION_SECTION_ID,
   ImplementationSection,
+  type ImplementationReport,
 } from "./sections/implementation";
 import { WheelCenterpiece } from "./centerpiece/wheel";
 import { WheelLegend } from "./centerpiece/wheel-legend";
 import { DocCoherenceMatrix } from "./centerpiece/doc-coherence-matrix";
 import { DeliveryRoster } from "./centerpiece/delivery-roster";
+import { Nr7TargetLinks } from "./centerpiece/nr7-target-links";
+import { rankPolicyLinkCandidates } from "./sections/implementation/review-groups";
 import { InstitutionFlow } from "./centerpiece/institution-flow";
 import { FinancingCenterpiece } from "./centerpiece/financing-centerpiece";
 import { PolicyCoherenceExplorer } from "@/components/viz/policy-coherence-explorer";
+import { FinancingCoherence } from "@/components/viz/financing-coherence";
 import type {
   WheelFilter,
   WheelFocus,
@@ -154,6 +155,7 @@ import {
   type ImplementationCoverage,
   type InstitutionFlowModel,
 } from "@/lib/implementation-coherence";
+import { buildNr7Report, nr7PairByTarget } from "./nr7-report";
 import { orgAcronymsFor } from "@/data/org-acronyms";
 import type {
   AlignmentResult,
@@ -170,6 +172,7 @@ import type {
   IpccSector,
   NbsCategory,
   Nr7Data,
+  Nr7PseudoTarget,
   PolicyDocumentType,
   SectorSynthesis,
   Target,
@@ -278,6 +281,11 @@ interface CoherenceBriefingProps {
    *  budget-reach read on the Financing slide (AI-estimated). */
   budgetAlignment?: AlignmentResult[] | null;
   nr7Data?: Nr7Data | null;
+  /** NR7 reported actions as pseudo-targets + their alignment against the
+   *  policy targets (Level-3 biodiversity implementation). Own keys, never
+   *  merged into `targets`/`alignment`; null without an NR7 run. */
+  nr7PseudoTargets?: Nr7PseudoTarget[] | null;
+  nr7Alignment?: AlignmentResult[] | null;
   globeSubcategories?: GlobeSubcategory[];
 }
 
@@ -300,6 +308,8 @@ export function CoherenceBriefing({
   berData = null,
   budgetAlignment = null,
   nr7Data = null,
+  nr7PseudoTargets = null,
+  nr7Alignment = null,
   globeSubcategories = [],
 }: CoherenceBriefingProps) {
   const t = useTranslations("briefing");
@@ -532,28 +542,55 @@ export function CoherenceBriefing({
     return computeBudgetCoverage(budgetAlignment, funded, visibleTargets);
   }, [financing, budgetAlignment, visibleTargets]);
 
-  // ── Implementation (Level 3) — the BTR lens ─────────────────────
-  // What the BTR self-reports against the plan. Null → the Implementation
-  // slide is dropped entirely. Uses the FULL `alignment` (the merged array
-  // carries the BTR measure↔policy pairs that `visibleAlignment` strips); the
-  // policy side is gated on `visibleTargets` so it tracks the document toggle.
+  // ── Implementation (Level 3) — the self-reported lens ───────────
+  // What the country's own reports say against the plan. Two sources: the BTR
+  // measures (`btrData`) and, where an NR7 alignment run exists, the NR7
+  // reported actions (`nr7PseudoTargets` + `nr7Alignment`). Null → the
+  // Implementation slide is dropped entirely. Uses the FULL `alignment` (the
+  // merged array carries the BTR measure↔policy pairs that `visibleAlignment`
+  // strips) plus the NR7 pairs, merged ONLY for these reads — NR7 never
+  // enters `alignment` itself, so no policy count moves; the policy side is
+  // gated on `visibleTargets` so it tracks the document toggle.
   // Per-country sourced acronym map: collapses an acronym ("MET") and the full
   // name ("Ministry of Environment and Climate Change") into one label in the
   // neutral institution context shown on action detail.
   // Empty until confirmed against the BTR's own abbreviations list (raw render).
   const orgMap = useMemo(() => orgAcronymsFor(countryId), [countryId]);
 
+  const hasBtr = Boolean(btrData?.mitigationMeasures?.length);
+  const nr7Actions = useMemo(() => nr7PseudoTargets ?? [], [nr7PseudoTargets]);
+  const hasReportedActions = hasBtr || nr7Actions.length > 0;
+  const implementationAlignment = useMemo(
+    () => (nr7Alignment?.length ? [...alignment, ...nr7Alignment] : alignment),
+    [alignment, nr7Alignment],
+  );
+
+  // Both self-reports always feed the reads; the slide ranks what needs a
+  // look per report itself (sections/implementation/review-groups.ts).
   const implementation = useMemo<ActionPlanAlignmentSummary | null>(() => {
-    if (!btrData || !btrData.mitigationMeasures?.length) return null;
-    return computeActionPlanAlignment(alignment, btrData, visibleTargets, 5, orgMap);
-  }, [btrData, alignment, visibleTargets, orgMap]);
+    if (!hasReportedActions) return null;
+    return computeActionPlanAlignment(
+      implementationAlignment,
+      btrData,
+      visibleTargets,
+      5,
+      orgMap,
+      nr7Actions,
+    );
+  }, [hasReportedActions, implementationAlignment, btrData, visibleTargets, orgMap, nr7Actions]);
 
   // Coverage: which visible targets have >= 1 strongly aligned reported
   // action (the slide's lead story, mirroring the Financing dot-map).
   const implementationCoverage = useMemo<ImplementationCoverage | null>(() => {
-    if (!btrData || !btrData.mitigationMeasures?.length) return null;
-    return computeImplementationCoverage(alignment, btrData, visibleTargets, orgMap);
-  }, [btrData, alignment, visibleTargets, orgMap]);
+    if (!hasReportedActions) return null;
+    return computeImplementationCoverage(
+      implementationAlignment,
+      btrData,
+      visibleTargets,
+      orgMap,
+      nr7Actions,
+    );
+  }, [hasReportedActions, implementationAlignment, btrData, visibleTargets, orgMap, nr7Actions]);
 
   // The report object for the right column: who is named on the reported
   // actions, with each institution's actions as status-coloured dots.
@@ -571,36 +608,53 @@ export function CoherenceBriefing({
     if (!btrData || !btrData.mitigationMeasures?.length) return null;
     return computeInstitutionFlow(alignment, btrData, visibleTargets, orgMap);
   }, [btrData, alignment, visibleTargets, orgMap]);
+  // Which self-report the Implementation slide shows; the roster / flow
+  // column is built on the BTR, so it steps aside while the NR7 is on screen.
+  const [implReport, setImplReport] = useState<ImplementationReport>(hasBtr ? "btr" : "nr7");
   const [implCenterView, setImplCenterView] = useState<"roster" | "flow">(
     "roster",
   );
+  // The policy-link row the reader opened on the NR7 view; the column shows
+  // that national target's links (the top-ranked one until a row is open).
+  // Owned here like hoveredDocPairKey; cleared when the report switches.
+  const [focusedNr7TargetId, setFocusedNr7TargetId] = useState<string | null>(null);
+  const handleImplReportChange = useCallback((report: ImplementationReport) => {
+    setImplReport(report);
+    setFocusedNr7TargetId(null);
+  }, []);
   // Pop the active centerpiece into a large overlay so relationships are
   // explorable at size (the sticky column is only ~480px wide).
   const [expanded, setExpanded] = useState(false);
 
   // Synthetic Target stand-ins for reported actions, so an action↔target row
   // in the Implementation drill-down opens the SAME PairDrawer as everywhere
-  // else in the briefing. sourceDocument "BTR" uses the reserved doc token;
-  // sourceLabel carries the country-reported status ("BTR · Ongoing").
+  // else in the briefing. BTR: sourceDocument uses the reserved "BTR" token
+  // and sourceLabel carries the country-reported status ("BTR · Ongoing").
+  // NR7: the pipeline's pseudo-target IS the stand-in (reserved "NR7" token,
+  // `measureStatus` = the country's self-assessment on the parent target).
   const actionPairTargets = useMemo(() => {
     const map = new Map<string, Target>();
-    if (!btrData?.mitigationMeasures?.length) return map;
-    for (const [id, meta] of buildActionMeta(btrData)) {
-      const status = (meta.measure.status ?? "").trim();
-      map.set(id, {
-        id,
-        text: meta.measure.description
-          ? `${meta.name}. ${meta.measure.description}`
-          : meta.name,
-        sourceDocument: "BTR",
-        sourceLabel: status,
-        country: countryName,
-        isQuantitative: false,
-        isTimeBound: false,
-      });
+    if (btrData?.mitigationMeasures?.length) {
+      for (const [id, meta] of buildActionMeta(btrData)) {
+        const status = (meta.measure.status ?? "").trim();
+        map.set(id, {
+          id,
+          text: meta.measure.description
+            ? `${meta.name}. ${meta.measure.description}`
+            : meta.name,
+          sourceDocument: "BTR",
+          sourceLabel: status,
+          country: countryName,
+          isQuantitative: false,
+          isTimeBound: false,
+        });
+      }
+    }
+    for (const pt of nr7Actions) {
+      map.set(pt.id, { ...pt, country: pt.country || countryName });
     }
     return map;
-  }, [btrData, countryName]);
+  }, [btrData, nr7Actions, countryName]);
 
   // Synthetic Target stand-ins for funded budget lines, so a budget↔commitment
   // match on the Financing slide (non-Panama DocumentCoverage layout) opens the
@@ -762,6 +816,30 @@ export function CoherenceBriefing({
         (a) => targetMap.has(a.targetAId) && targetMap.has(a.targetBId),
       ),
     [visibleAlignment, targetMap],
+  );
+
+  // The NR7 self-report read three ways and joined to the coherence map
+  // (nr7-report/). Null without NR7 data, so the strip and drawer self-hide.
+  // Policy reach follows the document toggle like every other number here.
+  const nr7Report = useMemo(
+    () => buildNr7Report(nr7Data, policyAlignment, targetMap, { policyLinkDoc: countryConfig?.nr7PolicyLinkDocType }),
+    [nr7Data, policyAlignment, targetMap, countryConfig?.nr7PolicyLinkDocType],
+  );
+  // The NR7 column: the opened row's national target, else (default) the
+  // top row's; `recurring` marks the counterparts that repeat across the
+  // rows. Null without links (the wheel stays).
+  const nr7CenterRow = useMemo(() => {
+    if (!nr7Report) return null;
+    const ranked = rankPolicyLinkCandidates(nr7Report);
+    if (!ranked) return null;
+    const focused = focusedNr7TargetId ? ranked.items.find((i) => i.row.targetId === focusedNr7TargetId)?.row ?? null : null;
+    return { row: focused ?? ranked.items[0].row, isDefault: focused === null, recurring: ranked.recurring };
+  }, [nr7Report, focusedNr7TargetId]);
+  // Which NR7 national targets can open a reported-action pair (keyed on the
+  // pseudo-targets' parent id, so it survives the alignment re-run).
+  const nr7PairTargets = useMemo(
+    () => nr7PairByTarget(nr7Report, targetMap, actionPairTargets, implementationAlignment),
+    [nr7Report, targetMap, actionPairTargets, implementationAlignment],
   );
   const frictionTotals = useMemo(
     () => frictionTypeTotalsFromAlignment(policyAlignment),
@@ -989,17 +1067,45 @@ export function CoherenceBriefing({
   const openActionPair = useCallback(
     (actionId: string, targetId: string) => {
       if (!targetMap.has(targetId) || !actionPairTargets.has(actionId)) return;
-      const conn = alignment.some(
+      const conn = implementationAlignment.some(
         (p) =>
           (p.targetAId === actionId && p.targetBId === targetId) ||
           (p.targetAId === targetId && p.targetBId === actionId),
       );
       if (!conn) return;
-      // Action first: the connector reads in delivery direction ("BTR action
-      // supports / is possibly misaligned with the policy target").
+      // Action first: the connector reads in delivery direction ("reported
+      // action supports / is possibly misaligned with the policy target").
       openPanel({ kind: "target-pair", aId: actionId, bId: targetId });
     },
-    [targetMap, actionPairTargets, alignment, openPanel],
+    [targetMap, actionPairTargets, implementationAlignment, openPanel],
+  );
+
+  // A flagged pair on a biodiversity report row: the pair is between the
+  // NBSAP target the national target restates and the counterpart, opened
+  // NBSAP side first (the target the reader opened, then what it may pull
+  // against) with the national target as the drawer's context.
+  const openNr7Pair = useCallback(
+    (nationalTargetId: string, counterpartId: string) => {
+      const nbsapId = nr7Report?.targets.find((r) => r.targetId === nationalTargetId)?.nbsapTargetId;
+      if (!nbsapId || !targetMap.has(nbsapId) || !targetMap.has(counterpartId)) return;
+      const conn = visibleAlignment.some(
+        (p) =>
+          (p.targetAId === nbsapId && p.targetBId === counterpartId) ||
+          (p.targetAId === counterpartId && p.targetBId === nbsapId),
+      );
+      if (!conn) return;
+      openPanel({ kind: "target-pair", aId: nbsapId, bId: counterpartId, nr7TargetId: nationalTargetId });
+    },
+    [nr7Report, targetMap, visibleAlignment, openPanel],
+  );
+
+  // A target's profile panel, from the Where to Focus rows and the NR7 review
+  // rows alike. Silently ignores targets outside the visible corpus.
+  const openTargetProfile = useCallback(
+    (targetId: string) => {
+      if (targetMap.has(targetId)) openPanel({ kind: "target-profile", targetId });
+    },
+    [targetMap, openPanel],
   );
 
   // Financing drill-down (non-Panama DocumentCoverage layout): open a
@@ -1072,46 +1178,47 @@ export function CoherenceBriefing({
     [openPanel],
   );
 
-  /** Targets per document, over the whole corpus rather than the visible
-   *  subset: an excluded document still shows its real count, because that is
-   *  what the reader needs in order to decide whether to bring it back in. */
-  const targetCountByDoc = useMemo(() => {
-    const counts = new Map<PolicyDocumentType, number>();
-    for (const target of targets) {
-      counts.set(
-        target.sourceDocument,
-        (counts.get(target.sourceDocument) ?? 0) + 1,
-      );
-    }
-    return counts;
-  }, [targets]);
-
   /** EVERYTHING the analysis touches, including the BTR reported-action and BER
    *  budget-line stand-ins that the analytical views deliberately exclude.
-   *
-   *  Feeds the browse bar and the targets drawer ONLY. This widens what a reader
-   *  can open and read; it never changes what the briefing compares, which stays
-   *  on the filtered `targets`. Without this the BTR chip would open an empty
-   *  drawer, because `targets` has both stand-in kinds filtered out upstream. */
+   *  Used to build the browsable doc list, and — for the stand-in chips only —
+   *  the drawer contents below. It never changes what the briefing compares,
+   *  which stays on the filtered `targets`. */
   const browsableTargets = useMemo<Target[]>(() => {
     const byId = new Map<string, Target>();
     for (const target of explorerData) byId.set(target.id, target);
     // The BER stand-ins are built in this component from `berData` rather than
     // arriving in the payload's target list, so they have to be folded in here.
     for (const target of budgetPairTargets.values()) byId.set(target.id, target);
+    // Likewise the NR7 reported actions ship on their own payload key, so the
+    // corpus row can show an "NR7" chip and its drawer can list them.
+    for (const target of nr7Actions) byId.set(target.id, target);
     return [...byId.values()];
-  }, [explorerData, budgetPairTargets]);
+  }, [explorerData, budgetPairTargets, nr7Actions]);
 
-  const browsableCountByDoc = useMemo(() => {
+  /** The single set the doc headers COUNT and the doc drawer LISTS, so the two
+   *  never drift — a document's header must equal what its "view targets" drawer
+   *  shows. A real policy document shows only its policy `targets` (its real
+   *  count, over the whole corpus so an excluded doc still shows a real number);
+   *  only the BTR/BER stand-in chips — documents with no policy targets of their
+   *  own — contribute their browsable stand-ins, so those chips still open a
+   *  non-empty drawer. */
+  const drawerTargets = useMemo<Target[]>(() => {
+    const standIns = browsableTargets.filter(
+      (t) => !allDocs.includes(t.sourceDocument),
+    );
+    return [...targets, ...standIns];
+  }, [targets, browsableTargets, allDocs]);
+
+  const displayCountByDoc = useMemo(() => {
     const counts = new Map<PolicyDocumentType, number>();
-    for (const target of browsableTargets) {
+    for (const target of drawerTargets) {
       counts.set(
         target.sourceDocument,
         (counts.get(target.sourceDocument) ?? 0) + 1,
       );
     }
     return counts;
-  }, [browsableTargets]);
+  }, [drawerTargets]);
 
   const browsableDocs = useMemo<PolicyDocumentType[]>(() => {
     const extra = new Set<PolicyDocumentType>();
@@ -1428,11 +1535,13 @@ export function CoherenceBriefing({
           financing &&
           !financingUsesWideGrid
         ? "financing"
-        : activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster
+        : activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster
           ? implCenterView === "flow" && institutionFlow
             ? "institutionFlow"
             : "deliveryRoster"
-          : "wheel";
+          : activeSection === IMPLEMENTATION_SECTION_ID && implReport === "nr7" && nr7CenterRow
+            ? "nr7TargetLinks"
+            : "wheel";
 
   // renders both inline (the ~480px column) and inside the expand overlay; the
   // only difference is the wheel's height cap.
@@ -1473,7 +1582,9 @@ export function CoherenceBriefing({
         />
       );
     }
-    if (activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster) {
+    // The roster / flow column is built on the BTR's named institutions, so
+    // it steps aside when the reader has switched the slide to NR7 only.
+    if (activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster) {
       return (
         <div>
           {/* Toggle the reported-snapshot column between WHO delivers
@@ -1510,6 +1621,20 @@ export function CoherenceBriefing({
             <DeliveryRoster roster={deliveryRoster} countryName={countryName} />
           )}
         </div>
+      );
+    }
+    // The NR7 view: the opened national target's links to the other plans.
+    if (activeSection === IMPLEMENTATION_SECTION_ID && implReport === "nr7" && nr7CenterRow) {
+      return (
+        <Nr7TargetLinks
+          row={nr7CenterRow.row}
+          isDefault={nr7CenterRow.isDefault}
+          countryConfig={countryConfig}
+          countryName={countryName}
+          visibleTargetIds={visibleTargetIds}
+          onOpenTarget={openTargetProfile}
+          recurring={nr7CenterRow.recurring}
+        />
       );
     }
     // Only the Sectors section groups the wheel by lens; every other section
@@ -1554,7 +1679,8 @@ export function CoherenceBriefing({
   const wheelIsActiveCenterpiece =
     activeSection !== DOC_PAIRS_SECTION_ID &&
     !(activeSection === FINANCING_SECTION_ID && financing) &&
-    !(activeSection === IMPLEMENTATION_SECTION_ID && deliveryRoster);
+    !(activeSection === IMPLEMENTATION_SECTION_ID && implReport === "btr" && deliveryRoster) &&
+    !(activeSection === IMPLEMENTATION_SECTION_ID && implReport === "nr7" && nr7CenterRow);
 
   // Marker slot for a section wrapper; renders only where a stage begins
   // (see stageMarkerBySection above).
@@ -1618,7 +1744,7 @@ export function CoherenceBriefing({
           <TargetsBrowseBar
             allDocs={browsableDocs}
             countryConfig={countryConfig}
-            targetCountByDoc={browsableCountByDoc}
+            targetCountByDoc={displayCountByDoc}
             onViewTargets={openDocTargets}
             hiddenDocs={hiddenDocs}
           />
@@ -1629,7 +1755,7 @@ export function CoherenceBriefing({
             countryConfig={countryConfig}
             onToggle={toggleDoc}
             onReset={resetHiddenDocs}
-            targetCountByDoc={targetCountByDoc}
+            targetCountByDoc={displayCountByDoc}
             onViewTargets={openDocTargets}
           />
           {storylineCaveat && (
@@ -1731,9 +1857,7 @@ export function CoherenceBriefing({
                 hotspots={frictionHotspots}
                 concentration={targetConcentration}
                 countryConfig={countryConfig}
-                onOpenTarget={(target) =>
-                  openPanel({ kind: "target-profile", targetId: target.id })
-                }
+                onOpenTarget={(target) => openTargetProfile(target.id)}
               />
             </div>
             <div
@@ -1771,17 +1895,23 @@ export function CoherenceBriefing({
                 }
               >
                 {stageMarker(FINANCING_SECTION_ID)}
-                <FinancingSection
-                  summary={financing}
-                  commitmentCount={visibleTargets.length}
-                  coverage={budgetCoverage}
-                  countryConfig={countryConfig}
-                  countryName={countryName}
-                  grid={fundingGrid}
-                  berData={berData}
-                  globeSpend={outcomeBudget}
-                  onOpenBudgetPair={openBudgetPair}
-                />
+                {/* Restored to the data-first "Budget & Financing Coherence"
+                    table (BER expenditure by GLOBE subcategory) per country-
+                    office feedback (Lea, Aug 2026): show the actual budget data
+                    rather than the alignment-inference framing. */}
+                {berData && (
+                  <FinancingCoherence
+                    berData={berData}
+                    targets={targets}
+                    classifications={classifications}
+                    budgetAlignment={budgetAlignment ?? []}
+                    globeCategories={globeCategories}
+                    globeSubcategories={globeSubcategories}
+                    sectors={sectors}
+                    countryConfig={countryConfig}
+                    embedded
+                  />
+                )}
               </div>
             )}
             {implementation && implementationCoverage && (
@@ -1798,9 +1928,18 @@ export function CoherenceBriefing({
                   coverage={implementationCoverage}
                   summary={implementation}
                   nr7Data={nr7Data}
+                  nr7Report={nr7Report}
+                  nr7PairTargets={nr7PairTargets}
+                  visibleTargetIds={visibleTargetIds}
+                  report={implReport}
+                  onReportChange={handleImplReportChange}
                   countryName={countryName}
                   countryConfig={countryConfig}
                   onOpenActionPair={openActionPair}
+                  onOpenTarget={openTargetProfile}
+                  onOpenNr7Pair={openNr7Pair}
+                  focusedNr7TargetId={focusedNr7TargetId}
+                  onFocusNr7Target={setFocusedNr7TargetId}
                 />
               </div>
             )}
@@ -1837,7 +1976,7 @@ export function CoherenceBriefing({
                   hiddenDocs={hiddenDocs}
                   countryConfig={countryConfig}
                   onToggle={toggleDoc}
-                  targetCountByDoc={targetCountByDoc}
+                  targetCountByDoc={displayCountByDoc}
                   onViewTargets={openDocTargets}
                 />
               </div>
@@ -1912,11 +2051,12 @@ export function CoherenceBriefing({
         actionPairTargets={actionPairTargets}
         budgetPairTargets={budgetPairTargets}
         visibleAlignment={visibleAlignment}
-        alignment={alignment}
+        alignment={implementationAlignment}
         budgetAlignment={budgetAlignment ?? null}
         policyAlignment={policyAlignment}
         docPairSyntheses={visibleDocPairSyntheses}
         corpusThemes={visibleCorpusThemes}
+        nr7Report={nr7Report}
         visibleTargets={visibleTargets}
         visibleClassifications={visibleClassifications}
         sectorCategories={sectorCategories}
@@ -1924,7 +2064,7 @@ export function CoherenceBriefing({
         sectorSynthesesIndex={sectorSynthesesIndex}
         totalFlagged={frictionTotals.total}
         totalDocCount={documentCount}
-        allTargets={browsableTargets}
+        allTargets={drawerTargets}
         hiddenDocs={hiddenDocs}
       />
       {/* Expand the active centerpiece to a large overlay so relationships are

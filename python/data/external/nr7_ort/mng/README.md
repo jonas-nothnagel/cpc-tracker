@@ -1,0 +1,1 @@
+Raw NR7 exports for Mongolia from the CBD Online Reporting Tool (public API), fetched 2026-09-11 by scripts/fetch_nr7_ort.py. All three feed nr7_mng.json: section3.csv (national targets), headline.csv (indicator series) and binary.csv (GBF questionnaire, with the tool's own question wording).
