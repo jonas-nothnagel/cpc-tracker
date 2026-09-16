@@ -1080,6 +1080,25 @@ export function CoherenceBriefing({
     [targetMap, actionPairTargets, implementationAlignment, openPanel],
   );
 
+  // A flagged pair on a biodiversity report row: the pair is between the
+  // NBSAP target the national target restates and the counterpart, opened
+  // NBSAP side first (the target the reader opened, then what it may pull
+  // against) with the national target as the drawer's context.
+  const openNr7Pair = useCallback(
+    (nationalTargetId: string, counterpartId: string) => {
+      const nbsapId = nr7Report?.targets.find((r) => r.targetId === nationalTargetId)?.nbsapTargetId;
+      if (!nbsapId || !targetMap.has(nbsapId) || !targetMap.has(counterpartId)) return;
+      const conn = visibleAlignment.some(
+        (p) =>
+          (p.targetAId === nbsapId && p.targetBId === counterpartId) ||
+          (p.targetAId === counterpartId && p.targetBId === nbsapId),
+      );
+      if (!conn) return;
+      openPanel({ kind: "target-pair", aId: nbsapId, bId: counterpartId, nr7TargetId: nationalTargetId });
+    },
+    [nr7Report, targetMap, visibleAlignment, openPanel],
+  );
+
   // A target's profile panel, from the Where to Focus rows and the NR7 review
   // rows alike. Silently ignores targets outside the visible corpus.
   const openTargetProfile = useCallback(
@@ -1918,6 +1937,7 @@ export function CoherenceBriefing({
                   countryConfig={countryConfig}
                   onOpenActionPair={openActionPair}
                   onOpenTarget={openTargetProfile}
+                  onOpenNr7Pair={openNr7Pair}
                   focusedNr7TargetId={focusedNr7TargetId}
                   onFocusNr7Target={setFocusedNr7TargetId}
                 />
@@ -2036,6 +2056,7 @@ export function CoherenceBriefing({
         policyAlignment={policyAlignment}
         docPairSyntheses={visibleDocPairSyntheses}
         corpusThemes={visibleCorpusThemes}
+        nr7Report={nr7Report}
         visibleTargets={visibleTargets}
         visibleClassifications={visibleClassifications}
         sectorCategories={sectorCategories}

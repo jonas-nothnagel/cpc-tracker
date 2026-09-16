@@ -473,7 +473,7 @@
           },
           "row": {
             "title": "Opening a row",
-            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated). A biodiversity row opens to what the report itself says holds the target back, the flagged pairs, and the full report entry; the column beside lists the plans that share the aim."
+            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated). A biodiversity row opens to what the report itself says holds the target back, the flagged pairs (each opens why it was flagged), and the full report entry; the column beside lists the plans that share the aim."
           },
           "fullPicture": {
             "title": "The full picture",
@@ -627,6 +627,14 @@
         "nr7ActionTag": "Reported action (NR7)",
         "nr7Status": "Country self-assessment: {status}",
         "nr7ReportedUnder": "Reported under national target {id}: {text}",
+        "nr7Context": {
+          "from": "From national target {n}",
+          "challenges": "What the report says holds it back",
+          "reportWords": "the report's words",
+          "noChallenges": "The report gives no key-challenges text for this target.",
+          "repeats": "The biodiversity report's rows flag this target against {count, plural, one {# national target} other {# national targets}}.",
+          "seeAll": "All its flagged pairs"
+        },
         "budgetLineTag": "Budget line (BER)",
         "feedback": {
           "prompt": "Was this assessment useful?",

@@ -122,6 +122,10 @@ config key carries `PolicyLink`, so
 `grep -rni "policylink" src messages python/data/*country-config.json`
 lists it; delete `sections/implementation/nr7-policy-link-rows.tsx` and its
 test, then each hit (the slide falls back to the cross-checks by itself).
+The pair drawer's context for a pair opened from a row (`pair-context.ts`,
+the `nr7TargetId` field on the `target-pair` panel entry, the
+`briefing.drawer.pair.nr7Context` keys) goes with it:
+`grep -rn "nr7PairContext\|Nr7PairContext\|nr7TargetId\|nr7Context\|onOpenNr7Pair" src messages`.
 The column alone: `grep -rni "nr7targetlinks\|nr7Links\|focusedNr7TargetId" src messages`
 (`centerpiece/nr7-target-links.tsx` + test, the host state and branches,
 the tour id and its copy); the wheel returns by itself.

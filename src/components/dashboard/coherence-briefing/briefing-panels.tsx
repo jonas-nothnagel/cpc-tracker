@@ -32,6 +32,7 @@ import {
   type DocTargetsView,
 } from "./doc-targets-drawer";
 import { FlagProfileDrawer, type FlagProfileSubject } from "./flag-profile";
+import { nr7PairContext, type Nr7ReportModel } from "./nr7-report";
 import { PairDrawer, type PairDrawerData } from "./pair-drawer";
 import { SectorDrawer } from "./sector-drawer";
 import { ThemeDrawer } from "./theme-drawer";
@@ -88,6 +89,9 @@ export interface BriefingPanelHostProps {
 
   docPairSyntheses: DocPairSynthesis[];
   corpusThemes: CorpusThemes | null;
+  /** The biodiversity report model, for a pair opened from one of its
+   *  national targets (null without an NR7). */
+  nr7Report?: Nr7ReportModel | null;
 
   visibleTargets: Target[];
   visibleClassifications: ThematicClassification[];
@@ -180,6 +184,9 @@ export function BriefingPanelHost(props: BriefingPanelHostProps) {
           countryId={props.countryId}
           onOpenTargetPair={(aId, bId) =>
             push({ kind: "target-pair", aId, bId })
+          }
+          onOpenTargetProfile={(targetId) =>
+            push({ kind: "target-profile", targetId })
           }
         />
       )}
@@ -279,6 +286,7 @@ function useResolvedPanel(
     docPairSyntheses,
     corpusThemes,
     sectorSynthesesIndex,
+    nr7Report,
   } = props;
 
   // Reported-action and budget-line stand-ins live outside the visible policy
@@ -317,9 +325,15 @@ function useResolvedPanel(
         const targetB = lookup.findTarget(panel.bId);
         const pair = lookup.findPair(panel.aId, panel.bId);
         if (!targetA || !targetB || !pair) return null;
+        // Opened from a biodiversity report row: the drawer leads with that
+        // national target. A row that no longer resolves (no NR7, no NBSAP
+        // match) leaves the plain pair rather than an empty panel.
+        const nr7 = panel.nr7TargetId
+          ? nr7PairContext(nr7Report, panel.nr7TargetId, panel.aId, panel.bId)
+          : null;
         return {
           kind: "pair",
-          data: { mode: "target-pair", pair, targetA, targetB },
+          data: { mode: "target-pair", pair, targetA, targetB, nr7 },
         };
       }
       case "doc-pair": {
@@ -406,6 +420,7 @@ function useResolvedPanel(
     docPairSyntheses,
     corpusThemes,
     sectorSynthesesIndex,
+    nr7Report,
   ]);
 }
 

@@ -18,10 +18,12 @@
  *
  * A row opens inline, in this order: what the report itself says holds the
  * target back, in its own words, FIRST (the country's reason leads); one
- * line with the aligned count; the flagged pairs as a plain list; the GBF
- * target the country filed it under, expanded; the full report entry
- * (questionnaire, indicators, narrative) behind one disclosure; one link to
- * the target in the biodiversity plan. Words carry every colour.
+ * line with the aligned count; the flagged pairs as a plain list, each
+ * opening that pair (why it was flagged, with this national target as the
+ * context) when the host offers `onOpenPair`, else the counterpart's
+ * profile; the GBF target the country filed it under, expanded; the full
+ * report entry (questionnaire, indicators, narrative) behind one disclosure;
+ * one link to the target in the biodiversity plan. Words carry every colour.
  *
  * The rating and the report's words are the report's; the links are
  * AI-estimated alignment between target texts. The view's one caveat sits
@@ -49,6 +51,9 @@ export interface Nr7PolicyLinkRowsProps {
   countryConfig: CountryConfig | null;
   visibleTargetIds: ReadonlySet<string>;
   onOpenTarget: (targetId: string) => void;
+  /** A flagged pair in an open row opens that pair, with the national target
+   *  as its context. Absent: the pair's counterpart opens as a target. */
+  onOpenPair?: (nationalTargetId: string, counterpartId: string) => void;
   /** A shared-indicator chip in the full entry points at that indicator. */
   onFocusIndicator: (indicatorId: string) => void;
   /** The open row, when the host owns it (its sticky column follows the
@@ -139,20 +144,21 @@ export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
 
 /** The flagged counterparts as a plain list (the box they sit in already
  *  says what they are), the first few then "+ N more" unfolding the rest
- *  (and folding back). Mounted only while the row is open, so it starts
- *  folded each time. */
+ *  (and folding back). Each opens the pair (the counterpart alone when the
+ *  host offers no pair opener). Mounted only while the row is open, so it
+ *  starts folded each time. */
 function FlaggedList({
   links,
   docLabel,
   visibleTargetIds,
-  onOpenTarget,
+  onOpen,
   moreLabel,
   fewerLabel,
 }: {
   links: Nr7PolicyLink[];
   docLabel: (doc: string) => string;
   visibleTargetIds: ReadonlySet<string>;
-  onOpenTarget: (targetId: string) => void;
+  onOpen: (counterpartId: string) => void;
   moreLabel: (n: number) => string;
   fewerLabel: string;
 }) {
@@ -167,7 +173,7 @@ function FlaggedList({
           <li key={l.targetId} className="flex items-start gap-1.5">
             <span aria-hidden="true" className="mt-1.5 inline-block w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: FLAGGED_COLOR }} />
             {visibleTargetIds.has(l.targetId) ? (
-              <button type="button" onClick={() => onOpenTarget(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
+              <button type="button" onClick={() => onOpen(l.targetId)} title={l.text} className="text-[var(--undp-blue)] hover:underline text-left">
                 {label} <span aria-hidden="true">›</span>
               </button>
             ) : (
@@ -199,6 +205,7 @@ function PolicyLinkRow({
   countryConfig,
   visibleTargetIds,
   onOpenTarget,
+  onOpenPair,
   onFocusIndicator,
 }: {
   item: Nr7PolicyLinkItem;
@@ -225,6 +232,10 @@ function PolicyLinkRow({
   const flaggedLabel = hasFlags ? tPl("flaggedFaceCount", { count: evidence.flagged }) : tPl("noneFlagged");
   const name = transitionName("pl", row.targetId);
   const challenges = row.keyChallengesSummary ?? row.progressSummary;
+  // The pair needs the NBSAP match to exist; without it (or a pair opener)
+  // the counterpart opens on its own.
+  const openFlagged = (counterpartId: string) =>
+    onOpenPair && row.nbsapTargetId ? onOpenPair(row.targetId, counterpartId) : onOpenTarget(counterpartId);
 
   return (
     <li id={`policy-link-row-${row.targetId}`} className="border-t border-line-soft" style={{ viewTransitionName: name }}>
@@ -296,7 +307,7 @@ function PolicyLinkRow({
               <p className="text-caption font-medium mb-1" style={{ color: FLAGGED_COLOR }}>
                 {tPl("flaggedHeading", { count: links.flagged.length })}
               </p>
-              <FlaggedList links={links.flagged} docLabel={docLabel} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} moreLabel={(n) => tPl("more", { count: n })} fewerLabel={tPl("fewer")} />
+              <FlaggedList links={links.flagged} docLabel={docLabel} visibleTargetIds={visibleTargetIds} onOpen={openFlagged} moreLabel={(n) => tPl("more", { count: n })} fewerLabel={tPl("fewer")} />
             </section>
           )}
           {row.gbfTargets.length > 0 && (

@@ -142,6 +142,28 @@ describe("Nr7PolicyLinkRows", () => {
     expect(within(row).getByTitle(/GBF\) target 11:/)).toHaveTextContent("GBF T11");
   });
 
+  it("opens a flagged pair as the pair with the national target as context when the host offers it, else the counterpart alone", () => {
+    const model = buildNr7Report(behind, [...FIXTURE_ALIGNMENT, flagged], FIXTURE_TARGETS)!;
+    const group = rankPolicyLinkCandidates(model)!;
+    const onOpenTarget = vi.fn();
+    const onOpenPair = vi.fn();
+    const { unmount } = render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7PolicyLinkRows group={group} model={model} countryConfig={null} visibleTargetIds={new Set(FIXTURE_TARGETS.keys())} onOpenTarget={onOpenTarget} onOpenPair={onOpenPair} onFocusIndicator={vi.fn()} />
+      </NextIntlClientProvider>,
+    );
+    fireEvent.click(rowButton(0));
+    fireEvent.click(within(within(rows()[0]).getByTestId("policy-link-review")).getByRole("button", { name: "NDC · NDC_1" }));
+    expect(onOpenPair).toHaveBeenCalledWith("NT04", "NDC_1");
+    expect(onOpenTarget).not.toHaveBeenCalled();
+    unmount();
+    // Without a pair opener the counterpart opens as a target, as before.
+    const fallback = renderRows([...FIXTURE_ALIGNMENT, flagged]);
+    fireEvent.click(rowButton(0));
+    fireEvent.click(within(within(rows()[0]).getByTestId("policy-link-review")).getByRole("button", { name: "NDC · NDC_1" }));
+    expect(fallback.onOpenTarget).toHaveBeenCalledWith("NDC_1");
+  });
+
   it("hands the open row to the host when the host owns it", () => {
     const model = buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!;
     const group = rankPolicyLinkCandidates(model)!;

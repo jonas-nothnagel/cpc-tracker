@@ -473,7 +473,7 @@
           },
           "row": {
             "title": "Abrir una fila",
-            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA). Una fila de biodiversidad se abre a lo que el propio informe dice que frena la meta, los pares señalados y la entrada completa del informe; la columna de al lado lista los planes que comparten el objetivo."
+            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA). Una fila de biodiversidad se abre a lo que el propio informe dice que frena la meta, los pares señalados (cada uno abre por qué se señaló) y la entrada completa del informe; la columna de al lado lista los planes que comparten el objetivo."
           },
           "fullPicture": {
             "title": "La imagen completa",
@@ -627,6 +627,14 @@
         "nr7ActionTag": "Acción reportada (NR7)",
         "nr7Status": "Autoevaluación del país: {status}",
         "nr7ReportedUnder": "Reportada bajo la meta nacional {id}: {text}",
+        "nr7Context": {
+          "from": "Desde la meta nacional {n}",
+          "challenges": "Qué dice el informe que la frena",
+          "reportWords": "palabras del informe",
+          "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
+          "repeats": "Las filas del informe de biodiversidad señalan esta meta frente a {count, plural, one {# meta nacional} other {# metas nacionales}}.",
+          "seeAll": "Todos sus pares señalados"
+        },
         "budgetLineTag": "Línea presupuestaria (BER)",
         "feedback": {
           "prompt": "¿Le resultó útil esta evaluación?",

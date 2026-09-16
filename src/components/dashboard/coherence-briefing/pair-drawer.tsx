@@ -10,7 +10,12 @@
  * with a "Show aligned" expand. Clicking a target-pair row drills into
  * target-pair mode; the panel trail supplies the way back.
  *
- * Target-pair mode renders the two-target card view + AI rationale.
+ * Target-pair mode renders the two-target card view + AI rationale. Opened
+ * from a national target on the biodiversity report's rows it leads with
+ * that target (its rating, the report's own words on what holds it back), so
+ * the pair reads beside the country's reason, never as the reason; and under
+ * the counterpart, when the report flags it against more than one national
+ * target, one link to its corpus-wide profile.
  *
  * The surrounding chrome (scrim, dialog, Escape and back keys, scroll lock,
  * focus trap, close button) belongs to DrawerShell; this file renders a
@@ -36,6 +41,7 @@ import {
 import { DrawerHeader } from "@/components/ui/drawer-shell";
 import { isContradiction } from "@/types";
 import { FeedbackControl } from "./feedback-control";
+import { NR7_COLORS, type Nr7PairContext } from "./nr7-report";
 import { FrictionDimensionChip, SubFieldChip } from "./theme-drawer";
 import { DefinitionChip } from "./target-quality";
 import type {
@@ -66,6 +72,8 @@ export type PairDrawerData =
       pair: AlignmentResult;
       targetA: Target;
       targetB: Target;
+      /** Set when opened from a biodiversity report row. */
+      nr7?: Nr7PairContext | null;
     }
   | {
       mode: "doc-pair";
@@ -79,6 +87,7 @@ export function PairDrawer({
   countryConfig,
   countryId,
   onOpenTargetPair,
+  onOpenTargetProfile,
 }: {
   data: PairDrawerData;
   countryConfig: CountryConfig | null;
@@ -86,14 +95,19 @@ export function PairDrawer({
   countryId?: string;
   /** Drill from a doc-pair example row into that single target-pair. */
   onOpenTargetPair: (aId: string, bId: string) => void;
+  /** Drill from a pair opened off the biodiversity report into the
+   *  counterpart's corpus-wide profile (every pair flagged on it). */
+  onOpenTargetProfile?: (targetId: string) => void;
 }) {
   return data.mode === "target-pair" ? (
     <TargetPairBody
       pair={data.pair}
       targetA={data.targetA}
       targetB={data.targetB}
+      nr7={data.nr7 ?? null}
       countryConfig={countryConfig}
       countryId={countryId}
+      onOpenTargetProfile={onOpenTargetProfile}
     />
   ) : (
     <DocPairBody
@@ -113,20 +127,39 @@ function TargetPairBody({
   pair,
   targetA,
   targetB,
+  nr7,
   countryConfig,
   countryId,
+  onOpenTargetProfile,
 }: {
   pair: AlignmentResult;
   targetA: Target;
   targetB: Target;
+  nr7: Nr7PairContext | null;
   countryConfig: CountryConfig | null;
   countryId?: string;
+  onOpenTargetProfile?: (targetId: string) => void;
 }) {
   const t = useTranslations("briefing.drawer.pair");
   const alignmentLabels = useAlignmentLabels();
   const contradictionLabels = useContradictionTypeLabels();
   const color = ALIGNMENT_COLORS[pair.alignment];
   const contra = isContradiction(pair.alignment);
+  // Under the counterpart's card, when the report flags it against more
+  // than one national target: the way to every pair flagged on it.
+  const repeatsLine =
+    nr7 && nr7.repeatsOn > 1 && onOpenTargetProfile ? (
+      <p className="text-caption text-[var(--undp-gray)] leading-relaxed -mt-2" data-testid="pair-nr7-repeats">
+        {t("nr7Context.repeats", { count: nr7.repeatsOn })}{" "}
+        <button
+          type="button"
+          onClick={() => onOpenTargetProfile(nr7.counterpartId)}
+          className="text-[var(--undp-blue)] hover:underline"
+        >
+          {t("nr7Context.seeAll")} <span aria-hidden="true">›</span>
+        </button>
+      </p>
+    ) : null;
   return (
     <>
       <DrawerHeader>
@@ -147,11 +180,13 @@ function TargetPairBody({
       </DrawerHeader>
 
       <div className="px-6 py-6 space-y-5">
+        {nr7 && <Nr7ContextBlock ctx={nr7} />}
         <TargetCard
           target={targetA}
           countryConfig={countryConfig}
           color={color}
         />
+        {nr7?.counterpartId === targetA.id && repeatsLine}
         <div className="flex items-center gap-3">
           <span
             aria-hidden="true"
@@ -179,6 +214,7 @@ function TargetPairBody({
           countryConfig={countryConfig}
           color={color}
         />
+        {nr7?.counterpartId === targetB.id && repeatsLine}
 
         {pair.description && (
           <section className="border-t border-line pt-4">
@@ -229,6 +265,44 @@ function TargetPairBody({
         />
       )}
     </>
+  );
+}
+
+/** Where the pair was reached from: the national target, its rating as the
+ *  report gives it (dot + word, the app-wide ramp), and the report's own words
+ *  on what holds it back, clamped. All of it is the report's; nothing here is
+ *  AI-derived, and the pair below is never presented as the cause. */
+function Nr7ContextBlock({ ctx }: { ctx: Nr7PairContext }) {
+  const t = useTranslations("briefing.drawer.pair.nr7Context");
+  const ratingLabels = useNr7BadgeLabels();
+  const { row } = ctx;
+  const challenges = row.keyChallengesSummary ?? row.progressSummary;
+  return (
+    <section className="border-l border-line-strong pl-3" data-testid="pair-nr7-context">
+      <p className="text-caption text-[var(--undp-gray)]">
+        {t("from", { n: row.number })}
+        <span className="mx-1.5" aria-hidden="true">·</span>
+        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+          <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: NR7_COLORS[row.status] }} />
+          <span className="font-medium" style={{ color: NR7_COLORS[row.status] }}>{ratingLabels[row.status]}</span>
+        </span>
+      </p>
+      {/* The full text as the report gives it, deadline included: the drawer
+          has the room the row face does not. */}
+      <p className="text-data text-[var(--undp-black)] leading-snug mt-0.5 max-w-prose">
+        {row.targetText}
+      </p>
+      <p className="text-caption font-medium text-[var(--undp-gray)] mt-2">
+        {t("challenges")} <span className="font-normal">({t("reportWords")})</span>
+      </p>
+      {challenges ? (
+        <p className="text-caption text-[var(--undp-black)] leading-relaxed whitespace-pre-line line-clamp-3 max-w-prose" title={challenges}>
+          {challenges}
+        </p>
+      ) : (
+        <p className="text-caption text-[var(--undp-gray)]">{t("noChallenges")}</p>
+      )}
+    </section>
   );
 }
 

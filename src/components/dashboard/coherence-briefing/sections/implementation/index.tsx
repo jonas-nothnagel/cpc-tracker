@@ -73,6 +73,7 @@ export function ImplementationSection({
   countryConfig,
   onOpenActionPair,
   onOpenTarget,
+  onOpenNr7Pair,
   focusedNr7TargetId,
   onFocusNr7Target,
 }: {
@@ -96,6 +97,9 @@ export function ImplementationSection({
   countryConfig: CountryConfig | null;
   onOpenActionPair: (actionId: string, targetId: string) => void;
   onOpenTarget: (targetId: string) => void;
+  /** A flagged pair in an open biodiversity row opens that pair with the
+   *  national target as its context. */
+  onOpenNr7Pair?: (nationalTargetId: string, counterpartId: string) => void;
 }) {
   const t = useTranslations("briefing.implementation");
   const groups = useMemo(
@@ -152,6 +156,7 @@ export function ImplementationSection({
             countryConfig={countryConfig}
             visibleTargetIds={visibleTargetIds}
             onOpenTarget={onOpenTarget}
+            onOpenPair={onOpenNr7Pair}
             onFocusIndicator={fullPicture.focusIndicator}
             selectedId={focusedNr7TargetId}
             onSelect={onFocusNr7Target}

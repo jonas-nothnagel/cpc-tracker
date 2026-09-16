@@ -57,7 +57,8 @@ takeaways first.
      opens, in this order: what the report says holds it back (labelled the
      report's words, clamped to three lines), one line with the aligned count
      ("Aligned strongly with 51 targets in 6 other documents."), the flagged
-     pairs under "Flagged pairs (11)" as a plain list (`+ N more`), the GBF
+     pairs under "Flagged pairs (11)" as a plain list (`+ N more`; each opens
+     the pair drawer with this national target as its context, see below), the GBF
      target it is filed under with the abbreviation expanded, one "Full
      report entry" disclosure (`nr7-report/target-detail.tsx`: rating
      wording, narrative, questionnaire, indicators, shared-indicator chips
@@ -95,6 +96,24 @@ takeaways first.
    One self-reported lens, not a complete audit."), and what is not yet
    included. Neither repeats the caveat.
 
+**A flagged pair, opened** (`onOpenNr7Pair` in the host, `pair-drawer.tsx`):
+the pair drawer for the NBSAP target the national target restates and the
+counterpart, NBSAP side first (the target the reader opened, then what it
+may pull against), carrying the national target as context
+(`nr7-report/pair-context.ts`; the panel entry is `target-pair` with
+`nr7TargetId`, keyed apart from the same pair opened from the wheel): above
+the two cards, "From national target 4 · No progress", the target's full
+text as the report gives it (deadline included; the drawer has the room the
+row face does not) and the report's own words on what holds it back
+(clamped, labelled the report's words); then the cards, the connector, the AI rationale with its
+caveat and the feedback bar as everywhere else; and under the counterpart's
+card, only when the report's rows flag it against two or more national
+targets, "The biodiversity report's rows flag this target against N
+national targets. All its flagged pairs ›", which pushes the counterpart's
+corpus-wide flag profile (the drawer that used to open directly) onto the
+trail. The column's links and the aligned pairs still open the counterpart's
+profile.
+
 **The sticky column** (`centerpiece/nr7-target-links.tsx`, desktop only)
 follows the biodiversity view: the opened row's national target (the top
 row until one is opened, with a note saying so), one line per document
@@ -107,6 +126,20 @@ host does not pass one.
 
 ## Decisions (2026-09-09 to 2026-09-16, with the product owner)
 
+- (2026-09-16, later) A flagged pair in an open row opened the counterpart's
+  corpus-wide flag profile (every pair flagged on it, its document pairs,
+  themes and manageability split), which never mentioned the national
+  target the reader came from nor why this pair was flagged: the one thing
+  the click promised. Now it opens the pair drawer (the rationale, both
+  texts, the mechanism) with a context block for the national target on
+  top, so the pair reads beside the country's own reason and never as it;
+  the profile stays one link away, offered only where the counterpart
+  repeats (the eight expansion targets that hit 8 to 12 national targets
+  each are where one review covers many). Four product calls, the user's:
+  only the row's flagged pairs (the column and the aligned links unchanged),
+  a context block rather than one line or none, the profile kept reachable
+  inside the drawer, the NBSAP side first. es/mn copy drafted in-session
+  for native review.
 - (2026-09-16, after a design audit of the Mongolia NR7 view) The view was
   making three arguments at once (the report's rating, the AI flag count,
   the turned-round counterparts) with about 530 words and four caveats on

@@ -14,6 +14,7 @@ export {
   type Nr7TargetRow as Nr7TargetRowModel,
 } from "./nr7-self-report";
 export { nr7PairByTarget, type Nr7PairRef } from "./pair-by-target";
+export { nr7PairContext, type Nr7PairContext } from "./pair-context";
 export { SignalLine } from "./signal-line";
 export { Nr7TargetDetail } from "./target-detail";
 export { IndicatorsView } from "./indicators-view";
