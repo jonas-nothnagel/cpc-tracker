@@ -1095,7 +1095,7 @@
           "hit": "National target {n}: rated {rating}",
           "showAll": "Show all {count}",
           "showFewer": "Show fewer",
-          "pairCount": "on {count} of {targets} national targets{behind, plural, =0 {} other {, # behind schedule}}"
+          "pairCount": "Flagged against {count} of the {targets} national targets{behind, plural, =0 {} one {, one of them rated behind schedule} other {, # of them rated behind schedule}}"
         },
         "nr7CrossChecks": {
           "summary": "Ratings that do not match their own evidence",

@@ -1095,7 +1095,7 @@
           "hit": "Meta nacional {n}: calificada {rating}",
           "showAll": "Mostrar las {count}",
           "showFewer": "Mostrar menos",
-          "pairCount": "en {count} de {targets} metas nacionales{behind, plural, =0 {} other {, # rezagadas}}"
+          "pairCount": "Señalada frente a {count} de las {targets} metas nacionales{behind, plural, =0 {} one {, una de ellas calificada como rezagada} other {, # de ellas calificadas como rezagadas}}"
         },
         "nr7CrossChecks": {
           "summary": "Calificaciones que no coinciden con su propia evidencia",

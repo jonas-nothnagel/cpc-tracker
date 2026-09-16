@@ -30,8 +30,8 @@ describe("Nr7RecurringCounterparts", () => {
   it("lists the counterparts flagged against two or more national targets, most first, with the count over the report and the targets by name", () => {
     const { onOpenTarget } = renderFold();
     expect(items()).toHaveLength(2);
-    expect(within(items()[0]).getByTestId("recurring-count")).toHaveTextContent("on 3 of 4 national targets, 2 behind schedule");
-    expect(within(items()[1]).getByTestId("recurring-count")).toHaveTextContent("on 2 of 4 national targets, 1 behind schedule");
+    expect(within(items()[0]).getByTestId("recurring-count")).toHaveTextContent("Flagged against 3 of the 4 national targets, 2 of them rated behind schedule");
+    expect(within(items()[1]).getByTestId("recurring-count")).toHaveTextContent("Flagged against 2 of the 4 national targets, one of them rated behind schedule");
     // The national targets by name, behind schedule first, each with its rating word; text, since no row handler is given.
     const hits = within(within(items()[0]).getByRole("list", { name: "National targets this is flagged against" })).getAllByRole("listitem");
     expect(hits.map((h) => h.textContent)).toEqual([
