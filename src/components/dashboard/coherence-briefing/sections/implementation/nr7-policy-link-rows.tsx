@@ -29,12 +29,13 @@
  * here: the hedged pointer is the slide's "Where to start" block.
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocMediumLabel } from "@/lib/utils";
 import { transitionName, withViewTransition } from "@/lib/view-transition";
 import { GbfChip, NR7_COLORS, Nr7TargetDetail, stripNr7Deadline, type Nr7PolicyLink, type Nr7ReportModel } from "../../nr7-report";
+import type { Nr7RowRequest } from "./full-picture";
 import type { Nr7PolicyLinkGroup, Nr7PolicyLinkItem } from "./review-groups";
 import type { CountryConfig } from "@/types";
 
@@ -54,20 +55,48 @@ export interface Nr7PolicyLinkRowsProps {
    *  selection). Absent: the rows keep their own. */
   selectedId?: string | null;
   onSelect?: (targetId: string | null) => void;
+  /** A request from below the rows (a cross-check, an indicator card) to
+   *  open one row, unfolding "Show all" when it is hidden, with its full
+   *  entry when asked; answered once, then handed back. */
+  rowRequest?: Nr7RowRequest | null;
+  onRowRequestHandled?: () => void;
 }
 
 export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
-  const { group, model, selectedId, onSelect } = props;
+  const { group, model, selectedId, onSelect, rowRequest, onRowRequestHandled } = props;
   const t = useTranslations("briefing.implementation");
   const tPl = useTranslations("briefing.implementation.biodiversity.policyLinks");
   const [showAll, setShowAll] = useState(false);
   const [localId, setLocalId] = useState<string | null>(null);
+  // Which open row has its full entry unfolded; closes with the row.
+  const [detailId, setDetailId] = useState<string | null>(null);
+  const [scrollToId, setScrollToId] = useState<string | null>(null);
   const indicatorsById = useMemo(() => new Map(model.indicators.map((i) => [i.id, i])), [model.indicators]);
   const expandedId = selectedId !== undefined ? selectedId : localId;
   const select = (id: string | null) => {
     setLocalId(id);
+    setDetailId(null);
     onSelect?.(id);
   };
+  useEffect(() => {
+    if (!rowRequest) return;
+    const { targetId, detail } = rowRequest;
+    if (!group.items.some((i) => i.row.targetId === targetId)) {
+      onRowRequestHandled?.();
+      return;
+    }
+    if (group.rest.some((i) => i.row.targetId === targetId)) setShowAll(true);
+    setLocalId(targetId);
+    onSelect?.(targetId);
+    setDetailId(detail ? targetId : null);
+    setScrollToId(targetId);
+    onRowRequestHandled?.();
+  }, [rowRequest, group, onSelect, onRowRequestHandled]);
+  useEffect(() => {
+    if (!scrollToId) return;
+    document.getElementById(`policy-link-row-${scrollToId}`)?.scrollIntoView?.({ block: "center", behavior: "smooth" });
+    setScrollToId(null);
+  }, [scrollToId]);
   if (group.total === 0) return null;
   const rows = showAll ? group.items : group.top;
   // The caption sits before the first row not rated behind schedule.
@@ -84,6 +113,8 @@ export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
             first={i === 0}
             caption={i === restStart ? tPl("restHeading") : undefined}
             indicatorsById={indicatorsById}
+            detailOpen={detailId === item.row.targetId}
+            onToggleDetail={() => setDetailId((cur) => (cur === item.row.targetId ? null : item.row.targetId))}
             {...props}
           />
         ))}
@@ -163,6 +194,8 @@ function PolicyLinkRow({
   first,
   caption,
   indicatorsById,
+  detailOpen,
+  onToggleDetail,
   countryConfig,
   visibleTargetIds,
   onOpenTarget,
@@ -174,13 +207,14 @@ function PolicyLinkRow({
   first: boolean;
   caption?: string;
   indicatorsById: Map<string, Nr7ReportModel["indicators"][number]>;
-} & Omit<Nr7PolicyLinkRowsProps, "group" | "model" | "selectedId" | "onSelect">) {
+  detailOpen: boolean;
+  onToggleDetail: () => void;
+} & Omit<Nr7PolicyLinkRowsProps, "group" | "model" | "selectedId" | "onSelect" | "rowRequest" | "onRowRequestHandled">) {
   const t = useTranslations("briefing.implementation");
   const tPl = useTranslations("briefing.implementation.biodiversity.policyLinks");
   const tNr7 = useTranslations("briefing.nr7Report");
   const ratingLabels = useNr7BadgeLabels();
   const [readMore, setReadMore] = useState(false);
-  const [detailOpen, setDetailOpen] = useState(false);
   const { row, links, evidence } = item;
   const bodyId = `policy-link-${row.targetId}`;
   const fullText = stripNr7Deadline(row.targetText);
@@ -279,7 +313,7 @@ function PolicyLinkRow({
           <div data-testid="policy-link-detail">
             <button
               type="button"
-              onClick={() => setDetailOpen((v) => !v)}
+              onClick={onToggleDetail}
               aria-expanded={detailOpen}
               aria-controls={`${bodyId}-detail`}
               className="inline-flex items-baseline gap-1.5 text-caption text-[var(--undp-blue)] hover:underline"

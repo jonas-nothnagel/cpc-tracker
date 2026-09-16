@@ -83,7 +83,7 @@ describe("ImplementationSection", () => {
     expect(screen.getByText(/Evidence: Testland's Biennial Transparency Report \(BTR\) and 7th National Report/)).toBeInTheDocument();
   });
 
-  it("biodiversity report: the finding, a plain body, where to start, the policy-link rows and three folded sections", () => {
+  it("biodiversity report: the finding, a plain body, where to start, the policy-link rows and two folded sections", () => {
     renderSlide({ report: "nr7" });
     expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule.");
     expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. None is flagged.");
@@ -99,9 +99,10 @@ describe("ImplementationSection", () => {
     expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(4);
     expect(document.querySelector('[data-tour="review-row"]')?.getAttribute("aria-label")).toMatch(/^4 · /);
     expect(screen.getByTestId("policy-link-rows")).toBeInTheDocument();
-    // The cross-checks fold below, with the two NR7 sections.
+    // The cross-checks fold below, with the indicators; the national targets are the rows, not a second list.
     const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
-    expect(details).toHaveLength(3);
+    expect(details).toHaveLength(2);
+    expect(screen.queryByText(/NR7 by national target/)).toBeNull();
     expect(details.every((d) => !d.open)).toBe(true);
     expect(screen.getByText("Ratings that do not match their own evidence")).toBeInTheDocument();
     expect(screen.getByText("5 places, no AI involved")).toBeInTheDocument();
@@ -136,7 +137,7 @@ describe("ImplementationSection", () => {
     // Three eligible cross-checks on the face (the reach rule needs alignment); the held-back one sits behind "Show all".
     expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(3);
     expect(screen.queryByTestId("policy-link-rows")).toBeNull();
-    expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(2);
+    expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(1);
   });
 
   it("the toggle sits above the headline and hands the switch to the host", () => {

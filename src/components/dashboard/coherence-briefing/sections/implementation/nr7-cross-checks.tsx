@@ -13,7 +13,7 @@ import { useTranslations } from "next-intl";
 import { Sparkline } from "@/components/ui/sparkline";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { transitionName, withViewTransition } from "@/lib/view-transition";
-import { IndicatorCard, NR7_COLORS, QuestionnaireTable, type Nr7PairRef, type Nr7ReportModel } from "../../nr7-report";
+import { IndicatorCard, NR7_COLORS, QuestionnaireTable, stripNr7Deadline, type Nr7PairRef, type Nr7ReportModel } from "../../nr7-report";
 import { ANSWER_COLORS, ANSWER_ORDER, NR7_SERIES_COLOR } from "../../nr7-report/nr7-colors";
 import type { BiodiversityReviewGroup, Nr7Evidence, Nr7ReviewItem } from "./review-groups";
 
@@ -34,7 +34,9 @@ export interface Nr7CrossChecksProps {
   visibleTargetIds: ReadonlySet<string>;
   onOpenActionPair: (actionId: string, targetId: string) => void;
   onOpenTarget: (targetId: string) => void;
-  onFocusNr7Target: (targetId: string) => void;
+  /** Open the national target's policy-link row with its full entry; absent
+   *  when the rows are not on the slide (the link is then not shown). */
+  onFocusNr7Target?: (targetId: string) => void;
   onFocusNr7Indicator: (indicatorId: string) => void;
   /** Rendered inside the folded full picture (the policy-link rows lead the
    *  slide): no tour anchors, the tour points at the visual above. */
@@ -158,8 +160,9 @@ function CrossCheckRow({
   const { signal, row, indicator, evidence } = item;
   const bodyId = `cross-check-${signal.rule}-${signal.targetId ?? signal.indicatorId}`;
   const pair = row ? nr7PairTargets.get(row.targetId) : undefined;
-  const fullText = (row ? row.targetText : indicator?.title ?? "").replace(/\s+/g, " ").trim();
-  const subject = row ? `${row.number} · ${expanded ? fullText : shortText(row.targetText)}` : fullText;
+  // The deadline prefix every target shares is dropped, as on the policy-link rows.
+  const fullText = row ? stripNr7Deadline(row.targetText) : (indicator?.title ?? "").replace(/\s+/g, " ").trim();
+  const subject = row ? `${row.number} · ${expanded ? fullText : shortText(fullText)}` : fullText;
   const rating = row ? ratingLabels[row.status] : "";
   // One name per moving part, so the view transition glides each from its
   // closed place to its open one (the subject unfolds in place; the rating
@@ -181,7 +184,7 @@ function CrossCheckRow({
             spans the row and wraps to the full text; nothing is repeated. */}
         <span
           className={`text-data text-[var(--undp-black)] leading-snug ${expanded ? "col-span-3 whitespace-normal max-w-prose font-medium" : "truncate"}`}
-          title={expanded ? undefined : fullText}
+          title={expanded ? undefined : (row ? row.targetText : fullText)}
           style={{ viewTransitionName: `${name}-subject` }}
           data-testid="cross-check-subject"
         >
@@ -226,7 +229,7 @@ function CrossCheckRow({
             <p className="text-caption text-[var(--undp-black)]">{tNr7("targets.row.reach", { count: row.policyReach, n: row.nbsapNumber })}</p>
           )}
           <p className="flex flex-wrap gap-x-4 gap-y-1 text-caption">
-            {row && (
+            {row && onFocusNr7Target && (
               <button type="button" onClick={() => onFocusNr7Target(row.targetId)} className="text-[var(--undp-blue)] hover:underline">
                 {t("row.nr7.seeTarget")} <span aria-hidden="true">›</span>
               </button>

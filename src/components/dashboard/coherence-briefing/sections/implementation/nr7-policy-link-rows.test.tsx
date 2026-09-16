@@ -187,4 +187,26 @@ describe("Nr7PolicyLinkRows", () => {
     expect(rows()).toHaveLength(3);
     expect(document.body.textContent).not.toMatch(/\b(should|must|responsible|blame|ministry|contradict|tension)\b/i);
   });
+
+  it("answers a request from below the rows: unfolds Show all, opens the row with its full entry, hands the request back", () => {
+    const model = buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!;
+    const group = rankPolicyLinkCandidates(model, 2)!;
+    const onRowRequestHandled = vi.fn();
+    const ui = (rowRequest: { targetId: string; detail: boolean } | null) => (
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7PolicyLinkRows group={group} model={model} countryConfig={null} visibleTargetIds={new Set()} onOpenTarget={vi.fn()} onFocusIndicator={vi.fn()} rowRequest={rowRequest} onRowRequestHandled={onRowRequestHandled} />
+      </NextIntlClientProvider>
+    );
+    const { rerender } = render(ui(null));
+    expect(rows()).toHaveLength(2);
+    // NT03 sits behind "Show all 4".
+    rerender(ui({ targetId: "NT03", detail: true }));
+    expect(rows()).toHaveLength(4);
+    expect(rowButton(3)).toHaveAttribute("aria-expanded", "true");
+    expect(within(rows()[3]).getByTestId("nr7-target-detail")).toBeInTheDocument();
+    expect(onRowRequestHandled).toHaveBeenCalledTimes(1);
+    // Closing the row folds its entry too.
+    fireEvent.click(rowButton(3));
+    expect(within(rows()[3]).queryByTestId("nr7-target-detail")).toBeNull();
+  });
 });

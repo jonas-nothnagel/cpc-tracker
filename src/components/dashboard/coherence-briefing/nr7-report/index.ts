@@ -15,7 +15,6 @@ export {
 } from "./nr7-self-report";
 export { nr7PairByTarget, type Nr7PairRef } from "./pair-by-target";
 export { SignalLine } from "./signal-line";
-export { Nr7TargetsList } from "./targets-list";
 export { Nr7TargetDetail } from "./target-detail";
 export { IndicatorsView } from "./indicators-view";
 export { IndicatorCard } from "./indicator-card";

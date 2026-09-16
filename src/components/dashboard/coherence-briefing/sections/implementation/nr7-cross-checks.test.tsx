@@ -73,7 +73,7 @@ describe("Nr7CrossChecks", () => {
     expect(screen.getByText("Answers not yet in place (2 of 3)")).toBeInTheDocument();
     // The face's own subject unfolds from the truncated form to the full
     // target; nothing is repeated in the body.
-    expect(screen.getAllByTestId("cross-check-subject")[0]).toHaveTextContent("1 · By 2030, mainstream biodiversity into all sectors.");
+    expect(screen.getAllByTestId("cross-check-subject")[0]).toHaveTextContent("1 · Mainstream biodiversity into all sectors.");
     expect(screen.getByRole("table")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /See the national target/ }));
     expect(onFocusNr7Target).toHaveBeenCalledWith("NT01");
@@ -95,5 +95,16 @@ describe("Nr7CrossChecks", () => {
   it("keeps the face factual: no suggestion or blame words", () => {
     renderRows();
     expect(document.body.textContent).not.toMatch(/\b(should|must|responsible|blame|ministry|contradict|tension)\b/i);
+  });
+
+  it("offers no row link when the rows are not on the slide", () => {
+    const group = buildReviewGroups({ summary: null, nr7Report, btrActions: 0 }).biodiversity!;
+    render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <Nr7CrossChecks group={group} model={nr7Report} nr7PairTargets={new Map()} visibleTargetIds={new Set()} onOpenActionPair={vi.fn()} onOpenTarget={vi.fn()} onFocusNr7Indicator={vi.fn()} />
+      </NextIntlClientProvider>,
+    );
+    fireEvent.click(rowButton(0));
+    expect(screen.queryByRole("button", { name: /See the national target/ })).toBeNull();
   });
 });

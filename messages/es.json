@@ -477,7 +477,7 @@
           },
           "fullPicture": {
             "title": "La imagen completa",
-            "body": "Debajo del visual, las secciones plegadas guardan el resto del informe en pantalla: cobertura por documento para el informe climático, cada meta nacional e indicador para el de biodiversidad."
+            "body": "Debajo de las filas, las secciones plegadas guardan el resto del informe en pantalla: cobertura por documento para el informe climático; para el de biodiversidad, los lugares donde una calificación y la propia evidencia del informe difieren, y cada indicador."
           }
         }
       },
@@ -1092,10 +1092,6 @@
           "summary": "Cobertura por documento",
           "count": "{reached} de {total} metas tienen una acción reportada alineada"
         },
-        "nr7Targets": {
-          "summary": "NR7 por meta nacional",
-          "count": "{count, plural, one {# meta nacional} other {# metas nacionales}}, {onTrack} calificadas en curso"
-        },
         "nr7Indicators": {
           "summary": "Todos los indicadores del NR7",
           "count": "{withValues} de {total} con valores reportados"
@@ -1260,13 +1256,9 @@
         "no": "No"
       },
       "targets": {
-        "heading": "Metas nacionales ({count})",
         "row": {
-          "questionnaire": "{yes} sí · {partially} parcialmente · {underDevelopment} en desarrollo · {no} no",
           "noQuestionnaire": "Sin respuestas del cuestionario para esta meta",
-          "indicators": "{count, plural, =0 {sin indicadores} one {# indicador} other {# indicadores}}",
-          "reach": "{count, plural, one {# meta de política} other {# metas de política}} fuertemente alineadas con la NBSAP {n}",
-          "reachNone": "Sin meta NBSAP correspondiente"
+          "reach": "{count, plural, one {# meta de política} other {# metas de política}} fuertemente alineadas con la NBSAP {n}"
         },
         "expand": {
           "level": "Nivel de progreso, según se reporta: {level}",
@@ -1318,11 +1310,7 @@
       },
       "gbf": {
         "chip": "GBF T{n}",
-        "chipTitle": "Meta {n} del Marco Mundial de Biodiversidad (GBF): {title}",
-        "groupHeading": "Meta GBF {n} · {title}",
-        "ungrouped": "Sin meta GBF asignada",
-        "groupedBy": "Agrupadas por la meta del Marco Mundial de Biodiversidad de Kunming-Montreal (GBF) bajo la que el país registró cada meta nacional, con el encabezado de la CBD.",
-        "uncovered": "Ninguna meta nacional está registrada bajo {count, plural, one {la meta GBF} other {las metas GBF}} {list}."
+        "chipTitle": "Meta {n} del Marco Mundial de Biodiversidad (GBF): {title}"
       }
     },
     "docFilter": {

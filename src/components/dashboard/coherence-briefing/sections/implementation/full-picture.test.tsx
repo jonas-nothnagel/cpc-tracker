@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { act, cleanup, render, renderHook, screen, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../../../messages/en.json";
 
@@ -22,7 +22,7 @@ const summary = { totalFlaggedPairs: 0 } as ActionPlanAlignmentSummary;
 
 const crossChecks = buildReviewGroups({ summary: null, nr7Report, btrActions: 0 }).biodiversity!;
 
-function Harness({ report = "nr7", withNr7 = true, folded = false, onState }: { report?: "btr" | "nr7"; withNr7?: boolean; folded?: boolean; onState?: (s: ReturnType<typeof useNr7FullPicture>) => void }) {
+function Harness({ report = "nr7", withNr7 = true, folded = false, onState, onOpenRowDetail }: { report?: "btr" | "nr7"; withNr7?: boolean; folded?: boolean; onState?: (s: ReturnType<typeof useNr7FullPicture>) => void; onOpenRowDetail?: (targetId: string) => void }) {
   const state = useNr7FullPicture();
   onState?.(state);
   return (
@@ -39,6 +39,7 @@ function Harness({ report = "nr7", withNr7 = true, folded = false, onState }: { 
       countryConfig={null}
       onOpenActionPair={vi.fn()}
       onOpenTarget={vi.fn()}
+      onOpenRowDetail={onOpenRowDetail}
     />
   );
 }
@@ -46,43 +47,25 @@ function Harness({ report = "nr7", withNr7 = true, folded = false, onState }: { 
 const wrap = (ui: React.ReactElement) => render(<NextIntlClientProvider locale="en" messages={en}>{ui}</NextIntlClientProvider>);
 
 describe("FullPicture", () => {
-  it("folds the two NR7 sections closed under the biodiversity report, with counts in their summaries", () => {
+  it("folds the indicators closed under the biodiversity report, with the count in the summary; the national targets are the rows above, not a second list", () => {
     wrap(<Harness report="nr7" />);
     const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
-    expect(details).toHaveLength(2);
+    expect(details).toHaveLength(1);
     expect(details.every((d) => !d.open)).toBe(true);
-    expect(screen.getByText("4 national targets, 2 rated on track")).toBeInTheDocument();
     expect(screen.getByText("4 of 5 with reported values")).toBeInTheDocument();
+    expect(screen.queryByText(/NR7 by national target/)).toBeNull();
     expect(screen.queryByText("Coverage by document")).toBeNull();
   });
 
   it("folds the cross-checks first when the policy-link rows lead the slide, without tour anchors", () => {
     wrap(<Harness report="nr7" folded />);
     const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
-    expect(details).toHaveLength(3);
+    expect(details).toHaveLength(2);
     expect(details[0].id).toBe("full-picture-nr7-cross-checks");
     expect(screen.getByText("Ratings that do not match their own evidence")).toBeInTheDocument();
     expect(screen.getByText("5 places, no AI involved")).toBeInTheDocument();
     expect(within(details[0]).getAllByRole("listitem")).toHaveLength(4);
     expect(details[0].querySelector('[data-tour="review-visual"], [data-tour="review-row"]')).toBeNull();
-  });
-
-  it("groups the national targets under the GBF target the country filed them under", () => {
-    let latest: ReturnType<typeof useNr7FullPicture> | undefined;
-    wrap(<Harness onState={(s) => { latest = s; }} />);
-    act(() => latest!.setNr7TargetsOpen(true));
-    const groups = screen.getByTestId("nr7-gbf-groups");
-    expect(within(groups).getAllByRole("heading", { level: 4 }).map((h) => h.textContent)).toEqual([
-      "GBF target 3 · 30% of areas are effectively conserved",
-      "GBF target 6 · Reduce rates of introduction and establishment of invasive alien species by 50%",
-      "GBF target 7 · Pollution reduced, halving nutrient loss and pesticide risk",
-      "GBF target 14 · The multiple values of biodiversity are integrated into decision-making at all levels",
-    ]);
-    expect(screen.getByText(/Grouped by the Kunming-Montreal Global Biodiversity Framework \(GBF\) target/)).toBeInTheDocument();
-    expect(screen.getByText(/No national target is filed under GBF targets T1, T2, T4/)).toBeInTheDocument();
-    // NT04 sits under T7 and carries its second filing as a chip; the others carry none.
-    expect(within(document.getElementById("nr7-row-NT04")!).getByText("GBF T11")).toBeInTheDocument();
-    expect(within(document.getElementById("nr7-row-NT02")!).queryByText(/GBF T/)).toBeNull();
   });
 
   it("folds only the coverage section under the climate report, legend and disclaimer inside", () => {
@@ -97,15 +80,25 @@ describe("FullPicture", () => {
     expect(screen.getByText(/AI-estimated and indicative/)).toBeInTheDocument();
   });
 
-  it("focusTarget opens the NR7 targets section with that row expanded; focusIndicator opens and outlines the card", () => {
+  it("focusIndicator opens the indicators section and outlines the card; a target chip on a card asks the rows to open that target", () => {
     let latest: ReturnType<typeof useNr7FullPicture> | undefined;
-    wrap(<Harness onState={(s) => { latest = s; }} />);
-    act(() => latest!.focusTarget("NT02"));
-    expect((document.getElementById("full-picture-nr7-targets") as HTMLDetailsElement).open).toBe(true);
-    expect(document.querySelector("#nr7-row-NT02 button")).toHaveAttribute("aria-expanded", "true");
+    const onOpenRowDetail = vi.fn();
+    wrap(<Harness onState={(s) => { latest = s; }} onOpenRowDetail={onOpenRowDetail} />);
     act(() => latest!.focusIndicator("A.3"));
     expect((document.getElementById("full-picture-nr7-indicators") as HTMLDetailsElement).open).toBe(true);
     expect(document.getElementById("nr7-ind-A.3")!.className).toContain("ring-1");
+    fireEvent.click(within(document.getElementById("nr7-ind-A.3")!).getByRole("button", { name: "Open national target 2" }));
+    expect(onOpenRowDetail).toHaveBeenCalledWith("NT02");
+  });
+
+  it("without rows on the slide the target chips on indicator cards are text, and the folded cross-checks offer no row link", () => {
+    let latest: ReturnType<typeof useNr7FullPicture> | undefined;
+    wrap(<Harness folded onState={(s) => { latest = s; }} />);
+    act(() => latest!.focusIndicator("A.3"));
+    expect(within(document.getElementById("nr7-ind-A.3")!).queryByRole("button", { name: "Open national target 2" })).toBeNull();
+    act(() => latest!.setCrossChecksOpen(true));
+    fireEvent.click(within(document.getElementById("full-picture-nr7-cross-checks")!).getAllByRole("button")[0]);
+    expect(screen.queryByRole("button", { name: /See the national target/ })).toBeNull();
   });
 
   it("renders nothing for the biodiversity report without an NR7", () => {
@@ -113,11 +106,11 @@ describe("FullPicture", () => {
     expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(0);
   });
 
-  it("the hook toggles a target off again", () => {
+  it("the hook carries a row request until the rows hand it back", () => {
     const { result } = renderHook(() => useNr7FullPicture());
-    act(() => result.current.toggleTarget("NT01"));
-    expect(result.current.expandedTargetId).toBe("NT01");
-    act(() => result.current.toggleTarget("NT01"));
-    expect(result.current.expandedTargetId).toBeNull();
+    act(() => result.current.requestRow("NT01", true));
+    expect(result.current.rowRequest).toEqual({ targetId: "NT01", detail: true });
+    act(() => result.current.clearRowRequest());
+    expect(result.current.rowRequest).toBeNull();
   });
 });

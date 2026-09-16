@@ -21,8 +21,9 @@ export function IndicatorsView({
   model: Nr7ReportModel;
   /** Card to scroll to and outline after a chip or signal click. */
   focusIndicatorId: string | null;
-  /** A target chip on a card: jump to that national target. */
-  onOpenTarget: (targetId: string) => void;
+  /** A target chip on a card: jump to that national target. Absent, the
+   *  chips are text. */
+  onOpenTarget?: (targetId: string) => void;
 }) {
   const t = useTranslations("briefing.nr7Report.indicators");
 

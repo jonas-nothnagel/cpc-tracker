@@ -477,7 +477,7 @@
           },
           "fullPicture": {
             "title": "The full picture",
-            "body": "Below the visual, the folded sections hold the rest of the report on screen: coverage by document for the climate report, every national target and indicator for the biodiversity one."
+            "body": "Below the rows, the folded sections hold the rest of the report on screen: coverage by document for the climate report; for the biodiversity one, the places where a rating and the report's own evidence differ, and every indicator."
           }
         }
       },
@@ -1092,10 +1092,6 @@
           "summary": "Coverage by document",
           "count": "{reached} of {total} targets have an aligned reported action"
         },
-        "nr7Targets": {
-          "summary": "NR7 by national target",
-          "count": "{count, plural, one {# national target} other {# national targets}}, {onTrack} rated on track"
-        },
         "nr7Indicators": {
           "summary": "All NR7 indicators",
           "count": "{withValues} of {total} with reported values"
@@ -1260,13 +1256,9 @@
         "no": "No"
       },
       "targets": {
-        "heading": "National targets ({count})",
         "row": {
-          "questionnaire": "{yes} yes · {partially} partially · {underDevelopment} under development · {no} no",
           "noQuestionnaire": "No questionnaire answers for this target",
-          "indicators": "{count, plural, =0 {no indicators} one {# indicator} other {# indicators}}",
-          "reach": "{count, plural, one {# policy target} other {# policy targets}} strongly aligned with NBSAP {n}",
-          "reachNone": "No NBSAP target matched"
+          "reach": "{count, plural, one {# policy target} other {# policy targets}} strongly aligned with NBSAP {n}"
         },
         "expand": {
           "level": "Level of progress, as reported: {level}",
@@ -1318,11 +1310,7 @@
       },
       "gbf": {
         "chip": "GBF T{n}",
-        "chipTitle": "Global Biodiversity Framework (GBF) target {n}: {title}",
-        "groupHeading": "GBF target {n} · {title}",
-        "ungrouped": "Not filed under a GBF target",
-        "groupedBy": "Grouped by the Kunming-Montreal Global Biodiversity Framework (GBF) target the country filed each national target under, with the CBD's heading for it.",
-        "uncovered": "No national target is filed under {count, plural, one {GBF target} other {GBF targets}} {list}."
+        "chipTitle": "Global Biodiversity Framework (GBF) target {n}: {title}"
       }
     },
     "docFilter": {

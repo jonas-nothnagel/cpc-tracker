@@ -26,7 +26,9 @@
  *      inline.
  *   4. The full picture folds closed below for that report only
  *      (./full-picture.tsx; the cross-checks fold here when the policy-link
- *      rows lead), then the source and not-yet-included captions.
+ *      rows lead; the national targets are the rows above, each opening
+ *      to its full report entry), then the source and not-yet-included
+ *      captions.
  *
  * Right column (DeliveryRoster): who is named on the BTR actions; the host
  * shows it only while the climate report is on screen.
@@ -117,6 +119,10 @@ export function ImplementationSection({
   // below them. Without a linked target behind schedule (no policy
   // alignment, or none visible) the cross-checks are the view, as before.
   const policyLinks = groups.biodiversity?.policyLinks ?? null;
+  // A national target named below the rows (a cross-check, an indicator
+  // card) opens its row with its full entry; without rows on the slide
+  // those links are not offered.
+  const openRowDetail = policyLinks ? (targetId: string) => fullPicture.requestRow(targetId, true) : undefined;
   const sentence =
     shown === "nr7" && groups.biodiversity
       ? biodiversitySentence(groups.biodiversity, nr7Report?.totals ?? null, countryName, countryConfig, t)
@@ -148,6 +154,8 @@ export function ImplementationSection({
             onFocusIndicator={fullPicture.focusIndicator}
             selectedId={focusedNr7TargetId}
             onSelect={onFocusNr7Target}
+            rowRequest={fullPicture.rowRequest}
+            onRowRequestHandled={fullPicture.clearRowRequest}
           />
         ) : showEvidence && shown === "nr7" && groups.biodiversity && nr7Report ? (
           <Nr7CrossChecks
@@ -157,7 +165,6 @@ export function ImplementationSection({
             visibleTargetIds={visibleTargetIds}
             onOpenActionPair={onOpenActionPair}
             onOpenTarget={onOpenTarget}
-            onFocusNr7Target={fullPicture.focusTarget}
             onFocusNr7Indicator={fullPicture.focusIndicator}
           />
         ) : undefined
@@ -178,6 +185,7 @@ export function ImplementationSection({
               countryConfig={countryConfig}
               onOpenActionPair={onOpenActionPair}
               onOpenTarget={onOpenTarget}
+              onOpenRowDetail={openRowDetail}
             />
           )}
           <div className="space-y-1.5">
