@@ -2,19 +2,19 @@
 
 /**
  * Nr7TargetLinks — the sticky column while the biodiversity report (NR7) is
- * on the Implementation slide. Until a row is opened it shows where the
- * flagged pairs repeat across the rows (./nr7-recurring-counterparts.tsx;
- * the top-ranked target stands in only when nothing repeats). For the
- * national target the reader opened: the policy targets in OTHER documents
- * the pipeline judged strongly aligned with the NBSAP target it restates,
- * one bar per document, then the aligned targets themselves, with the
- * potential misalignments marked by colour AND word, and, on each flagged
- * pair whose counterpart repeats, how many national targets it is on.
+ * on the Implementation slide: for the national target opened on the slide
+ * (the top row until one is opened), the policy targets in OTHER documents
+ * the pipeline judged strongly aligned with the NBSAP target it restates.
+ * One line per document (aligned count, flagged count in the flag colour),
+ * then the aligned targets per document, with the potential misalignments
+ * marked by colour AND word, and, on each flagged pair whose counterpart
+ * repeats across the rows, how many national targets it is on.
  *
- * The reading it supports: these are the targets the report rates behind
- * schedule that the most other plans line up with, so movement there could
- * matter beyond the biodiversity plan. The column states the counts; the
- * hedged pointer stays in the slide's "Where to start".
+ * The column states the counts; the hedged pointer stays in the slide's
+ * "Where to start", and the view's one caveat under the slide's rows covers
+ * the column too (nothing here repeats it). No bars: the aligned count is
+ * context (the Mongolia read showed it does not track how a target is
+ * doing), so it is a number beside the document, not a length to compare.
  *
  * Everything drawn here is already on the row model (`Nr7PolicyLinks`):
  * no alignment scan, and the reader's document toggle has already applied.
@@ -26,8 +26,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useNr7BadgeLabels } from "@/lib/labels";
 import { FLAGGED_COLOR, getDocColor, getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
-import { GbfChip, NR7_COLORS, shortNr7Text, type Nr7PolicyLink, type Nr7TargetRowModel } from "../nr7-report";
-import { Nr7RecurringCounterparts } from "../sections/implementation/nr7-recurring-counterparts";
+import { GbfChip, NR7_COLORS, shortNr7Text, stripNr7Deadline, type Nr7PolicyLink, type Nr7TargetRowModel } from "../nr7-report";
 import type { Nr7RecurringGroup } from "../sections/implementation/review-groups";
 import type { CountryConfig } from "@/types";
 
@@ -36,44 +35,33 @@ const PER_DOC_SHOWN = 6;
 
 export interface Nr7TargetLinksProps {
   row: Nr7TargetRowModel;
-  /** True while nothing is opened on the slide and the top-ranked target stands in. */
+  /** True while nothing is opened on the slide and the top row stands in. */
   isDefault: boolean;
   countryConfig: CountryConfig | null;
   countryName: string;
   visibleTargetIds: ReadonlySet<string>;
   onOpenTarget: (targetId: string) => void;
-  /** Where the flagged pairs repeat; shown while no row is opened, and
-   *  marks the repeating counterparts in an opened target's list. */
+  /** Where the flagged pairs repeat across the rows: marks the repeating
+   *  counterparts in the opened target's lists. */
   recurring?: Nr7RecurringGroup | null;
-  /** Opens a policy-link row on the slide (the chips of the default view). */
-  onOpenRow?: (targetId: string) => void;
 }
 
-export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, visibleTargetIds, onOpenTarget, recurring = null, onOpenRow }: Nr7TargetLinksProps) {
+export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, visibleTargetIds, onOpenTarget, recurring = null }: Nr7TargetLinksProps) {
   const t = useTranslations("briefing.implementationCenter.nr7Links");
-  if (isDefault && recurring) {
-    return <Nr7RecurringCounterparts group={recurring} countryConfig={countryConfig} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} onSelectRow={onOpenRow} />;
-  }
   const repeats = new Map((recurring?.items ?? []).map((c) => [c.targetId, c.count]));
   const links = row.policyLinks;
   const hasLinks = Boolean(links && (links.high.length > 0 || links.flagged.length > 0));
   // A target without links (nothing in the corpus restates it, or nothing
-  // aligns) keeps the header and says so; the bars and lists need links.
+  // aligns) keeps the header and says so; the lists need links.
   if (!links || !hasLinks) {
     return (
       <div className="px-1 space-y-6" data-testid="nr7-target-links">
         <TargetHeader row={row} isDefault={isDefault} countryName={countryName} />
-        <p className="text-[11.5px] text-[var(--undp-black)] leading-snug" data-testid="nr7-links-none">{t("noLinks")}</p>
-        <p className="text-[11px] text-[var(--undp-gray)] leading-snug" data-tour="nr7-links-caveat">{t("caveat")}</p>
+        <p className="text-caption text-[var(--undp-black)] leading-snug" data-testid="nr7-links-none">{t("noLinks")}</p>
       </div>
     );
   }
   const docs = links.byDoc.filter((d) => d.high > 0 || d.flagged > 0);
-  // Bars count strong alignment only; a document with nothing but flagged
-  // pairs keeps its place in the misalignment line and the target list.
-  const barDocs = docs.filter((d) => d.high > 0);
-  const maxHigh = barDocs.reduce((m, d) => Math.max(m, d.high), 0);
-  const flaggedDocs = docs.filter((d) => d.flagged > 0).sort((a, b) => b.flagged - a.flagged || a.doc.localeCompare(b.doc));
   const label = (doc: string) => getDocMediumLabel(countryConfig, doc);
   const title = (doc: string) => getDocFullLabel(countryConfig, doc);
   // Per document, the pairs to review first, then the aligned ones.
@@ -82,45 +70,33 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
 
   return (
     <div className="px-1 space-y-6" data-testid="nr7-target-links">
-      <TargetHeader row={row} isDefault={isDefault} countryName={countryName}>
-        <p className="text-[11.5px] text-[var(--undp-black)] mt-1.5">
-          {t("mixLine", { count: links.high.length, docs: links.docs, flagged: links.flagged.length })}
-        </p>
-      </TargetHeader>
+      <TargetHeader row={row} isDefault={isDefault} countryName={countryName} />
 
-      {/* One bar per document: how many of its targets align strongly. */}
+      {/* One line per document: how many of its targets align strongly, and
+          how many pairs are flagged for review. */}
       <div>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">{t("bars.heading")}</p>
-        <ul className="space-y-1.5" data-tour="nr7-links-bars">
-          {barDocs.map((d) => (
-            <li key={d.doc} className="grid grid-cols-[7rem_1fr_2rem] items-center gap-x-2">
-              <span className="inline-flex items-center gap-1.5 min-w-0" title={title(d.doc)}>
+        <p className="text-caption uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">{t("list.heading")}</p>
+        <ul className="space-y-1.5" data-tour="nr7-links-list">
+          {docs.map((d) => (
+            <li key={d.doc} className="flex items-baseline gap-x-3 text-caption">
+              <span className="inline-flex items-center gap-1.5 min-w-0 flex-1" title={title(d.doc)}>
                 <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: getDocColor(countryConfig, d.doc) }} />
-                <span className="text-[12px] text-[var(--undp-black)] truncate">{label(d.doc)}</span>
+                <span className="text-[var(--undp-black)] truncate">{label(d.doc)}</span>
               </span>
-              <span className="block h-2 rounded-sm bg-gray-100 overflow-hidden" aria-hidden="true">
-                <span className="block h-full rounded-sm" style={{ width: `${maxHigh > 0 ? Math.max(3, (d.high / maxHigh) * 100) : 0}%`, backgroundColor: getDocColor(countryConfig, d.doc) }} />
-              </span>
-              <span className="text-[11px] tabular-nums text-[var(--undp-gray)] text-right">{d.high}</span>
+              <span className="tabular-nums text-[var(--undp-gray)] whitespace-nowrap">{t("list.aligned", { count: d.high })}</span>
+              {d.flagged > 0 && (
+                <span className="tabular-nums font-medium whitespace-nowrap" style={{ color: FLAGGED_COLOR }}>
+                  {t("list.flagged", { count: d.flagged })}
+                </span>
+              )}
             </li>
           ))}
         </ul>
-        <p className="text-[11px] text-[var(--undp-gray)] mt-2 leading-snug">{t("bars.note", { n: row.number })}</p>
-        {flaggedDocs.length > 0 && (
-          <p className="text-[11.5px] mt-1.5 leading-snug" data-testid="nr7-links-flagged">
-            <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style={{ backgroundColor: FLAGGED_COLOR }} />
-            <span style={{ color: FLAGGED_COLOR }} className="font-medium">{t("flagged.heading", { count: links.flagged.length })}</span>
-            <span className="text-[var(--undp-black)]">
-              {" "}
-              {flaggedDocs.map((d) => `${label(d.doc)} ${d.flagged}`).join(" · ")}
-            </span>
-          </p>
-        )}
       </div>
 
       {/* The aligned targets, per document, explorable one by one. */}
       <div>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">{t("targets.heading")}</p>
+        <p className="text-caption uppercase tracking-[0.18em] text-[var(--undp-gray)] mb-2">{t("targets.heading")}</p>
         <ul className="space-y-2" data-tour="nr7-links-docs">
           {docs.map((d) => {
             const list = byDoc.get(d.doc) ?? [];
@@ -129,19 +105,11 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
                 <details className="group">
                   <summary className="cursor-pointer list-none flex items-baseline justify-between gap-3">
                     <span className="flex items-center gap-1.5 min-w-0">
-                      <span className="text-[12px] text-[var(--undp-black)] truncate" title={title(d.doc)}>{label(d.doc)}</span>
-                      <span aria-hidden="true" className="text-[var(--undp-gray)]/50 text-[11px] group-open:hidden">+</span>
-                      <span aria-hidden="true" className="text-[var(--undp-gray)]/50 text-[11px] hidden group-open:inline">−</span>
+                      <span className="text-caption text-[var(--undp-black)] truncate" title={title(d.doc)}>{label(d.doc)}</span>
+                      <span aria-hidden="true" className="text-[var(--undp-gray)]/50 text-caption group-open:hidden">+</span>
+                      <span aria-hidden="true" className="text-[var(--undp-gray)]/50 text-caption hidden group-open:inline">−</span>
                     </span>
-                    <span className="text-[11px] tabular-nums text-[var(--undp-gray)] shrink-0">
-                      {d.high}
-                      {d.flagged > 0 && (
-                        <span className="font-medium" style={{ color: FLAGGED_COLOR }}>
-                          {" "}
-                          {t("targets.toReview", { count: d.flagged })}
-                        </span>
-                      )}
-                    </span>
+                    <span className="text-caption tabular-nums text-[var(--undp-gray)] shrink-0">{d.high + d.flagged}</span>
                   </summary>
                   <TargetList list={list} visibleTargetIds={visibleTargetIds} onOpenTarget={onOpenTarget} flaggedWord={t("flagged.word")} moreLabel={(n) => t("targets.more", { count: n })} fewerLabel={t("targets.fewer")} repeats={repeats} repeatsLabel={(n) => t("targets.repeats", { count: n })} />
                 </details>
@@ -150,26 +118,23 @@ export function Nr7TargetLinks({ row, isDefault, countryConfig, countryName, vis
           })}
         </ul>
       </div>
-
-      <p className="text-[11px] text-[var(--undp-gray)] leading-snug" data-tour="nr7-links-caveat">{t("caveat")}</p>
     </div>
   );
 }
 
-/** Which national target, as the report rates it; the link count line (when
- *  there are links) slots in before the default note. */
-function TargetHeader({ row, isDefault, countryName, children }: { row: Nr7TargetRowModel; isDefault: boolean; countryName: string; children?: React.ReactNode }) {
+/** Which national target, as the report rates it. */
+function TargetHeader({ row, isDefault, countryName }: { row: Nr7TargetRowModel; isDefault: boolean; countryName: string }) {
   const t = useTranslations("briefing.implementationCenter.nr7Links");
   const ratingLabels = useNr7BadgeLabels();
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--undp-gray)]">{t("header.eyebrow")}</p>
-      <p className="text-[15px] font-semibold text-[var(--undp-black)] leading-tight mt-0.5">{t("header.title", { n: row.number })}</p>
-      <p className="text-[11.5px] text-[var(--undp-gray)] mt-0.5">{t("header.subtitle", { country: countryName })}</p>
-      <p className="text-[12px] text-[var(--undp-black)] leading-snug mt-1.5" title={row.targetText}>
-        {shortNr7Text(row.targetText, 110)}
+      <p className="text-caption uppercase tracking-[0.18em] text-[var(--undp-gray)]">{t("header.eyebrow")}</p>
+      <p className="text-body font-semibold text-[var(--undp-black)] leading-tight mt-0.5">{t("header.title", { n: row.number })}</p>
+      <p className="text-caption text-[var(--undp-gray)] mt-0.5">{t("header.subtitle", { country: countryName })}</p>
+      <p className="text-caption text-[var(--undp-black)] leading-snug mt-1.5" title={row.targetText}>
+        {shortNr7Text(stripNr7Deadline(row.targetText), 110)}
       </p>
-      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11.5px]">
+      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-caption">
         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
           <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: NR7_COLORS[row.status] }} />
           <span className="font-medium" style={{ color: NR7_COLORS[row.status] }}>{ratingLabels[row.status]}</span>
@@ -178,8 +143,7 @@ function TargetHeader({ row, isDefault, countryName, children }: { row: Nr7Targe
           <GbfChip key={g.id} target={g} />
         ))}
       </p>
-      {children}
-      {isDefault && <p className="text-[11px] text-[var(--undp-gray)] mt-1" data-testid="nr7-links-default">{t("defaultNote")}</p>}
+      {isDefault && <p className="text-caption text-[var(--undp-gray)] mt-1" data-testid="nr7-links-default">{t("defaultNote")}</p>}
     </div>
   );
 }
@@ -190,7 +154,7 @@ function TargetHeader({ row, isDefault, countryName, children }: { row: Nr7Targe
 export function ReviewMark({ flagged, word, children }: { flagged: boolean; word: string; children: React.ReactNode }) {
   if (!flagged) {
     return (
-      <span className="flex items-start gap-1.5 text-[11.5px] leading-snug">
+      <span className="flex items-start gap-1.5 text-caption leading-snug">
         <span aria-hidden="true" className="mt-1.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 bg-[var(--undp-gray)]" />
         {children}
       </span>
@@ -198,7 +162,7 @@ export function ReviewMark({ flagged, word, children }: { flagged: boolean; word
   }
   return (
     <span
-      className="flex items-start gap-1.5 text-[11.5px] leading-snug rounded-r px-1.5 py-0.5 -ml-0.5"
+      className="flex items-start gap-1.5 text-caption leading-snug rounded-r px-1.5 py-0.5 -ml-0.5"
       style={{ backgroundColor: `${FLAGGED_COLOR}14`, borderLeft: `2px solid ${FLAGGED_COLOR}` }}
       data-review="true"
     >
@@ -247,7 +211,7 @@ function TargetList({
               <span title={l.text} className="min-w-0">{l.label}</span>
             )}
             {l.level === "flagged" && (repeats.get(l.targetId) ?? 0) > 1 && (
-              <span className="text-[10.5px] text-[var(--undp-gray)] whitespace-nowrap" data-testid="nr7-links-repeats">
+              <span className="text-caption text-[var(--undp-gray)] whitespace-nowrap" data-testid="nr7-links-repeats">
                 {repeatsLabel(repeats.get(l.targetId)!)}
               </span>
             )}
@@ -256,7 +220,7 @@ function TargetList({
       ))}
       {(more > 0 || showAll) && (
         <li>
-          <button type="button" onClick={() => setShowAll((v) => !v)} className="text-[11px] text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums">
+          <button type="button" onClick={() => setShowAll((v) => !v)} className="text-caption text-[var(--undp-gray)] hover:text-[var(--undp-black)] underline underline-offset-2 tabular-nums">
             {showAll ? fewerLabel : moreLabel(more)}
           </button>
         </li>

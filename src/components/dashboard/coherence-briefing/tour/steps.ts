@@ -95,9 +95,8 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "caveat", target: "roster-caveat", placement: "top" },
   ],
   nr7TargetLinks: [
-    { id: "bars", target: "nr7-links-bars", placement: "left" },
+    { id: "list", target: "nr7-links-list", placement: "left" },
     { id: "docs", target: "nr7-links-docs", placement: "left" },
-    { id: "caveat", target: "nr7-links-caveat", placement: "top" },
   ],
   institutionFlow: [
     { id: "institutions", target: "flow-institutions", placement: "right" },

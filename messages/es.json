@@ -483,17 +483,13 @@
       },
       "nr7TargetLinks": {
         "steps": {
-          "bars": {
-            "title": "Una barra por documento",
-            "body": "Cada barra cuenta las metas de política de ese documento que la IA juzgó fuertemente alineadas con la meta nacional abierta a la izquierda. Barras más largas: más de ese plan se alinea con ella."
+          "list": {
+            "title": "Una línea por documento",
+            "body": "Para cada plan, cuántas de sus metas juzgó la IA fuertemente alineadas con la meta nacional abierta a la izquierda, y cuántos de esos pares están señalados para revisar."
           },
           "docs": {
             "title": "Las metas alineadas",
-            "body": "Abre un documento para listar las metas una por una; un punto rojo y las palabras \"posible desalineación\" marcan un par señalado para revisión. Haz clic en una meta para leerla."
-          },
-          "caveat": {
-            "title": "Lo que esto no es",
-            "body": "Los vínculos son alineación entre textos de metas, estimada por la IA y filtrada por los documentos que muestras. No dicen que una meta ejecute ni financie a otra."
+            "body": "Abre un plan para listar las metas una por una; un punto rojo y las palabras \"posible desalineación\" marcan un par señalado para revisión, y \"en N metas\" un par que se repite en otras metas nacionales. Haz clic en una meta para leerla."
           }
         }
       }
@@ -1210,24 +1206,21 @@
           "title": "Qué se alinea con la meta nacional {n}",
           "subtitle": "{country} · Séptimo Informe Nacional (NR7) frente a las metas de política"
         },
-        "mixLine": "{count, plural, one {# meta de política} other {# metas de política}} en {docs, plural, one {# otro documento} other {# otros documentos}} se alinean fuertemente con ella; {flagged, plural, =0 {sin posibles desalineaciones} one {# posible desalineación} other {# posibles desalineaciones}}.",
-        "defaultNote": "La meta mejor clasificada de la diapositiva. Abre otra fila para cambiarla.",
-        "bars": {
+        "defaultNote": "La primera fila de la diapositiva. Abre otra fila para cambiarla.",
+        "list": {
           "heading": "Por documento",
-          "note": "Largo de la barra: cuántas metas de ese documento juzgó la IA fuertemente alineadas con la meta nacional {n}."
+          "aligned": "{count} alineadas",
+          "flagged": "{count} por revisar"
         },
         "flagged": {
-          "heading": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}:",
           "word": "posible desalineación"
         },
         "targets": {
           "heading": "Las metas alineadas",
           "more": "+ {count} más",
           "fewer": "Mostrar menos",
-          "toReview": "+ {count} por revisar",
           "repeats": "en {count} metas"
         },
-        "caveat": "Alineación estimada por IA entre textos de metas, para los documentos mostrados. Un aviso para revisar, no un registro de ejecución ni de financiamiento. Abre una meta para leer el par.",
         "noLinks": "Ninguna meta de política de los otros documentos se juzgó fuertemente alineada con ella."
       }
     },

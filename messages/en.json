@@ -483,17 +483,13 @@
       },
       "nr7TargetLinks": {
         "steps": {
-          "bars": {
-            "title": "One bar per document",
-            "body": "Each bar counts the policy targets in that document the AI judged strongly aligned with the national target opened on the left. Longer bars: more of that plan lines up with it."
+          "list": {
+            "title": "One line per document",
+            "body": "For each plan, how many of its targets the AI judged strongly aligned with the national target opened on the left, and how many of those pairs are flagged for review."
           },
           "docs": {
             "title": "The aligned targets",
-            "body": "Open a document to list the targets one by one; a red dot and the words \"potential misalignment\" mark a pair flagged for review. Click a target to read it."
-          },
-          "caveat": {
-            "title": "What this is not",
-            "body": "The links are alignment between target texts, estimated by the AI and filtered by the documents you show. They do not say that one target delivers or funds another."
+            "body": "Open a plan to list the targets one by one; a red dot and the words \"potential misalignment\" mark a pair flagged for review, and \"on N targets\" a pair that repeats on other national targets. Click a target to read it."
           }
         }
       }
@@ -1210,24 +1206,21 @@
           "title": "What lines up with national target {n}",
           "subtitle": "{country} · 7th National Report (NR7) against the policy targets"
         },
-        "mixLine": "{count, plural, one {# policy target} other {# policy targets}} in {docs, plural, one {# other document} other {# other documents}} align strongly with it; {flagged, plural, =0 {no potential misalignments} one {# potential misalignment} other {# potential misalignments}}.",
-        "defaultNote": "The top-ranked target on the slide. Open another row to change.",
-        "bars": {
+        "defaultNote": "The top row on the slide. Open another row to change.",
+        "list": {
           "heading": "By document",
-          "note": "Bar length: how many of that document's targets the AI judged strongly aligned with national target {n}."
+          "aligned": "{count} aligned",
+          "flagged": "{count} to review"
         },
         "flagged": {
-          "heading": "{count, plural, one {# potential misalignment} other {# potential misalignments}}:",
           "word": "potential misalignment"
         },
         "targets": {
           "heading": "The aligned targets",
           "more": "+ {count} more",
           "fewer": "Show fewer",
-          "toReview": "+ {count} to review",
           "repeats": "on {count} targets"
         },
-        "caveat": "AI-estimated alignment between target texts, for the documents shown. A prompt for review, not a record of delivery or funding. Open a target to read the pair.",
         "noLinks": "No policy target in the other documents was judged strongly aligned with it."
       }
     },

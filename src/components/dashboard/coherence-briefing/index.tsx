@@ -825,9 +825,9 @@ export function CoherenceBriefing({
     () => buildNr7Report(nr7Data, policyAlignment, targetMap, { policyLinkDoc: countryConfig?.nr7PolicyLinkDocType }),
     [nr7Data, policyAlignment, targetMap, countryConfig?.nr7PolicyLinkDocType],
   );
-  // The NR7 column: the opened row's national target, else (default) where
-  // the flagged pairs repeat, with the top-ranked target behind schedule
-  // standing in when nothing repeats. Null without links (the wheel stays).
+  // The NR7 column: the opened row's national target, else (default) the
+  // top row's; `recurring` marks the counterparts that repeat across the
+  // rows. Null without links (the wheel stays).
   const nr7CenterRow = useMemo(() => {
     if (!nr7Report) return null;
     const ranked = rankPolicyLinkCandidates(nr7Report);
@@ -1615,7 +1615,6 @@ export function CoherenceBriefing({
           visibleTargetIds={visibleTargetIds}
           onOpenTarget={openTargetProfile}
           recurring={nr7CenterRow.recurring}
-          onOpenRow={setFocusedNr7TargetId}
         />
       );
     }
