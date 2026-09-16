@@ -78,7 +78,7 @@ describe("buildReviewGroups", () => {
     // NT01 and NT04 tie on links and documents (no flagged links either): the lower number leads. NT03 is not behind schedule: last.
     expect(pl.items.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02", "NT03"]);
     expect(pl.items.map((i) => i.behind)).toEqual([true, true, true, false]);
-    expect(pl).toMatchObject({ total: 4, hidden: 0, candidates: 3, maxCount: 3, behindFlagged: 0 });
+    expect(pl).toMatchObject({ total: 4, hidden: 0, candidates: 3, maxCount: 3, topFlaggedDoc: null });
     expect(pl.lead.map((i) => i.row.targetId)).toEqual(["NT01", "NT04", "NT02"]);
     expect(pl.items[0].evidence).toEqual({ kind: "policyLinks", count: 3, max: 3, docs: 2, flagged: 0, byDoc: [{ doc: "NDC", high: 2 }, { doc: "NAP", high: 1 }] });
     // No NBSAP match for NT03: empty links, a zero count on the same scale.
@@ -88,7 +88,10 @@ describe("buildReviewGroups", () => {
     const g2 = rankPolicyLinkCandidates(buildNr7Report(behind, contested, FIXTURE_TARGETS)!);
     expect(g2!.items.map((i) => i.row.targetId)).toEqual(["NT04", "NT01", "NT02", "NT03"]);
     expect(g2!.items[0].evidence.flagged).toBe(1);
-    expect(g2!.behindFlagged).toBe(1);
+    // The body names the document most flagged pairs are with, once.
+    expect(g2!.topFlaggedDoc).toEqual({ doc: "NDC", flagged: 1, total: 1 });
+    const spread = rankPolicyLinkCandidates(buildNr7Report(behind, [...contested, flag("NBSAP_1", "NAP_1"), flag("NBSAP_2", "NAP_1")], FIXTURE_TARGETS)!);
+    expect(spread!.topFlaggedDoc).toEqual({ doc: "NAP", flagged: 2, total: 3 });
     // The cap folds the rest behind "Show all".
     const capped = rankPolicyLinkCandidates(buildNr7Report(behind, FIXTURE_ALIGNMENT, FIXTURE_TARGETS)!, 2);
     expect(capped).toMatchObject({ hidden: 2 });
@@ -181,7 +184,9 @@ describe.skipIf(!present)("buildReviewGroups on the Mongolia data", () => {
     expect(pl.top.map((i) => i.row.targetId)).toEqual(["NT08", "NT02", "NT01", "NT07", "NT18"]);
     // All 20 national targets: the 13 rated behind schedule first (every one linked), then the 7 others.
     // Nine of the thirteen carry at least one flagged pair.
-    expect(pl).toMatchObject({ candidates: 13, total: 20, hidden: 15, maxCount: 60, behindFlagged: 9 });
+    expect(pl).toMatchObject({ candidates: 13, total: 20, hidden: 15, maxCount: 60 });
+    // Most of the 168 flagged pairs are with the food security strategy: the body says so once.
+    expect(pl.topFlaggedDoc).toEqual({ doc: "FSS", flagged: 87, total: 168 });
     expect(pl.lead).toHaveLength(13);
     expect(pl.items.slice(0, 13).every((i) => i.behind)).toBe(true);
     expect(pl.items.slice(13).every((i) => !i.behind)).toBe(true);

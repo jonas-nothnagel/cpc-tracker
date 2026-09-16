@@ -106,6 +106,11 @@ export function Nr7PolicyLinkRows(props: Nr7PolicyLinkRowsProps) {
           {showAll ? t("showFewer") : t("showAll", { count: group.total })}
         </button>
       )}
+      {/* The view's one caveat: the ratings are the report's, the links are
+          AI-estimated. Nowhere else on this view repeats it. */}
+      <p className="mt-3 text-caption text-[var(--undp-gray)] max-w-prose leading-relaxed" data-testid="policy-link-caveat">
+        {tPl("caveat")}
+      </p>
     </div>
   );
 }

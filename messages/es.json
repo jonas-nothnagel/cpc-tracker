@@ -1051,9 +1051,9 @@
         "short": "NR7: {status}"
       },
       "footer": {
-        "sources": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country}. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
-        "sourcesWithNr7": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country} y su 7.º Informe Nacional (NR7) al CDB. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
-        "sourcesNr7Only": "Evidencia: el 7.º Informe Nacional (NR7) de {country} al CDB. Una lente autorreportada, no una auditoría completa; las correspondencias y señales de revisión son estimadas por IA, conviene verificarlas.",
+        "sources": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country}. Una lente autorreportada, no una auditoría completa.",
+        "sourcesWithNr7": "Evidencia: el Informe Bienal de Transparencia (BTR) de {country} y su 7.º Informe Nacional (NR7) al CDB. Una lente autorreportada, no una auditoría completa.",
+        "sourcesNr7Only": "Evidencia: el 7.º Informe Nacional (NR7) de {country} al CDB. Una lente autorreportada, no una auditoría completa.",
         "notIncluded": "Aún no incluido: series temporales de indicadores, ejecución presupuestaria, reportes de entrega a nivel de proyecto."
       },
       "misalignment": {
@@ -1143,11 +1143,11 @@
         "start": "Abre una fila para ver la calificación junto a la evidencia, con las palabras y cifras del propio informe. Cada una es una pregunta por resolver antes del próximo informe: ¿es correcta la calificación, o la evidencia?",
         "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA.",
         "policyLinks": {
-          "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas. {flagged, plural, =0 {Ninguna de ellas presenta} one {Una de ellas presenta} other {# de ellas presentan}} posibles desalineaciones con otros planes nacionales.",
-          "body": "Primero van las metas que el informe califica como {limited} o {noProgress}. Cada fila dice cuántos pares señaló la IA como posibles desalineaciones y en qué plan está la mayoría.",
-          "start": "Abre la meta nacional {n} ({text}): calificada {rating}, {flaggedLine}. Vale la pena mirar de cerca qué dice el informe que la frena; la columna de al lado muestra qué planes comparten el objetivo.",
-          "startFlagged": "Abre la meta nacional {n} ({text}): calificada {rating}, {flaggedLine}. Vale la pena mirar de cerca si esos pares tienen que ver con lo que el informe dice que la frena; la columna de al lado lista las metas de otros planes en las que esos pares se repiten.",
-          "startCaveat": "Las calificaciones, respuestas y cifras son del propio informe. Los vínculos con otros documentos son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
+          "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas.",
+          "body": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados señaló la IA como posibles desalineaciones. La mayoría de los pares señalados son con {doc}.",
+          "bodyNoFlagged": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados señaló la IA como posibles desalineaciones. Ninguno está señalado.",
+          "start": "Empieza por la primera fila: qué dice el informe que la frena y, luego, si los planes vinculados tienen que ver con ello.",
+          "caveat": "Las calificaciones y las palabras del informe son del propio informe. Los vínculos con otros planes son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
           "flaggedFace": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, sobre todo con {doc}",
           "flaggedFaceOne": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}, con {doc}",
           "noneFlagged": "sin posibles desalineaciones",

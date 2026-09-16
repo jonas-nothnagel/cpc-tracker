@@ -1051,9 +1051,9 @@
         "short": "NR7: {status}"
       },
       "footer": {
-        "sources": "Evidence: {country}'s Biennial Transparency Report (BTR). One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
-        "sourcesWithNr7": "Evidence: {country}'s Biennial Transparency Report (BTR) and 7th National Report (NR7) to the CBD. One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
-        "sourcesNr7Only": "Evidence: {country}'s 7th National Report (NR7) to the CBD. One self-reported lens, not a complete audit; matches and review prompts are AI-estimated, worth verifying.",
+        "sources": "Evidence: {country}'s Biennial Transparency Report (BTR). One self-reported lens, not a complete audit.",
+        "sourcesWithNr7": "Evidence: {country}'s Biennial Transparency Report (BTR) and 7th National Report (NR7) to the CBD. One self-reported lens, not a complete audit.",
+        "sourcesNr7Only": "Evidence: {country}'s 7th National Report (NR7) to the CBD. One self-reported lens, not a complete audit.",
         "notIncluded": "Not yet included: indicator time series, budget execution, project-level delivery reporting."
       },
       "misalignment": {
@@ -1143,11 +1143,11 @@
         "start": "Open a row to see the rating beside the evidence, in the report's own words and numbers. Each is a question to settle before the next report: is the rating right, or is the evidence?",
         "startCaveat": "Computed from the report's own statements. Nothing on this tab is AI-generated.",
         "policyLinks": {
-          "headline": "{country}'s biodiversity report rates {behind} of {targets} national targets behind schedule. {flagged, plural, =0 {None of them carries} one {One of them carries} other {# of them carry}} potential misalignments with other national plans.",
-          "body": "Targets the report rates {limited} or {noProgress} come first. Each row says how many pairs the AI flagged as potential misalignments and which plan most of them are in.",
-          "start": "Open national target {n} ({text}): rated {rating}, {flaggedLine}. Worth a closer look at what the report says holds it back; the column beside shows which plans share the aim.",
-          "startFlagged": "Open national target {n} ({text}): rated {rating}, {flaggedLine}. Worth a closer look at whether those pairs bear on what the report says holds it back; the column beside lists the targets in other plans those pairs repeat on.",
-          "startCaveat": "Ratings, answers and figures are the report's own. Links to other documents are AI-estimated alignment between target texts: a prompt for review, not a record of delivery or funding.",
+          "headline": "{country}'s biodiversity report rates {behind} of {targets} national targets behind schedule.",
+          "body": "Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. Most flagged pairs are with the {doc}.",
+          "bodyNoFlagged": "Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. None is flagged.",
+          "start": "Start with the top row: what the report says holds it back, then whether the linked plans bear on it.",
+          "caveat": "Ratings and the report's words are the report's own. Links to other plans are AI-estimated alignment between target texts: a prompt for review, not a record of delivery or funding.",
           "flaggedFace": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, mostly with the {doc}",
           "flaggedFaceOne": "{count, plural, one {# potential misalignment} other {# potential misalignments}}, with the {doc}",
           "noneFlagged": "no potential misalignments",

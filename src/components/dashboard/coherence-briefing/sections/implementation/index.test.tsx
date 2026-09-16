@@ -85,14 +85,16 @@ describe("ImplementationSection", () => {
 
   it("biodiversity report: the finding, a plain body, where to start, the policy-link rows and three folded sections", () => {
     renderSlide({ report: "nr7" });
-    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule. None of them carries potential misalignments with other national plans.");
-    expect(body()).toBe("Targets the report rates Limited progress or No progress come first. Each row says how many pairs the AI flagged as potential misalignments and which plan most of them are in.");
+    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule.");
+    expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. None is flagged.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
     expect(start()).toContain("Where to start");
-    expect(start()).toContain("Open national target 4 (By 2030, reduce pollution.): rated no progress, no potential misalignments.");
-    expect(start()).toContain("Worth a closer look at what the report says holds it back; the column beside shows which plans share the aim.");
-    expect(start()).toContain("AI-estimated alignment between target texts");
+    expect(start()).toContain("Start with the top row: what the report says holds it back, then whether the linked plans bear on it.");
+    expect(start()).not.toContain("AI-estimated");
     expect(start()).not.toContain("Nothing on this tab is AI-generated.");
+    // One caveat on the view, under the rows; nothing else repeats it.
+    expect(screen.getByTestId("policy-link-caveat")).toHaveTextContent("Links to other plans are AI-estimated alignment between target texts");
+    expect(document.body.textContent!.match(/AI-estimated/g)).toHaveLength(1);
     // All four national targets, the one behind schedule with links first; the headline counts that one.
     expect(document.querySelectorAll('[data-tour="review-visual"] li')).toHaveLength(4);
     expect(document.querySelector('[data-tour="review-row"]')?.getAttribute("aria-label")).toMatch(/^4 · /);
@@ -108,16 +110,16 @@ describe("ImplementationSection", () => {
     expect(screen.getByText(/Evidence: Testland's 7th National Report \(NR7\)/)).toBeInTheDocument();
   });
 
-  it("biodiversity report: where to start names the top target's potential misalignments when it has any, hedged", () => {
+  it("biodiversity report: the body names the document most flagged pairs are with, once, and the headline stays one number", () => {
     const contested = buildNr7Report(FIXTURE_NR7, [...FIXTURE_ALIGNMENT, flag("NBSAP_4", "NDC_1", "manageable")], FIXTURE_TARGETS)!;
     render(
       <NextIntlClientProvider locale="en" messages={en}>
         <ImplementationSection coverage={coverage} summary={summary} nr7Data={FIXTURE_NR7} nr7Report={contested} visibleTargetIds={new Set(FIXTURE_TARGETS.keys())} report="nr7" onReportChange={vi.fn()} countryName="Testland" countryConfig={null} onOpenActionPair={vi.fn()} onOpenTarget={vi.fn()} />
       </NextIntlClientProvider>,
     );
-    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule. One of them carries potential misalignments with other national plans.");
-    expect(start()).toContain("rated no progress, 1 potential misalignment, with the NDC.");
-    expect(start()).toContain("Worth a closer look at whether those pairs bear on what the report says holds it back; the column beside lists the targets in other plans those pairs repeat on.");
+    expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule.");
+    expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. Most flagged pairs are with the NDC.");
+    expect(start()).toContain("Start with the top row");
     expect(screen.getAllByTestId("policy-link-flagged-face")[0]).toHaveTextContent("1 potential misalignment, with the NDC");
     // Where the pairs repeat is the sticky column's business, never a second list on the slide.
     expect(screen.queryByTestId("recurring-counterparts")).toBeNull();

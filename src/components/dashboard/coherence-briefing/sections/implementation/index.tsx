@@ -9,10 +9,11 @@
  *
  * Order of the slide (decided with the product owner, 2026-09-09):
  *   1. The headline is the finding for the report on screen, with its
- *      denominator; the body says what was found in two plain sentences;
- *      a "Where to start" block says what to do with the visual below and
- *      how, ending with the caveat. All templated from the data. No LLM
- *      anywhere on this slide.
+ *      denominator, one sentence; the body says what was found in two plain
+ *      sentences; a "Where to start" block says what to do with the visual
+ *      below, one line. All templated from the data. No LLM anywhere on this
+ *      slide. The biodiversity view carries ONE caveat, under its rows
+ *      (the climate view keeps its own under "Where to start").
  *   2. One control: which report (./report-toggle.tsx), only when both exist,
  *      as tabs above the headline (the headline is about the chosen report).
  *   3. The takeaways as a visual: ranked two-tone bars for the climate report
@@ -35,20 +36,19 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../../slide-frame";
 import { TourButton } from "../../tour/tour-button";
-import { useNr7BadgeLabels } from "@/lib/labels";
 import { getDocFullLabel, getDocMediumLabel } from "@/lib/utils";
 import {
   nr7StatusByNbsapTarget,
   type ActionPlanAlignmentSummary,
   type ImplementationCoverage,
 } from "@/lib/implementation-coherence";
-import { shortNr7Text, type Nr7PairRef, type Nr7ReportModel } from "../../nr7-report";
+import type { Nr7PairRef, Nr7ReportModel } from "../../nr7-report";
 import type { Nr7Status } from "../../nr7-report/nr7-self-report";
 import { buildReviewGroups, POLICY_LINK_STATUSES, type BiodiversityReviewGroup, type ClimateReviewGroup } from "./review-groups";
 import { ReportToggle, type ImplementationReport } from "./report-toggle";
 import { ClimateStrainChart } from "./climate-strain-chart";
 import { Nr7CrossChecks } from "./nr7-cross-checks";
-import { flaggedLine, Nr7PolicyLinkRows } from "./nr7-policy-link-rows";
+import { Nr7PolicyLinkRows } from "./nr7-policy-link-rows";
 import { FullPicture, useNr7FullPicture } from "./full-picture";
 import type { CountryConfig, Nr7Data } from "@/types";
 
@@ -96,7 +96,6 @@ export function ImplementationSection({
   onOpenTarget: (targetId: string) => void;
 }) {
   const t = useTranslations("briefing.implementation");
-  const ratingLabels = useNr7BadgeLabels();
   const groups = useMemo(
     () => buildReviewGroups({ summary, nr7Report, btrActions: coverage.btrActions }),
     [summary, nr7Report, coverage.btrActions],
@@ -120,7 +119,7 @@ export function ImplementationSection({
   const policyLinks = groups.biodiversity?.policyLinks ?? null;
   const sentence =
     shown === "nr7" && groups.biodiversity
-      ? biodiversitySentence(groups.biodiversity, nr7Report?.totals ?? null, countryName, countryConfig, ratingLabels, t)
+      ? biodiversitySentence(groups.biodiversity, nr7Report?.totals ?? null, countryName, countryConfig, t)
       : climateSentence(groups.climate, coverage, countryName, countryConfig, t);
   const footerKey = shown === "nr7" ? "footer.sourcesNr7Only" : hasNr7 ? "footer.sourcesWithNr7" : "footer.sources";
 
@@ -264,12 +263,11 @@ export function climateSentence(
 }
 
 /** Biodiversity report. With policy-link rows: headline = how many targets
- *  the report rates behind schedule and how many of those carry potential
- *  misalignments with other plans; body = how the rows below are ordered
- *  and what each row says; start = the top target, hedged, with the same
- *  words for its potential misalignments as its row, pointing at the
- *  column beside for the plans that share the aim and where the pairs
- *  repeat, with the caveat that the links are AI-estimated.
+ *  the report rates behind schedule, one number; body = what a row shows,
+ *  and the one document most flagged pairs are with (said here once, not
+ *  on every row); start = one hedged line on the top row (what the report
+ *  says holds it back, then whether the linked plans bear on it). The
+ *  caveat is the rows' own single line, not part of the sentence.
  *  Without them (no policy alignment visible): headline = the cross-check
  *  count; body = what the report gives per target and that these are the
  *  places it does not agree; start = open a row, then settle which side is
@@ -279,27 +277,17 @@ export function biodiversitySentence(
   totals: { targets: number; byStatus: Record<Nr7Status, number> } | null,
   countryName: string,
   countryConfig: CountryConfig | null,
-  ratingLabels: Record<Nr7Status, string>,
   t: T,
 ): Sentence {
   const links = group.policyLinks;
   if (links && totals) {
-    const lead = links.lead[0];
     const behind = [...POLICY_LINK_STATUSES].reduce((n, s) => n + (totals.byStatus[s] ?? 0), 0);
-    const flagged = flaggedLine(lead, countryConfig);
     return {
-      headline: t("biodiversity.policyLinks.headline", { country: countryName, behind, targets: totals.targets, flagged: links.behindFlagged }),
-      body: t("biodiversity.policyLinks.body", { limited: ratingLabels.limited, noProgress: ratingLabels.no_progress }),
-      // With potential misalignments on the top target, the pointer says the
-      // row's words for them: hedged ("worth a closer look at whether"), no
-      // cause claimed.
-      start: t(flagged.key === "noneFlagged" ? "biodiversity.policyLinks.start" : "biodiversity.policyLinks.startFlagged", {
-        n: lead.row.number,
-        text: shortNr7Text(lead.row.targetText, 60),
-        rating: ratingLabels[lead.row.status].toLocaleLowerCase(),
-        flaggedLine: t(`biodiversity.policyLinks.${flagged.key}`, flagged.values),
-      }),
-      startCaveat: t("biodiversity.policyLinks.startCaveat"),
+      headline: t("biodiversity.policyLinks.headline", { country: countryName, behind, targets: totals.targets }),
+      body: links.topFlaggedDoc
+        ? t("biodiversity.policyLinks.body", { doc: docInProse(countryConfig, links.topFlaggedDoc.doc) })
+        : t("biodiversity.policyLinks.bodyNoFlagged"),
+      start: t("biodiversity.policyLinks.start"),
     };
   }
   if (group.total === 0) {

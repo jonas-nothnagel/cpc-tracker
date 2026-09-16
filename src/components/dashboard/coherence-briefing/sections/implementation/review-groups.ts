@@ -152,9 +152,9 @@ export interface Nr7PolicyLinkGroup {
   /** Targets rated behind schedule with >= 1 HIGH link, ranked: the rows
    *  "Where to start" speaks about. Never empty. */
   lead: Nr7PolicyLinkItem[];
-  /** Targets rated behind schedule with >= 1 flagged link (the headline's
-   *  "N of them"). */
-  behindFlagged: number;
+  /** The document most of the flagged pairs across every row are with
+   *  (the body's one sentence about them); null when nothing is flagged. */
+  topFlaggedDoc: { doc: string; flagged: number; total: number } | null;
   /** Largest HIGH-link count over every row. */
   maxCount: number;
 }
@@ -252,9 +252,26 @@ export function rankPolicyLinkCandidates(model: Nr7ReportModel, cap: number = PO
     hidden: Math.max(0, items.length - cap),
     candidates: candidates.length,
     lead,
-    behindFlagged: items.filter((i) => i.behind && i.evidence.flagged > 0).length,
+    topFlaggedDoc: topFlaggedDoc(items),
     maxCount,
   };
+}
+
+/** The document with the most flagged pairs over every row (ties by id),
+ *  with the total across all documents. Null when nothing is flagged. */
+function topFlaggedDoc(items: Nr7PolicyLinkItem[]): Nr7PolicyLinkGroup["topFlaggedDoc"] {
+  const byDoc = new Map<string, number>();
+  let total = 0;
+  for (const item of items) {
+    for (const d of item.links.byDoc) {
+      if (d.flagged === 0) continue;
+      byDoc.set(d.doc, (byDoc.get(d.doc) ?? 0) + d.flagged);
+      total += d.flagged;
+    }
+  }
+  if (total === 0) return null;
+  const [doc, flagged] = [...byDoc.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
+  return { doc, flagged, total };
 }
 
 /** The flagged pairs across the rows, turned round: per counterpart in
