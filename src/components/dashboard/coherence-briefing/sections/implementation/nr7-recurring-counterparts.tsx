@@ -80,7 +80,7 @@ function CounterpartRow({
       <p className="text-caption font-medium leading-snug mt-0.5 pl-3.5" style={{ color: FLAGGED_COLOR }} data-testid="recurring-count">
         {t("pairCount", { count: item.count, targets, behind: item.behindCount })}
       </p>
-      <ul className="mt-1 pl-3.5 space-y-0.5" aria-label={t("hitsLabel")}>
+      <ul className="mt-1 pl-3.5 space-y-0.5 sm:grid sm:grid-cols-2 sm:gap-x-4 sm:space-y-0" aria-label={t("hitsLabel")}>
         {item.hits.map((h) => {
           const title = t("hit", { n: h.number, rating: ratingLabels[h.status] });
           const face = (
