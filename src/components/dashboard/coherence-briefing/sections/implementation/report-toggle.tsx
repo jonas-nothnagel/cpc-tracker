@@ -1,7 +1,9 @@
 "use client";
 
-/** The one control on the slide: which self-report is on screen. Pills as on
- *  the Sectors slide; blue marks the current selection. */
+/** The one control on the slide: which self-report is on screen. Two tabs
+ *  above the headline (the headline is about the report chosen here, so the
+ *  choice comes first); the current one is marked by a blue underline, the
+ *  darker weight and `aria-pressed`, never by colour alone. */
 
 import { useTranslations } from "next-intl";
 
@@ -20,17 +22,17 @@ export function ReportToggle({
     { id: "nr7", label: t("biodiversity") },
   ];
   return (
-    <div role="group" aria-label={t("aria")} className="flex flex-wrap items-center gap-1.5" data-tour="report-toggle">
+    <div role="group" aria-label={t("aria")} className="flex flex-wrap items-end gap-x-5 border-b border-line" data-tour="report-toggle">
       {options.map((o) => (
         <button
           key={o.id}
           type="button"
           onClick={() => onChange(o.id)}
           aria-pressed={report === o.id}
-          className={`text-caption px-2.5 py-1 rounded-full border transition-colors ${
+          className={`-mb-px pb-2 pt-1 text-data border-b-2 transition-colors ${
             report === o.id
-              ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
-              : "border-gray-300 text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-400"
+              ? "border-[var(--undp-blue)] text-[var(--undp-black)] font-medium"
+              : "border-transparent text-[var(--undp-gray)] hover:text-[var(--undp-black)] hover:border-gray-300"
           }`}
         >
           {o.label}

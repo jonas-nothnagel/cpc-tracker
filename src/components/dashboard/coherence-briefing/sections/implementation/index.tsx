@@ -13,7 +13,8 @@
  *      a "Where to start" block says what to do with the visual below and
  *      how, ending with the caveat. All templated from the data. No LLM
  *      anywhere on this slide.
- *   2. One control: which report (./report-toggle.tsx), only when both exist.
+ *   2. One control: which report (./report-toggle.tsx), only when both exist,
+ *      as tabs above the headline (the headline is about the chosen report).
  *   3. The takeaways as a visual: ranked two-tone bars for the climate report
  *      (./climate-strain-chart.tsx); for the biodiversity report every
  *      national target, the ones rated behind schedule first, ranked by their
@@ -129,7 +130,7 @@ export function ImplementationSection({
       headline={sentence.headline}
       body={sentence.body}
       reading={sentence.start ? <WhereToStart heading={t("startHeading")} text={sentence.start} caveat={sentence.startCaveat} /> : undefined}
-      controls={showToggle ? <ReportToggle report={shown} onChange={onReportChange!} /> : undefined}
+      controlsFirst={showToggle ? <ReportToggle report={shown} onChange={onReportChange!} /> : undefined}
       tourButton={
         showEvidence ? (
           <TourButton tourId="implementationCoverage" scopeId={IMPLEMENTATION_SECTION_ID} labelled />

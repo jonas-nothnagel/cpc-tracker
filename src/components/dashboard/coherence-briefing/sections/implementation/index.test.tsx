@@ -137,9 +137,13 @@ describe("ImplementationSection", () => {
     expect(document.querySelectorAll('[data-tour="full-picture"] > details')).toHaveLength(2);
   });
 
-  it("the toggle hands the switch to the host", () => {
+  it("the toggle sits above the headline and hands the switch to the host", () => {
     const onReportChange = vi.fn();
     renderSlide({ report: "btr", onReportChange });
+    const group = screen.getByRole("group", { name: "Choose a report" });
+    const heading = screen.getByRole("heading", { level: 2 });
+    // The headline is about the chosen report, so the choice comes first in reading order.
+    expect(group.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Biodiversity report (NR7)" }));
     expect(onReportChange).toHaveBeenCalledWith("nr7");
   });
