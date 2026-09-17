@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest, NextResponse } from "next/server";
+import { readdirSync } from "fs";
+import { join, relative, sep } from "path";
 
 // next-intl's ESM middleware build imports "next/server" in a way vitest can't
 // resolve; the intl handler isn't exercised by these auth/static paths, so mock it.
@@ -7,7 +9,7 @@ vi.mock("next-intl/middleware", () => ({
   default: () => () => NextResponse.next(),
 }));
 
-const { default: proxy, isGatedPath } = await import("./proxy");
+const { default: proxy, isGatedPath, isPublicFile } = await import("./proxy");
 
 const TOKEN = "test-token-xyz";
 
@@ -115,6 +117,16 @@ describe("proxy auth gate", () => {
     expect((await proxy(req("/undp-logo.png"))).status).toBe(200);
   });
 
+  it("does not let a file extension on an API path skip the CSRF check", async () => {
+    const res = await proxy(
+      req("/api/ratings/mongolia.json", {
+        method: "POST",
+        headers: { origin: "https://evil.example", host: "app.example.org" },
+      }),
+    );
+    expect(res.status).toBe(403);
+  });
+
   it("leaves the public health + auth endpoints open", async () => {
     expect((await proxy(req("/api/health"))).status).toBe(200);
     expect((await proxy(req("/api/auth", { method: "POST" }))).status).toBe(200);
@@ -174,5 +186,45 @@ describe("proxy auth gate", () => {
     } finally {
       vi.unstubAllEnvs();
     }
+  });
+});
+
+describe("isPublicFile", () => {
+  it("covers every file under public/, so none falls through to locale routing", () => {
+    // A public file whose extension is not on the list is rewritten to
+    // /en/<file> by next-intl and 404s (the methodology walkthrough, 2026-09-15
+    // to 2026-09-17). Adding a file type to public/ must extend PUBLIC_FILE_RE.
+    const root = join(process.cwd(), "public");
+    const files: string[] = [];
+    const walk = (dir: string) => {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        const full = join(dir, entry.name);
+        if (entry.isDirectory()) walk(full);
+        else files.push("/" + relative(root, full).split(sep).join("/"));
+      }
+    };
+    walk(root);
+    expect(files.length).toBeGreaterThan(0);
+    const uncovered = files.filter((f) => !isPublicFile(f));
+    expect(uncovered, "public files the proxy would swallow").toEqual([]);
+  });
+
+  it("names the walkthrough and brief in every locale, and common document types", () => {
+    for (const f of [
+      "/methodology-experience.html",
+      "/methodology-experience.es.html",
+      "/methodology-brief.mn.html",
+      "/guide.pdf",
+      "/data/export.csv",
+      "/notes.md",
+    ]) {
+      expect(isPublicFile(f), f).toBe(true);
+    }
+  });
+
+  it("is not consulted for pages or API routes with dotted segments", () => {
+    expect(isPublicFile("/en/analysis/test.id")).toBe(false);
+    expect(isPublicFile("/api/analyze/test.id/status")).toBe(false);
+    expect(isPublicFile("/mongolia")).toBe(false);
   });
 });

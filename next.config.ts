@@ -31,6 +31,16 @@ const securityHeaders = [
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
 ];
 
+// For files this app frames itself (see headers() below): same origin may
+// embed them, nobody else.
+const framedFileHeaders = [
+  {
+    key: "Content-Security-Policy",
+    value: contentSecurityPolicy.replace("frame-ancestors 'none'", "frame-ancestors 'self'"),
+  },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+];
+
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
@@ -38,7 +48,16 @@ const nextConfig: NextConfig = {
     },
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // The "How it works" page (src/app/[locale]/methodology) shows the
+      // walkthrough from public/ in a same-origin iframe. The strict defaults
+      // above forbid framing outright, so these files get a same-origin
+      // exception; a later rule overrides the earlier one for the same key.
+      // Only the files that are framed are listed: the printable brief opens
+      // in a new tab and keeps the defaults.
+      { source: "/:file(methodology-experience.*\\.html)", headers: framedFileHeaders },
+    ];
   },
 };
 

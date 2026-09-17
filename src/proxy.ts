@@ -13,12 +13,25 @@ import { gateBypassed, hasValidAuth } from "./lib/auth/token";
 const intlMiddleware = createMiddleware(routing);
 
 const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
-// Static assets are matched by extension INSIDE the middleware (below) rather
-// than excluded by the matcher regex. A regex exclusion for dotted paths would
-// also skip auth for dynamic route segments that contain a dot
-// (e.g. /api/ratings/us.test, /en/analysis/x.y) — an auth-gate bypass.
-const STATIC_EXT_RE =
-  /\.(?:js|mjs|css|png|jpg|jpeg|gif|svg|ico|webp|avif|woff|woff2|ttf|eot|map|xml|txt|webmanifest)$/i;
+// Files served from `public/` are matched by extension INSIDE the middleware
+// (below) rather than excluded by the matcher regex. A regex exclusion for
+// dotted paths would also skip auth for dynamic route segments that contain a
+// dot (e.g. /api/ratings/us.test, /en/analysis/x.y) — an auth-gate bypass.
+//
+// The list must cover every file type that lives under `public/`: a file whose
+// extension is missing here falls through to locale routing, gets rewritten to
+// /en/<file> and 404s (the methodology walkthrough, an .html file, did exactly
+// that from 2026-09-15 to 2026-09-17). `src/proxy.test.ts` walks `public/` and
+// fails when a file is added that this list does not cover.
+const PUBLIC_FILE_RE =
+  /\.(?:js|mjs|css|png|jpg|jpeg|gif|svg|ico|webp|avif|woff|woff2|ttf|eot|map|xml|txt|webmanifest|html|htm|pdf|json|csv|md|docx|xlsx|pptx|zip|mp4|webm|mp3|ogg|wav|m4a|vtt)$/i;
+
+/** True for a request path that names a file under `public/` by extension.
+ *  Never consulted for API paths, which are handled first (a dotted dynamic
+ *  API segment must not skip the CSRF and gate checks). */
+export function isPublicFile(pathname: string): boolean {
+  return PUBLIC_FILE_RE.test(pathname);
+}
 
 // API routes that ingest uploaded documents or spend LLM budget on them.
 // `/api/analyze` is the exact POST that starts a run; `/api/analyze/<id>/status`
@@ -85,19 +98,15 @@ function isCrossSiteMutation(req: NextRequest): boolean {
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Static assets: pass through without an auth check (identified by extension,
-  // not by a matcher regex — see STATIC_EXT_RE).
-  if (
-    pathname.startsWith("/_next/") ||
-    pathname.startsWith("/_vercel/") ||
-    STATIC_EXT_RE.test(pathname)
-  ) {
+  if (pathname.startsWith("/_next/") || pathname.startsWith("/_vercel/")) {
     return NextResponse.next();
   }
 
   const api = isApiPath(pathname);
-  const analytics = isAnalyticsPath(pathname);
 
+  // Order matters. The API checks come first so that an API path ending in a
+  // file extension (a dotted dynamic segment such as /api/ratings/x.json) can
+  // never be mistaken for a public file and skip them.
   if (api && isCrossSiteMutation(req)) {
     return NextResponse.json({ error: "Cross-site request blocked" }, { status: 403 });
   }
@@ -113,8 +122,9 @@ export default async function proxy(req: NextRequest) {
     }
   }
 
-  // API and analytics are outside the locale tree — pass them straight through.
-  if (api || analytics) {
+  // API and analytics are outside the locale tree; so is every file served
+  // from `public/` (see PUBLIC_FILE_RE). Pass them straight through.
+  if (api || isAnalyticsPath(pathname) || isPublicFile(pathname)) {
     return NextResponse.next();
   }
   // Everything else goes through next-intl locale routing.
@@ -122,9 +132,9 @@ export default async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  // Run on everything except Next/Vercel internals. Static files are passed
-  // through by extension INSIDE the middleware (STATIC_EXT_RE) — we deliberately
-  // do NOT exclude dotted paths here, because that skipped auth for dynamic
-  // route segments containing a dot (an auth-gate bypass).
+  // Run on everything except Next/Vercel internals. Files under `public/` are
+  // passed through by extension INSIDE the middleware (PUBLIC_FILE_RE) — we
+  // deliberately do NOT exclude dotted paths here, because that skipped auth
+  // for dynamic route segments containing a dot (an auth-gate bypass).
   matcher: ["/((?!_next|_vercel).*)"],
 };
