@@ -22,8 +22,34 @@ export function FootprintChip() {
   const pathname = usePathname();
   const t = useTranslations("sustainability");
   const [co2, setCo2] = useState<number | null>(null);
+  // Fold-safe: at the top of a scrollable page the chip stays out of the way
+  // (it overlapped the briefing's corpus chips at laptop sizes). It appears
+  // once the reader scrolls; on pages too short to scroll it shows directly,
+  // so the link is never unreachable.
+  const [pastFold, setPastFold] = useState(false);
 
   const suppressed = pathname === "/sustainability";
+
+  useEffect(() => {
+    const update = () =>
+      setPastFold(
+        window.scrollY > 120 ||
+          document.documentElement.scrollHeight <=
+            window.innerHeight + 40,
+      );
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    // The page grows after mount (data arrives, sections render) — without
+    // this, a short loading state would latch the chip visible at the top.
+    const observer = new ResizeObserver(update);
+    observer.observe(document.documentElement);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (suppressed) return;
@@ -39,7 +65,7 @@ export function FootprintChip() {
     };
   }, [suppressed]);
 
-  if (suppressed || co2 === null || co2 <= 0) return null;
+  if (suppressed || co2 === null || co2 <= 0 || !pastFold) return null;
 
   // Anchored bottom-right on every page (the landing hero's WCAG pause/play
   // control sits bottom-left so they never overlap), so the link lives in the

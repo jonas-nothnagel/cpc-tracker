@@ -47,7 +47,7 @@ interface PrimaryAdaptation {
 }
 
 interface ChatContext {
-  mode: "document" | "globe" | "sector" | "gga";
+  mode: "document" | "globe" | "sector" | "gga" | "hr";
   filter: string;
   groups: { id: string; label: string }[];
   /** Subset of group ids the user currently has toggled on. The model
@@ -70,6 +70,7 @@ interface ChatContext {
     primaryGlobe?: PrimaryRef;
     primarySector?: PrimaryRef;
     primaryGga?: PrimaryRef;
+    primaryHr?: PrimaryRef;
     primaryAdaptationGoal?: PrimaryAdaptation;
   }[];
   /** Taxonomy lists with descriptions so the model can resolve free-text
@@ -78,6 +79,7 @@ interface ChatContext {
     globe: { id: string; name: string; description?: string }[];
     sector: { id: string; name: string; description?: string }[];
     gga: { id: string; name: string; description?: string }[];
+    hr: { id: string; name: string; description?: string }[];
     adaptation: { id: string; description: string }[];
   };
   /** AI-generated rationales for every non-"none" alignment pair. */
@@ -167,7 +169,7 @@ type ChatAction =
   | { type: "focus_category"; categoryId: string }
   | { type: "select_target"; targetId: string }
   | { type: "select_pair"; targetAId: string; targetBId: string }
-  | { type: "set_mode"; mode: "document" | "globe" | "sector" | "gga" }
+  | { type: "set_mode"; mode: "document" | "globe" | "sector" | "gga" | "hr" }
   /** Unhide one or more docs so the next action's target is visible. */
   | { type: "show_docs"; ids: string[] }
   | { type: "noop" };
@@ -209,7 +211,7 @@ TOOLS
 - focus_category(categoryId): focus a group arc on the wheel
 - select_target(targetId): open the target detail panel
 - select_pair(targetAId, targetBId): open the pair compare view, best for "why X conflicts with Y" since the rationale renders automatically
-- set_mode(mode): document | globe | sector | gga
+- set_mode(mode): document | globe | sector | gga | hr
 - show_docs(ids): unhide a hidden document group; call BEFORE focus / select if your target's doc is currently hidden
 
 SCOPE OF THIS TURN
@@ -313,11 +315,11 @@ const TOOLS = [
     function: {
       name: "set_mode",
       description:
-        "Switch the wheel grouping mode. document = group arcs by source document. globe = group by biodiversity (GLOBE) category. sector = group by climate mitigation (IPCC) sector. gga = group by climate resilience (Global Goal on Adaptation) theme.",
+        "Switch the wheel grouping mode. document = group arcs by source document. globe = group by biodiversity (GLOBE) category. sector = group by climate mitigation (IPCC) sector. gga = group by climate resilience (Global Goal on Adaptation) theme. hr = group by human rights theme.",
       parameters: {
         type: "object",
         properties: {
-          mode: { type: "string", enum: ["document", "globe", "sector", "gga"] },
+          mode: { type: "string", enum: ["document", "globe", "sector", "gga", "hr"] },
         },
         required: ["mode"],
         additionalProperties: false,
@@ -372,6 +374,7 @@ function buildUserMessage(
       if (t.primaryGlobe) tags.push(`globe=${t.primaryGlobe.id}:${t.primaryGlobe.name}`);
       if (t.primarySector) tags.push(`sector=${t.primarySector.id}:${t.primarySector.name}`);
       if (t.primaryGga) tags.push(`gga=${t.primaryGga.id}:${t.primaryGga.name}`);
+      if (t.primaryHr) tags.push(`hr=${t.primaryHr.id}:${t.primaryHr.name}`);
       if (t.primaryAdaptationGoal)
         tags.push(`adaptation=${t.primaryAdaptationGoal.id}:${t.primaryAdaptationGoal.description.slice(0, 80)}`);
       const tagStr = tags.length ? `\n  primary: ${tags.join(" | ")}` : "";
@@ -403,6 +406,14 @@ function buildUserMessage(
           : "",
         tax.gga.length
           ? `Global Goal on Adaptation climate-resilience themes (taxonomyType=gga):\n${tax.gga
+              .map(
+                (c) =>
+                  `${c.id} | ${c.name}${c.description ? ` — ${c.description.replace(/\s+/g, " ").slice(0, 200)}` : ""}`,
+              )
+              .join("\n")}`
+          : "",
+        tax.hr.length
+          ? `Human rights themes (taxonomyType=hr). These describe which rights themes a target ENGAGES, based on the reviewed documents; they are not an assessment of a country's human rights record:\n${tax.hr
               .map(
                 (c) =>
                   `${c.id} | ${c.name}${c.description ? ` — ${c.description.replace(/\s+/g, " ").slice(0, 200)}` : ""}`,
@@ -1071,14 +1082,30 @@ const ACTION_ORDER: Record<ChatAction["type"], number> = {
   noop: 6,
 };
 
+// The client-supplied context blob (target index + rationales + synthesis) is
+// large but bounded; cap the whole body before buffering, plus the free-text
+// fields, so an unauthenticated caller can't drive unbounded LLM cost.
+const MAX_BODY_BYTES = 2 * 1024 * 1024; // 2 MB
+const MAX_QUERY_CHARS = 4_000;
+const MAX_HISTORY_CONTENT_CHARS = 8_000;
+
 export async function POST(req: Request) {
+  const declaredLength = Number(req.headers.get("content-length"));
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Body too large" }, { status: 413 });
+  }
+  const rawText = await req.text();
+  if (rawText.length > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Body too large" }, { status: 413 });
+  }
+
   let body: {
     query?: string;
     context?: ChatContext;
     history?: HistoryTurn[];
   };
   try {
-    body = (await req.json()) as {
+    body = JSON.parse(rawText) as {
       query?: string;
       context?: ChatContext;
       history?: HistoryTurn[];
@@ -1088,9 +1115,17 @@ export async function POST(req: Request) {
   }
   const query = (body.query ?? "").trim();
   const context = body.context;
-  const history = (body.history ?? []).slice(-3); // cap at 3 turns
+  const history = (body.history ?? [])
+    .slice(-3) // cap at 3 turns
+    .map((t) => ({
+      role: t.role,
+      content: (t.content ?? "").slice(0, MAX_HISTORY_CONTENT_CHARS),
+    }));
   if (!query) {
     return NextResponse.json({ error: "Empty query" }, { status: 400 });
+  }
+  if (query.length > MAX_QUERY_CHARS) {
+    return NextResponse.json({ error: "Query too long" }, { status: 413 });
   }
   if (!context) {
     return NextResponse.json({ error: "Missing context" }, { status: 400 });
@@ -1213,7 +1248,8 @@ export async function POST(req: Request) {
         mode === "document" ||
         mode === "globe" ||
         mode === "sector" ||
-        mode === "gga"
+        mode === "gga" ||
+        mode === "hr"
       ) {
         actionByType.set("set_mode", { type: "set_mode", mode });
       }
@@ -1359,6 +1395,14 @@ export async function POST(req: Request) {
           co2_geq: impacts.co2_geq,
           minerals_ugsbeq: impacts.minerals_ugsbeq,
           source: impacts.source,
+          energy_wh_min: impacts.energy_wh_min,
+          energy_wh_max: impacts.energy_wh_max,
+          water_ml_min: impacts.water_ml_min,
+          water_ml_max: impacts.water_ml_max,
+          co2_geq_min: impacts.co2_geq_min,
+          co2_geq_max: impacts.co2_geq_max,
+          minerals_ugsbeq_min: impacts.minerals_ugsbeq_min,
+          minerals_ugsbeq_max: impacts.minerals_ugsbeq_max,
         }),
       )
       .catch(() => {});

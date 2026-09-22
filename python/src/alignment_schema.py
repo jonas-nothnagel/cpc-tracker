@@ -2,7 +2,7 @@
 Shared alignment schema: label maps, parser, and legacy migration helper.
 
 Used by `align.py` (target-target), `measure_align.py` (BTR-target),
-`budget_align.py` (BER-target), and `nr7_align.py` (CBD/NR7-target).
+`budget_align.py` (BER-target).
 
 v2.1 schema:
   Positive scale (unchanged from v1): none / low / medium / high

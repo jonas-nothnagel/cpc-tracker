@@ -31,7 +31,7 @@ export type ChatAction =
   | { type: "focus_category"; categoryId: string }
   | { type: "select_target"; targetId: string }
   | { type: "select_pair"; targetAId: string; targetBId: string }
-  | { type: "set_mode"; mode: "document" | "sector" | "globe" | "gga" }
+  | { type: "set_mode"; mode: "document" | "sector" | "globe" | "gga" | "hr" }
   /** Unhide one or more documents so the next action's target is visible.
    *  Emitted by the server when the answer touches a doc that isn't in the
    *  current visible-groups set. Applied client-side before any focus or
@@ -78,7 +78,7 @@ interface ChatRankings {
 
 interface BuildChatRequestArgs {
   query: string;
-  groupMode: "document" | "sector" | "globe" | "gga";
+  groupMode: "document" | "sector" | "globe" | "gga" | "hr";
   filter: string;
   targets: Target[];
   alignment: AlignmentResult[];
@@ -86,6 +86,7 @@ interface BuildChatRequestArgs {
   sectors: ChatTaxCategory[];
   globeCategories: ChatTaxCategory[];
   ggaCategories: ChatTaxCategory[];
+  hrCategories: ChatTaxCategory[];
   btrData?: BtrData | null;
   availableDocs: PolicyDocumentType[];
   /** Docs the user currently has toggled off. Surfaced to the model as
@@ -128,6 +129,7 @@ export function buildChatRequest({
   sectors,
   globeCategories,
   ggaCategories,
+  hrCategories,
   btrData,
   availableDocs,
   hiddenDocs,
@@ -183,6 +185,7 @@ export function buildChatRequest({
     sectors,
     globeCategories,
     ggaCategories,
+    hrCategories,
     btrData,
   );
 
@@ -198,6 +201,11 @@ export function buildChatRequest({
       description: c.description,
     })),
     gga: ggaCategories.map((c) => ({
+      id: c.id,
+      name: c.name,
+      description: c.description,
+    })),
+    hr: hrCategories.map((c) => ({
       id: c.id,
       name: c.name,
       description: c.description,
@@ -267,6 +275,7 @@ export function buildChatRequest({
       primaryGlobe: primary?.globe,
       primarySector: primary?.sector,
       primaryGga: primary?.gga,
+      primaryHr: primary?.hr,
       primaryAdaptationGoal: primary?.adaptation,
     };
   });
@@ -458,6 +467,7 @@ interface PrimarySlot {
   globe?: { id: string; name: string };
   sector?: { id: string; name: string };
   gga?: { id: string; name: string };
+  hr?: { id: string; name: string };
   adaptation?: { id: string; description: string };
 }
 
@@ -466,11 +476,13 @@ function buildPrimaryByTarget(
   sectors: ChatTaxCategory[],
   globeCategories: ChatTaxCategory[],
   ggaCategories: ChatTaxCategory[],
+  hrCategories: ChatTaxCategory[],
   btrData: BtrData | null | undefined,
 ): Map<string, PrimarySlot> {
   const globeById = new Map(globeCategories.map((c) => [c.id, c.name]));
   const sectorById = new Map(sectors.map((c) => [c.id, c.name]));
   const ggaById = new Map(ggaCategories.map((c) => [c.id, c.name]));
+  const hrById = new Map(hrCategories.map((c) => [c.id, c.name]));
   const adaptationById = new Map(
     (btrData?.adaptationGoals ?? []).map((g) => [g.id, g.description]),
   );
@@ -484,6 +496,8 @@ function buildPrimaryByTarget(
       slot.sector = { id: c.categoryId, name: sectorById.get(c.categoryId)! };
     } else if (c.taxonomyType === "gga" && ggaById.has(c.categoryId)) {
       slot.gga = { id: c.categoryId, name: ggaById.get(c.categoryId)! };
+    } else if (c.taxonomyType === "hr" && hrById.has(c.categoryId)) {
+      slot.hr = { id: c.categoryId, name: hrById.get(c.categoryId)! };
     } else if (
       c.taxonomyType === "adaptation_goal" &&
       adaptationById.has(c.categoryId)

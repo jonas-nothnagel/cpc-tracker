@@ -19,10 +19,10 @@ import {
 import { ConstellationCenterpiece } from "./constellation";
 import { WheelLegend } from "./wheel-legend";
 import type {
-  AlignmentResult,
   CountryConfig,
-  Target,
   ThematicClassification,
+  WheelAlignment,
+  WheelTarget,
 } from "@/types";
 
 export { WheelLegend } from "./wheel-legend";
@@ -45,8 +45,8 @@ export function Centerpiece({
   onPairClick,
   onArcClick,
 }: {
-  targets: Target[];
-  alignments: AlignmentResult[];
+  targets: WheelTarget[];
+  alignments: WheelAlignment[];
   classifications: ThematicClassification[];
   countryConfig: CountryConfig | null;
   state: WheelState;

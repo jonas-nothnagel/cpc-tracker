@@ -16,6 +16,17 @@ import type { PolicyDocumentType, TargetSource, TextCleanup } from "@/types";
  */
 
 const MAX_TARGETS = 150;
+// Cap concurrent detached pipeline runs so an unauthenticated flood (or a burst
+// of legitimate uploads) can't spawn unbounded Python processes / LLM cost.
+const MAX_CONCURRENT_ANALYSES = 3;
+let inFlightAnalyses = 0;
+// Sliding-window rate limit on analysis STARTS. The concurrency counter alone
+// tracks only *alive* children, so a burst of fast-exiting spawns can slip past
+// it; this window bounds how many analyses can be kicked off regardless of how
+// long each runs — the real cap on resource/LLM-cost abuse.
+const MAX_STARTS_PER_WINDOW = 5;
+const RATE_WINDOW_MS = 60_000;
+let recentStarts: number[] = [];
 const IS_SERVERLESS = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
 
 interface AnalyzeRequest {
@@ -46,6 +57,16 @@ interface AnalyzeRequest {
     water_ml: number;
     co2_geq: number;
     minerals_ugsbeq: number;
+    // Modelled-uncertainty bounds (ledger schema 2); the tracker seeds
+    // midpoints on both ends when they are absent.
+    energy_wh_min?: number;
+    energy_wh_max?: number;
+    water_ml_min?: number;
+    water_ml_max?: number;
+    co2_geq_min?: number;
+    co2_geq_max?: number;
+    minerals_ugsbeq_min?: number;
+    minerals_ugsbeq_max?: number;
     call_count: number;
     tracked_call_count: number;
     cached_call_count: number;
@@ -63,7 +84,7 @@ export async function POST(request: NextRequest) {
         error:
           "Running new analyses is not available in the hosted preview. " +
           "The AI pipeline requires a local or Docker environment with Python. " +
-          "You can explore the pre-computed Mongolia pilot on the Dashboard.",
+          "You can explore the pre-computed country analyses on the Dashboard.",
       },
       { status: 501 }
     );
@@ -95,8 +116,40 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  if (inFlightAnalyses >= MAX_CONCURRENT_ANALYSES) {
+    return NextResponse.json(
+      { error: "The analysis service is busy. Please try again shortly." },
+      { status: 429 }
+    );
+  }
+  // Sliding-window rate limit (lifetime-independent burst cap).
+  const nowTs = Date.now();
+  recentStarts = recentStarts.filter((t) => nowTs - t < RATE_WINDOW_MS);
+  if (recentStarts.length >= MAX_STARTS_PER_WINDOW) {
+    return NextResponse.json(
+      { error: "Too many analyses started recently. Please wait a moment." },
+      { status: 429 }
+    );
+  }
+  // Reserve the slot synchronously with the check above — there is no `await`
+  // between them, so a concurrent burst can't all pass the check before any of
+  // them increments (the previous code incremented only after spawn, which a
+  // burst of near-simultaneous requests raced past). Released exactly once when
+  // the pipeline exits/fails to start, or if setup below throws.
+  inFlightAnalyses++;
+  recentStarts.push(nowTs);
+  let released = false;
+  const release = () => {
+    if (!released) {
+      released = true;
+      inFlightAnalyses--;
+    }
+  };
+
   try {
-    const id = randomUUID().slice(0, 8);
+    // Full UUID (128-bit), not an 8-char slice: makes analysis IDs unguessable
+    // so results can't be read by enumeration (defence-in-depth behind auth).
+    const id = randomUUID();
     const inputDir = join(ANALYSES_DIR, id, "input");
     const outputDir = join(ANALYSES_DIR, id, "output");
     mkdirSync(inputDir, { recursive: true });
@@ -143,6 +196,9 @@ export async function POST(request: NextRequest) {
         nbs_categories: body.nbsCategories ?? defaultCats.nbs_categories ?? [],
         ipcc_sectors: body.sectors ?? defaultCats.ipcc_sectors ?? [],
         globe_categories: defaultCats.globe_categories ?? [],
+        // Fixed, non-user-curated taxonomy: carry the defaults through or the
+        // pipeline silently produces no human rights lens for uploads.
+        hr_categories: defaultCats.hr_categories ?? [],
       };
       writeFileSync(
         join(inputDir, "categories.json"),
@@ -213,10 +269,14 @@ export async function POST(request: NextRequest) {
         detached: true,
       }
     );
+    // Release the reserved slot when the detached pipeline exits or fails.
+    child.on("exit", release);
+    child.on("error", release);
     child.unref();
 
     return NextResponse.json({ analysisId: id });
   } catch (err) {
+    release(); // setup failed before the child could take over the slot
     const message =
       err instanceof Error ? err.message : "An unexpected error occurred";
     console.error("Analysis setup failed:", message);

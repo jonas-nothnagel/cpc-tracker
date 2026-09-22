@@ -1,114 +1,114 @@
 [
   {
     "targetId": "NBSAP_1",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_2",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "2030; 30 percent",
+    "quantitativeDetails": "30 percent",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_3",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "2030; 30%",
+    "quantitativeDetails": "30%",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_4",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_5",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_6",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_7",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_8",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_9",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_10",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_11",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_12",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_13",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_14",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_15",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_16",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
@@ -127,16 +127,16 @@
   },
   {
     "targetId": "NBSAP_19",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
     "targetId": "NBSAP_20",
-    "isQuantitative": true,
+    "isQuantitative": false,
     "isTimeBound": true,
-    "quantitativeDetails": "2030",
+    "quantitativeDetails": "",
     "timeBoundDetails": "By 2030"
   },
   {
@@ -245,6 +245,41 @@
     "timeBoundDetails": ""
   },
   {
+    "targetId": "NDC_28",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "23.0%; 30.3%",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NDC_29",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "-21.1 million t CO\u2082-eq.; -24.4",
+    "timeBoundDetails": "in 2035"
+  },
+  {
+    "targetId": "NDC_30",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "19.3 million t CO\u2082-eq.",
+    "timeBoundDetails": "by 2030"
+  },
+  {
+    "targetId": "NDC_31",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1.8 million t CO\u2082-eq.",
+    "timeBoundDetails": "by 2030"
+  },
+  {
+    "targetId": "NDC_32",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
     "targetId": "NDC_1",
     "isQuantitative": false,
     "isTimeBound": false,
@@ -259,6 +294,13 @@
     "timeBoundDetails": ""
   },
   {
+    "targetId": "NDC_33",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
     "targetId": "NDC_3",
     "isQuantitative": false,
     "isTimeBound": false,
@@ -267,6 +309,13 @@
   },
   {
     "targetId": "NDC_4",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_34",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
@@ -294,6 +343,13 @@
     "timeBoundDetails": ""
   },
   {
+    "targetId": "NDC_35",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
     "targetId": "NDC_8",
     "isQuantitative": false,
     "isTimeBound": false,
@@ -302,6 +358,13 @@
   },
   {
     "targetId": "NDC_9",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_36",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
@@ -330,6 +393,13 @@
   },
   {
     "targetId": "NDC_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_37",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
@@ -392,42 +462,147 @@
     "timeBoundDetails": ""
   },
   {
-    "targetId": "NDC_22",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "5.277 million tons of CO2; 2030; 9.78 million tons of CO2; 2035; 50 million head",
-    "timeBoundDetails": "until 2030; until 2035"
-  },
-  {
-    "targetId": "NDC_23",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "4.15 million tons; 2030; 7.48 million tons; 2035",
-    "timeBoundDetails": "by 2030; by 2035"
-  },
-  {
-    "targetId": "NDC_24",
-    "isQuantitative": true,
-    "isTimeBound": true,
-    "quantitativeDetails": "1.12 million tons; 2030; 2.29 million tons; 2035",
-    "timeBoundDetails": "by 2030; by 2035"
-  },
-  {
-    "targetId": "NDC_25",
-    "isQuantitative": true,
-    "isTimeBound": false,
-    "quantitativeDetails": "10%; (3%); (7%); IV",
-    "timeBoundDetails": ""
-  },
-  {
-    "targetId": "NDC_26",
+    "targetId": "NDC_38",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
     "timeBoundDetails": ""
   },
   {
-    "targetId": "NDC_27",
+    "targetId": "NDC_39",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_40",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_41",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NDC_42",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NITIPA_1",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5,556.3 thousand tons of CO2-eq; 8,264.9 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NITIPA_2",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "5,277.7 thousand tons of CO2-eq; 9,781.2 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NITIPA_3",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1,163.6 thousand tons of CO2-eq; 1,313 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NITIPA_4",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "2,762.2 thousand tons of CO2-eq; 3,465.9 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NITIPA_5",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "633.5 thousand tons of CO2-eq; 1,066.1 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NITIPA_6",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "641.6 thousand tons of CO2-eq; 844.4 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2030; by 2035"
+  },
+  {
+    "targetId": "NITIPA_7",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "386.2 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NITIPA_8",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "613.9 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NITIPA_9",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "1,881.4 thousand tons of CO2-eq",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NITIPA_10",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "974.9 thousand tons",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NITIPA_11",
+    "isQuantitative": true,
+    "isTimeBound": true,
+    "quantitativeDetails": "85.7 thousand tons of CO\u2082-eq",
+    "timeBoundDetails": "by 2035"
+  },
+  {
+    "targetId": "NITIPA_12",
+    "isQuantitative": true,
+    "isTimeBound": false,
+    "quantitativeDetails": "129,339,500 hectares",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NITIPA_13",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NITIPA_14",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NITIPA_15",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "quantitativeDetails": "",
+    "timeBoundDetails": ""
+  },
+  {
+    "targetId": "NITIPA_16",
     "isQuantitative": false,
     "isTimeBound": false,
     "quantitativeDetails": "",
@@ -500,7 +675,7 @@
     "targetId": "SECTORAL_10",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "30% of national territory; 33%; 35%",
+    "quantitativeDetails": "30% of national territory; 33% by 2040; 35% by 2050",
     "timeBoundDetails": "by 2030; by 2040; by 2050"
   },
   {
@@ -542,7 +717,7 @@
     "targetId": "FSS_1",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "2022 autumn and 2023 spring ordinary sessions",
+    "quantitativeDetails": "2022; 2023",
     "timeBoundDetails": "during the 2022 autumn and 2023 spring ordinary sessions"
   },
   {
@@ -731,7 +906,7 @@
     "targetId": "FSS_28",
     "isQuantitative": true,
     "isTimeBound": false,
-    "quantitativeDetails": "50.0 thousand head; 50.0 thousand head",
+    "quantitativeDetails": "50.0 thousand head of beef-oriented breeds; 50.0 thousand head of dairy-oriented breeds",
     "timeBoundDetails": ""
   },
   {
@@ -829,7 +1004,7 @@
     "targetId": "NRVTS_1",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "9%; 7.85% in 2015",
+    "quantitativeDetails": "9% of the total area; 7.85% in 2015",
     "timeBoundDetails": "by 2030; in 2015"
   },
   {
@@ -983,7 +1158,7 @@
     "targetId": "NRVTS_23",
     "isQuantitative": true,
     "isTimeBound": true,
-    "quantitativeDetails": "2015; 3963.3 sq. km",
+    "quantitativeDetails": "2015 (3963.3 sq. km); 3963.3 sq. km",
     "timeBoundDetails": "by 2030; 2015"
   },
   {

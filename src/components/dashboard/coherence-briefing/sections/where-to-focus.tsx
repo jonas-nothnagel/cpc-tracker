@@ -12,6 +12,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { TourButton } from "../tour/tour-button";
 import type {
   TargetConcentration,
@@ -51,9 +52,10 @@ export function WhereToFocusSection({
       id={WHERE_TO_FOCUS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         hotspots.length > 0 ? (
-          <TourButton tourId="whereToFocus" scopeId={WHERE_TO_FOCUS_SECTION_ID} />
+          <TourButton tourId="whereToFocus" scopeId={WHERE_TO_FOCUS_SECTION_ID} labelled />
         ) : undefined
       }
       evidence={

@@ -1,16 +1,14 @@
 """
 Step 1: Thematic Classification.
 
-Two flavours of classifier:
-
-- ``run_classification`` (legacy): one binary 0/1 LLM call per (target, category)
-  pair. Multi-label by construction. Kept for back-compat where callers explicitly
-  want the old behaviour, and as the schema baseline.
-- ``rank_classification`` (preferred): one LLM call per target returns a
-  probability-ranked list of categories with scores. Top-ranked entry is the
-  ``isPrimary`` classification (single-label per target per taxonomy);
-  ``isRelevant`` is derived from ``score >= RELEVANCE_THRESHOLD``. Multi-label
-  data is preserved as records with ``isRelevant=true, isPrimary=false``.
+One classifier: ``rank_classification`` — one LLM call per target returns a
+probability-ranked list of categories with scores. Top-ranked entry is the
+``isPrimary`` classification (single-label per target per taxonomy);
+``isRelevant`` is derived from ``score >= RELEVANCE_THRESHOLD``. Multi-label
+data is preserved as records with ``isRelevant=true, isPrimary=false``.
+(The legacy binary 0/1 per-(target, category) classifier was removed in the
+2026-08 dead-code prune; its cached responses live under the retired
+``classify_*`` namespaces.)
 
 The ranked classifier exists so visualizations can show consistent counts
 across views: each target contributes to exactly one category's primary
@@ -32,167 +30,76 @@ logger = logging.getLogger(__name__)
 RELEVANCE_THRESHOLD = 0.5
 
 # ---------------------------------------------------------------------------
-# Prompts — exact replicas from old_scripts cell 41 + cell 40 + cell 47
-# ---------------------------------------------------------------------------
-
-
-def build_system_prompt(all_category_names: list[str]) -> str:
-    """
-    Build the system prompt exactly as the original notebook (cell 41).
-
-    The original interpolates {all_themes} which is a semicolon-separated
-    list of all theme/category names.
-    """
-    all_themes = "; ".join(all_category_names)
-    return f"""
-# CONTEXT #
-I work with international policy and need to identify whether cross-reference theme texts \
-are covered in target texts.
-
-# PERSONA #
-You are a policy specialist focused on the subject-matters of Biodiversity/Nature, Climate, \
-Land Degradation, {all_themes}.
-
-# TASK #
-Your task is to assess whether a target text is connected to a cross-reference theme text, \
-by following these steps:
-**Step 1** - Identify the essential overarching topic and purpose of the cross-reference theme text;
-**Step 2** - Identify the sub-topic and subject of the cross-reference theme text;
-**Step 3** - Relying on your subject-matter expert knowledge and keeping in mind that a specific \
-purpose relating to different subjects (e.g., ecosystem impacted or considered) relate to \
-different themes, assess whether the target text covers the cross-reference theme text.
-
-# STYLE #
-Write in the style of a United Nations (UN) official document.
-
-# RESPONSE #
-**Option 1**: If the target text does **not** cover the essential overarching topic and purpose \
-of the cross-reference theme text and its sub-topic or subject, return `0`;
-**Option 2**: If the target text does cover the essential overarching topic and purpose of the \
-cross-reference theme text and its sub-topics or subject, return `1`.
-
-Take each step one at a time, but **do not return Steps 1 and 3**; rather, \
-return **only your final response**.
-"""
-
-
-def build_user_message(theme_text: str, target_text: str) -> str:
-    """
-    Build the user message exactly as the original notebook (cell 47 + cell 40).
-
-    The original concatenates:
-      "Here are the cross-reference theme texts:\n{theme_text}'\n"
-      "Here is the target texts:\n{target_text}'\n"
-      "{prompt}"
-
-    Where `prompt` (cell 40) = "Assess whether or not the target texts
-    cover the topics of the cross-reference theme texts."
-    """
-    return (
-        f"Here are the cross-reference theme texts:\n"
-        f"{theme_text}'\n"
-        f"Here is the target texts:\n"
-        f"{target_text}'\n"
-        f"\nAssess whether or not the target texts cover the topics of the cross-reference theme texts.\n"
-    )
-
-
-# ---------------------------------------------------------------------------
-# Parsing
-# ---------------------------------------------------------------------------
-
-
-def parse_classification(raw: str) -> bool:
-    """Parse a 0/1 response from the LLM."""
-    cleaned = raw.strip().strip('"').strip("'").strip(".")
-    if cleaned.startswith("1"):
-        return True
-    if cleaned.startswith("0"):
-        return False
-    # Fallback: look for yes/no keywords
-    lower = cleaned.lower()
-    if "yes" in lower or "pertains" in lower:
-        return True
-    return False
-
-
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
-
-
-async def run_classification(
-    targets: list[dict[str, Any]],
-    categories: list[dict[str, Any]],
-    taxonomy_type: str,
-) -> list[dict[str, Any]]:
-    """
-    Classify every target against every category.
-
-    Returns a list of dicts:
-      { targetId, categoryId, taxonomyType, isRelevant }
-    """
-    logger.info(
-        f"Classifying {len(targets)} targets × {len(categories)} {taxonomy_type} categories "
-        f"= {len(targets) * len(categories)} calls"
-    )
-
-    # Build system prompt with all category names (matches original all_themes)
-    all_names = [cat["name"] for cat in categories]
-    system_prompt = build_system_prompt(all_names)
-
-    # Build all LLM call specs
-    calls: list[dict[str, Any]] = []
-    call_keys: list[tuple[str, str]] = []  # (target_id, category_id) for each call
-
-    for target in targets:
-        for cat in categories:
-            # Original notebook (cell 34): theme_text = theme_name + " " + theme_description
-            theme_text = cat["name"] + " " + cat["description"]
-            user = build_user_message(theme_text, target["text"])
-            calls.append({
-                "system": system_prompt,
-                "user": user,
-                "top_p": 0.3,         # original: top_p = 0.3
-                "max_tokens": 500,    # original: max_tokens = 500
-            })
-            call_keys.append((target["id"], cat["id"]))
-
-    # Run all calls concurrently
-    results = await call_llm_batch(
-        calls,
-        cache_namespace=f"classify_{taxonomy_type}",
-        desc=f"Classification ({taxonomy_type})",
-    )
-
-    # Parse results
-    classifications = []
-    for (target_id, category_id), raw in zip(call_keys, results):
-        is_relevant = parse_classification(raw)
-        classifications.append({
-            "targetId": target_id,
-            "categoryId": category_id,
-            "taxonomyType": taxonomy_type,
-            "isRelevant": is_relevant,
-        })
-
-    relevant_count = sum(1 for c in classifications if c["isRelevant"])
-    logger.info(
-        f"  {taxonomy_type} classification done: "
-        f"{relevant_count} relevant out of {len(classifications)} total"
-    )
-
-    return classifications
-
-
-# ---------------------------------------------------------------------------
 # Ranked classifier (preferred)
 # ---------------------------------------------------------------------------
 
+# Human rights scoring guidance, appended to the generic rank prompt for the
+# `hr` taxonomy only.
+#
+# WHY: the generic prompt asks how strongly a target "relates to" a category.
+# For topical taxonomies (IPCC sectors, GLOBE) topical relation IS the thing
+# being measured, so that works. For rights themes it does not: a mining
+# regulation genuinely "relates to" a business theme without engaging anyone's
+# rights. Measured over all four countries' first pass, of the 80 primary
+# `hr_business` placements scoring >= 0.8, ZERO contained any rights, due
+# diligence, accountability, remedy or consent language -- the model was
+# matching the subject noun ("mining activities are business operations") rather
+# than the right. The same held for `hr_information_education`, where
+# inter-agency data sharing scored 0.90 against the right to access information.
+#
+# This is PROJECT-DEFINED framing, not source-traced taxonomy text: it tells the
+# model how to interpret the categories and introduces no policy content of its
+# own (guardrail: no LLM-drafted content in pipeline inputs; project-defined
+# framing is permitted when labelled as such, which this comment does).
+#
+# Plain string, NOT an f-string: the literal {"ranked": []} must survive.
+_HR_SCORING_GUIDANCE = """# HOW TO SCORE THIS TAXONOMY
+These categories are human rights themes. Score whether the target ENGAGES the
+right, not whether it shares a topic, sector or actor with the theme.
+
+A target engages a right when implementing it would change whether people can
+exercise that right - by guaranteeing, extending, protecting, restricting or
+creating accountability for it, or by removing a barrier to it.
+
+Shared subject matter is NOT engagement:
+- Naming, regulating or funding an actor group does not by itself engage that
+  group's rights. Licensing, market development, industrial policy and sector
+  regulation involving businesses are not the business theme unless the target
+  concerns human rights due diligence, accountability for human rights harms,
+  or remedy.
+- Producing, sharing or using information does not by itself engage the right to
+  information. Scientific data, monitoring systems, research collaboration and
+  inter-agency information exchange are not the information theme unless the
+  target concerns the public's ability to obtain, understand or act on
+  information about decisions that affect them.
+- Naming a group as a beneficiary is not the same as addressing that group's
+  participation, consent, protection or non-discrimination.
+
+Purely technical, financial, infrastructural or administrative targets commonly
+engage no theme at all. When that is so, return {"ranked": []} - an empty array
+is a correct and expected answer, not a failure.
+
+Interpret the 0.0-1.0 scale as follows for this taxonomy:
+- 0.85-1.0 the target is explicitly about securing, protecting or enforcing this right
+- 0.6-0.84 a clear, deliberate rights dimension, though not the target's main purpose
+- 0.4-0.59 the right is plausibly affected and the target names the right or its holders
+- 0.2-0.39 indirect; a reviewer could reasonably disagree
+- omit     shared topic, sector or actor only"""
+
+# Per-taxonomy scoring guidance. Appended ONLY for the taxonomies listed here,
+# so every other lens's prompt bytes -- and therefore its warm `rank_*` cache --
+# are byte-for-byte untouched.
+TAXONOMY_SCORING_GUIDANCE: dict[str, str] = {"hr": _HR_SCORING_GUIDANCE}
+
 
 def build_rank_system_prompt(taxonomy_type: str) -> str:
-    """System prompt for the ranked classifier."""
-    return f"""You are a policy classifier. Your job is to assess how strongly a policy target relates to each category in a {taxonomy_type} taxonomy.
+    """System prompt for the ranked classifier.
+
+    Taxonomies without an entry in TAXONOMY_SCORING_GUIDANCE get exactly the
+    prompt they always had, keeping their caches valid.
+    """
+    guidance = TAXONOMY_SCORING_GUIDANCE.get(taxonomy_type)
+    base = f"""You are a policy classifier. Your job is to assess how strongly a policy target relates to each category in a {taxonomy_type} taxonomy.
 
 # TASK
 Given a target and a list of N categories, score every category for its relevance to the target on a 0.0-1.0 scale, where:
@@ -214,6 +121,7 @@ Return ONLY a JSON object, no markdown:
 }}
 
 Order the array from highest score to lowest. The top entry will be treated as the primary classification."""
+    return f"{base}\n\n{guidance}" if guidance else base
 
 
 def build_rank_user_message(

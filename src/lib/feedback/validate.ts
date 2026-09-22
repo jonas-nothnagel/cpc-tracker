@@ -23,7 +23,7 @@ const SURFACES: ReadonlySet<FeedbackSurface> = new Set([
   "corpus_storyline",
 ]);
 const VOTES: ReadonlySet<FeedbackVote> = new Set(["up", "down", "retracted"]);
-const LOCALES = new Set(["en", "es", "mn"]);
+const LOCALES = new Set(["en", "es", "mn", "fr"]);
 
 /**
  * Target / doc-type ids as they appear in the pipeline outputs, or slugified

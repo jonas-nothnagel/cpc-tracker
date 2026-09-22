@@ -6,6 +6,7 @@
   "excludedDocTypes": [],
   "_documentTypesComment": "Côte d'Ivoire's three source documents from data_cote_divoire_19Jun26.xlsx. Codes come from the verbatim `Type` column (NDC / NBT / LDN); the mediumLabel parenthetical is the verbatim `Convention` column value (Climate / Nature / Land degradation). The `Doc` column was NOT used for codes because it mixes a version label (\"NDC 3.0\") and a source-tool name (\"ORT\" = the CBD Online Reporting Tool, which is the source, not the document). Colors from the UNDP-compatible Tailwind palette: blue=climate, green=nature, amber=land. Avoids reserved red (#dc2626 political sensitivity), BTR purple (#7c3aed), and OTHER grey (#78716c); mutually distinguishable.",
   "_documentMetaComment": "Reference metadata (docKind / published / author / url) for the doc-focus panel. Sourced from primary/official systems; every url verified to return HTTP 200 on 2026-06-30. NDC 3.0 = direct UNFCCC PDF (cover: 'CDN 3.0 / Republique de Cote d'Ivoire / Octobre 2025'); NBT = CBD Online Reporting Tool registry (Cote d'Ivoire's Kunming-Montreal national targets are also browsable on the national CHM ci.chm-cbd.net); LDN = UNCCD country commitments page (2018). NBT publication date omitted because the exact submission date was not verified. No objective strings set (the primaries' overall goal was not read verbatim).",
+  "_docClassComment": "Machine-readable document classification (docClass) and national-hierarchy level (docTier) consumed by src/lib/doc-taxonomy. Added Aug 2026 for parity with Panama. THE VOCABULARY IS PROJECT-DEFINED (see DOC_CLASSES in src/lib/doc-taxonomy); EACH ASSIGNMENT TRACES TO THE DOCUMENT'S OWN SELF-DESCRIPTION recorded in docKind below: all three documents in this corpus declare national targets to a convention (NDC to the UNFCCC, NBT to the CBD / Kunming-Montreal framework, LDN to the UNCCD), so all three are commitment / tier 2 - a deliberately flat hierarchy that reflects the corpus, not a failure to differentiate. NOT YET REVIEWED BY THE COUNTRY OFFICE - confirm before this ships.",
   "documentTypes": [
     {
       "id": "NDC",
@@ -13,6 +14,8 @@
       "mediumLabel": "NDC (Climate)",
       "fullLabel": "Nationally Determined Contributions 3.0",
       "color": "#0468b1",
+      "docClass": "commitment",
+      "docTier": 2,
       "docKind": "Nationally Determined Contribution (UNFCCC)",
       "published": "October 2025",
       "author": "Government of Côte d'Ivoire",
@@ -24,6 +27,8 @@
       "mediumLabel": "NBT (Nature)",
       "fullLabel": "National Biodiversity Targets",
       "color": "#166534",
+      "docClass": "commitment",
+      "docTier": 2,
       "docKind": "National biodiversity targets (CBD, Kunming-Montreal Global Biodiversity Framework)",
       "author": "Government of Côte d'Ivoire",
       "url": "https://ort.cbd.int/national-targets"
@@ -34,6 +39,8 @@
       "mediumLabel": "LDN (Land degradation)",
       "fullLabel": "Land Degradation Neutrality targets",
       "color": "#b45309",
+      "docClass": "commitment",
+      "docTier": 2,
       "docKind": "UNCCD Land Degradation Neutrality country targets",
       "published": "2018",
       "author": "Government of Côte d'Ivoire (UNCCD LDN Target Setting Programme)",

@@ -14,6 +14,8 @@ Checks per country:
   3. anchorDocType is declared and present in data
   4. countrySectors vs btr_data.json sectorRaw/sector
   5. excludedDocTypes ⊆ documentTypes
+  6. financingLayout is a known value ("grid" | "dotmap") and "grid" has
+     budget-alignment data behind it (else the slide silently falls back)
 
 Reserved tokens (BTR, BER, BTR_ADP, OTHER) are exempt: they are
 pipeline-generated or fallback labels in src/lib/utils.ts.
@@ -189,6 +191,34 @@ def check_country(config_path: Path) -> tuple[bool, list[str]]:
                 )
     else:
         out.append("  countrySectors: skipped (none declared)")
+
+    # 6. financingLayout: known value; "grid" needs budget-alignment data
+    layout = config.get("financingLayout")
+    if layout is not None:
+        if layout not in ("grid", "dotmap"):
+            out.append("  financingLayout:")
+            out.append(
+                f"    DRIFT: unknown value {layout!r} (expected 'grid' or 'dotmap')"
+            )
+            drift = True
+        elif layout == "grid":
+            # The frontend fails soft to the dot-map when the grid yields no
+            # rows, so absent data is a silent no-op — surface it here.
+            has_budget = any(
+                (OUTPUT_DIR / country).glob("**/budget_alignment.json")
+            )
+            if not has_budget:
+                out.append("  financingLayout:")
+                out.append(
+                    "    WARNING: 'grid' declared but no budget_alignment.json "
+                    "under output (slide will fall back to the dot-map)"
+                )
+            else:
+                out.append("  financingLayout (grid): OK")
+        else:
+            out.append("  financingLayout (dotmap): OK")
+    else:
+        out.append("  financingLayout: skipped (none declared, defaults to dotmap)")
 
     # 5. excludedDocTypes ⊆ documentTypes
     if excluded:

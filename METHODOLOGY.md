@@ -4,7 +4,7 @@
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused; updated 2026-07-06: sector synthesis (`synthesize_by_sector.py`) now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis produces up to 3+3 noun-phrase themes grounded in deterministic evidence tables, with disjoint counting for potential-misalignment themes, per-theme aggregates, a style validator with corrective retry, and expanded precomputed visibility states — see the Step 8 section; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged). This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (English-first extraction output, quote-in-document validation — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-03: the active taxonomy set (`ACTIVE_TAXONOMIES` in `python/src/config.py`) is reduced to IPCC sectors, GLOBE, and GGA — NBS classification is paused; updated 2026-07-06: sector synthesis (`synthesize_by_sector.py`) now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis produces up to 3+3 noun-phrase themes grounded in deterministic evidence tables, with disjoint counting for potential-misalignment themes, per-theme aggregates, a style validator with corrective retry, and expanded precomputed visibility states — see the Step 8 section; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [docs/EXTRACTION_PIPELINE.md](docs/EXTRACTION_PIPELINE.md); the analysis stages described here are unchanged); updated 2026-07-31: added the human rights themes taxonomy (9 themes, UNDP guidance, DRAFT under expert review) to `ACTIVE_TAXONOMIES`, the sector-synthesis allowlist, and the dashboard lenses; updated 2026-08-09: Mongolia corpus re-curated after a provenance audit — the official NDC 3.0 (2025) targets and the domestic Government Resolution No. 91 targets (new `NITIPA` document type) are now separated, 178 targets across eight document types (pipeline behaviour unchanged; worked-example numbers refreshed); updated 2026-08-27: the human rights lens no longer lists targets without a clear theme as a row and states the lens scope instead (dashboard presentation only; pipeline behaviour unchanged).; updated 2026-09-14 (security review): the Step 5 analyst and advisor system prompts in `align.py` now instruct the model to treat target text as untrusted data and never follow instructions embedded in it, moving the prompt to version 2.3 and the alignment cache namespace to `alignment_v4`; the five-state scale and the rubric are unchanged, but the first re-run of each country is a cold alignment run and the change has not yet been re-calibrated (see [docs/ACCESS_AND_LIMITS.md](docs/ACCESS_AND_LIMITS.md), section 4). This document must be re-verified whenever pipeline behaviour changes; see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).*
 
 ---
 
@@ -33,7 +33,8 @@ Input: Policy targets (text + source document type)
   │
   ├─ Step 2: Thematic Classification (LLM)
   │     ├─ IPCC sectors (7), GLOBE categories (9) + subcategories (49)
-  │     ├─ GGA climate-resilience themes (7); optional country adaptation goals
+  │     ├─ GGA climate-resilience themes (7); human rights themes (9, draft)
+  │     ├─ optional country adaptation goals
   │     └─ ranked dual-mode (primary + relevant); active set: config.ACTIVE_TAXONOMIES
   │
   ├─ Step 3: Cross-Document Pair Generation (computation)
@@ -93,7 +94,7 @@ Administrative references (e.g., "Article 2", "Target 3") are explicitly exclude
 
 Dashboard surfaces choose a mode intentionally: **primary** for ranking ("what is this target mainly about?") and **relevant** for breadth ("everything this target touches"). The two modes are never mixed in a single view, because relevant tags carry different scores.
 
-**Categories are pre-defined by experts and traced to a primary source, never LLM-drafted.** The set of taxonomies the pipeline classifies against is `ACTIVE_TAXONOMIES` in `python/src/config.py` — since 2026-07-03: **IPCC sectors, GLOBE, and GGA** (plus optional country-specific adaptation goals). The taxonomies:
+**Categories are pre-defined by experts and traced to a primary source, never LLM-drafted.** The set of taxonomies the pipeline classifies against is `ACTIVE_TAXONOMIES` in `python/src/config.py` — since 2026-07-31: **IPCC sectors, GLOBE, GGA, and human rights themes** (plus optional country-specific adaptation goals). The taxonomies:
 
 ### Nature-Based Solutions Categories (10) — paused since 2026-07-03
 
@@ -128,11 +129,19 @@ When a country supplies adaptation data (e.g. Mongolia's APNDC goals via `mongol
 
 The seven thematic targets of the **UAE Framework for Global Climate Resilience** (UNFCCC decision 2/CMA.5, paragraph 9): Water; Agriculture and food; Health; Ecosystems and biodiversity; Infrastructure and human settlements; Livelihoods; Cultural heritage. Descriptions are verbatim from the decision text (the short labels are project-assigned, as the decision gives its sub-paragraphs no headers). Unlike the country-specific adaptation goals, this is a portable global adaptation/resilience lens, applied to every country's policy targets and, where present, to BTR measures and BER budget programmes.
 
+### Human rights themes (9) — DRAFT
+
+Nine themes from UNDP's *Human rights themes for AI Flagship Policy Coherence Tracker* (draft circulated to UNDP human rights experts, July 2026), which builds on the UN Environment Management Group's *Guidance on integrating human rights in National Biodiversity Strategy and Action Plans* (April 2023) and generalises it beyond the KMGBF to national policies. The source document separates rights/issues themes — Information and education; Free, meaningful and active public participation; Access to justice — from themes grouped by rights-holder: Indigenous Peoples and local communities; Gender equality; Children and youth; Environmental Human Rights Defenders; Businesses; Rights of Persons with Disabilities. Each theme's description is the verbatim list of "descriptive actions" from the source; the rights/groups split is carried as a display-only `block` field and is never sent to the classifier.
+
+This lens reports **which human rights themes a country's targets engage, as written in the reviewed documents**. It is not an assessment of a country's human rights record, performance, or compliance, and a thinly-covered theme is not evidence of a rights violation. Targets for which no theme reaches the relevance threshold are not grouped under this lens; the dashboard states how many of the country's targets the lens covers, so a target outside the lens is never read as a finding about that target.
+
+*Status: the taxonomy is a draft under expert review. Regenerate with `dev_data_scripts/ingest_hr_taxonomy_31jul26.py` when comments land; backfill committed outputs with `python/scripts/classify_hr.py`.*
+
 Which taxonomies (lenses) are available is a country-level, data-driven choice, not a fixed part of the methodology; users may also bring their own taxonomy.
 
 **Cost note:** This is the most API-intensive step. The ranked classifier scores all categories in a taxonomy per target, so cost scales with the number of targets and the breadth of the active taxonomies. Results are cached (per taxonomy namespace) to avoid duplicate calls across analyses.
 
-**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`sector` / `globe` / `adaptation_goal` / `gga`; `nbs` only in outputs from before 2026-07-03), and a short `reasoning` for primary/relevant entries.
+**Output:** `classifications.json` — for each (target, category) record: `score`, `isRelevant`, `isPrimary`, `taxonomyType` (`sector` / `globe` / `adaptation_goal` / `gga` / `hr`; `nbs` only in outputs from before 2026-07-03), and a short `reasoning` for primary/relevant entries.
 
 ---
 
@@ -144,7 +153,7 @@ Which taxonomies (lenses) are available is a country-level, data-driven choice, 
 
 **Rationale for assessing all pairs:** The alignment LLM (Agent 2) works from decomposed target text and never sees classification data. Using classification as a pre-filter created a noisy binary gate that blocked the alignment LLM from ever seeing most pairs — including valid cross-sector connections. The alignment LLM itself is better positioned to judge relevance.
 
-**Example:** With 20 NBSAP targets, 27 NDC targets, and 15 NAP targets: 20×27 + 20×15 + 27×15 = 1,245 cross-document pairs.
+**Example:** With 20 NBSAP targets, 36 NDC targets, and 15 NAP targets: 20×36 + 20×15 + 36×15 = 1,560 cross-document pairs.
 
 **Output:** A list of `(targetA_id, targetB_id)` pairs to evaluate in Steps 4–5.
 
@@ -240,11 +249,18 @@ The adapted prompt frames the comparison as policy-target vs. reported-measure (
 
 ## Step 7: Budget-Target Alignment (Level 2, conditional)
 
-**Purpose:** Map government budget programmes against policy targets to see where money does and does not follow ambition. Runs only when a Biodiversity Expenditure Review (`{country}-ber.json`) is present (currently Mongolia).
+**Purpose:** Map government budget programmes against policy targets to see where money does and does not follow ambition. Runs only when a Biodiversity Expenditure Review (`{country}-ber.json`) is present (currently Mongolia and Panama).
 
-**Method:** Budget programmes (name, description, and multi-year expenditure) are converted to pseudo-targets and run through the same workflow as Steps 4–5: Agent 1 decomposes each programme, then an adapted Agent 2 assesses alignment against each policy target on the v2.1 five-state scale. Framing follows the guardrail that the BER is "reviewed biodiversity spending", not "the country's biodiversity budget".
+**Method:** Budget programmes (name, description, and multi-year expenditure) are converted to pseudo-targets and run through the same workflow as Steps 4–5: Agent 1 decomposes each programme, then an adapted Agent 2 assesses alignment against each policy target on the v2.1 five-state scale. The comparison is between the programme's *description* and the target's *text* — the BER identifies and quantifies expenditure but never assigns it to policy targets; every programme↔target link is produced by this analysis. Framing follows the guardrail that the BER is "reviewed biodiversity spending", not "the country's biodiversity budget".
 
 **Output:** `budget_alignment.json` and `budget_pseudo_targets.json`.
+
+**Presentation of results (frontend):**
+
+- **Aligned spend** for a target = the sum of executed expenditure across programmes whose descriptions the pipeline judged `high`- or `medium`-aligned with that target's text (zero-spend programmes are excluded). It expresses how much reviewed spending is *associated* with a target, not money allocated to it.
+- **Aligned-spend tiers** ("High / Medium / Low / No aligned spend") are rank-based: the top 10 and bottom 10 targets by aligned spend within the visible document set (tie-aware at the displayed rounding). They describe relative volume of aligned expenditure — never financing adequacy, which would require financing-needs and gap data the module does not include.
+- **Overlap and totals:** a programme contributes its full spend to every target it aligns with, so per-target figures intentionally overlap. Document-level and whole-review totals count each programme once (union of contributors) and are therefore not the sum of the per-target figures.
+- **GLOBE breakdown:** reviewed spend grouped by the programme's single primary GLOBE category (BIOFIN global biodiversity expenditure taxonomy). Categories are assigned by the Tracker's AI classification of programme descriptions, not by the national BIOFIN team; each programme counts once.
 
 ---
 

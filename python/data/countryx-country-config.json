@@ -1,0 +1,53 @@
+{
+ "_comment": "Display config for Country X, a FICTIONAL demonstration country (project-defined, not a primary source). Purpose: demo the full coherence dashboard without exposing pilot-country data. The corpus is real published policy-target text pooled from several countries' documents (dev_data_scripts/mock_targets_14aug26.xlsx, built by dev_data_scripts/ingest_countryx_14aug26.py) and de-identified by hand-curated edits listed in that script — no LLM-drafted text anywhere in this config or the corpus. Coherence-only (Level 1): no BTR / BER / NR7 data, so no btrMitigationSourceRef, countrySectors, or mitigationTaxonomy.",
+ "name": "Country X",
+ "_anchorDocTypeComment": "Intentionally omitted. The five documents are parallel convention/strategy commitments (climate, adaptation, nature, land), not a vision-and-derivatives hierarchy, so the Vision Anchor Coverage view stays off (same reasoning as Sri Lanka).",
+ "defaultHiddenDocTypes": [],
+ "excludedDocTypes": [],
+ "_documentTypesComment": "Generic document-type names, not real national documents: Country X is fictional, so fullLabel is the plain convention/strategy document kind and no docKind/published/author/url metadata is set (omitted rather than fabricated). Colors reuse the established cross-country palette (NDC blue and NBSAP green match Sri Lanka / Côte d'Ivoire; LDN amber matches Sri Lanka); avoids reserved red (#dc2626 political sensitivity), BTR purple (#7c3aed), and OTHER grey (#78716c); mutually distinguishable.",
+ "documentTypes": [
+  {
+   "id": "NDC",
+   "shortLabel": "NDC",
+   "mediumLabel": "NDC (Climate)",
+   "fullLabel": "Nationally Determined Contribution",
+   "color": "#0468b1"
+  },
+  {
+   "id": "NAP",
+   "shortLabel": "NAP",
+   "mediumLabel": "NAP (Adaptation)",
+   "fullLabel": "National Adaptation Plan",
+   "color": "#0e7490"
+  },
+  {
+   "id": "CCS",
+   "shortLabel": "CCS",
+   "mediumLabel": "CCS (Climate strategy)",
+   "fullLabel": "Climate Change Strategy",
+   "color": "#4f46e5"
+  },
+  {
+   "id": "NBSAP",
+   "shortLabel": "NBSAP",
+   "mediumLabel": "NBSAP (Nature)",
+   "fullLabel": "National Biodiversity Strategy and Action Plan",
+   "color": "#166534"
+  },
+  {
+   "id": "LDN",
+   "shortLabel": "LDN",
+   "mediumLabel": "LDN (Land degradation)",
+   "fullLabel": "Land Degradation Neutrality National Strategy",
+   "color": "#b45309"
+  }
+ ],
+ "_docProvenanceComment": "Country X is fictional, so provenance states what each demonstration document actually is instead of citing a national source: real published policy-target text from one real country's document of this kind, de-identified (see ingest_countryx_14aug26.py for every edit).",
+ "docProvenance": {
+  "NDC": "Demonstration document for the fictional Country X: real published NDC target text from one country, de-identified. Not any real country's NDC.",
+  "NAP": "Demonstration document for the fictional Country X: real published National Adaptation Plan target text from one country, de-identified. Not any real country's NAP.",
+  "CCS": "Demonstration document for the fictional Country X: real published national climate change strategy target text from one country, de-identified. Not any real country's strategy.",
+  "NBSAP": "Demonstration document for the fictional Country X: real published NBSAP target text from one country, de-identified. Not any real country's NBSAP.",
+  "LDN": "Demonstration document for the fictional Country X: real published Land Degradation Neutrality strategy target text from one country, de-identified. Not any real country's strategy."
+ }
+}

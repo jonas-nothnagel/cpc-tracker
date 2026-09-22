@@ -1,0 +1,2928 @@
+[
+ {
+  "id": "NDC_1",
+  "text": "Increase restoration, Management and Conservation of mangroves, flooded forests, and aquatic habitats",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 15",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase restoration, Management and Conservation of mangroves, flooded forests, and aquatic habitats",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_2",
+  "text": "Develop and implement integrated marine spatial planning",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 9",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop and implement integrated marine spatial planning",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_3",
+  "text": "Expand, establish and improve the management of coastal and marine protected areas",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 10",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Expand, establish and improve the management of coastal and marine protected areas",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_4",
+  "text": "Introduce agro-ecological practices, land productivities including reducing tillage and sustainable agriculture (such as mulching, cover cropping, crop rotations, alternative crops)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Introduce agro-ecological practices, land productivities including reducing tillage and sustainable agriculture (such as mulching, cover cropping, crop rotations, alternative crops)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_5",
+  "text": "Improve Good Agricultural Practices (GAP) and Sustainable Natural Rubber (SNR)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve Good Agricultural Practices (GAP) and Sustainable Natural Rubber (SNR)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_6",
+  "text": "Introduce agroforestry practices on rubber-high value timber for smallholders",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 9",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Introduce agroforestry practices on rubber-high value timber for smallholders",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_7",
+  "text": "Introduce and promote agroforestry",
+  "sourceDocument": "NDC",
+  "sourceLabel": "FOLU 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Introduce and promote agroforestry",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_8",
+  "text": "Improve animal waste management for soil improvement and rural energy",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve animal waste management for soil improvement and rural energy",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_9",
+  "text": "Improve fodder and feeding for livestock production",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve fodder and feeding for livestock production",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_10",
+  "text": "Develop climate resilient crop varieties well suited to market demand",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 12",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop climate resilient crop varieties well suited to market demand",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_11",
+  "text": "Increase climate smart practices and technologies on crop production",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 13",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase climate smart practices and technologies on crop production",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_12",
+  "text": "Improve Diversification through the production of Climate-Resilient High-Value Crops",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 14",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve Diversification through the production of Climate-Resilient High-Value Crops",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_13",
+  "text": "Enhance Research and Development of Climate-Resilient Livestock Breeds",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 19",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance Research and Development of Climate-Resilient Livestock Breeds",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_14",
+  "text": "Improve Climate-Smart Fodder Management and production",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 20",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve Climate-Smart Fodder Management and production",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_15",
+  "text": "Increase climate resilient processing, storage and logistic for agri-food system",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 21",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase climate resilient processing, storage and logistic for agri-food system",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_16",
+  "text": "Scaling up solar irrigation to improve climate-resilient agriculture practices, enhance water efficiency and mitigation potentials",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 23",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Scaling up solar irrigation to improve climate-resilient agriculture practices, enhance water efficiency and mitigation potentials",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_17",
+  "text": "Reducing food loss and waste.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Food systems 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Reducing food loss and waste.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_18",
+  "text": "Conduct climate risk assessments, develop a climate-resilient and inclusive WASH response framework, and monitoring and evaluation to strengthen climate risk- informed programming across all provinces",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Conduct climate risk assessments, develop a climate-resilient and inclusive WASH response framework, and monitoring and evaluation to strengthen climate risk- informed programming across all provinces",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NDC_19",
+  "text": "Operationalize the implementation of the climate resilient and inclusive WASH response framework for climate-resilient, low-carbon, and inclusive WASH",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Operationalize the implementation of the climate resilient and inclusive WASH response framework for climate-resilient, low-carbon, and inclusive WASH",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_20",
+  "text": "Streamline climate risk assessments and the implementation of climate resilient measures for piped water supply infrastructures and services, particularly in climate risk prone areas and promoting inclusive and pro-poor approaches for vulnerable communities, women and children.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Streamline climate risk assessments and the implementation of climate resilient measures for piped water supply infrastructures and services, particularly in climate risk prone areas and promoting inclusive and pro-poor approaches for vulnerable communities, women and children.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_21",
+  "text": "Promote and de-risk investments and climate financing for climate-resilient and low carbon water supply infrastructures and systems",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote and de-risk investments and climate financing for climate-resilient and low carbon water supply infrastructures and systems",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_22",
+  "text": "Update the national piped water data monitoring system with inclusion of climate resilient aspects to assess vulnerabilities, track progress, and ensure targeted interventions for the communities (with particular attention for women and children) living in climate disaster prone areas.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Update the national piped water data monitoring system with inclusion of climate resilient aspects to assess vulnerabilities, track progress, and ensure targeted interventions for the communities (with particular attention for women and children) living in climate disaster prone areas.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_23",
+  "text": "Expand sewage and Fecal Sludge Management (FSM) systems coverage area in urban areas to reduce GHG and prevent contaminations during extreme weather events promoting pro-poor services for vulnerable groups, including women and children",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Expand sewage and Fecal Sludge Management (FSM) systems coverage area in urban areas to reduce GHG and prevent contaminations during extreme weather events promoting pro-poor services for vulnerable groups, including women and children",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_24",
+  "text": "Promote water management resilience by integrating traditional and Indigenous water management systems",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 15",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote water management resilience by integrating traditional and Indigenous water management systems",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_25",
+  "text": "Establishment and modernization of a centralized and standardized meteorological and hydrological data centre for water management.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Disaster and climate risk management 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Establishment and modernization of a centralized and standardized meteorological and hydrological data centre for water management.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_26",
+  "text": "Introduce sustainable rubber wood harvesting",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 10",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Introduce sustainable rubber wood harvesting",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_27",
+  "text": "Reduce deforestation through REDD+ Mechanism and other measures",
+  "sourceDocument": "NDC",
+  "sourceLabel": "FOLU 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Reduce deforestation through REDD+ Mechanism and other measures",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_28",
+  "text": "Expand forest cover through afforestation and reforestation activities(A/R)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "FOLU 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Expand forest cover through afforestation and reforestation activities(A/R)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_29",
+  "text": "Increase forest carbon stocks through assisted natural regeneration (ANR) and other forest restoration measures",
+  "sourceDocument": "NDC",
+  "sourceLabel": "FOLU 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase forest carbon stocks through assisted natural regeneration (ANR) and other forest restoration measures",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_30",
+  "text": "Incorporate good and/or improved forest management practices to enhance forest carbon stocks as well as ecosystem integrity",
+  "sourceDocument": "NDC",
+  "sourceLabel": "FOLU 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Incorporate good and/or improved forest management practices to enhance forest carbon stocks as well as ecosystem integrity",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_31",
+  "text": "Improved forest management practices, such as integrated landscape management and sustainable forestry practices",
+  "sourceDocument": "NDC",
+  "sourceLabel": "FOLU 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improved forest management practices, such as integrated landscape management and sustainable forestry practices",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_32",
+  "text": "Forest Ecosystem adaptation and resilience through protection of the existing forest and biodiversity ecosystem: Conservation Forest ecosystem and forest biodiversity in the production forest area.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "FOLU 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Forest Ecosystem adaptation and resilience through protection of the existing forest and biodiversity ecosystem: Conservation Forest ecosystem and forest biodiversity in the production forest area.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_33",
+  "text": "Increase forest restoration areas at cultural heritage sites",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 17",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase forest restoration areas at cultural heritage sites",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_34",
+  "text": "Increasing Awareness and Capacity Building in the implementation of REDD+ mechanism, ecotourism models, monitoring systems, law enforcement, and others. (FOLU)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Policy, planning and capacity building 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increasing Awareness and Capacity Building in the implementation of REDD+ mechanism, ecotourism models, monitoring systems, law enforcement, and others. (FOLU)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_35",
+  "text": "Strengthening institutional frameworks in REDD+ implementation, forest and land use/cover change monitoring, and community-based financing framework. (FOLU)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Policy, planning and capacity building 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthening institutional frameworks in REDD+ implementation, forest and land use/cover change monitoring, and community-based financing framework. (FOLU)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_36",
+  "text": "Establish and strengthen national biodiversity monitoring and assessment systems reflecting ecosystem and livelihood resilience",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Establish and strengthen national biodiversity monitoring and assessment systems reflecting ecosystem and livelihood resilience",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_37",
+  "text": "Enhance biodiversity resilience targets in line with the country's NBSAP",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance biodiversity resilience targets in line with the country's NBSAP",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_38",
+  "text": "Conduct gap assessments and develop policy and framework instruments on biodiversity",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Conduct gap assessments and develop policy and framework instruments on biodiversity",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_39",
+  "text": "Identify zones within Protected Areas (PAs) that are threatened by climate risks and increase their resilience",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Identify zones within Protected Areas (PAs) that are threatened by climate risks and increase their resilience",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_40",
+  "text": "Strengthen Private-Public Partnerships (PPP) to promote and operationalise Payment for Ecosystem Services (PES) in PAs",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen Private-Public Partnerships (PPP) to promote and operationalise Payment for Ecosystem Services (PES) in PAs",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_41",
+  "text": "Strengthen community livelihood in Protected Areas (PAs), Community Forestry (CF) and Community Fisheries (CFi) through ecotourism",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 12",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen community livelihood in Protected Areas (PAs), Community Forestry (CF) and Community Fisheries (CFi) through ecotourism",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_42",
+  "text": "Prepare the modality of green spaces for urban planning or new sub-cities to address the vulnerability of urbanisation",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Prepare the modality of green spaces for urban planning or new sub-cities to address the vulnerability of urbanisation",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_43",
+  "text": "Enhancing climate-resilient cities at the sub-national level by conducting climate vulnerability and impact assessments to integrate climate resilience strategies into sub-national development plans",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 10",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhancing climate-resilient cities at the sub-national level by conducting climate vulnerability and impact assessments to integrate climate resilience strategies into sub-national development plans",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_44",
+  "text": "Develop guidelines and plans to integrate climate resilience into land use and urban planning.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Policy, planning and capacity building 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop guidelines and plans to integrate climate resilience into land use and urban planning.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_45",
+  "text": "Design and build guidance for climate-resilient houses and buildings for low-income households",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Design and build guidance for climate-resilient houses and buildings for low-income households",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_46",
+  "text": "Integrate disaster risk reduction and climate change into the planning, development and support of the Social Service Workforce through enhancement of legal framework, adoption of quality assurance system and capacity building of the SSW.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Social protection, social services and child protection 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Integrate disaster risk reduction and climate change into the planning, development and support of the Social Service Workforce through enhancement of legal framework, adoption of quality assurance system and capacity building of the SSW.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_47",
+  "text": "Strengthen subnational capacity to assess, manage, and respond to climate change and disaster risks in their local areas and enhanced climate change coordination mechanism and other coordination mechanisms.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen subnational capacity to assess, manage, and respond to climate change and disaster risks in their local areas and enhanced climate change coordination mechanism and other coordination mechanisms.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_48",
+  "text": "Increase awareness of disaster crises (flood, drought heat stress, disease outbreak) in animal production and develop readiness to respond to hazards",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 18",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase awareness of disaster crises (flood, drought heat stress, disease outbreak) in animal production and develop readiness to respond to hazards",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_49",
+  "text": "Enhance Climate Services, Including Digital Solutions and early warning system",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 22",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance Climate Services, Including Digital Solutions and early warning system",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_50",
+  "text": "Construct climate and Disaster Resilience Safe Evacuation Centres with integrated climate and inclusive disaster-resilient design in disaster-prone areas",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 9",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Construct climate and Disaster Resilience Safe Evacuation Centres with integrated climate and inclusive disaster-resilient design in disaster-prone areas",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_51",
+  "text": "Improve early warning systems by ensuring inclusive dissemination and integrating digital platforms with impact-based forecasting under the Early Warning for All (EW4ALL) initiative.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Disaster and climate risk management 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve early warning systems by ensuring inclusive dissemination and integrating digital platforms with impact-based forecasting under the Early Warning for All (EW4ALL) initiative.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_52",
+  "text": "Strengthen disaster preparedness and resilience by integrating anticipatory action (AA), securing appropriate financing, and enhancing local and community capacities.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Disaster and climate risk management 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen disaster preparedness and resilience by integrating anticipatory action (AA), securing appropriate financing, and enhancing local and community capacities.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_53",
+  "text": "Enhance disaster risk analytics and identify vulnerable communities to support evidence-based decision-making.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Disaster and climate risk management 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance disaster risk analytics and identify vulnerable communities to support evidence-based decision-making.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_54",
+  "text": "Strengthen the capacities of social workers, caregivers, and local communities to support victims and vulnerable groups in climate risk and disaster preparedness (Social services).",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Policy, planning and capacity building 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen the capacities of social workers, caregivers, and local communities to support victims and vulnerable groups in climate risk and disaster preparedness (Social services).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_55",
+  "text": "Strengthen climate proof infrastructure for supporting local economy and development",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 11",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen climate proof infrastructure for supporting local economy and development",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_56",
+  "text": "Enhance multi-sectoral coordination mechanisms to adapt and implement Climate Resilient and Environmentally Sustainable Health Care Facilities, including WASH, considering the needs of vulnerable groups (e.g., children, pregnant women, elderly, migrants, and persons with disabilities).",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance multi-sectoral coordination mechanisms to adapt and implement Climate Resilient and Environmentally Sustainable Health Care Facilities, including WASH, considering the needs of vulnerable groups (e.g., children, pregnant women, elderly, migrants, and persons with disabilities).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_57",
+  "text": "Develop a building code that mainstreams climate resilience into building designs and building/housing construction",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop a building code that mainstreams climate resilience into building designs and building/housing construction",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_58",
+  "text": "Rural road rehabilitation and improvement for climate change resilience",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Rural road rehabilitation and improvement for climate change resilience",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_59",
+  "text": "Improve and/or enhance Indigenous Peoples and Local Communities (IPLC) customary practices and knowledge for climate-driven conservation and restoration initiatives",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve and/or enhance Indigenous Peoples and Local Communities (IPLC) customary practices and knowledge for climate-driven conservation and restoration initiatives",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_60",
+  "text": "Register and increase climate resilience in ecotourism and community-based ecotourism sites",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 11",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Register and increase climate resilience in ecotourism and community-based ecotourism sites",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_61",
+  "text": "Building climate resilience among poor, vulnerable and at-risk population by strengthening routine social protection programmes and service delivery.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Social protection, social services and child protection 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Building climate resilience among poor, vulnerable and at-risk population by strengthening routine social protection programmes and service delivery.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_62",
+  "text": "Reducing climate vulnerability among poor, vulnerable, and at-risk population by implementing shock responsive social protection (SRSP) and improving interoperability of social protection systems.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Social protection, social services and child protection 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Reducing climate vulnerability among poor, vulnerable, and at-risk population by implementing shock responsive social protection (SRSP) and improving interoperability of social protection systems.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_63",
+  "text": "Enabling a just and inclusive transition by expanding social protection to those whose livelihoods are/will be affected by climate change.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Social protection, social services and child protection 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enabling a just and inclusive transition by expanding social protection to those whose livelihoods are/will be affected by climate change.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_64",
+  "text": "Establishing the foundations for climate-sensitive housing related support for poor, vulnerable and at risk population through the social protection system.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Social protection, social services and child protection 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Establishing the foundations for climate-sensitive housing related support for poor, vulnerable and at risk population through the social protection system.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_65",
+  "text": "Expand Specialized Social Services (SSS) and reinforce the climate resilience of all rehabilitation centers, residential care institutions (RCIs) and communities.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Social protection, social services and child protection 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Expand Specialized Social Services (SSS) and reinforce the climate resilience of all rehabilitation centers, residential care institutions (RCIs) and communities.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_66",
+  "text": "Promote environmental sustainability and climate resilience in the country by integrating green concepts into the national Technical and Vocational Education and Training (TVET) system.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Education, information and awareness raising 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote environmental sustainability and climate resilience in the country by integrating green concepts into the national Technical and Vocational Education and Training (TVET) system.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_67",
+  "text": "Strengthen climate change mainstreaming in the development plans, including M&E, and in the public investment program, at the national/capital/provincial levels.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen climate change mainstreaming in the development plans, including M&E, and in the public investment program, at the national/capital/provincial levels.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_68",
+  "text": "Enhance the integration of systematic Gender Analysis into Climate Vulnerability Assessments and sectoral planning.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 11",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance the integration of systematic Gender Analysis into Climate Vulnerability Assessments and sectoral planning.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_69",
+  "text": "Establish a national sewage and FSM data monitoring system with inclusion of climate resilient indicators",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Human health and WASH 9",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Establish a national sewage and FSM data monitoring system with inclusion of climate resilient indicators",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_70",
+  "text": "Repair and rehabilitate existing road infrastructure, ensuring climate-resilient designs, and establish effective operation and maintenance systems that consider the impacts of climate change",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Repair and rehabilitate existing road infrastructure, ensuring climate-resilient designs, and establish effective operation and maintenance systems that consider the impacts of climate change",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_71",
+  "text": "Develop and expand resilient school infrastructure by constructing new buildings and facilities, retrofitting existing structures, and designing climate-resilient infrastructure tailored to geographic and demographic needs",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop and expand resilient school infrastructure by constructing new buildings and facilities, retrofitting existing structures, and designing climate-resilient infrastructure tailored to geographic and demographic needs",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_72",
+  "text": "Research/Evidence generation and knowledge management for climate impacts, including adaptation and mitigation actions, with consideration for determinants of health.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Education, information and awareness raising 11",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Research/Evidence generation and knowledge management for climate impacts, including adaptation and mitigation actions, with consideration for determinants of health.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_73",
+  "text": "Increase child and youth-sensitive commitments of government to enhance access to information and public awareness on climate change and its impacts on the promotion, protection and fulfilment of rights of children, and support families and communities to become climate resilient.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Education, information and awareness raising 14",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase child and youth-sensitive commitments of government to enhance access to information and public awareness on climate change and its impacts on the promotion, protection and fulfilment of rights of children, and support families and communities to become climate resilient.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_74",
+  "text": "Enhance the Resilience of natural and cultural heritage to climate change",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 14",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance the Resilience of natural and cultural heritage to climate change",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_75",
+  "text": "Strengthen community resilience to climate-related health risks by developing and implementing public awareness campaigns on climate-sensitive diseases (e.g., dengue, malaria), injuries (e.g., drowning, snakebites), nutrition, and mental health, with targeted messaging for vulnerable groups (e.g., children, pregnant women, elderly, migrants, and persons with disabilities).",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Education, information and awareness raising 10",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen community resilience to climate-related health risks by developing and implementing public awareness campaigns on climate-sensitive diseases (e.g., dengue, malaria), injuries (e.g., drowning, snakebites), nutrition, and mental health, with targeted messaging for vulnerable groups (e.g., children, pregnant women, elderly, migrants, and persons with disabilities).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_76",
+  "text": "New national road construction with climate-resilient designs to withstand the impacts of climate change",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Infrastructure 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "New national road construction with climate-resilient designs to withstand the impacts of climate change",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_77",
+  "text": "Increase awareness and knowledge in the most vulnerable urban communities, including women, children and young people, on climate change impacts on sanitation services, related health risks, and prevention measures.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Education, information and awareness raising 13",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase awareness and knowledge in the most vulnerable urban communities, including women, children and young people, on climate change impacts on sanitation services, related health risks, and prevention measures.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_78",
+  "text": "Increase the share of RE-installed capacity to 72% by 2035 (conditionally to 80% by 2035)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase the share of RE-installed capacity to 72% by 2035 (conditionally to 80% by 2035)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_79",
+  "text": "Phase down coal-fired power plants",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Phase down coal-fired power plants",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_80",
+  "text": "Accelerate integrated public transport and low-carbon urban mobility in major cities",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy/ Transport 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Accelerate integrated public transport and low-carbon urban mobility in major cities",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_81",
+  "text": "Enforce regulations for introducing fuel efficiency and emission standards for internal combustion engine (ICE) vehicles in road transport",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy/ Transport 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enforce regulations for introducing fuel efficiency and emission standards for internal combustion engine (ICE) vehicles in road transport",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_82",
+  "text": "Scale up the adoption of electric mobility for low-carbon road transport",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy/ Transport 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Scale up the adoption of electric mobility for low-carbon road transport",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_83",
+  "text": "Develop an inclusive climate financing policy framework, supported by tools and coordination mechanisms, to mobilize and track climate expenditures, funds and revenues. Further explore opportunities in climate finance and carbon markets.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop an inclusive climate financing policy framework, supported by tools and coordination mechanisms, to mobilize and track climate expenditures, funds and revenues. Further explore opportunities in climate finance and carbon markets.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_84",
+  "text": "Shift long-distance freight and passenger transport from road to rail",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy/ Transport 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Shift long-distance freight and passenger transport from road to rail",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_85",
+  "text": "Enhance efficient and low-carbon waterborne transport through inland waterways",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy/ Transport 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance efficient and low-carbon waterborne transport through inland waterways",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NDC_86",
+  "text": "Enhance Climate-Proof Energy Infrastructure",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy 12",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance Climate-Proof Energy Infrastructure",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_87",
+  "text": "Waste collection and segregation at source (at households, schools, markets, restaurants/hotels levels)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Waste 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Waste collection and segregation at source (at households, schools, markets, restaurants/hotels levels)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_88",
+  "text": "Increase capacities for organic waste processing",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Waste 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase capacities for organic waste processing",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_89",
+  "text": "Industrial wastewater (IWW) management",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Waste 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Industrial wastewater (IWW) management",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_90",
+  "text": "Promote air quality control and management in construction sites.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Air quality 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote air quality control and management in construction sites.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_91",
+  "text": "Strengthen air quality regulatory enforcement: operationalize air quality management sub-decree and emission standard (Air quality).",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Policy, planning and capacity building 10",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen air quality regulatory enforcement: operationalize air quality management sub-decree and emission standard (Air quality).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_92",
+  "text": "Convert Special Economic Zone (SEZ)/ Industrial Park (IP) into Eco-industrial parks (EIPs)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Energy/Manufacturing and Construction 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Convert Special Economic Zone (SEZ)/ Industrial Park (IP) into Eco-industrial parks (EIPs)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_93",
+  "text": "Implement solid waste reduction strategies, and pollution control measures",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Waste 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Implement solid waste reduction strategies, and pollution control measures",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_94",
+  "text": "Strengthen the preparedness and response capacities of national and local institutions and communities through mainstreaming migration and displacement trends, gender and disability inclusion.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Disaster and climate risk management 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen the preparedness and response capacities of national and local institutions and communities through mainstreaming migration and displacement trends, gender and disability inclusion.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_95",
+  "text": "Increase the proportion and capacity of women in government leadership and decision-making roles relevant to all NDC priority sectors.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 9",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase the proportion and capacity of women in government leadership and decision-making roles relevant to all NDC priority sectors.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_96",
+  "text": "Scale-up the integration of gender considerations in climate-related policies in all NDC sectors, with special focus on the transition to green economy.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 12",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Scale-up the integration of gender considerations in climate-related policies in all NDC sectors, with special focus on the transition to green economy.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_97",
+  "text": "Strengthen the conservation and development of application of traditional knowledge",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 16",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen the conservation and development of application of traditional knowledge",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_98",
+  "text": "Strengthen the institutional capacities of the national sustainable development council through its climate change technical working group.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen the institutional capacities of the national sustainable development council through its climate change technical working group.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NDC_99",
+  "text": "Upgrade non-formal education curriculum to build green competencies.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Education, information and awareness raising 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Upgrade non-formal education curriculum to build green competencies.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_100",
+  "text": "Mainstream climate change into the national education strategic plan and its operational plans.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Education, information and awareness raising 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Mainstream climate change into the national education strategic plan and its operational plans.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NDC_101",
+  "text": "Strengthen capacity building to effectively integrate climate risks and adaptation options in national and provincial-level health sector planning and implementation, including capacity building for healthcare providers to address climate health impacts on vulnerable populations.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Policy, planning and capacity building 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen capacity building to effectively integrate climate risks and adaptation options in national and provincial-level health sector planning and implementation, including capacity building for healthcare providers to address climate health impacts on vulnerable populations.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_102",
+  "text": "Increase adoption of integrated and site-specific nutrient management",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Agriculture 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase adoption of integrated and site-specific nutrient management",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_103",
+  "text": "Strengthen digital data governance and reporting mechanism to in line with the Enhanced Transparency Framework (ETF) reporting requirement (Agriculture).",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Governance 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen digital data governance and reporting mechanism to in line with the Enhanced Transparency Framework (ETF) reporting requirement (Agriculture).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_104",
+  "text": "Develop M&E framework for assessing climate impacts in PAs",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop M&E framework for assessing climate impacts in PAs",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_105",
+  "text": "Shift food consumption towards more nutritious, healthier and more sustainable diets.",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Food systems 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Shift food consumption towards more nutritious, healthier and more sustainable diets.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NDC_106",
+  "text": "Promote environmentally friendly practices in the tourism sector, engaging stakeholders (private sector and tourism association)",
+  "sourceDocument": "NDC",
+  "sourceLabel": "Livelihood and ecosystems 13",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote environmentally friendly practices in the tourism sector, engaging stakeholders (private sector and tourism association)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_1",
+  "text": "Management of fisheries and aquaculture farmland: Restore fishery resources and aquatic habitats to create a balance for aquatic biodiversity.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 10",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of fisheries and aquaculture farmland: Restore fishery resources and aquatic habitats to create a balance for aquatic biodiversity.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_2",
+  "text": "Productivity and food security maintained amidst climate risks and impacts.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Productivity and food security maintained amidst climate risks and impacts.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_3",
+  "text": "Management of crop farmland: Encourage adjustment in agricultural patterns in response to the changing climate.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of crop farmland: Encourage adjustment in agricultural patterns in response to the changing climate.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_4",
+  "text": "Management of crop farmland: Promote integrated farming or crop rotation to mitigate risks and damages from climate change.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of crop farmland: Promote integrated farming or crop rotation to mitigate risks and damages from climate change.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_5",
+  "text": "Management of crop farmland: Develop water resources in non-irrigated zones to be more effective and sufficient to meet the demand for crops and livestock.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of crop farmland: Develop water resources in non-irrigated zones to be more effective and sufficient to meet the demand for crops and livestock.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_6",
+  "text": "Management of crop farmland: Promote measures for soil conservation, rehabilitation, and soil fertility maintenance in degraded agricultural land, such as undertaking cover cropping, contour tillage, and crop selection according to the soil and climatic conditions in degraded agricultural land to increase production per unit, strengthen food security, and enhance the productivity of the areas.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of crop farmland: Promote measures for soil conservation, rehabilitation, and soil fertility maintenance in degraded agricultural land, such as undertaking cover cropping, contour tillage, and crop selection according to the soil and climatic conditions in degraded agricultural land to increase production per unit, strengthen food security, and enhance the productivity of the areas.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_7",
+  "text": "Management of livestock farmland: Develop livestock management systems and products to respond to the climate change trends.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of livestock farmland: Develop livestock management systems and products to respond to the climate change trends.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_8",
+  "text": "Supporting mechanisms for agriculture and food security: Develop an index for the capacity of the agricultural sector's self-reliance in the event of climate-related disasters to assess farmers' capacity in different areas.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 12",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Develop an index for the capacity of the agricultural sector's self-reliance in the event of climate-related disasters to assess farmers' capacity in different areas.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_9",
+  "text": "Supporting mechanisms for agriculture and food security: Map climate-risk agricultural areas and climate change impacts at the local level and make the information available for farmers to access and apply",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 14",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Map climate-risk agricultural areas and climate change impacts at the local level and make the information available for farmers to access and apply",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_10",
+  "text": "Supporting mechanisms for agriculture and food security: Develop precision farming technology to lower the cost of operation, thus allowing more comprehensive access and adoption among farmers and increasing the effectiveness in planning and managing agricultural activities",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 15",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Develop precision farming technology to lower the cost of operation, thus allowing more comprehensive access and adoption among farmers and increasing the effectiveness in planning and managing agricultural activities",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_11",
+  "text": "Supporting mechanisms for agriculture and food security: Promote production with sustainable agriculture and integrated farming to produce sufficient food for household consumption, reduce the risk of food shortages, and always have access to food.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 17",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Promote production with sustainable agriculture and integrated farming to produce sufficient food for household consumption, reduce the risk of food shortages, and always have access to food.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NAP_12",
+  "text": "Supporting mechanisms for agriculture and food security: Establish seed banks for crops, livestock, and aquatic species to loan the means of production and act as a reserve in events of natural disasters.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 19",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Establish seed banks for crops, livestock, and aquatic species to loan the means of production and act as a reserve in events of natural disasters.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_13",
+  "text": "Supporting mechanisms for agriculture and food security: Promote the improvement of crop/livestock varieties to accommodate the changes in climatic conditions and support farmers' access to these varieties.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 20",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Promote the improvement of crop/livestock varieties to accommodate the changes in climatic conditions and support farmers' access to these varieties.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_14",
+  "text": "Supporting mechanisms for agriculture and food security: Support research and development to reduce food loss and food waste in the agricultural sector.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 22",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Support research and development to reduce food loss and food waste in the agricultural sector.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_15",
+  "text": "Supporting mechanisms for agriculture and food security: Support networks building for climate change adaptation in the agricultural sector to enable cooperation on early warnings, climate risk assessments, and exchanges of knowledge, technology, and agricultural innovation with linkages to the local context.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 23",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Support networks building for climate change adaptation in the agricultural sector to enable cooperation on early warnings, climate risk assessments, and exchanges of knowledge, technology, and agricultural innovation with linkages to the local context.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_16",
+  "text": "Supporting mechanisms for agriculture and food security: Enhance farmers' awareness of climate change impacts on the agricultural sector and capacity building of farmers to adaptive and climate-risk management.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 24",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Enhance farmers' awareness of climate change impacts on the agricultural sector and capacity building of farmers to adaptive and climate-risk management.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_17",
+  "text": "Supporting mechanisms for agriculture and food security: Develop research to assess climate change factors that may impact the agricultural sector (crop farming, livestock production, fishery, and aquaculture resources)",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 25",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Supporting mechanisms for agriculture and food security: Develop research to assess climate change factors that may impact the agricultural sector (crop farming, livestock production, fishery, and aquaculture resources)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_18",
+  "text": "Promote CSA: Alternate Wetting and Drying (AWD): Dry-season rice area in irrigation zones using AWD (Climate-Smart Rice Production).",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 26",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote CSA: Alternate Wetting and Drying (AWD): Dry-season rice area in irrigation zones using AWD (Climate-Smart Rice Production).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_19",
+  "text": "Promote CSA: Breeding & Varieties: Cultivation area of climate-resilient improved varieties (hectares); Number of farmers using improved varieties (Person); and Number of improved plant varieties/strains (Varieties).",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 28",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote CSA: Breeding & Varieties: Cultivation area of climate-resilient improved varieties (hectares); Number of farmers using improved varieties (Person); and Number of improved plant varieties/strains (Varieties).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NAP_20",
+  "text": "Enhance soil/ecosystem fertility and water accessibility: Irrigation Access: Agricultural households with access to irrigation.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 30",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance soil/ecosystem fertility and water accessibility: Irrigation Access: Agricultural households with access to irrigation.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_21",
+  "text": "Develop efficient resource management and risk systems: Research Integration: Climate change research projects covering crops, livestock, and fisheries.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 31",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop efficient resource management and risk systems: Research Integration: Climate change research projects covering crops, livestock, and fisheries.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_22",
+  "text": "Increased water security and decreased losses and damage from water-related disasters.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Water resources management 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increased water security and decreased losses and damage from water-related disasters.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_23",
+  "text": "Management of crop farmland: Develop and improve water resources management in irrigated zones in flood risk and drought risk areas to be more effective.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of crop farmland: Develop and improve water resources management in irrigated zones in flood risk and drought risk areas to be more effective.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_24",
+  "text": "Increase knowledge and research: Early Warning Systems: Information management systems for forecasting and warning dissemination.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 33",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase knowledge and research: Early Warning Systems: Information management systems for forecasting and warning dissemination.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_25",
+  "text": "Water-Related Disaster Management: Percentage of functional telemetry systems in water-risk areas (Unit: %)",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Water resources management 11",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Water-Related Disaster Management: Percentage of functional telemetry systems in water-risk areas (Unit: %)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_26",
+  "text": "Regional Water Resources Management: Flood Prevention and Mitigation Plans for all river basins (Unit: %)",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Water resources management 15",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Regional Water Resources Management: Flood Prevention and Mitigation Plans for all river basins (Unit: %)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NAP_27",
+  "text": "Regional Water Resources Management: Number of key cities with flood protection and urban drainage systems (Unit: Locations).",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Water resources management 18",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Regional Water Resources Management: Number of key cities with flood protection and urban drainage systems (Unit: Locations).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_28",
+  "text": "Established effective public health systems to manage risks and reduce impacts from climate change.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Public health",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Established effective public health systems to manage risks and reduce impacts from climate change.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_29",
+  "text": "Sustainable management of biodiversity resources to respond to climate impacts.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Natural resources management",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Sustainable management of biodiversity resources to respond to climate impacts.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_30",
+  "text": "Enhanced capacity of Individuals, communities, and cities to adapt to climate change impacts appropriately according to the local context.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Human settlements and security",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhanced capacity of Individuals, communities, and cities to adapt to climate change impacts appropriately according to the local context.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_31",
+  "text": "Management of fisheries and aquaculture farmland: Develop systems to control, prevent, and treat livestock diseases caused by climate change and epidemics caused by floods and drought",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of fisheries and aquaculture farmland: Develop systems to control, prevent, and treat livestock diseases caused by climate change and epidemics caused by floods and drought",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_32",
+  "text": "Management of fisheries and aquaculture farmland: Develop fishery management systems to respond to climate change trends.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 9",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Management of fisheries and aquaculture farmland: Develop fishery management systems to respond to climate change trends.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_33",
+  "text": "Support integration with external agencies: Cooperation Agreements: MOUs with external agencies supporting adaptation and resilience.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 38",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Support integration with external agencies: Cooperation Agreements: MOUs with external agencies supporting adaptation and resilience.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_34",
+  "text": "Improve regulations, standards, and incentives: Learning Centers: Climate-smart adaptation learning centers and demonstration plots utilizing adaptation strategies.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Agriculture and food security 42",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve regulations, standards, and incentives: Learning Centers: Climate-smart adaptation learning centers and demonstration plots utilizing adaptation strategies.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NAP_35",
+  "text": "Regional Water Resources Management: Drought Prevention and Mitigation Plans for all river basins (Unit: %)",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Water resources management 14",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Regional Water Resources Management: Drought Prevention and Mitigation Plans for all river basins (Unit: %)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "NAP_36",
+  "text": "Strengthened capacity of the tourism sector toward climate-resilience and sustainable development.",
+  "sourceDocument": "NAP",
+  "sourceLabel": "Tourism",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthened capacity of the tourism sector toward climate-resilience and sustainable development.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_1",
+  "text": "Rehabilitate or sustainably manage ≥ 50% of degraded coastal zones (mangroves, reefs)",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 7 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Rehabilitate or sustainably manage ≥ 50% of degraded coastal zones (mangroves, reefs)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_2",
+  "text": "Expand integrated coastal zone management, promoting mangrove restoration and shoreline vegetation buffers.",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 5 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Expand integrated coastal zone management, promoting mangrove restoration and shoreline vegetation buffers.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_3",
+  "text": "Ensure that ≥ 50% of agricultural land under climate-smart practices (irrigation, drought-resilient seeds, crop diversification)",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 4 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Ensure that ≥ 50% of agricultural land under climate-smart practices (irrigation, drought-resilient seeds, crop diversification)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_4",
+  "text": "Implement climate-smart agriculture (e.g., soil & water conservation, agroforestry, improved seeds, irrigation).",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 6 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Implement climate-smart agriculture (e.g., soil & water conservation, agroforestry, improved seeds, irrigation).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_5",
+  "text": "Reduce post-harvest losses of crops (e.g., fruits, vegetables) by 40% through improved storage and value addition",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 5 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Reduce post-harvest losses of crops (e.g., fruits, vegetables) by 40% through improved storage and value addition",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_6",
+  "text": "Adopt integrated water resources management (e.g., reduce leakages, promote rainwater harvesting, regulate abstraction).",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 7 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Adopt integrated water resources management (e.g., reduce leakages, promote rainwater harvesting, regulate abstraction).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_7",
+  "text": "Demarcate and protect 60% of major water sources in all major basins to strengthen water resilience",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 2 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Demarcate and protect 60% of major water sources in all major basins to strengthen water resilience",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "CCS_8",
+  "text": "Decrease the deforestation rate by 20% from the national baseline, restoring 2 million ha of degraded forests",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 5 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Decrease the deforestation rate by 20% from the national baseline, restoring 2 million ha of degraded forests",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "CCS_9",
+  "text": "Scale up community-based forest management, afforestation, and REDD+ initiatives to reduce deforestation pressures.",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 8 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Scale up community-based forest management, afforestation, and REDD+ initiatives to reduce deforestation pressures.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_10",
+  "text": "Undertake risk & vulnerability mapping for land-use planning, focusing on flood-prone and coastal hazard areas.",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 4 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Undertake risk & vulnerability mapping for land-use planning, focusing on flood-prone and coastal hazard areas.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_11",
+  "text": "Develop climate-resilient and low carbon tourism by adopting efficiency measures and enforcing coastal building codes.",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 10 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop climate-resilient and low carbon tourism by adopting efficiency measures and enforcing coastal building codes.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_12",
+  "text": "Integrate climate change adaptation into ≥ 60% of national/sector plans and local government budgets by 2026",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 1 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Integrate climate change adaptation into ≥ 60% of national/sector plans and local government budgets by 2026",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_13",
+  "text": "Construct or upgrade flood-control systems in at least 50% of water basins",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 3 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Construct or upgrade flood-control systems in at least 50% of water basins",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_14",
+  "text": "Strengthen disaster risk management and early warning systems for climate extremes, including community-level outreach.",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 3 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Strengthen disaster risk management and early warning systems for climate extremes, including community-level outreach.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_15",
+  "text": "Provide incentives for climate-smart technology innovation(e.g., renewable micro-grids, improved seeds)",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 3 (Cross-cutting)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Provide incentives for climate-smart technology innovation(e.g., renewable micro-grids, improved seeds)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_16",
+  "text": "Develop modern waste management in all major urban centers (3R-reduce, reuse, recycle) and pilot waste-to-energy projects",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 6 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop modern waste management in all major urban centers (3R-reduce, reuse, recycle) and pilot waste-to-energy projects",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_17",
+  "text": "Gender mainstreaming in all climate actions, ensuring equitable participation and benefit-sharing",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 5 (Cross-cutting)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Gender mainstreaming in all climate actions, ensuring equitable participation and benefit-sharing",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_18",
+  "text": "Integrate climate change curricula into primary, secondary, and tertiary education, with annual climate forums",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 1 (Cross-cutting)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Integrate climate change curricula into primary, secondary, and tertiary education, with annual climate forums",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_19",
+  "text": "Enhance capacity and coordination on climate change governance (e.g., institutional strengthening, training, awareness).",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 1 (Cross-cutting)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enhance capacity and coordination on climate change governance (e.g., institutional strengthening, training, awareness).",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_20",
+  "text": "Establish a National Climate Change Financing Mechanism and integrate a climate code in national budgets",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 4 (Cross-cutting)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Establish a National Climate Change Financing Mechanism and integrate a climate code in national budgets",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_21",
+  "text": "Promote livestock resilience by adopting improved rangeland management in ≥ 40% of pastoral communities",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 6 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote livestock resilience by adopting improved rangeland management in ≥ 40% of pastoral communities",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_22",
+  "text": "Conduct climate-proofing for all major new infrastructure projects (roads, rail, power lines)",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 8 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Conduct climate-proofing for all major new infrastructure projects (roads, rail, power lines)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_23",
+  "text": "Conduct or update climate-risk assessments in ≥ 30 districts and improve national meteorological networks",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 2 (Cross-cutting)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Conduct or update climate-risk assessments in ≥ 30 districts and improve national meteorological networks",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "CCS_24",
+  "text": "Reduce economy-wide GHG emissions by 30-35% below BAU by 2030 (aligned with updated NDC)",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 1 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Reduce economy-wide GHG emissions by 30-35% below BAU by 2030 (aligned with updated NDC)",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_25",
+  "text": "Expand renewable energy (solar, wind, geothermal, hydro, bioenergy) to ≥ 25% of total generation mix",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 2 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Expand renewable energy (solar, wind, geothermal, hydro, bioenergy) to ≥ 25% of total generation mix",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_26",
+  "text": "Adopt energy-efficient technologies (efficient cookstoves, industrial retrofits) in ≥ 40% of households and 20% of factories",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 3 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Adopt energy-efficient technologies (efficient cookstoves, industrial retrofits) in ≥ 40% of households and 20% of factories",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_27",
+  "text": "Promote energy efficiency (e.g., efficient cookstoves) and renewable energy (solar, wind) to diversify the energy mix.",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 9 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote energy efficiency (e.g., efficient cookstoves) and renewable energy (solar, wind) to diversify the energy mix.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_28",
+  "text": "Introduce or scale up mass transit systems (BRT, rail) and non-motorized transport in major cities",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 4 (Mitigation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Introduce or scale up mass transit systems (BRT, rail) and non-motorized transport in major cities",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "CCS_29",
+  "text": "Equip 70% of health facilities with climate-resilient water and power systems, expanding disease surveillance to all regions",
+  "sourceDocument": "CCS",
+  "sourceLabel": "Objective 9 (Adaptation)",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Equip 70% of health facilities with climate-resilient water and power systems, expanding disease surveillance to all regions",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_1",
+  "text": "By 2030, ensure that all areas of high biodiversity importance are identified and brought under participatory, integrated and biodiversity-inclusive spatial planning and management processes, with effective and equitable management addressing key drivers of land-use and sea-use change, and with natural habitat loss brought close to zero.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, ensure that all areas of high biodiversity importance are identified and brought under participatory, integrated and biodiversity-inclusive spatial planning and management processes, with effective and equitable management addressing key drivers of land-use and sea-use change, and with natural habitat loss brought close to zero.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_2",
+  "text": "By 2030, at least 30 percent of the total area of degraded terrestrial, inland water, marine and coastal ecosystems will be defined, mapped, prioritized and under restoration to enhance biodiversity, connectivity, and ecosystem functions and services.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, at least 30 percent of the total area of degraded terrestrial, inland water, marine and coastal ecosystems will be defined, mapped, prioritized and under restoration to enhance biodiversity, connectivity, and ecosystem functions and services.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_3",
+  "text": "By 2030, at least 30 percent of terrestrial and inland water areas, and at least XX% of marine and coastal areas are effectively conserved by the protected area system and other effective area-based conservation measures (OECMs), with management plans and effective management in place to ensure the 2050 vision, while ensuring equitably participation with inclusive processes and outcomes, and recognizing the roles of indigenous peoples, local communities, women and youth.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, at least 30 percent of terrestrial and inland water areas, and at least XX% of marine and coastal areas are effectively conserved by the protected area system and other effective area-based conservation measures (OECMs), with management plans and effective management in place to ensure the 2050 vision, while ensuring equitably participation with inclusive processes and outcomes, and recognizing the roles of indigenous peoples, local communities, women and youth.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_4",
+  "text": "By 2030, nature's contributions to people are restored, maintained and enhanced, including ecosystem functions and services, reduction in disease risk, and protection from natural hazards and disasters, through nature-based solutions and/or ecosystem-based approaches for the benefit of all people and nature.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 11",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, nature's contributions to people are restored, maintained and enhanced, including ecosystem functions and services, reduction in disease risk, and protection from natural hazards and disasters, through nature-based solutions and/or ecosystem-based approaches for the benefit of all people and nature.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_5",
+  "text": "By 2030, the areas used for agriculture, aquaculture, fisheries and forestry are managed sustainably, in particular through the sustainable use of biodiversity, including environmental-friendly practices such as sustainable intensification, agroecological and other innovative approaches contributing to food security, restoring and conserving biodiversity, and maintaining nature's contributions to social and economic good, including ecosystem functions and services.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 10",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, the areas used for agriculture, aquaculture, fisheries and forestry are managed sustainably, in particular through the sustainable use of biodiversity, including environmental-friendly practices such as sustainable intensification, agroecological and other innovative approaches contributing to food security, restoring and conserving biodiversity, and maintaining nature's contributions to social and economic good, including ecosystem functions and services.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_6",
+  "text": "By 2030, halt the human-induced extinction of threatened species, reduce extinction risks and ensure the restoration of genetic diversity in wild and domesticated populations through in situ and ex situ conservation and sustainable management.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, halt the human-induced extinction of threatened species, reduce extinction risks and ensure the restoration of genetic diversity in wild and domesticated populations through in situ and ex situ conservation and sustainable management.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_7",
+  "text": "By 2030, Ensure that the use, harvesting and trade of wild species is sustainable, safe and legal, preventing overexploitation, minimizing impacts on non-target species and ecosystems, and reducing the risk of pathogen spillover, applying the ecosystem approach.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, Ensure that the use, harvesting and trade of wild species is sustainable, safe and legal, preventing overexploitation, minimizing impacts on non-target species and ecosystems, and reducing the risk of pathogen spillover, applying the ecosystem approach.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_8",
+  "text": "By 2030, major invasive alien species (IAS) and their pathways have been identified, prioritized and controlling measures determined and implemented to reduce and minimize rate of invasion and their impacts on biodiversity and ecosystem services.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, major invasive alien species (IAS) and their pathways have been identified, prioritized and controlling measures determined and implemented to reduce and minimize rate of invasion and their impacts on biodiversity and ecosystem services.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_9",
+  "text": "By 2030, the impacts of climate change on biodiversity are reduced and minimized, through nature-based solutions, ecosystem-based approaches, climate mitigation and adaptation and disaster risk reduction strategies.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, the impacts of climate change on biodiversity are reduced and minimized, through nature-based solutions, ecosystem-based approaches, climate mitigation and adaptation and disaster risk reduction strategies.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_10",
+  "text": "By 2030, biodiversity-inclusive urban planning is promoted and substantially implemented to significantly increase the area, quality, connectivity and public access to green and blue spaces in cities and other densely populated areas, enhancing natural landscapes, native biodiversity, ecosystem services, and human health and well-being.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 12",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, biodiversity-inclusive urban planning is promoted and substantially implemented to significantly increase the area, quality, connectivity and public access to green and blue spaces in cities and other densely populated areas, enhancing natural landscapes, native biodiversity, ecosystem services, and human health and well-being.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_11",
+  "text": "By 2030, biodiversity values are integrated into national, sub-national, local and private sector policies, regulations, planning and decision-making processes, ensuring that key public and private activities, fiscal policies and financial flows are progressively aligned with the country's sustainable development goals and the Global Biodiversity Framework.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 14",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, biodiversity values are integrated into national, sub-national, local and private sector policies, regulations, planning and decision-making processes, ensuring that key public and private activities, fiscal policies and financial flows are progressively aligned with the country's sustainable development goals and the Global Biodiversity Framework.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_12",
+  "text": "By 2030, build national capacities for biodiversity conservation, promote technology and scientific transfer, foster joint technology development and joint scientific research among international, national and IPLCs to implement the NBSAP.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 20",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, build national capacities for biodiversity conservation, promote technology and scientific transfer, foster joint technology development and joint scientific research among international, national and IPLCs to implement the NBSAP.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_13",
+  "text": "By 2030, a user-friendly information system containing data and information on biodiversity (including its associated ecosystem services, values, functions, status, trends, threats and the consequences of its loss) has been established and maintained and is widely shared among stakeholders and the public.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 21",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, a user-friendly information system containing data and information on biodiversity (including its associated ecosystem services, values, functions, status, trends, threats and the consequences of its loss) has been established and maintained and is widely shared among stakeholders and the public.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_14",
+  "text": "By 2030, pollutant pressures on terrestrial and aquatic ecosystems are substantially reduced to levels that are not detrimental to ecosystem function and biodiversity, with effective measures in place to mitigate cumulative effects of excess nutrients, pesticides and highly hazardous chemicals, and plastic pollution.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, pollutant pressures on terrestrial and aquatic ecosystems are substantially reduced to levels that are not detrimental to ecosystem function and biodiversity, with effective measures in place to mitigate cumulative effects of excess nutrients, pesticides and highly hazardous chemicals, and plastic pollution.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_15",
+  "text": "By 2030, the management and use of wild species is sustainable for the benefit of people, ensuring social, economic and environmental benefits while enabling sustainable use by indigenous peoples and local communities.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 9",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, the management and use of wild species is sustainable for the benefit of people, ensuring social, economic and environmental benefits while enabling sustainable use by indigenous peoples and local communities.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_16",
+  "text": "By 2030, the country will initiate the fair and equitable sharing of benefits from genetic resources and traditional knowledge, contributing to national benefits while protecting rights and raising awareness.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 13",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, the country will initiate the fair and equitable sharing of benefits from genetic resources and traditional knowledge, contributing to national benefits while protecting rights and raising awareness.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_17",
+  "text": "By 2030, the negative impacts of business on biodiversity are reduced through measures that require monitoring, assessment and disclosure of biodiversity risks and impacts across operations and supply chains, promote compliance with access and benefit-sharing regulations, and encourage sustainable production and consumption practices that increase positive contributions to nature.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 15",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, the negative impacts of business on biodiversity are reduced through measures that require monitoring, assessment and disclosure of biodiversity risks and impacts across operations and supply chains, promote compliance with access and benefit-sharing regulations, and encourage sustainable production and consumption practices that increase positive contributions to nature.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_18",
+  "text": "By 2030, the elimination, phasing out or reform of incentives, including subsidies, that are harmful to biodiversity and the scaling up of positive incentives for the conservation and sustainable use of biodiversity.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 18",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, the elimination, phasing out or reform of incentives, including subsidies, that are harmful to biodiversity and the scaling up of positive incentives for the conservation and sustainable use of biodiversity.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_19",
+  "text": "By 2030, the country will mobilize funds for the development and implementation of the National Biodiversity Strategy and Action Plan through increased national budget, innovative financing, public-private/NGOs partnerships and international support.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 19",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, the country will mobilize funds for the development and implementation of the National Biodiversity Strategy and Action Plan through increased national budget, innovative financing, public-private/NGOs partnerships and international support.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_20",
+  "text": "By 2030, reduce overconsumption and waste generation by at least 30% by promoting sustainable consumption choices.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 16",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, reduce overconsumption and waste generation by at least 30% by promoting sustainable consumption choices.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_21",
+  "text": "By 2030, promote equitable, inclusive and gender-responsive participation of indigenous peoples and local communities, women, youth and persons with disabilities in biodiversity decision-making, in relation to their rights to lands, resources and traditional knowledge.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 22",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, promote equitable, inclusive and gender-responsive participation of indigenous peoples and local communities, women, youth and persons with disabilities in biodiversity decision-making, in relation to their rights to lands, resources and traditional knowledge.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "NBSAP_22",
+  "text": "By 2030, gender equality in biodiversity conservation and NBSAP implementation is achieved and valued through a gender-responsive approach, ensuring that women and girls have equal rights and access to land and natural resources, and equitable opportunities for meaningful participation and leadership at all levels, including the fair and equitable sharing of benefits arising from biodiversity and natural resources.",
+  "sourceDocument": "NBSAP",
+  "sourceLabel": "Target 23",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "By 2030, gender equality in biodiversity conservation and NBSAP implementation is achieved and valued through a gender-responsive approach, ensuring that women and girls have equal rights and access to land and natural resources, and equitable opportunities for meaningful participation and leadership at all levels, including the fair and equitable sharing of benefits arising from biodiversity and natural resources.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_1",
+  "text": "Global Biodiversity Framework of policies.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Operational Objective 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Global Biodiversity Framework of policies.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_2",
+  "text": "Develop planning strategies that contribute to the improvement of land productivity and ecosystem services.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop planning strategies that contribute to the improvement of land productivity and ecosystem services.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_3",
+  "text": "Improve the conditions of affected ecosystems, combat desertification and land degradation, promote sustainable land management, and contribute to Land Degradation neutrality.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Strategic Objective 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Improve the conditions of affected ecosystems, combat desertification and land degradation, promote sustainable land management, and contribute to Land Degradation neutrality.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_4",
+  "text": "Develop planning strategies that contribute to reducing the vulnerability of ecosystems to drought.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop planning strategies that contribute to reducing the vulnerability of ecosystems to drought.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_5",
+  "text": "Integrate climate change adaptation into the National Land Degradation Neutrality Strategy to enhance the resilience of ecosystems and communities to climate impacts.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 6",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Integrate climate change adaptation into the National Land Degradation Neutrality Strategy to enhance the resilience of ecosystems and communities to climate impacts.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_6",
+  "text": "Mitigate, manage, and adapt to the effects of drought in order to increase the resilience of ecosystems and vulnerable populations.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Strategic Objective 3",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Mitigate, manage, and adapt to the effects of drought in order to increase the resilience of ecosystems and vulnerable populations.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_7",
+  "text": "Develop planning strategies to generate environmental benefits in the fight against desertification.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop planning strategies to generate environmental benefits in the fight against desertification.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_8",
+  "text": "Promote awareness and active participation of civil society, non-governmental organizations, and other stakeholders to highlight the importance of Land Degradation neutrality and the adoption of sustainable practices.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote awareness and active participation of civil society, non-governmental organizations, and other stakeholders to highlight the importance of Land Degradation neutrality and the adoption of sustainable practices.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_9",
+  "text": "Promote cooperation and collaboration among different actors, including government institutions, international organizations, the private sector, academia, and civil society, to jointly address the challenges of land degradation.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 7",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promote cooperation and collaboration among different actors, including government institutions, international organizations, the private sector, academia, and civil society, to jointly address the challenges of land degradation.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_10",
+  "text": "Ensure gender equality in the planning, implementation, monitoring, and evaluation of actions related to Land Degradation neutrality, promoting the full and meaningful participation of women in decision-making processes, as well as in the sustainable management of land and soil resources, ensuring that their knowledge, needs, and perspectives are equitably incorporated.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 8",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Ensure gender equality in the planning, implementation, monitoring, and evaluation of actions related to Land Degradation neutrality, promoting the full and meaningful participation of women in decision-making processes, as well as in the sustainable management of land and soil resources, ensuring that their knowledge, needs, and perspectives are equitably incorporated.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_11",
+  "text": "Generate global environmental benefits through the effective implementation of the Fight Against Desertification.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Strategic Objective 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Generate global environmental benefits through the effective implementation of the Fight Against Desertification.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_12",
+  "text": "Promotion, awareness-raising, and education.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Operational Objective 1",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Promotion, awareness-raising, and education.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_13",
+  "text": "Capacity development",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Operational Objective 4",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Capacity development",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_14",
+  "text": "Develop planning strategies that contribute to improving food security and adequate access to water for people living in vulnerable areas.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "General Objective 2",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop planning strategies that contribute to improving food security and adequate access to water for people living in vulnerable areas.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_15",
+  "text": "Mobilize a substantial and additional amount of financial and non-financial resources to support the implementation of the Convention through effective partnerships at the global and national levels.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Strategic Objective 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Mobilize a substantial and additional amount of financial and non-financial resources to support the implementation of the Convention through effective partnerships at the global and national levels.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "LDN_16",
+  "text": "Financing and technology transfer.",
+  "sourceDocument": "LDN",
+  "sourceLabel": "Operational Objective 5",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Financing and technology transfer.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ }
+]

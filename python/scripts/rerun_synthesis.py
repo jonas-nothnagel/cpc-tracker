@@ -43,7 +43,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.config import DATA_DIR, OUTPUT_DIR  # noqa: E402
+from src.config import DATA_DIR, OUTPUT_DIR, all_targets_files, country_display_name  # noqa: E402
 from src.llm import set_language  # noqa: E402
 from src.synthesis_states import (  # noqa: E402
     canonical_hidden_key,
@@ -61,12 +61,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger("rerun_synthesis")
 
-DEFAULT_TARGETS = [
-    "mongolia-targets.json",
-    "panama-targets.json",
-    "sri-lanka-targets.json",
-    "cote-divoire-targets.json",
-]
+# Every committed corpus, from the python/data glob — see config.all_targets_files.
+DEFAULT_TARGETS = all_targets_files()
 
 
 def stem_for(targets_file: str) -> str:
@@ -78,9 +74,35 @@ def _load(path: Path):
     return json.loads(path.read_text()) if path.exists() else None
 
 
+# Mirrors PREFERRED_DEFAULT_SLUGS in src/lib/dashboard-data.ts: the model dir
+# the dashboard shows by default when a country has per-model outputs.
+PREFERRED_MODEL_SLUGS = ["gpt-5-4", "gpt-5-5"]
+
+
+def resolve_out_dir(stem: str) -> Path | None:
+    """Flat layout, or the dashboard-default model subdir (Mongolia)."""
+    base = OUTPUT_DIR / stem
+    if (base / "alignment.json").exists():
+        return base
+    if not base.exists():
+        return None
+    candidates = sorted(
+        p for p in base.iterdir()
+        if p.is_dir() and (p / "alignment.json").exists()
+    )
+    for slug in PREFERRED_MODEL_SLUGS:
+        for path in candidates:
+            if path.name == slug:
+                return path
+    return candidates[0] if candidates else None
+
+
 async def rerun_country(targets_file: str) -> None:
     stem = stem_for(targets_file)
-    out_dir = OUTPUT_DIR / stem
+    out_dir = resolve_out_dir(stem)
+    if out_dir is None:
+        logger.warning(f"[{stem}] no alignment.json under {OUTPUT_DIR / stem} — skipping")
+        return
 
     targets = _load(DATA_DIR / targets_file)
     alignment = _load(out_dir / "alignment.json")
@@ -90,7 +112,9 @@ async def rerun_country(targets_file: str) -> None:
         return
 
     config = _load(DATA_DIR / f"{stem}-country-config.json") or {}
-    country_name = config.get("name", stem.capitalize())
+    # Shared resolver (config name, else title-cased slug) — the same value
+    # run_analysis embeds in the corpus-synthesis prompts.
+    country_name = country_display_name(stem)
     doc_type_labels = {
         dt["id"]: dt.get("mediumLabel") or dt.get("shortLabel") or dt["id"]
         for dt in config.get("documentTypes", [])

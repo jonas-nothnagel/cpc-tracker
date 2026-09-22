@@ -10,40 +10,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from src.classify import run_classification
 from src.align import decompose_targets, assess_alignment, generate_pairs
 from src.quantitative import assess_quantitative_flags
-
-
-# ---------------------------------------------------------------------------
-# Thematic classification
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.asyncio
-async def test_classify_with_mock_llm(sample_targets, sample_nbs_categories):
-    """run_classification should classify each target × category pair."""
-    # 5 targets × 2 nbs categories = 10 calls
-    responses = ["1"] * 5 + ["0"] * 5
-
-    with patch("src.classify.call_llm_batch", new_callable=AsyncMock) as mock_batch:
-        mock_batch.return_value = responses
-        result = await run_classification(sample_targets, sample_nbs_categories, "nbs")
-
-    assert len(result) == 10
-    relevant = [c for c in result if c["isRelevant"]]
-    assert len(relevant) == 5
-
-    for c in result:
-        assert "targetId" in c
-        assert "categoryId" in c
-        assert "taxonomyType" in c
-        assert c["taxonomyType"] == "nbs"
-
-
-# ---------------------------------------------------------------------------
-# Target decomposition
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.asyncio

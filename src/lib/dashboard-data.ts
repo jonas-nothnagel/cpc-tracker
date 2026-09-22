@@ -20,9 +20,22 @@ import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { join } from "path";
 import { gzipSync } from "node:zlib";
 import { getCountry, isValidCountryId } from "@/config/countries";
+import { routing } from "@/i18n/routing";
+import { WHEEL_DRAWN_LEVELS } from "@/types";
 import { migrateLegacyAlignmentRecords } from "@/lib/alignment-migration";
 import { localizeCategories } from "@/data/category-translations";
+import {
+  applyAlignmentTranslations,
+  localizeLabelled,
+  localizeTargetTexts,
+  type AlignmentTranslationOverlay,
+  type LocalizableTarget,
+} from "@/lib/locale-text";
+import {
+  applyUnclassifiedBuckets,
+} from "@/lib/unclassified-bucket";
 import type {
+  AlignmentLevel,
   BlindEvaluationReport,
   BlindPairSample,
   ModelAgreementSummary,
@@ -413,6 +426,7 @@ export interface DashboardResponse {
   globeCategories: unknown[];
   globeSubcategories: unknown[];
   ggaCategories: unknown[];
+  hrCategories: unknown[];
   classifications: unknown[];
   alignment: unknown[];
   btrData: Record<string, unknown> | null;
@@ -486,11 +500,45 @@ export function assembleDashboardData(
     globe_categories?: unknown[];
     globe_subcategories?: unknown[];
     gga_categories?: unknown[];
+    hr_categories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
+  // Read the sparse per-locale rationale overlay for one alignment file.
+  // Deliberately NOT readLocalizedJson: that swaps a whole file, and these are
+  // maps merged onto the English records. See src/lib/locale-text.
+  const rationaleOverlay = (name: string) =>
+    locale && locale !== "en"
+      ? readJson<AlignmentTranslationOverlay>(
+          join(outputDir, name.replace(/\.json$/, `.${locale}.json`)),
+        )
+      : null;
+
   const alignmentRaw = readJson<Record<string, unknown>[]>(join(outputDir, "alignment.json"));
   // Migrate any v1 records to v2.1 shape so the rest of the assembly sees a single schema.
-  const alignment = alignmentRaw ? migrateLegacyAlignmentRecords(alignmentRaw) : null;
+  const alignmentMigrated = alignmentRaw ? migrateLegacyAlignmentRecords(alignmentRaw) : null;
+  // Overlay the per-locale pair rationales where a translation pass has run.
+  // Deliberately NOT readLocalizedJson: that swaps a whole file, and this one is
+  // a sparse map merged onto the English records. See src/lib/locale-text.
+  const alignment = alignmentMigrated
+    ? applyAlignmentTranslations(
+        alignmentMigrated,
+        rationaleOverlay("alignment.json"),
+        locale,
+      )
+    : null;
+  // Which elements each target's text states (action / scope / outcome), from
+  // python/src/target_quality.py. Optional by design: when the file is absent
+  // every quality affordance hides, exactly as the briefing already treats
+  // missing BER / BTR / NR7 data. See .../coherence-briefing/target-quality.
+  const targetQuality = readJson<
+    {
+      targetId: string;
+      elements?: Record<string, boolean>;
+      evidence?: Record<string, string>;
+      confidence?: string;
+    }[]
+  >(join(outputDir, "target_quality.json"));
+
   const quantFlags = readJson<
     { targetId: string; isQuantitative: boolean; isTimeBound: boolean; quantitativeDetails?: string; timeBoundDetails?: string }[]
   >(
@@ -544,16 +592,55 @@ export function assembleDashboardData(
     }
   }
 
-  const enrichedTargets = (targets as Record<string, unknown>[]).map((t) => {
-    const flags = flagsByTarget.get(String(t.id));
-    return {
-      ...t,
-      isQuantitative: flags?.isQuantitative ?? false,
-      isTimeBound: flags?.isTimeBound ?? false,
-      quantitativeDetails: flags?.quantitativeDetails ?? undefined,
-      timeBoundDetails: flags?.timeBoundDetails ?? undefined,
-    };
-  });
+  // The five elements are assembled here rather than in the pipeline: two of
+  // them (measurable / deadline) already existed as quantitative flags, and
+  // recomputing them would risk the two sources disagreeing.
+  const qualityByTarget = new Map<
+    string,
+    {
+      elements: Record<string, boolean>;
+      evidence: Record<string, string>;
+      confidence?: string;
+    }
+  >();
+  if (targetQuality) {
+    for (const q of targetQuality) {
+      const flags = flagsByTarget.get(q.targetId);
+      qualityByTarget.set(q.targetId, {
+        elements: {
+          measurable: flags?.isQuantitative ?? false,
+          deadline: flags?.isTimeBound ?? false,
+          ...(q.elements ?? {}),
+        },
+        evidence: {
+          measurable: flags?.quantitativeDetails ?? "",
+          deadline: flags?.timeBoundDetails ?? "",
+          ...(q.evidence ?? {}),
+        },
+        confidence: q.confidence,
+      });
+    }
+  }
+
+  const enrichedTargets = localizeTargetTexts(
+    (targets as (Record<string, unknown> & LocalizableTarget)[]).map((t) => {
+      const flags = flagsByTarget.get(String(t.id));
+      const quality = qualityByTarget.get(String(t.id));
+      return {
+        ...t,
+        isQuantitative: flags?.isQuantitative ?? false,
+        isTimeBound: flags?.isTimeBound ?? false,
+        quantitativeDetails: flags?.quantitativeDetails ?? undefined,
+        timeBoundDetails: flags?.timeBoundDetails ?? undefined,
+        definition: quality,
+      };
+    }),
+    // Show people their own words: in a locale that matches the target's
+    // source language, render the original and keep the English analysis text
+    // behind the language chip. Safe to do here because the country payload is
+    // cached per-locale. See src/lib/locale-text.
+    locale,
+  );
 
   const btrData = readJson<{ mitigationMeasures?: Record<string, unknown>[] } & Record<string, unknown>>(
     join(outputDir, "btr_data.json")
@@ -629,7 +716,11 @@ export function assembleDashboardData(
     join(outputDir, "measure_alignment.json")
   );
   const measureAlignment = measureAlignmentRaw
-    ? migrateLegacyAlignmentRecords(measureAlignmentRaw)
+    ? applyAlignmentTranslations(
+        migrateLegacyAlignmentRecords(measureAlignmentRaw),
+        rationaleOverlay("measure_alignment.json"),
+        locale,
+      )
     : null;
 
   const allTargets = measurePseudoTargets
@@ -648,7 +739,11 @@ export function assembleDashboardData(
     join(outputDir, "budget_alignment.json")
   );
   const budgetAlignment = budgetAlignmentRaw
-    ? migrateLegacyAlignmentRecords(budgetAlignmentRaw)
+    ? applyAlignmentTranslations(
+        migrateLegacyAlignmentRecords(budgetAlignmentRaw),
+        rationaleOverlay("budget_alignment.json"),
+        locale,
+      )
     : null;
   const berData = readJson<unknown>(
     join(dataDir, deriveCountryFile(targetsFile, "ber"))
@@ -702,11 +797,21 @@ export function assembleDashboardData(
       )
     : new Set<string>();
 
-  const finalClassifications = excludedTargetIds.size
+  const visibleClassifications = excludedTargetIds.size
     ? (classifications as Record<string, unknown>[]).filter(
         (c) => !excludedTargetIds.has(String(c.targetId ?? "")),
       )
     : classifications;
+
+  // Mark targets with no relevant category with a derived "no clear theme"
+  // primary rather than letting a sub-threshold primary read as a real one.
+  // The marker is never listed as a category: lens surfaces exclude the marked
+  // targets and state the lens scope. Derived here, never in categories.json;
+  // see `lib/unclassified-bucket.ts` for why.
+  const { classifications: finalClassifications } =
+    applyUnclassifiedBuckets(
+      (visibleClassifications ?? []) as Record<string, unknown>[],
+    );
 
   const finalAlignment = excludedTargetIds.size
     ? (allAlignment as Record<string, unknown>[]).filter(
@@ -717,6 +822,20 @@ export function assembleDashboardData(
     : allAlignment;
 
   // Scrub excluded entries from the config sent to the frontend.
+  // Fold per-locale document label overrides in before the exclusion filter, so
+  // both steps hand on one already-localized documentTypes list and no call
+  // site downstream needs to know a locale exists. See src/lib/locale-text.
+  if (countryConfig) {
+    const cfg = countryConfig as Record<string, unknown>;
+    const docTypes = cfg.documentTypes as
+      | Record<string, unknown>[]
+      | undefined;
+    if (docTypes) {
+      const localized = localizeLabelled(docTypes, locale);
+      if (localized !== docTypes) cfg.documentTypes = localized;
+    }
+  }
+
   let finalConfig = countryConfig;
   if (excluded.size && countryConfig) {
     const cfg = countryConfig as Record<string, unknown>;
@@ -763,6 +882,10 @@ export function assembleDashboardData(
         (categories.gga_categories ?? []) as Record<string, unknown>[],
         locale,
       ),
+      hrCategories: localizeCategories(
+        (categories.hr_categories ?? []) as Record<string, unknown>[],
+        locale,
+      ),
       classifications: finalClassifications,
       alignment: finalAlignment,
       btrData: btrData ?? null,
@@ -781,17 +904,113 @@ export function assembleDashboardData(
   };
 }
 
-/** A cached country payload: the assembled data plus its serialized + gzipped
- *  forms, so repeat API hits skip disk reads, JSON.stringify, and compression. */
-export interface CountryPayload {
-  data: DashboardResponse;
+/**
+ * The slice of a country payload the landing wheel needs: enough to draw one
+ * wheel grouped by document. The wheel variant of `Centerpiece` reads only
+ * `id` and `sourceDocument` from a target, only the pair ids and level from an
+ * alignment, and never draws a pair outside `WHEEL_DRAWN_LEVELS` (the
+ * constellation variant does draw `low`, so it must not be fed this slice).
+ * Serving this instead of the full payload takes the landing's per-country
+ * download from megabytes to a few hundred KB.
+ */
+export interface WheelSliceResponse {
+  targets: { id: string; sourceDocument: string }[];
+  alignment: { targetAId: string; targetBId: string; alignment: string }[];
+  countryConfig: Record<string, unknown> | null;
+}
+
+export function projectWheelSlice(
+  data: Pick<DashboardResponse, "targets" | "alignment" | "countryConfig">,
+): WheelSliceResponse {
+  const targets: WheelSliceResponse["targets"] = [];
+  for (const raw of data.targets) {
+    const t = raw as { id?: unknown; sourceDocument?: unknown };
+    if (typeof t.id === "string" && typeof t.sourceDocument === "string") {
+      targets.push({ id: t.id, sourceDocument: t.sourceDocument });
+    }
+  }
+  const alignment: WheelSliceResponse["alignment"] = [];
+  for (const raw of data.alignment) {
+    const a = raw as { targetAId?: unknown; targetBId?: unknown; alignment?: unknown };
+    if (
+      typeof a.targetAId === "string" &&
+      typeof a.targetBId === "string" &&
+      typeof a.alignment === "string" &&
+      WHEEL_DRAWN_LEVELS.has(a.alignment as AlignmentLevel)
+    ) {
+      alignment.push({ targetAId: a.targetAId, targetBId: a.targetBId, alignment: a.alignment });
+    }
+  }
+  return { targets, alignment, countryConfig: data.countryConfig ?? null };
+}
+
+/** A serialized payload plus its gzipped form, so repeat API hits skip
+ *  JSON.stringify and compression. */
+export interface SerializedPayload {
   json: string;
   // Typed as Uint8Array (not Buffer) so it satisfies NextResponse's BodyInit;
   // gzipSync returns a Buffer, which is a Uint8Array subclass.
   gzip: Uint8Array;
 }
 
-// Keyed by canonical country id. Held for the container's lifetime; a deploy
+/** A cached country payload: the assembled data plus its serialized forms. */
+export interface CountryPayload extends SerializedPayload {
+  data: DashboardResponse;
+}
+
+function serializePayload(value: unknown): SerializedPayload {
+  const json = JSON.stringify(value);
+  return { json, gzip: gzipSync(json) };
+}
+
+/**
+ * Locale as it participates in cache keys and assembly. Anything outside the
+ * routing table falls back to English, so an arbitrary `?locale=` value can
+ * neither create its own container-lifetime cache entry nor change what is
+ * assembled (assembly already reads English for unknown locales).
+ */
+function normalizeLocale(locale: string | undefined): string | undefined {
+  if (!locale || locale === routing.defaultLocale) return undefined;
+  return (routing.locales as readonly string[]).includes(locale) ? locale : undefined;
+}
+
+type CountryCacheKeyResult =
+  | { kind: "ok"; key: string; paths: DerivedPaths; locale: string | undefined }
+  | { kind: "error"; status: 400 | 404; error: string };
+
+/**
+ * Validate a country request (registry, model slug, paths) and derive the key
+ * every per-country cache shares: canonical id, then `@model` when a per-model
+ * subdir resolved, then `:locale` for non-English locales. Each combination
+ * produces a distinct payload (different narratives, different alignment
+ * outputs), so each gets its own entry.
+ */
+function resolveCountryCacheKey(
+  country: string,
+  locale: string | undefined,
+  model: string | null | undefined,
+): CountryCacheKeyResult {
+  const result = derivePaths(null, country, model ?? null);
+  if (result.kind === "error") {
+    return { kind: "error", status: result.status, error: result.error };
+  }
+  if (result.kind !== "country") {
+    return { kind: "error", status: 400, error: "Expected a country param" };
+  }
+  // Canonical id from the registry (derivePaths already validated it exists).
+  const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
+  const normalizedLocale = normalizeLocale(locale);
+  const modelKey = result.paths.model ? `@${result.paths.model}` : "";
+  const localeKey = normalizedLocale ? `:${normalizedLocale}` : "";
+  return {
+    kind: "ok",
+    key: `${canonical}${modelKey}${localeKey}`,
+    paths: result.paths,
+    locale: normalizedLocale,
+  };
+}
+
+// Keyed by resolveCountryCacheKey. Held for the container's lifetime; a deploy
 // restarts the container (fresh image, fresh map). Never holds analysis payloads.
 const countryPayloadCache = new Map<string, CountryPayload>();
 
@@ -809,32 +1028,56 @@ export function getCountryDashboardPayload(
   locale?: string,
   model?: string | null,
 ): CountryPayloadResult {
-  const result = derivePaths(null, country, model ?? null);
-  if (result.kind === "error") {
-    return { kind: "error", status: result.status, error: result.error };
-  }
-  if (result.kind !== "country") {
-    return { kind: "error", status: 400, error: "Expected a country param" };
-  }
-
-  // Canonical id from the registry (derivePaths already validated it exists).
-  // The cache key is per-locale AND per-model: each combination produces a
-  // distinct payload (different narratives, different alignment outputs).
-  const canonical = getCountry(country.toLowerCase())?.id ?? country.toLowerCase();
-  const resolvedModel = result.paths.model;
-  const localeKey = locale && locale !== "en" ? `:${locale}` : "";
-  const modelKey = resolvedModel ? `@${resolvedModel}` : "";
-  const key = `${canonical}${modelKey}${localeKey}`;
-  const cached = countryPayloadCache.get(key);
+  const resolved = resolveCountryCacheKey(country, locale, model);
+  if (resolved.kind === "error") return resolved;
+  const cached = countryPayloadCache.get(resolved.key);
   if (cached) return { kind: "ok", payload: cached };
 
-  const assembled = assembleDashboardData(result.paths, "country", locale);
+  const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale);
   if (assembled.kind === "error") {
     return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
   }
 
-  const json = JSON.stringify(assembled.data);
-  const payload: CountryPayload = { data: assembled.data, json, gzip: gzipSync(json) };
-  countryPayloadCache.set(key, payload);
+  const payload: CountryPayload = { data: assembled.data, ...serializePayload(assembled.data) };
+  countryPayloadCache.set(resolved.key, payload);
+  return { kind: "ok", payload };
+}
+
+export type WheelPayloadResult =
+  | { kind: "ok"; payload: SerializedPayload }
+  | { kind: "error"; status: 400 | 404; error: string; missing?: string[] };
+
+// Slim entries only (tens to hundreds of KB each), in the same key space as
+// the full-payload cache.
+const wheelPayloadCache = new Map<string, SerializedPayload>();
+
+/**
+ * The landing wheel's slice of a country payload, validated and keyed exactly
+ * like the full payload (so `?model=` and `?locale=` behave the same on both
+ * routes) and cached in its own serialized form. When the full payload is
+ * already cached the slice is projected from it; otherwise the data is
+ * assembled once and only the slim slice is retained, so the landing's idle
+ * prefetch of every pilot does not pin every full payload in memory.
+ */
+export function getCountryWheelPayload(
+  country: string,
+  locale?: string,
+  model?: string | null,
+): WheelPayloadResult {
+  const resolved = resolveCountryCacheKey(country, locale, model);
+  if (resolved.kind === "error") return resolved;
+  const cached = wheelPayloadCache.get(resolved.key);
+  if (cached) return { kind: "ok", payload: cached };
+
+  let data = countryPayloadCache.get(resolved.key)?.data;
+  if (!data) {
+    const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale);
+    if (assembled.kind === "error") {
+      return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
+    }
+    data = assembled.data;
+  }
+  const payload = serializePayload(projectWheelSlice(data));
+  wheelPayloadCache.set(resolved.key, payload);
   return { kind: "ok", payload };
 }

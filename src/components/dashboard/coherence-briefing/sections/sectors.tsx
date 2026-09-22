@@ -17,6 +17,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { SlideFrame } from "../slide-frame";
+import { ReadingLine, glossaryTags } from "@/components/ui/glossary";
 import { TourButton } from "../tour/tour-button";
 import {
   type CoverageConcentrationStat,
@@ -52,6 +53,8 @@ export function SectorsSection({
   onLensChange,
   onOpenSector,
   onHoverSector,
+  corpusTargetCount = 0,
+  unplacedCount = 0,
 }: {
   sectorRows: SectorTension[];
   sectorShares: SectorCoherenceShareSummary | null;
@@ -66,6 +69,12 @@ export function SectorsSection({
     taxonomyType: string;
   }) => void;
   onHoverSector?: (categoryId: string | null) => void;
+  /** Targets in the corpus the lens is applied to (all visible targets). */
+  corpusTargetCount?: number;
+  /** Targets the lens could not place in any theme. When above zero the
+   *  coverage body states the lens scope ("N of the M targets connect to
+   *  one of these themes") instead of listing the absence as a row. */
+  unplacedCount?: number;
 }) {
   const t = useTranslations("briefing.sectors");
   const [sortMode, setSortMode] = useState<SectorSortMode>("coverage");
@@ -96,6 +105,8 @@ export function SectorsSection({
     mergedRows,
     midShare,
     taxonomyType,
+    corpusTargetCount,
+    unplacedCount,
     t,
   });
   const maxTargetCount = mergedRows.reduce(
@@ -112,9 +123,10 @@ export function SectorsSection({
       id={SECTORS_SECTION_ID}
       headline={sentence.headline}
       body={sentence.body}
+      reading={<ReadingLine>{t.rich("reading", glossaryTags())}</ReadingLine>}
       tourButton={
         mergedRows.length > 0 ? (
-          <TourButton tourId="sectors" scopeId={SECTORS_SECTION_ID} />
+          <TourButton tourId="sectors" scopeId={SECTORS_SECTION_ID} labelled />
         ) : undefined
       }
       controls={
@@ -129,7 +141,11 @@ export function SectorsSection({
           <p className="text-body text-[var(--undp-gray)]">{t("noTaxonomy")}</p>
         ) : (
           <div className="border-y border-gray-200 py-3">
-            <SectorColumnHeader sortMode={sortMode} onSort={setSortMode} />
+            <SectorColumnHeader
+              sortMode={sortMode}
+              onSort={setSortMode}
+              taxonomyType={taxonomyType}
+            />
             <ul
               className="divide-y divide-gray-100"
               onMouseLeave={() => onHoverSector?.(null)}
@@ -293,12 +309,26 @@ export function SectorWheelFilter({
   );
 }
 
+/** Which noun a lens's rows should be called. GGA and human rights rows are
+ *  "themes"; GLOBE rows are "categories"; everything else keeps "sector". Shared
+ *  by the column header and the coverage sentence so a lens never mixes nouns.
+ *  NOTE the "Show all N sectors" link is deliberately still hard-nouned: the
+ *  analytics registry (`lib/analytics/miniature-regions.ts`) routes clicks on it
+ *  by matching that rendered string, so varying it by lens would break routing. */
+function nounStyleFor(taxonomyType: string): "theme" | "category" | "sector" {
+  if (taxonomyType === "gga" || taxonomyType === "hr") return "theme";
+  if (taxonomyType === "globe") return "category";
+  return "sector";
+}
+
 function SectorColumnHeader({
   sortMode,
   onSort,
+  taxonomyType,
 }: {
   sortMode: SectorSortMode;
   onSort: (m: SectorSortMode) => void;
+  taxonomyType: string;
 }) {
   const t = useTranslations("briefing.sectors");
   return (
@@ -306,7 +336,7 @@ function SectorColumnHeader({
       className={`${GRID} px-1 pb-1 mb-1 text-caption text-[var(--undp-gray)]`}
       data-tour="sector-columns"
     >
-      <span>{t("col.sector")}</span>
+      <span>{t(`col.${nounStyleFor(taxonomyType)}`)}</span>
       <button
         type="button"
         onClick={() => onSort("coverage")}
@@ -343,22 +373,19 @@ function composeCoverageSentence({
   mergedRows,
   midShare,
   taxonomyType,
+  corpusTargetCount,
+  unplacedCount,
   t,
 }: {
   coverageConcentration: CoverageConcentrationStat;
   mergedRows: MergedSectorRow[];
   midShare: number;
   taxonomyType: string;
+  corpusTargetCount: number;
+  unplacedCount: number;
   t: ReturnType<typeof useTranslations<"briefing.sectors">>;
 }): CoverageSentence {
-  // GGA themes are not "sectors"; the globe lens reads "category". Anything else
-  // keeps the generic "sector" noun.
-  const nounStyle =
-    taxonomyType === "gga"
-      ? "theme"
-      : taxonomyType === "globe"
-        ? "category"
-        : "sector";
+  const nounStyle = nounStyleFor(taxonomyType);
   const noun = t(`noun.${nounStyle}.singular`);
   const nounPlural = t(`noun.${nounStyle}.plural`);
   const { populatedSectors, totalTargets, topNames, share } =
@@ -371,22 +398,48 @@ function composeCoverageSentence({
     };
   }
 
+  // Targets the lens could not place are not a theme, so they are neither
+  // ranked among the rows nor named as a concentration peak. The body states
+  // the lens scope instead, which keeps the corpus magnitude visible without
+  // implying that every target ought to carry one of these themes.
+  const scopeNote =
+    unplacedCount > 0
+      ? t("coverage.lensScope", {
+          placed: totalTargets,
+          total: corpusTargetCount,
+          nounPlural,
+        })
+      : "";
+
   const sharePct = Math.round(share * 100);
   const list = formatList(topNames, t);
   let headline: string;
   if (topNames.length === 1) {
-    headline = t("coverage.singleHeadline", { name: topNames[0], pct: sharePct });
+    headline = t("coverage.singleHeadline", {
+      name: topNames[0],
+      pct: sharePct,
+      total: totalTargets,
+    });
   } else if (topNames.length >= populatedSectors) {
     headline = t("coverage.everyHeadline", {
       sectors: populatedSectors,
       nounPlural,
       name: topNames[0],
+      total: totalTargets,
     });
   } else {
-    headline = t("coverage.topHeadline", { list, pct: sharePct });
+    headline = t("coverage.topHeadline", {
+      list,
+      pct: sharePct,
+      total: totalTargets,
+    });
   }
 
-  return { headline, body: composeFlagBody({ mergedRows, midShare, nounPlural, t }) };
+  const flagBody = composeFlagBody({ mergedRows, midShare, nounPlural, t });
+  return {
+    headline,
+    body: scopeNote ? `${scopeNote} ${flagBody}` : flagBody,
+  };
 }
 
 /**

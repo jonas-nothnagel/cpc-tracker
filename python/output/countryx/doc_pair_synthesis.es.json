@@ -1,0 +1,192 @@
+[
+  {
+    "doc_a": "CCS",
+    "doc_b": "LDN",
+    "label_a": "CCS (Climate strategy)",
+    "label_b": "LDN (Land degradation)",
+    "aligned_count": 321,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Arquitectura habilitadora compartida para una gestión resiliente de la tierra",
+      "reinforce": "Los dos documentos suelen estar alineados mediante instrumentos facilitadores, especialmente la financiación climática y la codificación presupuestaria, la movilización de recursos, la transferencia de tecnología, la sensibilización, la educación y la coordinación entre múltiples actores que podrían apoyar las acciones contra la degradación de las tierras. También avanzan en la misma dirección en vías prácticas de resiliencia como la agricultura climáticamente inteligente, la protección de las fuentes de agua, el control de inundaciones, la cartografía de riesgos, la restauración forestal y otras medidas de planificación que apoyan los servicios ecosistémicos, la resiliencia a la sequía y la gestión sostenible de las tierras.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "La vinculación de la financiación climática, la planificación del uso de la tierra y las plataformas compartidas de divulgación o apoyo tecnológico podría ayudar a traducir estas amplias medidas facilitadoras en una implementación más coordinada en la agricultura, las cuencas hidrográficas, los bosques y las tierras degradadas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "CCS",
+    "doc_b": "NAP",
+    "label_a": "CCS (Climate strategy)",
+    "label_b": "NAP (Adaptation)",
+    "aligned_count": 740,
+    "flagged_count": 7,
+    "contradiction_types": {
+      "resource_competition": 6,
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Adaptación inteligente en materia de agua y vínculos con la información climática",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección mediante la integración de la adaptación, las evaluaciones del riesgo climático, las redes meteorológicas, los sistemas de alerta temprana y la planificación de inundaciones o sequías a nivel de cuenca. También se alinean con la agricultura climáticamente inteligente, el acceso al riego, las variedades mejoradas, la protección de cuencas hidrográficas y la gestión costera o de la biodiversidad, donde la CCS proporciona instrumentos de planificación, financiación o información sobre riesgos que pueden apoyar la implementación del NAP.",
+      "clash": "La posible desalineación recurrente se da en torno a los recursos hídricos compartidos. Los casos examinados apuntan en su mayoría a que la expansión del riego, el desarrollo hídrico agrícola o un acceso más amplio al agua podrían competir con las fuentes de agua protegidas, la gestión de la sequía en las cuencas o la restauración de hábitats acuáticos y pesquerías, y un caso señala presiones sobre la tierra y la ubicación entre la restauración forestal y la infraestructura hídrica para la agricultura.",
+      "coordination_hint": "La asignación de agua a nivel de cuenca, los controles de extracción, el diseño de la eficiencia del riego y la planificación del uso del suelo o de las cuencas hidrográficas podrían ayudar a armonizar el acceso al agua para la agricultura con la protección de las fuentes, la planificación frente a la sequía y los objetivos de los ecosistemas acuáticos.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "CCS",
+    "doc_b": "NBSAP",
+    "label_a": "CCS (Climate strategy)",
+    "label_b": "NBSAP (Nature)",
+    "aligned_count": 516,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Vías de gestión de la tierra y el agua favorables para la naturaleza",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección cuando la acción climática se lleva a cabo mediante la gestión de los ecosistemas y de la tierra, especialmente la restauración forestal, la reducción de la deforestación, la rehabilitación de manglares y zonas costeras, y la gestión integrada de los recursos hídricos vinculada a la restauración de las aguas continentales. La alineación también se repite mediante herramientas facilitadoras como la planificación espacial, la financiación climática y la codificación presupuestaria, la divulgación empresarial, los sistemas de información y una gobernanza participativa o con perspectiva de género que puede respaldar una implementación que incluya la biodiversidad.",
+      "clash": "Una posible desalineación aparece en un par relacionado con la infraestructura, donde la adaptación al clima de nuevas carreteras principales, ferrocarriles y líneas eléctricas podría coincidir con áreas protegidas u otras medidas de conservación basadas en áreas si la ubicación y el trazado no se coordinan. Los registros no muestran una posible desalineación recurrente más amplia más allá de este problema de implementación.",
+      "coordination_hint": "La planificación espacial conjunta y la evaluación de las inversiones en infraestructura, restauración y agua o zonas costeras podrían ayudar a que estas agendas se apoyen mutuamente, al tiempo que tienen en cuenta las áreas de conservación y las prioridades de los ecosistemas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "CCS",
+    "doc_b": "NDC",
+    "label_a": "CCS (Climate strategy)",
+    "label_b": "NDC (Climate)",
+    "aligned_count": 2129,
+    "flagged_count": 2,
+    "contradiction_types": {
+      "resource_competition": 1,
+      "delivery_friction": 1
+    },
+    "synthesis": {
+      "storyline_name": "Resiliencia climática mediante sistemas e infraestructura facilitadores",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección al vincular sistemas habilitadores, como la financiación climática, la cartografía de riesgos, la educación, la inclusión de género y los marcos institucionales, con la implementación sectorial en agua, edificios, agricultura, costas y protección social. Un patrón recurrente es que la planificación de CCS y los instrumentos de resiliencia, como el control de inundaciones en cuencas, la cartografía de amenazas, la gestión costera y la codificación presupuestaria, se alinean con medidas de NDC como el suministro de agua resiliente, los códigos de construcción resilientes al clima, la preparación inclusiva ante desastres y la conservación de los ecosistemas.",
+      "clash": "La posible desalineación aparece en dos ámbitos específicos de implementación, más que como un patrón general. Uno se refiere a la asignación de agua, donde la extracción regulada en el marco de la gestión integrada de los recursos hídricos podría competir con la demanda ampliada de riego solar, y el otro se refiere al uso de la tierra, donde la construcción de nuevas carreteras podría generar presión sobre la protección y restauración de los bosques si el trazado se superpone con paisajes forestales.",
+      "coordination_hint": "La planificación hídrica a nivel de cuenca y la evaluación espacial de corredores de infraestructura podrían ayudar a alinear estas medidas, preservando al mismo tiempo la orientación compartida más amplia en materia de resiliencia y mitigación.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "LDN",
+    "doc_b": "NAP",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NAP (Adaptation)",
+    "aligned_count": 477,
+    "flagged_count": 4,
+    "contradiction_types": {
+      "resource_competition": 4
+    },
+    "synthesis": {
+      "storyline_name": "Resiliencia compartida a la sequía mediante la planificación de la tierra y el agua",
+      "reinforce": "Los dos documentos se alinean en gran medida en torno a la resiliencia a la sequía, la adaptación al clima y la gestión sostenible de los sistemas de producción dependientes de la tierra. Esto se repite a través de los vínculos entre la restauración de tierras de LDN, la integración de la adaptación, la sensibilización y el fortalecimiento de capacidades, y los instrumentos del NAP, como la capacitación de agricultores, los planes para cuencas afectadas por sequías e inundaciones, la información sobre riesgos climáticos, el acceso al riego y la agricultura climáticamente inteligente.",
+      "clash": "Una posible desalineación recurrente aparece en torno a la competencia por los recursos hídricos. Todos los casos examinados apuntan a que la expansión del riego agrícola o el desarrollo hídrico en zonas no irrigadas podrían aumentar la demanda sobre recursos hídricos finitos de los que también dependen los ecosistemas vulnerables a la sequía y los esfuerzos de restauración de tierras.",
+      "coordination_hint": "La planificación conjunta de cuencas o cuencas hidrográficas, que vincule la expansión del riego con la asignación de agua, las medidas de eficiencia y las salvaguardias de gestión de la tierra, podría ayudar a mantener las medidas de adaptación y resiliencia de la tierra orientadas en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "LDN",
+    "doc_b": "NBSAP",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NBSAP (Nature)",
+    "aligned_count": 338,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Planificación compartida del uso de la tierra y vías de restauración de los ecosistemas",
+      "reinforce": "Los documentos suelen alinearse mediante la planificación del uso de la tierra, la gestión sostenible de la tierra y la restauración de ecosistemas degradados, especialmente cuando los objetivos de LDN sobre la lucha contra la desertificación se conectan con las metas de los NBSAP relativas a las áreas protegidas, la restauración, la reducción de la contaminación y la gestión sostenible de los paisajes agrícolas y forestales. Un segundo patrón recurrente es el apoyo facilitador, incluido el desarrollo de capacidades, la financiación, la transferencia de tecnología, la sensibilización y la participación inclusiva, que tiende a respaldar acciones de biodiversidad como la adaptación al clima, los sistemas de información, la divulgación empresarial y la toma de decisiones basada en las partes interesadas.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "La planificación, la financiación y el seguimiento conjuntos en materia de restauración, ordenación territorial y paisajes de producción sostenible podrían ayudar a que ambos documentos avancen en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "LDN",
+    "doc_b": "NDC",
+    "label_a": "LDN (Land degradation)",
+    "label_b": "NDC (Climate)",
+    "aligned_count": 1086,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Planificación compartida de la tierra y el agua resiliente al clima",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de gestión de la tierra resiliente al clima, mediante la integración de la adaptación en la estrategia de LDN y medidas de la NDC como las prácticas agroecológicas, la forestación y la reforestación, los servicios climáticos, la alerta temprana y el monitoreo del uso de la tierra. La alineación también se repite en torno a instrumentos habilitadores, incluida la movilización de financiación, la sensibilización y la educación, la cooperación entre actores, la participación inclusiva en materia de género y la planificación de la seguridad alimentaria y el acceso al agua de las comunidades vulnerables.",
+      "clash": "La posible desalineación aparece solo una vez en este conjunto, en torno a la resiliencia a la sequía y la ampliación del riego solar. El punto de revisión es que la expansión del riego podría competir por recursos hídricos escasos en zonas afectadas por la sequía, a menos que se coordinen la asignación del agua, las salvaguardias de eficiencia y la gestión de las aguas subterráneas o de las cuencas.",
+      "coordination_hint": "La planificación conjunta entre los actores de la tierra, la agricultura, el agua y el clima podría ayudar a conectar las medidas de adaptación, riego y restauración de tierras en las mismas zonas propensas a la sequía.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NBSAP",
+    "label_a": "NAP (Adaptation)",
+    "label_b": "NBSAP (Nature)",
+    "aligned_count": 604,
+    "flagged_count": 7,
+    "contradiction_types": {
+      "delivery_friction": 4,
+      "resource_competition": 3
+    },
+    "synthesis": {
+      "storyline_name": "Adaptación agrícola vinculada a la planificación de la biodiversidad",
+      "reinforce": "En muchos pares, el NAP y la NBSAP se alinean mediante medidas facilitadoras que conectan la agricultura resiliente al clima, la pesca y la gestión del agua con resultados en materia de biodiversidad. Entre los vínculos recurrentes figuran la cartografía de riesgos climáticos, la investigación, los centros de aprendizaje, la reforma de incentivos y la planificación espacial, que a menudo apuntan a una gestión más sostenible de la tierra, el agua y los hábitats acuáticos, incluso cuando las vías de implementación siguen siendo indirectas.",
+      "clash": "La posible desalineación se repite principalmente allí donde el desarrollo hídrico agrícola y el acceso al riego podrían superponerse con la planificación espacial que incorpora la biodiversidad, la restauración de ecosistemas, las áreas de aguas continentales protegidas o conservadas y los esfuerzos de reducción de la contaminación. También aparece un patrón recurrente menor allí donde una adopción más amplia de la agricultura de precisión podría aumentar el uso de insumos, a menos que se diseñe en torno a salvaguardias relativas a los nutrientes, los plaguicidas y la calidad del agua.",
+      "coordination_hint": "La zonificación conjunta, la planificación de cuencas hidrográficas y las normas sobre insumos agrícolas podrían ayudar a armonizar el riego, el desarrollo de los recursos hídricos y la agricultura de precisión con los objetivos de conservación, restauración y control de la contaminación cuando estén implicados los mismos paisajes o aguas continentales.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NDC",
+    "label_a": "NAP (Adaptation)",
+    "label_b": "NDC (Climate)",
+    "aligned_count": 2295,
+    "flagged_count": 9,
+    "contradiction_types": {
+      "resource_competition": 7,
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "Resiliencia climática compartida mediante el agua y la agricultura",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante la planificación de cuencas, la telemetría, la alerta temprana, los sistemas de datos hidrológicos y la capacidad subnacional de gestión del riesgo de desastres, especialmente en torno a la sequía, las inundaciones y la seguridad hídrica. También se alinean con medidas de adaptación a nivel de explotación agrícola, como la agricultura sostenible, las variedades de cultivos resilientes al clima, las prácticas mejoradas, la investigación y los sistemas de información que apoyan la seguridad alimentaria y la resiliencia climática.",
+      "clash": "La posible desalineación se repite principalmente en torno a la competencia por recursos hídricos y terrestres finitos. Los pares de revisión suelen señalar que la expansión del riego, el desarrollo hídrico agrícola o los cambios en el uso de las tierras agrícolas podrían competir con la gestión de cuencas frente a sequías e inundaciones, los servicios de agua por tubería, la restauración de hábitats acuáticos o la protección forestal y la forestación cuando las mismas cuencas o paisajes se superponen.",
+      "coordination_hint": "La planificación conjunta de cuencas y del uso de la tierra, con normas compartidas de asignación del agua, emplazamiento y salvaguardias ambientales, podría ayudar a mantener compatibles las acciones de riego, forestales, pesqueras y de WASH en zonas superpuestas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NDC",
+    "label_a": "NBSAP (Nature)",
+    "label_b": "NDC (Climate)",
+    "aligned_count": 1631,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "delivery_friction": 5
+    },
+    "synthesis": {
+      "storyline_name": "Sistemas habilitadores compartidos para una acción climática resiliente para la biodiversidad",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante sistemas facilitadores, especialmente plataformas de datos e información sobre biodiversidad, investigación y gestión del conocimiento, planificación con perspectiva de género y capacidad comunitaria para la adaptación y la reducción del riesgo de desastres. También se alinean con mecanismos prácticos de implementación naturaleza-clima, como las NbS, la restauración, las prácticas sostenibles de alimentación y agricultura, y herramientas de política o financiación, incluidos el pago por servicios ecosistémicos y la integración de la biodiversidad en las decisiones públicas y privadas.",
+      "clash": "La posible desalineación se repite principalmente allí donde la planificación espacial inclusiva de la biodiversidad, la restauración de las aguas continentales, las aguas continentales protegidas o conservadas, y el control de especies invasoras coinciden con la construcción de nuevas carreteras o la ampliación del transporte por vías navegables interiores. Los casos examinados suelen señalar geografías compartidas, especialmente zonas de alta biodiversidad y vías navegables interiores, donde el trazado, la ubicación, las obras de navegación o el aumento del movimiento de embarcaciones podrían complicar la ejecución a menos que se incorporen salvaguardias de biodiversidad.",
+      "coordination_hint": "La planificación espacial conjunta, los datos compartidos sobre biodiversidad y el diseño temprano de medidas de trazado, restauración y bioseguridad podrían ayudar a que estos documentos se apoyen mutuamente en las áreas de transporte y aguas continentales.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

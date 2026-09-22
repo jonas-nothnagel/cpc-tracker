@@ -338,10 +338,13 @@ export function computeFinancingCoherence(
 // classification. Powers the Financing section's dot-grid evidence panel.
 // ---------------------------------------------------------------------------
 
-/** Funding tier for a single policy target. Outlier-aware: top/bottom 10 by
- *  aligned spend get flagged so unusually well-funded and unusually
- *  under-funded targets stand out on the dot grid. */
-export type FundingTier = "well-funded" | "normal" | "under-funded" | "unfunded";
+/** Aligned-spend tier for a single policy target. Outlier-aware: the top/bottom
+ *  10 targets by aligned spend stand out on the dot grid. Tiers describe the
+ *  relative VOLUME of AI-aligned expenditure around a target — never financing
+ *  adequacy, which would require needs/gap data the module does not have.
+ *  Values collide lexically with AlignmentLevel but are a distinct type; keep
+ *  tier and level lookups separate (TIER_COLOR vs LEVEL_COLOR). */
+export type FundingTier = "high" | "medium" | "low" | "none";
 
 /** One programme contributing to a target's aligned spend. */
 export interface FundingTargetContributor {
@@ -370,11 +373,13 @@ export interface FundingTargetRow {
   docLabel: string;
   text: string;
   /** Sum of contributing programmes' total executed spend (M PAB for Panama).
-   *  Each programme contributes its FULL spend even if it aligns with many
-   *  targets — the LLM links a programme to many targets, so this overcounts
-   *  in aggregate. The cross-target ranking still works because all targets
-   *  share the same overcount basis. Surfaces association strength, not
-   *  traced allocation. */
+   *  Each programme contributes its FULL spend even if its description aligns
+   *  with many targets — the LLM links a programme to many targets, so this
+   *  overcounts in aggregate. The cross-target ranking still works because all
+   *  targets share the same overcount basis. Surfaces how much reviewed
+   *  spending has descriptions aligned with the target, not traced allocation.
+   *  Any document-level or whole-review money figure must instead count each
+   *  programme once — use dedupeContributorSpend, never sum alignedSpend. */
   alignedSpend: number;
   alignedProgrammeCount: number;
   tier: FundingTier;
@@ -501,21 +506,93 @@ export function computeFundingTargetRows(args: {
     .map<FundingTargetRow>((r) => {
       const rounded = round1M(r.alignedSpend);
       let tier: FundingTier;
-      if (r.alignedSpend === 0) tier = "unfunded";
-      else if (rounded >= topCutoff) tier = "well-funded";
-      else if (rounded <= bottomCutoff) tier = "under-funded";
-      else tier = "normal";
+      if (r.alignedSpend === 0) tier = "none";
+      else if (rounded >= topCutoff) tier = "high";
+      else if (rounded <= bottomCutoff) tier = "low";
+      else tier = "medium";
       return { ...r, tier };
     })
     .sort((a, b) => b.alignedSpend - a.alignedSpend);
 }
 
+/** The financing slide's wide-grid evidence, or null when the country uses
+ *  the dot-map. Non-null only when BOTH hold:
+ *    1. the country opts in via `countryConfig.financingLayout === "grid"`
+ *       (config intent — the grid's aligned-spend-tier framing must fit the
+ *       country's budget data, which is an editorial call, not a data one), and
+ *    2. the data actually yields at least one funding row (berData +
+ *       budgetAlignment present, ≥1 visible target) — so a mis-flagged
+ *       country fails soft to the DocumentCoverage dot-map.
+ *  The briefing derives its whole wide-grid layout (suppressed centerpiece,
+ *  widened column, invisible aside, fundingGrid tour) from this being
+ *  non-null; no surface may branch on the country id. */
+export function computeFundingGrid(args: {
+  targets: Target[];
+  budgetAlignment: AlignmentResult[] | null;
+  berData: BerData | null;
+  countryConfig: CountryConfig | null;
+  locale: string;
+}): FundingGrid | null {
+  const { targets, budgetAlignment, berData, countryConfig, locale } = args;
+  if (countryConfig?.financingLayout !== "grid") return null;
+  if (!berData || !budgetAlignment) return null;
+  const visibleDocIds = visibleFinancingDocIds(countryConfig);
+  const rows = computeFundingTargetRows({
+    targets,
+    alignment: budgetAlignment,
+    berData,
+    countryConfig,
+    locale,
+    visibleDocIds,
+  });
+  if (rows.length === 0) return null;
+  return {
+    docs: groupFundingRowsByDoc(rows, countryConfig),
+    totals: {
+      reviewed: rows.length,
+      high: rows.filter((r) => r.tier === "high").length,
+      low: rows.filter((r) => r.tier === "low").length,
+      none: rows.filter((r) => r.tier === "none").length,
+    },
+  };
+}
+
+export interface FundingGrid {
+  docs: ReturnType<typeof groupFundingRowsByDoc>;
+  totals: { reviewed: number; high: number; low: number; none: number };
+}
+
+/** Sum each contributing programme ONCE across the given rows (union by
+ *  programme code). Per-target alignedSpend values intentionally overlap (the
+ *  same programme backs every target its description aligns with), so any
+ *  document-level or whole-review money figure must come from here, never
+ *  from summing alignedSpend. */
+export function dedupeContributorSpend(
+  rows: FundingTargetRow[],
+): { spend: number; programmeCount: number } {
+  const byCode = new Map<string, number>();
+  for (const r of rows) {
+    for (const c of r.contributors) byCode.set(c.code, c.spend);
+  }
+  let spend = 0;
+  for (const v of byCode.values()) spend += v;
+  return { spend, programmeCount: byCode.size };
+}
+
 /** Group rows by source document, in the order declared in countryConfig.
- *  Same visibility filter as computeFundingTargetRows. */
+ *  Same visibility filter as computeFundingTargetRows. docSpend and
+ *  docProgrammeCount count each programme once within the document (see
+ *  dedupeContributorSpend). */
 export function groupFundingRowsByDoc(
   rows: FundingTargetRow[],
   countryConfig: CountryConfig | null,
-): { docId: string; docLabel: string; rows: FundingTargetRow[] }[] {
+): {
+  docId: string;
+  docLabel: string;
+  rows: FundingTargetRow[];
+  docSpend: number;
+  docProgrammeCount: number;
+}[] {
   const byDoc = new Map<string, FundingTargetRow[]>();
   for (const r of rows) {
     if (!byDoc.has(r.docId)) byDoc.set(r.docId, []);
@@ -528,11 +605,17 @@ export function groupFundingRowsByDoc(
     ...declared.filter((id) => byDoc.has(id)),
     ...[...byDoc.keys()].filter((id) => !declared.includes(id)),
   ];
-  return ordered.map((docId) => ({
-    docId,
-    docLabel: docMediumLabel(countryConfig, docId),
-    rows: byDoc.get(docId)!,
-  }));
+  return ordered.map((docId) => {
+    const docRows = byDoc.get(docId)!;
+    const { spend, programmeCount } = dedupeContributorSpend(docRows);
+    return {
+      docId,
+      docLabel: docMediumLabel(countryConfig, docId),
+      rows: docRows,
+      docSpend: spend,
+      docProgrammeCount: programmeCount,
+    };
+  });
 }
 
 /** Document set the financing section is allowed to surface: countryConfig

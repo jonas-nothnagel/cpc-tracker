@@ -1,113 +1,148 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { EYEBROW, pillClass, SEGMENT_CLASS } from "./pill";
+
+type ViewMode = "coherence" | "finance";
 
 /**
- * Explorer B canvas. A reflowing three-column layout — lens pane (left), hero
- * wheel + command dock (centre), answers (right) — so the pieces sit beside one
- * another rather than overlapping. Nothing is an absolute overlay over the
- * wheel, so the lens stays clickable, the wheel's edge labels never slide under
- * the lens, and opening the answers panel reserves space (the wheel reflows)
- * instead of covering it. No visible frame: it blends into the briefing page.
- * Stacks vertically on small screens. Purely presentational — every interactive
- * piece is built by the parent. Nothing carries a z-index so the briefing's
- * sticky section nav (z-10) always paints over it.
+ * Explorer flagship canvas — a single, non-scrolling screen.
+ *
+ * Three grid rows fill the height the host gives it (the briefing finale or
+ * the standalone explore page):
+ *   1. Top bar        — title, live stat line, answers recall and the
+ *                       Coherence / Finance view switch.
+ *   2. Controls strip — group-by, the alignment filter, the legend.
+ *   3. Stage          — the wheel (left, about two thirds of the width,
+ *                       sized by that width) and the persistent rail (right):
+ *                       the corpus summary and the ask bar at rest, the answer
+ *                       or the selected detail otherwise. The rail is absolutely
+ *                       positioned inside its cell so the wheel alone sets the
+ *                       row height and the rail scrolls within it. Below `lg`
+ *                       the rail stacks under the wheel at a fixed height, so
+ *                       there is always exactly one rail (and one ask input)
+ *                       in the DOM.
+ *
+ * Height is content-driven (the page scrolls on short viewports), the way the
+ * standalone explorer always sized: a bigger wheel beats a one-screen fit.
+ * Purely presentational: every interactive piece is built by the parent and
+ * passed in; the top-bar controls are the one exception, rendered here so the
+ * chrome stays in one place.
  */
 export function WorkbenchStage({
-  statLine,
-  lensPane,
+  title,
+  statLead,
+  statFlagged,
+  statTail,
+  showViewSwitch,
+  view,
+  onViewChange,
+  viewLabel,
+  viewCoherenceLabel,
+  viewFinanceLabel,
+  controls,
   wheel,
-  dock,
-  answers,
-  answersOpen,
-  onToggleAnswers,
-  answersHandleLabel,
-  answersHeading,
-  answersToggleTitle,
-  answersClose,
-  financeActive,
-  financeNote,
-  footerCaveat,
+  rail,
+  answersAvailable,
+  onShowAnswers,
+  answersLabel,
   modal,
 }: {
-  statLine: string;
-  lensPane: ReactNode;
+  title: string;
+  /** Stat line split so the flagged count can carry its own colour + weight. */
+  statLead: string;
+  statFlagged: string;
+  statTail: string;
+  showViewSwitch: boolean;
+  /** Eyebrow before the view switch ("View"). */
+  viewLabel: string;
+  view: ViewMode;
+  onViewChange: (view: ViewMode) => void;
+  viewCoherenceLabel: string;
+  viewFinanceLabel: string;
+  controls: ReactNode;
   wheel: ReactNode;
-  dock: ReactNode;
-  answers: ReactNode;
-  answersOpen: boolean;
-  onToggleAnswers: () => void;
-  answersHandleLabel: string;
-  answersHeading: string;
-  answersToggleTitle: string;
-  answersClose: string;
-  financeActive: boolean;
-  financeNote: string;
-  footerCaveat: string;
+  rail: ReactNode;
+  /** An answer exists but the rail shows the summary: offer a way back to it. */
+  answersAvailable: boolean;
+  onShowAnswers: () => void;
+  answersLabel: string;
   modal?: ReactNode;
 }) {
   return (
-    <section className="mb-2">
-      <p className="mb-4 text-caption text-[var(--undp-gray)]">{statLine}</p>
-
-      <div className="relative mx-auto flex max-w-[1180px] flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-        {/* Lens pane — left column. */}
-        <div className="lg:w-[250px] lg:shrink-0">{lensPane}</div>
-
-        {/* Hero wheel + command dock — centre column. */}
-        <div className="flex min-w-0 flex-1 flex-col items-center">
-          <div className="w-full max-w-[860px]">{wheel}</div>
-          {financeActive && (
-            <p className="mt-1 max-w-[460px] text-center text-caption text-[var(--undp-gray)]">
-              {financeNote}
-            </p>
-          )}
-          <div className="mt-5 w-full max-w-[720px]">{dock}</div>
+    <div className="grid w-full min-w-0 grid-cols-1 bg-white">
+      {/* ── Row 1 · Top bar ─────────────────────────────────────────── */}
+      <div className="flex items-center justify-between gap-4 border-b border-line bg-white px-5 py-2.5 sm:px-6">
+        <div className="min-w-0 flex-1">
+          {/* On the house 5-step ramp: the same serif headline the Explore
+              section used before it folded into this top bar. */}
+          <h2 className="truncate font-display text-headline font-medium text-[var(--undp-black)]">
+            {title}
+          </h2>
+          <p className="mt-0.5 truncate text-caption leading-normal text-[var(--undp-gray)]">
+            {statLead}{" "}
+            <span className="font-semibold text-[var(--color-flagged)]">
+              {statFlagged}
+            </span>{" "}
+            · {statTail}
+          </p>
         </div>
-
-        {/* Answers — a right column when open (reserves space, no overlap),
-            otherwise a small handle on the right edge. */}
-        {answersOpen ? (
-          <div className="w-full lg:w-[346px] lg:shrink-0">
-            <div className="flex max-h-[760px] flex-col rounded-2xl border border-line bg-white shadow-lg">
-              <div className="flex shrink-0 items-center justify-between border-b border-line-soft px-3.5 py-2.5">
-                <span className="text-caption font-medium text-[var(--undp-gray)]">
-                  {answersHeading}
-                </span>
+        <div className="flex flex-none items-center gap-2.5">
+          {/* Reachability: while the rail shows the summary but an answer is
+              still available, this brings it back. */}
+          {answersAvailable && (
+            <button
+              type="button"
+              onClick={onShowAnswers}
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--undp-blue)] bg-white px-3.5 py-1.5 text-caption font-medium text-[var(--undp-blue)] transition-colors hover:bg-[var(--undp-blue)] hover:text-white"
+            >
+              {answersLabel}
+            </button>
+          )}
+          {/* The view switch is the top bar's one control, so it reads as
+              such: a labelled, larger segmented pill. */}
+          {showViewSwitch && (
+            <div className="flex items-center gap-2.5">
+              <span className={EYEBROW}>{viewLabel}</span>
+              <div className={SEGMENT_CLASS} role="group" aria-label={viewLabel}>
                 <button
                   type="button"
-                  onClick={onToggleAnswers}
-                  title={answersToggleTitle}
-                  className="text-caption font-medium text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-black)]"
+                  onClick={() => onViewChange("coherence")}
+                  aria-pressed={view === "coherence"}
+                  className={pillClass(view === "coherence", "bg-[var(--undp-black)]", "md")}
                 >
-                  {answersClose}
+                  {viewCoherenceLabel}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onViewChange("finance")}
+                  aria-pressed={view === "finance"}
+                  className={pillClass(view === "finance", "bg-[#0e7490]", "md")}
+                >
+                  {viewFinanceLabel}
                 </button>
               </div>
-              <div className="min-h-0 flex-1 overflow-y-auto px-3.5 py-3.5">
-                {answers}
-              </div>
             </div>
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={onToggleAnswers}
-            title={answersToggleTitle}
-            aria-expanded={false}
-            className="absolute right-0 top-0 hidden items-center rounded-l-xl border border-r-0 border-line bg-white px-2.5 py-3 text-caption font-medium text-[var(--undp-gray)] shadow-md transition-colors hover:text-[var(--undp-black)] lg:flex"
-            style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
-          >
-            {answersHandleLabel}
-          </button>
-        )}
+          )}
+        </div>
       </div>
 
-      <p className="mt-4 flex items-center gap-2 text-caption text-[var(--undp-gray)]">
-        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--undp-yellow,#edb716)]" />
-        {footerCaveat}
-      </p>
+      {/* ── Row 2 · Controls strip ──────────────────────────────────── */}
+      {controls}
+
+      {/* ── Row 3 · Stage (wheel + rail) ────────────────────────────── */}
+      <div className="grid min-w-0 grid-cols-1 gap-4 px-4 py-3 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,32%)] xl:grid-cols-[minmax(0,1fr)_minmax(380px,34%)]">
+        <div className="flex min-w-0 items-center justify-center">{wheel}</div>
+        {/* The rail is absolute inside its cell: the cell stretches to the
+            wheel's row height without adding its own, so the rail scrolls
+            within the wheel's height on lg+. Stacked below lg it gets a fixed
+            height instead. */}
+        <div className="relative h-[520px] min-w-0 lg:h-auto lg:min-h-[560px]">
+          <div className="absolute inset-0">{rail}</div>
+        </div>
+      </div>
 
       {modal}
-    </section>
+    </div>
   );
 }

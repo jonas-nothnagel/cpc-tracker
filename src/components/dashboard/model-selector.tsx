@@ -8,10 +8,12 @@
  * State lives in the URL (?model=<slug>) so the choice is shareable and
  * survives reload; the parent dashboard refetches on change.
  *
- * AI labelling caveat: per the project guardrails (CLAUDE.md), AI outputs
- * carry an "AI-generated" tag. We surface the active model name immediately
- * next to the selector so reviewers always know which model produced the
- * results on screen.
+ * Deliberately quiet: one right-aligned attribution line, not a bar. The
+ * fold's usability review found the old full-width strip ("flagship
+ * proprietary", "not the production result") read as internal jargon in the
+ * page's most valuable position. The AI-labelling guardrail (CLAUDE.md)
+ * needs the producing model visibly attributed — this line is that
+ * attribution; the tier vocabulary stays on the comparison page.
  */
 
 import { useTranslations } from "next-intl";
@@ -56,38 +58,26 @@ export function ModelSelector({
   const t = useTranslations("dashboard.modelSelector");
   if (availableModels.length < 2) return null;
   const active = selectedModel ?? availableModels[0];
-  const activeLabel = prettifySlug(active);
 
   return (
-    <div className="flex flex-wrap items-center gap-3 px-4 py-2 border-y border-gray-100 bg-white">
-      <label
-        htmlFor="model-selector"
-        className="text-xs font-medium uppercase tracking-wide text-[var(--undp-gray)]"
-      >
-        {t("label")}
-      </label>
+    <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-end gap-x-2 gap-y-1 px-6 pt-3 text-xs text-[var(--undp-gray)]">
+      <label htmlFor="model-selector">{t("attribution")}</label>
       <select
         id="model-selector"
         value={active}
         onChange={(e) => (track("model_switched", { model: e.target.value }), onChange(e.target.value))}
-        className="text-sm border border-gray-200 rounded-md px-2 py-1 bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]"
+        className="rounded border border-gray-200 bg-white px-1.5 py-0.5 text-xs hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]"
       >
-        {availableModels.map((slug) => {
-          const { label, tier } = prettifySlug(slug);
-          return (
-            <option key={slug} value={slug}>
-              {label} — {tier}
-            </option>
-          );
-        })}
+        {availableModels.map((slug) => (
+          <option key={slug} value={slug}>
+            {prettifySlug(slug).label}
+          </option>
+        ))}
       </select>
-      <span className="text-xs text-[var(--undp-gray)] italic">
-        {t("caveat", { model: activeLabel.label })}
-      </span>
       {comparisonHref && (
         <Link
           href={comparisonHref}
-          className="ml-auto text-xs text-[var(--undp-blue)] hover:underline whitespace-nowrap"
+          className="text-[var(--undp-blue)] hover:underline whitespace-nowrap"
         >
           {t("compareLink")}
         </Link>

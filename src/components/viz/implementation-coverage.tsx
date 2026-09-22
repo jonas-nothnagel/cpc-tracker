@@ -39,6 +39,7 @@ import type {
   CountryConfig,
   GlobeCategory,
   GgaCategory,
+  HrCategory,
   IpccSector,
   MitigationMeasure,
   SupportProject,
@@ -351,7 +352,7 @@ function buildAdaptationRows(
 // Biodiversity row builder (grouped by GLOBE category)
 // ---------------------------------------------------------------------------
 
-type CoverageGroupMode = "default" | "biodiversity" | "country_sectors" | "gga";
+type CoverageGroupMode = "default" | "biodiversity" | "country_sectors" | "gga" | "hr";
 
 const BIODIVERSITY_PALETTE = [
   "#0d9488", "#7c3aed", "#0284c7", "#16a34a",
@@ -1640,6 +1641,7 @@ interface ImplementationCoverageProps {
   /** GGA climate-resilience themes (decision 2/CMA.5); enables a "By climate
    *  resilience" grouping mode, single-level like the GLOBE biodiversity view. */
   ggaCategories?: GgaCategory[];
+  hrCategories?: HrCategory[];
   /**
    * Existing classifications from the pipeline. Filtered by `taxonomyType` —
    * `sector` for the mitigation table, `adaptation_goal` for the adaptation
@@ -1657,6 +1659,7 @@ export function ImplementationCoverage({
   sectors,
   globeCategories,
   ggaCategories,
+  hrCategories,
   classifications,
   highlightSector,
   countryConfig,
@@ -1701,6 +1704,16 @@ export function ImplementationCoverage({
         ? buildBiodiversityRows(btrData, ggaCategories, targets, classifications, "gga")
         : { rows: [], unclassified: [] },
     [btrData, ggaCategories, targets, classifications],
+  );
+
+  // Human rights grouping. Single-level taxonomy, so the same category-coverage
+  // builder is reused with taxonomyType "hr".
+  const hrData = useMemo(
+    () =>
+      hrCategories && hrCategories.length > 0
+        ? buildBiodiversityRows(btrData, hrCategories, targets, classifications, "hr")
+        : { rows: [], unclassified: [] },
+    [btrData, hrCategories, targets, classifications],
   );
 
   const countrySectorRows = useMemo(
@@ -1839,16 +1852,57 @@ export function ImplementationCoverage({
     setExpandedCountrySector((prev) => (prev === id ? null : id));
   }, []);
 
+  // A lens is offered only when the pipeline actually classified this country
+  // against it. The category lists come from the global categories.json and are
+  // therefore non-empty for every country, so they cannot gate on their own —
+  // same data-driven rule the briefing and the explorer already apply.
+  const classifiedTaxonomies = useMemo(() => {
+    const seen = new Set<string>();
+    for (const c of classifications) {
+      if (c.isPrimary && c.taxonomyType) seen.add(c.taxonomyType);
+    }
+    return seen;
+  }, [classifications]);
+
   const hasBiodiversityData =
-    globeCategories != null && globeCategories.length > 0;
-  const hasGgaData = ggaCategories != null && ggaCategories.length > 0;
+    globeCategories != null &&
+    globeCategories.length > 0 &&
+    classifiedTaxonomies.has("globe");
+  const hasGgaData =
+    ggaCategories != null &&
+    ggaCategories.length > 0 &&
+    classifiedTaxonomies.has("gga");
+  const hasHrData =
+    hrCategories != null &&
+    hrCategories.length > 0 &&
+    classifiedTaxonomies.has("hr");
+
+  // The selected grouping can stop being offered while this component stays
+  // mounted — switching country or model swaps in classifications that may not
+  // cover the same lenses. Fall back rather than leave the select pointing at a
+  // mode with no option and the body rendering an empty table.
+  const groupModeOffered =
+    groupMode === "biodiversity"
+      ? hasBiodiversityData
+      : groupMode === "gga"
+        ? hasGgaData
+        : groupMode === "hr"
+          ? hasHrData
+          : groupMode === "country_sectors"
+            ? hasCountrySectors
+            : true;
+  const activeGroupMode: CoverageGroupMode = groupModeOffered
+    ? groupMode
+    : hasCountrySectors
+      ? "country_sectors"
+      : "default";
 
   return (
     <div>
-      {(hasBiodiversityData || hasCountrySectors || hasGgaData) && (
+      {(hasBiodiversityData || hasCountrySectors || hasGgaData || hasHrData) && (
         <div className="flex items-center gap-2 mb-4">
           <select
-            value={groupMode}
+            value={activeGroupMode}
             onChange={(e) => setGroupMode(e.target.value as CoverageGroupMode)}
             className="border border-gray-200 rounded-md px-2.5 py-1.5 text-xs text-[var(--undp-black)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--undp-blue)]/30"
           >
@@ -1872,13 +1926,16 @@ export function ImplementationCoverage({
             {hasGgaData && (
               <option value="gga">{t("groupMode.byGga")}</option>
             )}
+            {hasHrData && (
+              <option value="hr">{t("groupMode.byHr")}</option>
+            )}
           </select>
         </div>
       )}
 
       <ReportingGapsCard gaps={gaps} />
 
-      {groupMode === "country_sectors" ? (
+      {activeGroupMode === "country_sectors" ? (
         <>
           <MitigationByCountrySector
             rows={countrySectorRows}
@@ -1893,7 +1950,7 @@ export function ImplementationCoverage({
             countryConfig={countryConfig}
           />
         </>
-      ) : groupMode === "biodiversity" ? (
+      ) : activeGroupMode === "biodiversity" ? (
         <BiodiversityByGlobe
           rows={biodiversityData.rows}
           unclassified={biodiversityData.unclassified}
@@ -1901,7 +1958,7 @@ export function ImplementationCoverage({
           onToggle={toggleBioCategory}
           countryConfig={countryConfig}
         />
-      ) : groupMode === "gga" ? (
+      ) : activeGroupMode === "gga" ? (
         <BiodiversityByGlobe
           rows={ggaData.rows}
           unclassified={ggaData.unclassified}
@@ -1910,6 +1967,17 @@ export function ImplementationCoverage({
           countryConfig={countryConfig}
           title={t("gga.title")}
           sectionDesc={t("gga.sectionDesc")}
+          infoBox={null}
+        />
+      ) : activeGroupMode === "hr" ? (
+        <BiodiversityByGlobe
+          rows={hrData.rows}
+          unclassified={hrData.unclassified}
+          expandedCategory={expandedBioCategory}
+          onToggle={toggleBioCategory}
+          countryConfig={countryConfig}
+          title={t("hr.title")}
+          sectionDesc={t("hr.sectionDesc")}
           infoBox={null}
         />
       ) : (

@@ -164,7 +164,7 @@ export function AnalysisSections({ report }: { report: ModelComparisonReport }) 
 }
 
 /** Manual evaluation tool sections (rating + precision estimation).
- *  Rendered on its own page at /mongolia/model-evaluation so the analyst
+ *  Rendered on its own page at /[country]/model-evaluation so the analyst
  *  view and the rating workflow each have their own focus. Shares all
  *  helpers, DisagreementRow, and TargetBlock with `AnalysisSections` —
  *  it's the same module, different entry point. */

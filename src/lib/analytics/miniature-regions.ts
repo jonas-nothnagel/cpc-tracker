@@ -241,11 +241,15 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
     {
       id: "target-grid",
       name: "Funding dot grid",
-      // briefing.financing.targetGrid.tier.*
+      // briefing.financing.targetGrid.tier.* — current aligned-spend labels
+      // plus the pre-2026-07 funding-tier labels, so historical events keep
+      // resolving to this region.
       match: frag(
-        "Well-funded", "Funded", "Under-funded", "No aligned spend",
-        "Bien financiada", "Financiada", "Sub-financiada", "Sin gasto alineado",
-        "Сайн санхүүжсэн", "Санхүүжсэн", "Тааруухан санхүүжсэн", "Зэрэгцэх зарцуулалтгүй",
+        "aligned spend", "asto alineado", "тохирох зарцуулалт",
+        "No aligned spend", "Sin gasto alineado", "Зэрэгцэх зарцуулалтгүй",
+        "Well-funded", "Funded", "Under-funded",
+        "Bien financiada", "Financiada", "Sub-financiada",
+        "Сайн санхүүжсэн", "Санхүүжсэн", "Тааруухан санхүүжсэн",
       ),
     },
     OTHER,
@@ -309,21 +313,21 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
         frag("Ask the assistant", "Pregunte al asistente", "туслахаас асуух"),
         exact(
           "Ask →", "Preguntar →", "Асуух →",
-          "Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах",
+          "Show an insight", "Mostrar una observación", "Ойлголт харуулах",
           "Show on the wheel", "Mostrar en la rueda", "Хүрд дээр харуулах",
         ),
       ),
     },
     {
       id: "answers",
-      name: "The answers panel",
-      // explorer.workbench.answersHandle ("Answers · N") / answersClose
+      name: "The answers rail",
+      // explorer.workbench.answersHeading (top-bar recall) / backToSummary
       match: either(
         (label) =>
           label.startsWith("Answers") ||
           label.startsWith("Respuestas") ||
           label.startsWith("Хариултууд"),
-        exact("Collapse", "Contraer", "Хураах"),
+        exact("Back to summary", "Volver al resumen", "Товч тойм руу буцах"),
       ),
     },
     OTHER,

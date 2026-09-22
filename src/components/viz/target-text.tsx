@@ -12,19 +12,49 @@ import type { TargetRow } from "@/lib/csv-parser";
 const LANGUAGE_REGISTRY: Record<string, { code: string; name: string }> = {
   es: { code: "ES", name: "Spanish" },
   mn: { code: "MN", name: "Mongolian" },
+  fr: { code: "FR", name: "French" },
 };
 
 /**
  * Detect the source language of `textOriginal` when no explicit `language`
- * code is set on the record. Script-based heuristic: any Cyrillic character
- * means Mongolian (the only Cyrillic country in scope); otherwise default
- * to Spanish (Panama's source language).
+ * code is set on the record. Script-based heuristic only where a script is
+ * decisive: any Cyrillic character means Mongolian (the only Cyrillic corpus
+ * in scope). Latin-script text is NOT guessed — Spanish and French are
+ * indistinguishable at this level, so we return null and the chip renders
+ * without a language claim rather than mislabeling (every current corpus
+ * carries an explicit `language` code, so this is a fallback of a fallback).
  */
-function detectLanguage(textOriginal: string): { code: string; name: string } {
+function detectLanguage(textOriginal: string): { code: string; name: string } | null {
   if (/[Ѐ-ӿ]/.test(textOriginal)) {
     return LANGUAGE_REGISTRY.mn;
   }
-  return LANGUAGE_REGISTRY.es;
+  return null;
+}
+
+/**
+ * Resolve the language the chip should claim for a target's original text.
+ * Order: caller override → declared `target.language` (registry entry, else
+ * the declared code verbatim) → decisive script detection → null (no claim;
+ * the chip does not render). Exported for unit tests.
+ */
+export function resolveTargetLanguage(
+  target: Pick<Target, "language" | "textOriginal">,
+  languageCode?: string,
+  languageName?: string,
+): { code: string; name: string } | null {
+  if (languageCode && languageName) return { code: languageCode, name: languageName };
+  if (target.language) {
+    const entry = LANGUAGE_REGISTRY[target.language.toLowerCase()];
+    if (entry) return entry;
+    // Declared but unregistered code (a future corpus language): show the
+    // declared code verbatim rather than guessing a name for it.
+    const code = target.language.toUpperCase();
+    return { code, name: code };
+  }
+  // No declared language: script detection only where decisive; null means
+  // no language claim at all (never guess between Latin-script languages).
+  if (target.textOriginal) return detectLanguage(target.textOriginal);
+  return null;
 }
 
 /**
@@ -52,6 +82,8 @@ export function OriginalLanguageChip({
     | "sourceLabelOriginal"
     | "language"
     | "textOriginalSource"
+    | "textTranslation"
+    | "sourceLabelTranslation"
   >;
   languageCode?: string;
   languageName?: string;
@@ -59,23 +91,28 @@ export function OriginalLanguageChip({
   const t = useTranslations("viz.targetText");
   const [open, setOpen] = useState(false);
 
-  const resolved = (() => {
-    if (languageCode && languageName) return { code: languageCode, name: languageName };
-    if (target.language) {
-      const entry = LANGUAGE_REGISTRY[target.language.toLowerCase()];
-      if (entry) return entry;
-    }
-    if (target.textOriginal) return detectLanguage(target.textOriginal);
-    return LANGUAGE_REGISTRY.es;
-  })();
+  // When `src/lib/locale-text` has already swapped this target onto its source
+  // language, `text` IS the original and the English analysis text has moved to
+  // `textTranslation`. Reading the English side from there keeps the panel
+  // honest — otherwise both halves would show the same Spanish string — and
+  // flips what the chip offers: not "see the original" but "see the English
+  // this verdict was computed on".
+  const swapped = Boolean(target.textTranslation);
+  const englishText = target.textTranslation ?? target.text;
+  const englishLabel = target.sourceLabelTranslation ?? target.sourceLabel;
+
+  const resolved = resolveTargetLanguage(target, languageCode, languageName);
 
   // Localized display name for the resolved language, keyed by lowercase code.
   // Falls back to the registry's English name for any code without a translation.
   const languageLabels: Record<string, string> = {
     es: t("language.es"),
     mn: t("language.mn"),
+    fr: t("language.fr"),
   };
-  const displayName = languageLabels[resolved.code.toLowerCase()] ?? resolved.name;
+  const displayName = resolved
+    ? (languageLabels[resolved.code.toLowerCase()] ?? resolved.name)
+    : "";
 
   // Close on Escape for keyboard users.
   useEffect(() => {
@@ -101,6 +138,13 @@ export function OriginalLanguageChip({
   if (!target.textOriginal || target.textOriginalSource === "machine") {
     return null;
   }
+  // Fail closed on the language claim: with no declared code, no caller
+  // override, and no decisive script, don't render a chip that would have to
+  // guess the language (the pre-fix behavior defaulted to Spanish and
+  // mislabeled French sources).
+  if (!resolved) {
+    return null;
+  }
 
   return (
     <span className="relative inline-block">
@@ -119,11 +163,19 @@ export function OriginalLanguageChip({
           }
         }}
         aria-expanded={open}
-        aria-label={t("chip.ariaLabel", { language: displayName })}
-        title={t("chip.title", { language: displayName })}
+        aria-label={
+          swapped
+            ? t("chip.ariaLabelEnglish")
+            : t("chip.ariaLabel", { language: displayName })
+        }
+        title={
+          swapped
+            ? t("chip.titleEnglish")
+            : t("chip.title", { language: displayName })
+        }
         className="inline-flex items-center px-1.5 py-0.5 rounded border border-amber-300 bg-amber-50 text-amber-800 text-caption font-semibold hover:bg-amber-100 transition-colors cursor-pointer"
       >
-        {resolved.code}
+        {swapped ? "EN" : resolved.code}
       </span>
       {open && (
         <span
@@ -161,12 +213,12 @@ export function OriginalLanguageChip({
               <p className="text-caption font-medium text-[var(--undp-gray)] mb-0.5">
                 {t("panel.translationEnglish")}
               </p>
-              {target.sourceLabel && (
+              {englishLabel && (
                 <p className="font-medium text-[var(--undp-gray)] mb-1">
-                  {target.sourceLabel}
+                  {englishLabel}
                 </p>
               )}
-              <p className="text-[var(--undp-black)]">{target.text}</p>
+              <p className="text-[var(--undp-black)]">{englishText}</p>
             </div>
           </div>
         </span>

@@ -25,7 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.config import DATA_DIR, LLM_MODEL, OUTPUT_DIR  # noqa: E402
+from src.config import DATA_DIR, DEFAULT_TARGETS_FILE, LLM_MODEL, OUTPUT_DIR  # noqa: E402
 from src.llm import _augment_system_with_language, read_cache, set_language  # noqa: E402
 from src.align import (  # noqa: E402
     ADVISOR_SYSTEM,
@@ -129,7 +129,7 @@ def verdict(hits: int, n: int) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--targets-file", default="mongolia-targets.json")
+    parser.add_argument("--targets-file", default=DEFAULT_TARGETS_FILE)
     parser.add_argument("--language", default="en", choices=["en", "es", "mn", "fr"])
     parser.add_argument("--sample", type=int, default=25)
     args = parser.parse_args()

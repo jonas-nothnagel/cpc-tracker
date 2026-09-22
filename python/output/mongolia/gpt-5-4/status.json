@@ -3,39 +3,56 @@
   "step": 8,
   "totalSteps": 8,
   "currentStep": "Complete",
-  "message": "Pipeline finished in 16698.0s",
-  "startedAt": "2026-06-01T14:55:12.578383+00:00",
-  "completedAt": "2026-06-01T19:33:30.580588+00:00",
+  "message": "Pipeline finished in 3272.9s",
+  "startedAt": "2026-08-09T15:16:15.809685+00:00",
+  "completedAt": "2026-08-09T16:10:48.684633+00:00",
   "error": null,
   "summary": {
-    "totalTargets": 153,
-    "totalClassifications": 17724,
-    "relevantClassifications": 1544,
-    "totalPairs": 9678,
+    "totalTargets": 178,
+    "totalClassifications": 21269,
+    "relevantClassifications": 1735,
+    "totalPairs": 13404,
     "alignmentLevels": {
-      "medium": 5691,
-      "flagged": 1128,
-      "low": 1512,
-      "high": 1336,
-      "none": 11
+      "medium": 7474,
+      "low": 3861,
+      "flagged": 671,
+      "high": 1388,
+      "none": 10
     },
-    "totalContradictions": 0,
-    "measureAlignmentPairs": 6327,
+    "totalContradictions": 671,
+    "measureAlignmentPairs": 7302,
     "measurePseudoTargets": 39,
-    "budgetAlignmentPairs": 4284,
+    "budgetAlignmentPairs": 4984,
     "budgetPseudoTargets": 28,
-    "elapsedSeconds": 16698.0
+    "elapsedSeconds": 3272.9
   },
+  "promptVersion": "2.2",
   "footprint": {
-    "energy_wh": 3949.1841423705164,
-    "water_ml": 17090.17335979138,
-    "co2_geq": 1659.2428626048438,
-    "minerals_ugsbeq": 8484.815964187448,
-    "call_count": 21390,
-    "tracked_call_count": 20523,
-    "cached_call_count": 867,
+    "energy_wh": 5116.60940856405,
+    "water_ml": 22142.2295477493,
+    "co2_geq": 2106.221972530858,
+    "minerals_ugsbeq": 8555.792491370252,
+    "call_count": 28102,
+    "tracked_call_count": 27098,
+    "estimated_call_count": 0,
+    "cached_call_count": 1004,
     "model": "gpt-5.4",
     "available": true,
-    "source": "measured"
+    "source": "measured",
+    "by_model": [
+      {
+        "energy_wh": 5116.60940856405,
+        "water_ml": 22142.2295477493,
+        "co2_geq": 2106.221972530858,
+        "minerals_ugsbeq": 8555.792491370252,
+        "call_count": 28102,
+        "tracked_call_count": 27098,
+        "estimated_call_count": 0,
+        "cached_call_count": 1004,
+        "model": "gpt-5.4",
+        "available": true,
+        "source": "measured"
+      }
+    ]
   }
 }

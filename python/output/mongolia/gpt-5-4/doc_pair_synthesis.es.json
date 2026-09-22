@@ -1,0 +1,562 @@
+[
+  {
+    "doc_a": "FSS",
+    "doc_b": "ILDN",
+    "label_a": "FSS",
+    "label_b": "LDN Investment",
+    "aligned_count": 98,
+    "flagged_count": 22,
+    "contradiction_types": {
+      "delivery_friction": 13,
+      "resource_competition": 3,
+      "goal_conflict": 6
+    },
+    "synthesis": {
+      "storyline_name": "Expansión agrícola dentro de los marcos de gestión de la tierra",
+      "reinforce": "En muchos pares alineados, los documentos avanzan en la misma dirección en materia de producción sostenible basada en la tierra, especialmente mediante la rotación de cultivos, la protección de la fertilidad del suelo, la gestión de la capacidad de carga de los pastizales, la agroforestería, las semillas adaptadas localmente y el riego con criterios ambientales. La alineación también suele señalar vínculos facilitadores en los que el establecimiento de metas de LDN, el seguimiento, las alianzas y los proyectos transformadores podrían apoyar las leyes, normas, investigación, capacitación e incentivos al procesamiento del sector alimentario sin compartir el mismo mecanismo de implementación.",
+      "clash": "La posible desalineación se repite cuando las medidas de FSS amplían las tierras de cultivo, los cultivos comerciales de regadío, las explotaciones ganaderas, la producción de forraje, la reubicación agrícola rural, la infraestructura energética o la producción de fertilizantes vinculada a la minería en tierras que los instrumentos de ILDN también pueden procurar conservar, restaurar, monitorear o designar como áreas protegidas. El patrón más repetido es el riesgo de superposición espacial, especialmente entre la nueva conversión agrícola o la ubicación de instalaciones y la expansión de áreas protegidas de ILDN, la gestión del paisaje forestal, la mitigación de los pastizales occidentales y los objetivos más amplios de neutralidad de la degradación de las tierras de LDN.",
+      "coordination_hint": "Los debates conjuntos sobre evaluación preliminar, zonificación y emplazamiento del uso de la tierra, vinculados a las metas de LDN y a la planificación de áreas protegidas, podrían ayudar a identificar dónde la expansión de la producción y las medidas de gestión responsable de la tierra pueden ser compatibles.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NAP",
+    "label_a": "FSS",
+    "label_b": "NAP",
+    "aligned_count": 375,
+    "flagged_count": 30,
+    "contradiction_types": {
+      "delivery_friction": 19,
+      "goal_conflict": 3,
+      "resource_competition": 8
+    },
+    "synthesis": {
+      "storyline_name": "Expansión agrícola junto con la gestión de recursos resiliente al clima",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en torno a una agricultura resiliente al clima, especialmente cuando la capacidad de carga de los pastizales, la gestión del agua, la alerta temprana, la conservación del suelo, la supervisión de la inocuidad alimentaria, la logística y la capacitación respaldan sistemas alimentarios y ganaderos más fiables. Un patrón recurrente es que las medidas de adaptación del NAP proporcionan condiciones habilitantes para la implementación del FSS, por ejemplo mediante la gobernanza de los pastizales, el monitoreo del agua, la gestión de los ecosistemas y la información sobre riesgos que pueden respaldar acciones relativas a los cultivos, la ganadería y el suministro de alimentos.",
+      "clash": "La posible desalineación se repite cuando las medidas de expansión de FSS para nuevas tierras de cultivo, arroz de regadío y remolacha azucarera, ganadería intensiva, producción de forraje, reubicación rural y apoyo a las explotaciones agrícolas podrían competir con los objetivos del NAP en materia de protección del suelo, gestión de ecosistemas y biodiversidad, bosques y asignación del agua. Los casos examinados suelen señalar una presión compartida sobre tierras y agua finitas, o desafíos de implementación cuando las medidas de crecimiento agrícola y las medidas de restauración o protección pueden operar en los mismos paisajes sin una zonificación, ubicación o planificación de recursos claras.",
+      "coordination_hint": "La planificación conjunta de la tierra y el agua, vinculada a las normas de ubicación de pastizales, bosques, ecosistemas e irrigación, podría ayudar a mantener alineada la agenda compartida de seguridad alimentaria y adaptación en las mismas zonas rurales.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NBSAP",
+    "label_a": "FSS",
+    "label_b": "NBSAP",
+    "aligned_count": 487,
+    "flagged_count": 87,
+    "contradiction_types": {
+      "resource_competition": 18,
+      "delivery_friction": 61,
+      "goal_conflict": 8
+    },
+    "synthesis": {
+      "storyline_name": "La expansión agrícola dentro de los sistemas de planificación de la biodiversidad",
+      "reinforce": "Los dos documentos suelen estar alineados mediante instrumentos de gobernanza facilitadores en torno a la agricultura, la inocuidad alimentaria y la gestión ambiental. Los vínculos recurrentes incluyen legislación sensible a la biodiversidad, normas, seguimiento, control de la contaminación, prácticas de agricultura sostenible y medidas agroforestales o basadas en árboles que apoyan tanto la producción de alimentos como la resiliencia de los ecosistemas.",
+      "clash": "La posible desalineación se repite cuando las medidas de FSS amplían las tierras de cultivo, el forraje, las explotaciones ganaderas, los invernaderos, el riego, la producción de fertilizantes o los asentamientos agrícolas rurales en los mismos sistemas de tierra, agua e incentivos que NBSAP utiliza para las áreas protegidas, la restauración, la conservación de especies, la planificación espacial, la reducción de la contaminación y la reforma de los subsidios verdes. Los problemas del lado de la implementación aparecen con mayor frecuencia, especialmente en torno al emplazamiento, la conversión del uso de la tierra, el uso del agua, la gestión de residuos y nutrientes, y si el apoyo o la financiación a la producción podrían superponerse con áreas o incentivos sensibles para la biodiversidad.",
+      "coordination_hint": "La planificación espacial conjunta, las normas de ubicación y la evaluación de la financiación agrícola y la infraestructura en relación con las áreas protegidas, las prioridades de restauración, los corredores de especies, los límites hídricos y las salvaguardias contra la contaminación podrían ayudar a mantener ambas agendas avanzando en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NDC",
+    "label_a": "FSS",
+    "label_b": "NDC",
+    "aligned_count": 840,
+    "flagged_count": 106,
+    "contradiction_types": {
+      "delivery_friction": 56,
+      "resource_competition": 40,
+      "goal_conflict": 10
+    },
+    "synthesis": {
+      "storyline_name": "Agricultura climáticamente inteligente con presiones sobre la tierra y el agua",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de agricultura resiliente al clima, especialmente mediante el riego eficiente en el uso del agua, la gestión de suelos y pastizales, la bioseguridad, los sistemas de semillas, la agroforestería y los servicios veterinarios que respaldan una producción agrícola y ganadera más resiliente. La alineación también se repite en el plano habilitador, donde las normas, la investigación, los marcos jurídicos y los mecanismos de implementación inclusivos en la FSS pueden alinearse con las medidas de adaptación e institucionales de la NDC.",
+      "clash": "La posible desalineación reaparece cuando las medidas de expansión de FSS, especialmente las nuevas tierras de cultivo, el arroz de regadío y la remolacha azucarera, el crecimiento de los invernaderos, la intensificación ganadera, la producción de fertilizantes y el apoyo energético, podrían aumentar la presión sobre las mismas trayectorias de tierra, agua, bosques, biodiversidad y emisiones que la NDC está tratando de gestionar. Los mecanismos más comunes apuntan a problemas de implementación en torno a la gestión de residuos de cultivos, la ubicación cerca de ecosistemas protegidos o en recuperación, y la producción intensiva en emisiones, junto con la competencia por los recursos en relación con el agua de riego, el agua para pastizales y la tierra rural.",
+      "coordination_hint": "La planificación espacial conjunta y la asignación de recursos a nivel de cuenca, vinculadas con normas de producción de bajas emisiones y salvaguardias de la biodiversidad, podrían ayudar a mantener alineadas la expansión agrícola y las medidas de adaptación al clima en los mismos paisajes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NITIPA",
+    "label_a": "FSS",
+    "label_b": "National targets (Res. 91)",
+    "aligned_count": 174,
+    "flagged_count": 13,
+    "contradiction_types": {
+      "delivery_friction": 11,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Modernización de la ganadería junto con las vías de implementación climática",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en torno a la productividad ganadera, la mejora genética, la gestión de la capacidad de los pastizales, la trazabilidad, las normas alimentarias y las mejoras del procesamiento. Un patrón recurrente es que las medidas de producción, investigación, almacenamiento y suministro energético del FSS podrían apoyar la implementación de la Res. 91 cuando una energía más limpia, la capacidad institucional, la investigación y la eficiencia agrícola contribuyen a sistemas alimentarios y ganaderos de menores emisiones.",
+      "clash": "La posible desalineación reaparece cuando las medidas del FSS amplían el número de cabezas de ganado, el suministro de forraje, el establecimiento de explotaciones agrícolas, la reubicación agrícola rural o nuevas tierras de cultivo, mientras que la Res. 91 también persigue la reducción de las emisiones agrícolas y señala la presión sobre los suelos degradados de pastizales. Los casos examinados suelen apuntar a decisiones de implementación, como el abastecimiento energético, la conversión de tierras, el riego, los niveles de carga ganadera y la expansión respaldada por crédito, como los mecanismos concretos que podrían dificultar el cumplimiento de los objetivos climáticos si no se alinean estrechamente.",
+      "coordination_hint": "La planificación conjunta sobre el apoyo a la ganadería de bajas emisiones, el uso de la tierra sensible a los pastizales y las condiciones de energía limpia para la producción de alimentos podría ayudar a que estas medidas respalden tanto la expansión del sistema alimentario como el cumplimiento de los objetivos climáticos.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "NRVTS",
+    "label_a": "FSS",
+    "label_b": "LDN Targets",
+    "aligned_count": 328,
+    "flagged_count": 71,
+    "contradiction_types": {
+      "delivery_friction": 38,
+      "goal_conflict": 14,
+      "resource_competition": 19
+    },
+    "synthesis": {
+      "storyline_name": "Expansión agrícola junto con medidas de gestión de la tierra",
+      "reinforce": "Los dos documentos suelen alinearse en torno al aumento de la productividad agrícola, al tiempo que mejoran la forma en que se gestionan la tierra y los insumos. Ejemplos claros incluyen el riego y el almacenamiento de agua que respaldan aumentos del rendimiento, la gestión del ganado basada en la capacidad de carga de los pastizales que respalda instrumentos para el uso sostenible de los pastizales, y las normas de inocuidad alimentaria y el monitoreo de residuos alineados con las normas revisadas sobre plaguicidas.",
+      "clash": "La posible desalineación reaparece cuando las medidas de FSS amplían las tierras de cultivo, el forraje, la producción ganadera o los asentamientos agrícolas rurales, mientras que las medidas de NRVTS reservan o restauran tierras para pastizales, bosques, humedales, agroforestería, sistemas silvopastoriles o áreas protegidas. Los principales mecanismos señalados en la revisión apuntan a presiones sobre la asignación de tierras, desafíos de implementación al aplicar salvaguardias para suelos, pastizales y humedales junto con la expansión, y competencia por la misma base local de recursos.",
+      "coordination_hint": "Las normas conjuntas de evaluación, zonificación y emplazamiento del uso de la tierra, vinculadas con salvaguardias para la protección de pastizales, bosques, humedales y suelos, podrían ayudar a que ambos documentos avancen de manera más coherente en la misma dirección en las áreas superpuestas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSS",
+    "doc_b": "SECTORAL",
+    "label_a": "FSS",
+    "label_b": "Vision 2050",
+    "aligned_count": 412,
+    "flagged_count": 85,
+    "contradiction_types": {
+      "delivery_friction": 44,
+      "goal_conflict": 13,
+      "resource_competition": 28
+    },
+    "synthesis": {
+      "storyline_name": "Expansión agrícola vinculada a salvaguardias ecológicas",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en la modernización de la agricultura mediante el riego, la tecnología inteligente para cultivos, el almacenamiento y el envasado, la trazabilidad, la supervisión de la inocuidad alimentaria y la preparación para la exportación. La alineación también se repite cuando las medidas de producción y procesamiento del FSS, como la expansión de las tierras de cultivo, la tecnología de sistemas de cultivo, los sistemas de calidad ganadera y las mejoras del procesamiento, pueden respaldar los objetivos de la Visión 2050 sobre la ganadería sostenible, la fertilidad del suelo, la agricultura cooperativa y las cadenas de valor resilientes al clima.",
+      "clash": "La posible desalineación reaparece cuando los incentivos de FSS para expandir las tierras de cultivo, la ganadería, los forrajes, los fertilizantes, las fábricas, el apoyo energético y la actividad agrícola rural pueden aumentar las demandas sobre la tierra, el agua o los subsidios que la Visión 2050 también orienta hacia las áreas protegidas, la cobertura forestal, la rehabilitación de tierras, los límites de capacidad de carga de los pastizales y la reducción del apoyo perjudicial para el medio ambiente. Los registros de revisión suelen señalar riesgos de implementación en torno a la ubicación, la presión de pastoreo, el uso de agua para riego y la financiación de la producción, más que una diferencia amplia en la dirección general.",
+      "coordination_hint": "La zonificación espacial, la asignación de agua y la evaluación de subsidios o inversiones podrían ayudar a alinear la expansión de la producción con los objetivos relativos a los pastizales, la restauración de tierras y las áreas protegidas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NAP",
+    "label_a": "LDN Investment",
+    "label_b": "NAP",
+    "aligned_count": 114,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Mecanismos compartidos de ejecución de la restauración de tierras y la adaptación",
+      "reinforce": "Los dos documentos suelen avanzar en la misma dirección en materia de adaptación basada en los ecosistemas, restauración de tierras y protección de la biodiversidad, especialmente mediante la expansión de las áreas protegidas, la gestión forestal sostenible, la conservación del suelo y las medidas para reducir la desertificación y la degradación de las tierras. La alineación también se repite a través de instrumentos habilitadores, ya que las medidas jurídicas y de fortalecimiento de capacidades del NAP, junto con el monitoreo hídrico y ambiental, tienden a respaldar el establecimiento de metas de ILDN, los proyectos transformadores, la movilización de recursos y el seguimiento de la LDN.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "Vincular las medidas de gobernanza, capacidad y seguimiento del NAP con la inversión en ILDN, el diseño de proyectos y los canales de presentación de informes podría ayudar a traducir los objetivos compartidos sobre la tierra y los ecosistemas en una implementación más coordinada.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NBSAP",
+    "label_a": "LDN Investment",
+    "label_b": "NBSAP",
+    "aligned_count": 149,
+    "flagged_count": 0,
+    "contradiction_types": {},
+    "synthesis": {
+      "storyline_name": "Vías compartidas para la restauración de tierras y la implementación de la biodiversidad",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de restauración de tierras, silvicultura y agricultura sostenibles, áreas protegidas y soluciones basadas en la naturaleza, y las metas del NBSAP proporcionan vías concretas de implementación para las ambiciones del ILDN en materia de acción transformadora, aprovechamiento de múltiples beneficios y expansión de las áreas protegidas. La alineación también se repite en torno a los sistemas facilitadores, incluidos el establecimiento de metas, el seguimiento y la presentación de informes, el acceso a datos sobre biodiversidad, la divulgación empresarial, la integración en todos los sectores, las alianzas y la financiación, lo que podría respaldar decisiones comunes de priorización, seguimiento e inversión.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto.",
+      "coordination_hint": "El uso conjunto de datos sobre la condición de la tierra y la biodiversidad, la planificación espacial y los mecanismos de financiación podría ayudar a conectar las prioridades de inversión de ILDN con las acciones de restauración, áreas protegidas y uso sostenible de la tierra del NBSAP.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NDC",
+    "label_a": "LDN Investment",
+    "label_b": "NDC",
+    "aligned_count": 264,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "resource_competition": 3,
+      "delivery_friction": 2
+    },
+    "synthesis": {
+      "storyline_name": "Restauración de tierras vinculada a los instrumentos de implementación climática",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección al conectar el establecimiento de metas de LDN, los proyectos transformadores, el seguimiento y la financiación de los asociados con la implementación de la NDC en bosques, biodiversidad, pastizales y adaptación al clima. Un mecanismo recurrente es que ILDN proporciona instrumentos habilitadores como la movilización de recursos, la restauración del paisaje y el seguimiento de la condición de la tierra, mientras que la NDC aporta medidas sectoriales como la gestión forestal sostenible, la regeneración de ecosistemas, la gestión inteligente de pastizales y la gobernanza inclusiva.",
+      "clash": "La posible desalineación reaparece cuando la expansión de las áreas protegidas o la restauración de pastizales puede superponerse con medidas de la NDC que aumentan la demanda de la misma tierra o agua, especialmente la infraestructura de agua y alimentación para el ganado, la irrigación de cultivos y la expansión de la producción, y algunas obras del sector hídrico. Los casos examinados suelen señalar geografías compartidas, como áreas protegidas, zonas de amortiguamiento, cuencas fluviales y pastizales afectados por la minería, donde la zonificación, la ubicación, la intensidad del pastoreo y la asignación de agua podrían determinar si la implementación se mantiene alineada.",
+      "coordination_hint": "La planificación conjunta a escala espacial y de cuenca, vinculada al seguimiento de la LDN y a las decisiones de inversión sectorial de la NDC, podría ayudar a identificar dónde la conservación, la restauración, el pastoreo, la agricultura y la infraestructura hídrica pueden secuenciarse o ubicarse de manera que respalden ambos documentos.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NITIPA",
+    "label_a": "LDN Investment",
+    "label_b": "National targets (Res. 91)",
+    "aligned_count": 86,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "delivery_friction": 5
+    },
+    "synthesis": {
+      "storyline_name": "Dependencia compartida de la financiación y de los sistemas habilitadores",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante mecanismos facilitadores, especialmente la movilización de financiación climática, la coordinación entre socios, la investigación, el seguimiento y la capacidad institucional que podrían respaldar el cumplimiento de las metas sectoriales de mitigación. Esto se repite con mayor claridad cuando la movilización de recursos de ILDN se alinea con los objetivos de financiación de NITIPA, y de manera más amplia cuando los proyectos transformadores de LDN, el establecimiento de metas y la presentación de informes respaldan la acción climática en los sistemas de energía, agricultura, construcción, residuos y conocimiento.",
+      "clash": "La posible desalineación reaparece cuando las medidas de conservación y gestión de la tierra en bosques y áreas protegidas de recursos gestionados pueden superponerse espacialmente con la construcción de energía hidroeléctrica o la expansión agrícola relacionada con la ganadería. Los casos examinados suelen señalar presiones sobre el uso de la tierra en la etapa de implementación, como el emplazamiento de represas, la infraestructura asociada, la intensidad del pastoreo y la expansión de la cadena de suministro ganadera que afectan a los paisajes forestales o a las áreas consideradas para protección.",
+      "coordination_hint": "La planificación espacial, la zonificación y las salvaguardias compartidas en las medidas de conservación, energía hidroeléctrica y ganadería podrían ayudar a armonizar la implementación allí donde las áreas de intervención puedan superponerse.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "NRVTS",
+    "label_a": "LDN Investment",
+    "label_b": "LDN Targets",
+    "aligned_count": 190,
+    "flagged_count": 1,
+    "contradiction_types": {
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Herramientas de inversión en LDN que apoyan las medidas de restauración de tierras",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección porque las herramientas transversales de ILDN, el establecimiento de metas, las alianzas y la movilización de recursos, los proyectos transformadores, el aprovechamiento de múltiples beneficios, y el seguimiento y la presentación de informes, se alinean con medidas de NRVTS como la reforestación, la agroforestería y las cortinas rompevientos, la gestión de pastizales y praderas, la prevención de la erosión, la prevención de incendios forestales, la gestión de humedales, y la ecologización urbana. Un segundo patrón recurrente es que las iniciativas de ILDN sobre paisajes forestales y áreas protegidas respaldan las acciones de política forestal de NRVTS y las medidas de gestión forestal a nivel de sitio, especialmente cuando la reforestación, la gestión forestal sostenible, la conservación de la biodiversidad, el almacenamiento de carbono, y resultados mensurables sobre la condición de la tierra están vinculados.",
+      "clash": "No hay una posible desalineación recurrente en este conjunto. El único caso identificado apunta a una posible desalineación entre la expansión de las áreas protegidas de recursos gestionados y la búsqueda de mayores rendimientos agrícolas, donde algunos paisajes terrestres podrían enfrentar demandas contrapuestas de uso del suelo o de atención a la inversión.",
+      "coordination_hint": "La planificación espacial, la zonificación y la vinculación de los sistemas de financiación y seguimiento de ILDN con las medidas de implementación de NRVTS podrían ayudar a mantener los esfuerzos de restauración, conservación y productividad agrícola avanzando en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "ILDN",
+    "doc_b": "SECTORAL",
+    "label_a": "LDN Investment",
+    "label_b": "Vision 2050",
+    "aligned_count": 109,
+    "flagged_count": 8,
+    "contradiction_types": {
+      "resource_competition": 5,
+      "delivery_friction": 3
+    },
+    "synthesis": {
+      "storyline_name": "Gestión compartida de la tierra con compensaciones asociadas al riego",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de reducción de la degradación de la tierra mediante instrumentos complementarios, el establecimiento y seguimiento de metas de LDN, la rehabilitación de tierras, la acción contra la desertificación, las medidas relativas a la capacidad de carga de los pastizales y la gestión sostenible de los bosques y los pastizales. Un patrón recurrente es que ILDN proporciona marcos habilitadores, financiación, alianzas y seguimiento, mientras que Vision 2050 proporciona vías de implementación sectorial como la rehabilitación del Green Belt, la gobernanza de los pastizales, la expansión forestal y la agricultura resiliente al clima.",
+      "clash": "La posible desalineación se repite principalmente en torno a la expansión de la agricultura de regadío, donde la incorporación de tierras en barbecho al cultivo y el aumento de la demanda de riego podrían competir con los objetivos de restauración de la LDN, los objetivos relativos al estado de la tierra y las necesidades de agua en paisajes de tierras secas o vinculados a los bosques. Un segundo patrón recurrente es la posible desalineación entre la expansión de las áreas protegidas y algunas medidas agrícolas o ganaderas, en los casos en que la asignación de tierras, los pastos de reserva, los pozos o la expansión de cultivos puedan superponerse con áreas consideradas para protección.",
+      "coordination_hint": "La planificación integrada de la tierra y el agua, con zonificación, evaluación de la aptitud de la tierra y indicadores de seguimiento compartidos, podría ayudar a mantener alineadas con los objetivos de LDN las decisiones sobre riego, pastizales y áreas protegidas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NBSAP",
+    "label_a": "NAP",
+    "label_b": "NBSAP",
+    "aligned_count": 271,
+    "flagged_count": 6,
+    "contradiction_types": {
+      "delivery_friction": 4,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Gobernanza compartida de los ecosistemas con coordinación del uso de la tierra",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante la restauración de ecosistemas, las áreas protegidas y conectadas, la infraestructura verde y azul urbana, el control de la contaminación y la capacidad jurídica, científica e institucional intersectorial. Un patrón recurrente es que los facilitadores de adaptación de los NAP, como los marcos jurídicos, el desarrollo de capacidades, la alerta temprana y las medidas de resiliencia de los ecosistemas, se alinean con los instrumentos de los NBSAP para la transversalización de la biodiversidad, la restauración, la resiliencia climática y la protección de la salud humana.",
+      "clash": "La posible desalineación reaparece cuando las medidas de desarrollo de agua, pastizales y cultivos de los NAP implican estanques, riego, acceso al agua o ampliación del uso agrícola en paisajes que la planificación espacial y las metas de áreas protegidas de los NBSAP procuran conservar o conectar. Los casos examinados suelen señalar una superposición de las vías de implementación y algunas reivindicaciones compartidas sobre los recursos de tierra y agua, especialmente en torno a las áreas protegidas, los corredores y los hábitats naturales.",
+      "coordination_hint": "La planificación espacial conjunta, la zonificación y la ubicación de inversiones en agua, pastoreo y agricultura con sensibilidad hacia la biodiversidad podrían ayudar a que ambos documentos avancen en los mismos paisajes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NDC",
+    "label_a": "NAP",
+    "label_b": "NDC",
+    "aligned_count": 504,
+    "flagged_count": 14,
+    "contradiction_types": {
+      "delivery_friction": 7,
+      "resource_competition": 7
+    },
+    "synthesis": {
+      "storyline_name": "Resiliencia climática compartida mediante los sistemas terrestres y acuáticos",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de resiliencia climática mediante sistemas facilitadores y ejecución sectorial, especialmente en la gestión del agua, la alerta temprana, la reducción del riesgo de desastres, la gestión de pastizales y la gobernanza climática intersectorial. Los pares alineados recurrentes vinculan medidas del NAP como el monitoreo del agua, los estanques, la planificación de pastizales, los marcos jurídicos y de capacidades, y la preparación sanitaria con medidas del NDC sobre la resiliencia del sector hídrico, la alerta temprana ante desastres naturales, la gobernanza inclusiva, la educación y las tecnologías inteligentes para la ganadería.",
+      "clash": "La posible desalineación reaparece cuando las acciones de adaptación y mitigación recurren a la misma base de tierras y recursos hídricos, especialmente en los puntos de agua para pastizales, la expansión del riego, la construcción de estanques, la forestación, las áreas protegidas y los corredores ecológicos. Los pares de revisión también suelen señalar una superposición en la implementación, en la que la protección de la biodiversidad y la gestión de los ecosistemas podrían verse afectadas por la ubicación de la infraestructura hídrica, las medidas de apoyo a la ganadería o la intensificación de cultivos en los mismos paisajes.",
+      "coordination_hint": "La planificación espacial conjunta, la asignación de agua a nivel de cuenca y los procesos compartidos de ubicación y salvaguardias podrían ayudar a que estos documentos se apoyen mutuamente allí donde convergen las medidas relativas a los pastizales, la agricultura, la infraestructura hídrica, los bosques y la biodiversidad.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NITIPA",
+    "label_a": "NAP",
+    "label_b": "National targets (Res. 91)",
+    "aligned_count": 138,
+    "flagged_count": 8,
+    "contradiction_types": {
+      "delivery_friction": 7,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Medidas facilitadoras intersectoriales para el clima y presiones sobre el uso de la tierra",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante vínculos facilitadores, en los que los marcos jurídicos del NAP, el fortalecimiento de capacidades, la financiación, la investigación, el monitoreo del agua y los sistemas de riesgo de desastres apoyan la implementación de las metas sectoriales en energía, agricultura, residuos, transporte, edificios y bosques. Una alineación directa más sólida también aparece en la ganadería, donde las medidas del NAP sobre calidad del ganado, trazabilidad, control de enfermedades, gestión de pastizales y servicios hídricos se alinean con las metas de emisiones agrícolas y las mejoras en la cadena de valor.",
+      "clash": "La posible desalineación reaparece cuando las medidas de crecimiento agrícola y de rotación ganadera podrían aumentar la presión del pastoreo, del uso de la tierra y de los hábitats en zonas que el NAP procura proteger mediante la gestión de ecosistemas, suelos, bosques y pastizales. Un segundo problema recurrente aparece en torno a la energía hidroeléctrica y los objetivos relacionados con el agua o la biodiversidad, donde la ubicación de las represas, los caudales de los ríos y el uso compartido del agua dulce podrían complicar los resultados relativos a los servicios ecosistémicos hídricos y a la protección de los hábitats.",
+      "coordination_hint": "La planificación a nivel de cuenca, la zonificación del uso de la tierra, los controles de carga ganadera y las salvaguardias de biodiversidad podrían ayudar a que estos documentos se mantengan alineados mientras los proyectos de mitigación y las medidas de adaptación avanzan conjuntamente.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "NRVTS",
+    "label_a": "NAP",
+    "label_b": "LDN Targets",
+    "aligned_count": 296,
+    "flagged_count": 9,
+    "contradiction_types": {
+      "delivery_friction": 4,
+      "resource_competition": 5
+    },
+    "synthesis": {
+      "storyline_name": "Gestión de la tierra y del agua en paisajes compartidos",
+      "reinforce": "Los documentos a menudo avanzan en la misma dirección en cuanto al uso sostenible de los pastizales, la agroforestería, las cortinas rompevientos, la reforestación y el monitoreo del agua, y varios pares vinculan las medidas de implementación del NAP con instrumentos jurídicos, de planificación o de restauración del NRVTS. Un patrón recurrente es que las acciones del NAP sobre los límites de los pastizales, la gestión del pastoreo, el establecimiento de bosques y la conservación del suelo se alinean con las medidas del NRVTS para el uso sostenible de las tierras de pastoreo, la restauración de pastizales, la agroforestería, la expansión forestal y la gestión responsable de los humedales.",
+      "clash": "La posible desalineación se repite cuando las medidas relativas a pastizales, cultivos, bosques, áreas protegidas y humedales pueden recurrir a la misma tierra o hidrología. Los pares examinados suelen señalar que el acceso al pastoreo, el almacenamiento para riego o la intensificación agrícola se superponen con la reforestación, la ampliación de áreas protegidas, la protección de ecosistemas o los objetivos de humedales sin pérdida neta, especialmente cuando no se especifican la ubicación, la zonificación o la asignación de agua.",
+      "coordination_hint": "La zonificación compartida del uso de la tierra, la evaluación hidrológica y las normas a nivel de sitio para el pastoreo, la restauración, el almacenamiento para riego y las áreas protegidas podrían ayudar a que estas medidas avancen en los mismos paisajes con menos superposiciones.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NAP",
+    "doc_b": "SECTORAL",
+    "label_a": "NAP",
+    "label_b": "Vision 2050",
+    "aligned_count": 198,
+    "flagged_count": 18,
+    "contradiction_types": {
+      "delivery_friction": 6,
+      "resource_competition": 12
+    },
+    "synthesis": {
+      "storyline_name": "Vínculos entre la gestión resiliente al clima de la tierra y el agua",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de agricultura resiliente al clima y de gestión de pastizales, suelos, bosques y agua. Entre los vínculos recurrentes figuran el riego combinado con la conservación del suelo, las cooperativas de pastores combinadas con la adaptación de los pastizales y del ganado, la alerta temprana y el fortalecimiento de capacidades en apoyo de la resiliencia agrícola, y la rehabilitación de tierras o la valoración de los ecosistemas en apoyo de la restauración y la planificación de los recursos.",
+      "clash": "La posible desalineación reaparece cuando la expansión del riego, la intensificación de los cultivos, el desarrollo de puntos de agua para el ganado, la expansión forestal y el crecimiento de las áreas protegidas pueden recurrir a los mismos recursos finitos de tierra y agua destinados a la protección de los ecosistemas, la recuperación del suelo o el uso sostenible de los pastizales. Los registros de revisión suelen señalar reivindicaciones compartidas sobre el agua de riego, las zonas de fuentes de agua dulce, las tierras de pastoreo y los sitios que, alternativamente, podrían utilizarse para la reforestación, la protección del hábitat o las medidas de adaptación al clima.",
+      "coordination_hint": "La asignación de agua a nivel de cuenca, la zonificación del uso de la tierra y las normas de emplazamiento para el riego, la infraestructura de pastoreo, los bosques y las áreas protegidas podrían ayudar a que estas agendas avancen de manera más coordinada.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NDC",
+    "label_a": "NBSAP",
+    "label_b": "NDC",
+    "aligned_count": 660,
+    "flagged_count": 19,
+    "contradiction_types": {
+      "resource_competition": 7,
+      "delivery_friction": 12
+    },
+    "synthesis": {
+      "storyline_name": "Planificación basada en los ecosistemas junto con la gestión del agua y de la tierra",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de resiliencia de los ecosistemas, mediante el uso de NbS, la restauración, las áreas protegidas, el monitoreo, la investigación, el acceso al conocimiento y herramientas de política habilitadoras como la financiación, la reforma de subsidios, la divulgación y la participación inclusiva. La alineación se repite con mayor claridad allí donde las medidas de biodiversidad apoyan la adaptación al clima en los bosques, la agricultura, los sistemas hídricos y la infraestructura verde urbana mediante mejores datos, gobernanza y gestión sostenible de la tierra.",
+      "clash": "La posible desalineación se repite principalmente cuando las medidas de agua, ganadería y cultivos de regadío de las NDC introducen pozos, estanques, canales, tuberías, expansión del riego, producción de forraje u otra infraestructura en los mismos paisajes y cuencas fluviales a los que el NBSAP se dirige para la planificación espacial, la restauración, las áreas protegidas, la conectividad de las especies y los servicios ecosistémicos. Un segundo patrón recurrente se da en la implementación en tierras de cultivo, donde la labranza cero y la intensificación climáticamente inteligente pueden depender de herbicidas, acolchado con película plástica y expansión del riego, lo que podría complicar los objetivos de reducción de la contaminación y los resultados de restauración del NBSAP.",
+      "coordination_hint": "La planificación a nivel de cuenca, la zonificación y ubicación sensibles a la biodiversidad, las salvaguardias de caudales ambientales y la evaluación conjunta de las inversiones agrícolas y hídricas podrían ayudar a que estas medidas se apoyen mutuamente de manera más coherente.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NITIPA",
+    "label_a": "NBSAP",
+    "label_b": "National targets (Res. 91)",
+    "aligned_count": 225,
+    "flagged_count": 25,
+    "contradiction_types": {
+      "delivery_friction": 25
+    },
+    "synthesis": {
+      "storyline_name": "Implementación climática intersectorial mediante salvaguardias de biodiversidad",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección mediante medidas habilitadoras como la investigación, el acceso al conocimiento, la financiación, la capacidad institucional, la reforma de los subsidios y la integración de la biodiversidad en la planificación sectorial. En los sectores de la energía, la construcción, el transporte, los residuos, la industria y la agricultura, las acciones de mitigación climática tienden a alinearse con los objetivos de biodiversidad cuando se articulan mediante la planificación espacial, la toma de decisiones basada en evidencia y unos incentivos más ecológicos.",
+      "clash": "La posible desalineación reaparece cuando medidas específicas de implementación climática, especialmente la construcción de energía hidroeléctrica, la ubicación más amplia de energías renovables y la expansión o intensificación del sector ganadero, pueden competir con los objetivos de biodiversidad por la tierra, el agua, la conectividad fluvial, los hábitats y los corredores ecológicos. Una posible desalineación similar también aparece cuando la reforma de subsidios, la financiación para la conservación o las medidas de consumo sostenible se cruzan con las vías de implementación agrícolas y energéticas.",
+      "coordination_hint": "El uso conjunto de la planificación espacial, la ubicación sensible a la biodiversidad, la zonificación de la tierra y el agua, y los procesos compartidos de evaluación de impactos podría ayudar a que estas medidas climáticas y de biodiversidad se apoyen mutuamente de manera más coherente.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "NRVTS",
+    "label_a": "NBSAP",
+    "label_b": "LDN Targets",
+    "aligned_count": 468,
+    "flagged_count": 5,
+    "contradiction_types": {
+      "delivery_friction": 2,
+      "goal_conflict": 1,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Planificación compartida del uso de la tierra y vías de restauración",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en la restauración de tierras degradadas, bosques, pastizales y humedales, con vínculos concretos a través de obligaciones de reforestación, recuperación rotacional de pasturas, agroforestería, reverdecimiento urbano, ampliación de áreas protegidas y pago por servicios ecosistémicos. Un patrón recurrente es que las medidas habilitadoras de alcance NBSAP sobre la transversalización de la biodiversidad, la financiación, el acceso al conocimiento, la participación y la reforma de incentivos se alinean con las medidas técnicas y las acciones de política de NRVTS como apoyo de gobernanza y financiación para la gestión de la tierra sobre el terreno.",
+      "clash": "La posible desalineación se repite principalmente en torno a la Meta 3 de la NRVTS sobre el aumento de los rendimientos agrícolas, donde la intensificación y las decisiones conexas sobre el uso de la tierra podrían competir con la planificación espacial de la NBSAP, la restauración de tierras, la conservación de especies y la expansión de las áreas protegidas y de conectividad sobre la misma base territorial. Una segunda posible desalineación, más acotada, aparece en las zonas de estepa y estepa forestal, donde la expansión de las áreas protegidas y la ganadería silvopastoril podrían recurrir a espacios y recursos de gestión superpuestos.",
+      "coordination_hint": "La zonificación espacial conjunta, la planificación agrícola sensible a la biodiversidad y las normas específicas por zona para los paisajes de estepa, pastizales y conectividad podrían ayudar a que estos documentos respalden tanto los objetivos de producción como los de restauración.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NBSAP",
+    "doc_b": "SECTORAL",
+    "label_a": "NBSAP",
+    "label_b": "Vision 2050",
+    "aligned_count": 249,
+    "flagged_count": 26,
+    "contradiction_types": {
+      "delivery_friction": 17,
+      "goal_conflict": 2,
+      "resource_competition": 7
+    },
+    "synthesis": {
+      "storyline_name": "Planificación del uso de la tierra y del agua en los ámbitos de la biodiversidad y la agricultura",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de gestión de la tierra, mediante la planificación espacial, la lucha contra la desertificación, la rehabilitación de tierras, la valoración de los servicios ecosistémicos y la reforma de los subsidios que favorece una menor contaminación y suelos más saludables. La alineación también se repite a través de herramientas facilitadoras, la transversalización de la biodiversidad, los sistemas de conocimiento, las finanzas y la participación inclusiva, lo que podría ayudar a que las medidas relativas a la agricultura, los pastizales y la restauración utilicen evidencia sobre biodiversidad y valores de los servicios ecosistémicos en la planificación y la inversión.",
+      "clash": "La posible desalineación se repite con mayor frecuencia cuando la expansión agrícola de la Visión 2050, especialmente la agricultura de regadío, el crecimiento inteligente de los cultivos y la intensificación ganadera o la infraestructura de apoyo, podría competir con las prioridades del NBSAP relativas a las áreas protegidas, la restauración, los corredores de especies y las soluciones de ahorro de agua o basadas en la naturaleza. Un segundo patrón recurrente es la superposición en la implementación, donde la infraestructura de riego, el uso de productos químicos, el diseño de subsidios y las medidas de apoyo a los pastizales pueden no alinearse plenamente con las salvaguardias de evaluación de la biodiversidad, reducción de la contaminación, zonificación de la restauración y conectividad de los hábitats, a menos que se coordinen.",
+      "coordination_hint": "Los procesos conjuntos de asignación espacial y del agua, vinculados con la evaluación de la biodiversidad y las normas de emplazamiento para el riego, la expansión de cultivos, la infraestructura ganadera y las áreas protegidas o de restauración, podrían ayudar a que ambos documentos avancen en los mismos paisajes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NDC",
+    "doc_b": "NITIPA",
+    "label_a": "NDC",
+    "label_b": "National targets (Res. 91)",
+    "aligned_count": 387,
+    "flagged_count": 16,
+    "contradiction_types": {
+      "delivery_friction": 15,
+      "resource_competition": 1
+    },
+    "synthesis": {
+      "storyline_name": "Implementación climática intersectorial mediante marcos facilitadores",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección al vincular las metas sectoriales cuantificadas de NITIPA en energía, residuos, agricultura, construcción e industria con los resultados de emisiones de toda la economía del NDC para 2030 y 2035. La alineación también se repite mediante instrumentos habilitadores, financiación, investigación, inclusión y medidas jurídicas o institucionales de un documento que tienden a apoyar la ejecución de acciones sectoriales en el otro, incluida la agricultura inteligente, la restauración forestal, la resiliencia sanitaria, la gobernanza del riesgo de desastres y la adaptación hídrica.",
+      "clash": "La posible desalineación se repite principalmente allí donde se superponen los usos de la tierra y del agua, especialmente entre las medidas de biodiversidad, bosques, pastizales y adaptación hídrica en la NDC y las medidas relacionadas con la energía hidroeléctrica o la ganadería en NITIPA. Los casos examinados suelen señalar vías de implementación en las que la ubicación de represas y los cambios en el caudal de los ríos podrían afectar a los ecosistemas acuáticos y a los objetivos de seguridad hídrica, o en las que la expansión de la actividad ganadera podría ejercer una presión adicional sobre las áreas protegidas, los corredores ecológicos, los bosques y los pastizales restaurados.",
+      "coordination_hint": "La planificación espacial y de cuencas integrada, vinculada con normas de caudal ecológico, zonificación del uso del suelo y salvaguardias para proyectos, podría ayudar a que estos documentos se apoyen mutuamente de manera más coherente en paisajes y sistemas fluviales compartidos.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NDC",
+    "doc_b": "NRVTS",
+    "label_a": "NDC",
+    "label_b": "LDN Targets",
+    "aligned_count": 711,
+    "flagged_count": 12,
+    "contradiction_types": {
+      "resource_competition": 7,
+      "delivery_friction": 5
+    },
+    "synthesis": {
+      "storyline_name": "Vías compartidas de gestión responsable de la tierra y el agua",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de resiliencia basada en la tierra, especialmente mediante la gestión forestal, la reforestación, la prevención de la erosión, las medidas de fertilidad del suelo y las prácticas agrícolas como la labranza mínima o nula. La alineación también se repite cuando las medidas facilitadoras de la NDC sobre inclusión, gobernanza, resiliencia ante desastres y gestión del agua respaldan las acciones de la NRVTS sobre humedales, normas para pastizales, pagos por servicios ecosistémicos y paisajes productivos sostenibles.",
+      "clash": "La posible desalineación se repite principalmente cuando las medidas de la NDC relativas al riego, la infraestructura hídrica, los rendimientos de los cultivos, los puntos de agua para el ganado o la producción silvopastoril dependen de los mismos recursos de tierra o agua a los que se dirigen la protección de humedales, la expansión de áreas protegidas, los objetivos de superficie forestal o los corredores de biodiversidad del NRVTS. Un segundo patrón recurrente es el diseño de la implementación en la interfaz cultivo-pastura, incluido el uso de herbicidas en la siembra directa frente a la reducción de plaguicidas, y el cercado de campos o la gestión de residuos frente al movimiento estacional del pastoreo.",
+      "coordination_hint": "La asignación de agua a nivel de cuenca, la zonificación del uso de la tierra y la planificación conjunta de medidas relativas a cultivos, pastizales, bosques, humedales y áreas protegidas podrían ayudar a que ambos documentos avancen en los mismos paisajes.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NDC",
+    "doc_b": "SECTORAL",
+    "label_a": "NDC",
+    "label_b": "Vision 2050",
+    "aligned_count": 479,
+    "flagged_count": 38,
+    "contradiction_types": {
+      "delivery_friction": 16,
+      "resource_competition": 22
+    },
+    "synthesis": {
+      "storyline_name": "Trayectorias de gestión de la tierra y el agua resilientes al clima",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de gestión resiliente al clima de la tierra, el agua, los bosques y los pastizales, con vínculos recurrentes entre los objetivos de adaptación y secuestro de las NDC y las medidas de la Visión 2050 sobre lucha contra la desertificación, áreas protegidas, cobertura forestal, capacidad de carga de los pastizales y agricultura climáticamente inteligente. La alineación también se repite a través de instrumentos habilitadores, marcos jurídicos, financiación, seguimiento, seguros y sistemas de conocimiento que respaldan la implementación de la restauración forestal, la reducción del riesgo de desastres, las variedades de cultivos resilientes y las prácticas agrícolas sostenibles.",
+      "clash": "La posible desalineación se repite con mayor frecuencia cuando la Visión 2050 amplía la agricultura de regadío o la producción de cultivos orientada a la exportación, mientras que las medidas de la NDC buscan la seguridad hídrica, los caudales ecológicos, la protección del suelo, el secuestro forestal, la protección de la biodiversidad o la restauración de pastizales y bosques, creando reivindicaciones superpuestas sobre tierras y agua finitas. Un segundo patrón recurrente es la superposición en la implementación entre la expansión de áreas protegidas o corredores ecológicos y las medidas relativas a la ganadería, el riego o la infraestructura hídrica, donde la ubicación, el acceso y la secuenciación podrían ser importantes en los mismos paisajes.",
+      "coordination_hint": "La asignación de agua a nivel de cuenca, la zonificación del uso del suelo y la ubicación sensible a las áreas protegidas podrían ayudar a que estas agendas se apoyen mutuamente, al tiempo que gestionan las demandas compartidas sobre el agua, las tierras de cultivo, los pastizales, los bosques y las zonas de origen de agua dulce.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NITIPA",
+    "doc_b": "NRVTS",
+    "label_a": "National targets (Res. 91)",
+    "label_b": "LDN Targets",
+    "aligned_count": 151,
+    "flagged_count": 6,
+    "contradiction_types": {
+      "delivery_friction": 6
+    },
+    "synthesis": {
+      "storyline_name": "Facilitadores climáticos transversales que apoyan las metas relativas a la tierra",
+      "reinforce": "Un patrón recurrente es que los instrumentos transversales de NITIPA sobre financiación, investigación, capacidad jurídica e inclusión social se alinean con las acciones de NRVTS sobre reforestación, gobernanza de pastizales, ecologización urbana, humedales y sistemas silvopastoriles. Ambos documentos a menudo avanzan en la misma dirección mediante mecanismos habilitadores, en los que la financiación climática podría apoyar medidas relativas a la tierra, la investigación podría fundamentar la gestión de los ecosistemas y la capacidad regulatoria podría ayudar a aplicar normas y la planificación del uso de la tierra.",
+      "clash": "La posible desalineación recurrente se centra principalmente en las vías de implementación en la ganadería y la energía hidroeléctrica. Las medidas de expansión agrícola y ganadera podrían aumentar la presión sobre los pastizales o los bosques, a menos que vayan acompañadas de salvaguardias relativas al pastoreo, la carga ganadera y el uso de la tierra, mientras que la construcción de infraestructura hidroeléctrica podría afectar a los bosques y a la hidrología de los humedales según el emplazamiento, el diseño y la gestión de los caudales.",
+      "coordination_hint": "La evaluación conjunta del uso de la tierra y las salvaguardias de los ecosistemas en las medidas relativas a la ganadería, la energía hidroeléctrica, los bosques, los pastizales y los humedales podría ayudar a mantener una implementación alineada, al tiempo que se preservan los objetivos más amplios de clima y restauración de la tierra compartidos por ambos documentos.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NITIPA",
+    "doc_b": "SECTORAL",
+    "label_a": "National targets (Res. 91)",
+    "label_b": "Vision 2050",
+    "aligned_count": 158,
+    "flagged_count": 11,
+    "contradiction_types": {
+      "delivery_friction": 8,
+      "goal_conflict": 1,
+      "resource_competition": 2
+    },
+    "synthesis": {
+      "storyline_name": "Vínculos de implementación de la gestión del ganado y de la tierra",
+      "reinforce": "Los documentos suelen alinearse en torno a la gestión ganadera y de pastizales climáticamente inteligente, donde las medidas sobre emisiones del ganado de la Resolution 91 se conectan directamente con herramientas de la Vision 2050 como los límites de capacidad de carga de los pastizales, la gestión de rebaños basada en la ecología y la modernización ecológica de la ganadería. Una segunda alineación recurrente es que los instrumentos habilitadores de la Resolution 91, la financiación, la capacidad jurídica e institucional y la investigación climática respaldan la implementación de la Vision 2050 en materia de lucha contra la desertificación, rehabilitación de tierras, adaptación agrícola y la planificación conexa del uso de la tierra.",
+      "clash": "La posible desalineación se repite con mayor claridad allí donde las medidas de producción agrícola y ganadera de la Resolución 91 podrían interactuar de manera poco armoniosa con los límites del hato de la Visión 2050, las normas sobre capacidad de carga de los pastizales, las medidas de lucha contra la desertificación y la expansión de las áreas protegidas, especialmente si la implementación se inclina hacia el crecimiento del hato en lugar de la productividad por animal. Un patrón recurrente menor se refiere al uso de la tierra y del agua, donde la energía hidroeléctrica y una infraestructura energética más amplia podrían enfrentar superposición en el lado de la ejecución con la expansión de las áreas protegidas y la agricultura de regadío a través de la ubicación, la concesión de permisos y los recursos compartidos de las cuencas fluviales.",
+      "coordination_hint": "La planificación espacial conjunta y las normas de aplicación para la ganadería, vinculadas a umbrales de capacidad de carga, la zonificación de áreas protegidas y la asignación de agua a nivel de cuenca, podrían ayudar a que estos documentos avancen en la misma dirección.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "NRVTS",
+    "doc_b": "SECTORAL",
+    "label_a": "LDN Targets",
+    "label_b": "Vision 2050",
+    "aligned_count": 341,
+    "flagged_count": 25,
+    "contradiction_types": {
+      "resource_competition": 15,
+      "delivery_friction": 9,
+      "goal_conflict": 1
+    },
+    "synthesis": {
+      "storyline_name": "Asignación de tierras y aguas entre los usos de restauración",
+      "reinforce": "Los dos documentos a menudo avanzan en la misma dirección en materia de gestión sostenible de la tierra, especialmente mediante la gobernanza de los pastizales, la ampliación de las áreas protegidas, la reforestación y el pago por servicios ecosistémicos para las cabeceras de cuenca y los humedales. La alineación también se repite cuando Vision 2050 proporciona marcos habilitadores, como normas de capacidad de carga, reforma de subsidios, valoración de los servicios ecosistémicos y medidas de adaptación climática, que respaldan las acciones de NRVTS en bosques, pastizales y sistemas pastoriles.",
+      "clash": "La posible desalineación se repite principalmente en torno a la competencia por la misma base de tierra y agua, especialmente entre la expansión de la agricultura de regadío o el crecimiento de cultivos orientados a la exportación y las medidas de NRVTS sobre bosques, pastizales, humedales, áreas protegidas y uso rotativo de pasturas. Un segundo patrón recurrente es la posible desalineación relacionada con la implementación, en la que la expansión del riego y las trayectorias de cultivo con uso de productos químicos podrían coexistir de manera incómoda con los objetivos de reducción de plaguicidas, prevención de la erosión y ausencia de pérdida neta de humedales.",
+      "coordination_hint": "La planificación integrada del uso de la tierra y de las cuencas hidrográficas, con normas claras de ubicación, zonificación y asignación de agua, podría ayudar a que estas agendas avancen conjuntamente allí donde se superponen las prioridades de la agricultura, los pastizales, los bosques, los humedales y las áreas protegidas.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  }
+]

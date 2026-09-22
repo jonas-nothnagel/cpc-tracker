@@ -21,6 +21,15 @@ export interface ChatImpacts {
   co2_geq: number;
   minerals_ugsbeq: number;
   source: FootprintSource;
+  // Modelled-uncertainty bounds, present when the API returned ranges.
+  energy_wh_min?: number;
+  energy_wh_max?: number;
+  water_ml_min?: number;
+  water_ml_max?: number;
+  co2_geq_min?: number;
+  co2_geq_max?: number;
+  minerals_ugsbeq_min?: number;
+  minerals_ugsbeq_max?: number;
 }
 
 const API_URL = "https://api.ecologits.ai/v1beta/estimations";
@@ -68,12 +77,23 @@ export async function estimateChatImpacts(
     const json = (await res.json()) as { impacts?: Record<string, unknown> };
     const impacts = json.impacts ?? {};
     const usage = (impacts.usage ?? {}) as Record<string, unknown>;
+    const energy = bounds(impacts.energy);
+    const gwp = bounds(impacts.gwp);
+    const adpe = bounds(impacts.adpe);
+    const wcf = bounds(usage.wcf ?? impacts.wcf);
     return {
       energy_wh: midpoint(impacts.energy) * 1000, // kWh -> Wh
       co2_geq: midpoint(impacts.gwp) * 1000, // kgCO2eq -> gCO2eq
       minerals_ugsbeq: midpoint(impacts.adpe) * 1e9, // kgSbeq -> ugSbeq
       water_ml: midpoint(usage.wcf ?? impacts.wcf) * 1000, // L -> mL
       source: "api",
+      ...(energy && { energy_wh_min: energy.min * 1000, energy_wh_max: energy.max * 1000 }),
+      ...(gwp && { co2_geq_min: gwp.min * 1000, co2_geq_max: gwp.max * 1000 }),
+      ...(adpe && {
+        minerals_ugsbeq_min: adpe.min * 1e9,
+        minerals_ugsbeq_max: adpe.max * 1e9,
+      }),
+      ...(wcf && { water_ml_min: wcf.min * 1000, water_ml_max: wcf.max * 1000 }),
     };
   } catch {
     return fallback;
@@ -96,4 +116,19 @@ export function midpoint(field: unknown): number {
     return Number(value) || 0;
   }
   return Number(field) || 0;
+}
+
+/**
+ * Extract the raw {min, max} bounds from an EcoLogits impact field, or null
+ * when the field carries a scalar (no modelled range).
+ */
+export function bounds(field: unknown): { min: number; max: number } | null {
+  if (field && typeof field === "object" && "value" in field) {
+    const value = (field as { value: unknown }).value;
+    if (value && typeof value === "object" && "min" in value && "max" in value) {
+      const range = value as { min: number; max: number };
+      return { min: Number(range.min) || 0, max: Number(range.max) || 0 };
+    }
+  }
+  return null;
 }

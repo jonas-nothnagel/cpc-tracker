@@ -74,6 +74,8 @@ describe("MINIATURE_REGIONS structure", () => {
     // financing / implementation coverage rows (rendered without <strong>)
     expect(regionForLabel("financing", "NDC 8 of 12 matched")).toBe("coverage-rows");
     expect(regionForLabel("financing", "NDC 12-аас 8 нь тохирсон")).toBe("coverage-rows");
+    expect(regionForLabel("financing", "T2.1: High aligned spend, $4.5M")).toBe("target-grid");
+    // pre-2026-07 tier labels in historical events still resolve
     expect(regionForLabel("financing", "T2.1: Well-funded, $4.5M")).toBe("target-grid");
     expect(regionForLabel("implementation", "NDC 5 of 9 addressed")).toBe("coverage-rows");
     expect(regionForLabel("implementation", "Ministry of Energy → NDC: 4 targets")).toBe("flow-diagram");
@@ -143,8 +145,8 @@ describe("locale lock against messages/*.json", () => {
       ["primary targets", "objetivos primarios", "үндсэн зорилт"]],
     ["financing.matchedCount", (m) => m.briefing.financing.matchedCount,
       [" matched", " coinciden", " нь тохирсон"]],
-    ["financing.targetGrid.tier.well-funded", (m) => m.briefing.financing.targetGrid.tier["well-funded"],
-      ["Well-funded", "Bien financiada", "Сайн санхүүжсэн"]],
+    ["financing.targetGrid.tier.high", (m) => m.briefing.financing.targetGrid.tier.high,
+      ["High aligned spend", "Gasto alineado alto", "Их тохирох зарцуулалт"]],
     ["implementation.matchedCount", (m) => m.briefing.implementation.matchedCount,
       [" addressed", " abordadas", " нь хамрагдсан"]],
     ["implementationCenter.flow.toggleRoster", (m) => m.briefing.implementationCenter.flow.toggleRoster,
@@ -158,11 +160,11 @@ describe("locale lock against messages/*.json", () => {
     ["explorer.chat.askAriaProminent", (m) => m.explorer.chat.askAriaProminent,
       ["Ask the assistant", "Pregunte al asistente", "туслахаас асуух"]],
     ["explorer.chat.surpriseMe", (m) => m.explorer.chat.surpriseMe,
-      ["Show another insight", "Mostrar otra observación", "Өөр ойлголт харуулах"]],
-    ["explorer.workbench.answersHandle", (m) => m.explorer.workbench.answersHandle,
+      ["Show an insight", "Mostrar una observación", "Ойлголт харуулах"]],
+    ["explorer.workbench.answersHeading", (m) => m.explorer.workbench.answersHeading,
       ["Answers", "Respuestas", "Хариултууд"]],
-    ["explorer.workbench.answersClose", (m) => m.explorer.workbench.answersClose,
-      ["Collapse", "Contraer", "Хураах"]],
+    ["explorer.workbench.backToSummary", (m) => m.explorer.workbench.backToSummary,
+      ["Back to summary", "Volver al resumen", "Товч тойм руу буцах"]],
   ];
 
   it.each(LOCKS)("%s", (_desc, select, fragments) => {

@@ -199,6 +199,18 @@ describe("sectionUsage", () => {
     expect(byId.direction.shareOfInteractions).toBeCloseTo(2 / 3);
   });
 
+  it("attributes clicks on the standalone explore route to its section", () => {
+    const summary = aggregate(
+      [
+        ev({ type: "click", section: "explore", route: "/[country]/explore", label: "Back to summary" }),
+        ev({ type: "click", section: "explore", route: "/[country]", label: "Back to summary" }),
+      ],
+      NOW,
+    );
+    const explore = summary.sectionUsage.find((s) => s.section === "explore");
+    expect(explore?.interactions).toBe(2);
+  });
+
   it("tolerates legacy click rows without a section field", () => {
     const legacy = ev({ type: "click" }) as unknown as Record<string, unknown>;
     delete legacy.section;

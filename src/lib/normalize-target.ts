@@ -1,11 +1,12 @@
 import type { PolicyDocumentType, Target } from "@/types";
 
 /**
- * Normalize one raw payload target into the `Target` contract, applying the
- * locale text swap: when the target's original-language text matches the
- * active locale, show it instead of the English translation. Extracted from
- * `CoherenceDashboard` so standalone surfaces (the finding pages) apply the
- * exact same rule without importing the dashboard bundle.
+ * Normalize one raw payload target into the `Target` contract (a field
+ * whitelist: a field not named here never reaches the UI), applying the
+ * client-side locale swap for machine back-translations. Shared by
+ * `useDashboardData` and the server-rendered finding and pulse pages, so every
+ * surface applies the same field whitelist and swap rule without importing the
+ * client dashboard bundle.
  */
 export function normalizeTarget(t: Record<string, unknown>, locale?: string): Target {
   // Pseudo-target extras (`measureStatus` on BTR rows, `expenditure` on
@@ -25,15 +26,23 @@ export function normalizeTarget(t: Record<string, unknown>, locale?: string): Ta
     ? String(t.sourceLabelOriginal)
     : undefined;
   const language = t.language ? String(t.language) : undefined;
-  // When the target's original-language text matches the active locale, show
-  // it instead of the English translation. For genuinely sourced originals
-  // (textOriginalSource !== "machine") this is the real document wording; for
-  // machine back-translations (e.g. the Mongolian targets) it surfaces the
-  // machine text under the global machine-translation caveat on the language
-  // switcher. Either way the chip's "original" is now redundant (already shown),
-  // so drop it; the verify-translation chip is separately suppressed for
-  // machine originals in OriginalLanguageChip.
-  if (locale && language === locale && textOriginal) {
+  // Locale swap for MACHINE back-translations only (the Mongolian targets):
+  // there is no genuine source-language text to compare against, so the
+  // machine text simply replaces the English under the global
+  // machine-translation caveat on the language switcher, and the chip's
+  // "original" would be redundant.
+  //
+  // Genuinely sourced originals (Panama's Spanish) are swapped SERVER-SIDE by
+  // `src/lib/locale-text` instead, which keeps the English analysis text in
+  // `textTranslation` so the language chip can still show both sides. Doing it
+  // here as well would swap twice and, because this function whitelists the
+  // fields it returns, would drop the English on the floor.
+  if (
+    locale &&
+    language === locale &&
+    textOriginal &&
+    t.textOriginalSource === "machine"
+  ) {
     text = textOriginal;
     if (sourceLabelOriginal) sourceLabel = sourceLabelOriginal;
     textOriginal = undefined;
@@ -51,12 +60,29 @@ export function normalizeTarget(t: Record<string, unknown>, locale?: string): Ta
     timeBoundDetails: t.timeBoundDetails ? String(t.timeBoundDetails) : undefined,
     activities: t.activities ? String(t.activities) : undefined,
     actions: t.actions ? String(t.actions) : undefined,
+    // `activitySources` is the gate `itemisedActivities()` reads (viz/target-text):
+    // without it a target's listed activities collapse into one paragraph and
+    // "Activities & Actions (1)". `sources` feeds the document drawer's verbatim
+    // quote and the public source links. Both are arrays the API already ships.
+    activitySources: Array.isArray(t.activitySources) ? t.activitySources : undefined,
+    sources: Array.isArray(t.sources) ? (t.sources as Target["sources"]) : undefined,
     textOriginal,
     sourceLabelOriginal,
     textOriginalSource:
       t.textOriginalSource === "machine" || t.textOriginalSource === "source"
         ? t.textOriginalSource
         : undefined,
+    // Written server-side by src/lib/locale-text when the text was swapped onto
+    // its source language: the English the analysis ran on, kept reachable
+    // behind the language chip. This whitelist is why they must be listed —
+    // anything not named here never reaches the UI.
+    textTranslation: t.textTranslation ? String(t.textTranslation) : undefined,
+    sourceLabelTranslation: t.sourceLabelTranslation
+      ? String(t.sourceLabelTranslation)
+      : undefined,
+    textLocale: t.textLocale ? String(t.textLocale) : undefined,
+    // Which elements the target's text states (src/.../target-quality).
+    definition: (t.definition as Target["definition"]) ?? undefined,
     actionType:
       t.actionType === "mitigation" || t.actionType === "adaptation"
         ? t.actionType

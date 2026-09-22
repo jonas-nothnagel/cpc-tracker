@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# Build the production Docker image, push to Azure Container Registry, and wait
-# for App Service to redeploy. Replaces .github/workflows/deploy.yml (GHA was
-# deactivated for this account 2026-06-23). Same delivery model: ACR push →
+# Build the production container image, push to Azure Container Registry, and
+# wait for App Service to redeploy. Replaces .github/workflows/deploy.yml (GHA
+# was deactivated for this account 2026-06-23). Same delivery model: ACR push →
 # webhook → App Service pulls → smoke test.
 #
 # Usage:
-#   ./scripts/deploy.sh         # interactive — prompts for confirmation
-#   ./scripts/deploy.sh -y      # skip confirmation, useful in scripts
+#   ./scripts/deploy.sh                       # interactive — prompts to confirm
+#   ./scripts/deploy.sh -y                    # skip confirmation, for scripts
+#   CONTAINER_CMD=podman ./scripts/deploy.sh  # build with podman, not docker
 #
 # Prereqs:
-#   - docker (with buildx)
+#   - docker (with buildx), or podman if CONTAINER_CMD=podman
 #   - az CLI, logged in (`az login`). No service principal / ACR admin
-#     password needed — `az acr login` uses your existing AAD token.
+#     password needed — registry auth rides on your existing AAD token.
 #
 # Safety nets: warns if working tree is dirty or not on main; both are
 # overridable via the confirmation prompt or -y.
@@ -25,13 +26,21 @@ APP_NAME="cpc-tracker-c657"
 RESOURCE_GROUP="undphqbppsai001"
 APP_URL="https://${APP_NAME}.azurewebsites.net/"
 
+# Container runtime. Defaults to docker (the tested path); set
+# CONTAINER_CMD=podman on hosts without a docker daemon.
+CONTAINER_CMD="${CONTAINER_CMD:-docker}"
+case "${CONTAINER_CMD}" in
+  docker|podman) ;;
+  *) echo "❌ CONTAINER_CMD must be 'docker' or 'podman' (got '${CONTAINER_CMD}')" >&2; exit 2 ;;
+esac
+
 # ── Parse flags ──────────────────────────────────────────────────────────
 SKIP_CONFIRM=0
 for arg in "$@"; do
   case "$arg" in
     -y|--yes) SKIP_CONFIRM=1 ;;
     -h|--help)
-      sed -n '2,18p' "$0" | sed 's/^# \?//'
+      sed -n '2,19p' "$0" | sed 's/^# \?//'
       exit 0
       ;;
     *)
@@ -43,9 +52,17 @@ for arg in "$@"; do
 done
 
 # ── Pre-flight ───────────────────────────────────────────────────────────
-command -v docker >/dev/null || { echo "❌ docker not found"; exit 1; }
+command -v "${CONTAINER_CMD}" >/dev/null || { echo "❌ ${CONTAINER_CMD} not found"; exit 1; }
 command -v az >/dev/null || { echo "❌ az CLI not found"; exit 1; }
-docker buildx version >/dev/null 2>&1 || { echo "❌ docker buildx not available"; exit 1; }
+if [ "${CONTAINER_CMD}" = "docker" ]; then
+  docker buildx version >/dev/null 2>&1 || { echo "❌ docker buildx not available"; exit 1; }
+  # buildx talks to the daemon; a dead daemon otherwise surfaces as a confusing
+  # failure minutes into the build.
+  docker info >/dev/null 2>&1 || {
+    echo "❌ docker daemon not reachable. Start it, or re-run with CONTAINER_CMD=podman."
+    exit 1
+  }
+fi
 
 # Confirm Azure auth (cheap, surfaces a clear error before the long build).
 az account show --query name -o tsv >/dev/null 2>&1 || {
@@ -161,7 +178,19 @@ fi
 # ── 1. ACR login (uses AAD, no admin password) ───────────────────────────
 echo
 echo "▸ Logging in to ${REGISTRY}…"
-az acr login --name "${REGISTRY_NAME}" >/dev/null
+if [ "${CONTAINER_CMD}" = "podman" ]; then
+  # `az acr login` shells out to `docker login`, so it cannot authenticate
+  # podman. --expose-token returns an ACR refresh token instead, which podman
+  # accepts against the well-known null GUID username.
+  ACR_TOKEN=$(az acr login --name "${REGISTRY_NAME}" --expose-token \
+    --query accessToken -o tsv)
+  echo "${ACR_TOKEN}" | podman login "${REGISTRY}" \
+    --username "00000000-0000-0000-0000-000000000000" \
+    --password-stdin >/dev/null
+  unset ACR_TOKEN
+else
+  az acr login --name "${REGISTRY_NAME}" >/dev/null
+fi
 
 # ── 1b. Analytics dashboard token (App Service app setting) ──────────────
 # Ensures ANALYTICS_DASHBOARD_TOKEN is set so /analytics works in prod
@@ -209,14 +238,32 @@ fi
 # Mirror the original GHA: dual tag (sha + latest), registry cache for speed
 # on subsequent runs. The cache image is namespaced under :buildcache to keep
 # it separate from the runtime tags.
-echo "▸ Building and pushing (this can take a few minutes on first run)…"
-docker buildx build \
-  --push \
-  --tag "${REGISTRY}/${IMAGE}:${GIT_SHA_FULL}" \
-  --tag "${REGISTRY}/${IMAGE}:latest" \
-  --cache-from "type=registry,ref=${REGISTRY}/${IMAGE}:buildcache" \
-  --cache-to "type=registry,ref=${REGISTRY}/${IMAGE}:buildcache,mode=max" \
-  .
+echo "▸ Building and pushing with ${CONTAINER_CMD} (a few minutes on first run)…"
+if [ "${CONTAINER_CMD}" = "podman" ]; then
+  # podman build has no --push, so build locally then push each tag.
+  #
+  # The cache flags take a bare *repository* — podman rejects a tag or digest
+  # and manages its own cache tags inside it. So podman cannot reuse buildx's
+  # ${IMAGE}:buildcache tag and gets a sibling repo instead; the two runtimes
+  # keep separate caches, which costs a cold first build after switching.
+  podman build \
+    --tag "${REGISTRY}/${IMAGE}:${GIT_SHA_FULL}" \
+    --tag "${REGISTRY}/${IMAGE}:latest" \
+    --cache-from "${REGISTRY}/${IMAGE}-buildcache" \
+    --cache-to "${REGISTRY}/${IMAGE}-buildcache" \
+    .
+  # :latest must land last — the ACR webhook fires on it and triggers the pull.
+  podman push "${REGISTRY}/${IMAGE}:${GIT_SHA_FULL}"
+  podman push "${REGISTRY}/${IMAGE}:latest"
+else
+  docker buildx build \
+    --push \
+    --tag "${REGISTRY}/${IMAGE}:${GIT_SHA_FULL}" \
+    --tag "${REGISTRY}/${IMAGE}:latest" \
+    --cache-from "type=registry,ref=${REGISTRY}/${IMAGE}:buildcache" \
+    --cache-to "type=registry,ref=${REGISTRY}/${IMAGE}:buildcache,mode=max" \
+    .
+fi
 
 # ── 3. Smoke test ────────────────────────────────────────────────────────
 # ACR webhook (cpctrackerCD) fires asynchronously; App Service may take a

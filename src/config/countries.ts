@@ -142,6 +142,25 @@ export const COUNTRIES: CountryEntry[] = [
       ber: false,
     },
   },
+  {
+    id: "countryx",
+    name: "Country X",
+    // Fictional demonstration country: lets the team demo the full coherence
+    // dashboard without exposing pilot-country data. The corpus is real
+    // published policy-target text pooled from several countries' documents
+    // and de-identified by hand (dev_data_scripts/ingest_countryx_14aug26.py).
+    // iso3 "xcx" is in the ISO 3166-1 user-assigned range, so it can never
+    // collide with a real country. Coherence-only (Level 1).
+    iso3: "xcx",
+    status: "demo",
+    visible: true,
+    has: {
+      coherence: true,
+      btr: { mitigation: false, adaptation: false },
+      nr7: false,
+      ber: false,
+    },
+  },
 ];
 
 /**

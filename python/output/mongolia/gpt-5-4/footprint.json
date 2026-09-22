@@ -1,12 +1,28 @@
 {
-  "energy_wh": 3949.1841423705164,
-  "water_ml": 17090.17335979138,
-  "co2_geq": 1659.2428626048438,
-  "minerals_ugsbeq": 8484.815964187448,
-  "call_count": 21390,
-  "tracked_call_count": 20523,
-  "cached_call_count": 867,
+  "energy_wh": 5116.60940856405,
+  "water_ml": 22142.2295477493,
+  "co2_geq": 2106.221972530858,
+  "minerals_ugsbeq": 8555.792491370252,
+  "call_count": 28102,
+  "tracked_call_count": 27098,
+  "estimated_call_count": 0,
+  "cached_call_count": 1004,
   "model": "gpt-5.4",
   "available": true,
-  "source": "measured"
+  "source": "measured",
+  "by_model": [
+    {
+      "energy_wh": 5116.60940856405,
+      "water_ml": 22142.2295477493,
+      "co2_geq": 2106.221972530858,
+      "minerals_ugsbeq": 8555.792491370252,
+      "call_count": 28102,
+      "tracked_call_count": 27098,
+      "estimated_call_count": 0,
+      "cached_call_count": 1004,
+      "model": "gpt-5.4",
+      "available": true,
+      "source": "measured"
+    }
+  ]
 }

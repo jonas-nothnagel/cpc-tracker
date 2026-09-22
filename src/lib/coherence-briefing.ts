@@ -29,6 +29,8 @@ import type {
   SectorSynthesis,
   Target,
   ThematicClassification,
+  WheelAlignment,
+  WheelTarget,
 } from "@/types";
 
 // ─── Headline verdict ───────────────────────────────────────────────
@@ -842,8 +844,8 @@ export interface DocCoherenceEdge {
  * separation and filament weight.
  */
 export function buildDocCoherenceGraph(
-  alignment: AlignmentResult[],
-  targets: Target[],
+  alignment: WheelAlignment[],
+  targets: WheelTarget[],
   countryConfig: CountryConfig | null,
 ): { nodes: DocCoherenceNode[]; edges: DocCoherenceEdge[] } {
   const targetMap = new Map(targets.map((t) => [t.id, t]));
@@ -936,8 +938,8 @@ export interface DocFrictionShares {
  * its own arc without being penalised merely for being large.
  */
 export function buildDocFrictionShares(
-  alignment: AlignmentResult[],
-  targets: Target[],
+  alignment: WheelAlignment[],
+  targets: WheelTarget[],
   countryConfig: CountryConfig | null,
 ): DocFrictionShares {
   const { edges } = buildDocCoherenceGraph(alignment, targets, countryConfig);
@@ -1905,6 +1907,10 @@ export function buildFlagSubsetProfile(args: {
   for (const c of classifications) {
     if (!c.isPrimary || c.taxonomyType !== taxonomyType) continue;
     if (!targetMap.has(c.targetId)) continue;
+    // Only the lens's own themes: a derived "no clear theme" marker, or an id
+    // from another sector list sharing this taxonomyType, is not a theme and
+    // must never surface as a raw id.
+    if (!catNameById.has(c.categoryId)) continue;
     primaryByTarget.set(c.targetId, c.categoryId);
   }
 
@@ -1957,7 +1963,7 @@ export function buildFlagSubsetProfile(args: {
   const byTheme = [...themeCounts.entries()]
     .map(([categoryId, count]) => ({
       categoryId,
-      categoryName: catNameById.get(categoryId) ?? categoryId,
+      categoryName: catNameById.get(categoryId)!,
       count,
     }))
     .sort((x, y) =>

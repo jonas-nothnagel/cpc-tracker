@@ -7,6 +7,22 @@ import type {
   CountryConfig,
   DocumentTypeEntry,
 } from "@/types";
+import { listCountries } from "@/config/countries";
+
+/** Strip a redundant `<countryId>_` prefix (canonical id or alias, per the
+ *  country registry) from a target id for display. Some corpora namespace
+ *  their target ids with the country slug (Panama: `panama_CNR_1`); inside
+ *  that country's own views the prefix is noise. Ids without a registry
+ *  prefix pass through untouched (Mongolia's `NBSAP_1` stays `NBSAP_1`). */
+export function stripCountryIdPrefix(targetId: string): string {
+  for (const c of listCountries()) {
+    for (const slug of [c.id, ...(c.aliases ?? [])]) {
+      const prefix = slug + "_";
+      if (targetId.startsWith(prefix)) return targetId.slice(prefix.length);
+    }
+  }
+  return targetId;
+}
 
 // ---------------------------------------------------------------------------
 // Country-driven document type helpers

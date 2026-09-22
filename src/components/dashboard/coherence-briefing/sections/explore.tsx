@@ -18,21 +18,22 @@ export const EXPLORE_SECTION_ID = "explore";
 
 export function ExploreSection({ children }: { children: ReactNode }) {
   const t = useTranslations("briefing.explore");
+  // The Explore finale is a self-contained workbench: it owns its own title,
+  // stat line, and controls in a top bar, so the section heading and intro
+  // fold into that chrome and stay only as an accessible landmark. Height is
+  // content-driven (the wheel sizes by width, capped), so the section can be
+  // taller than one screen on laptops; a bigger wheel beats a one-screen fit.
+  // The nav publishes its live height as --jump-nav-clearance (see JumpNav),
+  // so the anchor landing tracks however many rows the nav currently wraps to.
   return (
     <section
       id={EXPLORE_SECTION_ID}
-      className="scroll-mt-24 pt-2"
+      className="scroll-mt-[var(--jump-nav-clearance,10.25rem)]"
       aria-labelledby={`${EXPLORE_SECTION_ID}-heading`}
     >
-      <h2
-        id={`${EXPLORE_SECTION_ID}-heading`}
-        className="font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium mb-3"
-      >
+      <h2 id={`${EXPLORE_SECTION_ID}-heading`} className="sr-only">
         {t("heading")}
       </h2>
-      <p className="text-body text-[var(--undp-black)] max-w-prose mb-6">
-        {t("body")}
-      </p>
       {children}
     </section>
   );

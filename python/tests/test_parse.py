@@ -6,7 +6,6 @@ These test pure functions with no LLM calls.
 import re
 
 from src.align import parse_alignment, parse_decomposition, generate_pairs
-from src.classify import parse_classification
 from src.quantitative import _parse_response
 from src.parse_ctf import _METADATA_PATTERNS, _TABLE_REF_RE, _normalize_sector
 
@@ -275,31 +274,6 @@ class TestParseDecomposition:
         result = parse_decomposition(raw)
         assert result["Goal/Purpose"] == raw
         assert result["Action/Intervention"] == ""
-
-
-# ---------------------------------------------------------------------------
-# parse_classification
-# ---------------------------------------------------------------------------
-
-
-class TestParseClassification:
-    def test_returns_true_for_1(self):
-        assert parse_classification("1") is True
-
-    def test_returns_false_for_0(self):
-        assert parse_classification("0") is False
-
-    def test_returns_true_for_1_with_whitespace(self):
-        assert parse_classification("  1  ") is True
-
-    def test_returns_false_for_0_with_quotes(self):
-        assert parse_classification('"0"') is False
-
-    def test_yes_keyword(self):
-        assert parse_classification("Yes, the target pertains to this category.") is True
-
-    def test_no_keyword_fallback(self):
-        assert parse_classification("No clear connection") is False
 
 
 # ---------------------------------------------------------------------------

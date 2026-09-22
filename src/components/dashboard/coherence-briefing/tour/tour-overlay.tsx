@@ -14,6 +14,13 @@ interface TourOverlayProps {
   onNext: () => void;
   onBack: () => void;
   onClose: () => void;
+  /** How a step's target is aligned when the page scrolls to it. "nearest"
+   *  (default) moves minimally — required for chart tours, whose targets sit
+   *  in the sticky aside and unmount if the active section flips beneath
+   *  them. "start" pins the target to the top of the window (respecting its
+   *  scroll-margin) — right for the guided read, which walks page sections
+   *  top to bottom and whose anchors never unmount on section change. */
+  scrollBlock?: ScrollLogicalPosition;
 }
 
 /** Padding between the target's bounding box and the spotlight edge. */
@@ -38,6 +45,7 @@ export function TourOverlay({
   onNext,
   onBack,
   onClose,
+  scrollBlock = "nearest",
 }: TourOverlayProps) {
   const t = useTranslations("briefing.tour");
   const cardRef = useRef<HTMLDivElement>(null);
@@ -50,11 +58,9 @@ export function TourOverlay({
   const targetRect = useTargetRect(current?.el ?? null, onClose);
 
   // Bring the highlighted element into view when the step changes — but only
-  // if it is not already fully visible, and then with minimal movement.
-  // Gratuitous scrolling is not just noise here: the briefing derives its
-  // active section from scroll position (IntersectionObserver), and a section
-  // flip swaps the sticky-aside centerpiece, unmounting the tour's target and
-  // ending the tour mid-walkthrough.
+  // if it is not already fully visible, and then per scrollBlock (see the
+  // prop doc: "nearest" for chart tours, whose sticky-aside targets unmount
+  // if the active section flips beneath them; "start" for the guided read).
   useEffect(() => {
     const el = current?.el;
     if (!el) return;
@@ -64,10 +70,49 @@ export function TourOverlay({
       r.left >= 0 &&
       r.bottom <= window.innerHeight &&
       r.right <= window.innerWidth;
-    if (!fullyVisible) {
-      el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    // Sticky targets (the jump nav) pin themselves to the viewport: their
+    // rect no longer answers "where is this in the page", so start-aligning
+    // them scrolls forever past the mark. They only ever need the minimal
+    // bring-into-view.
+    const sticky = getComputedStyle(el).position === "sticky";
+    // In start mode, a target resting in the lower half of the window is
+    // also repositioned, so every step frames its subject at the top. (A
+    // target near the document's end stays as high as the page allows.)
+    const startMode = scrollBlock === "start" && !sticky;
+    const needsScroll = startMode
+      ? !fullyVisible || r.top > window.innerHeight / 2
+      : !fullyVisible;
+    if (!needsScroll) return;
+    // The global reduced-motion CSS zeroes transitions but does not reach
+    // JS-initiated scrolling, so honour the preference here explicitly.
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const behavior = reduceMotion ? ("auto" as const) : ("smooth" as const);
+    if (!startMode) {
+      el.scrollIntoView({ block: "nearest", behavior });
+      return;
     }
-  }, [current]);
+    // Start mode scrolls by explicit offset instead of scrollIntoView:
+    // content mounting as it enters view shifts layout mid-scroll, and a
+    // smooth scrollIntoView animation keeps flying to its stale destination
+    // (it even overrides later corrective calls). Deriving the offset from
+    // the element's fresh rect and scroll-margin sidesteps that, and the
+    // settle pass below re-derives it once the animation is done, correcting
+    // only if the landing is actually off.
+    const marginTop = () =>
+      parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    const targetY = () =>
+      window.scrollY + el.getBoundingClientRect().top - marginTop();
+    window.scrollTo({ top: targetY(), behavior });
+    if (reduceMotion) return;
+    const settle = setTimeout(() => {
+      if (Math.abs(el.getBoundingClientRect().top - marginTop()) > 4) {
+        window.scrollTo({ top: targetY(), behavior: "auto" });
+      }
+    }, 800);
+    return () => clearTimeout(settle);
+  }, [current, scrollBlock]);
 
   // Measure the rendered card so placement uses its real height.
   useLayoutEffect(() => {

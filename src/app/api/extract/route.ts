@@ -19,6 +19,18 @@ const ALLOWED_EXTENSIONS = [".pdf", ".docx", ".txt"];
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 const MIN_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
 
+// docType / sourceDocument are short labels interpolated into the extraction
+// LLM prompt. Strip newlines/control chars, restrict the charset, and cap the
+// length so they can't smuggle multi-line instructions into the prompt.
+function sanitizeLabel(raw: string, fallback: string): string {
+  const cleaned = raw
+    .replace(/[\r\n\t]+/g, " ")
+    .replace(/[^\w \-./&()]/g, "")
+    .trim()
+    .slice(0, 60);
+  return cleaned.length > 0 ? cleaned : fallback;
+}
+
 export async function POST(request: NextRequest) {
   if (IS_SERVERLESS) {
     return NextResponse.json(
@@ -38,8 +50,11 @@ export async function POST(request: NextRequest) {
   }
 
   const file = formData.get("file") as File | null;
-  const docType = (formData.get("docType") as string) || "policy";
-  const sourceDocument = (formData.get("sourceDocument") as string) || "SECTORAL";
+  const docType = sanitizeLabel((formData.get("docType") as string) || "", "policy");
+  const sourceDocument = sanitizeLabel(
+    (formData.get("sourceDocument") as string) || "",
+    "SECTORAL",
+  );
   const localeRaw = (formData.get("locale") as string) || "en";
   const SUPPORTED_OUTPUT_LANGS = new Set(["en", "es", "mn", "fr"]);
   const outputLanguage = SUPPORTED_OUTPUT_LANGS.has(localeRaw) ? localeRaw : "en";

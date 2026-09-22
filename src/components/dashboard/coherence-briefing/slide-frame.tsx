@@ -20,6 +20,7 @@ export function SlideFrame({
   id,
   headline,
   body,
+  reading,
   controls,
   evidence,
   disclosure,
@@ -28,6 +29,10 @@ export function SlideFrame({
   id: string;
   headline: ReactNode;
   body?: ReactNode;
+  /** How to READ the evidence, as opposed to what it says. One quiet line under
+   *  the finding, always visible (see src/components/ui/glossary). Optional:
+   *  omit and the slide renders exactly as it did before reading lines existed. */
+  reading?: ReactNode;
   controls?: ReactNode;
   evidence?: ReactNode;
   disclosure?: ReactNode;
@@ -37,26 +42,40 @@ export function SlideFrame({
   return (
     <section
       id={id}
-      className="scroll-mt-24 pt-2"
+      // Anchor jumps land just below the sticky app header + jump nav. The
+      // nav publishes its live height as --jump-nav-clearance (see JumpNav);
+      // the fallback covers the pre-hydration first paint.
+      className="scroll-mt-[calc(var(--jump-nav-clearance,10.25rem)+0.75rem)] pt-2"
       aria-labelledby={`${id}-heading`}
     >
-      <h2
-        id={`${id}-heading`}
-        className="font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium mb-4"
+      {/* The headline block doubles as the slide's guided-read anchor: a
+          compact spotlight target (never the whole 80vh section). The scroll
+          margin keeps it clear of the sticky app header + jump nav when the
+          tour scrolls the page; it tracks the nav's live height like the
+          section anchor above. */}
+      <div
+        data-tour={`slide-${id}`}
+        className="scroll-mt-[calc(var(--jump-nav-clearance,10.25rem)+0.75rem)]"
       >
-        {headline}
-        {/* Guided-tour trigger, inline in the heading like the InfoBox
-            convention elsewhere (the eyebrow row it used to live in was
-            removed in the density distill). */}
-        {tourButton && (
-          <span className="inline-flex align-middle ml-2.5">{tourButton}</span>
+        <h2
+          id={`${id}-heading`}
+          className="font-display text-headline sm:text-headline-lg text-[var(--undp-black)] font-medium mb-4"
+        >
+          {headline}
+          {/* Guided-tour trigger, inline in the heading like the InfoBox
+              convention elsewhere (the eyebrow row it used to live in was
+              removed in the density distill). */}
+          {tourButton && (
+            <span className="inline-flex align-middle ml-2.5">{tourButton}</span>
+          )}
+        </h2>
+        {body && (
+          <p className="text-body text-[var(--undp-black)] max-w-prose mb-4">
+            {body}
+          </p>
         )}
-      </h2>
-      {body && (
-        <p className="text-body text-[var(--undp-black)] max-w-prose mb-4">
-          {body}
-        </p>
-      )}
+      </div>
+      {reading}
       {controls && <div className="mb-6">{controls}</div>}
       {evidence && <div className="mb-6">{evidence}</div>}
       {disclosure && (

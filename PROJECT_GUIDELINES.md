@@ -123,10 +123,16 @@ The tool will progressively incorporate:
 These items must be addressed before production deployment:
 
 ### 5.1 Security & Authentication
-- User sessions and authentication (likely Azure AD / UNDP SSO)
-- API rate limiting per user (currently only per-analysis target cap)
-- Input validation and sanitization of user-provided targets
-- CORS and CSRF protection for the API endpoints
+Shipped in August 2026 after the Strix security review (user and operator guide: [`docs/ACCESS_AND_LIMITS.md`](docs/ACCESS_AND_LIMITS.md)):
+- A single shared access token (`APP_ACCESS_TOKEN`) gates every page and API route; browsers exchange it for a 7-day HttpOnly cookie at `/login`, scripts send it as a Bearer header. Production fails closed when the token is unset.
+- Security response headers (CSP, no framing, HSTS) and a same-origin check on state-changing API calls.
+- Size caps on uploads (50 MB documents, 15 MB spreadsheets) and chat bodies; at most 3 concurrent analyses and 5 starts per minute per server process; unguessable full-UUID analysis IDs.
+- Extraction and alignment prompts instruct the model to treat document and target text as untrusted data (prompt v2.3).
+
+Still open:
+- Per-person accounts via Azure AD / UNDP SSO, and a sign-out button in the UI (the current cookie expires after 7 days or when the token is rotated).
+- Per-user rate limits and usage quotas; the current caps are per server process, not per user.
+- An audit trail of who started which analysis.
 
 ### 5.2 Data Persistence & State
 - Currently, analysis results are stored on-disk in `python/analyses/{id}/`. There is no database, no user accounts, and no way to browse past analyses from the UI.
@@ -141,6 +147,7 @@ These items must be addressed before production deployment:
 
 ### 5.4 Deployment
 - Target deployment: Docker image on Azure (App Service or Container Instances).
+- `APP_ACCESS_TOKEN` must be set as an App Service application setting before the first deploy; the app refuses all requests in production without it. Point the platform health check at `/api/health`, the only unauthenticated route besides `/api/auth`.
 - The Python pipeline needs `uv` or a pip-based virtualenv inside the container.
 - Environment variables for LLM provider switching (OpenRouter for dev, Azure OpenAI for prod).
 - National data sovereignty: ensure no government data is sent to external APIs without consent.
