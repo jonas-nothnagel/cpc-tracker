@@ -33,8 +33,11 @@ MAX_PRECOMPUTE_DOCS = 4
 
 # Per-document single-hidden states are only precomputed for corpora up to
 # this many documents; larger corpora fall back to the lazy regen route for
-# anything beyond the default-hidden states.
-MAX_SINGLE_DOC_STATES = 10
+# anything beyond the default-hidden states. 12, not 10, because Sri Lanka's
+# next corpus has twelve documents: above the cap, hiding any one of them falls
+# back to full-corpus storylines and a live LLM call on the server. Each state
+# costs one corpus call plus the sector calls whose prompts changed.
+MAX_SINGLE_DOC_STATES = 12
 
 
 def canonical_hidden_key(hidden: list[str] | set[str]) -> str:
