@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { shareOf } from "@/lib/brief/compute";
-import type { BriefData, ThemeItem } from "@/lib/brief/data";
+import { MAX_THEMES, OTHER_THEME, themeDots, type BriefData, type ThemeItem } from "@/lib/brief/data";
 import type { BriefDocument } from "@/lib/brief/source";
+import { DOT_COLORS, DotCanvas, MAX_DOTS } from "../dot-field";
 import { ExamplePairView } from "../example-pair";
 import { useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
-/** Most themes listed; the pipeline writes three of each kind. */
-const MAX_THEMES = 3;
+/** The pairs outside every theme, in a lighter ink of the same tone. */
+const OTHER_INK = { reinforce: "#a8cbb2", apart: "#f1b1a4" } as const;
 /** Most contested resources named for one theme. */
 const MAX_RESOURCES = 3;
 /** Documents named for one theme; the rest are counted. */
@@ -39,12 +40,23 @@ function docsTakingPart(row: ThemeItem, docs: BriefDocument[]): BriefDocument[] 
 export function ThemeSectionView({
   data,
   tone,
+  variant = "screen",
+  picked: pickedProp,
+  replay = 0,
+  onPick,
   onOpenPair,
   onOpenTheme,
 }: {
   data: BriefData;
   tone: "reinforce" | "apart";
   countryId?: string;
+  variant?: "screen" | "print";
+  /** The selected theme when the brief holds the selection (screen and
+   *  print show the same example); otherwise the section keeps its own. */
+  picked?: string | null;
+  /** Bumped to replay the dots' build, e.g. when arriving from the overall picture. */
+  replay?: number;
+  onPick?: (name: string) => void;
   onOpenPair?: (aId: string, bId: string) => void;
   onOpenTheme?: (type: "reinforcement" | "friction", name: string) => void;
 }) {
@@ -62,7 +74,10 @@ export function ThemeSectionView({
     const rest = names.length - shown.length;
     return joinList(rest > 0 ? [...shown, t("themes.moreDocs", { count: rest })] : shown, t("and"));
   };
-  const [picked, setPicked] = useState<string | null>(null);
+  const [ownPick, setOwnPick] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const picked = onPick ? (pickedProp ?? null) : ownPick;
+  const pick = (name: string) => (onPick ? onPick(name) : setOwnPick(name));
   const key = tone === "reinforce" ? "together" : "apart";
   const type = tone === "reinforce" ? "reinforcement" : "friction";
   const section = data[key];
@@ -85,6 +100,43 @@ export function ThemeSectionView({
 
   return (
     <SectionFrame id={key} headline={headline}>
+      {variant === "screen" && rows.length > 0 && (
+        <DotCanvas
+          className="brief-theme-dots"
+          labelled
+          replay={replay}
+          hovered={hovered}
+          onHover={setHovered}
+          onSelect={pick}
+          unit={Math.max(1, Math.ceil(data.counts[tone] / MAX_DOTS))}
+          groups={themeDots(data, tone).map((g, i) =>
+            g.key === OTHER_THEME
+              ? {
+                  key: g.key,
+                  count: g.count,
+                  color: OTHER_INK[tone],
+                  texture: tone === "apart",
+                  label: t("themes.other"),
+                  tip: t("themes.otherTip", { count: g.count }),
+                }
+              : {
+                  key: g.key,
+                  count: g.count,
+                  color: DOT_COLORS[tone],
+                  texture: tone === "apart",
+                  label: String(i + 1),
+                  selectable: true,
+                  tip: (
+                    <>
+                      <strong>{g.key}</strong>
+                      <br />
+                      {t(`themes.count.${tone}`, { count: g.count })}
+                    </>
+                  ),
+                },
+          )}
+        />
+      )}
       {rows.length > 0 ? (
         <>
           <p className="brief-themes-title">
@@ -109,12 +161,15 @@ export function ThemeSectionView({
                   className="brief-theme"
                   data-testid="brief-theme-row"
                   data-selected={on ? "true" : undefined}
+                  data-hovered={hovered === row.storyline.name ? "true" : undefined}
+                  onPointerEnter={() => setHovered(row.storyline.name)}
+                  onPointerLeave={() => setHovered(null)}
                 >
                   <button
                     type="button"
                     className="brief-theme-button"
                     aria-pressed={on}
-                    onClick={() => setPicked(row.storyline.name)}
+                    onClick={() => pick(row.storyline.name)}
                   >
                     <span className="brief-theme-n" aria-hidden="true">
                       {i + 1}
@@ -148,6 +203,7 @@ export function ThemeSectionView({
           example={example}
           tone={tone}
           docs={data.scope.docs}
+          fit={variant === "print"}
           themeName={selected?.storyline.name}
           onOpenPair={onOpenPair}
           onOpenTheme={selected ? () => onOpenTheme?.(type, selected.storyline.name) : undefined}

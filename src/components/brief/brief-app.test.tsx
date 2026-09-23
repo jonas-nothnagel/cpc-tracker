@@ -15,6 +15,7 @@ globalThis.ResizeObserver ??= class {
 } as never;
 import { defaultSelection } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
+import { briefFixture } from "@/lib/brief/test-fixture";
 
 const IDS = ["A1", "A2", "A3", "B1", "B2", "C1", "C2"];
 const I = Object.fromEntries(IDS.map((id, i) => [id, i]));
@@ -122,15 +123,56 @@ describe("BriefApp", () => {
     fireEvent.click(screen.getByRole("button", { name: "Move Areas of alignment down" }));
     const first = screen.getAllByTestId("brief-sheet")[0];
     const ids = [...first.querySelectorAll("[data-section]")].map((n) => n.getAttribute("data-section"));
-    expect(ids).toEqual(["overall", "apart"]);
+    expect(ids).toEqual(["overall", "aligned"]);
   });
 
-  it("drops a page when the last section is left out", () => {
+  it("drops a page when sections are left out", () => {
     renderApp();
     const sections = screen.getByRole("group", { name: "Sections" });
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Most aligned targets/ }));
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
     expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
     expect(window.location.search).toContain("sections=");
+  });
+});
+
+describe("BriefApp screen and print", () => {
+  const sheets = () => document.querySelector(".brief-sheets") as HTMLElement;
+
+  it("shows the brief as one flowing page and keeps the A4 pages for printing", () => {
+    renderApp();
+    expect(screen.getByTestId("brief-flow")).toBeTruthy();
+    expect(sheets().getAttribute("aria-hidden")).toBe("true");
+  });
+
+  it("opens the A4 pages as a print preview from the print button", () => {
+    const print = vi.spyOn(window, "print").mockImplementation(() => {});
+    renderApp();
+    fireEvent.click(screen.getByRole("button", { name: "Print or save as PDF" }));
+    expect(screen.queryByTestId("brief-flow")).toBeNull();
+    expect(sheets().getAttribute("aria-hidden")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Print" }));
+    expect(print).toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Back to the brief" }));
+    expect(screen.getByTestId("brief-flow")).toBeTruthy();
+    print.mockRestore();
+  });
+
+  it("takes the reader from the aligned group to the section behind it", () => {
+    const scroll = vi.mocked(Element.prototype.scrollIntoView);
+    scroll.mockClear();
+    renderApp(briefFixture({ themes: true }));
+    fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
+    const targets = scroll.mock.contexts.map((el) => (el as Element).id);
+    expect(targets).toContain("brief-flow-together");
+  });
+
+  it("prints the theme the reader selected on screen", () => {
+    renderApp(briefFixture({ themes: true }));
+    const flow = screen.getByTestId("brief-flow");
+    const apart = flow.querySelector('[data-section="apart"]') as HTMLElement;
+    fireEvent.click(within(within(apart).getAllByTestId("brief-theme-row")[1]).getByRole("button"));
+    expect(within(sheets()).getAllByText("Verbatim text of commitment A6.").length).toBeGreaterThan(0);
   });
 });
 
@@ -168,12 +210,16 @@ describe("BriefApp accessibility and provenance", () => {
       commitments: SOURCE.commitments.map((c, i) => (i === 0 ? { ...c, translated: "translation" as const } : c)),
     };
     renderApp(translated);
-    expect(screen.getByText("Target texts on this page are translations of the original documents.")).toBeTruthy();
+    expect(
+      screen.getAllByText("Target texts on this page are translations of the original documents.").length,
+    ).toBeGreaterThan(0);
   });
 
   it("keeps an open drill-down off the printed page", () => {
     renderApp();
-    fireEvent.click(screen.getAllByTestId("brief-pair-row")[0].querySelector("button") as HTMLElement);
+    const flow = screen.getByTestId("brief-flow");
+    fireEvent.click(within(within(flow).getAllByTestId("brief-doc-row")[0]).getByRole("button"));
+    fireEvent.click(within(within(flow).getAllByTestId("brief-pair-row")[0]).getByRole("button"));
     expect(screen.getByRole("dialog").closest("[data-screen-only]")).not.toBeNull();
   });
 });

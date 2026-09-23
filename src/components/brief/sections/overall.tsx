@@ -6,7 +6,16 @@ import { DotField } from "../dot-field";
 import { useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
-export function OverallSection({ data }: { data: BriefData }) {
+export function OverallSection({
+  data,
+  variant = "screen",
+  onFocusTone,
+}: {
+  data: BriefData;
+  variant?: "screen" | "print";
+  /** Go to the section behind the aligned or potential-misalignment group. */
+  onFocusTone?: (tone: "reinforce" | "apart") => void;
+}) {
   const t = useTranslations("brief.overall");
   const { pct } = useNumbers();
   const c = data.counts;
@@ -21,8 +30,8 @@ export function OverallSection({ data }: { data: BriefData }) {
         apart: share(c.apart),
       })}
     >
-      <div data-tour="brief-overall">
-        <DotField counts={data.counts} />
+      <div className="brief-overall" data-tour="brief-overall">
+        <DotField counts={data.counts} still={variant === "print"} onFocusTone={onFocusTone} />
       </div>
     </SectionFrame>
   );

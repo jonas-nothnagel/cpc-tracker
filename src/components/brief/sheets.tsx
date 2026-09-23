@@ -8,27 +8,38 @@ import { SECTION_UNITS, type BriefPage } from "@/lib/brief/sections";
 import type { SectionId } from "@/lib/brief/selection";
 
 /**
- * The brief as A4 sheets: what the screen shows is what prints. Each sheet
+ * The brief as A4 sheets, for printing and the print preview. Each sheet
  * carries a running head and a footer; page 1 opens with the title block.
- * Sections sit in fixed-height slots (quarter, half or full page).
+ * Sections sit in fixed-height slots (quarter, half or full page). While
+ * the reader is on the flowing page the sheets stay laid out off screen,
+ * so charts and text fits are measured at page size, and inert.
  */
 export function Sheets({
   pages,
   countryName,
   preparedOn,
+  hidden = false,
   titleBlock,
   renderSection,
 }: {
   pages: BriefPage[];
   countryName: string;
   preparedOn: string;
+  /** Off screen and out of the accessibility tree (still prints). */
+  hidden?: boolean;
   titleBlock: ReactNode;
   renderSection: (id: SectionId) => ReactNode;
 }) {
   const t = useTranslations("brief.sheet");
   const date = briefDate(preparedOn, useLocale());
   return (
-    <div className="brief-sheets" id="brief-sheets">
+    <div
+      className="brief-sheets"
+      id="brief-sheets"
+      data-offscreen={hidden ? "true" : undefined}
+      aria-hidden={hidden ? true : undefined}
+      inert={hidden}
+    >
       {pages.map((page, i) => {
         const pageLabel = t("page", { page: i + 1, total: pages.length });
         return (

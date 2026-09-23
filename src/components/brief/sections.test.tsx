@@ -12,6 +12,7 @@ import { ThemeSectionView } from "./sections/themes";
 import { CommitmentsSection } from "./sections/commitments";
 import { DocumentsSection } from "./sections/documents";
 import { AreasSection } from "./sections/areas";
+import { AlignedSection } from "./sections/aligned";
 
 // jsdom has no canvas; the dot field draws nothing but its labels still render.
 HTMLCanvasElement.prototype.getContext = vi.fn(() => null) as never;
@@ -43,6 +44,28 @@ describe("brief sections", () => {
     expect(screen.getByText("19%")).toBeTruthy();
     expect(screen.getByText("14%")).toBeTruthy();
     expect(screen.queryByText(/Each dot/)).toBeNull();
+  });
+
+  it("opens every section with its finding, not a label above it", () => {
+    wrap(<CommitmentsSection data={DATA} />);
+    expect(screen.queryByText("Targets to review first")).toBeNull();
+    cleanup();
+    wrap(<OverallSection data={DATA} />);
+    expect(screen.queryByText("Overall coherence")).toBeNull();
+  });
+
+  it("overall: on screen, the aligned and potential misalignment groups lead to their sections", () => {
+    const onFocusTone = vi.fn();
+    wrap(<OverallSection data={DATA} onFocusTone={onFocusTone} />);
+    fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
+    fireEvent.click(screen.getByRole("button", { name: "14% potential misalignment" }));
+    expect(onFocusTone.mock.calls).toEqual([["reinforce"], ["apart"]]);
+    expect(screen.queryByRole("button", { name: /partially aligned/ })).toBeNull();
+  });
+
+  it("overall: in print, the groups are plain labels", () => {
+    wrap(<OverallSection data={DATA} variant="print" />);
+    expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("overall: leads with partial alignment when partial links are the larger group", () => {
@@ -171,15 +194,45 @@ describe("brief sections", () => {
     expect(within(rows[0]).getByText(/mostly with Document C/)).toBeTruthy();
   });
 
-  it("documents: orders pairs of documents by their share of potential misalignment", () => {
+  it("aligned: leads with the target aligned with the largest share of the targets it was compared with", () => {
+    wrap(<AlignedSection data={DATA} />);
+    expect(
+      screen.getByRole("heading", {
+        name: "1 Commitment A1 Verbatim text of commitment A1. (Document A) is aligned with 100% of the targets it was compared with.",
+      }),
+    ).toBeTruthy();
+    const rows = screen.getAllByTestId("brief-aligned-row");
+    expect(rows).toHaveLength(8);
+    expect(within(rows[0]).getByText(/mostly with Document B/)).toBeTruthy();
+    expect(within(rows[4]).getByText("83%")).toBeTruthy();
+  });
+
+  it("documents: one row per document, most closely aligned with the others first", () => {
     wrap(<DocumentsSection data={DATA} />);
     expect(
       screen.getByRole("heading", {
-        name: "Potential misalignment ranges from 0% to 25% across pairs of documents.",
+        name: "Alignment with the other documents ranges from 58% for Document B to 75% for Document A.",
       }),
     ).toBeTruthy();
-    const rows = screen.getAllByTestId("brief-pair-row").map((r) => r.getAttribute("data-pair"));
-    expect(rows).toEqual(["B~C", "A~B", "A~C"]);
+    const rows = screen.getAllByTestId("brief-doc-row").map((r) => r.getAttribute("data-doc"));
+    expect(rows).toEqual(["A", "C", "B"]);
+  });
+
+  it("documents: on screen, a document opens to its pairs and a pair to its panel", () => {
+    const onOpenDocPair = vi.fn();
+    wrap(<DocumentsSection data={DATA} onOpenDocPair={onOpenDocPair} />);
+    const first = screen.getAllByTestId("brief-doc-row")[0];
+    fireEvent.click(within(first).getByRole("button", { expanded: false }));
+    const pairs = within(first).getAllByTestId("brief-pair-row");
+    expect(pairs.map((p) => p.getAttribute("data-pair"))).toEqual(["A~C", "A~B"]);
+    fireEvent.click(within(pairs[0]).getByRole("button"));
+    expect(onOpenDocPair).toHaveBeenCalledWith("A", "C");
+  });
+
+  it("documents: in print, the document rows stay closed", () => {
+    wrap(<DocumentsSection data={DATA} variant="print" />);
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+    expect(screen.getAllByTestId("brief-doc-row")).toHaveLength(3);
   });
 
   it("documents: names the measures above the bars instead of a legend", () => {

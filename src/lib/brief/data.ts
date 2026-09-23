@@ -1,6 +1,8 @@
 import {
+  alignedTargets,
   areaRows,
   commitmentsToReview,
+  docStats,
   concentrationOf,
   docPairStats,
   leadingPair,
@@ -9,8 +11,10 @@ import {
   themeRows,
   overallLead,
   toneCounts,
+  type AlignedRow,
   type AreaRow,
   type CommitmentRow,
+  type DocStat,
   type Concentration,
   type DocPairStat,
   type ExamplePair,
@@ -42,11 +46,14 @@ export interface BriefData {
   counts: ToneCounts;
   lead: OverallLead;
   pairs: DocPairStat[];
+  /** Each document with all its target pairs, most closely aligned first. */
+  docs: DocStat[];
   leading: { reinforce: DocPairStat | null; apart: DocPairStat | null };
   together: ThemeSection;
   apart: ThemeSection;
   concentration: Concentration;
   commitments: CommitmentRow[];
+  aligned: AlignedRow[];
   areas: { rows: AreaRow[]; average: number; max: number } | null;
 }
 
@@ -65,6 +72,27 @@ function themeSection(
   return { rows, exact, example };
 }
 
+/** Key of the group holding a tone's target pairs outside every theme. */
+export const OTHER_THEME = "__other";
+
+/** Most themes a section shows; the pipeline writes three of each kind. */
+export const MAX_THEMES = 3;
+
+/**
+ * A tone's target pairs as dot groups: one per theme shown (each pair counts
+ * once, see `themeRows`), then the pairs outside those themes. The groups
+ * add up to the tone's total in the overall picture.
+ */
+export function themeDots(
+  data: BriefData,
+  tone: "reinforce" | "apart",
+): { key: string; count: number }[] {
+  const rows = (tone === "reinforce" ? data.together : data.apart).rows.slice(0, MAX_THEMES);
+  const groups = rows.map((r) => ({ key: r.storyline.name, count: r.count }));
+  const other = data.counts[tone] - groups.reduce((s, g) => s + g.count, 0);
+  return other > 0 ? [...groups, { key: OTHER_THEME, count: other }] : groups;
+}
+
 export function buildBriefData(source: BriefSource, scope: Scope, lens: LensId | null): BriefData {
   const pairs = docPairStats(scope);
   const leading = {
@@ -78,11 +106,13 @@ export function buildBriefData(source: BriefSource, scope: Scope, lens: LensId |
     counts,
     lead: overallLead(counts),
     pairs,
+    docs: docStats(scope),
     leading,
     together: themeSection(source, scope, "reinforcement", leading.reinforce),
     apart: themeSection(source, scope, "friction", leading.apart),
     concentration: concentrationOf(scope),
     commitments: commitmentsToReview(scope, 8),
+    aligned: alignedTargets(scope, 8),
     areas: lens ? areaRows(source, scope, lens) : null,
   };
 }

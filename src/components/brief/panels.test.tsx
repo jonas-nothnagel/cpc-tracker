@@ -9,7 +9,7 @@ import { BriefPanels, type PanelState } from "./panels";
 
 vi.mock("@/lib/analytics/client", () => ({ track: vi.fn() }));
 
-const SOURCE = briefFixture();
+const SOURCE = briefFixture({ notes: true });
 const DATA = buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "B", "C"]), "globe");
 
 function renderPanels(stack: PanelState[], onPush = vi.fn()) {
@@ -39,6 +39,8 @@ describe("BriefPanels", () => {
   it("lists a pair of documents' potential misalignments through the busiest commitment first", () => {
     const { onPush } = renderPanels([{ kind: "docPair", a: "B", b: "C" }]);
     expect(screen.getByText("9 potential misalignments. Most frequent targets first.")).toBeTruthy();
+    expect(screen.getAllByTestId("brief-strand-row")).toHaveLength(5);
+    fireEvent.click(screen.getByRole("button", { name: "Show all 9" }));
     const rows = screen.getAllByTestId("brief-strand-row");
     expect(rows).toHaveLength(9);
     expect(rows[0].textContent).toContain("6 Commitment B6");
@@ -47,6 +49,26 @@ describe("BriefPanels", () => {
     expect(rows[0].textContent).toContain("Verbatim text of commitment B6");
     fireEvent.click(within(rows[0]).getByRole("button"));
     expect(onPush).toHaveBeenCalledWith({ kind: "pair", a: "B6", b: "C4" });
+  });
+
+  it("reads a pair of documents with the AI's first sentences, the rest on request", () => {
+    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
+    expect(screen.getByText("A and B on land")).toBeTruthy();
+    expect(screen.getByText("Both expand restoration.")).toBeTruthy();
+    expect(screen.queryByText(/They also share monitoring/)).toBeNull();
+    fireEvent.click(screen.getAllByRole("button", { name: "More" })[0]);
+    expect(screen.getByText(/They also share monitoring/)).toBeTruthy();
+    expect(screen.getByText("Cropland expansion may compete with protected areas.")).toBeTruthy();
+    expect(screen.getByText("Joint land-use screening could help.")).toBeTruthy();
+  });
+
+  it("lists a pair of documents' strongest aligned target pairs", () => {
+    const { onPush } = renderPanels([{ kind: "docPair", a: "A", b: "C" }]);
+    expect(screen.getByText("30 aligned target pairs, strongest first")).toBeTruthy();
+    const rows = screen.getAllByTestId("brief-aligned-pair-row");
+    expect(rows).toHaveLength(5);
+    fireEvent.click(within(rows[1]).getByRole("button"));
+    expect(onPush).toHaveBeenCalledWith({ kind: "pair", a: "A1", b: "C3" });
   });
 
   it("groups a commitment's partners by how they read", () => {

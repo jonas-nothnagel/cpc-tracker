@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildBriefData } from "./data";
+import { buildBriefData, themeDots, OTHER_THEME } from "./data";
 import { pairExample, scopeOf } from "./compute";
 import { briefFixture } from "./test-fixture";
 
@@ -59,6 +59,26 @@ describe("buildBriefData with recurring themes", () => {
     const narrow = buildBriefData(source, scopeOf(source, ["A", "C"]), null);
     expect(narrow.apart.rows).toEqual([]);
     expect(narrow.apart.example).toBeNull();
+  });
+});
+
+describe("themeDots", () => {
+  const source = briefFixture({ themes: true });
+  const data = buildBriefData(source, scopeOf(source, ["A", "B", "C"]), null);
+
+  it("splits a tone's target pairs into its themes and the rest", () => {
+    // 54 of the 72 aligned pairs sit in the restoration theme's documents.
+    expect(themeDots(data, "reinforce")).toEqual([
+      { key: "Shared land restoration", count: 54 },
+      { key: OTHER_THEME, count: 18 },
+    ]);
+  });
+
+  it("leaves out the rest when every pair belongs to a theme", () => {
+    expect(themeDots(data, "apart")).toEqual([
+      { key: "Water allocation pressure", count: 9 },
+      { key: "Goal overlap", count: 6 },
+    ]);
   });
 });
 

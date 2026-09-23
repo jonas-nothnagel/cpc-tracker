@@ -205,8 +205,9 @@ export function leadingPair(
 
 export interface ThemeRow {
   storyline: CorpusStoryline;
-  /** Comparisons of the theme's tone inside its pairs of documents,
-   *  counted live for the selection. */
+  /** Target pairs of the theme's tone inside its pairs of documents,
+   *  counted live for the selection; a pair of documents cited by two
+   *  themes counts for the higher-ranked one only. */
   count: number;
   /** Document id -> share of the theme's comparisons it takes part in
    *  (a comparison counts for both its documents). */
@@ -229,14 +230,32 @@ export function themeRows(
   if (!themes) return { rows: [], exact: true };
   const storylines = themes.storylines.filter((s) => s.type === type);
   const stats = computeStorylineLiveStats(storylines, scope.alignment, scope.targets);
-  const rows: ThemeRow[] = [];
-  for (const s of rankStorylines(storylines, type, (x) => stats.get(x)?.liveCount ?? 0)) {
-    const st = stats.get(s);
-    if (!st || st.liveCount === 0) continue;
-    const docShares: Record<string, number> = {};
-    for (const [doc, n] of st.docCounts) docShares[doc] = n / st.liveCount;
-    rows.push({ storyline: s, count: st.liveCount, docShares });
+  const ranked = rankStorylines(storylines, type, (x) => stats.get(x)?.liveCount ?? 0);
+  // Each pair of documents belongs to the highest-ranked theme that cites it,
+  // so every target pair is counted once and the themes' dots add up.
+  const owner = new Map<string, number>();
+  ranked.forEach((s, i) => {
+    for (const key of getStorylineDocPairKeys(s)) if (!owner.has(key)) owner.set(key, i);
+  });
+  const tone = type === "friction" ? "apart" : "reinforce";
+  const counts = ranked.map(() => ({ count: 0, docCounts: new Map<string, number>() }));
+  for (const c of scope.comparisons) {
+    if (toneOf(c.level) !== tone) continue;
+    const i = owner.get(getDocPairKey(c.a.doc, c.b.doc));
+    if (i === undefined) continue;
+    counts[i].count += 1;
+    for (const doc of [c.a.doc, c.b.doc]) {
+      counts[i].docCounts.set(doc, (counts[i].docCounts.get(doc) ?? 0) + 1);
+    }
   }
+  const rows: ThemeRow[] = [];
+  ranked.forEach((s, i) => {
+    const { count, docCounts } = counts[i];
+    if (count === 0) return;
+    const docShares: Record<string, number> = {};
+    for (const [doc, n] of docCounts) docShares[doc] = n / count;
+    rows.push({ storyline: s, count, docShares });
+  });
   return { rows, exact: isExact };
 }
 
@@ -307,11 +326,30 @@ export interface CommitmentRow {
   partnerDocs: { doc: string; count: number }[];
 }
 
+/**
+ * Partner documents, closest first: by the share of the partner document's
+ * targets linked (a raw count would favour the largest document), then the
+ * count, then document order.
+ */
+function rankPartnerDocs(scope: Scope, partners: Map<string, number>): { doc: string; count: number }[] {
+  const docOrder = new Map(scope.docs.map((d, i) => [d.id, i]));
+  const size = new Map<string, number>();
+  for (const c of scope.commitments) size.set(c.doc, (size.get(c.doc) ?? 0) + 1);
+  const share = (doc: string, count: number) => count / Math.max(1, size.get(doc) ?? 1);
+  return [...partners.entries()]
+    .map(([doc, count]) => ({ doc, count }))
+    .sort(
+      (x, y) =>
+        share(y.doc, y.count) - share(x.doc, x.count) ||
+        y.count - x.count ||
+        (docOrder.get(x.doc) ?? 0) - (docOrder.get(y.doc) ?? 0),
+    );
+}
+
 /** The commitments in the most potential misalignments, with the documents
  *  those misalignments run to. */
 export function commitmentsToReview(scope: Scope, limit = 8): CommitmentRow[] {
   const byId = new Map(scope.commitments.map((c) => [c.id, c]));
-  const docOrder = new Map(scope.docs.map((d, i) => [d.id, i]));
   return rankTargetsByFriction(scope.alignment, scope.targets, limit).map(
     ({ target, flaggedPairCount }) => {
       const partners = new Map<string, number>();
@@ -320,14 +358,70 @@ export function commitmentsToReview(scope: Scope, limit = 8): CommitmentRow[] {
         const other = c.a.id === target.id ? c.b : c.b.id === target.id ? c.a : null;
         if (other) partners.set(other.doc, (partners.get(other.doc) ?? 0) + 1);
       }
-      const partnerDocs = [...partners.entries()]
-        .map(([doc, count]) => ({ doc, count }))
-        .sort(
-          (x, y) => y.count - x.count || (docOrder.get(x.doc) ?? 0) - (docOrder.get(y.doc) ?? 0),
-        );
-      return { commitment: byId.get(target.id)!, apart: flaggedPairCount, partnerDocs };
+      return {
+        commitment: byId.get(target.id)!,
+        apart: flaggedPairCount,
+        partnerDocs: rankPartnerDocs(scope, partners),
+      };
     },
   );
+}
+
+export interface AlignedRow {
+  commitment: BriefCommitment;
+  /** Targets in other documents it is aligned with. */
+  aligned: number;
+  /** Targets in other documents it was compared with. */
+  compared: number;
+  /** Documents of its aligned partners, most first. */
+  partnerDocs: { doc: string; count: number }[];
+}
+
+/**
+ * The targets aligned with the largest share of the targets they were
+ * compared with (a share, not a raw count, so a target in a large document
+ * is not favoured for being compared more often); the count breaks ties,
+ * then document order.
+ */
+export function alignedTargets(scope: Scope, limit = 8): AlignedRow[] {
+  const rows = new Map(
+    scope.commitments.map((c) => [
+      c.id,
+      { commitment: c, aligned: 0, compared: 0, partners: new Map<string, number>() },
+    ]),
+  );
+  for (const c of scope.comparisons) {
+    const aligned = toneOf(c.level) === "reinforce";
+    for (const [self, other] of [
+      [c.a, c.b],
+      [c.b, c.a],
+    ]) {
+      const row = rows.get(self.id);
+      if (!row) continue;
+      row.compared += 1;
+      if (!aligned) continue;
+      row.aligned += 1;
+      row.partners.set(other.doc, (row.partners.get(other.doc) ?? 0) + 1);
+    }
+  }
+  const order = new Map(scope.commitments.map((c, i) => [c.id, i]));
+  const share = (r: { aligned: number; compared: number }) =>
+    r.compared > 0 ? r.aligned / r.compared : 0;
+  return [...rows.values()]
+    .filter((r) => r.aligned > 0)
+    .sort(
+      (x, y) =>
+        share(y) - share(x) ||
+        y.aligned - x.aligned ||
+        (order.get(x.commitment.id) ?? 0) - (order.get(y.commitment.id) ?? 0),
+    )
+    .slice(0, limit)
+    .map(({ commitment, aligned, compared, partners }) => ({
+      commitment,
+      aligned,
+      compared,
+      partnerDocs: rankPartnerDocs(scope, partners),
+    }));
 }
 
 export interface Concentration {
@@ -493,6 +587,61 @@ export function pairExample(
   return best.mechanism
     ? { a: best.a, b: best.b, level: best.level, mechanism: best.mechanism }
     : { a: best.a, b: best.b, level: best.level };
+}
+
+// ─── Documents ──────────────────────────────────────────────────────
+
+/**
+ * The aligned target pairs between two documents, strongest first: a strong
+ * link before a moderate one, then the targets that recur most among them,
+ * then the pair key, so the order never depends on data order.
+ */
+export function strongestAligned(scope: Scope, docA: string, docB: string): ScopedComparison[] {
+  const between = scope.comparisons.filter(
+    (c) =>
+      toneOf(c.level) === "reinforce" &&
+      ((c.a.doc === docA && c.b.doc === docB) || (c.a.doc === docB && c.b.doc === docA)),
+  );
+  const involvement = new Map<string, number>();
+  for (const c of between) {
+    for (const id of [c.a.id, c.b.id]) involvement.set(id, (involvement.get(id) ?? 0) + 1);
+  }
+  const recurring = (c: ScopedComparison) =>
+    (involvement.get(c.a.id) ?? 0) + (involvement.get(c.b.id) ?? 0);
+  return between.sort((x, y) => {
+    const d =
+      (x.level === "high" ? 0 : 1) - (y.level === "high" ? 0 : 1) || recurring(y) - recurring(x);
+    if (d !== 0) return d;
+    const kx = commitmentPairKey(x.a.id, x.b.id);
+    const ky = commitmentPairKey(y.a.id, y.b.id);
+    return kx < ky ? -1 : kx > ky ? 1 : 0;
+  });
+}
+
+export interface DocStat {
+  doc: BriefDocument;
+  /** Every target pair the document takes part in. */
+  counts: ToneCounts;
+}
+
+/** Each document with all its target pairs, most closely aligned first
+ *  (share of aligned pairs; document order breaks ties). */
+export function docStats(scope: Scope): DocStat[] {
+  const byDoc = new Map(scope.docs.map((d) => [d.id, emptyCounts()]));
+  for (const c of scope.comparisons) {
+    const tone = toneOf(c.level);
+    for (const doc of [c.a.doc, c.b.doc]) {
+      const counts = byDoc.get(doc);
+      if (!counts) continue;
+      counts[tone] += 1;
+      counts.total += 1;
+    }
+  }
+  const aligned = (c: ToneCounts) => (c.total > 0 ? c.reinforce / c.total : 0);
+  return scope.docs
+    .map((doc, order) => ({ doc, order, counts: byDoc.get(doc.id)! }))
+    .sort((x, y) => aligned(y.counts) - aligned(x.counts) || x.order - y.order)
+    .map(({ doc, counts }) => ({ doc, counts }));
 }
 
 // ─── Documents' own shares ──────────────────────────────────────────

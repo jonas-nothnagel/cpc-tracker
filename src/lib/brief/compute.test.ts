@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  alignedTargets,
   areaRows,
   commitmentsToReview,
+  docStats,
   docToneShares,
   concentrationOf,
   docPairStats,
@@ -302,8 +304,9 @@ describe("commitmentsToReview", () => {
     const rows = commitmentsToReview(scopeOf(SOURCE, ["A", "B", "C"]), 3);
     expect(rows.map((r) => [r.commitment.id, r.apart, r.partnerDocs])).toEqual([
       ["A3", 2, [{ doc: "C", count: 2 }]],
-      ["B2", 2, [{ doc: "A", count: 1 }, { doc: "C", count: 1 }]],
-      ["C2", 2, [{ doc: "A", count: 1 }, { doc: "B", count: 1 }]],
+      // One link each way: the smaller partner document (C has 2 targets, A 3) comes first.
+      ["B2", 2, [{ doc: "C", count: 1 }, { doc: "A", count: 1 }]],
+      ["C2", 2, [{ doc: "B", count: 1 }, { doc: "A", count: 1 }]],
     ]);
   });
 });
@@ -406,3 +409,102 @@ describe("docToneShares", () => {
     ]);
   });
 });
+
+// ─── Round 6: aligned targets, documents, exclusive themes ───────────
+
+describe("alignedTargets", () => {
+  const fixture = briefFixture();
+  const scope = scopeOf(fixture, ["A", "B", "C"]);
+
+  it("ranks targets by the share of the targets they were compared with that they align with", () => {
+    expect(alignedTargets(scope, 5).map((r) => [r.commitment.id, r.aligned, r.compared])).toEqual([
+      ["A1", 12, 12],
+      ["A2", 12, 12],
+      ["A3", 12, 12],
+      ["A4", 12, 12],
+      ["B1", 10, 12],
+    ]);
+  });
+
+  it("names the documents a target is aligned with, most first", () => {
+    const [top] = alignedTargets(scope, 1);
+    expect(top.partnerDocs).toEqual([
+      { doc: "B", count: 6 },
+      { doc: "C", count: 6 },
+    ]);
+  });
+});
+
+describe("docStats", () => {
+  it("counts every target pair a document takes part in, most aligned first", () => {
+    const fixture = briefFixture();
+    const stats = docStats(scopeOf(fixture, ["A", "B", "C"]));
+    expect(stats.map((d) => [d.doc.id, d.counts.reinforce, d.counts.apart, d.counts.total])).toEqual([
+      ["A", 54, 6, 72],
+      ["C", 48, 9, 72],
+      ["B", 42, 15, 72],
+    ]);
+  });
+});
+
+describe("themeRows counts each target pair once", () => {
+  it("gives a pair of documents cited by two themes to the higher-ranked one", () => {
+    const WATER_PLANNING = storyline("Shared water planning", "reinforcement", ["A<->B"], "medium");
+    const source = withThemes();
+    const both = {
+      ...source,
+      themes: {
+        ...source.themes!,
+        storylines: [RESTORATION, WATER_PLANNING, WATER, GOALS, DELIVERY],
+        states: {
+          "": { ...source.themes!, storylines: [RESTORATION, WATER_PLANNING, WATER, GOALS, DELIVERY] },
+        },
+      },
+    };
+    const { rows } = themeRows(both, scopeOf(both, ["A", "B", "C"]), "reinforcement");
+    // RESTORATION (high) claims A<->B first; nothing is left for WATER_PLANNING.
+    expect(rows.map((r) => [r.storyline.name, r.count])).toEqual([["Shared land restoration", 6]]);
+  });
+});
+
+describe("partner documents are weighed by their size", () => {
+  // X1 is linked with 2 of Y's 4 targets and with Z's only target: Z is the
+  // closer partner even though Y has more links.
+  const ids = ["X1", "Y1", "Y2", "Y3", "Y4", "Z1"];
+  const at = Object.fromEntries(ids.map((id, i) => [id, i]));
+  const sized = (level: number): BriefSource => ({
+    countryId: "t",
+    countryName: "T",
+    commitments: ids.map((id) => ({ id, doc: id[0], label: id, text: id })),
+    documents: ["X", "Y", "Z"].map((id) => ({
+      id,
+      code: id,
+      name: id,
+      full: id,
+      color: "#000",
+      count: ids.filter((c) => c[0] === id).length,
+      defaultOn: true,
+    })),
+    comparisons: [
+      [at.X1, at.Y1, level, 0],
+      [at.X1, at.Y2, level, 0],
+      [at.X1, at.Z1, level, 0],
+    ].flat(),
+    lenses: [],
+    themes: null,
+    model: null,
+  });
+
+  it("names the aligned partner document by its share of targets, not the raw count", () => {
+    const source = sized(0);
+    const [x1] = alignedTargets(scopeOf(source, ["X", "Y", "Z"]), 8).filter((r) => r.commitment.id === "X1");
+    expect(x1.partnerDocs.map((p) => p.doc)).toEqual(["Z", "Y"]);
+  });
+
+  it("names the potential-misalignment partner document the same way", () => {
+    const source = sized(4);
+    const x1 = commitmentsToReview(scopeOf(source, ["X", "Y", "Z"]), 8).find((r) => r.commitment.id === "X1");
+    expect(x1?.partnerDocs.map((p) => p.doc)).toEqual(["Z", "Y"]);
+  });
+});
+

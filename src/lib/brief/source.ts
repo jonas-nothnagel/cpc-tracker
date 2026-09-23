@@ -1,5 +1,5 @@
 import { normalizeTarget } from "@/lib/normalize-target";
-import type { CorpusThemesPayload } from "@/lib/coherence-briefing";
+import { loadDocPairSyntheses, type CorpusThemesPayload } from "@/lib/coherence-briefing";
 import type {
   AlignmentLevel,
   AlignmentMechanism,
@@ -59,6 +59,18 @@ export interface BriefLens {
   primary: Record<string, string>;
 }
 
+/** The pipeline's AI synthesis for one pair of documents (the dashboard's
+ *  pair panel): a short title, how they align, where they may diverge, and
+ *  a hedged process pointer. */
+export interface BriefPairNote {
+  a: string;
+  b: string;
+  title: string;
+  align: string;
+  diverge: string;
+  hint: string;
+}
+
 export interface BriefSource {
   countryId: string;
   countryName: string;
@@ -70,6 +82,8 @@ export interface BriefSource {
   comparisons: number[];
   lenses: BriefLens[];
   themes: CorpusThemesPayload | null;
+  /** AI syntheses per pair of documents; empty when the pipeline wrote none. */
+  pairNotes?: BriefPairNote[];
   model: string | null;
 }
 
@@ -207,6 +221,17 @@ export function buildBriefSource(args: {
     lenses.push({ id: spec.id, taxonomyType: spec.taxonomyType, categories, primary });
   }
 
+  const pairNotes: BriefPairNote[] = loadDocPairSyntheses(data)
+    .filter((p) => p.synthesis_error === null && p.synthesis)
+    .map((p) => ({
+      a: p.doc_a,
+      b: p.doc_b,
+      title: p.synthesis.storyline_name,
+      align: p.synthesis.reinforce,
+      diverge: p.synthesis.clash,
+      hint: p.synthesis.coordination_hint,
+    }));
+
   return {
     countryId: args.countryId,
     countryName: args.countryName,
@@ -215,6 +240,7 @@ export function buildBriefSource(args: {
     comparisons,
     lenses,
     themes: (data.corpusThemes as CorpusThemesPayload | null) ?? null,
+    pairNotes,
     model: (data.model as string | null) ?? null,
   };
 }

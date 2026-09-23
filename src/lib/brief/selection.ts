@@ -3,6 +3,7 @@ import type { BriefSource, LensId } from "./source";
 export type SectionId =
   | "overall"
   | "together"
+  | "aligned"
   | "apart"
   | "commitments"
   | "documents"
@@ -11,14 +12,22 @@ export type SectionId =
 export const SECTION_IDS: SectionId[] = [
   "overall",
   "together",
+  "aligned",
   "apart",
   "commitments",
   "documents",
   "areas",
 ];
 
-/** The standard brief: three A4 pages, the last half full. */
-export const DEFAULT_SECTIONS: SectionId[] = ["overall", "together", "apart", "commitments", "documents"];
+/** The standard brief: three full A4 pages. */
+export const DEFAULT_SECTIONS: SectionId[] = [
+  "overall",
+  "together",
+  "aligned",
+  "apart",
+  "commitments",
+  "documents",
+];
 
 export interface BriefSelection {
   /** Selected document ids, in config order; always at least two. */

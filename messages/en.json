@@ -497,11 +497,11 @@
         "steps": {
           "overall": {
             "title": "Overall coherence",
-            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model. The dots are grouped by the rating: aligned, partially aligned, potential misalignment or no clear relationship."
+            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Selecting the aligned or the potential misalignment group opens the recurring themes behind it."
           },
           "themes": {
             "title": "Recurring themes",
-            "body": "An AI model groups the rated target pairs into recurring themes. Each row shows how often a theme occurs and the documents involved; selecting a theme shows one of its examples."
+            "body": "An AI model groups the rated target pairs into recurring themes. Each cluster of dots is one theme, numbered like the list below; selecting a cluster or a row shows one of its examples."
           },
           "example": {
             "title": "The targets as written",
@@ -513,11 +513,15 @@
           },
           "documents": {
             "title": "Documents side by side",
-            "body": "Each bar is one pair of documents: potential misalignment from the left, alignment from the right. Selecting a pair lists its potential misalignments."
+            "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document shows its pairs of documents; selecting a pair opens the AI summary, the strongest aligned target pairs and the potential misalignments."
           },
           "builder": {
             "title": "Customize the brief",
-            "body": "Choose the documents, policy areas and sections. The brief updates at once, prints on two to three pages and can be shared as a link."
+            "body": "Choose the documents, policy areas and sections. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
+          },
+          "aligned": {
+            "title": "Most aligned targets",
+            "body": "The targets aligned with the largest share of the targets they were compared with: where the documents already pull together."
           }
         }
       }
@@ -2986,7 +2990,8 @@
       "apart": "Potential misalignment",
       "commitments": "Targets to review first",
       "documents": "Documents side by side",
-      "areas": "By policy area"
+      "areas": "By policy area",
+      "aligned": "Most aligned targets"
     },
     "tone": {
       "reinforce": "aligned",
@@ -3025,7 +3030,9 @@
       "exampleOf": "Example: {name}",
       "readFull": "Read in full",
       "more": "More on this theme",
-      "moreDocs": "{count, plural, one {# more} other {# more}}"
+      "moreDocs": "{count, plural, one {# more} other {# more}}",
+      "other": "Other",
+      "otherTip": "{count, plural, one {# target pair} other {# target pairs}} outside the recurring themes"
     },
     "commitments": {
       "headlineConcentrated": "Of the {total, number} potential misalignments, {pct} involve just {top, plural, one {one target} other {# targets}}.",
@@ -3034,14 +3041,13 @@
       "mostlyWith": "mostly with {doc}"
     },
     "documents": {
-      "headline": "Potential misalignment ranges from {low} to {high} across pairs of documents.",
-      "headlineFallback": "Across all documents, {pct} of target pairs show potential misalignment.",
+      "headline": "Alignment with the other documents ranges from {low} for {docLow} to {high} for {docHigh}.",
+      "headlineFallback": "Across all documents, {pct} of target pairs are aligned.",
       "few": "few target pairs",
-      "more": "{count, plural, one {# more pair of documents} other {# more pairs of documents}}",
-      "row": "{docA} and {docB}: {apart} potential misalignment, {partial} partially aligned, {aligned} aligned, from {total, number} target pairs",
       "columnApart": "Potential misalignment",
       "columnPartial": "Partially aligned",
-      "columnAligned": "Aligned"
+      "columnAligned": "Aligned",
+      "docRow": "{doc}: {aligned} aligned, {apart} potential misalignment, from {total, number} target pairs"
     },
     "areas": {
       "headline": "{area} shows the highest share of potential misalignment: {pct}.",
@@ -3071,7 +3077,12 @@
       "themeSummary": "AI summary",
       "pathwayTitle": "AI-suggested starting point",
       "pathwayCaveat": "For expert review, not a recommendation.",
-      "themeDocs": "Documents involved, by share of the theme's target pairs"
+      "themeDocs": "Documents involved, by share of the theme's target pairs",
+      "aiReading": "AI summary",
+      "whereAlign": "Where they align",
+      "whereDiverge": "Where they may diverge",
+      "more": "More",
+      "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}"
     },
     "and": "and",
     "resources": {
@@ -3115,6 +3126,17 @@
       "biodiversity": "biodiversity",
       "forage": "forage",
       "rangelands": "rangelands"
+    },
+    "aligned": {
+      "headline": "{target} ({doc}) is aligned with {pct} of the targets it was compared with.",
+      "headlineEmpty": "No target is aligned with another in this selection.",
+      "mostlyWith": "mostly with {doc}",
+      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with"
+    },
+    "preview": {
+      "pages": "{count, plural, one {# page} other {# pages}}",
+      "print": "Print",
+      "back": "Back to the brief"
     }
   }
 }

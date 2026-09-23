@@ -4,6 +4,7 @@ import type { SectionId } from "./selection";
 export const SECTION_UNITS: Record<SectionId, 1 | 2> = {
   overall: 1,
   together: 2,
+  aligned: 2,
   apart: 2,
   commitments: 2,
   documents: 2,

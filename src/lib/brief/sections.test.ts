@@ -4,11 +4,18 @@ import { DEFAULT_SECTIONS, SECTION_IDS } from "./selection";
 
 describe("paginate", () => {
   it("lays the standard brief out on three pages", () => {
-    expect(DEFAULT_SECTIONS).toEqual(["overall", "together", "apart", "commitments", "documents"]);
+    expect(DEFAULT_SECTIONS).toEqual([
+      "overall",
+      "together",
+      "aligned",
+      "apart",
+      "commitments",
+      "documents",
+    ]);
     expect(paginate(DEFAULT_SECTIONS)).toEqual([
       { title: true, sections: ["overall", "together"] },
-      { title: false, sections: ["apart", "commitments"] },
-      { title: false, sections: ["documents"] },
+      { title: false, sections: ["aligned", "apart"] },
+      { title: false, sections: ["commitments", "documents"] },
     ]);
   });
 
@@ -34,6 +41,6 @@ describe("paginate", () => {
     const pages = paginate(SECTION_IDS);
     expect(pages.flatMap((p) => p.sections)).toEqual(SECTION_IDS);
     expect(SECTION_IDS).not.toContain("map");
-    expect(pages).toHaveLength(3);
+    expect(pages).toHaveLength(4);
   });
 });

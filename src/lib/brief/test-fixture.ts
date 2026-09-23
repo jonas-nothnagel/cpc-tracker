@@ -58,7 +58,20 @@ export const FIXTURE_THEMES = [
   storyline("Goal overlap", "friction", ["A<->B"], []),
 ];
 
-export function briefFixture({ themes = false }: { themes?: boolean } = {}): BriefSource {
+/** An AI synthesis for the pair A~B, as the pipeline writes it. */
+export const FIXTURE_NOTE = {
+  a: "A",
+  b: "B",
+  title: "A and B on land",
+  align: "Both expand restoration. They also share monitoring.",
+  diverge: "Cropland expansion may compete with protected areas. It recurs in the north.",
+  hint: "Joint land-use screening could help.",
+};
+
+export function briefFixture({
+  themes = false,
+  notes = false,
+}: { themes?: boolean; notes?: boolean } = {}): BriefSource {
   const commitments = DOCS.flatMap((doc) =>
     Array.from({ length: PER_DOC }, (_, i) => ({
       id: `${doc}${i + 1}`,
@@ -133,6 +146,7 @@ export function briefFixture({ themes = false }: { themes?: boolean } = {}): Bri
           return { ...full, states: { "": full } };
         })()
       : null,
+    pairNotes: notes ? [FIXTURE_NOTE] : [],
     model: null,
   };
 }

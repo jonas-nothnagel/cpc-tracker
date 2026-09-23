@@ -12,10 +12,11 @@ import {
 } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
 import { Builder } from "./builder";
+import { Flow } from "./flow";
 import { Hero } from "./hero";
 import { BriefPanels, type PanelState } from "./panels";
 import { clip } from "./ink";
-import { SectionView, type SectionHandlers } from "./section-view";
+import { SectionView, type SectionHandlers, type ThemeTone } from "./section-view";
 import { Sheets, TitleBlock } from "./sheets";
 import "./brief.css";
 
@@ -31,6 +32,11 @@ function driftLines(scope: Scope, max = 108): string[] {
   return lines;
 }
 
+/**
+ * The coherence brief. On screen it is one flowing page; the A4 sheets are
+ * always laid out (off screen, so their charts are drawn at page size) and
+ * come forward as a print preview from the print button, and in print.
+ */
 export function BriefApp({
   source,
   initialSelection,
@@ -41,8 +47,19 @@ export function BriefApp({
   preparedOn: string;
 }) {
   const tl = useTranslations("briefing.lens");
+  const tp = useTranslations("brief.preview");
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
+  const [mode, setMode] = useState<"read" | "preview">("read");
+  // The theme the reader selected in each theme section; the printed pages
+  // show the same example as the screen.
+  const [picked, setPicked] = useState<Record<ThemeTone, string | null>>({
+    reinforce: null,
+    apart: null,
+  });
+  // Bumped to replay a theme section's dots when the reader arrives from
+  // the overall picture.
+  const [replay, setReplay] = useState<Record<ThemeTone, number>>({ reinforce: 0, apart: 0 });
 
   const update = useCallback(
     (next: BriefSelection) => {
@@ -77,17 +94,26 @@ export function BriefApp({
       onOpenDocPair: (a, b) => setPanels([{ kind: "docPair", a, b }]),
       onOpenCommitment: (id) => setPanels([{ kind: "commitment", id }]),
       onOpenTheme: (type, name) => setPanels([{ kind: "theme", type, name }]),
+      onPickTheme: (tone, name) => setPicked((p) => ({ ...p, [tone]: name })),
+      onFocusTone: (tone) => {
+        const id = tone === "reinforce" ? "together" : "apart";
+        document
+          .getElementById(`brief-flow-${id}`)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        setReplay((r) => ({ ...r, [tone]: r[tone] + 1 }));
+      },
     }),
     [],
   );
 
   const readBrief = () =>
-    document.getElementById("brief-sheets")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("brief-main")?.scrollIntoView({ behavior: "smooth", block: "start" });
   const customize = () => {
     const title = document.getElementById("brief-builder-title");
     title?.scrollIntoView({ behavior: "smooth", block: "start" });
     title?.focus({ preventScroll: true });
   };
+  const preview = mode === "preview";
 
   return (
     <div data-brief className="brief-root">
@@ -100,32 +126,74 @@ export function BriefApp({
         onRead={readBrief}
         onCustomize={customize}
       />
-      <div className="brief-desk">
+      <div className="brief-desk" data-mode={mode}>
         <Builder
           source={source}
           selection={selection}
           pageCount={pages.length}
           onChange={update}
           onReset={() => update(defaultSelection(source))}
-          onPrint={() => window.print()}
+          onPrint={() => (preview ? window.print() : setMode("preview"))}
         />
-        <Sheets
-          pages={pages}
-          countryName={source.countryName}
-          preparedOn={preparedOn}
-          titleBlock={
-            <TitleBlock
+        <div className="brief-main" id="brief-main">
+          {preview ? (
+            <div className="brief-preview-bar" data-screen-only>
+              <p className="brief-preview-pages">{tp("pages", { count: pages.length })}</p>
+              <button type="button" className="brief-button-primary" onClick={() => window.print()}>
+                {tp("print")}
+              </button>
+              <button type="button" className="brief-button-quiet" onClick={() => setMode("read")}>
+                {tp("back")}
+              </button>
+            </div>
+          ) : (
+            <Flow
               countryName={source.countryName}
               commitments={scope.commitments.length}
               documents={scope.docs.length}
               comparisons={scope.comparisons.length}
               translation={translation}
+              sections={selection.sections}
+              renderSection={(id) => (
+                <SectionView
+                  id={id}
+                  variant="screen"
+                  data={data}
+                  lensName={lensName}
+                  handlers={handlers}
+                  picked={picked}
+                  replay={replay}
+                />
+              )}
             />
-          }
-          renderSection={(id) => (
-            <SectionView id={id} data={data} lensName={lensName} handlers={handlers} />
           )}
-        />
+          <Sheets
+            pages={pages}
+            countryName={source.countryName}
+            preparedOn={preparedOn}
+            hidden={!preview}
+            titleBlock={
+              <TitleBlock
+                countryName={source.countryName}
+                commitments={scope.commitments.length}
+                documents={scope.docs.length}
+                comparisons={scope.comparisons.length}
+                translation={translation}
+              />
+            }
+            renderSection={(id) => (
+              <SectionView
+                id={id}
+                variant="print"
+                data={data}
+                lensName={lensName}
+                handlers={handlers}
+                picked={picked}
+                replay={replay}
+              />
+            )}
+          />
+        </div>
       </div>
       <div data-screen-only>
         <BriefPanels

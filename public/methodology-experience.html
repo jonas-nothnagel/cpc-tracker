@@ -377,6 +377,59 @@
   .impl-status { margin-left: auto; font-size: 9px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
   .impl-status.way { background: rgba(25,97,39,0.12); color: var(--align-high); }
   .impl-status.mis { background: rgba(220,38,38,0.1); color: var(--align-flagged); }
+
+  /* ── The coherence brief's visual language (Sep 2026): the left side is a
+     dot scene (methodology-scene.js), one ink dot per target, then per
+     target pair, on a white ground; captions state each step's result. ── */
+  :root { --ground: #fff; }
+  .mapwrap { background: #fff; }
+  .scene { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  .scene-cap { position: absolute; left: 56px; right: 56px; top: 40px; z-index: 5; pointer-events: none; }
+  .sc-phase { margin: 0 0 6px; font-size: 13px; color: var(--undp-gray); }
+  .sc-text { margin: 0; max-width: 32em; font-family: var(--font-serif); font-size: clamp(21px, 2.1vw, 27px);
+    font-weight: 500; line-height: 1.22; letter-spacing: -0.005em; color: var(--undp-black); }
+  .scene-labels { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; }
+  .sl { position: absolute; font-size: 12px; line-height: 1.3; color: var(--undp-gray); white-space: nowrap; }
+  .sl .n { font-weight: 600; color: var(--undp-black); font-variant-numeric: tabular-nums; }
+  .sl.sl-doc { font-size: 13px; color: var(--undp-black); }
+  .sl.sl-doc .n { margin-left: 4px; font-weight: 600; color: var(--undp-gray); }
+  .sl.sl-small { font-size: 12px; color: var(--undp-gray); }
+  .sl.sl-cluster { max-width: 190px; white-space: normal; font-size: 12.5px; color: var(--undp-black); }
+  .sl.sl-cluster .n { margin-right: 3px; }
+  .sl.sl-legend { font-size: 14px; color: var(--undp-black); }
+  .sl.sl-legend .n { margin-right: 4px; }
+  .sl.sl-legend .key { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; vertical-align: 0; }
+  .sl.sl-legend .gap { display: inline-block; width: 22px; }
+  .sl.sl-num { font-size: 13px; color: var(--undp-gray); }
+  .sl.sl-center { transform: translate(-50%, -50%); }
+  .sl .parts { display: flex; gap: 56px; }
+  .sl .parts > div { display: flex; flex-direction: column; gap: 7px; padding: 16px 20px; background: #fff; border: 1px solid var(--border-200); }
+  .sl .parts b { margin-bottom: 4px; font-size: 13px; color: var(--undp-black); }
+  .sl .parts span { position: relative; padding-left: 14px; font-size: 13px; color: var(--undp-black); }
+  .sl .parts span::before { content: ""; position: absolute; left: 0; top: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--undp-blue); }
+  .sl.sl-list { white-space: normal; }
+  .sl.sl-list.sl-top { transform: translateY(-100%); }
+  .sl .themes { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; }
+  .sl .themes li { max-width: 440px; font-size: 12.5px; color: var(--undp-black); }
+  .sl .themes .n { display: inline-block; width: 14px; color: var(--undp-gray); }
+  .sl .themes .c { margin-left: 4px; color: var(--undp-gray); font-variant-numeric: tabular-nums; }
+  .sl.sl-foot { font-size: 13px; color: var(--undp-black); }
+  .sl .squares { display: inline-flex; flex-wrap: wrap; gap: 3px; max-width: 360px; margin-right: 10px; vertical-align: middle; }
+  .sl .squares i { display: inline-block; width: 8px; height: 8px; }
+  .sl.sl-human .person { display: inline-block; width: 22px; height: 22px;
+    background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='5' r='2.6' fill='none' stroke='%239a6b34' stroke-width='1.4'/%3E%3Cpath d='M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2' fill='none' stroke='%239a6b34' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  /* Plain controls under the scene, no floating pill. */
+  .controls { left: 56px; transform: none; bottom: 28px; padding: 0; background: none; border: 0; border-radius: 0;
+    box-shadow: none; backdrop-filter: none; }
+  .cbtn.primary { border-radius: 0; }
+  .sep { display: none; }
+  .dots { gap: 6px; padding: 0 8px; }
+  .dots button { width: 6px; height: 6px; border: 0; background: var(--border-300); }
+  .dots button.seen { background: var(--undp-gray); }
+  .dots button[aria-current="true"] { background: var(--undp-black); transform: scale(1.5); }
+  /* Intro: one line and Start, no card. */
+  .intro { background: rgba(255,255,255,0.96); backdrop-filter: none; }
+  .intro p { color: var(--undp-gray); }
 </style>
 </head>
 <body class="show-example">
@@ -405,34 +458,18 @@
 
 <div class="work">
   <div class="mapwrap" id="mapwrap">
-    <div class="board" id="board">
-      <svg class="edges" id="edges"><defs>
-        <marker id="arrow" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
-          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#cbd3ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </marker>
-        <marker id="arrowF" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
-          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#ddd0b5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </marker>
-      </defs></svg>
-    </div>
+    <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+    <div id="sceneLabels" class="scene-labels" aria-hidden="true"></div>
+    <div id="sceneCap" class="scene-cap" aria-live="polite"></div>
     <div class="intro" id="intro">
       <div class="card">
-        <p class="eyebrow">Methodology · How it works</p>
-        <h1 class="serif">The analysis pipeline, step by step</h1>
-        <p>From a set of national policy documents to a coherence map: every phase, every agent, and how they connect. The diagram builds on the left while the panel explains each step in plain language.</p>
+        <h1 class="serif">How the analysis works</h1>
+        <p>From policy documents to the coherence brief, one step at a time.</p>
         <button class="start" id="startBtn">
           <svg width="14" height="14" viewBox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/></svg>
-          Start the walkthrough
+          Start
         </button>
-        <span class="auto">It begins automatically in a moment.</span>
-        <span class="auto">A worked example is threaded through every step; it can be switched off with <b>Follow an example</b> in the top bar.</span>
-        <span class="auto"><a href="/methodology-brief.html" target="_blank" rel="noopener" style="color:var(--undp-blue);text-decoration:none">A printable 2-page brief is also available</a></span>
       </div>
-    </div>
-    <div class="legend" aria-hidden="true">
-      <span class="li"><span class="sw ai"></span> AI step</span>
-      <span class="li"><span class="sw agent"></span> Specialist agent</span>
-      <span class="li"><span class="sw human"></span> Human step</span>
     </div>
     <div class="controls">
       <button class="cbtn" id="prev" aria-label="Previous" title="Previous (←)"><svg class="ico" viewBox="0 0 16 16"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -440,8 +477,6 @@
       <button class="cbtn" id="next" aria-label="Next" title="Next (→)"><svg class="ico" viewBox="0 0 16 16"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="sep"></div>
       <div class="dots" id="dots"></div>
-      <div class="sep"></div>
-      <button class="cbtn" id="fit" aria-label="Fit whole diagram" title="Fit whole diagram"><svg class="ico" viewBox="0 0 16 16"><path d="M2 6 V2 H6 M10 2 H14 V6 M14 10 V14 H10 M6 14 H2 V10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
   </div>
 
@@ -690,8 +725,6 @@
       <p class="p-say">Finally, with no further AI, the individual judgements roll up into <strong>coherency scores</strong> between each pair of documents, plus a simple count of <strong>how many pairs are flagged</strong> for a closer look. These feed the dashboard: the coherence wheel, alignment heatmaps and theme breakdowns.</p>
       <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
         <div class="gauge-row"><div class="gauge"><div class="gv">70%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">19</div><div class="gl">pairs flagged (of 720)</div></div></div>
-        <svg id="wheelSvg" viewBox="0 0 320 320" width="210" height="210" role="img" aria-label="Coherence wheel" style="overflow:visible"></svg>
-        <div class="wheel-legend"><span><span class="ln" style="background:var(--align-high)"></span> Aligned</span><span><span class="ln" style="background:repeating-linear-gradient(90deg,var(--align-flagged) 0 4px,transparent 4px 7px)"></span> Potential misalignment</span></div>
       </div></div>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · where it lands</p><p class="exb">The example pair is <b>1 of 19 flagged</b> between the NDC and NBSAP. The other <b>701 of 720</b> pairs sit on the positive scale (660 of them medium or high), so one flag barely moves the <b>70%</b> score, but it is now visible on the wheel and ready for review.</p></div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx"><code>Score = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. For Mongolia's NDC and NBSAP that is 70% across 720 pairs, of which 19 are flagged for review. All derived metrics are computed locally, zero model calls.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
@@ -775,6 +808,7 @@
   </div>
 </div>
 
+<script src="methodology-scene.js"></script>
 <script>
 (function () {
   var DOCC = { ndc: "#0468b1", nbsap: "#0d9488", nap: "#b45309" };
@@ -796,127 +830,22 @@
     { i: 11, ph: "sy", t: "Follow the finance",     b: "Budget review (BER)", level: "L2" },
     { i: 12, ph: "sy", t: "Track implementation",   b: "BTR \u00b7 NR7", level: "L3" }
   ];
-  // lane layout. array order = visual order = play order; n.i is the stable id used by panels + edges.
-  var COL = 200, NW = 178, NH = 66;
-  var LANE = { ex: 40, an: 226, sy: 412 };
-  var IDX = { ex: 0, an: 0, sy: 0 };
-  NODES.forEach(function (n) { n.x = 30 + IDX[n.ph] * COL; n.y = LANE[n.ph]; IDX[n.ph]++; });
-  var byI = {}, AIDX = {}; NODES.forEach(function (n, k) { byI[n.i] = n; AIDX[n.i] = k; });
-
-  var EDGES = [
-    [0,1],[1,2],[2,3],[3,13,"cross","Targets","confirmed"],
-    [13,4],[4,5],[5,6],[6,7],[7,8],[8,9,"cross","Coherence","5-level + facets"],
-    [9,10],[10,14],[8,11,"feed"],[8,12,"feed"],[14,5,"fb","Feedback","improves future analysis"]
-  ];
-
-  var board = document.getElementById("board");
-  var edgesSvg = document.getElementById("edges");
-  var mapwrap = document.getElementById("mapwrap");
   var dotsWrap = document.getElementById("dots");
   var psteps = Array.prototype.slice.call(document.querySelectorAll(".pstep"));
   var N = NODES.length;
-
-  // build node elements
-  NODES.forEach(function (n, k) {
-    var el = document.createElement("div");
-    el.className = "node " + n.ph + (n.agent ? " agent" : "") + (n.kind === "human" ? " human" : "");
-    el.style.left = n.x + "px"; el.style.top = n.y + "px";
-    var badge = n.kind === "human" ? '<span class="htag">Human</span>'
-      : (n.agent ? '<span class="atag">' + n.agent + "</span>" : (n.level ? '<span class="ltag">' + n.level + "</span>" : ""));
-    var num = n.kind === "human"
-      ? '<span class="nnum"><svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>'
-      : '<span class="nnum">' + ("0" + (n.i + 1)).slice(-2) + '</span>';
-    el.innerHTML = badge + num + '<span class="ntext"><span class="nt">' + n.t + '</span><span class="nb">' + n.b + "</span></span>";
-    el.addEventListener("click", function () { stop(); goTo(k, true); });
-    board.appendChild(el);
-    n.el = el;
-  });
-
-  // phase bands
-  var PH = { ex: "Extraction", an: "Analysis", sy: "Synthesis & Delivery" };
-  var PHK = { ex: "Documents → targets", an: "Targets → coherence", sy: "Patterns, finance & delivery" };
-  var bands = {};
-  Object.keys(PH).forEach(function (ph) {
-    var ns = NODES.filter(function (n) { return n.ph === ph; });
-    var minX = Math.min.apply(null, ns.map(function (n) { return n.x; })) - 22;
-    var maxX = Math.max.apply(null, ns.map(function (n) { return n.x + NW; })) + 22;
-    var top = ns[0].y - 16, bot = ns[0].y + NH + 16;
-    var band = document.createElement("div");
-    band.className = "band " + ph;
-    band.style.left = minX + "px"; band.style.top = top + "px"; band.style.width = (maxX - minX) + "px"; band.style.height = (bot - top) + "px";
-    board.insertBefore(band, board.firstChild);
-    var label = document.createElement("div");
-    label.className = "band-label " + ph;
-    label.style.left = minX + "px"; label.style.top = (top - 64) + "px";
-    label.innerHTML = '<span class="k">' + PH[ph] + '</span><span class="n serif">' + PHK[ph] + "</span>";
-    board.appendChild(label);
-    bands[ph] = { band: band, label: label };
-  });
-
-  // edges + artifact labels
-  EDGES.forEach(function (e) {
-    var a = byI[e[0]], b = byI[e[1]], feed = e[2] === "feed", cross = e[2] === "cross", fb = e[2] === "fb";
-    var sx = a.x + NW, sy = a.y + NH / 2, tx = b.x, ty = b.y + NH / 2;
-    var mx = (sx + tx) / 2;
-    var d = "M " + sx + " " + sy + " C " + mx + " " + sy + " " + mx + " " + ty + " " + (tx - 8) + " " + ty;
-    var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    p.setAttribute("d", d); p.setAttribute("class", "edge" + (feed ? " feed" : "") + (fb ? " fb" : ""));
-    p.setAttribute("marker-end", "url(#" + (feed || fb ? "arrowF" : "arrow") + ")");
-    var len = p.getTotalLength(); p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
-    p.dataset.stage = Math.max(AIDX[e[0]], AIDX[e[1]]);
-    edgesSvg.appendChild(p); e.el = p;
-    if ((cross || fb) && e[3]) {
-      var lab = document.createElement("div");
-      lab.className = fb ? "fb-lab" : "elabel";
-      lab.style.left = mx + "px"; lab.style.top = ((sy + ty) / 2) + "px";
-      lab.innerHTML = fb ? e[3] : (e[3] + ' <span class="dt">· ' + e[4] + "</span>");
-      board.appendChild(lab); e.lab = lab; e.labStage = Math.max(AIDX[e[0]], AIDX[e[1]]);
-    }
-  });
-
-  var bw = Math.max.apply(null, NODES.map(function (n) { return n.x + NW; })) + 40;
-  var bh = LANE.sy + NH + 40;
-  board.style.width = bw + "px"; board.style.height = bh + "px";
-  edgesSvg.setAttribute("width", bw); edgesSvg.setAttribute("height", bh);
-
-  // ---- transform ----
-  var view = { s: 1, tx: 0, ty: 0 };
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function apply(animate) { board.classList.toggle("animating", !!animate && !reduce); board.style.transform = "translate(" + view.tx + "px," + view.ty + "px) scale(" + view.s + ")"; }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-  function VW() { return mapwrap.clientWidth; } function VH() { return mapwrap.clientHeight; }
-  function fitNodes(list, animate) {
-    var x0 = Math.min.apply(null, list.map(function (n) { return n.x; })) - 34;
-    var x1 = Math.max.apply(null, list.map(function (n) { return n.x + NW; })) + 34;
-    var y0 = Math.min.apply(null, list.map(function (n) { return n.y; })) - 60;
-    var y1 = Math.max.apply(null, list.map(function (n) { return n.y + NH; })) + 30;
-    var s = clamp(Math.min((VW() - 80) / (x1 - x0), (VH() - 120) / (y1 - y0)), 0.25, 1.15);
-    var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
-    view.s = s; view.tx = VW() / 2 - s * cx; view.ty = VH() / 2 - s * cy; apply(animate !== false);
-  }
 
   // ---- state ----
   var cur = 0;
   function render() {
-    NODES.forEach(function (n, k) { n.el.classList.toggle("shown", k <= cur); n.el.classList.toggle("active", k === cur); });
-    EDGES.forEach(function (e) {
-      var on = parseInt(e.el.dataset.stage, 10) <= cur; e.el.classList.toggle("drawn", on);
-      if (e.lab) e.lab.classList.toggle("shown", e.labStage <= cur);
-    });
-    var actPh = NODES[cur].ph, shown = {}; NODES.forEach(function (n, k) { if (k <= cur) shown[n.ph] = 1; });
-    Object.keys(bands).forEach(function (ph) {
-      bands[ph].band.classList.toggle("shown", !!shown[ph]); bands[ph].label.classList.toggle("shown", !!shown[ph]);
-      bands[ph].band.classList.toggle("active", ph === actPh);
-    });
     psteps.forEach(function (p) { p.classList.toggle("on", +p.dataset.i === NODES[cur].i); });
     Array.prototype.forEach.call(dotsWrap.children, function (d, i) { d.setAttribute("aria-current", i === cur ? "true" : "false"); d.classList.toggle("seen", i <= cur); });
     document.getElementById("prev").disabled = cur === 0;
+    if (window.MethodScene) window.MethodScene.go(cur);
     try { localStorage.setItem("cpc_phases2_stage", String(cur)); } catch (e) {}
   }
-  function goTo(i, animate) {
+  function goTo(i) {
     cur = clamp(i, 0, N - 1); render();
-    // keep every node up to the active one framed, so the build is visible
-    fitNodes(NODES.slice(0, cur + 1), animate);
   }
   function next() { if (cur < N - 1) goTo(cur + 1, true); else stop(); }
   function prev() { if (cur > 0) goTo(cur - 1, true); }
@@ -932,7 +861,6 @@
   document.getElementById("next").addEventListener("click", function () { stop(); next(); });
   document.getElementById("prev").addEventListener("click", function () { stop(); prev(); });
   document.getElementById("play").addEventListener("click", function () { playing() ? stop() : start(); });
-  document.getElementById("fit").addEventListener("click", function () { stop(); cur = N - 1; render(); fitNodes(NODES, true); });
   window.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { stop(); next(); } else if (e.key === "ArrowLeft") { stop(); prev(); } });
 
   var dP = document.getElementById("depthPlain"), dD = document.getElementById("depthDeep");
@@ -940,7 +868,7 @@
   dP.addEventListener("click", function () { depth("plain"); }); dD.addEventListener("click", function () { depth("deep"); });
 
   var exT = document.getElementById("exToggle");
-  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); });
+  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); if (window.MethodScene) window.MethodScene.refresh(); });
 
   // ---- diagrams ----
   function buildPairs() {
@@ -956,27 +884,6 @@
       var hot = lk[0] === 1 && lk[1] === 1; p.setAttribute("stroke", hot ? DOCC.ndc : "#cbd5d1"); p.setAttribute("stroke-width", hot ? 2.2 : 1.1); p.setAttribute("opacity", hot ? 0.95 : 0.5); G.appendChild(p);
     });
   }
-  function buildWheel() {
-    var svg = document.getElementById("wheelSvg"); var NS = "http://www.w3.org/2000/svg";
-    var cx = 160, cy = 160, R = 124, band = 9, TAU = Math.PI * 2, gap = 6 * Math.PI / 180;
-    var docs = [{ id: "ndc", s: "NDC", c: DOCC.ndc, n: 7 }, { id: "nbsap", s: "NBSAP", c: DOCC.nbsap, n: 6 }, { id: "nap", s: "NAP", c: DOCC.nap, n: 5 }];
-    var tot = docs.reduce(function (a, d) { return a + d.n; }, 0), av = TAU - gap * docs.length, cur2 = -gap / 2, ang = {};
-    function pol(r, a) { var t = a - Math.PI / 2; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; }
-    function arc(r, a0, a1) { var p0 = pol(r, a0), p1 = pol(r, a1), lg = (a1 - a0) > Math.PI ? 1 : 0; return "M " + p0[0] + " " + p0[1] + " A " + r + " " + r + " 0 " + lg + " 1 " + p1[0] + " " + p1[1]; }
-    docs.forEach(function (d) {
-      var sp = av * (d.n / tot), a0 = cur2 + gap, a1 = a0 + sp, pd = sp * 0.14, i0 = a0 + pd, i1 = a1 - pd;
-      for (var i = 0; i < d.n; i++) { var f = d.n === 1 ? 0.5 : i / (d.n - 1); ang[d.id + i] = i0 + (i1 - i0) * f; }
-      var ap = document.createElementNS(NS, "path"); ap.setAttribute("d", arc(R - band / 2, a0, a1)); ap.setAttribute("fill", "none"); ap.setAttribute("stroke", d.c); ap.setAttribute("stroke-width", band); svg.appendChild(ap);
-      var md = (a0 + a1) / 2, lp = pol(R + 15, md), tx = document.createElementNS(NS, "text"); tx.setAttribute("x", lp[0]); tx.setAttribute("y", lp[1]);
-      var cv = Math.cos(md - Math.PI / 2); tx.setAttribute("text-anchor", cv > 0.1 ? "start" : cv < -0.1 ? "end" : "middle"); tx.setAttribute("dominant-baseline", "middle");
-      tx.setAttribute("font-size", "12"); tx.setAttribute("font-weight", "600"); tx.setAttribute("font-family", "var(--font-sans)"); tx.setAttribute("fill", d.c); tx.textContent = d.s; svg.appendChild(tx);
-      cur2 = a1;
-    });
-    var prs = [["ndc0","nbsap1","a"],["ndc2","nbsap3","a"],["ndc4","nap1","a"],["nbsap0","nap2","a"],["ndc1","nap0","a"],["ndc5","nbsap4","a"],["nbsap2","nap3","a"],["ndc3","nbsap5","f"],["ndc6","nap4","f"],["nbsap0","ndc4","a"]];
-    var rE = R - band - 6; prs.sort(function (p) { return p[2] === "f" ? 1 : -1; });
-    prs.forEach(function (pr) { var aA = ang[pr[0]], aB = ang[pr[1]]; if (aA == null || aB == null) return; var A = pol(rE, aA), B = pol(rE, aB), c1 = pol(rE * 0.16, aA), c2 = pol(rE * 0.16, aB); var p = document.createElementNS(NS, "path"); p.setAttribute("d", "M " + A[0] + " " + A[1] + " C " + c1[0] + " " + c1[1] + " " + c2[0] + " " + c2[1] + " " + B[0] + " " + B[1]); p.setAttribute("fill", "none"); p.setAttribute("stroke-linecap", "round"); var f = pr[2] === "f"; p.setAttribute("stroke", f ? "#dc2626" : "#196127"); p.setAttribute("stroke-width", f ? 1.6 : 2.2); if (f) p.setAttribute("stroke-dasharray", "5 4"); p.setAttribute("opacity", f ? 0.7 : 0.5); svg.insertBefore(p, svg.firstChild); });
-  }
-
   // ---- intro / boot ----
   var intro = document.getElementById("intro"), booted = false, autoTimer = null;
   function boot() { if (booted) return; booted = true; if (autoTimer) clearTimeout(autoTimer); intro.classList.add("gone"); goTo(0, false); setTimeout(function () { start(); }, 650); }
@@ -984,11 +891,14 @@
 
   function init() {
     depth("plain");
-    buildPairs(); buildWheel();
-    cur = 0; render(); goTo(0, false);
+    buildPairs();
+    if (window.MethodScene) window.MethodScene.init();
+    // A link can open one step directly (#step=8), without the intro or autoplay.
+    var m = /step=(\d+)/.exec(window.location.hash);
+    if (m) { booted = true; intro.classList.add("gone"); goTo(parseInt(m[1], 10) - 1); return; }
+    cur = 0; render();
     autoTimer = setTimeout(boot, 2800);
   }
-  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { fitNodes(NODES.slice(0, cur + 1), false); }, 130); });
   if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
 })();
 </script>

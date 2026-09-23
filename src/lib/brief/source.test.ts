@@ -195,3 +195,53 @@ describe("buildBriefSource translation flags", () => {
     expect(sourceWith(swapped, "es").commitments[0].translated).toBeUndefined();
   });
 });
+
+describe("buildBriefSource pair notes", () => {
+  function synthesis(a: string, b: string, error: string | null = null) {
+    return {
+      doc_a: a,
+      doc_b: b,
+      label_a: a,
+      label_b: b,
+      aligned_count: 3,
+      flagged_count: 1,
+      contradiction_types: {},
+      synthesis: {
+        storyline_name: `${a} and ${b} on land`,
+        reinforce: "Both expand restoration. They also share monitoring.",
+        clash: "Cropland expansion may compete with protected areas.",
+        coordination_hint: "Joint land-use screening could help.",
+        confidence: "high",
+      },
+      synthesis_error: error,
+    };
+  }
+
+  it("carries each pair of documents' AI synthesis and skips failed ones", () => {
+    const source = buildBriefSource({
+      countryId: "mongolia",
+      countryName: "Mongolia",
+      locale: "en",
+      data: {
+        ...DATA,
+        docPairSynthesis: [synthesis("NDC", "NBSAP"), synthesis("NDC", "FSS", "timeout")],
+      },
+    });
+    expect(source.pairNotes).toEqual([
+      {
+        a: "NDC",
+        b: "NBSAP",
+        title: "NDC and NBSAP on land",
+        align: "Both expand restoration. They also share monitoring.",
+        diverge: "Cropland expansion may compete with protected areas.",
+        hint: "Joint land-use screening could help.",
+      },
+    ]);
+  });
+
+  it("has no pair notes when the pipeline wrote none", () => {
+    const source = buildBriefSource({ countryId: "x", countryName: "X", locale: "en", data: DATA });
+    expect(source.pairNotes).toEqual([]);
+  });
+});
+

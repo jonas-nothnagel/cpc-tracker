@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { layoutDots } from "./dot-layout";
+import { layoutDots, layoutGroups } from "./dot-layout";
 
 const COUNTS = { reinforce: 660, partial: 280, apart: 50, none: 10, total: 1000 };
 
@@ -61,3 +61,26 @@ describe("layoutDots texture", () => {
     expect(thinApart).toBe(20);
   });
 });
+
+describe("layoutGroups", () => {
+  it("lays any list of groups side by side and skips empty ones", () => {
+    const layout = layoutGroups([{ count: 30 }, { count: 0 }, { count: 10, texture: true }], 1, 200, 40);
+    expect(layout.groups.map((g) => [g.index, g.dots])).toEqual([
+      [0, 30],
+      [2, 10],
+    ]);
+    expect(layout.group.length).toBe(40);
+  });
+
+  it("thins every other dot of a textured group only", () => {
+    const layout = layoutGroups([{ count: 30 }, { count: 10, texture: true }], 1, 200, 40);
+    let thin = 0;
+    for (let i = 0; i < layout.group.length; i++) {
+      if (layout.small[i] !== 1) continue;
+      expect(layout.group[i]).toBe(1);
+      thin += 1;
+    }
+    expect(thin).toBe(5);
+  });
+});
+

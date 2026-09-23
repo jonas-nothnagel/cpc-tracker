@@ -206,13 +206,22 @@
 
 [data-brief] .brief-desk {
   display: grid;
-  grid-template-columns: 16.5rem 210mm;
-  justify-content: center;
+  grid-template-columns: 16.5rem minmax(0, 1fr);
   align-items: start;
-  gap: 2.5rem;
-  padding: 2.5rem 1.5rem 5rem;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  padding: 3rem clamp(1.5rem, 4vw, 4.5rem) 6rem;
   border-top: 1px solid var(--brief-hairline);
+  background: #fff;
+}
+
+/* The print preview puts the A4 sheets on a grey desk, centred. */
+[data-brief] .brief-desk[data-mode="preview"] {
   background: var(--brief-desk);
+}
+
+[data-brief] .brief-main {
+  position: relative;
+  min-width: 0;
 }
 
 [data-brief] .brief-builder {
@@ -371,8 +380,19 @@
 [data-brief] .brief-sheets {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.75rem;
   min-width: 0;
+}
+
+/* Off screen while the reader is on the flowing page: laid out at page size
+   so charts and text fits are measured as they will print. */
+[data-brief] .brief-sheets[data-offscreen] {
+  position: absolute;
+  top: 0;
+  left: -10000px;
+  width: 210mm;
+  visibility: hidden;
 }
 
 [data-brief] .brief-sheet {
@@ -467,7 +487,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px 34px;
-  margin: auto 0 0;
+  margin: 18px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -558,6 +578,13 @@
 }
 
 /* Dot field: the overall picture as a halftone print */
+
+[data-brief] .brief-overall {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
 
 [data-brief] .brief-dots {
   display: flex;
@@ -1089,11 +1116,333 @@
   color: var(--brief-muted);
 }
 
-/* ── Narrow screens: builder on top, then fluid sheets ───────────── */
+/* ── Flow: the brief on screen ───────────────────────────────────── */
+
+[data-brief] .brief-flow {
+  max-width: 74rem;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+[data-brief] .brief-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 3rem;
+  padding: 0 0 2rem;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-intro-country {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 3.4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+[data-brief] .brief-intro-title {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-intro-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .brief-intro-figures li {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-brief] .brief-intro-value {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+[data-brief] .brief-intro-label {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-intro-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-flow-section {
+  padding: 3.5rem 0 3.25rem;
+  border-bottom: 1px solid var(--brief-hairline);
+  scroll-margin-top: 1rem;
+}
+
+[data-brief] .brief-flow .brief-sec {
+  height: auto;
+}
+
+[data-brief] .brief-flow .brief-sec-headline {
+  max-width: 34em;
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+  line-height: 1.2;
+}
+
+[data-brief] .brief-flow .brief-sec-body {
+  overflow: visible;
+}
+
+/* A tall overall field: the picture the reader explores. */
+[data-brief] .brief-flow .brief-overall .brief-dots-field {
+  flex: none;
+  height: clamp(180px, 22vw, 260px);
+}
+
+[data-brief] .brief-flow .brief-dots-legend {
+  gap: 0.5rem 1.75rem;
+  margin-top: 0.9rem;
+}
+
+[data-brief] .brief-flow .brief-dots-pct {
+  font-size: 1rem;
+}
+
+[data-brief] .brief-flow .brief-dots-tone {
+  font-size: 0.9375rem;
+}
+
+[data-brief] .brief-dots-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+[data-brief] .brief-dots-link .brief-dots-tone {
+  color: var(--brief-ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+  text-underline-offset: 4px;
+}
+
+[data-brief] .brief-dots-link:hover .brief-dots-tone {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .brief-dots-link:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 3px;
+}
+
+[data-brief] .brief-dots-arrow {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-dots-field[data-selectable] {
+  cursor: pointer;
+}
+
+/* Theme clusters: the tone's dots grouped by theme, numbered like the list. */
+[data-brief] .brief-theme-dots {
+  flex: none;
+  margin: 0 0 1.25rem;
+}
+
+[data-brief] .brief-theme-dots .brief-dots-field {
+  flex: none;
+  height: clamp(110px, 12vw, 150px);
+}
+
+[data-brief] .brief-dots-labels {
+  position: relative;
+  height: 20px;
+}
+
+[data-brief] .brief-dots-label {
+  position: absolute;
+  bottom: 3px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brief-muted);
+  white-space: nowrap;
+}
+
+[data-brief] .brief-dots-label[data-active] {
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-flow .brief-themes-title {
+  font-size: 0.8125rem;
+}
+
+[data-brief] .brief-flow .brief-theme-button {
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  padding: 0.7rem 0.6rem;
+}
+
+[data-brief] .brief-flow .brief-theme-n,
+[data-brief] .brief-flow .brief-theme-count {
+  font-size: 0.875rem;
+}
+
+[data-brief] .brief-flow .brief-theme-name {
+  font-size: 1rem;
+}
+
+[data-brief] .brief-flow .brief-theme-meta {
+  font-size: 0.875rem;
+}
+
+/* On screen the dots above give the sizes; the bars are for paper. */
+[data-brief] .brief-flow .brief-theme-bar {
+  display: none;
+}
+
+[data-brief] .brief-theme[data-hovered] .brief-theme-button {
+  background: #f7f7f7;
+}
+
+[data-brief] .brief-flow .brief-example {
+  margin-top: 1.5rem;
+}
+
+[data-brief] .brief-flow .brief-example-caption,
+[data-brief] .brief-flow .brief-quote-source {
+  font-size: 0.8125rem;
+}
+
+[data-brief] .brief-flow .brief-quote-text {
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+[data-brief] .brief-flow .brief-example-link {
+  margin-top: 52px;
+}
+
+[data-brief] .brief-flow .brief-example-actions .brief-button-quiet {
+  margin-right: 1.25rem;
+  font-size: 0.875rem;
+}
+
+/* Ranked targets */
+[data-brief] .brief-flow .brief-rank-row {
+  grid-template-columns: 22px minmax(0, 1fr) minmax(90px, 200px) 48px;
+  padding: 0.6rem 0;
+}
+
+[data-brief] .brief-flow .brief-rank-title {
+  font-size: 0.9375rem;
+}
+
+[data-brief] .brief-flow .brief-rank-meta,
+[data-brief] .brief-flow .brief-rank-n {
+  font-size: 0.8125rem;
+}
+
+[data-brief] .brief-flow .brief-rank-value {
+  font-size: 0.9375rem;
+}
+
+[data-brief] .brief-rank-bar-aligned > span {
+  background-image: radial-gradient(circle, var(--brief-green) 1.3px, transparent 1.55px);
+  background-size: 3px 3px;
+}
+
+/* Documents: rows open to their pairs. */
+[data-brief] .brief-flow .brief-pairs-head {
+  font-size: 0.8125rem;
+}
+
+[data-brief] .brief-flow .brief-pair {
+  padding: 0.55rem 0 0.65rem;
+}
+
+[data-brief] .brief-flow .brief-pair-name {
+  font-size: 0.9375rem;
+}
+
+[data-brief] .brief-flow .brief-pair-value {
+  font-size: 0.875rem;
+}
+
+[data-brief] .brief-flow .brief-pair-bar {
+  height: 14px;
+}
+
+[data-brief] .brief-doc-button .brief-pair-name::after {
+  content: " +";
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-doc[data-open] .brief-doc-button .brief-pair-name::after {
+  content: " \2212";
+}
+
+[data-brief] .brief-doc[data-open] {
+  background: #fafafa;
+}
+
+[data-brief] .brief-doc-pairs {
+  margin: 0 0 0.75rem;
+  padding: 0 0 0 1.5rem;
+  list-style: none;
+}
+
+[data-brief] .brief-doc-pairs .brief-pair-name {
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-doc-pairs .brief-pair-bar {
+  height: 10px;
+}
+
+/* ── Print preview bar ───────────────────────────────────────────── */
+
+[data-brief] .brief-preview-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: -1rem 0 1.5rem;
+  padding: 1rem 0;
+  background: var(--brief-desk);
+}
+
+[data-brief] .brief-preview-pages {
+  margin: 0 auto 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* ── Narrow screens: builder on top, then the flow ───────────────── */
 
 @media screen and (max-width: 1180px) {
   [data-brief] .brief-desk {
-    grid-template-columns: minmax(0, 210mm);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   [data-brief] .brief-builder {
@@ -1107,13 +1456,15 @@
     padding: 1.5rem 1rem 3rem;
   }
 
-  [data-brief] .brief-sheet {
+  /* Only the visible preview turns fluid; the off-screen sheets keep their
+     A4 geometry for measuring. */
+  [data-brief] .brief-desk[data-mode="preview"] .brief-sheet {
     width: 100%;
     height: auto;
     padding: 1.25rem 1rem;
   }
 
-  [data-brief] .brief-slot {
+  [data-brief] .brief-desk[data-mode="preview"] .brief-slot {
     height: auto;
   }
 }
@@ -1142,8 +1493,12 @@
     background: none;
   }
 
-  [data-brief] .brief-sheets {
+  [data-brief] .brief-sheets,
+  [data-brief] .brief-sheets[data-offscreen] {
+    position: static;
     display: block;
+    width: auto;
+    visibility: visible;
   }
 
   [data-brief] .brief-sheet {

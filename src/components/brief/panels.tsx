@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { DrawerHeader, DrawerShell } from "@/components/ui/drawer-shell";
 import { PairDrawer } from "@/components/dashboard/coherence-briefing/pair-drawer";
-import { partnersOf } from "@/lib/brief/compute";
+import { partnersOf, strongestAligned } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import type { FoundPair } from "@/lib/brief/pair";
 import type { BriefSource } from "@/lib/brief/source";
@@ -20,6 +20,8 @@ export type PanelState =
 
 /** Commitment lists show this many before "Show all". */
 const LIST_PREVIEW = 12;
+/** Target-pair lists in a document pair show this many before "Show all". */
+const PAIR_PREVIEW = 5;
 
 function keyOf(p: PanelState): string {
   switch (p.kind) {
@@ -102,6 +104,100 @@ function PairPanel({
   );
 }
 
+/** Split an AI paragraph into its first sentence and the rest. */
+function firstSentence(text: string): { first: string; rest: string } {
+  const m = text.match(/^([\s\S]+?[.!?])(\s+)([\s\S]*)$/);
+  return m ? { first: m[1], rest: m[3] } : { first: text, rest: "" };
+}
+
+/** One labelled AI line: the first sentence, the rest on request. */
+function NoteLine({ label, text }: { label: string; text: string }) {
+  const t = useTranslations("brief.panel");
+  const [more, setMore] = useState(false);
+  const { first, rest } = firstSentence(text);
+  return (
+    <div>
+      <h3 className="text-data font-semibold text-[var(--undp-black)]">{label}</h3>
+      <p className="mt-1 text-body leading-relaxed text-[var(--undp-black)]">
+        {more ? text : first}
+        {rest && !more && (
+          <>
+            {" "}
+            <button
+              type="button"
+              className="text-caption font-medium text-[var(--undp-blue)] underline underline-offset-2"
+              onClick={() => setMore(true)}
+            >
+              {t("more")}
+            </button>
+          </>
+        )}
+      </p>
+    </div>
+  );
+}
+
+/** Rows of target pairs between two documents: both targets, one line each. */
+function PairRows({
+  rows,
+  docName,
+  testId,
+  mechanismOf,
+  onOpen,
+}: {
+  rows: { key: string; a: { doc: string; label: string; text: string; id: string }; b: { doc: string; label: string; text: string; id: string }; mechanism?: string }[];
+  docName: (id: string) => string;
+  testId: string;
+  mechanismOf?: (m: string) => string;
+  onOpen: (aId: string, bId: string) => void;
+}) {
+  const t = useTranslations("brief.panel");
+  const [all, setAll] = useState(false);
+  const shown = all ? rows : rows.slice(0, PAIR_PREVIEW);
+  return (
+    <>
+      <ol className="mt-3 border-t border-line">
+        {shown.map((r) => (
+          <li key={r.key} className="border-b border-line" data-testid={testId}>
+            <button
+              type="button"
+              className="block w-full py-2.5 text-left hover:bg-[var(--undp-light-gray,#f7f7f7)]"
+              onClick={() => onOpen(r.a.id, r.b.id)}
+            >
+              <span className="block text-data text-[var(--undp-black)]">
+                <span className="text-[var(--undp-gray)]">{docName(r.a.doc)} · </span>
+                {commitmentLine(r.a)}
+              </span>
+              <span className="block text-data text-[var(--undp-black)]">
+                <span className="text-[var(--undp-gray)]">{docName(r.b.doc)} · </span>
+                {commitmentLine(r.b)}
+              </span>
+              {r.mechanism && mechanismOf && (
+                <span className="mt-0.5 block text-caption text-[var(--undp-gray)]">{mechanismOf(r.mechanism)}</span>
+              )}
+            </button>
+          </li>
+        ))}
+      </ol>
+      {!all && rows.length > PAIR_PREVIEW && (
+        <button
+          type="button"
+          className="mt-2 text-caption font-medium text-[var(--undp-blue)] underline underline-offset-2"
+          onClick={() => setAll(true)}
+        >
+          {t("showAll", { count: rows.length })}
+        </button>
+      )}
+    </>
+  );
+}
+
+/**
+ * A pair of documents, after the dashboard's pair panel: the result bar, the
+ * pipeline's AI reading (first sentences, the rest on request), a hedged
+ * starting point, then the strongest aligned pairs and the potential
+ * misalignments, most frequent targets first.
+ */
 function DocPairPanel({
   data,
   source,
@@ -118,19 +214,29 @@ function DocPairPanel({
   const t = useTranslations("brief.panel");
   const tm = useTranslations("labels.contradictionType");
   const { pct } = useNumbers();
-  const stat = data.pairs.find((p) => p.a.id === a && p.b.id === b);
+  const stat = data.pairs.find((p) => (p.a.id === a && p.b.id === b) || (p.a.id === b && p.b.id === a));
+  const note =
+    (source.pairNotes ?? []).find((n) => (n.a === a && n.b === b) || (n.a === b && n.b === a)) ?? null;
   const strands = useMemo(
     () =>
       strandsByPathway(
         data.scope.alignment,
         data.scope.targets,
         source.documents.map((d) => d.id),
-      ).get(`${a}~${b}`) ?? [],
+      ).get(`${a}~${b}`) ??
+      strandsByPathway(
+        data.scope.alignment,
+        data.scope.targets,
+        source.documents.map((d) => d.id),
+      ).get(`${b}~${a}`) ??
+      [],
     [data.scope, source.documents, a, b],
   );
+  const aligned = useMemo(() => strongestAligned(data.scope, a, b), [data.scope, a, b]);
   const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
   const c = stat?.counts;
   const share = (v: number) => pct(c && c.total > 0 ? v / c.total : 0);
+  const byId = new Map(data.scope.commitments.map((x) => [x.id, x]));
   return (
     <>
       <DrawerHeader>
@@ -148,33 +254,49 @@ function DocPairPanel({
           </p>
         )}
       </DrawerHeader>
-      <div className="px-6 py-4">
-        <p className="text-body text-[var(--undp-black)]">{t("docPairLead", { count: strands.length })}</p>
-        <ol className="mt-3 border-t border-line">
-          {strands.map((s) => (
-            <li key={s.pairKey} className="border-b border-line" data-testid="brief-strand-row">
-              <button
-                type="button"
-                className="block w-full py-2.5 text-left hover:bg-[var(--undp-light-gray,#f7f7f7)]"
-                onClick={() => onOpenPair(s.pair.targetAId, s.pair.targetBId)}
-              >
-                <span className="block text-data text-[var(--undp-black)]">
-                  <span className="text-[var(--undp-gray)]">{docName(s.targetA.sourceDocument)} · </span>
-                  {commitmentLine({ label: s.targetA.sourceLabel, text: s.targetA.text })}
-                </span>
-                <span className="block text-data text-[var(--undp-black)]">
-                  <span className="text-[var(--undp-gray)]">{docName(s.targetB.sourceDocument)} · </span>
-                  {commitmentLine({ label: s.targetB.sourceLabel, text: s.targetB.text })}
-                </span>
-                {s.pair.mechanism && (
-                  <span className="mt-0.5 block text-caption text-[var(--undp-gray)]">
-                    {tm(s.pair.mechanism)}
-                  </span>
-                )}
-              </button>
-            </li>
-          ))}
-        </ol>
+      <div className="space-y-6 px-6 py-4">
+        {note && (
+          <section className="space-y-3">
+            <p className="text-caption text-[var(--undp-gray)]">{t("aiReading")}</p>
+            <p className="font-display text-[1.125rem] leading-snug text-[var(--undp-black)]">{note.title}</p>
+            <NoteLine label={t("whereAlign")} text={note.align} />
+            <NoteLine label={t("whereDiverge")} text={note.diverge} />
+          </section>
+        )}
+        {note?.hint && (
+          <section>
+            <h3 className="text-data font-semibold text-[var(--undp-black)]">{t("pathwayTitle")}</h3>
+            <p className="mt-1 text-body leading-relaxed text-[var(--undp-black)]">{note.hint}</p>
+            <p className="mt-1 text-caption text-[var(--undp-gray)]">{t("pathwayCaveat")}</p>
+          </section>
+        )}
+        <section>
+          <h3 className="text-data font-semibold text-[var(--undp-black)]">
+            {t("alignedPairs", { count: aligned.length })}
+          </h3>
+          <PairRows
+            testId="brief-aligned-pair-row"
+            docName={docName}
+            onOpen={onOpenPair}
+            rows={aligned.map((x) => ({ key: `${x.a.id}__${x.b.id}`, a: x.a, b: x.b }))}
+          />
+        </section>
+        <section>
+          <h3 className="text-data font-semibold text-[var(--undp-black)]">
+            {t("docPairLead", { count: strands.length })}
+          </h3>
+          <PairRows
+            testId="brief-strand-row"
+            docName={docName}
+            onOpen={onOpenPair}
+            mechanismOf={(m) => tm(m)}
+            rows={strands.flatMap((s) => {
+              const x = byId.get(s.pair.targetAId);
+              const y = byId.get(s.pair.targetBId);
+              return x && y ? [{ key: s.pairKey, a: x, b: y, mechanism: s.pair.mechanism ?? undefined }] : [];
+            })}
+          />
+        </section>
       </div>
     </>
   );
