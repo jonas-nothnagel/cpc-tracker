@@ -1,4 +1,5 @@
 import {
+  buildSectorCoherenceShare,
   computeStorylineLiveStats,
   computeTargetConcentration,
   getDocPairKey,
@@ -20,6 +21,7 @@ import {
   type BriefCommitment,
   type BriefDocument,
   type BriefSource,
+  type LensId,
 } from "./source";
 
 // ─── Scope ──────────────────────────────────────────────────────────
@@ -418,4 +420,70 @@ export function partnersOf(
     apart: scope.commitments.filter((c) => apart.has(c.id)),
     reinforce: scope.commitments.filter((c) => reinforce.has(c.id)),
   };
+}
+
+// ─── Policy areas ───────────────────────────────────────────────────
+
+export interface AreaRow {
+  id: string;
+  name: string;
+  /** Selected commitments whose primary area this is. */
+  commitments: number;
+  /** Comparisons touching the area that reinforce or show potential misalignment. */
+  reviewed: number;
+  apart: number;
+  /** apart / reviewed; null below the dashboard's minimum sample. */
+  share: number | null;
+}
+
+/**
+ * Policy areas of one lens, rated by their share of potential misalignment
+ * (the dashboard's `buildSectorCoherenceShare`, which leaves thin areas
+ * unrated). Areas without selected commitments are left out.
+ */
+export function areaRows(
+  source: BriefSource,
+  scope: Scope,
+  lensId: LensId,
+): { rows: AreaRow[]; average: number; max: number } {
+  const lens = source.lenses.find((l) => l.id === lensId);
+  if (!lens) return { rows: [], average: 0, max: 0 };
+  const inScope = new Set(scope.commitments.map((c) => c.id));
+  const classifications = Object.entries(lens.primary)
+    .filter(([targetId]) => inScope.has(targetId))
+    .map(([targetId, categoryId]) => ({
+      targetId,
+      categoryId,
+      taxonomyType: lens.taxonomyType,
+      isPrimary: true,
+    }));
+  const summary = buildSectorCoherenceShare({
+    targets: scope.targets,
+    alignment: scope.alignment,
+    classifications,
+    categories: lens.categories,
+    taxonomyType: lens.taxonomyType,
+  });
+  const members = new Map<string, number>();
+  for (const c of classifications) members.set(c.categoryId, (members.get(c.categoryId) ?? 0) + 1);
+  const rows: AreaRow[] = lens.categories
+    .filter((cat) => (members.get(cat.id) ?? 0) > 0)
+    .map((cat) => {
+      const share = summary.byCategory.get(cat.id);
+      return {
+        id: cat.id,
+        name: cat.name,
+        commitments: members.get(cat.id) ?? 0,
+        reviewed: share?.reviewedPairs ?? 0,
+        apart: share?.flaggedPairs ?? 0,
+        share: share?.flaggedShare ?? null,
+      };
+    })
+    .sort((x, y) => {
+      if (x.share === null && y.share !== null) return 1;
+      if (y.share === null && x.share !== null) return -1;
+      const d = (y.share ?? 0) - (x.share ?? 0) || y.commitments - x.commitments;
+      return d !== 0 ? d : x.name.localeCompare(y.name);
+    });
+  return { rows, average: summary.mid, max: summary.maxShare };
 }

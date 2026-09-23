@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   apartStep,
+  areaRows,
   commitmentsToReview,
   concentrationOf,
   docPairStats,
@@ -363,5 +364,53 @@ describe("partnersOf", () => {
     const partners = partnersOf(scopeOf(SOURCE, ["A", "B", "C"]), "B2");
     expect(partners.apart.map((c) => c.id)).toEqual(["A2", "C2"]);
     expect(partners.reinforce.map((c) => c.id)).toEqual(["A1", "A3", "C1"]);
+  });
+});
+
+// ─── Task 7: policy areas ─────────────────────────────────────────────
+
+describe("areaRows", () => {
+  const source: BriefSource = {
+    ...SOURCE,
+    lenses: [
+      {
+        id: "globe",
+        taxonomyType: "globe",
+        categories: [
+          { id: "g1", name: "Protected areas" },
+          { id: "g2", name: "Agriculture" },
+          { id: "g3", name: "Water" },
+        ],
+        primary: { A1: "g1", B1: "g1", C2: "g1", A2: "g2", A3: "g2", C1: "g2" },
+      },
+    ],
+  };
+
+  it("rates each area by its share of potential misalignment, highest first", () => {
+    const { rows, average, max } = areaRows(source, scopeOf(source, ["A", "B", "C"]), "globe");
+    expect(rows.map((r) => [r.id, r.name, r.commitments, r.reviewed, r.apart])).toEqual([
+      ["g2", "Agriculture", 3, 7, 3],
+      ["g1", "Protected areas", 3, 6, 2],
+    ]);
+    expect(rows[0].share).toBeCloseTo(3 / 7);
+    expect(rows[1].share).toBeCloseTo(2 / 6);
+    expect(average).toBeCloseTo(4 / 11);
+    expect(max).toBeCloseTo(3 / 7);
+  });
+
+  it("leaves the share empty for an area with too few rated comparisons", () => {
+    const { rows } = areaRows(source, scopeOf(source, ["A", "B"]), "globe");
+    expect(rows.map((r) => [r.name, r.share])).toEqual([
+      ["Agriculture", null],
+      ["Protected areas", null],
+    ]);
+  });
+
+  it("returns nothing for a lens the country does not have", () => {
+    expect(areaRows(source, scopeOf(source, ["A", "B", "C"]), "hr")).toEqual({
+      rows: [],
+      average: 0,
+      max: 0,
+    });
   });
 });
