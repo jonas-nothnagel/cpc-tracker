@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  apartStep,
+  commitmentsToReview,
+  concentrationOf,
   docPairStats,
   leadingPair,
+  mapCells,
+  partnersOf,
+  reinforceStep,
   scopeOf,
   shareStep,
   themeExample,
@@ -283,5 +289,79 @@ describe("themeExample", () => {
 
   it("returns null when none of the theme's comparisons are in the selection", () => {
     expect(themeExample(scopeOf(SOURCE, ["A", "B"]), WATER)).toBeNull();
+  });
+});
+
+// ─── Task 6: commitments and map cells ────────────────────────────────
+
+describe("commitmentsToReview", () => {
+  it("ranks commitments by potential misalignments and names their partner documents", () => {
+    const rows = commitmentsToReview(scopeOf(SOURCE, ["A", "B", "C"]), 3);
+    expect(rows.map((r) => [r.commitment.id, r.apart, r.partnerDocs])).toEqual([
+      ["A3", 2, [{ doc: "C", count: 2 }]],
+      ["B2", 2, [{ doc: "A", count: 1 }, { doc: "C", count: 1 }]],
+      ["C2", 2, [{ doc: "A", count: 1 }, { doc: "B", count: 1 }]],
+    ]);
+  });
+});
+
+describe("concentrationOf", () => {
+  it("finds the fewest commitments covering half of the potential misalignments", () => {
+    expect(concentrationOf(scopeOf(SOURCE, ["A", "B", "C"]))).toEqual({
+      total: 4,
+      contested: 5,
+      top: ["A3"],
+      share: 0.5,
+      concentrated: true,
+    });
+  });
+
+  it("reports nothing to concentrate when there is no potential misalignment", () => {
+    const scope = scopeOf(SOURCE, ["A", "B", "C"]);
+    const calm = { ...scope, alignment: scope.alignment.filter((r) => r.alignment !== "flagged") };
+    expect(concentrationOf(calm)).toEqual({
+      total: 0,
+      contested: 0,
+      top: [],
+      share: 0,
+      concentrated: false,
+    });
+  });
+});
+
+describe("mapCells", () => {
+  it("counts each commitment's comparisons by tone", () => {
+    const cells = mapCells(scopeOf(SOURCE, ["A", "B", "C"]));
+    expect(cells.map((c) => [c.commitment.id, c.apart, c.reinforce, c.total])).toEqual([
+      ["A1", 0, 4, 4],
+      ["A2", 1, 1, 4],
+      ["A3", 2, 1, 4],
+      ["B1", 0, 1, 5],
+      ["B2", 2, 3, 5],
+      ["C1", 1, 3, 5],
+      ["C2", 2, 1, 5],
+    ]);
+  });
+});
+
+describe("apartStep and reinforceStep", () => {
+  it("bins potential misalignments as 0, 1-2, 3-5, 6-10, 11-20, 21+", () => {
+    expect([0, 1, 2, 3, 5, 6, 10, 11, 20, 21, 999].map(apartStep)).toEqual([
+      0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5,
+    ]);
+  });
+
+  it("bins the reinforcing share in quarters", () => {
+    expect([0, 0.2499, 0.25, 0.4999, 0.5, 0.75, 1].map(reinforceStep)).toEqual([
+      0, 0, 1, 1, 2, 3, 3,
+    ]);
+  });
+});
+
+describe("partnersOf", () => {
+  it("lists a commitment's partners by tone, in document order", () => {
+    const partners = partnersOf(scopeOf(SOURCE, ["A", "B", "C"]), "B2");
+    expect(partners.apart.map((c) => c.id)).toEqual(["A2", "C2"]);
+    expect(partners.reinforce.map((c) => c.id)).toEqual(["A1", "A3", "C1"]);
   });
 });

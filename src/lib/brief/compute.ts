@@ -1,8 +1,10 @@
 import {
   computeStorylineLiveStats,
+  computeTargetConcentration,
   getDocPairKey,
   getStorylineDocPairKeys,
   rankStorylines,
+  rankTargetsByFriction,
   selectCorpusThemesForState,
 } from "@/lib/coherence-briefing";
 import type {
@@ -294,4 +296,126 @@ export function themeExample(scope: Scope, storyline: CorpusStoryline): ExampleP
   return best.mechanism
     ? { a: best.a, b: best.b, level: best.level, mechanism: best.mechanism }
     : { a: best.a, b: best.b, level: best.level };
+}
+
+// ─── Commitments ────────────────────────────────────────────────────
+
+export interface CommitmentRow {
+  commitment: BriefCommitment;
+  /** Potential misalignments the commitment is part of. */
+  apart: number;
+  /** Documents of its partners in those potential misalignments, most first. */
+  partnerDocs: { doc: string; count: number }[];
+}
+
+/** The commitments in the most potential misalignments, with the documents
+ *  those misalignments run to. */
+export function commitmentsToReview(scope: Scope, limit = 8): CommitmentRow[] {
+  const byId = new Map(scope.commitments.map((c) => [c.id, c]));
+  const docOrder = new Map(scope.docs.map((d, i) => [d.id, i]));
+  return rankTargetsByFriction(scope.alignment, scope.targets, limit).map(
+    ({ target, flaggedPairCount }) => {
+      const partners = new Map<string, number>();
+      for (const c of scope.comparisons) {
+        if (c.level !== "flagged") continue;
+        const other = c.a.id === target.id ? c.b : c.b.id === target.id ? c.a : null;
+        if (other) partners.set(other.doc, (partners.get(other.doc) ?? 0) + 1);
+      }
+      const partnerDocs = [...partners.entries()]
+        .map(([doc, count]) => ({ doc, count }))
+        .sort(
+          (x, y) => y.count - x.count || (docOrder.get(x.doc) ?? 0) - (docOrder.get(y.doc) ?? 0),
+        );
+      return { commitment: byId.get(target.id)!, apart: flaggedPairCount, partnerDocs };
+    },
+  );
+}
+
+export interface Concentration {
+  /** Potential misalignments in the selection. */
+  total: number;
+  /** Commitments part of at least one. */
+  contested: number;
+  /** Fewest commitments (ids, most involved first) covering at least half. */
+  top: string[];
+  /** Share of potential misalignments those commitments are part of. */
+  share: number;
+  /** Few commitments carry it: at most a fifth of the contested ones. */
+  concentrated: boolean;
+}
+
+export function concentrationOf(scope: Scope): Concentration {
+  const c = computeTargetConcentration(scope.alignment, scope.targets, 0.5);
+  const top = c.topTargets.map((t) => t.target.id);
+  return {
+    total: c.totalFlaggedPairs,
+    contested: c.contestedTargetCount,
+    top,
+    share: c.coveredPairShare,
+    concentrated: top.length > 0 && top.length <= 0.2 * c.contestedTargetCount,
+  };
+}
+
+// ─── Map cells ──────────────────────────────────────────────────────
+
+export interface MapCell {
+  commitment: BriefCommitment;
+  apart: number;
+  reinforce: number;
+  total: number;
+}
+
+export function mapCells(scope: Scope): MapCell[] {
+  const cells = new Map(
+    scope.commitments.map((c) => [c.id, { commitment: c, apart: 0, reinforce: 0, total: 0 }]),
+  );
+  for (const c of scope.comparisons) {
+    const tone = toneOf(c.level);
+    for (const id of [c.a.id, c.b.id]) {
+      const cell = cells.get(id);
+      if (!cell) continue;
+      cell.total += 1;
+      if (tone === "apart") cell.apart += 1;
+      else if (tone === "reinforce") cell.reinforce += 1;
+    }
+  }
+  return [...cells.values()];
+}
+
+/** Lower bounds of the map's potential-misalignment steps:
+ *  0, 1-2, 3-5, 6-10, 11-20, 21 and more. */
+export const APART_STEPS = [0, 1, 3, 6, 11, 21] as const;
+
+export function apartStep(n: number): 0 | 1 | 2 | 3 | 4 | 5 {
+  let step = 0;
+  for (let i = 0; i < APART_STEPS.length; i++) if (n >= APART_STEPS[i]) step = i;
+  return step as 0 | 1 | 2 | 3 | 4 | 5;
+}
+
+/** Quarters of the share of a commitment's comparisons that reinforce. */
+export function reinforceStep(share: number): 0 | 1 | 2 | 3 {
+  if (share < 0.25) return 0;
+  if (share < 0.5) return 1;
+  if (share < 0.75) return 2;
+  return 3;
+}
+
+/** A commitment's partners by tone, in document order. */
+export function partnersOf(
+  scope: Scope,
+  id: string,
+): { apart: BriefCommitment[]; reinforce: BriefCommitment[] } {
+  const apart = new Set<string>();
+  const reinforce = new Set<string>();
+  for (const c of scope.comparisons) {
+    const other = c.a.id === id ? c.b.id : c.b.id === id ? c.a.id : null;
+    if (!other) continue;
+    const tone = toneOf(c.level);
+    if (tone === "apart") apart.add(other);
+    else if (tone === "reinforce") reinforce.add(other);
+  }
+  return {
+    apart: scope.commitments.filter((c) => apart.has(c.id)),
+    reinforce: scope.commitments.filter((c) => reinforce.has(c.id)),
+  };
 }
