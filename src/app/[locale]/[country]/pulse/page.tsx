@@ -4,8 +4,8 @@ import { Link } from "@/i18n/navigation";
 import { getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { computePulseModel } from "@/lib/pulse/aggregate";
-import { selectFindingCandidates, type FindingCandidate } from "@/lib/finding/candidates";
-import { loadConsensusCounts } from "@/lib/finding/consensus";
+import { strandSignals, strandsByPathway } from "@/lib/pulse/strands";
+import type { FindingCandidate } from "@/lib/finding/candidates";
 import { buildFindingHeadline } from "@/lib/finding/headline";
 import { findingDocName } from "@/lib/finding/doc-name";
 import { normalizeTarget } from "@/lib/normalize-target";
@@ -43,25 +43,7 @@ async function loadPulse(props: Props) {
 
   const docOrder = (countryConfig?.documentTypes ?? []).map((d) => d.id);
   const model_ = computePulseModel(data.alignment, data.targets, docOrder);
-
-  const consensus = loadConsensusCounts(entry.id);
-  const candidates = selectFindingCandidates(data.alignment, data.targets, {
-    consensusCounts: consensus?.counts,
-  });
-  const orderIdx = (d: string) => {
-    const i = docOrder.indexOf(d);
-    return i === -1 ? docOrder.length : i;
-  };
-  const grouped = new Map<string, FindingCandidate[]>();
-  for (const c of candidates) {
-    const da = c.targetA.sourceDocument;
-    const db = c.targetB.sourceDocument;
-    const [a, b] = orderIdx(da) <= orderIdx(db) ? [da, db] : [db, da];
-    const key = `${a}~${b}`;
-    const list = grouped.get(key);
-    if (list) list.push(c);
-    else grouped.set(key, [c]);
-  }
+  const grouped = strandsByPathway(data.alignment, data.targets, docOrder);
 
   const t = await getTranslations({ locale, namespace: "pulse" });
   const tf = await getTranslations({ locale, namespace: "finding" });
@@ -86,19 +68,11 @@ async function loadPulse(props: Props) {
       sharedContext: c.pair.sharedContext,
       sameDoc: false,
     });
-    const signals = [
-      consensus
-        ? tf("index.modelsFlagging", {
-            count: c.modelsFlagging ?? 1,
-            total: consensus.modelsTotal,
-          })
-        : null,
-      c.pair.confidence ? confidenceLabels[c.pair.confidence] : null,
-      c.pair.manageability ? manageabilityLabels[c.pair.manageability] : null,
-      c.pair.mechanism ? mechanismLabels[c.pair.mechanism] : null,
-    ]
-      .filter(Boolean)
-      .join(" · ");
+    const signals = strandSignals(c.pair, {
+      confidence: confidenceLabels,
+      manageability: manageabilityLabels,
+      mechanism: mechanismLabels,
+    });
     return {
       pairKey: c.pairKey,
       rowTitle: `${a.sourceLabel} ↔ ${b.sourceLabel}`,

@@ -51,7 +51,7 @@ const PROPS: CoherenceCanvasProps = {
         {
           pairKey: "FSS_18__NDC_22",
           rowTitle: "3.4 Fodder production ↔ Livestock mitigation",
-          signals: "identified by 4 of 4 models · High confidence · Design-level",
+          signals: "High confidence · Design-level · Competing for resources",
           claim: "Possible competition for land between Food Supply and Security Measures and Nationally Determined Contribution",
           aTag: "FSS · 3.4 Fodder production",
           aText: "Provide organisational and financial support to increase fodder cultivation.",
@@ -63,7 +63,7 @@ const PROPS: CoherenceCanvasProps = {
         {
           pairKey: "FSS_1__NDC_2",
           rowTitle: "3.1 New cropland ↔ Ecosystems",
-          signals: "identified by 3 of 4 models · Medium confidence",
+          signals: "Medium confidence · Competing for resources",
           claim: "Possible competition for land between Food Supply and Security Measures and Nationally Determined Contribution",
           aTag: "FSS · 3.1 New cropland",
           aText: "Convert reclaimed land into agricultural land.",
