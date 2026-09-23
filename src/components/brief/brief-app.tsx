@@ -114,7 +114,7 @@ export function BriefApp({
               documents={scope.docs.length}
               comparisons={scope.comparisons.length}
               lensName={lensName}
-              documentNames={scope.docs.map((d) => d.full)}
+              documentNames={scope.docs.map((d) => (d.code === d.name ? d.name : `${d.code}: ${d.name}`))}
             />
           }
           renderSection={(id) => (

@@ -68,7 +68,8 @@ describe("brief sections", () => {
       }),
     ).toBeTruthy();
     const rows = screen.getAllByTestId("brief-commitment-row");
-    expect(within(rows[0]).getByText("6 Commitment B6")).toBeTruthy();
+    // A short label is only a clause number, so the start of the text follows it.
+    expect(within(rows[0]).getByText("6 Commitment B6 Verbatim text of commitment B6.")).toBeTruthy();
     expect(within(rows[0]).getByText("7")).toBeTruthy();
     expect(within(rows[0]).getByText(/mostly with Document C/)).toBeTruthy();
   });

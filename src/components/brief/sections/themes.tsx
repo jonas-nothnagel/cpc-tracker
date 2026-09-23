@@ -39,7 +39,7 @@ export function ThemeSectionView({
       });
   const note =
     section.rows.length > 0
-      ? `${t("themes.aiNote")}${section.exact ? "" : ` ${t("themes.notExact")}`}`
+      ? `${t("themes.legend")} ${t("themes.aiNote")}${section.exact ? "" : ` ${t("themes.notExact")}`}`
       : undefined;
   return (
     <SectionFrame id={key} headline={headline} note={note}>

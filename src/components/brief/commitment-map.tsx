@@ -9,7 +9,8 @@ import { INK } from "./ink";
 
 /** Drawing width of the map in sheet pixels (178 mm of content width). */
 export const MAP_WIDTH = 672;
-const MAP_MAX_HEIGHT = 540;
+const MAP_MAX_HEIGHT = 600;
+const NAME_LINES = 3;
 const LABEL_FONT = 12;
 /** Rough width of one character of the 12px sans, for wrapping names. */
 const CHAR_WIDTH = 6.4;
@@ -27,7 +28,7 @@ function fillOf(step: number, mode: MapMode): string {
   return INK.green[step];
 }
 
-/** Up to two lines of a document name within a block's width. */
+/** Up to three lines of a document name within a block's width. */
 function wrapName(name: string, width: number): string[] {
   const max = Math.max(4, Math.floor(width / CHAR_WIDTH));
   const words = name.split(/\s+/);
@@ -41,10 +42,10 @@ function wrapName(name: string, width: number): string[] {
     }
     if (line) lines.push(line);
     line = word;
-    if (lines.length === 2) break;
+    if (lines.length === NAME_LINES) break;
   }
-  if (lines.length < 2 && line) lines.push(line);
-  if (lines.length > 2) lines.length = 2;
+  if (lines.length < NAME_LINES && line) lines.push(line);
+  if (lines.length > NAME_LINES) lines.length = NAME_LINES;
   const used = lines.join(" ").length;
   if (used < name.length) {
     const last = lines[lines.length - 1];
@@ -101,7 +102,7 @@ export function CommitmentMap({
         docs.map((d) => ({ id: d.id, count: byDoc.get(d.id)?.length ?? 0 })),
         MAP_WIDTH,
         MAP_MAX_HEIGHT,
-        { labelHeight: 36 },
+        { labelHeight: 52, maxCell: 26, minBlockWidth: 148 },
       ),
     [docs, byDoc],
   );

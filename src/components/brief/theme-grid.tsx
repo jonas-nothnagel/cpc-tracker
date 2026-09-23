@@ -83,12 +83,6 @@ export function ThemeGrid({
           ))}
         </tbody>
       </table>
-      <p className="brief-grid-legend">
-        {ramp.map((c) => (
-          <span key={c} className="brief-mark" style={{ background: c }} aria-hidden="true" />
-        ))}
-        <span>{t("legend")}</span>
-      </p>
     </div>
   );
 }

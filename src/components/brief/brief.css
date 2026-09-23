@@ -485,11 +485,11 @@
   max-width: 40em;
   margin: 2px 0 8px;
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 500;
   line-height: 1.22;
   letter-spacing: -0.005em;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 [data-brief] .brief-sec-sub {
@@ -503,6 +503,7 @@
   flex: 1;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 [data-brief] .brief-sec-note {
@@ -540,22 +541,26 @@
 }
 
 [data-brief] .brief-dots-field canvas {
-  display: block;
-}
-
-[data-brief] .brief-dots-labels {
-  position: relative;
-  height: 32px;
-  margin-top: 6px;
-}
-
-[data-brief] .brief-dots-label {
   position: absolute;
-  top: 0;
-  display: grid;
-  grid-template-columns: auto auto;
-  column-gap: 5px;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .brief-dots-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .brief-dots-legend li {
+  display: flex;
   align-items: baseline;
+  gap: 5px;
   white-space: nowrap;
 }
 
@@ -564,6 +569,7 @@
   height: 8px;
   border-radius: 50%;
   align-self: center;
+  flex: none;
 }
 
 [data-brief] .brief-dots-pct {
@@ -572,7 +578,6 @@
 }
 
 [data-brief] .brief-dots-tone {
-  grid-column: 2;
   font-size: 12px;
   color: var(--brief-muted);
 }
@@ -606,7 +611,7 @@
 
 [data-brief] .brief-grid th,
 [data-brief] .brief-grid td {
-  padding: 5px 0;
+  padding: 3px 0;
   border-bottom: 1px solid var(--brief-hairline);
   vertical-align: middle;
 }
@@ -670,11 +675,19 @@
   background: var(--brief-hairline-strong);
 }
 
+[data-brief] .brief-sec-subrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 16px;
+}
+
 [data-brief] .brief-grid-legend {
   display: flex;
   align-items: center;
   gap: 3px;
-  margin: 5px 0 0;
+  margin: 0 0 5px;
   font-size: 12px;
   color: var(--brief-muted);
 }
@@ -685,7 +698,14 @@
 
 /* Example pair: two verbatim commitments in the documents' own voice */
 
+/* The example takes the space the section leaves; its quotes fade out at
+   the bottom instead of being cut mid-line when a language or a long theme
+   name leaves less room. */
 [data-brief] .brief-example {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
   margin: 4px 0 0;
 }
 
@@ -697,8 +717,13 @@
 
 [data-brief] .brief-example-pair {
   display: grid;
+  flex: 1;
   grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
   align-items: start;
+  min-height: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(180deg, #000 calc(100% - 18px), transparent);
 }
 
 [data-brief] .brief-quote {
@@ -729,7 +754,7 @@
   font-family: var(--font-display);
   font-size: 13.5px;
   line-height: 1.45;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
 
@@ -874,7 +899,7 @@
 [data-brief] .brief-pair {
   display: block;
   width: 100%;
-  padding: 4px 0 5px;
+  padding: 3px 0 4px;
   border: 0;
   border-bottom: 1px solid var(--brief-hairline);
   background: none;
@@ -890,7 +915,7 @@
 
 [data-brief] .brief-pair-name {
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   overflow: hidden;
   font-size: 12px;
   white-space: nowrap;

@@ -6,8 +6,8 @@ import type { BriefData } from "@/lib/brief/data";
 import { RED_HATCH, useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
-/** Rows that fit a half page. */
-const MAX_ROWS = 9;
+/** Rows that fit a half page under a two-line headline and the legend. */
+const MAX_ROWS = 7;
 
 function ranked(pairs: DocPairStat[]): DocPairStat[] {
   const enough = pairs.filter((p) => p.counts.total >= MIN_PAIR_COMPARISONS);

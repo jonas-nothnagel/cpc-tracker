@@ -2973,7 +2973,7 @@
     "together": {
       "headline": "{docA} y {docB} son los que más se refuerzan entre sí: {pct} de sus comparaciones.",
       "headlineFallback": "Los documentos se refuerzan entre sí en {pct} de las comparaciones.",
-      "themes": "Temas recurrentes en los que los documentos se refuerzan entre sí",
+      "themes": "Temas recurrentes de refuerzo mutuo",
       "themesEmpty": "No se identificó ningún tema recurrente para esta selección de documentos.",
       "example": "Por ejemplo, estos dos compromisos se refuerzan entre sí"
     },

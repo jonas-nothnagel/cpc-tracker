@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { docToneShares, partnersOf, type MapCell } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import { CommitmentMap, type MapMode } from "../commitment-map";
-import { INK, useNumbers } from "../ink";
+import { INK, commitmentLine, useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
 /** Documents need this many commitments before the headline names them. */
@@ -166,12 +166,12 @@ export function MapSection({
                   <span>
                     {mode === "apart"
                       ? t("keyRowApart", {
-                          label: c.commitment.label,
+                          label: commitmentLine(c.commitment, 70),
                           doc: docName(c.commitment.doc),
                           count: c.apart,
                         })
                       : t("keyRowTogether", {
-                          label: c.commitment.label,
+                          label: commitmentLine(c.commitment, 70),
                           doc: docName(c.commitment.doc),
                           pct: pct(c.total > 0 ? c.reinforce / c.total : 0),
                         })}

@@ -103,16 +103,37 @@ export function DotField({ counts }: { counts: ToneCounts }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || size.w === 0 || layout.tones.length === 0) return;
-    canvas.style.width = `${size.w}px`;
-    canvas.style.height = `${size.h}px`;
     const finish = () => {
       paint(canvas, layout, size.w, size.h, 1, null);
       settled.current = true;
     };
+    // The print layout can differ from the screen (a narrow window reflows the
+    // sheets): repaint the settled field at the size it has on paper.
+    const onPrint = () => {
+      const field = fieldRef.current;
+      const w = field?.clientWidth ?? 0;
+      const h = field?.clientHeight ?? 0;
+      settled.current = true;
+      if (w > 0 && h > 0 && (w !== size.w || h !== size.h)) {
+        paint(canvas, layoutDots(counts, unit, w, h), w, h, 1, null);
+      } else {
+        paint(canvas, layout, size.w, size.h, 1, null);
+      }
+    };
+    const printQuery = window.matchMedia?.("print");
+    const onPrintChange = (e: MediaQueryListEvent) => {
+      if (e.matches) onPrint();
+    };
+    printQuery?.addEventListener?.("change", onPrintChange);
+    window.addEventListener("beforeprint", onPrint);
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const detach = () => {
+      printQuery?.removeEventListener?.("change", onPrintChange);
+      window.removeEventListener("beforeprint", onPrint);
+    };
     if (settled.current || reduce || typeof IntersectionObserver === "undefined") {
       finish();
-      return;
+      return detach;
     }
     const rand = seeded(layout.tones.length * 7919 + 17);
     const from = new Float32Array(layout.tones.length * 2);
@@ -140,36 +161,17 @@ export function DotField({ counts }: { counts: ToneCounts }) {
       { threshold: 0.4 },
     );
     io.observe(canvas);
-    window.addEventListener("beforeprint", finish);
     return () => {
       io.disconnect();
       cancelAnimationFrame(frame);
-      window.removeEventListener("beforeprint", finish);
+      detach();
     };
-  }, [layout, size]);
+  }, [layout, size, counts, unit]);
 
   const labelOf = (tone: Tone) => t(`tone.${tone}`);
   const shareOf = (tone: Tone) => (counts.total > 0 ? counts[tone] / counts.total : 0);
 
-  // Labels flow left to right from each group's start, never overlapping.
-  // Before the field is measured they sit at their cumulative share.
   const tonesShown = DOT_ORDER.filter((tone) => counts[tone] > 0);
-  const placed: { tone: Tone; left: number | string }[] = [];
-  if (layout.groups.length > 0) {
-    let edge = -Infinity;
-    for (const g of layout.groups) {
-      const width = Math.max(pct(shareOf(g.tone)).length * 8, labelOf(g.tone).length * 6.4) + 16;
-      const left = Math.min(Math.max(g.x0, edge + 12), Math.max(0, size.w - width));
-      placed.push({ tone: g.tone, left });
-      edge = left + width;
-    }
-  } else {
-    let cumulative = 0;
-    for (const tone of tonesShown) {
-      placed.push({ tone, left: `${Math.round(cumulative * 100)}%` });
-      cumulative += shareOf(tone);
-    }
-  }
 
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
     const box = e.currentTarget.getBoundingClientRect();
@@ -194,15 +196,15 @@ export function DotField({ counts }: { counts: ToneCounts }) {
           </div>
         )}
       </div>
-      <div className="brief-dots-labels" aria-hidden="true">
-        {placed.map(({ tone, left }) => (
-          <span key={tone} className="brief-dots-label" style={{ left }}>
+      <ul className="brief-dots-legend" aria-hidden="true">
+        {tonesShown.map((tone) => (
+          <li key={tone}>
             <span className="brief-dots-key" style={{ background: DOT_COLORS[tone] }} />
             <span className="brief-dots-pct">{pct(shareOf(tone))}</span>
             <span className="brief-dots-tone">{labelOf(tone)}</span>
-          </span>
+          </li>
         ))}
-      </div>
+      </ul>
       <ul className="sr-only">
         {tonesShown.map((tone) => (
           <li key={tone}>

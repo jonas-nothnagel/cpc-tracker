@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import type { BriefData } from "@/lib/brief/data";
-import { useNumbers } from "../ink";
+import { commitmentLine, useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
 export function CommitmentsSection({
@@ -37,7 +37,7 @@ export function CommitmentsSection({
                 onClick={() => onOpenCommitment?.(row.commitment.id)}
                 title={row.commitment.text}
               >
-                <span className="brief-rank-title">{row.commitment.label}</span>
+                <span className="brief-rank-title">{commitmentLine(row.commitment)}</span>
                 <span className="brief-rank-meta">
                   {docName(row.commitment.doc)}
                   {partner ? ` · ${t("mostlyWith", { doc: docName(partner.doc) })}` : ""}

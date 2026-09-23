@@ -2973,7 +2973,7 @@
     "together": {
       "headline": "{docA} and {docB} reinforce each other most often: {pct} of their comparisons.",
       "headlineFallback": "The documents reinforce each other in {pct} of comparisons.",
-      "themes": "Recurring themes where the documents reinforce each other",
+      "themes": "Recurring themes of reinforcement",
       "themesEmpty": "No recurring theme was identified for this selection of documents.",
       "example": "For example, these two commitments reinforce each other"
     },
