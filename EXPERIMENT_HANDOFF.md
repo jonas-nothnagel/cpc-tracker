@@ -5,16 +5,24 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
-## Status 2026-09-23: long-lived parallel track
+## Status 2026-09-23: long-lived parallel track, now the coherence brief
 
-Jonas decided to develop the canvas in parallel with `main` for weeks to months. It may
+Jonas decided to develop this track in parallel with `main` for weeks to months. It may
 never merge back and may instead overtake main as the product's opening view.
+
+**Round 4 (2026-09-23, free hand from Jonas): the canvas is replaced by the coherence
+brief** at `/{country}/brief` (`/pulse` redirects there). Jonas: the canvas was "neither
+impressive, nor pretty, nor informative, nor accessible for non technical people, nor
+understandable". The brief answers the original dashboard's two questions, what works well
+together and what does not, for a reader with no technical background, as a composable
+2-3 page policy brief. Spec: `docs/superpowers/specs/2026-09-23-coherence-brief-design.md`;
+plan: `docs/superpowers/plans/2026-09-23-coherence-brief.md`. Verdict pending.
 
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
   Start chats for this work from inside the worktree folder.
 - **Run:** `pnpm dev -p 3100` (keeps 3000 free for main's dev server), then
-  `http://localhost:3100/mongolia/pulse`. English URLs carry no locale prefix. No sign-in
+  `http://localhost:3100/mongolia/brief`. English URLs carry no locale prefix. No sign-in
   locally: the auth gate from #221 is bypassed in dev when no token is configured, and it
   covers `/pulse` and `/findings` automatically (it gates every route except login/health).
 - **Syncing main:** `git merge main` from the worktree, never rebase. The branch is
@@ -117,45 +125,61 @@ compelling enough to forward to a colleague. This branch is the search for the a
 2. **Significance strip** (`0dc90bc`): the card gained data-only "why this pair stands out"
    lines (model consensus, pattern rarity, target concentration, review status).
    Verdict (Jonas): "a few information bubbles more... will not lead to uptake", discarded.
-3. **The coherence canvas** (`2a0bc14`): Jonas's own picture, built bold. Live at
-   `/{country}/pulse`. Verdict so far: "a good start" — parked here for a later pickup.
+3. **The coherence canvas** (`2a0bc14`): Jonas's own picture, built bold, at
+   `/{country}/pulse`. Verdict 2026-08-06: "a good start"; 2026-09-23: not impressive,
+   pretty, informative, accessible or understandable enough. Replaced.
+4. **The coherence brief** (2026-09-23, `f0d22c9`..): a composable, printable 2-3 page
+   brief, see below. Verdict pending.
 
 The finding-page routes (`/{country}/finding/{pairKey}`, `/{country}/findings`) still exist
-on this branch. They are LEGACY as surfaces, but their lib layer is the data engine of the
-canvas and the "Open as a page" leaf is still linked from the canvas's strand stage.
+on this branch as legacy surfaces; nothing in the brief links to them. Their lib layer
+(`selectFindingCandidates`) still feeds `src/lib/pulse/strands.ts`.
 
-## What the canvas is (design contract)
+## What the brief is (design contract)
 
-- **Documents as literal pages** on a shallow arc (fold, doc color, target count), ordered
-  by the country config's documentTypes order.
-- **Two layers, two scales, stated in the legend.** Quiet green tissue = each doc pair's
-  aligned share (opacity only). Red dashed fibers = doc pairs whose flagged share sits at
-  or above the corpus's OWN mean (width/glow grow with share, capped at 3x). Within-corpus
-  ranking is what fixes "the wheel always looks the same": Mongolia shows 10 of 21 pathways
-  inflamed, Panama 9 of 28, Cote d'Ivoire honestly 1 of 3.
-- **Staged dive, three glances.** Click a fiber: the two documents anchor left/right, the
-  fiber splits into its top-6 strands, ranked by how many of the pathway's potential
-  misalignments their targets are in (confidence, manageability, mechanism break ties;
-  consensus dropped 2026-09-23), with an "and N more, ranked" link into `/findings`
-  (which still ranks the old way). Click a strand:
-  claim sentence (serif), the two verbatim commitments, mechanism sentence, AI rationale
-  behind a disclosure. Esc walks back.
-- Deterministic geometry (hash-seeded jitter, SSR-safe, no Math.random). Reduced motion
-  honored. Vocabulary canonical ("potential misalignment"; "inflamed nerve" is an internal
-  metaphor, never UI copy). en/es/mn with parity-gate coverage.
+- **Landing:** rows of verbatim commitments from the selected documents drift behind one
+  serif statement of scale ("178 commitments. 8 policy documents. 13,404 comparisons.").
+  Reduced motion stills them. References Jonas gave: Anthropic's 81k-interviews feature
+  (moving text), Gates Notes, Die Zeit's Berlin election map story, riso-windowseat.
+- **The brief:** A4 sheets on a light desk; the screen shows exactly what prints. A builder
+  beside the sheets picks documents (country-config defaults), the policy-area lens and
+  the sections, reorders them, shows the page count, copies a share link (URL holds
+  `docs`, `lens`, `sections`) and prints. Default = 3 pages; verified by headless print of
+  the production build for all four countries and en/es/mn.
+- **Sections** (each self-contained: question label, serif finding, one visual, note):
+  overall picture (every comparison one ink dot, halftone), what works well together and
+  where policies may pull apart (leading pair of documents by share, min 30 comparisons;
+  AI-identified themes as a theme x document grid; one principled example pair),
+  commitments to look at first (concentration), documents side by side (result bars,
+  misalignment anchored left and hatched, reinforcement right, average tick), map of
+  commitments (one square per commitment, Zeit-style steps 0/1-2/3-5/6-10/11-20/21+,
+  numbered top five, selection lights partners), by policy area (lens shares, thin areas
+  unrated). Drill-downs open one drawer with a back trail: comparison (AI reading via
+  `/api/brief/pair`), pair of documents (strands through the busiest commitment first),
+  commitment (partners by tone), theme (AI summary; pathway under "AI-suggested starting
+  point").
+- **Inks:** green solid = reinforce, red hatched or dashed = potential misalignment;
+  validated ordinal ramps (dataviz validator); green vs red fails CVD separation, so
+  position, labels and hatching always carry it too. Text never takes the data colour.
+- **Language:** commitment, policy document, comparison, reinforce each other, partial link,
+  potential misalignment, no clear link. No "pathway", "corpus", "pipeline", "flagged".
 
 ## Where the code lives
 
-- `src/lib/pulse/aggregate.ts` — doc-pair model (shares, corpus mean, inflamed flag). Tested.
-- `src/lib/pulse/geometry.ts` — arc positions, hash jitter, fiber paths, widths. Tested.
-- `src/lib/pulse/strands.ts` — pathway grouping of flagged pairs (same key as the fibers),
-  the recurring-target ranking, and the strand caption line. Tested.
-- `src/components/pulse/coherence-canvas.tsx` (+ `types.ts`) — the scene, staging, overlays.
-- `src/app/[locale]/[country]/pulse/page.tsx` — server assembly: payload, strand
-  precompute with translated claims/signals.
-- Data engine (round-1 survivors): `src/lib/finding/{candidates,headline,doc-name,consensus,
-  resolve,significance}.ts`, all tested.
-- Messages: `finding.*` and `pulse.*` namespaces in `messages/{en,es,mn}.json`.
+- `src/lib/brief/` — pure, tested: `source.ts` (payload -> compact BriefSource),
+  `selection.ts` (defaults, URL), `sections.ts` (units, pagination), `compute.ts` (scope,
+  tones, pairs, themes, examples, concentration, map cells, areas, document shares),
+  `data.ts` (everything a selection needs), `map-layout.ts`, `dot-layout.ts`, `pair.ts`,
+  `test-fixture.ts` (hand-countable 3 x 6 fixture).
+- `src/components/brief/` — `brief-app.tsx` (state, URL, panels), `hero.tsx` +
+  `moving-text.tsx`, `builder.tsx`, `sheets.tsx`, `sections/*`, `dot-field.tsx`,
+  `theme-grid.tsx`, `example-pair.tsx`, `commitment-map.tsx`, `panels.tsx`, `ink.tsx`,
+  `brief.css` (all styles incl. print, scoped to `[data-brief]`).
+- `src/app/[locale]/[country]/brief/page.tsx`, `src/app/api/brief/pair/route.ts`;
+  `src/app/[locale]/[country]/pulse/page.tsx` is now a redirect.
+- `src/lib/pulse/strands.ts` survives (pair-of-documents panel); the canvas UI, its geometry
+  and aggregate were removed (git history: `2a0bc14`, `bc0b3ea`, `88a489a`).
+- Messages: `brief.*` in `messages/{en,es,mn}.json`; `pulse.*` removed.
 
 ## Data facts worth re-loading
 
@@ -170,22 +194,27 @@ canvas and the "Open as a page" leaf is still linked from the canvas's strand st
 
 ## Open questions for the pickup
 
-1. The uptake gate: does the overview invite touch, and does the dive feel like following
-   the pain? ("a good start" is not yet a yes.)
-2. If yes: does the canvas become the dashboard's opening view (replacing/joining the wheel
-   in section 01), and what happens on mobile?
-3. Strand claims: template sentences are honest but repetitive within one pathway; consider
-   target-level phrasing per strand.
-4. The review loop (validate/dismiss with note) is still the missing trust layer everywhere.
-5. Hub-target idea from round 2 is unexplored: one page per concentration target
-   (e.g. FSS 3.1, 85 pairs) aggregating the buried drill-down content.
+1. The uptake gate for the brief: would Jonas send the printed default brief to Lea or a
+   CO colleague as is? If not, which section fails first?
+2. With three documents (Cote d'Ivoire) the same pair can lead both "works well together"
+   (86%) and "may pull apart" (11%); true, but it reads oddly. Decide whether the apart
+   headline should skip a pair that leads the other way, or say so.
+3. Finance and implementation sections: the registry and builder are ready for sections
+   that declare the data they need; none exist yet (by decision, coherence only).
+4. The review loop (validate/dismiss with note) is still the missing trust layer.
+5. Rows in panels keep the stored pair orientation (the AI readings say "first/second
+   target").
 
 ## How to resume
 
 - Code: `cd /Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`,
-  `pnpm dev -p 3100`, open `http://localhost:3100/mongolia/pulse`. Never check this branch
+  `pnpm dev -p 3100`, open `http://localhost:3100/mongolia/brief`. Never check this branch
   out in the main checkout; it lives in the worktree (see the status section above).
-- Tests for just this work: `npx vitest run src/lib/pulse src/components/pulse src/lib/finding`.
+- Tests for just this work:
+  `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 npx vitest run src/lib/brief src/components/brief src/lib/pulse`.
+- Print check: `pnpm build && npx next start -p 3101`, then Chrome headless
+  `--print-to-pdf` with `--virtual-time-budget=8000` on `http://localhost:3101/mongolia/brief`
+  (the dev server's live-reload socket keeps a virtual-time print from finishing).
 - Chat context: start `claude` inside the worktree folder and say "pick up the
   coherence-pulse experiment"; Claude's memory (`finding-cards-experiment`, shared across
   worktrees of this repo) plus this file carry the rest.
