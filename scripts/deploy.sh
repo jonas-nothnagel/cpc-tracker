@@ -51,6 +51,23 @@ for arg in "$@"; do
   esac
 done
 
+# ── Apple Silicon guard ──────────────────────────────────────────────────
+# A native build on an M-series Mac is arm64, and the registry cache export
+# attaches attestation manifests. App Service (amd64) can pull neither, so the
+# site drops to a persistent 503 (ImagePullFailure, 2026-07-07). Build
+# server-side instead, from a clean checkout of the exact commit to ship; see
+# step 6 of .claude/commands/deliver.md:
+#   az acr build --registry policycoherence \
+#     --image cpc-tracker:<full-sha> --image cpc-tracker:latest .
+# Set ALLOW_ARM64_BUILD=1 only if this script has been changed to build
+# linux/amd64 without provenance, and that image was pulled successfully.
+if [ "$(uname -m)" = "arm64" ] && [ "${ALLOW_ARM64_BUILD:-0}" != "1" ]; then
+  echo "❌ Refusing to build on arm64: App Service cannot pull the image this" >&2
+  echo "   script produces here, and the live site would go down (503)." >&2
+  echo "   Use az acr build instead (see .claude/commands/deliver.md, step 6)." >&2
+  exit 1
+fi
+
 # ── Pre-flight ───────────────────────────────────────────────────────────
 command -v "${CONTAINER_CMD}" >/dev/null || { echo "❌ ${CONTAINER_CMD} not found"; exit 1; }
 command -v az >/dev/null || { echo "❌ az CLI not found"; exit 1; }

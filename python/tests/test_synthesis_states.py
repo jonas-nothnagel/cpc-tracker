@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from src.synthesis_states import (
     MAX_PRECOMPUTE_DOCS,
+    MAX_SINGLE_DOC_STATES,
     canonical_hidden_key,
     filter_doc_pair_records,
     filter_targets_alignment,
@@ -59,10 +63,34 @@ class TestPrecomputeHiddenStates:
         states = precompute_hidden_states([], all_doc_types=docs)
         assert states == [[], ["NDC"], ["NAP"], ["NMP"]]
 
+    def test_single_doc_states_at_bound(self):
+        docs = [f"D{i}" for i in range(MAX_SINGLE_DOC_STATES)]
+        states = precompute_hidden_states([], all_doc_types=docs)
+        assert len(states) == 1 + MAX_SINGLE_DOC_STATES
+
     def test_no_single_doc_states_above_bound(self):
-        docs = [f"D{i}" for i in range(11)]
+        docs = [f"D{i}" for i in range(MAX_SINGLE_DOC_STATES + 1)]
         states = precompute_hidden_states([], all_doc_types=docs)
         assert states == [[]]
+
+    def test_duplicate_doc_types_count_once(self):
+        docs = [f"D{i}" for i in range(MAX_SINGLE_DOC_STATES)] * 2
+        states = precompute_hidden_states([], all_doc_types=docs)
+        assert len(states) == 1 + MAX_SINGLE_DOC_STATES
+
+    def test_bound_covers_every_shipped_corpus(self):
+        # Every shipped country must get an exact state for each single hide;
+        # above the bound a toggle falls back to full-corpus prose plus a live
+        # LLM call on the server.
+        data = Path(__file__).resolve().parents[1] / "data"
+        corpora = sorted(data.glob("*-targets.json"))
+        assert corpora, "no shipped corpora found"
+        for path in corpora:
+            targets = json.loads(path.read_text())
+            docs = {t["sourceDocument"] for t in targets}
+            assert len(docs) <= MAX_SINGLE_DOC_STATES, (
+                f"{path.name} has {len(docs)} documents; raise MAX_SINGLE_DOC_STATES"
+            )
 
     def test_briefing_default_combo(self):
         # Panama: defaultHidden=[ENR], secondary=[HR, PIOTA, PNRF]. The

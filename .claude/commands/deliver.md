@@ -8,6 +8,8 @@ If `$ARGUMENTS` is provided, treat it as the branch name hint (e.g. `fix/lint-br
 
 ### 1. Ship
 
+**First, if the change will be deployed, ask the user to run `! az login`** (the token expires weekly), so it is done while the PR is reviewed rather than blocking at the end. Do not ask for the PIM role elevation yet: that waits until the PR is merged (step 6.1), so elevated rights are held only for the deploy.
+
 Follow the `/ship` workflow:
 
 1. `git status` and `git diff --stat` to confirm what is being delivered.
@@ -64,14 +66,72 @@ Follow the `/sync` workflow:
 
 ### 6. Deploy to live (Azure)
 
-Azure App Service `cpc-tracker-c657` is the **primary live site** and no longer auto-deploys on merge (GitHub Actions was deactivated for this account 2026-06-23), so the merged commit must be pushed to Azure explicitly. This is the step that makes the change actually go live.
+Azure App Service `cpc-tracker-c657` is the **primary live site** and does not auto-deploy on merge (GitHub Actions was deactivated for this account 2026-06-23), so the merged commit must be built and pushed explicitly. This is the step that makes the change actually go live.
 
-1. Confirm you are on `main` at the merge commit with a clean working tree.
-2. Run **`pnpm run deploy`** (builds the image with Docker buildx, pushes to ACR `policycoherence/cpc-tracker:{sha,latest}`, then polls the live URL for 200). It must be `pnpm run deploy`, never `pnpm deploy` — the bare form hits pnpm's native `deploy` subcommand instead of the script.
-3. **PIM gate (interactive, cannot be automated).** The standing Azure role is Reader; ACR push needs Contributor. If the script stops with a Reader-role error it prints an activation link (`https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/ActivationMenuBlade/~/azurerbac`). Surface it, pause and ask the user to activate **Contributor** (default 2h), then re-run `pnpm run deploy`. Do not try to elevate the role yourself.
-4. The ACR webhook (`webappcpctrackerc657`) is healthy and fires on push, so App Service pulls the new image automatically; the container swap finishes ~1-2 min after the script's 200 poll returns (the poll can go green on the old container first). If a deploy ever looks stuck on the old image, force the pull: `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
-5. **No-Docker fallback.** If `pnpm run deploy` fails because Docker isn't installed on the machine, build server-side instead (no local Docker): `az acr build --registry policycoherence --image cpc-tracker:latest --image cpc-tracker:$(git rev-parse --short HEAD) .` then `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
-6. Confirm live: `curl -sS -o /dev/null -w "%{http_code}" https://cpc-tracker-c657.azurewebsites.net/` returns 200 and the homepage title still reads "CPC Analyzer".
+**6.1 Before building.** Stop and ask the user if any of these fails; never work around them.
+
+1. `az` works: `az acr show --name policycoherence --query loginServer -o tsv`. `az account show` can look fine while real calls fail with `AADSTS70043`; if so, ask the user to run `! az login`.
+2. **Ask the user to activate PIM Contributor now** (default 2h): `https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/ActivationMenuBlade/~/azurerbac`. ACR push needs it; the standing role is Reader. Asking only now keeps the elevation to the deploy itself. Never try to elevate the role yourself.
+3. The block below checks the rest: that the PR is merged, that deploying cannot roll the live site back, and that the merge commit passes `tsc` and the tests.
+
+**6.2 Build the exact merge commit.** Run this block as ONE command, changing only the PR number on the first line:
+
+```bash
+PR=<number> bash -euo pipefail <<'DEPLOY'
+: "${PR:?set PR to the pull request number}"
+git fetch origin --quiet
+MERGE_SHA=$(gh pr view "$PR" --json mergeCommit --jq '.mergeCommit.oid // empty')
+[ -n "$MERGE_SHA" ] || { echo "PR $PR is not merged; nothing to deploy" >&2; exit 1; }
+
+# Never roll the live site back: what is live must already be in this commit's history.
+LIVE_TAG=$(az acr manifest list-metadata -r policycoherence -n cpc-tracker \
+  --query "[?tags[?@=='latest']].tags[?@!='latest' && @!='buildcache']|[0]|[0]" -o tsv)
+if [ -n "$LIVE_TAG" ]; then
+  LIVE_SHA=$(git rev-parse --verify --quiet "$LIVE_TAG^{commit}") \
+    || { echo "live commit $LIVE_TAG is not in local history; git fetch, then retry" >&2; exit 2; }
+  [ "$LIVE_SHA" != "$MERGE_SHA" ] || { echo "$MERGE_SHA is already live"; exit 0; }
+  git merge-base --is-ancestor "$LIVE_SHA" "$MERGE_SHA" \
+    || { echo "live $LIVE_TAG is newer than or unrelated to $MERGE_SHA; deploying would roll it back" >&2; exit 2; }
+fi
+
+# Clean checkout of exactly the merge commit (clear any leftover from an interrupted run).
+ROOT="$(git rev-parse --show-toplevel)"
+DEPLOY_WT="$ROOT/.claude/worktrees/deploy-${MERGE_SHA:0:7}"
+git worktree remove --force "$DEPLOY_WT" 2>/dev/null || true
+git worktree prune
+git worktree add --quiet --detach "$DEPLOY_WT" "$MERGE_SHA"
+trap 'cd "$ROOT"; git worktree remove --force "$DEPLOY_WT" || true' EXIT
+cd "$DEPLOY_WT"
+[ "$(git rev-parse HEAD)" = "$MERGE_SHA" ]
+
+# The commit that ships must be green. Exit 3 means red: ask the user.
+if [ "${ALLOW_RED:-0}" != 1 ]; then
+  pnpm install --offline --frozen-lockfile --silent
+  { npx tsc --noEmit && pnpm test --run --silent; } \
+    || { echo "merge commit $MERGE_SHA is not green; ask the user (ALLOW_RED=1 deploys anyway)" >&2; exit 3; }
+fi
+
+az acr build --registry policycoherence --image "cpc-tracker:$MERGE_SHA" --image cpc-tracker:latest .
+echo "pushed $MERGE_SHA as cpc-tracker:latest"
+DEPLOY
+```
+
+What each part guards against:
+- **One command, `set -u`.** The agent's shell does not keep variables between calls; split up, an empty path makes `cd ""` succeed and `az acr build .` upload the main working tree.
+- **The merge SHA and the ancestor check.** PRs merge in parallel here. Building the tip of `main` can ship someone else's unreviewed merge, and a slower deploy of an older PR finishing last would roll the site back.
+- **A clean checkout.** `az acr build .` uploads the directory as it sits on disk, filtered only by `.dockerignore`; the main tree carries uncommitted edits and the gitignored ingest scripts in `dev_data_scripts/`.
+- **The green check.** `main` can be red from other merges, and deploying ships all of it; that is the user's decision, not this command's. `ALLOW_RED=1` exists for when they have made it.
+- **Tags.** The full SHA plus `latest`, nothing else: `scripts/deploy.sh` reads the live commit as the first non-`latest` tag, so a short SHA would sort first and break it.
+- **Cleanup.** A run killed mid-build leaves the worktree behind, so the next run clears it first; the trap ends in `|| true` so a failed cleanup cannot turn a successful push into a failure that invites a second push.
+- The build takes several minutes: give the command a long timeout or run it in the background.
+
+**Never use `pnpm run deploy` / `scripts/deploy.sh` on an Apple Silicon Mac.** Its local build is arm64 with attestation manifests; App Service can pull neither and the site drops to a persistent 503 (seen 2026-07-07). The script now refuses to run on arm64.
+
+**6.3 Confirm it went live.** The site keeps answering 200 from the old container during the ~1-2 min swap, so a 200 alone proves nothing.
+1. The ACR webhook told App Service to pull: `az acr webhook list-events --registry policycoherence --name webappcpctrackerc657 -o table`. The newest event is this push, with status 200 or 202.
+2. If the change is visible over HTTP, check it is served, for example a changed count from `https://cpc-tracker-c657.azurewebsites.net/api/dashboard?country=<id>` or a new page.
+3. If the webhook event is missing or failed, or the change is still not served after ~5 min, force the pull: `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`. The webhook has failed silently before (see the `reference_azure_deploy_webhook_fix` memory).
+4. A change with nothing visible over HTTP (docs, pipeline code) is confirmed by the webhook event alone; say so in the report rather than claiming it is served.
 
 ### 7. Report
 
@@ -80,15 +140,17 @@ Print a concise summary:
 - Commit hashes (original + review fixes)
 - Merge commit hash
 - Confirmation that `old-origin/main` was updated
-- Confirmation that the live Azure site was deployed (image tag / SHA) and returns 200
+- Deploy status: the image tag (full SHA), the webhook event, and whether the change was seen served, or why it cannot be seen over HTTP
 
 ## Important
 
 - **Never force push** or amend published commits.
 - **Never commit `.env` files or credentials.** Warn the user if they ask to.
 - **Never skip the `old-origin` push** — it is what drives the Vercel demo deploy (see `reference_vercel_deploy` memory).
+- **Never deploy from the main working tree.** Build from a clean checkout of the merge commit (step 6.2); the main tree carries uncommitted and gitignored files that `az acr build` would ship.
+- **Never use `pnpm run deploy` on Apple Silicon.** It ships an image App Service cannot pull and takes the site down; the script now refuses (step 6.2).
 - **Never skip the Azure deploy step** — Azure is the primary live site and does not auto-deploy on merge; without step 6 the change is merged but not live. See `reference_manual_azure_deploy` memory.
-- **The PIM Contributor activation is interactive** — it needs the user's portal + MFA and cannot be automated. Pause and wait; do not attempt to elevate the role or work around it.
+- **The PIM Contributor activation is interactive and just-in-time** — it needs the user's portal + MFA and cannot be automated. Pause and wait; do not attempt to elevate the role or work around it.
 - **This deploy step is a stopgap.** When GitHub Actions auto-deploy is restored for the account, remove step 6 and merges will go live automatically again.
 - **Never add AI attribution** to commits, PR body, review comments, or follow-up comments.
 - **Stop before merge** if the review finds anything that could be a bug, a regression, or a security issue. Non-blocking nits (dead code, typo in comment, naming) can be auto-applied; judgement calls require user confirmation.
