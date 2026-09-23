@@ -3038,6 +3038,41 @@
       "tooFew": "pocas comparaciones",
       "average": "promedio de estas áreas: {pct}",
       "row": "{area}: {pct} de posible desalineación en {reviewed, number} comparaciones"
+    },
+    "map": {
+      "headlineApart": "La posible desalineación se concentra en {doc}: {pct} de sus comparaciones, frente a {avg} en el conjunto de los documentos.",
+      "headlineTogether": "{doc} es el que más refuerza a los demás documentos: {pct} de sus comparaciones, frente a {avg} en el conjunto.",
+      "headlineEmpty": "Ningún compromiso forma parte de una posible desalineación.",
+      "standfirst": "Cada cuadrado es un compromiso, agrupado por documento.",
+      "shading": "Sombreado",
+      "modeApart": "Posibles desalineaciones",
+      "modeTogether": "Vínculos de refuerzo",
+      "legendApart": "Posibles desalineaciones por compromiso",
+      "legendTogether": "Proporción de sus comparaciones que se refuerzan",
+      "stepsApart": {
+        "0": "0",
+        "1": "1-2",
+        "2": "3-5",
+        "3": "6-10",
+        "4": "11-20",
+        "5": "21+"
+      },
+      "stepsTogether": {
+        "0": "menos del 25 %",
+        "1": "25-50 %",
+        "2": "50-75 %",
+        "3": "75 % o más"
+      },
+      "keyApart": "Los compromisos más implicados, numerados en el mapa",
+      "keyTogether": "Los compromisos con más vínculos de refuerzo, numerados en el mapa",
+      "keyRowApart": "{label} ({doc}): {count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
+      "keyRowTogether": "{label} ({doc}): {pct} de sus comparaciones se refuerzan",
+      "cell": "{label}, {doc}: {apart, plural, =0 {ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}}, {reinforce, number} vínculos de refuerzo de {total, number} comparaciones",
+      "aria": "Mapa de {count, number} compromisos. Use las flechas para desplazarse entre ellos e Intro para seleccionar uno.",
+      "hint": "Seleccione un cuadrado para ver con qué compromisos se refuerza y con cuáles podría divergir.",
+      "selected": "{apart, plural, =0 {Ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}} · {reinforce, number} vínculos de refuerzo",
+      "open": "Ver los compromisos con los que se compara",
+      "clear": "Quitar la selección"
     }
   }
 }

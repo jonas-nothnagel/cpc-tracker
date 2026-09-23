@@ -1008,6 +1008,225 @@
   color: var(--brief-muted);
 }
 
+/* Map of commitments */
+
+[data-brief] .brief-map-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+
+[data-brief] .brief-map-toolbar-label {
+  margin-right: 4px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+[data-brief] .brief-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+[data-brief] .brief-toggle-on {
+  border-color: var(--brief-ink);
+  background: var(--brief-ink);
+  color: #fff;
+}
+
+[data-brief] .brief-toggle:focus-within {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .brief-map {
+  position: relative;
+  outline: none;
+}
+
+[data-brief] .brief-map:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 4px;
+}
+
+[data-brief] .brief-map-svg {
+  display: block;
+  overflow: visible;
+}
+
+[data-brief] .brief-map-doc {
+  fill: var(--brief-ink);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+[data-brief] .brief-map-cell {
+  cursor: pointer;
+}
+
+[data-brief] .brief-map-badge {
+  fill: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+[data-brief] .brief-map-tip {
+  position: absolute;
+  z-index: 2;
+  max-width: 300px;
+  padding: 6px 9px;
+  transform: translate(-50%, calc(-100% - 8px));
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+[data-brief] .brief-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border: 1px solid var(--brief-hairline);
+  border-radius: 6px;
+}
+
+[data-brief] .brief-map-legend-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+[data-brief] .brief-map-legend-steps {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .brief-map-legend-steps li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-map-swatch {
+  width: 24px;
+  height: 12px;
+  border: 1px solid;
+  border-radius: 2px;
+}
+
+[data-brief] .brief-map-key,
+[data-brief] .brief-map-selected {
+  margin-top: 10px;
+}
+
+[data-brief] .brief-map-key-title {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+[data-brief] .brief-map-key ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .brief-map-key li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 0;
+  font-size: 12px;
+}
+
+[data-brief] .brief-map-key-n {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--brief-ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+[data-brief] .brief-map-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-map-selected {
+  padding-top: 8px;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-map-selected-source {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-map-selected-label {
+  font-weight: 600;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-map-selected-text {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  line-height: 1.45;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-map-selected-counts {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+[data-brief] .brief-map-selected-actions {
+  display: flex;
+  gap: 16px;
+  margin: 6px 0 0;
+}
+
+[data-brief] .brief-map-selected-actions .brief-button-quiet {
+  font-size: 12px;
+}
+
 /* ── Narrow screens: builder on top, then fluid sheets ───────────── */
 
 @media screen and (max-width: 1180px) {

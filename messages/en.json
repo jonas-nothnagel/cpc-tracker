@@ -3038,6 +3038,41 @@
       "tooFew": "too few comparisons",
       "average": "average across these areas: {pct}",
       "row": "{area}: {pct} potential misalignment across {reviewed, number} comparisons"
+    },
+    "map": {
+      "headlineApart": "Potential misalignment gathers in {doc}: {pct} of its comparisons, against {avg} across all documents.",
+      "headlineTogether": "{doc} reinforces the other documents most: {pct} of its comparisons, against {avg} across all documents.",
+      "headlineEmpty": "No commitment is part of a potential misalignment.",
+      "standfirst": "Each square is one commitment, grouped by document.",
+      "shading": "Shading",
+      "modeApart": "Potential misalignments",
+      "modeTogether": "Reinforcing links",
+      "legendApart": "Potential misalignments per commitment",
+      "legendTogether": "Share of its comparisons that reinforce",
+      "stepsApart": {
+        "0": "0",
+        "1": "1-2",
+        "2": "3-5",
+        "3": "6-10",
+        "4": "11-20",
+        "5": "21+"
+      },
+      "stepsTogether": {
+        "0": "under 25%",
+        "1": "25-50%",
+        "2": "50-75%",
+        "3": "75% or more"
+      },
+      "keyApart": "The most involved commitments, numbered on the map",
+      "keyTogether": "The commitments with the most reinforcing links, numbered on the map",
+      "keyRowApart": "{label} ({doc}): {count, plural, one {# potential misalignment} other {# potential misalignments}}",
+      "keyRowTogether": "{label} ({doc}): {pct} of its comparisons reinforce",
+      "cell": "{label}, {doc}: {apart, plural, =0 {no potential misalignment} one {# potential misalignment} other {# potential misalignments}}, {reinforce, number} reinforcing links out of {total, number} comparisons",
+      "aria": "Map of {count, number} commitments. Use the arrow keys to move between them and Enter to select one.",
+      "hint": "Select a square to see which commitments it works with and against.",
+      "selected": "{apart, plural, =0 {No potential misalignment} one {# potential misalignment} other {# potential misalignments}} · {reinforce, number} reinforcing links",
+      "open": "Show the commitments it is compared with",
+      "clear": "Clear the selection"
     }
   }
 }

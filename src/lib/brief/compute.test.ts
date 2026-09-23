@@ -3,6 +3,7 @@ import {
   apartStep,
   areaRows,
   commitmentsToReview,
+  docToneShares,
   concentrationOf,
   docPairStats,
   leadingPair,
@@ -19,6 +20,7 @@ import {
   type DocPairStat,
 } from "./compute";
 import type { BriefCommitment, BriefDocument, BriefSource } from "./source";
+import { briefFixture } from "./test-fixture";
 import type { CorpusStoryline } from "@/types";
 
 function doc(id: string): BriefDocument {
@@ -412,5 +414,20 @@ describe("areaRows", () => {
       average: 0,
       max: 0,
     });
+  });
+});
+
+// ─── Task 12: document shares for the map headline ────────────────────
+
+
+describe("docToneShares", () => {
+  it("counts each document's comparisons by tone, a comparison counting for both documents", () => {
+    const source = briefFixture();
+    const shares = docToneShares(scopeOf(source, ["A", "B", "C"]));
+    expect(shares.map((s) => [s.doc.id, s.commitments, s.total, s.reinforce, s.apart])).toEqual([
+      ["A", 6, 72, 54, 6],
+      ["B", 6, 72, 42, 15],
+      ["C", 6, 72, 48, 9],
+    ]);
   });
 });

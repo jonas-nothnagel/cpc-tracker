@@ -522,3 +522,42 @@ export function pairExample(
     ? { a: best.a, b: best.b, level: best.level, mechanism: best.mechanism }
     : { a: best.a, b: best.b, level: best.level };
 }
+
+// ─── Documents' own shares ──────────────────────────────────────────
+
+export interface DocToneShare {
+  doc: BriefDocument;
+  commitments: number;
+  /** Comparisons the document takes part in (each counts for both documents). */
+  total: number;
+  reinforce: number;
+  apart: number;
+}
+
+/** Each selected document's comparisons by tone: where the map's shading
+ *  gathers, normalised by how often the document was compared. */
+export function docToneShares(scope: Scope): DocToneShare[] {
+  const byDoc = new Map<string, DocToneShare>(
+    scope.docs.map((d) => [
+      d.id,
+      {
+        doc: d,
+        commitments: scope.commitments.filter((c) => c.doc === d.id).length,
+        total: 0,
+        reinforce: 0,
+        apart: 0,
+      },
+    ]),
+  );
+  for (const c of scope.comparisons) {
+    const tone = toneOf(c.level);
+    for (const doc of [c.a.doc, c.b.doc]) {
+      const entry = byDoc.get(doc);
+      if (!entry) continue;
+      entry.total += 1;
+      if (tone === "reinforce") entry.reinforce += 1;
+      else if (tone === "apart") entry.apart += 1;
+    }
+  }
+  return [...byDoc.values()];
+}
