@@ -2974,6 +2974,70 @@
       "partial": "vínculo parcial",
       "apart": "posible desalineación",
       "none": "sin vínculo claro"
+    },
+    "overall": {
+      "headline": {
+        "mostly_aligned": "Las políticas de {country} se refuerzan en gran medida entre sí.",
+        "mixed": "La coherencia entre las políticas de {country} es desigual.",
+        "lots_of_misalignment": "Las políticas de {country} muestran una posible desalineación considerable."
+      },
+      "unitOne": "Cada punto es una comparación entre dos compromisos.",
+      "unitMany": "Cada punto representa {count, number} comparaciones entre dos compromisos.",
+      "group": "{count, number} comparaciones ({pct}): {tone}"
+    },
+    "together": {
+      "headline": "{docA} y {docB} son los que más se refuerzan entre sí: {pct} de sus comparaciones.",
+      "headlineFallback": "Los documentos se refuerzan entre sí en {pct} de las comparaciones.",
+      "themes": "Temas recurrentes en los que los documentos se refuerzan entre sí",
+      "themesEmpty": "No se identificó ningún tema recurrente para esta selección de documentos.",
+      "example": "Por ejemplo, estos dos compromisos se refuerzan entre sí"
+    },
+    "apart": {
+      "headline": "{docA} y {docB} muestran la mayor posible desalineación: {pct} de sus comparaciones.",
+      "headlineFallback": "{pct} de las comparaciones muestran una posible desalineación.",
+      "themes": "Temas recurrentes de posible desalineación",
+      "themesEmpty": "No se identificó ninguna posible desalineación recurrente para esta selección de documentos.",
+      "example": "Por ejemplo, estos dos compromisos podrían divergir",
+      "showReading": "Mostrar la lectura de la IA",
+      "hideReading": "Ocultar la lectura de la IA",
+      "loading": "Cargando la lectura de la IA…",
+      "unavailable": "No se pudo cargar la lectura de la IA.",
+      "readingNote": "Lectura generada por IA, para revisión por personas expertas nacionales."
+    },
+    "themes": {
+      "aiNote": "La IA nombra los temas a partir de las comparaciones calificadas; los recuentos provienen de las calificaciones.",
+      "notExact": "Los nombres de los temas se redactaron para el conjunto completo de documentos.",
+      "comparisons": "{count, plural, one {# comparación} other {# comparaciones}}",
+      "share": "{doc}: {pct} de las comparaciones de este tema",
+      "noPart": "{doc}: no participa",
+      "legend": "Cuadros más oscuros: el documento aporta una parte mayor del tema.",
+      "headerTheme": "Tema (identificado por IA)",
+      "headerCount": "Comparaciones"
+    },
+    "commitments": {
+      "headlineConcentrated": "{pct} de las {total, number} posibles desalineaciones se remontan a {top, plural, one {# compromiso} other {# compromisos}}.",
+      "headlineSpread": "La posible desalineación se reparte entre {contested, plural, one {# compromiso} other {# compromisos}}.",
+      "headlineEmpty": "Ningún compromiso forma parte de una posible desalineación.",
+      "count": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
+      "mostlyWith": "sobre todo con {doc}"
+    },
+    "documents": {
+      "headline": "La posible desalineación va de {low} a {high} entre pares de documentos.",
+      "headlineFallback": "En el conjunto de las comparaciones, {pct} muestran una posible desalineación.",
+      "average": "promedio de todas las comparaciones: {pct}",
+      "few": "pocas comparaciones",
+      "more": "{count, plural, one {# par de documentos más} other {# pares de documentos más}}",
+      "showAll": "Mostrar todos los pares",
+      "showFewer": "Mostrar menos",
+      "row": "{docA} y {docB}: {apart} posible desalineación, {partial} vínculo parcial, {reinforce} se refuerzan entre sí, en {total, number} comparaciones"
+    },
+    "areas": {
+      "headline": "{area} muestra la mayor proporción de posible desalineación: {pct}.",
+      "headlineEmpty": "Hay muy pocas comparaciones calificadas en las áreas de política para compararlas.",
+      "commitmentsCount": "{count, plural, one {# compromiso} other {# compromisos}}",
+      "tooFew": "pocas comparaciones",
+      "average": "promedio de estas áreas: {pct}",
+      "row": "{area}: {pct} de posible desalineación en {reviewed, number} comparaciones"
     }
   }
 }

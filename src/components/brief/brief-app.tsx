@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { scopeOf, type Scope } from "@/lib/brief/compute";
+import { buildBriefData } from "@/lib/brief/data";
 import { paginate } from "@/lib/brief/sections";
 import {
   defaultSelection,
@@ -56,6 +57,11 @@ export function BriefApp({
   const scope = useMemo(() => scopeOf(source, selection.docs), [source, selection.docs]);
   const pages = useMemo(() => paginate(selection.sections), [selection.sections]);
   const lines = useMemo(() => driftLines(scope), [scope]);
+  const data = useMemo(
+    () => buildBriefData(source, scope, selection.lens),
+    [source, scope, selection.lens],
+  );
+  const lensName = selection.lens ? tl(selection.lens) : null;
 
   const readBrief = () =>
     document.getElementById("brief-sheets")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -95,11 +101,13 @@ export function BriefApp({
               commitments={scope.commitments.length}
               documents={scope.docs.length}
               comparisons={scope.comparisons.length}
-              lensName={selection.lens ? tl(selection.lens) : null}
+              lensName={lensName}
               documentNames={scope.docs.map((d) => d.full)}
             />
           }
-          renderSection={(id) => <SectionView id={id} />}
+          renderSection={(id) => (
+            <SectionView id={id} data={data} lensName={lensName} handlers={{}} />
+          )}
         />
       </div>
     </div>

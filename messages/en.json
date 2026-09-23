@@ -2974,6 +2974,70 @@
       "partial": "partial link",
       "apart": "potential misalignment",
       "none": "no clear link"
+    },
+    "overall": {
+      "headline": {
+        "mostly_aligned": "{country}'s policies largely reinforce each other.",
+        "mixed": "Coherence is mixed across {country}'s policies.",
+        "lots_of_misalignment": "{country}'s policies show substantial potential misalignment."
+      },
+      "unitOne": "Each dot is one comparison between two commitments.",
+      "unitMany": "Each dot stands for {count, number} comparisons between two commitments.",
+      "group": "{count, number} comparisons ({pct}): {tone}"
+    },
+    "together": {
+      "headline": "{docA} and {docB} reinforce each other most often: {pct} of their comparisons.",
+      "headlineFallback": "The documents reinforce each other in {pct} of comparisons.",
+      "themes": "Recurring themes where the documents reinforce each other",
+      "themesEmpty": "No recurring theme was identified for this selection of documents.",
+      "example": "For example, these two commitments reinforce each other"
+    },
+    "apart": {
+      "headline": "{docA} and {docB} show the most potential misalignment: {pct} of their comparisons.",
+      "headlineFallback": "{pct} of comparisons show potential misalignment.",
+      "themes": "Recurring themes of potential misalignment",
+      "themesEmpty": "No recurring potential misalignment was identified for this selection of documents.",
+      "example": "For example, these two commitments may pull apart",
+      "showReading": "Show the AI reading",
+      "hideReading": "Hide the AI reading",
+      "loading": "Loading the AI reading…",
+      "unavailable": "The AI reading could not be loaded.",
+      "readingNote": "AI-generated reading, for review by national experts."
+    },
+    "themes": {
+      "aiNote": "Themes are named by AI from the rated comparisons; the counts come from the ratings.",
+      "notExact": "The theme names were written for the full set of documents.",
+      "comparisons": "{count, plural, one {# comparison} other {# comparisons}}",
+      "share": "{doc}: {pct} of this theme's comparisons",
+      "noPart": "{doc}: takes no part",
+      "legend": "Darker squares: the document carries a larger part of the theme.",
+      "headerTheme": "Theme (AI-identified)",
+      "headerCount": "Comparisons"
+    },
+    "commitments": {
+      "headlineConcentrated": "{pct} of the {total, number} potential misalignments trace back to {top, plural, one {# commitment} other {# commitments}}.",
+      "headlineSpread": "Potential misalignment is spread across {contested, plural, one {# commitment} other {# commitments}}.",
+      "headlineEmpty": "No commitment is part of a potential misalignment.",
+      "count": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
+      "mostlyWith": "mostly with {doc}"
+    },
+    "documents": {
+      "headline": "Potential misalignment ranges from {low} to {high} across pairs of documents.",
+      "headlineFallback": "Across all comparisons, {pct} show potential misalignment.",
+      "average": "average across all comparisons: {pct}",
+      "few": "few comparisons",
+      "more": "{count, plural, one {# more pair of documents} other {# more pairs of documents}}",
+      "showAll": "Show all pairs",
+      "showFewer": "Show fewer",
+      "row": "{docA} and {docB}: {apart} potential misalignment, {partial} partial link, {reinforce} reinforce each other, from {total, number} comparisons"
+    },
+    "areas": {
+      "headline": "{area} shows the highest share of potential misalignment: {pct}.",
+      "headlineEmpty": "Too few rated comparisons in any policy area to compare.",
+      "commitmentsCount": "{count, plural, one {# commitment} other {# commitments}}",
+      "tooFew": "too few comparisons",
+      "average": "average across these areas: {pct}",
+      "row": "{area}: {pct} potential misalignment across {reviewed, number} comparisons"
     }
   }
 }

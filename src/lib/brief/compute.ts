@@ -487,3 +487,38 @@ export function areaRows(
     });
   return { rows, average: summary.mid, max: summary.maxShare };
 }
+
+/**
+ * An example for a pair of documents when no theme supplies one: a
+ * comparison of the tone between the two documents, preferring a strong
+ * over a moderate link, then the commitments that recur most among those
+ * comparisons, then the pair key. Same rule as `themeExample`, minus anchors.
+ */
+export function pairExample(
+  scope: Scope,
+  docA: string,
+  docB: string,
+  tone: "reinforce" | "apart",
+): ExamplePair | null {
+  const between = (c: ScopedComparison) =>
+    (c.a.doc === docA && c.b.doc === docB) || (c.a.doc === docB && c.b.doc === docA);
+  const candidates = scope.comparisons.filter((c) => between(c) && toneOf(c.level) === tone);
+  if (candidates.length === 0) return null;
+  const involvement = new Map<string, number>();
+  for (const c of candidates) {
+    for (const id of [c.a.id, c.b.id]) involvement.set(id, (involvement.get(id) ?? 0) + 1);
+  }
+  const recurring = (c: ScopedComparison) =>
+    (involvement.get(c.a.id) ?? 0) + (involvement.get(c.b.id) ?? 0);
+  const best = [...candidates].sort((x, y) => {
+    const d =
+      (x.level === "high" ? 0 : 1) - (y.level === "high" ? 0 : 1) || recurring(y) - recurring(x);
+    if (d !== 0) return d;
+    const kx = commitmentPairKey(x.a.id, x.b.id);
+    const ky = commitmentPairKey(y.a.id, y.b.id);
+    return kx < ky ? -1 : kx > ky ? 1 : 0;
+  })[0];
+  return best.mechanism
+    ? { a: best.a, b: best.b, level: best.level, mechanism: best.mechanism }
+    : { a: best.a, b: best.b, level: best.level };
+}

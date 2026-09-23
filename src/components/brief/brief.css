@@ -12,6 +12,8 @@
   --brief-blue-dark: #035293;
   --brief-green: #2a7443;
   --brief-red: #d2432c;
+  --brief-partial: #cdd3c9;
+  --brief-none: #e9e9e6;
   color: var(--brief-ink);
   background: #fff;
 }
@@ -467,6 +469,540 @@
 /* Section anatomy: the question, the finding, then the evidence */
 
 [data-brief] .brief-section-label {
+  margin: 0;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-sec {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+[data-brief] .brief-sec-headline {
+  max-width: 40em;
+  margin: 2px 0 8px;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+[data-brief] .brief-sec-sub {
+  margin: 0 0 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+[data-brief] .brief-sec-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+[data-brief] .brief-sec-note {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-sec-empty {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Dot field: the overall picture as a halftone print */
+
+[data-brief] .brief-dots {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+[data-brief] .brief-dots-field {
+  position: relative;
+  flex: 1;
+  min-height: 44px;
+}
+
+[data-brief] .brief-dots-field canvas {
+  display: block;
+}
+
+[data-brief] .brief-dots-labels {
+  position: relative;
+  height: 32px;
+  margin-top: 6px;
+}
+
+[data-brief] .brief-dots-label {
+  position: absolute;
+  top: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 5px;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+[data-brief] .brief-dots-key {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  align-self: center;
+}
+
+[data-brief] .brief-dots-pct {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+[data-brief] .brief-dots-tone {
+  grid-column: 2;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-tip {
+  position: absolute;
+  top: 6px;
+  z-index: 2;
+  padding: 6px 9px;
+  transform: translateX(-50%);
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Theme grid */
+
+[data-brief] .brief-grid-wrap {
+  margin-bottom: 10px;
+}
+
+[data-brief] .brief-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+[data-brief] .brief-grid th,
+[data-brief] .brief-grid td {
+  padding: 5px 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  vertical-align: middle;
+}
+
+[data-brief] .brief-grid thead th {
+  border-bottom-color: var(--brief-hairline-strong);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--brief-muted);
+  vertical-align: bottom;
+}
+
+[data-brief] .brief-grid-theme {
+  padding-right: 10px !important;
+  text-align: left;
+}
+
+[data-brief] tbody .brief-grid-theme {
+  font-weight: 500;
+}
+
+[data-brief] .brief-grid-doc {
+  width: 44px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+[data-brief] .brief-grid-count {
+  width: 80px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-mark {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+[data-brief] .brief-mark-none {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brief-hairline-strong);
+}
+
+[data-brief] .brief-grid-legend {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-grid-legend > span:last-child {
+  margin-left: 6px;
+}
+
+/* Example pair: two verbatim commitments in the documents' own voice */
+
+[data-brief] .brief-example {
+  margin: 4px 0 0;
+}
+
+[data-brief] .brief-example-caption {
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-example-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
+  align-items: start;
+}
+
+[data-brief] .brief-quote {
+  min-width: 0;
+  margin: 0;
+}
+
+[data-brief] .brief-quote-source {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-quote-label {
+  overflow: hidden;
+  font-weight: 600;
+  color: var(--brief-ink);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .brief-quote-text {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  line-height: 1.45;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-example-link {
+  margin: 44px 8px 0;
+  height: 0;
+}
+
+[data-brief] .brief-example-link-reinforce {
+  border-top: 2px solid var(--brief-green);
+}
+
+[data-brief] .brief-example-link-apart {
+  border-top: 2px dashed var(--brief-red);
+}
+
+[data-brief] .brief-example-actions {
+  margin: 6px 0 0;
+}
+
+[data-brief] .brief-example-actions .brief-button-quiet {
+  font-size: 12px;
+}
+
+/* Ranked commitments */
+
+[data-brief] .brief-rank {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .brief-rank-row {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 120px 34px;
+  align-items: center;
+  column-gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-rank-n {
+  font-size: 12px;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-rank-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .brief-rank-main:hover .brief-rank-title {
+  text-decoration: underline;
+}
+
+[data-brief] .brief-rank-title,
+[data-brief] .brief-rank-meta {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .brief-rank-title {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+[data-brief] .brief-rank-meta {
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-rank-bar > span {
+  display: block;
+  height: 8px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brief-red);
+}
+
+[data-brief] .brief-rank-value {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Documents side by side */
+
+[data-brief] .brief-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 6px;
+  row-gap: 2px;
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-legend-key {
+  width: 14px;
+  height: 9px;
+  margin-left: 8px;
+  border-radius: 2px;
+}
+
+[data-brief] .brief-legend-key:first-child {
+  margin-left: 0;
+}
+
+[data-brief] .brief-key-partial {
+  background: var(--brief-partial);
+}
+
+[data-brief] .brief-key-reinforce {
+  background: var(--brief-green);
+}
+
+[data-brief] .brief-legend-tick {
+  width: 1.5px;
+  height: 13px;
+  margin-left: 10px;
+  background: var(--brief-ink);
+}
+
+[data-brief] .brief-pairs,
+[data-brief] .brief-areas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .brief-pair {
+  display: block;
+  width: 100%;
+  padding: 4px 0 5px;
+  border: 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .brief-pair:hover .brief-pair-name {
+  text-decoration: underline;
+}
+
+[data-brief] .brief-pair-name {
+  display: block;
+  margin-bottom: 3px;
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .brief-pair-few {
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-pair-bar-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 34px;
+  align-items: center;
+  column-gap: 8px;
+}
+
+[data-brief] .brief-pair-value {
+  font-size: 12px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-pair-value-end {
+  text-align: left;
+}
+
+[data-brief] .brief-pair-bar {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  height: 12px;
+}
+
+[data-brief] .brief-seg {
+  display: block;
+  flex: 0 1 auto;
+  height: 100%;
+  min-width: 1px;
+}
+
+[data-brief] .brief-pair-bar > .brief-seg:first-child {
+  border-radius: 3px 0 0 3px;
+}
+
+[data-brief] .brief-seg-partial {
+  background: var(--brief-partial);
+}
+
+[data-brief] .brief-seg-none {
+  background: var(--brief-none);
+}
+
+[data-brief] .brief-seg-reinforce {
+  border-radius: 0 3px 3px 0;
+  background: var(--brief-green);
+}
+
+[data-brief] .brief-pair-avg,
+[data-brief] .brief-area-avg {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 1.5px;
+  transform: translateX(-50%);
+  background: var(--brief-ink);
+}
+
+/* Policy areas */
+
+[data-brief] .brief-area {
+  padding: 4px 0 5px;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-area-name {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 3px;
+  font-size: 12px;
+}
+
+[data-brief] .brief-area-name > span:first-child {
+  overflow: hidden;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .brief-area-meta {
+  flex: none;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-area-bar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  align-items: center;
+  column-gap: 8px;
+  margin: 0;
+}
+
+[data-brief] .brief-area-bar {
+  position: relative;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--brief-none);
+}
+
+[data-brief] .brief-area-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 0 3px 3px 0;
+  background: var(--brief-red);
+}
+
+[data-brief] .brief-area-value {
+  font-size: 12px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-area-few {
   margin: 0;
   font-size: 12px;
   color: var(--brief-muted);
