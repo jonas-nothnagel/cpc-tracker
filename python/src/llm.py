@@ -251,6 +251,57 @@ def read_cache_entry(
     return None
 
 
+# ---------------------------------------------------------------------------
+# Token usage (per call, recorded in the cache entry and summed per namespace)
+# ---------------------------------------------------------------------------
+#
+# Cost decisions need real numbers: how much of the prompt the provider served
+# from its prefix cache, and how many hidden reasoning tokens a verdict cost.
+# Neither is visible from the content, so each live call records the usage
+# block on its cache entry (`meta.usage`) and adds it to an in-process total
+# that a run script can print at the end (`get_usage_totals`).
+
+_usage_totals: dict[str, dict[str, int]] = {}
+
+
+def usage_from_response(response: Any) -> dict[str, int] | None:
+    """The usage block of a chat completion as plain ints, or None when the
+    provider sent none. `cachedPrompt` and `reasoning` are included only when
+    the provider reports them."""
+    usage = getattr(response, "usage", None)
+    if usage is None:
+        return None
+    out: dict[str, int] = {
+        "prompt": int(getattr(usage, "prompt_tokens", 0) or 0),
+        "completion": int(getattr(usage, "completion_tokens", 0) or 0),
+    }
+    pd = getattr(usage, "prompt_tokens_details", None)
+    cached = getattr(pd, "cached_tokens", None) if pd is not None else None
+    if cached is not None:
+        out["cachedPrompt"] = int(cached)
+    cd = getattr(usage, "completion_tokens_details", None)
+    reasoning = getattr(cd, "reasoning_tokens", None) if cd is not None else None
+    if reasoning is not None:
+        out["reasoning"] = int(reasoning)
+    return out
+
+
+def record_usage(namespace: str, usage: dict[str, int]) -> None:
+    tot = _usage_totals.setdefault(namespace, {"calls": 0})
+    tot["calls"] += 1
+    for k, v in usage.items():
+        tot[k] = tot.get(k, 0) + int(v)
+
+
+def get_usage_totals() -> dict[str, dict[str, int]]:
+    """Live (non-cached) token usage of this process, per cache namespace."""
+    return {ns: dict(t) for ns, t in _usage_totals.items()}
+
+
+def reset_usage_totals() -> None:
+    _usage_totals.clear()
+
+
 def write_cache(
     namespace: str,
     system: str,
@@ -424,6 +475,10 @@ async def call_llm_detailed(
                 # default (docs/model-selection.md).
                 if model in _models_without_temperature:
                     meta = {**(meta or {}), "samplingDefault": True}
+                usage = usage_from_response(response)
+                if usage:
+                    meta = {**(meta or {}), "usage": usage}
+                    record_usage(cache_namespace, usage)
                 write_cache(cache_namespace, system, user, model, content, meta=meta)
                 info = {"status": _call_status(content, {}), "cached": False}
                 if finish == "length":

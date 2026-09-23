@@ -18,6 +18,11 @@ export function normalizeTarget(t: Record<string, unknown>, locale?: string): Ta
   const extras: Record<string, unknown> = {};
   if (t.measureStatus !== undefined) extras.measureStatus = t.measureStatus;
   if (t.expenditure !== undefined) extras.expenditure = t.expenditure;
+  // NR7 reported-action provenance (Nr7PseudoTarget): the parent national
+  // target the narrative was filed under, shown on the pair drawer card.
+  for (const key of ["nbsapTargetId", "nr7ParentTargetId", "nr7ParentTargetText"]) {
+    if (typeof t[key] === "string") extras[key] = t[key];
+  }
 
   let text = String(t.text);
   let sourceLabel = String(t.sourceLabel);
@@ -84,7 +89,9 @@ export function normalizeTarget(t: Record<string, unknown>, locale?: string): Ta
     // Which elements the target's text states (src/.../target-quality).
     definition: (t.definition as Target["definition"]) ?? undefined,
     actionType:
-      t.actionType === "mitigation" || t.actionType === "adaptation"
+      t.actionType === "mitigation" ||
+      t.actionType === "adaptation" ||
+      t.actionType === "nr7"
         ? t.actionType
         : undefined,
     ...extras,

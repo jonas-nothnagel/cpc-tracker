@@ -6,7 +6,7 @@ to [`../METHODOLOGY.md`](../METHODOLOGY.md), which explains the "why". For the
 document → targets extraction phase that produces the input, see
 [`EXTRACTION_PIPELINE.md`](EXTRACTION_PIPELINE.md).
 
-*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (the analysis stages here are unchanged; targets files may now additionally carry `textOriginal`/`language`/`sources`/`textCleanup` from wizard uploads, which the analysis passes through untouched); updated 2026-07-03: active taxonomy set (`config.ACTIVE_TAXONOMIES`) reduced to IPCC sectors, GLOBE, and GGA — NBS paused; updated 2026-07-06: sector synthesis now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis reworked — evidence tables, 3+3 noun-phrase themes with pathways and anchors, disjoint friction counts, per-theme aggregates, shared style validator (`synthesis_style.py`), expanded precompute states, and `scripts/rerun_synthesis.py` for surgical re-runs; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [EXTRACTION_PIPELINE.md](EXTRACTION_PIPELINE.md); the analysis stages here are unchanged, and targets files may now also carry `labelSource`, which the analysis passes through untouched); updated 2026-07-31: added the human rights themes taxonomy (9, draft) to the active set; updated 2026-08-09: Mongolia corpus re-curated (official NDC 3.0 separated from Government Resolution No. 91 targets, new `NITIPA` document type; 178 targets, 13,404 pairs) — pipeline behaviour unchanged, worked-example numbers refreshed; updated 2026-09-14 (security review): the Step 5 analyst/advisor system prompts carry an untrusted-input instruction, prompt version 2.2 → 2.3, alignment cache namespace `alignment_v3` → `alignment_v4` (cold re-run required per country; grading rubric unchanged), and `extract.py` carries the same instruction. Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
+*Last verified against the pipeline (`python/src/`) at commit `8cdb1ff` on 2026-06-19; updated 2026-06-29 to add the GGA climate-resilience taxonomy (decision 2/CMA.5); re-verified 2026-07-02 after the document-extraction overhaul (the analysis stages here are unchanged; targets files may now additionally carry `textOriginal`/`language`/`sources`/`textCleanup` from wizard uploads, which the analysis passes through untouched); updated 2026-07-03: active taxonomy set (`config.ACTIVE_TAXONOMIES`) reduced to IPCC sectors, GLOBE, and GGA — NBS paused; updated 2026-07-06: sector synthesis now lists GGA in its allowlist and `run_analysis.py` resolves GGA category names, so a full re-run emits the GGA lens instead of dropping it; updated 2026-07-06 (theme-synthesis rework): Step 8 corpus synthesis reworked — evidence tables, 3+3 noun-phrase themes with pathways and anchors, disjoint friction counts, per-theme aggregates, shared style validator (`synthesis_style.py`), expanded precompute states, and `scripts/rerun_synthesis.py` for surgical re-runs; updated 2026-07-10: document extraction hardened (language-block handling for parallel-translation PDFs, truncation salvage, document-native labels via `labelSource`, document-order output — see [EXTRACTION_PIPELINE.md](EXTRACTION_PIPELINE.md); the analysis stages here are unchanged, and targets files may now also carry `labelSource`, which the analysis passes through untouched); updated 2026-07-31: added the human rights themes taxonomy (9, draft) to the active set; updated 2026-08-09: Mongolia corpus re-curated (official NDC 3.0 separated from Government Resolution No. 91 targets, new `NITIPA` document type; 178 targets, 13,404 pairs) — pipeline behaviour unchanged, worked-example numbers refreshed; updated 2026-09-11 (verified at commit `b5c0f05`): added Step 6b, the NR7 biodiversity self-report input from the CBD reporting tool (now carrying the GBF global target per national target) and the opt-in NR7 narrative alignment run, plus their output files; updated 2026-09-14 (security review): the Step 5 analyst/advisor system prompts carry an untrusted-input instruction, prompt version 2.2 → 2.3, alignment cache namespace `alignment_v3` → `alignment_v4` (cold re-run required per country; grading rubric unchanged), and `extract.py` carries the same instruction. Re-verify and bump this stamp whenever pipeline behaviour changes; see [`../PROJECT_GUIDELINES.md`](../PROJECT_GUIDELINES.md).*
 
 The whole run is orchestrated by **`run_analysis.py`** as eight stages (`TOTAL_STEPS = 8`). Steps 6 and 7 run only when the relevant data exists. Every LLM call is cached on disk by a hash of `{system_prompt, user_prompt, model}`, namespaced per step, so re-running with the same inputs and model costs nothing.
 
@@ -123,6 +123,20 @@ BTR mitigation measures and, where available, adaptation actions become pseudo-t
 
 ---
 
+## Step 6b: NR7 Biodiversity Self-Report — Level 3 (conditional)
+
+- **Input script (no LLM):** `scripts/fetch_nr7_ort.py` → `src/nr7_ort.py` · **Writes:** `data/external/nr7_{iso3}.json` (+ raw CSVs under `data/external/nr7_ort/{iso3}/`)
+- **Runs when:** the country has a 7th National Report on the CBD Online Reporting Tool (public API); anchored on the country's NBSAP targets in `data/{country}-targets.json` (`--nbsap-doc` if they carry another code)
+- **Optional LLM step:** `scripts/run_nr7_alignment.py` → `src/nr7_align.py` · **Writes:** `nr7_pseudo_targets.json`, `nr7_alignment.json` (uncalibrated; not shown as review items)
+
+Section III (national targets with their four narratives, the six-level progress rating folded onto four statuses, and the GBF global target(s) each is filed under), the headline / component / national indicator series and the GBF questionnaire answers are kept verbatim. The dashboard reads the JSON directly: cross-checks between rating and evidence, grouping by GBF target, and the join to Step 5 (policy targets in other documents rated HIGH against the restated NBSAP target) are all frontend arithmetic.
+
+```bash
+python scripts/fetch_nr7_ort.py --country Mongolia --iso3 MNG --iso2 MN --targets-file mongolia-targets.json
+```
+
+---
+
 ## Step 7: Budget Alignment — Level 2 (conditional)
 
 - **Script:** `budget_align.py` · **Writes:** `budget_alignment.json`, `budget_pseudo_targets.json`
@@ -157,6 +171,8 @@ Precomputed states now cover the full corpus, every single-document-hidden state
 | `alignment.json` | 5 + 5a | yes |
 | `doc_pair_synthesis.json`, `corpus_themes.json`, `sector_synthesis.json` | 8 | yes |
 | `measure_alignment.json`, `measure_pseudo_targets.json` | 6 | if BTR data |
+| `nr7_pseudo_targets.json`, `nr7_alignment.json` | 6b (opt-in) | if NR7 data and the run is requested |
+| `data/external/nr7_{iso3}.json` (under `python/data/`, not `output/`) | 6b | if NR7 data |
 | `budget_alignment.json`, `budget_pseudo_targets.json` | 7 | if BER data |
 | `status.json`, `footprint.json` | all | yes (progress + footprint) |
 

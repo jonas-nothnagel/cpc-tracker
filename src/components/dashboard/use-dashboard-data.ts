@@ -22,6 +22,7 @@ import type {
   BtrData,
   BerData,
   Nr7Data,
+  Nr7PseudoTarget,
   CountryConfig,
   DocPairSynthesis,
   SectorSynthesis,
@@ -49,6 +50,11 @@ export interface DashboardData {
   berData: BerData | null;
   budgetAlignment: AlignmentResult[] | null;
   budgetPseudoTargets: Target[] | null;
+  /** NR7 reported actions as pseudo-targets + their alignment against the
+   *  policy targets. Own keys (the budget pattern), never merged into
+   *  `targets`/`alignment`; null for a country without an NR7 run. */
+  nr7Alignment: AlignmentResult[] | null;
+  nr7PseudoTargets: Nr7PseudoTarget[] | null;
   footprint: FootprintSnapshot | null;
   docPairSynthesis: DocPairSynthesis[];
   // Raw payloads carrying the `states` map for the document toggle; the
@@ -97,6 +103,11 @@ export function normalize(raw: DashboardResponse, locale?: string): DashboardDat
     budgetPseudoTargets:
       (r.budgetPseudoTargets as Record<string, unknown>[] | null)?.map((t) =>
         normalizeTarget(t, locale),
+      ) ?? null,
+    nr7Alignment: (r.nr7Alignment as AlignmentResult[] | null) ?? null,
+    nr7PseudoTargets:
+      (r.nr7PseudoTargets as Record<string, unknown>[] | null)?.map(
+        (t) => normalizeTarget(t, locale) as Nr7PseudoTarget,
       ) ?? null,
     footprint: (r.footprint as FootprintSnapshot | null) ?? null,
     docPairSynthesis: (r.docPairSynthesis as DocPairSynthesis[] | null) ?? [],

@@ -1,9 +1,11 @@
-// Shared-token authentication for the whole app (pages + API).
+// Shared-token authentication for the document-upload flow only.
 //
-// A single `APP_ACCESS_TOKEN` secret is handed to admin users. Browsers
-// authenticate by exchanging it for an `app_auth` cookie (see /api/auth);
-// scripts/curl can pass `Authorization: Bearer <token>` directly. The gate is
-// enforced in `src/proxy.ts` (middleware).
+// A single `APP_ACCESS_TOKEN` secret is handed to the people allowed to upload
+// documents and start analyses. Browsers authenticate by exchanging it for an
+// `app_auth` cookie (see /api/auth); scripts/curl can pass
+// `Authorization: Bearer <token>` directly. The gate is enforced in
+// `src/proxy.ts` (middleware) on the upload wizard pages and the upload API
+// routes; every other page and API route is open.
 //
 // Everything here uses Web Crypto (`crypto.subtle`) so it runs unchanged in the
 // Edge middleware runtime AND in Node route handlers — Node's `crypto` module
@@ -11,7 +13,8 @@
 //
 // Behaviour when `APP_ACCESS_TOKEN` is unset:
 //   - development: gate is bypassed (open) so local dev needs no token;
-//   - production: fail closed — every request is denied until the token is set.
+//   - production: fail closed — uploads are refused until the token is set.
+//     The rest of the app keeps working.
 
 import type { NextRequest } from "next/server";
 

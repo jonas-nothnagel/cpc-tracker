@@ -132,10 +132,11 @@ export interface Target {
   /** Set alongside `textTranslation`: the language `text` is currently in. */
   textLocale?: string;
   /**
-   * For BTR-sourced pseudo-targets: whether this came from a mitigation measure or
-   * an adaptation action. Undefined for policy targets (NDC/NBSAP/NAP/...).
+   * For reported-action pseudo-targets: a BTR mitigation measure, a BTR
+   * adaptation action, or an NR7 reported action. Undefined for policy targets
+   * (NDC/NBSAP/NAP/...).
    */
-  actionType?: BTRActionType;
+  actionType?: ReportedActionType;
   /**
    * Verbatim source span(s) this target was extracted from. At least one entry expected for
    * targets that went through the extraction pipeline; legacy entries pre-dating the schema
@@ -149,6 +150,11 @@ export interface Target {
 
 /** Kind of reported action from a Biennial Transparency Report. */
 export type BTRActionType = "mitigation" | "adaptation";
+
+/** Kind of reported action across the self-reported implementation sources:
+ *  the BTR's mitigation / adaptation rows, or a reported action from the 7th
+ *  National Report to the CBD (NR7). */
+export type ReportedActionType = BTRActionType | "nr7";
 
 /**
  * Provenance for a data point — cited to a primary document so users can audit it.
@@ -1096,6 +1102,14 @@ export interface CountryConfig {
    */
   anchorDocType?: string;
   /**
+   * `sourceDocument` id of the corpus targets the NR7 national targets
+   * restate (the NBSAP, by default "NBSAP"). The biodiversity view counts
+   * each national target's cross-document policy links through that
+   * document's targets. The Python side (`fetch_nr7_ort.py --nbsap-doc`)
+   * must agree, and ids still take the `NBSAP_n` prefix it writes.
+   */
+  nr7PolicyLinkDocType?: string;
+  /**
    * Which evidence layout the financing (Level 2) slide should use.
    * - `"dotmap"` (default): the DocumentCoverage dot-map — one uniform dot per
    *   target, filled when a HIGH-confidence budget line matches. The fallback
@@ -1204,18 +1218,133 @@ export interface Nr7ProgressItem {
   targetId: string;
   targetText: string;
   progressStatus: "on_track" | "limited" | "no_progress" | "unknown";
+  /** The report's own six-level "Level of Progress" wording, when sourced
+   *  from the CBD Online Reporting Tool (python/src/nr7_ort.py). */
+  levelOfProgress?: string | null;
+  /** What the NR7 alignment pairs against policy targets. From the ORT
+   *  source this is the Main Actions Summary, one entry per national target
+   *  until the splitting rule is calibrated. */
   reportedActions: string[];
+  /** The report's four narratives, kept separate (ORT source). */
+  mainActionsSummary?: string | null;
   progressSummary?: string | null;
+  keyChallengesSummary?: string | null;
+  actionEffectivenessSummary?: string | null;
+  /** Legacy aliases read by the NR7 progress panel: challenges = key
+   *  challenges summary, examples = action effectiveness summary. */
   challenges?: string | null;
   examples?: string | null;
-  /** Maps to an NBSAP target (e.g. "NBT_1") for direct lookup */
-  nbsapTargetId?: string;
+  /** Corpus id of the NBSAP target this national target restates (e.g.
+   *  "NBSAP_4"), matched by text. Files from the 2026-03 PDF scrape carry
+   *  "NBT_n" instead; readers accept both. */
+  nbsapTargetId?: string | null;
+  /** Text-similarity score behind `nbsapTargetId` (0..1). */
+  nbsapMatchScore?: number;
+  /** The Kunming-Montreal GBF global target(s) the country filed this
+   *  national target under, from the reporting tool: id "T03", code
+   *  "GBF-T03", and the CBD's heading verbatim. Several when the country
+   *  filed it under more than one; absent on files older than 2026-09-11. */
+  gbfTargets?: Nr7GbfTargetRef[];
+  ortUniqueId?: string | null;
+  publishedOn?: string | null;
+}
+
+export interface Nr7GbfTargetRef {
+  id: string;
+  code: string;
+  title: string;
+}
+
+/** One answer in the NR7's GBF binary-indicator questionnaire. */
+export interface Nr7QuestionnaireAnswer {
+  /** National target the question was answered under (e.g. "NT12"). */
+  targetId: string;
+  indicatorCode: string | null;
+  indicatorTitle: string | null;
+  questionNumber: string;
+  /** The question as worded by the reporting tool; null when the export
+   *  carried no wording (the UI then shows the number only). */
+  questionTitle: string | null;
+  /** The answer as recorded, verbatim. */
+  response: string;
+  /** Standard four-step scale, or null for enum / free-text answers. */
+  responseValue: "yes" | "partially" | "under_development" | "no" | null;
+  ortUniqueId?: string | null;
+  publishedOn?: string | null;
+}
+
+export interface Nr7IndicatorPoint {
+  year: number;
+  /** Numeric value, or null when the cell was non-numeric (see valueText). */
+  value: number | null;
+  valueText: string | null;
+  footnote: string | null;
+}
+
+/** One series of an indicator: the whole indicator, or one disaggregation
+ *  of it (a biome, a taxon, terrestrial vs OECM). Unit is per series. */
+export interface Nr7IndicatorSeries {
+  disaggregation: string | null;
+  unit: string | null;
+  points: Nr7IndicatorPoint[];
+}
+
+export interface Nr7Indicator {
+  /** GBF code when there is one ("3.1", "A.CT.10"), else a slug of the title. */
+  id: string;
+  code: string | null;
+  name: string;
+  /** Verbatim title from the reporting tool. */
+  title: string;
+  indicatorType: "headline" | "component" | "national" | string | null;
+  /** National targets the indicator is reported under; [] when detached. */
+  targetIds: string[];
+  /** The country's comment, usually why no value was reported. */
+  comments: string | null;
+  ortUniqueId?: string | null;
+  publishedOn?: string | null;
+  /** Empty when the country reported no values. */
+  series: Nr7IndicatorSeries[];
 }
 
 export interface Nr7Data {
   country: string;
+  /** Shown as the citation "NR7 (…)": the report's publication year. */
   reportingPeriod: string;
   progressItems: Nr7ProgressItem[];
+  iso3?: string;
+  /** Where the file came from (ORT source only). */
+  source?: {
+    name: string;
+    url: string;
+    section?: string;
+    sections?: string[];
+    publishedOn?: string | null;
+    fetchedAt: string;
+  };
+  /** GBF questionnaire answers (ORT source only). */
+  questionnaire?: { answers: Nr7QuestionnaireAnswer[] };
+  /** Indicator series (ORT source only). */
+  indicators?: Nr7Indicator[];
+}
+
+/**
+ * One NR7 reported action as a pseudo-target (python/src/nr7_align.py
+ * `nr7_actions_to_pseudo_targets`). Ships on its own payload key
+ * (`nr7PseudoTargets`), never inside `targets`, so it is not counted as a
+ * policy target. `measureStatus` is the country's self-assessed progress on
+ * the PARENT national target, not a lifecycle stage of the action itself.
+ */
+export interface Nr7PseudoTarget extends Target {
+  sourceDocument: "NR7";
+  actionType: "nr7";
+  measureStatus: Nr7ProgressItem["progressStatus"] | string;
+  /** NBSAP corpus target the parent national target restates (e.g.
+   *  "NBSAP_4"; runs on the older PDF-scraped file carry "NBT_3"). */
+  nbsapTargetId?: string;
+  /** The NR7's own id for the parent national target (e.g. "NT03"). */
+  nr7ParentTargetId?: string;
+  nr7ParentTargetText?: string;
 }
 
 

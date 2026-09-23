@@ -37,7 +37,7 @@ export function stripCountryIdPrefix(targetId: string): string {
 //   1. `countryConfig.documentTypes` — country-specific mapping loaded from
 //      `{country}-country-config.json`. Country entries override the reserved
 //      fallback when both are present (lets a country rename BTR if needed).
-//   2. Reserved token (BTR, OTHER) — universal fallback so every country
+//   2. Reserved token (BTR, NR7, OTHER) — universal fallback so every country
 //      renders these consistently without having to declare them.
 //   3. Raw id or neutral fallback — for unknown ids, return the id itself for
 //      labels and a neutral gray for colors.
@@ -51,6 +51,8 @@ export function stripCountryIdPrefix(targetId: string): string {
  *   mitigation and adaptation render as distinct stacks. Targets keep
  *   `sourceDocument === "BTR"`; the split is computed by `chartDocKey` at
  *   chart-construction time.
+ * - `NR7`: 7th National Report to the CBD — reported actions on the country's
+ *   national biodiversity targets (`nr7PseudoTargets`, never in `targets`)
  * - `OTHER`: catch-all when a target's `sourceDocument` is not declared
  */
 const RESERVED_DOC_TYPES: Record<string, DocumentTypeEntry> = {
@@ -67,6 +69,13 @@ const RESERVED_DOC_TYPES: Record<string, DocumentTypeEntry> = {
     mediumLabel: "BTR (Adaptation)",
     fullLabel: "Biennial Transparency Report — adaptation actions",
     color: "#c026d3",
+  },
+  NR7: {
+    id: "NR7",
+    shortLabel: "NR7 Action",
+    mediumLabel: "NR7 (Biodiversity report)",
+    fullLabel: "7th National Report to the Convention on Biological Diversity",
+    color: "#0f766e",
   },
   OTHER: {
     id: "OTHER",
@@ -200,7 +209,8 @@ export function getDocTypeOrder(
   const reservedOffset = 1_000_000;
   if (docId === "BTR") return reservedOffset;
   if (docId === "BTR_ADP") return reservedOffset + 1;
-  if (docId === "OTHER") return reservedOffset + 2;
+  if (docId === "NR7") return reservedOffset + 2;
+  if (docId === "OTHER") return reservedOffset + 3;
   return Number.MAX_SAFE_INTEGER;
 }
 

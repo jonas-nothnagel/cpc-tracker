@@ -5,14 +5,9 @@ import { useTranslations } from "next-intl";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance } from "@/components/ui/data-provenance";
 import { useNr7BadgeLabels } from "@/lib/labels";
+import { NR7_COLORS } from "@/components/dashboard/coherence-briefing/nr7-report/nr7-colors";
 import type { Nr7Data, Nr7ProgressItem, AlignmentResult, Target, AlignmentLevel } from "@/types";
 
-const NR7_COLORS: Record<string, string> = {
-  on_track: "#16a34a",
-  limited: "#d97706",
-  no_progress: "#dc2626",
-  unknown: "#9ca3af",
-};
 const STATUS_ORDER = ["on_track", "limited", "no_progress", "unknown"] as const;
 
 /* ------------------------------------------------------------------ */
@@ -36,7 +31,7 @@ function Nr7TargetCard({
 }) {
   const t = useTranslations("viz.nr7Progress");
   const displayLabel = item.nbsapTargetId
-    ? `NBSAP ${item.nbsapTargetId.replace("NBT_", "")}`
+    ? `NBSAP ${item.nbsapTargetId.replace(/^(NBT|NBSAP)_/, "")}`
     : item.targetId;
   const hasDetail = item.progressSummary || item.challenges || item.examples;
   const cleanSummary = item.progressSummary?.replace(/\n/g, " ") ?? null;

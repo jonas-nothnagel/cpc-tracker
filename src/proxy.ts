@@ -4,18 +4,50 @@ import { routing } from "./i18n/routing";
 import { gateBypassed, hasValidAuth } from "./lib/auth/token";
 
 // Next 16 renamed `middleware.ts` to `proxy.ts`. This wraps the next-intl
-// locale middleware with a shared-token authentication gate that covers pages,
-// `/api/*`, and `/analytics`. See src/lib/auth/token.ts for the token model.
+// locale middleware with a shared-token authentication gate that covers ONLY
+// the document-upload flow: the upload wizard pages and the API routes that
+// accept uploaded files or start an analysis from them. Every other page and
+// API route (pilot-country dashboards, briefings, chat, viewing a finished
+// analysis, analytics) is open. See src/lib/auth/token.ts for the token model.
 
 const intlMiddleware = createMiddleware(routing);
 
 const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
-// Static assets are matched by extension INSIDE the middleware (below) rather
-// than excluded by the matcher regex. A regex exclusion for dotted paths would
-// also skip auth for dynamic route segments that contain a dot
-// (e.g. /api/ratings/us.test, /en/analysis/x.y) — an auth-gate bypass.
-const STATIC_EXT_RE =
-  /\.(?:js|mjs|css|png|jpg|jpeg|gif|svg|ico|webp|avif|woff|woff2|ttf|eot|map|xml|txt|webmanifest)$/i;
+// Files served from `public/` are matched by extension INSIDE the middleware
+// (below) rather than excluded by the matcher regex. A regex exclusion for
+// dotted paths would also skip auth for dynamic route segments that contain a
+// dot (e.g. /api/ratings/us.test, /en/analysis/x.y) — an auth-gate bypass.
+//
+// The list must cover every file type that lives under `public/`: a file whose
+// extension is missing here falls through to locale routing, gets rewritten to
+// /en/<file> and 404s (the methodology walkthrough, an .html file, did exactly
+// that from 2026-09-15 to 2026-09-17). `src/proxy.test.ts` walks `public/` and
+// fails when a file is added that this list does not cover.
+const PUBLIC_FILE_RE =
+  /\.(?:js|mjs|css|png|jpg|jpeg|gif|svg|ico|webp|avif|woff|woff2|ttf|eot|map|xml|txt|webmanifest|html|htm|pdf|json|csv|md|docx|xlsx|pptx|zip|mp4|webm|mp3|ogg|wav|m4a|vtt)$/i;
+
+/** True for a request path that names a file under `public/` by extension.
+ *  Never consulted for API paths, which are handled first (a dotted dynamic
+ *  API segment must not skip the CSRF and gate checks). */
+export function isPublicFile(pathname: string): boolean {
+  return PUBLIC_FILE_RE.test(pathname);
+}
+
+// API routes that ingest uploaded documents or spend LLM budget on them.
+// `/api/analyze` is the exact POST that starts a run; `/api/analyze/<id>/status`
+// (polling a run that already started) stays open, like viewing the result.
+const GATED_API_PATHS = new Set([
+  "/api/extract",
+  "/api/parse-btr",
+  "/api/parse-excel-targets",
+  "/api/analyze",
+  "/api/extraction-review",
+]);
+
+// Upload wizard pages: /upload, /es/upload, /mn/upload, /panama/upload,
+// /es/panama/upload. Matching on the trailing segment keeps every locale and
+// country variant covered without enumerating them.
+const UPLOAD_PAGE_RE = /^(?:\/[^/]+){0,2}\/upload\/?$/;
 
 function isApiPath(pathname: string): boolean {
   return pathname === "/api" || pathname.startsWith("/api/");
@@ -25,12 +57,27 @@ function isAnalyticsPath(pathname: string): boolean {
   return pathname === "/analytics" || pathname.startsWith("/analytics/");
 }
 
-// Reachable without authentication.
-function isPublicPath(pathname: string): boolean {
-  if (pathname === "/api/auth" || pathname === "/api/health") return true;
-  // /login and locale-prefixed variants (/es/login, /mn/login)
-  if (pathname === "/login" || /^\/[a-z]{2}\/login$/.test(pathname)) return true;
-  return false;
+/** True for the upload wizard and the API routes it calls. */
+export function isGatedPath(pathname: string): boolean {
+  const normalised = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+  if (GATED_API_PATHS.has(normalised)) return true;
+  return UPLOAD_PAGE_RE.test(pathname);
+}
+
+// The hostnames this request was addressed to, as the browser saw them.
+// Behind a reverse proxy (Azure App Service) `req.nextUrl.host` is the
+// container's listen address (localhost:3000), not the public hostname, so
+// comparing Origin against it rejected every same-origin browser POST in
+// production. Host and X-Forwarded-Host are what the proxy forwards; a
+// cross-site page cannot set either from the browser.
+function requestHosts(req: NextRequest): Set<string> {
+  const hosts = new Set<string>();
+  const forwarded = req.headers.get("x-forwarded-host");
+  if (forwarded) hosts.add(forwarded.split(",")[0].trim().toLowerCase());
+  const host = req.headers.get("host");
+  if (host) hosts.add(host.trim().toLowerCase());
+  hosts.add(req.nextUrl.host.toLowerCase());
+  return hosts;
 }
 
 // CSRF defence-in-depth: reject cross-site state-changing requests to the API.
@@ -42,7 +89,7 @@ function isCrossSiteMutation(req: NextRequest): boolean {
   const origin = req.headers.get("origin");
   if (!origin) return false;
   try {
-    return new URL(origin).host !== req.nextUrl.host;
+    return !requestHosts(req).has(new URL(origin).host.toLowerCase());
   } catch {
     return true;
   }
@@ -51,24 +98,20 @@ function isCrossSiteMutation(req: NextRequest): boolean {
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Static assets: pass through without an auth check (identified by extension,
-  // not by a matcher regex — see STATIC_EXT_RE).
-  if (
-    pathname.startsWith("/_next/") ||
-    pathname.startsWith("/_vercel/") ||
-    STATIC_EXT_RE.test(pathname)
-  ) {
+  if (pathname.startsWith("/_next/") || pathname.startsWith("/_vercel/")) {
     return NextResponse.next();
   }
 
   const api = isApiPath(pathname);
-  const analytics = isAnalyticsPath(pathname);
 
+  // Order matters. The API checks come first so that an API path ending in a
+  // file extension (a dotted dynamic segment such as /api/ratings/x.json) can
+  // never be mistaken for a public file and skip them.
   if (api && isCrossSiteMutation(req)) {
     return NextResponse.json({ error: "Cross-site request blocked" }, { status: 403 });
   }
 
-  if (!isPublicPath(pathname) && !gateBypassed()) {
+  if (isGatedPath(pathname) && !gateBypassed()) {
     if (!(await hasValidAuth(req))) {
       if (api) {
         return NextResponse.json({ error: "Authentication required" }, { status: 401 });
@@ -79,8 +122,9 @@ export default async function proxy(req: NextRequest) {
     }
   }
 
-  // API and analytics are outside the locale tree — pass them straight through.
-  if (api || analytics) {
+  // API and analytics are outside the locale tree; so is every file served
+  // from `public/` (see PUBLIC_FILE_RE). Pass them straight through.
+  if (api || isAnalyticsPath(pathname) || isPublicFile(pathname)) {
     return NextResponse.next();
   }
   // Everything else goes through next-intl locale routing.
@@ -88,9 +132,9 @@ export default async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  // Run on everything except Next/Vercel internals. Static files are passed
-  // through by extension INSIDE the middleware (STATIC_EXT_RE) — we deliberately
-  // do NOT exclude dotted paths here, because that skipped auth for dynamic
-  // route segments containing a dot (an auth-gate bypass).
+  // Run on everything except Next/Vercel internals. Files under `public/` are
+  // passed through by extension INSIDE the middleware (PUBLIC_FILE_RE) — we
+  // deliberately do NOT exclude dotted paths here, because that skipped auth
+  // for dynamic route segments containing a dot (an auth-gate bypass).
   matcher: ["/((?!_next|_vercel).*)"],
 };

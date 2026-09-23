@@ -33,6 +33,13 @@ describe("panelKey", () => {
     expect(new Set(keys).size).toBe(ALL_KINDS.length);
   });
 
+  it("keeps a pair opened from a biodiversity report row apart from the same pair opened elsewhere", () => {
+    const plain = panelKey({ kind: "target-pair", aId: "NBSAP_4", bId: "NDC_1" });
+    const fromRow = panelKey({ kind: "target-pair", aId: "NBSAP_4", bId: "NDC_1", nr7TargetId: "NT04" });
+    expect(fromRow).not.toBe(plain);
+    expect(fromRow).toBe(panelKey({ kind: "target-pair", aId: "NBSAP_4", bId: "NDC_1", nr7TargetId: "NT04" }));
+  });
+
   it("treats document pairs as unordered", () => {
     expect(panelKey({ kind: "doc-pair", docA: "NDC", docB: "NBSAP" })).toBe(
       panelKey({ kind: "doc-pair", docA: "NBSAP", docB: "NDC" }),

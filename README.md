@@ -40,7 +40,8 @@ pnpm install
 cp .env.example .env
 # Edit .env with your OPENROUTER_API_KEY
 # Leave APP_ACCESS_TOKEN empty for local development (no sign-in needed).
-# Set it to test the sign-in page; production refuses all requests until it is set.
+# Set it to test the upload sign-in page; in production, document upload is
+# disabled until it is set (the rest of the app stays open).
 
 # Run development server
 pnpm dev
@@ -52,7 +53,7 @@ pnpm dev
 
 - [Project Guidelines](./PROJECT_GUIDELINES.md) - Design decisions and architecture
 - [Python Pipeline](./python/README.md) - LLM analysis pipeline
-- [Signing in, upload limits, and safe handling of documents](./docs/ACCESS_AND_LIMITS.md) - the shared access token, size and rate limits, API access from scripts, and what the prompt-injection guard means for re-runs
+- [Signing in to upload, upload limits, and safe handling of documents](./docs/ACCESS_AND_LIMITS.md) - the shared upload token, size and rate limits, API access from scripts, and what the prompt-injection guard means for re-runs
 
 ## Status
 

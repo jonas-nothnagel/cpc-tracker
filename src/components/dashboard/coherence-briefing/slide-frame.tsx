@@ -21,6 +21,7 @@ export function SlideFrame({
   headline,
   body,
   reading,
+  controlsFirst,
   controls,
   evidence,
   disclosure,
@@ -33,6 +34,11 @@ export function SlideFrame({
    *  the finding, always visible (see src/components/ui/glossary). Optional:
    *  omit and the slide renders exactly as it did before reading lines existed. */
   reading?: ReactNode;
+  /** A control that changes what the headline is about (which report is on
+   *  screen): rendered above the headline, so the reader chooses before
+   *  reading. `controls` below stays for controls that only shape the
+   *  evidence. */
+  controlsFirst?: ReactNode;
   controls?: ReactNode;
   evidence?: ReactNode;
   disclosure?: ReactNode;
@@ -48,6 +54,7 @@ export function SlideFrame({
       className="scroll-mt-[calc(var(--jump-nav-clearance,10.25rem)+0.75rem)] pt-2"
       aria-labelledby={`${id}-heading`}
     >
+      {controlsFirst && <div className="mb-5">{controlsFirst}</div>}
       {/* The headline block doubles as the slide's guided-read anchor: a
           compact spotlight target (never the whole 80vh section). The scroll
           margin keeps it clear of the sticky app header + jump nav when the

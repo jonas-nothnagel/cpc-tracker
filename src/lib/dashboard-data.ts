@@ -434,6 +434,13 @@ export interface DashboardResponse {
   berData: unknown;
   budgetAlignment: unknown[] | null;
   budgetPseudoTargets: Record<string, unknown>[] | null;
+  /** NR7 reported actions + their alignment (Level-3 biodiversity
+   *  implementation). Separate keys like budget, NOT merged into `targets`:
+   *  the frontend's reported-action test is `sourceDocument === "BTR"`, so a
+   *  merged NR7 row would be counted as a policy target. Null until a run
+   *  with scripts/run_nr7_alignment.py produces the files. */
+  nr7Alignment: unknown[] | null;
+  nr7PseudoTargets: Record<string, unknown>[] | null;
   footprint: Record<string, unknown> | null;
   docPairSynthesis: unknown[];
   corpusThemes: Record<string, unknown> | null;
@@ -723,13 +730,35 @@ export function assembleDashboardData(
       )
     : null;
 
-  const allTargets = measurePseudoTargets
-    ? [...enrichedTargets, ...measurePseudoTargets]
-    : enrichedTargets;
+  // NR7 (7th National Report to the CBD) pseudo-targets + alignment — the
+  // Level-3 biodiversity-implementation analogue of the BTR measures above.
+  // Exposed as their own payload keys (the budget pattern) rather than merged
+  // into `targets`/`alignment`: 29 frontend sites test "reported action" as
+  // `sourceDocument === "BTR"`, so a merged NR7 row would be miscounted as a
+  // policy target. Null for every country without an NR7 run.
+  const nr7PseudoTargets = readJson<Record<string, unknown>[]>(
+    join(outputDir, "nr7_pseudo_targets.json")
+  );
+  const nr7AlignmentRaw = readJson<Record<string, unknown>[]>(
+    join(outputDir, "nr7_alignment.json")
+  );
+  const nr7Alignment = nr7AlignmentRaw
+    ? applyAlignmentTranslations(
+        migrateLegacyAlignmentRecords(nr7AlignmentRaw),
+        rationaleOverlay("nr7_alignment.json"),
+        locale,
+      )
+    : null;
 
-  const allAlignment = measureAlignment
-    ? [...(alignment as unknown[]), ...measureAlignment]
-    : alignment;
+  const allTargets = [
+    ...enrichedTargets,
+    ...(measurePseudoTargets ?? []),
+  ];
+
+  const allAlignment = [
+    ...(alignment as unknown[]),
+    ...(measureAlignment ?? []),
+  ];
 
   // Budget alignment (BER data)
   const budgetPseudoTargets = readJson<Record<string, unknown>[]>(
@@ -893,6 +922,8 @@ export function assembleDashboardData(
       berData: berData ?? null,
       budgetAlignment: budgetAlignment ?? null,
       budgetPseudoTargets: budgetPseudoTargets ?? null,
+      nr7Alignment: nr7Alignment ?? null,
+      nr7PseudoTargets: nr7PseudoTargets ?? null,
       footprint: footprint ?? null,
       docPairSynthesis: docPairSynthesis ?? [],
       corpusThemes: corpusThemes ?? null,

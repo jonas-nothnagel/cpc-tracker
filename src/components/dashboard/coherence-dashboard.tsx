@@ -152,6 +152,8 @@ export function CoherenceDashboard({
         berData={data.berData}
         budgetAlignment={data.budgetAlignment}
         nr7Data={data.nr7Data}
+        nr7PseudoTargets={data.nr7PseudoTargets}
+        nr7Alignment={data.nr7Alignment}
         globeSubcategories={data.globeSubcategories}
         alignment={data.alignment}
         classifications={data.classifications}

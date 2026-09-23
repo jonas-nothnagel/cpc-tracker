@@ -64,6 +64,12 @@ from .measure_align import (
     decompose_measures,
     assess_measure_alignment,
 )
+from .nr7_align import (
+    nr7_actions_to_pseudo_targets,
+    generate_nr7_pairs,
+    decompose_nr7_actions,
+    assess_nr7_alignment,
+)
 from .budget_align import (
     programs_to_pseudo_targets,
     generate_budget_pairs,
@@ -296,6 +302,17 @@ def parse_args() -> argparse.Namespace:
         help="Skip the target-definition-elements step. The dashboard hides "
              "every quality affordance when target_quality.json is absent, so "
              "this is a safe way to shorten a run.",
+    )
+    parser.add_argument(
+        "--nr7-file",
+        default=None,
+        help="Path (relative to DATA_DIR, e.g. 'external/nr7_mng.json') to a "
+             "7th National Report to the CBD dataset. When set, the pipeline "
+             "runs the Level-3 biodiversity implementation alignment "
+             "(policy targets × NR7 reported actions) and writes "
+             "nr7_pseudo_targets.json + nr7_alignment.json. Opt-in because no "
+             "NR7 prompt cache exists yet, so the first run is billable and "
+             "the NR7 framing is pending expert calibration (see nr7_align.py).",
     )
     parser.add_argument(
         "--limit-targets",
@@ -862,6 +879,47 @@ async def main() -> None:
         else:
             logger.info("")
             logger.info("STEP 7: Skipped (no BER data)")
+
+        # 8. Target-to-NR7 alignment (Level-3 biodiversity implementation).
+        # Opt-in via --nr7-file: no NR7 prompt cache exists, so the first run
+        # is billable, and the NR7 framing is pending expert calibration (see
+        # the CALIBRATION TODO in nr7_align.py). Mirrors the measure/budget
+        # blocks: policy targets × NR7 reported actions → nr7_alignment.json.
+        if args.nr7_file:
+            nr7_path = DATA_DIR / args.nr7_file
+            if not nr7_path.exists():
+                logger.warning(
+                    f"--nr7-file '{args.nr7_file}' not found under DATA_DIR "
+                    f"({nr7_path}); skipping NR7 alignment"
+                )
+            else:
+                logger.info("")
+                logger.info("STEP 7b: Target-to-NR7 alignment")
+                logger.info("-" * 40)
+
+                nr7 = json.loads(nr7_path.read_text())
+                progress_items = nr7.get("progressItems", [])
+                nr7_pseudo_targets = nr7_actions_to_pseudo_targets(progress_items)
+                logger.info(
+                    f"  {len(progress_items)} NR7 progress items → "
+                    f"{len(nr7_pseudo_targets)} reported-action pseudo-targets"
+                )
+
+                if nr7_pseudo_targets:
+                    nr7_pairs = generate_nr7_pairs(targets, nr7_pseudo_targets)
+                    nr7_decomps = await decompose_nr7_actions(nr7_pseudo_targets)
+                    all_decomps = {**decompositions, **nr7_decomps}
+                    nr7_alignment_results = await assess_nr7_alignment(
+                        nr7_pairs, all_decomps, doc_type_labels
+                    )
+
+                    out_path = OUTPUT_DIR / "nr7_alignment.json"
+                    out_path.write_text(json.dumps(nr7_alignment_results, indent=2))
+                    logger.info(f"Saved {len(nr7_alignment_results)} NR7 alignment results")
+
+                    out_path = OUTPUT_DIR / "nr7_pseudo_targets.json"
+                    out_path.write_text(json.dumps(nr7_pseudo_targets, indent=2))
+                    logger.info(f"Saved {len(nr7_pseudo_targets)} NR7 pseudo-targets")
 
         # 9. Synthesis layer — doc-pair, corpus, and per-sector storylines.
         # Reads existing alignment.json + classifications.json (no re-compute);

@@ -124,7 +124,7 @@ These items must be addressed before production deployment:
 
 ### 5.1 Security & Authentication
 Shipped in August 2026 after the Strix security review (user and operator guide: [`docs/ACCESS_AND_LIMITS.md`](docs/ACCESS_AND_LIMITS.md)):
-- A single shared access token (`APP_ACCESS_TOKEN`) gates every page and API route; browsers exchange it for a 7-day HttpOnly cookie at `/login`, scripts send it as a Bearer header. Production fails closed when the token is unset.
+- A single shared access token (`APP_ACCESS_TOKEN`) gates the document-upload flow only: the upload wizard pages and the API routes that accept uploaded files or start an analysis (`/api/extract`, `/api/parse-btr`, `/api/parse-excel-targets`, `/api/analyze`, `/api/extraction-review`). Dashboards, briefings, chat, finished analyses, and the analytics page are open. Browsers exchange the token for a 7-day HttpOnly cookie at `/login`, scripts send it as a Bearer header. In production, uploads are refused when the token is unset; the rest of the app keeps working. (Narrowed from whole-app gating on 2026-09-14: the pilot dashboards are meant to be browsable without a credential; only ingesting new documents and spending pipeline budget needs one.)
 - Security response headers (CSP, no framing, HSTS) and a same-origin check on state-changing API calls.
 - Size caps on uploads (50 MB documents, 15 MB spreadsheets) and chat bodies; at most 3 concurrent analyses and 5 starts per minute per server process; unguessable full-UUID analysis IDs.
 - Extraction and alignment prompts instruct the model to treat document and target text as untrusted data (prompt v2.3).
@@ -147,7 +147,7 @@ Still open:
 
 ### 5.4 Deployment
 - Target deployment: Docker image on Azure (App Service or Container Instances).
-- `APP_ACCESS_TOKEN` must be set as an App Service application setting before the first deploy; the app refuses all requests in production without it. Point the platform health check at `/api/health`, the only unauthenticated route besides `/api/auth`.
+- `APP_ACCESS_TOKEN` must be set as an App Service application setting before the first deploy; without it, production refuses document uploads and new analysis runs (everything else still serves). Point the platform health check at `/api/health`.
 - The Python pipeline needs `uv` or a pip-based virtualenv inside the container.
 - Environment variables for LLM provider switching (OpenRouter for dev, Azure OpenAI for prod).
 - National data sovereignty: ensure no government data is sent to external APIs without consent.
