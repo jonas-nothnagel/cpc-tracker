@@ -11,6 +11,7 @@ import { useNumbers } from "./ink";
  * slot heights; the A4 sheets exist for printing and the print preview.
  */
 export function Flow({
+  hidden = false,
   countryName,
   commitments,
   documents,
@@ -19,6 +20,9 @@ export function Flow({
   sections,
   renderSection,
 }: {
+  /** Hidden while the print preview shows; kept mounted so open rows and
+   *  selections survive the round trip. */
+  hidden?: boolean;
   countryName: string;
   commitments: number;
   documents: number;
@@ -35,7 +39,7 @@ export function Flow({
     { value: comparisons, label: t("figures.comparisons", { count: comparisons }) },
   ];
   return (
-    <main className="brief-flow" data-testid="brief-flow" data-screen-only>
+    <main className="brief-flow" data-testid="brief-flow" data-screen-only hidden={hidden}>
       <header className="brief-intro" data-testid="brief-intro">
         <div className="brief-intro-name">
           <p className="brief-intro-country">{countryName}</p>

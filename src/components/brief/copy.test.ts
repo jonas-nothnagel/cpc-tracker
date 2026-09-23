@@ -32,6 +32,12 @@ describe("brief copy", () => {
     expect(strings(tour).filter(([, v]) => /reinforc|flagged|tension|contradict|\byou\b/i.test(v))).toEqual([]);
   });
 
+  it("describes themes as the pipeline builds them: pairs of documents, counted by their target pairs", () => {
+    const steps = (en.briefing.tour as Record<string, { steps?: Record<string, { body: string }> }>).brief.steps!;
+    expect(steps.themes.body).toMatch(/between the documents it covers/);
+    expect(steps.themes.body).not.toMatch(/groups the rated target pairs/);
+  });
+
   it("claims no expert confirmation the data does not record", () => {
     for (const catalog of [en, es, mn]) {
       expect(strings(catalog.brief).filter(([, v]) => /confirmed by|confirmado por|баталгаажуул/i.test(v))).toEqual([]);

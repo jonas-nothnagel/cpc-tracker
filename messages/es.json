@@ -3038,7 +3038,7 @@
       "headlineConcentrated": "De las {total, number} posibles desalineaciones, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
       "headlineSpread": "La posible desalineación se reparte entre {contested, plural, one {# meta} other {# metas}}.",
       "headlineEmpty": "Ninguna meta muestra una posible desalineación.",
-      "mostlyWith": "sobre todo con {doc}"
+      "partner": "{count, number} con {doc}"
     },
     "documents": {
       "headline": "Alignment with the other documents ranges from {low} for {docLow} to {high} for {docHigh}.",
@@ -3130,8 +3130,8 @@
     "aligned": {
       "headline": "{target} ({doc}) is aligned with {pct} of the targets it was compared with.",
       "headlineEmpty": "No target is aligned with another in this selection.",
-      "mostlyWith": "mostly with {doc}",
-      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with"
+      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with",
+      "meta": "alineada con {aligned, number} de {compared, number} metas comparadas"
     },
     "preview": {
       "pages": "{count, plural, one {# page} other {# pages}}",

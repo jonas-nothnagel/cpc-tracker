@@ -149,13 +149,29 @@ describe("BriefApp screen and print", () => {
     const print = vi.spyOn(window, "print").mockImplementation(() => {});
     renderApp();
     fireEvent.click(screen.getByRole("button", { name: "Print or save as PDF" }));
-    expect(screen.queryByTestId("brief-flow")).toBeNull();
+    expect((screen.getByTestId("brief-flow") as HTMLElement).hidden).toBe(true);
     expect(sheets().getAttribute("aria-hidden")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Print" }));
     expect(print).toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "Back to the brief" }));
-    expect(screen.getByTestId("brief-flow")).toBeTruthy();
+    expect((screen.getByTestId("brief-flow") as HTMLElement).hidden).toBe(false);
     print.mockRestore();
+  });
+
+  it("opens the preview at its first page and returns to the same place", () => {
+    const scrollTo = vi.fn();
+    vi.stubGlobal("scrollTo", scrollTo);
+    const scroll = vi.mocked(Element.prototype.scrollIntoView);
+    scroll.mockClear();
+    renderApp();
+    Object.defineProperty(window, "scrollY", { value: 1800, configurable: true });
+    fireEvent.click(screen.getByRole("button", { name: "Print or save as PDF" }));
+    expect(scroll.mock.contexts.map((el) => (el as Element).id)).toContain("brief-main");
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Print" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to the brief" }));
+    expect(scrollTo).toHaveBeenLastCalledWith(0, 1800);
+    Object.defineProperty(window, "scrollY", { value: 0, configurable: true });
+    vi.unstubAllGlobals();
   });
 
   it("takes the reader from the aligned group to the section behind it", () => {
@@ -165,6 +181,21 @@ describe("BriefApp screen and print", () => {
     fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
     const targets = scroll.mock.contexts.map((el) => (el as Element).id);
     expect(targets).toContain("brief-flow-together");
+  });
+
+  it("moves focus to the section it leads to", () => {
+    renderApp(briefFixture({ themes: true }));
+    fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
+    const heading = document.querySelector("#brief-flow-together h2");
+    expect(document.activeElement).toBe(heading);
+  });
+
+  it("links a group only while its section is in the brief", () => {
+    renderApp(briefFixture({ themes: true }));
+    const sections = screen.getByRole("group", { name: "Sections" });
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Areas of alignment/ }));
+    expect(screen.queryByRole("button", { name: "67% aligned" })).toBeNull();
+    expect(screen.getByRole("button", { name: "14% potential misalignment" })).toBeTruthy();
   });
 
   it("prints the theme the reader selected on screen", () => {
@@ -198,6 +229,9 @@ describe("BriefApp accessibility and provenance", () => {
 
   it("lets the reader pause and resume the moving text", () => {
     renderApp();
+    // The name says what the button does next; a pressed state on top would
+    // announce "Play the moving text, pressed".
+    expect(screen.getByRole("button", { name: "Pause the moving text" }).getAttribute("aria-pressed")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Pause the moving text" }));
     expect(document.querySelector(".brief-drift")?.getAttribute("data-paused")).toBe("true");
     fireEvent.click(screen.getByRole("button", { name: "Play the moving text" }));

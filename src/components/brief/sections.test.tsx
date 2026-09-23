@@ -191,7 +191,9 @@ describe("brief sections", () => {
     // A short label is only a clause number, so the start of the text follows it.
     expect(within(rows[0]).getByText("6 Commitment B6 Verbatim text of commitment B6.")).toBeTruthy();
     expect(within(rows[0]).getByText("7")).toBeTruthy();
-    expect(within(rows[0]).getByText(/mostly with Document C/)).toBeTruthy();
+    // Partner documents by count, largest first, never a superlative.
+    expect(within(rows[0]).getByText(/6 with Document C, 1 with Document A/)).toBeTruthy();
+    expect(screen.queryByText(/mostly with/)).toBeNull();
   });
 
   it("aligned: leads with the target aligned with the largest share of the targets it was compared with", () => {
@@ -203,7 +205,8 @@ describe("brief sections", () => {
     ).toBeTruthy();
     const rows = screen.getAllByTestId("brief-aligned-row");
     expect(rows).toHaveLength(8);
-    expect(within(rows[0]).getByText(/mostly with Document B/)).toBeTruthy();
+    expect(within(rows[0]).getByText(/aligned with 12 of 12 targets compared/)).toBeTruthy();
+    expect(screen.queryByText(/mostly with/)).toBeNull();
     expect(within(rows[4]).getByText("83%")).toBeTruthy();
   });
 

@@ -25,15 +25,17 @@
   var HUMAN = "#9a6b34";
   var BLUE = "#0468b1";
 
+  // The documents' names as the brief shows them (country config, full name
+  // without its trailing parenthesis); LDN is spelled out once.
   var DOCS = [
     ["Vision 2050", 15],
-    ["NDC", 36],
-    ["Res. 91", 16],
-    ["NBSAP", 20],
-    ["NAP", 15],
-    ["FSS", 41],
-    ["LDN Targets", 27],
-    ["ILDN", 8],
+    ["Nationally Determined Contribution", 36],
+    ["National targets for implementation of the Paris Agreement", 16],
+    ["National Biodiversity Strategy & Action Plan", 20],
+    ["National Adaptation Plan", 15],
+    ["Food Supply and Security Measures", 41],
+    ["LDN Targets (Land Degradation Neutrality)", 27],
+    ["Investing in Land Degradation Neutrality", 8],
   ];
   // Per target, in document order: measurable group (0 a number and a date,
   // 1 a number, 2 a date, 3 neither), primary GLOBE category (index into
@@ -87,21 +89,21 @@
   var FIELDS = ["Goal", "Action", "Ecosystem", "Audience", "Outcome"];
 
   var CAPTIONS = [
-    ["Extraction", "Eight policy documents, read in full."],
-    ["Extraction", "Page by page; forewords and annexes set aside."],
-    ["Extraction", "178 targets, word for word."],
-    ["Extraction", "Every figure, year and framework traced to its source."],
+    ["Extraction · Mongolia", "Mongolia: eight policy documents, read in full."],
+    ["Extraction · Mongolia", "Page by page; forewords and annexes set aside."],
+    ["Extraction · Mongolia", "178 targets from Mongolia's documents, word for word."],
+    ["Extraction · Mongolia", "Every figure, year and framework traced to its source."],
     ["Human step", "A reviewer keeps, edits or adds targets."],
-    ["Analysis", "48 of the 178 targets carry a number or a date."],
-    ["Analysis", "Each target placed in a category of the selected lens."],
-    ["Analysis", "13,404 target pairs: every target against every target in the other documents."],
+    ["Analysis · Mongolia", "48 of Mongolia's 178 targets carry a number or a date."],
+    ["Analysis · Mongolia", "Each target placed in a category of the selected lens."],
+    ["Analysis · Mongolia", "13,404 target pairs: every target against every target in the other documents."],
     ["Analysis · Agent 1", "Each target broken into five parts before any comparison."],
     ["Analysis · Agent 2", "Each pair rated from the two targets' texts."],
-    ["Synthesis", "66% of target pairs are aligned; 5% show potential misalignment."],
-    ["Synthesis", "Aligned and potentially misaligned pairs grouped into recurring themes."],
+    ["Synthesis · Mongolia", "Across Mongolia's policies, 66% of target pairs are aligned; 5% show potential misalignment."],
+    ["Synthesis · Mongolia", "Aligned and potentially misaligned pairs grouped into recurring themes."],
     ["Human step", "Each insight can be rated with a thumb and a note."],
-    ["Level 2 · Finance", "157 of the 178 targets align with at least one of 28 reviewed budget programmes."],
-    ["Level 3 · Implementation", "173 of the 178 targets align with at least one of 39 reported measures."],
+    ["Level 2 · Finance · Mongolia", "157 of Mongolia's 178 targets align with at least one of 28 reviewed budget programmes."],
+    ["Level 3 · Implementation · Mongolia", "173 of Mongolia's 178 targets align with at least one of 39 reported measures."],
   ];
 
   function seeded(seed) {
@@ -176,7 +178,7 @@
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function box() {
-    var left = 56, right = 56, top = 150, bottom = 110;
+    var left = 56, right = 56, top = 176, bottom = 110;
     return { x: left, y: top, w: Math.max(200, W - left - right), h: Math.max(160, H - top - bottom) };
   }
 
@@ -186,7 +188,7 @@
     var perRow = 5;
     var pitch = compact ? Math.min(7, (colW - 12) / 8) : Math.min(15, (colW - 18) / perRow);
     DOCS.forEach(function (d, di) {
-      cols.push({ x: b.x + di * colW + 6, y: b.y + (compact ? 22 : 34), w: colW - 12, pitch: pitch, perRow: compact ? 8 : perRow });
+      cols.push({ x: b.x + di * colW + 6, y: b.y + (compact ? 22 : 72), w: colW - 12, pitch: pitch, perRow: compact ? 8 : perRow });
     });
     return cols;
   }
@@ -223,20 +225,20 @@
 
   /** Clusters in a wrapping row, each a small grid, with its label above. */
   function clusters(groups, b, pitch) {
-    var out = [], x = b.x, y = b.y + 26, rowH = 0;
+    var out = [], x = b.x, y = b.y + 64, rowH = 0;
     groups.forEach(function (g) {
       var n = g[1];
       var cols = Math.max(3, Math.ceil(Math.sqrt(n * 1.8)));
       var w = Math.max(cols * pitch, 110), h = Math.ceil(n / cols) * pitch;
-      if (x + w > b.x + b.w && x > b.x) { x = b.x; y += rowH + 54; rowH = 0; }
+      if (x + w > b.x + b.w && x > b.x) { x = b.x; y += rowH + 78; rowH = 0; }
       out.push({ x: x, y: y, cols: cols, pitch: pitch, w: w, h: h, name: g[0], n: n });
       x += w + 36; rowH = Math.max(rowH, h);
     });
     return out;
   }
 
-  function label(x, y, html, cls) {
-    return { x: x, y: y, html: html, cls: cls || "" };
+  function label(x, y, html, cls, width) {
+    return { x: x, y: y, html: html, cls: cls || "", w: width || 0 };
   }
 
   function fmt(n) { return n.toLocaleString("en-US"); }
@@ -268,11 +270,11 @@
         place(T1, ti, x, y, r, a, c);
       });
       cols.forEach(function (col, di) {
-        var extra = "";
-        if (k >= 2 && k <= 4) extra = ' <span class="n">' + DOCS[di][1] + "</span>";
-        if (k === 13) extra = ' <span class="n">' + FINANCE[di] + " of " + DOCS[di][1] + "</span>";
-        if (k === 14) extra = ' <span class="n">' + IMPLEMENTATION[di] + " of " + DOCS[di][1] + "</span>";
-        labs.push(label(col.x, col.y - 26, DOCS[di][0] + extra, "sl-doc"));
+        var count = "";
+        if (k >= 2 && k <= 4) count = DOCS[di][1] + " targets";
+        if (k === 13) count = FINANCE[di] + " of " + DOCS[di][1];
+        if (k === 14) count = IMPLEMENTATION[di] + " of " + DOCS[di][1];
+        labs.push(label(col.x, col.y - 10, '<span class="nm">' + DOCS[di][0] + "</span>" + (count ? '<span class="ct">' + count + "</span>" : ""), "sl-doc sl-up", col.w));
       });
       if (k === 13 || k === 14) {
         var n = k === 13 ? 28 : 39;
@@ -294,7 +296,7 @@
         if (t.ex && document.body.classList.contains("show-example")) ring[ti] = 3;
       });
       cl.forEach(function (c) {
-        labs.push(label(c.x, c.y - 22, '<span class="n">' + c.n + "</span> " + c.name, "sl-cluster"));
+        labs.push(label(c.x, c.y - 8, '<span class="nm"><span class="n">' + c.n + "</span> " + c.name + "</span>", "sl-cluster sl-up", c.w));
       });
     } else {
       // Pair scenes: targets shrink into a thin band at the top, then fade.
@@ -307,7 +309,7 @@
         place(T1, ti, x, y, k === 8 && t.ex ? 7 : col.pitch * 0.32, show ? 1 : 0, INK);
         if (k === 8 && t.ex) ring[ti] = 3;
       });
-      if (k === 7) cc.forEach(function (col, di) { labs.push(label(col.x, col.y - 20, DOCS[di][0], "sl-doc sl-small")); });
+      if (k === 7) cc.forEach(function (col, di) { labs.push(label(col.x, col.y - 6, '<span class="nm">' + DOCS[di][0] + "</span>", "sl-doc sl-small sl-up", col.w)); });
     }
 
     // Pairs
@@ -400,7 +402,7 @@
     for (var di = 0; di < DOCS.length; di++) {
       var x = b.x + di * colW + 6, w = colW - 18;
       for (var li = 0; li < 18; li++) {
-        var lw = w * (0.55 + r() * 0.42), y = b.y + 34 + li * 11;
+        var lw = w * (0.55 + r() * 0.42), y = b.y + 72 + li * 11;
         var setAside = li >= 13;
         ctx.fillStyle = lines.kept ? (setAside ? LINE : LINE_DARK) : LINE_DARK;
         ctx.fillRect(x, y, lw, 3.5);
@@ -503,7 +505,8 @@
   function showLabels(list) {
     labelsEl.innerHTML = list
       .map(function (l) {
-        return '<div class="sl ' + l.cls + '" style="left:' + l.x.toFixed(1) + "px;top:" + l.y.toFixed(1) + 'px">' + l.html + "</div>";
+        var width = l.w ? ";width:" + l.w.toFixed(1) + "px" : "";
+        return '<div class="sl ' + l.cls + '" style="left:' + l.x.toFixed(1) + "px;top:" + l.y.toFixed(1) + "px" + width + '">' + l.html + "</div>";
       })
       .join("");
   }

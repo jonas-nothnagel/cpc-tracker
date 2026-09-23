@@ -501,7 +501,7 @@
           },
           "themes": {
             "title": "Recurring themes",
-            "body": "An AI model groups the rated target pairs into recurring themes. Each cluster of dots is one theme, numbered like the list below; selecting a cluster or a row shows one of its examples."
+            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers. Each cluster of dots is one theme, numbered like the list below; selecting a cluster or a row shows one of its examples."
           },
           "example": {
             "title": "The targets as written",
@@ -3038,7 +3038,7 @@
       "headlineConcentrated": "Of the {total, number} potential misalignments, {pct} involve just {top, plural, one {one target} other {# targets}}.",
       "headlineSpread": "Potential misalignment is spread across {contested, plural, one {# target} other {# targets}}.",
       "headlineEmpty": "No target shows potential misalignment.",
-      "mostlyWith": "mostly with {doc}"
+      "partner": "{count, number} with {doc}"
     },
     "documents": {
       "headline": "Alignment with the other documents ranges from {low} for {docLow} to {high} for {docHigh}.",
@@ -3130,8 +3130,8 @@
     "aligned": {
       "headline": "{target} ({doc}) is aligned with {pct} of the targets it was compared with.",
       "headlineEmpty": "No target is aligned with another in this selection.",
-      "mostlyWith": "mostly with {doc}",
-      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with"
+      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with",
+      "meta": "aligned with {aligned, number} of {compared, number} targets compared"
     },
     "preview": {
       "pages": "{count, plural, one {# page} other {# pages}}",

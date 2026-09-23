@@ -205,9 +205,8 @@ export function leadingPair(
 
 export interface ThemeRow {
   storyline: CorpusStoryline;
-  /** Target pairs of the theme's tone inside its pairs of documents,
-   *  counted live for the selection; a pair of documents cited by two
-   *  themes counts for the higher-ranked one only. */
+  /** Target pairs of the theme's tone between the documents it cites,
+   *  counted live for the selection (coverage: themes may share pairs). */
   count: number;
   /** Document id -> share of the theme's comparisons it takes part in
    *  (a comparison counts for both its documents). */
@@ -230,32 +229,17 @@ export function themeRows(
   if (!themes) return { rows: [], exact: true };
   const storylines = themes.storylines.filter((s) => s.type === type);
   const stats = computeStorylineLiveStats(storylines, scope.alignment, scope.targets);
-  const ranked = rankStorylines(storylines, type, (x) => stats.get(x)?.liveCount ?? 0);
-  // Each pair of documents belongs to the highest-ranked theme that cites it,
-  // so every target pair is counted once and the themes' dots add up.
-  const owner = new Map<string, number>();
-  ranked.forEach((s, i) => {
-    for (const key of getStorylineDocPairKeys(s)) if (!owner.has(key)) owner.set(key, i);
-  });
-  const tone = type === "friction" ? "apart" : "reinforce";
-  const counts = ranked.map(() => ({ count: 0, docCounts: new Map<string, number>() }));
-  for (const c of scope.comparisons) {
-    if (toneOf(c.level) !== tone) continue;
-    const i = owner.get(getDocPairKey(c.a.doc, c.b.doc));
-    if (i === undefined) continue;
-    counts[i].count += 1;
-    for (const doc of [c.a.doc, c.b.doc]) {
-      counts[i].docCounts.set(doc, (counts[i].docCounts.get(doc) ?? 0) + 1);
-    }
-  }
+  // Coverage, as the pipeline defines it and the dashboard shows it: a theme
+  // counts the target pairs of its tone between the documents it cites, so
+  // two themes citing the same pair of documents both count those pairs.
   const rows: ThemeRow[] = [];
-  ranked.forEach((s, i) => {
-    const { count, docCounts } = counts[i];
-    if (count === 0) return;
+  for (const s of rankStorylines(storylines, type, (x) => stats.get(x)?.liveCount ?? 0)) {
+    const st = stats.get(s);
+    if (!st || st.liveCount === 0) continue;
     const docShares: Record<string, number> = {};
-    for (const [doc, n] of docCounts) docShares[doc] = n / count;
-    rows.push({ storyline: s, count, docShares });
-  });
+    for (const [doc, n] of st.docCounts) docShares[doc] = n / st.liveCount;
+    rows.push({ storyline: s, count: st.liveCount, docShares });
+  }
   return { rows, exact: isExact };
 }
 
@@ -327,23 +311,16 @@ export interface CommitmentRow {
 }
 
 /**
- * Partner documents, closest first: by the share of the partner document's
- * targets linked (a raw count would favour the largest document), then the
- * count, then document order.
+ * Partner documents with their counts, largest first (document order breaks
+ * ties). Rows state the counts ("21 with the NDC, 14 with LDN Targets"), so
+ * the order names no winner; weighting by document size had made the label
+ * point at the smallest document.
  */
 function rankPartnerDocs(scope: Scope, partners: Map<string, number>): { doc: string; count: number }[] {
   const docOrder = new Map(scope.docs.map((d, i) => [d.id, i]));
-  const size = new Map<string, number>();
-  for (const c of scope.commitments) size.set(c.doc, (size.get(c.doc) ?? 0) + 1);
-  const share = (doc: string, count: number) => count / Math.max(1, size.get(doc) ?? 1);
   return [...partners.entries()]
     .map(([doc, count]) => ({ doc, count }))
-    .sort(
-      (x, y) =>
-        share(y.doc, y.count) - share(x.doc, x.count) ||
-        y.count - x.count ||
-        (docOrder.get(x.doc) ?? 0) - (docOrder.get(y.doc) ?? 0),
-    );
+    .sort((x, y) => y.count - x.count || (docOrder.get(x.doc) ?? 0) - (docOrder.get(y.doc) ?? 0));
 }
 
 /** The commitments in the most potential misalignments, with the documents

@@ -390,6 +390,12 @@
     font-weight: 500; line-height: 1.22; letter-spacing: -0.005em; color: var(--undp-black); }
   .scene-labels { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; }
   .sl { position: absolute; font-size: 12px; line-height: 1.3; color: var(--undp-gray); white-space: nowrap; }
+  /* Document and cluster labels wrap within their column or cluster and grow
+     upward from a shared baseline, so long names never run into a neighbour. */
+  .sl.sl-up { transform: translateY(-100%); white-space: normal; }
+  .sl.sl-up .nm { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    hyphens: auto; overflow-wrap: anywhere; }
+  .sl.sl-up .ct { display: block; margin-top: 2px; font-weight: 600; color: var(--undp-gray); font-variant-numeric: tabular-nums; }
   .sl .n { font-weight: 600; color: var(--undp-black); font-variant-numeric: tabular-nums; }
   .sl.sl-doc { font-size: 13px; color: var(--undp-black); }
   .sl.sl-doc .n { margin-left: 4px; font-weight: 600; color: var(--undp-gray); }
@@ -743,7 +749,7 @@
         <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Competing resources 32% &nbsp; <b style="color:var(--mech-delivery)">●</b> Delivery 59% &nbsp; <b style="color:var(--mech-goal)">●</b> Conflicting goals 9%</p>
       </div></div>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">In the NDC and NBSAP pairing, <b>19 of 720</b> pairs are flagged, and most are the <b>delivery</b> kind. The example pair is a <b>resource</b> flag: coordinating water infrastructure with spatial planning would ease it.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces recurring potential misalignment across document pairs, plus hedged pathway pointers, anchored to visible evidence, never prescriptive. In Mongolia's corpus the flagged share is about 5%, spread across many targets rather than a few.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces recurring potential misalignment across document pairs, plus hedged pathway pointers, anchored to visible evidence, never prescriptive. In Mongolia's set about 5% of target pairs show potential misalignment, and about half of those involve just seven targets.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
     </div>
 
     <div class="pstep" data-i="14">

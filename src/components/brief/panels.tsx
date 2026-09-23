@@ -7,6 +7,7 @@ import { PairDrawer } from "@/components/dashboard/coherence-briefing/pair-drawe
 import { partnersOf, strongestAligned } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import type { FoundPair } from "@/lib/brief/pair";
+import { firstSentence } from "@/lib/brief/text";
 import type { BriefSource } from "@/lib/brief/source";
 import { strandsByPathway } from "@/lib/pulse/strands";
 import type { CountryConfig } from "@/types";
@@ -102,12 +103,6 @@ function PairPanel({
       onOpenTargetPair={() => {}}
     />
   );
-}
-
-/** Split an AI paragraph into its first sentence and the rest. */
-function firstSentence(text: string): { first: string; rest: string } {
-  const m = text.match(/^([\s\S]+?[.!?])(\s+)([\s\S]*)$/);
-  return m ? { first: m[1], rest: m[3] } : { first: text, rest: "" };
 }
 
 /** One labelled AI line: the first sentence, the rest on request. */

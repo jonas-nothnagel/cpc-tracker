@@ -31,7 +31,6 @@ export function AlignedSection({
     <SectionFrame id="aligned" headline={headline}>
       <ol className="brief-rank" data-tour="brief-aligned">
         {data.aligned.map((row, i) => {
-          const partner = row.partnerDocs[0];
           return (
             <li key={row.commitment.id} className="brief-rank-row" data-testid="brief-aligned-row">
               <span className="brief-rank-n">{i + 1}</span>
@@ -44,7 +43,7 @@ export function AlignedSection({
                 <span className="brief-rank-title">{commitmentLine(row.commitment)}</span>
                 <span className="brief-rank-meta">
                   {docName(row.commitment.doc)}
-                  {partner ? ` · ${t("mostlyWith", { doc: docName(partner.doc) })}` : ""}
+                  {` · ${t("meta", { aligned: row.aligned, compared: row.compared })}`}
                 </span>
               </button>
               <span

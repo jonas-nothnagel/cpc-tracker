@@ -151,6 +151,8 @@ export function DotCanvas({
   const colors = groups.map((g) => g.color).join(",");
   const hoveredIndex = hovered === null ? -1 : groups.findIndex((g) => g.key === hovered);
   const dimExcept = hoveredIndex >= 0 ? hoveredIndex : null;
+  // Hover dims the other groups of a settled field; it never restarts a build.
+  const dimRef = useRef<number | null>(null);
 
   useEffect(() => {
     const el = fieldRef.current;
@@ -177,7 +179,7 @@ export function DotCanvas({
       settled.current = false;
     }
     const finish = () => {
-      paint(canvas, layout, palette, size.w, size.h, 1, null, dimExcept);
+      paint(canvas, layout, palette, size.w, size.h, 1, null, dimRef.current);
       settled.current = true;
     };
     // The print layout can differ from the screen: repaint the settled
@@ -226,7 +228,10 @@ export function DotCanvas({
       const p = Math.min(1, (now - start) / 1400);
       paint(canvas, layout, palette, size.w, size.h, p, from, null);
       if (p < 1) frame = requestAnimationFrame(step);
-      else settled.current = true;
+      else {
+        settled.current = true;
+        if (dimRef.current !== null) paint(canvas, layout, palette, size.w, size.h, 1, null, dimRef.current);
+      }
     };
     const io = new IntersectionObserver(
       (entries) => {
@@ -243,7 +248,14 @@ export function DotCanvas({
       cancelAnimationFrame(frame);
       detach();
     };
-  }, [layout, size, colors, still, replay, shape, unit, dimExcept]);
+  }, [layout, size, colors, still, replay, shape, unit]);
+
+  useEffect(() => {
+    dimRef.current = dimExcept;
+    const canvas = canvasRef.current;
+    if (!canvas || !settled.current || size.w === 0 || layout.group.length === 0) return;
+    paint(canvas, layout, colors.split(","), size.w, size.h, 1, null, dimExcept);
+  }, [dimExcept, layout, size, colors]);
 
   const groupAt = (x: number) => {
     const gap = layout.pitch * 2;
@@ -310,16 +322,20 @@ export function DotField({
   counts,
   still = false,
   onFocusTone,
+  focusTones = ["reinforce", "apart"],
 }: {
   counts: ToneCounts;
   still?: boolean;
   onFocusTone?: (tone: "reinforce" | "apart") => void;
+  focusTones?: ("reinforce" | "apart")[];
 }) {
   const t = useTranslations("brief");
   const { n, pct } = useNumbers();
   const share = (tone: Tone) => (counts.total > 0 ? counts[tone] / counts.total : 0);
   const focusable = (tone: Tone): tone is "reinforce" | "apart" =>
-    Boolean(onFocusTone) && (tone === "reinforce" || tone === "apart");
+    Boolean(onFocusTone) &&
+    (tone === "reinforce" || tone === "apart") &&
+    focusTones.includes(tone);
   const groups: CanvasGroup[] = DOT_ORDER.map((tone) => ({
     key: tone,
     count: counts[tone],

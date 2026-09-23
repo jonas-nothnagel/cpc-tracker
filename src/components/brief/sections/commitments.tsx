@@ -27,7 +27,10 @@ export function CommitmentsSection({
     <SectionFrame id="commitments" headline={headline}>
       <ol className="brief-rank" data-tour="brief-commitments">
         {data.commitments.map((row, i) => {
-          const partner = row.partnerDocs[0];
+          const partners = row.partnerDocs
+            .slice(0, 2)
+            .map((p) => t("partner", { count: p.count, doc: docName(p.doc) }))
+            .join(", ");
           return (
             <li key={row.commitment.id} className="brief-rank-row" data-testid="brief-commitment-row">
               <span className="brief-rank-n">{i + 1}</span>
@@ -40,7 +43,7 @@ export function CommitmentsSection({
                 <span className="brief-rank-title">{commitmentLine(row.commitment)}</span>
                 <span className="brief-rank-meta">
                   {docName(row.commitment.doc)}
-                  {partner ? ` · ${t("mostlyWith", { doc: docName(partner.doc) })}` : ""}
+                  {partners ? ` · ${partners}` : ""}
                 </span>
               </button>
               <span className="brief-rank-bar" aria-hidden="true">

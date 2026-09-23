@@ -20,7 +20,9 @@ export function SectionFrame({
 }) {
   return (
     <div className="brief-sec" data-sec={id}>
-      <h2 className="brief-sec-headline">{headline}</h2>
+      <h2 className="brief-sec-headline" tabIndex={-1}>
+        {headline}
+      </h2>
       {sub && <p className="brief-sec-sub">{sub}</p>}
       <div className="brief-sec-body">{children}</div>
       {note && <p className="brief-sec-note">{note}</p>}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { scopeOf, type Scope } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
@@ -60,6 +60,26 @@ export function BriefApp({
   // Bumped to replay a theme section's dots when the reader arrives from
   // the overall picture.
   const [replay, setReplay] = useState<Record<ThemeTone, number>>({ reinforce: 0, apart: 0 });
+  // Where the reader was on the flowing page when the preview opened.
+  const readScroll = useRef(0);
+  const printRef = useRef<HTMLButtonElement>(null);
+  const lastMode = useRef(mode);
+
+  useEffect(() => {
+    if (lastMode.current === mode) return;
+    lastMode.current = mode;
+    if (mode === "preview") {
+      // The preview opens at its first page, with Print in reach.
+      document.getElementById("brief-main")?.scrollIntoView({ block: "start" });
+      printRef.current?.focus({ preventScroll: true });
+    } else {
+      window.scrollTo(0, readScroll.current);
+    }
+  }, [mode]);
+  const openPreview = () => {
+    readScroll.current = window.scrollY;
+    setMode("preview");
+  };
 
   const update = useCallback(
     (next: BriefSelection) => {
@@ -97,9 +117,11 @@ export function BriefApp({
       onPickTheme: (tone, name) => setPicked((p) => ({ ...p, [tone]: name })),
       onFocusTone: (tone) => {
         const id = tone === "reinforce" ? "together" : "apart";
-        document
-          .getElementById(`brief-flow-${id}`)
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        const section = document.getElementById(`brief-flow-${id}`);
+        if (!section) return;
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+        // Keyboard and screen-reader users arrive where the pointer went.
+        section.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
         setReplay((r) => ({ ...r, [tone]: r[tone] + 1 }));
       },
     }),
@@ -114,6 +136,11 @@ export function BriefApp({
     title?.focus({ preventScroll: true });
   };
   const preview = mode === "preview";
+  // The overall groups link only to theme sections the reader has kept.
+  const focusTones: ThemeTone[] = [
+    ...(selection.sections.includes("together") ? (["reinforce"] as const) : []),
+    ...(selection.sections.includes("apart") ? (["apart"] as const) : []),
+  ];
 
   return (
     <div data-brief className="brief-root">
@@ -133,40 +160,41 @@ export function BriefApp({
           pageCount={pages.length}
           onChange={update}
           onReset={() => update(defaultSelection(source))}
-          onPrint={() => (preview ? window.print() : setMode("preview"))}
+          onPrint={() => (preview ? window.print() : openPreview())}
         />
         <div className="brief-main" id="brief-main">
-          {preview ? (
+          {preview && (
             <div className="brief-preview-bar" data-screen-only>
               <p className="brief-preview-pages">{tp("pages", { count: pages.length })}</p>
-              <button type="button" className="brief-button-primary" onClick={() => window.print()}>
+              <button ref={printRef} type="button" className="brief-button-primary" onClick={() => window.print()}>
                 {tp("print")}
               </button>
               <button type="button" className="brief-button-quiet" onClick={() => setMode("read")}>
                 {tp("back")}
               </button>
             </div>
-          ) : (
-            <Flow
-              countryName={source.countryName}
-              commitments={scope.commitments.length}
-              documents={scope.docs.length}
-              comparisons={scope.comparisons.length}
-              translation={translation}
-              sections={selection.sections}
-              renderSection={(id) => (
-                <SectionView
-                  id={id}
-                  variant="screen"
-                  data={data}
-                  lensName={lensName}
-                  handlers={handlers}
-                  picked={picked}
-                  replay={replay}
-                />
-              )}
-            />
           )}
+          <Flow
+            hidden={preview}
+            countryName={source.countryName}
+            commitments={scope.commitments.length}
+            documents={scope.docs.length}
+            comparisons={scope.comparisons.length}
+            translation={translation}
+            sections={selection.sections}
+            renderSection={(id) => (
+              <SectionView
+                id={id}
+                variant="screen"
+                data={data}
+                lensName={lensName}
+                handlers={handlers}
+                picked={picked}
+                replay={replay}
+                focusTones={focusTones}
+              />
+            )}
+          />
           <Sheets
             pages={pages}
             countryName={source.countryName}

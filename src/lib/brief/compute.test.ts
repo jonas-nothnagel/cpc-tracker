@@ -304,9 +304,8 @@ describe("commitmentsToReview", () => {
     const rows = commitmentsToReview(scopeOf(SOURCE, ["A", "B", "C"]), 3);
     expect(rows.map((r) => [r.commitment.id, r.apart, r.partnerDocs])).toEqual([
       ["A3", 2, [{ doc: "C", count: 2 }]],
-      // One link each way: the smaller partner document (C has 2 targets, A 3) comes first.
-      ["B2", 2, [{ doc: "C", count: 1 }, { doc: "A", count: 1 }]],
-      ["C2", 2, [{ doc: "B", count: 1 }, { doc: "A", count: 1 }]],
+      ["B2", 2, [{ doc: "A", count: 1 }, { doc: "C", count: 1 }]],
+      ["C2", 2, [{ doc: "A", count: 1 }, { doc: "B", count: 1 }]],
     ]);
   });
 });
@@ -447,8 +446,8 @@ describe("docStats", () => {
   });
 });
 
-describe("themeRows counts each target pair once", () => {
-  it("gives a pair of documents cited by two themes to the higher-ranked one", () => {
+describe("themeRows counts coverage, as the pipeline and the dashboard do", () => {
+  it("counts a pair of documents cited by two themes for both", () => {
     const WATER_PLANNING = storyline("Shared water planning", "reinforcement", ["A<->B"], "medium");
     const source = withThemes();
     const both = {
@@ -462,14 +461,17 @@ describe("themeRows counts each target pair once", () => {
       },
     };
     const { rows } = themeRows(both, scopeOf(both, ["A", "B", "C"]), "reinforcement");
-    // RESTORATION (high) claims A<->B first; nothing is left for WATER_PLANNING.
-    expect(rows.map((r) => [r.storyline.name, r.count])).toEqual([["Shared land restoration", 6]]);
+    // A<->B holds 3 aligned pairs, A<->C 3: restoration covers both, water planning A<->B.
+    expect(rows.map((r) => [r.storyline.name, r.count])).toEqual([
+      ["Shared land restoration", 6],
+      ["Shared water planning", 3],
+    ]);
   });
 });
 
-describe("partner documents are weighed by their size", () => {
-  // X1 is linked with 2 of Y's 4 targets and with Z's only target: Z is the
-  // closer partner even though Y has more links.
+describe("partner documents are listed by their counts", () => {
+  // X1 is linked with 2 of Y's 4 targets and with Z's only target: the row
+  // states both counts, largest first, and names no winner.
   const ids = ["X1", "Y1", "Y2", "Y3", "Y4", "Z1"];
   const at = Object.fromEntries(ids.map((id, i) => [id, i]));
   const sized = (level: number): BriefSource => ({
@@ -495,16 +497,22 @@ describe("partner documents are weighed by their size", () => {
     model: null,
   });
 
-  it("names the aligned partner document by its share of targets, not the raw count", () => {
+  it("orders aligned partner documents by count", () => {
     const source = sized(0);
     const [x1] = alignedTargets(scopeOf(source, ["X", "Y", "Z"]), 8).filter((r) => r.commitment.id === "X1");
-    expect(x1.partnerDocs.map((p) => p.doc)).toEqual(["Z", "Y"]);
+    expect(x1.partnerDocs).toEqual([
+      { doc: "Y", count: 2 },
+      { doc: "Z", count: 1 },
+    ]);
   });
 
-  it("names the potential-misalignment partner document the same way", () => {
+  it("orders potential-misalignment partner documents by count", () => {
     const source = sized(4);
     const x1 = commitmentsToReview(scopeOf(source, ["X", "Y", "Z"]), 8).find((r) => r.commitment.id === "X1");
-    expect(x1?.partnerDocs.map((p) => p.doc)).toEqual(["Z", "Y"]);
+    expect(x1?.partnerDocs).toEqual([
+      { doc: "Y", count: 2 },
+      { doc: "Z", count: 1 },
+    ]);
   });
 });
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildBriefData, themeDots, OTHER_THEME } from "./data";
 import { pairExample, scopeOf } from "./compute";
-import { briefFixture } from "./test-fixture";
+import { briefFixture, FIXTURE_THEMES } from "./test-fixture";
 
 describe("buildBriefData", () => {
   const source = briefFixture();
@@ -70,6 +70,24 @@ describe("themeDots", () => {
     // 54 of the 72 aligned pairs sit in the restoration theme's documents.
     expect(themeDots(data, "reinforce")).toEqual([
       { key: "Shared land restoration", count: 54 },
+      { key: OTHER_THEME, count: 18 },
+    ]);
+  });
+
+  it("counts as the rest only the pairs outside every theme's documents, even when themes overlap", () => {
+    const planning = { ...FIXTURE_THEMES[0], name: "Shared water planning", contributing_doc_pairs: ["A<->B"] };
+    const full = {
+      storylines: [...FIXTURE_THEMES, planning],
+      summary_paragraph: "",
+      doc_pair_count: 3,
+      schema_version: 2,
+    };
+    const overlapping = { ...source, themes: { ...full, states: { "": full } } };
+    const d = buildBriefData(overlapping, scopeOf(overlapping, ["A", "B", "C"]), null);
+    // A~B (24) and A~C (30) are covered; B~C's 18 aligned pairs are the rest.
+    expect(themeDots(d, "reinforce")).toEqual([
+      { key: "Shared land restoration", count: 54 },
+      { key: "Shared water planning", count: 24 },
       { key: OTHER_THEME, count: 18 },
     ]);
   });

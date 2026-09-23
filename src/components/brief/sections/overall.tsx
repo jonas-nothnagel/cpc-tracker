@@ -10,11 +10,14 @@ export function OverallSection({
   data,
   variant = "screen",
   onFocusTone,
+  focusTones = ["reinforce", "apart"],
 }: {
   data: BriefData;
   variant?: "screen" | "print";
   /** Go to the section behind the aligned or potential-misalignment group. */
   onFocusTone?: (tone: "reinforce" | "apart") => void;
+  /** The groups whose section is in the brief; the others stay plain labels. */
+  focusTones?: ("reinforce" | "apart")[];
 }) {
   const t = useTranslations("brief.overall");
   const { pct } = useNumbers();
@@ -31,7 +34,12 @@ export function OverallSection({
       })}
     >
       <div className="brief-overall" data-tour="brief-overall">
-        <DotField counts={data.counts} still={variant === "print"} onFocusTone={onFocusTone} />
+        <DotField
+          counts={data.counts}
+          still={variant === "print"}
+          onFocusTone={onFocusTone}
+          focusTones={focusTones}
+        />
       </div>
     </SectionFrame>
   );

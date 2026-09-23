@@ -48,7 +48,6 @@ export function Hero({
       <button
         type="button"
         className="brief-hero-pause"
-        aria-pressed={paused}
         aria-label={paused ? t("play") : t("pause")}
         title={paused ? t("play") : t("pause")}
         onClick={() => setPaused((p) => !p)}

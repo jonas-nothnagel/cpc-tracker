@@ -3038,7 +3038,7 @@
       "headlineConcentrated": "{total, number} болзошгүй үл нийцлийн {pct} нь ердөө {top, plural, one {нэг зорилттой} other {# зорилттой}} холбоотой.",
       "headlineSpread": "Болзошгүй үл нийцэл {contested, plural, one {# зорилтод} other {# зорилтод}} тархсан байна.",
       "headlineEmpty": "Болзошгүй үл нийцэлтэй зорилт алга.",
-      "mostlyWith": "ихэвчлэн {doc}-тэй"
+      "partner": "{doc}-тэй {count, number}"
     },
     "documents": {
       "headline": "Alignment with the other documents ranges from {low} for {docLow} to {high} for {docHigh}.",
@@ -3130,8 +3130,8 @@
     "aligned": {
       "headline": "{target} ({doc}) is aligned with {pct} of the targets it was compared with.",
       "headlineEmpty": "No target is aligned with another in this selection.",
-      "mostlyWith": "mostly with {doc}",
-      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with"
+      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with",
+      "meta": "харьцуулсан {compared, number} зорилтын {aligned, number}-тай уялдаатай"
     },
     "preview": {
       "pages": "{count, plural, one {# page} other {# pages}}",

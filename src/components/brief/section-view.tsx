@@ -35,6 +35,7 @@ export function SectionView({
   handlers,
   picked,
   replay,
+  focusTones,
 }: {
   id: SectionId;
   variant?: SectionVariant;
@@ -43,6 +44,8 @@ export function SectionView({
   handlers: SectionHandlers;
   picked?: Record<ThemeTone, string | null>;
   replay?: Record<ThemeTone, number>;
+  /** Tones whose theme section is in the brief (their overall group links to it). */
+  focusTones?: ThemeTone[];
 }) {
   const ts = useTranslations("brief.sections");
   const theme = (tone: ThemeTone) => (
@@ -64,6 +67,7 @@ export function SectionView({
           data={data}
           variant={variant}
           onFocusTone={variant === "screen" ? handlers.onFocusTone : undefined}
+          focusTones={focusTones}
         />
       );
     case "together":

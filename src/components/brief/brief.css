@@ -1118,6 +1118,10 @@
 
 /* ── Flow: the brief on screen ───────────────────────────────────── */
 
+[data-brief] .brief-flow[hidden] {
+  display: none;
+}
+
 [data-brief] .brief-flow {
   max-width: 74rem;
   font-size: 15px;
