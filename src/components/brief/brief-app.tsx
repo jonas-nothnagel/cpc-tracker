@@ -13,8 +13,9 @@ import {
 import type { BriefSource } from "@/lib/brief/source";
 import { Builder } from "./builder";
 import { Hero } from "./hero";
+import { BriefPanels, type PanelState } from "./panels";
 import { clip } from "./ink";
-import { SectionView } from "./section-view";
+import { SectionView, type SectionHandlers } from "./section-view";
 import { Sheets, TitleBlock } from "./sheets";
 import "./brief.css";
 
@@ -41,6 +42,7 @@ export function BriefApp({
 }) {
   const tl = useTranslations("briefing.lens");
   const [selection, setSelection] = useState(initialSelection);
+  const [panels, setPanels] = useState<PanelState[]>([]);
 
   const update = useCallback(
     (next: BriefSelection) => {
@@ -62,6 +64,16 @@ export function BriefApp({
     [source, scope, selection.lens],
   );
   const lensName = selection.lens ? tl(selection.lens) : null;
+
+  const handlers: SectionHandlers = useMemo(
+    () => ({
+      onOpenPair: (a, b) => setPanels([{ kind: "pair", a, b }]),
+      onOpenDocPair: (a, b) => setPanels([{ kind: "docPair", a, b }]),
+      onOpenCommitment: (id) => setPanels([{ kind: "commitment", id }]),
+      onOpenTheme: (type, name) => setPanels([{ kind: "theme", type, name }]),
+    }),
+    [],
+  );
 
   const readBrief = () =>
     document.getElementById("brief-sheets")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -106,10 +118,18 @@ export function BriefApp({
             />
           }
           renderSection={(id) => (
-            <SectionView id={id} data={data} lensName={lensName} handlers={{}} />
+            <SectionView id={id} data={data} lensName={lensName} handlers={handlers} />
           )}
         />
       </div>
+      <BriefPanels
+        stack={panels}
+        source={source}
+        data={data}
+        onPush={(next) => setPanels((stack) => [...stack, next])}
+        onBack={() => setPanels((stack) => stack.slice(0, -1))}
+        onClose={() => setPanels([])}
+      />
     </div>
   );
 }

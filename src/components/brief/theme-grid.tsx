@@ -17,12 +17,15 @@ export function ThemeGrid({
   rows,
   docs,
   tone,
+  onOpenTheme,
 }: {
   rows: ThemeRow[];
   docs: BriefDocument[];
   tone: "reinforce" | "apart";
+  onOpenTheme?: (name: string) => void;
 }) {
   const t = useTranslations("brief.themes");
+  const tp = useTranslations("brief.panel");
   const { n, pct } = useNumbers();
   const ramp = tone === "reinforce" ? INK.greenSteps : INK.redSteps;
   return (
@@ -47,9 +50,16 @@ export function ThemeGrid({
           {rows.slice(0, MAX_ROWS).map((row) => (
             <tr key={row.storyline.name}>
               <th scope="row" className="brief-grid-theme">
-                <span className="brief-clamp-2" title={row.storyline.name}>
-                  {row.storyline.name}
-                </span>
+                <button
+                  type="button"
+                  className="brief-grid-open"
+                  onClick={() => onOpenTheme?.(row.storyline.name)}
+                  aria-label={tp("openTheme", { name: row.storyline.name })}
+                >
+                  <span className="brief-clamp-2" title={row.storyline.name}>
+                    {row.storyline.name}
+                  </span>
+                </button>
               </th>
               {docs.map((d) => {
                 const share = row.docShares[d.id] ?? 0;

@@ -1,0 +1,381 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { DrawerHeader, DrawerShell } from "@/components/ui/drawer-shell";
+import { PairDrawer } from "@/components/dashboard/coherence-briefing/pair-drawer";
+import { partnersOf } from "@/lib/brief/compute";
+import type { BriefData } from "@/lib/brief/data";
+import type { FoundPair } from "@/lib/brief/pair";
+import type { BriefSource } from "@/lib/brief/source";
+import { strandsByPathway } from "@/lib/pulse/strands";
+import type { CountryConfig } from "@/types";
+import { useNumbers } from "./ink";
+
+export type PanelState =
+  | { kind: "pair"; a: string; b: string }
+  | { kind: "docPair"; a: string; b: string }
+  | { kind: "commitment"; id: string }
+  | { kind: "theme"; type: "reinforcement" | "friction"; name: string };
+
+/** Commitment lists show this many before "Show all". */
+const LIST_PREVIEW = 12;
+
+function keyOf(p: PanelState): string {
+  switch (p.kind) {
+    case "pair":
+      return `pair:${p.a}:${p.b}`;
+    case "docPair":
+      return `docs:${p.a}:${p.b}`;
+    case "commitment":
+      return `c:${p.id}`;
+    default:
+      return `theme:${p.type}:${p.name}`;
+  }
+}
+
+/** The pair drawer reads document labels and colours from a country config;
+ *  the brief's own document list carries all of them. */
+function configFrom(source: BriefSource): CountryConfig {
+  return {
+    documentTypes: source.documents.map((d) => ({
+      id: d.id,
+      shortLabel: d.code,
+      mediumLabel: d.name,
+      fullLabel: d.full,
+      color: d.color,
+    })),
+  } as unknown as CountryConfig;
+}
+
+function PairPanel({
+  a,
+  b,
+  countryId,
+  config,
+}: {
+  a: string;
+  b: string;
+  countryId: string;
+  config: CountryConfig;
+}) {
+  const t = useTranslations("brief.panel");
+  const locale = useLocale();
+  const [state, setState] = useState<{ status: "loading" | "error" | "ok"; found?: FoundPair }>({
+    status: "loading",
+  });
+  // Mounted once per comparison (keyed by the caller), so it starts loading.
+  useEffect(() => {
+    let alive = true;
+    const query = new URLSearchParams({ country: countryId, a, b, locale });
+    fetch(`/api/brief/pair?${query}`)
+      .then((res) => (res.ok ? (res.json() as Promise<FoundPair>) : Promise.reject(new Error())))
+      .then((found) => alive && setState({ status: "ok", found }))
+      .catch(() => alive && setState({ status: "error" }));
+    return () => {
+      alive = false;
+    };
+  }, [a, b, countryId, locale]);
+
+  if (state.status !== "ok" || !state.found) {
+    return (
+      <>
+        <DrawerHeader>
+          <h2 className="font-display text-[1.25rem] leading-snug text-[var(--undp-black)]">
+            {t("pairDialog")}
+          </h2>
+        </DrawerHeader>
+        <p className="px-6 py-4 text-body text-[var(--undp-gray)]">
+          {state.status === "error" ? t("error") : t("loading")}
+        </p>
+      </>
+    );
+  }
+  const { pair, targetA, targetB } = state.found;
+  return (
+    <PairDrawer
+      data={{ mode: "target-pair", pair, targetA, targetB }}
+      countryConfig={config}
+      countryId={countryId}
+      onOpenTargetPair={() => {}}
+    />
+  );
+}
+
+function DocPairPanel({
+  data,
+  source,
+  a,
+  b,
+  onOpenPair,
+}: {
+  data: BriefData;
+  source: BriefSource;
+  a: string;
+  b: string;
+  onOpenPair: (aId: string, bId: string) => void;
+}) {
+  const t = useTranslations("brief.panel");
+  const tm = useTranslations("labels.contradictionType");
+  const { pct } = useNumbers();
+  const stat = data.pairs.find((p) => p.a.id === a && p.b.id === b);
+  const strands = useMemo(
+    () =>
+      strandsByPathway(
+        data.scope.alignment,
+        data.scope.targets,
+        source.documents.map((d) => d.id),
+      ).get(`${a}~${b}`) ?? [],
+    [data.scope, source.documents, a, b],
+  );
+  const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
+  const c = stat?.counts;
+  const share = (v: number) => pct(c && c.total > 0 ? v / c.total : 0);
+  return (
+    <>
+      <DrawerHeader>
+        <h2 className="font-display text-[1.25rem] leading-snug text-[var(--undp-black)]">
+          {t("docPairDialog", { docA: docName(a), docB: docName(b) })}
+        </h2>
+        {c && (
+          <p className="mt-1 text-caption text-[var(--undp-gray)]">
+            {t("docPairCounts", {
+              total: c.total,
+              reinforce: share(c.reinforce),
+              partial: share(c.partial),
+              apart: share(c.apart),
+            })}
+          </p>
+        )}
+      </DrawerHeader>
+      <div className="px-6 py-4">
+        <p className="text-body text-[var(--undp-black)]">{t("docPairLead", { count: strands.length })}</p>
+        <ol className="mt-3 border-t border-line">
+          {strands.map((s) => (
+            <li key={s.pairKey} className="border-b border-line" data-testid="brief-strand-row">
+              <button
+                type="button"
+                className="block w-full py-2.5 text-left hover:bg-[var(--undp-light-gray,#f7f7f7)]"
+                onClick={() => onOpenPair(s.pair.targetAId, s.pair.targetBId)}
+              >
+                <span className="block text-data text-[var(--undp-black)]">
+                  <span className="text-[var(--undp-gray)]">{docName(s.targetA.sourceDocument)} · </span>
+                  {s.targetA.sourceLabel}
+                </span>
+                <span className="block text-data text-[var(--undp-black)]">
+                  <span className="text-[var(--undp-gray)]">{docName(s.targetB.sourceDocument)} · </span>
+                  {s.targetB.sourceLabel}
+                </span>
+                {s.pair.mechanism && (
+                  <span className="mt-0.5 block text-caption text-[var(--undp-gray)]">
+                    {tm(s.pair.mechanism)}
+                  </span>
+                )}
+              </button>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </>
+  );
+}
+
+function CommitmentList({
+  items,
+  docName,
+  onOpen,
+}: {
+  items: { id: string; doc: string; label: string }[];
+  docName: (id: string) => string;
+  onOpen: (id: string) => void;
+}) {
+  const t = useTranslations("brief.panel");
+  const [all, setAll] = useState(false);
+  const shown = all ? items : items.slice(0, LIST_PREVIEW);
+  return (
+    <>
+      <ul className="mt-2 border-t border-line">
+        {shown.map((p) => (
+          <li key={p.id} className="border-b border-line">
+            <button
+              type="button"
+              className="block w-full py-2 text-left text-data text-[var(--undp-black)] hover:underline"
+              onClick={() => onOpen(p.id)}
+            >
+              <span className="text-[var(--undp-gray)]">{docName(p.doc)} · </span>
+              {p.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+      {!all && items.length > LIST_PREVIEW && (
+        <button
+          type="button"
+          className="mt-2 text-caption font-medium text-[var(--undp-blue)] underline underline-offset-2"
+          onClick={() => setAll(true)}
+        >
+          {t("showAll", { count: items.length })}
+        </button>
+      )}
+    </>
+  );
+}
+
+function CommitmentPanel({
+  data,
+  id,
+  onOpenPair,
+}: {
+  data: BriefData;
+  id: string;
+  onOpenPair: (aId: string, bId: string) => void;
+}) {
+  const t = useTranslations("brief.panel");
+  const commitment = data.scope.commitments.find((c) => c.id === id);
+  const partners = useMemo(() => partnersOf(data.scope, id), [data.scope, id]);
+  const docName = (doc: string) => data.scope.docs.find((d) => d.id === doc)?.name ?? doc;
+  if (!commitment) return null;
+  return (
+    <>
+      <DrawerHeader>
+        <p className="text-caption text-[var(--undp-gray)]">{docName(commitment.doc)}</p>
+        <h2 className="font-display text-[1.25rem] leading-snug text-[var(--undp-black)]">
+          {commitment.label}
+        </h2>
+      </DrawerHeader>
+      <div className="space-y-6 px-6 py-4">
+        <p className="font-display text-body leading-relaxed text-[var(--undp-black)]">{commitment.text}</p>
+        <section>
+          <h3 className="text-data font-semibold text-[var(--undp-black)]">
+            {t("worksAgainst", { count: partners.apart.length })}
+          </h3>
+          <CommitmentList items={partners.apart} docName={docName} onOpen={(p) => onOpenPair(id, p)} />
+        </section>
+        <section>
+          <h3 className="text-data font-semibold text-[var(--undp-black)]">
+            {t("worksWith", { count: partners.reinforce.length })}
+          </h3>
+          <CommitmentList items={partners.reinforce} docName={docName} onOpen={(p) => onOpenPair(id, p)} />
+        </section>
+      </div>
+    </>
+  );
+}
+
+function ThemePanel({
+  data,
+  type,
+  name,
+}: {
+  data: BriefData;
+  type: "reinforcement" | "friction";
+  name: string;
+}) {
+  const t = useTranslations("brief.panel");
+  const { pct } = useNumbers();
+  const section = type === "reinforcement" ? data.together : data.apart;
+  const row = section.rows.find((r) => r.storyline.name === name);
+  if (!row) return null;
+  const docs = data.scope.docs
+    .map((d) => ({ doc: d, share: row.docShares[d.id] ?? 0 }))
+    .filter((x) => x.share > 0)
+    .sort((x, y) => y.share - x.share);
+  return (
+    <>
+      <DrawerHeader>
+        <p className="text-caption text-[var(--undp-gray)]">{t(`themeKind.${type}`)}</p>
+        <h2 className="font-display text-[1.25rem] leading-snug text-[var(--undp-black)]">{name}</h2>
+      </DrawerHeader>
+      <div className="space-y-6 px-6 py-4">
+        <section>
+          <h3 className="text-data font-semibold text-[var(--undp-black)]">{t("themeSummary")}</h3>
+          <p className="mt-1 text-body leading-relaxed text-[var(--undp-black)]">{row.storyline.description}</p>
+        </section>
+        {row.storyline.pathway && (
+          <section>
+            <h3 className="text-data font-semibold text-[var(--undp-black)]">{t("pathwayTitle")}</h3>
+            <p className="mt-1 text-body leading-relaxed text-[var(--undp-black)]">{row.storyline.pathway}</p>
+            <p className="mt-1 text-caption text-[var(--undp-gray)]">{t("pathwayCaveat")}</p>
+          </section>
+        )}
+        <section>
+          <h3 className="text-data font-semibold text-[var(--undp-black)]">{t("themeDocs")}</h3>
+          <ul className="mt-2 border-t border-line">
+            {docs.map(({ doc, share }) => (
+              <li key={doc.id} className="flex justify-between gap-4 border-b border-line py-2 text-data">
+                <span title={doc.full}>{doc.name}</span>
+                <span className="tabular-nums text-[var(--undp-gray)]">{pct(share)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </>
+  );
+}
+
+/**
+ * The brief's drill-downs in one drawer with a back trail: a single
+ * comparison (with its AI reading), a pair of documents, a commitment and
+ * its partners, a recurring theme. Opening something from inside a panel
+ * pushes onto the trail; Escape or Back steps out.
+ */
+export function BriefPanels({
+  stack,
+  source,
+  data,
+  onPush,
+  onBack,
+  onClose,
+}: {
+  stack: PanelState[];
+  source: BriefSource;
+  data: BriefData;
+  onPush: (next: PanelState) => void;
+  onBack: () => void;
+  onClose: () => void;
+}) {
+  const t = useTranslations("brief.panel");
+  const config = useMemo(() => configFrom(source), [source]);
+  const top = stack[stack.length - 1];
+  if (!top) return null;
+  const openPair = (a: string, b: string) => onPush({ kind: "pair", a, b });
+  const dialogLabel =
+    top.kind === "pair"
+      ? t("pairDialog")
+      : top.kind === "theme"
+        ? t("themeDialog", { name: top.name })
+        : top.kind === "commitment"
+          ? t("commitmentDialog", {
+              label: data.scope.commitments.find((c) => c.id === top.id)?.label ?? top.id,
+            })
+          : t("docPairDialog", {
+              docA: data.scope.docs.find((d) => d.id === top.a)?.name ?? top.a,
+              docB: data.scope.docs.find((d) => d.id === top.b)?.name ?? top.b,
+            });
+  return (
+    <DrawerShell
+      open
+      onClose={onClose}
+      onBack={stack.length > 1 ? onBack : undefined}
+      backLabel={t("back")}
+      dialogLabel={dialogLabel}
+      panelKey={keyOf(top)}
+    >
+      {top.kind === "pair" && (
+        <PairPanel
+          key={keyOf(top)}
+          a={top.a}
+          b={top.b}
+          countryId={source.countryId}
+          config={config}
+        />
+      )}
+      {top.kind === "docPair" && (
+        <DocPairPanel data={data} source={source} a={top.a} b={top.b} onOpenPair={openPair} />
+      )}
+      {top.kind === "commitment" && <CommitmentPanel data={data} id={top.id} onOpenPair={openPair} />}
+      {top.kind === "theme" && <ThemePanel data={data} type={top.type} name={top.name} />}
+    </DrawerShell>
+  );
+}

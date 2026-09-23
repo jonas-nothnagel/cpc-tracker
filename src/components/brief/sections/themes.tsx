@@ -15,11 +15,13 @@ export function ThemeSectionView({
   data,
   tone,
   onOpenPair,
+  onOpenTheme,
 }: {
   data: BriefData;
   tone: "reinforce" | "apart";
   countryId?: string;
   onOpenPair?: (aId: string, bId: string) => void;
+  onOpenTheme?: (type: "reinforcement" | "friction", name: string) => void;
 }) {
   const t = useTranslations("brief");
   const { pct } = useNumbers();
@@ -43,7 +45,12 @@ export function ThemeSectionView({
     <SectionFrame id={key} headline={headline} note={note}>
       <p className="brief-sec-sub">{t(`${key}.themes`)}</p>
       {section.rows.length > 0 ? (
-        <ThemeGrid rows={section.rows} docs={data.scope.docs} tone={tone} />
+        <ThemeGrid
+          rows={section.rows}
+          docs={data.scope.docs}
+          tone={tone}
+          onOpenTheme={(name) => onOpenTheme?.(tone === "reinforce" ? "reinforcement" : "friction", name)}
+        />
       ) : (
         <p className="brief-sec-empty">{t(`${key}.themesEmpty`)}</p>
       )}

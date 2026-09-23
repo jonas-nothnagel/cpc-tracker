@@ -653,7 +653,6 @@
           "anonNote": "Los comentarios son anónimos y solo los ve el equipo del proyecto.",
           "error": "No se pudo guardar el comentario. Inténtelo de nuevo más tarde."
         },
-        "openAsPage": "Abrir como página",
         "rationaleTranslationPending": "Esta explicación aún no ha sido traducida, por lo que se muestra en inglés."
       },
       "theme": {
@@ -1881,20 +1880,6 @@
       "empty": "No hay posibles desalineaciones entre documentos distintos en este conjunto de datos."
     }
   },
-  "pulse": {
-    "title": "{flagged, number} posibles desalineaciones, concentradas en {inflamed, number} de {pairs, number} rutas entre documentos",
-    "subtitle": "{docs, number} documentos de política · {compared, number} pares de metas comparados",
-    "pathwayLine": "{flagged, number} posibles desalineaciones en {compared, number} pares comparados ({pct})",
-    "moreRanked": "y {count, number} más, ordenados",
-    "back": "Volver a todos los documentos",
-    "topStrands": "Primero las metas más recurrentes",
-    "showRationale": "Mostrar el razonamiento de la IA",
-    "hideRationale": "Ocultar el razonamiento de la IA",
-    "targetsWord": "metas",
-    "clickHint": "Seleccione una fibra roja para seguirla",
-    "legendTissue": "Líneas verdes: cuánto de cada par de documentos está alineado. La calma es la norma; esta capa es la mayoría.",
-    "legendNerve": "Fibras rojas discontinuas: rutas entre documentos cuya proporción de posible desalineación está en o por encima del promedio de este corpus. El grosor crece con esa proporción. Las dos capas usan escalas distintas."
-  },
   "labels": {
     "alignment": {
       "flagged": "Posible desalineación",
@@ -3073,6 +3058,29 @@
       "selected": "{apart, plural, =0 {Ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}} · {reinforce, number} vínculos de refuerzo",
       "open": "Ver los compromisos con los que se compara",
       "clear": "Quitar la selección"
+    },
+    "panel": {
+      "back": "Volver",
+      "loading": "Cargando la comparación…",
+      "error": "No se pudo cargar esta comparación.",
+      "pairDialog": "Comparación de dos compromisos",
+      "docPairDialog": "{docA} y {docB}",
+      "docPairCounts": "{total, number} comparaciones: {reinforce} se refuerzan entre sí, {partial} vínculo parcial, {apart} posible desalineación",
+      "docPairLead": "{count, plural, =0 {No hay posible desalineación entre estos dos documentos.} one {# posible desalineación, empezando por los compromisos que más se repiten.} other {# posibles desalineaciones, empezando por los compromisos que más se repiten.}}",
+      "commitmentDialog": "Compromiso: {label}",
+      "worksAgainst": "{count, plural, =0 {Ninguna posible desalineación en esta selección} one {Posible desalineación con # compromiso} other {Posible desalineación con # compromisos}}",
+      "worksWith": "{count, plural, =0 {No refuerza ningún compromiso de esta selección} one {Refuerza # compromiso} other {Refuerza # compromisos}}",
+      "showAll": "Mostrar los {count, number}",
+      "themeDialog": "Tema: {name}",
+      "themeKind": {
+        "reinforcement": "Tema recurrente en el que los documentos se refuerzan entre sí, identificado por IA",
+        "friction": "Tema recurrente de posible desalineación, identificado por IA"
+      },
+      "themeSummary": "Resumen de la IA",
+      "pathwayTitle": "Punto de partida sugerido por la IA",
+      "pathwayCaveat": "Un punto de partida para la revisión por personas expertas nacionales, no una recomendación.",
+      "themeDocs": "Documentos que participan, según su parte de las comparaciones del tema",
+      "openTheme": "Abrir el tema {name}"
     }
   }
 }

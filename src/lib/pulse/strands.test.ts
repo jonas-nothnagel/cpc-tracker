@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { computePulseModel } from "./aggregate";
 import { strandSignals, strandsByPathway, type StrandSignalLabels } from "./strands";
 import type { AlignmentResult, Target } from "@/types";
 
@@ -45,7 +44,7 @@ const LABELS: StrandSignalLabels = {
 };
 
 describe("strandsByPathway", () => {
-  it("files each flagged pair under the pathway the canvas draws, whichever way round it was compared", () => {
+  it("files each flagged pair under its pair of documents in document order, whichever way round it was compared", () => {
     const alignment = [
       makePair("FSS_1", "NDC_1"),
       makePair("NDC_2", "FSS_2"),
@@ -63,11 +62,6 @@ describe("strandsByPathway", () => {
     ]);
     expect(strands.get("NDC~NBSAP")!.map((c) => c.pairKey)).toEqual(["NBSAP_1__NDC_1"]);
 
-    // Every flagged pair a fiber counts is reachable from that fiber's key.
-    const edges = computePulseModel(alignment, TARGETS, DOC_ORDER).edges;
-    for (const e of edges.filter((x) => x.flagged > 0)) {
-      expect(strands.get(`${e.a}~${e.b}`)?.length).toBe(e.flagged);
-    }
   });
 
   it("puts strands through the target with the most potential misalignments in the pathway first", () => {

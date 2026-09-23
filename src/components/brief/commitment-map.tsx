@@ -118,13 +118,16 @@ export function CommitmentMap({
     return out;
   }, [layout, byDoc]);
 
-  const roleOf = useMemo(() => {
-    if (!selected || !partners) return (_id: string): Role => undefined;
-    const apart = new Set(partners.apart.map((c) => c.id));
-    const reinforce = new Set(partners.reinforce.map((c) => c.id));
-    return (id: string): Role =>
-      id === selected ? "selected" : apart.has(id) ? "apart" : reinforce.has(id) ? "reinforce" : "dim";
+  // With a selection, every square has a role; without one, none.
+  const roles = useMemo(() => {
+    const map = new Map<string, Role>();
+    if (!selected || !partners) return map;
+    for (const c of partners.reinforce) map.set(c.id, "reinforce");
+    for (const c of partners.apart) map.set(c.id, "apart");
+    map.set(selected, "selected");
+    return map;
   }, [selected, partners]);
+  const roleOf = (id: string): Role => roles.get(id) ?? (selected ? "dim" : undefined);
 
   const docName = (id: string) => docs.find((d) => d.id === id)?.name ?? id;
   const describe = (cell: MapCell) =>

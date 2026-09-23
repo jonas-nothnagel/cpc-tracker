@@ -629,6 +629,20 @@
   font-weight: 500;
 }
 
+[data-brief] .brief-grid-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .brief-grid-open:hover {
+  text-decoration: underline;
+}
+
 [data-brief] .brief-grid-doc {
   width: 44px;
   text-align: center;

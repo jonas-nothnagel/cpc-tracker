@@ -14,6 +14,7 @@ export interface SectionHandlers {
   onOpenPair?: (aId: string, bId: string) => void;
   onOpenDocPair?: (a: string, b: string) => void;
   onOpenCommitment?: (id: string) => void;
+  onOpenTheme?: (type: "reinforcement" | "friction", name: string) => void;
 }
 
 /** Renders one section of the brief by id. */
@@ -33,9 +34,23 @@ export function SectionView({
     case "overall":
       return <OverallSection data={data} />;
     case "together":
-      return <ThemeSectionView data={data} tone="reinforce" onOpenPair={handlers.onOpenPair} />;
+      return (
+        <ThemeSectionView
+          data={data}
+          tone="reinforce"
+          onOpenPair={handlers.onOpenPair}
+          onOpenTheme={handlers.onOpenTheme}
+        />
+      );
     case "apart":
-      return <ThemeSectionView data={data} tone="apart" onOpenPair={handlers.onOpenPair} />;
+      return (
+        <ThemeSectionView
+          data={data}
+          tone="apart"
+          onOpenPair={handlers.onOpenPair}
+          onOpenTheme={handlers.onOpenTheme}
+        />
+      );
     case "commitments":
       return <CommitmentsSection data={data} onOpenCommitment={handlers.onOpenCommitment} />;
     case "documents":

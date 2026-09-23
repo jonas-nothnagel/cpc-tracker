@@ -13,11 +13,11 @@ export interface StrandSignalLabels {
 }
 
 /**
- * The pathway dive's strands: every flagged policy-to-policy pair, filed under
- * the key the canvas draws its pathway with (`computePulseModel`'s edge key).
- * Within a pathway, strands through the target in the most of that pathway's
+ * Every flagged policy-to-policy pair, filed under its pair of documents
+ * (`A~B`, the two ids in document order; the brief's pair-of-documents panel).
+ * Within a pair of documents, strands through the target in the most of its
  * potential misalignments come first (then by the other target's count), so
- * the dive opens on the targets the pathway's misalignment runs through.
+ * the list opens on the targets its misalignment runs through.
  * Confidence, manageability and mechanism only break ties: nearly every flag
  * carries the same values. Cross-model consensus is not a key: comparison runs
  * exist for one country and lag its corpus.

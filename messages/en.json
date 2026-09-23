@@ -653,7 +653,6 @@
           "anonNote": "Feedback is anonymous and goes only to the project team.",
           "error": "The feedback could not be saved. Please try again later."
         },
-        "openAsPage": "Open as a page",
         "rationaleTranslationPending": "This explanation has not been translated yet, so it is shown in English."
       },
       "theme": {
@@ -1881,20 +1880,6 @@
       "empty": "No potential misalignments between different documents in this dataset."
     }
   },
-  "pulse": {
-    "title": "{flagged, number} potential misalignments, concentrated in {inflamed, number} of {pairs, number} document pathways",
-    "subtitle": "{docs, number} policy documents · {compared, number} compared target pairs",
-    "pathwayLine": "{flagged, number} potential misalignments in {compared, number} compared pairs ({pct})",
-    "moreRanked": "and {count, number} more, ranked",
-    "back": "Back to all documents",
-    "topStrands": "Most recurring targets first",
-    "showRationale": "Show the AI rationale",
-    "hideRationale": "Hide the AI rationale",
-    "targetsWord": "targets",
-    "clickHint": "Select a red fiber to follow it",
-    "legendTissue": "Green lines: how much of each document pair aligns. Calm is the norm; this layer is the majority.",
-    "legendNerve": "Red dashed fibers: document pathways whose share of potential misalignment sits at or above this corpus's own average. Width grows with that share. The two layers use separate scales."
-  },
   "labels": {
     "alignment": {
       "flagged": "Potential misalignment",
@@ -3073,6 +3058,29 @@
       "selected": "{apart, plural, =0 {No potential misalignment} one {# potential misalignment} other {# potential misalignments}} · {reinforce, number} reinforcing links",
       "open": "Show the commitments it is compared with",
       "clear": "Clear the selection"
+    },
+    "panel": {
+      "back": "Back",
+      "loading": "Loading the comparison…",
+      "error": "This comparison could not be loaded.",
+      "pairDialog": "Comparison of two commitments",
+      "docPairDialog": "{docA} and {docB}",
+      "docPairCounts": "{total, number} comparisons: {reinforce} reinforce each other, {partial} partial link, {apart} potential misalignment",
+      "docPairLead": "{count, plural, =0 {No potential misalignment between these two documents.} one {# potential misalignment, starting with the commitments that recur most.} other {# potential misalignments, starting with the commitments that recur most.}}",
+      "commitmentDialog": "Commitment: {label}",
+      "worksAgainst": "{count, plural, =0 {No potential misalignment in this selection} one {Potential misalignment with # commitment} other {Potential misalignment with # commitments}}",
+      "worksWith": "{count, plural, =0 {Reinforces no commitment in this selection} one {Reinforces # commitment} other {Reinforces # commitments}}",
+      "showAll": "Show all {count, number}",
+      "themeDialog": "Theme: {name}",
+      "themeKind": {
+        "reinforcement": "Recurring theme where the documents reinforce each other, identified by AI",
+        "friction": "Recurring theme of potential misalignment, identified by AI"
+      },
+      "themeSummary": "AI summary",
+      "pathwayTitle": "AI-suggested starting point",
+      "pathwayCaveat": "A prompt for review by national experts, not a recommendation.",
+      "themeDocs": "Documents taking part, by share of the theme's comparisons",
+      "openTheme": "Open the theme {name}"
     }
   }
 }
