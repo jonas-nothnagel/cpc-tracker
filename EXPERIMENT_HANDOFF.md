@@ -5,7 +5,7 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
-## Status 2026-09-22: long-lived parallel track
+## Status 2026-09-23: long-lived parallel track
 
 Jonas decided to develop the canvas in parallel with `main` for weeks to months. It may
 never merge back and may instead overtake main as the product's opening view.
@@ -25,11 +25,20 @@ never merge back and may instead overtake main as the product's opening view.
     current whitelist + swap rule), imported by main's `use-dashboard-data.ts`. If main
     edits its normalizer again, the merge conflicts there instead of drifting silently;
     port main's change into `src/lib/normalize-target.ts`.
-  - `coherence-dashboard.tsx`: take main's version (the branch no longer changes it).
-- **Verification after the first sync:** 882 tests pass (1 skipped), all four countries'
-  `/pulse` render. `tsc` shows one error in `src/lib/analytics/store.test.ts`, inherited
-  unchanged from main. The Turbopack "inferred your workspace root" warning in the dev
-  log is harmless (the parent checkout's lockfile).
+  - `coherence-dashboard.tsx` and `pair-drawer.tsx`: take main's version (the branch no
+    longer changes either; the production drawer's "Open as a page" link was dropped at
+    the second sync because it broke main's PairDrawer test).
+  - The local `main` ref lives in the main checkout and can lag GitHub. If
+    `git log HEAD..origin/main` is non-empty after `git fetch origin`, merge `origin/main`
+    instead of `main` (the second sync did this; the main checkout stays untouched).
+- **Verification after the second sync** (merge of `origin/main` at 7006442, PRs
+  #223-#226, 2026-09-23): 1,011 tests pass (1 skipped), all four countries' `/pulse`
+  render with the numbers below unchanged. `tsc` shows one error in
+  `src/lib/analytics/store.test.ts`, inherited unchanged from main. Run the suite as
+  `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 npx vitest run`: on this Mac's de-DE default, three
+  of main's NR7 tests fail because main formats numbers with `toLocaleString(undefined)`
+  (a main-side issue, not the branch's). The Turbopack "inferred your workspace root"
+  warning in the dev log is harmless (the parent checkout's lockfile).
 - **Not pushed anywhere.** A local-only branch for a month is a backup risk; pushing it
   (as a branch, no PR) is Jonas's call.
 
@@ -45,9 +54,9 @@ never merge back and may instead overtake main as the product's opening view.
 The August numbers further down (1,128 flags, 10 of 21) predate the Mongolia re-curation
 (#189: NDC 3.0 split from the Resolution 91 "NITIPA" document) and are historical.
 
-### Open items from the first sync
+### Open items
 
-1. **Cleanup (decided 2026-09-23): drop cross-model consensus from the canvas.** The
+1. **DONE 2026-09-23 (bc0b3ea): cross-model consensus dropped from the canvas.** The
    overview (headline, inflamed fibers, widths) already uses only the served model. The
    leftover from the finding-card rounds is in the pathway dive: strands are ordered first
    by "models flagging" (`src/lib/finding/candidates.ts`, the sort's first key) and each
@@ -56,11 +65,31 @@ The August numbers further down (1,128 flags, 10 of 21) predate the Mongolia re-
    so the 31 new NDC 3.0 targets cap at "1 of 4", rank down, and read as disagreement.
    Decision: stop passing consensus counts in the pulse page and drop the models line from
    strands, so ordering is confidence, manageability, mechanism for every country, like
-   the production dashboard. Do NOT re-run comparison models for this.
+   the production dashboard. Do NOT re-run comparison models for this. Grouping and the
+   caption now live in `src/lib/pulse/strands.ts` (tested). The legacy leaves the canvas
+   links to (`/findings` via "and N more, ranked", the finding page via "Open as a page")
+   still read consensus.
 2. **Sri Lanka corpus on `main` is the old one** (8 docs incl. minerals NMP). The
    2026-09-18 replacement (225 targets, 12 docs, minerals + fisheries dropped) was still
    uncommitted in the main checkout at this sync; it arrives with the next `git merge main`
-   once it lands there.
+   once it lands there. Still the old corpus on `origin/main` at 7006442.
+3. **Consequence of item 1: the dive's "top 6" is mostly alphabetical.** The pipeline's
+   enums barely vary: medium confidence + coordination-level is 663 of Mongolia's 671
+   flags, 1,104 of Panama's 1,133, 864 of Sri Lanka's 866. With consensus gone, only the
+   mechanism differs, so the final pairKey tie-break (lexical: `NDC_11` before `NDC_1`)
+   picks which six strands a pathway shows: in 12 of 13 inflamed Mongolia pathways
+   (55 of 78 strands shown), 9 of 9 in Panama (41 of 54), 6 of 9 in Sri Lanka. For
+   Panama, Sri Lanka and Cote d'Ivoire this was already true before the cleanup. The
+   header "Strongest signals first" overclaims. A data-only signal that does vary:
+   concentration on a target within the pathway (every pathway is a full cross-product,
+   so counts are comparable per side). Mongolia: Vision 2050 "Irrigated agriculture
+   expansion" (doc id SECTORAL) is in 21 of 38 Vision 2050<->NDC flags, and one target
+   touches half the flags in 5 of 13 inflamed pathways; Panama: PIOTA "Pillar 1.2" in 157
+   of 173 ENR<->PIOTA flags, PEG "1.1 Actions to Implement (integrate local productive
+   chains)" (an 895-character merged action list) in 190 of 517 PEG<->ENR flags. A hub can
+   be a real cross-cutting conflict or a broad, merged target text; the reader decides
+   which. To re-audit, re-derive from `/api/dashboard?country=x` with the canvas's filters
+   (flagged, cross-document, no BTR/BER).
 
 ## Why this branch exists
 
@@ -93,8 +122,9 @@ canvas and the "Open as a page" leaf is still linked from the canvas's strand st
   ranking is what fixes "the wheel always looks the same": Mongolia shows 10 of 21 pathways
   inflamed, Panama 9 of 28, Cote d'Ivoire honestly 1 of 3.
 - **Staged dive, three glances.** Click a fiber: the two documents anchor left/right, the
-  fiber splits into its top-6 ranked strands (consensus, confidence, manageability,
-  mechanism), with an honest "and N more, ranked" link into `/findings`. Click a strand:
+  fiber splits into its top-6 ranked strands (confidence, manageability, mechanism;
+  consensus dropped 2026-09-23, see open item 3 on ties), with an "and N more, ranked"
+  link into `/findings`. Click a strand:
   claim sentence (serif), the two verbatim commitments, mechanism sentence, AI rationale
   behind a disclosure. Esc walks back.
 - Deterministic geometry (hash-seeded jitter, SSR-safe, no Math.random). Reduced motion
@@ -105,9 +135,11 @@ canvas and the "Open as a page" leaf is still linked from the canvas's strand st
 
 - `src/lib/pulse/aggregate.ts` — doc-pair model (shares, corpus mean, inflamed flag). Tested.
 - `src/lib/pulse/geometry.ts` — arc positions, hash jitter, fiber paths, widths. Tested.
+- `src/lib/pulse/strands.ts` — pathway grouping of flagged pairs (same key as the fibers)
+  and the strand caption line. Tested.
 - `src/components/pulse/coherence-canvas.tsx` (+ `types.ts`) — the scene, staging, overlays.
-- `src/app/[locale]/[country]/pulse/page.tsx` — server assembly: payload, consensus counts,
-  strand precompute with translated claims/signals.
+- `src/app/[locale]/[country]/pulse/page.tsx` — server assembly: payload, strand
+  precompute with translated claims/signals.
 - Data engine (round-1 survivors): `src/lib/finding/{candidates,headline,doc-name,consensus,
   resolve,significance}.ts`, all tested.
 - Messages: `finding.*` and `pulse.*` namespaces in `messages/{en,es,mn}.json`.
