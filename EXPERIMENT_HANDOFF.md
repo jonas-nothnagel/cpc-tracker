@@ -16,7 +16,36 @@ impressive, nor pretty, nor informative, nor accessible for non technical people
 understandable". The brief answers the original dashboard's two questions, what works well
 together and what does not, for a reader with no technical background, as a composable
 2-3 page policy brief. Spec: `docs/superpowers/specs/2026-09-23-coherence-brief-design.md`;
-plan: `docs/superpowers/plans/2026-09-23-coherence-brief.md`. Verdict pending.
+plan: `docs/superpowers/plans/2026-09-23-coherence-brief.md`.
+
+**Round 5 (`d0cf0b5`):** self-explanatory sections in the team's language. Jonas: keep the
+drifting header, the dot field, the left menu and full-screen use. No explanations or text
+walls; the theme x document grid and the commitment map were not understandable; faded text
+was unreadable; wording too "LLM-like". The rule now lives in CLAUDE.md, DESIGN.md and memory
+(`self-explanatory-visuals`).
+
+**Round 6 (`ff89b09`):** Jonas: "too much like a make-a-pdf tool". The screen is now a flowing
+page, and A4 pages appear only as a print preview. The dots are clickable into their themes,
+there is a "Most aligned targets" section, the documents view is sorted per document with a
+richer pair panel, and How it works has a dot-scene left side. Work on Mongolia English only
+until Jonas likes a version; es/mn got English placeholders for new strings. A fresh code
+review of rounds 5 and 6 led to fix pass `c79bd1e`:
+- partner documents stated with counts;
+- sentence split safe for "Res. 91";
+- hovering no longer restarts the build;
+- theme counts back to coverage (pipeline contract, dashboard parity);
+- overall links only to kept sections;
+- the preview lands on page 1;
+- How it works labels wrap, carry full names and name Mongolia.
+
+Deferred minors from that review:
+- the tour's dot unit for Sri Lanka;
+- dead code;
+- no feedback control on the pair synthesis;
+- tour targets in preview;
+- `#step=N` not reaching the iframe route.
+
+Verdict pending.
 
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
@@ -128,8 +157,11 @@ compelling enough to forward to a colleague. This branch is the search for the a
 3. **The coherence canvas** (`2a0bc14`): Jonas's own picture, built bold, at
    `/{country}/pulse`. Verdict 2026-08-06: "a good start"; 2026-09-23: not impressive,
    pretty, informative, accessible or understandable enough. Replaced.
-4. **The coherence brief** (2026-09-23, `f0d22c9`..): a composable, printable 2-3 page
-   brief, see below. Verdict pending.
+4. **The coherence brief** (2026-09-23, `f0d22c9`..`abea5ff`): a composable, printable
+   2-3 page brief. Verdict: "neither ... understandable" parts (grid, map, text walls).
+5. **Self-explanatory brief** (`d0cf0b5`): plain theme lists, readable examples, team
+   register, walkthrough. Verdict: clearer; red/green liked; "too much a PDF tool".
+6. **Flowing brief + dynamic dots + new How it works** (`ff89b09`). Verdict pending.
 
 The finding-page routes (`/{country}/finding/{pairKey}`, `/{country}/findings`) still exist
 on this branch as legacy surfaces; nothing in the brief links to them. Their lib layer
@@ -137,49 +169,47 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
 
 ## What the brief is (design contract)
 
-- **Landing:** rows of verbatim commitments from the selected documents drift behind one
-  serif statement of scale ("178 commitments. 8 policy documents. 13,404 comparisons.").
-  Reduced motion stills them. References Jonas gave: Anthropic's 81k-interviews feature
-  (moving text), Gates Notes, Die Zeit's Berlin election map story, riso-windowseat.
-- **The brief:** A4 sheets on a light desk; the screen shows exactly what prints. A builder
-  beside the sheets picks documents (country-config defaults), the policy-area lens and
-  the sections, reorders them, shows the page count, copies a share link (URL holds
-  `docs`, `lens`, `sections`) and prints. Default = 3 pages; verified by headless print of
-  the production build for all four countries and en/es/mn.
-- **Sections** (each self-contained: question label, serif finding, one visual, note):
-  overall picture (every comparison one ink dot, halftone), what works well together and
-  where policies may pull apart (leading pair of documents by share, min 30 comparisons;
-  AI-identified themes as a theme x document grid; one principled example pair),
-  commitments to look at first (concentration), documents side by side (result bars,
-  misalignment anchored left and hatched, reinforcement right, average tick), map of
-  commitments (one square per commitment, Zeit-style steps 0/1-2/3-5/6-10/11-20/21+,
-  numbered top five, selection lights partners), by policy area (lens shares, thin areas
-  unrated). Drill-downs open one drawer with a back trail: comparison (AI reading via
-  `/api/brief/pair`), pair of documents (strands through the busiest commitment first),
-  commitment (partners by tone), theme (AI summary; pathway under "AI-suggested starting
-  point").
-- **Inks:** green solid = reinforce, red hatched or dashed = potential misalignment;
-  validated ordinal ramps (dataviz validator); green vs red fails CVD separation, so
-  position, labels and hatching always carry it too. Text never takes the data colour.
-- **Language:** commitment, policy document, comparison, reinforce each other, partial link,
-  potential misalignment, no clear link. No "pathway", "corpus", "pipeline", "flagged".
+- **Landing:** rows of verbatim targets drift behind one serif statement of scale
+  ("8 policy documents. 178 targets. 13,404 target pairs compared."); an icon pause button
+  (WCAG 2.2.2); reduced motion stills them.
+- **Screen:** one flowing, full-width page next to the builder (documents, policy-area lens,
+  sections and their order, share link, "How to read this brief" walkthrough, "How the
+  analysis works" link). No section eyebrows: each section opens with its finding.
+- **Print:** A4 sheets are always laid out off screen (so charts and text fits are measured at
+  page size), inert and hidden; "Print or save as PDF" shows them as a preview with Print /
+  Back. The theme the reader selected prints. Default = overall, areas of alignment, most
+  aligned targets, potential misalignment, targets to review first, documents = 3 pages.
+- **Sections:** overall (halftone dot field; aligned and potential-misalignment legend
+  entries link to their sections); areas of alignment / potential misalignment (leading pair
+  of documents headline; the tone's dots clustered by theme, numbered like the list; theme
+  rows with the three documents most involved and, for misalignment, the resources involved;
+  one example per theme, quotes fitted to whole lines); most aligned targets (share of
+  compared targets); targets to review first (concentration); documents (one row per
+  document, most aligned first, opening to its pairs); by policy area (optional).
+- **Pair panel:** the pipeline's AI synthesis (first sentence, rest on request), an
+  AI-suggested starting point, strongest aligned target pairs, potential misalignments.
+- **Language:** targets, target pairs, aligned, partially aligned, potential misalignment,
+  no clear relationship. Never commitment (the team's finance layer), reinforce, flagged.
+- **How it works** (`public/methodology-experience.html` + `methodology-scene.js`): the left
+  side is a canvas of dots on Mongolia's real per-target data (documents, extraction,
+  measurable flags, GLOBE categories, 13,404 pairs, ratings, themes, finance, implementation);
+  captions state each step's result; `#step=N` opens one step.
 
 ## Where the code lives
 
-- `src/lib/brief/` — pure, tested: `source.ts` (payload -> compact BriefSource),
-  `selection.ts` (defaults, URL), `sections.ts` (units, pagination), `compute.ts` (scope,
-  tones, pairs, themes, examples, concentration, map cells, areas, document shares),
-  `data.ts` (everything a selection needs), `map-layout.ts`, `dot-layout.ts`, `pair.ts`,
-  `test-fixture.ts` (hand-countable 3 x 6 fixture).
-- `src/components/brief/` — `brief-app.tsx` (state, URL, panels), `hero.tsx` +
-  `moving-text.tsx`, `builder.tsx`, `sheets.tsx`, `sections/*`, `dot-field.tsx`,
-  `theme-grid.tsx`, `example-pair.tsx`, `commitment-map.tsx`, `panels.tsx`, `ink.tsx`,
-  `brief.css` (all styles incl. print, scoped to `[data-brief]`).
-- `src/app/[locale]/[country]/brief/page.tsx`, `src/app/api/brief/pair/route.ts`;
-  `src/app/[locale]/[country]/pulse/page.tsx` is now a redirect.
-- `src/lib/pulse/strands.ts` survives (pair-of-documents panel); the canvas UI, its geometry
-  and aggregate were removed (git history: `2a0bc14`, `bc0b3ea`, `88a489a`).
-- Messages: `brief.*` in `messages/{en,es,mn}.json`; `pulse.*` removed.
+- `src/lib/brief/` (pure, tested): `source.ts` (payload -> BriefSource, incl. `pairNotes`),
+  `selection.ts`, `sections.ts`, `compute.ts` (scope, tones, pairs, exclusive themes,
+  examples, concentration, aligned targets, document stats, strongest aligned, areas),
+  `data.ts` (`buildBriefData`, `themeDots`), `dot-layout.ts` (`layoutGroups`), `sheet.ts`
+  (footer date, line fit), `pair.ts`, `test-fixture.ts` (options `themes`, `notes`).
+- `src/components/brief/`: `brief-app.tsx` (modes, shared theme selection, replay), `flow.tsx`
+  (screen), `sheets.tsx` (print), `section-view.tsx` (variant screen/print), `sections/*`,
+  `dot-field.tsx` (`DotCanvas` + overall `DotField`), `example-pair.tsx`, `panels.tsx`,
+  `builder.tsx`, `hero.tsx`, `moving-text.tsx`, `ink.tsx`, `brief.css`.
+- Walkthrough steps: `TOUR_STEPS.brief` in the dashboard's tour engine
+  (`src/components/dashboard/coherence-briefing/tour/steps.ts`), copy in `briefing.tour.brief`.
+- Routes: `src/app/[locale]/[country]/brief/page.tsx`, `src/app/api/brief/pair/route.ts`;
+  `/pulse` redirects.
 
 ## Data facts worth re-loading
 
@@ -194,16 +224,17 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
 
 ## Open questions for the pickup
 
-1. The uptake gate for the brief: would Jonas send the printed default brief to Lea or a
-   CO colleague as is? If not, which section fails first?
-2. With three documents (Cote d'Ivoire) the same pair can lead both "works well together"
-   (86%) and "may pull apart" (11%); true, but it reads oddly. Decide whether the apart
-   headline should skip a pair that leads the other way, or say so.
-3. Finance and implementation sections: the registry and builder are ready for sections
-   that declare the data they need; none exist yet (by decision, coherence only).
-4. The review loop (validate/dismiss with note) is still the missing trust layer.
-5. Rows in panels keep the stored pair orientation (the AI readings say "first/second
-   target").
+1. Uptake gate: would Jonas send the printed default brief to Lea or a CO colleague as is?
+2. "Most aligned targets" is led by generic enabling targets (for example the NDC's "Enabling
+   environment Goal", aligned with 100% of the targets it was compared with). True, but it
+   may read as trivial.
+3. Cote d'Ivoire: the same pair can lead both "most closely aligned" and "highest share of
+   potential misalignment".
+4. How it works, right panel: some worked-example numbers are older hand-set figures
+   (NDC <-> NBSAP 720 pairs, 70%, 1,560 pairs); the new left side uses the current run.
+5. New strings since round 6 are English placeholders in es/mn; the es/mn How it works
+   pages still carry the old flowchart.
+6. Finance and implementation sections: none yet (coherence only by decision).
 
 ## How to resume
 
@@ -219,3 +250,8 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
   coherence-pulse experiment"; Claude's memory (`finding-cards-experiment`, shared across
   worktrees of this repo) plus this file carry the rest.
 - Keep current with main via `git merge main` (see the status section), not rebase.
+- How it works checks: after `pnpm build` (new files in `public/` are only served by the
+  production server if they existed at build time), open
+  `http://localhost:3101/methodology-experience.html#step=11`. Headless captures need
+  `--force-prefers-reduced-motion` to show settled scenes (animation frames barely advance
+  under virtual time), and Chrome keeps running after writing the file (use an alarm).
