@@ -14,10 +14,13 @@ export interface StrandSignalLabels {
 
 /**
  * The pathway dive's strands: every flagged policy-to-policy pair, filed under
- * the key the canvas draws its pathway with (`computePulseModel`'s edge key)
- * and ranked within it by confidence, then manageability, then mechanism, the
- * order the production dashboard uses for every country. Cross-model consensus
- * is not a key: comparison runs exist for one country and lag its corpus.
+ * the key the canvas draws its pathway with (`computePulseModel`'s edge key).
+ * Within a pathway, strands through the target in the most of that pathway's
+ * potential misalignments come first (then by the other target's count), so
+ * the dive opens on the targets the pathway's misalignment runs through.
+ * Confidence, manageability and mechanism only break ties: nearly every flag
+ * carries the same values. Cross-model consensus is not a key: comparison runs
+ * exist for one country and lag its corpus.
  */
 export function strandsByPathway(
   alignment: unknown[],
@@ -37,6 +40,27 @@ export function strandsByPathway(
     const list = grouped.get(key);
     if (list) list.push(c);
     else grouped.set(key, [c]);
+  }
+
+  for (const list of grouped.values()) {
+    const involved = new Map<string, number>();
+    for (const c of list) {
+      for (const id of [c.targetA.id, c.targetB.id]) {
+        involved.set(id, (involved.get(id) ?? 0) + 1);
+      }
+    }
+    const counts = (c: FindingCandidate) => {
+      const a = involved.get(c.targetA.id) ?? 0;
+      const b = involved.get(c.targetB.id) ?? 0;
+      return a >= b ? [a, b] : [b, a];
+    };
+    // Stable sort: equal counts keep the candidates' confidence, manageability,
+    // mechanism, key order.
+    list.sort((x, y) => {
+      const [xBusier, xOther] = counts(x);
+      const [yBusier, yOther] = counts(y);
+      return yBusier - xBusier || yOther - xOther;
+    });
   }
   return grouped;
 }

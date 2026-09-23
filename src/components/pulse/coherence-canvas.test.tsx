@@ -76,7 +76,7 @@ const PROPS: CoherenceCanvasProps = {
   ],
   strings: {
     back: "Back to all documents",
-    topStrands: "Strongest signals first",
+    topStrands: "Most recurring targets first",
     showRationale: "Show the AI rationale",
     hideRationale: "Hide the AI rationale",
     aiDisclaimer: "AI-generated assessment of this pair.",

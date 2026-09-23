@@ -70,7 +70,27 @@ describe("strandsByPathway", () => {
     }
   });
 
-  it("ranks a pathway's strands by confidence, then manageability, then mechanism", () => {
+  it("puts strands through the target with the most potential misalignments in the pathway first", () => {
+    const strands = strandsByPathway(
+      [
+        makePair("FSS_1", "NDC_2", { confidence: "high" }),
+        makePair("FSS_2", "NDC_1"),
+        makePair("FSS_2", "NDC_2"),
+        makePair("FSS_2", "NDC_3"),
+      ],
+      [...TARGETS, makeTarget("NDC_3")],
+      DOC_ORDER,
+    );
+    // In this pathway FSS_2 is in 3 potential misalignments, NDC_2 in 2, the rest in 1.
+    expect(strands.get("NDC~FSS")!.map((c) => c.pairKey)).toEqual([
+      "FSS_2__NDC_2", // FSS_2 (3), partner NDC_2 (2)
+      "FSS_2__NDC_1", // FSS_2 (3), partner in 1
+      "FSS_2__NDC_3", // same counts: tie falls through to the key
+      "FSS_1__NDC_2", // NDC_2 (2): high confidence does not outrank the busier target
+    ]);
+  });
+
+  it("breaks ties between equally involved targets by confidence, then manageability, then mechanism", () => {
     const strands = strandsByPathway(
       [
         makePair("FSS_1", "NDC_1", { confidence: "medium", mechanism: "goal_conflict" }),

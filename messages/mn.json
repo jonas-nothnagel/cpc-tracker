@@ -1887,7 +1887,7 @@
     "pathwayLine": "{compared, number} харьцуулсан хосын {flagged, number} нь болзошгүй үл нийцэл ({pct})",
     "moreRanked": "мөн эрэмбэлсэн {count, number} бий",
     "back": "Бүх баримт бичиг рүү буцах",
-    "topStrands": "Хамгийн хүчтэй дохио эхэндээ",
+    "topStrands": "Хамгийн олон давтагдсан зорилт эхэндээ",
     "showRationale": "AI үндэслэлийг харуулах",
     "hideRationale": "AI үндэслэлийг нуух",
     "targetsWord": "зорилт",

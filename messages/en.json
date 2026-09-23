@@ -1887,7 +1887,7 @@
     "pathwayLine": "{flagged, number} potential misalignments in {compared, number} compared pairs ({pct})",
     "moreRanked": "and {count, number} more, ranked",
     "back": "Back to all documents",
-    "topStrands": "Strongest signals first",
+    "topStrands": "Most recurring targets first",
     "showRationale": "Show the AI rationale",
     "hideRationale": "Hide the AI rationale",
     "targetsWord": "targets",

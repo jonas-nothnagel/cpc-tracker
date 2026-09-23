@@ -1887,7 +1887,7 @@
     "pathwayLine": "{flagged, number} posibles desalineaciones en {compared, number} pares comparados ({pct})",
     "moreRanked": "y {count, number} más, ordenados",
     "back": "Volver a todos los documentos",
-    "topStrands": "Primero las señales más fuertes",
+    "topStrands": "Primero las metas más recurrentes",
     "showRationale": "Mostrar el razonamiento de la IA",
     "hideRationale": "Ocultar el razonamiento de la IA",
     "targetsWord": "metas",
