@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
+import { TourOverlay } from "@/components/dashboard/coherence-briefing/tour/tour-overlay";
+import { useTour } from "@/components/dashboard/coherence-briefing/tour/use-tour";
+import { routing } from "@/i18n/routing";
 import { SECTION_UNITS } from "@/lib/brief/sections";
 import { SECTION_IDS, type BriefSelection, type SectionId } from "@/lib/brief/selection";
 import type { BriefSource, LensId } from "@/lib/brief/source";
@@ -29,7 +33,12 @@ export function Builder({
   const t = useTranslations("brief.builder");
   const ts = useTranslations("brief.sections");
   const tl = useTranslations("briefing.lens");
+  const locale = useLocale();
+  const tour = useTour();
   const [copied, setCopied] = useState(false);
+  // A plain link keeps the builder free of router context; the locale
+  // prefix follows the app's "as-needed" routing.
+  const methodologyHref = locale === routing.defaultLocale ? "/methodology" : `/${locale}/methodology`;
 
   const selectedDocs = new Set(selection.docs);
   const atMinimum = selection.docs.length <= 2;
@@ -73,10 +82,37 @@ export function Builder({
     id === "gga" ? tl("ggaTooltip") : id === "hr" ? tl("hrTooltip") : undefined;
 
   return (
-    <aside className="brief-builder" data-screen-only aria-labelledby="brief-builder-title">
+    <aside
+      className="brief-builder"
+      data-screen-only
+      data-tour="brief-builder"
+      aria-labelledby="brief-builder-title"
+    >
       <h2 id="brief-builder-title" className="brief-builder-title" tabIndex={-1}>
         {t("title")}
       </h2>
+      <p className="brief-builder-help">
+        <button
+          type="button"
+          className="brief-button-quiet"
+          onClick={(e) => tour.start(TOUR_STEPS.brief, e.currentTarget.closest("[data-brief]"))}
+        >
+          {t("tour")}
+        </button>
+        <a className="brief-button-quiet" href={methodologyHref}>
+          {t("method")}
+        </a>
+      </p>
+      {tour.active && (
+        <TourOverlay
+          tourId="brief"
+          steps={tour.steps}
+          stepIndex={tour.stepIndex}
+          onNext={tour.next}
+          onBack={tour.back}
+          onClose={tour.close}
+        />
+      )}
 
       <fieldset className="brief-builder-group">
         <legend>{t("documents")}</legend>

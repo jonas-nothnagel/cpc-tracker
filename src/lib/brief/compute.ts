@@ -355,49 +355,7 @@ export function concentrationOf(scope: Scope): Concentration {
   };
 }
 
-// ─── Map cells ──────────────────────────────────────────────────────
-
-export interface MapCell {
-  commitment: BriefCommitment;
-  apart: number;
-  reinforce: number;
-  total: number;
-}
-
-export function mapCells(scope: Scope): MapCell[] {
-  const cells = new Map(
-    scope.commitments.map((c) => [c.id, { commitment: c, apart: 0, reinforce: 0, total: 0 }]),
-  );
-  for (const c of scope.comparisons) {
-    const tone = toneOf(c.level);
-    for (const id of [c.a.id, c.b.id]) {
-      const cell = cells.get(id);
-      if (!cell) continue;
-      cell.total += 1;
-      if (tone === "apart") cell.apart += 1;
-      else if (tone === "reinforce") cell.reinforce += 1;
-    }
-  }
-  return [...cells.values()];
-}
-
-/** Lower bounds of the map's potential-misalignment steps:
- *  0, 1-2, 3-5, 6-10, 11-20, 21 and more. */
-export const APART_STEPS = [0, 1, 3, 6, 11, 21] as const;
-
-export function apartStep(n: number): 0 | 1 | 2 | 3 | 4 | 5 {
-  let step = 0;
-  for (let i = 0; i < APART_STEPS.length; i++) if (n >= APART_STEPS[i]) step = i;
-  return step as 0 | 1 | 2 | 3 | 4 | 5;
-}
-
-/** Quarters of the share of a commitment's comparisons that reinforce. */
-export function reinforceStep(share: number): 0 | 1 | 2 | 3 {
-  if (share < 0.25) return 0;
-  if (share < 0.5) return 1;
-  if (share < 0.75) return 2;
-  return 3;
-}
+// ─── Partners ───────────────────────────────────────────────────────
 
 /** A commitment's partners by tone, in document order. */
 export function partnersOf(

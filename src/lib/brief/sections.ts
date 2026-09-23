@@ -1,13 +1,12 @@
 import type { SectionId } from "./selection";
 
 /** Height of each section in quarter-page units of an A4 sheet. */
-export const SECTION_UNITS: Record<SectionId, 1 | 2 | 4> = {
+export const SECTION_UNITS: Record<SectionId, 1 | 2> = {
   overall: 1,
   together: 2,
   apart: 2,
   commitments: 2,
   documents: 2,
-  map: 4,
   areas: 2,
 };
 

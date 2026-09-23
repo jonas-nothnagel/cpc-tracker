@@ -1,7 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useNumbers } from "./ink";
+import { briefDate } from "@/lib/brief/sheet";
 import { SECTION_UNITS, type BriefPage } from "@/lib/brief/sections";
 import type { SectionId } from "@/lib/brief/selection";
 
@@ -24,8 +26,7 @@ export function Sheets({
   renderSection: (id: SectionId) => ReactNode;
 }) {
   const t = useTranslations("brief.sheet");
-  const format = useFormatter();
-  const date = format.dateTime(new Date(preparedOn), { dateStyle: "long" });
+  const date = briefDate(preparedOn, useLocale());
   return (
     <div className="brief-sheets" id="brief-sheets">
       {pages.map((page, i) => {
@@ -56,43 +57,47 @@ export function Sheets({
   );
 }
 
+/** Page 1's opening: the country, the brief, and its scale in three
+ *  figures. How the analysis works lives in the walkthrough and on the
+ *  methodology page, not here. */
 export function TitleBlock({
   countryName,
   commitments,
   documents,
   comparisons,
-  lensName,
   translation,
-  documentNames,
 }: {
   countryName: string;
   commitments: number;
   documents: number;
   comparisons: number;
-  lensName: string | null;
   /** Set when commitment texts are machine translations or translations of originals. */
   translation?: "machine" | "source" | null;
-  documentNames: string[];
 }) {
   const t = useTranslations("brief.sheet");
+  const { n } = useNumbers();
+  const figures = [
+    { value: documents, label: t("figures.documents", { count: documents }) },
+    { value: commitments, label: t("figures.commitments", { count: commitments }) },
+    { value: comparisons, label: t("figures.comparisons", { count: comparisons }) },
+  ];
   return (
-    <div className="brief-title">
+    <div className="brief-title" data-testid="brief-title">
       <p className="brief-title-country">{countryName}</p>
       <p className="brief-title-name">{t("title")}</p>
-      <p className="brief-title-scope">
-        <span>{t("scope", { commitments, documents, comparisons })}</span>
-        {lensName && <span className="brief-title-lens">{t("lensScope", { lens: lensName })}</span>}
-      </p>
-      <p className="brief-title-method">{t("method")}</p>
+      <ul className="brief-title-figures">
+        {figures.map((f) => (
+          <li key={f.label} className="brief-title-figure" data-testid="brief-figure">
+            <span className="brief-title-figure-value">{n(f.value)}</span>{" "}
+            <span className="brief-title-figure-label">{f.label}</span>
+          </li>
+        ))}
+      </ul>
       {translation && (
-        <p className="brief-title-method">
+        <p className="brief-title-note">
           {t(translation === "machine" ? "translatedMachine" : "translatedSource")}
         </p>
       )}
-      <p className="brief-title-docs">
-        <span className="brief-title-docs-label">{t("documentsTitle")}: </span>
-        {documentNames.join("; ")}
-      </p>
     </div>
   );
 }

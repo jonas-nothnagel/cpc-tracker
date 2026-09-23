@@ -27,7 +27,8 @@ export type BriefingTourId =
   | "docPairs"
   | "sectors"
   | "whereToFocus"
-  | "implementationCoverage";
+  | "implementationCoverage"
+  | "brief";
 
 export interface TourStep {
   /** i18n key segment under `briefing.tour.{tourId}.steps`. */
@@ -43,6 +44,17 @@ export interface TourStep {
 }
 
 export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
+  // The coherence brief (/{country}/brief): what each part of the page is,
+  // so the page itself carries no reading instructions. Steps whose section
+  // is not in the reader's brief are dropped.
+  brief: [
+    { id: "overall", target: "brief-overall", placement: "bottom" },
+    { id: "themes", target: "brief-themes", placement: "bottom" },
+    { id: "example", target: "brief-example", placement: "top" },
+    { id: "commitments", target: "brief-commitments", placement: "top" },
+    { id: "documents", target: "brief-documents", placement: "top" },
+    { id: "builder", target: "brief-builder", placement: "right" },
+  ],
   // The product-level first read: not "how to read this chart" but what the
   // briefing shows, why it matters, and what to do with it. Offered once to
   // first-time visitors by GuidedReadOffer, restartable from its quiet

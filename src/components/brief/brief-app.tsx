@@ -97,7 +97,6 @@ export function BriefApp({
         documents={scope.docs.length}
         comparisons={scope.comparisons.length}
         lines={lines}
-        translated={translation !== null}
         onRead={readBrief}
         onCustomize={customize}
       />
@@ -120,9 +119,7 @@ export function BriefApp({
               commitments={scope.commitments.length}
               documents={scope.docs.length}
               comparisons={scope.comparisons.length}
-              lensName={lensName}
               translation={translation}
-              documentNames={scope.docs.map((d) => (d.code === d.name ? d.name : `${d.code}: ${d.name}`))}
             />
           }
           renderSection={(id) => (

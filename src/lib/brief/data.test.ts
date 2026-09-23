@@ -41,6 +41,27 @@ describe("buildBriefData", () => {
   });
 });
 
+describe("buildBriefData with recurring themes", () => {
+  const source = briefFixture({ themes: true });
+  const data = buildBriefData(source, scopeOf(source, ["A", "B", "C"]), null);
+
+  it("gives every theme its own example, anchors first", () => {
+    expect(
+      data.apart.rows.map((r) => [r.storyline.name, r.count, r.example?.a.id, r.example?.b.id]),
+    ).toEqual([
+      ["Water allocation pressure", 9, "B5", "C4"],
+      ["Goal overlap", 6, "A6", "B1"],
+    ]);
+    expect([data.apart.example?.a.id, data.apart.example?.b.id]).toEqual(["B5", "C4"]);
+  });
+
+  it("keeps the example of the leading pair only when no theme has one", () => {
+    const narrow = buildBriefData(source, scopeOf(source, ["A", "C"]), null);
+    expect(narrow.apart.rows).toEqual([]);
+    expect(narrow.apart.example).toBeNull();
+  });
+});
+
 describe("pairExample", () => {
   const source = briefFixture();
   const scope = scopeOf(source, ["A", "B", "C"]);

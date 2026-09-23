@@ -7,6 +7,7 @@
  *   B~C: 18 reinforce, 9 partial, 9 potential misalignment (B5 x C4-C6, B6 x C1-C6)
  * Overall: 108 comparisons, 72 reinforce, 21 partial, 15 potential misalignment.
  */
+import type { CorpusStoryline } from "@/types";
 import type { BriefSource } from "./source";
 
 const DOCS = ["A", "B", "C"];
@@ -21,7 +22,43 @@ function levelFor(pair: string, k: number): number {
   return 4;
 }
 
-export function briefFixture(): BriefSource {
+function storyline(
+  name: string,
+  type: CorpusStoryline["type"],
+  pairs: string[],
+  anchors: string[],
+  resources: string[] = [],
+): CorpusStoryline {
+  return {
+    name,
+    type,
+    description: `About ${name}`,
+    contributing_doc_pairs: pairs,
+    confidence: "high",
+    pair_count: 999,
+    spans_documents: [],
+    anchor_target_ids: anchors,
+    aggregates: {
+      pair_total: 999,
+      doc_shares: [],
+      top_targets: [],
+      sector_tags: [],
+      ...(type === "friction"
+        ? { contested_resources: resources.map((resource, i) => ({ resource, count: 9 - i })) }
+        : {}),
+    },
+  };
+}
+
+/** Recurring themes for the fixture: one of alignment across A~B and A~C,
+ *  two of potential misalignment (B~C: 9 comparisons, A~B: 6). */
+export const FIXTURE_THEMES = [
+  storyline("Shared land restoration", "reinforcement", ["A<->B", "A<->C"], ["A2", "C1"]),
+  storyline("Water allocation pressure", "friction", ["B<->C"], ["B5"], ["water", "land"]),
+  storyline("Goal overlap", "friction", ["A<->B"], []),
+];
+
+export function briefFixture({ themes = false }: { themes?: boolean } = {}): BriefSource {
   const commitments = DOCS.flatMap((doc) =>
     Array.from({ length: PER_DOC }, (_, i) => ({
       id: `${doc}${i + 1}`,
@@ -85,7 +122,17 @@ export function briefFixture(): BriefSource {
         },
       },
     ],
-    themes: null,
+    themes: themes
+      ? (() => {
+          const full = {
+            storylines: FIXTURE_THEMES,
+            summary_paragraph: "",
+            doc_pair_count: 3,
+            schema_version: 2,
+          };
+          return { ...full, states: { "": full } };
+        })()
+      : null,
     model: null,
   };
 }

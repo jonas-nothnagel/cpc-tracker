@@ -6,6 +6,13 @@ import { BriefApp } from "./brief-app";
 
 vi.mock("@/lib/analytics/client", () => ({ track: vi.fn() }));
 HTMLCanvasElement.prototype.getContext = vi.fn(() => null) as never;
+// jsdom implements neither scrollIntoView nor ResizeObserver (the walkthrough uses both).
+Element.prototype.scrollIntoView = vi.fn();
+globalThis.ResizeObserver ??= class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as never;
 import { defaultSelection } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
 
@@ -81,10 +88,25 @@ describe("BriefApp", () => {
 
   it("states the scope on the title block and updates it when a document is left out", () => {
     renderApp();
-    expect(screen.getByText("7 commitments in 3 policy documents, compared 16 times")).toBeTruthy();
+    const figures = () =>
+      within(screen.getByTestId("brief-title"))
+        .getAllByTestId("brief-figure")
+        .map((f) => f.textContent);
+    expect(figures()).toEqual(["3 policy documents", "7 targets", "16 target pairs compared"]);
     fireEvent.click(screen.getByRole("checkbox", { name: /Document C/ }));
-    expect(screen.getByText("5 commitments in 2 policy documents, compared 6 times")).toBeTruthy();
+    expect(figures()).toEqual(["2 policy documents", "5 targets", "6 target pairs compared"]);
     expect(window.location.search).toBe("?docs=A%2CB");
+  });
+
+  it("dates the brief in UNDP style", () => {
+    renderApp();
+    expect(screen.getAllByText(/Prepared on 23 September 2026 with the Policy Coherence Analyzer/).length).toBeGreaterThan(0);
+  });
+
+  it("keeps method text and document lists off the title block", () => {
+    renderApp();
+    const title = screen.getByTestId("brief-title");
+    expect(within(title).queryByText(/AI model|Documents in this brief|Policy areas/)).toBeNull();
   });
 
   it("keeps at least two documents", () => {
@@ -97,22 +119,41 @@ describe("BriefApp", () => {
 
   it("reorders the sheets when a section moves", () => {
     renderApp();
-    fireEvent.click(screen.getByRole("button", { name: "Move What works well together down" }));
+    fireEvent.click(screen.getByRole("button", { name: "Move Areas of alignment down" }));
     const first = screen.getAllByTestId("brief-sheet")[0];
     const ids = [...first.querySelectorAll("[data-section]")].map((n) => n.getAttribute("data-section"));
     expect(ids).toEqual(["overall", "apart"]);
   });
 
-  it("drops a page when the map is left out", () => {
+  it("drops a page when the last section is left out", () => {
     renderApp();
     const sections = screen.getByRole("group", { name: "Sections" });
-    fireEvent.click(within(sections).getByRole("checkbox", { name: /Map of commitments/ }));
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
     expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
     expect(window.location.search).toContain("sections=");
   });
 });
 
+describe("BriefApp walkthrough", () => {
+  it("links the methodology page instead of explaining the method on the page", () => {
+    renderApp();
+    const link = screen.getByRole("link", { name: "How the analysis works" });
+    expect(link.getAttribute("href")).toBe("/methodology");
+  });
+
+  it("walks the reader through the brief on request", () => {
+    renderApp();
+    fireEvent.click(screen.getByRole("button", { name: "How to read this brief" }));
+    expect(screen.getByRole("dialog", { name: "Overall coherence" })).toBeTruthy();
+  });
+});
+
 describe("BriefApp accessibility and provenance", () => {
+  it("does not narrate the moving text", () => {
+    renderApp();
+    expect(screen.queryByText(/moving lines/)).toBeNull();
+  });
+
   it("lets the reader pause and resume the moving text", () => {
     renderApp();
     fireEvent.click(screen.getByRole("button", { name: "Pause the moving text" }));
@@ -127,8 +168,7 @@ describe("BriefApp accessibility and provenance", () => {
       commitments: SOURCE.commitments.map((c, i) => (i === 0 ? { ...c, translated: "translation" as const } : c)),
     };
     renderApp(translated);
-    expect(screen.getByText("Commitment texts on this page are translations of the original documents.")).toBeTruthy();
-    expect(screen.getByText("The moving lines are commitments from the documents, shown in translation.")).toBeTruthy();
+    expect(screen.getByText("Target texts on this page are translations of the original documents.")).toBeTruthy();
   });
 
   it("keeps an open drill-down off the printed page", () => {

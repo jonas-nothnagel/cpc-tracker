@@ -38,7 +38,7 @@ afterEach(() => {
 describe("BriefPanels", () => {
   it("lists a pair of documents' potential misalignments through the busiest commitment first", () => {
     const { onPush } = renderPanels([{ kind: "docPair", a: "B", b: "C" }]);
-    expect(screen.getByText("9 potential misalignments, starting with the commitments that recur most.")).toBeTruthy();
+    expect(screen.getByText("9 potential misalignments. Most frequent targets first.")).toBeTruthy();
     const rows = screen.getAllByTestId("brief-strand-row");
     expect(rows).toHaveLength(9);
     expect(rows[0].textContent).toContain("6 Commitment B6");
@@ -51,8 +51,8 @@ describe("BriefPanels", () => {
 
   it("groups a commitment's partners by how they read", () => {
     renderPanels([{ kind: "commitment", id: "B6" }]);
-    expect(screen.getByText("Potential misalignment with 7 commitments")).toBeTruthy();
-    expect(screen.getByText("Aligned with 4 commitments")).toBeTruthy();
+    expect(screen.getByText("Potential misalignment with 7 targets")).toBeTruthy();
+    expect(screen.getByText("Aligned with 4 targets")).toBeTruthy();
     expect(screen.getByText("Verbatim text of commitment B6.")).toBeTruthy();
   });
 
@@ -85,7 +85,7 @@ describe("BriefPanels", () => {
       </NextIntlClientProvider>,
     );
     expect(screen.getByText("About land restoration.")).toBeTruthy();
-    expect(screen.getByText("The theme names were written for the full set of documents.")).toBeTruthy();
+    expect(screen.getByText("Theme names were identified across all documents.")).toBeTruthy();
   });
 
   it("loads one comparison with its AI reading", async () => {

@@ -25,7 +25,7 @@ export function CommitmentsSection({
   const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
   return (
     <SectionFrame id="commitments" headline={headline}>
-      <ol className="brief-rank">
+      <ol className="brief-rank" data-tour="brief-commitments">
         {data.commitments.map((row, i) => {
           const partner = row.partnerDocs[0];
           return (

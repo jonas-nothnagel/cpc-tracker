@@ -1,16 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
-  apartStep,
   areaRows,
   commitmentsToReview,
   docToneShares,
   concentrationOf,
   docPairStats,
   leadingPair,
-  mapCells,
   overallLead,
   partnersOf,
-  reinforceStep,
   scopeOf,
   shareStep,
   themeExample,
@@ -332,35 +329,6 @@ describe("concentrationOf", () => {
       share: 0,
       concentrated: false,
     });
-  });
-});
-
-describe("mapCells", () => {
-  it("counts each commitment's comparisons by tone", () => {
-    const cells = mapCells(scopeOf(SOURCE, ["A", "B", "C"]));
-    expect(cells.map((c) => [c.commitment.id, c.apart, c.reinforce, c.total])).toEqual([
-      ["A1", 0, 4, 4],
-      ["A2", 1, 1, 4],
-      ["A3", 2, 1, 4],
-      ["B1", 0, 1, 5],
-      ["B2", 2, 3, 5],
-      ["C1", 1, 3, 5],
-      ["C2", 2, 1, 5],
-    ]);
-  });
-});
-
-describe("apartStep and reinforceStep", () => {
-  it("bins potential misalignments as 0, 1-2, 3-5, 6-10, 11-20, 21+", () => {
-    expect([0, 1, 2, 3, 5, 6, 10, 11, 20, 21, 999].map(apartStep)).toEqual([
-      0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5,
-    ]);
-  });
-
-  it("bins the reinforcing share in quarters", () => {
-    expect([0, 0.2499, 0.25, 0.4999, 0.5, 0.75, 1].map(reinforceStep)).toEqual([
-      0, 0, 1, 1, 2, 3, 3,
-    ]);
   });
 });
 

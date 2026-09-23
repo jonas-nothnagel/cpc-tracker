@@ -492,6 +492,34 @@
             "body": "Abre un plan para listar las metas una por una; un punto rojo y las palabras \"posible desalineación\" marcan un par señalado para revisión, y \"en N metas\" un par que se repite en otras metas nacionales. Haz clic en una meta para leerla."
           }
         }
+      },
+      "brief": {
+        "steps": {
+          "overall": {
+            "title": "Coherencia general",
+            "body": "Cada punto es un par de metas: dos metas de documentos distintos, comparadas por un modelo de IA. Los puntos se agrupan según la calificación: alineados, parcialmente alineados, posible desalineación o sin relación clara."
+          },
+          "themes": {
+            "title": "Temas recurrentes",
+            "body": "Un modelo de IA agrupa los pares de metas calificados en temas recurrentes. Cada fila muestra la frecuencia del tema y los documentos implicados; al seleccionar un tema se muestra uno de sus ejemplos."
+          },
+          "example": {
+            "title": "Las metas tal como están escritas",
+            "body": "Los ejemplos citan ambas metas de los documentos. Leer completo añade la explicación de la IA sobre la calificación, que es orientativa y está pensada para su validación por personas expertas nacionales."
+          },
+          "commitments": {
+            "title": "Metas que conviene revisar primero",
+            "body": "Las metas que intervienen en más posibles desalineaciones. Al seleccionar una se listan las metas con las que está alineada y aquellas con posible desalineación."
+          },
+          "documents": {
+            "title": "Los documentos, uno junto a otro",
+            "body": "Cada barra es un par de documentos: la posible desalineación desde la izquierda y la alineación desde la derecha. Al seleccionar un par se listan sus posibles desalineaciones."
+          },
+          "builder": {
+            "title": "Personalizar la nota",
+            "body": "Elija los documentos, las áreas de política y las secciones. La nota se actualiza al instante, se imprime en dos o tres páginas y puede compartirse como enlace."
+          }
+        }
       }
     },
     "explorer": {
@@ -2911,21 +2939,19 @@
     "metaTitle": "{country}: nota de coherencia de políticas",
     "hero": {
       "kicker": "{country} · Nota de coherencia de políticas",
-      "commitments": "{count, plural, one {# compromiso.} other {# compromisos.}}",
+      "commitments": "{count, plural, one {# meta.} other {# metas.}}",
       "documents": "{count, plural, one {# documento de política.} other {# documentos de política.}}",
-      "comparisons": "{count, plural, one {# comparación.} other {# comparaciones.}}",
-      "lead": "Cada compromiso se contrasta con todos los compromisos de los demás documentos, para mostrar dónde las políticas están alineadas y dónde pueden divergir.",
+      "comparisons": "{count, plural, one {# par de metas comparado.} other {# pares de metas comparados.}}",
+      "lead": "Cada meta se compara con todas las metas de los demás documentos para identificar ámbitos de alineación y posibles desalineaciones.",
       "read": "Leer la nota",
-      "customize": "Elegir el contenido de la nota",
-      "quoted": "Las líneas en movimiento son compromisos citados de los documentos.",
-      "quotedTranslated": "Las líneas en movimiento son compromisos de los documentos, mostrados en traducción.",
+      "customize": "Personalizar la nota",
       "pause": "Pausar el texto en movimiento",
       "play": "Reanudar el texto en movimiento"
     },
     "builder": {
-      "title": "Componer la nota",
+      "title": "Personalizar la nota",
       "documents": "Documentos",
-      "commitments": "{count, plural, one {# compromiso} other {# compromisos}}",
+      "commitments": "{count, plural, one {# meta} other {# metas}}",
       "minDocuments": "Se necesitan al menos dos documentos para comparar.",
       "lens": "Áreas de política",
       "sections": "Secciones",
@@ -2936,27 +2962,30 @@
       "print": "Imprimir o guardar como PDF",
       "copyLink": "Copiar el enlace a esta nota",
       "copied": "Enlace copiado",
-      "reset": "Volver a la nota estándar"
+      "reset": "Volver a la nota estándar",
+      "tour": "Cómo leer esta nota",
+      "method": "Cómo funciona el análisis"
     },
     "sheet": {
       "running": "{country} · Nota de coherencia de políticas",
       "page": "Página {page, number} de {total, number}",
-      "footer": "Preparada el {date} con el Policy Coherence Analyzer. Análisis asistido por IA para revisión por personas expertas nacionales.",
+      "footer": "Preparada el {date} con el Policy Coherence Analyzer. Análisis asistido por IA, para validación por personas expertas nacionales.",
       "title": "Nota de coherencia de políticas",
-      "scope": "{commitments, plural, one {# compromiso} other {# compromisos}} en {documents, plural, one {# documento de política} other {# documentos de política}}, comparados {comparisons, plural, one {# vez} other {# veces}}",
       "lensScope": "Áreas de política: {lens}",
-      "method": "Cada compromiso de estos documentos se compara con todos los compromisos de los demás documentos. Un modelo de IA lee ambos textos y califica cada comparación, leyendo únicamente el texto de política que recibe. Las calificaciones son puntos de partida para la revisión experta, no conclusiones.",
-      "documentsTitle": "Documentos de esta nota",
-      "translatedMachine": "Los textos de los compromisos en esta página son traducciones automáticas del texto que leyó el análisis.",
-      "translatedSource": "Los textos de los compromisos en esta página son traducciones de los documentos originales."
+      "translatedMachine": "Los textos de las metas en esta página son traducciones automáticas.",
+      "translatedSource": "Los textos de las metas en esta página son traducciones de los documentos originales.",
+      "figures": {
+        "documents": "{count, plural, one {documento de política} other {documentos de política}}",
+        "commitments": "{count, plural, one {meta} other {metas}}",
+        "comparisons": "{count, plural, one {par de metas comparado} other {pares de metas comparados}}"
+      }
     },
     "sections": {
-      "overall": "El panorama general",
-      "together": "Lo que funciona bien en conjunto",
-      "apart": "Dónde las políticas pueden divergir",
-      "commitments": "Compromisos que conviene revisar primero",
+      "overall": "Coherencia general",
+      "together": "Ámbitos de alineación",
+      "apart": "Posible desalineación",
+      "commitments": "Metas que conviene revisar primero",
       "documents": "Los documentos, uno junto a otro",
-      "map": "Mapa de compromisos",
       "areas": "Por área de política"
     },
     "tone": {
@@ -2967,117 +2996,72 @@
     },
     "overall": {
       "headline": {
-        "aligned": "{aligned} de las comparaciones entre las políticas de {country} están alineadas; {apart} muestran una posible desalineación.",
-        "partial": "{partial} de las comparaciones entre las políticas de {country} están parcialmente alineadas, {aligned} están alineadas y {apart} muestran una posible desalineación.",
-        "empty": "No hay comparaciones en esta selección."
+        "aligned": "En las políticas de {country}, el {aligned} de los pares de metas están alineados y el {apart} muestran una posible desalineación.",
+        "partial": "En las políticas de {country}, el {partial} de los pares de metas están parcialmente alineados, el {aligned} están alineados y el {apart} muestran una posible desalineación.",
+        "empty": "No hay pares de metas en esta selección."
       },
-      "unitOne": "Cada punto es una comparación entre dos compromisos.",
-      "unitMany": "Cada punto representa {count, number} comparaciones entre dos compromisos.",
-      "group": "{count, number} comparaciones ({pct}): {tone}"
+      "group": "{count, number} pares de metas ({pct}): {tone}"
     },
     "together": {
-      "headline": "{docA} y {docB} son los más alineados: {pct} de sus comparaciones.",
-      "headlineFallback": "{pct} de las comparaciones están alineadas.",
-      "themes": "Temas recurrentes de alineación",
-      "themesEmpty": "No se identificó ningún tema recurrente para esta selección de documentos.",
-      "example": "Por ejemplo, estos dos compromisos están alineados"
+      "headline": "{docA} y {docB} son los más alineados: {pct} de sus pares de metas.",
+      "headlineFallback": "En el conjunto de los documentos, el {pct} de los pares de metas están alineados.",
+      "themesEmpty": "Ningún tema recurrente en esta selección."
     },
     "apart": {
-      "headline": "{docA} y {docB} tienen la mayor proporción de posible desalineación: {pct} de sus comparaciones.",
-      "headlineFallback": "{pct} de las comparaciones muestran una posible desalineación.",
-      "themes": "Temas recurrentes de posible desalineación",
-      "themesEmpty": "No se identificó ninguna posible desalineación recurrente para esta selección de documentos.",
-      "example": "Por ejemplo, estos dos compromisos podrían divergir",
-      "showReading": "Mostrar la lectura de la IA",
-      "hideReading": "Ocultar la lectura de la IA",
-      "loading": "Cargando la lectura de la IA…",
-      "unavailable": "No se pudo cargar la lectura de la IA.",
-      "readingNote": "Lectura generada por IA, para revisión por personas expertas nacionales."
+      "headline": "{docA} y {docB} tienen la mayor proporción de posible desalineación: {pct} de sus pares de metas.",
+      "headlineFallback": "En el conjunto de los documentos, el {pct} de los pares de metas muestran una posible desalineación.",
+      "themesEmpty": "Ningún tema recurrente de posible desalineación en esta selección."
     },
     "themes": {
-      "aiNote": "La IA nombra los temas a partir de las comparaciones calificadas; los recuentos provienen de las calificaciones.",
-      "notExact": "Los nombres de los temas se redactaron para el conjunto completo de documentos.",
-      "comparisons": "{count, plural, one {# comparación} other {# comparaciones}}",
-      "share": "{doc}: {pct} de las comparaciones de este tema",
-      "noPart": "{doc}: no participa",
-      "legend": "Cuadros más oscuros: el documento aporta una parte mayor del tema.",
-      "headerTheme": "Tema (identificado por IA)",
-      "headerCount": "Comparaciones"
+      "notExact": "Los nombres de los temas se identificaron en el conjunto de los documentos.",
+      "title": "Temas recurrentes, identificados por IA",
+      "titleAllDocuments": "Temas recurrentes, identificados por IA en todos los documentos",
+      "contested": "Recursos implicados: {list}",
+      "count": {
+        "reinforce": "{count, plural, one {# par de metas alineado} other {# pares de metas alineados}}",
+        "apart": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}"
+      },
+      "example": "Ejemplo",
+      "exampleOf": "Ejemplo: {name}",
+      "readFull": "Leer completo",
+      "more": "Más sobre este tema",
+      "moreDocs": "{count, plural, one {# más} other {# más}}"
     },
     "commitments": {
-      "headlineConcentrated": "{pct} de las {total, number} posibles desalineaciones se remontan a {top, plural, one {# compromiso} other {# compromisos}}.",
-      "headlineSpread": "La posible desalineación se reparte entre {contested, plural, one {# compromiso} other {# compromisos}}.",
-      "headlineEmpty": "Ningún compromiso forma parte de una posible desalineación.",
-      "count": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
+      "headlineConcentrated": "De las {total, number} posibles desalineaciones, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
+      "headlineSpread": "La posible desalineación se reparte entre {contested, plural, one {# meta} other {# metas}}.",
+      "headlineEmpty": "Ninguna meta muestra una posible desalineación.",
       "mostlyWith": "sobre todo con {doc}"
     },
     "documents": {
       "headline": "La posible desalineación va de {low} a {high} entre pares de documentos.",
-      "headlineFallback": "En el conjunto de las comparaciones, {pct} muestran una posible desalineación.",
-      "average": "promedio de todas las comparaciones: {pct}",
-      "few": "pocas comparaciones",
+      "headlineFallback": "En el conjunto de los documentos, el {pct} de los pares de metas muestran una posible desalineación.",
+      "few": "pocos pares de metas",
       "more": "{count, plural, one {# par de documentos más} other {# pares de documentos más}}",
-      "showAll": "Mostrar todos los pares",
-      "showFewer": "Mostrar menos",
-      "row": "{docA} y {docB}: {apart} posible desalineación, {partial} parcialmente alineados, {aligned} alineados, en {total, number} comparaciones"
+      "row": "{docA} y {docB}: {apart} posible desalineación, {partial} parcialmente alineados, {aligned} alineados, de {total, number} pares de metas",
+      "columnApart": "Posible desalineación",
+      "columnPartial": "Parcialmente alineados",
+      "columnAligned": "Alineados"
     },
     "areas": {
       "headline": "{area} muestra la mayor proporción de posible desalineación: {pct}.",
-      "headlineEmpty": "Hay muy pocas comparaciones calificadas en las áreas de política para compararlas.",
-      "commitmentsCount": "{count, plural, one {# compromiso} other {# compromisos}}",
-      "tooFew": "pocas comparaciones",
-      "average": "promedio de estas áreas: {pct}",
-      "row": "{area}: {pct} de posible desalineación en {comparisons, number} comparaciones",
+      "headlineEmpty": "Hay muy pocos pares de metas calificados en las áreas de política para compararlas.",
+      "commitmentsCount": "{count, plural, one {# meta} other {# metas}}",
+      "tooFew": "muy pocos pares de metas",
+      "row": "{area}: {pct} de posible desalineación en {comparisons, number} pares de metas",
       "headlineNone": "Ningún área de política calificada muestra posible desalineación."
-    },
-    "map": {
-      "headlineApart": "La posible desalineación se concentra en {doc}: {pct} de sus comparaciones, frente a {avg} en el conjunto de los documentos.",
-      "headlineTogether": "{doc} es el más alineado con los demás documentos: {pct} de sus comparaciones, frente a {avg} en el conjunto.",
-      "headlineEmpty": "Ningún compromiso forma parte de una posible desalineación.",
-      "standfirst": "Cada cuadrado es un compromiso, agrupado por documento.",
-      "shading": "Sombreado",
-      "modeApart": "Posibles desalineaciones",
-      "modeTogether": "Alineación",
-      "legendApart": "Posibles desalineaciones por compromiso",
-      "legendTogether": "Proporción de sus comparaciones que están alineadas",
-      "stepsApart": {
-        "0": "0",
-        "1": "1-2",
-        "2": "3-5",
-        "3": "6-10",
-        "4": "11-20",
-        "5": "21+"
-      },
-      "stepsTogether": {
-        "0": "menos del 25 %",
-        "1": "25-50 %",
-        "2": "50-75 %",
-        "3": "75 % o más"
-      },
-      "keyApart": "Los compromisos más implicados, numerados en el mapa",
-      "keyTogether": "Los compromisos alineados con más compromisos, numerados en el mapa",
-      "keyRowApart": "{label} ({doc}): {count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
-      "keyRowTogether": "{label} ({doc}): alineado con {count, plural, one {# compromiso} other {# compromisos}}",
-      "cell": "{label}, {doc}: {apart, plural, =0 {ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}}, alineado con {aligned, number} de {total, number} compromisos comparados",
-      "aria": "Mapa de {count, number} compromisos. Use las flechas para desplazarse entre ellos e Intro para seleccionar uno.",
-      "hint": "Seleccione un cuadrado para ver con qué compromisos está alineado y con cuáles podría divergir.",
-      "selected": "{apart, plural, =0 {Ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}} · alineado con {aligned, number} compromisos",
-      "open": "Ver los compromisos con los que se compara",
-      "clear": "Quitar la selección",
-      "headlineFallbackApart": "{pct} de las comparaciones muestran una posible desalineación.",
-      "headlineFallbackTogether": "{pct} de las comparaciones están alineadas."
     },
     "panel": {
       "back": "Volver",
       "loading": "Cargando la comparación…",
       "error": "No se pudo cargar esta comparación.",
-      "pairDialog": "Comparación de dos compromisos",
+      "pairDialog": "Dos metas comparadas",
       "docPairDialog": "{docA} y {docB}",
-      "docPairCounts": "{total, number} comparaciones: {aligned} alineadas, {partial} parcialmente alineadas, {apart} posible desalineación",
-      "docPairLead": "{count, plural, =0 {No hay posible desalineación entre estos dos documentos.} one {# posible desalineación, empezando por los compromisos que más se repiten.} other {# posibles desalineaciones, empezando por los compromisos que más se repiten.}}",
-      "commitmentDialog": "Compromiso: {label}",
-      "worksAgainst": "{count, plural, =0 {Ninguna posible desalineación en esta selección} one {Posible desalineación con # compromiso} other {Posible desalineación con # compromisos}}",
-      "worksWith": "{count, plural, =0 {No está alineado con ningún compromiso de esta selección} one {Alineado con # compromiso} other {Alineado con # compromisos}}",
+      "docPairCounts": "{total, number} pares de metas: {aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación",
+      "docPairLead": "{count, plural, =0 {Ninguna posible desalineación entre estos dos documentos.} one {# posible desalineación. Primero, las metas más frecuentes.} other {# posibles desalineaciones. Primero, las metas más frecuentes.}}",
+      "commitmentDialog": "Meta: {label}",
+      "worksAgainst": "{count, plural, =0 {Ninguna posible desalineación en esta selección} one {Posible desalineación con # meta} other {Posible desalineación con # metas}}",
+      "worksWith": "{count, plural, =0 {Alineada con ninguna meta en esta selección} one {Alineada con # meta} other {Alineada con # metas}}",
       "showAll": "Mostrar los {count, number}",
       "themeDialog": "Tema: {name}",
       "themeKind": {
@@ -3086,9 +3070,51 @@
       },
       "themeSummary": "Resumen de la IA",
       "pathwayTitle": "Punto de partida sugerido por la IA",
-      "pathwayCaveat": "Un punto de partida para la revisión por personas expertas nacionales, no una recomendación.",
-      "themeDocs": "Documentos que participan, según su parte de las comparaciones del tema",
-      "openTheme": "Abrir el tema {name}"
+      "pathwayCaveat": "Para revisión experta; no es una recomendación.",
+      "themeDocs": "Documentos implicados, según su parte de los pares de metas del tema"
+    },
+    "and": "y",
+    "resources": {
+      "land": "tierra",
+      "water": "agua",
+      "forest": "bosque",
+      "habitat": "hábitat",
+      "pasture": "pastos",
+      "soil": "suelo",
+      "landscape": "paisaje",
+      "watershed": "cuenca",
+      "wetland": "humedal",
+      "space": "espacio",
+      "ecosystem": "ecosistema",
+      "freshwater": "agua dulce",
+      "grassland": "pastizal",
+      "rangeland": "tierras de pastoreo",
+      "pastureland": "tierras de pastoreo",
+      "groundwater": "agua subterránea",
+      "waterway": "curso de agua",
+      "capacity": "capacidad",
+      "area": "superficie",
+      "budget": "presupuesto",
+      "flora": "flora",
+      "fauna": "fauna",
+      "aquifer": "acuífero",
+      "livestock": "ganado",
+      "resource": "recursos",
+      "stock": "existencias",
+      "finance": "financiación",
+      "funding": "financiación",
+      "biomass": "biomasa",
+      "water body": "masa de agua",
+      "river system": "sistema fluvial",
+      "fodder": "forraje",
+      "species": "especies",
+      "coast": "costa",
+      "grazing": "pastoreo",
+      "peatland": "turbera",
+      "coastal resource": "recursos costeros",
+      "biodiversity": "biodiversidad",
+      "forage": "forraje",
+      "rangelands": "tierras de pastoreo"
     }
   }
 }

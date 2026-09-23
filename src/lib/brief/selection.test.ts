@@ -60,10 +60,14 @@ describe("parseSelection", () => {
   });
 
   it("drops unknown and repeated sections and keeps the given order", () => {
-    expect(parseSelection({ sections: "map,bogus,overall,map" }, SOURCE).sections).toEqual([
-      "map",
+    expect(parseSelection({ sections: "apart,bogus,overall,apart" }, SOURCE).sections).toEqual([
+      "apart",
       "overall",
     ]);
+  });
+
+  it("drops the retired map section from older links", () => {
+    expect(parseSelection({ sections: "map,overall" }, SOURCE).sections).toEqual(["overall"]);
   });
 
   it("falls back to the standard sections when none survive", () => {
@@ -89,10 +93,10 @@ describe("selectionQuery", () => {
     const selection = {
       docs: ["NP", "PEG", "ENR"],
       lens: "gga" as const,
-      sections: ["map" as const, "overall" as const],
+      sections: ["apart" as const, "overall" as const],
     };
     const query = selectionQuery(selection, SOURCE);
-    expect(query).toBe("docs=NP%2CPEG%2CENR&lens=gga&sections=map%2Coverall");
+    expect(query).toBe("docs=NP%2CPEG%2CENR&lens=gga&sections=apart%2Coverall");
     const params = Object.fromEntries(new URLSearchParams(query));
     expect(parseSelection(params, SOURCE)).toEqual(selection);
   });

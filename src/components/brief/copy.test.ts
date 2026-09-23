@@ -19,6 +19,19 @@ describe("brief copy", () => {
     expect(strings(en.brief).filter(([, v]) => banned.test(v))).toEqual([]);
   });
 
+  it("calls the compared units targets: commitment is the team's finance layer", () => {
+    // The team compares "targets" and counts "target pairs"; "Commitment"
+    // names the public-finance layer of its framework (TAG 2, pitch deck).
+    const tour = (en.briefing.tour as Record<string, unknown>).brief;
+    expect(strings({ brief: en.brief, tour }).filter(([, v]) => /commitment/i.test(v))).toEqual([]);
+    expect(strings(es.brief).filter(([, v]) => /compromiso/i.test(v))).toEqual([]);
+  });
+
+  it("keeps the walkthrough in the same vocabulary", () => {
+    const tour = (en.briefing.tour as Record<string, unknown>).brief;
+    expect(strings(tour).filter(([, v]) => /reinforc|flagged|tension|contradict|\byou\b/i.test(v))).toEqual([]);
+  });
+
   it("claims no expert confirmation the data does not record", () => {
     for (const catalog of [en, es, mn]) {
       expect(strings(catalog.brief).filter(([, v]) => /confirmed by|confirmado por|баталгаажуул/i.test(v))).toEqual([]);

@@ -18,14 +18,13 @@ export function AreasSection({ data, lensName }: { data: BriefData; lensName: st
     : (top.share ?? 0) > 0
       ? t("areas.headline", { area: top.name, pct: pct(top.share ?? 0) })
       : t("areas.headlineNone");
-  const scale = Math.max(areas.max, areas.average, 0.01);
+  const scale = Math.max(areas.max, 0.01);
   const x = (v: number) => `${((v / scale) * 100).toFixed(2)}%`;
   return (
     <SectionFrame
       id="areas"
       headline={headline}
       sub={lensName ? t("sheet.lensScope", { lens: lensName }) : undefined}
-      note={t("areas.average", { pct: pct(areas.average) })}
     >
       <ol className="brief-areas">
         {areas.rows.slice(0, MAX_ROWS).map((r) => (
@@ -44,7 +43,6 @@ export function AreasSection({ data, lensName }: { data: BriefData; lensName: st
                   aria-label={t("areas.row", { area: r.name, pct: pct(r.share), comparisons: r.comparisons })}
                 >
                   <span className="brief-area-fill" style={{ width: x(r.share) }} />
-                  <span className="brief-area-avg" style={{ left: x(areas.average) }} />
                 </span>
                 <span className="brief-area-value">{pct(r.share)}</span>
               </p>

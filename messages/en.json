@@ -492,6 +492,34 @@
             "body": "Open a plan to list the targets one by one; a red dot and the words \"potential misalignment\" mark a pair flagged for review, and \"on N targets\" a pair that repeats on other national targets. Click a target to read it."
           }
         }
+      },
+      "brief": {
+        "steps": {
+          "overall": {
+            "title": "Overall coherence",
+            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model. The dots are grouped by the rating: aligned, partially aligned, potential misalignment or no clear relationship."
+          },
+          "themes": {
+            "title": "Recurring themes",
+            "body": "An AI model groups the rated target pairs into recurring themes. Each row shows how often a theme occurs and the documents involved; selecting a theme shows one of its examples."
+          },
+          "example": {
+            "title": "The targets as written",
+            "body": "Examples quote both targets from the documents. Read in full adds the AI explanation of the rating, which is advisory and meant for validation by national experts."
+          },
+          "commitments": {
+            "title": "Targets to review first",
+            "body": "The targets involved in the most potential misalignments. Selecting one lists the targets it is aligned with and those with potential misalignment."
+          },
+          "documents": {
+            "title": "Documents side by side",
+            "body": "Each bar is one pair of documents: potential misalignment from the left, alignment from the right. Selecting a pair lists its potential misalignments."
+          },
+          "builder": {
+            "title": "Customize the brief",
+            "body": "Choose the documents, policy areas and sections. The brief updates at once, prints on two to three pages and can be shared as a link."
+          }
+        }
       }
     },
     "explorer": {
@@ -2908,24 +2936,22 @@
     }
   },
   "brief": {
-    "metaTitle": "{country}: policy coherence brief",
+    "metaTitle": "{country}: Policy coherence brief",
     "hero": {
       "kicker": "{country} · Policy coherence brief",
-      "commitments": "{count, plural, one {# commitment.} other {# commitments.}}",
+      "commitments": "{count, plural, one {# target.} other {# targets.}}",
       "documents": "{count, plural, one {# policy document.} other {# policy documents.}}",
-      "comparisons": "{count, plural, one {# comparison.} other {# comparisons.}}",
-      "lead": "Each commitment is read against every commitment in the other documents, to show where the policies are aligned and where they may pull apart.",
+      "comparisons": "{count, plural, one {# target pair compared.} other {# target pairs compared.}}",
+      "lead": "Each target is compared with every target in the other documents to identify areas of alignment and potential misalignment.",
       "read": "Read the brief",
-      "customize": "Choose what the brief covers",
-      "quoted": "The moving lines are commitments quoted from the documents.",
-      "quotedTranslated": "The moving lines are commitments from the documents, shown in translation.",
+      "customize": "Customize the brief",
       "pause": "Pause the moving text",
       "play": "Play the moving text"
     },
     "builder": {
-      "title": "Build the brief",
+      "title": "Customize the brief",
       "documents": "Documents",
-      "commitments": "{count, plural, one {# commitment} other {# commitments}}",
+      "commitments": "{count, plural, one {# target} other {# targets}}",
       "minDocuments": "At least two documents are needed for a comparison.",
       "lens": "Policy areas",
       "sections": "Sections",
@@ -2936,27 +2962,30 @@
       "print": "Print or save as PDF",
       "copyLink": "Copy link to this brief",
       "copied": "Link copied",
-      "reset": "Back to the standard brief"
+      "reset": "Back to the standard brief",
+      "tour": "How to read this brief",
+      "method": "How the analysis works"
     },
     "sheet": {
       "running": "{country} · Policy coherence brief",
       "page": "Page {page, number} of {total, number}",
-      "footer": "Prepared on {date} with the Policy Coherence Analyzer. AI-assisted analysis for review by national experts.",
+      "footer": "Prepared on {date} with the Policy Coherence Analyzer. AI-assisted analysis for validation by national experts.",
       "title": "Policy coherence brief",
-      "scope": "{commitments, plural, one {# commitment} other {# commitments}} in {documents, plural, one {# policy document} other {# policy documents}}, compared {comparisons, plural, one {# time} other {# times}}",
       "lensScope": "Policy areas: {lens}",
-      "method": "Every commitment in these documents is compared with every commitment in the other documents. An AI model reads the two texts and rates each comparison, reading only the policy text it is given. The ratings are prompts for expert review, not findings.",
-      "documentsTitle": "Documents in this brief",
-      "translatedMachine": "Commitment texts on this page are machine translations of the text the analysis read.",
-      "translatedSource": "Commitment texts on this page are translations of the original documents."
+      "translatedMachine": "Target texts on this page are machine translations.",
+      "translatedSource": "Target texts on this page are translations of the original documents.",
+      "figures": {
+        "documents": "{count, plural, one {policy document} other {policy documents}}",
+        "commitments": "{count, plural, one {target} other {targets}}",
+        "comparisons": "{count, plural, one {target pair compared} other {target pairs compared}}"
+      }
     },
     "sections": {
-      "overall": "The overall picture",
-      "together": "What works well together",
-      "apart": "Where policies may pull apart",
-      "commitments": "Commitments to look at first",
+      "overall": "Overall coherence",
+      "together": "Areas of alignment",
+      "apart": "Potential misalignment",
+      "commitments": "Targets to review first",
       "documents": "Documents side by side",
-      "map": "Map of commitments",
       "areas": "By policy area"
     },
     "tone": {
@@ -2967,117 +2996,72 @@
     },
     "overall": {
       "headline": {
-        "aligned": "{aligned} of comparisons between {country}'s policies are aligned; {apart} show potential misalignment.",
-        "partial": "{partial} of comparisons between {country}'s policies are partially aligned, {aligned} are aligned and {apart} show potential misalignment.",
-        "empty": "There are no comparisons in this selection."
+        "aligned": "Across {country}'s policies, {aligned} of target pairs are aligned and {apart} show potential misalignment.",
+        "partial": "Across {country}'s policies, {partial} of target pairs are partially aligned, {aligned} are aligned and {apart} show potential misalignment.",
+        "empty": "There are no target pairs in this selection."
       },
-      "unitOne": "Each dot is one comparison between two commitments.",
-      "unitMany": "Each dot stands for {count, number} comparisons between two commitments.",
-      "group": "{count, number} comparisons ({pct}): {tone}"
+      "group": "{count, number} target pairs ({pct}): {tone}"
     },
     "together": {
-      "headline": "{docA} and {docB} are the most closely aligned: {pct} of their comparisons.",
-      "headlineFallback": "{pct} of comparisons are aligned.",
-      "themes": "Recurring themes of alignment",
-      "themesEmpty": "No recurring theme was identified for this selection of documents.",
-      "example": "For example, these two commitments are aligned"
+      "headline": "{docA} and {docB} are the most closely aligned: {pct} of their target pairs.",
+      "headlineFallback": "Across all documents, {pct} of target pairs are aligned.",
+      "themesEmpty": "No recurring theme in this selection."
     },
     "apart": {
-      "headline": "{docA} and {docB} have the highest share of potential misalignment: {pct} of their comparisons.",
-      "headlineFallback": "{pct} of comparisons show potential misalignment.",
-      "themes": "Recurring themes of potential misalignment",
-      "themesEmpty": "No recurring potential misalignment was identified for this selection of documents.",
-      "example": "For example, these two commitments may pull apart",
-      "showReading": "Show the AI reading",
-      "hideReading": "Hide the AI reading",
-      "loading": "Loading the AI reading…",
-      "unavailable": "The AI reading could not be loaded.",
-      "readingNote": "AI-generated reading, for review by national experts."
+      "headline": "{docA} and {docB} have the highest share of potential misalignment: {pct} of their target pairs.",
+      "headlineFallback": "Across all documents, {pct} of target pairs show potential misalignment.",
+      "themesEmpty": "No recurring theme of potential misalignment in this selection."
     },
     "themes": {
-      "aiNote": "Themes are named by AI from the rated comparisons; the counts come from the ratings.",
-      "notExact": "The theme names were written for the full set of documents.",
-      "comparisons": "{count, plural, one {# comparison} other {# comparisons}}",
-      "share": "{doc}: {pct} of this theme's comparisons",
-      "noPart": "{doc}: takes no part",
-      "legend": "Darker squares: the document carries a larger part of the theme.",
-      "headerTheme": "Theme (AI-identified)",
-      "headerCount": "Comparisons"
+      "notExact": "Theme names were identified across all documents.",
+      "title": "Recurring themes, identified by AI",
+      "titleAllDocuments": "Recurring themes, identified by AI across all documents",
+      "contested": "Resources involved: {list}",
+      "count": {
+        "reinforce": "{count, plural, one {# aligned target pair} other {# aligned target pairs}}",
+        "apart": "{count, plural, one {# potential misalignment} other {# potential misalignments}}"
+      },
+      "example": "Example",
+      "exampleOf": "Example: {name}",
+      "readFull": "Read in full",
+      "more": "More on this theme",
+      "moreDocs": "{count, plural, one {# more} other {# more}}"
     },
     "commitments": {
-      "headlineConcentrated": "{pct} of the {total, number} potential misalignments trace back to {top, plural, one {# commitment} other {# commitments}}.",
-      "headlineSpread": "Potential misalignment is spread across {contested, plural, one {# commitment} other {# commitments}}.",
-      "headlineEmpty": "No commitment is part of a potential misalignment.",
-      "count": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
+      "headlineConcentrated": "Of the {total, number} potential misalignments, {pct} involve just {top, plural, one {one target} other {# targets}}.",
+      "headlineSpread": "Potential misalignment is spread across {contested, plural, one {# target} other {# targets}}.",
+      "headlineEmpty": "No target shows potential misalignment.",
       "mostlyWith": "mostly with {doc}"
     },
     "documents": {
       "headline": "Potential misalignment ranges from {low} to {high} across pairs of documents.",
-      "headlineFallback": "Across all comparisons, {pct} show potential misalignment.",
-      "average": "average across all comparisons: {pct}",
-      "few": "few comparisons",
+      "headlineFallback": "Across all documents, {pct} of target pairs show potential misalignment.",
+      "few": "few target pairs",
       "more": "{count, plural, one {# more pair of documents} other {# more pairs of documents}}",
-      "showAll": "Show all pairs",
-      "showFewer": "Show fewer",
-      "row": "{docA} and {docB}: {apart} potential misalignment, {partial} partially aligned, {aligned} aligned, from {total, number} comparisons"
+      "row": "{docA} and {docB}: {apart} potential misalignment, {partial} partially aligned, {aligned} aligned, from {total, number} target pairs",
+      "columnApart": "Potential misalignment",
+      "columnPartial": "Partially aligned",
+      "columnAligned": "Aligned"
     },
     "areas": {
       "headline": "{area} shows the highest share of potential misalignment: {pct}.",
-      "headlineEmpty": "Too few rated comparisons in any policy area to compare.",
-      "commitmentsCount": "{count, plural, one {# commitment} other {# commitments}}",
-      "tooFew": "too few comparisons",
-      "average": "average across these areas: {pct}",
-      "row": "{area}: {pct} potential misalignment across {comparisons, number} comparisons",
+      "headlineEmpty": "Too few rated target pairs in any policy area to compare.",
+      "commitmentsCount": "{count, plural, one {# target} other {# targets}}",
+      "tooFew": "too few target pairs",
+      "row": "{area}: {pct} potential misalignment across {comparisons, number} target pairs",
       "headlineNone": "No rated policy area shows potential misalignment."
-    },
-    "map": {
-      "headlineApart": "Potential misalignment gathers in {doc}: {pct} of its comparisons, against {avg} across all documents.",
-      "headlineTogether": "{doc} is the most closely aligned with the other documents: {pct} of its comparisons, against {avg} across all documents.",
-      "headlineEmpty": "No commitment is part of a potential misalignment.",
-      "standfirst": "Each square is one commitment, grouped by document.",
-      "shading": "Shading",
-      "modeApart": "Potential misalignments",
-      "modeTogether": "Alignment",
-      "legendApart": "Potential misalignments per commitment",
-      "legendTogether": "Share of its comparisons that are aligned",
-      "stepsApart": {
-        "0": "0",
-        "1": "1-2",
-        "2": "3-5",
-        "3": "6-10",
-        "4": "11-20",
-        "5": "21+"
-      },
-      "stepsTogether": {
-        "0": "under 25%",
-        "1": "25-50%",
-        "2": "50-75%",
-        "3": "75% or more"
-      },
-      "keyApart": "The most involved commitments, numbered on the map",
-      "keyTogether": "The commitments aligned with the most other commitments, numbered on the map",
-      "keyRowApart": "{label} ({doc}): {count, plural, one {# potential misalignment} other {# potential misalignments}}",
-      "keyRowTogether": "{label} ({doc}): aligned with {count, plural, one {# commitment} other {# commitments}}",
-      "cell": "{label}, {doc}: {apart, plural, =0 {no potential misalignment} one {# potential misalignment} other {# potential misalignments}}, aligned with {aligned, number} of {total, number} commitments compared",
-      "aria": "Map of {count, number} commitments. Use the arrow keys to move between them and Enter to select one.",
-      "hint": "Select a square to see which commitments it is aligned with and which it may pull against.",
-      "selected": "{apart, plural, =0 {No potential misalignment} one {# potential misalignment} other {# potential misalignments}} · aligned with {aligned, number} commitments",
-      "open": "Show the commitments it is compared with",
-      "clear": "Clear the selection",
-      "headlineFallbackApart": "{pct} of comparisons show potential misalignment.",
-      "headlineFallbackTogether": "{pct} of comparisons are aligned."
     },
     "panel": {
       "back": "Back",
       "loading": "Loading the comparison…",
       "error": "This comparison could not be loaded.",
-      "pairDialog": "Comparison of two commitments",
+      "pairDialog": "Two targets compared",
       "docPairDialog": "{docA} and {docB}",
-      "docPairCounts": "{total, number} comparisons: {aligned} aligned, {partial} partially aligned, {apart} potential misalignment",
-      "docPairLead": "{count, plural, =0 {No potential misalignment between these two documents.} one {# potential misalignment, starting with the commitments that recur most.} other {# potential misalignments, starting with the commitments that recur most.}}",
-      "commitmentDialog": "Commitment: {label}",
-      "worksAgainst": "{count, plural, =0 {No potential misalignment in this selection} one {Potential misalignment with # commitment} other {Potential misalignment with # commitments}}",
-      "worksWith": "{count, plural, =0 {Aligned with no commitment in this selection} one {Aligned with # commitment} other {Aligned with # commitments}}",
+      "docPairCounts": "{total, number} target pairs: {aligned} aligned, {partial} partially aligned, {apart} potential misalignment",
+      "docPairLead": "{count, plural, =0 {No potential misalignment between these two documents.} one {# potential misalignment. Most frequent targets first.} other {# potential misalignments. Most frequent targets first.}}",
+      "commitmentDialog": "Target: {label}",
+      "worksAgainst": "{count, plural, =0 {No potential misalignment in this selection} one {Potential misalignment with # target} other {Potential misalignment with # targets}}",
+      "worksWith": "{count, plural, =0 {Aligned with no target in this selection} one {Aligned with # target} other {Aligned with # targets}}",
       "showAll": "Show all {count, number}",
       "themeDialog": "Theme: {name}",
       "themeKind": {
@@ -3086,9 +3070,51 @@
       },
       "themeSummary": "AI summary",
       "pathwayTitle": "AI-suggested starting point",
-      "pathwayCaveat": "A prompt for review by national experts, not a recommendation.",
-      "themeDocs": "Documents taking part, by share of the theme's comparisons",
-      "openTheme": "Open the theme {name}"
+      "pathwayCaveat": "For expert review, not a recommendation.",
+      "themeDocs": "Documents involved, by share of the theme's target pairs"
+    },
+    "and": "and",
+    "resources": {
+      "land": "land",
+      "water": "water",
+      "forest": "forest",
+      "habitat": "habitat",
+      "pasture": "pasture",
+      "soil": "soil",
+      "landscape": "landscape",
+      "watershed": "watershed",
+      "wetland": "wetland",
+      "space": "space",
+      "ecosystem": "ecosystem",
+      "freshwater": "freshwater",
+      "grassland": "grassland",
+      "rangeland": "rangeland",
+      "pastureland": "pastureland",
+      "groundwater": "groundwater",
+      "waterway": "waterway",
+      "capacity": "capacity",
+      "area": "area",
+      "budget": "budget",
+      "flora": "flora",
+      "fauna": "fauna",
+      "aquifer": "aquifer",
+      "livestock": "livestock",
+      "resource": "resource",
+      "stock": "stock",
+      "finance": "finance",
+      "funding": "funding",
+      "biomass": "biomass",
+      "water body": "water body",
+      "river system": "river system",
+      "fodder": "fodder",
+      "species": "species",
+      "coast": "coast",
+      "grazing": "grazing",
+      "peatland": "peatland",
+      "coastal resource": "coastal resource",
+      "biodiversity": "biodiversity",
+      "forage": "forage",
+      "rangelands": "rangelands"
     }
   }
 }

@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { MIN_PAIR_COMPARISONS, shareOf, type DocPairStat } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
-import { RED_HATCH, useNumbers } from "../ink";
+import { useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
 /** Rows that fit a half page under a two-line headline and the legend. */
@@ -23,9 +23,9 @@ function ranked(pairs: DocPairStat[]): DocPairStat[] {
 
 /**
  * One result bar per pair of documents. Potential misalignment is anchored
- * at the left (hatched red) and reinforcement at the right (green), so both
- * shares compare along a common baseline; the tick marks the average share
- * of potential misalignment across all comparisons.
+ * at the left and alignment at the right, so both shares compare along a
+ * common baseline and position tells them apart without colour; the
+ * measures are named above the bars, where a legend would otherwise sit.
  */
 export function DocumentsSection({
   data,
@@ -46,8 +46,7 @@ export function DocumentsSection({
       ? t("documents.headline", { low: pct(Math.min(...shares)), high: pct(Math.max(...shares)) })
       : t("documents.headlineFallback", { pct: pct(average) });
   const shown = rows.slice(0, MAX_ROWS);
-  const width = (v: number) => `${(v * 100).toFixed(2)}%`;
-  const basis = (v: number) => ({ flexBasis: width(v) });
+  const basis = (v: number) => ({ flexBasis: `${(v * 100).toFixed(2)}%` });
 
   return (
     <SectionFrame
@@ -55,17 +54,12 @@ export function DocumentsSection({
       headline={headline}
       note={rows.length > shown.length ? t("documents.more", { count: rows.length - shown.length }) : undefined}
     >
-      <p className="brief-legend">
-        <span className="brief-legend-key" style={{ background: RED_HATCH }} aria-hidden="true" />
-        <span>{t("tone.apart")}</span>
-        <span className="brief-legend-key brief-key-partial" aria-hidden="true" />
-        <span>{t("tone.partial")}</span>
-        <span className="brief-legend-key brief-key-reinforce" aria-hidden="true" />
-        <span>{t("tone.reinforce")}</span>
-        <span className="brief-legend-tick" aria-hidden="true" />
-        <span>{t("documents.average", { pct: pct(average) })}</span>
+      <p className="brief-pairs-head" data-testid="brief-pairs-head" aria-hidden="true">
+        <span className="brief-pairs-head-apart">{t("documents.columnApart")}</span>
+        <span className="brief-pairs-head-partial">{t("documents.columnPartial")}</span>
+        <span className="brief-pairs-head-aligned">{t("documents.columnAligned")}</span>
       </p>
-      <ol className="brief-pairs">
+      <ol className="brief-pairs" data-tour="brief-documents">
         {shown.map((p) => {
           const c = p.counts;
           const few = c.total < MIN_PAIR_COMPARISONS;
@@ -93,7 +87,7 @@ export function DocumentsSection({
                   <span className="brief-pair-value">{pct(share(c.apart))}</span>
                   <span className="brief-pair-bar">
                     {c.apart > 0 && (
-                      <span className="brief-seg" style={{ ...basis(share(c.apart)), background: RED_HATCH }} />
+                      <span className="brief-seg brief-seg-apart" style={basis(share(c.apart))} />
                     )}
                     {c.partial > 0 && (
                       <span className="brief-seg brief-seg-partial" style={basis(share(c.partial))} />
@@ -104,7 +98,6 @@ export function DocumentsSection({
                     {c.reinforce > 0 && (
                       <span className="brief-seg brief-seg-reinforce" style={basis(share(c.reinforce))} />
                     )}
-                    <span className="brief-pair-avg" style={{ left: width(average) }} />
                   </span>
                   <span className="brief-pair-value brief-pair-value-end">{pct(share(c.reinforce))}</span>
                 </span>

@@ -10,7 +10,6 @@ export function Hero({
   documents,
   comparisons,
   lines,
-  translated = false,
   onRead,
   onCustomize,
 }: {
@@ -19,8 +18,6 @@ export function Hero({
   documents: number;
   comparisons: number;
   lines: string[];
-  /** The commitments are shown in translation. */
-  translated?: boolean;
   onRead: () => void;
   onCustomize: () => void;
 }) {
@@ -34,8 +31,8 @@ export function Hero({
       <div className="brief-hero-content">
         <p className="brief-hero-kicker">{t("kicker", { country: countryName })}</p>
         <h1 className="brief-hero-statement">
-          <span>{t("commitments", { count: commitments })}</span>
           <span>{t("documents", { count: documents })}</span>
+          <span>{t("commitments", { count: commitments })}</span>
           <span>{t("comparisons", { count: comparisons })}</span>
         </h1>
         <p className="brief-hero-lead">{t("lead")}</p>
@@ -48,17 +45,22 @@ export function Hero({
           </button>
         </div>
       </div>
-      <p className="brief-hero-note">
-        <button
-          type="button"
-          className="brief-hero-pause"
-          aria-pressed={paused}
-          onClick={() => setPaused((p) => !p)}
-        >
-          {paused ? t("play") : t("pause")}
-        </button>
-        <span>{translated ? t("quotedTranslated") : t("quoted")}</span>
-      </p>
+      <button
+        type="button"
+        className="brief-hero-pause"
+        aria-pressed={paused}
+        aria-label={paused ? t("play") : t("pause")}
+        title={paused ? t("play") : t("pause")}
+        onClick={() => setPaused((p) => !p)}
+      >
+        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+          {paused ? (
+            <path d="M3 1.5v9l7.5-4.5z" fill="currentColor" />
+          ) : (
+            <path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor" />
+          )}
+        </svg>
+      </button>
     </section>
   );
 }

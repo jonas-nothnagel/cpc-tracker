@@ -4,18 +4,18 @@ import { DEFAULT_SECTIONS, SECTION_IDS } from "./selection";
 
 describe("paginate", () => {
   it("lays the standard brief out on three pages", () => {
+    expect(DEFAULT_SECTIONS).toEqual(["overall", "together", "apart", "commitments", "documents"]);
     expect(paginate(DEFAULT_SECTIONS)).toEqual([
       { title: true, sections: ["overall", "together"] },
-      { title: false, sections: ["apart", "documents"] },
-      { title: false, sections: ["map"] },
+      { title: false, sections: ["apart", "commitments"] },
+      { title: false, sections: ["documents"] },
     ]);
   });
 
   it("moves a section that does not fit to the next page, keeping the order", () => {
-    expect(paginate(["map", "overall"])).toEqual([
-      { title: true, sections: [] },
-      { title: false, sections: ["map"] },
-      { title: false, sections: ["overall"] },
+    expect(paginate(["commitments", "documents", "apart"])).toEqual([
+      { title: true, sections: ["commitments"] },
+      { title: false, sections: ["documents", "apart"] },
     ]);
   });
 
@@ -33,6 +33,7 @@ describe("paginate", () => {
   it("keeps every section, in order, when all are chosen", () => {
     const pages = paginate(SECTION_IDS);
     expect(pages.flatMap((p) => p.sections)).toEqual(SECTION_IDS);
-    expect(pages).toHaveLength(5);
+    expect(SECTION_IDS).not.toContain("map");
+    expect(pages).toHaveLength(3);
   });
 });

@@ -4,7 +4,6 @@ import {
   concentrationOf,
   docPairStats,
   leadingPair,
-  mapCells,
   pairExample,
   themeExample,
   themeRows,
@@ -15,7 +14,6 @@ import {
   type Concentration,
   type DocPairStat,
   type ExamplePair,
-  type MapCell,
   type Scope,
   type ThemeRow,
   type OverallLead,
@@ -23,10 +21,17 @@ import {
 } from "./compute";
 import type { BriefSource, LensId } from "./source";
 
+/** A recurring theme with its own example, so the example a reader sees
+ *  always belongs to the theme they selected. */
+export interface ThemeItem extends ThemeRow {
+  example: ExamplePair | null;
+}
+
 export interface ThemeSection {
-  rows: ThemeRow[];
+  rows: ThemeItem[];
   /** Theme names were written for exactly this selection of documents. */
   exact: boolean;
+  /** The first theme's example, or the leading pair's when no theme has one. */
   example: ExamplePair | null;
 }
 
@@ -42,7 +47,6 @@ export interface BriefData {
   apart: ThemeSection;
   concentration: Concentration;
   commitments: CommitmentRow[];
-  cells: MapCell[];
   areas: { rows: AreaRow[]; average: number; max: number } | null;
 }
 
@@ -52,12 +56,9 @@ function themeSection(
   type: "reinforcement" | "friction",
   lead: DocPairStat | null,
 ): ThemeSection {
-  const { rows, exact } = themeRows(source, scope, type);
-  let example: ExamplePair | null = null;
-  for (const row of rows) {
-    example = themeExample(scope, row.storyline);
-    if (example) break;
-  }
+  const { rows: ranked, exact } = themeRows(source, scope, type);
+  const rows = ranked.map((row) => ({ ...row, example: themeExample(scope, row.storyline) }));
+  let example = rows.find((row) => row.example)?.example ?? null;
   if (!example && lead) {
     example = pairExample(scope, lead.a.id, lead.b.id, type === "friction" ? "apart" : "reinforce");
   }
@@ -82,7 +83,6 @@ export function buildBriefData(source: BriefSource, scope: Scope, lens: LensId |
     apart: themeSection(source, scope, "friction", leading.apart),
     concentration: concentrationOf(scope),
     commitments: commitmentsToReview(scope, 8),
-    cells: mapCells(scope),
     areas: lens ? areaRows(source, scope, lens) : null,
   };
 }

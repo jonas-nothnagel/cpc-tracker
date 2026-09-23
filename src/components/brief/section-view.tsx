@@ -6,7 +6,6 @@ import type { SectionId } from "@/lib/brief/selection";
 import { AreasSection } from "./sections/areas";
 import { CommitmentsSection } from "./sections/commitments";
 import { DocumentsSection } from "./sections/documents";
-import { MapSection } from "./sections/map";
 import { OverallSection } from "./sections/overall";
 import { ThemeSectionView } from "./sections/themes";
 
@@ -57,8 +56,6 @@ export function SectionView({
       return <DocumentsSection data={data} onOpenDocPair={handlers.onOpenDocPair} />;
     case "areas":
       return <AreasSection data={data} lensName={lensName} />;
-    case "map":
-      return <MapSection data={data} onOpenCommitment={handlers.onOpenCommitment} />;
     default:
       return <p className="brief-sec-label">{ts(id)}</p>;
   }
