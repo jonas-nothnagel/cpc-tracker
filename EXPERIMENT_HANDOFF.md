@@ -117,7 +117,7 @@ July 2026 feedback (Panama focus group 24 Jul, Mongolia call 28 Jul, Magda's BIO
 said: the analysis is valued, navigation is fine, but interpretation fails and nothing is
 compelling enough to forward to a colleague. This branch is the search for the answer.
 
-## The three rounds and their verdicts
+## The rounds and their verdicts
 
 1. **Finding pages** (`4280cdb`, `753eff8`): one target-pair claim per permalinked page,
    template-composed headline, ranked shortlist at `/{country}/findings`.
