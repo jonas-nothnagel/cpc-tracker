@@ -8,6 +8,8 @@ If `$ARGUMENTS` is provided, treat it as the branch name hint (e.g. `fix/lint-br
 
 ### 1. Ship
 
+**First, ask the user for the two interactive Azure steps the deploy (step 6) needs**, so they can do them while the PR is reviewed rather than blocking at the end: `! az login` (the token expires weekly), and activating PIM Contributor (lasts 2h). Details in step 6.2.
+
 Follow the `/ship` workflow:
 
 1. `git status` and `git diff --stat` to confirm what is being delivered.
@@ -64,14 +66,25 @@ Follow the `/sync` workflow:
 
 ### 6. Deploy to live (Azure)
 
-Azure App Service `cpc-tracker-c657` is the **primary live site** and no longer auto-deploys on merge (GitHub Actions was deactivated for this account 2026-06-23), so the merged commit must be pushed to Azure explicitly. This is the step that makes the change actually go live.
+Azure App Service `cpc-tracker-c657` is the **primary live site** and does not auto-deploy on merge (GitHub Actions was deactivated for this account 2026-06-23), so the merged commit must be built and pushed explicitly. This is the step that makes the change actually go live.
 
-1. Confirm you are on `main` at the merge commit with a clean working tree.
-2. Run **`pnpm run deploy`** (builds the image with Docker buildx, pushes to ACR `policycoherence/cpc-tracker:{sha,latest}`, then polls the live URL for 200). It must be `pnpm run deploy`, never `pnpm deploy` — the bare form hits pnpm's native `deploy` subcommand instead of the script.
-3. **PIM gate (interactive, cannot be automated).** The standing Azure role is Reader; ACR push needs Contributor. If the script stops with a Reader-role error it prints an activation link (`https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/ActivationMenuBlade/~/azurerbac`). Surface it, pause and ask the user to activate **Contributor** (default 2h), then re-run `pnpm run deploy`. Do not try to elevate the role yourself.
-4. The ACR webhook (`webappcpctrackerc657`) is healthy and fires on push, so App Service pulls the new image automatically; the container swap finishes ~1-2 min after the script's 200 poll returns (the poll can go green on the old container first). If a deploy ever looks stuck on the old image, force the pull: `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
-5. **No-Docker fallback.** If `pnpm run deploy` fails because Docker isn't installed on the machine, build server-side instead (no local Docker): `az acr build --registry policycoherence --image cpc-tracker:latest --image cpc-tracker:$(git rev-parse --short HEAD) .` then `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
-6. Confirm live: `curl -sS -o /dev/null -w "%{http_code}" https://cpc-tracker-c657.azurewebsites.net/` returns 200 and the homepage title still reads "CPC Analyzer".
+1. **Build from a clean checkout of the merge commit, never from the main working tree.** `az acr build .` uploads the directory as it sits on disk, filtered only by `.dockerignore`, so uncommitted edits and untracked files would ship to production. That includes the gitignored ingest scripts in `dev_data_scripts/` (only its `sharepoint_sync` subfolder is dockerignored). Use a throwaway worktree:
+   ```bash
+   git fetch origin
+   DEPLOY_WT="$(mktemp -d)/deploy" && git worktree add --detach "$DEPLOY_WT" origin/main
+   ```
+2. **Sign-in and role (interactive; ask the user, never work around them).**
+   - The `az` token expires weekly under conditional access. `az account show` can look fine while real calls fail with `AADSTS70043`, so test with a real call: `az acr show --name policycoherence --query loginServer -o tsv`. If it fails, ask the user to run `! az login`.
+   - ACR push needs Contributor; the standing role is Reader. Ask the user to activate **PIM Contributor** (default 2h): `https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/ActivationMenuBlade/~/azurerbac`. Do not try to elevate the role yourself.
+3. **Build server-side** (amd64 build agents, plain image manifest, no local Docker needed):
+   ```bash
+   cd "$DEPLOY_WT" && az acr build --registry policycoherence \
+     --image cpc-tracker:latest --image "cpc-tracker:$(git rev-parse --short HEAD)" .
+   ```
+   **Do not use `pnpm run deploy` / `scripts/deploy.sh` on an Apple Silicon Mac.** It builds a native arm64 image and its registry cache export attaches attestation manifests; App Service can pull neither, so the site drops to a persistent 503 (`ImagePullFailure`, seen 2026-07-07). It is only safe from an amd64 machine.
+4. The ACR webhook (`webappcpctrackerc657`) fires on push, so App Service pulls the new image automatically. The container swap finishes ~1-2 min later, and the site keeps answering 200 from the old container in the meantime. If it looks stuck, force the pull: `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
+5. **Confirm the new build is live, not just that the site answers.** A bare 200 can come from the old container. Check `curl -sS -o /dev/null -w "%{http_code}" https://cpc-tracker-c657.azurewebsites.net/` returns 200 **and** something only this change contains is served, for example a changed count from `https://cpc-tracker-c657.azurewebsites.net/api/dashboard?country=<id>` or a new page. Poll for up to ~5 min before forcing the restart.
+6. Clean up: `git worktree remove --force "$DEPLOY_WT"`.
 
 ### 7. Report
 
@@ -80,13 +93,15 @@ Print a concise summary:
 - Commit hashes (original + review fixes)
 - Merge commit hash
 - Confirmation that `old-origin/main` was updated
-- Confirmation that the live Azure site was deployed (image tag / SHA) and returns 200
+- Confirmation that the live Azure site was deployed (image tag / SHA), returns 200, and serves the change
 
 ## Important
 
 - **Never force push** or amend published commits.
 - **Never commit `.env` files or credentials.** Warn the user if they ask to.
 - **Never skip the `old-origin` push** — it is what drives the Vercel demo deploy (see `reference_vercel_deploy` memory).
+- **Never deploy from the main working tree.** Build from a clean worktree at the merge commit (step 6.1); the main tree carries uncommitted and gitignored files that `az acr build` would ship.
+- **Never use `pnpm run deploy` on Apple Silicon.** It ships an image App Service cannot pull and takes the site down (step 6.3).
 - **Never skip the Azure deploy step** — Azure is the primary live site and does not auto-deploy on merge; without step 6 the change is merged but not live. See `reference_manual_azure_deploy` memory.
 - **The PIM Contributor activation is interactive** — it needs the user's portal + MFA and cannot be automated. Pause and wait; do not attempt to elevate the role or work around it.
 - **This deploy step is a stopgap.** When GitHub Actions auto-deploy is restored for the account, remove step 6 and merges will go live automatically again.
