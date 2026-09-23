@@ -73,7 +73,7 @@ The August numbers further down (1,128 flags, 10 of 21) predate the Mongolia re-
    2026-09-18 replacement (225 targets, 12 docs, minerals + fisheries dropped) was still
    uncommitted in the main checkout at this sync; it arrives with the next `git merge main`
    once it lands there. Still the old corpus on `origin/main` at 7006442.
-3. **Consequence of item 1: the dive's "top 6" is mostly alphabetical.** The pipeline's
+3. **RESOLVED 2026-09-23 (88a489a): the dive's "top 6" was mostly alphabetical.** The pipeline's
    enums barely vary: medium confidence + coordination-level is 663 of Mongolia's 671
    flags, 1,104 of Panama's 1,133, 864 of Sri Lanka's 866. With consensus gone, only the
    mechanism differs, so the final pairKey tie-break (lexical: `NDC_11` before `NDC_1`)
@@ -90,6 +90,18 @@ The August numbers further down (1,128 flags, 10 of 21) predate the Mongolia re-
    be a real cross-cutting conflict or a broad, merged target text; the reader decides
    which. To re-audit, re-derive from `/api/dashboard?country=x` with the canvas's filters
    (flagged, cross-document, no BTR/BER).
+   Fix (Jonas: "check what targets have the most potential misalignments, like the old
+   overview"): strands rank by how many of the PATHWAY's potential misalignments their
+   targets are in (busier target, then the other); the enums only break ties; header
+   "Most recurring targets first". Counted within the pathway, not corpus-wide like the
+   explorer's "Most conflicted targets": corpus-wide counts overlapped the in-pathway
+   top 6 on only 45 of 78 Mongolia strands and made pathways open on globally busy
+   targets (Vision 2050 <-> FSS would lead with "Irrigated agriculture expansion", in 3 of
+   its 85). Now NBSAP <-> FSS opens on "3 Protected areas" (21 of 87) against six FSS
+   production measures. Still open: rows keep the stored pair orientation (FSS target
+   left under an "NBSAP <-> FSS" header); flipping them would misdirect the rationales
+   that say "the first/second target" (26 of 712 Mongolia flags, 45 of 866 Sri Lanka).
+   The counts themselves are not shown yet.
 
 ## Why this branch exists
 
@@ -122,9 +134,10 @@ canvas and the "Open as a page" leaf is still linked from the canvas's strand st
   ranking is what fixes "the wheel always looks the same": Mongolia shows 10 of 21 pathways
   inflamed, Panama 9 of 28, Cote d'Ivoire honestly 1 of 3.
 - **Staged dive, three glances.** Click a fiber: the two documents anchor left/right, the
-  fiber splits into its top-6 ranked strands (confidence, manageability, mechanism;
-  consensus dropped 2026-09-23, see open item 3 on ties), with an "and N more, ranked"
-  link into `/findings`. Click a strand:
+  fiber splits into its top-6 strands, ranked by how many of the pathway's potential
+  misalignments their targets are in (confidence, manageability, mechanism break ties;
+  consensus dropped 2026-09-23), with an "and N more, ranked" link into `/findings`
+  (which still ranks the old way). Click a strand:
   claim sentence (serif), the two verbatim commitments, mechanism sentence, AI rationale
   behind a disclosure. Esc walks back.
 - Deterministic geometry (hash-seeded jitter, SSR-safe, no Math.random). Reduced motion
@@ -135,8 +148,8 @@ canvas and the "Open as a page" leaf is still linked from the canvas's strand st
 
 - `src/lib/pulse/aggregate.ts` — doc-pair model (shares, corpus mean, inflamed flag). Tested.
 - `src/lib/pulse/geometry.ts` — arc positions, hash jitter, fiber paths, widths. Tested.
-- `src/lib/pulse/strands.ts` — pathway grouping of flagged pairs (same key as the fibers)
-  and the strand caption line. Tested.
+- `src/lib/pulse/strands.ts` — pathway grouping of flagged pairs (same key as the fibers),
+  the recurring-target ranking, and the strand caption line. Tested.
 - `src/components/pulse/coherence-canvas.tsx` (+ `types.ts`) — the scene, staging, overlays.
 - `src/app/[locale]/[country]/pulse/page.tsx` — server assembly: payload, strand
   precompute with translated claims/signals.
