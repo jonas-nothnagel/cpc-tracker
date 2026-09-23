@@ -45,14 +45,18 @@ never merge back and may instead overtake main as the product's opening view.
 The August numbers further down (1,128 flags, 10 of 21) predate the Mongolia re-curation
 (#189: NDC 3.0 split from the Resolution 91 "NITIPA" document) and are historical.
 
-### Known data caveats to resolve before trusting strand ranking
+### Open items from the first sync
 
-1. **Mongolia consensus is mixed-corpus.** The served run (gpt-5.4) covers the 178-target
-   corpus; the three comparison runs (deepseek-v4-pro, gpt-5.4-mini, llama-4-maverick)
-   still cover the pre-#189 153-target corpus. 31 current targets exist in only one run,
-   so any strand touching them can reach at most "1 of 4 models" and is ranked down.
-   Options: re-run the comparison models on the current corpus, or drop consensus from
-   the ranking for pairs whose targets are not in every run.
+1. **Cleanup (decided 2026-09-23): drop cross-model consensus from the canvas.** The
+   overview (headline, inflamed fibers, widths) already uses only the served model. The
+   leftover from the finding-card rounds is in the pathway dive: strands are ordered first
+   by "models flagging" (`src/lib/finding/candidates.ts`, the sort's first key) and each
+   strand shows "identified by N of 4 models" (`pulse/page.tsx`, `index.modelsFlagging`).
+   Only Mongolia has comparison runs, and those still cover the pre-#189 153-target corpus,
+   so the 31 new NDC 3.0 targets cap at "1 of 4", rank down, and read as disagreement.
+   Decision: stop passing consensus counts in the pulse page and drop the models line from
+   strands, so ordering is confidence, manageability, mechanism for every country, like
+   the production dashboard. Do NOT re-run comparison models for this.
 2. **Sri Lanka corpus on `main` is the old one** (8 docs incl. minerals NMP). The
    2026-09-18 replacement (225 targets, 12 docs, minerals + fisheries dropped) was still
    uncommitted in the main checkout at this sync; it arrives with the next `git merge main`
