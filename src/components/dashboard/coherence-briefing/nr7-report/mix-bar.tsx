@@ -45,7 +45,7 @@ export function MixBar({
               <span
                 key={seg.key}
                 aria-hidden="true"
-                title={`${seg.label} · ${seg.count.toLocaleString()}`}
+                title={`${seg.label} · ${seg.count.toLocaleString("en-US")}`}
                 className="absolute inset-y-0"
                 style={{ left: `${left}%`, width: `${width}%`, backgroundColor: seg.color }}
               />
@@ -63,7 +63,7 @@ export function MixBar({
                 style={{ backgroundColor: seg.color }}
               />
               <span className="text-[var(--undp-black)] font-medium tabular-nums">
-                {seg.count.toLocaleString()}
+                {seg.count.toLocaleString("en-US")}
               </span>{" "}
               {seg.label}
             </span>

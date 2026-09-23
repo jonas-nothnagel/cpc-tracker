@@ -17,7 +17,7 @@ import { IndicatorCard, NR7_COLORS, QuestionnaireTable, stripNr7Deadline, type N
 import { ANSWER_COLORS, ANSWER_ORDER, NR7_SERIES_COLOR } from "../../nr7-report/nr7-colors";
 import type { BiodiversityReviewGroup, Nr7Evidence, Nr7ReviewItem } from "./review-groups";
 
-const fmt = (n: number | null) => (n === null ? "" : n.toLocaleString(undefined, { maximumFractionDigits: 3 }));
+const fmt = (n: number | null) => (n === null ? "" : n.toLocaleString("en-US", { maximumFractionDigits: 3 }));
 
 function shortText(text: string, max = 44): string {
   const clean = text.replace(/\s+/g, " ").trim();
