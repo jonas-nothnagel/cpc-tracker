@@ -1,0 +1,541 @@
+/* Coherence brief: landing, desk, A4 sheets and print. Everything is scoped to
+   [data-brief] so nothing leaks into the rest of the app. Sizes inside sheets
+   are fixed (px/mm) so the screen shows exactly what prints. */
+
+[data-brief] {
+  --brief-ink: #232e3d;
+  --brief-muted: #55606e;
+  --brief-hairline: #e5e7eb;
+  --brief-hairline-strong: #d4d7dc;
+  --brief-desk: #f7f7f7;
+  --brief-blue: #0468b1;
+  --brief-blue-dark: #035293;
+  --brief-green: #2a7443;
+  --brief-red: #d2432c;
+  color: var(--brief-ink);
+  background: #fff;
+}
+
+/* ── Landing ─────────────────────────────────────────────────────── */
+
+[data-brief] .brief-hero {
+  position: relative;
+  min-height: min(88vh, 860px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #fff;
+}
+
+[data-brief] .brief-drift {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.05rem;
+  padding: 3rem 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: rgba(35, 46, 61, 0.24);
+  user-select: none;
+  pointer-events: none;
+}
+
+[data-brief] .brief-drift-row {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+[data-brief] .brief-drift-strip {
+  display: inline-flex;
+  animation: brief-drift var(--drift-duration, 180s) linear infinite;
+  will-change: transform;
+}
+
+[data-brief] .brief-drift-item {
+  padding-right: 3.5rem;
+}
+
+@keyframes brief-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brief] .brief-drift-strip {
+    animation: none;
+  }
+}
+
+[data-brief] .brief-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #fff 0%,
+      rgba(255, 255, 255, 0.96) 28%,
+      rgba(255, 255, 255, 0.72) 54%,
+      rgba(255, 255, 255, 0.28) 100%
+    ),
+    linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0) 16%, rgba(255, 255, 255, 0) 84%, #fff 100%);
+}
+
+[data-brief] .brief-hero-content {
+  position: relative;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 5rem;
+}
+
+[data-brief] .brief-hero-kicker {
+  margin: 0 0 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-hero-statement {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+[data-brief] .brief-hero-lead {
+  max-width: 34rem;
+  margin: 1.75rem 0 0;
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+[data-brief] .brief-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2.25rem;
+}
+
+[data-brief] .brief-hero-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.25rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+/* ── Buttons (square primary, underlined quiet) ──────────────────── */
+
+[data-brief] .brief-button-primary {
+  border: 0;
+  border-radius: 0;
+  padding: 0.75rem 1.5rem;
+  background: var(--brief-blue);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+[data-brief] .brief-button-primary:hover {
+  background: var(--brief-blue-dark);
+}
+
+[data-brief] .brief-button-quiet {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--brief-ink);
+  font-size: 0.9375rem;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+  cursor: pointer;
+}
+
+[data-brief] .brief-button-quiet:hover {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] button:focus-visible,
+[data-brief] input:focus-visible,
+[data-brief] [tabindex]:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+/* ── Desk and builder ────────────────────────────────────────────── */
+
+[data-brief] .brief-desk {
+  display: grid;
+  grid-template-columns: 16.5rem 210mm;
+  justify-content: center;
+  align-items: start;
+  gap: 2.5rem;
+  padding: 2.5rem 1.5rem 5rem;
+  border-top: 1px solid var(--brief-hairline);
+  background: var(--brief-desk);
+}
+
+[data-brief] .brief-builder {
+  position: sticky;
+  top: 1.5rem;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .brief-builder-title {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .brief-builder-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0.85rem 0 1rem;
+  border: 0;
+  border-top: 1px solid var(--brief-hairline-strong);
+}
+
+[data-brief] .brief-builder-group > legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 0.45rem;
+  padding: 0;
+  font-weight: 600;
+}
+
+[data-brief] .brief-builder-group > :not(legend) {
+  clear: both;
+}
+
+[data-brief] .brief-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.3rem 0;
+  cursor: pointer;
+}
+
+[data-brief] .brief-check input {
+  flex: none;
+  margin: 0.2rem 0 0;
+  accent-color: var(--brief-blue);
+}
+
+[data-brief] .brief-check input:disabled + .brief-check-swatch,
+[data-brief] .brief-check input:disabled ~ .brief-check-text {
+  opacity: 0.75;
+}
+
+[data-brief] .brief-check-swatch {
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-top: 0.3rem;
+}
+
+[data-brief] .brief-check-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+[data-brief] .brief-check-name {
+  line-height: 1.35;
+}
+
+[data-brief] .brief-check-meta,
+[data-brief] .brief-builder-hint {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-builder-hint {
+  margin: 0.35rem 0 0;
+}
+
+[data-brief] .brief-section-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .brief-section-list-off {
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-section-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+[data-brief] .brief-section-move {
+  display: flex;
+  flex: none;
+  gap: 0.2rem;
+  padding-top: 0.25rem;
+}
+
+[data-brief] .brief-section-move button {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--brief-ink);
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+[data-brief] .brief-section-move button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+[data-brief] .brief-builder-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--brief-hairline-strong);
+}
+
+[data-brief] .brief-builder-pages {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* ── Sheets ──────────────────────────────────────────────────────── */
+
+[data-brief] .brief-sheets {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  min-width: 0;
+}
+
+[data-brief] .brief-sheet {
+  display: flex;
+  flex-direction: column;
+  width: 210mm;
+  height: 297mm;
+  padding: 13mm 16mm 11mm;
+  overflow: hidden;
+  border: 1px solid var(--brief-hairline);
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+[data-brief] .brief-sheet-head,
+[data-brief] .brief-sheet-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-sheet-head {
+  height: 6mm;
+  margin-bottom: 5mm;
+  padding-bottom: 1.5mm;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-sheet-foot {
+  height: 7mm;
+  margin-top: 4mm;
+  padding-top: 1.5mm;
+  align-items: flex-start;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-sheet-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4mm;
+  min-height: 0;
+}
+
+[data-brief] .brief-slot {
+  flex: none;
+  min-height: 0;
+  overflow: hidden;
+}
+
+[data-brief] .brief-units-1 {
+  height: 58mm;
+}
+
+[data-brief] .brief-units-2 {
+  height: 120mm;
+}
+
+[data-brief] .brief-units-4 {
+  height: 244mm;
+}
+
+/* Title block */
+
+[data-brief] .brief-title {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+[data-brief] .brief-title-country {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+[data-brief] .brief-title-name {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-title-scope {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 12px;
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+[data-brief] .brief-title-lens {
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-title-method {
+  max-width: 44rem;
+  margin: 6px 0 0;
+  font-size: 12px;
+}
+
+[data-brief] .brief-title-docs {
+  display: -webkit-box;
+  margin: 6px 0 0;
+  overflow: hidden;
+  font-size: 12px;
+  color: var(--brief-muted);
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-title-docs-label {
+  color: var(--brief-ink);
+}
+
+/* Section anatomy: the question, the finding, then the evidence */
+
+[data-brief] .brief-section-label {
+  margin: 0;
+  font-size: 12px;
+  color: var(--brief-muted);
+}
+
+/* ── Narrow screens: builder on top, then fluid sheets ───────────── */
+
+@media screen and (max-width: 1180px) {
+  [data-brief] .brief-desk {
+    grid-template-columns: minmax(0, 210mm);
+  }
+
+  [data-brief] .brief-builder {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  [data-brief] .brief-desk {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  [data-brief] .brief-sheet {
+    width: 100%;
+    height: auto;
+    padding: 1.25rem 1rem;
+  }
+
+  [data-brief] .brief-slot {
+    height: auto;
+  }
+}
+
+/* ── Print: exactly the sheets ───────────────────────────────────── */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  [data-brief] {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  [data-brief] [data-screen-only] {
+    display: none !important;
+  }
+
+  [data-brief] .brief-desk {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  [data-brief] .brief-sheets {
+    display: block;
+  }
+
+  [data-brief] .brief-sheet {
+    margin: 0;
+    border: 0;
+    break-after: page;
+  }
+
+  [data-brief] .brief-sheet:last-child {
+    break-after: auto;
+  }
+}

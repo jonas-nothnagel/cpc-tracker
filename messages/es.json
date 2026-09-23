@@ -2921,5 +2921,59 @@
       "term": "NR7",
       "definition": "7.º Informe Nacional: el informe que un país presenta ante la convención de biodiversidad de la ONU (CDB) describiendo el avance en sus metas nacionales de biodiversidad."
     }
+  },
+  "brief": {
+    "metaTitle": "{country}: nota de coherencia de políticas",
+    "hero": {
+      "kicker": "{country} · Nota de coherencia de políticas",
+      "commitments": "{count, plural, one {# compromiso.} other {# compromisos.}}",
+      "documents": "{count, plural, one {# documento de política.} other {# documentos de política.}}",
+      "comparisons": "{count, plural, one {# comparación.} other {# comparaciones.}}",
+      "lead": "Cada compromiso se contrasta con todos los compromisos de los demás documentos, para mostrar dónde las políticas se refuerzan entre sí y dónde pueden divergir.",
+      "read": "Leer la nota",
+      "customize": "Elegir el contenido de la nota",
+      "quoted": "Las líneas en movimiento son compromisos citados de los documentos."
+    },
+    "builder": {
+      "title": "Componer la nota",
+      "documents": "Documentos",
+      "commitments": "{count, plural, one {# compromiso} other {# compromisos}}",
+      "minDocuments": "Se necesitan al menos dos documentos para comparar.",
+      "lens": "Áreas de política",
+      "sections": "Secciones",
+      "moveUp": "Subir {section}",
+      "moveDown": "Bajar {section}",
+      "size": "{units, select, 1 {un cuarto de página} 2 {media página} other {página completa}}",
+      "pages": "{count, plural, one {Se imprime en # página} other {Se imprime en # páginas}}",
+      "print": "Imprimir o guardar como PDF",
+      "copyLink": "Copiar el enlace a esta nota",
+      "copied": "Enlace copiado",
+      "reset": "Volver a la nota estándar"
+    },
+    "sheet": {
+      "running": "{country} · Nota de coherencia de políticas",
+      "page": "Página {page, number} de {total, number}",
+      "footer": "Preparada el {date} con el Policy Coherence Analyzer. Análisis asistido por IA para revisión por personas expertas nacionales.",
+      "title": "Nota de coherencia de políticas",
+      "scope": "{commitments, plural, one {# compromiso} other {# compromisos}} en {documents, plural, one {# documento de política} other {# documentos de política}}, comparados {comparisons, plural, one {# vez} other {# veces}}",
+      "lensScope": "Áreas de política: {lens}",
+      "method": "Cada compromiso confirmado por personas expertas nacionales se compara con todos los compromisos de los demás documentos. Un modelo de IA lee ambos textos y califica cada comparación, leyendo únicamente el texto de política que recibe. Las calificaciones son puntos de partida para la revisión experta, no conclusiones.",
+      "documentsTitle": "Documentos de esta nota"
+    },
+    "sections": {
+      "overall": "El panorama general",
+      "together": "Lo que funciona bien en conjunto",
+      "apart": "Dónde las políticas pueden divergir",
+      "commitments": "Compromisos que conviene revisar primero",
+      "documents": "Los documentos, uno junto a otro",
+      "map": "Mapa de compromisos",
+      "areas": "Por área de política"
+    },
+    "tone": {
+      "reinforce": "se refuerzan entre sí",
+      "partial": "vínculo parcial",
+      "apart": "posible desalineación",
+      "none": "sin vínculo claro"
+    }
   }
 }

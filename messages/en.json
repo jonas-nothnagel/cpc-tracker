@@ -2921,5 +2921,59 @@
       "term": "NR7",
       "definition": "7th National Report: the report a country submits to the UN biodiversity convention (CBD) describing progress on its national biodiversity targets."
     }
+  },
+  "brief": {
+    "metaTitle": "{country}: policy coherence brief",
+    "hero": {
+      "kicker": "{country} · Policy coherence brief",
+      "commitments": "{count, plural, one {# commitment.} other {# commitments.}}",
+      "documents": "{count, plural, one {# policy document.} other {# policy documents.}}",
+      "comparisons": "{count, plural, one {# comparison.} other {# comparisons.}}",
+      "lead": "Each commitment is read against every commitment in the other documents, to show where the policies reinforce each other and where they may pull apart.",
+      "read": "Read the brief",
+      "customize": "Choose what the brief covers",
+      "quoted": "The moving lines are commitments quoted from the documents."
+    },
+    "builder": {
+      "title": "Build the brief",
+      "documents": "Documents",
+      "commitments": "{count, plural, one {# commitment} other {# commitments}}",
+      "minDocuments": "At least two documents are needed for a comparison.",
+      "lens": "Policy areas",
+      "sections": "Sections",
+      "moveUp": "Move {section} up",
+      "moveDown": "Move {section} down",
+      "size": "{units, select, 1 {quarter page} 2 {half page} other {full page}}",
+      "pages": "{count, plural, one {Prints on # page} other {Prints on # pages}}",
+      "print": "Print or save as PDF",
+      "copyLink": "Copy link to this brief",
+      "copied": "Link copied",
+      "reset": "Back to the standard brief"
+    },
+    "sheet": {
+      "running": "{country} · Policy coherence brief",
+      "page": "Page {page, number} of {total, number}",
+      "footer": "Prepared on {date} with the Policy Coherence Analyzer. AI-assisted analysis for review by national experts.",
+      "title": "Policy coherence brief",
+      "scope": "{commitments, plural, one {# commitment} other {# commitments}} in {documents, plural, one {# policy document} other {# policy documents}}, compared {comparisons, plural, one {# time} other {# times}}",
+      "lensScope": "Policy areas: {lens}",
+      "method": "Every commitment confirmed by national experts is compared with every commitment in the other documents. An AI model reads the two texts and rates each comparison, reading only the policy text it is given. The ratings are prompts for expert review, not findings.",
+      "documentsTitle": "Documents in this brief"
+    },
+    "sections": {
+      "overall": "The overall picture",
+      "together": "What works well together",
+      "apart": "Where policies may pull apart",
+      "commitments": "Commitments to look at first",
+      "documents": "Documents side by side",
+      "map": "Map of commitments",
+      "areas": "By policy area"
+    },
+    "tone": {
+      "reinforce": "reinforce each other",
+      "partial": "partial link",
+      "apart": "potential misalignment",
+      "none": "no clear link"
+    }
   }
 }
