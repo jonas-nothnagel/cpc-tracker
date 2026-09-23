@@ -129,6 +129,22 @@
   margin-top: 2.25rem;
 }
 
+[data-brief] .brief-drift[data-paused="true"] .brief-drift-strip {
+  animation-play-state: paused;
+}
+
+[data-brief] .brief-hero-pause {
+  margin-right: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brief-ink);
+  font-size: 0.75rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
 [data-brief] .brief-hero-note {
   position: absolute;
   left: 0;
@@ -468,7 +484,7 @@
 
 /* Section anatomy: the question, the finding, then the evidence */
 
-[data-brief] .brief-section-label {
+[data-brief] .brief-sec-label {
   margin: 0;
   font-size: 12px;
   color: var(--brief-muted);

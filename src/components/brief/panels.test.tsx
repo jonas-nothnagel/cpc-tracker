@@ -43,6 +43,8 @@ describe("BriefPanels", () => {
     expect(rows).toHaveLength(9);
     expect(rows[0].textContent).toContain("6 Commitment B6");
     expect(rows[0].textContent).toContain("4 Commitment C4");
+    // Short labels carry the start of their verbatim text.
+    expect(rows[0].textContent).toContain("Verbatim text of commitment B6");
     fireEvent.click(within(rows[0]).getByRole("button"));
     expect(onPush).toHaveBeenCalledWith({ kind: "pair", a: "B6", b: "C4" });
   });
@@ -50,8 +52,40 @@ describe("BriefPanels", () => {
   it("groups a commitment's partners by how they read", () => {
     renderPanels([{ kind: "commitment", id: "B6" }]);
     expect(screen.getByText("Potential misalignment with 7 commitments")).toBeTruthy();
-    expect(screen.getByText("Reinforces 4 commitments")).toBeTruthy();
+    expect(screen.getByText("Aligned with 4 commitments")).toBeTruthy();
     expect(screen.getByText("Verbatim text of commitment B6.")).toBeTruthy();
+  });
+
+  it("says when a theme's AI text was written for the full set of documents", () => {
+    const storyline = {
+      name: "Shared land restoration",
+      type: "reinforcement" as const,
+      description: "About land restoration.",
+      pathway: "Joint monitoring could be a starting point.",
+      contributing_doc_pairs: ["A<->B"],
+      confidence: "high" as const,
+      pair_count: 1,
+      spans_documents: ["A", "B"],
+    };
+    const full = { storylines: [storyline], summary_paragraph: "", doc_pair_count: 3 };
+    const withThemes = { ...SOURCE, themes: { ...full, states: { "": full } } };
+    const data = buildBriefData(withThemes, scopeOf(withThemes, ["A", "B"]), null);
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <div data-brief>
+          <BriefPanels
+            stack={[{ kind: "theme", type: "reinforcement", name: "Shared land restoration" }]}
+            source={withThemes}
+            data={data}
+            onPush={vi.fn()}
+            onBack={vi.fn()}
+            onClose={vi.fn()}
+          />
+        </div>
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByText("About land restoration.")).toBeTruthy();
+    expect(screen.getByText("The theme names were written for the full set of documents.")).toBeTruthy();
   });
 
   it("loads one comparison with its AI reading", async () => {

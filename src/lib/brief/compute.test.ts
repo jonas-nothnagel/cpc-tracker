@@ -8,6 +8,7 @@ import {
   docPairStats,
   leadingPair,
   mapCells,
+  overallLead,
   partnersOf,
   reinforceStep,
   scopeOf,
@@ -16,7 +17,6 @@ import {
   themeRows,
   toneCounts,
   toneOf,
-  verdictOf,
   type DocPairStat,
 } from "./compute";
 import type { BriefCommitment, BriefDocument, BriefSource } from "./source";
@@ -117,23 +117,26 @@ describe("toneCounts", () => {
   });
 });
 
-describe("verdictOf", () => {
-  const counts = (reinforce: number, apart: number) => ({
+describe("overallLead", () => {
+  const counts = (reinforce: number, partial: number, apart: number, none = 0) => ({
     reinforce,
+    partial,
     apart,
-    partial: 0,
-    none: 0,
-    total: reinforce + apart,
+    none,
+    total: reinforce + partial + apart + none,
   });
 
-  it("uses the dashboard's 15% and 30% thresholds on potential misalignment", () => {
-    expect(verdictOf(counts(851, 149))).toBe("mostly_aligned");
-    expect(verdictOf(counts(85, 15))).toBe("mixed");
-    expect(verdictOf(counts(70, 30))).toBe("lots_of_misalignment");
+  it("leads with alignment when aligned comparisons outnumber partial ones", () => {
+    expect(overallLead(counts(66, 29, 5))).toBe("aligned");
   });
 
-  it("reads an empty selection as mostly aligned rather than dividing by zero", () => {
-    expect(verdictOf(counts(0, 0))).toBe("mostly_aligned");
+  it("leads with partial alignment when partial links are the larger group (Sri Lanka)", () => {
+    // Sri Lanka's default brief: 42% aligned, 55% partial, 1.5% potential misalignment.
+    expect(overallLead(counts(420, 554, 15, 11))).toBe("partial");
+  });
+
+  it("says nothing about alignment for an empty selection", () => {
+    expect(overallLead(counts(0, 0, 0))).toBe("empty");
   });
 });
 
@@ -388,21 +391,25 @@ describe("areaRows", () => {
     ],
   };
 
-  it("rates each area by its share of potential misalignment, highest first", () => {
-    const { rows, average, max } = areaRows(source, scopeOf(source, ["A", "B", "C"]), "globe");
-    expect(rows.map((r) => [r.id, r.name, r.commitments, r.reviewed, r.apart])).toEqual([
-      ["g2", "Agriculture", 3, 7, 3],
-      ["g1", "Protected areas", 3, 6, 2],
+  it("rates each area by its share of all its comparisons, highest first", () => {
+    const { rows, average, max } = areaRows(source, scopeOf(source, ["A", "B", "C"]), "globe", 5);
+    // Every comparison touching an area's commitments counts, whatever its reading.
+    expect(rows.map((r) => [r.id, r.name, r.commitments, r.comparisons, r.apart])).toEqual([
+      ["g2", "Agriculture", 3, 11, 3],
+      ["g1", "Protected areas", 3, 11, 2],
     ]);
-    expect(rows[0].share).toBeCloseTo(3 / 7);
-    expect(rows[1].share).toBeCloseTo(2 / 6);
-    expect(average).toBeCloseTo(4 / 11);
-    expect(max).toBeCloseTo(3 / 7);
+    expect(rows[0].share).toBeCloseTo(3 / 11);
+    expect(rows[1].share).toBeCloseTo(2 / 11);
+    // All 16 comparisons touch the lens; 4 show potential misalignment.
+    expect(average).toBeCloseTo(4 / 16);
+    expect(max).toBeCloseTo(3 / 11);
   });
 
-  it("leaves the share empty for an area with too few rated comparisons", () => {
-    const { rows } = areaRows(source, scopeOf(source, ["A", "B"]), "globe");
-    expect(rows.map((r) => [r.name, r.share])).toEqual([
+  it("leaves the share empty below the minimum number of comparisons", () => {
+    const { rows } = areaRows(source, scopeOf(source, ["A", "B", "C"]), "globe");
+    expect(rows.map((r) => r.share)).toEqual([null, null]);
+    const thin = areaRows(source, scopeOf(source, ["A", "B"]), "globe", 5);
+    expect(thin.rows.map((r) => [r.name, r.share])).toEqual([
       ["Agriculture", null],
       ["Protected areas", null],
     ]);

@@ -8,8 +8,8 @@ import {
   pairExample,
   themeExample,
   themeRows,
+  overallLead,
   toneCounts,
-  verdictOf,
   type AreaRow,
   type CommitmentRow,
   type Concentration,
@@ -18,8 +18,8 @@ import {
   type MapCell,
   type Scope,
   type ThemeRow,
+  type OverallLead,
   type ToneCounts,
-  type Verdict,
 } from "./compute";
 import type { BriefSource, LensId } from "./source";
 
@@ -35,7 +35,7 @@ export interface BriefData {
   countryName: string;
   scope: Scope;
   counts: ToneCounts;
-  verdict: Verdict;
+  lead: OverallLead;
   pairs: DocPairStat[];
   leading: { reinforce: DocPairStat | null; apart: DocPairStat | null };
   together: ThemeSection;
@@ -75,7 +75,7 @@ export function buildBriefData(source: BriefSource, scope: Scope, lens: LensId |
     countryName: source.countryName,
     scope,
     counts,
-    verdict: verdictOf(counts),
+    lead: overallLead(counts),
     pairs,
     leading,
     together: themeSection(source, scope, "reinforcement", leading.reinforce),

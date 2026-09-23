@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { MovingText } from "./moving-text";
 
@@ -9,6 +10,7 @@ export function Hero({
   documents,
   comparisons,
   lines,
+  translated = false,
   onRead,
   onCustomize,
 }: {
@@ -17,13 +19,17 @@ export function Hero({
   documents: number;
   comparisons: number;
   lines: string[];
+  /** The commitments are shown in translation. */
+  translated?: boolean;
   onRead: () => void;
   onCustomize: () => void;
 }) {
   const t = useTranslations("brief.hero");
+  // WCAG 2.2.2: moving content that runs on gets a pause control.
+  const [paused, setPaused] = useState(false);
   return (
     <section className="brief-hero" data-screen-only>
-      <MovingText lines={lines} />
+      <MovingText lines={lines} paused={paused} />
       <div className="brief-hero-veil" aria-hidden="true" />
       <div className="brief-hero-content">
         <p className="brief-hero-kicker">{t("kicker", { country: countryName })}</p>
@@ -42,7 +48,17 @@ export function Hero({
           </button>
         </div>
       </div>
-      <p className="brief-hero-note">{t("quoted")}</p>
+      <p className="brief-hero-note">
+        <button
+          type="button"
+          className="brief-hero-pause"
+          aria-pressed={paused}
+          onClick={() => setPaused((p) => !p)}
+        >
+          {paused ? t("play") : t("pause")}
+        </button>
+        <span>{translated ? t("quotedTranslated") : t("quoted")}</span>
+      </p>
     </section>
   );
 }

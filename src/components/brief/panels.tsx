@@ -10,7 +10,7 @@ import type { FoundPair } from "@/lib/brief/pair";
 import type { BriefSource } from "@/lib/brief/source";
 import { strandsByPathway } from "@/lib/pulse/strands";
 import type { CountryConfig } from "@/types";
-import { useNumbers } from "./ink";
+import { commitmentLine, useNumbers } from "./ink";
 
 export type PanelState =
   | { kind: "pair"; a: string; b: string }
@@ -141,7 +141,7 @@ function DocPairPanel({
           <p className="mt-1 text-caption text-[var(--undp-gray)]">
             {t("docPairCounts", {
               total: c.total,
-              reinforce: share(c.reinforce),
+              aligned: share(c.reinforce),
               partial: share(c.partial),
               apart: share(c.apart),
             })}
@@ -160,11 +160,11 @@ function DocPairPanel({
               >
                 <span className="block text-data text-[var(--undp-black)]">
                   <span className="text-[var(--undp-gray)]">{docName(s.targetA.sourceDocument)} · </span>
-                  {s.targetA.sourceLabel}
+                  {commitmentLine({ label: s.targetA.sourceLabel, text: s.targetA.text })}
                 </span>
                 <span className="block text-data text-[var(--undp-black)]">
                   <span className="text-[var(--undp-gray)]">{docName(s.targetB.sourceDocument)} · </span>
-                  {s.targetB.sourceLabel}
+                  {commitmentLine({ label: s.targetB.sourceLabel, text: s.targetB.text })}
                 </span>
                 {s.pair.mechanism && (
                   <span className="mt-0.5 block text-caption text-[var(--undp-gray)]">
@@ -185,7 +185,7 @@ function CommitmentList({
   docName,
   onOpen,
 }: {
-  items: { id: string; doc: string; label: string }[];
+  items: { id: string; doc: string; label: string; text: string }[];
   docName: (id: string) => string;
   onOpen: (id: string) => void;
 }) {
@@ -203,7 +203,7 @@ function CommitmentList({
               onClick={() => onOpen(p.id)}
             >
               <span className="text-[var(--undp-gray)]">{docName(p.doc)} · </span>
-              {p.label}
+              {commitmentLine(p)}
             </button>
           </li>
         ))}
@@ -272,6 +272,7 @@ function ThemePanel({
   name: string;
 }) {
   const t = useTranslations("brief.panel");
+  const tt = useTranslations("brief.themes");
   const { pct } = useNumbers();
   const section = type === "reinforcement" ? data.together : data.apart;
   const row = section.rows.find((r) => r.storyline.name === name);
@@ -290,6 +291,7 @@ function ThemePanel({
         <section>
           <h3 className="text-data font-semibold text-[var(--undp-black)]">{t("themeSummary")}</h3>
           <p className="mt-1 text-body leading-relaxed text-[var(--undp-black)]">{row.storyline.description}</p>
+          {!section.exact && <p className="mt-1 text-caption text-[var(--undp-gray)]">{tt("notExact")}</p>}
         </section>
         {row.storyline.pathway && (
           <section>

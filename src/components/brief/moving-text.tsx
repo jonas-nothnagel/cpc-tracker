@@ -7,7 +7,15 @@ import type { CSSProperties } from "react";
  * carry their spacing as padding (not a flex gap) for the same reason.
  * Decorative: hidden from assistive technology, still under reduced motion.
  */
-export function MovingText({ lines, rows = 9 }: { lines: string[]; rows?: number }) {
+export function MovingText({
+  lines,
+  rows = 9,
+  paused = false,
+}: {
+  lines: string[];
+  rows?: number;
+  paused?: boolean;
+}) {
   if (lines.length === 0) return null;
   // Deal the lines out like cards so neighbouring rows show different documents.
   const strips = Array.from({ length: rows }, (_, r) => {
@@ -15,7 +23,7 @@ export function MovingText({ lines, rows = 9 }: { lines: string[]; rows?: number
     return dealt.length > 0 ? dealt : [lines[r % lines.length]];
   });
   return (
-    <div className="brief-drift" aria-hidden="true">
+    <div className="brief-drift" aria-hidden="true" data-paused={paused ? "true" : "false"}>
       {strips.map((items, r) => (
         <div key={r} className="brief-drift-row">
           <div

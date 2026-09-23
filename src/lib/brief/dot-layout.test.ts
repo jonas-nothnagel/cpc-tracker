@@ -44,3 +44,20 @@ describe("layoutDots", () => {
     expect(layout.tones.length).toBe(0);
   });
 });
+
+describe("layoutDots texture", () => {
+  it("thins every other dot of the potential-misalignment group, and no other group", () => {
+    const layout = layoutDots({ reinforce: 40, partial: 0, apart: 40, none: 0, total: 80 }, 1, 200, 40);
+    const apartIndex = 2; // DOT_ORDER: reinforce, partial, apart, none
+    let thinApart = 0;
+    let thinOther = 0;
+    for (let i = 0; i < layout.tones.length; i++) {
+      if (layout.small[i] === 1) {
+        if (layout.tones[i] === apartIndex) thinApart += 1;
+        else thinOther += 1;
+      }
+    }
+    expect(thinOther).toBe(0);
+    expect(thinApart).toBe(20);
+  });
+});

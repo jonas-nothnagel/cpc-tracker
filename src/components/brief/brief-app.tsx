@@ -64,6 +64,12 @@ export function BriefApp({
     [source, scope, selection.lens],
   );
   const lensName = selection.lens ? tl(selection.lens) : null;
+  // Say so whenever the commitments on the page are not the documents' own wording.
+  const translation = scope.commitments.some((c) => c.translated === "machine")
+    ? "machine"
+    : scope.commitments.some((c) => c.translated === "translation")
+      ? "source"
+      : null;
 
   const handlers: SectionHandlers = useMemo(
     () => ({
@@ -91,6 +97,7 @@ export function BriefApp({
         documents={scope.docs.length}
         comparisons={scope.comparisons.length}
         lines={lines}
+        translated={translation !== null}
         onRead={readBrief}
         onCustomize={customize}
       />
@@ -114,6 +121,7 @@ export function BriefApp({
               documents={scope.docs.length}
               comparisons={scope.comparisons.length}
               lensName={lensName}
+              translation={translation}
               documentNames={scope.docs.map((d) => (d.code === d.name ? d.name : `${d.code}: ${d.name}`))}
             />
           }
@@ -122,14 +130,16 @@ export function BriefApp({
           )}
         />
       </div>
-      <BriefPanels
-        stack={panels}
-        source={source}
-        data={data}
-        onPush={(next) => setPanels((stack) => [...stack, next])}
-        onBack={() => setPanels((stack) => stack.slice(0, -1))}
-        onClose={() => setPanels([])}
-      />
+      <div data-screen-only>
+        <BriefPanels
+          stack={panels}
+          source={source}
+          data={data}
+          onPush={(next) => setPanels((stack) => [...stack, next])}
+          onBack={() => setPanels((stack) => stack.slice(0, -1))}
+          onClose={() => setPanels([])}
+        />
+      </div>
     </div>
   );
 }

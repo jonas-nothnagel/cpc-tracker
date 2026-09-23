@@ -81,7 +81,7 @@ export function DocumentsSection({
                   docB: p.b.name,
                   apart: pct(share(c.apart)),
                   partial: pct(share(c.partial)),
-                  reinforce: pct(share(c.reinforce)),
+                  aligned: pct(share(c.reinforce)),
                   total: c.total,
                 })}
               >

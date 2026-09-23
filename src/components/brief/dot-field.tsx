@@ -59,11 +59,12 @@ function paint(
         x = from[2 * i] + (x - from[2 * i]) * e;
         y = from[2 * i + 1] + (y - from[2 * i + 1]) * e;
       }
-      if (r >= 1.1) {
-        ctx.moveTo(x + r, y);
-        ctx.arc(x, y, r, 0, Math.PI * 2);
+      const rr = layout.small[i] === 1 ? r * 0.45 : r;
+      if (rr >= 1.1) {
+        ctx.moveTo(x + rr, y);
+        ctx.arc(x, y, rr, 0, Math.PI * 2);
       } else {
-        ctx.rect(x - r, y - r, 2 * r, 2 * r);
+        ctx.rect(x - rr, y - rr, 2 * rr, 2 * rr);
       }
     }
     ctx.fill();

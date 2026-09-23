@@ -157,3 +157,41 @@ describe("buildBriefSource", () => {
     expect(source.themes).toBeNull();
   });
 });
+
+describe("buildBriefSource translation flags", () => {
+  function sourceWith(target: Record<string, unknown>, locale: string) {
+    return buildBriefSource({
+      countryId: "x",
+      countryName: "X",
+      data: { ...DATA, targets: [target, target_("NBSAP_1", "NBSAP")], alignment: [] },
+      locale,
+    });
+  }
+  function target_(id: string, doc: string) {
+    return { id, text: `Text of ${id}`, sourceDocument: doc, sourceLabel: id, country: "X", isQuantitative: false, isTimeBound: false };
+  }
+
+  it("marks machine back-translations shown in the page language", () => {
+    const t = { ...target_("NDC_1", "NDC"), textOriginal: "Монгол", language: "mn", textOriginalSource: "machine" };
+    expect(sourceWith(t, "mn").commitments[0]).toMatchObject({ text: "Монгол", translated: "machine" });
+    expect(sourceWith(t, "en").commitments[0].translated).toBeUndefined();
+  });
+
+  it("marks text shown in translation when the original is in another language", () => {
+    const t = { ...target_("NDC_1", "NDC"), textOriginal: "Texto original", language: "es", textOriginalSource: "source" };
+    expect(sourceWith(t, "en").commitments[0].translated).toBe("translation");
+  });
+
+  it("does not mark text already swapped onto its source language", () => {
+    const swapped = {
+      ...target_("NDC_1", "NDC"),
+      text: "Texto original",
+      textOriginal: "Texto original",
+      textTranslation: "Text of NDC_1",
+      textLocale: "es",
+      language: "es",
+      textOriginalSource: "source",
+    };
+    expect(sourceWith(swapped, "es").commitments[0].translated).toBeUndefined();
+  });
+});

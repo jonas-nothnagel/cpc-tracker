@@ -21,6 +21,10 @@ export interface DotLayout {
   xs: Float32Array;
   ys: Float32Array;
   tones: Uint8Array;
+  /** 1 where a dot is drawn small: every other dot of the potential-
+   *  misalignment group, a checker texture that tells it apart from the
+   *  aligned group without relying on red and green. */
+  small: Uint8Array;
 }
 
 /**
@@ -50,6 +54,7 @@ export function layoutDots(
     xs: new Float32Array(0),
     ys: new Float32Array(0),
     tones: new Uint8Array(0),
+    small: new Uint8Array(0),
   };
   if (total === 0 || width <= 0 || height <= 0) return empty;
 
@@ -67,19 +72,24 @@ export function layoutDots(
   const xs = new Float32Array(total);
   const ys = new Float32Array(total);
   const tones = new Uint8Array(total);
+  const small = new Uint8Array(total);
+  const apartIndex = DOT_ORDER.indexOf("apart");
   const groups: DotGroup[] = [];
   let x = 0;
   let n = 0;
   for (const g of present) {
     const x0 = x;
     for (let d = 0; d < g.dots; d++, n++) {
-      xs[n] = x + Math.floor(d / rows) * pitch + pitch / 2;
-      ys[n] = yOffset + (d % rows) * pitch + pitch / 2;
+      const col = Math.floor(d / rows);
+      const row = d % rows;
+      xs[n] = x + col * pitch + pitch / 2;
+      ys[n] = yOffset + row * pitch + pitch / 2;
       tones[n] = g.index;
+      if (g.index === apartIndex && (col + row) % 2 === 1) small[n] = 1;
     }
     x += Math.ceil(g.dots / rows) * pitch;
     groups.push({ tone: g.tone, count: g.count, dots: g.dots, x0, x1: x });
     x += gapPitches * pitch;
   }
-  return { pitch, radius: Math.max(0.55, pitch * 0.34), rows, groups, xs, ys, tones };
+  return { pitch, radius: Math.max(0.55, pitch * 0.34), rows, groups, xs, ys, tones, small };
 }

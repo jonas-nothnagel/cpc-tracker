@@ -29,20 +29,34 @@ function wrap(node: ReactNode) {
 afterEach(cleanup);
 
 describe("brief sections", () => {
-  it("overall: states the verdict and labels every group of dots with its share", () => {
+  it("overall: states the shares the dots show and labels every group", () => {
     wrap(<OverallSection data={DATA} />);
-    expect(screen.getByRole("heading", { name: "Coherence is mixed across Testland's policies." })).toBeTruthy();
+    expect(
+      screen.getByRole("heading", {
+        name: "67% of comparisons between Testland's policies are aligned; 14% show potential misalignment.",
+      }),
+    ).toBeTruthy();
     expect(screen.getByText("67%")).toBeTruthy();
     expect(screen.getByText("19%")).toBeTruthy();
     expect(screen.getByText("14%")).toBeTruthy();
     expect(screen.getByText("Each dot is one comparison between two commitments.")).toBeTruthy();
   });
 
-  it("together: names the two documents that reinforce each other most", () => {
+  it("overall: leads with partial alignment when partial links are the larger group", () => {
+    const counts = { reinforce: 420, partial: 554, apart: 15, none: 11, total: 1000 };
+    wrap(<OverallSection data={{ ...DATA, counts, lead: "partial" }} />);
+    expect(
+      screen.getByRole("heading", {
+        name: "55% of comparisons between Testland's policies are partially aligned, 42% are aligned and 2% show potential misalignment.",
+      }),
+    ).toBeTruthy();
+  });
+
+  it("together: names the two documents that are most closely aligned", () => {
     wrap(<ThemeSectionView data={DATA} tone="reinforce" countryId="testland" />);
     expect(
       screen.getByRole("heading", {
-        name: "Document A and Document C reinforce each other most often: 83% of their comparisons.",
+        name: "Document A and Document C are the most closely aligned: 83% of their comparisons.",
       }),
     ).toBeTruthy();
     expect(screen.getByText("No recurring theme was identified for this selection of documents.")).toBeTruthy();
@@ -53,7 +67,7 @@ describe("brief sections", () => {
     wrap(<ThemeSectionView data={DATA} tone="apart" countryId="testland" />);
     expect(
       screen.getByRole("heading", {
-        name: "Document B and Document C show the most potential misalignment: 25% of their comparisons.",
+        name: "Document B and Document C have the highest share of potential misalignment: 25% of their comparisons.",
       }),
     ).toBeTruthy();
     expect(screen.getByText("Verbatim text of commitment B6.")).toBeTruthy();
@@ -88,13 +102,29 @@ describe("brief sections", () => {
   it("areas: rates each policy area and marks the thin ones", () => {
     const thin = buildBriefData(SOURCE, scopeOf(SOURCE, ["B", "C"]), "globe");
     wrap(<AreasSection data={thin} lensName="Biodiversity" />);
-    expect(screen.getByText("too few comparisons")).toBeTruthy();
+    // With B and C only, both areas have 18 comparisons, under the floor of 30.
+    expect(screen.getAllByText("too few comparisons")).toHaveLength(2);
     cleanup();
     wrap(<AreasSection data={DATA} lensName="Biodiversity" />);
     expect(
       screen.getByRole("heading", {
-        name: "Agriculture shows the highest share of potential misalignment: 64%.",
+        name: "Agriculture shows the highest share of potential misalignment: 33%.",
       }),
+    ).toBeTruthy();
+  });
+
+  it("areas: does not name a highest share when no rated area has any", () => {
+    const calm = {
+      ...DATA,
+      areas: {
+        rows: [{ id: "g1", name: "Protected areas", commitments: 3, comparisons: 36, apart: 0, share: 0 }],
+        average: 0,
+        max: 0,
+      },
+    };
+    wrap(<AreasSection data={calm} lensName="Biodiversity" />);
+    expect(
+      screen.getByRole("heading", { name: "No rated policy area shows potential misalignment." }),
     ).toBeTruthy();
   });
 });

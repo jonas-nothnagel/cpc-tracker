@@ -2914,10 +2914,13 @@
       "commitments": "{count, plural, one {# commitment.} other {# commitments.}}",
       "documents": "{count, plural, one {# policy document.} other {# policy documents.}}",
       "comparisons": "{count, plural, one {# comparison.} other {# comparisons.}}",
-      "lead": "Each commitment is read against every commitment in the other documents, to show where the policies reinforce each other and where they may pull apart.",
+      "lead": "Each commitment is read against every commitment in the other documents, to show where the policies are aligned and where they may pull apart.",
       "read": "Read the brief",
       "customize": "Choose what the brief covers",
-      "quoted": "The moving lines are commitments quoted from the documents."
+      "quoted": "The moving lines are commitments quoted from the documents.",
+      "quotedTranslated": "The moving lines are commitments from the documents, shown in translation.",
+      "pause": "Pause the moving text",
+      "play": "Play the moving text"
     },
     "builder": {
       "title": "Build the brief",
@@ -2942,8 +2945,10 @@
       "title": "Policy coherence brief",
       "scope": "{commitments, plural, one {# commitment} other {# commitments}} in {documents, plural, one {# policy document} other {# policy documents}}, compared {comparisons, plural, one {# time} other {# times}}",
       "lensScope": "Policy areas: {lens}",
-      "method": "Every commitment confirmed by national experts is compared with every commitment in the other documents. An AI model reads the two texts and rates each comparison, reading only the policy text it is given. The ratings are prompts for expert review, not findings.",
-      "documentsTitle": "Documents in this brief"
+      "method": "Every commitment in these documents is compared with every commitment in the other documents. An AI model reads the two texts and rates each comparison, reading only the policy text it is given. The ratings are prompts for expert review, not findings.",
+      "documentsTitle": "Documents in this brief",
+      "translatedMachine": "Commitment texts on this page are machine translations of the text the analysis read.",
+      "translatedSource": "Commitment texts on this page are translations of the original documents."
     },
     "sections": {
       "overall": "The overall picture",
@@ -2955,30 +2960,30 @@
       "areas": "By policy area"
     },
     "tone": {
-      "reinforce": "reinforce each other",
-      "partial": "partial link",
+      "reinforce": "aligned",
+      "partial": "partially aligned",
       "apart": "potential misalignment",
-      "none": "no clear link"
+      "none": "no clear relationship"
     },
     "overall": {
       "headline": {
-        "mostly_aligned": "{country}'s policies largely reinforce each other.",
-        "mixed": "Coherence is mixed across {country}'s policies.",
-        "lots_of_misalignment": "{country}'s policies show substantial potential misalignment."
+        "aligned": "{aligned} of comparisons between {country}'s policies are aligned; {apart} show potential misalignment.",
+        "partial": "{partial} of comparisons between {country}'s policies are partially aligned, {aligned} are aligned and {apart} show potential misalignment.",
+        "empty": "There are no comparisons in this selection."
       },
       "unitOne": "Each dot is one comparison between two commitments.",
       "unitMany": "Each dot stands for {count, number} comparisons between two commitments.",
       "group": "{count, number} comparisons ({pct}): {tone}"
     },
     "together": {
-      "headline": "{docA} and {docB} reinforce each other most often: {pct} of their comparisons.",
-      "headlineFallback": "The documents reinforce each other in {pct} of comparisons.",
-      "themes": "Recurring themes of reinforcement",
+      "headline": "{docA} and {docB} are the most closely aligned: {pct} of their comparisons.",
+      "headlineFallback": "{pct} of comparisons are aligned.",
+      "themes": "Recurring themes of alignment",
       "themesEmpty": "No recurring theme was identified for this selection of documents.",
-      "example": "For example, these two commitments reinforce each other"
+      "example": "For example, these two commitments are aligned"
     },
     "apart": {
-      "headline": "{docA} and {docB} show the most potential misalignment: {pct} of their comparisons.",
+      "headline": "{docA} and {docB} have the highest share of potential misalignment: {pct} of their comparisons.",
       "headlineFallback": "{pct} of comparisons show potential misalignment.",
       "themes": "Recurring themes of potential misalignment",
       "themesEmpty": "No recurring potential misalignment was identified for this selection of documents.",
@@ -3014,7 +3019,7 @@
       "more": "{count, plural, one {# more pair of documents} other {# more pairs of documents}}",
       "showAll": "Show all pairs",
       "showFewer": "Show fewer",
-      "row": "{docA} and {docB}: {apart} potential misalignment, {partial} partial link, {reinforce} reinforce each other, from {total, number} comparisons"
+      "row": "{docA} and {docB}: {apart} potential misalignment, {partial} partially aligned, {aligned} aligned, from {total, number} comparisons"
     },
     "areas": {
       "headline": "{area} shows the highest share of potential misalignment: {pct}.",
@@ -3022,18 +3027,19 @@
       "commitmentsCount": "{count, plural, one {# commitment} other {# commitments}}",
       "tooFew": "too few comparisons",
       "average": "average across these areas: {pct}",
-      "row": "{area}: {pct} potential misalignment across {reviewed, number} comparisons"
+      "row": "{area}: {pct} potential misalignment across {comparisons, number} comparisons",
+      "headlineNone": "No rated policy area shows potential misalignment."
     },
     "map": {
       "headlineApart": "Potential misalignment gathers in {doc}: {pct} of its comparisons, against {avg} across all documents.",
-      "headlineTogether": "{doc} reinforces the other documents most: {pct} of its comparisons, against {avg} across all documents.",
+      "headlineTogether": "{doc} is the most closely aligned with the other documents: {pct} of its comparisons, against {avg} across all documents.",
       "headlineEmpty": "No commitment is part of a potential misalignment.",
       "standfirst": "Each square is one commitment, grouped by document.",
       "shading": "Shading",
       "modeApart": "Potential misalignments",
-      "modeTogether": "Reinforcing links",
+      "modeTogether": "Alignment",
       "legendApart": "Potential misalignments per commitment",
-      "legendTogether": "Share of its comparisons that reinforce",
+      "legendTogether": "Share of its comparisons that are aligned",
       "stepsApart": {
         "0": "0",
         "1": "1-2",
@@ -3049,15 +3055,17 @@
         "3": "75% or more"
       },
       "keyApart": "The most involved commitments, numbered on the map",
-      "keyTogether": "The commitments with the most reinforcing links, numbered on the map",
+      "keyTogether": "The commitments aligned with the most other commitments, numbered on the map",
       "keyRowApart": "{label} ({doc}): {count, plural, one {# potential misalignment} other {# potential misalignments}}",
-      "keyRowTogether": "{label} ({doc}): {pct} of its comparisons reinforce",
-      "cell": "{label}, {doc}: {apart, plural, =0 {no potential misalignment} one {# potential misalignment} other {# potential misalignments}}, {reinforce, number} reinforcing links out of {total, number} comparisons",
+      "keyRowTogether": "{label} ({doc}): aligned with {count, plural, one {# commitment} other {# commitments}}",
+      "cell": "{label}, {doc}: {apart, plural, =0 {no potential misalignment} one {# potential misalignment} other {# potential misalignments}}, aligned with {aligned, number} of {total, number} commitments compared",
       "aria": "Map of {count, number} commitments. Use the arrow keys to move between them and Enter to select one.",
-      "hint": "Select a square to see which commitments it works with and against.",
-      "selected": "{apart, plural, =0 {No potential misalignment} one {# potential misalignment} other {# potential misalignments}} · {reinforce, number} reinforcing links",
+      "hint": "Select a square to see which commitments it is aligned with and which it may pull against.",
+      "selected": "{apart, plural, =0 {No potential misalignment} one {# potential misalignment} other {# potential misalignments}} · aligned with {aligned, number} commitments",
       "open": "Show the commitments it is compared with",
-      "clear": "Clear the selection"
+      "clear": "Clear the selection",
+      "headlineFallbackApart": "{pct} of comparisons show potential misalignment.",
+      "headlineFallbackTogether": "{pct} of comparisons are aligned."
     },
     "panel": {
       "back": "Back",
@@ -3065,15 +3073,15 @@
       "error": "This comparison could not be loaded.",
       "pairDialog": "Comparison of two commitments",
       "docPairDialog": "{docA} and {docB}",
-      "docPairCounts": "{total, number} comparisons: {reinforce} reinforce each other, {partial} partial link, {apart} potential misalignment",
+      "docPairCounts": "{total, number} comparisons: {aligned} aligned, {partial} partially aligned, {apart} potential misalignment",
       "docPairLead": "{count, plural, =0 {No potential misalignment between these two documents.} one {# potential misalignment, starting with the commitments that recur most.} other {# potential misalignments, starting with the commitments that recur most.}}",
       "commitmentDialog": "Commitment: {label}",
       "worksAgainst": "{count, plural, =0 {No potential misalignment in this selection} one {Potential misalignment with # commitment} other {Potential misalignment with # commitments}}",
-      "worksWith": "{count, plural, =0 {Reinforces no commitment in this selection} one {Reinforces # commitment} other {Reinforces # commitments}}",
+      "worksWith": "{count, plural, =0 {Aligned with no commitment in this selection} one {Aligned with # commitment} other {Aligned with # commitments}}",
       "showAll": "Show all {count, number}",
       "themeDialog": "Theme: {name}",
       "themeKind": {
-        "reinforcement": "Recurring theme where the documents reinforce each other, identified by AI",
+        "reinforcement": "Recurring theme of alignment, identified by AI",
         "friction": "Recurring theme of potential misalignment, identified by AI"
       },
       "themeSummary": "AI summary",

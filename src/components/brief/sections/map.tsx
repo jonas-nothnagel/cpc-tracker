@@ -16,16 +16,13 @@ function byId(x: MapCell, y: MapCell): number {
   return x.commitment.id < y.commitment.id ? -1 : x.commitment.id > y.commitment.id ? 1 : 0;
 }
 
-/** The five commitments the chosen shading singles out, most first. */
+/** The five commitments the chosen shading singles out, most first: by
+ *  potential misalignments, or by how many commitments they are aligned with. */
 function calloutsFor(cells: MapCell[], mode: MapMode): MapCell[] {
-  const share = (c: MapCell) => (c.total > 0 ? c.reinforce / c.total : 0);
+  const count = (c: MapCell) => (mode === "apart" ? c.apart : c.reinforce);
   return [...cells]
-    .filter((c) => (mode === "apart" ? c.apart > 0 : c.reinforce > 0))
-    .sort((x, y) =>
-      mode === "apart"
-        ? y.apart - x.apart || byId(x, y)
-        : share(y) - share(x) || y.reinforce - x.reinforce || byId(x, y),
-    )
+    .filter((c) => count(c) > 0)
+    .sort((x, y) => count(y) - count(x) || byId(x, y))
     .slice(0, CALLOUTS);
 }
 
@@ -42,9 +39,13 @@ export function MapSection({
   const [selected, setSelected] = useState<string | null>(null);
 
   const shares = useMemo(() => docToneShares(data.scope), [data.scope]);
+  // A selection only counts while its commitment is in the brief; after its
+  // document is left out, the map shows no selection rather than dimming all.
+  const selectedCell = selected ? data.cells.find((c) => c.commitment.id === selected) : undefined;
+  const active = selectedCell ? selected : null;
   const partners = useMemo(
-    () => (selected ? partnersOf(data.scope, selected) : null),
-    [data.scope, selected],
+    () => (active ? partnersOf(data.scope, active) : null),
+    [data.scope, active],
   );
   const callouts = useMemo(() => calloutsFor(data.cells, mode), [data.cells, mode]);
   const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
@@ -67,7 +68,9 @@ export function MapSection({
             pct: pct(lead[tone] / lead.total),
             avg: pct(average),
           })
-        : t("headlineEmpty");
+        : t(mode === "apart" ? "headlineFallbackApart" : "headlineFallbackTogether", {
+            pct: pct(average),
+          });
 
   const steps =
     mode === "apart"
@@ -79,8 +82,6 @@ export function MapSection({
           label: t(`stepsTogether.${k}`),
           fill: INK.green[i],
         }));
-
-  const selectedCell = selected ? data.cells.find((c) => c.commitment.id === selected) : null;
 
   return (
     <SectionFrame id="map" headline={headline} sub={t("standfirst")}>
@@ -104,7 +105,7 @@ export function MapSection({
         docs={data.scope.docs}
         mode={mode}
         callouts={callouts.map((c) => c.commitment.id)}
-        selected={selected}
+        selected={active}
         partners={partners}
         onSelect={setSelected}
       />
@@ -138,7 +139,7 @@ export function MapSection({
           </p>
           <p className="brief-map-selected-text">{selectedCell.commitment.text}</p>
           <p className="brief-map-selected-counts">
-            {t("selected", { apart: selectedCell.apart, reinforce: selectedCell.reinforce })}
+            {t("selected", { apart: selectedCell.apart, aligned: selectedCell.reinforce })}
           </p>
           <p className="brief-map-selected-actions" data-screen-only>
             <button
@@ -173,7 +174,7 @@ export function MapSection({
                       : t("keyRowTogether", {
                           label: commitmentLine(c.commitment, 70),
                           doc: docName(c.commitment.doc),
-                          pct: pct(c.total > 0 ? c.reinforce / c.total : 0),
+                          count: c.reinforce,
                         })}
                   </span>
                 </li>

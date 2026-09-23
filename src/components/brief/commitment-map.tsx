@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { apartStep, reinforceStep, type MapCell } from "@/lib/brief/compute";
 import { cellOrigin, layoutMap } from "@/lib/brief/map-layout";
 import type { BriefCommitment, BriefDocument } from "@/lib/brief/source";
-import { INK } from "./ink";
+import { INK, commitmentLine } from "./ink";
 
 /** Drawing width of the map in sheet pixels (178 mm of content width). */
 export const MAP_WIDTH = 672;
@@ -133,10 +133,10 @@ export function CommitmentMap({
   const docName = (id: string) => docs.find((d) => d.id === id)?.name ?? id;
   const describe = (cell: MapCell) =>
     t("cell", {
-      label: cell.commitment.label,
+      label: commitmentLine(cell.commitment, 70),
       doc: docName(cell.commitment.doc),
       apart: cell.apart,
-      reinforce: cell.reinforce,
+      aligned: cell.reinforce,
       total: cell.total,
     });
 

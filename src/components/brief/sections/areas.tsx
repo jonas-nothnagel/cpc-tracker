@@ -13,9 +13,11 @@ export function AreasSection({ data, lensName }: { data: BriefData; lensName: st
   const areas = data.areas;
   if (!areas) return null;
   const top = areas.rows.find((r) => r.share !== null);
-  const headline = top
-    ? t("areas.headline", { area: top.name, pct: pct(top.share ?? 0) })
-    : t("areas.headlineEmpty");
+  const headline = !top
+    ? t("areas.headlineEmpty")
+    : (top.share ?? 0) > 0
+      ? t("areas.headline", { area: top.name, pct: pct(top.share ?? 0) })
+      : t("areas.headlineNone");
   const scale = Math.max(areas.max, areas.average, 0.01);
   const x = (v: number) => `${((v / scale) * 100).toFixed(2)}%`;
   return (
@@ -39,7 +41,7 @@ export function AreasSection({ data, lensName }: { data: BriefData; lensName: st
                 <span
                   className="brief-area-bar"
                   role="img"
-                  aria-label={t("areas.row", { area: r.name, pct: pct(r.share), reviewed: r.reviewed })}
+                  aria-label={t("areas.row", { area: r.name, pct: pct(r.share), comparisons: r.comparisons })}
                 >
                   <span className="brief-area-fill" style={{ width: x(r.share) }} />
                   <span className="brief-area-avg" style={{ left: x(areas.average) }} />

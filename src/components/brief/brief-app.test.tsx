@@ -1,8 +1,11 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import { BriefApp } from "./brief-app";
+
+vi.mock("@/lib/analytics/client", () => ({ track: vi.fn() }));
+HTMLCanvasElement.prototype.getContext = vi.fn(() => null) as never;
 import { defaultSelection } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
 
@@ -54,12 +57,12 @@ const SOURCE: BriefSource = {
   model: null,
 };
 
-function renderApp() {
+function renderApp(source: BriefSource = SOURCE) {
   return render(
     <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
       <BriefApp
-        source={SOURCE}
-        initialSelection={defaultSelection(SOURCE)}
+        source={source}
+        initialSelection={defaultSelection(source)}
         preparedOn="2026-09-23T10:00:00.000Z"
       />
     </NextIntlClientProvider>,
@@ -106,5 +109,31 @@ describe("BriefApp", () => {
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Map of commitments/ }));
     expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
     expect(window.location.search).toContain("sections=");
+  });
+});
+
+describe("BriefApp accessibility and provenance", () => {
+  it("lets the reader pause and resume the moving text", () => {
+    renderApp();
+    fireEvent.click(screen.getByRole("button", { name: "Pause the moving text" }));
+    expect(document.querySelector(".brief-drift")?.getAttribute("data-paused")).toBe("true");
+    fireEvent.click(screen.getByRole("button", { name: "Play the moving text" }));
+    expect(document.querySelector(".brief-drift")?.getAttribute("data-paused")).toBe("false");
+  });
+
+  it("says when commitment texts are shown in translation", () => {
+    const translated = {
+      ...SOURCE,
+      commitments: SOURCE.commitments.map((c, i) => (i === 0 ? { ...c, translated: "translation" as const } : c)),
+    };
+    renderApp(translated);
+    expect(screen.getByText("Commitment texts on this page are translations of the original documents.")).toBeTruthy();
+    expect(screen.getByText("The moving lines are commitments from the documents, shown in translation.")).toBeTruthy();
+  });
+
+  it("keeps an open drill-down off the printed page", () => {
+    renderApp();
+    fireEvent.click(screen.getAllByTestId("brief-pair-row")[0].querySelector("button") as HTMLElement);
+    expect(screen.getByRole("dialog").closest("[data-screen-only]")).not.toBeNull();
   });
 });

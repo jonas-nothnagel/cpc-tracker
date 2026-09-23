@@ -62,6 +62,7 @@ export function TitleBlock({
   documents,
   comparisons,
   lensName,
+  translation,
   documentNames,
 }: {
   countryName: string;
@@ -69,6 +70,8 @@ export function TitleBlock({
   documents: number;
   comparisons: number;
   lensName: string | null;
+  /** Set when commitment texts are machine translations or translations of originals. */
+  translation?: "machine" | "source" | null;
   documentNames: string[];
 }) {
   const t = useTranslations("brief.sheet");
@@ -81,6 +84,11 @@ export function TitleBlock({
         {lensName && <span className="brief-title-lens">{t("lensScope", { lens: lensName })}</span>}
       </p>
       <p className="brief-title-method">{t("method")}</p>
+      {translation && (
+        <p className="brief-title-method">
+          {t(translation === "machine" ? "translatedMachine" : "translatedSource")}
+        </p>
+      )}
       <p className="brief-title-docs">
         <span className="brief-title-docs-label">{t("documentsTitle")}: </span>
         {documentNames.join("; ")}

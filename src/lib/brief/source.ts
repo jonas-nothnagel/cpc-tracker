@@ -32,6 +32,9 @@ export interface BriefCommitment {
   doc: string;
   label: string;
   text: string;
+  /** Set when the text shown is not the document's own wording: a machine
+   *  translation, or a translation of an original in another language. */
+  translated?: "machine" | "translation";
 }
 
 export interface BriefDocument {
@@ -82,6 +85,20 @@ export function briefDocName(
   return entry.mediumLabel || full || entry.id;
 }
 
+/** Whether the text shown for a raw target in this locale is a translation.
+ *  Machine back-translations are shown only in their own locale (see
+ *  `normalizeTarget`); originals swapped in server-side carry `textLocale`. */
+function translationOf(
+  raw: Record<string, unknown>,
+  locale: string,
+): BriefCommitment["translated"] {
+  const original = raw.textOriginal;
+  if (typeof original !== "string" || !original || original === raw.text) return undefined;
+  if (raw.textOriginalSource === "machine") return raw.language === locale ? "machine" : undefined;
+  if (raw.textLocale && raw.textLocale === raw.language) return undefined;
+  return "translation";
+}
+
 const LENS_SPECS: { id: LensId; key: string; taxonomyType: string }[] = [
   { id: "globe", key: "globeCategories", taxonomyType: "globe" },
   { id: "ipcc", key: "sectors", taxonomyType: "sector" },
@@ -109,9 +126,11 @@ export function buildBriefSource(args: {
     ...(config?.secondaryDocTypes ?? []),
   ]);
 
-  const targets: Target[] = ((data.targets as Record<string, unknown>[]) ?? [])
-    .map((t) => normalizeTarget(t, locale))
-    .filter((t) => !PSEUDO_DOCUMENTS.has(t.sourceDocument));
+  const raws = ((data.targets as Record<string, unknown>[]) ?? []).filter(
+    (t) => !PSEUDO_DOCUMENTS.has(String(t.sourceDocument)),
+  );
+  const translated = new Map(raws.map((t) => [String(t.id), translationOf(t, locale)]));
+  const targets: Target[] = raws.map((t) => normalizeTarget(t, locale));
 
   const present = new Set(targets.map((t) => t.sourceDocument));
   const docOrder = [
@@ -127,7 +146,11 @@ export function buildBriefSource(args: {
         (rank.get(x.t.sourceDocument) ?? 0) - (rank.get(y.t.sourceDocument) ?? 0) ||
         x.i - y.i,
     )
-    .map(({ t }) => ({ id: t.id, doc: t.sourceDocument, label: t.sourceLabel, text: t.text }));
+    .map(({ t }) => {
+      const flag = translated.get(t.id);
+      const c: BriefCommitment = { id: t.id, doc: t.sourceDocument, label: t.sourceLabel, text: t.text };
+      return flag ? { ...c, translated: flag } : c;
+    });
   const indexOf = new Map(commitments.map((c, i) => [c.id, i]));
 
   const counts = new Map<string, number>();

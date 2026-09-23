@@ -1,5 +1,4 @@
 import {
-  buildSectorCoherenceShare,
   computeStorylineLiveStats,
   computeTargetConcentration,
   getDocPairKey,
@@ -123,17 +122,15 @@ export function toneCounts(comparisons: { level: AlignmentLevel }[]): ToneCounts
   return counts;
 }
 
-export type Verdict = "mostly_aligned" | "mixed" | "lots_of_misalignment";
+/** Which reading the overall picture leads with. Shares are of ALL
+ *  comparisons, so the headline never claims more than the dots show:
+ *  "aligned" when aligned comparisons are at least as many as partial ones,
+ *  "partial" when partial links are the larger group, "empty" with none. */
+export type OverallLead = "empty" | "aligned" | "partial";
 
-/** The dashboard's headline verdict (`pickHeadlineVerdict`): the share of
- *  potential misalignment among comparisons with a clear reading, against
- *  the same 15% and 30% thresholds. */
-export function verdictOf(counts: ToneCounts): Verdict {
-  const clear = counts.apart + counts.reinforce;
-  const share = clear > 0 ? counts.apart / clear : 0;
-  if (share < 0.15) return "mostly_aligned";
-  if (share < 0.3) return "mixed";
-  return "lots_of_misalignment";
+export function overallLead(counts: ToneCounts): OverallLead {
+  if (counts.total === 0) return "empty";
+  return counts.partial > counts.reinforce ? "partial" : "aligned";
 }
 
 // ─── Pairs of documents ─────────────────────────────────────────────
@@ -424,59 +421,76 @@ export function partnersOf(
 
 // ─── Policy areas ───────────────────────────────────────────────────
 
+/** Fewest comparisons a policy area needs before the brief rates it; the
+ *  same floor as for a pair of documents. */
+export const MIN_AREA_COMPARISONS = 30;
+
 export interface AreaRow {
   id: string;
   name: string;
   /** Selected commitments whose primary area this is. */
   commitments: number;
-  /** Comparisons touching the area that reinforce or show potential misalignment. */
-  reviewed: number;
+  /** Comparisons touching one of those commitments, whatever their reading. */
+  comparisons: number;
   apart: number;
-  /** apart / reviewed; null below the dashboard's minimum sample. */
+  /** apart / comparisons; null below the minimum. */
   share: number | null;
 }
 
 /**
  * Policy areas of one lens, rated by their share of potential misalignment
- * (the dashboard's `buildSectorCoherenceShare`, which leaves thin areas
- * unrated). Areas without selected commitments are left out.
+ * over ALL their comparisons, the same basis as every other share in the
+ * brief (a comparison between two areas counts for both). Areas without
+ * selected commitments are left out; thin areas stay unrated.
  */
 export function areaRows(
   source: BriefSource,
   scope: Scope,
   lensId: LensId,
+  minComparisons = MIN_AREA_COMPARISONS,
 ): { rows: AreaRow[]; average: number; max: number } {
   const lens = source.lenses.find((l) => l.id === lensId);
   if (!lens) return { rows: [], average: 0, max: 0 };
   const inScope = new Set(scope.commitments.map((c) => c.id));
-  const classifications = Object.entries(lens.primary)
-    .filter(([targetId]) => inScope.has(targetId))
-    .map(([targetId, categoryId]) => ({
-      targetId,
-      categoryId,
-      taxonomyType: lens.taxonomyType,
-      isPrimary: true,
-    }));
-  const summary = buildSectorCoherenceShare({
-    targets: scope.targets,
-    alignment: scope.alignment,
-    classifications,
-    categories: lens.categories,
-    taxonomyType: lens.taxonomyType,
-  });
+  const primary = new Map(
+    Object.entries(lens.primary).filter(([targetId]) => inScope.has(targetId)),
+  );
   const members = new Map<string, number>();
-  for (const c of classifications) members.set(c.categoryId, (members.get(c.categoryId) ?? 0) + 1);
+  for (const category of primary.values()) members.set(category, (members.get(category) ?? 0) + 1);
+
+  const stats = new Map<string, { comparisons: number; apart: number }>();
+  let touching = 0;
+  let touchingApart = 0;
+  for (const c of scope.comparisons) {
+    const areas = new Set(
+      [primary.get(c.a.id), primary.get(c.b.id)].filter((x): x is string => Boolean(x)),
+    );
+    if (areas.size === 0) continue;
+    const apart = toneOf(c.level) === "apart";
+    touching += 1;
+    if (apart) touchingApart += 1;
+    for (const area of areas) {
+      const entry = stats.get(area) ?? { comparisons: 0, apart: 0 };
+      entry.comparisons += 1;
+      if (apart) entry.apart += 1;
+      stats.set(area, entry);
+    }
+  }
+
+  let max = 0;
   const rows: AreaRow[] = lens.categories
     .filter((cat) => (members.get(cat.id) ?? 0) > 0)
     .map((cat) => {
-      const share = summary.byCategory.get(cat.id);
+      const entry = stats.get(cat.id) ?? { comparisons: 0, apart: 0 };
+      const share = entry.comparisons >= minComparisons ? entry.apart / entry.comparisons : null;
+      if (share !== null && share > max) max = share;
       return {
         id: cat.id,
         name: cat.name,
         commitments: members.get(cat.id) ?? 0,
-        reviewed: share?.reviewedPairs ?? 0,
-        apart: share?.flaggedPairs ?? 0,
-        share: share?.flaggedShare ?? null,
+        comparisons: entry.comparisons,
+        apart: entry.apart,
+        share,
       };
     })
     .sort((x, y) => {
@@ -485,7 +499,7 @@ export function areaRows(
       const d = (y.share ?? 0) - (x.share ?? 0) || y.commitments - x.commitments;
       return d !== 0 ? d : x.name.localeCompare(y.name);
     });
-  return { rows, average: summary.mid, max: summary.maxShare };
+  return { rows, average: touching > 0 ? touchingApart / touching : 0, max };
 }
 
 /**

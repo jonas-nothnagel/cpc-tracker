@@ -2914,10 +2914,13 @@
       "commitments": "{count, plural, one {# compromiso.} other {# compromisos.}}",
       "documents": "{count, plural, one {# documento de política.} other {# documentos de política.}}",
       "comparisons": "{count, plural, one {# comparación.} other {# comparaciones.}}",
-      "lead": "Cada compromiso se contrasta con todos los compromisos de los demás documentos, para mostrar dónde las políticas se refuerzan entre sí y dónde pueden divergir.",
+      "lead": "Cada compromiso se contrasta con todos los compromisos de los demás documentos, para mostrar dónde las políticas están alineadas y dónde pueden divergir.",
       "read": "Leer la nota",
       "customize": "Elegir el contenido de la nota",
-      "quoted": "Las líneas en movimiento son compromisos citados de los documentos."
+      "quoted": "Las líneas en movimiento son compromisos citados de los documentos.",
+      "quotedTranslated": "Las líneas en movimiento son compromisos de los documentos, mostrados en traducción.",
+      "pause": "Pausar el texto en movimiento",
+      "play": "Reanudar el texto en movimiento"
     },
     "builder": {
       "title": "Componer la nota",
@@ -2942,8 +2945,10 @@
       "title": "Nota de coherencia de políticas",
       "scope": "{commitments, plural, one {# compromiso} other {# compromisos}} en {documents, plural, one {# documento de política} other {# documentos de política}}, comparados {comparisons, plural, one {# vez} other {# veces}}",
       "lensScope": "Áreas de política: {lens}",
-      "method": "Cada compromiso confirmado por personas expertas nacionales se compara con todos los compromisos de los demás documentos. Un modelo de IA lee ambos textos y califica cada comparación, leyendo únicamente el texto de política que recibe. Las calificaciones son puntos de partida para la revisión experta, no conclusiones.",
-      "documentsTitle": "Documentos de esta nota"
+      "method": "Cada compromiso de estos documentos se compara con todos los compromisos de los demás documentos. Un modelo de IA lee ambos textos y califica cada comparación, leyendo únicamente el texto de política que recibe. Las calificaciones son puntos de partida para la revisión experta, no conclusiones.",
+      "documentsTitle": "Documentos de esta nota",
+      "translatedMachine": "Los textos de los compromisos en esta página son traducciones automáticas del texto que leyó el análisis.",
+      "translatedSource": "Los textos de los compromisos en esta página son traducciones de los documentos originales."
     },
     "sections": {
       "overall": "El panorama general",
@@ -2955,30 +2960,30 @@
       "areas": "Por área de política"
     },
     "tone": {
-      "reinforce": "se refuerzan entre sí",
-      "partial": "vínculo parcial",
+      "reinforce": "alineados",
+      "partial": "parcialmente alineados",
       "apart": "posible desalineación",
-      "none": "sin vínculo claro"
+      "none": "sin relación clara"
     },
     "overall": {
       "headline": {
-        "mostly_aligned": "Las políticas de {country} se refuerzan en gran medida entre sí.",
-        "mixed": "La coherencia entre las políticas de {country} es desigual.",
-        "lots_of_misalignment": "Las políticas de {country} muestran una posible desalineación considerable."
+        "aligned": "{aligned} de las comparaciones entre las políticas de {country} están alineadas; {apart} muestran una posible desalineación.",
+        "partial": "{partial} de las comparaciones entre las políticas de {country} están parcialmente alineadas, {aligned} están alineadas y {apart} muestran una posible desalineación.",
+        "empty": "No hay comparaciones en esta selección."
       },
       "unitOne": "Cada punto es una comparación entre dos compromisos.",
       "unitMany": "Cada punto representa {count, number} comparaciones entre dos compromisos.",
       "group": "{count, number} comparaciones ({pct}): {tone}"
     },
     "together": {
-      "headline": "{docA} y {docB} son los que más se refuerzan entre sí: {pct} de sus comparaciones.",
-      "headlineFallback": "Los documentos se refuerzan entre sí en {pct} de las comparaciones.",
-      "themes": "Temas recurrentes de refuerzo mutuo",
+      "headline": "{docA} y {docB} son los más alineados: {pct} de sus comparaciones.",
+      "headlineFallback": "{pct} de las comparaciones están alineadas.",
+      "themes": "Temas recurrentes de alineación",
       "themesEmpty": "No se identificó ningún tema recurrente para esta selección de documentos.",
-      "example": "Por ejemplo, estos dos compromisos se refuerzan entre sí"
+      "example": "Por ejemplo, estos dos compromisos están alineados"
     },
     "apart": {
-      "headline": "{docA} y {docB} muestran la mayor posible desalineación: {pct} de sus comparaciones.",
+      "headline": "{docA} y {docB} tienen la mayor proporción de posible desalineación: {pct} de sus comparaciones.",
       "headlineFallback": "{pct} de las comparaciones muestran una posible desalineación.",
       "themes": "Temas recurrentes de posible desalineación",
       "themesEmpty": "No se identificó ninguna posible desalineación recurrente para esta selección de documentos.",
@@ -3014,7 +3019,7 @@
       "more": "{count, plural, one {# par de documentos más} other {# pares de documentos más}}",
       "showAll": "Mostrar todos los pares",
       "showFewer": "Mostrar menos",
-      "row": "{docA} y {docB}: {apart} posible desalineación, {partial} vínculo parcial, {reinforce} se refuerzan entre sí, en {total, number} comparaciones"
+      "row": "{docA} y {docB}: {apart} posible desalineación, {partial} parcialmente alineados, {aligned} alineados, en {total, number} comparaciones"
     },
     "areas": {
       "headline": "{area} muestra la mayor proporción de posible desalineación: {pct}.",
@@ -3022,18 +3027,19 @@
       "commitmentsCount": "{count, plural, one {# compromiso} other {# compromisos}}",
       "tooFew": "pocas comparaciones",
       "average": "promedio de estas áreas: {pct}",
-      "row": "{area}: {pct} de posible desalineación en {reviewed, number} comparaciones"
+      "row": "{area}: {pct} de posible desalineación en {comparisons, number} comparaciones",
+      "headlineNone": "Ningún área de política calificada muestra posible desalineación."
     },
     "map": {
       "headlineApart": "La posible desalineación se concentra en {doc}: {pct} de sus comparaciones, frente a {avg} en el conjunto de los documentos.",
-      "headlineTogether": "{doc} es el que más refuerza a los demás documentos: {pct} de sus comparaciones, frente a {avg} en el conjunto.",
+      "headlineTogether": "{doc} es el más alineado con los demás documentos: {pct} de sus comparaciones, frente a {avg} en el conjunto.",
       "headlineEmpty": "Ningún compromiso forma parte de una posible desalineación.",
       "standfirst": "Cada cuadrado es un compromiso, agrupado por documento.",
       "shading": "Sombreado",
       "modeApart": "Posibles desalineaciones",
-      "modeTogether": "Vínculos de refuerzo",
+      "modeTogether": "Alineación",
       "legendApart": "Posibles desalineaciones por compromiso",
-      "legendTogether": "Proporción de sus comparaciones que se refuerzan",
+      "legendTogether": "Proporción de sus comparaciones que están alineadas",
       "stepsApart": {
         "0": "0",
         "1": "1-2",
@@ -3049,15 +3055,17 @@
         "3": "75 % o más"
       },
       "keyApart": "Los compromisos más implicados, numerados en el mapa",
-      "keyTogether": "Los compromisos con más vínculos de refuerzo, numerados en el mapa",
+      "keyTogether": "Los compromisos alineados con más compromisos, numerados en el mapa",
       "keyRowApart": "{label} ({doc}): {count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
-      "keyRowTogether": "{label} ({doc}): {pct} de sus comparaciones se refuerzan",
-      "cell": "{label}, {doc}: {apart, plural, =0 {ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}}, {reinforce, number} vínculos de refuerzo de {total, number} comparaciones",
+      "keyRowTogether": "{label} ({doc}): alineado con {count, plural, one {# compromiso} other {# compromisos}}",
+      "cell": "{label}, {doc}: {apart, plural, =0 {ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}}, alineado con {aligned, number} de {total, number} compromisos comparados",
       "aria": "Mapa de {count, number} compromisos. Use las flechas para desplazarse entre ellos e Intro para seleccionar uno.",
-      "hint": "Seleccione un cuadrado para ver con qué compromisos se refuerza y con cuáles podría divergir.",
-      "selected": "{apart, plural, =0 {Ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}} · {reinforce, number} vínculos de refuerzo",
+      "hint": "Seleccione un cuadrado para ver con qué compromisos está alineado y con cuáles podría divergir.",
+      "selected": "{apart, plural, =0 {Ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}} · alineado con {aligned, number} compromisos",
       "open": "Ver los compromisos con los que se compara",
-      "clear": "Quitar la selección"
+      "clear": "Quitar la selección",
+      "headlineFallbackApart": "{pct} de las comparaciones muestran una posible desalineación.",
+      "headlineFallbackTogether": "{pct} de las comparaciones están alineadas."
     },
     "panel": {
       "back": "Volver",
@@ -3065,15 +3073,15 @@
       "error": "No se pudo cargar esta comparación.",
       "pairDialog": "Comparación de dos compromisos",
       "docPairDialog": "{docA} y {docB}",
-      "docPairCounts": "{total, number} comparaciones: {reinforce} se refuerzan entre sí, {partial} vínculo parcial, {apart} posible desalineación",
+      "docPairCounts": "{total, number} comparaciones: {aligned} alineadas, {partial} parcialmente alineadas, {apart} posible desalineación",
       "docPairLead": "{count, plural, =0 {No hay posible desalineación entre estos dos documentos.} one {# posible desalineación, empezando por los compromisos que más se repiten.} other {# posibles desalineaciones, empezando por los compromisos que más se repiten.}}",
       "commitmentDialog": "Compromiso: {label}",
       "worksAgainst": "{count, plural, =0 {Ninguna posible desalineación en esta selección} one {Posible desalineación con # compromiso} other {Posible desalineación con # compromisos}}",
-      "worksWith": "{count, plural, =0 {No refuerza ningún compromiso de esta selección} one {Refuerza # compromiso} other {Refuerza # compromisos}}",
+      "worksWith": "{count, plural, =0 {No está alineado con ningún compromiso de esta selección} one {Alineado con # compromiso} other {Alineado con # compromisos}}",
       "showAll": "Mostrar los {count, number}",
       "themeDialog": "Tema: {name}",
       "themeKind": {
-        "reinforcement": "Tema recurrente en el que los documentos se refuerzan entre sí, identificado por IA",
+        "reinforcement": "Tema recurrente de alineación, identificado por IA",
         "friction": "Tema recurrente de posible desalineación, identificado por IA"
       },
       "themeSummary": "Resumen de la IA",

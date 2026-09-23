@@ -9,7 +9,7 @@ describe("buildBriefData", () => {
 
   it("counts the selection and reads its verdict", () => {
     expect(data.counts).toEqual({ reinforce: 72, partial: 21, apart: 15, none: 0, total: 108 });
-    expect(data.verdict).toBe("mixed");
+    expect(data.lead).toBe("aligned");
   });
 
   it("names the pairs of documents that lead each way", () => {
