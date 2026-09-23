@@ -4,7 +4,8 @@
   "docProvenance": {
     "NDC": "Mongolia NDC 3.0 under the UNFCCC Paris Agreement, submitted September 2025 (English official submission)",
     "NITIPA": "National targets for implementation of the Paris Agreement, Government of Mongolia Resolution No. 91 (10 September 2025); Mongolian original on legalinfo.mn. English target text is a translation supplied with the partner-curated targets spreadsheet (August 2026).",
-    "NAP": "Mongolia NAP, completed 2024 (per BTR1 Section 3.9.1.8, Table III.8)",
+    "NBSAP": "Mongolia's 20 national biodiversity targets for 2030 (NT01 to NT20), in the wording filed with the CBD Online Reporting Tool (first filed August 2024, last updated February 2026). The Seventh National Report (NR7) reports progress against this wording. The Government approved the National Biodiversity Strategy and Action Plan 2026–2030 on 10 June 2026 (Resolution No. 246); it keeps the same 20 targets and revises the wording of several.",
+    "NAP": "National Adaptation Plan to Climate Change 2024–2030, English edition published on unfccc.int (March 2025)",
     "BTR": "Mongolia BTR1 (December 2025)",
     "SECTORAL": "Vision 2050 Long-term Development Policy, Parliament Resolution 52, May 2020",
     "FSS": "Food Supply and Security Measures, Mongolia Parliament Resolution 36 (17 June 2022)",
@@ -22,7 +23,7 @@
   "_financingLayoutComment": "The financing (Level 2) slide uses the FundingTargetGrid wide-grid layout, same as Panama, so the section reads consistently across BER countries. Mongolia's BER supports it: 153 of 178 targets carry aligned spend with a wide range (65-890bn MNT, so relative-volume tiers are meaningful) and per-year executed expenditure (2020-2024) for the drill-down chart. Known degradation: BER programmes carry no institution field, so the drawer's grouped-by-institution expansion collapses into the single fallback bucket; the flat contributor list is unaffected. Set to 'dotmap' (or remove) to restore the DocumentCoverage matched/unmatched view.",
   "financingLayout": "grid",
   "defaultHiddenDocTypes": [],
-  "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel; urls verified HTTP 200 on 2026-06-30 (NDC 3.0 and NITIPA urls verified 2026-08-09) by reading the document's cover/front matter. Sources: Vision 2050 on cabinet.gov.mn; NDC 3.0 (2025), NAP and BTR1 on unfccc.int; NBSAP (the 2015 National Biodiversity Program, CBD; English is an unofficial translation) on cbd.int; FSS = State Great Hural Resolution 36 of 17 Jun 2022 and NITIPA = Government Resolution No. 91 of 10 Sep 2025 on legalinfo.mn (both Mongolian only, no official English version); NRVTS and ILDN on unccd.int. Objectives for Vision 2050 and the NDC are verbatim from those documents. ILDN's cover carries no date (UNCCD repository folder dated Feb 2019) so its published is omitted. BER (internal expenditure review) and OTHER (catch-all) have no public single-document source, so no metadata is set. The 27 NDC targets analysed before August 2026 mixed NDC 3.0 content with Resolution 91 content; the corpus now separates them (NDC vs NITIPA).",
+  "_documentMetaComment": "Reference metadata (docKind / published / author / url / objective) for the doc-focus panel; urls verified HTTP 200 on 2026-06-30 (NDC 3.0 and NITIPA urls verified 2026-08-09) by reading the document's cover/front matter. Sources: Vision 2050 on cabinet.gov.mn; NDC 3.0 (2025), NAP and BTR1 on unfccc.int; NBSAP = Mongolia's CBD-filed national targets (ORT records NT01-NT20, all 20 verified identical to the corpus text on 2026-09-23) on ort.cbd.int, NOT the 2015 National Biodiversity Program (Government Resolution No. 325 of 4 Aug 2015, repealed when the NBSAP 2026-2030 was approved by Government Resolution No. 246 of 10 Jun 2026; CBD record https://ort.cbd.int/database/record?documentID=300694). The approved NBSAP keeps NT01-NT20 in order but rewords several (e.g. NT3 adds OECMs, NT7 adds emission reduction and sequestration), so the corpus text is the pre-approval CBD wording that NR7 reports against. NAP re-verified 2026-09-23 against the unfccc.int PDF (National Adaptation Plan to Climate Change 2024-2030): 14 of 15 target texts verbatim; NAP_7's text and the NAP action lines come from the partner-curated targets spreadsheet and are not in that PDF; FSS = State Great Hural Resolution 36 of 17 Jun 2022 and NITIPA = Government Resolution No. 91 of 10 Sep 2025 on legalinfo.mn (both Mongolian only, no official English version); NRVTS and ILDN on unccd.int. Objectives for Vision 2050 and the NDC are verbatim from those documents. ILDN's cover carries no date (UNCCD repository folder dated Feb 2019) so its published is omitted. BER (internal expenditure review) and OTHER (catch-all) have no public single-document source, so no metadata is set. The 27 NDC targets analysed before August 2026 mixed NDC 3.0 content with Resolution 91 content; the corpus now separates them (NDC vs NITIPA).",
   "_docClassComment": "Machine-readable document classification (docClass) and national-hierarchy level (docTier) consumed by src/lib/doc-taxonomy. Added Aug 2026 to bring Mongolia to parity with Panama (same focal-group rationale: undifferentiated documents lead readers to misread relationships). THE VOCABULARY IS PROJECT-DEFINED (see DOC_CLASSES in src/lib/doc-taxonomy); EACH ASSIGNMENT TRACES TO THE DOCUMENT'S OWN SELF-DESCRIPTION recorded in docKind / fullLabel below, never its subject matter: SECTORAL is Vision 2050, the whole-of-government Long-term Development Policy every other instrument answers to and this tool's declared anchorDocType (strategic_plan; tier 1 - it is not term-scoped like Panama's PEG, noted as a deliberate deviation from the class's term-plan wording). NDC is a contribution declared to the UNFCCC (commitment, tier 2); NRVTS declares voluntary national LDN targets to the UNCCD, the same act as an NDC (commitment, tier 2). NITIPA is a government resolution operationalising the Paris Agreement domestically (roadmap, tier 3). NBSAP calls itself a Strategy and Action Plan for one theme (sector_strategy, tier 3); NAP and FSS are theme-scoped national plans / sectoral measures (sector_plan, tier 3). BER is an expenditure review, not a policy instrument (reporting, tier 5). ILDN (a country profile / investment case) and OTHER map to no class and are deliberately left unassigned; BTR is not listed because reporting / tier 5 comes from the reserved-token defaults in doc-taxonomy. NOT YET REVIEWED BY THE COUNTRY OFFICE - confirm before this ships.",
   "documentTypes": [
     {
@@ -70,19 +71,20 @@
       "id": "NBSAP",
       "shortLabel": "NBSAP",
       "mediumLabel": "NBSAP",
-      "fullLabel": "National Biodiversity Strategy & Action Plan",
+      "fullLabel": "National biodiversity targets for 2030 (NBSAP, as filed with the CBD)",
       "color": "#0d9488",
       "docClass": "sector_strategy",
       "docTier": 3,
       "docKind": "National Biodiversity Strategy and Action Plan (CBD)",
-      "published": "2015",
-      "author": "Ministry of Environment, Green Development and Tourism (Government of Mongolia)"
+      "published": "February 2026",
+      "author": "Government of Mongolia (Ministry of Environment and Climate Change)",
+      "url": "https://ort.cbd.int/national-targets?recordTypes=nationalTarget7&countries=mn"
     },
     {
       "id": "NAP",
       "shortLabel": "NAP",
       "mediumLabel": "NAP",
-      "fullLabel": "National Adaptation Plan",
+      "fullLabel": "National Adaptation Plan to Climate Change 2024–2030",
       "color": "#b45309",
       "docClass": "sector_plan",
       "docTier": 3,
