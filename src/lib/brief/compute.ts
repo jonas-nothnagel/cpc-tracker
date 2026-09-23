@@ -1,4 +1,17 @@
-import type { AlignmentLevel, AlignmentMechanism, AlignmentResult, Target } from "@/types";
+import {
+  computeStorylineLiveStats,
+  getDocPairKey,
+  getStorylineDocPairKeys,
+  rankStorylines,
+  selectCorpusThemesForState,
+} from "@/lib/coherence-briefing";
+import type {
+  AlignmentLevel,
+  AlignmentMechanism,
+  AlignmentResult,
+  CorpusStoryline,
+  Target,
+} from "@/types";
 import {
   LEVEL_CODES,
   MECHANISM_CODES,
@@ -185,4 +198,100 @@ export function leadingPair(
     if (d > 0 || (d === 0 && s.counts.total > best.counts.total)) best = s;
   }
   return best;
+}
+
+// ─── Recurring themes ───────────────────────────────────────────────
+
+export interface ThemeRow {
+  storyline: CorpusStoryline;
+  /** Comparisons of the theme's tone inside its pairs of documents,
+   *  counted live for the selection. */
+  count: number;
+  /** Document id -> share of the theme's comparisons it takes part in
+   *  (a comparison counts for both its documents). */
+  docShares: Record<string, number>;
+}
+
+/**
+ * The AI-identified recurring themes of one tone, for the selected documents:
+ * names from the theme state written for this selection (or the full set,
+ * with `exact` false), counts and document shares computed live from the
+ * ratings, ranked as the dashboard ranks them. Themes with nothing left in
+ * the selection are dropped.
+ */
+export function themeRows(
+  source: BriefSource,
+  scope: Scope,
+  type: "reinforcement" | "friction",
+): { rows: ThemeRow[]; exact: boolean } {
+  const { themes, isExact } = selectCorpusThemesForState(source.themes, scope.hiddenDocs);
+  if (!themes) return { rows: [], exact: true };
+  const storylines = themes.storylines.filter((s) => s.type === type);
+  const stats = computeStorylineLiveStats(storylines, scope.alignment, scope.targets);
+  const rows: ThemeRow[] = [];
+  for (const s of rankStorylines(storylines, type, (x) => stats.get(x)?.liveCount ?? 0)) {
+    const st = stats.get(s);
+    if (!st || st.liveCount === 0) continue;
+    const docShares: Record<string, number> = {};
+    for (const [doc, n] of st.docCounts) docShares[doc] = n / st.liveCount;
+    rows.push({ storyline: s, count: st.liveCount, docShares });
+  }
+  return { rows, exact: isExact };
+}
+
+/** Three steps for how much of a theme a document carries; 0 = no part. */
+export function shareStep(share: number): 0 | 1 | 2 | 3 {
+  if (share <= 0) return 0;
+  if (share <= 0.1) return 1;
+  if (share <= 0.25) return 2;
+  return 3;
+}
+
+export interface ExamplePair {
+  a: BriefCommitment;
+  b: BriefCommitment;
+  level: AlignmentLevel;
+  mechanism?: AlignmentMechanism;
+}
+
+function commitmentPairKey(a: string, b: string): string {
+  return a < b ? `${a}__${b}` : `${b}__${a}`;
+}
+
+/**
+ * One example for a theme, chosen by rule rather than taste: a comparison of
+ * the theme's tone inside its pairs of documents, preferring the commitments
+ * the theme was written around (its anchors), then a strong over a moderate
+ * link, then the commitments that recur most in the theme, then the pair key.
+ */
+export function themeExample(scope: Scope, storyline: CorpusStoryline): ExamplePair | null {
+  const keys = getStorylineDocPairKeys(storyline);
+  const friction = storyline.type === "friction";
+  const candidates = scope.comparisons.filter(
+    (c) =>
+      keys.has(getDocPairKey(c.a.doc, c.b.doc)) &&
+      (friction ? c.level === "flagged" : c.level === "high" || c.level === "medium"),
+  );
+  if (candidates.length === 0) return null;
+  const anchors = new Set(storyline.anchor_target_ids ?? []);
+  const involvement = new Map<string, number>();
+  for (const c of candidates) {
+    for (const id of [c.a.id, c.b.id]) involvement.set(id, (involvement.get(id) ?? 0) + 1);
+  }
+  const anchorsIn = (c: ScopedComparison) =>
+    (anchors.has(c.a.id) ? 1 : 0) + (anchors.has(c.b.id) ? 1 : 0);
+  const levelRank = (c: ScopedComparison) => (c.level === "high" ? 0 : 1);
+  const recurring = (c: ScopedComparison) =>
+    (involvement.get(c.a.id) ?? 0) + (involvement.get(c.b.id) ?? 0);
+  const best = [...candidates].sort((x, y) => {
+    const d =
+      anchorsIn(y) - anchorsIn(x) || levelRank(x) - levelRank(y) || recurring(y) - recurring(x);
+    if (d !== 0) return d;
+    const kx = commitmentPairKey(x.a.id, x.b.id);
+    const ky = commitmentPairKey(y.a.id, y.b.id);
+    return kx < ky ? -1 : kx > ky ? 1 : 0;
+  })[0];
+  return best.mechanism
+    ? { a: best.a, b: best.b, level: best.level, mechanism: best.mechanism }
+    : { a: best.a, b: best.b, level: best.level };
 }

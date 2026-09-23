@@ -3,12 +3,16 @@ import {
   docPairStats,
   leadingPair,
   scopeOf,
+  shareStep,
+  themeExample,
+  themeRows,
   toneCounts,
   toneOf,
   verdictOf,
   type DocPairStat,
 } from "./compute";
 import type { BriefCommitment, BriefDocument, BriefSource } from "./source";
+import type { CorpusStoryline } from "@/types";
 
 function doc(id: string): BriefDocument {
   return { id, code: id, name: `Document ${id}`, full: id, color: "#000", count: 0, defaultOn: true };
@@ -157,5 +161,127 @@ describe("leadingPair", () => {
     const tied = [make("A", "B", 10, 100), make("A", "C", 20, 200), make("B", "C", 20, 200)];
     const lead = leadingPair(tied, "apart");
     expect([lead?.a.id, lead?.b.id]).toEqual(["A", "C"]);
+  });
+});
+
+// ─── Task 5: recurring themes ─────────────────────────────────────────
+
+
+function storyline(
+  name: string,
+  type: CorpusStoryline["type"],
+  pairs: string[],
+  confidence: CorpusStoryline["confidence"],
+  anchors: string[] = [],
+): CorpusStoryline {
+  return {
+    name,
+    type,
+    description: `About ${name}`,
+    contributing_doc_pairs: pairs,
+    confidence,
+    pair_count: 999,
+    spans_documents: [],
+    anchor_target_ids: anchors,
+  };
+}
+
+const RESTORATION = storyline("Shared land restoration", "reinforcement", ["A<->B", "A<->C"], "high", [
+  "A2",
+  "C1",
+]);
+const WATER = storyline("Water allocation pressure", "friction", ["A<->C"], "high", ["A3"]);
+const GOALS = storyline("Goal overlap", "friction", ["A<->B"], "medium");
+const DELIVERY = storyline("Delivery overlap", "friction", ["B<->C"], "medium");
+
+function withThemes(states?: Record<string, CorpusStoryline[]>): BriefSource {
+  const full = {
+    storylines: [RESTORATION, WATER, GOALS, DELIVERY],
+    summary_paragraph: "",
+    doc_pair_count: 3,
+    schema_version: 2,
+  };
+  return {
+    ...SOURCE,
+    themes: {
+      ...full,
+      states: {
+        "": full,
+        ...Object.fromEntries(
+          Object.entries(states ?? {}).map(([k, storylines]) => [k, { ...full, storylines }]),
+        ),
+      },
+    },
+  };
+}
+
+describe("themeRows", () => {
+  it("counts each theme's comparisons live and shares them out by document", () => {
+    const source = withThemes();
+    const { rows, exact } = themeRows(source, scopeOf(source, ["A", "B", "C"]), "reinforcement");
+    expect(exact).toBe(true);
+    expect(rows.map((r) => [r.storyline.name, r.count, r.docShares])).toEqual([
+      ["Shared land restoration", 6, { A: 1, B: 0.5, C: 0.5 }],
+    ]);
+  });
+
+  it("ranks by confidence, then live count, then name", () => {
+    const source = withThemes();
+    const { rows } = themeRows(source, scopeOf(source, ["A", "B", "C"]), "friction");
+    expect(rows.map((r) => [r.storyline.name, r.count])).toEqual([
+      ["Water allocation pressure", 2],
+      ["Delivery overlap", 1],
+      ["Goal overlap", 1],
+    ]);
+  });
+
+  it("drops themes with nothing left in the selection and says when names are not exact", () => {
+    const source = withThemes();
+    const { rows, exact } = themeRows(source, scopeOf(source, ["A", "B"]), "friction");
+    expect(rows.map((r) => r.storyline.name)).toEqual(["Goal overlap"]);
+    expect(exact).toBe(false);
+  });
+
+  it("uses the theme state written for the selection when there is one", () => {
+    const renamed = { ...GOALS, name: "Goal overlap between A and B" };
+    const source = withThemes({ C: [renamed] });
+    const { rows, exact } = themeRows(source, scopeOf(source, ["A", "B"]), "friction");
+    expect(exact).toBe(true);
+    expect(rows.map((r) => r.storyline.name)).toEqual(["Goal overlap between A and B"]);
+  });
+
+  it("returns no rows when the country has no themes", () => {
+    expect(themeRows(SOURCE, scopeOf(SOURCE, ["A", "B", "C"]), "friction")).toEqual({
+      rows: [],
+      exact: true,
+    });
+  });
+});
+
+describe("shareStep", () => {
+  it("puts a document's share of a theme into three steps", () => {
+    expect([0, 0.1, 0.1001, 0.25, 0.2501, 1].map(shareStep)).toEqual([0, 1, 2, 2, 3, 3]);
+  });
+});
+
+describe("themeExample", () => {
+  const scope = scopeOf(SOURCE, ["A", "B", "C"]);
+
+  it("prefers two anchor commitments over a pair that appears more often", () => {
+    const example = themeExample(scope, RESTORATION);
+    expect([example?.a.id, example?.b.id, example?.level]).toEqual(["A2", "C1", "medium"]);
+  });
+
+  it("breaks remaining ties by the pair key and keeps the mechanism", () => {
+    const example = themeExample(scope, WATER);
+    expect([example?.a.id, example?.b.id, example?.mechanism]).toEqual([
+      "A3",
+      "C1",
+      "resource_competition",
+    ]);
+  });
+
+  it("returns null when none of the theme's comparisons are in the selection", () => {
+    expect(themeExample(scopeOf(SOURCE, ["A", "B"]), WATER)).toBeNull();
   });
 });
