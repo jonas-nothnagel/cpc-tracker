@@ -6,7 +6,8 @@
  * count-aware ramp applied only to the default "strong + potential
  * misalignment" state, and the "potential misalignment only" state drew every
  * dashed red ribbon at a fixed 0.55 opacity / 2 px, which turned Sri Lanka's
- * 866 flagged pairs into a solid mass. Both states now share one rule: ink
+ * then-866 flagged pairs into a solid mass (its 23 Sep 2026 corpus flags 315,
+ * and Panama still flags 1,172). Both states now share one rule: ink
  * falls linearly with the number of drawn edges between RAMP_START and
  * RAMP_END, with the flagged ramp starting higher because dashed strokes carry
  * less ink per pixel than solid ones.
