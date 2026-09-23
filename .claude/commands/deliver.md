@@ -8,7 +8,7 @@ If `$ARGUMENTS` is provided, treat it as the branch name hint (e.g. `fix/lint-br
 
 ### 1. Ship
 
-**First, ask the user for the two interactive Azure steps the deploy (step 6) needs**, so they can do them while the PR is reviewed rather than blocking at the end: `! az login` (the token expires weekly), and activating PIM Contributor (lasts 2h). Details in step 6.2.
+**First, ask the user for the two interactive Azure steps the deploy (step 6) needs**, so they can do them while the PR is reviewed rather than blocking at the end: `! az login` (the token expires weekly), and activating PIM Contributor (lasts 2h). Details in step 6.1.
 
 Follow the `/ship` workflow:
 
@@ -68,23 +68,36 @@ Follow the `/sync` workflow:
 
 Azure App Service `cpc-tracker-c657` is the **primary live site** and does not auto-deploy on merge (GitHub Actions was deactivated for this account 2026-06-23), so the merged commit must be built and pushed explicitly. This is the step that makes the change actually go live.
 
-1. **Build from a clean checkout of the merge commit, never from the main working tree.** `az acr build .` uploads the directory as it sits on disk, filtered only by `.dockerignore`, so uncommitted edits and untracked files would ship to production. That includes the gitignored ingest scripts in `dev_data_scripts/` (only its `sharepoint_sync` subfolder is dockerignored). Use a throwaway worktree:
-   ```bash
-   git fetch origin
-   DEPLOY_WT="$(mktemp -d)/deploy" && git worktree add --detach "$DEPLOY_WT" origin/main
-   ```
-2. **Sign-in and role (interactive; ask the user, never work around them).**
+1. **Sign-in and role (interactive; ask the user, never work around them).** These should already have been requested at the start of step 1.
    - The `az` token expires weekly under conditional access. `az account show` can look fine while real calls fail with `AADSTS70043`, so test with a real call: `az acr show --name policycoherence --query loginServer -o tsv`. If it fails, ask the user to run `! az login`.
    - ACR push needs Contributor; the standing role is Reader. Ask the user to activate **PIM Contributor** (default 2h): `https://portal.azure.com/#view/Microsoft_Azure_PIMCommon/ActivationMenuBlade/~/azurerbac`. Do not try to elevate the role yourself.
-3. **Build server-side** (amd64 build agents, plain image manifest, no local Docker needed):
+   - Check, read-only, that the analytics token app setting exists: `az webapp config appsettings list --name cpc-tracker-c657 --resource-group undphqbppsai001 --query "length([?name=='ANALYTICS_DASHBOARD_TOKEN'])" -o tsv` should print `1`. If it prints `0`, `/analytics` will 404: tell the user, and do not generate or overwrite a token yourself (`scripts/deploy.sh` documents how).
+2. **Build the exact merge commit, from a clean checkout, in ONE shell invocation.** Replace `<number>` with the PR number and run this whole block as a single command:
    ```bash
-   cd "$DEPLOY_WT" && az acr build --registry policycoherence \
-     --image cpc-tracker:latest --image "cpc-tracker:$(git rev-parse --short HEAD)" .
+   bash -euo pipefail <<'DEPLOY'
+   PR=<number>
+   git fetch origin --quiet
+   MERGE_SHA=$(gh pr view "$PR" --json mergeCommit --jq '.mergeCommit.oid // empty')
+   [ -n "$MERGE_SHA" ] || { echo "PR $PR is not merged; nothing to deploy" >&2; exit 1; }
+   ROOT="$(git rev-parse --show-toplevel)"
+   DEPLOY_WT="$ROOT/.claude/worktrees/deploy-${MERGE_SHA:0:7}"
+   git worktree add --detach "$DEPLOY_WT" "$MERGE_SHA"
+   trap 'cd "$ROOT" && git worktree remove --force "$DEPLOY_WT"' EXIT
+   cd "$DEPLOY_WT"
+   [ "$(git rev-parse HEAD)" = "$MERGE_SHA" ]
+   az acr build --registry policycoherence \
+     --image "cpc-tracker:$MERGE_SHA" --image "cpc-tracker:${MERGE_SHA:0:7}" --image cpc-tracker:latest .
+   DEPLOY
    ```
-   **Do not use `pnpm run deploy` / `scripts/deploy.sh` on an Apple Silicon Mac.** It builds a native arm64 image and its registry cache export attaches attestation manifests; App Service can pull neither, so the site drops to a persistent 503 (`ImagePullFailure`, seen 2026-07-07). It is only safe from an amd64 machine.
-4. The ACR webhook (`webappcpctrackerc657`) fires on push, so App Service pulls the new image automatically. The container swap finishes ~1-2 min later, and the site keeps answering 200 from the old container in the meantime. If it looks stuck, force the pull: `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
-5. **Confirm the new build is live, not just that the site answers.** A bare 200 can come from the old container. Check `curl -sS -o /dev/null -w "%{http_code}" https://cpc-tracker-c657.azurewebsites.net/` returns 200 **and** something only this change contains is served, for example a changed count from `https://cpc-tracker-c657.azurewebsites.net/api/dashboard?country=<id>` or a new page. Poll for up to ~5 min before forcing the restart.
-6. Clean up: `git worktree remove --force "$DEPLOY_WT"`.
+   Why each piece matters:
+   - **One invocation, `set -u`:** the agent's shell does not keep variables between calls. Split across calls, an empty `$DEPLOY_WT` makes `cd ""` succeed silently and `az acr build .` upload the main working tree.
+   - **The merge SHA, not `origin/main`:** PRs merge in parallel here, so the tip of `main` may already include someone else's unreviewed change by the time this runs.
+   - **A clean checkout:** `az acr build .` uploads the directory as it sits on disk, filtered only by `.dockerignore`. The main tree carries uncommitted edits and the gitignored ingest scripts in `dev_data_scripts/`, which would ship to production.
+   - **Tags:** the full SHA matches what `scripts/deploy.sh` compares against; the short SHA is for people.
+   - It takes several minutes; give the command a long timeout or run it in the background.
+3. **Do not use `pnpm run deploy` / `scripts/deploy.sh` on an Apple Silicon Mac.** It builds a native arm64 image and its registry cache export attaches attestation manifests; App Service can pull neither, so the site drops to a persistent 503 (`ImagePullFailure`, seen 2026-07-07). It is only safe from an amd64 machine.
+4. The ACR webhook (`webappcpctrackerc657`) fires on push, so App Service pulls the new image automatically. The container swap finishes ~1-2 min later, and the site keeps answering 200 from the old container in the meantime. If it looks stuck after ~5 min, force the pull: `az webapp restart --name cpc-tracker-c657 --resource-group undphqbppsai001`.
+5. **Confirm the new build is live, not just that the site answers.** A bare 200 can come from the old container. Check `curl -sS -o /dev/null -w "%{http_code}" https://cpc-tracker-c657.azurewebsites.net/` returns 200 **and** something only this change contains is served, for example a changed count from `https://cpc-tracker-c657.azurewebsites.net/api/dashboard?country=<id>` or a new page. Poll for a few minutes before forcing the restart.
 
 ### 7. Report
 
@@ -100,7 +113,7 @@ Print a concise summary:
 - **Never force push** or amend published commits.
 - **Never commit `.env` files or credentials.** Warn the user if they ask to.
 - **Never skip the `old-origin` push** — it is what drives the Vercel demo deploy (see `reference_vercel_deploy` memory).
-- **Never deploy from the main working tree.** Build from a clean worktree at the merge commit (step 6.1); the main tree carries uncommitted and gitignored files that `az acr build` would ship.
+- **Never deploy from the main working tree.** Build from a clean worktree at the merge commit (step 6.2); the main tree carries uncommitted and gitignored files that `az acr build` would ship.
 - **Never use `pnpm run deploy` on Apple Silicon.** It ships an image App Service cannot pull and takes the site down (step 6.3).
 - **Never skip the Azure deploy step** — Azure is the primary live site and does not auto-deploy on merge; without step 6 the change is merged but not live. See `reference_manual_azure_deploy` memory.
 - **The PIM Contributor activation is interactive** — it needs the user's portal + MFA and cannot be automated. Pause and wait; do not attempt to elevate the role or work around it.
