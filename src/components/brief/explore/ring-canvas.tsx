@@ -10,10 +10,21 @@ import {
   type PointerEvent,
   type ReactNode,
 } from "react";
+import {
+  edgeAt,
+  flowerPaths,
+  roadPaths,
+  samplePath,
+  type EdgePath,
+  type EdgeSpec,
+} from "@/lib/brief/explore/lines";
+import type { Relation } from "@/lib/brief/explore/model";
 import { layoutRing, placeLabels, seatAt, type ArcSpec, type RingLayout } from "@/lib/brief/explore/ring";
 
 /** How long the seats take to move to their new places, in milliseconds. */
 const MOVE_MS = 800;
+/** How close the pointer must come to a line to take it, in pixels. */
+const LINE_REACH = 6;
 
 /** Inks of the ring: the brief's two inks and its neutrals. Text never takes
  *  a seat's ink; the labels and the side column stay in ink. */
@@ -28,6 +39,14 @@ export const RING_INK = {
   hairline: "#e5e7eb",
 } as const;
 
+/** How each reading is drawn as a line: ink, width, opacity, dash. */
+const LINE_STYLE: Partial<Record<Relation, { ink: string; width: number; alpha: number; dash: number[] }>> = {
+  strong: { ink: RING_INK.green, width: 1.2, alpha: 0.6, dash: [] },
+  aligned: { ink: RING_INK.green, width: 0.9, alpha: 0.26, dash: [] },
+  partial: { ink: "#8f9a8a", width: 1, alpha: 0.5, dash: [1.5, 3] },
+  apart: { ink: RING_INK.red, width: 1.25, alpha: 0.85, dash: [4, 3] },
+};
+
 export interface SeatStyle {
   color: string;
   /** Drawn as an outline: not compared with the target in the centre. */
@@ -37,15 +56,9 @@ export interface SeatStyle {
   texture?: boolean;
 }
 
-export interface Spoke {
-  id: number;
-  tone: "strong" | "apart";
-}
-
 export interface ArcLabel {
   name: string;
   sub?: string;
-  title?: string;
   dim?: boolean;
 }
 
@@ -82,87 +95,99 @@ function labelHeight(label: ArcLabel): number {
   return lines(label.name, 7.4) * 18 + (label.sub ? lines(label.sub, 6.2) * 16 + 2 : 0);
 }
 
-function paint(
-  canvas: HTMLCanvasElement,
-  w: number,
-  h: number,
-  layout: RingLayout,
-  cur: SeatState,
-  spokes: Spoke[],
-  spokeAlpha: number,
-  focus: number | null,
-  marked: number | null,
-  cursor: number | null,
-) {
+function tracePath(ctx: CanvasRenderingContext2D, path: EdgePath) {
+  path.segments.forEach((seg, k) => {
+    if (seg.kind === "arc") {
+      ctx.arc(path.cx, path.cy, seg.r, seg.a0, seg.a1, seg.a1 < seg.a0);
+    } else if (seg.kind === "quad") {
+      if (k === 0) ctx.moveTo(seg.p0[0], seg.p0[1]);
+      ctx.quadraticCurveTo(seg.c[0], seg.c[1], seg.p1[0], seg.p1[1]);
+    } else {
+      if (k === 0) ctx.moveTo(seg.p0[0], seg.p0[1]);
+      ctx.bezierCurveTo(seg.p1[0], seg.p1[1], seg.p2[0], seg.p2[1], seg.p3[0], seg.p3[1]);
+    }
+  });
+}
+
+/** Lines of one kind in one pass, overprinting where they cross. */
+function strokeLines(ctx: CanvasRenderingContext2D, paths: EdgePath[], alpha: number, drained = false) {
+  for (const relation of ["aligned", "partial", "strong", "apart"] as Relation[]) {
+    const style = LINE_STYLE[relation];
+    const list = paths.filter((p) => p.relation === relation);
+    if (!style || list.length === 0) continue;
+    ctx.strokeStyle = drained ? "#cfd3cc" : style.ink;
+    ctx.globalAlpha = alpha * (drained ? 0.45 : style.alpha);
+    ctx.lineWidth = style.width;
+    ctx.setLineDash(style.dash);
+    ctx.beginPath();
+    for (const p of list) tracePath(ctx, p);
+    ctx.stroke();
+  }
+}
+
+interface Frame {
+  layout: RingLayout;
+  cur: SeatState;
+  flower: EdgePath[];
+  road: EdgePath[];
+  lineAlpha: number;
+  focus: number | null;
+  /** The seat under the pointer or the keyboard. */
+  hot: number | null;
+  /** The line of the comparison beside the ring, or under the pointer. */
+  hotLine: number | null;
+  w: number;
+  h: number;
+}
+
+function paint(canvas: HTMLCanvasElement, f: Frame) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
   const dpr = Math.max(2, window.devicePixelRatio || 1);
-  if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
+  if (canvas.width !== Math.round(f.w * dpr) || canvas.height !== Math.round(f.h * dpr)) {
+    canvas.width = Math.round(f.w * dpr);
+    canvas.height = Math.round(f.h * dpr);
   }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.clearRect(0, 0, w, h);
+  ctx.clearRect(0, 0, f.w, f.h);
+  const { layout, cur } = f;
   const { cx, cy, radius } = layout;
 
-  // The middle: a hairline circle where the target in the centre sits.
+  // The middle: the target in the centre is a node the lines leave from.
   if (layout.rCentre > 0) {
-    ctx.strokeStyle = RING_INK.hairline;
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = f.focus === null ? RING_INK.hairline : RING_INK.ink;
+    ctx.lineWidth = f.focus === null ? 1 : 1.25;
     ctx.beginPath();
     ctx.arc(cx, cy, layout.rCentre, 0, Math.PI * 2);
     ctx.stroke();
   }
 
-  // Lines from the centre to strong alignments (solid) and potential
-  // misalignments (dashed), overprinting where they cross.
-  if (spokeAlpha > 0 && spokes.length > 0) {
+  if (f.lineAlpha > 0) {
     ctx.save();
     ctx.globalCompositeOperation = "multiply";
     ctx.lineCap = "round";
-    for (const tone of ["strong", "apart"] as const) {
-      ctx.strokeStyle = tone === "strong" ? RING_INK.green : RING_INK.red;
-      ctx.setLineDash(tone === "apart" ? [4, 3] : []);
-      ctx.lineWidth = 1.1;
-      ctx.globalAlpha = spokeAlpha * (tone === "strong" ? 0.45 : 0.75);
-      ctx.beginPath();
-      for (const s of spokes) {
-        if (s.tone !== tone || s.id === marked) continue;
-        const dx = cur.x[s.id] - cx;
-        const dy = cur.y[s.id] - cy;
-        const d = Math.hypot(dx, dy);
-        if (d <= layout.rCentre + 8) continue;
-        const ux = dx / d;
-        const uy = dy / d;
-        ctx.moveTo(cx + ux * (layout.rCentre + 4), cy + uy * (layout.rCentre + 4));
-        ctx.lineTo(cx + ux * (d - radius - 2.5), cy + uy * (d - radius - 2.5));
-      }
-      ctx.stroke();
-    }
-    // The line of the seat in hand, on top and heavier.
-    const hot = marked === null ? undefined : spokes.find((s) => s.id === marked);
+    // A seat in hand shows its own lines; the centre's step back.
+    const peek = f.road.length > 0;
+    strokeLines(ctx, f.flower, f.lineAlpha, peek);
+    if (peek) strokeLines(ctx, f.road, f.lineAlpha);
+    const hot = f.hotLine === null ? undefined : f.flower.find((p) => p.id === f.hotLine);
     if (hot) {
-      const dx = cur.x[hot.id] - cx;
-      const dy = cur.y[hot.id] - cy;
-      const d = Math.hypot(dx, dy);
-      ctx.globalAlpha = spokeAlpha;
-      ctx.strokeStyle = hot.tone === "strong" ? RING_INK.green : RING_INK.red;
-      ctx.setLineDash(hot.tone === "apart" ? [5, 3] : []);
-      ctx.lineWidth = 2.2;
+      const style = LINE_STYLE[hot.relation];
+      ctx.globalAlpha = f.lineAlpha;
+      ctx.strokeStyle = style?.ink ?? RING_INK.ink;
+      ctx.lineWidth = 2.6;
+      ctx.setLineDash(hot.relation === "apart" ? [6, 4] : []);
       ctx.beginPath();
-      ctx.moveTo(cx + (dx / d) * (layout.rCentre + 4), cy + (dy / d) * (layout.rCentre + 4));
-      ctx.lineTo(cx + (dx / d) * (d - radius - 2.5), cy + (dy / d) * (d - radius - 2.5));
+      tracePath(ctx, hot);
       ctx.stroke();
     }
     ctx.restore();
   }
 
-  // Seats.
   for (let i = 0; i < cur.x.length; i++) {
     if (!layout.placed[i]) continue;
-    const rr = radius * cur.s[i];
     ctx.beginPath();
-    ctx.arc(cur.x[i], cur.y[i], rr, 0, Math.PI * 2);
+    ctx.arc(cur.x[i], cur.y[i], radius * cur.s[i], 0, Math.PI * 2);
     const color = `rgb(${cur.r[i] | 0},${cur.g[i] | 0},${cur.b[i] | 0})`;
     if (cur.hollow[i]) {
       ctx.strokeStyle = color;
@@ -174,7 +199,6 @@ function paint(
     }
   }
 
-  // The centre's own place on the ring, and the seat in hand.
   const ringAt = (i: number, extra: number, width: number) => {
     ctx.strokeStyle = RING_INK.ink;
     ctx.lineWidth = width;
@@ -182,46 +206,59 @@ function paint(
     ctx.arc(cur.x[i], cur.y[i], radius + extra, 0, Math.PI * 2);
     ctx.stroke();
   };
-  if (focus !== null && layout.placed[focus]) ringAt(focus, 1.5, 1.6);
-  if (marked !== null && layout.placed[marked]) ringAt(marked, 3, 2);
-  if (cursor !== null && cursor !== marked && layout.placed[cursor]) ringAt(cursor, 3, 1.5);
+  if (f.focus !== null && layout.placed[f.focus]) ringAt(f.focus, 1.5, 1.6);
+  if (f.hotLine !== null && layout.placed[f.hotLine]) ringAt(f.hotLine, 3, 2);
+  if (f.hot !== null && f.hot !== f.hotLine && layout.placed[f.hot]) ringAt(f.hot, 3, 1.6);
 }
 
 /**
  * The ring: one seat per target, arcs by document or policy area, the target
- * in the centre in the middle. Seats glide to their places when the centre or
- * the grouping changes. Names sit outside their arcs; pointing at a seat names
- * it; the keyboard moves from seat to seat.
+ * in the centre in the middle with a line to each target it relates to.
+ * Seats glide to their places when the centre or the grouping changes; the
+ * lines draw once they have arrived. A seat under the pointer shows its own
+ * lines round the centre. Selecting a seat puts it in the centre; selecting
+ * a line opens that comparison.
  */
 export function RingCanvas({
   arcs,
   n,
   styles,
-  spokes,
+  edges,
+  neighbours,
   focus,
   highlight,
+  selectedLine,
   labels,
   centre,
   tipFor,
+  lineTipFor,
   describe,
-  onSelect,
-  onCentre,
+  onSeat,
+  onLine,
+  onBackground,
   onEscape,
   ariaLabel,
 }: {
   arcs: ArcSpec[];
   n: number;
   styles: SeatStyle[];
-  spokes: Spoke[];
+  /** Lines from the target in the centre. */
+  edges: EdgeSpec[];
+  /** A seat's own lines, shown while it is in hand. */
+  neighbours: (id: number) => EdgeSpec[];
   focus: number | null;
-  /** A seat to mark, e.g. the partner shown beside the ring. */
+  /** A seat to mark from outside the ring, e.g. a row under the pointer. */
   highlight: number | null;
+  /** The partner of the comparison shown beside the ring. */
+  selectedLine: number | null;
   labels: ArcLabel[];
   centre: ReactNode;
   tipFor: (id: number) => ReactNode;
+  lineTipFor: (id: number) => ReactNode;
   describe: (id: number) => string;
-  onSelect: (id: number) => void;
-  onCentre: (id: number) => void;
+  onSeat: (id: number) => void;
+  onLine: (id: number) => void;
+  onBackground?: () => void;
   onEscape?: () => void;
   ariaLabel: string;
 }) {
@@ -229,18 +266,28 @@ export function RingCanvas({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const state = useRef<SeatState | null>(null);
   const settled = useRef(false);
-  const drawRef = useRef<(spokeAlpha?: number) => void>(() => {});
+  const drawRef = useRef<(lineAlpha?: number) => void>(() => {});
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [hover, setHover] = useState<number | null>(null);
+  const [hoverLine, setHoverLine] = useState<{ id: number; x: number; y: number } | null>(null);
   const [cursor, setCursor] = useState<number | null>(null);
   const [live, setLive] = useState("");
 
   const layout = useMemo(() => layoutRing(arcs, n, size.w, size.h), [arcs, n, size.w, size.h]);
-  const placed = useMemo(
-    () => placeLabels(layout, labels.map(labelHeight)),
-    [layout, labels],
-  );
+  const placed = useMemo(() => placeLabels(layout, labels.map(labelHeight)), [layout, labels]);
   const order = useMemo(() => arcs.flatMap((a) => a.ids), [arcs]);
+  const flower = useMemo(() => flowerPaths(layout, arcs, edges), [layout, arcs, edges]);
+  const sampled = useMemo(() => flower.map((p) => ({ id: p.id, pts: samplePath(p, 14) })), [flower]);
+  const hot = hover ?? cursor ?? highlight;
+  // At rest, a seat in hand shows its own lines round the centre. With a
+  // target in the centre, it lights its line to the centre instead.
+  const road = useMemo(
+    () => (focus !== null || hot === null ? [] : roadPaths(layout, hot, neighbours(hot))),
+    [hot, focus, layout, neighbours],
+  );
+  const hotLine =
+    hoverLine?.id ?? (hot !== null && flower.some((p) => p.id === hot) ? hot : null) ?? selectedLine;
+
   // The checker: within a textured band, seats whose column and row add up
   // to an odd number are drawn small.
   const small = useMemo(() => {
@@ -253,7 +300,6 @@ export function RingCanvas({
     }
     return out;
   }, [arcs, styles, layout.rows, n]);
-  const marked = hover ?? highlight;
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -288,25 +334,19 @@ export function RingCanvas({
       }
     }
     const cur = state.current!;
-    const from = {
-      x: cur.x.slice(),
-      y: cur.y.slice(),
-      r: cur.r.slice(),
-      g: cur.g.slice(),
-      b: cur.b.slice(),
-      s: cur.s.slice(),
-    };
+    const from = { x: cur.x.slice(), y: cur.y.slice(), r: cur.r.slice(), g: cur.g.slice(), b: cur.b.slice(), s: cur.s.slice() };
     const to = seatState(n);
+    let moves = false;
     for (let i = 0; i < n; i++) {
       to.x[i] = layout.placed[i] ? layout.x[i] : from.x[i];
       to.y[i] = layout.placed[i] ? layout.y[i] : from.y[i];
-      const style = styles[i];
-      const [r, g, b] = rgb(style?.color ?? RING_INK.rest);
+      const [r, g, b] = rgb(styles[i]?.color ?? RING_INK.rest);
       to.r[i] = r;
       to.g[i] = g;
       to.b[i] = b;
       to.s[i] = small[i] ? 0.55 : 1;
-      to.hollow[i] = style?.hollow ? 1 : 0;
+      to.hollow[i] = styles[i]?.hollow ? 1 : 0;
+      if (Math.abs(to.x[i] - from.x[i]) > 0.5 || Math.abs(to.y[i] - from.y[i]) > 0.5) moves = true;
     }
     const frame = (p: number) => {
       const e = 1 - Math.pow(1 - p, 3);
@@ -320,8 +360,8 @@ export function RingCanvas({
         if (p >= 0.5) cur.hollow[i] = to.hollow[i];
       }
       settled.current = p >= 1;
-      // Lines appear once the seats have arrived.
-      drawRef.current(p < 0.7 ? 0 : (p - 0.7) / 0.3);
+      // Lines follow once the seats have arrived.
+      drawRef.current(moves ? (p < 0.7 ? 0 : (p - 0.7) / 0.3) : 1);
     };
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduce || typeof requestAnimationFrame === "undefined") {
@@ -330,39 +370,48 @@ export function RingCanvas({
     }
     let raf = 0;
     let start = 0;
+    const duration = first ? MOVE_MS * 1.4 : moves ? MOVE_MS : 260;
     const tick = (now: number) => {
       if (!start) start = now;
-      const p = Math.min(1, (now - start) / (first ? MOVE_MS * 1.4 : MOVE_MS));
+      const p = Math.min(1, (now - start) / duration);
       frame(p);
       if (p < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-    // `styles` and `layout` change together with what the ring shows.
   }, [layout, styles, small, n, size.w, size.h]);
 
-  // Redraw with the latest marks; the move effect calls this every frame.
+  // Redraw with the latest lines and marks; the move effect calls this every frame.
   useEffect(() => {
-    drawRef.current = (spokeAlpha = 1) => {
+    drawRef.current = (lineAlpha = 1) => {
       const canvas = canvasRef.current;
       if (!canvas || !state.current) return;
-      paint(canvas, size.w, size.h, layout, state.current, spokes, spokeAlpha, focus, marked, cursor);
+      paint(canvas, { layout, cur: state.current, flower, road, lineAlpha, focus, hot, hotLine, w: size.w, h: size.h });
     };
     if (settled.current) drawRef.current(1);
-  }, [layout, spokes, focus, marked, cursor, size.w, size.h]);
+  }, [layout, flower, road, focus, hot, hotLine, size.w, size.h]);
 
-  const at = (e: { clientX: number; clientY: number }, el: HTMLElement) => {
+  const point = (e: { clientX: number; clientY: number }, el: HTMLElement) => {
     const box = el.getBoundingClientRect();
-    return seatAt(layout, e.clientX - box.left, e.clientY - box.top);
+    return { x: e.clientX - box.left, y: e.clientY - box.top };
   };
-  const onMove = (e: PointerEvent<HTMLDivElement>) => setHover(at(e, e.currentTarget));
+  const onMove = (e: PointerEvent<HTMLDivElement>) => {
+    const { x, y } = point(e, e.currentTarget);
+    const seat = seatAt(layout, x, y);
+    setHover(seat);
+    const line = seat === null && settled.current ? edgeAt(sampled, x, y, LINE_REACH) : null;
+    setHoverLine(line === null ? null : { id: line, x, y });
+  };
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
-    const seat = at(e, e.currentTarget);
-    if (seat !== null) onSelect(seat);
-  };
-  const onDoubleClick = (e: MouseEvent<HTMLDivElement>) => {
-    const seat = at(e, e.currentTarget);
-    if (seat !== null) onCentre(seat);
+    const { x, y } = point(e, e.currentTarget);
+    const seat = seatAt(layout, x, y);
+    if (seat !== null) {
+      onSeat(seat);
+      return;
+    }
+    const line = edgeAt(sampled, x, y, LINE_REACH);
+    if (line !== null) onLine(line);
+    else onBackground?.();
   };
 
   const moveCursor = (next: number | null) => {
@@ -396,10 +445,10 @@ export function RingCanvas({
         moveCursor(order[order.length - 1]);
         break;
       case "Enter":
-        if (cursor !== null) onSelect(cursor);
+        if (cursor !== null) onSeat(cursor);
         break;
       case " ":
-        if (cursor !== null) onCentre(cursor);
+        if (cursor !== null) onLine(cursor);
         break;
       case "Escape":
         onEscape?.();
@@ -412,7 +461,7 @@ export function RingCanvas({
 
   const tipSeat = hover ?? cursor;
   const tipBelow = tipSeat !== null && layout.y[tipSeat] < 110;
-  const centreSize = Math.max(0, layout.rCentre * 1.5);
+  const centreSize = Math.max(0, layout.rCentre * 1.52);
 
   return (
     <div
@@ -422,12 +471,14 @@ export function RingCanvas({
       aria-roledescription="ring"
       aria-label={ariaLabel}
       tabIndex={0}
-      data-pointer={hover !== null ? "seat" : undefined}
+      data-pointer={hover !== null || hoverLine !== null ? "seat" : undefined}
       data-testid="explore-ring"
       onPointerMove={onMove}
-      onPointerLeave={() => setHover(null)}
+      onPointerLeave={() => {
+        setHover(null);
+        setHoverLine(null);
+      }}
       onClick={onClick}
-      onDoubleClick={onDoubleClick}
       onKeyDown={onKeyDown}
       onBlur={() => setCursor(null)}
     >
@@ -443,7 +494,6 @@ export function RingCanvas({
               data-align={l.align}
               data-dim={label.dim ? "true" : undefined}
               style={{ left: l.x, top: l.y }}
-              title={label.title}
             >
               <span className="ex-label-name">{label.name}</span>
               {label.sub && <span className="ex-label-sub">{label.sub}</span>}
@@ -452,10 +502,7 @@ export function RingCanvas({
         })}
       </div>
       {layout.rCentre > 0 && (
-        <div
-          className="ex-centre"
-          style={{ left: layout.cx, top: layout.cy, width: centreSize, maxHeight: centreSize }}
-        >
+        <div className="ex-centre" style={{ left: layout.cx, top: layout.cy, width: centreSize, height: centreSize }}>
           {centre}
         </div>
       )}
@@ -470,6 +517,15 @@ export function RingCanvas({
           role="presentation"
         >
           {tipFor(tipSeat)}
+        </div>
+      )}
+      {tipSeat === null && hoverLine !== null && (
+        <div
+          className="ex-tip"
+          style={{ left: Math.min(Math.max(hoverLine.x, 150), size.w - 150), top: hoverLine.y - 12 }}
+          role="presentation"
+        >
+          {lineTipFor(hoverLine.id)}
         </div>
       )}
       <p className="ex-live" aria-live="polite">

@@ -83,3 +83,16 @@ describe("exploreReducer", () => {
     expect(s.trail[s.trail.length - 1]).toBe("T28");
   });
 });
+
+describe("lines", () => {
+  it("draws strong alignment and potential misalignment by default", () => {
+    expect(initialExploreState().lines).toEqual(["strong", "apart"]);
+  });
+
+  it("switches one kind of line on and off", () => {
+    let s = exploreReducer(initialExploreState(), { type: "lines", kind: "aligned", on: true });
+    expect(s.lines).toEqual(["strong", "aligned", "apart"]);
+    s = exploreReducer(s, { type: "lines", kind: "strong", on: false });
+    expect(s.lines).toEqual(["aligned", "apart"]);
+  });
+});

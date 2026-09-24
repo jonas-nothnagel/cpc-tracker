@@ -104,17 +104,35 @@ describe("Explore", () => {
     expect(within(side()).getByText(/Potential misalignment with 4\./)).toBeInTheDocument();
   });
 
-  it("moves from seat to seat by keyboard and centres one with the space bar", () => {
+  it("moves from seat to seat by keyboard, centres one with Enter and opens its comparison with Space", async () => {
     renderExplore();
     const ring = screen.getByRole("application");
     ring.focus();
     fireEvent.keyDown(ring, { key: "ArrowRight" });
-    fireEvent.keyDown(ring, { key: " " });
+    fireEvent.keyDown(ring, { key: "Enter" });
     // A1: aligned with all 12 targets it was compared with, 6 of them strongly.
     expect(within(side()).getByText(/Aligned with 12 of the 12 targets/)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Strong alignments (6)" })).toBeInTheDocument();
+    // Six seats on is the first of B (sorted against A1): Space opens its comparison.
+    for (let i = 0; i < 6; i++) fireEvent.keyDown(ring, { key: "ArrowRight" });
+    fireEvent.keyDown(ring, { key: " " });
+    expect(await screen.findByTestId("explore-pair")).toBeInTheDocument();
+    fireEvent.keyDown(ring, { key: "Escape" });
+    expect(screen.queryByTestId("explore-pair")).toBeNull();
     fireEvent.keyDown(ring, { key: "Escape" });
     expect(screen.getByRole("heading", { name: "Targets to review first" })).toBeInTheDocument();
+  });
+
+  it("switches kinds of lines on and off, with their counts for the target in the centre", () => {
+    renderExplore({ focus: "A1" });
+    const lines = screen.getByRole("group", { name: "Lines" });
+    const strong = within(lines).getByRole("button", { name: /Strong alignment/ });
+    const moderate = within(lines).getByRole("button", { name: /Moderate alignment/ });
+    expect(strong).toHaveAttribute("aria-pressed", "true");
+    expect(moderate).toHaveAttribute("aria-pressed", "false");
+    expect(strong).toHaveTextContent("6");
+    fireEvent.click(moderate);
+    expect(moderate).toHaveAttribute("aria-pressed", "true");
   });
 
   it("groups the ring by a policy area lens on request", () => {

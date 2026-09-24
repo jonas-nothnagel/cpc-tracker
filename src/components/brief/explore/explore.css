@@ -610,3 +610,118 @@
   font-weight: 400;
   color: var(--brief-muted);
 }
+
+/* ── Lines: which readings the ring draws ───────────────────────── */
+
+[data-brief] .ex-lines {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ex-lines button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.1rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--brief-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+[data-brief] .ex-lines button[aria-pressed="true"] {
+  color: var(--brief-ink);
+  border-bottom-color: var(--brief-ink);
+}
+
+[data-brief] .ex-lines button[aria-pressed="false"] .ex-glyph {
+  opacity: 0.35;
+}
+
+[data-brief] .ex-lines-n {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .ex-glyph {
+  flex: none;
+}
+
+[data-brief] .ex-tip-rating {
+  margin: 0 0 3px;
+  font-weight: 600;
+}
+
+/* ── The middle of the ring, always in use ──────────────────────── */
+
+[data-brief] .ex-centre-rest,
+[data-brief] .ex-centre-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+[data-brief] .ex-centre-figure {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+[data-brief] .ex-centre-caption {
+  margin: 0.3rem 0 0.9rem;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-centre-bar {
+  margin: 0.7rem 0 0;
+  text-align: left;
+}
+
+[data-brief] .ex-centre-bar .brief-pair-bar {
+  height: 10px;
+}
+
+[data-brief] .ex-centre .ex-key {
+  justify-content: center;
+  margin-top: 0.55rem;
+  font-size: 0.75rem;
+}
+
+[data-brief] .ex-centre-rest .ex-centre-count {
+  margin-top: 0.8rem;
+}
+
+[data-brief] .ex-centre-label {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 0.35rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ex-centre-card .ex-centre-text {
+  -webkit-line-clamp: 5;
+}
+
+[data-brief] .ex-pair-tools {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}

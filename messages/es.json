@@ -3188,10 +3188,10 @@
       "arcCounts": "{aligned, number} aligned, {apart, number} potential misalignment",
       "arcCountsAligned": "{aligned, number} aligned",
       "restTip": "{apart, plural, =0 {No potential misalignment} one {# potential misalignment} other {# potential misalignments}}, {strong, plural, =0 {no strong alignment} one {# strong alignment} other {# strong alignments}}",
-      "ringLabel": "{targets, number} targets on a ring, grouped by {group}. Arrow keys move from target to target, Enter selects one, Space puts it in the centre.",
+      "ringLabel": "{targets, number} targets on a ring, grouped by {group}. Arrow keys move from target to target, Enter puts one in the centre, Space opens its comparison with the target in the centre.",
       "centre": "Put in the centre",
       "close": "Close",
-      "keyStrong": "{count, plural, one {# strong alignment} other {# strong alignments}}"
+      "lines": "Lines"
     }
   }
 }

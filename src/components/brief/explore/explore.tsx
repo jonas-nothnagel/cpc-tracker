@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type Dispatch, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import type { ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
+import type { EdgeSpec } from "@/lib/brief/explore/lines";
 import {
   arcTally,
   buildExploreModel,
@@ -11,38 +13,47 @@ import {
   groupByLens,
   levelBetween,
   mechanismBetween,
+  relationOf,
   seatOrder,
   seatRelation,
   toneCountsOf,
   OTHER_GROUP,
   type ExploreModel,
+  type FocusProfile,
+  type Relation,
 } from "@/lib/brief/explore/model";
 import { searchTargets } from "@/lib/brief/explore/search";
-import type { ExploreAction, ExploreGroup, ExploreState } from "@/lib/brief/explore/state";
+import {
+  LINE_KINDS,
+  type ExploreAction,
+  type ExploreGroup,
+  type ExploreState,
+  type LineKind,
+} from "@/lib/brief/explore/state";
 import type { BriefCommitment, BriefSource } from "@/lib/brief/source";
 import { clip, commitmentLine, useNumbers } from "../ink";
 import { ResultBar } from "../sections/documents";
 import { PairView } from "./pair-view";
-import { RING_INK, RingCanvas, type ArcLabel, type SeatStyle, type Spoke } from "./ring-canvas";
+import { RING_INK, RingCanvas, type ArcLabel, type SeatStyle } from "./ring-canvas";
 import "./explore.css";
 
-/** Targets each ranked list shows at rest, and marks on the ring. */
+/** Targets each ranked list shows at rest. */
 const RANKED = 6;
 /** Search results shown before "Show all". */
 const RESULTS = 24;
+/** Labels shorter than this are clause numbers ("7 b)"), not titles. */
+const TITLE_LABEL = 12;
 
-type Tally = ReturnType<typeof arcTally>;
-
-/** The ring's inks in words, with their counts: the legend is the tally. */
-const KEY: { tone: "reinforce" | "partial" | "none" | "apart"; count: (p: ReturnType<typeof focusProfile>) => number }[] = [
-  { tone: "reinforce", count: (p) => p.counts.strong + p.counts.aligned },
-  { tone: "partial", count: (p) => p.counts.partial },
-  { tone: "none", count: (p) => p.counts.none },
-  { tone: "apart", count: (p) => p.counts.apart },
-];
+/** The stored level each kind of line stands for, for its label. */
+const LINE_LEVEL: Record<LineKind, "high" | "medium" | "low" | "flagged"> = {
+  strong: "high",
+  aligned: "medium",
+  partial: "low",
+  apart: "flagged",
+};
 
 /** A seat's ink when a target is in the centre. */
-function relationStyle(relation: ReturnType<typeof seatRelation>): SeatStyle {
+function relationStyle(relation: Relation): SeatStyle {
   switch (relation) {
     case "strong":
     case "aligned":
@@ -56,6 +67,27 @@ function relationStyle(relation: ReturnType<typeof seatRelation>): SeatStyle {
     default:
       return { color: RING_INK.rest, hollow: true };
   }
+}
+
+/** A short line glyph for each kind of line, as the ring draws it. */
+function LineGlyph({ kind }: { kind: LineKind }) {
+  const stroke = kind === "apart" ? RING_INK.red : kind === "partial" ? "#8f9a8a" : RING_INK.green;
+  const dash = kind === "apart" ? "4 3" : kind === "partial" ? "1.5 3" : undefined;
+  return (
+    <svg className="ex-glyph" width="22" height="8" viewBox="0 0 22 8" aria-hidden="true">
+      <line
+        x1="1"
+        y1="4"
+        x2="21"
+        y2="4"
+        stroke={stroke}
+        strokeWidth={kind === "aligned" ? 1.4 : 2}
+        strokeOpacity={kind === "aligned" ? 0.55 : 1}
+        strokeDasharray={dash}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
 }
 
 /** Ranked rows at rest: a target, its document, its count as a halftone bar. */
@@ -108,7 +140,7 @@ function RankRows({
 }
 
 /** Partners of the target in the centre, one row each, marked with the
- *  rating's ink. */
+ *  rating's ink; a row opens the comparison. */
 function PartnerRows({
   ids,
   model,
@@ -178,13 +210,31 @@ function PartnerRows({
   );
 }
 
+/** The ring's inks in words, with their counts: the key is the tally. */
+function ToneKey({ counts, share = false }: { counts: ToneCounts; share?: boolean }) {
+  const tt = useTranslations("brief.tone");
+  const { n, pct } = useNumbers();
+  const tones = (["reinforce", "partial", "none", "apart"] as const).filter((tone) => counts[tone] > 0);
+  return (
+    <ul className="ex-key">
+      {tones.map((tone) => (
+        <li key={tone}>
+          <span className={`ex-key-mark ex-key-${tone}`} aria-hidden="true" />
+          <span className="ex-key-n">{share ? pct(counts[tone] / Math.max(1, counts.total)) : n(counts[tone])}</span>{" "}
+          {tt(tone)}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /**
  * Explore the targets: every target of the selected documents as a seat on a
  * ring, by document or policy area. Any target can take the centre; every
  * other seat then takes the ink of how it reads against it and sorts within
- * its arc, potential misalignment from one end and strong alignment at the
- * other, with lines from the centre to both. The column beside the ring
- * names what the ring shows and leads to the evidence.
+ * its arc, potential misalignment from one end and alignment at the other,
+ * and a line runs from the centre to each target it relates to. The column
+ * beside the ring names what the ring shows and leads to the evidence.
  */
 export function Explore({
   source,
@@ -205,7 +255,8 @@ export function Explore({
   const tc = useTranslations("brief.commitments");
   const tr = useTranslations("brief.panel.rating");
   const tm = useTranslations("labels.contradictionType");
-  const { pct } = useNumbers();
+  const tf = useTranslations("brief.sheet.figures");
+  const { n, pct } = useNumbers();
 
   const model = useMemo(() => buildExploreModel(data.scope), [data.scope]);
   const focus = state.focus ? (model.index.get(state.focus) ?? null) : null;
@@ -222,7 +273,7 @@ export function Explore({
   const matches = useMemo(() => new Set(searchTargets(model.items, state.query)), [model, state.query]);
   const searching = state.query.trim().length >= 2;
 
-  // A partner shown beside the ring, and a seat pointed at from the column.
+  // The comparison open beside the ring, and a seat pointed at from the column.
   const [selected, setSelected] = useState<string | null>(null);
   const [hot, setHot] = useState<string | null>(null);
   const lastFocus = useRef(state.focus);
@@ -238,96 +289,115 @@ export function Explore({
     if (selected) pairRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
   }, [selected]);
 
-  const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
+  const docName = useCallback(
+    (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id,
+    [data.scope.docs],
+  );
   const byId = useMemo(() => new Map(model.items.map((c) => [c.id, c])), [model]);
   const review = data.commitments.slice(0, RANKED);
   const strongest = data.strongest.slice(0, RANKED);
 
-  const styles = useMemo<SeatStyle[]>(() => {
-    const marks = new Map<string, string>();
-    for (const row of strongest) marks.set(row.commitment.id, RING_INK.green);
-    for (const row of review) marks.set(row.commitment.id, RING_INK.red);
-    return model.items.map((c, i) => {
-      let style: SeatStyle =
-        focus === null
-          ? { color: searching ? RING_INK.ink : (marks.get(c.id) ?? RING_INK.rest) }
-          : i === focus
-            ? { color: RING_INK.ink, hollow: true }
-            : relationStyle(seatRelation(model, focus, i));
-      if (searching && !matches.has(i)) style = { ...style, color: RING_INK.drained };
-      return style;
-    });
-  }, [model, focus, searching, matches, review, strongest]);
-
-  const spokes = useMemo<Spoke[]>(() => {
-    if (focus === null || !profile) return [];
-    return [
-      ...profile.partners.strong.map((id) => ({ id, tone: "strong" as const })),
-      ...profile.partners.apart.map((id) => ({ id, tone: "apart" as const })),
-    ];
-  }, [focus, profile]);
-
-  const groupName = (key: string) => {
-    if (key === OTHER_GROUP) return t("other");
-    if (!lens) return docName(key);
-    return lens.categories.find((c) => c.id === key)?.name ?? key;
-  };
-  const labels = useMemo<ArcLabel[]>(
+  const styles = useMemo<SeatStyle[]>(
     () =>
-      arcs.map((arc) => {
-        const name = groupName(arc.key);
-        const title = lens ? undefined : data.scope.docs.find((d) => d.id === arc.key)?.full;
-        if (focus === null) return { name, title };
-        const tally: Tally = arcTally(model, arc.ids, focus);
-        const compared = arc.ids.length - tally.unrelated - (arc.ids.includes(focus) ? 1 : 0);
-        if (compared <= 0) return { name, title, sub: t("sameDocument"), dim: true };
-        const aligned = tally.strong + tally.aligned;
-        const sub =
-          tally.apart > 0 ? t("arcCounts", { aligned, apart: tally.apart }) : t("arcCountsAligned", { aligned });
-        return { name, title, sub };
+      model.items.map((_, i) => {
+        let style: SeatStyle =
+          focus === null
+            ? { color: searching ? RING_INK.ink : RING_INK.rest }
+            : i === focus
+              ? { color: RING_INK.ink, hollow: true }
+              : relationStyle(seatRelation(model, focus, i));
+        if (searching && !matches.has(i)) style = { ...style, color: RING_INK.drained, texture: false };
+        return style;
       }),
-    // groupName reads lens and docs, both in the deps through arcs and lens.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [arcs, focus, model, lens, data.scope.docs, t],
+    [model, focus, searching, matches],
   );
 
+  const lines = state.lines;
+  const edges = useMemo<EdgeSpec[]>(
+    () => (profile ? lines.flatMap((kind) => profile.partners[kind].map((id) => ({ id, relation: kind }))) : []),
+    [profile, lines],
+  );
+  const neighbours = useCallback(
+    (id: number): EdgeSpec[] => {
+      const out: EdgeSpec[] = [];
+      model.items.forEach((_, j) => {
+        if (j === id) return;
+        const level = levelBetween(model, id, j);
+        if (level === null) return;
+        const relation = relationOf(level);
+        if ((lines as Relation[]).includes(relation)) out.push({ id: j, relation });
+      });
+      return out;
+    },
+    [model, lines],
+  );
+
+  const labels = useMemo<ArcLabel[]>(() => {
+    const groupName = (key: string) => {
+      if (key === OTHER_GROUP) return t("other");
+      if (!lens) return docName(key);
+      return lens.categories.find((c) => c.id === key)?.name ?? key;
+    };
+    return arcs.map((arc) => {
+      const name = groupName(arc.key);
+      if (focus === null) return { name };
+      const tally = arcTally(model, arc.ids, focus);
+      const compared = arc.ids.length - tally.unrelated - (arc.ids.includes(focus) ? 1 : 0);
+      if (compared <= 0) return { name, sub: t("sameDocument"), dim: true };
+      const aligned = tally.strong + tally.aligned;
+      const sub =
+        tally.apart > 0 ? t("arcCounts", { aligned, apart: tally.apart }) : t("arcCountsAligned", { aligned });
+      return { name, sub };
+    });
+  }, [arcs, focus, model, lens, docName, t]);
+
   const relationText = (i: number): string => {
-    if (focus === null) return "";
-    if (i === focus) return "";
+    if (focus === null || i === focus) return "";
     const level = levelBetween(model, focus, i);
     if (level === null) return t("sameDocument");
     const mechanism = level === "flagged" ? mechanismBetween(model, focus, i) : null;
     return mechanism ? `${tr(level)} · ${tm(mechanism)}` : tr(level);
   };
   const restCounts = useMemo(() => {
-    const counts = new Map<number, { apart: number; strong: number }>();
-    model.items.forEach((_, i) => counts.set(i, { apart: 0, strong: 0 }));
     const size = model.items.length;
+    const apart = new Uint16Array(size);
+    const strong = new Uint16Array(size);
     for (let a = 0; a < size; a++) {
       for (let b = a + 1; b < size; b++) {
         const level = model.levels[a * size + b];
         if (level === 5) {
-          counts.get(a)!.apart += 1;
-          counts.get(b)!.apart += 1;
+          apart[a] += 1;
+          apart[b] += 1;
         } else if (level === 1) {
-          counts.get(a)!.strong += 1;
-          counts.get(b)!.strong += 1;
+          strong[a] += 1;
+          strong[b] += 1;
         }
       }
     }
-    return counts;
+    return { apart, strong };
   }, [model]);
   const tipFor = (i: number): ReactNode => {
     const c = model.items[i];
-    const rest = restCounts.get(i);
     return (
       <>
         <span className="ex-tip-doc">{docName(c.doc)}</span>
         <span className="ex-tip-line">{commitmentLine(c, 110)}</span>
         {focus !== null && i !== focus && <span className="ex-tip-rel">{relationText(i)}</span>}
-        {focus === null && rest && (
-          <span className="ex-tip-rel">{t("restTip", { apart: rest.apart, strong: rest.strong })}</span>
+        {focus === null && (
+          <span className="ex-tip-rel">
+            {t("restTip", { apart: restCounts.apart[i], strong: restCounts.strong[i] })}
+          </span>
         )}
+      </>
+    );
+  };
+  const lineTipFor = (i: number): ReactNode => {
+    const c = model.items[i];
+    return (
+      <>
+        <span className="ex-tip-rel ex-tip-rating">{relationText(i)}</span>
+        <span className="ex-tip-doc">{docName(c.doc)}</span>
+        <span className="ex-tip-line">{commitmentLine(c, 110)}</span>
       </>
     );
   };
@@ -337,14 +407,16 @@ export function Explore({
     return `${docName(c.doc)}: ${commitmentLine(c, 110)}${rel ? `. ${rel}` : ""}`;
   };
 
-  const select = (i: number) => {
-    const id = model.items[i].id;
-    if (focus === null) dispatch({ type: "focus", id });
-    else if (i === focus) return;
-    else if (levelBetween(model, focus, i) === null) dispatch({ type: "focus", id });
-    else setSelected((cur) => (cur === id ? null : id));
+  const toCentre = (i: number) => {
+    if (i !== focus) dispatch({ type: "focus", id: model.items[i].id });
   };
-  const centreOn = (i: number) => dispatch({ type: "focus", id: model.items[i].id });
+  // A comparison opens for any target compared with the centre, whichever
+  // lines are drawn.
+  const openLine = (i: number) => {
+    if (focus === null || levelBetween(model, focus, i) === null) return;
+    const id = model.items[i].id;
+    setSelected((cur) => (cur === id ? null : id));
+  };
   const escape = () => {
     if (selected) setSelected(null);
     else if (state.query) dispatch({ type: "query", text: "" });
@@ -353,24 +425,37 @@ export function Explore({
 
   const focusItem = focus === null ? null : model.items[focus];
   const centre =
-    focusItem === null ? (
-      <>
-        <p className="ex-centre-country">{data.countryName}</p>
+    focusItem === null || !profile ? (
+      <div className="ex-centre-rest">
+        <p className="ex-centre-figure">{n(data.counts.total)}</p>
+        <p className="ex-centre-caption">{tf("comparisons", { count: data.counts.total })}</p>
+        {data.counts.total > 0 && (
+          <div className="ex-centre-bar">
+            <ResultBar counts={data.counts} />
+          </div>
+        )}
+        <ToneKey counts={data.counts} share />
         <p className="ex-centre-count">
           {t("restCentre", { targets: model.items.length, documents: data.scope.docs.length })}
         </p>
-      </>
+      </div>
     ) : (
-      <>
+      <div className="ex-centre-card">
         <p className="ex-centre-doc">{docName(focusItem.doc)}</p>
-        <p className="ex-centre-text">{clip(focusItem.text, 260)}</p>
-      </>
+        {focusItem.label.length >= TITLE_LABEL && <p className="ex-centre-label">{clip(focusItem.label, 90)}</p>}
+        <p className="ex-centre-text">
+          {focusItem.label.length >= TITLE_LABEL ? clip(focusItem.text, 200) : commitmentLine(focusItem, 200)}
+        </p>
+        {profile.total > 0 && (
+          <div className="ex-centre-bar">
+            <ResultBar counts={toneCountsOf(profile)} />
+          </div>
+        )}
+      </div>
     );
 
-  const highlight = (() => {
-    const id = hot ?? selected;
-    return id ? (model.index.get(id) ?? null) : null;
-  })();
+  const highlight = hot ? (model.index.get(hot) ?? null) : null;
+  const selectedLine = selected ? (model.index.get(selected) ?? null) : null;
 
   const concentration = data.concentration;
   const restHeadline =
@@ -385,6 +470,7 @@ export function Explore({
         : tc("headlineSpread", { contested: concentration.contested });
 
   const groupLabel = (g: ExploreGroup) => (g === "docs" ? t("groupDocs") : tl(g));
+  const lineCount = (kind: LineKind) => (profile ? profile.partners[kind].length : null);
 
   return (
     <div className="ex" data-testid="explore">
@@ -417,6 +503,25 @@ export function Explore({
             ))}
           </div>
         )}
+        <div className="ex-lines" role="group" aria-label={t("lines")}>
+          <span className="ex-group-label">{t("lines")}</span>
+          {LINE_KINDS.map((kind) => {
+            const on = lines.includes(kind);
+            const count = lineCount(kind);
+            return (
+              <button
+                key={kind}
+                type="button"
+                aria-pressed={on}
+                onClick={() => dispatch({ type: "lines", kind, on: !on })}
+              >
+                <LineGlyph kind={kind} />
+                {tr(LINE_LEVEL[kind])}
+                {count !== null && <span className="ex-lines-n">{n(count)}</span>}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="ex-body">
@@ -425,15 +530,19 @@ export function Explore({
             arcs={arcs}
             n={model.items.length}
             styles={styles}
-            spokes={spokes}
+            edges={edges}
+            neighbours={neighbours}
             focus={focus}
             highlight={highlight}
+            selectedLine={selectedLine}
             labels={labels}
             centre={centre}
             tipFor={tipFor}
+            lineTipFor={lineTipFor}
             describe={describe}
-            onSelect={select}
-            onCentre={centreOn}
+            onSeat={toCentre}
+            onLine={openLine}
+            onBackground={() => setSelected(null)}
             onEscape={escape}
             ariaLabel={t("ringLabel", { targets: model.items.length, group: groupLabel(state.group) })}
           />
@@ -588,7 +697,7 @@ function FocusColumn({
   pair,
 }: {
   item: BriefCommitment;
-  profile: NonNullable<ReturnType<typeof focusProfile>>;
+  profile: FocusProfile;
   model: ExploreModel;
   focus: number;
   docName: (id: string) => string;
@@ -602,8 +711,6 @@ function FocusColumn({
   pair: ReactNode;
 }) {
   const t = useTranslations("brief.explore");
-  const tt = useTranslations("brief.tone");
-  const { n } = useNumbers();
   const [open, setOpen] = useState(false);
   const aligned = profile.counts.strong + profile.counts.aligned;
   const long = item.text.length > 240;
@@ -639,27 +746,7 @@ function FocusColumn({
           </>
         )}
       </p>
-      {profile.total > 0 && (
-        <>
-          <div className="brief-panel-result ex-result" aria-hidden="true">
-            <ResultBar counts={toneCountsOf(profile)} />
-          </div>
-          <ul className="ex-key">
-            {KEY.filter((k) => k.count(profile) > 0).map((k) => (
-              <li key={k.tone}>
-                <span className={`ex-key-mark ex-key-${k.tone}`} aria-hidden="true" />
-                <span className="ex-key-n">{n(k.count(profile))}</span> {tt(k.tone)}
-              </li>
-            ))}
-            {profile.counts.strong > 0 && (
-              <li>
-                <span className="ex-key-line" aria-hidden="true" />
-                {t("keyStrong", { count: profile.counts.strong })}
-              </li>
-            )}
-          </ul>
-        </>
-      )}
+      {profile.total > 0 && <ToneKey counts={toneCountsOf(profile)} />}
       {pair}
       {profile.partners.apart.length > 0 && (
         <section className="ex-section">

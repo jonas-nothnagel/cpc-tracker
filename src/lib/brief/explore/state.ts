@@ -1,5 +1,9 @@
 import type { LensId } from "../source";
 
+/** Readings the ring can draw lines for, in the order the controls list them. */
+export const LINE_KINDS = ["strong", "aligned", "partial", "apart"] as const;
+export type LineKind = (typeof LINE_KINDS)[number];
+
 /**
  * The explorer's state, changed only through actions: the controls, the
  * ring, the keyboard, the link and (later) the chat all dispatch the same
@@ -16,6 +20,8 @@ export interface ExploreState {
   group: ExploreGroup;
   /** Search text; not part of the link. */
   query: string;
+  /** Readings drawn as lines. */
+  lines: LineKind[];
 }
 
 export type ExploreAction =
@@ -23,13 +29,14 @@ export type ExploreAction =
   | { type: "back" }
   | { type: "clear" }
   | { type: "group"; group: ExploreGroup }
-  | { type: "query"; text: string };
+  | { type: "query"; text: string }
+  | { type: "lines"; kind: LineKind; on: boolean };
 
 /** Most steps Back can take. */
 const TRAIL = 12;
 
 export function initialExploreState(): ExploreState {
-  return { focus: null, trail: [], group: "docs", query: "" };
+  return { focus: null, trail: [], group: "docs", query: "", lines: ["strong", "apart"] };
 }
 
 export function exploreReducer(state: ExploreState, action: ExploreAction): ExploreState {
@@ -49,6 +56,11 @@ export function exploreReducer(state: ExploreState, action: ExploreAction): Expl
       return state.group === action.group ? state : { ...state, group: action.group };
     case "query":
       return { ...state, query: action.text };
+    case "lines":
+      return {
+        ...state,
+        lines: LINE_KINDS.filter((k) => (k === action.kind ? action.on : state.lines.includes(k))),
+      };
     default:
       return state;
   }

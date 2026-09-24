@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useReducer } from "react";
+import { useEffect, useMemo, useReducer, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { scopeOf } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
@@ -33,11 +33,14 @@ export function ExploreApp({
   const scope = useMemo(() => scopeOf(source, docs), [source, docs]);
   const data = useMemo(() => buildBriefData(source, scope, lens), [source, scope, lens]);
 
+  // The link carries the grouping. A target in the centre is read from a
+  // shared link once, but not written back, so a reload starts at rest.
+  const opened = useRef(state.focus);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    params.delete("focus");
     params.delete("group");
-    for (const [key, value] of new URLSearchParams(exploreQuery(state))) params.set(key, value);
+    if (state.focus !== opened.current) params.delete("focus");
+    for (const [key, value] of new URLSearchParams(exploreQuery({ ...state, focus: null }))) params.set(key, value);
     const query = params.toString();
     window.history.replaceState(window.history.state, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
     // Only what the link carries.

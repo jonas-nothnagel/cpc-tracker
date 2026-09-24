@@ -96,9 +96,14 @@ export function PairView({
           {pair ? tp(`rating.${pair.alignment}`) : tp("pairDialog")}
           {pair && flagged && pair.mechanism && <span className="ex-pair-type">{tm(pair.mechanism)}</span>}
         </h3>
-        <button type="button" className="ex-close" onClick={onClose} aria-label={t("close")}>
-          ×
-        </button>
+        <span className="ex-pair-tools">
+          <button type="button" className="ex-link" onClick={() => onCentre(partner)}>
+            {t("centre")}
+          </button>
+          <button type="button" className="ex-close" onClick={onClose} aria-label={t("close")}>
+            ×
+          </button>
+        </span>
       </div>
       {first && second && (
         <div className="brief-panel-pair">
@@ -136,11 +141,6 @@ export function PairView({
           />
         </div>
       )}
-      <p className="ex-pair-actions">
-        <button type="button" className="ex-link" onClick={() => onCentre(partner)}>
-          {t("centre")}
-        </button>
-      </p>
     </section>
   );
 }
