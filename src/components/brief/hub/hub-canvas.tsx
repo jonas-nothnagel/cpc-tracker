@@ -360,7 +360,7 @@ export function HubCanvas({
                 className="brief-hub-label brief-hub-label-partner"
                 data-side={left ? "left" : "right"}
                 data-dim={dim}
-                data-compact={layout.focusLabel < 56 ? "true" : undefined}
+                data-compact={layout.focusLabel < 56 ? "true" : layout.focusLabel < 72 ? "two" : undefined}
                 style={{
                   left: left ? g.x1 : g.x0,
                   top: g.y0 - 6,

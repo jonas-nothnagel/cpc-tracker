@@ -1519,8 +1519,12 @@
   -webkit-line-clamp: 1;
 }
 
-[data-brief] .brief-hub-label-partner[data-compact] .brief-hub-label-name {
+[data-brief] .brief-hub-label-partner[data-compact="true"] .brief-hub-label-name {
   -webkit-line-clamp: 1;
+}
+
+[data-brief] .brief-hub-label-partner[data-compact="two"] .brief-hub-label-name {
+  -webkit-line-clamp: 2;
 }
 
 [data-brief] .brief-hub-label-left[data-compact] .brief-hub-label-meta {
