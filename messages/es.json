@@ -3184,14 +3184,28 @@
       "clear": "All targets",
       "more": "Read more",
       "less": "Show less",
-      "sameDocument": "Same document, not compared",
+      "sameDocument": "Same document",
       "arcCounts": "{aligned, number} aligned, {apart, number} potential misalignment",
       "arcCountsAligned": "{aligned, number} aligned",
       "restTip": "{apart, plural, =0 {No potential misalignment} one {# potential misalignment} other {# potential misalignments}}, {strong, plural, =0 {no strong alignment} one {# strong alignment} other {# strong alignments}}",
       "ringLabel": "{targets, number} targets on a ring, grouped by {group}. Arrow keys move from target to target, Enter puts one in the centre, Space opens its comparison with the target in the centre.",
       "centre": "Put in the centre",
       "close": "Close",
-      "lines": "Lines"
+      "lines": "Lines",
+      "inCentre": "In the centre",
+      "kindDoc": "Document",
+      "kindArea": "Policy area · {lens}",
+      "groupFigures": "{targets, plural, one {# target} other {# targets}}, {pairs, plural, one {# target pair} other {# target pairs}} with the other documents",
+      "withDocs": "With the other documents",
+      "withAreas": "With the other policy areas",
+      "browseDocs": "Documents",
+      "targetsCount": "{count, plural, one {# target} other {# targets}}",
+      "tipWith": "With {name}:",
+      "tipApart": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
+      "tipStrong": "{count, plural, one {# strong alignment} other {# strong alignments}}",
+      "tipAligned": "{count, number} moderate",
+      "tipPartial": "{count, number} partial",
+      "seatPairs": "{target}: {count, plural, one {# target pair} other {# target pairs}}"
     }
   }
 }

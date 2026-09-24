@@ -4,23 +4,28 @@ import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type 
 import { useTranslations } from "next-intl";
 import type { ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
+import {
+  focusKey,
+  focusMembers,
+  groupProfile,
+  groupSeatOrder,
+  pairsBetween,
+  parseFocusKey,
+  rankMembers,
+  type FocusRef,
+  type GroupProfile,
+} from "@/lib/brief/explore/focus";
 import type { EdgeSpec } from "@/lib/brief/explore/lines";
 import {
-  arcTally,
   buildExploreModel,
-  focusProfile,
   groupByDocument,
   groupByLens,
   levelBetween,
   mechanismBetween,
   relationOf,
-  seatOrder,
-  seatRelation,
-  toneCountsOf,
   OTHER_GROUP,
-  type ExploreModel,
-  type FocusProfile,
   type Relation,
+  type RelationCounts,
 } from "@/lib/brief/explore/model";
 import { searchTargets } from "@/lib/brief/explore/search";
 import {
@@ -30,17 +35,24 @@ import {
   type ExploreState,
   type LineKind,
 } from "@/lib/brief/explore/state";
-import type { BriefCommitment, BriefSource } from "@/lib/brief/source";
+import type { BriefSource } from "@/lib/brief/source";
 import { clip, commitmentLine, useNumbers } from "../ink";
 import { ResultBar } from "../sections/documents";
 import { PairView } from "./pair-view";
 import { RING_INK, RingCanvas, type ArcLabel, type SeatStyle } from "./ring-canvas";
+import { ToneKey } from "./rows";
+import {
+  GroupColumn,
+  RestColumn,
+  SearchColumn,
+  TargetColumn,
+  type ArcRow,
+  type BrowseRow,
+  type RankedRow,
+  type SeatPairs,
+} from "./side";
 import "./explore.css";
 
-/** Targets each ranked list shows at rest. */
-const RANKED = 6;
-/** Search results shown before "Show all". */
-const RESULTS = 24;
 /** Labels shorter than this are clause numbers ("7 b)"), not titles. */
 const TITLE_LABEL = 12;
 
@@ -52,7 +64,7 @@ const LINE_LEVEL: Record<LineKind, "high" | "medium" | "low" | "flagged"> = {
   apart: "flagged",
 };
 
-/** A seat's ink when a target is in the centre. */
+/** A seat's ink against the centre. */
 function relationStyle(relation: Relation): SeatStyle {
   switch (relation) {
     case "strong":
@@ -67,6 +79,26 @@ function relationStyle(relation: Relation): SeatStyle {
     default:
       return { color: RING_INK.rest, hollow: true };
   }
+}
+
+/** Target pairs by reading, as the brief's tone counts. */
+function tones(c: RelationCounts): ToneCounts {
+  const reinforce = c.strong + c.aligned;
+  return { reinforce, partial: c.partial, apart: c.apart, none: c.none, total: reinforce + c.partial + c.apart + c.none };
+}
+
+function sumPairs(profile: GroupProfile, ids: number[]): RelationCounts {
+  const sum: RelationCounts = { apart: 0, partial: 0, none: 0, unrelated: 0, aligned: 0, strong: 0 };
+  for (const id of ids) {
+    if (profile.isMember[id]) continue;
+    const p = profile.pairs[id];
+    sum.apart += p.apart;
+    sum.partial += p.partial;
+    sum.none += p.none;
+    sum.aligned += p.aligned;
+    sum.strong += p.strong;
+  }
+  return sum;
 }
 
 /** A short line glyph for each kind of line, as the ring draws it. */
@@ -90,151 +122,14 @@ function LineGlyph({ kind }: { kind: LineKind }) {
   );
 }
 
-/** Ranked rows at rest: a target, its document, its count as a halftone bar. */
-function RankRows({
-  rows,
-  tone,
-  docName,
-  onFocus,
-  onHover,
-  testId,
-}: {
-  rows: { commitment: BriefCommitment; value: number }[];
-  tone: "reinforce" | "apart";
-  docName: (id: string) => string;
-  onFocus: (id: string) => void;
-  onHover: (id: string | null) => void;
-  testId: string;
-}) {
-  const { n } = useNumbers();
-  const max = Math.max(1, ...rows.map((r) => r.value));
-  return (
-    <ol className="ex-rank">
-      {rows.map((row, i) => (
-        <li
-          key={row.commitment.id}
-          className="ex-rank-row"
-          data-testid={testId}
-          onPointerEnter={() => onHover(row.commitment.id)}
-          onPointerLeave={() => onHover(null)}
-        >
-          <span className="ex-rank-n">{i + 1}</span>
-          <button
-            type="button"
-            className="ex-rank-main"
-            onClick={() => onFocus(row.commitment.id)}
-            onFocus={() => onHover(row.commitment.id)}
-            onBlur={() => onHover(null)}
-          >
-            <span className="ex-rank-title">{commitmentLine(row.commitment)}</span>
-            <span className="ex-rank-meta">{docName(row.commitment.doc)}</span>
-          </button>
-          <span className={`ex-rank-bar ex-rank-bar-${tone}`} aria-hidden="true">
-            <span style={{ width: `${((row.value / max) * 100).toFixed(1)}%` }} />
-          </span>
-          <span className="ex-rank-value">{n(row.value)}</span>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-/** Partners of the target in the centre, one row each, marked with the
- *  rating's ink; a row opens the comparison. */
-function PartnerRows({
-  ids,
-  model,
-  focus,
-  tone,
-  docName,
-  selected,
-  onSelect,
-  onHover,
-  mechanismLabel,
-  testId,
-}: {
-  ids: number[];
-  model: ExploreModel;
-  focus: number;
-  tone: "reinforce" | "apart";
-  docName: (id: string) => string;
-  selected: string | null;
-  onSelect: (id: string) => void;
-  onHover: (id: string | null) => void;
-  mechanismLabel: (m: string) => string;
-  testId: string;
-}) {
-  const t = useTranslations("brief.panel");
-  const [all, setAll] = useState(false);
-  const shown = all ? ids : ids.slice(0, 8);
-  return (
-    <>
-      <ol className="brief-panel-rows ex-rows">
-        {shown.map((i) => {
-          const c = model.items[i];
-          const mechanism = tone === "apart" ? mechanismBetween(model, focus, i) : null;
-          return (
-            <li
-              key={c.id}
-              className="brief-panel-row"
-              data-testid={testId}
-              data-selected={selected === c.id ? "true" : undefined}
-              onPointerEnter={() => onHover(c.id)}
-              onPointerLeave={() => onHover(null)}
-            >
-              <button
-                type="button"
-                onClick={() => onSelect(c.id)}
-                onFocus={() => onHover(c.id)}
-                onBlur={() => onHover(null)}
-              >
-                <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
-                <span className="brief-panel-row-main">
-                  <span className="brief-panel-row-line">
-                    <span className="brief-panel-row-doc">{docName(c.doc)} · </span>
-                    {commitmentLine(c)}
-                  </span>
-                  {mechanism && <span className="brief-panel-row-type">{mechanismLabel(mechanism)}</span>}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-      {!all && ids.length > shown.length && (
-        <button type="button" className="brief-panel-more brief-panel-show-all" onClick={() => setAll(true)}>
-          {t("showAll", { count: ids.length })}
-        </button>
-      )}
-    </>
-  );
-}
-
-/** The ring's inks in words, with their counts: the key is the tally. */
-function ToneKey({ counts, share = false }: { counts: ToneCounts; share?: boolean }) {
-  const tt = useTranslations("brief.tone");
-  const { n, pct } = useNumbers();
-  const tones = (["reinforce", "partial", "none", "apart"] as const).filter((tone) => counts[tone] > 0);
-  return (
-    <ul className="ex-key">
-      {tones.map((tone) => (
-        <li key={tone}>
-          <span className={`ex-key-mark ex-key-${tone}`} aria-hidden="true" />
-          <span className="ex-key-n">{share ? pct(counts[tone] / Math.max(1, counts.total)) : n(counts[tone])}</span>{" "}
-          {tt(tone)}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 /**
  * Explore the targets: every target of the selected documents as a seat on a
- * ring, by document or policy area. Any target can take the centre; every
- * other seat then takes the ink of how it reads against it and sorts within
- * its arc, potential misalignment from one end and alignment at the other,
- * and a line runs from the centre to each target it relates to. The column
- * beside the ring names what the ring shows and leads to the evidence.
+ * ring, by document or policy area. A target, a document or a policy area can
+ * take the centre; every other seat then takes the ink of how it reads
+ * against it and sorts within its arc, potential misalignment from one end
+ * and alignment at the other, and lines run from the centre to the targets
+ * it relates to. The column beside the ring names what the ring shows and
+ * leads to the evidence.
  */
 export function Explore({
   source,
@@ -259,105 +154,66 @@ export function Explore({
   const { n, pct } = useNumbers();
 
   const model = useMemo(() => buildExploreModel(data.scope), [data.scope]);
-  const focus = state.focus ? (model.index.get(state.focus) ?? null) : null;
+  const ref = useMemo<FocusRef | null>(() => (state.focus ? parseFocusKey(state.focus) : null), [state.focus]);
+  const members = useMemo(() => (ref ? focusMembers(model, ref, source.lenses) : []), [model, ref, source.lenses]);
+  const group = useMemo(() => (members.length > 0 ? groupProfile(model, members) : null), [model, members]);
+  const active = group ? ref : null;
+  const focusTarget = active?.kind === "target" ? members[0] : null;
+
   const lens = state.group === "docs" ? null : (source.lenses.find((l) => l.id === state.group) ?? null);
   const seatGroups = useMemo(
     () => (lens ? groupByLens(model, lens) : groupByDocument(model, data.scope.docs)),
     [model, lens, data.scope.docs],
   );
   const arcs = useMemo(
-    () => seatGroups.map((g) => ({ key: g.key, ids: seatOrder(model, g.ids, focus) })),
-    [seatGroups, model, focus],
+    () => seatGroups.map((g) => ({ key: g.key, ids: group ? groupSeatOrder(g.ids, group) : g.ids })),
+    [seatGroups, group],
   );
-  const profile = useMemo(() => (focus === null ? null : focusProfile(model, focus)), [model, focus]);
   const matches = useMemo(() => new Set(searchTargets(model.items, state.query)), [model, state.query]);
   const searching = state.query.trim().length >= 2;
 
-  // The comparison open beside the ring, and a seat pointed at from the column.
-  const [selected, setSelected] = useState<string | null>(null);
+  // What is open beside the ring: a comparison of two targets, or (with a
+  // document or area in the centre) one seat's pairs with it.
+  const [pair, setPair] = useState<{ a: string; b: string } | null>(null);
+  const [seat, setSeat] = useState<string | null>(null);
   const [hot, setHot] = useState<string | null>(null);
+  const [hotArc, setHotArc] = useState<string | null>(null);
   const lastFocus = useRef(state.focus);
   useEffect(() => {
     if (lastFocus.current !== state.focus) {
       lastFocus.current = state.focus;
-      setSelected(null);
+      setPair(null);
+      setSeat(null);
       setHot(null);
+      setHotArc(null);
     }
   }, [state.focus]);
   const pairRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (selected) pairRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
-  }, [selected]);
+    if (pair) pairRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
+  }, [pair]);
 
   const docName = useCallback(
     (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id,
     [data.scope.docs],
   );
   const byId = useMemo(() => new Map(model.items.map((c) => [c.id, c])), [model]);
-  const review = data.commitments.slice(0, RANKED);
-  const strongest = data.strongest.slice(0, RANKED);
-
-  const styles = useMemo<SeatStyle[]>(
-    () =>
-      model.items.map((_, i) => {
-        let style: SeatStyle =
-          focus === null
-            ? { color: searching ? RING_INK.ink : RING_INK.rest }
-            : i === focus
-              ? { color: RING_INK.ink, hollow: true }
-              : relationStyle(seatRelation(model, focus, i));
-        if (searching && !matches.has(i)) style = { ...style, color: RING_INK.drained, texture: false };
-        return style;
-      }),
-    [model, focus, searching, matches],
-  );
-
-  const lines = state.lines;
-  const edges = useMemo<EdgeSpec[]>(
-    () => (profile ? lines.flatMap((kind) => profile.partners[kind].map((id) => ({ id, relation: kind }))) : []),
-    [profile, lines],
-  );
-  const neighbours = useCallback(
-    (id: number): EdgeSpec[] => {
-      const out: EdgeSpec[] = [];
-      model.items.forEach((_, j) => {
-        if (j === id) return;
-        const level = levelBetween(model, id, j);
-        if (level === null) return;
-        const relation = relationOf(level);
-        if ((lines as Relation[]).includes(relation)) out.push({ id: j, relation });
-      });
-      return out;
-    },
-    [model, lines],
-  );
-
-  const labels = useMemo<ArcLabel[]>(() => {
-    const groupName = (key: string) => {
+  const groupName = useCallback(
+    (key: string) => {
       if (key === OTHER_GROUP) return t("other");
       if (!lens) return docName(key);
       return lens.categories.find((c) => c.id === key)?.name ?? key;
-    };
-    return arcs.map((arc) => {
-      const name = groupName(arc.key);
-      if (focus === null) return { name };
-      const tally = arcTally(model, arc.ids, focus);
-      const compared = arc.ids.length - tally.unrelated - (arc.ids.includes(focus) ? 1 : 0);
-      if (compared <= 0) return { name, sub: t("sameDocument"), dim: true };
-      const aligned = tally.strong + tally.aligned;
-      const sub =
-        tally.apart > 0 ? t("arcCounts", { aligned, apart: tally.apart }) : t("arcCountsAligned", { aligned });
-      return { name, sub };
-    });
-  }, [arcs, focus, model, lens, docName, t]);
+    },
+    [lens, docName, t],
+  );
+  const arcFocusKey = useCallback(
+    (key: string) =>
+      state.group === "docs" ? focusKey({ kind: "doc", id: key }) : focusKey({ kind: "area", lens: state.group, id: key }),
+    [state.group],
+  );
 
-  const relationText = (i: number): string => {
-    if (focus === null || i === focus) return "";
-    const level = levelBetween(model, focus, i);
-    if (level === null) return t("sameDocument");
-    const mechanism = level === "flagged" ? mechanismBetween(model, focus, i) : null;
-    return mechanism ? `${tr(level)} · ${tm(mechanism)}` : tr(level);
-  };
+  // Each target's potential misalignments and strong alignments with every
+  // target in the other documents: the rankings at rest.
   const restCounts = useMemo(() => {
     const size = model.items.length;
     const apart = new Uint16Array(size);
@@ -376,18 +232,111 @@ export function Explore({
     }
     return { apart, strong };
   }, [model]);
+  const ranked = (counts: Uint16Array): RankedRow[] =>
+    model.items
+      .map((commitment, i) => ({ commitment, value: counts[i], i }))
+      .filter((r) => r.value > 0)
+      .sort((x, y) => y.value - x.value || x.i - y.i)
+      .map(({ commitment, value }) => ({ commitment, value }));
+
+  const styles = useMemo<SeatStyle[]>(
+    () =>
+      model.items.map((_, i) => {
+        let style: SeatStyle = !group
+          ? { color: searching ? RING_INK.ink : RING_INK.rest }
+          : group.isMember[i]
+            ? { color: RING_INK.ink, hollow: true }
+            : relationStyle(group.relation[i]);
+        if (searching && !matches.has(i)) style = { ...style, color: RING_INK.drained, texture: false };
+        return style;
+      }),
+    [model, group, searching, matches],
+  );
+
+  const lines = state.lines;
+  // A line to every seat with at least one pair of a drawn reading with the
+  // centre (for one target, exactly its reading).
+  const edges = useMemo<EdgeSpec[]>(() => {
+    if (!group) return [];
+    const out: EdgeSpec[] = [];
+    model.items.forEach((_, j) => {
+      if (group.isMember[j]) return;
+      for (const kind of lines) if (group.pairs[j][kind] > 0) out.push({ id: j, relation: kind });
+    });
+    return out;
+  }, [group, lines, model]);
+  const neighbours = useCallback(
+    (id: number): EdgeSpec[] => {
+      const out: EdgeSpec[] = [];
+      model.items.forEach((_, j) => {
+        if (j === id) return;
+        const level = levelBetween(model, id, j);
+        if (level === null) return;
+        const relation = relationOf(level);
+        if ((lines as Relation[]).includes(relation)) out.push({ id: j, relation });
+      });
+      return out;
+    },
+    [model, lines],
+  );
+
+  const labels = useMemo<ArcLabel[]>(
+    () =>
+      arcs.map((arc) => {
+        const name = groupName(arc.key);
+        const selectable = arc.key !== OTHER_GROUP;
+        if (!group) return { name, selectable };
+        const others = arc.ids.filter((id) => !group.isMember[id]);
+        if (others.length === 0) return { name, sub: t("inCentre"), dim: true, selectable };
+        const c = tones(sumPairs(group, others));
+        if (c.total === 0) return { name, sub: t("sameDocument"), dim: true, selectable };
+        const sub =
+          c.apart > 0
+            ? t("arcCounts", { aligned: c.reinforce, apart: c.apart })
+            : t("arcCountsAligned", { aligned: c.reinforce });
+        return { name, sub, selectable };
+      }),
+    [arcs, group, groupName, t],
+  );
+
+  const centreName = (): string => {
+    if (!active) return "";
+    if (active.kind === "doc") return docName(active.id);
+    if (active.kind === "area") {
+      const areaLens = source.lenses.find((l) => l.id === active.lens);
+      return areaLens?.categories.find((c) => c.id === active.id)?.name ?? active.id;
+    }
+    return commitmentLine(model.items[members[0]], 80);
+  };
+  const kindLabel = (): string =>
+    active?.kind === "doc" ? t("kindDoc") : active?.kind === "area" ? t("kindArea", { lens: tl(active.lens) }) : "";
+
+  const relationText = (i: number): string => {
+    if (focusTarget === null || i === focusTarget) return "";
+    const level = levelBetween(model, focusTarget, i);
+    if (level === null) return t("sameDocument");
+    const mechanism = level === "flagged" ? mechanismBetween(model, focusTarget, i) : null;
+    return mechanism ? `${tr(level)} · ${tm(mechanism)}` : tr(level);
+  };
+  const groupText = (i: number): string => {
+    if (!group || group.isMember[i]) return "";
+    const p = group.pairs[i];
+    const parts = [
+      p.apart > 0 ? t("tipApart", { count: p.apart }) : null,
+      p.strong > 0 ? t("tipStrong", { count: p.strong }) : null,
+      p.aligned > 0 ? t("tipAligned", { count: p.aligned }) : null,
+      p.partial > 0 ? t("tipPartial", { count: p.partial }) : null,
+    ].filter(Boolean);
+    return parts.length > 0 ? `${t("tipWith", { name: centreName() })} ${parts.join(", ")}` : t("sameDocument");
+  };
   const tipFor = (i: number): ReactNode => {
     const c = model.items[i];
+    const relation = !group ? t("restTip", { apart: restCounts.apart[i], strong: restCounts.strong[i] }) : focusTarget !== null ? relationText(i) : groupText(i);
     return (
       <>
         <span className="ex-tip-doc">{docName(c.doc)}</span>
         <span className="ex-tip-line">{commitmentLine(c, 110)}</span>
-        {focus !== null && i !== focus && <span className="ex-tip-rel">{relationText(i)}</span>}
-        {focus === null && (
-          <span className="ex-tip-rel">
-            {t("restTip", { apart: restCounts.apart[i], strong: restCounts.strong[i] })}
-          </span>
-        )}
+        {relation && <span className="ex-tip-rel">{relation}</span>}
       </>
     );
   };
@@ -395,7 +344,7 @@ export function Explore({
     const c = model.items[i];
     return (
       <>
-        <span className="ex-tip-rel ex-tip-rating">{relationText(i)}</span>
+        <span className="ex-tip-rel ex-tip-rating">{focusTarget !== null ? relationText(i) : groupText(i)}</span>
         <span className="ex-tip-doc">{docName(c.doc)}</span>
         <span className="ex-tip-line">{commitmentLine(c, 110)}</span>
       </>
@@ -403,59 +352,88 @@ export function Explore({
   };
   const describe = (i: number) => {
     const c = model.items[i];
-    const rel = relationText(i);
+    const rel = focusTarget !== null ? relationText(i) : groupText(i);
     return `${docName(c.doc)}: ${commitmentLine(c, 110)}${rel ? `. ${rel}` : ""}`;
   };
 
+  const focusOn = (key: string) => dispatch({ type: "focus", id: key });
   const toCentre = (i: number) => {
-    if (i !== focus) dispatch({ type: "focus", id: model.items[i].id });
+    const key = model.items[i].id;
+    if (key !== state.focus) focusOn(key);
   };
-  // A comparison opens for any target compared with the centre, whichever
-  // lines are drawn.
+  // A line (or Space on a seat) opens what connects that seat to the centre.
   const openLine = (i: number) => {
-    if (focus === null || levelBetween(model, focus, i) === null) return;
+    if (!group || group.isMember[i]) return;
     const id = model.items[i].id;
-    setSelected((cur) => (cur === id ? null : id));
+    if (focusTarget !== null) {
+      if (levelBetween(model, focusTarget, i) === null) return;
+      const a = model.items[focusTarget].id;
+      setPair((cur) => (cur?.b === id ? null : { a, b: id }));
+    } else if (group.relation[i] !== "unrelated") {
+      setSeat((cur) => (cur === id ? null : id));
+      setPair(null);
+    }
+  };
+  // Empty space steps out: an open comparison first, then the centre.
+  const background = () => {
+    if (pair) setPair(null);
+    else if (seat) setSeat(null);
+    else if (state.focus) dispatch({ type: "clear" });
   };
   const escape = () => {
-    if (selected) setSelected(null);
+    if (pair) setPair(null);
+    else if (seat) setSeat(null);
     else if (state.query) dispatch({ type: "query", text: "" });
     else if (state.focus) dispatch({ type: "back" });
   };
 
-  const focusItem = focus === null ? null : model.items[focus];
-  const centre =
-    focusItem === null || !profile ? (
-      <div className="ex-centre-rest">
-        <p className="ex-centre-figure">{n(data.counts.total)}</p>
-        <p className="ex-centre-caption">{tf("comparisons", { count: data.counts.total })}</p>
-        {data.counts.total > 0 && (
-          <div className="ex-centre-bar">
-            <ResultBar counts={data.counts} />
-          </div>
-        )}
-        <ToneKey counts={data.counts} share />
-        <p className="ex-centre-count">
-          {t("restCentre", { targets: model.items.length, documents: data.scope.docs.length })}
-        </p>
-      </div>
-    ) : (
-      <div className="ex-centre-card">
-        <p className="ex-centre-doc">{docName(focusItem.doc)}</p>
-        {focusItem.label.length >= TITLE_LABEL && <p className="ex-centre-label">{clip(focusItem.label, 90)}</p>}
-        <p className="ex-centre-text">
-          {focusItem.label.length >= TITLE_LABEL ? clip(focusItem.text, 200) : commitmentLine(focusItem, 200)}
-        </p>
-        {profile.total > 0 && (
-          <div className="ex-centre-bar">
-            <ResultBar counts={toneCountsOf(profile)} />
-          </div>
-        )}
-      </div>
-    );
+  const counts = group ? tones(group.totals) : data.counts;
+  const centre = !active ? (
+    <div className="ex-centre-rest">
+      <p className="ex-centre-figure">{n(data.counts.total)}</p>
+      <p className="ex-centre-caption">{tf("comparisons", { count: data.counts.total })}</p>
+      {data.counts.total > 0 && (
+        <div className="ex-centre-bar">
+          <ResultBar counts={data.counts} />
+        </div>
+      )}
+      <ToneKey counts={data.counts} share />
+      <p className="ex-centre-count">
+        {t("restCentre", { targets: model.items.length, documents: data.scope.docs.length })}
+      </p>
+    </div>
+  ) : active.kind === "target" ? (
+    (() => {
+      const item = model.items[members[0]];
+      const titled = item.label.length >= TITLE_LABEL;
+      return (
+        <div className="ex-centre-card">
+          <p className="ex-centre-doc">{docName(item.doc)}</p>
+          {titled && <p className="ex-centre-label">{clip(item.label, 90)}</p>}
+          <p className="ex-centre-text">{titled ? clip(item.text, 200) : commitmentLine(item, 200)}</p>
+          {counts.total > 0 && (
+            <div className="ex-centre-bar">
+              <ResultBar counts={counts} />
+            </div>
+          )}
+        </div>
+      );
+    })()
+  ) : (
+    <div className="ex-centre-card">
+      <p className="ex-centre-doc">{kindLabel()}</p>
+      <p className="ex-centre-group">{centreName()}</p>
+      <p className="ex-centre-count">{t("groupFigures", { targets: members.length, pairs: group!.total })}</p>
+      {counts.total > 0 && (
+        <div className="ex-centre-bar">
+          <ResultBar counts={counts} />
+        </div>
+      )}
+    </div>
+  );
 
   const highlight = hot ? (model.index.get(hot) ?? null) : null;
-  const selectedLine = selected ? (model.index.get(selected) ?? null) : null;
+  const selectedLine = pair ? (model.index.get(pair.b) ?? null) : seat ? (model.index.get(seat) ?? null) : null;
 
   const concentration = data.concentration;
   const restHeadline =
@@ -469,8 +447,182 @@ export function Explore({
           })
         : tc("headlineSpread", { contested: concentration.contested });
 
+  // Documents or policy areas to open from the resting column: the ring's arcs.
+  const browse = useMemo<BrowseRow[]>(() => {
+    if (!lens) {
+      return data.scope.docs.map((d) => ({
+        key: focusKey({ kind: "doc", id: d.id }),
+        name: d.name,
+        meta: t("targetsCount", { count: d.count }),
+        counts: data.docs.find((s) => s.doc.id === d.id)?.counts ?? { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 },
+      }));
+    }
+    return seatGroups
+      .filter((g) => g.key !== OTHER_GROUP)
+      .map((g) => ({
+        key: focusKey({ kind: "area", lens: lens.id, id: g.key }),
+        name: groupName(g.key),
+        meta: t("targetsCount", { count: g.ids.length }),
+        counts: tones(groupProfile(model, g.ids).totals),
+      }));
+  }, [lens, data.scope.docs, data.docs, seatGroups, groupName, model, t]);
+
   const groupLabel = (g: ExploreGroup) => (g === "docs" ? t("groupDocs") : tl(g));
-  const lineCount = (kind: LineKind) => (profile ? profile.partners[kind].length : null);
+  // How many lines of each kind the ring draws: one per target with such a
+  // reading of the centre.
+  const lineCount = (kind: LineKind) =>
+    group ? model.items.reduce((sum, _, j) => sum + (!group.isMember[j] && group.pairs[j][kind] > 0 ? 1 : 0), 0) : null;
+
+  const pairView = pair ? (
+    <div ref={pairRef}>
+      <PairView
+        key={`${pair.a}~${pair.b}`}
+        countryId={source.countryId}
+        a={pair.a}
+        b={pair.b}
+        partner={pair.b}
+        commitments={byId}
+        docs={data.scope.docs}
+        onCentre={focusOn}
+        onClose={() => setPair(null)}
+      />
+    </div>
+  ) : null;
+
+  let side: ReactNode;
+  if (searching) {
+    side = (
+      <SearchColumn items={[...matches].map((i) => model.items[i])} docName={docName} onFocus={focusOn} onHover={setHot} />
+    );
+  } else if (!active || !group) {
+    side = (
+      <RestColumn
+        headline={restHeadline}
+        review={ranked(restCounts.apart)}
+        strongest={ranked(restCounts.strong)}
+        browseTitle={lens ? tl(lens.id) : t("browseDocs")}
+        browse={browse}
+        docName={docName}
+        onFocus={focusOn}
+        onHover={setHot}
+        onHoverGroup={(key) => setHotArc(key ? parseFocusKey(key).id : null)}
+      />
+    );
+  } else if (active.kind === "target") {
+    const item = model.items[members[0]];
+    const partnerRows = (relation: "apart" | "strong") =>
+      model.items.flatMap((c, j) =>
+        !group.isMember[j] && group.relation[j] === relation
+          ? [
+              {
+                id: c.id,
+                commitment: c,
+                type:
+                  relation === "apart" && mechanismBetween(model, members[0], j)
+                    ? tm(mechanismBetween(model, members[0], j)!)
+                    : undefined,
+              },
+            ]
+          : [],
+      );
+    side = (
+      <TargetColumn
+        item={item}
+        docName={docName}
+        finding={
+          group.total === 0 ? (
+            t("findingNone")
+          ) : (
+            <>
+              {t("finding", { aligned: counts.reinforce, total: group.total })}
+              {counts.apart > 0 && <> {t("findingApart", { apart: counts.apart })}</>}
+            </>
+          )
+        }
+        counts={counts}
+        apart={partnerRows("apart")}
+        strong={partnerRows("strong")}
+        selected={pair?.b ?? null}
+        onSelect={(id) => setPair((cur) => (cur?.b === id ? null : { a: item.id, b: id }))}
+        onHover={setHot}
+        canGoBack={state.trail.length > 0}
+        onBack={() => dispatch({ type: "back" })}
+        onClear={() => dispatch({ type: "clear" })}
+        pair={pairView}
+      />
+    );
+  } else {
+    const typeOf = (a: number, b: number) => {
+      const m = mechanismBetween(model, a, b);
+      return m ? tm(m) : undefined;
+    };
+    const toPairs = (list: [number, number][]) =>
+      list.map(([a, b]) => ({ a: model.items[a], b: model.items[b], type: typeOf(a, b) }));
+    const rows: ArcRow[] = arcs
+      .filter((arc) => arc.ids.some((id) => !group.isMember[id]))
+      .map((arc) => {
+        const others = arc.ids.filter((id) => !group.isMember[id]);
+        return {
+          key: arc.key,
+          name: groupName(arc.key),
+          counts: tones(sumPairs(group, others)),
+          apart: toPairs(pairsBetween(model, members, others, "apart")),
+          strong: toPairs(pairsBetween(model, members, others, "strong")),
+        };
+      })
+      .filter((row) => row.counts.total > 0);
+    const memberRanks = rankMembers(model, group);
+    const seatIndex = seat ? model.index.get(seat) : undefined;
+    const seatPairs: SeatPairs | null =
+      seatIndex === undefined
+        ? null
+        : {
+            seat: model.items[seatIndex],
+            pairs: members
+              .flatMap((m) => {
+                const level = levelBetween(model, m, seatIndex);
+                return level === null ? [] : [{ m, level }];
+              })
+              .sort(
+                (x, y) =>
+                  ["flagged", "high", "medium", "low", "none"].indexOf(x.level) -
+                  ["flagged", "high", "medium", "low", "none"].indexOf(y.level),
+              )
+              .map(({ m, level }) => ({
+                a: model.items[m],
+                b: model.items[seatIndex],
+                rating: tr(level),
+                type: level === "flagged" ? typeOf(m, seatIndex) : undefined,
+                tone: level === "flagged" ? ("apart" as const) : level === "high" || level === "medium" ? ("reinforce" as const) : ("ink" as const),
+              })),
+          };
+    const full = active.kind === "doc" ? data.scope.docs.find((d) => d.id === active.id)?.full : undefined;
+    side = (
+      <GroupColumn
+        kind={kindLabel()}
+        name={centreName()}
+        full={full}
+        figures={t("groupFigures", { targets: members.length, pairs: group.total })}
+        counts={counts}
+        rowsTitle={lens ? t("withAreas") : t("withDocs")}
+        rows={rows}
+        review={memberRanks.apart.map((r) => ({ commitment: model.items[r.id], value: r.count }))}
+        strongest={memberRanks.strong.map((r) => ({ commitment: model.items[r.id], value: r.count }))}
+        seatPairs={seatPairs}
+        docName={docName}
+        selectedPair={pair ? `${pair.a}~${pair.b}` : null}
+        onPair={(a, b) => setPair((cur) => (cur && cur.a === a && cur.b === b ? null : { a, b }))}
+        onFocus={focusOn}
+        onHover={setHot}
+        onHoverArc={setHotArc}
+        onCloseSeat={() => setSeat(null)}
+        canGoBack={state.trail.length > 0}
+        onBack={() => dispatch({ type: "back" })}
+        onClear={() => dispatch({ type: "clear" })}
+        pair={pairView}
+      />
+    );
+  }
 
   return (
     <div className="ex" data-testid="explore">
@@ -509,12 +661,7 @@ export function Explore({
             const on = lines.includes(kind);
             const count = lineCount(kind);
             return (
-              <button
-                key={kind}
-                type="button"
-                aria-pressed={on}
-                onClick={() => dispatch({ type: "lines", kind, on: !on })}
-              >
+              <button key={kind} type="button" aria-pressed={on} onClick={() => dispatch({ type: "lines", kind, on: !on })}>
                 <LineGlyph kind={kind} />
                 {tr(LINE_LEVEL[kind])}
                 {count !== null && <span className="ex-lines-n">{n(count)}</span>}
@@ -532,7 +679,7 @@ export function Explore({
             styles={styles}
             edges={edges}
             neighbours={neighbours}
-            focus={focus}
+            focus={focusTarget}
             highlight={highlight}
             selectedLine={selectedLine}
             labels={labels}
@@ -542,246 +689,18 @@ export function Explore({
             describe={describe}
             onSeat={toCentre}
             onLine={openLine}
-            onBackground={() => setSelected(null)}
+            onBackground={background}
             onEscape={escape}
+            onLabel={(key) => focusOn(arcFocusKey(key))}
+            onReset={active ? () => dispatch({ type: "clear" }) : undefined}
+            resetLabel={t("clear")}
+            hotArc={hotArc}
             ariaLabel={t("ringLabel", { targets: model.items.length, group: groupLabel(state.group) })}
           />
         </div>
-
-        <aside className="ex-side">
-          {searching ? (
-            <SearchResults
-              ids={[...matches]}
-              model={model}
-              docName={docName}
-              onFocus={(id) => dispatch({ type: "focus", id })}
-              onHover={setHot}
-            />
-          ) : focusItem === null || !profile ? (
-            <>
-              <h2 className="ex-headline">{restHeadline}</h2>
-              {review.length > 0 && (
-                <>
-                  <h3 className="ex-sub">{t("reviewFirst")}</h3>
-                  <RankRows
-                    rows={review.map((r) => ({ commitment: r.commitment, value: r.apart }))}
-                    tone="apart"
-                    docName={docName}
-                    onFocus={(id) => dispatch({ type: "focus", id })}
-                    onHover={setHot}
-                    testId="explore-review-row"
-                  />
-                </>
-              )}
-              {strongest.length > 0 && (
-                <>
-                  <h3 className="ex-sub">{t("strongest")}</h3>
-                  <RankRows
-                    rows={strongest.map((r) => ({ commitment: r.commitment, value: r.strong }))}
-                    tone="reinforce"
-                    docName={docName}
-                    onFocus={(id) => dispatch({ type: "focus", id })}
-                    onHover={setHot}
-                    testId="explore-strong-row"
-                  />
-                </>
-              )}
-            </>
-          ) : (
-            <FocusColumn
-              item={focusItem}
-              profile={profile}
-              model={model}
-              focus={focus!}
-              docName={docName}
-              canGoBack={state.trail.length > 0}
-              onBack={() => dispatch({ type: "back" })}
-              onClear={() => dispatch({ type: "clear" })}
-              selected={selected}
-              onSelect={(id) => setSelected((cur) => (cur === id ? null : id))}
-              onHover={setHot}
-              mechanismLabel={(m) => tm(m)}
-              pair={
-                selected ? (
-                  <div ref={pairRef}>
-                    <PairView
-                      key={`${focusItem.id}~${selected}`}
-                      countryId={source.countryId}
-                      a={focusItem.id}
-                      b={selected}
-                      partner={selected}
-                      commitments={byId}
-                      docs={data.scope.docs}
-                      onCentre={(id) => dispatch({ type: "focus", id })}
-                      onClose={() => setSelected(null)}
-                    />
-                  </div>
-                ) : null
-              }
-            />
-          )}
-        </aside>
+        <aside className="ex-side">{side}</aside>
       </div>
     </div>
   );
 }
 
-function SearchResults({
-  ids,
-  model,
-  docName,
-  onFocus,
-  onHover,
-}: {
-  ids: number[];
-  model: ExploreModel;
-  docName: (id: string) => string;
-  onFocus: (id: string) => void;
-  onHover: (id: string | null) => void;
-}) {
-  const t = useTranslations("brief.explore");
-  const tp = useTranslations("brief.panel");
-  const [all, setAll] = useState(false);
-  const shown = all ? ids : ids.slice(0, RESULTS);
-  return (
-    <>
-      <p className="ex-count" role="status">
-        {t("searchCount", { count: ids.length })}
-      </p>
-      <ol className="brief-panel-rows ex-rows">
-        {shown.map((i) => {
-          const c = model.items[i];
-          return (
-            <li
-              key={c.id}
-              className="brief-panel-row"
-              data-testid="explore-result-row"
-              onPointerEnter={() => onHover(c.id)}
-              onPointerLeave={() => onHover(null)}
-            >
-              <button type="button" onClick={() => onFocus(c.id)}>
-                <span className="brief-panel-mark ex-mark-ink" aria-hidden="true" />
-                <span className="brief-panel-row-main">
-                  <span className="brief-panel-row-line">
-                    <span className="brief-panel-row-doc">{docName(c.doc)} · </span>
-                    {commitmentLine(c)}
-                  </span>
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-      {!all && ids.length > shown.length && (
-        <button type="button" className="brief-panel-more brief-panel-show-all" onClick={() => setAll(true)}>
-          {tp("showAll", { count: ids.length })}
-        </button>
-      )}
-    </>
-  );
-}
-
-function FocusColumn({
-  item,
-  profile,
-  model,
-  focus,
-  docName,
-  canGoBack,
-  onBack,
-  onClear,
-  selected,
-  onSelect,
-  onHover,
-  mechanismLabel,
-  pair,
-}: {
-  item: BriefCommitment;
-  profile: FocusProfile;
-  model: ExploreModel;
-  focus: number;
-  docName: (id: string) => string;
-  canGoBack: boolean;
-  onBack: () => void;
-  onClear: () => void;
-  selected: string | null;
-  onSelect: (id: string) => void;
-  onHover: (id: string | null) => void;
-  mechanismLabel: (m: string) => string;
-  pair: ReactNode;
-}) {
-  const t = useTranslations("brief.explore");
-  const [open, setOpen] = useState(false);
-  const aligned = profile.counts.strong + profile.counts.aligned;
-  const long = item.text.length > 240;
-  return (
-    <>
-      <nav className="ex-nav">
-        {canGoBack && (
-          <button type="button" className="ex-link" onClick={onBack}>
-            {t("back")}
-          </button>
-        )}
-        <button type="button" className="ex-link" onClick={onClear}>
-          {t("clear")}
-        </button>
-      </nav>
-      <p className="ex-focus-doc">{docName(item.doc)}</p>
-      <h2 className="ex-focus-title">{commitmentLine(item, 140)}</h2>
-      <p className="ex-focus-text" data-clamped={long && !open ? "true" : undefined}>
-        {item.text}
-      </p>
-      {long && (
-        <button type="button" className="brief-panel-more" onClick={() => setOpen((v) => !v)}>
-          {open ? t("less") : t("more")}
-        </button>
-      )}
-      <p className="ex-focus-finding">
-        {profile.total === 0 ? (
-          t("findingNone")
-        ) : (
-          <>
-            {t("finding", { aligned, total: profile.total })}
-            {profile.counts.apart > 0 && <> {t("findingApart", { apart: profile.counts.apart })}</>}
-          </>
-        )}
-      </p>
-      {profile.total > 0 && <ToneKey counts={toneCountsOf(profile)} />}
-      {pair}
-      {profile.partners.apart.length > 0 && (
-        <section className="ex-section">
-          <h3 className="ex-sub">{t("apartList", { count: profile.partners.apart.length })}</h3>
-          <PartnerRows
-            ids={profile.partners.apart}
-            model={model}
-            focus={focus}
-            tone="apart"
-            docName={docName}
-            selected={selected}
-            onSelect={onSelect}
-            onHover={onHover}
-            mechanismLabel={mechanismLabel}
-            testId="explore-apart-row"
-          />
-        </section>
-      )}
-      {profile.partners.strong.length > 0 && (
-        <section className="ex-section">
-          <h3 className="ex-sub">{t("strongList", { count: profile.partners.strong.length })}</h3>
-          <PartnerRows
-            ids={profile.partners.strong}
-            model={model}
-            focus={focus}
-            tone="reinforce"
-            docName={docName}
-            selected={selected}
-            onSelect={onSelect}
-            onHover={onHover}
-            mechanismLabel={mechanismLabel}
-            testId="explore-strong-partner-row"
-          />
-        </section>
-      )}
-    </>
-  );
-}

@@ -5,6 +5,7 @@ import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
 import { parseSelection } from "@/lib/brief/selection";
 import { parseExploreState, type ExploreGroup } from "@/lib/brief/explore/state";
+import { focusKey } from "@/lib/brief/explore/focus";
 import { ExploreApp } from "@/components/brief/explore/explore-app";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -49,7 +50,14 @@ export default async function ExplorePreviewPage(props: Props) {
   const selection = parseSelection(searchParams, source);
   const groups: ExploreGroup[] = ["docs", ...source.lenses.map((l) => l.id).filter((id) => RING_LENSES.has(id))];
   const inScope = new Set(selection.docs);
-  const ids = new Set(source.commitments.filter((c) => inScope.has(c.doc)).map((c) => c.id));
+  // What a link may put in the centre: a target, a document or a policy area.
+  const ids = new Set([
+    ...source.commitments.filter((c) => inScope.has(c.doc)).map((c) => c.id),
+    ...selection.docs.map((id) => focusKey({ kind: "doc", id })),
+    ...source.lenses
+      .filter((l) => RING_LENSES.has(l.id))
+      .flatMap((l) => l.categories.map((c) => focusKey({ kind: "area", lens: l.id, id: c.id }))),
+  ]);
   return (
     <ExploreApp
       source={source}

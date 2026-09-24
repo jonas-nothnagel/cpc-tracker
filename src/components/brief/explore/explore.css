@@ -725,3 +725,150 @@
   gap: 0.75rem;
   font-size: 0.875rem;
 }
+
+/* ── Names that open their arc, and the way back on the ring ───────── */
+
+[data-brief] .ex-label-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+[data-brief] .ex-label-button:hover,
+[data-brief] .ex-label-button:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .ex-reset {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brief-ink);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+[data-brief] .ex-reset:hover {
+  border-color: var(--brief-ink);
+}
+
+[data-brief] .ex-centre-group {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
+  font-weight: 500;
+  line-height: 1.2;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-wrap: balance;
+}
+
+/* ── Groups as rows: a document or area with its result bar ─────── */
+
+[data-brief] .ex-group-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-group-row {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-group-row-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(7rem, 11rem);
+  align-items: center;
+  column-gap: 0.75rem;
+  width: 100%;
+  padding: 0.55rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .ex-group-row-main:hover {
+  background: var(--brief-desk);
+}
+
+[data-brief] .ex-group-row[data-open] > .ex-group-row-main {
+  background: var(--brief-desk);
+}
+
+[data-brief] .ex-group-row-name {
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+[data-brief] .ex-group-row-meta {
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-group-row-bar .brief-pair-bar-row {
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
+  column-gap: 5px;
+}
+
+[data-brief] .ex-group-row-bar .brief-pair-bar {
+  height: 9px;
+}
+
+[data-brief] .ex-group-row-bar .brief-pair-value {
+  font-size: 11px;
+}
+
+[data-brief] .ex-group-row-pairs {
+  padding: 0.25rem 0 0.75rem 0.75rem;
+}
+
+[data-brief] .ex-sub-small {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .ex-more {
+  margin-top: 0.5rem;
+  color: var(--brief-muted);
+}
+
+/* One seat's pairs with the document or area in the centre. */
+[data-brief] .ex-seat {
+  margin: 1.25rem 0 0.5rem;
+  padding: 0.85rem 1rem 0.5rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 8px;
+}
+
+[data-brief] .ex-seat-title {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}

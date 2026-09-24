@@ -135,6 +135,65 @@ describe("Explore", () => {
     expect(moderate).toHaveAttribute("aria-pressed", "true");
   });
 
+  it("puts a whole document in the centre with its relations to every other document", () => {
+    renderExplore();
+    const docs = screen.getAllByTestId("explore-browse-row");
+    expect(docs.map((row) => within(row).getByRole("button").textContent)).toEqual([
+      expect.stringContaining("Document A"),
+      expect.stringContaining("Document B"),
+      expect.stringContaining("Document C"),
+    ]);
+    fireEvent.click(within(docs[0]).getByRole("button"));
+    expect(within(side()).getByRole("heading", { name: "Document A" })).toBeInTheDocument();
+    expect(within(side()).getByText("6 targets, 72 target pairs with the other documents")).toBeInTheDocument();
+    const rows = screen.getAllByTestId("explore-arc-row");
+    expect(rows).toHaveLength(2);
+    // With Document B: six potential misalignments, all with A6.
+    fireEvent.click(within(rows[0]).getAllByRole("button")[0]);
+    expect(screen.getByRole("heading", { name: "Potential misalignment (6)" })).toBeInTheDocument();
+    expect(screen.getAllByTestId("explore-arc-apart-row")).toHaveLength(5);
+    // Its own targets, most potential misalignments first.
+    expect(screen.getAllByTestId("explore-group-review-row")).toHaveLength(1);
+  });
+
+  it("puts a policy area in the centre when the ring is grouped by that lens", () => {
+    renderExplore({ group: "globe" });
+    const agriculture = screen
+      .getAllByTestId("explore-browse-row")
+      .find((row) => row.textContent?.includes("Agriculture"))!;
+    fireEvent.click(within(agriculture).getByRole("button"));
+    expect(within(side()).getByText("Policy area · Biodiversity")).toBeInTheDocument();
+    expect(within(side()).getByRole("heading", { name: "Agriculture" })).toBeInTheDocument();
+  });
+
+  it("steps out with a click on empty space: first the comparison, then the centre", async () => {
+    renderExplore({ focus: "B6" });
+    fireEvent.click(within(screen.getAllByTestId("explore-apart-row")[0]).getByRole("button"));
+    await screen.findByTestId("explore-pair");
+    const ring = screen.getByRole("application");
+    fireEvent.click(ring);
+    expect(screen.queryByTestId("explore-pair")).toBeNull();
+    expect(within(side()).getByText(/Potential misalignment with 7\./)).toBeInTheDocument();
+    fireEvent.click(ring);
+    expect(screen.getByRole("heading", { name: "Targets to review first" })).toBeInTheDocument();
+  });
+
+  it("goes back to all targets from a button on the ring", () => {
+    renderExplore({ focus: "doc:B" });
+    const ring = screen.getByRole("application");
+    fireEvent.click(within(ring).getByRole("button", { name: /All targets/ }));
+    expect(screen.getByRole("heading", { name: "Targets to review first" })).toBeInTheDocument();
+  });
+
+  it("shows every ranked target on request", () => {
+    renderExplore();
+    expect(screen.getAllByTestId("explore-review-row")).toHaveLength(6);
+    const more = within(side()).getAllByRole("button", { name: /Show all/ })[0];
+    fireEvent.click(more);
+    // Every target with at least one potential misalignment: A6, B1-B6, C1-C6.
+    expect(screen.getAllByTestId("explore-review-row")).toHaveLength(13);
+  });
+
   it("groups the ring by a policy area lens on request", () => {
     renderExplore();
     const lens = screen.getByRole("button", { name: "Biodiversity" });

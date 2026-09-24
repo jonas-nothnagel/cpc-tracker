@@ -170,14 +170,22 @@ export interface RingLabel {
  * Each arc's name outside the ring, on the side the arc faces: to the right
  * of arcs on the right, to the left of arcs on the left, above or below the
  * arcs at the top and bottom. Names on one side are spread so they never
- * overlap.
+ * overlap, then pushed out until no name box touches the seats.
  */
-export function placeLabels(layout: RingLayout, heights: number[], gap = 6): RingLabel[] {
+export function placeLabels(
+  layout: RingLayout,
+  sizes: (number | { width: number; height: number })[],
+  gap = 6,
+): RingLabel[] {
+  const sizeOf = (k: number) => {
+    const s = sizes[k];
+    return typeof s === "number" ? { width: 150, height: s } : (s ?? { width: 150, height: 20 });
+  };
   const reach = layout.rOuter + Math.max(10, layout.pitch * 0.6) + 4;
   const labels: RingLabel[] = layout.arcs.map((arc, k) => {
     const cos = Math.cos(arc.mid);
     const sin = Math.sin(arc.mid);
-    const h = heights[k] ?? 20;
+    const h = sizeOf(k).height;
     const x = layout.cx + cos * reach;
     const y = layout.cy + sin * reach;
     if (cos > 0.35) return { key: arc.key, x, y, align: "left", height: h };
@@ -200,6 +208,30 @@ export function placeLabels(layout: RingLayout, heights: number[], gap = 6): Rin
       }
     }
   }
+  // Off the seats: a name box may not come nearer the centre than the seats'
+  // outer edge. Side names move outward, top and bottom names away.
+  const clear = layout.rOuter + layout.radius + 2;
+  labels.forEach((l, k) => {
+    const { width, height } = sizeOf(k);
+    const top = l.y - height / 2;
+    const bot = l.y + height / 2;
+    if (l.align === "left" || l.align === "right") {
+      const ny = Math.max(top, Math.min(layout.cy, bot));
+      const dy = ny - layout.cy;
+      if (Math.abs(dy) >= clear) return;
+      const dx = Math.sqrt(clear * clear - dy * dy);
+      if (l.align === "left") l.x = Math.max(l.x, layout.cx + dx);
+      else l.x = Math.min(l.x, layout.cx - dx);
+      return;
+    }
+    const x0 = l.x - width / 2;
+    const nx = Math.max(x0, Math.min(layout.cx, x0 + width));
+    const dx = nx - layout.cx;
+    if (Math.abs(dx) >= clear) return;
+    const dy = Math.sqrt(clear * clear - dx * dx);
+    if (l.y < layout.cy) l.y = Math.min(l.y, layout.cy - dy - height / 2);
+    else l.y = Math.max(l.y, layout.cy + dy + height / 2);
+  });
   return labels;
 }
 

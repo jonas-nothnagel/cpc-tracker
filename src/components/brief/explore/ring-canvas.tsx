@@ -60,6 +60,8 @@ export interface ArcLabel {
   name: string;
   sub?: string;
   dim?: boolean;
+  /** The name opens its arc as the centre. */
+  selectable?: boolean;
 }
 
 function rgb(hex: string): [number, number, number] {
@@ -89,10 +91,11 @@ function seatState(n: number): SeatState {
   };
 }
 
-/** Rough height of an arc's name (up to three lines) and its counts line. */
-function labelHeight(label: ArcLabel): number {
+/** Rough size of an arc's name (up to three lines of 150px) and its counts line. */
+function labelSize(label: ArcLabel): { width: number; height: number } {
   const lines = (text: string, px: number) => Math.min(3, Math.max(1, Math.ceil((text.length * px) / 150)));
-  return lines(label.name, 7.4) * 18 + (label.sub ? lines(label.sub, 6.2) * 16 + 2 : 0);
+  const width = Math.min(150, Math.max(label.name.length * 7.4, (label.sub?.length ?? 0) * 6.2));
+  return { width, height: lines(label.name, 7.4) * 18 + (label.sub ? lines(label.sub, 6.2) * 16 + 2 : 0) };
 }
 
 function tracePath(ctx: CanvasRenderingContext2D, path: EdgePath) {
@@ -126,6 +129,8 @@ function strokeLines(ctx: CanvasRenderingContext2D, paths: EdgePath[], alpha: nu
 }
 
 interface Frame {
+  /** Seats of an arc brought forward; lines to other seats step back. */
+  hotIds: Set<number> | null;
   layout: RingLayout;
   cur: SeatState;
   flower: EdgePath[];
@@ -168,7 +173,10 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
     ctx.lineCap = "round";
     // A seat in hand shows its own lines; the centre's step back.
     const peek = f.road.length > 0;
-    strokeLines(ctx, f.flower, f.lineAlpha, peek);
+    if (f.hotIds && !peek) {
+      strokeLines(ctx, f.flower.filter((p) => !f.hotIds!.has(p.id)), f.lineAlpha, true);
+      strokeLines(ctx, f.flower.filter((p) => f.hotIds!.has(p.id)), f.lineAlpha);
+    } else strokeLines(ctx, f.flower, f.lineAlpha, peek);
     if (peek) strokeLines(ctx, f.road, f.lineAlpha);
     const hot = f.hotLine === null ? undefined : f.flower.find((p) => p.id === f.hotLine);
     if (hot) {
@@ -237,6 +245,10 @@ export function RingCanvas({
   onLine,
   onBackground,
   onEscape,
+  onLabel,
+  onReset,
+  resetLabel,
+  hotArc = null,
   ariaLabel,
 }: {
   arcs: ArcSpec[];
@@ -260,6 +272,13 @@ export function RingCanvas({
   onLine: (id: number) => void;
   onBackground?: () => void;
   onEscape?: () => void;
+  /** An arc's name was selected. */
+  onLabel?: (key: string) => void;
+  /** Back to the resting ring, from a button on the ring itself. */
+  onReset?: () => void;
+  resetLabel?: string;
+  /** An arc to bring forward (its lines stay, the others step back). */
+  hotArc?: string | null;
   ariaLabel: string;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -274,7 +293,7 @@ export function RingCanvas({
   const [live, setLive] = useState("");
 
   const layout = useMemo(() => layoutRing(arcs, n, size.w, size.h), [arcs, n, size.w, size.h]);
-  const placed = useMemo(() => placeLabels(layout, labels.map(labelHeight)), [layout, labels]);
+  const placed = useMemo(() => placeLabels(layout, labels.map(labelSize)), [layout, labels]);
   const order = useMemo(() => arcs.flatMap((a) => a.ids), [arcs]);
   const flower = useMemo(() => flowerPaths(layout, arcs, edges), [layout, arcs, edges]);
   const sampled = useMemo(() => flower.map((p) => ({ id: p.id, pts: samplePath(p, 14) })), [flower]);
@@ -287,6 +306,10 @@ export function RingCanvas({
   );
   const hotLine =
     hoverLine?.id ?? (hot !== null && flower.some((p) => p.id === hot) ? hot : null) ?? selectedLine;
+  const hotIds = useMemo(() => {
+    const arc = hotArc === null ? undefined : arcs.find((a) => a.key === hotArc);
+    return arc ? new Set(arc.ids) : null;
+  }, [arcs, hotArc]);
 
   // The checker: within a textured band, seats whose column and row add up
   // to an odd number are drawn small.
@@ -386,10 +409,22 @@ export function RingCanvas({
     drawRef.current = (lineAlpha = 1) => {
       const canvas = canvasRef.current;
       if (!canvas || !state.current) return;
-      paint(canvas, { layout, cur: state.current, flower, road, lineAlpha, focus, hot, hotLine, w: size.w, h: size.h });
+      paint(canvas, {
+        hotIds,
+        layout,
+        cur: state.current,
+        flower,
+        road,
+        lineAlpha,
+        focus,
+        hot,
+        hotLine,
+        w: size.w,
+        h: size.h,
+      });
     };
     if (settled.current) drawRef.current(1);
-  }, [layout, flower, road, focus, hot, hotLine, size.w, size.h]);
+  }, [layout, flower, road, focus, hot, hotLine, hotIds, size.w, size.h]);
 
   const point = (e: { clientX: number; clientY: number }, el: HTMLElement) => {
     const box = el.getBoundingClientRect();
@@ -483,7 +518,19 @@ export function RingCanvas({
       onBlur={() => setCursor(null)}
     >
       <canvas ref={canvasRef} aria-hidden="true" />
-      <div className="ex-labels" aria-hidden="true">
+      {onReset && resetLabel && (
+        <button
+          type="button"
+          className="ex-reset"
+          onClick={(e) => {
+            e.stopPropagation();
+            onReset();
+          }}
+        >
+          <span aria-hidden="true">×</span> {resetLabel}
+        </button>
+      )}
+      <div className="ex-labels">
         {placed.map((l, k) => {
           const label = labels[k];
           if (!label) return null;
@@ -492,10 +539,23 @@ export function RingCanvas({
               key={l.key}
               className="ex-label"
               data-align={l.align}
-              data-dim={label.dim ? "true" : undefined}
+              data-dim={label.dim || (hotArc !== null && hotArc !== l.key) ? "true" : undefined}
               style={{ left: l.x, top: l.y }}
             >
-              <span className="ex-label-name">{label.name}</span>
+              {label.selectable && onLabel ? (
+                <button
+                  type="button"
+                  className="ex-label-name ex-label-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLabel(l.key);
+                  }}
+                >
+                  {label.name}
+                </button>
+              ) : (
+                <span className="ex-label-name">{label.name}</span>
+              )}
               {label.sub && <span className="ex-label-sub">{label.sub}</span>}
             </div>
           );

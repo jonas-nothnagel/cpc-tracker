@@ -174,3 +174,26 @@ describe("seatAt", () => {
     expect(seatAt(layout, layout.cx, layout.cy)).toBeNull();
   });
 });
+
+describe("placeLabels clear of the ring", () => {
+  function boxOf(l: { x: number; y: number; align: string; height: number }, width: number) {
+    const x0 = l.align === "left" ? l.x : l.align === "right" ? l.x - width : l.x - width / 2;
+    return { x0, x1: x0 + width, y0: l.y - l.height / 2, y1: l.y + l.height / 2 };
+  }
+
+  it("keeps every name box off the seats, whatever the arcs", () => {
+    for (const sizes of [[36, 20, 41, 15, 27, 16, 15, 8], [4, 16, 91, 4, 192, 9, 55, 33], [181, 21, 7], [3, 3, 3, 3, 3, 3, 3, 3, 100]]) {
+      const { arcs, n } = arcsOf(sizes);
+      const layout = layoutRing(arcs, n, 900, 700);
+      const sizesOf = arcs.map(() => ({ width: 140, height: 38 }));
+      const labels = placeLabels(layout, sizesOf);
+      const clear = layout.rOuter + layout.radius + 2;
+      labels.forEach((l) => {
+        const b = boxOf(l, 140);
+        const nx = Math.max(b.x0, Math.min(layout.cx, b.x1));
+        const ny = Math.max(b.y0, Math.min(layout.cy, b.y1));
+        expect(Math.hypot(nx - layout.cx, ny - layout.cy)).toBeGreaterThanOrEqual(clear - 0.5);
+      });
+    }
+  });
+});
