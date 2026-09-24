@@ -1,0 +1,612 @@
+/* Explore the targets: the ring beside its column. Scoped to [data-brief]
+   and to .ex so nothing leaks into the brief or the rest of the app. */
+
+[data-brief] .ex {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--brief-ink);
+}
+
+/* ── Controls: one row above everything they scope ──────────────── */
+
+[data-brief] .ex-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 2.25rem;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-search {
+  flex: 0 1 22rem;
+  min-width: 14rem;
+}
+
+[data-brief] .ex-search input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--brief-ink);
+  font: inherit;
+  font-size: 0.9375rem;
+}
+
+[data-brief] .ex-search input:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 1px;
+}
+
+[data-brief] .ex-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.1rem;
+  font-size: 0.9375rem;
+}
+
+[data-brief] .ex-group-label {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-group button {
+  padding: 0.2rem 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--brief-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+[data-brief] .ex-group button:hover {
+  border-bottom-color: var(--brief-hairline-strong);
+}
+
+[data-brief] .ex-group button[aria-pressed="true"] {
+  border-bottom-color: var(--brief-blue);
+  color: var(--brief-blue);
+  font-weight: 600;
+}
+
+/* ── The ring beside its column ─────────────────────────────────── */
+
+[data-brief] .ex-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(19rem, 25rem);
+  align-items: start;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding-top: 1.25rem;
+}
+
+/* The ring stays in view while the column scrolls past it. */
+[data-brief] .ex-stage {
+  position: sticky;
+  top: 1rem;
+  height: min(calc(100vh - 2rem), 58rem);
+  min-height: 32rem;
+}
+
+[data-brief] .ex-ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  outline: none;
+}
+
+[data-brief] .ex-ring:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .ex-ring[data-pointer="seat"] {
+  cursor: pointer;
+}
+
+[data-brief] .ex-ring canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .ex-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[data-brief] .ex-label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  max-width: 150px;
+  line-height: 1.25;
+  transition: opacity 200ms ease;
+}
+
+[data-brief] .ex-label[data-align="left"] {
+  align-items: flex-start;
+  transform: translateY(-50%);
+  text-align: left;
+}
+
+[data-brief] .ex-label[data-align="right"] {
+  align-items: flex-end;
+  transform: translate(-100%, -50%);
+  text-align: right;
+}
+
+[data-brief] .ex-label[data-align="center"] {
+  align-items: center;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+[data-brief] .ex-label[data-dim] {
+  opacity: 0.5;
+}
+
+[data-brief] .ex-label-name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 600;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ex-label-sub {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--brief-muted);
+}
+
+/* The middle of the ring: the target in the centre, or the country. */
+[data-brief] .ex-centre {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+[data-brief] .ex-centre-country {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+[data-brief] .ex-centre-count {
+  margin: 0.4rem 0 0;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-centre-doc {
+  margin: 0 0 0.4rem;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-centre-text {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+  line-height: 1.35;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  text-wrap: pretty;
+}
+
+[data-brief] .ex-tip {
+  position: absolute;
+  z-index: 3;
+  width: max-content;
+  max-width: 18rem;
+  padding: 7px 10px;
+  transform: translate(-50%, -100%);
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+[data-brief] .ex-tip[data-below] {
+  transform: translate(-50%, 0);
+}
+
+[data-brief] .ex-tip-doc {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-tip-line {
+  display: block;
+  font-weight: 600;
+}
+
+[data-brief] .ex-tip-rel {
+  display: block;
+  margin-top: 3px;
+}
+
+[data-brief] .ex-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── The column ─────────────────────────────────────────────────── */
+
+[data-brief] .ex-side {
+  min-width: 0;
+  padding-bottom: 4rem;
+}
+
+[data-brief] .ex-headline {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.25;
+  text-wrap: pretty;
+}
+
+[data-brief] .ex-sub {
+  margin: 1.75rem 0 0.4rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .ex-count {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .ex-nav {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ex-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brief-blue);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(4, 104, 177, 0.4);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+[data-brief] .ex-link:hover {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .ex-focus-doc {
+  margin: 0 0 0.25rem;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-focus-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-wrap: pretty;
+}
+
+[data-brief] .ex-focus-text {
+  margin: 0.6rem 0 0.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+[data-brief] .ex-focus-text[data-clamped],
+[data-brief] .ex-quote[data-clamped] {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ex-focus-finding {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .ex-result {
+  margin-top: 0.5rem;
+}
+
+/* The ring's inks in words, with their counts. */
+[data-brief] .ex-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .ex-key li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+[data-brief] .ex-key-n {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .ex-key-mark {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+[data-brief] .ex-key-reinforce {
+  background: var(--brief-green);
+}
+
+[data-brief] .ex-key-partial {
+  background: #a9b3a4;
+}
+
+[data-brief] .ex-key-none {
+  background: #cfcfc9;
+}
+
+/* Potential misalignment: a small dot beside a full one, the ring's checker. */
+[data-brief] .ex-key-apart {
+  width: 14px;
+  border-radius: 0;
+  background: radial-gradient(circle at 3.5px 50%, var(--brief-red) 3.5px, transparent 3.8px),
+    radial-gradient(circle at 11px 50%, var(--brief-red) 2px, transparent 2.3px);
+}
+
+[data-brief] .ex-key-line {
+  display: inline-block;
+  width: 16px;
+  border-top: 2px solid var(--brief-green);
+}
+
+[data-brief] .ex-section {
+  margin-top: 0.25rem;
+}
+
+[data-brief] .ex-rows .brief-panel-row[data-selected] > button {
+  background: #eef4fa;
+}
+
+[data-brief] .ex-mark-ink {
+  background: var(--brief-ink);
+}
+
+/* Ranked targets at rest: the target, its document, a halftone bar, the count. */
+[data-brief] .ex-rank {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-rank-row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) minmax(48px, 80px) 30px;
+  align-items: start;
+  column-gap: 10px;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-rank-n,
+[data-brief] .ex-rank-value {
+  padding-top: 1px;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .ex-rank-n {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-rank-value {
+  font-weight: 600;
+  text-align: right;
+}
+
+[data-brief] .ex-rank-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .ex-rank-main:hover .ex-rank-title {
+  text-decoration: underline;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+}
+
+[data-brief] .ex-rank-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ex-rank-meta {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-rank-bar {
+  margin-top: 6px;
+}
+
+[data-brief] .ex-rank-bar > span {
+  display: block;
+  height: 9px;
+  min-width: 3px;
+}
+
+[data-brief] .ex-rank-bar-apart > span {
+  background-image: radial-gradient(circle, var(--brief-red) 1.2px, transparent 1.45px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ex-rank-bar-reinforce > span {
+  background-image: radial-gradient(circle, var(--brief-green) 1.3px, transparent 1.55px);
+  background-size: 3px 3px;
+}
+
+/* One comparison beside the ring. */
+[data-brief] .ex-pair {
+  margin: 1.5rem 0 0.5rem;
+  padding: 1rem 1rem 0.75rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 8px;
+  background: #fff;
+}
+
+[data-brief] .ex-pair-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+[data-brief] .ex-pair-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+[data-brief] .ex-pair-type {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-sans, inherit);
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-close {
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--brief-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+[data-brief] .ex-close:hover {
+  color: var(--brief-ink);
+}
+
+[data-brief] .ex-pair .brief-panel-quote-text {
+  font-size: 1rem;
+}
+
+[data-brief] .ex-pair-ai {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+[data-brief] .ex-pair-actions {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+}
+
+/* ── Narrow screens: the ring on top, the column under it ───────── */
+
+@media screen and (max-width: 960px) {
+  [data-brief] .ex-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-brief] .ex-stage {
+    position: relative;
+    top: 0;
+    height: min(92vw, 40rem);
+    min-height: 22rem;
+  }
+}
+
+/* ── The page it sits on while it is being built ─────────────────── */
+
+[data-brief] .ex-page {
+  max-width: 92rem;
+  margin: 0 auto;
+  padding: 1.75rem clamp(1rem, 3vw, 3rem) 3rem;
+}
+
+[data-brief] .ex-page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin: 0 0 1.25rem;
+}
+
+[data-brief] .ex-page-country {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+[data-brief] .ex-page-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
