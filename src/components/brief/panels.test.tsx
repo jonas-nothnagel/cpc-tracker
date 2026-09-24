@@ -164,6 +164,34 @@ describe("BriefPanels", () => {
     expect(await screen.findByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeTruthy();
   });
 
+  it("labels a pair of documents' AI summary with its confidence and a caveat", () => {
+    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
+    expect(screen.getByText("Medium confidence")).toBeTruthy();
+    expect(screen.getByText("AI-generated synthesis. Treat as a prompt to review, not a settled finding.")).toBeTruthy();
+  });
+
+  it("labels a theme as identified by AI, with its confidence and a caveat", () => {
+    const themed = briefFixture({ themes: true });
+    const data = buildBriefData(themed, scopeOf(themed, ["A", "B", "C"]), null);
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <div data-brief>
+          <BriefPanels
+            stack={[{ kind: "theme", type: "friction", name: "Water allocation pressure" }]}
+            source={themed}
+            data={data}
+            onPush={vi.fn()}
+            onBack={vi.fn()}
+            onClose={vi.fn()}
+          />
+        </div>
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByText("Recurring theme of potential misalignment, identified by AI")).toBeTruthy();
+    expect(screen.getByText("High confidence")).toBeTruthy();
+    expect(screen.getByText("AI-generated synthesis. Treat as a prompt to review, not a settled finding.")).toBeTruthy();
+  });
+
   it("reads one comparison as the two targets and the AI's explanation", async () => {
     vi.stubGlobal(
       "fetch",

@@ -77,6 +77,28 @@ function PanelTitle({ title, sub, children }: { title: ReactNode; sub?: ReactNod
   );
 }
 
+/** The AI's own confidence in a reading, as the app words it. */
+function confidenceLabel(tc: (key: "high" | "medium" | "low") => string, value?: string | null): string | null {
+  return value === "high" || value === "medium" || value === "low" ? tc(value) : null;
+}
+
+/** An AI section's heading, with the AI's confidence beside it. */
+function AiHeading({ label, confidence }: { label: string; confidence: string | null }) {
+  return (
+    <h3 className="brief-panel-h">
+      {label}
+      {confidence && (
+        <>
+          <span className="brief-panel-sep" aria-hidden="true">
+            {" · "}
+          </span>
+          <span className="brief-panel-conf">{confidence}</span>
+        </>
+      )}
+    </h3>
+  );
+}
+
 /** Target pairs by rating as the brief's result bar: potential
  *  misalignment from the left, alignment from the right. */
 function ResultStrip({ label, counts }: { label: string; counts: ToneCounts }) {
@@ -320,6 +342,8 @@ function DocPairPanel({
 }) {
   const t = useTranslations("brief.panel");
   const tm = useTranslations("labels.contradictionType");
+  const tc = useTranslations("labels.confidence");
+  const td = useTranslations("briefing.drawer.pair");
   const stat = data.pairs.find((p) => (p.a.id === a && p.b.id === b) || (p.a.id === b && p.b.id === a));
   const note =
     (source.pairNotes ?? []).find((n) => (n.a === a && n.b === b) || (n.a === b && n.b === a)) ?? null;
@@ -343,12 +367,13 @@ function DocPairPanel({
       <div className="brief-panel-body">
         {note && (
           <section>
-            <h3 className="brief-panel-h">{t("aiReading")}</h3>
+            <AiHeading label={t("aiReading")} confidence={confidenceLabel(tc, note.confidence)} />
             <p className="brief-panel-lead">
               <AiText text={note.title} docs={source.documents} />
             </p>
             <NoteLine label={t("whereAlign")} text={note.align} docs={source.documents} />
             <NoteLine label={t("whereDiverge")} text={note.diverge} docs={source.documents} />
+            <p className="brief-panel-caveat">{td("aiDisclaimer")}</p>
           </section>
         )}
         {note?.hint && (
@@ -506,6 +531,8 @@ function ThemePanel({
 }) {
   const t = useTranslations("brief.panel");
   const tt = useTranslations("brief.themes");
+  const tc = useTranslations("labels.confidence");
+  const td = useTranslations("briefing.drawer.theme");
   const { pct } = useNumbers();
   const resourceLine = useResourceLine();
   const tone = type === "reinforcement" ? "reinforce" : "apart";
@@ -523,16 +550,25 @@ function ThemePanel({
   return (
     <>
       <DrawerHeader>
-        <PanelTitle title={name} sub={tt(`count.${tone}`, { count: row.count })} />
+        <PanelTitle
+          title={name}
+          sub={
+            <>
+              <span className="brief-panel-sub-line">{tt(`count.${tone}`, { count: row.count })}</span>
+              <span className="brief-panel-sub-line">{t(`themeKind.${type}`)}</span>
+            </>
+          }
+        />
       </DrawerHeader>
       <div className="brief-panel-body">
         <section>
-          <h3 className="brief-panel-h">{t("themeSummary")}</h3>
+          <AiHeading label={t("themeSummary")} confidence={confidenceLabel(tc, row.storyline.confidence)} />
           <p className="brief-panel-text">
             <AiText text={row.storyline.description} docs={docNames} />
           </p>
           {resources && <p className="brief-panel-meta">{resources}</p>}
           {!section.exact && <p className="brief-panel-caveat">{tt("notExact")}</p>}
+          <p className="brief-panel-caveat">{td("aiDisclaimer")}</p>
         </section>
         {row.example && (
           <ExamplePairView example={row.example} tone={tone} docs={data.scope.docs} onOpenPair={onOpenPair} />

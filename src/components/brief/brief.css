@@ -1680,9 +1680,11 @@
     border-bottom: 1px solid var(--brief-hairline);
   }
 
+  /* A jump to a step lands below the field, not under it. */
   [data-brief] .brief-hub-step {
     padding-top: 1.5rem;
     padding-bottom: 4rem;
+    scroll-margin-top: calc(max(16rem, 44vh) + 1rem);
   }
 
   [data-brief] .brief-hub-step[data-step="overview"] {
@@ -1705,6 +1707,16 @@
 [data-brief] .brief-panel-sub {
   margin: 0.3rem 0 0;
   font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-sub-line {
+  display: block;
+}
+
+[data-brief] .brief-panel-conf,
+[data-brief] .brief-panel-sep {
+  font-weight: 400;
   color: var(--brief-muted);
 }
 

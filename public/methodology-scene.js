@@ -436,7 +436,7 @@
         var src = MEASURE_EX[2];
         labs.push(label(b.x, below, '<div class="qcard qcard-check">' + quote(src, marked(src)) +
           '<p class="q-check"><span aria-hidden="true">✓</span> "2030" found in the source text</p>' +
-          '<p class="q-note">Source: the national target as recorded on the CBD Online Reporting Tool</p></div>', "sl-cards", Math.min(b.w, 420)));
+          '<p class="q-note">Source: the national target as recorded on the Online Reporting Tool of the Convention on Biological Diversity</p></div>', "sl-cards", Math.min(b.w, 420)));
       }
       if (k === 13 || k === 14) {
         var n = k === 13 ? 28 : 39;

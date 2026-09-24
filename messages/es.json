@@ -496,11 +496,11 @@
       "brief": {
         "steps": {
           "overall": {
-            "title": "Overall coherence",
+            "title": "Coherencia general",
             "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots regroup by recurring theme, and around one document at a time."
           },
           "themes": {
-            "title": "Recurring themes",
+            "title": "Temas recurrentes",
             "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Each cluster of dots is one theme, numbered like the list; selecting either opens the theme with an example."
           },
           "commitments": {
@@ -508,11 +508,11 @@
             "body": "Las metas que intervienen en más posibles desalineaciones. Al seleccionar una se listan las metas con las que está alineada y aquellas con posible desalineación."
           },
           "documents": {
-            "title": "Documents side by side",
+            "title": "Los documentos, uno junto a otro",
             "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document places it at the centre of the dots, with its target pairs with each other document beside it; selecting a pair of documents opens the AI summary, the strongest aligned target pairs and the potential misalignments."
           },
           "builder": {
-            "title": "Customize the brief",
+            "title": "Personalizar la nota",
             "body": "Choose the documents and the policy areas, then the sections for the printed brief. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
           },
           "aligned": {

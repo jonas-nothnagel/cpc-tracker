@@ -66,6 +66,7 @@ export const FIXTURE_NOTE = {
   align: "Both expand restoration. They also share monitoring.",
   diverge: "Cropland expansion may compete with protected areas. It recurs in the north.",
   hint: "Joint land-use screening could help.",
+  confidence: "medium",
 };
 
 export function briefFixture({

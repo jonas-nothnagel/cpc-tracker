@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildBriefData } from "./data";
 import { scopeOf } from "./compute";
 import { briefFixture, FIXTURE_THEMES } from "./test-fixture";
+import { DOT_ORDER } from "./dot-layout";
 import { FOCUS_LABEL, hubParticles, layoutHub, type HubParticle } from "./hub";
 
 const SOURCE = briefFixture({ themes: true });
@@ -104,6 +105,17 @@ describe("layoutHub", () => {
         expect(side === "left" ? g.x1 <= 260 : g.x0 >= 260).toBe(true);
       }
     }
+  });
+
+  it("a document in focus: potential misalignment keeps its texture, not only its colour", () => {
+    const layout = layoutHub({ kind: "doc", doc: "A" }, particles, DATA, 800, 500);
+    const apart = particles.flatMap((p, i) => (p.tone === DOT_ORDER.indexOf("apart") && layout.visible[i] ? [i] : []));
+    const aligned = particles.flatMap((p, i) => (p.tone === DOT_ORDER.indexOf("reinforce") && layout.visible[i] ? [i] : []));
+    expect(apart.length).toBeGreaterThan(0);
+    // Every other dot drawn small, as in the overview and the landing field.
+    expect(apart.some((i) => layout.small[i] === 1)).toBe(true);
+    expect(apart.some((i) => layout.small[i] === 0)).toBe(true);
+    expect(aligned.every((i) => layout.small[i] === 0)).toBe(true);
   });
 
   it("keeps the dots close to their overview size in every step", () => {

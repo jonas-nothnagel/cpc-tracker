@@ -41,9 +41,29 @@ review of rounds 5 and 6 led to fix pass `c79bd1e`:
 Deferred minors from that review:
 - the tour's dot unit for Sri Lanka;
 - dead code;
-- no feedback control on the pair synthesis;
+- no feedback control on the pair synthesis (fixed in round 7);
 - tour targets in preview;
 - `#step=N` not reaching the iframe route.
+
+**Round 7 (2026-09-24, `d68da55`, `31e201f`, `94e8e67`):** Jonas: the sections felt
+"unfocused again"; start from one great coherence overview built out of the landing dots and
+explore from there. It combines the dashboard's 01 direction/themes, 02 document focus,
+04 types of misalignment and 05 where to focus. Mongolia English only for the first version.
+- **The overview** (`src/components/brief/hub/`) replaces the screen sections: a sticky dot
+  field beside four steps. As a step crosses the middle of the window, the same dots
+  re-form: by rating; aligned pairs by theme (+ strongest alignments, counted by strong
+  links as in the explorer); potential misalignments by theme (+ types of potential
+  misalignment + targets to review first); and one document in the centre with its pairs
+  with every other document on either side, joined by spokes (picked from the document
+  list, whose rows carry chevrons and open one at a time).
+- **Panels** in the brief's design: serif title, result bar, rating-ink rows, the two
+  targets as quotes. The review loop (thumbs + note) is on every AI text, with the
+  dashboard's anchors. Document codes in AI text get tooltips with the full names.
+- **How it works:** the 13,404 pairs are a comparison triangle (documents along the
+  diagonal, their own squares empty), coloured by every pair's real rating in the next step.
+  The worked example's parts, measurable phrases and source check are quoted on the left.
+  Invented right-hand examples were removed, and the example figures re-verified.
+- The printed brief is unchanged: the builder's section group reads "In the printed brief".
 
 Verdict pending.
 
@@ -161,7 +181,10 @@ compelling enough to forward to a colleague. This branch is the search for the a
    2-3 page brief. Verdict: "neither ... understandable" parts (grid, map, text walls).
 5. **Self-explanatory brief** (`d0cf0b5`): plain theme lists, readable examples, team
    register, walkthrough. Verdict: clearer; red/green liked; "too much a PDF tool".
-6. **Flowing brief + dynamic dots + new How it works** (`ff89b09`). Verdict pending.
+6. **Flowing brief + dynamic dots + new How it works** (`ff89b09`). Verdict: How it works
+   and the documents list liked; the other sections "unfocused again".
+7. **One coherence overview** (`d68da55`..`94e8e67`): the scrolling hub, brief-style
+   panels, hands-on How it works. Verdict pending.
 
 The finding-page routes (`/{country}/finding/{pairKey}`, `/{country}/findings`) still exist
 on this branch as legacy surfaces; nothing in the brief links to them. Their lib layer
@@ -173,39 +196,49 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
   ("8 policy documents. 178 targets. 13,404 target pairs compared."); an icon pause button
   (WCAG 2.2.2); reduced motion stills them.
 - **Screen:** one flowing, full-width page next to the builder (documents, policy-area lens,
-  sections and their order, share link, "How to read this brief" walkthrough, "How the
-  analysis works" link). No section eyebrows: each section opens with its finding.
+  the sections of the printed brief and their order, share link, "How to read this brief"
+  walkthrough, "How the analysis works" link). The page is the coherence overview, then any
+  other kept section (policy areas).
 - **Print:** A4 sheets are always laid out off screen (so charts and text fits are measured at
   page size), inert and hidden; "Print or save as PDF" shows them as a preview with Print /
-  Back. The theme the reader selected prints. Default = overall, areas of alignment, most
-  aligned targets, potential misalignment, targets to review first, documents = 3 pages.
-- **Sections:** overall (halftone dot field; aligned and potential-misalignment legend
-  entries link to their sections); areas of alignment / potential misalignment (leading pair
-  of documents headline; the tone's dots clustered by theme, numbered like the list; theme
-  rows with the three documents most involved and, for misalignment, the resources involved;
-  one example per theme, quotes fitted to whole lines); most aligned targets (share of
-  compared targets); targets to review first (concentration); documents (one row per
-  document, most aligned first, opening to its pairs); by policy area (optional).
-- **Pair panel:** the pipeline's AI synthesis (first sentence, rest on request), an
-  AI-suggested starting point, strongest aligned target pairs, potential misalignments.
+  Back. Default = overall, areas of alignment, strongest alignments, potential misalignment,
+  targets to review first, documents = 3 pages.
+- **Overview steps** (screen): overall (headline + legend; aligned and potential
+  misalignment lead to their steps); aligned (leading pair of documents headline; themes
+  numbered like the dot groups; strongest alignments by strong links); potential
+  misalignment (themes with resources involved; types of potential misalignment; targets to
+  review first); documents (one row per document, most aligned first; the open row sits at
+  the centre of the dots). Dots keep within 1.8x their landing size in every step.
+- **Print sections:** overall (halftone field), areas of alignment / potential misalignment
+  (theme list + one example per theme, quotes fitted to whole lines), strongest alignments,
+  targets to review first, documents, by policy area (optional).
+- **Panels:** serif title with one plain line or the result bar under it. Pair of documents:
+  the pipeline's AI summary (first sentence, rest on request), an AI-suggested starting
+  point, strongest aligned target pairs, potential misalignments. One comparison: both
+  targets quoted, joined by the rating's line, then the AI explanation. Theme: size, AI
+  summary, example, starting point, documents by share. Thumbs + note on each AI text.
 - **Language:** targets, target pairs, aligned, partially aligned, potential misalignment,
   no clear relationship. Never commitment (the team's finance layer), reinforce, flagged.
 - **How it works** (`public/methodology-experience.html` + `methodology-scene.js`): the left
   side is a canvas of dots on Mongolia's real per-target data (documents, extraction,
-  measurable flags, GLOBE categories, 13,404 pairs, ratings, themes, finance, implementation);
-  captions state each step's result; `#step=N` opens one step.
+  measurable flags, GLOBE categories, the comparison triangle of 13,404 pairs with each
+  pair's real rating, themes, finance, implementation) with the worked example quoted in
+  place; captions state each step's result; `#step=N` opens one step.
 
 ## Where the code lives
 
-- `src/lib/brief/` (pure, tested): `source.ts` (payload -> BriefSource, incl. `pairNotes`),
-  `selection.ts`, `sections.ts`, `compute.ts` (scope, tones, pairs, exclusive themes,
-  examples, concentration, aligned targets, document stats, strongest aligned, areas),
-  `data.ts` (`buildBriefData`, `themeDots`), `dot-layout.ts` (`layoutGroups`), `sheet.ts`
-  (footer date, line fit), `pair.ts`, `test-fixture.ts` (options `themes`, `notes`).
-- `src/components/brief/`: `brief-app.tsx` (modes, shared theme selection, replay), `flow.tsx`
-  (screen), `sheets.tsx` (print), `section-view.tsx` (variant screen/print), `sections/*`,
-  `dot-field.tsx` (`DotCanvas` + overall `DotField`), `example-pair.tsx`, `panels.tsx`,
-  `builder.tsx`, `hero.tsx`, `moving-text.tsx`, `ink.tsx`, `brief.css`.
+- `src/lib/brief/` (pure, tested): `source.ts` (payload -> BriefSource, incl. `pairNotes` with
+  confidence), `selection.ts`, `sections.ts`, `compute.ts` (scope, tones, pairs, themes as
+  coverage, examples, concentration, strongest alignments, mechanism mix, document stats,
+  areas), `data.ts` (`buildBriefData`, `themeDots`), `hub.ts` (overview particles and stage
+  layouts), `dot-layout.ts` (`layoutGroups`), `text.ts` (sentence split, document codes),
+  `sheet.ts`, `pair.ts`, `test-fixture.ts` (options `themes`, `notes`).
+- `src/components/brief/`: `brief-app.tsx` (modes, panels), `flow.tsx` (screen), `hub/`
+  (`hub.tsx` steps, `hub-canvas.tsx` morphing field), `sheets.tsx` (print),
+  `section-view.tsx`, `sections/*` (print sections; `ThemeList`, `DocList`, `ResultBar` and
+  the headline hooks are shared with the overview), `rank-list.tsx`, `dot-field.tsx`,
+  `example-pair.tsx`, `panels.tsx`, `builder.tsx`, `hero.tsx`, `moving-text.tsx`, `ink.tsx`,
+  `brief.css`.
 - Walkthrough steps: `TOUR_STEPS.brief` in the dashboard's tour engine
   (`src/components/dashboard/coherence-briefing/tour/steps.ts`), copy in `briefing.tour.brief`.
 - Routes: `src/app/[locale]/[country]/brief/page.tsx`, `src/app/api/brief/pair/route.ts`;
@@ -225,16 +258,18 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
 ## Open questions for the pickup
 
 1. Uptake gate: would Jonas send the printed default brief to Lea or a CO colleague as is?
-2. "Most aligned targets" is led by generic enabling targets (for example the NDC's "Enabling
-   environment Goal", aligned with 100% of the targets it was compared with). True, but it
-   may read as trivial.
+2. Strongest alignments are led by broad targets (Vision 2050's national anti-desertification
+   programme and the NBSAP's biodiversity mainstreaming, 60 strong links each). True, but
+   possibly unsurprising to a reader.
 3. Cote d'Ivoire: the same pair can lead both "most closely aligned" and "highest share of
    potential misalignment".
-4. How it works, right panel: some worked-example numbers are older hand-set figures
-   (NDC <-> NBSAP 720 pairs, 70%, 1,560 pairs); the new left side uses the current run.
-5. New strings since round 6 are English placeholders in es/mn; the es/mn How it works
-   pages still carry the old flowchart.
-6. Finance and implementation sections: none yet (coherence only by decision).
+4. es/mn: new and changed strings since round 6 are English placeholders (hub, panels,
+   tour, builder "In the printed brief"); the es/mn How it works pages keep the old
+   flowchart. Translate once Jonas likes the Mongolia English version.
+5. The overview's screen-only sections (overall dot field with links, theme dot clusters)
+   still exist as components for the print path; their screen interactivity is now unused.
+6. Next sections Jonas named: sectors (from the taxonomy lens), implementation, finance,
+   and the wheel to explore.
 
 ## How to resume
 

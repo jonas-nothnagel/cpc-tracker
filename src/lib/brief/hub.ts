@@ -276,12 +276,17 @@ function placeFocus(
     const w = cols * pitch;
     const h = rows * pitch;
     const x0 = onLeft ? cx - middle / 2 - SPOKE - w : cx + middle / 2 + SPOKE;
+    const apart = DOT_ORDER.indexOf("apart");
     list.forEach((id, n) => {
-      layout.x[id] = x0 + (n % cols) * pitch + pitch / 2;
-      layout.y[id] = top + Math.floor(n / cols) * pitch + pitch / 2;
+      const col = n % cols;
+      const row = Math.floor(n / cols);
+      layout.x[id] = x0 + col * pitch + pitch / 2;
+      layout.y[id] = top + row * pitch + pitch / 2;
       layout.r[id] = Math.max(0.55, pitch * 0.34);
       layout.visible[id] = 1;
       layout.ink[id] = particles[id].tone;
+      // The checker texture tells potential misalignment apart without colour.
+      if (particles[id].tone === apart && (col + row) % 2 === 1) layout.small[id] = 1;
     });
     layout.groups.push({
       key: partners[k].id,
