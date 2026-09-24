@@ -24,6 +24,7 @@ export function RankList({
   testId,
   tour,
   onOpen,
+  onHover,
 }: {
   items: RankItem[];
   tone: "reinforce" | "apart";
@@ -35,6 +36,8 @@ export function RankList({
   testId: string;
   tour?: string;
   onOpen?: (id: string) => void;
+  /** The target under the pointer (null when it leaves). */
+  onHover?: (id: string | null) => void;
 }) {
   const { n } = useNumbers();
   const docName = (id: string) => docs.find((d) => d.id === id)?.name ?? id;
@@ -48,7 +51,13 @@ export function RankList({
           .join(", ");
         const width = { width: `${((item.value / max) * 100).toFixed(1)}%` };
         return (
-          <li key={item.commitment.id} className="brief-rank-row" data-testid={testId}>
+          <li
+            key={item.commitment.id}
+            className="brief-rank-row"
+            data-testid={testId}
+            onPointerEnter={onHover ? () => onHover(item.commitment.id) : undefined}
+            onPointerLeave={onHover ? () => onHover(null) : undefined}
+          >
             <span className="brief-rank-n">{i + 1}</span>
             <button
               type="button"

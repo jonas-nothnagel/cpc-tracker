@@ -24,6 +24,7 @@
   var LINE_DARK = "#b9bfc7";
   var HUMAN = "#9a6b34";
   var BLUE = "#0468b1";
+  var GREEN_MID = "#78ab86";
 
   // The documents' names as the brief shows them (country config, full name
   // without its trailing parenthesis); LDN is spelled out once.
@@ -244,6 +245,12 @@
     }
   });
   var TONE_OF = { h: 0, m: 0, l: 1, f: 2, n: 3 };
+  // The rating scale, as the comparison step shows it: strong and moderate
+  // alignment apart, before the overall picture counts both as aligned.
+  var LEVEL_INK = { h: GREEN, m: GREEN_MID, l: GREY, n: NONE, f: RED };
+  var LEVELS = [["h", "strong alignment"], ["m", "moderate alignment"], ["l", "partial alignment"], ["n", "no clear relationship"], ["f", "potential misalignment"]];
+  var LEVEL_COUNT = { h: 0, m: 0, l: 0, n: 0, f: 0 };
+  for (var lc = 0; lc < RATINGS.length; lc++) LEVEL_COUNT[RATINGS.charAt(lc)] += 1;
   var cellOf = new Int32Array(pairs.length);
   var pairAt = new Int32Array(RATINGS.length);
   (function () {
@@ -273,8 +280,10 @@
   var T0 = stateArrays(targets.length), T1 = stateArrays(targets.length);
   var P0 = stateArrays(pairs.length), P1 = stateArrays(pairs.length);
   var ring = new Uint8Array(targets.length);
-  // Rings on single target pairs (the worked example's cell).
+  // Rings on single target pairs (the worked example's cell), and outlines
+  // around one block of pairs.
   var marks = [];
+  var outlines = [];
   var lines = { a0: 0, a1: 0, kept: false };
 
   // ── Canvas ─────────────────────────────────────────────────────────
@@ -399,6 +408,7 @@
     var showEx = document.body.classList.contains("show-example");
     ring.fill(0);
     marks.length = 0;
+    outlines.length = 0;
     lines.a1 = k <= 1 ? 1 : 0;
     lines.kept = k === 1;
 
@@ -501,7 +511,7 @@
         var colr = LINE_DARK, alpha = 1, size = MT.pitch * 0.36;
         if (k === 7 && showEx && exCell[ci]) { colr = BLUE; size = MT.pitch * 0.5; }
         if (k === 8) alpha = 0.28;
-        if (k === 9) colr = TONES[p.tone][2];
+        if (k === 9) colr = LEVEL_INK[RATINGS.charAt(ci)];
         place(P1, pi, pos[0], pos[1], size, alpha, colr);
       });
       var exPos = cellXY(MT, EX_PAIR);
@@ -511,9 +521,14 @@
         // A document's own square stays empty: the note sits in the largest.
         var big = 5, sq = DOCS[big][1] * MT.pitch;
         labs.push(label(MT.x0 + MT.off[big] + sq * 0.55, MT.y0 + MT.off[big] + sq * 0.74, "Same document: not compared", "sl-note sl-note-r", 150));
-        if (showEx) {
-          labs.push(label(MT.x0 - 150, under, '<span class="key" style="background:' + BLUE + '"></span>The 158 target pairs of one target: National Biodiversity Strategy &amp; Action Plan, 1 Spatial planning', "sl-legend sl-legend-small"));
-        }
+        // One block of pairs, outlined: the targets of two documents, row by column.
+        var bx = MT.x0 + MT.off[EX_NBSAP.doc], by = MT.y0 + MT.off[EX_NDC.doc];
+        var bw = DOCS[EX_NBSAP.doc][1] * MT.pitch, bh = DOCS[EX_NDC.doc][1] * MT.pitch;
+        outlines.push({ x: bx - 2, y: by - 2, w: bw + 4, h: bh + 4 });
+        labs.push(label(bx + bw + 8, by + bh * 0.72, DOCS[EX_NDC.doc][1] + " × " + DOCS[EX_NBSAP.doc][1] + " = " + fmt(DOCS[EX_NDC.doc][1] * DOCS[EX_NBSAP.doc][1]) + " target pairs", "sl-callout sl-callout-mid"));
+        var key = '<span class="keyline"><span class="key" style="background:' + LINE_DARK + '"></span>Each dot is one target pair</span>';
+        if (showEx) key += '<span class="keyline"><span class="key" style="background:' + BLUE + '"></span>The 158 target pairs of one target: National Biodiversity Strategy &amp; Action Plan, 1 Spatial planning</span>';
+        labs.push(label(MT.x0 - 150, under, key, "sl-legend sl-legend-small sl-keys"));
       }
       if (k === 8) {
         var rows = PARTS.map(function (row) {
@@ -528,10 +543,10 @@
           '<div class="pcard"><p class="q-src">' + DOCS[EX_NDC.doc][0] + " · <b>" + EX_NDC.label + "</b></p><dl>" + rowsB + "</dl></div></div>", "sl-center"));
       }
       if (k === 9) {
-        var row9 = TONES.map(function (t) {
-          return '<span class="key" style="background:' + t[2] + '"></span><span class="n">' + fmt(t[1]) + "</span> " + t[0];
-        }).join('<span class="gap"></span>');
-        labs.push(label(MT.x0 - 150, under, row9, "sl-legend sl-legend-small"));
+        var row9 = LEVELS.map(function (lv) {
+          return '<span class="keyitem"><span class="key" style="background:' + LEVEL_INK[lv[0]] + '"></span><span class="n">' + fmt(LEVEL_COUNT[lv[0]]) + "</span> " + lv[1] + "</span>";
+        }).join("");
+        labs.push(label(MT.x0 - 150, under, row9, "sl-legend sl-legend-small sl-keyrow", MT.side + 150));
         if (showEx) {
           labs.push(label(exPos[0] + 14, exPos[1] - 10, '<span class="verdict"><span class="o"></span>Potential misalignment</span><span class="why">Competing for resources: land</span>', "sl-callout"));
         }
@@ -683,6 +698,11 @@
         ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
         ctx.stroke();
       });
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 1.25;
+      outlines.forEach(function (o) {
+        ctx.strokeRect(o.x, o.y, o.w, o.h);
+      });
     }
     ctx.globalAlpha = 1;
   }
@@ -729,13 +749,16 @@
       .join("");
   }
 
+  /** The step's place (from the page) above the step's result. */
+  var placeLabel = "";
   function showCaption(k) {
     var c = CAPTIONS[k] || ["", ""];
-    capEl.innerHTML = '<p class="sc-phase">' + c[0] + '</p><p class="sc-text">' + c[1] + "</p>";
+    capEl.innerHTML = '<p class="sc-phase">' + (placeLabel || c[0]) + '</p><p class="sc-text">' + c[1] + "</p>";
   }
 
-  function go(k) {
+  function go(k, place) {
     if (!canvas) return;
+    if (place) placeLabel = place;
     if (step >= 0) freeze(progress);
     step = k;
     var s = sceneFor(k);

@@ -199,6 +199,13 @@ describe("BriefApp screen and print", () => {
     expect(sheets().querySelector('[data-section="together"]')).toBeNull();
   });
 
+  it("goes from the landing straight into the overview, without repeating its figures", () => {
+    renderApp();
+    const flow = screen.getByTestId("brief-flow");
+    expect(within(flow).queryByTestId("brief-intro")).toBeNull();
+    expect(flow.firstElementChild?.getAttribute("data-testid")).toBe("brief-hub");
+  });
+
   it("shows the overview's sections once, in the overview", () => {
     renderApp(briefFixture({ themes: true }));
     const flow = screen.getByTestId("brief-flow");
@@ -276,9 +283,8 @@ describe("BriefApp accessibility and provenance", () => {
       commitments: SOURCE.commitments.map((c, i) => (i === 0 ? { ...c, translated: "translation" as const } : c)),
     };
     renderApp(translated);
-    expect(
-      screen.getAllByText("Target texts on this page are translations of the original documents.").length,
-    ).toBeGreaterThan(0);
+    const hero = document.querySelector(".brief-hero") as HTMLElement;
+    expect(within(hero).getByText("Target texts on this page are translations of the original documents.")).toBeTruthy();
   });
 
   it("keeps an open drill-down off the printed page", () => {

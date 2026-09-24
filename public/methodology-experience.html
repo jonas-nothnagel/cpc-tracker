@@ -455,18 +455,81 @@
     -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
   .sl.sl-callout { transform: translateY(-100%); display: flex; flex-direction: column; gap: 2px; padding: 7px 10px;
     background: #fff; border: 1px solid var(--border-200); white-space: nowrap; }
+  .sl.sl-callout-mid { transform: translateY(-50%); font-size: 12.5px; color: #232e3d; }
+  .ex-facts { margin: 6px 0 0; font-size: 13px; color: var(--undp-gray); }
+  .mini-lab { font-size: 13px; color: #232e3d; }
+  .kind-bar { display: flex; gap: 2px; height: 12px; }
+  .kind-bar i { display: block; height: 100%; }
+  .kind-bar i.apart, .kbar i { background-image: radial-gradient(circle, #d2432c 1.2px, transparent 1.45px); background-size: 3px 3px; }
+  .kind-bar i.rest { background: #e9e9e6; }
+  .kind-rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-100); }
+  .kind-rows li { display: grid; grid-template-columns: minmax(0, 1fr) 120px 40px; align-items: center; column-gap: 10px;
+    padding: 7px 0; border-bottom: 1px solid var(--border-100); font-size: 13px; color: #232e3d; }
+  .kind-rows b { text-align: right; font-variant-numeric: tabular-nums; }
+  .kbar { display: block; height: 9px; }
+  .kbar i { display: block; height: 100%; min-width: 3px; }
+  .sl.sl-keys { display: flex; flex-direction: column; gap: 4px; }
+  .sl.sl-keyrow { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  .sl .keyitem { white-space: nowrap; }
+  .sl .keyline { display: block; }
   .sl .verdict { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--undp-black); }
   .sl .verdict .o { width: 9px; height: 9px; border: 2px solid #d2432c; border-radius: 50%; }
   .sl .why { font-size: 12px; color: var(--undp-gray); }
+  /* Round 8: the right side in the coherence brief's design. The step's place
+     moved to the left; technical details are always there, as a section. */
+  .p-eyebrow { display: none; }
+  .pstep { padding: 40px 40px 48px; }
+  .p-title { font-weight: 500; font-size: clamp(25px, 2.2vw, 31px); line-height: 1.18; letter-spacing: -0.005em;
+    color: #232e3d; margin: 0 0 16px; }
+  .p-say { font-size: 16px; line-height: 1.62; color: #232e3d; }
+  .p-viz > * { max-width: 440px; }
+  .p-example { margin-top: 28px; }
+  .ex-card { border: 0; border-left: 2px solid var(--undp-blue); border-radius: 0; background: none; padding: 1px 0 1px 16px; }
+  .ex-card .exl { font-size: 13px; color: #232e3d; margin-bottom: 6px; }
+  .ex-card .exb { font-size: 14.5px; line-height: 1.58; color: #232e3d; }
+  .ex-pair { gap: 0; }
+  .ex-t { border: 0; border-top: 1px solid var(--border-100); border-radius: 0; padding: 9px 0; background: none; }
+  .ex-t .ex-txt { font-family: var(--font-serif); font-size: 14.5px; line-height: 1.45; }
+  .p-tech, .p-deep, body.show-deep .p-tech, body.show-deep .p-deep { display: block; }
+  .p-note { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border-200); }
+  .p-deep { margin-top: 18px; padding-top: 0; border-top: 0; }
+  .p-note .nl { font-size: 13px; font-weight: 600; color: #232e3d; margin-bottom: 8px; }
+  .p-tech .tx { font-size: 14px; line-height: 1.62; color: #3c4654; }
+  .p-tech .tx code, .ptext code { background: none; padding: 0; color: #232e3d; }
+  .p-tech .specs { gap: 0; margin-top: 10px; }
+  .p-tech .specs span { border: 0; padding: 0; font-family: inherit; font-size: 12.5px; color: var(--undp-gray); }
+  .p-tech .specs span + span::before { content: "·"; padding: 0 7px; }
+  .prompt { border-radius: 0; box-shadow: none; }
+  .prow.out { background: #fafafa; }
+  .role, .role.sys, .role.usr, .role.out, .role.code { background: none; color: var(--undp-gray); padding: 0; border-radius: 0;
+    font-size: 11px; font-weight: 600; letter-spacing: 0; text-transform: none; min-width: 58px; }
+  .ptext { font-size: 13px; }
+  .ptext .ret span { background: none; color: #232e3d; padding: 0; }
+  .ptext .ret span + span::before { content: "·"; padding: 0 5px; color: var(--undp-gray); }
+  .chip, .lens-chip, .facet, .tag-pill, .fin-link, .impl-status { border-radius: 2px; box-shadow: none; }
+  .target-card, .flagged-panel, .gauge, .scale-track, .ex-t { border-radius: 0; box-shadow: none; }
+  /* The step's place, on the left above its sentence. */
+  .sc-phase { display: flex; gap: 10px; align-items: baseline; }
+  .sc-step { font-weight: 600; color: #232e3d; }
+  .sc-phase-name { color: var(--undp-gray); }
+  /* Numbered steps: the reader's place filled in, the steps behind in ink,
+     a gap where the phase changes, human steps in the reviewer's colour. */
+  .dots { gap: 4px; }
+  .dots button { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-300); background: #fff;
+    color: var(--undp-gray); font: 600 11px/1 var(--font-sans, inherit); font-variant-numeric: tabular-nums;
+    display: inline-flex; align-items: center; justify-content: center; transform: none; }
+  .dots button.phase-start { margin-left: 10px; }
+  .dots button.seen { border-color: #232e3d; color: #232e3d; background: #fff; }
+  .dots button.human { border-color: #9a6b34; color: #9a6b34; }
+  .dots button[aria-current="step"] { background: #232e3d; border-color: #232e3d; color: #fff; transform: none; }
+  .dots button.human[aria-current="step"] { background: #9a6b34; border-color: #9a6b34; }
+  .dots button:hover { border-color: var(--undp-blue); color: var(--undp-blue); }
+  .dots button[aria-current="step"]:hover { color: #fff; }
   /* Plain controls under the scene, no floating pill. */
   .controls { left: 56px; transform: none; bottom: 28px; padding: 0; background: none; border: 0; border-radius: 0;
     box-shadow: none; backdrop-filter: none; }
   .cbtn.primary { border-radius: 0; }
   .sep { display: none; }
-  .dots { gap: 6px; padding: 0 8px; }
-  .dots button { width: 6px; height: 6px; border: 0; background: var(--border-300); }
-  .dots button.seen { background: var(--undp-gray); }
-  .dots button[aria-current="true"] { background: var(--undp-black); transform: scale(1.5); }
   /* Intro: one line and Start, no card. */
   .intro { background: rgba(255,255,255,0.96); backdrop-filter: none; }
   .intro p { color: var(--undp-gray); }
@@ -489,10 +552,6 @@
       <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 8s2.5-4.6 7-4.6S15 8 15 8s-2.5 4.6-7 4.6S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
       <span class="lbl">Follow an example</span>
     </button>
-    <div class="seg" role="group" aria-label="Detail level">
-      <button id="depthPlain" aria-pressed="true">Plain</button>
-      <button id="depthDeep" aria-pressed="false">Deep dive</button>
-    </div>
   </div>
 </div>
 
@@ -535,7 +594,7 @@
         <div class="doc-card"><div class="spine" style="background:var(--doc-ldn)"></div><div class="abbr" style="color:var(--doc-ldn)">LDN +</div><div class="full">Land Degradation &amp; sectoral plans</div><div class="conv"><img src="/unccd.png" alt="UNCCD"><span class="cnt">optional</span></div></div>
       </div></div></div>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">This walkthrough follows two of Mongolia's documents: its <b>NBSAP</b> (biodiversity) and its <b>NDC</b> (climate). One target from each is traced through to the insight.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Documents enter via <code>POST /api/extract</code>; the document type is recorded per file. The worked example uses Mongolia's real analysis (NDC 36, NBSAP 20, NAP 15 targets).</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>doc-type tagged</span></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Documents enter via <code>POST /api/extract</code>; the document type is recorded per file. The worked example uses Mongolia's real analysis (NDC 36, NBSAP 20, NAP 15 targets).</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>doc-type tagged</span></div></div>
     </div>
 
     <div class="pstep" data-i="1">
@@ -547,8 +606,8 @@
         <div class="chunk"><div class="ch-head"><span class="pg">chunk 2 · pp. 5–9</span><span class="tag-pill tag-keep">Kept</span></div><div class="txt-line" style="width:100%"></div><div class="txt-line" style="width:84%"></div></div>
         <div class="chunk dropped"><div class="ch-head"><span class="pg">chunk 3 · annex</span><span class="tag-pill tag-drop">Set aside</span></div><div class="txt-line" style="width:66%"></div></div>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Page-aware parsers (<code>pymupdf</code>, <code>python-docx</code>) preserve page spans; text is chunked at ~30k characters with 2k overlap. A lightweight relevance filter then keeps or drops each chunk, and is deliberately conservative.</p><div class="specs"><span>~30k chunks</span><span>2k overlap</span><span>keep-on-doubt</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Page-aware parsers (<code>pymupdf</code>, <code>python-docx</code>) preserve page spans; text is chunked at ~30k characters with 2k overlap. A lightweight relevance filter then keeps or drops each chunk, and is deliberately conservative.</p><div class="specs"><span>~30k chunks</span><span>2k overlap</span><span>keep-on-doubt</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The prompt</p>
         <div class="prompt">
           <div class="prow"><span class="role sys">System</span><div class="ptext">Sort one document chunk. Reply <code>KEEP</code> or <code>DROP</code>.</div></div>
           <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">Does this passage contain concrete policy targets or commitments, or is it preface, boilerplate or annex?</span> <code>{chunk}</code></div></div>
@@ -572,8 +631,8 @@
         </div>
         <p class="exb" style="margin-top:9px">Together with <b>NBSAP Target 1</b> above, this is the pair traced through the walkthrough, each recorded word for word.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A strict <em>verbatim contract</em>: <code>sourceText</code> is copied character-for-character; the displayed <code>text</code> allows only deterministic cleanup (drop a numeric label, rejoin broken lines). Every target keeps its sources and page numbers.</p><div class="specs"><span>verbatim contract</span><span>sources[]</span><span>verbatim · cleaned · synthesis</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">A strict <em>verbatim contract</em>: <code>sourceText</code> is copied character-for-character; the displayed <code>text</code> allows only deterministic cleanup (drop a numeric label, rejoin broken lines). Every target keeps its sources and page numbers.</p><div class="specs"><span>verbatim contract</span><span>sources[]</span><span>verbatim · cleaned · synthesis</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The prompt</p>
         <div class="prompt">
           <div class="prow"><span class="role sys">System</span><div class="ptext">Extract policy targets. Rules:<ul><li><b>sourceText</b> = copied verbatim, character-for-character</li><li><b>text</b> = light cleanup only, no rewording or summarising</li><li>every number, %, year or scope must already appear in the source</li></ul></div></div>
           <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">few-shot Mongolia examples</span> + <code>{chunk}</code></div></div>
@@ -586,8 +645,8 @@
       <p class="p-eyebrow ex"><span class="pp">Phase 1 · Extraction</span><span class="ps">Step 04</span></p>
       <h2 class="p-title serif">Consolidate, then verify nothing was invented</h2>
       <p class="p-say">Because sections overlap, the same target can be picked up twice. Duplicates are <strong>merged into one entry</strong> (keeping all their source quotes), and then every figure, year and named framework is <strong>checked back against the original document</strong>.</p>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Consolidation merges near-duplicates (keeping every source); contradicting numbers stay as separate targets. Then <code>validate_claim_grounding</code> runs locally, a miss stamps a <code>_provenanceFlag</code> the dashboard surfaces as a review badge.</p><div class="specs"><span>merge, keep sources</span><span>local validator</span><span>provenance flags</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the check</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Consolidation merges near-duplicates (keeping every source); contradicting numbers stay as separate targets. Then <code>validate_claim_grounding</code> runs locally, a miss stamps a <code>_provenanceFlag</code> the dashboard surfaces as a review badge.</p><div class="specs"><span>merge, keep sources</span><span>local validator</span><span>provenance flags</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The check</p>
         <div class="prompt">
           <div class="prow"><span class="role sys">Consolidate (LLM)</span><div class="ptext">Merge duplicates, preserve every source; keep contradicting numbers as separate targets.</div></div>
           <div class="prow out"><span class="role code">Validate (code)</span><div class="ptext">for every <code>%</code>, year, <code>ha</code>, <code>tCO2e</code>… in the text:<br>&nbsp;&nbsp;if it appears in no source quote → flag for review</div></div>
@@ -605,7 +664,7 @@
         <div class="check-row"><span class="check" style="background:#a87f4a">+</span><span style="font-size:12px;color:var(--undp-black)">Add a target the extraction missed</span></div>
       </div></div>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">Mongolia's reviewer keeps <b>NBSAP Target 1</b> and <b>NDC Water resources 2</b>, checking both against their source pages, before the comparison begins.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">This is the extraction-review step in the upload wizard: targets can be kept, dropped, edited (text and page numbers), or added by hand. Rejected targets never enter the pairing or alignment stages.</p><div class="specs"><span>human review</span><span>keep · edit · add</span><span>gates analysis</span></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">This is the extraction-review step in the upload wizard: targets can be kept, dropped, edited (text and page numbers), or added by hand. Rejected targets never enter the pairing or alignment stages.</p><div class="specs"><span>human review</span><span>keep · edit · add</span><span>gates analysis</span></div></div>
     </div>
 
     <div class="pstep" data-i="4">
@@ -613,8 +672,8 @@
       <h2 class="p-title serif">Flag what is measurable and time-bound</h2>
       <p class="p-say">For each target, the tool notes whether it contains a <strong>measurable outcome</strong> (a figure, a percentage, an area) and whether it is <strong>time-bound</strong> (a deadline). These are early indicators of how implementation-ready a commitment is, and the exact phrases are kept.</p>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> target is time-bound (<b>"by 2030"</b>). The <b>NDC</b> water target names technologies and outcomes but no single headline figure, so it reads as qualitative here.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Targets are evaluated in batches of 12 for <code>isQuantitative</code> / <code>isTimeBound</code>, returning the phrases. Administrative references ("Article 2") are excluded. Multilingual, no extra NLP dependencies.</p><div class="specs"><span>batched ×12</span><span>phrase-level</span><span>multilingual</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Targets are evaluated in batches of 12 for <code>isQuantitative</code> / <code>isTimeBound</code>, returning the phrases. Administrative references ("Article 2") are excluded. Multilingual, no extra NLP dependencies.</p><div class="specs"><span>batched ×12</span><span>phrase-level</span><span>multilingual</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The prompt</p>
         <div class="prompt">
           <div class="prow"><span class="role usr">User</span><div class="ptext">For each target, return:<ul><li><b>isQuantitative?</b> an explicit number / % / amount</li><li><b>isTimeBound?</b> a year or timeframe</li><li>ignore <code>Article 2</code> / <code>Target 3</code> references; return the exact phrases</li></ul></div></div>
           <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>isQuantitative</span><span>isTimeBound</span><span>phrases[]</span></span></div></div>
@@ -647,8 +706,8 @@
         </div>
         <p class="exb" style="margin-top:9px">Switching to IPCC sectors or a country's own set regroups both targets, with no re-analysis.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A relevance score (0&ndash;1) for each <code>(target × category)</code>; the top-scoring category becomes <code>primary</code>, and any above the relevance threshold are tagged <code>relevant</code> (dual-mode). Taxonomies: nature-based solutions, IPCC sectors, the GLOBE taxonomy with sub-categories, the seven GGA climate-resilience themes (UAE Framework for Global Climate Resilience, decision 2/CMA.5), and optional adaptation goals, all configurable per country. The most call-intensive step (<em>n × c</em> scores), so results are cached.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>GGA</span><span>primary + relevant</span><span>cached</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">A relevance score (0&ndash;1) for each <code>(target × category)</code>; the top-scoring category becomes <code>primary</code>, and any above the relevance threshold are tagged <code>relevant</code> (dual-mode). Taxonomies: nature-based solutions, IPCC sectors, the GLOBE taxonomy with sub-categories, the seven GGA climate-resilience themes (UAE Framework for Global Climate Resilience, decision 2/CMA.5), and optional adaptation goals, all configurable per country. The most call-intensive step (<em>n × c</em> scores), so results are cached.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>GGA</span><span>primary + relevant</span><span>cached</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The prompt</p>
         <div class="prompt">
           <div class="prow"><span class="role sys">System</span><div class="ptext">Policy specialist. Categories: <code>{NBS · IPCC sectors · GLOBE · GGA, or the country's own set}</code></div></div>
           <div class="prow"><span class="role usr">User</span><div class="ptext">Category: <code>{name}</code> &ndash; <code>{description}</code><br>Target: <code>{target text}</code><br>How relevant is the target to this category?</div></div>
@@ -662,8 +721,8 @@
       <h2 class="p-title serif">Compare every target across documents</h2>
       <p class="p-say">Coherence is about how <strong>different</strong> documents relate, so each target is paired with every target from a <strong>different</strong> document, never one against itself. Every pair is examined; nothing is filtered out in advance, so genuine cross-sector links are never missed.</p>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> spatial-planning target is compared with <b>158 targets</b> in the other seven documents; the <b>NDC</b> water target is one of them. Between the NBSAP and the NDC alone there are <b>720 target pairs</b>.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">The cross-product of every different-document pairing, each pair counted once: for Mongolia's eight documents and 178 targets, 13,404 target pairs (NBSAP × NDC alone is 20 × 36 = 720). No pre-filter is applied, so a genuine cross-sector link is never screened out before the assessment looks at it.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the logic</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">The cross-product of every different-document pairing, each pair counted once: for Mongolia's eight documents and 178 targets, 13,404 target pairs (NBSAP × NDC alone is 20 × 36 = 720). No pre-filter is applied, so a genuine cross-sector link is never screened out before the assessment looks at it.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The logic</p>
         <div class="prompt">
           <div class="prow"><span class="role code">Code (no LLM)</span><div class="ptext">group targets by document → take the Cartesian product of each <em>different-document</em> pairing → de-duplicate by pair.</div></div>
         </div>
@@ -677,8 +736,8 @@
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · both targets, broken down</p>
         <p class="exb">The water infrastructure in the NDC target's Action field (ponds, canals and pipelines) is what the comparison weighs against the NBSAP target's natural ecosystems.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Agent 1 extracts five fields, strictly factual, no inference beyond the target text. Separating the breakdown (Agent 1) from the judgement (Agent 2) keeps assessments grounded and consistent across countries and frameworks.</p><div class="specs"><span>Agent 1 · Target Analyst</span><span>5 fields</span><span>factual only</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Agent 1 extracts five fields, strictly factual, no inference beyond the target text. Separating the breakdown (Agent 1) from the judgement (Agent 2) keeps assessments grounded and consistent across countries and frameworks.</p><div class="specs"><span>Agent 1 · Target Analyst</span><span>5 fields</span><span>factual only</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The prompt</p>
         <div class="prompt">
           <div class="prow"><span class="role sys">System</span><div class="ptext">Target Analyst. Extract, factually, no inference beyond what the target states.</div></div>
           <div class="prow"><span class="role usr">User</span><div class="ptext">From <code>{target}</code>, extract:<ul><li><b>Goal / Purpose</b></li><li><b>Action / Intervention</b></li><li><b>Ecosystem / Area</b></li><li><b>Target Audience</b></li><li><b>Expected Impact / Outcome</b></li></ul></div></div>
@@ -689,38 +748,14 @@
     <div class="pstep" data-i="8">
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 09 · Agent 2</span></p>
       <h2 class="p-title serif">Judge how well a pair aligns</h2>
-      <p class="p-say">A second agent, the <strong>Alignment Advisor</strong>, receives only the two breakdowns and places the pair on a <strong>five-level scale</strong>, or raises a single <strong>"Potential misalignment"</strong> flag, but only when a real friction can be named. A merely loose link stays "Partial". Every judgement carries a short rationale.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="scale">
-          <p class="scale-cap">The positive side: <b>four levels</b>, from No to High</p>
-          <div class="scale-track">
-            <div class="scale-seg" style="background:var(--undp-gray)">No</div>
-            <div class="scale-seg" style="background:#9bbf6a">Partial</div>
-            <div class="scale-seg" style="background:var(--align-medium)">Medium</div>
-            <div class="scale-seg" style="background:var(--align-high)">High</div>
-          </div>
-        </div>
-        <div class="scale-divider"><span class="ln"></span><span class="or">or, when a friction is named</span><span class="ln"></span></div>
-        <div class="flagged-panel">
-          <div class="fh"><span class="o"></span> Potential misalignment</div>
-          <div class="facet-row">
-            <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
-            <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
-            <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
-          </div>
-        </div>
-      </div></div>
+      <p class="p-say">A second agent, the <strong>Alignment Advisor</strong>, receives only the two breakdowns and places the pair on a <strong>five-level scale</strong>, or marks it as a <strong>"Potential misalignment"</strong>, but only when it can name what pulls the two apart: a shared resource, the same place, or one undermining the other. A merely loose link stays "Partial". Every judgement carries a short rationale.</p>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · the verdict</p>
         <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
-        <div class="ex-facets">
-          <span class="facet" style="background:rgba(234,88,12,0.12);color:#ea580c"><span class="fl">Mechanism</span> Resource competition</span>
-          <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
-          <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
-        </div>
+        <p class="ex-facts">Competing for resources · manageable · medium confidence</p>
         <p class="exb" style="margin-top:10px">Both targets support ecosystem protection and planning, but the NDC also names water accumulation facilities, irrigation ponds, canals and pasture irrigation, which can compete with the ecosystems the NBSAP target protects. Zoning, environmental-flow safeguards and biodiversity-sensitive siting would keep them aligned.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Runs on <code>gpt-5.4</code> (private Azure, temperature 0 for repeatable results). Levels none / low ("Partial") / medium / high / flagged, shown as <strong>"Potential misalignment"</strong>. A flag adds mechanism, manageability and confidence, so a reviewer sees <em>why</em> a pair was flagged rather than a bare severity number.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Runs on <code>gpt-5.4</code> (private Azure, temperature 0 for repeatable results). The pipeline's levels are <code>none</code> / <code>low</code> / <code>medium</code> / <code>high</code> / <code>flagged</code>; the dashboard shows <code>low</code> as "Partial" and <code>flagged</code> as <strong>"Potential misalignment"</strong>. A potential misalignment also carries its type, manageability and confidence, so a reviewer sees <em>why</em> it was raised rather than a bare severity number.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The prompt</p>
         <div class="prompt">
           <div class="prow"><span class="role sys">System</span><div class="ptext">Compare two target decompositions. Choose a level: <code>none</code> / <code>low</code> / <code>medium</code> / <code>high</code>, or <code>flagged</code>.<ul><li>Flag <b>only</b> when a specific friction can be named (a shared resource, the same place, one undermining another)</li><li>a merely loose link → <b>low</b>, not flagged</li></ul>If flagged, also return:<ul><li><b>mechanism</b>: goal conflict · resource competition · delivery friction</li><li><b>manageability</b>: manageable · fundamental</li><li><b>confidence</b>: low · medium · high</li></ul></div></div>
           <div class="prow"><span class="role usr">User</span><div class="ptext">A: <code>{decomposition A}</code><br>B: <code>{decomposition B}</code></div></div>
@@ -732,12 +767,12 @@
     <div class="pstep" data-i="9">
       <p class="p-eyebrow sy"><span class="pp">Phase 3 · Synthesis</span><span class="ps">Step 10</span></p>
       <h2 class="p-title serif">Score it, and map the whole picture</h2>
-      <p class="p-say">Finally, with no further AI, the individual judgements roll up into <strong>coherency scores</strong> between each pair of documents, plus a simple count of <strong>how many pairs are flagged</strong> for a closer look. These feed the dashboard: the coherence wheel, alignment heatmaps and theme breakdowns.</p>
+      <p class="p-say">Finally, with no further AI, the individual judgements roll up into <strong>coherency scores</strong> between each pair of documents, plus a count of the <strong>potential misalignments</strong> to look at more closely. These feed the dashboard: the coherence wheel, alignment heatmaps and theme breakdowns.</p>
       <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
-        <div class="gauge-row"><div class="gauge"><div class="gv">70%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">19</div><div class="gl">pairs flagged (of 720)</div></div></div>
+        <div class="gauge-row"><div class="gauge"><div class="gv">70%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">19</div><div class="gl">potential misalignments (of 720 pairs)</div></div></div>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · where it lands</p><p class="exb">The example pair is <b>1 of 19 flagged</b> between the NDC and NBSAP. The other <b>701 of 720</b> pairs sit on the positive scale (660 of them medium or high), so one flag barely moves the <b>70%</b> score, but it is now visible on the wheel and ready for review.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx"><code>Score = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. For Mongolia's NDC and NBSAP that is 70% across 720 pairs, of which 19 are flagged for review. All derived metrics are computed locally, zero model calls.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · where it lands</p><p class="exb">The example pair is <b>1 of 19 potential misalignments</b> between the NDC and NBSAP. The other <b>701 of 720</b> pairs sit on the positive scale (660 of them medium or high), so one barely moves the <b>70%</b> score, but it is now visible and ready for review.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx"><code>Score = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. For Mongolia's NDC and NBSAP that is 70% across 720 pairs, of which 19 are potential misalignments for review. All derived metrics are computed locally, zero model calls.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
     </div>
 
     <div class="pstep" data-i="10">
@@ -745,15 +780,18 @@
       <h2 class="p-title serif">Surface the recurring patterns</h2>
       <p class="p-say">Across every pair, the tool shows <strong>how much</strong> potential misalignment there is and <strong>what kind</strong> it is. It is framed as where to look first: a prompt for review, never a verdict. Every result is <strong>AI-assisted and traceable to the source text</strong>, and the final interpretation rests with national experts.</p>
       <div class="p-viz"><div style="width:100%">
-        <p class="mini-lab">How much is flagged</p>
-        <div class="conc-bar"><span style="flex:.05;background:var(--align-flagged)"></span><span style="flex:.95;background:var(--border-200)"></span></div>
-        <p class="mini-cap">About <b>1 in 20 pairs</b> is flagged for review (671 of 13,404). Most pairs align, so the flags are where to focus.</p>
-        <p class="mini-lab" style="margin-top:16px">What kind it is</p>
-        <div class="mech-bar"><span style="flex:.32;background:var(--mech-resource)"></span><span style="flex:.59;background:var(--mech-delivery)"></span><span style="flex:.09;background:var(--mech-goal)"></span></div>
-        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Competing resources 32% &nbsp; <b style="color:var(--mech-delivery)">●</b> Delivery 59% &nbsp; <b style="color:var(--mech-goal)">●</b> Conflicting goals 9%</p>
+        <p class="mini-lab">How much shows potential misalignment</p>
+        <div class="kind-bar"><i class="apart" style="width:5%"></i><i class="rest" style="width:95%"></i></div>
+        <p class="mini-cap">About <b>1 in 20 pairs</b> shows potential misalignment (671 of 13,404). Most pairs align, so these are where to look first.</p>
+        <p class="mini-lab" style="margin-top:18px">What kind it is</p>
+        <ul class="kind-rows">
+          <li><span>Delivery &amp; coordination</span><span class="kbar"><i style="width:59%"></i></span><b>59%</b></li>
+          <li><span>Competing for resources</span><span class="kbar"><i style="width:32%"></i></span><b>32%</b></li>
+          <li><span>Conflicting goals</span><span class="kbar"><i style="width:9%"></i></span><b>9%</b></li>
+        </ul>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">In the NDC and NBSAP pairing, <b>19 of 720</b> pairs are flagged, and most are the <b>delivery</b> kind. The example pair is a <b>resource</b> flag: coordinating water infrastructure with spatial planning would ease it.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces recurring potential misalignment across document pairs, plus hedged pathway pointers, anchored to visible evidence, never prescriptive. In Mongolia's set about 5% of target pairs show potential misalignment, and about half of those involve just seven targets.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">In the NDC and NBSAP pairing, <b>19 of 720</b> pairs show potential misalignment, most of the <b>delivery and coordination</b> kind. The example pair is about <b>competing for resources</b>: coordinating water infrastructure with spatial planning could ease it.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">A synthesis layer reads the mechanism mix and surfaces recurring potential misalignment across document pairs, plus hedged pathway pointers, anchored to visible evidence, never prescriptive. In Mongolia's set about 5% of target pairs show potential misalignment, and about half of those involve just seven targets.</p><div class="specs"><span>share of potential misalignment</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
     </div>
 
     <div class="pstep" data-i="14">
@@ -773,7 +811,7 @@
         </div>
       </div></div>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">A reviewer who disagrees that the water and spatial-planning targets conflict can <b>rate this rationale down</b> and record the reason. The response is logged against this exact text and informs the next run.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Feedback is captured on target-pair rationales and document-pair syntheses (<code>POST /api/feedback</code>) into an append-only ledger keyed to the exact AI text, so a rating stays interpretable even after the pipeline is re-run.</p><div class="specs"><span>thumbs + note</span><span>anonymous</span><span>append-only ledger</span></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Feedback is captured on target-pair rationales and document-pair syntheses (<code>POST /api/feedback</code>) into an append-only ledger keyed to the exact AI text, so a rating stays interpretable even after the pipeline is re-run.</p><div class="specs"><span>thumbs + note</span><span>anonymous</span><span>append-only ledger</span></div></div>
     </div>
 
     <div class="pstep" data-i="11">
@@ -788,8 +826,8 @@
         </div>
         <p class="fin-caveat">A <abbr title="budget expenditure review">BER</abbr> covers only programmes in the uploaded review, a subset of national expenditure. The review identifies expenditure; every programme-to-target link is made by the Tracker's AI comparison of descriptions, not by the review.</p>
       </div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Level 2, finance. <abbr title="budget expenditure review">BER</abbr> programmes become pseudo-targets and run through the same classify → decompose → align workflow; a funding view links programmes and reported actions by shared category. A target's "aligned spend" sums the programmes whose descriptions align with it (relative volume, never financing adequacy); a programme backs every target it aligns with, so per-target figures overlap while document totals count each programme once. Shipped for Mongolia and Panama.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia · Panama (BER)</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the reuse</p>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Level 2, finance. <abbr title="budget expenditure review">BER</abbr> programmes become pseudo-targets and run through the same classify → decompose → align workflow; a funding view links programmes and reported actions by shared category. A target's "aligned spend" sums the programmes whose descriptions align with it (relative volume, never financing adequacy); a programme backs every target it aligns with, so per-target figures overlap while document totals count each programme once. Shipped for Mongolia and Panama.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia · Panama (BER)</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The reuse</p>
         <div class="prompt">
           <div class="prow"><span class="role code">Same workflow</span><div class="ptext">BER programme → <em>pseudo-target</em> → classify → Agent 1 decompose → Agent 2 align against each policy target.</div></div>
         </div>
@@ -806,9 +844,9 @@
         <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Community pasture agreements <span class="impl-status way">Under way</span></div>
         <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--align-flagged);flex:none"></span> Feed-import subsidy <span class="impl-status mis">Potential misalignment</span></div>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · in summary</p><p class="exb">The walkthrough followed one pair, the NBSAP spatial-planning target and the NDC water target, from upload to a flagged coherence finding ready for review. Levels 2 and 3 apply the same steps to budgets and reported actions wherever that data exists.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Level 3, delivery. Reported measures (<abbr title="Biennial Transparency Report">BTR</abbr>, national reports) become pseudo-targets through the same two-agent workflow; an adapted prompt asks whether a measure "directly implements, partially supports, or has no relationship to" each target. In progress.</p><div class="specs"><span>Level 3 · delivery</span><span>BTR · <abbr title="Seventh National Report to the CBD">NR7</abbr></span><span>in progress</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Deep dive · the question</p>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · in summary</p><p class="exb">The walkthrough followed one pair, the NBSAP spatial-planning target and the NDC water target, from upload to a potential misalignment ready for review. Levels 2 and 3 apply the same steps to budgets and reported actions wherever that data exists.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Level 3, delivery. Reported measures (<abbr title="Biennial Transparency Report">BTR</abbr>, national reports) become pseudo-targets through the same two-agent workflow; an adapted prompt asks whether a measure "directly implements, partially supports, or has no relationship to" each target. In progress.</p><div class="specs"><span>Level 3 · delivery</span><span>BTR · <abbr title="Seventh National Report to the CBD">NR7</abbr></span><span>in progress</span></div></div>
+      <div class="p-note p-deep"><p class="nl">The question</p>
         <div class="prompt">
           <div class="prow"><span class="role usr">Adapted Agent 2</span><div class="ptext">Does this reported measure <b>directly implement</b>, <b>partially support</b>, or have <b>no relationship to</b> the target?</div></div>
         </div>
@@ -849,9 +887,12 @@
   var cur = 0;
   function render() {
     psteps.forEach(function (p) { p.classList.toggle("on", +p.dataset.i === NODES[cur].i); });
-    Array.prototype.forEach.call(dotsWrap.children, function (d, i) { d.setAttribute("aria-current", i === cur ? "true" : "false"); d.classList.toggle("seen", i <= cur); });
+    Array.prototype.forEach.call(dotsWrap.children, function (d, i) {
+      if (i === cur) d.setAttribute("aria-current", "step"); else d.removeAttribute("aria-current");
+      d.classList.toggle("seen", i < cur);
+    });
     document.getElementById("prev").disabled = cur === 0;
-    if (window.MethodScene) window.MethodScene.go(cur);
+    if (window.MethodScene) window.MethodScene.go(cur, '<span class="sc-step">Step ' + (cur + 1) + ' of ' + N + '</span><span class="sc-phase-name">' + phaseOf(NODES[cur]) + "</span>");
     try { localStorage.setItem("cpc_phases2_stage", String(cur)); } catch (e) {}
   }
   function goTo(i) {
@@ -866,16 +907,29 @@
   function start() { if (cur >= N - 1) goTo(0, true); document.getElementById("playIco").innerHTML = '<rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor"/><rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor"/>'; timer = setInterval(function () { if (cur >= N - 1) stop(); else next(); }, 3600); }
   function stop() { if (timer) { clearInterval(timer); timer = null; } document.getElementById("playIco").innerHTML = '<path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/>'; }
 
-  for (var k = 0; k < N; k++) { (function (j) { var b = document.createElement("button"); b.setAttribute("aria-label", "Step " + (j + 1)); b.addEventListener("click", function () { stop(); goTo(j, true); }); dotsWrap.appendChild(b); })(k); }
+  // Numbered steps, a gap where the phase changes; the reader's place is filled in.
+  function phaseOf(node) {
+    if (node.kind === "human") return "Human in the loop";
+    if (node.level === "L2") return "Level 2 · Finance";
+    if (node.level === "L3") return "Level 3 · Implementation";
+    return { ex: "Extraction", an: "Analysis", sy: "Synthesis" }[node.ph];
+  }
+  for (var k = 0; k < N; k++) { (function (j) {
+    var b = document.createElement("button");
+    b.textContent = String(j + 1);
+    b.setAttribute("aria-label", "Step " + (j + 1) + ": " + NODES[j].t);
+    b.title = NODES[j].t;
+    if (NODES[j].kind === "human") b.className = "human";
+    if (j > 0 && NODES[j].ph !== NODES[j - 1].ph) b.classList.add("phase-start");
+    b.addEventListener("click", function () { stop(); goTo(j, true); });
+    dotsWrap.appendChild(b);
+  })(k); }
 
   document.getElementById("next").addEventListener("click", function () { stop(); next(); });
   document.getElementById("prev").addEventListener("click", function () { stop(); prev(); });
   document.getElementById("play").addEventListener("click", function () { playing() ? stop() : start(); });
   window.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { stop(); next(); } else if (e.key === "ArrowLeft") { stop(); prev(); } });
 
-  var dP = document.getElementById("depthPlain"), dD = document.getElementById("depthDeep");
-  function depth(m) { document.body.classList.toggle("show-deep", m === "deep"); dP.setAttribute("aria-pressed", String(m === "plain")); dD.setAttribute("aria-pressed", String(m === "deep")); }
-  dP.addEventListener("click", function () { depth("plain"); }); dD.addEventListener("click", function () { depth("deep"); });
 
   var exT = document.getElementById("exToggle");
   exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); if (window.MethodScene) window.MethodScene.refresh(); });
@@ -886,7 +940,6 @@
   document.getElementById("startBtn").addEventListener("click", boot);
 
   function init() {
-    depth("plain");
     if (window.MethodScene) window.MethodScene.init();
     // A link can open one step directly (#step=8), without the intro or autoplay.
     var m = /step=(\d+)/.exec(window.location.hash);

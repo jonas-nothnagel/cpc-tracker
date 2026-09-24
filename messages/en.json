@@ -3086,7 +3086,8 @@
         "low": "Partial alignment",
         "none": "No clear relationship",
         "flagged": "Potential misalignment"
-      }
+      },
+      "and": "and"
     },
     "and": "and",
     "resources": {
@@ -3144,7 +3145,23 @@
       "back": "Back to the brief"
     },
     "hub": {
-      "kinds": "Types of potential misalignment"
+      "kinds": "Types of potential misalignment",
+      "leadTogether": "<first>{docA}</first> and <second>{docB}</second> are the most closely aligned: {pct} of their target pairs.",
+      "leadApart": "<first>{docA}</first> and <second>{docB}</second> have the highest share of potential misalignment: {pct} of their target pairs.",
+      "documentsLead": "Alignment with the other documents ranges from {low} for <first>{docLow}</first> to {high} for <second>{docHigh}</second>.",
+      "focus": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment, the highest share with <other>{partner}</other> ({partnerShare}).",
+      "focusPlain": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment.",
+      "focusNone": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned, with no potential misalignment.",
+      "pairNames": "{docA} and {docB}",
+      "bandTip": {
+        "reinforce": "{count, plural, one {# aligned target pair} other {# aligned target pairs}} in this theme",
+        "apart": "{count, plural, one {# potential misalignment} other {# potential misalignments}} in this theme"
+      },
+      "partTip": {
+        "strong": "{count, plural, one {# strong alignment} other {# strong alignments}} with {doc}",
+        "review": "{count, plural, one {# potential misalignment} other {# potential misalignments}} with {doc}"
+      },
+      "centerPairs": "{count, plural, one {# target pair} other {# target pairs}}"
     },
     "explore": {
       "title": "Explore the targets",

@@ -77,7 +77,7 @@ describe("Hub", () => {
 
   it("lists the strongest alignments with their strong links", () => {
     renderHub();
-    const step = document.querySelector('[data-step="reinforce"]') as HTMLElement;
+    const step = document.querySelector('[data-step="strong"]') as HTMLElement;
     const rows = within(step).getAllByTestId("hub-strong-row");
     expect(rows).toHaveLength(6);
     expect(rows[0].textContent).toContain("Commitment C1");
@@ -86,11 +86,48 @@ describe("Hub", () => {
 
   it("shows what kind of potential misalignment and the targets with the most", () => {
     renderHub();
-    const step = document.querySelector('[data-step="apart"]') as HTMLElement;
-    expect(within(step).getByText("Competing for resources")).toBeTruthy();
+    const kinds = document.querySelector('[data-step="kinds"]') as HTMLElement;
+    expect(within(kinds).getByText("Competing for resources")).toBeTruthy();
+    const step = document.querySelector('[data-step="review"]') as HTMLElement;
     const rows = within(step).getAllByTestId("hub-apart-row");
     expect(rows).toHaveLength(6);
     expect(rows[0].textContent).toContain("Commitment B6");
+  });
+
+  it("dives into the strongest alignments, the types and the targets to review as they come into view", () => {
+    renderHub();
+    enter("strong");
+    expect(stage()).toBe("strong");
+    enter("kinds");
+    expect(stage()).toBe("kinds");
+    enter("review");
+    expect(stage()).toBe("review");
+  });
+
+  it("names the documents of a finding as links to their comparison", () => {
+    const onOpenDocPair = vi.fn();
+    renderHub({ onOpenDocPair });
+    const together = document.querySelector('[data-step="reinforce"] h2') as HTMLElement;
+    expect(together.textContent).toBe("Document A and Document C are the most closely aligned: 83% of their target pairs.");
+    fireEvent.click(within(together).getByRole("button", { name: "Document C" }));
+    expect(onOpenDocPair).toHaveBeenLastCalledWith("A", "C");
+    const apart = document.querySelector('[data-step="apart"] h2') as HTMLElement;
+    fireEvent.click(within(apart).getByRole("button", { name: "Document B" }));
+    expect(onOpenDocPair).toHaveBeenLastCalledWith("B", "C");
+  });
+
+  it("sums up the document at the centre, and moves the hub from the finding's names", () => {
+    const onOpenDocPair = vi.fn();
+    renderHub({ onOpenDocPair });
+    enter("documents");
+    expect(screen.getByTestId("hub-focus").textContent).toBe(
+      "Document A: 75% of its 72 target pairs are aligned; 8% show potential misalignment, the highest share with Document B (17%).",
+    );
+    fireEvent.click(within(screen.getByTestId("hub-focus")).getByRole("button", { name: "Document B" }));
+    expect(onOpenDocPair).toHaveBeenLastCalledWith("A", "B");
+    const headline = document.querySelector('[data-step="documents"] h2') as HTMLElement;
+    fireEvent.click(within(headline).getByRole("button", { name: "Document B" }));
+    expect(stage()).toBe("doc:B");
   });
 
   it("builds the wheel around the document the reader picks", () => {

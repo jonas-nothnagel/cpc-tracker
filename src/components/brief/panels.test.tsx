@@ -119,6 +119,19 @@ describe("BriefPanels", () => {
     ).toBeTruthy();
   });
 
+  it("sets the two documents apart, and lays their target pairs out in one column each", () => {
+    renderPanels([{ kind: "docPair", a: "B", b: "C" }]);
+    expect(screen.getAllByTestId("brief-docpair-doc").map((e) => e.textContent)).toEqual(["Document B", "Document C"]);
+    const cols = screen.getAllByTestId("brief-docpair-cols")[0];
+    expect(within(cols).getByText("Document B")).toBeTruthy();
+    expect(within(cols).getByText("Document C")).toBeTruthy();
+    // Each row: the first document's target on the left, the second's on the right.
+    const row = screen.getAllByTestId("brief-strand-row")[0];
+    const [left, right] = within(row).getAllByTestId("brief-docpair-cell");
+    expect(left.textContent).toContain("Commitment B6");
+    expect(right.textContent).toContain("Commitment C4");
+  });
+
   it("asks for feedback on a pair of documents' AI reading, and only where there is one", async () => {
     renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
     expect(await screen.findByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeTruthy();

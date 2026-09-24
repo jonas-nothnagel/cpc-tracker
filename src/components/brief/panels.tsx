@@ -8,7 +8,7 @@ import { partnersOf, strongestAligned, toneCounts, toneOf, type ToneCounts } fro
 import type { BriefData } from "@/lib/brief/data";
 import type { FoundPair } from "@/lib/brief/pair";
 import { docCodeSegments, firstSentence } from "@/lib/brief/text";
-import type { BriefCommitment, BriefSource } from "@/lib/brief/source";
+import type { BriefCommitment, BriefDocument, BriefSource } from "@/lib/brief/source";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { strandsByPathway } from "@/lib/pulse/strands";
 import type { AlignmentLevel } from "@/types";
@@ -270,19 +270,32 @@ interface LinkRow {
   mechanism?: string;
 }
 
-/** Target pairs as rows: both targets, one line each, marked with the
- *  rating's ink (solid green, dashed red). */
+/** A document's name with its colour from the builder. */
+function DocMark({ doc }: { doc: BriefDocument }) {
+  return (
+    <span className="brief-panel-docmark">
+      <span className="brief-panel-swatch" style={{ background: doc.color }} aria-hidden="true" />
+      {doc.name}
+    </span>
+  );
+}
+
+/**
+ * Target pairs between two documents as a table: the first document's
+ * target on the left, the second's on the right, under their names, each
+ * row marked with the rating's ink (solid green, dashed red).
+ */
 function PairRows({
   rows,
   tone,
-  docName,
+  docs,
   testId,
   mechanismOf,
   onOpen,
 }: {
   rows: LinkRow[];
   tone: "reinforce" | "apart";
-  docName: (id: string) => string;
+  docs: [BriefDocument, BriefDocument];
   testId: string;
   mechanismOf?: (m: string) => string;
   onOpen: (aId: string, bId: string) => void;
@@ -290,27 +303,32 @@ function PairRows({
   const t = useTranslations("brief.panel");
   const [all, setAll] = useState(false);
   const shown = all ? rows : rows.slice(0, PAIR_PREVIEW);
+  if (rows.length === 0) return null;
   return (
     <>
-      <ol className="brief-panel-rows">
-        {shown.map((r) => (
-          <li key={r.key} className="brief-panel-row" data-testid={testId}>
-            <button type="button" onClick={() => onOpen(r.a.id, r.b.id)}>
-              <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
-              <span className="brief-panel-row-main">
-                <span className="brief-panel-row-line">
-                  <span className="brief-panel-row-doc">{docName(r.a.doc)} · </span>
-                  {commitmentLine(r.a)}
+      <p className="brief-panel-cols" data-testid="brief-docpair-cols" aria-hidden="true">
+        <span />
+        <DocMark doc={docs[0]} />
+        <DocMark doc={docs[1]} />
+      </p>
+      <ol className="brief-panel-rows brief-panel-pairrows">
+        {shown.map((r) => {
+          const [left, right] = r.a.doc === docs[0].id ? [r.a, r.b] : [r.b, r.a];
+          return (
+            <li key={r.key} className="brief-panel-row" data-testid={testId}>
+              <button type="button" onClick={() => onOpen(r.a.id, r.b.id)}>
+                <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
+                <span className="brief-panel-cell" data-testid="brief-docpair-cell">
+                  {commitmentLine(left)}
                 </span>
-                <span className="brief-panel-row-line">
-                  <span className="brief-panel-row-doc">{docName(r.b.doc)} · </span>
-                  {commitmentLine(r.b)}
+                <span className="brief-panel-cell" data-testid="brief-docpair-cell">
+                  {commitmentLine(right)}
                 </span>
                 {r.mechanism && mechanismOf && <span className="brief-panel-row-type">{mechanismOf(r.mechanism)}</span>}
-              </span>
-            </button>
-          </li>
-        ))}
+              </button>
+            </li>
+          );
+        })}
       </ol>
       {!all && rows.length > PAIR_PREVIEW && (
         <button type="button" className="brief-panel-more brief-panel-show-all" onClick={() => setAll(true)}>
@@ -344,6 +362,7 @@ function DocPairPanel({
   const tm = useTranslations("labels.contradictionType");
   const tc = useTranslations("labels.confidence");
   const td = useTranslations("briefing.drawer.pair");
+  const { pct } = useNumbers();
   const stat = data.pairs.find((p) => (p.a.id === a && p.b.id === b) || (p.a.id === b && p.b.id === a));
   const note =
     (source.pairNotes ?? []).find((n) => (n.a === a && n.b === b) || (n.a === b && n.b === a)) ?? null;
@@ -359,10 +378,41 @@ function DocPairPanel({
   const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
   const title = t("docPairDialog", { docA: docName(a), docB: docName(b) });
   const byId = new Map(data.scope.commitments.map((x) => [x.id, x]));
+  const docA = data.scope.docs.find((d) => d.id === a);
+  const docB = data.scope.docs.find((d) => d.id === b);
+  const docs = docA && docB ? ([docA, docB] as [BriefDocument, BriefDocument]) : null;
   return (
     <>
       <DrawerHeader>
-        <PanelTitle title={title}>{stat && <ResultStrip label={title} counts={stat.counts} />}</PanelTitle>
+        {/* Two documents compared: one name per line, each with its colour. */}
+        <h2 className="brief-panel-title brief-panel-title-pair">
+          {docs ? (
+            <>
+              <span className="brief-panel-pairdoc" data-testid="brief-docpair-doc">
+                <span className="brief-panel-swatch" style={{ background: docs[0].color }} aria-hidden="true" />
+                {docs[0].name}
+              </span>
+              <span className="brief-sr-only"> {t("and")} </span>
+              <span className="brief-panel-pairdoc" data-testid="brief-docpair-doc">
+                <span className="brief-panel-swatch" style={{ background: docs[1].color }} aria-hidden="true" />
+                {docs[1].name}
+              </span>
+            </>
+          ) : (
+            title
+          )}
+        </h2>
+        {stat && <ResultStrip label={title} counts={stat.counts} />}
+        {stat && (
+          <p className="brief-panel-sub">
+            {t("docPairCounts", {
+              total: stat.counts.total,
+              aligned: pct(stat.counts.total > 0 ? stat.counts.reinforce / stat.counts.total : 0),
+              partial: pct(stat.counts.total > 0 ? stat.counts.partial / stat.counts.total : 0),
+              apart: pct(stat.counts.total > 0 ? stat.counts.apart / stat.counts.total : 0),
+            })}
+          </p>
+        )}
       </DrawerHeader>
       <div className="brief-panel-body">
         {note && (
@@ -387,28 +437,32 @@ function DocPairPanel({
         )}
         <section>
           <h3 className="brief-panel-h">{t("alignedPairs", { count: aligned.length })}</h3>
-          <PairRows
-            tone="reinforce"
-            testId="brief-aligned-pair-row"
-            docName={docName}
-            onOpen={onOpenPair}
-            rows={aligned.map((x) => ({ key: `${x.a.id}__${x.b.id}`, a: x.a, b: x.b }))}
-          />
+          {docs && (
+            <PairRows
+              tone="reinforce"
+              testId="brief-aligned-pair-row"
+              docs={docs}
+              onOpen={onOpenPair}
+              rows={aligned.map((x) => ({ key: `${x.a.id}__${x.b.id}`, a: x.a, b: x.b }))}
+            />
+          )}
         </section>
         <section>
           <h3 className="brief-panel-h">{t("docPairLead", { count: strands.length })}</h3>
-          <PairRows
-            tone="apart"
-            testId="brief-strand-row"
-            docName={docName}
-            onOpen={onOpenPair}
-            mechanismOf={(m) => tm(m)}
-            rows={strands.flatMap((s) => {
-              const x = byId.get(s.pair.targetAId);
-              const y = byId.get(s.pair.targetBId);
-              return x && y ? [{ key: s.pairKey, a: x, b: y, mechanism: s.pair.mechanism ?? undefined }] : [];
-            })}
-          />
+          {docs && (
+            <PairRows
+              tone="apart"
+              testId="brief-strand-row"
+              docs={docs}
+              onOpen={onOpenPair}
+              mechanismOf={(m) => tm(m)}
+              rows={strands.flatMap((s) => {
+                const x = byId.get(s.pair.targetAId);
+                const y = byId.get(s.pair.targetBId);
+                return x && y ? [{ key: s.pairKey, a: x, b: y, mechanism: s.pair.mechanism ?? undefined }] : [];
+              })}
+            />
+          )}
         </section>
       </div>
       {/* One control for the whole AI reading, as on the dashboard: the

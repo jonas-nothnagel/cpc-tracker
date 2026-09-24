@@ -10,6 +10,7 @@ export function Hero({
   documents,
   comparisons,
   lines,
+  translation = null,
   onRead,
   onCustomize,
 }: {
@@ -18,10 +19,13 @@ export function Hero({
   documents: number;
   comparisons: number;
   lines: string[];
+  /** Said whenever the targets are not in the documents' own wording. */
+  translation?: "machine" | "source" | null;
   onRead: () => void;
   onCustomize: () => void;
 }) {
   const t = useTranslations("brief.hero");
+  const ts = useTranslations("brief.sheet");
   // WCAG 2.2.2: moving content that runs on gets a pause control.
   const [paused, setPaused] = useState(false);
   return (
@@ -36,6 +40,11 @@ export function Hero({
           <span>{t("comparisons", { count: comparisons })}</span>
         </h1>
         <p className="brief-hero-lead">{t("lead")}</p>
+        {translation && (
+          <p className="brief-hero-note">
+            {ts(translation === "machine" ? "translatedMachine" : "translatedSource")}
+          </p>
+        )}
         <div className="brief-hero-actions">
           <button type="button" className="brief-button-primary" onClick={onRead}>
             {t("read")}

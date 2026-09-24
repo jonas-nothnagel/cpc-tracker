@@ -204,13 +204,14 @@
 
 /* ── Desk and builder ────────────────────────────────────────────── */
 
+/* The desk picks up where the landing leaves off: no divider, the
+   overview's dots flow down into their field. */
 [data-brief] .brief-desk {
   display: grid;
   grid-template-columns: 16.5rem minmax(0, 1fr);
   align-items: start;
   gap: clamp(2rem, 4vw, 4.5rem);
-  padding: 3rem clamp(1.5rem, 4vw, 4.5rem) 6rem;
-  border-top: 1px solid var(--brief-hairline);
+  padding: 0.5rem clamp(1.5rem, 4vw, 4.5rem) 6rem;
   background: #fff;
 }
 
@@ -575,6 +576,12 @@
   overflow: hidden;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-hero-note {
+  margin: -0.5rem 0 1.5rem;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
 }
 
 /* Dot field: the overall picture as a halftone print */
@@ -1128,67 +1135,6 @@
   line-height: 1.5;
 }
 
-[data-brief] .brief-intro {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.25rem 3rem;
-  padding: 0 0 2rem;
-  border-bottom: 1px solid var(--brief-hairline);
-}
-
-[data-brief] .brief-intro-country {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(2.25rem, 3.4vw, 3rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-
-[data-brief] .brief-intro-title {
-  margin: 0.35rem 0 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  color: var(--brief-muted);
-}
-
-[data-brief] .brief-intro-figures {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 2.75rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-[data-brief] .brief-intro-figures li {
-  display: flex;
-  flex-direction: column;
-}
-
-[data-brief] .brief-intro-value {
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  font-weight: 500;
-  line-height: 1;
-  font-variant-numeric: tabular-nums lining-nums;
-}
-
-[data-brief] .brief-intro-label {
-  margin-top: 0.35rem;
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
-
-[data-brief] .brief-intro-note {
-  flex-basis: 100%;
-  margin: 0;
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
-
 [data-brief] .brief-flow-section {
   padding: 3.5rem 0 3.25rem;
   border-bottom: 1px solid var(--brief-hairline);
@@ -1453,7 +1399,7 @@
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
   align-items: start;
   gap: clamp(1.5rem, 3.2vw, 3.5rem);
-  padding: 2.25rem 0 3.5rem;
+  padding: 0 0 3.5rem;
   border-bottom: 1px solid var(--brief-hairline);
 }
 
@@ -1504,6 +1450,11 @@
   opacity: 0.35;
 }
 
+/* Names above columns wrap to two lines within their column. */
+[data-brief] .brief-hub-label:has(.brief-hub-label-name) {
+  white-space: normal;
+}
+
 /* Around a document in focus, each other document is named above its
    cluster, on the outer side. */
 [data-brief] .brief-hub-label-partner {
@@ -1535,17 +1486,90 @@
   -webkit-box-orient: vertical;
 }
 
+[data-brief] .brief-hub-label-meta {
+  display: block;
+  margin-top: 1px;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--brief-muted);
+}
+
+/* Strips (targets, types): the label to the left, right-aligned. */
+[data-brief] .brief-hub-label-left {
+  padding-right: 12px;
+  transform: translateY(-50%);
+  text-align: right;
+  white-space: normal;
+}
+
+[data-brief] .brief-hub-label-left .brief-hub-label-name {
+  -webkit-line-clamp: 2;
+}
+
+[data-brief] .brief-hub-label-partner .brief-hub-label-name {
+  font-size: 0.8125rem;
+  -webkit-line-clamp: 3;
+}
+
+/* A partner's shares as a small result bar under its name. */
+[data-brief] .brief-hub-label-bar {
+  display: block;
+  width: 9.5rem;
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+[data-brief] .brief-hub-label-bar .brief-pair-bar-row {
+  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  column-gap: 4px;
+}
+
+[data-brief] .brief-hub-label-bar .brief-pair-value {
+  font-size: 0.75rem;
+}
+
+[data-brief] .brief-hub-label-bar .brief-pair-bar {
+  height: 8px;
+}
+
+[data-brief] .brief-hub-rank {
+  font-variant-numeric: tabular-nums;
+  color: var(--brief-muted);
+}
+
 [data-brief] .brief-hub-center {
   position: absolute;
-  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
   transform: translate(-50%, -50%);
+  padding: 6px 4px;
+  background: rgba(255, 255, 255, 0.94);
   text-align: center;
+}
+
+[data-brief] .brief-hub-center-bar .brief-pair-bar-row {
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
+  column-gap: 5px;
+}
+
+[data-brief] .brief-hub-center-bar .brief-pair-value {
+  font-size: 0.75rem;
+}
+
+[data-brief] .brief-hub-center-bar .brief-pair-bar {
+  height: 10px;
+}
+
+[data-brief] .brief-hub-center-meta {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
 }
 
 [data-brief] .brief-hub-center-name {
   display: block;
-  padding: 0.35rem 0.5rem;
-  background: rgba(255, 255, 255, 0.92);
   font-family: var(--font-display);
   font-size: 1.1875rem;
   font-weight: 600;
@@ -1602,9 +1626,57 @@
 }
 
 [data-brief] .brief-hub-sub {
-  margin: 2.25rem 0 0.4rem;
-  font-size: 0.9375rem;
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.1875rem, 1.5vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+/* The deeper steps (strongest alignments, types, targets to review first)
+   stay in view long enough for their dots to be read. */
+[data-brief] .brief-hub-substep {
+  min-height: 52vh;
+}
+
+/* A document named in a finding: set apart, and a way into it. */
+[data-brief] .brief-docname {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(35, 46, 61, 0.45);
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+[data-brief] .brief-docname[role="button"]:hover {
+  color: var(--brief-blue);
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .brief-docname[role="button"]:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .brief-docname-static {
   font-weight: 600;
+  text-decoration: none;
+  cursor: auto;
+}
+
+/* The document at the centre of the hub, in one line. */
+[data-brief] .brief-hub-focus {
+  max-width: 36em;
+  margin: -0.4rem 0 1.4rem;
+  font-size: 1rem;
+  line-height: 1.55;
 }
 
 /* Types of potential misalignment: one row each, share of the whole. */
@@ -1617,16 +1689,37 @@
 
 [data-brief] .brief-hub-kind {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(90px, 200px) 48px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(64px, 120px) 44px;
+  align-items: start;
   column-gap: 10px;
-  padding: 0.55rem 0;
+  padding: 0.6rem 0.35rem;
   border-bottom: 1px solid var(--brief-hairline);
-  cursor: help;
+}
+
+[data-brief] .brief-hub-kind[data-hovered] {
+  background: #f7f7f7;
+}
+
+[data-brief] .brief-hub-kind-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 [data-brief] .brief-hub-kind-name {
   font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .brief-hub-kind-desc {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-hub-kind-bar {
+  margin-top: 6px;
 }
 
 [data-brief] .brief-hub-kind-bar > span {
@@ -1638,6 +1731,7 @@
 [data-brief] .brief-hub-kind-value {
   font-size: 0.9375rem;
   font-weight: 600;
+  line-height: 1.5;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -1712,6 +1806,83 @@
 
 [data-brief] .brief-panel-sub-line {
   display: block;
+}
+
+[data-brief] .brief-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Two documents compared: one name per line, each with its colour. */
+[data-brief] .brief-panel-title-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+[data-brief] .brief-panel-pairdoc {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+[data-brief] .brief-panel-swatch {
+  display: inline-block;
+  flex: none;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 2px;
+}
+
+[data-brief] .brief-panel-docmark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-panel-docmark .brief-panel-swatch {
+  width: 0.55rem;
+  height: 0.55rem;
+}
+
+/* Target pairs as a two-column table under the two names. */
+[data-brief] .brief-panel-cols {
+  display: grid;
+  grid-template-columns: 3px minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 0.75rem;
+  margin: 0.6rem 0 0;
+  padding: 0 0.35rem 0.35rem 0;
+}
+
+[data-brief] .brief-panel-pairrows .brief-panel-row > button {
+  grid-template-columns: 3px minmax(0, 1fr) minmax(0, 1fr);
+  row-gap: 0.2rem;
+}
+
+[data-brief] .brief-panel-cell {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+[data-brief] .brief-panel-row > button:hover .brief-panel-cell {
+  text-decoration: underline;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+}
+
+[data-brief] .brief-panel-pairrows .brief-panel-row-type {
+  grid-column: 2 / -1;
+}
+
+[data-brief] .brief-panel-pairrows button:has(.brief-panel-row-type) .brief-panel-mark {
+  grid-row: 1 / span 2;
 }
 
 [data-brief] .brief-panel-conf,

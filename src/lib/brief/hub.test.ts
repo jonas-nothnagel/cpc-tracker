@@ -15,8 +15,20 @@ function visibleCount(layout: ReturnType<typeof layoutHub>) {
 describe("hubParticles", () => {
   it("makes one particle per target pair when no two themes share a pair of documents", () => {
     const particles = hubParticles(DATA);
-    expect(particles).toHaveLength(108);
-    expect(particles.every((p) => !p.ghost)).toBe(true);
+    expect(particles.filter((p) => !p.ghost)).toHaveLength(108);
+    expect(particles.some((p) => p.ghost === "theme")).toBe(false);
+  });
+
+  it("adds a copy for a pair between two top targets of a list, so both count it", () => {
+    const strong = DATA.strongest.slice(0, 6).map((r) => r.commitment.id);
+    const review = DATA.commitments.slice(0, 6).map((r) => r.commitment.id);
+    const within = (ids: string[]) => (c: { a: { id: string }; b: { id: string } }) =>
+      ids.includes(c.a.id) && ids.includes(c.b.id);
+    const shared =
+      DATA.scope.comparisons.filter((c) => c.level === "high" && within(strong)(c)).length +
+      DATA.scope.comparisons.filter((c) => c.level === "flagged" && within(review)(c)).length;
+    expect(shared).toBeGreaterThan(0);
+    expect(hubParticles(DATA).filter((p) => p.ghost === "target")).toHaveLength(shared);
   });
 
   it("adds a ghost for each extra theme a target pair is covered by", () => {
@@ -24,7 +36,7 @@ describe("hubParticles", () => {
     const full = { storylines: [...FIXTURE_THEMES, planning], summary_paragraph: "", doc_pair_count: 3, schema_version: 2 };
     const source = { ...SOURCE, themes: { ...full, states: { "": full } } };
     const data = buildBriefData(source, scopeOf(source, ["A", "B", "C"]), null);
-    const ghosts = hubParticles(data).filter((p) => p.ghost);
+    const ghosts = hubParticles(data).filter((p) => p.ghost === "theme");
     // A~B's 24 aligned pairs sit in both alignment themes.
     expect(ghosts).toHaveLength(24);
   });
@@ -50,6 +62,40 @@ describe("layoutHub", () => {
       ["Shared land restoration", 54],
       ["__other", 18],
     ]);
+  });
+
+  it("aligned: a theme shows which pairs of documents carry it, largest first", () => {
+    const layout = layoutHub({ kind: "reinforce" }, particles, DATA, 800, 400);
+    const theme = layout.groups[0];
+    expect(theme.parts?.map((p) => [p.key, p.count])).toEqual([
+      ["A<->C", 30],
+      ["A<->B", 24],
+    ]);
+    // Side by side along the theme's strip, never overlapping, named at its left.
+    const [first, second] = theme.parts!;
+    expect(second.x0).toBeGreaterThanOrEqual(first.x1);
+    expect(theme.labelAt).toBe("left");
+  });
+
+  it("strongest alignments: one strip per target, split by the partner's document", () => {
+    const layout = layoutHub({ kind: "strong" }, particles, DATA, 800, 500);
+    expect(layout.groups.map((g) => [g.key, g.count])).toEqual(
+      DATA.strongest.slice(0, 6).map((r) => [r.commitment.id, r.strong]),
+    );
+    expect(layout.groups[0].parts?.map((p) => [p.key, p.count])).toEqual([
+      ["A", 5],
+      ["B", 3],
+    ]);
+    expect(layout.groups.every((g) => g.labelAt === "left")).toBe(true);
+  });
+
+  it("potential misalignment by type, and the targets to review first", () => {
+    const kinds = layoutHub({ kind: "kinds" }, particles, DATA, 800, 500);
+    expect(kinds.groups.map((g) => [g.key, g.count])).toEqual(DATA.mix.map((m) => [m.mechanism, m.count]));
+    const review = layoutHub({ kind: "review" }, particles, DATA, 800, 500);
+    expect(review.groups.map((g) => [g.key, g.count])).toEqual(
+      DATA.commitments.slice(0, 6).map((r) => [r.commitment.id, r.apart]),
+    );
   });
 
   it("potential misalignment: only those pairs, in their themes", () => {
@@ -84,8 +130,13 @@ describe("layoutHub", () => {
         tone: i % 4,
         a: "F",
         b: ids[k + 1],
+        ca: "F1",
+        cb: `${ids[k + 1]}1`,
+        level: "medium" as const,
+        mechanism: null,
         theme: -1,
-        ghost: false,
+        target: -1,
+        ghost: false as const,
         base: 0,
       })),
     );
@@ -121,16 +172,33 @@ describe("layoutHub", () => {
   it("keeps the dots close to their overview size in every step", () => {
     const overview = layoutHub({ kind: "overview" }, particles, DATA, 800, 500);
     const size = Math.max(...overview.r);
-    for (const stage of [{ kind: "reinforce" }, { kind: "apart" }, { kind: "doc", doc: "A" }] as const) {
+    const cases = [
+      [{ kind: "reinforce" }, 1.8],
+      [{ kind: "apart" }, 1.8],
+      [{ kind: "doc", doc: "A" }, 1.8],
+      [{ kind: "strong" }, 2.6],
+      [{ kind: "kinds" }, 2.6],
+      [{ kind: "review" }, 2.6],
+    ] as const;
+    for (const [stage, zoom] of cases) {
       const layout = layoutHub(stage, particles, DATA, 800, 500);
       const largest = Math.max(...layout.r.filter((_, i) => layout.visible[i]));
-      expect(largest).toBeLessThanOrEqual(size * 1.8 + 1e-6);
+      expect(largest).toBeLessThanOrEqual(size * zoom + 1e-6);
       expect(largest).toBeGreaterThan(0);
     }
   });
 
   it("keeps every shown dot inside the field", () => {
-    for (const stage of [{ kind: "overview" }, { kind: "reinforce" }, { kind: "apart" }, { kind: "doc", doc: "B" }] as const) {
+    const stages = [
+      { kind: "overview" },
+      { kind: "reinforce" },
+      { kind: "strong" },
+      { kind: "apart" },
+      { kind: "kinds" },
+      { kind: "review" },
+      { kind: "doc", doc: "B" },
+    ] as const;
+    for (const stage of stages) {
       const layout = layoutHub(stage, particles, DATA, 800, 500);
       for (let i = 0; i < layout.visible.length; i++) {
         if (!layout.visible[i]) continue;

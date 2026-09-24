@@ -41,12 +41,14 @@ export function ReviewList({
   testId,
   tour,
   onOpen,
+  onHover,
 }: {
   data: BriefData;
   limit?: number;
   testId: string;
   tour?: string;
   onOpen?: (id: string) => void;
+  onHover?: (id: string | null) => void;
 }) {
   const t = useTranslations("brief.commitments");
   return (
@@ -62,6 +64,7 @@ export function ReviewList({
       testId={testId}
       tour={tour}
       onOpen={onOpen}
+      onHover={onHover}
     />
   );
 }

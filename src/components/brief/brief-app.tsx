@@ -131,6 +131,7 @@ export function BriefApp({
         documents={scope.docs.length}
         comparisons={scope.comparisons.length}
         lines={lines}
+        translation={translation}
         onRead={readBrief}
         onCustomize={customize}
       />
@@ -157,11 +158,6 @@ export function BriefApp({
           )}
           <Flow
             hidden={preview}
-            countryName={source.countryName}
-            commitments={scope.commitments.length}
-            documents={scope.docs.length}
-            comparisons={scope.comparisons.length}
-            translation={translation}
             overview={
               <Hub
                 data={data}

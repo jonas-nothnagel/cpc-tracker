@@ -42,11 +42,13 @@ export function StrongestList({
   testId,
   tour,
   onOpen,
+  onHover,
 }: {
   data: BriefData;
   testId: string;
   tour?: string;
   onOpen?: (id: string) => void;
+  onHover?: (id: string | null) => void;
 }) {
   const t = useTranslations("brief.aligned");
   return (
@@ -63,6 +65,7 @@ export function StrongestList({
       testId={testId}
       tour={tour}
       onOpen={onOpen}
+      onHover={onHover}
     />
   );
 }
