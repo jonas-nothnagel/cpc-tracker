@@ -130,6 +130,9 @@ describe("BriefPanels", () => {
     const [left, right] = within(row).getAllByTestId("brief-docpair-cell");
     expect(left.textContent).toContain("Commitment B6");
     expect(right.textContent).toContain("Commitment C4");
+    // The column names are for the eye; each cell names its document for a screen reader.
+    expect(left.textContent).toContain("Document B");
+    expect(right.textContent).toContain("Document C");
   });
 
   it("asks for feedback on a pair of documents' AI reading, and only where there is one", async () => {

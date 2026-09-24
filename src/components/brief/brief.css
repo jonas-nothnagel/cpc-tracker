@@ -1412,10 +1412,13 @@
   min-height: 24rem;
 }
 
+/* The field keeps its labels to itself: nothing reaches past its edges
+   (on a phone that would scroll the page sideways). */
 [data-brief] .brief-hub-canvas {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 [data-brief] .brief-hub-canvas canvas {
@@ -1507,6 +1510,23 @@
   -webkit-line-clamp: 2;
 }
 
+[data-brief] .brief-hub-label-left[data-compact] .brief-hub-label-name {
+  font-size: 0.8125rem;
+}
+
+[data-brief] .brief-hub-label-left[data-compact="tight"] .brief-hub-label-name {
+  font-size: 0.75rem;
+  -webkit-line-clamp: 1;
+}
+
+[data-brief] .brief-hub-label-partner[data-compact] .brief-hub-label-name {
+  -webkit-line-clamp: 1;
+}
+
+[data-brief] .brief-hub-label-left[data-compact] .brief-hub-label-meta {
+  display: none;
+}
+
 [data-brief] .brief-hub-label-partner .brief-hub-label-name {
   font-size: 0.8125rem;
   -webkit-line-clamp: 3;
@@ -1516,6 +1536,7 @@
 [data-brief] .brief-hub-label-bar {
   display: block;
   width: 9.5rem;
+  max-width: 100%;
   margin-top: 3px;
   font-weight: 400;
 }

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { DrawerHeader, DrawerShell } from "@/components/ui/drawer-shell";
 import { FeedbackControl } from "@/components/dashboard/coherence-briefing/feedback-control";
-import { partnersOf, strongestAligned, toneCounts, toneOf, type ToneCounts } from "@/lib/brief/compute";
+import { findDocPair, partnersOf, strongestAligned, toneCounts, toneOf, type ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import type { FoundPair } from "@/lib/brief/pair";
 import { docCodeSegments, firstSentence } from "@/lib/brief/text";
@@ -319,9 +319,11 @@ function PairRows({
               <button type="button" onClick={() => onOpen(r.a.id, r.b.id)}>
                 <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
                 <span className="brief-panel-cell" data-testid="brief-docpair-cell">
+                  <span className="brief-sr-only">{docs[0].name}: </span>
                   {commitmentLine(left)}
                 </span>
                 <span className="brief-panel-cell" data-testid="brief-docpair-cell">
+                  <span className="brief-sr-only">{docs[1].name}: </span>
                   {commitmentLine(right)}
                 </span>
                 {r.mechanism && mechanismOf && <span className="brief-panel-row-type">{mechanismOf(r.mechanism)}</span>}
@@ -363,7 +365,7 @@ function DocPairPanel({
   const tc = useTranslations("labels.confidence");
   const td = useTranslations("briefing.drawer.pair");
   const { pct } = useNumbers();
-  const stat = data.pairs.find((p) => (p.a.id === a && p.b.id === b) || (p.a.id === b && p.b.id === a));
+  const stat = findDocPair(data.pairs, a, b);
   const note =
     (source.pairNotes ?? []).find((n) => (n.a === a && n.b === b) || (n.a === b && n.b === a)) ?? null;
   const strands = useMemo(() => {

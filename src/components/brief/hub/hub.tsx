@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { MIN_PAIR_COMPARISONS, pairKeyOf, shareOf, type Tone, type ToneCounts } from "@/lib/brief/compute";
+import { findDocPair, MIN_PAIR_COMPARISONS, shareOf, type Tone, type ToneCounts } from "@/lib/brief/compute";
 import { MAX_THEMES, OTHER_THEME, type BriefData } from "@/lib/brief/data";
 import { DOT_ORDER } from "@/lib/brief/dot-layout";
-import { HUB_TOP, type HubGroup, type HubStage } from "@/lib/brief/hub";
+import { HUB_TOP, pairInOrder, type HubGroup, type HubStage } from "@/lib/brief/hub";
 import { DOT_COLORS } from "../dot-field";
 import { commitmentLine, useNumbers } from "../ink";
 import { StrongestList } from "../sections/aligned";
@@ -70,7 +70,7 @@ export function Hub({
   const overall = useOverallHeadline(data);
 
   const [active, setActive] = useState<HubStep>("overview");
-  const [hovered, setHovered] = useState<string | null>(null);
+  const [hover, setHover] = useState<{ key: string; stage: string } | null>(null);
   // The document at the centre of the hub, and the row open in the list.
   const firstDoc = data.docs[0]?.doc.id ?? null;
   const [chosen, setChosen] = useState<string | null>(null);
@@ -82,6 +82,7 @@ export function Hub({
   const root = useRef<HTMLDivElement>(null);
   const stepEl = (step: HubStep) => root.current?.querySelector<HTMLElement>(`[data-step="${step}"]`) ?? null;
   const hasPairs = data.counts.total > 0;
+  const hasKinds = data.mix.length > 0;
 
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
@@ -97,9 +98,13 @@ export function Hub({
     );
     root.current?.querySelectorAll("[data-step]").forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, [hasPairs]);
+    // Steps come and go with the selection (no pairs, no types): observe anew.
+  }, [hasPairs, hasKinds]);
 
   const stageKind = active === "documents" ? (focus ? `doc:${focus}` : "overview") : active;
+  // What the pointer brought forward belongs to the step it was in.
+  const hovered = hover && hover.stage === stageKind ? hover.key : null;
+  const setHovered = (key: string | null) => setHover(key === null ? null : { key, stage: stageKind });
   const stage = useMemo<HubStage>(
     () =>
       stageKind.startsWith("doc:")
@@ -128,12 +133,12 @@ export function Hub({
   const share = (v: number) => (c.total > 0 ? v / c.total : 0);
   const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
   const pairNames = (key: string) => {
-    const [a, b] = key.split("<->");
+    const [a, b] = pairInOrder(key, data.scope.docs);
     return { a, b, names: th("pairNames", { docA: docName(a), docB: docName(b) }) };
   };
   const themeRows = (tone: "reinforce" | "apart") =>
     (tone === "reinforce" ? data.together : data.apart).rows.slice(0, MAX_THEMES);
-  const pairStat = (a: string, b: string) => data.pairs.find((p) => pairKeyOf(p.a.id, p.b.id) === pairKeyOf(a, b));
+  const pairStat = (a: string, b: string) => findDocPair(data.pairs, a, b);
   const commitment = (id: string) => data.scope.commitments.find((x) => x.id === id);
   const mixTotal = data.mix.reduce((sum, m) => sum + m.count, 0);
 
@@ -436,7 +441,7 @@ export function Hub({
               />
             </section>
 
-            {data.mix.length > 0 && (
+            {hasKinds && (
               <section className="brief-hub-step brief-hub-substep" data-step="kinds">
                 <h3 className="brief-hub-sub">{th("kinds")}</h3>
                 <ul className="brief-hub-kinds">

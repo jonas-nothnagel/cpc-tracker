@@ -87,6 +87,8 @@ export interface HubLayout {
   center: { x: number; y: number; half: number } | null;
   /** Room kept at the left for the strips' labels. */
   labelWidth: number;
+  /** Room above each cluster for its name, in the document stage. */
+  focusLabel: number;
 }
 
 /** Aligned, partially aligned, potential misalignment, no clear relationship,
@@ -108,6 +110,17 @@ export const ZOOM_DEEP = 2.6;
 /** Rows of dots in one strip of the strongest alignments, types of
  *  potential misalignment and targets to review first. */
 const STRIP_ROWS = 4;
+/** The smallest dot pitch; below it a dot stands for several pairs. */
+const MIN_PITCH = 1.2;
+
+/** The two documents of a pair key ("A<->B"), in the documents' own order,
+ *  so a pair reads the same way in tips, panels and headlines. */
+export function pairInOrder(key: string, docs: { id: string }[]): [string, string] {
+  const [a, b] = key.split("<->");
+  const ia = docs.findIndex((d) => d.id === a);
+  const ib = docs.findIndex((d) => d.id === b);
+  return ib >= 0 && (ia < 0 || ib < ia) ? [b, a] : [a, b];
+}
 
 export function hubParticles(data: BriefData): HubParticle[] {
   const shown = (rows: BriefData["together"]["rows"]) =>
@@ -155,6 +168,7 @@ function emptyLayout(n: number): HubLayout {
     groups: [],
     center: null,
     labelWidth: 0,
+    focusLabel: FOCUS_LABEL,
   };
 }
 
@@ -255,15 +269,29 @@ function placeStrips(
     const parts = m.parts.filter((p) => p.ids.length > 0);
     return parts.reduce((s, p) => s + Math.ceil(p.ids.length / rows), 0) + parts.length - 1;
   };
+  // Themes and kinds fill their slot with rows; ranked targets keep four.
+  const rowsAt = (p: number) => Math.max(1, fill ? Math.floor(slotH / p) : Math.min(STRIP_ROWS, Math.floor(slotH / p)));
   let pitch = maxPitch;
-  let rows = STRIP_ROWS;
-  for (let i = 0; i < 600; i++) {
-    rows = fill ? Math.max(STRIP_ROWS, Math.floor(slotH / pitch)) : STRIP_ROWS;
+  for (let i = 0; i < 600 && pitch > MIN_PITCH; i++) {
+    const rows = rowsAt(pitch);
     const widest = Math.max(1, ...present.map((m) => colsFor(m, rows)));
     if (widest * pitch <= areaW && rows * pitch <= slotH) break;
     pitch *= 0.97;
   }
-  pitch = Math.max(1.2, pitch);
+  pitch = Math.max(MIN_PITCH, pitch);
+  const rows = rowsAt(pitch);
+  // Too many pairs for the room even at the smallest dot: one dot stands
+  // for `unit` pairs, taken evenly along each segment; counts stay exact.
+  let unit = 1;
+  const fits = (u: number) =>
+    Math.max(
+      1,
+      ...present.map((m) => {
+        const parts = m.parts.filter((p) => p.ids.length > 0);
+        return parts.reduce((sum, p) => sum + Math.ceil(Math.ceil(p.ids.length / u) / rows), 0) + parts.length - 1;
+      }),
+    ) * pitch <= areaW;
+  while (!fits(unit) && unit < 100000) unit *= 2;
   const stripH = rows * pitch;
   const block = present.length * stripH + (present.length - 1) * gapY;
   const top = Math.max(0, (height - block) / 2);
@@ -274,12 +302,13 @@ function placeStrips(
     m.parts.forEach((part) => {
       if (part.ids.length === 0) return;
       const c0 = col;
-      part.ids.forEach((id, n) => {
+      const shown = part.ids.filter((_, n) => n % unit === 0);
+      shown.forEach((id, n) => {
         const cc = col + Math.floor(n / rows);
         const rr = n % rows;
         dot(layout, id, x0 + cc * pitch + pitch / 2, y0 + rr * pitch + pitch / 2, pitch, m.ink, m.texture && (cc + rr) % 2 === 1);
       });
-      col += Math.ceil(part.ids.length / rows);
+      col += Math.ceil(shown.length / rows);
       parts.push({ key: part.key, count: part.ids.length, x0: x0 + c0 * pitch, x1: x0 + col * pitch, y0, y1: y0 + stripH });
       col += 1;
     });
@@ -437,7 +466,10 @@ function placeFocus(
   const perSide = Math.max(1, left);
   const columnWidth = Math.max(1, cx - middle / 2 - SPOKE - FOCUS_PAD);
   const slot = (height - FOCUS_PAD) / perSide;
-  const boxH = Math.max(1, slot - FOCUS_LABEL - FOCUS_PAD);
+  // Many partners on a short field: the names get less room (one line).
+  const band = Math.max(30, Math.min(FOCUS_LABEL, slot * 0.45));
+  layout.focusLabel = band;
+  const boxH = Math.max(1, slot - band - FOCUS_PAD);
   const boxW = Math.max(1, Math.min(columnWidth, boxH * 2.2));
   // Clusters take the shape of the room they have, so the largest fills it.
   const aspect = boxW / boxH;
@@ -445,8 +477,17 @@ function placeFocus(
     const cols = Math.max(1, Math.ceil(Math.sqrt(n * aspect)));
     return { cols, rows: Math.ceil(n / cols) };
   };
-  const largest = shape(Math.max(1, ...members.map((ids) => ids.length)));
-  const pitch = Math.max(1.2, Math.min(maxPitch, boxW / largest.cols, boxH / largest.rows));
+  const most = Math.max(1, ...members.map((ids) => ids.length));
+  // Too many pairs for the room even at the smallest dot: one dot stands
+  // for `unit` pairs, taken evenly along each cluster; counts stay exact.
+  let unit = 1;
+  const fitsAt = (u: number) => {
+    const s = shape(Math.ceil(most / u));
+    return s.cols * MIN_PITCH <= boxW && s.rows * MIN_PITCH <= boxH;
+  };
+  while (!fitsAt(unit) && unit < 100000) unit *= 2;
+  const largest = shape(Math.ceil(most / unit));
+  const pitch = Math.max(MIN_PITCH, Math.min(maxPitch, boxW / largest.cols, boxH / largest.rows));
   const apart = DOT_ORDER.indexOf("apart");
   members.forEach((list, k) => {
     if (list.length === 0) return;
@@ -454,12 +495,13 @@ function placeFocus(
     const count = onLeft ? left : partners.length - left;
     const row = onLeft ? k : k - left;
     // A shorter side is centred on the document.
-    const top = FOCUS_PAD + (perSide - count) * (slot / 2) + row * slot + FOCUS_LABEL;
-    const { cols, rows } = shape(list.length);
+    const top = FOCUS_PAD + (perSide - count) * (slot / 2) + row * slot + band;
+    const shown = list.filter((_, n) => n % unit === 0);
+    const { cols, rows } = shape(shown.length);
     const w = cols * pitch;
     const h = rows * pitch;
     const x0 = onLeft ? cx - middle / 2 - SPOKE - w : cx + middle / 2 + SPOKE;
-    list.forEach((id, n) => {
+    shown.forEach((id, n) => {
       const col = n % cols;
       const r = Math.floor(n / cols);
       // The checker texture tells potential misalignment apart without colour.

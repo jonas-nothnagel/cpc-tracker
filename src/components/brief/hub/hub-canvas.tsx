@@ -192,7 +192,11 @@ export function HubCanvas({
   const settled = useRef(false);
   const brightRef = useRef({ group: -1, part: -1 });
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const [tip, setTip] = useState<(HubTarget & { x: number; y: number }) | null>(null);
+  // The tip belongs to the step it was pointed at in: when the dots re-form
+  // under a still pointer, an old name must not be read against new groups.
+  const key = stageKey(stage);
+  const [pointed, setTip] = useState<(HubTarget & { x: number; y: number; stage: string }) | null>(null);
+  const tip = pointed && pointed.stage === key ? pointed : null;
   const particles = useMemo(() => hubParticles(data), [data]);
   const layout = useMemo(
     () => layoutHub(stage, particles, data, size.w, size.h),
@@ -321,7 +325,7 @@ export function HubCanvas({
     const x = e.clientX - box.left;
     const y = e.clientY - box.top;
     const hit = targetAt(x, y);
-    setTip(hit && tipFor ? { ...hit, x: Math.min(Math.max(x, 140), size.w - 140), y } : null);
+    setTip(hit && tipFor ? { ...hit, x: Math.min(Math.max(x, 140), size.w - 140), y, stage: key } : null);
     onHover?.(hit?.group.key ?? null);
   };
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -335,7 +339,7 @@ export function HubCanvas({
     <div
       ref={wrapRef}
       className="brief-hub-canvas"
-      data-hub-stage={stageKey(stage)}
+      data-hub-stage={key}
       data-clickable={tip && onGroup && (clickable?.(tip) ?? true) ? "true" : undefined}
       onPointerMove={onMove}
       onPointerLeave={() => {
@@ -356,6 +360,7 @@ export function HubCanvas({
                 className="brief-hub-label brief-hub-label-partner"
                 data-side={left ? "left" : "right"}
                 data-dim={dim}
+                data-compact={layout.focusLabel < 56 ? "true" : undefined}
                 style={{
                   left: left ? g.x1 : g.x0,
                   top: g.y0 - 6,
@@ -368,11 +373,16 @@ export function HubCanvas({
             );
           }
           if (g.labelAt === "left") {
+            // A strip with little room (a phone's short field) gets a one-line label.
+            const next = layout.groups[k + 1];
+            const prev = layout.groups[k - 1];
+            const room = next ? next.y0 - g.y0 : prev ? g.y0 - prev.y0 : size.h;
             return (
               <div
                 key={g.key}
                 className="brief-hub-label brief-hub-label-left"
                 data-dim={dim}
+                data-compact={room < 34 ? "tight" : room < 58 ? "true" : undefined}
                 style={{ left: 0, top: (g.y0 + g.y1) / 2, width: layout.labelWidth }}
               >
                 {labelFor(g)}

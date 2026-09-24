@@ -3,7 +3,7 @@ import { buildBriefData } from "./data";
 import { scopeOf } from "./compute";
 import { briefFixture, FIXTURE_THEMES } from "./test-fixture";
 import { DOT_ORDER } from "./dot-layout";
-import { FOCUS_LABEL, hubParticles, layoutHub, type HubParticle } from "./hub";
+import { FOCUS_LABEL, hubParticles, layoutHub, pairInOrder, type HubParticle } from "./hub";
 
 const SOURCE = briefFixture({ themes: true });
 const DATA = buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "B", "C"]), null);
@@ -148,10 +148,10 @@ describe("layoutHub", () => {
       expect(column.length).toBeGreaterThan(0);
       for (let k = 1; k < column.length; k++) {
         // Each name sits in the band above its cluster, below the cluster before it.
-        expect(column[k].y0 - FOCUS_LABEL).toBeGreaterThanOrEqual(column[k - 1].y1);
+        expect(column[k].y0 - layout.focusLabel).toBeGreaterThanOrEqual(column[k - 1].y1);
       }
       for (const g of column) {
-        expect(g.y0 - FOCUS_LABEL).toBeGreaterThanOrEqual(0);
+        expect(g.y0 - layout.focusLabel).toBeGreaterThanOrEqual(0);
         expect(g.y1).toBeLessThanOrEqual(600);
         expect(side === "left" ? g.x1 <= 260 : g.x0 >= 260).toBe(true);
       }
@@ -188,6 +188,66 @@ describe("layoutHub", () => {
     }
   });
 
+  it("a document in focus with many large partners stays inside the field", () => {
+    const ids = ["F", ...Array.from({ length: 11 }, (_, k) => `P${k + 1}`)];
+    const docs = ids.map((id) => ({ ...DATA.scope.docs[0], id, name: `Document ${id}` }));
+    const sizes = [6336, 2900, 1800, 1200, 900, 700, 500, 300, 200, 120, 60];
+    const many: HubParticle[] = sizes.flatMap((n, k) =>
+      Array.from({ length: n }, (_, i) => ({
+        tone: i % 4,
+        a: "F",
+        b: ids[k + 1],
+        ca: "F1",
+        cb: `${ids[k + 1]}1`,
+        level: "medium" as const,
+        mechanism: null,
+        theme: -1,
+        target: -1,
+        ghost: false as const,
+        base: 0,
+      })),
+    );
+    const data = { ...DATA, scope: { ...DATA.scope, docs } };
+    const layout = layoutHub({ kind: "doc", doc: "F" }, many, data, 480, 520);
+    for (let i = 0; i < many.length; i++) {
+      if (!layout.visible[i]) continue;
+      expect(layout.x[i]).toBeGreaterThanOrEqual(0);
+      expect(layout.x[i]).toBeLessThanOrEqual(480);
+      expect(layout.y[i]).toBeGreaterThanOrEqual(0);
+      expect(layout.y[i]).toBeLessThanOrEqual(520);
+    }
+    // Names get the room the clusters leave; the counts stay exact.
+    expect(layout.focusLabel).toBeLessThan(FOCUS_LABEL);
+    expect(layout.groups.map((g) => g.count)).toEqual(sizes);
+  });
+
+  it("keeps a crowded step inside a phone's field, drawing a sample when it must", () => {
+    const crowd: HubParticle[] = Array.from({ length: 60000 }, (_, i) => ({
+      tone: 0,
+      a: "A",
+      b: i % 2 ? "B" : "C",
+      ca: "A1",
+      cb: "B1",
+      level: "medium" as const,
+      mechanism: null,
+      theme: -1,
+      target: -1,
+      ghost: false as const,
+      base: i,
+    }));
+    const layout = layoutHub({ kind: "reinforce" }, crowd, DATA, 390, 371);
+    let shown = 0;
+    for (let i = 0; i < crowd.length; i++) {
+      if (!layout.visible[i]) continue;
+      shown += 1;
+      expect(layout.x[i]).toBeLessThanOrEqual(390);
+      expect(layout.y[i]).toBeLessThanOrEqual(371);
+    }
+    expect(shown).toBeGreaterThan(0);
+    // The strip still states every pair.
+    expect(layout.groups.find((g) => g.key === "__other")?.count).toBe(60000);
+  });
+
   it("keeps every shown dot inside the field", () => {
     const stages = [
       { kind: "overview" },
@@ -210,3 +270,12 @@ describe("layoutHub", () => {
     }
   });
 });
+
+describe("pairInOrder", () => {
+  it("names a pair of documents in the documents' own order, not by key", () => {
+    const docs = [{ id: "NDC" }, { id: "FSS" }, { id: "NBSAP" }];
+    expect(pairInOrder("FSS<->NDC", docs)).toEqual(["NDC", "FSS"]);
+    expect(pairInOrder("FSS<->NBSAP", docs)).toEqual(["FSS", "NBSAP"]);
+  });
+});
+

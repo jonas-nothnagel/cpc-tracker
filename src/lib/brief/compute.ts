@@ -146,6 +146,11 @@ export function pairKeyOf(a: string, b: string): string {
   return `${a}~${b}`;
 }
 
+/** A pair of documents, whichever way round it is asked for. */
+export function findDocPair(pairs: DocPairStat[], a: string, b: string): DocPairStat | null {
+  return pairs.find((p) => (p.a.id === a && p.b.id === b) || (p.a.id === b && p.b.id === a)) ?? null;
+}
+
 /** One entry per pair of selected documents that were compared, in document
  *  order, whichever way round each comparison was stored. */
 export function docPairStats(scope: Scope): DocPairStat[] {

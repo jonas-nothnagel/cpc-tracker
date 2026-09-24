@@ -64,6 +64,31 @@ explore from there. It combines the dashboard's 01 direction/themes, 02 document
   The worked example's parts, measurable phrases and source check are quoted on the left.
   Invented right-hand examples were removed, and the example figures re-verified.
 - The printed brief is unchanged: the builder's section group reads "In the printed brief".
+- Review fix pass (`444bf1a`) added:
+  - AI labels, confidence and caveats on the theme and document-pair panels;
+  - phone jumps that land below the sticky field;
+  - texture in the document hub;
+  - the es/mn walkthrough titles restored.
+
+**Round 8 (2026-09-24, `9e612b4`):** Jonas liked the direction ("better and better"). The
+document hub was "MUCH better". The four green theme columns "only looked cool", and the
+steps should be more integrated and explorable as readers dive deeper.
+- The overview goes a level deeper with each step:
+  - themes as named strips split by the pairs of documents that carry them (hover names
+    the pair, a click opens it);
+  - the strongest alignments, the types of potential misalignment and the targets to
+    review first, each with its own strips.
+- Document names in findings lead into the documents.
+- The hub centre and partners carry result bars, and a factual line sums up the document
+  in focus.
+- The landing flows into the overview: no repeated figures band, no divider.
+- A pair of documents reads as two documents: two named lines and two columns of targets.
+- How it works:
+  - the step's place is on the left, with numbered navigation;
+  - technical details are always shown;
+  - the right side follows the brief's design;
+  - the triangle is annotated;
+  - plain copy uses the brief's vocabulary.
 
 Verdict pending.
 
@@ -184,7 +209,9 @@ compelling enough to forward to a colleague. This branch is the search for the a
 6. **Flowing brief + dynamic dots + new How it works** (`ff89b09`). Verdict: How it works
    and the documents list liked; the other sections "unfocused again".
 7. **One coherence overview** (`d68da55`..`94e8e67`): the scrolling hub, brief-style
-   panels, hands-on How it works. Verdict pending.
+   panels, hands-on How it works. Verdict: "better and better"; the document hub liked.
+8. **A deeper overview** (`9e612b4`): steps that dive deeper, documents set apart, How it
+   works aligned with the brief. Verdict pending.
 
 The finding-page routes (`/{country}/finding/{pairKey}`, `/{country}/findings`) still exist
 on this branch as legacy surfaces; nothing in the brief links to them. Their lib layer
@@ -208,7 +235,9 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
   numbered like the dot groups; strongest alignments by strong links); potential
   misalignment (themes with resources involved; types of potential misalignment; targets to
   review first); documents (one row per document, most aligned first; the open row sits at
-  the centre of the dots). Dots keep within 1.8x their landing size in every step.
+  the centre of the dots). Dots keep within 1.8x their landing size (2.6x in the steps that
+  single out a few targets); where even the smallest dot cannot fit every pair, one dot
+  stands for several, taken evenly, and the counts stay exact.
 - **Print sections:** overall (halftone field), areas of alignment / potential misalignment
   (theme list + one example per theme, quotes fitted to whole lines), strongest alignments,
   targets to review first, documents, by policy area (optional).
@@ -269,7 +298,11 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
 5. The overview's screen-only sections (overall dot field with links, theme dot clusters)
    still exist as components for the print path; their screen interactivity is now unused.
 6. Next sections Jonas named: sectors (from the taxonomy lens), implementation, finance,
-   and the wheel to explore.
+   and the wheel to explore. Another session built the explorable ring (`442fab3`, preview
+   at `/{country}/brief/explore`); the brief does not link to it yet.
+7. How it works, step 14 (finance): the right-hand examples ("Pasture management
+   programme", "Soil & fodder programme", "Wetland restoration target") look illustrative;
+   check them against Mongolia's BER data or replace them with real rows.
 
 ## How to resume
 

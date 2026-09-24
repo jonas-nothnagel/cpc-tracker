@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
+import es from "../../../../messages/es.json";
 import { buildBriefData } from "@/lib/brief/data";
 import { scopeOf } from "@/lib/brief/compute";
 import { briefFixture } from "@/lib/brief/test-fixture";
@@ -128,6 +129,35 @@ describe("Hub", () => {
     const headline = document.querySelector('[data-step="documents"] h2') as HTMLElement;
     fireEvent.click(within(headline).getByRole("button", { name: "Document B" }));
     expect(stage()).toBe("doc:B");
+  });
+
+  it("keeps a translated finding translated, with its documents still linked", () => {
+    render(
+      <NextIntlClientProvider locale="es" messages={es} timeZone="UTC">
+        <Hub data={DATA} />
+      </NextIntlClientProvider>,
+    );
+    const together = document.querySelector('[data-step="reinforce"] h2') as HTMLElement;
+    // Spanish sets a no-break space before the percent sign.
+    expect(together.textContent).toMatch(/^Document A y Document C son los más alineados: 83\s%/);
+    expect(within(together).getByRole("button", { name: "Document C" })).toBeTruthy();
+  });
+
+  it("follows steps that appear when the reader adds a document", () => {
+    const calm = buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "C"]), null);
+    expect(calm.mix).toHaveLength(0);
+    const { rerender } = render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Hub data={calm} />
+      </NextIntlClientProvider>,
+    );
+    rerender(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Hub data={DATA} />
+      </NextIntlClientProvider>,
+    );
+    enter("kinds");
+    expect(stage()).toBe("kinds");
   });
 
   it("builds the wheel around the document the reader picks", () => {

@@ -748,7 +748,7 @@
     <div class="pstep" data-i="8">
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 09 · Agent 2</span></p>
       <h2 class="p-title serif">Judge how well a pair aligns</h2>
-      <p class="p-say">A second agent, the <strong>Alignment Advisor</strong>, receives only the two breakdowns and places the pair on a <strong>five-level scale</strong>, or marks it as a <strong>"Potential misalignment"</strong>, but only when it can name what pulls the two apart: a shared resource, the same place, or one undermining the other. A merely loose link stays "Partial". Every judgement carries a short rationale.</p>
+      <p class="p-say">A second agent, the <strong>Alignment Advisor</strong>, receives only the two breakdowns and places the pair on a <strong>four-level scale</strong>, from no clear relationship to strong alignment, or marks it as a <strong>"Potential misalignment"</strong>, but only when it can name what pulls the two apart: a shared resource, the same place, or one undermining the other. A merely loose link stays "Partial". Every judgement carries a short rationale.</p>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · the verdict</p>
         <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
         <p class="ex-facts">Competing for resources · manageable · medium confidence</p>
@@ -810,7 +810,7 @@
           </div>
         </div>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">A reviewer who disagrees that the water and spatial-planning targets conflict can <b>rate this rationale down</b> and record the reason. The response is logged against this exact text and informs the next run.</p></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">A reviewer who disagrees that the water and spatial-planning targets may pull apart can <b>rate this rationale down</b> and record the reason. The response is logged against this exact text and informs the next run.</p></div></div>
       <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Feedback is captured on target-pair rationales and document-pair syntheses (<code>POST /api/feedback</code>) into an append-only ledger keyed to the exact AI text, so a rating stays interpretable even after the pipeline is re-run.</p><div class="specs"><span>thumbs + note</span><span>anonymous</span><span>append-only ledger</span></div></div>
     </div>
 

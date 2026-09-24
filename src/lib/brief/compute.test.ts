@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  findDocPair,
   strongConcentration,
   mechanismMix,
   strongestAlignments,
@@ -564,6 +565,17 @@ describe("strongConcentration", () => {
       share: 24 / 36,
       concentrated: false,
     });
+  });
+});
+
+describe("findDocPair", () => {
+  it("finds a pair of documents whichever way round it is asked for", () => {
+    const source = briefFixture();
+    const scope = scopeOf(source, ["A", "B", "C"]);
+    const pairs = docPairStats(scope);
+    expect(findDocPair(pairs, "A", "C")?.counts.total).toBe(36);
+    expect(findDocPair(pairs, "C", "A")).toBe(findDocPair(pairs, "A", "C"));
+    expect(findDocPair(pairs, "A", "Z")).toBeNull();
   });
 });
 
