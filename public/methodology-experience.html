@@ -424,6 +424,40 @@
   .sl .squares i { display: inline-block; width: 8px; height: 8px; }
   .sl.sl-human .person { display: inline-block; width: 22px; height: 22px;
     background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='5' r='2.6' fill='none' stroke='%239a6b34' stroke-width='1.4'/%3E%3Cpath d='M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2' fill='none' stroke='%239a6b34' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  /* Hands-on overlays on the scenes (Sep 2026, round 7): the targets and
+     parts the step is about, word for word, set in the brief's type. */
+  .sl.sl-cards { white-space: normal; }
+  .sl .quotes { display: flex; gap: 20px; }
+  .sl .quotes .qcard { flex: 1 1 0; }
+  .sl .qcard { padding: 12px 14px; background: #fff; border: 1px solid var(--border-200); color: var(--undp-black); }
+  .sl .q-src { margin: 0 0 5px; font-size: 12px; color: var(--undp-gray); }
+  .sl .q-src b { font-weight: 600; color: var(--undp-black); }
+  .sl .q-text { margin: 0; font-family: var(--font-serif); font-size: 14.5px; line-height: 1.45; }
+  .sl .qcard-small .q-text { display: -webkit-box; overflow: hidden; font-size: 13px; -webkit-line-clamp: 5; -webkit-box-orient: vertical; }
+  .sl .qcard-small .q-src { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .sl mark { padding: 0 2px; border-radius: 2px; color: inherit; }
+  .sl mark.num { background: #dcebf7; }
+  .sl mark.date { background: #f7e6d2; }
+  .sl .q-check { margin: 9px 0 0; font-size: 13px; color: var(--undp-black); }
+  .sl .q-check span { display: inline-block; width: 16px; color: var(--align-high); font-weight: 700; }
+  .sl .q-note { margin: 6px 0 0; font-size: 11.5px; color: var(--undp-gray); }
+  /* Names along the comparison triangle's diagonal, right-aligned. */
+  .sl.sl-diag { transform: translate(-100%, -50%); white-space: normal; text-align: right; font-size: 12px; color: var(--undp-black); }
+  .sl.sl-diag .nm { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .sl.sl-note { white-space: normal; font-size: 11.5px; line-height: 1.3; color: var(--undp-gray); }
+  .sl.sl-note-r { transform: translate(-100%, -50%); text-align: right; }
+  .sl.sl-legend-small { font-size: 12.5px; white-space: normal; }
+  .sl .parts2 { display: flex; gap: 18px; }
+  .sl .pcard { width: 320px; padding: 12px 14px; background: #fff; border: 1px solid var(--border-200); white-space: normal; }
+  .sl .pcard dl { display: grid; grid-template-columns: 64px 1fr; gap: 6px 10px; margin: 8px 0 0; }
+  .sl .pcard dt { font-size: 12px; font-weight: 600; color: var(--undp-gray); }
+  .sl .pcard dd { display: -webkit-box; overflow: hidden; margin: 0; font-size: 12.5px; line-height: 1.35; color: var(--undp-black);
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .sl.sl-callout { transform: translateY(-100%); display: flex; flex-direction: column; gap: 2px; padding: 7px 10px;
+    background: #fff; border: 1px solid var(--border-200); white-space: nowrap; }
+  .sl .verdict { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--undp-black); }
+  .sl .verdict .o { width: 9px; height: 9px; border: 2px solid #d2432c; border-radius: 50%; }
+  .sl .why { font-size: 12px; color: var(--undp-gray); }
   /* Plain controls under the scene, no floating pill. */
   .controls { left: 56px; transform: none; bottom: 28px; padding: 0; background: none; border: 0; border-radius: 0;
     box-shadow: none; backdrop-filter: none; }
@@ -552,12 +586,6 @@
       <p class="p-eyebrow ex"><span class="pp">Phase 1 · Extraction</span><span class="ps">Step 04</span></p>
       <h2 class="p-title serif">Consolidate, then verify nothing was invented</h2>
       <p class="p-say">Because sections overlap, the same target can be picked up twice. Duplicates are <strong>merged into one entry</strong> (keeping all their source quotes), and then every figure, year and named framework is <strong>checked back against the original document</strong>.</p>
-      <div class="p-viz"><div class="vstack" style="gap:9px">
-        <div class="target-card"><div class="tc-text">Restore <span class="claimchip">20,000 ha</span> of degraded pastureland <span class="claimchip">by 2030</span>.</div></div>
-        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"20,000 ha" found in source</span></div>
-        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"2030" found in source</span></div>
-        <div class="stamp">Every claim traced to the source</div>
-      </div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Consolidation merges near-duplicates (keeping every source); contradicting numbers stay as separate targets. Then <code>validate_claim_grounding</code> runs locally, a miss stamps a <code>_provenanceFlag</code> the dashboard surfaces as a review badge.</p><div class="specs"><span>merge, keep sources</span><span>local validator</span><span>provenance flags</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the check</p>
         <div class="prompt">
@@ -584,10 +612,6 @@
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 05</span></p>
       <h2 class="p-title serif">Flag what is measurable and time-bound</h2>
       <p class="p-say">For each target, the tool notes whether it contains a <strong>measurable outcome</strong> (a figure, a percentage, an area) and whether it is <strong>time-bound</strong> (a deadline). These are early indicators of how implementation-ready a commitment is, and the exact phrases are kept.</p>
-      <div class="p-viz"><div class="vstack">
-        <div class="detect-card"><span class="lab" style="font-family:var(--font-mono);font-size:10px;color:var(--undp-gray);display:block;margin-bottom:8px">NDC · pastureland target</span><div class="dt-text">Reduce overgrazing on <span class="mark-num">50%</span> of degraded pastures <span class="mark-yr">by 2030</span>.</div></div>
-        <div class="flag-row"><span class="flag q"><span class="d"></span> Measurable: "50%"</span><span class="flag t"><span class="d"></span> Time-bound: "by 2030"</span></div>
-      </div></div>
       <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> target is time-bound (<b>"by 2030"</b>). The <b>NDC</b> water target names technologies and outcomes but no single headline figure, so it reads as qualitative here.</p></div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Targets are evaluated in batches of 12 for <code>isQuantitative</code> / <code>isTimeBound</code>, returning the phrases. Administrative references ("Article 2") are excluded. Multilingual, no extra NLP dependencies.</p><div class="specs"><span>batched ×12</span><span>phrase-level</span><span>multilingual</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
@@ -637,13 +661,8 @@
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 07</span></p>
       <h2 class="p-title serif">Compare every target across documents</h2>
       <p class="p-say">Coherence is about how <strong>different</strong> documents relate, so each target is paired with every target from a <strong>different</strong> document, never one against itself. Every pair is examined; nothing is filtered out in advance, so genuine cross-sector links are never missed.</p>
-      <div class="p-viz"><svg id="pairSvg" viewBox="0 0 360 190" width="100%" role="img" aria-label="Targets in two documents linked by cross-document pairs" style="max-width:360px">
-        <text x="64" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0d7a70" font-weight="600">NBSAP</text>
-        <text x="296" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0468b1" font-weight="600">NDC</text>
-        <g id="pairLines" stroke-linecap="round"></g><g id="pairNodesL"></g><g id="pairNodesR"></g>
-      </svg><p class="pair-cap"><b>1,560 pairs</b> in this example · highlighted = the example pair</p></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> spatial-planning target and the <b>NDC</b> water target become <b>one of the 1,560 pairs</b>. The tool then checks whether they reinforce one another or pull apart.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">The cross-product of every different-document pairing, de-duplicated: 20×36 + 20×15 + 36×15 = 1,560. No pre-filter is applied, so a genuine cross-sector link is never screened out before the assessment looks at it.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example</p><p class="exb">The <b>NBSAP</b> spatial-planning target is compared with <b>158 targets</b> in the other seven documents; the <b>NDC</b> water target is one of them. Between the NBSAP and the NDC alone there are <b>720 target pairs</b>.</p></div></div>
+      <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">The cross-product of every different-document pairing, each pair counted once: for Mongolia's eight documents and 178 targets, 13,404 target pairs (NBSAP × NDC alone is 20 × 36 = 720). No pre-filter is applied, so a genuine cross-sector link is never screened out before the assessment looks at it.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the logic</p>
         <div class="prompt">
           <div class="prow"><span class="role code">Code (no LLM)</span><div class="ptext">group targets by document → take the Cartesian product of each <em>different-document</em> pairing → de-duplicate by pair.</div></div>
@@ -655,23 +674,8 @@
       <p class="p-eyebrow an"><span class="pp">Phase 2 · Analysis</span><span class="ps">Step 08 · Agent 1</span></p>
       <h2 class="p-title serif">Break each target into its parts</h2>
       <p class="p-say">Before two targets are compared, a first specialist agent, the <strong>Target Analyst</strong>, breaks each one into five plain components: its goal, the action proposed, the ecosystem, who is responsible, and the expected outcome. Comparing structured parts means alignment reflects policy substance, not word-matching.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="src-quote" style="background:#fff;margin-bottom:9px"><span class="lab">NDC · pastureland target</span>Establish collaborative management practices for pastures and expand pasture restoration.</div>
-        <div class="field-row"><span class="fk">Goal</span><span class="fv">Sustainable, collaborative pasture management</span></div>
-        <div class="field-row"><span class="fk">Action</span><span class="fv">Collaborative practices; expand restoration</span></div>
-        <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Pastures and grassland</span></div>
-        <div class="field-row"><span class="fk">Audience</span><span class="fv">Land managers, farmers</span></div>
-        <div class="field-row"><span class="fk">Outcome</span><span class="fv">More sustainable, more restored pasture</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · the NDC target, broken down</p>
-        <div style="margin-top:4px">
-          <div class="field-row"><span class="fk">Goal</span><span class="fv">Water-sector resilience and secure water availability</span></div>
-          <div class="field-row"><span class="fk">Action</span><span class="fv">Headwater protection and monitoring, plus water infrastructure: ponds, reservoirs, managed aquifer recharge, hydropower feasibility and flow transfer</span></div>
-          <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Rivers, groundwater, glaciers, lakes, wetlands, upstream basins</span></div>
-          <div class="field-row"><span class="fk">Audience</span><span class="fv">Local governments, private sector, industry; livestock and households</span></div>
-          <div class="field-row"><span class="fk">Outcome</span><span class="fv">More secure water; restored aquatic and wetland ecosystems</span></div>
-        </div>
-        <p class="exb" style="margin-top:9px">The infrastructure in the Action field is what the comparison weighs against the NBSAP target.</p>
+      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Worked example · both targets, broken down</p>
+        <p class="exb">The water infrastructure in the NDC target's Action field (ponds, canals and pipelines) is what the comparison weighs against the NBSAP target's natural ecosystems.</p>
       </div></div>
       <div class="p-note p-tech"><p class="nl">Technical</p><p class="tx">Agent 1 extracts five fields, strictly factual, no inference beyond the target text. Separating the breakdown (Agent 1) from the judgement (Agent 2) keeps assessments grounded and consistent across countries and frameworks.</p><div class="specs"><span>Agent 1 · Target Analyst</span><span>5 fields</span><span>factual only</span></div></div>
       <div class="p-note p-deep"><p class="nl">Deep dive · the prompt</p>
@@ -876,20 +880,6 @@
   var exT = document.getElementById("exToggle");
   exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); if (window.MethodScene) window.MethodScene.refresh(); });
 
-  // ---- diagrams ----
-  function buildPairs() {
-    var L = document.getElementById("pairNodesL"), R = document.getElementById("pairNodesR"), G = document.getElementById("pairLines");
-    var lx = 64, rx = 296, top = 34, gap = 24, nL = 6, nR = 6;
-    function nd(x, y, c) { var e = document.createElementNS("http://www.w3.org/2000/svg", "circle"); e.setAttribute("cx", x); e.setAttribute("cy", y); e.setAttribute("r", 4.5); e.setAttribute("fill", "#fff"); e.setAttribute("stroke", c); e.setAttribute("stroke-width", 2); return e; }
-    var ly = [], ry = [];
-    for (var i = 0; i < nL; i++) { ly.push(top + i * gap); L.appendChild(nd(lx, top + i * gap, DOCC.nbsap)); }
-    for (var j = 0; j < nR; j++) { ry.push(top + j * gap); R.appendChild(nd(rx, top + j * gap, DOCC.ndc)); }
-    [[0,1],[0,3],[1,1],[2,4],[3,2],[3,5],[4,0],[5,3],[2,2],[1,4]].forEach(function (lk) {
-      var p = document.createElementNS("http://www.w3.org/2000/svg", "path"); var x1 = lx + 4.5, y1 = ly[lk[0]], x2 = rx - 4.5, y2 = ry[lk[1]], mx = (x1 + x2) / 2;
-      p.setAttribute("d", "M " + x1 + " " + y1 + " C " + mx + " " + y1 + " " + mx + " " + y2 + " " + x2 + " " + y2); p.setAttribute("fill", "none");
-      var hot = lk[0] === 1 && lk[1] === 1; p.setAttribute("stroke", hot ? DOCC.ndc : "#cbd5d1"); p.setAttribute("stroke-width", hot ? 2.2 : 1.1); p.setAttribute("opacity", hot ? 0.95 : 0.5); G.appendChild(p);
-    });
-  }
   // ---- intro / boot ----
   var intro = document.getElementById("intro"), booted = false, autoTimer = null;
   function boot() { if (booted) return; booted = true; if (autoTimer) clearTimeout(autoTimer); intro.classList.add("gone"); goTo(0, false); setTimeout(function () { start(); }, 650); }
@@ -897,7 +887,6 @@
 
   function init() {
     depth("plain");
-    buildPairs();
     if (window.MethodScene) window.MethodScene.init();
     // A link can open one step directly (#step=8), without the intro or autoplay.
     var m = /step=(\d+)/.exec(window.location.hash);

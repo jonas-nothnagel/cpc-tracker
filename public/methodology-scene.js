@@ -86,7 +86,54 @@
     ["Hydropower and livestock delivery in sensitive landscapes", 71],
     ["Other pairs with potential misalignment", 155],
   ];
-  var FIELDS = ["Goal", "Action", "Ecosystem", "Audience", "Outcome"];
+  // Every target pair's rating, in the order of the comparison triangle:
+  // for each pair of documents (first before second in DOCS), the first
+  // document's targets as rows and the second's as columns. h strong, m
+  // moderate, l partial, n no clear relationship, f potential misalignment.
+  // Read 24 September 2026 from Mongolia's gpt-5-4 run (13,404 pairs).
+  var RATINGS = "mmhhhhhmmmmmmmmmmhhfhhmmlmmlmmmmhmmmmmmmmmmmhmmmmmmmmhhhhhhmmhhmmmmmmmhhmlmmmmmmmmmmmmhhmhmhhhhmmhmmhmlmmmhhmmmhmmmmmmmmmmmmlhhhhhmmmmmlmmmmmmhmmmmhmfmmmmmmmmmmmhhhhhhmmmmmmmmmmmmmmffmmffmmmmmmmmmmhhhhhmmmmmmmmmmmmmmmlmmlfffmfmlflmmmmmmmfhhhhhlmmlmlmmmffffffffffffffflffmflffmhhhlllflllmmmmmmmmmmmmmmmmmmmhhhhhhmmmhmmmmmhmmhmhhmhhhhmfhhhhhmmfmfmmmmfmmmmmmmmmmmhhhmhmhmmmhhhhmmmmmlmmmmmmmmmmlmmmhmmmhhhhhhhmhhhmhmmhmmhhhhmhhmmmmmmmmmmmmmhmmmmmmmhmmmmmmmmhhmmmmmmmmmmmmmmmmmhmhmmmhmmhmmmmmmmmmmmmmmmhmmmmhhmhhhhhhmhfhhmhmmmmmmmhmmmmmmmmmmmmhmmfllllllfllhmmmmmhmmmmmmhlmmhmmmmmllllllmllmhhmmmmllllllmllhmmmmmflllmllhmlhmmmmmhlmlmmlhllmmmmmlmllllllmlllmmlmlfllllflmlllmmllmmmmllllmlmmhmmmffmmlmfmfllmmmmmmmmmmmmmmmmmhhmmmmmmmmllflmhmmmmmmmmmmlmmmmmmmmmmmmmmmmmmmmmhmmmmmmmmmlmfmmmhmmmhhmmmmmhmlmhmmlmmmmmmmfmmmmhmmmhmmmmmmmmmmmmmmhhmmmmmmmmmmmmhhmmmmmhmlmhmmlmmmmmmfffmmmhmlmmmmlmmmmmfmfmmmmmmmmmmmlfmmmmfffflmlmflmmmlmflmmlfffflffffllflflfflllmmmmmmmhmlmhmmlmmmmmhhhhmhhfhmmhmmmhhhhmhhhmhmhmhmmhmmlmhhmmhhhmmhhhhmmhmmmmmhmmhhmmmhmhmmmhmmlmmmmmhmmmmmmmhhmhhhmhhhhmhhhhmhhhhmmhhmmhhhhmmmhhmmmmmhhmmmmmhmmmmmmmhhhhmmhhmmmmmhhhmmmmhmmmhmmmmmhhmmlmmmfmmmmmmhhmhmmmmfmmmmmmhhmmmmmmfmmfmmmlmhhllflffffffmflhfllmhmmmmmmmhhmmmmhmhhmfhmmfmfmmmhmmmmmhmmffmmmmhmhhmmhmmmmhhmmmmmhmmhmmmmmhmmhmmmmmmmlmmmmmmhmhhmmmmmmmmmmmflmmmmmhmmfmfffmmflffmmmmhfffmffflflmmlllmmmmmmhhmmmmhmmhhmmmfmmhmhhmmmhhmlmmmmmmmhlmmmmmmmmmmmmmmmmmmmmmmmhhmmmmmmlmmmmmmlmlmmmlmmmllmfmfmmmlmfmfmmhmffmmmlllmlllmlmlmmmmmhmmfmfmfmmhmmfmmmmhfffmmhmlmmmmmmmmlmmmmmmmmmmmmfmmmmmfmfmmhhhmmmmmmmmmmmmlhmmmmmhmmmmmmhhhhmmhhhmmmmmmlmmmmlmmmhmhmmlmmmmhmmmmlmmhmfmmhhmhfmflllllmmlmmmmmmlmmmmmmmhmmmmmmmmhmmmmmmmmhhmmmmhmlmmmmmmlflllllmmmlflflfmfflfflfmffffflmffllllllllmllmlllmllflflfmmfllflmhlfllfmlllllllllllmlmmmmmmmmmmfmfmhfmmfmmhmhmffmmmmlmlmlmllmllmmmmmmmfmmlfmhmmffmmhmmmffmmmmlmlmlmllmlmmmmmmmmmmmlmmmllmlmmmlmmmlmlmlllmmlmmmfmmmmmfmmmfmfmfmffmffmfmlmlffmmfflfllllmmmmmmlmmmlhhhhhhhfmmmmmmmmmmmmmmmmlmmmhmhmhhhhmhmhmmmmmmmmllmlmlmmmmmmmmmmmmmmmmmmmmmmlmlmlhhhhhhhmmmmmmmmmmmmmmllmmmlhhhhhhhmmmmmmmfmmmmmmmmmlmmmhmmmmmmmmmmmfmmmmfllllllllmflmfmlhmmmmmfmlmlfllllllllffffflfhmffmffffflmmmllmmmlhhmhmhhmmmmmmmmmmmhhhmmmmhmmmmfmmmfmmmmmhhmhmhhhhmhhhmmfmmmmmfhmmmmmhmmmhhhmmmmhmhhhmhhhmhhhhhmhmmmmhmmmmmmhhmmmmmmmhmhhmmmmmmmmmmmmmmhmmmmhmmmmmmmmmhmhhhmmmmmmmmmmmmmhmmmmmmhhhmhmhmmhhmmhmmmmmmmmmmmmmmmmmmmhmmmhmmfhmmmmmmmmmmmmlmfmmmmmffffllffmmmmmmmmmhhmhmmmmhmmmmhmhhhhhmhhhhmhhmhhmhhmmmmmhhhhhhmmhhhhhhhhhhhmhhmmmfmmmmmmlmmmmhmmhhhhhhhhhhhmhhmmhmhhmmmhmmmmhhmmmmmmmmfmmmmmhhmmffmmllflfllmmmmmmfmmllflfmlmmmmmmlmmmlfmmllmhmmmmmmmmmflmmmmhmmmflllllfllllmmmlmmlmmmlllllllmmmmmfmmmlfmlllmmmmmmlmllllllmlmmmmmmlllmmlmlmllhmmmmmmmmmmmmmmmhhhhmmmmmmmmlmmmhmmmmlmmmlmlllllmmmmmmllllllmllmmmmmmhllllllhllmmmlllmllllllmllmmmmmmmllllllhllmmmmmmmllllllfllmmmmmmmllllllmllmmmmmmmllllllmllmmmmmmmllllllmlllmmlmlmllllllmlllmmmmmmmlllllmlllmmmmmlmmmmlmlmmlhmmhmmmmmmmmmlllmhhmmmmmmmmmmmmlhhhhllllllllllllmmmmmmmmmmmmmmmlhhhmmmmmmmmmmlmmhhhmmlmmmmlmmmllhmhmhmhhhmmhmhmmhhhhmmhmmmmmmmmmhhhhmmmmmmmhmmmmmmlmmmmmhhhmmmhmmmmmmmlmmmmmmhhmmmhhmmmmmmlhmmmmhhhmmmhhmmmmmmlmmmmmhhhhhmhmhmmhmmmmmhmmhhhhhmhmhmmhmmmmhhhmhhhhhhhhhmhhmmmmhhhmmhmmmmhmhmmmmmlmmmmmmmmmmmmhhmmhmmmmmmmmffffmmfffmmfmmlffmmmhhhhhmhhmmmhmmmmmmmmhhhhhmhhhmmhmmlmhhmmmhmmmmhmmmhhmmmmmhmmhhhhhmhhhmmhhmmmhhmmmhmmmmhmmmmmmmlmmmmmmmmmmmhmmmlmmlmmmmmmmmmmmmhmmmlmlmlmmmmmhmmmmmmhmlmhmmlmmmmmmmmlmmlmmlmmmmmmmmmmffffmlmmmlmmlmlmmmmmmmmmmmmhmlmmmmlmmmmmhhmmmmmhmlmhmmlmmmmmmmmmmhmhmmmhmmmmmmmmmmmmmfmhmlmmmmmmmmmmffmfmfmmmlmmmmmmmmmmmmmmmmmhmlhmmmmmmmmmmmmmmhmhmmmhmmmhmmmmmmmmmmmmmmlhmmlmmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmmmmmmhmhmmmhhhmlmmmlmmmmmmlmllmmmmmmmmmmmmmmmhmmmmmmhhmmmmmmmmmmmhmmmmmhhhmmlmllmmmmmmmmlmmmmhmmmmmmmmmmmhmhmmhhhmmmhmhmhhhhmhmmmhhhhhmmmmmlmmmmmmmmmmmmmmmhmmlmmmmmmmmhlmhmmmmmmmmmmmhmmmmmhmmmmmhmhhmmhmmmmmmmmhmhhmfhmmfmfmmmhmhhmfhmmffmmmmhhmhhhmmmmmmmmmhmmmhmhhmhmhmmmhmffhhmmmhmhmmmmmhmmmhmmmmmmmmhmhhmmhmmmmmmmmmmmmmmhmmfmmmmmhmhmmmhmmmmmmmmhhmmmmmhhmmmmhhhhmmmmmhhmmmmmhhhmmmmmhhmmmmmhmmmhmhmmmhhmmmmmmmmmmmmmhhmmlmmmfmmhmmmhhhmlmmhmmmmmmmhhmmmmhmmhmmmmmhhmmmmmmmhmmmmmmmhhmmmmmmmmmmmmfhhmlmmffmmmmmfmhmmmmhmmmmmmmlmhhmmmmmmmmmmmmmhhmmmhmmmmlhhlmllhmhhmmmmmhhmmmmhhhhmmmmmmmmmmmhmmmmmlllmmmlllmmhhmmmmmmmmmmmmhhhmmlmmmmhhmmmhhhmlllmmmmlmmmhhhmmmmmhmmmmmmmhhhmmmhhhhmhmhhmlmmllmmmmfmlllmmffffmmmlmlffmmmllllmllllmllllllllmllflflmllllllhlmllfmlllllllllllmllmllmmmmfllmfmmflfflmhlmlfflmflllllllllmlllllmmmmlmflfmmfllflmmlhmffmmmllllmllllmlllllmmlmfmllfmmllfflfmlmllfmmmlllllllllmllmllmmlmflflfmfflfflfmfffffmmfllllllfllmllmllmmmmfmflfmfflfflfmlmfffmmllllllllmlmlllmmmmmmmlllfmmlmmfmhmmmlfflmlllllmllllmlmmmmmmmmmmmmfmmmmmfmhmmmmmmmmmmlmmmmmmlmllmmmmmmmflflfmffmffmhmmfmffmmmmllmmlmllmllllllmllflflfmmlllfllmlmlllmlllllllllllmllllllmllllflfmmfllflmmlmlllmlllllllllllmlllllmllmllllfmmfllflmhlflllmllllllmllllmlmmmlmmmmfmflfmmlllllmmlmmllmmmlllllllllmmmmmlmmlmmmllmmmlmllmmmmmmmllmmlllmmllllmlmlmmmmmmmlmllllllllmmmlmllllmllllmmllllmlllmlmlllmllllmmlmllmmmmmlllllllllmmllllmmmmmmmmmmmmfmfmmfmmfmmmmhhffmhmmlmmmmmmmmmmhmmmhmmmmmmmmmhmmlmmmmhhhhmhhmmmmmmmmmmlmmmmmmmmmmmmfmmhmmfmmmmhhmmmhmmlmmmmlmlmlmmmmhmmmmmhmmmmmlmlmmmmhhhmmhhmlmmmmmmlmlmmmmmhmmlmfmfmmfmmfmfmmhhffmmfmllmllmllmmmmmmhhmmmmmmmhhmhhmmmhmmmmmmmmmlmmmmmmmmlmmmmmmmmmmmmmhhmmhmmmmhmfmlmmmmlmmmmmmlmlmmmmhmmmmmmmmhhmhmfmhhmfmllmmmmlmmmmmmlmmmmmmhhmmmmmmmhhmmmmmmmhmmmlmmmmlmmmmmmmmmmmmhhhmmmmmmmhhmhmhmhhmmmmmmmmmlmmmmmmmlmmlmmmmmmlllllllllllllllmllllmmlmlllllmmmmlmmlmmmmmmmmmmmlmmmmmmmmmlmmmmmmmlmmlmmmmllmlmmmhlmmmmmmlmllmmmlmmllmlmmmllmmlmhlllllllllllhlllllllllllllmlllllllllllllllmmmmmmmmmmmmmllmmlmllmmmmmmllmmlmmlllllmmmllmllmmmmlmmmmmmlmlllmmlhhmmmmmmmllmlllmlllllllllmllllllmlllllmmlmlllllllllllllllmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhmmmmmmmmmmmmmmmmhmhmmmmmmmmmmmmmmmhmmmmmlmmmmmmmmmlmmmmmmmmmlhhhhmhmhmmllmllmlhlmmlmmlmlhhhmmmlhmhmmmmmmmmlmmmmmmmmmmmllmlmlhhhhmhmlmlmmlmmlmmhhhmmmmhmhmmmmmmmmmmmmhhmmlhmmmmmmmmmmmfmmmlmmmmmmhmmlhhmmlmhhmhmmmmmmfmmmmmhhmmmmmmmmmlmmmmmlmlmmmmmmmmmmmlmmmmmmlmlmmmmmhmmmmmmmmmmmlmmmmlmlmlmmmmmmmfmmmmmffmmlhhhhlhmhlmmmmlmmlmmmmmmhmmlhhhhlmmhmmlmmmlmlmmmmlmhlmmhhhhmhhhmmmmmmlmlhlmmlmmlmlhhhhlhmhlmmmmmmmlmlmmmmhmhhmmmmmmlmmmmmmmmmmmlmmlmmmmlmmmlmmlmmmmmmmmllmlmmmmmmmlmmmlmlllmllllllllmlmmlmmmmlmmlllllmlhhhhhhhmmmmmmmmmmlmmlmlllmlhhmmmhmmmlmmmmllllfllllllllmhmmmmmmmlmmlfflllmmlllllllhhhhhhhmmmmmlmllmmmmmllmlmlhhhhhhhmmmmmmmmmmmmmlllllmlmmmmmmmhhhhhhmlmmlmllllllllmfmmmmlhmfhhmmllllmmmmlmlmlmlmmmmmhhmmmmflfmlmmllllmllmllmmlmhhmhhmmllllmmlllllmlmmmmmmmhmhhhhmllmmmlmlmlllmlllllllllmlmlmllllmmmllllmmmmlmmmmmmlmmlmlmmlmmmmmmlmmmmlmmmmmmlmmlmmmmmmlllllllmmmllmlmlllllllmlllmmmmmmlmmmmmlmmmmmlmmmmmmmmmmmmmmlmmmmmmmmmmmmmmmmmmmlmmmlmmllmllllllmlmlllmllmmlmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhmmmmhmmhmmhmmmmmhhhhhmmhhmhmmmmhhmhmmmmhhhhmhhmmmmmmmmmmmmmmmmmmfmfmmmlhmmmmhmlhmmhmhmmhmmmmmmlhhmhhmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmmmmmmmmmmmmmfmfmmmmmmmmmmmmmhmmhhmhmmmmhhmhmlmmmmmmmlmfmmmmmlmlmmmmmlmmmmmmmlllmmmmlmmmmmmmmlmmmmmmmlmmllmmlmmmmmhmmmmmmmmmmlmmmmmmmmmmmmhmmmhmmhhmmfmfflmmmmmlmmmlmmmmmfffflmmmflmmmflfmmmlmmmmlmmmmllmmmlmmmmlmmmmlmmlmmlmmmlmmmmlmmmllmmlmmlmmmlmmmmlmmmmmhmmmmlmmhlmmmmlffffffflfllflllffmmlmlmllmmmmmlmmmlmmmmlffffllmmmlmmmmlmlmllmllllmmlmllmmmlmmmllmmlllhmmmmlmmhlmmmmlmmmmlmmmmllmlllmmmmlmmmmmmmmmmmhmmmmmhmmmmmmmmhmmmmmmmmmhmmmmmmmmmmmmmmmmmlmmmmhmmmmmmmmmmmhmmmmmhhmmmmmmmmmmmlmlmmmmffmmmmmfhmmllmmlllllmmllllmlmmmmllmmlllllmlmmmllllmmllllmmmmmmlllmlllllmlmlflmflllllllllmmllllmmmllllmlmmfflmfmmmhmmlmmllllllllllllllmmlllllllllllmlmmmmlmmmmmmmmllhhmmmmmhmmmmmhmhmmmmmmmmmmmmmmhhlmlmmmmllmmmhhhmmmmmhhmmmmhmmlllllmmllmllllmmlmllmmmlmmllllmmlmllmlllmlmmmmmmmmmmfmfmmflllllmmmhfflmhmlmmmmlmllllllllllmlllllllllllllllllllllllllllmlllllllllllllllllllmllllllllllllllllllmllllllmlllllllmflllllllmllllllllllllllmllllllllllllllmllllllllmllllllllmllllllmlllmmlllllllllllllmlllllllllllmllllllllllllllllllllllllllllmlllllllmllllmllllllllmllllllllmlmmlmmmmmmmmmlmmmlmlllmmhhhmmmmmlmmmmmmllllllllllllllllllllllllllllllllllllllmllllllllllmlllllllllllllllmlllllllllllmmllllllllllmlllllflflmfllfllmlmfffllllllllllllmmmmmmmmmmmlllmmmlmlmlmmlmmlllmmllmmmllmmmlllmlmmmmmmlmlmmlmmlmmmmmlmlmmmmlllmlllllmlllllllmllmlllmllllllllmmllllllmlllllllmllmmlmmlmllllmmmlmlllmmlmlllllllllllllllmmmlmllmmmllmmlllllllllllllfmlllllmlfmmmmmmmmlmlmlllllmllllllmlllllllllllllllllllmmllllllmllllllllllllllllllmlllmlllmllllllllllllllllllmmlllllmllllllllllllllmllllflllllllllllllllllllllflfllmmllmlllmlllllllllllllllllllllllllllfmmmmmmmmlmlmllllllllllllllllllllllllllllllllmlllmlnlmllllllllllllllllllmmlllllllmmmmmmmlmlmmllmlllmmmmmmlhmmmmmmmmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmlmmlmmmmmmmllmmlmmmlllmmmlmllmmmmmmlmmmllmlmmmmlmmmmlmlmmmmmmmmmmlmmmmmlffmmmmllmlmmmmmlmmlmmmlllllmmmllmlmmmmmlffllmlllmllmmlllmfmmmmmlmllmmmlllllmmmlmmmmmmmmmmmmmhmmmmmmhhmmlmmmmmmmlmmmmmmmhmhhmfhmmmmfmmmhmhhmmhmmmmmmmmhmhhmfhmmfffmmmhmhmmmhmmmmmmmmmmhmmmmmmmmmmmlhmhmmmmmlmmmhhmhhhhmmhhhmmmmmmmmmhmmhmmhhhhmmhmhhmmhmmmmmmmmhmmmmmhmmllllmmmmmlllmmlmmmmllhhhhmmhmmmmmhhmmmhmmmmmmmmmmlmmhmmmmmmmmmmmmmmmmllllllllmmllhmhmmmmmmmmmmmmhmhmmmhmmmmmmmmhhhmmmmmmmmmmmmhhhmmmmmmmmmmmmhhhmmmmmmmmmmmmmlmmmmmmmmfmfmfmmffffmfmmmmffmmmmlfmmmmllmllmmmmmllflflfmmflfflfmlmfffmmflllllllllmllmllfmmmflfffffffffffmfffffmmfflllllfllmlmmlmmmmmflflfmmflfflfmlmlffmmmllllmllllmmmmllmmmmlllllmmllllllmlmllllmllllllllmlmmmmmhmhhmfmlmfmhlmffmmmmmmmfmmmmmmmmmmmmmmlmmmmmmmflflfmmlllfmmhmmlffmmmlllllmlllmmmmmmmhmmfmfmfhhfmffmmhmhmffmmmmmmmmmmmmmmmmmmmmmmfmlmfmmlmfflmmmmmllmmmmmlmmlmmmllllllllllllllllllllllmmlllflllllllllllllmmmmmmhmmmmmmmmhmlmmmmmmmhmhmlmmmlmlmmmmlmmhmmmmhmhmmmmfhhmmmmmmhmhmmmmmmmmmmmmmmmmmmmlmmmmmmmmmlmmlmmfmlmlmmmmmmmmlmmmmmmlmmmmmmmmmmlmmmlmmlmllmmmmmmllmlmmmmmmmlmhmmmmmmmmhmmmlmlmmllllllmmlllllmmlllmlllhlmmmmmmmmmmfmflfmmfmffmmmmmmffmmmmmmmmmmmmmllmmmmmmmlmlmfmmlllllmmlmmllmmmmllmmlmlmmlmmmmmmmmmmlmlhmlmmllmmlmmmlmmmllllmlmmmmmmmmmmmmmlmllmmmmllllmmlmmmlmmmmlllmlmmmmlmmmlmmmmlmmmlmmllllllmlmlllmlmllllllllmhhhmmmmhhhhmmhmmfmmmmmhhmmmhhhhmmlhmhhhmmmmfhmmmmhhhhmhhmmmmmhmhmmfmmmfmmmmmhhmmlmmmmmmmmmmmmmmmmfmmmmmmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlmmmmmmlmmmmmmmmmmmhmmhhmmmlhhhmmmmhmmmmmmmmlhmmmmmmmmmhmmmmmmhlhhmhmhhmhhhhhmmmmmmmmmmmlmhmmmmmmmmmmmmmhmmhmmmmmhmlmhllllmlllmmmmlmmmmlmlllllhllmmlmmmmmmmlmmmmmllhmmmmmmhhhmmmhmmmmhmmhhhmmmmmmmmmlmmmmlmmmlmmmmmmmmmmmmmmlmllmmmmlllmmmmmmmmmmmmlllllllllllllllllllmlmmlllllmmmmmmlmmmmmmmmmmmmmmhmmmmmmmmmmmmmmmmmmmmmlmmmmmmhmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmmmmlmmmmmhhhhhmhhhhhhhmhhmhhhhhhmmhhmmmmmmmmmmmmmmmmmmmmmmhhmhmhmmhmhhmmmmhhmhmhmlmmmmmmmlmmmmmlmhhhhhmhhmmmmmmmmmmmmmmmmllllllllmhmmmmmmmhhmhhmmmhhmhhmmmmhmmmmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmfmmmmmmmlmmmmmmmmmmmmmmmlmlmmmmmmmmmmmlmmmmmmmmmllmmmmllmmllmmfllllllmllflflfmmflfflfmlmlffmmllllllllllmllmmlmmmllmflfmmflmfmmhmhmfflmmlllllllllmlmlmmmmmmllllmmmlmmflmmmmlmlllmmllllllmlmlmllmmmmlmmmmmmmmmmfmhmmhmmfmmmmlmlmllllmlllllmlllflflfmmlmlfllhlmllfmlllllllllllmllmmlmmmlmllllmmlmllmmmmmlllllmllmmmllllmlllmmmlmmmlmlmmmlmlmmmmmmmmmlmmllmmmmlllmlmmmmmmmmlmmmmmmmlmflmmmhmmfmmmmllmlmlllmmmhmmmhmmmmmhmmmmmmfmmmmhhmmmhhmlmmmmmmmmmmmmmhmmmmmmmhhhhmhfmhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhhmmmfmmmmmlllmmmmlmmmmmmmlmmllmmlmlllllllmllllllmllllllmllmlllllmmmlllmlmmlmmlmllmmlllmllmmmmllmmllmlmmlllmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlmmlmmmmmmmmmmmmmmmmmmmmhmhmmmmmmhmmfmmmfmmmmmhhmmmmhmmmmlmlhmmmmmmmhmmhmmmmmlmmllmllmmmlllmllmmmmmmmmmmlmmlllllmlmmmmmmmmmmmmmfmmmlhhhhhhhhhmlmmmlmmhmmmlmmmmlmmmlmmlmmmmmmmlmmmlmmlmmmmlmmmlmmllmmmmlmmlmllmmlmmmllfflllllllhhhhhhhmmlmmlmfmmlmmlllllmlhhmhmhhmmmmmmmmmmlmmlmlmlmlmmmmmmmhhmhhmfffmlmmlllllmlmmmmmmmhhhhhmmllllmmmlmllmmllllllllmmlmmmlmmlmmmlmllmmmmllllmmmlmllmlmmlmhhmhhmmmmmmmmmmmhhhhmmmmhhhhmhhlmmmmmmmmmmmmmmmmhmhhhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhmmmmmmmmmmmmllmlmmmllmmmmmmmmmlllllmlmmlmmmmmmmmmmmmlmlllnnllnlllllllllllmlmmlllllllllllllllllllmlmmmmmhlllllllllllllllmlmlmlmmmmmmmlllllllllllllmmlllmlmmllmmlllllllllllnlllllllllmmmlmhllllllllllllllmmmmlmmhmmmmmlllmlmllllmlllmmlmlmmmmhmmhmlmlllllllllllmmlmlmlmmmmmhmllllmllllllmllmlmlllmmmmmmlllllfllllllllllllfllmmlmmmffflllllllllllmmlmlmmmllllllllllfflllllflfmfmlmmmmlmmmfflllllllllnlllmlmlmlmlmmmmlllllfflllllflfffffffhmmmmmfffllmmlllmmllmmmmmmmhmmmmmmmlllmmlllllmlmmmmmmmhmmhhhmmmmlfllllllllfmmmfmlmmlmmmfflllllllllllllllllllmmmmmmllllllllllllllmllllllhmlmmmfflllfflllllflffflfllmfmffmfffflllllllllllllllllmmlmmmllllllmlllllmlfllllmlhmmmmmfllflhmmmmmmmmmmfmmmmmhmhhmmmlmmllllllllllllllllmmlmmmlllllmmlmlllmlhhhhhhhmmmmmlmmmmmlllllllllmmmmmmmmmlllllllllfflllllllfflmfffmllmllfflllfflllllflfffmfflllllllfffllmmlllllmlmllmllmmmmmmmlllmllllllllllmmmmmmmmlllmmllllllllllllllmmlmmmmmmlmmmlflmlllllllllllllllllmlllmmllllllnllllnllllllllllllllllllllllllllnlllllllllmllllllllllllllllllllllllllmlllmllllllllllllllllllllllmllllmlllllllllllnlllllllllmllllllllllllllllllllllllllmmmlmmlllllllllllllllllllllmlmllmlllllllllllllllllllllllmllmlllllmmmmmmmmllllllllllllllllllmmmmlmllmllmlllllllllllllmmmmmmlmmmlmmlllllllmlmlmlllmllflllllllmllmllllffllllllmmlllllfffflfflmmmmmmmmmmmmmmmllfllllllllllmlmflfmlmlmllfffllllllmlmlmlmfmmmmmmmmmmmmmllllmlllmmmmmmmhmlfmlllllffllmllflfflllllmmllmlllmmlmmllmlmmlmmmlllllmlllllllllllllllmllllllllllllllllllllllllllllllllllllllllllllllllllmhmmhmmhmhhmhmhhlhmmmmmmlhmmmmmmlllmmmmmlhmmmmmmlmmlllmllhmhhmmhlmlmmmmmhmhhhmhhhmmmmmmmmmmmmmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmllfmmmmmlmmmmmmhlmmmmlmmmmmmmmmmmmmhmmhmllmmmmmmmmmmmmmhmhhmmmmmlmmmmmmmlmmmmmmmlmmmmmml";
+  // The worked example's two targets broken into their parts: Agent 1's
+  // output for NBSAP 1 and NDC 4, word for word. Long fields are clipped;
+  // the Action rows quote the clauses the comparison turns on, with every
+  // omission marked.
+  var PARTS = [
+    [
+      "Goal",
+      "Reduce biodiversity loss and maintain ecological integrity by 2030.",
+      "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation…"
+    ],
+    [
+      "Action",
+      "Include all territory in spatial planning … maintain the proportion of natural ecosystems and prevent further decline …",
+      "… create water accumulation facilities and ponds … deliver water through canals and pipelines to wildlife and livestock …"
+    ],
+    [
+      "Ecosystem",
+      "All territory; natural ecosystems; land-use planning and soum territorial development planning.",
+      "Water sector; river headwaters; groundwater systems and wells; glaciers, lakes, reservoirs, rivers, wetlands…"
+    ],
+    [
+      "Audience",
+      "Authorities and planners responsible for spatial planning, land-use plans, soum territorial development…",
+      "Local governments; the private sector; the mining industry; light and heavy industry; households; wildlife…"
+    ],
+    [
+      "Outcome",
+      "Biodiversity loss is reduced, ecological integrity is maintained, the proportion of natural ecosystems is…",
+      "Improved resilience of the water sector; enhanced conservation, restoration, and sustainable use of water…"
+    ]
+  ];
+  // The worked example's two targets and one real target per measurable
+  // group, word for word; the marked phrases are the ones the analysis
+  // recorded as a number or a date.
+  var EX_NBSAP = { doc: 3, label: "1 Spatial planning", text: "By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management." };
+  var EX_NDC = { doc: 1, label: "Water resources 2", text: "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability." };
+  var MEASURE_EX = [
+    { doc: 3, label: "2 Land restoration", text: "By 2030, restore at least 30 percent of degraded ecosystems and improve ecological integrity and connectivity.", num: ["30 percent"], date: ["By 2030"] },
+    { doc: 5, label: "3.11 Strategic wheat reserve: 100,000 tonnes", text: "Build strategic reserves of at least 100,000 tonnes of food and seed red wheat from each year's autumn harvest", num: ["at least 100,000 tonnes"], date: [] },
+    { doc: 3, label: EX_NBSAP.label, text: EX_NBSAP.text, num: [], date: ["By 2030"] },
+    { doc: 1, label: EX_NDC.label, text: EX_NDC.text, num: [], date: [] },
+  ];
 
   var CAPTIONS = [
     ["Extraction · Mongolia", "Mongolia: eight policy documents, read in full."],
@@ -164,6 +211,61 @@
     return [a, b];
   });
 
+  // ── The comparison triangle ─────────────────────────────────────────
+  // One cell per target pair: for documents i < j, row r (a target of i)
+  // and column c (a target of j). Each pair's particle takes a cell with its
+  // own rating, so a pair keeps its colour from the triangle to the groups.
+  var BLOCKS = [];
+  (function () {
+    var k = 0;
+    for (var i = 0; i < DOCS.length; i++) {
+      for (var j = i + 1; j < DOCS.length; j++) {
+        BLOCKS.push({ i: i, j: j, start: k });
+        k += DOCS[i][1] * DOCS[j][1];
+      }
+    }
+  })();
+  var cellBlock = new Uint8Array(RATINGS.length);
+  var cellR = new Uint8Array(RATINGS.length);
+  var cellC = new Uint8Array(RATINGS.length);
+  // The example target's cells (NBSAP 1: its row and its column) and the
+  // example pair's cell (NDC 4 against NBSAP 1).
+  var exCell = new Uint8Array(RATINGS.length);
+  var EX_PAIR = -1;
+  BLOCKS.forEach(function (blk, bi) {
+    var rows = DOCS[blk.i][1], cols = DOCS[blk.j][1];
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var ci = blk.start + r * cols + c;
+        cellBlock[ci] = bi; cellR[ci] = r; cellC[ci] = c;
+        if ((blk.i === EX_NBSAP.doc && r === 0) || (blk.j === EX_NBSAP.doc && c === 0)) exCell[ci] = 1;
+        if (blk.i === EX_NDC.doc && blk.j === EX_NBSAP.doc && r === 9 && c === 0) EX_PAIR = ci;
+      }
+    }
+  });
+  var TONE_OF = { h: 0, m: 0, l: 1, f: 2, n: 3 };
+  var cellOf = new Int32Array(pairs.length);
+  var pairAt = new Int32Array(RATINGS.length);
+  (function () {
+    var byTone = [[], [], [], []];
+    for (var c = 0; c < RATINGS.length; c++) byTone[TONE_OF[RATINGS.charAt(c)]].push(c);
+    // Shuffled within a rating, so the later groupings draw on the whole
+    // triangle rather than on its first blocks.
+    var r2 = seeded(4211);
+    byTone.forEach(function (list) {
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(r2() * (i + 1));
+        var t = list[i]; list[i] = list[j]; list[j] = t;
+      }
+    });
+    var seen = [0, 0, 0, 0];
+    pairs.forEach(function (p, pi) {
+      var ci = byTone[p.tone][seen[p.tone]++];
+      cellOf[pi] = ci;
+      pairAt[ci] = pi;
+    });
+  })();
+
   // Current and target states: x, y, r, alpha, colour per particle.
   function stateArrays(n) {
     return { x: new Float32Array(n), y: new Float32Array(n), r: new Float32Array(n), a: new Float32Array(n), c: new Array(n) };
@@ -171,6 +273,8 @@
   var T0 = stateArrays(targets.length), T1 = stateArrays(targets.length);
   var P0 = stateArrays(pairs.length), P1 = stateArrays(pairs.length);
   var ring = new Uint8Array(targets.length);
+  // Rings on single target pairs (the worked example's cell).
+  var marks = [];
   var lines = { a0: 0, a1: 0, kept: false };
 
   // ── Canvas ─────────────────────────────────────────────────────────
@@ -223,18 +327,62 @@
     return [group.x0 + col * group.pitch + group.pitch / 2, b.y + row * group.pitch + group.pitch / 2];
   }
 
-  /** Clusters in a wrapping row, each a small grid, with its label above. */
-  function clusters(groups, b, pitch) {
+  /** The comparison triangle in the box: each document's targets along the
+   *  diagonal, its pairs with later documents to the right, with earlier
+   *  ones above; a document is never compared with itself. */
+  function triangle(b) {
+    var gapPx = 6, left = 170;
+    var gaps = DOCS.length - 1;
+    var side = Math.max(160, Math.min(b.w - left, b.h - 44));
+    var pitch = (side - gaps * gapPx) / targets.length;
+    var x0 = b.x + left + Math.max(0, (b.w - left - side) / 2);
+    var off = [], acc = 0;
+    DOCS.forEach(function (d, di) { off.push(acc * pitch + di * gapPx); acc += d[1]; });
+    return { x0: x0, y0: b.y + 20, side: side, pitch: pitch, off: off };
+  }
+
+  function cellXY(M, ci) {
+    var blk = BLOCKS[cellBlock[ci]];
+    return [M.x0 + M.off[blk.j] + cellC[ci] * M.pitch + M.pitch / 2, M.y0 + M.off[blk.i] + cellR[ci] * M.pitch + M.pitch / 2];
+  }
+
+  function diagXY(M, t) {
+    return [M.x0 + M.off[t.doc] + t.i * M.pitch + M.pitch / 2, M.y0 + M.off[t.doc] + t.i * M.pitch + M.pitch / 2];
+  }
+
+  /** Clusters in a wrapping row, each a small grid, with its label above;
+   *  `below` keeps room under each cluster (for an example). */
+  function clusters(groups, b, pitch, opts) {
+    var o = opts || {};
+    var minW = o.minW || 110, gap = o.gap || 36, below = o.below || 0;
     var out = [], x = b.x, y = b.y + 64, rowH = 0;
     groups.forEach(function (g) {
       var n = g[1];
       var cols = Math.max(3, Math.ceil(Math.sqrt(n * 1.8)));
-      var w = Math.max(cols * pitch, 110), h = Math.ceil(n / cols) * pitch;
-      if (x + w > b.x + b.w && x > b.x) { x = b.x; y += rowH + 78; rowH = 0; }
+      var w = Math.max(cols * pitch, minW), h = Math.ceil(n / cols) * pitch;
+      if (x + w > b.x + b.w && x > b.x) { x = b.x; y += rowH + below + 78; rowH = 0; }
       out.push({ x: x, y: y, cols: cols, pitch: pitch, w: w, h: h, name: g[0], n: n });
-      x += w + 36; rowH = Math.max(rowH, h);
+      x += w + gap; rowH = Math.max(rowH, h);
     });
     return out;
+  }
+
+  function esc(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  /** A target's text with its recorded number and date phrases marked. */
+  function marked(ex) {
+    var html = esc(ex.text);
+    ex.num.forEach(function (ph) { html = html.replace(esc(ph), '<mark class="num">' + esc(ph) + "</mark>"); });
+    ex.date.forEach(function (ph) { html = html.replace(esc(ph), '<mark class="date">' + esc(ph) + "</mark>"); });
+    return html;
+  }
+
+  /** A quoted target: its document and label, then its words. */
+  function quote(ex, body) {
+    return '<p class="q-src">' + DOCS[ex.doc][0] + " · <b>" + esc(ex.label) + "</b></p>" +
+      '<p class="q-text">' + (body || esc(ex.text)) + "</p>";
   }
 
   function label(x, y, html, cls, width) {
@@ -248,7 +396,9 @@
     var b = box();
     var labs = [];
     var pairAlpha = 0;
+    var showEx = document.body.classList.contains("show-example");
     ring.fill(0);
+    marks.length = 0;
     lines.a1 = k <= 1 ? 1 : 0;
     lines.kept = k === 1;
 
@@ -266,7 +416,7 @@
         if (k === 4) ring[ti] = 2;
         if (k === 13) { c = t.fin ? BLUE : LINE_DARK; }
         if (k === 14) { c = t.imp ? GREEN : LINE_DARK; }
-        if (t.ex && document.body.classList.contains("show-example") && k >= 2) ring[ti] = 3;
+        if (t.ex && showEx && k >= 2) ring[ti] = 3;
         place(T1, ti, x, y, r, a, c);
       });
       cols.forEach(function (col, di) {
@@ -276,6 +426,18 @@
         if (k === 14) count = IMPLEMENTATION[di] + " of " + DOCS[di][1];
         labs.push(label(col.x, col.y - 10, '<span class="nm">' + DOCS[di][0] + "</span>" + (count ? '<span class="ct">' + count + "</span>" : ""), "sl-doc sl-up", col.w));
       });
+      // Under the documents, the targets the step is about, word for word.
+      var tallest = Math.max.apply(null, DOCS.map(function (d) { return Math.ceil(d[1] / cols[0].perRow); }));
+      var below = cols[0].y + tallest * cols[0].pitch + 44;
+      if (k === 2 && showEx) {
+        labs.push(label(b.x, below, '<div class="quotes">' + '<div class="qcard">' + quote(EX_NBSAP) + "</div>" + '<div class="qcard">' + quote(EX_NDC) + "</div></div>", "sl-cards", Math.min(b.w, 760)));
+      }
+      if (k === 3) {
+        var src = MEASURE_EX[2];
+        labs.push(label(b.x, below, '<div class="qcard qcard-check">' + quote(src, marked(src)) +
+          '<p class="q-check"><span aria-hidden="true">✓</span> "2030" found in the source text</p>' +
+          '<p class="q-note">Source: the national target as recorded on the CBD Online Reporting Tool</p></div>', "sl-cards", Math.min(b.w, 420)));
+      }
       if (k === 13 || k === 14) {
         var n = k === 13 ? 28 : 39;
         var html = "";
@@ -285,7 +447,7 @@
     } else if (k === 5 || k === 6) {
       var groups = k === 5 ? MEASURE : GLOBE;
       var key = k === 5 ? "measure" : "globe";
-      var cl = clusters(groups, b, k === 5 ? 13 : 12);
+      var cl = k === 5 ? clusters(groups, b, 13, { minW: 176, gap: 22, below: 150 }) : clusters(groups, b, 12);
       var seen = groups.map(function () { return 0; });
       targets.forEach(function (t, ti) {
         var g = t[key], c = cl[g], n = seen[g]++;
@@ -293,46 +455,90 @@
         var y = c.y + Math.floor(n / c.cols) * c.pitch + c.pitch / 2;
         var colr = k === 5 ? (g === 0 ? INK : g === 3 ? LINE_DARK : "#6b7480") : INK;
         place(T1, ti, x, y, c.pitch * 0.34, 1, colr);
-        if (t.ex && document.body.classList.contains("show-example")) ring[ti] = 3;
+        if (t.ex && showEx) ring[ti] = 3;
       });
-      cl.forEach(function (c) {
+      cl.forEach(function (c, gi) {
         labs.push(label(c.x, c.y - 8, '<span class="nm"><span class="n">' + c.n + "</span> " + c.name + "</span>", "sl-cluster sl-up", c.w));
+        // One real target of the group, its number and date marked.
+        if (k === 5) labs.push(label(c.x, c.y + c.h + 16, '<div class="qcard qcard-small">' + quote(MEASURE_EX[gi], marked(MEASURE_EX[gi])) + "</div>", "sl-cards", c.w));
       });
+    } else if (k <= 9) {
+      // The comparison triangle: each target on the diagonal, its pairs to
+      // the right and above.
+      var M = triangle(b);
+      targets.forEach(function (t, ti) {
+        var d = diagXY(M, t);
+        place(T1, ti, d[0], d[1], Math.max(1.2, M.pitch * 0.46), 1, INK);
+        if (t.ex && showEx) ring[ti] = 3;
+      });
+      // The documents' names beside their stretch of the diagonal (under the
+      // parts cards they would only peek out).
+      if (k !== 8) {
+        DOCS.forEach(function (doc, di) {
+          var x = M.x0 + M.off[di] - 8;
+          var y = M.y0 + M.off[di] + (doc[1] * M.pitch) / 2;
+          labs.push(label(x, y, '<span class="nm">' + doc[0] + "</span>", "sl-diag", Math.max(80, Math.min(200, x - b.x + 40))));
+        });
+      }
     } else {
-      // Pair scenes: targets shrink into a thin band at the top, then fade.
+      // Pair scenes: the targets fade out.
       var cc = docColumns(b, true);
       targets.forEach(function (t, ti) {
         var col = cc[t.doc];
         var x = col.x + (t.i % col.perRow) * col.pitch + col.pitch / 2;
         var y = col.y + Math.floor(t.i / col.perRow) * col.pitch + col.pitch / 2;
-        var show = k === 7 || (k === 8 && t.ex);
-        place(T1, ti, x, y, k === 8 && t.ex ? 7 : col.pitch * 0.32, show ? 1 : 0, INK);
-        if (k === 8 && t.ex) ring[ti] = 3;
+        place(T1, ti, x, y, col.pitch * 0.32, 0, INK);
       });
-      if (k === 7) cc.forEach(function (col, di) { labs.push(label(col.x, col.y - 6, '<span class="nm">' + DOCS[di][0] + "</span>", "sl-doc sl-small sl-up", col.w)); });
     }
 
     // Pairs
     var fb = { x: b.x, y: b.y + 96, w: b.w, h: b.h - 96 };
-    if (k >= 7 && k <= 12) {
+    if (k >= 7 && k <= 9) {
       pairAlpha = 1;
-      if (k <= 9) {
-        var g1 = fieldGroups([pairs.length], fb)[0];
-        pairs.forEach(function (p, pi) {
-          var pos = fieldPos(g1, slot[pi], fb);
-          var col = k === 9 ? TONES[p.tone][2] : GREY;
-          place(P1, pi, pos[0], pos[1], g1.pitch * 0.34, k === 8 ? 0.25 : 1, col);
-        });
-        if (k === 8) {
-          // The example pair, pulled out and broken into its parts.
-          var cx = b.x + b.w * 0.5, cy = fb.y + fb.h * 0.5;
-          var html = '<div class="parts"><div><b>NBSAP · Target 1</b>' +
-            FIELDS.map(function (f) { return "<span>" + f + "</span>"; }).join("") +
-            '</div><div><b>NDC · water target</b>' +
-            FIELDS.map(function (f) { return "<span>" + f + "</span>"; }).join("") + "</div></div>";
-          labs.push(label(cx, cy, html, "sl-center"));
+      var MT = triangle(b);
+      pairs.forEach(function (p, pi) {
+        var ci = cellOf[pi], pos = cellXY(MT, ci);
+        var colr = LINE_DARK, alpha = 1, size = MT.pitch * 0.36;
+        if (k === 7 && showEx && exCell[ci]) { colr = BLUE; size = MT.pitch * 0.5; }
+        if (k === 8) alpha = 0.28;
+        if (k === 9) colr = TONES[p.tone][2];
+        place(P1, pi, pos[0], pos[1], size, alpha, colr);
+      });
+      var exPos = cellXY(MT, EX_PAIR);
+      if (showEx) marks.push({ x: exPos[0], y: exPos[1], r: Math.max(4, MT.pitch * 1.6) });
+      var under = MT.y0 + MT.side + 16;
+      if (k === 7) {
+        // A document's own square stays empty: the note sits in the largest.
+        var big = 5, sq = DOCS[big][1] * MT.pitch;
+        labs.push(label(MT.x0 + MT.off[big] + sq * 0.55, MT.y0 + MT.off[big] + sq * 0.74, "Same document: not compared", "sl-note sl-note-r", 150));
+        if (showEx) {
+          labs.push(label(MT.x0 - 150, under, '<span class="key" style="background:' + BLUE + '"></span>The 158 target pairs of one target: National Biodiversity Strategy &amp; Action Plan, 1 Spatial planning', "sl-legend sl-legend-small"));
         }
-      } else if (k === 10) {
+      }
+      if (k === 8) {
+        var rows = PARTS.map(function (row) {
+          return "<dt>" + row[0] + "</dt><dd>" + esc(row[1]) + "</dd>";
+        }).join("");
+        var rowsB = PARTS.map(function (row) {
+          return "<dt>" + row[0] + "</dt><dd>" + esc(row[2]) + "</dd>";
+        }).join("");
+        var cx = b.x + b.w / 2, cy = MT.y0 + MT.side / 2;
+        labs.push(label(cx, cy, '<div class="parts2">' +
+          '<div class="pcard"><p class="q-src">' + DOCS[EX_NBSAP.doc][0] + " · <b>" + EX_NBSAP.label + "</b></p><dl>" + rows + "</dl></div>" +
+          '<div class="pcard"><p class="q-src">' + DOCS[EX_NDC.doc][0] + " · <b>" + EX_NDC.label + "</b></p><dl>" + rowsB + "</dl></div></div>", "sl-center"));
+      }
+      if (k === 9) {
+        var row9 = TONES.map(function (t) {
+          return '<span class="key" style="background:' + t[2] + '"></span><span class="n">' + fmt(t[1]) + "</span> " + t[0];
+        }).join('<span class="gap"></span>');
+        labs.push(label(MT.x0 - 150, under, row9, "sl-legend sl-legend-small"));
+        if (showEx) {
+          labs.push(label(exPos[0] + 14, exPos[1] - 10, '<span class="verdict"><span class="o"></span>Potential misalignment</span><span class="why">Competing for resources: land</span>', "sl-callout"));
+        }
+      }
+    } else if (k >= 10 && k <= 12) {
+      pairAlpha = 1;
+      if (k === 10) {
         var tg = fieldGroups(TONES.map(function (t) { return t[1]; }), fb);
         var seenT = [0, 0, 0, 0];
         pairs.forEach(function (p, pi) {
@@ -465,6 +671,18 @@
         ctx.arc(tx, ty, Math.max(1, tr) + (ring[t] === 3 ? 4 : 2.5), 0, Math.PI * 2);
         ctx.stroke();
       }
+    }
+    // Rings on single pairs arrive with the labels.
+    var markAlpha = Math.max(0, Math.min(1, (p - 0.45) / 0.55));
+    if (markAlpha > 0) {
+      ctx.globalAlpha = markAlpha;
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = BLUE;
+      marks.forEach(function (m) {
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.stroke();
+      });
     }
     ctx.globalAlpha = 1;
   }
