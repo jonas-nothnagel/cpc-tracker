@@ -11,7 +11,7 @@ const aligned = (c: ToneCounts) => (c.total > 0 ? c.reinforce / c.total : 0);
 
 /** One result bar: potential misalignment from the left, alignment from the
  *  right, so position tells the two apart without colour. */
-function ResultBar({ name, counts, few }: { name: string; counts: ToneCounts; few?: boolean }) {
+export function ResultBar({ name, counts, few }: { name: string; counts: ToneCounts; few?: boolean }) {
   const t = useTranslations("brief.documents");
   const { pct } = useNumbers();
   const share = (v: number) => (counts.total > 0 ? v / counts.total : 0);
@@ -38,35 +38,49 @@ function ResultBar({ name, counts, few }: { name: string; counts: ToneCounts; fe
   );
 }
 
-/**
- * How each document fits with the others: one row per document with all its
- * target pairs, most closely aligned first. On screen a document opens to
- * its pairs (sorted the same way), and a pair to its panel.
- */
-export function DocumentsSection({
-  data,
-  variant = "screen",
-  onOpenDocPair,
-}: {
-  data: BriefData;
-  variant?: "screen" | "print";
-  onOpenDocPair?: (a: string, b: string) => void;
-}) {
+/** The finding: the range of alignment across the documents. */
+export function useDocumentsHeadline(data: BriefData): string {
   const t = useTranslations("brief");
   const { pct } = useNumbers();
-  const [open, setOpen] = useState<string | null>(null);
   const rated = data.docs.filter((d) => d.counts.total >= MIN_PAIR_COMPARISONS);
   const high = rated[0];
   const low = rated[rated.length - 1];
-  const headline =
-    rated.length >= 2 && aligned(high.counts) !== aligned(low.counts)
-      ? t("documents.headline", {
-          low: pct(aligned(low.counts)),
-          docLow: low.doc.name,
-          high: pct(aligned(high.counts)),
-          docHigh: high.doc.name,
-        })
-      : t("documents.headlineFallback", { pct: pct(aligned(data.counts)) });
+  return rated.length >= 2 && aligned(high.counts) !== aligned(low.counts)
+    ? t("documents.headline", {
+        low: pct(aligned(low.counts)),
+        docLow: low.doc.name,
+        high: pct(aligned(high.counts)),
+        docHigh: high.doc.name,
+      })
+    : t("documents.headlineFallback", { pct: pct(aligned(data.counts)) });
+}
+
+/**
+ * One row per document with all its target pairs, most closely aligned
+ * first. On screen a row opens to the document's pairs (sorted the same
+ * way), and a pair to its panel; the chevron shows which rows are open.
+ */
+export function DocList({
+  data,
+  variant = "screen",
+  open,
+  onToggle,
+  onOpenDocPair,
+  onHoverPartner,
+  tour,
+}: {
+  data: BriefData;
+  variant?: "screen" | "print";
+  /** The open document on screen. */
+  open: string | null;
+  onToggle?: (docId: string) => void;
+  onOpenDocPair?: (a: string, b: string) => void;
+  /** The partner document of the pair under the pointer. */
+  onHoverPartner?: (docId: string | null) => void;
+  tour?: string;
+}) {
+  const t = useTranslations("brief");
+  const { pct } = useNumbers();
   const order = new Map(data.scope.docs.map((d, i) => [d.id, i]));
   const partners = (docId: string): DocPairStat[] =>
     data.pairs
@@ -85,15 +99,15 @@ export function DocumentsSection({
     });
 
   return (
-    <SectionFrame id="documents" headline={headline}>
+    <>
       <p className="brief-pairs-head" data-testid="brief-pairs-head" aria-hidden="true">
         <span className="brief-pairs-head-apart">{t("documents.columnApart")}</span>
         <span className="brief-pairs-head-partial">{t("documents.columnPartial")}</span>
         <span className="brief-pairs-head-aligned">{t("documents.columnAligned")}</span>
       </p>
-      <ol className="brief-pairs" data-tour="brief-documents">
+      <ol className="brief-pairs" data-tour={tour}>
         {data.docs.map(({ doc, counts }) => {
-          const isOpen = open === doc.id;
+          const isOpen = variant === "screen" && open === doc.id;
           return (
             <li
               key={doc.id}
@@ -108,8 +122,9 @@ export function DocumentsSection({
                   className="brief-pair brief-doc-button"
                   aria-expanded={isOpen}
                   aria-label={rowLabel(doc.name, counts)}
-                  onClick={() => setOpen(isOpen ? null : doc.id)}
+                  onClick={() => onToggle?.(doc.id)}
                 >
+                  <span className="brief-doc-chevron" aria-hidden="true" />
                   <ResultBar name={doc.name} counts={counts} />
                 </button>
               ) : (
@@ -122,7 +137,13 @@ export function DocumentsSection({
                   {partners(doc.id).map((p) => {
                     const other = p.a.id === doc.id ? p.b : p.a;
                     return (
-                      <li key={`${p.a.id}~${p.b.id}`} data-testid="brief-pair-row" data-pair={`${p.a.id}~${p.b.id}`}>
+                      <li
+                        key={`${p.a.id}~${p.b.id}`}
+                        data-testid="brief-pair-row"
+                        data-pair={`${p.a.id}~${p.b.id}`}
+                        onPointerEnter={() => onHoverPartner?.(other.id)}
+                        onPointerLeave={() => onHoverPartner?.(null)}
+                      >
                         <button
                           type="button"
                           className="brief-pair"
@@ -144,6 +165,32 @@ export function DocumentsSection({
           );
         })}
       </ol>
+    </>
+  );
+}
+
+/** How each document fits with the others. */
+export function DocumentsSection({
+  data,
+  variant = "screen",
+  onOpenDocPair,
+}: {
+  data: BriefData;
+  variant?: "screen" | "print";
+  onOpenDocPair?: (a: string, b: string) => void;
+}) {
+  const headline = useDocumentsHeadline(data);
+  const [open, setOpen] = useState<string | null>(null);
+  return (
+    <SectionFrame id="documents" headline={headline}>
+      <DocList
+        data={data}
+        variant={variant}
+        open={open}
+        onToggle={(id) => setOpen((cur) => (cur === id ? null : id))}
+        onOpenDocPair={onOpenDocPair}
+        tour="brief-documents"
+      />
     </SectionFrame>
   );
 }

@@ -1394,13 +1394,36 @@
   height: 14px;
 }
 
-[data-brief] .brief-doc-button .brief-pair-name::after {
-  content: " +";
-  color: var(--brief-muted);
+/* A chevron marks the rows that open; it turns down on the open row. */
+[data-brief] .brief-pairs .brief-doc-button {
+  position: relative;
+  padding-left: 1.35rem;
 }
 
-[data-brief] .brief-doc[data-open] .brief-doc-button .brief-pair-name::after {
-  content: " \2212";
+[data-brief] .brief-doc-chevron {
+  position: absolute;
+  top: 0.95rem;
+  left: 0.3rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid var(--brief-ink);
+  border-bottom: 1.5px solid var(--brief-ink);
+  transform: rotate(-45deg);
+  transition: transform 160ms ease;
+}
+
+[data-brief] .brief-doc[data-open] .brief-doc-chevron {
+  transform: rotate(45deg);
+}
+
+[data-brief] .brief-doc-button:hover .brief-doc-chevron {
+  border-color: var(--brief-blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brief] .brief-doc-chevron {
+    transition: none;
+  }
 }
 
 [data-brief] .brief-doc[data-open] {
@@ -1420,6 +1443,251 @@
 
 [data-brief] .brief-doc-pairs .brief-pair-bar {
   height: 10px;
+}
+
+/* ── Coherence overview: the dot field beside its steps ─────────── */
+
+[data-brief] .brief-hub {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 3.2vw, 3.5rem);
+  padding: 2.25rem 0 3.5rem;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+/* The field stays in view, centred in the window, while the steps scroll
+   past it; a little taller than wide (the stage is about half the width). */
+[data-brief] .brief-hub-stage {
+  position: sticky;
+  top: max(1.25rem, calc(50vh - 31cqw));
+  height: min(calc(100vh - 2.5rem), 62cqw);
+  min-height: 24rem;
+}
+
+[data-brief] .brief-hub-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .brief-hub-canvas canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .brief-hub-canvas[data-clickable] {
+  cursor: pointer;
+}
+
+[data-brief] .brief-hub-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[data-brief] .brief-hub-label {
+  position: absolute;
+  transform: translateY(-100%);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  transition: opacity 160ms ease;
+}
+
+[data-brief] .brief-hub-label[data-dim] {
+  opacity: 0.35;
+}
+
+/* Around a document in focus, each other document is named above its
+   cluster, on the outer side. */
+[data-brief] .brief-hub-label-partner {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  white-space: normal;
+}
+
+[data-brief] .brief-hub-label-partner[data-side="left"] {
+  align-items: flex-end;
+  transform: translate(-100%, -100%);
+  text-align: right;
+}
+
+[data-brief] .brief-hub-label-partner[data-side="right"] {
+  align-items: flex-start;
+  transform: translateY(-100%);
+  text-align: left;
+}
+
+[data-brief] .brief-hub-label-name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-hub-center {
+  position: absolute;
+  width: max-content;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+[data-brief] .brief-hub-center-name {
+  display: block;
+  padding: 0.35rem 0.5rem;
+  background: rgba(255, 255, 255, 0.92);
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+[data-brief] .brief-hub-tip {
+  white-space: normal;
+  max-width: 17rem;
+}
+
+[data-brief] .brief-hub-steps {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+[data-brief] .brief-hub-step {
+  padding: 0.25rem 0 7rem;
+  scroll-margin-top: 1.25rem;
+}
+
+[data-brief] .brief-hub-step[data-step="overview"] {
+  min-height: 62vh;
+}
+
+[data-brief] .brief-hub-step:last-child {
+  padding-bottom: 0;
+}
+
+[data-brief] .brief-hub-headline {
+  max-width: 30em;
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.9vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+}
+
+[data-brief] .brief-hub-legend {
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0.25rem 0 0;
+}
+
+[data-brief] .brief-hub-legend .brief-dots-pct {
+  font-size: 1.0625rem;
+}
+
+[data-brief] .brief-hub-legend .brief-dots-tone {
+  font-size: 1rem;
+}
+
+[data-brief] .brief-hub-sub {
+  margin: 2.25rem 0 0.4rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* Types of potential misalignment: one row each, share of the whole. */
+[data-brief] .brief-hub-kinds {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-hub-kind {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(90px, 200px) 48px;
+  align-items: center;
+  column-gap: 10px;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  cursor: help;
+}
+
+[data-brief] .brief-hub-kind-name {
+  font-size: 0.9375rem;
+}
+
+[data-brief] .brief-hub-kind-bar > span {
+  display: block;
+  height: 9px;
+  min-width: 3px;
+}
+
+[data-brief] .brief-hub-kind-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ranked targets beside the field: titles get two lines, bars less room. */
+[data-brief] .brief-hub .brief-rank-row {
+  grid-template-columns: 20px minmax(0, 1fr) minmax(64px, 110px) 40px;
+  align-items: start;
+}
+
+[data-brief] .brief-hub .brief-rank-n,
+[data-brief] .brief-hub .brief-rank-value {
+  padding-top: 1px;
+}
+
+[data-brief] .brief-hub .brief-rank-bar {
+  margin-top: 7px;
+}
+
+[data-brief] .brief-hub .brief-rank-title {
+  display: -webkit-box;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Narrow screens: the field sits at the top while the steps pass under it. */
+@media screen and (max-width: 820px) {
+  [data-brief] .brief-hub {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  [data-brief] .brief-hub-stage {
+    top: 0;
+    z-index: 2;
+    height: 44vh;
+    min-height: 16rem;
+    background: #fff;
+    border-bottom: 1px solid var(--brief-hairline);
+  }
+
+  [data-brief] .brief-hub-step {
+    padding-top: 1.5rem;
+    padding-bottom: 4rem;
+  }
+
+  [data-brief] .brief-hub-step[data-step="overview"] {
+    min-height: 0;
+  }
 }
 
 /* ── Print preview bar ───────────────────────────────────────────── */

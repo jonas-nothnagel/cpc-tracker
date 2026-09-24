@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  strongConcentration,
+  mechanismMix,
+  strongestAlignments,
   alignedTargets,
   areaRows,
   commitmentsToReview,
@@ -513,6 +516,54 @@ describe("partner documents are listed by their counts", () => {
       { doc: "Y", count: 2 },
       { doc: "Z", count: 1 },
     ]);
+  });
+});
+
+// ─── Round 7: strongest alignments and the kinds of misalignment ─────
+
+describe("strongestAlignments", () => {
+  it("ranks targets by their strong links, as the explorer does", () => {
+    const fixture = briefFixture();
+    const rows = strongestAlignments(scopeOf(fixture, ["A", "B", "C"]), 6);
+    expect(rows.map((r) => [r.commitment.id, r.strong])).toEqual([
+      ["C1", 8],
+      ["C3", 8],
+      ["C5", 8],
+      ["B1", 7],
+      ["B3", 7],
+      ["A1", 6],
+    ]);
+  });
+
+  it("lists the documents of the strong links by count", () => {
+    const fixture = briefFixture();
+    const [c1] = strongestAlignments(scopeOf(fixture, ["A", "B", "C"]), 1);
+    expect(c1.partnerDocs).toEqual([
+      { doc: "A", count: 5 },
+      { doc: "B", count: 3 },
+    ]);
+  });
+});
+
+describe("mechanismMix", () => {
+  it("counts potential misalignments by what kind they are", () => {
+    const fixture = briefFixture();
+    expect(mechanismMix(scopeOf(fixture, ["A", "B", "C"]))).toEqual([
+      { mechanism: "resource_competition", count: 15 },
+    ]);
+  });
+});
+
+describe("strongConcentration", () => {
+  it("finds the fewest targets covering at least half of the strong alignments", () => {
+    const fixture = briefFixture();
+    expect(strongConcentration(scopeOf(fixture, ["A", "B", "C"]))).toEqual({
+      total: 36,
+      contested: 12,
+      top: ["C1", "C3", "C5"],
+      share: 24 / 36,
+      concentrated: false,
+    });
   });
 });
 

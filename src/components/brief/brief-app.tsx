@@ -9,14 +9,16 @@ import {
   defaultSelection,
   selectionQuery,
   type BriefSelection,
+  type SectionId,
 } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
 import { Builder } from "./builder";
 import { Flow } from "./flow";
 import { Hero } from "./hero";
+import { Hub } from "./hub/hub";
 import { BriefPanels, type PanelState } from "./panels";
 import { clip } from "./ink";
-import { SectionView, type SectionHandlers, type ThemeTone } from "./section-view";
+import { SectionView, type SectionHandlers } from "./section-view";
 import { Sheets, TitleBlock } from "./sheets";
 import "./brief.css";
 
@@ -31,6 +33,9 @@ function driftLines(scope: Scope, max = 108): string[] {
   }
   return lines;
 }
+
+/** Sections the coherence overview shows on screen; they print as sections. */
+const OVERVIEW_SECTIONS: SectionId[] = ["overall", "together", "aligned", "apart", "commitments", "documents"];
 
 /**
  * The coherence brief. On screen it is one flowing page; the A4 sheets are
@@ -51,15 +56,6 @@ export function BriefApp({
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
   const [mode, setMode] = useState<"read" | "preview">("read");
-  // The theme the reader selected in each theme section; the printed pages
-  // show the same example as the screen.
-  const [picked, setPicked] = useState<Record<ThemeTone, string | null>>({
-    reinforce: null,
-    apart: null,
-  });
-  // Bumped to replay a theme section's dots when the reader arrives from
-  // the overall picture.
-  const [replay, setReplay] = useState<Record<ThemeTone, number>>({ reinforce: 0, apart: 0 });
   // Where the reader was on the flowing page when the preview opened.
   const readScroll = useRef(0);
   const printRef = useRef<HTMLButtonElement>(null);
@@ -114,16 +110,6 @@ export function BriefApp({
       onOpenDocPair: (a, b) => setPanels([{ kind: "docPair", a, b }]),
       onOpenCommitment: (id) => setPanels([{ kind: "commitment", id }]),
       onOpenTheme: (type, name) => setPanels([{ kind: "theme", type, name }]),
-      onPickTheme: (tone, name) => setPicked((p) => ({ ...p, [tone]: name })),
-      onFocusTone: (tone) => {
-        const id = tone === "reinforce" ? "together" : "apart";
-        const section = document.getElementById(`brief-flow-${id}`);
-        if (!section) return;
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
-        // Keyboard and screen-reader users arrive where the pointer went.
-        section.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
-        setReplay((r) => ({ ...r, [tone]: r[tone] + 1 }));
-      },
     }),
     [],
   );
@@ -136,11 +122,6 @@ export function BriefApp({
     title?.focus({ preventScroll: true });
   };
   const preview = mode === "preview";
-  // The overall groups link only to theme sections the reader has kept.
-  const focusTones: ThemeTone[] = [
-    ...(selection.sections.includes("together") ? (["reinforce"] as const) : []),
-    ...(selection.sections.includes("apart") ? (["apart"] as const) : []),
-  ];
 
   return (
     <div data-brief className="brief-root">
@@ -181,18 +162,17 @@ export function BriefApp({
             documents={scope.docs.length}
             comparisons={scope.comparisons.length}
             translation={translation}
-            sections={selection.sections}
-            renderSection={(id) => (
-              <SectionView
-                id={id}
-                variant="screen"
+            overview={
+              <Hub
                 data={data}
-                lensName={lensName}
-                handlers={handlers}
-                picked={picked}
-                replay={replay}
-                focusTones={focusTones}
+                onOpenTheme={handlers.onOpenTheme}
+                onOpenCommitment={handlers.onOpenCommitment}
+                onOpenDocPair={handlers.onOpenDocPair}
               />
+            }
+            sections={selection.sections.filter((id) => !OVERVIEW_SECTIONS.includes(id))}
+            renderSection={(id) => (
+              <SectionView id={id} variant="screen" data={data} lensName={lensName} handlers={handlers} />
             )}
           />
           <Sheets
@@ -210,15 +190,7 @@ export function BriefApp({
               />
             }
             renderSection={(id) => (
-              <SectionView
-                id={id}
-                variant="print"
-                data={data}
-                lensName={lensName}
-                handlers={handlers}
-                picked={picked}
-                replay={replay}
-              />
+              <SectionView id={id} variant="print" data={data} lensName={lensName} handlers={handlers} />
             )}
           />
         </div>

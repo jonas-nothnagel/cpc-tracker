@@ -128,8 +128,8 @@ describe("BriefApp", () => {
 
   it("drops a page when sections are left out", () => {
     renderApp();
-    const sections = screen.getByRole("group", { name: "Sections" });
-    fireEvent.click(within(sections).getByRole("checkbox", { name: /Most aligned targets/ }));
+    const sections = screen.getByRole("group", { name: "In the printed brief" });
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Strongest alignments/ }));
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
     expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
     expect(window.location.search).toContain("sections=");
@@ -174,36 +174,46 @@ describe("BriefApp screen and print", () => {
     vi.unstubAllGlobals();
   });
 
-  it("takes the reader from the aligned group to the section behind it", () => {
+  it("opens on the coherence overview and takes the reader from the aligned group to its step", () => {
     const scroll = vi.mocked(Element.prototype.scrollIntoView);
     scroll.mockClear();
     renderApp(briefFixture({ themes: true }));
+    expect(screen.getByTestId("brief-hub")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
-    const targets = scroll.mock.contexts.map((el) => (el as Element).id);
-    expect(targets).toContain("brief-flow-together");
+    const targets = scroll.mock.contexts.map((el) => (el as HTMLElement).dataset.step);
+    expect(targets).toContain("reinforce");
   });
 
-  it("moves focus to the section it leads to", () => {
+  it("moves focus to the step it leads to", () => {
     renderApp(briefFixture({ themes: true }));
     fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
-    const heading = document.querySelector("#brief-flow-together h2");
+    const heading = document.querySelector('[data-step="reinforce"] h2');
     expect(document.activeElement).toBe(heading);
   });
 
-  it("links a group only while its section is in the brief", () => {
+  it("keeps the overview on screen whatever the printed brief holds", () => {
     renderApp(briefFixture({ themes: true }));
-    const sections = screen.getByRole("group", { name: "Sections" });
+    const sections = screen.getByRole("group", { name: "In the printed brief" });
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Areas of alignment/ }));
-    expect(screen.queryByRole("button", { name: "67% aligned" })).toBeNull();
-    expect(screen.getByRole("button", { name: "14% potential misalignment" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "67% aligned" })).toBeTruthy();
+    expect(sheets().querySelector('[data-section="together"]')).toBeNull();
   });
 
-  it("prints the theme the reader selected on screen", () => {
+  it("shows the overview's sections once, in the overview", () => {
     renderApp(briefFixture({ themes: true }));
     const flow = screen.getByTestId("brief-flow");
-    const apart = flow.querySelector('[data-section="apart"]') as HTMLElement;
-    fireEvent.click(within(within(apart).getAllByTestId("brief-theme-row")[1]).getByRole("button"));
-    expect(within(sheets()).getAllByText("Verbatim text of commitment A6.").length).toBeGreaterThan(0);
+    for (const id of ["overall", "together", "aligned", "apart", "commitments", "documents"]) {
+      expect(flow.querySelector(`[data-section="${id}"]`)).toBeNull();
+    }
+  });
+
+  it("adds the policy areas below the overview when the brief holds them", () => {
+    renderApp();
+    const flow = screen.getByTestId("brief-flow");
+    expect(flow.querySelector('[data-section="areas"]')).toBeNull();
+    const sections = screen.getByRole("group", { name: "In the printed brief" });
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /By policy area/ }));
+    expect(flow.querySelector('[data-section="areas"]')).not.toBeNull();
   });
 });
 
@@ -252,7 +262,7 @@ describe("BriefApp accessibility and provenance", () => {
   it("keeps an open drill-down off the printed page", () => {
     renderApp();
     const flow = screen.getByTestId("brief-flow");
-    fireEvent.click(within(within(flow).getAllByTestId("brief-doc-row")[0]).getByRole("button"));
+    // The overview opens with its first document open.
     fireEvent.click(within(within(flow).getAllByTestId("brief-pair-row")[0]).getByRole("button"));
     expect(screen.getByRole("dialog").closest("[data-screen-only]")).not.toBeNull();
   });

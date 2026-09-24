@@ -6,9 +6,10 @@ import type { SectionId } from "@/lib/brief/selection";
 import { useNumbers } from "./ink";
 
 /**
- * The brief on screen: one flowing page. The same sections as the printed
- * brief, in the reader's order, without page frames, running heads or fixed
- * slot heights; the A4 sheets exist for printing and the print preview.
+ * The brief on screen: one flowing page. The coherence overview first, then
+ * any other sections the reader keeps, without page frames, running heads
+ * or fixed slot heights; the A4 sheets exist for printing and the print
+ * preview.
  */
 export function Flow({
   hidden = false,
@@ -17,6 +18,7 @@ export function Flow({
   documents,
   comparisons,
   translation,
+  overview,
   sections,
   renderSection,
 }: {
@@ -28,6 +30,7 @@ export function Flow({
   documents: number;
   comparisons: number;
   translation: "machine" | "source" | null;
+  overview?: ReactNode;
   sections: SectionId[];
   renderSection: (id: SectionId) => ReactNode;
 }) {
@@ -59,6 +62,7 @@ export function Flow({
           </p>
         )}
       </header>
+      {overview}
       {sections.map((id) => (
         <section key={id} id={`brief-flow-${id}`} className="brief-flow-section" data-section={id}>
           {renderSection(id)}

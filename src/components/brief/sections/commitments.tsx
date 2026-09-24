@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import type { BriefData } from "@/lib/brief/data";
-import { commitmentLine, useNumbers } from "../ink";
+import { RankList } from "../rank-list";
+import { useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
 export function CommitmentsSection({
@@ -13,7 +14,7 @@ export function CommitmentsSection({
   onOpenCommitment?: (id: string) => void;
 }) {
   const t = useTranslations("brief.commitments");
-  const { n, pct } = useNumbers();
+  const { pct } = useNumbers();
   const c = data.concentration;
   const headline =
     c.total === 0
@@ -21,39 +22,46 @@ export function CommitmentsSection({
       : c.concentrated
         ? t("headlineConcentrated", { pct: pct(c.share), total: c.total, top: c.top.length })
         : t("headlineSpread", { contested: c.contested });
-  const max = data.commitments[0]?.apart ?? 1;
-  const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
   return (
     <SectionFrame id="commitments" headline={headline}>
-      <ol className="brief-rank" data-tour="brief-commitments">
-        {data.commitments.map((row, i) => {
-          const partners = row.partnerDocs
-            .slice(0, 2)
-            .map((p) => t("partner", { count: p.count, doc: docName(p.doc) }))
-            .join(", ");
-          return (
-            <li key={row.commitment.id} className="brief-rank-row" data-testid="brief-commitment-row">
-              <span className="brief-rank-n">{i + 1}</span>
-              <button
-                type="button"
-                className="brief-rank-main"
-                onClick={() => onOpenCommitment?.(row.commitment.id)}
-                title={row.commitment.text}
-              >
-                <span className="brief-rank-title">{commitmentLine(row.commitment)}</span>
-                <span className="brief-rank-meta">
-                  {docName(row.commitment.doc)}
-                  {partners ? ` · ${partners}` : ""}
-                </span>
-              </button>
-              <span className="brief-rank-bar" aria-hidden="true">
-                <span style={{ width: `${(row.apart / max) * 100}%` }} />
-              </span>
-              <span className="brief-rank-value">{n(row.apart)}</span>
-            </li>
-          );
-        })}
-      </ol>
+      <ReviewList
+        data={data}
+        testId="brief-commitment-row"
+        tour="brief-commitments"
+        onOpen={onOpenCommitment}
+      />
     </SectionFrame>
+  );
+}
+
+/** The targets involved in the most potential misalignments. */
+export function ReviewList({
+  data,
+  limit,
+  testId,
+  tour,
+  onOpen,
+}: {
+  data: BriefData;
+  limit?: number;
+  testId: string;
+  tour?: string;
+  onOpen?: (id: string) => void;
+}) {
+  const t = useTranslations("brief.commitments");
+  return (
+    <RankList
+      items={data.commitments.slice(0, limit).map((row) => ({
+        commitment: row.commitment,
+        value: row.apart,
+        partnerDocs: row.partnerDocs,
+      }))}
+      tone="apart"
+      docs={data.scope.docs}
+      partner={(count, doc) => t("partner", { count, doc })}
+      testId={testId}
+      tour={tour}
+      onOpen={onOpen}
+    />
   );
 }

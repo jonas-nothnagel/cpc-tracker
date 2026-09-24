@@ -196,18 +196,16 @@ describe("brief sections", () => {
     expect(screen.queryByText(/mostly with/)).toBeNull();
   });
 
-  it("aligned: leads with the target aligned with the largest share of the targets it was compared with", () => {
+  it("aligned: lists the strongest alignments by their strong links", () => {
     wrap(<AlignedSection data={DATA} />);
     expect(
-      screen.getByRole("heading", {
-        name: "1 Commitment A1 Verbatim text of commitment A1. (Document A) is aligned with 100% of the targets it was compared with.",
-      }),
+      screen.getByRole("heading", { name: "Strong alignments are spread across 12 targets." }),
     ).toBeTruthy();
     const rows = screen.getAllByTestId("brief-aligned-row");
-    expect(rows).toHaveLength(8);
-    expect(within(rows[0]).getByText(/aligned with 12 of 12 targets compared/)).toBeTruthy();
-    expect(screen.queryByText(/mostly with/)).toBeNull();
-    expect(within(rows[4]).getByText("83%")).toBeTruthy();
+    expect(rows).toHaveLength(6);
+    expect(rows[0].textContent).toContain("Commitment C1");
+    expect(within(rows[0]).getByText("8")).toBeTruthy();
+    expect(within(rows[0]).getByText(/5 with Document A, 3 with Document B/)).toBeTruthy();
   });
 
   it("documents: one row per document, most closely aligned with the others first", () => {

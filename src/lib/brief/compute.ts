@@ -401,6 +401,94 @@ export function alignedTargets(scope: Scope, limit = 8): AlignedRow[] {
     }));
 }
 
+export interface StrongRow {
+  commitment: BriefCommitment;
+  /** Strong ("high") links with targets in other documents. */
+  strong: number;
+  /** Documents of those links, by count. */
+  partnerDocs: { doc: string; count: number }[];
+}
+
+/**
+ * The targets with the most strong links, as the explorer's "Strongest
+ * alignments" counts them: only "high" readings, so broadly worded targets
+ * that are moderately aligned with everything do not lead. Ties keep
+ * document order.
+ */
+export function strongestAlignments(scope: Scope, limit = 6): StrongRow[] {
+  const rows = new Map(
+    scope.commitments.map((c) => [c.id, { commitment: c, strong: 0, partners: new Map<string, number>() }]),
+  );
+  for (const c of scope.comparisons) {
+    if (c.level !== "high") continue;
+    for (const [self, other] of [
+      [c.a, c.b],
+      [c.b, c.a],
+    ]) {
+      const row = rows.get(self.id);
+      if (!row) continue;
+      row.strong += 1;
+      row.partners.set(other.doc, (row.partners.get(other.doc) ?? 0) + 1);
+    }
+  }
+  const order = new Map(scope.commitments.map((c, i) => [c.id, i]));
+  return [...rows.values()]
+    .filter((r) => r.strong > 0)
+    .sort((x, y) => y.strong - x.strong || (order.get(x.commitment.id) ?? 0) - (order.get(y.commitment.id) ?? 0))
+    .slice(0, limit)
+    .map(({ commitment, strong, partners }) => ({
+      commitment,
+      strong,
+      partnerDocs: rankPartnerDocs(scope, partners),
+    }));
+}
+
+/**
+ * How concentrated the strong alignments are: the fewest targets that between
+ * them take part in at least half of the strong ("high") links, strongest
+ * first. Concentrated when those are at most a fifth of the targets with any
+ * strong link, the same rule as for potential misalignment.
+ */
+export function strongConcentration(scope: Scope): Concentration {
+  const strong = scope.comparisons.filter((c) => c.level === "high");
+  const links = new Map<string, number[]>();
+  strong.forEach((c, i) => {
+    for (const id of [c.a.id, c.b.id]) links.set(id, [...(links.get(id) ?? []), i]);
+  });
+  const order = new Map(scope.commitments.map((c, i) => [c.id, i]));
+  const ranked = [...links.entries()].sort(
+    (x, y) => y[1].length - x[1].length || (order.get(x[0]) ?? 0) - (order.get(y[0]) ?? 0),
+  );
+  const covered = new Set<number>();
+  const top: string[] = [];
+  for (const [id, pairs] of ranked) {
+    if (covered.size * 2 >= strong.length) break;
+    top.push(id);
+    for (const p of pairs) covered.add(p);
+  }
+  return {
+    total: strong.length,
+    contested: links.size,
+    top,
+    share: strong.length > 0 ? covered.size / strong.length : 0,
+    concentrated: top.length > 0 && top.length <= links.size / 5,
+  };
+}
+
+/** Potential misalignments by what kind they are (the reading's mechanism),
+ *  most first; readings without a mechanism are left out. */
+export function mechanismMix(scope: Scope): { mechanism: AlignmentMechanism; count: number }[] {
+  const counts = new Map<AlignmentMechanism, number>();
+  for (const c of scope.comparisons) {
+    if (c.level !== "flagged" || !c.mechanism) continue;
+    counts.set(c.mechanism, (counts.get(c.mechanism) ?? 0) + 1);
+  }
+  const order = MECHANISM_CODES.filter((m): m is AlignmentMechanism => Boolean(m));
+  return [...counts.entries()]
+    .map(([mechanism, count]) => ({ mechanism, count }))
+    .sort((x, y) => y.count - x.count || order.indexOf(x.mechanism) - order.indexOf(y.mechanism));
+}
+
 export interface Concentration {
   /** Potential misalignments in the selection. */
   total: number;

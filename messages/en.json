@@ -2958,7 +2958,7 @@
       "commitments": "{count, plural, one {# target} other {# targets}}",
       "minDocuments": "At least two documents are needed for a comparison.",
       "lens": "Policy areas",
-      "sections": "Sections",
+      "sections": "In the printed brief",
       "moveUp": "Move {section} up",
       "moveDown": "Move {section} down",
       "size": "{units, select, 1 {quarter page} 2 {half page} other {full page}}",
@@ -2991,7 +2991,7 @@
       "commitments": "Targets to review first",
       "documents": "Documents side by side",
       "areas": "By policy area",
-      "aligned": "Most aligned targets"
+      "aligned": "Strongest alignments"
     },
     "tone": {
       "reinforce": "aligned",
@@ -3128,15 +3128,19 @@
       "rangelands": "rangelands"
     },
     "aligned": {
-      "headline": "{target} ({doc}) is aligned with {pct} of the targets it was compared with.",
-      "headlineEmpty": "No target is aligned with another in this selection.",
-      "row": "Aligned with {aligned, number} of the {compared, number} targets it was compared with",
-      "meta": "aligned with {aligned, number} of {compared, number} targets compared"
+      "headlineEmpty": "No target is strongly aligned with another in this selection.",
+      "row": "{count, plural, one {# strong alignment} other {# strong alignments}}",
+      "headlineConcentrated": "Of the {total, number} strong alignments, {pct} involve just {top, plural, one {one target} other {# targets}}.",
+      "headlineSpread": "Strong alignments are spread across {contested, plural, one {# target} other {# targets}}.",
+      "partner": "{count, number} with {doc}"
     },
     "preview": {
       "pages": "{count, plural, one {# page} other {# pages}}",
       "print": "Print",
       "back": "Back to the brief"
+    },
+    "hub": {
+      "kinds": "Types of potential misalignment"
     }
   }
 }

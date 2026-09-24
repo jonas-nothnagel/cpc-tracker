@@ -32,11 +32,130 @@ function docsTakingPart(row: ThemeItem, docs: BriefDocument[]): BriefDocument[] 
     .map((x) => x.doc);
 }
 
+/** The section's finding: the leading pair of documents, or the overall
+ *  share when no pair has enough target pairs to lead. */
+export function useThemeHeadline(data: BriefData, tone: "reinforce" | "apart"): string {
+  const t = useTranslations("brief");
+  const { pct } = useNumbers();
+  const key = tone === "reinforce" ? "together" : "apart";
+  const lead = data.leading[tone];
+  return lead
+    ? t(`${key}.headline`, {
+        docA: lead.a.name,
+        docB: lead.b.name,
+        pct: pct(shareOf(lead.counts, tone)),
+      })
+    : t(`${key}.headlineFallback`, {
+        pct: pct(data.counts.total > 0 ? data.counts[tone] / data.counts.total : 0),
+      });
+}
+
+/**
+ * The recurring themes as a plain list: what, how often, which documents
+ * and, for potential misalignment, what is contested. With `selectedIndex`
+ * the rows are toggles (the section shows the selected theme's example);
+ * without it they are plain actions.
+ */
+export function ThemeList({
+  data,
+  tone,
+  selectedIndex,
+  hovered = null,
+  onHover,
+  onSelect,
+  tour,
+}: {
+  data: BriefData;
+  tone: "reinforce" | "apart";
+  selectedIndex?: number;
+  hovered?: string | null;
+  onHover?: (name: string | null) => void;
+  onSelect?: (name: string) => void;
+  tour?: string;
+}) {
+  const t = useTranslations("brief");
+  const tr = useTranslations("brief.resources");
+  const locale = useLocale();
+  // The pipeline names resources in English; other languages show only the
+  // words the glossary translates rather than mix languages in one line.
+  const resourceLabel = (word: string): string | null =>
+    tr.has(word) ? tr(word) : locale === "en" ? word : null;
+  const docLine = (row: ThemeItem): string => {
+    const names = docsTakingPart(row, data.scope.docs).map((d) => d.name);
+    const shown = names.slice(0, MAX_DOCS);
+    const rest = names.length - shown.length;
+    return joinList(rest > 0 ? [...shown, t("themes.moreDocs", { count: rest })] : shown, t("and"));
+  };
+  const key = tone === "reinforce" ? "together" : "apart";
+  const section = data[key];
+  const rows = section.rows.slice(0, MAX_THEMES);
+  const largest = Math.max(1, ...rows.map((r) => r.count));
+  if (rows.length === 0) return <p className="brief-sec-empty">{t(`${key}.themesEmpty`)}</p>;
+  return (
+    <>
+      <p className="brief-themes-title">
+        {section.exact ? t("themes.title") : t("themes.titleAllDocuments")}
+      </p>
+      <ol className="brief-themes" data-tour={tour}>
+        {rows.map((row, i) => {
+          const resources =
+            tone === "apart"
+              ? [
+                  ...new Set(
+                    (row.storyline.aggregates?.contested_resources ?? [])
+                      .map((r) => resourceLabel(r.resource))
+                      .filter((w): w is string => Boolean(w)),
+                  ),
+                ].slice(0, MAX_RESOURCES)
+              : [];
+          const on = i === selectedIndex;
+          return (
+            <li
+              key={row.storyline.name}
+              className="brief-theme"
+              data-testid="brief-theme-row"
+              data-selected={on ? "true" : undefined}
+              data-hovered={hovered === row.storyline.name ? "true" : undefined}
+              onPointerEnter={() => onHover?.(row.storyline.name)}
+              onPointerLeave={() => onHover?.(null)}
+            >
+              <button
+                type="button"
+                className="brief-theme-button"
+                aria-pressed={selectedIndex === undefined ? undefined : on}
+                onClick={() => onSelect?.(row.storyline.name)}
+              >
+                <span className="brief-theme-n" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <span className="brief-theme-main">
+                  <span className="brief-theme-name">{row.storyline.name}</span>
+                  {resources.length > 0 && (
+                    <span className="brief-theme-meta brief-theme-resources">
+                      {t("themes.contested", { list: joinList(resources, t("and")) })}
+                    </span>
+                  )}
+                  <span className="brief-theme-meta brief-theme-docs">{docLine(row)}</span>
+                </span>
+                <span className="brief-theme-size">
+                  <span className="brief-theme-count">{t(`themes.count.${tone}`, { count: row.count })}</span>
+                  <span className={`brief-theme-bar brief-screen-${tone}`} aria-hidden="true">
+                    <span style={{ width: `${((row.count / largest) * 100).toFixed(1)}%` }} />
+                  </span>
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+    </>
+  );
+}
+
 /** "What works well together" (reinforce) and "Where policies may pull
  *  apart" (apart): the leading pair of documents as the finding, then the
- *  recurring themes as a plain list (what, how often, which documents, and
- *  for potential misalignment what is contested). Selecting a theme shows
- *  one of its comparisons; the first theme's example prints. */
+ *  recurring themes. Selecting a theme shows one of its comparisons; the
+ *  first theme's example prints. */
 export function ThemeSectionView({
   data,
   tone,
@@ -61,19 +180,7 @@ export function ThemeSectionView({
   onOpenTheme?: (type: "reinforcement" | "friction", name: string) => void;
 }) {
   const t = useTranslations("brief");
-  const tr = useTranslations("brief.resources");
-  const locale = useLocale();
-  const { pct } = useNumbers();
-  // The pipeline names resources in English; other languages show only the
-  // words the glossary translates rather than mix languages in one line.
-  const resourceLabel = (word: string): string | null =>
-    tr.has(word) ? tr(word) : locale === "en" ? word : null;
-  const docLine = (row: ThemeItem): string => {
-    const names = docsTakingPart(row, data.scope.docs).map((d) => d.name);
-    const shown = names.slice(0, MAX_DOCS);
-    const rest = names.length - shown.length;
-    return joinList(rest > 0 ? [...shown, t("themes.moreDocs", { count: rest })] : shown, t("and"));
-  };
+  const headline = useThemeHeadline(data, tone);
   const [ownPick, setOwnPick] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const picked = onPick ? (pickedProp ?? null) : ownPick;
@@ -86,17 +193,6 @@ export function ThemeSectionView({
   const selectedIndex = pickedIndex >= 0 ? pickedIndex : Math.max(0, rows.findIndex((r) => r.example));
   const selected = rows[selectedIndex] ?? null;
   const example = selected ? selected.example : section.example;
-  const lead = data.leading[tone];
-  const headline = lead
-    ? t(`${key}.headline`, {
-        docA: lead.a.name,
-        docB: lead.b.name,
-        pct: pct(shareOf(lead.counts, tone)),
-      })
-    : t(`${key}.headlineFallback`, {
-        pct: pct(data.counts.total > 0 ? data.counts[tone] / data.counts.total : 0),
-      });
-  const largest = Math.max(1, ...rows.map((r) => r.count));
 
   return (
     <SectionFrame id={key} headline={headline}>
@@ -137,67 +233,15 @@ export function ThemeSectionView({
           )}
         />
       )}
-      {rows.length > 0 ? (
-        <>
-          <p className="brief-themes-title">
-            {section.exact ? t("themes.title") : t("themes.titleAllDocuments")}
-          </p>
-          <ol className="brief-themes" data-tour="brief-themes">
-            {rows.map((row, i) => {
-              const resources =
-                tone === "apart"
-                  ? [
-                      ...new Set(
-                        (row.storyline.aggregates?.contested_resources ?? [])
-                          .map((r) => resourceLabel(r.resource))
-                          .filter((w): w is string => Boolean(w)),
-                      ),
-                    ].slice(0, MAX_RESOURCES)
-                  : [];
-              const on = i === selectedIndex;
-              return (
-                <li
-                  key={row.storyline.name}
-                  className="brief-theme"
-                  data-testid="brief-theme-row"
-                  data-selected={on ? "true" : undefined}
-                  data-hovered={hovered === row.storyline.name ? "true" : undefined}
-                  onPointerEnter={() => setHovered(row.storyline.name)}
-                  onPointerLeave={() => setHovered(null)}
-                >
-                  <button
-                    type="button"
-                    className="brief-theme-button"
-                    aria-pressed={on}
-                    onClick={() => pick(row.storyline.name)}
-                  >
-                    <span className="brief-theme-n" aria-hidden="true">
-                      {i + 1}
-                    </span>
-                    <span className="brief-theme-main">
-                      <span className="brief-theme-name">{row.storyline.name}</span>
-                      {resources.length > 0 && (
-                        <span className="brief-theme-meta brief-theme-resources">
-                          {t("themes.contested", { list: joinList(resources, t("and")) })}
-                        </span>
-                      )}
-                      <span className="brief-theme-meta brief-theme-docs">{docLine(row)}</span>
-                    </span>
-                    <span className="brief-theme-size">
-                      <span className="brief-theme-count">{t(`themes.count.${tone}`, { count: row.count })}</span>
-                      <span className={`brief-theme-bar brief-screen-${tone}`} aria-hidden="true">
-                        <span style={{ width: `${((row.count / largest) * 100).toFixed(1)}%` }} />
-                      </span>
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-        </>
-      ) : (
-        <p className="brief-sec-empty">{t(`${key}.themesEmpty`)}</p>
-      )}
+      <ThemeList
+        data={data}
+        tone={tone}
+        selectedIndex={selectedIndex}
+        hovered={hovered}
+        onHover={setHovered}
+        onSelect={pick}
+        tour="brief-themes"
+      />
       {example && (
         <ExamplePairView
           example={example}

@@ -4,6 +4,9 @@ import {
   commitmentsToReview,
   docStats,
   concentrationOf,
+  mechanismMix,
+  strongConcentration,
+  strongestAlignments,
   docPairStats,
   leadingPair,
   pairExample,
@@ -13,6 +16,7 @@ import {
   overallLead,
   toneCounts,
   type AlignedRow,
+  type StrongRow,
   type AreaRow,
   type CommitmentRow,
   type DocStat,
@@ -25,6 +29,7 @@ import {
   type ToneCounts,
 } from "./compute";
 import { getDocPairKey, getStorylineDocPairKeys } from "@/lib/coherence-briefing";
+import type { AlignmentMechanism } from "@/types";
 import type { BriefSource, LensId } from "./source";
 
 /** A recurring theme with its own example, so the example a reader sees
@@ -56,6 +61,11 @@ export interface BriefData {
   concentration: Concentration;
   commitments: CommitmentRow[];
   aligned: AlignedRow[];
+  /** Targets with the most strong links (the explorer's "Strongest alignments"). */
+  strongest: StrongRow[];
+  strongConcentration: Concentration;
+  /** Potential misalignments by kind. */
+  mix: { mechanism: AlignmentMechanism; count: number }[];
   areas: { rows: AreaRow[]; average: number; max: number } | null;
 }
 
@@ -119,6 +129,9 @@ export function buildBriefData(source: BriefSource, scope: Scope, lens: LensId |
     concentration: concentrationOf(scope),
     commitments: commitmentsToReview(scope, 8),
     aligned: alignedTargets(scope, 8),
+    strongest: strongestAlignments(scope, 8),
+    strongConcentration: strongConcentration(scope),
+    mix: mechanismMix(scope),
     areas: lens ? areaRows(source, scope, lens) : null,
   };
 }

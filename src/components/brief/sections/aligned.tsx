@@ -2,11 +2,18 @@
 
 import { useTranslations } from "next-intl";
 import type { BriefData } from "@/lib/brief/data";
-import { commitmentLine, useNumbers } from "../ink";
+import { RankList } from "../rank-list";
+import { useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
 
-/** The targets aligned with the largest share of the targets they were
- *  compared with: where the documents already pull together. */
+/** Rows the printed section shows; the screen overview shows six too. */
+export const RANK_ROWS = 6;
+
+/**
+ * The strongest alignments: the targets with the most strong links to
+ * targets in other documents, counted as the explorer counts them (strong
+ * readings only). The headline says how concentrated those links are.
+ */
 export function AlignedSection({
   data,
   onOpenCommitment,
@@ -16,48 +23,46 @@ export function AlignedSection({
 }) {
   const t = useTranslations("brief.aligned");
   const { pct } = useNumbers();
-  const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
-  const share = (r: { aligned: number; compared: number }) =>
-    r.compared > 0 ? r.aligned / r.compared : 0;
-  const top = data.aligned[0];
-  const headline = top
-    ? t("headline", {
-        target: commitmentLine(top.commitment, 60),
-        doc: docName(top.commitment.doc),
-        pct: pct(share(top)),
-      })
-    : t("headlineEmpty");
+  const c = data.strongConcentration;
+  const headline =
+    c.total === 0
+      ? t("headlineEmpty")
+      : c.concentrated
+        ? t("headlineConcentrated", { total: c.total, pct: pct(c.share), top: c.top.length })
+        : t("headlineSpread", { contested: c.contested });
   return (
     <SectionFrame id="aligned" headline={headline}>
-      <ol className="brief-rank" data-tour="brief-aligned">
-        {data.aligned.map((row, i) => {
-          return (
-            <li key={row.commitment.id} className="brief-rank-row" data-testid="brief-aligned-row">
-              <span className="brief-rank-n">{i + 1}</span>
-              <button
-                type="button"
-                className="brief-rank-main"
-                onClick={() => onOpenCommitment?.(row.commitment.id)}
-                title={row.commitment.text}
-              >
-                <span className="brief-rank-title">{commitmentLine(row.commitment)}</span>
-                <span className="brief-rank-meta">
-                  {docName(row.commitment.doc)}
-                  {` · ${t("meta", { aligned: row.aligned, compared: row.compared })}`}
-                </span>
-              </button>
-              <span
-                className="brief-rank-bar brief-rank-bar-aligned"
-                role="img"
-                aria-label={t("row", { aligned: row.aligned, compared: row.compared })}
-              >
-                <span style={{ width: `${(share(row) * 100).toFixed(1)}%` }} />
-              </span>
-              <span className="brief-rank-value">{pct(share(row))}</span>
-            </li>
-          );
-        })}
-      </ol>
+      <StrongestList data={data} testId="brief-aligned-row" tour="brief-aligned" onOpen={onOpenCommitment} />
     </SectionFrame>
+  );
+}
+
+export function StrongestList({
+  data,
+  testId,
+  tour,
+  onOpen,
+}: {
+  data: BriefData;
+  testId: string;
+  tour?: string;
+  onOpen?: (id: string) => void;
+}) {
+  const t = useTranslations("brief.aligned");
+  return (
+    <RankList
+      items={data.strongest.slice(0, RANK_ROWS).map((row) => ({
+        commitment: row.commitment,
+        value: row.strong,
+        partnerDocs: row.partnerDocs,
+      }))}
+      tone="reinforce"
+      docs={data.scope.docs}
+      partner={(count, doc) => t("partner", { count, doc })}
+      valueLabel={(count) => t("row", { count })}
+      testId={testId}
+      tour={tour}
+      onOpen={onOpen}
+    />
   );
 }
