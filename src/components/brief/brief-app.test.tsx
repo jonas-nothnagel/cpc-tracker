@@ -229,6 +229,28 @@ describe("BriefApp walkthrough", () => {
     fireEvent.click(screen.getByRole("button", { name: "How to read this brief" }));
     expect(screen.getByRole("dialog", { name: "Overall coherence" })).toBeTruthy();
   });
+
+  it("walks through the overview on screen, never the print pages", () => {
+    renderApp(briefFixture({ themes: true }));
+    fireEvent.click(screen.getByRole("button", { name: "How to read this brief" }));
+    const titles: string[] = [];
+    for (let i = 0; i < 12; i++) {
+      const dialog = document.querySelector("[role=dialog][aria-label]") as HTMLElement | null;
+      if (!dialog) break;
+      titles.push(dialog.getAttribute("aria-label") ?? "");
+      const next = within(dialog).queryByRole("button", { name: "Next" });
+      if (!next) break;
+      fireEvent.click(next);
+    }
+    expect(titles).toEqual([
+      "Overall coherence",
+      "Recurring themes",
+      "Strongest alignments",
+      "Targets to review first",
+      "Documents side by side",
+      "Customize the brief",
+    ]);
+  });
 });
 
 describe("BriefApp accessibility and provenance", () => {

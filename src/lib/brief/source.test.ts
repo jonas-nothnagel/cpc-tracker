@@ -235,6 +235,7 @@ describe("buildBriefSource pair notes", () => {
         align: "Both expand restoration. They also share monitoring.",
         diverge: "Cropland expansion may compete with protected areas.",
         hint: "Joint land-use screening could help.",
+        confidence: "high",
       },
     ]);
   });

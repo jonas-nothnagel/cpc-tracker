@@ -497,15 +497,11 @@
         "steps": {
           "overall": {
             "title": "Overall coherence",
-            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Selecting the aligned or the potential misalignment group opens the recurring themes behind it."
+            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots regroup by recurring theme, and around one document at a time."
           },
           "themes": {
             "title": "Recurring themes",
-            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers. Each cluster of dots is one theme, numbered like the list below; selecting a cluster or a row shows one of its examples."
-          },
-          "example": {
-            "title": "The targets as written",
-            "body": "Examples quote both targets from the documents. Read in full adds the AI explanation of the rating, which is advisory and meant for validation by national experts."
+            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Each cluster of dots is one theme, numbered like the list; selecting either opens the theme with an example."
           },
           "commitments": {
             "title": "Targets to review first",
@@ -513,15 +509,15 @@
           },
           "documents": {
             "title": "Documents side by side",
-            "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document shows its pairs of documents; selecting a pair opens the AI summary, the strongest aligned target pairs and the potential misalignments."
+            "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document places it at the centre of the dots, with its target pairs with each other document beside it; selecting a pair of documents opens the AI summary, the strongest aligned target pairs and the potential misalignments."
           },
           "builder": {
             "title": "Customize the brief",
-            "body": "Choose the documents, policy areas and sections. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
+            "body": "Choose the documents and the policy areas, then the sections for the printed brief. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
           },
           "aligned": {
-            "title": "Most aligned targets",
-            "body": "The targets aligned with the largest share of the targets they were compared with: where the documents already pull together."
+            "title": "Strongest alignments",
+            "body": "The targets with the most strong alignments with targets in other documents, counted as in the explorer. Selecting one lists the targets it is aligned with and those with potential misalignment."
           }
         }
       }
@@ -3082,7 +3078,15 @@
       "whereAlign": "Where they align",
       "whereDiverge": "Where they may diverge",
       "more": "More",
-      "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}"
+      "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}",
+      "aiExplanation": "AI explanation",
+      "rating": {
+        "high": "Strong alignment",
+        "medium": "Moderate alignment",
+        "low": "Partial alignment",
+        "none": "No clear relationship",
+        "flagged": "Potential misalignment"
+      }
     },
     "and": "and",
     "resources": {

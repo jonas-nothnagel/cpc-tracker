@@ -69,6 +69,8 @@ export interface BriefPairNote {
   align: string;
   diverge: string;
   hint: string;
+  /** The AI's own confidence in the reading, kept with feedback on it. */
+  confidence?: string;
 }
 
 export interface BriefSource {
@@ -230,6 +232,7 @@ export function buildBriefSource(args: {
       align: p.synthesis.reinforce,
       diverge: p.synthesis.clash,
       hint: p.synthesis.coordination_hint,
+      confidence: p.synthesis.confidence,
     }));
 
   return {

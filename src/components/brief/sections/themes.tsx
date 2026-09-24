@@ -18,7 +18,7 @@ const MAX_RESOURCES = 3;
 const MAX_DOCS = 3;
 
 /** "A, B and C": UNDP style has no comma before the final conjunction. */
-function joinList(items: string[], and: string): string {
+export function joinList(items: string[], and: string): string {
   if (items.length <= 1) return items.join("");
   return `${items.slice(0, -1).join(", ")} ${and} ${items[items.length - 1]}`;
 }
@@ -30,6 +30,25 @@ function docsTakingPart(row: ThemeItem, docs: BriefDocument[]): BriefDocument[] 
     .filter((x) => x.share > 0)
     .sort((x, y) => y.share - x.share || x.order - y.order)
     .map((x) => x.doc);
+}
+
+/** "Resources involved: water and land", in the reader's language. The
+ *  pipeline names resources in English; other languages show only the words
+ *  the glossary translates rather than mix languages in one line. */
+export function useResourceLine(): (words: string[]) => string | null {
+  const t = useTranslations("brief");
+  const tr = useTranslations("brief.resources");
+  const locale = useLocale();
+  return (words) => {
+    const labels = [
+      ...new Set(
+        words
+          .map((w) => (tr.has(w) ? tr(w) : locale === "en" ? w : null))
+          .filter((w): w is string => Boolean(w)),
+      ),
+    ].slice(0, MAX_RESOURCES);
+    return labels.length > 0 ? t("themes.contested", { list: joinList(labels, t("and")) }) : null;
+  };
 }
 
 /** The section's finding: the leading pair of documents, or the overall
@@ -74,12 +93,7 @@ export function ThemeList({
   tour?: string;
 }) {
   const t = useTranslations("brief");
-  const tr = useTranslations("brief.resources");
-  const locale = useLocale();
-  // The pipeline names resources in English; other languages show only the
-  // words the glossary translates rather than mix languages in one line.
-  const resourceLabel = (word: string): string | null =>
-    tr.has(word) ? tr(word) : locale === "en" ? word : null;
+  const resourceLine = useResourceLine();
   const docLine = (row: ThemeItem): string => {
     const names = docsTakingPart(row, data.scope.docs).map((d) => d.name);
     const shown = names.slice(0, MAX_DOCS);
@@ -100,14 +114,8 @@ export function ThemeList({
         {rows.map((row, i) => {
           const resources =
             tone === "apart"
-              ? [
-                  ...new Set(
-                    (row.storyline.aggregates?.contested_resources ?? [])
-                      .map((r) => resourceLabel(r.resource))
-                      .filter((w): w is string => Boolean(w)),
-                  ),
-                ].slice(0, MAX_RESOURCES)
-              : [];
+              ? resourceLine((row.storyline.aggregates?.contested_resources ?? []).map((r) => r.resource))
+              : null;
           const on = i === selectedIndex;
           return (
             <li
@@ -130,11 +138,7 @@ export function ThemeList({
                 </span>
                 <span className="brief-theme-main">
                   <span className="brief-theme-name">{row.storyline.name}</span>
-                  {resources.length > 0 && (
-                    <span className="brief-theme-meta brief-theme-resources">
-                      {t("themes.contested", { list: joinList(resources, t("and")) })}
-                    </span>
-                  )}
+                  {resources && <span className="brief-theme-meta brief-theme-resources">{resources}</span>}
                   <span className="brief-theme-meta brief-theme-docs">{docLine(row)}</span>
                 </span>
                 <span className="brief-theme-size">

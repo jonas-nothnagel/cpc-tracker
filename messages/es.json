@@ -496,32 +496,28 @@
       "brief": {
         "steps": {
           "overall": {
-            "title": "Coherencia general",
-            "body": "Cada punto es un par de metas: dos metas de documentos distintos, comparadas por un modelo de IA. Los puntos se agrupan según la calificación: alineados, parcialmente alineados, posible desalineación o sin relación clara."
+            "title": "Overall coherence",
+            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots regroup by recurring theme, and around one document at a time."
           },
           "themes": {
-            "title": "Temas recurrentes",
-            "body": "Un modelo de IA agrupa los pares de metas calificados en temas recurrentes. Cada fila muestra la frecuencia del tema y los documentos implicados; al seleccionar un tema se muestra uno de sus ejemplos."
-          },
-          "example": {
-            "title": "Las metas tal como están escritas",
-            "body": "Los ejemplos citan ambas metas de los documentos. Leer completo añade la explicación de la IA sobre la calificación, que es orientativa y está pensada para su validación por personas expertas nacionales."
+            "title": "Recurring themes",
+            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Each cluster of dots is one theme, numbered like the list; selecting either opens the theme with an example."
           },
           "commitments": {
             "title": "Metas que conviene revisar primero",
             "body": "Las metas que intervienen en más posibles desalineaciones. Al seleccionar una se listan las metas con las que está alineada y aquellas con posible desalineación."
           },
           "documents": {
-            "title": "Los documentos, uno junto a otro",
-            "body": "Cada barra es un par de documentos: la posible desalineación desde la izquierda y la alineación desde la derecha. Al seleccionar un par se listan sus posibles desalineaciones."
+            "title": "Documents side by side",
+            "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document places it at the centre of the dots, with its target pairs with each other document beside it; selecting a pair of documents opens the AI summary, the strongest aligned target pairs and the potential misalignments."
           },
           "builder": {
-            "title": "Personalizar la nota",
-            "body": "Elija los documentos, las áreas de política y las secciones. La nota se actualiza al instante, se imprime en dos o tres páginas y puede compartirse como enlace."
+            "title": "Customize the brief",
+            "body": "Choose the documents and the policy areas, then the sections for the printed brief. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
           },
           "aligned": {
-            "title": "Most aligned targets",
-            "body": "The targets aligned with the largest share of the targets they were compared with: where the documents already pull together."
+            "title": "Strongest alignments",
+            "body": "The targets with the most strong alignments with targets in other documents, counted as in the explorer. Selecting one lists the targets it is aligned with and those with potential misalignment."
           }
         }
       }
@@ -3082,7 +3078,15 @@
       "whereAlign": "Where they align",
       "whereDiverge": "Where they may diverge",
       "more": "More",
-      "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}"
+      "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}",
+      "aiExplanation": "AI explanation",
+      "rating": {
+        "high": "Strong alignment",
+        "medium": "Moderate alignment",
+        "low": "Partial alignment",
+        "none": "No clear relationship",
+        "flagged": "Potential misalignment"
+      }
     },
     "and": "y",
     "resources": {

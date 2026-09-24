@@ -18,3 +18,36 @@ export function firstSentence(text: string): { first: string; rest: string } {
   }
   return { first: text, rest: "" };
 }
+
+export type CodeSegment = string | { code: string; name: string };
+
+/**
+ * An AI text in pieces, with each document id it uses ("FSS", "NRVTS")
+ * marked with the document's name, so the page can explain the code in
+ * place without changing the AI's words. Only ids are matched, whole words
+ * and case-sensitive: short codes such as "LDN" are also general terms.
+ */
+export function docCodeSegments(text: string, docs: { id: string; name: string }[]): CodeSegment[] {
+  // Codes are capitalised ids of three or more characters ("NDC", "FSS");
+  // a one-letter id would mark every "A" in the text.
+  const coded = docs.filter((d) => /^[A-Z][A-Z0-9_]{2,}$/.test(d.id) && d.id !== d.name);
+  if (coded.length === 0) return [text];
+  const names = new Map(coded.map((d) => [d.id, d.name]));
+  const pattern = new RegExp(
+    `\\b(${[...names.keys()]
+      .sort((x, y) => y.length - x.length)
+      .map((id) => id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+      .join("|")})\\b`,
+    "g",
+  );
+  const out: CodeSegment[] = [];
+  let last = 0;
+  for (const m of text.matchAll(pattern)) {
+    const at = m.index ?? 0;
+    if (at > last) out.push(text.slice(last, at));
+    out.push({ code: m[1], name: names.get(m[1]) ?? m[1] });
+    last = at + m[1].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out.length > 0 ? out : [text];
+}

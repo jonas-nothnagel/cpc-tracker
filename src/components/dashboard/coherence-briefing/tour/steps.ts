@@ -50,7 +50,6 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
   brief: [
     { id: "overall", target: "brief-overall", placement: "bottom" },
     { id: "themes", target: "brief-themes", placement: "bottom" },
-    { id: "example", target: "brief-example", placement: "top" },
     { id: "aligned", target: "brief-aligned", placement: "top" },
     { id: "commitments", target: "brief-commitments", placement: "top" },
     { id: "documents", target: "brief-documents", placement: "top" },

@@ -1690,6 +1690,275 @@
   }
 }
 
+/* ── Panels: the drill-downs in the brief's type and inks ─────────── */
+
+[data-brief] .brief-panel-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--brief-ink);
+  text-wrap: pretty;
+}
+
+[data-brief] .brief-panel-sub {
+  margin: 0.3rem 0 0;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-result {
+  margin-top: 0.8rem;
+}
+
+[data-brief] .brief-panel-result .brief-pair-value {
+  font-size: 0.875rem;
+}
+
+[data-brief] .brief-panel-result .brief-pair-bar {
+  height: 14px;
+}
+
+[data-brief] .brief-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 1.25rem 1.5rem 2.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-panel-h {
+  margin: 0 0 0.4rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .brief-panel-lead {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1.35;
+}
+
+[data-brief] .brief-panel-note + .brief-panel-note {
+  margin-top: 0.75rem;
+}
+
+[data-brief] .brief-panel-note-label {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-text {
+  margin: 0;
+}
+
+/* A document code in an AI text, named in its tooltip. */
+[data-brief] .brief-panel-body abbr[title] {
+  text-decoration: underline dotted;
+  text-decoration-color: rgba(35, 46, 61, 0.55);
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+[data-brief] .brief-panel-meta {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .brief-panel-caveat {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-more {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brief-ink);
+  font: inherit;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+[data-brief] .brief-panel-more:hover {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .brief-panel-show-all {
+  margin-top: 0.6rem;
+}
+
+/* Two targets, one above the other, joined by the rating's line. */
+[data-brief] .brief-panel-quote {
+  margin: 0;
+}
+
+[data-brief] .brief-panel-quote-source {
+  margin: 0 0 0.3rem;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-quote-label {
+  font-weight: 600;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-panel-quote-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+[data-brief] .brief-panel-link {
+  display: block;
+  width: 3rem;
+  height: 0;
+  margin: 1rem 0;
+}
+
+[data-brief] .brief-panel-link-reinforce {
+  border-top: 2px solid var(--brief-green);
+}
+
+[data-brief] .brief-panel-link-apart {
+  border-top: 2px dashed var(--brief-red);
+}
+
+[data-brief] .brief-panel-link-partial {
+  border-top: 2px solid #a9b3a4;
+}
+
+[data-brief] .brief-panel-link-none {
+  border-top: 2px dotted #a9b3a4;
+}
+
+/* Rows of targets or target pairs, marked with the rating's ink. */
+[data-brief] .brief-panel-rows {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-panel-row {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .brief-panel-row > button {
+  display: grid;
+  grid-template-columns: 3px minmax(0, 1fr);
+  column-gap: 0.75rem;
+  width: 100%;
+  padding: 0.6rem 0.35rem 0.6rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .brief-panel-row > button:hover {
+  background: #f7f7f7;
+}
+
+[data-brief] .brief-panel-mark {
+  align-self: stretch;
+  border-radius: 2px;
+}
+
+[data-brief] .brief-panel-mark-reinforce {
+  background: var(--brief-green);
+}
+
+[data-brief] .brief-panel-mark-apart {
+  background: repeating-linear-gradient(180deg, var(--brief-red) 0 4px, transparent 4px 7px);
+}
+
+[data-brief] .brief-panel-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+[data-brief] .brief-panel-row-line {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+[data-brief] .brief-panel-row > button:hover .brief-panel-row-line {
+  text-decoration: underline;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+}
+
+[data-brief] .brief-panel-row-doc {
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-row-type {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+/* Documents taking part in a theme, by share. */
+[data-brief] .brief-panel-share {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 7rem 2.75rem;
+  align-items: center;
+  column-gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  font-size: 0.875rem;
+}
+
+[data-brief] .brief-panel-share-bar > span {
+  display: block;
+  height: 9px;
+  min-width: 3px;
+}
+
+[data-brief] .brief-panel-share-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The theme's example, at reading size. */
+[data-brief] .brief-panel-body .brief-example {
+  margin: 0;
+}
+
+[data-brief] .brief-panel-body .brief-example-caption,
+[data-brief] .brief-panel-body .brief-quote-source {
+  font-size: 0.8125rem;
+}
+
+[data-brief] .brief-panel-body .brief-quote-text {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+[data-brief] .brief-panel-body .brief-example-link {
+  margin-top: 50px;
+}
+
+[data-brief] .brief-panel-body .brief-example-actions .brief-button-quiet {
+  font-size: 0.875rem;
+}
+
 /* ── Print preview bar ───────────────────────────────────────────── */
 
 [data-brief] .brief-preview-bar {

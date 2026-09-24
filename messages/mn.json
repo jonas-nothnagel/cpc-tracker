@@ -496,32 +496,28 @@
       "brief": {
         "steps": {
           "overall": {
-            "title": "Ерөнхий уялдаа",
-            "body": "Цэг бүр нь нэг зорилтын хос: өөр баримт бичгийн хоёр зорилтыг хиймэл оюуны загвар харьцуулсан. Цэгүүдийг үнэлгээгээр нь бүлэглэсэн: уялдаатай, хэсэгчлэн уялдаатай, болзошгүй үл нийцэл, тодорхой холбоогүй."
+            "title": "Overall coherence",
+            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots regroup by recurring theme, and around one document at a time."
           },
           "themes": {
-            "title": "Давтагдах сэдвүүд",
-            "body": "Хиймэл оюуны загвар үнэлсэн зорилтын хосуудыг давтагдах сэдвүүдэд бүлэглэдэг. Мөр бүр сэдэв хэр олон давтагддаг, аль баримт бичгүүд холбогддогийг харуулна; сэдвийг сонгоход түүний жишээ гарна."
-          },
-          "example": {
-            "title": "Зорилтууд эх бичвэрээрээ",
-            "body": "Жишээнүүд хоёр зорилтыг баримт бичгээс нь иш татна. Бүтнээр нь уншихад үнэлгээний талаарх хиймэл оюуны тайлбар нэмэгдэнэ; тайлбар нь зөвлөх шинжтэй бөгөөд үндэсний шинжээчдийн хяналтад зориулагдсан."
+            "title": "Recurring themes",
+            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Each cluster of dots is one theme, numbered like the list; selecting either opens the theme with an example."
           },
           "commitments": {
             "title": "Эхэлж хянах зорилтууд",
             "body": "Хамгийн олон болзошгүй үл нийцэлд холбогдсон зорилтууд. Нэгийг сонгоход түүнтэй уялдаатай болон болзошгүй үл нийцэлтэй зорилтуудын жагсаалт гарна."
           },
           "documents": {
-            "title": "Баримт бичгүүдийг зэрэгцүүлэн",
-            "body": "Мөр бүр нэг хос баримт бичиг: болзошгүй үл нийцэл зүүнээс, уялдаа баруунаас. Хосыг сонгоход түүний болзошгүй үл нийцлүүдийн жагсаалт гарна."
+            "title": "Documents side by side",
+            "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document places it at the centre of the dots, with its target pairs with each other document beside it; selecting a pair of documents opens the AI summary, the strongest aligned target pairs and the potential misalignments."
           },
           "builder": {
-            "title": "Тоймыг тохируулах",
-            "body": "Баримт бичиг, бодлогын чиглэл, хэсгүүдээ сонгоно уу. Тойм тэр даруй шинэчлэгдэж, хоёроос гурван хуудсанд хэвлэгдэх ба холбоосоор хуваалцаж болно."
+            "title": "Customize the brief",
+            "body": "Choose the documents and the policy areas, then the sections for the printed brief. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
           },
           "aligned": {
-            "title": "Most aligned targets",
-            "body": "The targets aligned with the largest share of the targets they were compared with: where the documents already pull together."
+            "title": "Strongest alignments",
+            "body": "The targets with the most strong alignments with targets in other documents, counted as in the explorer. Selecting one lists the targets it is aligned with and those with potential misalignment."
           }
         }
       }
@@ -3082,7 +3078,15 @@
       "whereAlign": "Where they align",
       "whereDiverge": "Where they may diverge",
       "more": "More",
-      "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}"
+      "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}",
+      "aiExplanation": "AI explanation",
+      "rating": {
+        "high": "Strong alignment",
+        "medium": "Moderate alignment",
+        "low": "Partial alignment",
+        "none": "No clear relationship",
+        "flagged": "Potential misalignment"
+      }
     },
     "and": "ба",
     "resources": {

@@ -110,6 +110,88 @@ describe("BriefPanels", () => {
     expect(screen.getByText("Theme names were identified across all documents.")).toBeTruthy();
   });
 
+  it("opens a pair of documents on the brief's result bar", () => {
+    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
+    expect(
+      screen.getByRole("img", {
+        name: "Document A and Document B: 67% aligned, 17% potential misalignment, from 36 target pairs",
+      }),
+    ).toBeTruthy();
+  });
+
+  it("asks for feedback on a pair of documents' AI reading, and only where there is one", async () => {
+    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
+    expect(await screen.findByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeTruthy();
+    cleanup();
+    renderPanels([{ kind: "docPair", a: "B", b: "C" }]);
+    await new Promise((r) => setTimeout(r, 20));
+    expect(screen.queryByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeNull();
+  });
+
+  it("opens a target on its own result bar", () => {
+    renderPanels([{ kind: "commitment", id: "B6" }]);
+    expect(
+      screen.getByRole("img", {
+        name: "6 Commitment B6: 33% aligned, 58% potential misalignment, from 12 target pairs",
+      }),
+    ).toBeTruthy();
+  });
+
+  it("shows a theme's size, its example and feedback on its AI summary", async () => {
+    const themed = briefFixture({ themes: true });
+    const data = buildBriefData(themed, scopeOf(themed, ["A", "B", "C"]), null);
+    const onPush = vi.fn();
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <div data-brief>
+          <BriefPanels
+            stack={[{ kind: "theme", type: "friction", name: "Water allocation pressure" }]}
+            source={themed}
+            data={data}
+            onPush={onPush}
+            onBack={vi.fn()}
+            onClose={vi.fn()}
+          />
+        </div>
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByText("9 potential misalignments")).toBeTruthy();
+    expect(screen.getByText("Resources involved: water and land")).toBeTruthy();
+    const example = screen.getByRole("figure");
+    expect(within(example).getByText("Verbatim text of commitment B5.")).toBeTruthy();
+    fireEvent.click(within(example).getByRole("button", { name: "Read in full" }));
+    expect(onPush).toHaveBeenCalledWith({ kind: "pair", a: "B5", b: "C4" });
+    expect(await screen.findByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeTruthy();
+  });
+
+  it("reads one comparison as the two targets and the AI's explanation", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        json: async () => ({
+          pair: {
+            targetAId: "B6",
+            targetBId: "C4",
+            alignment: "flagged",
+            mechanism: "resource_competition",
+            contestedResources: ["wetland"],
+            description: "Both claim the same wetland.",
+          },
+          targetA: { id: "B6", text: "Text B6", sourceDocument: "B", sourceLabel: "6 Commitment B6", country: "Testland", isQuantitative: false, isTimeBound: false },
+          targetB: { id: "C4", text: "Text C4", sourceDocument: "C", sourceLabel: "4 Commitment C4", country: "Testland", isQuantitative: false, isTimeBound: false },
+        }),
+      })),
+    );
+    renderPanels([{ kind: "pair", a: "B6", b: "C4" }]);
+    expect(await screen.findByRole("heading", { name: "Potential misalignment" })).toBeTruthy();
+    expect(screen.getByText("Competing for resources")).toBeTruthy();
+    expect(screen.getByText("Verbatim text of commitment B6.")).toBeTruthy();
+    expect(screen.getByText("Verbatim text of commitment C4.")).toBeTruthy();
+    expect(screen.getByText("Resources involved: wetland")).toBeTruthy();
+    expect(await screen.findByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeTruthy();
+  });
+
   it("loads one comparison with its AI reading", async () => {
     vi.stubGlobal(
       "fetch",
