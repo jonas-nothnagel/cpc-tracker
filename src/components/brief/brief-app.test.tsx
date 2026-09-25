@@ -14,6 +14,7 @@ globalThis.ResizeObserver ??= class {
   disconnect() {}
 } as never;
 import { defaultSelection } from "@/lib/brief/selection";
+import { initialExploreState } from "@/lib/brief/explore/state";
 import type { BriefSource } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
 
@@ -200,6 +201,29 @@ describe("BriefApp screen and print", () => {
     fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
     const heading = document.querySelector('[data-step="map"] h2');
     expect(document.activeElement).toBe(heading);
+  });
+
+  it("hands a target from the overview to the ring, and goes there", () => {
+    const scroll = vi.mocked(Element.prototype.scrollIntoView);
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <BriefApp
+          source={SOURCE}
+          initialSelection={defaultSelection(SOURCE)}
+          preparedOn="2026-09-23T10:00:00.000Z"
+          explore={{ layers: null, groups: ["docs"], initialState: initialExploreState(), initialPair: null }}
+        />
+      </NextIntlClientProvider>,
+    );
+    const ring = document.getElementById("brief-explore") as HTMLElement;
+    expect(within(ring).queryByText(/Potential misalignment with \d+\./)).toBeNull();
+    const row = within(document.querySelector('[data-step="apart"]') as HTMLElement).getAllByTestId("hub-apart-row")[0];
+    fireEvent.click(within(row).getByRole("button", { pressed: false }));
+    scroll.mockClear();
+    fireEvent.click(within(row).getByRole("button", { name: "Explore this target" }));
+    // The ring puts it in the centre and says how it reads against the rest.
+    expect(within(ring).getByText(/Potential misalignment with 2\./)).toBeTruthy();
+    expect(scroll.mock.contexts).toContain(ring);
   });
 
   it("keeps the overview on screen whatever the printed brief holds", () => {

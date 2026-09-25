@@ -152,6 +152,12 @@ export function BriefApp({
     [],
   );
 
+  // A target from the overview goes to the ring's centre, and the reader with it.
+  const exploreTarget = (id: string) => {
+    dispatchExplore({ type: "focus", id });
+    document.getElementById("brief-explore")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const readBrief = () =>
     document.getElementById("brief-main")?.scrollIntoView({ behavior: "smooth", block: "start" });
   const customize = () => {
@@ -203,6 +209,7 @@ export function BriefApp({
                 onOpenCommitment={handlers.onOpenCommitment}
                 onOpenDocPair={handlers.onOpenDocPair}
                 onOpenPair={handlers.onOpenPair}
+                onExplore={explore ? exploreTarget : undefined}
               />
             }
             sections={selection.sections.filter((id) => !OVERVIEW_SECTIONS.includes(id))}
