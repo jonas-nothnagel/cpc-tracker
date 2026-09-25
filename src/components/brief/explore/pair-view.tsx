@@ -5,18 +5,21 @@ import { useLocale, useTranslations } from "next-intl";
 import { FeedbackControl } from "@/components/dashboard/coherence-briefing/feedback-control";
 import { toneOf } from "@/lib/brief/compute";
 import type { FoundPair } from "@/lib/brief/pair";
-import type { BriefCommitment, BriefDocument } from "@/lib/brief/source";
+import type { ExploreItem } from "@/lib/brief/explore/model";
+import type { BriefCommitment } from "@/lib/brief/source";
 import { useResourceLine } from "../sections/themes";
 
 /** A target's text, a few lines at first, the rest on request. */
 function Quote({ c, docName }: { c: BriefCommitment; docName: string }) {
+  const item = c as ExploreItem;
+  const label = item.kind && item.kind !== "target" ? (item.code ? `${item.code} ${item.name}` : c.label) : c.label;
   const t = useTranslations("brief.explore");
   const [open, setOpen] = useState(false);
   const long = c.text.length > 280;
   return (
     <blockquote className="brief-panel-quote">
       <p className="brief-panel-quote-source">
-        {docName} · <span className="brief-panel-quote-label">{c.label}</span>
+        {docName} · <span className="brief-panel-quote-label">{label}</span>
       </p>
       <p className="brief-panel-quote-text ex-quote" data-clamped={long && !open ? "true" : undefined}>
         {c.text}
@@ -41,18 +44,20 @@ export function PairView({
   b,
   partner,
   commitments,
-  docs,
+  docName,
+  countryName,
   onCentre,
   onClose,
 }: {
   countryId: string;
-  /** The two targets, as asked for (the centre first). */
+  /** The two seats, as asked for (the centre first). */
   a: string;
   b: string;
-  /** The target that is not in the centre. */
+  /** The seat that is not in the centre. */
   partner: string;
-  commitments: Map<string, BriefCommitment>;
-  docs: BriefDocument[];
+  commitments: Map<string, ExploreItem>;
+  docName: (id: string) => string;
+  countryName: string;
   onCentre: (id: string) => void;
   onClose: () => void;
 }) {
@@ -77,7 +82,6 @@ export function PairView({
     };
   }, [a, b, countryId, locale, key]);
 
-  const docName = (id: string) => docs.find((d) => d.id === id)?.name ?? id;
   const current = state?.key === key ? state : null;
   const found = current?.status === "ok" ? current.found : undefined;
   // The stored order, so an explanation that says "the first target" points
@@ -85,7 +89,9 @@ export function PairView({
   const first = commitments.get(found?.pair.targetAId ?? a);
   const second = commitments.get(found?.pair.targetBId ?? b);
   const pair = found?.pair;
-  const flagged = pair?.alignment === "flagged";
+  // A reported action or budget line on one side: its own wording and caveat.
+  const layer = [commitments.get(a), commitments.get(b)].find((c) => c && c.kind !== "target")?.kind ?? null;
+  const flagged = pair?.alignment === "flagged" && layer !== "budget";
   const resources =
     pair && flagged && pair.mechanism === "resource_competition" ? resourceLine(pair.contestedResources ?? []) : null;
 
@@ -93,7 +99,13 @@ export function PairView({
     <section className="ex-pair" aria-live="polite" data-testid="explore-pair">
       <div className="ex-pair-head">
         <h3 className="ex-pair-title">
-          {pair ? tp(`rating.${pair.alignment}`) : tp("pairDialog")}
+          {!pair
+            ? tp("pairDialog")
+            : layer === "budget"
+              ? t(pair.alignment === "high" ? "tipBudgetMatch" : "tipBudgetNone")
+              : layer === "action" && pair.alignment === "flagged"
+                ? t("tipActionPull")
+                : tp(`rating.${pair.alignment}`)}
           {pair && flagged && pair.mechanism && <span className="ex-pair-type">{tm(pair.mechanism)}</span>}
         </h3>
         <span className="ex-pair-tools">
@@ -125,6 +137,8 @@ export function PairView({
           {pair.descriptionTranslationPending && (
             <p className="brief-panel-caveat">{td("rationaleTranslationPending")}</p>
           )}
+          {layer === "action" && <p className="brief-panel-caveat">{t("caveatBtr", { country: countryName })}</p>}
+          {layer === "budget" && <p className="brief-panel-caveat">{t("caveatBer")}</p>}
           <p className="brief-panel-caveat">{td("aiRationaleDisclaimer")}</p>
           <FeedbackControl
             variant="bar"

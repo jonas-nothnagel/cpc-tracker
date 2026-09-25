@@ -6,6 +6,7 @@ import { buildBriefSource } from "@/lib/brief/source";
 import { parseSelection } from "@/lib/brief/selection";
 import { parseExploreState, type ExploreGroup } from "@/lib/brief/explore/state";
 import { focusKey } from "@/lib/brief/explore/focus";
+import { buildExploreLayers, layerIdsOf } from "@/lib/brief/explore/layers";
 import { ExploreApp } from "@/components/brief/explore/explore-app";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -26,13 +27,9 @@ async function load(props: Props) {
   if (!entry || !entry.visible) return null;
   const result = getCountryDashboardPayload(entry.id, locale, null);
   if (result.kind !== "ok") return null;
-  const source = buildBriefSource({
-    countryId: entry.id,
-    countryName: entry.name,
-    data: result.payload.data as unknown as Record<string, unknown>,
-    locale,
-  });
-  return { locale, source };
+  const data = result.payload.data as unknown as Record<string, unknown>;
+  const source = buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale });
+  return { locale, source, layers: buildExploreLayers(data, source) };
 }
 
 export async function generateMetadata(props: Props) {
@@ -45,7 +42,7 @@ export async function generateMetadata(props: Props) {
 export default async function ExplorePreviewPage(props: Props) {
   const loaded = await load(props);
   if (!loaded) notFound();
-  const { source } = loaded;
+  const { source, layers } = loaded;
   const searchParams = await props.searchParams;
   const selection = parseSelection(searchParams, source);
   const groups: ExploreGroup[] = ["docs", ...source.lenses.map((l) => l.id).filter((id) => RING_LENSES.has(id))];
@@ -53,18 +50,25 @@ export default async function ExplorePreviewPage(props: Props) {
   // What a link may put in the centre: a target, a document or a policy area.
   const ids = new Set([
     ...source.commitments.filter((c) => inScope.has(c.doc)).map((c) => c.id),
+    ...(layers ? layerIdsOf(layers) : []),
     ...selection.docs.map((id) => focusKey({ kind: "doc", id })),
     ...source.lenses
       .filter((l) => RING_LENSES.has(l.id))
       .flatMap((l) => l.categories.map((c) => focusKey({ kind: "area", lens: l.id, id: c.id }))),
   ]);
+  const initialState = parseExploreState(searchParams, ids, groups);
+  // A shared comparison opens only next to the centre it was shared with.
+  const [pairA, pairB] = String(searchParams.pair ?? "").split("~");
+  const initialPair = initialState.focus === pairA && ids.has(pairB) ? { a: pairA, b: pairB } : null;
   return (
     <ExploreApp
       source={source}
       docs={selection.docs}
       lens={selection.lens}
       groups={groups}
-      initialState={parseExploreState(searchParams, ids, groups)}
+      initialState={initialState}
+      layers={layers}
+      initialPair={initialPair}
     />
   );
 }

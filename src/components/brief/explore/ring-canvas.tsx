@@ -41,8 +41,6 @@ export const RING_INK = {
 
 /** How each reading is drawn as a line: ink, width, opacity, dash. */
 const LINE_STYLE: Partial<Record<Relation, { ink: string; width: number; alpha: number; dash: number[] }>> = {
-  /** The centre's own targets, tied to it in ink. */
-  unrelated: { ink: RING_INK.ink, width: 1.1, alpha: 0.5, dash: [] },
   strong: { ink: RING_INK.green, width: 1.2, alpha: 0.6, dash: [] },
   aligned: { ink: RING_INK.green, width: 0.9, alpha: 0.26, dash: [] },
   partial: { ink: "#8f9a8a", width: 1, alpha: 0.5, dash: [1.5, 3] },
@@ -56,6 +54,8 @@ export interface SeatStyle {
   /** Part of a potential misalignment band: every other seat of the band is
    *  drawn small, the brief's checker texture, so the band reads without its red. */
   texture?: boolean;
+  /** A reported action or budget line: a square, not a target's dot. */
+  square?: boolean;
 }
 
 export interface ArcLabel {
@@ -79,6 +79,7 @@ interface SeatState {
   b: Float32Array;
   s: Float32Array;
   hollow: Uint8Array;
+  square: Uint8Array;
 }
 
 function seatState(n: number): SeatState {
@@ -90,6 +91,7 @@ function seatState(n: number): SeatState {
     b: new Float32Array(n),
     s: new Float32Array(n),
     hollow: new Uint8Array(n),
+    square: new Uint8Array(n),
   };
 }
 
@@ -122,7 +124,7 @@ function lineWidth(base: number, weight: number): number {
 
 /** Lines of one kind and width in one pass each, overprinting where they cross. */
 function strokeLines(ctx: CanvasRenderingContext2D, paths: EdgePath[], alpha: number, drained = false) {
-  for (const relation of ["unrelated", "aligned", "partial", "strong", "apart"] as Relation[]) {
+  for (const relation of ["aligned", "partial", "strong", "apart"] as Relation[]) {
     const style = LINE_STYLE[relation];
     const list = paths.filter((p) => p.relation === relation);
     if (!style || list.length === 0) continue;
@@ -144,8 +146,8 @@ function strokeLines(ctx: CanvasRenderingContext2D, paths: EdgePath[], alpha: nu
 }
 
 interface Frame {
-  /** Lines tying the centre to its own targets on the ring. */
-  tethers: EdgePath[];
+  /** Seats that just went to the centre, and how far their pulse has run (0-1). */
+  pulse: { ids: number[]; t: number } | null;
   /** Seats of an arc brought forward; lines to other seats step back. */
   hotIds: Set<number> | null;
   layout: RingLayout;
@@ -190,7 +192,6 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
     ctx.lineCap = "round";
     // A seat in hand shows its own lines; the centre's step back.
     const peek = f.road.length > 0;
-    strokeLines(ctx, f.tethers, f.lineAlpha);
     if (f.hotIds && !peek) {
       strokeLines(ctx, f.flower.filter((p) => !f.hotIds!.has(p.id)), f.lineAlpha, true);
       strokeLines(ctx, f.flower.filter((p) => f.hotIds!.has(p.id)), f.lineAlpha);
@@ -213,7 +214,11 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
   for (let i = 0; i < cur.x.length; i++) {
     if (!layout.placed[i]) continue;
     ctx.beginPath();
-    ctx.arc(cur.x[i], cur.y[i], radius * cur.s[i], 0, Math.PI * 2);
+    const rr = radius * cur.s[i];
+    if (cur.square[i]) {
+      const half = rr * 0.88;
+      ctx.rect(cur.x[i] - half, cur.y[i] - half, half * 2, half * 2);
+    } else ctx.arc(cur.x[i], cur.y[i], rr, 0, Math.PI * 2);
     const color = `rgb(${cur.r[i] | 0},${cur.g[i] | 0},${cur.b[i] | 0})`;
     if (cur.hollow[i]) {
       ctx.strokeStyle = color;
@@ -232,7 +237,21 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
     ctx.arc(cur.x[i], cur.y[i], radius + extra, 0, Math.PI * 2);
     ctx.stroke();
   };
-  if (f.focus !== null && layout.placed[f.focus]) ringAt(f.focus, 1.5, 1.6);
+  if (f.focus !== null && layout.placed[f.focus]) ringAt(f.focus, 2.5, 1.4);
+  // Where the centre came from: one soft ring widening from each of its seats.
+  if (f.pulse) {
+    ctx.save();
+    ctx.globalAlpha = (1 - f.pulse.t) * 0.7;
+    for (const i of f.pulse.ids) {
+      if (!layout.placed[i]) continue;
+      ctx.strokeStyle = RING_INK.ink;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.arc(cur.x[i], cur.y[i], radius + 3 + f.pulse.t * 16, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
   if (f.hotLine !== null && layout.placed[f.hotLine]) ringAt(f.hotLine, 3, 2);
   if (f.hot !== null && f.hot !== f.hotLine && layout.placed[f.hot]) ringAt(f.hot, 3, 1.6);
 }
@@ -250,7 +269,7 @@ export function RingCanvas({
   n,
   styles,
   edges,
-  tethers = [],
+  pulse = null,
   neighbours,
   focus,
   highlight,
@@ -275,8 +294,9 @@ export function RingCanvas({
   styles: SeatStyle[];
   /** Lines from the target in the centre. */
   edges: EdgeSpec[];
-  /** The centre's own seats, tied to it by a line each. */
-  tethers?: number[];
+  /** Seats that just took the centre: they pulse once, so the eye finds
+   *  where the centre came from. A new key starts a new pulse. */
+  pulse?: { key: string; ids: number[] } | null;
   /** A seat's own lines, shown while it is in hand. */
   neighbours: (id: number) => EdgeSpec[];
   focus: number | null;
@@ -317,10 +337,7 @@ export function RingCanvas({
   const placed = useMemo(() => placeLabels(layout, labels.map(labelSize)), [layout, labels]);
   const order = useMemo(() => arcs.flatMap((a) => a.ids), [arcs]);
   const flower = useMemo(() => flowerPaths(layout, arcs, edges), [layout, arcs, edges]);
-  const tetherPaths = useMemo(
-    () => flowerPaths(layout, arcs, tethers.map((id) => ({ id, relation: "unrelated" as const }))),
-    [layout, arcs, tethers],
-  );
+  const pulseRef = useRef<{ ids: number[]; t: number } | null>(null);
   const sampled = useMemo(() => flower.map((p) => ({ id: p.id, pts: samplePath(p, 14) })), [flower]);
   const hot = hover ?? cursor ?? highlight;
   // At rest, a seat in hand shows its own lines round the centre. With a
@@ -394,6 +411,7 @@ export function RingCanvas({
       to.b[i] = b;
       to.s[i] = small[i] ? 0.55 : 1;
       to.hollow[i] = styles[i]?.hollow ? 1 : 0;
+      cur.square[i] = styles[i]?.square ? 1 : 0;
       if (Math.abs(to.x[i] - from.x[i]) > 0.5 || Math.abs(to.y[i] - from.y[i]) > 0.5) moves = true;
     }
     const frame = (p: number) => {
@@ -435,7 +453,7 @@ export function RingCanvas({
       const canvas = canvasRef.current;
       if (!canvas || !state.current) return;
       paint(canvas, {
-        tethers: tetherPaths,
+        pulse: pulseRef.current,
         hotIds,
         layout,
         cur: state.current,
@@ -450,7 +468,36 @@ export function RingCanvas({
       });
     };
     if (settled.current) drawRef.current(1);
-  }, [layout, flower, tetherPaths, road, focus, hot, hotLine, hotIds, size.w, size.h]);
+  }, [layout, flower, road, focus, hot, hotLine, hotIds, size.w, size.h]);
+
+  // One pulse per new centre, once its seats have arrived.
+  const pulseKey = pulse?.key ?? null;
+  const pulseIds = pulse?.ids;
+  useEffect(() => {
+    if (!pulseKey || !pulseIds || pulseIds.length === 0) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || typeof requestAnimationFrame === "undefined") return;
+    let raf = 0;
+    let start = 0;
+    const tick = (now: number) => {
+      if (!settled.current) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      if (!start) start = now;
+      const t = Math.min(1, (now - start) / 900);
+      pulseRef.current = t < 1 ? { ids: pulseIds, t } : null;
+      drawRef.current(1);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      pulseRef.current = null;
+    };
+    // The ids travel with the key.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pulseKey]);
 
   const point = (e: { clientX: number; clientY: number }, el: HTMLElement) => {
     const box = el.getBoundingClientRect();

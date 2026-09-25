@@ -1,5 +1,5 @@
 import type { BriefLens, LensId } from "../source";
-import { levelBetween, relationOf, type ExploreModel, type Relation, type RelationCounts } from "./model";
+import { relationBetween, type ExploreModel, type Relation, type RelationCounts } from "./model";
 
 /**
  * What can take the centre of the ring: one target, a whole document, or a
@@ -57,6 +57,16 @@ export type SeatTone = "reinforce" | "partial" | "none" | "apart" | "unrelated";
  *  one end, alignment at the other, as in the brief's result bar. */
 const TONE_ORDER: SeatTone[] = ["apart", "partial", "none", "unrelated", "reinforce"];
 
+/** Between targets and a layer (reported actions, budget lines) a seat reads
+ *  by coverage: one strongly aligned action or matching budget line is
+ *  enough; otherwise an action that may pull against it; otherwise nothing
+ *  that counts. */
+function coverageOf(p: RelationCounts): SeatTone {
+  if (p.strong > 0) return "reinforce";
+  if (p.apart > 0) return "apart";
+  return p.none + p.partial + p.aligned > 0 ? "none" : "unrelated";
+}
+
 /** The reading most of a seat's pairs have; potential misalignment wins a
  *  tie, as the reading worth a review. */
 function toneOf(p: RelationCounts): SeatTone {
@@ -96,18 +106,22 @@ export function groupProfile(model: ExploreModel, members: number[]): GroupProfi
   for (let j = 0; j < n; j++) {
     if (isMember[j]) continue;
     for (const m of members) {
-      const level = levelBetween(model, m, j);
-      if (level === null) continue;
-      const relation = relationOf(level);
+      const relation = relationBetween(model, m, j);
+      if (relation === null) continue;
       pairs[j][relation] += 1;
-      totals[relation] += 1;
-      total += 1;
+      // The group's own figures count target pairs only.
+      if (model.items[j].kind === "target") {
+        totals[relation] += 1;
+        total += 1;
+      }
     }
   }
+  const groupKind = members.length > 0 ? model.items[members[0]].kind : "target";
+  const crossKind = (j: number) => (model.items[j].kind === "target") !== (groupKind === "target");
   const relation = pairs.map((p, j) =>
     isMember[j] ? "unrelated" : (PRECEDENCE.find((r) => p[r] > 0) ?? "unrelated"),
   );
-  const tone = pairs.map((p, j) => (isMember[j] ? "unrelated" : toneOf(p)));
+  const tone = pairs.map((p, j) => (isMember[j] ? "unrelated" : crossKind(j) ? coverageOf(p) : toneOf(p)));
   return { members, isMember, pairs, relation, tone, totals, total };
 }
 
@@ -150,12 +164,12 @@ export function rankMembers(
     apart.set(m, 0);
     strong.set(m, 0);
   }
-  model.items.forEach((_, j) => {
-    if (profile.isMember[j]) return;
+  model.items.forEach((item, j) => {
+    if (profile.isMember[j] || item.kind !== "target") return;
     for (const m of profile.members) {
-      const level = levelBetween(model, m, j);
-      if (level === "flagged") apart.set(m, apart.get(m)! + 1);
-      else if (level === "high") strong.set(m, strong.get(m)! + 1);
+      const relation = relationBetween(model, m, j);
+      if (relation === "apart") apart.set(m, apart.get(m)! + 1);
+      else if (relation === "strong") strong.set(m, strong.get(m)! + 1);
     }
   });
   const ranked = (counts: Map<number, number>) =>
@@ -178,13 +192,12 @@ export function pairsBetween(
   others: number[],
   reading: "strong" | "apart",
 ): [number, number][] {
-  const level = reading === "strong" ? "high" : "flagged";
   const inGroup = new Set(members);
   const pairs: [number, number][] = [];
   for (const m of members) {
     for (const o of others) {
       if (inGroup.has(o)) continue;
-      if (levelBetween(model, m, o) === level) pairs.push([m, o]);
+      if (relationBetween(model, m, o) === reading) pairs.push([m, o]);
     }
   }
   const mine = new Map<number, number>();

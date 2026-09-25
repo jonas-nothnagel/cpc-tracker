@@ -7,6 +7,8 @@ import { buildBriefData } from "@/lib/brief/data";
 import { scopeOf } from "@/lib/brief/compute";
 import { briefFixture } from "@/lib/brief/test-fixture";
 import { exploreReducer, initialExploreState, type ExploreState } from "@/lib/brief/explore/state";
+import { buildExploreLayers } from "@/lib/brief/explore/layers";
+import { LAYER_DATA } from "@/lib/brief/explore/test-layers";
 import { Explore } from "./explore";
 
 const SOURCE = briefFixture();
@@ -226,5 +228,64 @@ describe("Explore", () => {
     fireEvent.click(lens);
     expect(lens).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("application", { name: /grouped by Biodiversity/ })).toBeInTheDocument();
+  });
+});
+
+describe("Explore with finance and implementation", () => {
+  const LAYERS = buildExploreLayers(LAYER_DATA, SOURCE);
+
+  function renderLayered(initial?: Partial<ExploreState>) {
+    function Layered() {
+      const [state, dispatch] = useReducer(exploreReducer, { ...initialExploreState(), ...initial });
+      return (
+        <Explore source={SOURCE} data={DATA} state={state} dispatch={dispatch} groups={["docs", "globe"]} layers={LAYERS} />
+      );
+    }
+    return render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Layered />
+      </NextIntlClientProvider>,
+    );
+  }
+
+  it("offers the layers as switches, off at first", () => {
+    renderLayered();
+    const layers = screen.getByRole("group", { name: "Layers" });
+    expect(within(layers).getByRole("button", { name: /Reported actions/ })).toHaveAttribute("aria-pressed", "false");
+    expect(within(layers).getByRole("button", { name: /Budget lines/ })).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("shows a target's reported actions, budget lines and NR7 status beside the ring", () => {
+    renderLayered({ focus: "A1" });
+    expect(within(side()).getByText("1 strongly aligned reported action.")).toBeInTheDocument();
+    expect(within(side()).getByText("No matching budget line.")).toBeInTheDocument();
+    expect(within(side()).getByText("Limited progress")).toBeInTheDocument();
+    expect(screen.getAllByTestId("explore-action-strong")).toHaveLength(1);
+  });
+
+  it("puts a reported action in the centre with the targets it serves and may pull against", () => {
+    renderLayered({ focus: "BTR_1" });
+    expect(within(side()).getByText(/Reported mitigation action · Biennial Transparency Report \(BTR\)/)).toBeInTheDocument();
+    expect(within(side()).getByText("Strongly aligned with 1 target. May pull against 1 target.")).toBeInTheDocument();
+    expect(screen.getAllByTestId("explore-item-strong")).toHaveLength(1);
+    expect(screen.getAllByTestId("explore-item-pull")).toHaveLength(1);
+  });
+
+  it("puts a whole layer in the centre and says how many targets it covers", () => {
+    renderLayered();
+    const budget = screen
+      .getAllByTestId("explore-browse-row")
+      .find((row) => row.textContent?.includes("Budget lines (BER)"))!;
+    fireEvent.click(within(budget).getByRole("button", { name: /^Budget lines \(BER\)/ }));
+    expect(within(side()).getByText("1 of 18 targets have a matching budget line.")).toBeInTheDocument();
+  });
+
+  it("copies a link to the view in the centre", async () => {
+    const writeText = vi.fn(async () => undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+    renderLayered({ focus: "A1" });
+    fireEvent.click(screen.getByRole("button", { name: "Copy link" }));
+    expect(await screen.findByRole("button", { name: "Link copied" })).toBeInTheDocument();
+    expect(writeText).toHaveBeenCalledWith(expect.stringContaining("focus=A1"));
   });
 });

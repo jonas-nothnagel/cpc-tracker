@@ -1,4 +1,5 @@
 import type { LensId } from "../source";
+import { LAYER_ORDER, type LayerId } from "./layers";
 
 /** Readings the ring can draw lines for, in the order the controls list them. */
 export const LINE_KINDS = ["strong", "aligned", "partial", "apart"] as const;
@@ -22,6 +23,8 @@ export interface ExploreState {
   query: string;
   /** Readings drawn as lines. */
   lines: LineKind[];
+  /** Finance and implementation layers shown on the ring. */
+  layers: LayerId[];
 }
 
 export type ExploreAction =
@@ -30,13 +33,14 @@ export type ExploreAction =
   | { type: "clear" }
   | { type: "group"; group: ExploreGroup }
   | { type: "query"; text: string }
-  | { type: "lines"; kind: LineKind; on: boolean };
+  | { type: "lines"; kind: LineKind; on: boolean }
+  | { type: "layer"; layer: LayerId; on: boolean };
 
 /** Most steps Back can take. */
 const TRAIL = 12;
 
 export function initialExploreState(): ExploreState {
-  return { focus: null, trail: [], group: "docs", query: "", lines: ["strong", "apart"] };
+  return { focus: null, trail: [], group: "docs", query: "", lines: ["strong", "apart"], layers: [] };
 }
 
 export function exploreReducer(state: ExploreState, action: ExploreAction): ExploreState {
@@ -61,6 +65,11 @@ export function exploreReducer(state: ExploreState, action: ExploreAction): Expl
         ...state,
         lines: LINE_KINDS.filter((k) => (k === action.kind ? action.on : state.lines.includes(k))),
       };
+    case "layer":
+      return {
+        ...state,
+        layers: LAYER_ORDER.filter((l) => (l === action.layer ? action.on : state.layers.includes(l))),
+      };
     default:
       return state;
   }
@@ -77,10 +86,12 @@ export function parseExploreState(params: Params, ids: Set<string>, groups: Expl
   const state = initialExploreState();
   const focus = first(params.focus);
   const group = first(params.group) as ExploreGroup | undefined;
+  const layers = (first(params.layers) ?? "").split(",");
   return {
     ...state,
     focus: focus && ids.has(focus) ? focus : null,
     group: group && groups.includes(group) ? group : state.group,
+    layers: LAYER_ORDER.filter((l) => layers.includes(l)),
   };
 }
 
@@ -89,5 +100,6 @@ export function exploreQuery(state: ExploreState): string {
   const params = new URLSearchParams();
   if (state.focus) params.set("focus", state.focus);
   if (state.group !== "docs") params.set("group", state.group);
+  if (state.layers.length > 0) params.set("layers", state.layers.join(","));
   return params.toString();
 }

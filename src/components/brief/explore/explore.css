@@ -1012,3 +1012,81 @@
   cursor: default;
   opacity: 0.55;
 }
+
+/* ── Where the centre came from: one ink dot, on the ring and in the middle ── */
+
+[data-brief] .ex-origin-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 0.4rem;
+  border-radius: 50%;
+  background: var(--brief-ink);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3.2px var(--brief-ink);
+  vertical-align: 0.05em;
+}
+
+/* ── Finance and implementation ──────────────────────────────────── */
+
+[data-brief] .ex-square {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: #8f9a8a;
+}
+
+[data-brief] .ex-layers button[aria-pressed="true"] .ex-square {
+  background: var(--brief-ink);
+}
+
+[data-brief] .ex-focus-code {
+  color: var(--brief-muted);
+  font-weight: 400;
+}
+
+[data-brief] .ex-focus-facts {
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-caveat {
+  margin-top: 0.4rem;
+}
+
+[data-brief] .ex-nr7 {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ex-layer-section {
+  margin-top: 0.5rem;
+}
+
+[data-brief] .ex-layer-finding {
+  margin: 0 0 0.35rem;
+  font-size: 0.9375rem;
+}
+
+[data-brief] .ex-layer-section .ex-rows + .ex-rows {
+  border-top: 0;
+}
+
+/* The AI's first sentence under a verdict, in the pointer's card. */
+[data-brief] .ex-tip-ai {
+  display: block;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid var(--brief-hairline);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  white-space: normal;
+}
+
+[data-brief] .ex-tip-ai-label {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ex-tip {
+  max-width: 21rem;
+}

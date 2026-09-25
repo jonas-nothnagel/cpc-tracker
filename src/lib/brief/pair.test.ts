@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { findPair } from "./pair";
+import { findPair, readingsFor } from "./pair";
 
 function target(id: string, doc: string) {
   return {
@@ -47,5 +47,36 @@ describe("findPair", () => {
   it("refuses empty or overlong ids before searching", () => {
     expect(findPair(DATA, "", "NDC_1", "en")).toBeNull();
     expect(findPair(DATA, "x".repeat(121), "NDC_1", "en")).toBeNull();
+  });
+});
+
+describe("budget readings", () => {
+  const WITH_BUDGET = {
+    ...DATA,
+    budgetPseudoTargets: [{ id: "BER_1", sourceDocument: "BER", sourceLabel: "71401 Waste", text: "Waste management." }],
+    budgetAlignment: [
+      { targetAId: "NDC_1", targetBId: "BER_1", alignment: "high", description: "The line funds waste work. It is broad." },
+    ],
+  };
+
+  it("finds a target's reading with a budget line", () => {
+    const found = findPair(WITH_BUDGET, "BER_1", "NDC_1", "en");
+    expect(found?.pair.alignment).toBe("high");
+    expect(found?.targetB.sourceLabel).toBe("71401 Waste");
+  });
+
+  it("gives the first sentence of every reading of one target, by partner", () => {
+    expect(readingsFor(WITH_BUDGET, "NDC_1")).toEqual({
+      FSS_1: {
+        level: "flagged",
+        mechanism: "resource_competition",
+        first: "The first target expands cropland the second protects.",
+      },
+      BER_1: { level: "high", first: "The line funds waste work." },
+    });
+  });
+
+  it("has no readings for an unknown id", () => {
+    expect(readingsFor(WITH_BUDGET, "NOPE")).toEqual({});
   });
 });

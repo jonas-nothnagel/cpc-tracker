@@ -92,6 +92,7 @@ export function RestColumn({
   strongest,
   browseTitle,
   browse,
+  layerBrowse = [],
   countsOf,
   docName,
   onFocus,
@@ -103,6 +104,8 @@ export function RestColumn({
   strongest: RankedRow[];
   browseTitle: string;
   browse: BrowseRow[];
+  /** Reported actions and budget lines, where the country has them. */
+  layerBrowse?: BrowseRow[];
   countsOf: (id: string) => ToneCounts;
   docName: (id: string) => string;
   onFocus: (key: string) => void;
@@ -166,6 +169,23 @@ export function RestColumn({
           </ol>
         </section>
       )}
+      {layerBrowse.length > 0 && (
+        <section className="ex-section">
+          <h3 className="ex-sub">{t("browseLayers")}</h3>
+          <ol className="ex-group-rows">
+            {layerBrowse.map((row) => (
+              <BrowseGroup
+                key={row.key}
+                row={row}
+                countsOf={countsOf}
+                onFocus={onFocus}
+                onHover={onHover}
+                onHoverGroup={onHoverGroup}
+              />
+            ))}
+          </ol>
+        </section>
+      )}
     </>
   );
 }
@@ -176,15 +196,25 @@ function Nav({
   onClear,
   previous,
   next,
+  onShare,
 }: {
   canGoBack: boolean;
   onBack: () => void;
   onClear: () => void;
-  /** Step to the target before or after, in the same document. */
+  /** Step to the seat before or after, in the same document or layer. */
   previous?: () => void;
   next?: () => void;
+  /** Copy a link that opens this view. */
+  onShare?: () => Promise<boolean>;
 }) {
   const t = useTranslations("brief.explore");
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    if (!onShare) return;
+    const ok = await onShare();
+    setCopied(ok);
+    if (ok) setTimeout(() => setCopied(false), 2500);
+  };
   return (
     <nav className="ex-nav">
       {canGoBack && (
@@ -195,6 +225,11 @@ function Nav({
       <button type="button" className="ex-link" onClick={onClear}>
         {t("clear")}
       </button>
+      {onShare && (
+        <button type="button" className="ex-link" onClick={share} aria-live="polite">
+          {copied ? t("copied") : t("copyLink")}
+        </button>
+      )}
       {(previous || next) && (
         <span className="ex-step">
           <button type="button" className="ex-link" onClick={previous} disabled={!previous}>
@@ -234,6 +269,8 @@ export function TargetColumn({
   onClear,
   previous,
   next,
+  onShare,
+  extra,
   pair,
 }: {
   item: BriefCommitment;
@@ -250,6 +287,9 @@ export function TargetColumn({
   onClear: () => void;
   previous?: () => void;
   next?: () => void;
+  onShare?: () => Promise<boolean>;
+  /** More about the target: its NR7 status, its reported actions and budget lines. */
+  extra?: ReactNode;
   pair: ReactNode;
 }) {
   const t = useTranslations("brief.explore");
@@ -264,7 +304,14 @@ export function TargetColumn({
     }));
   return (
     <>
-      <Nav canGoBack={canGoBack} onBack={onBack} onClear={onClear} previous={previous} next={next} />
+      <Nav
+        canGoBack={canGoBack}
+        onBack={onBack}
+        onClear={onClear}
+        previous={previous}
+        next={next}
+        onShare={onShare}
+      />
       <p className="ex-focus-doc">{docName(item.doc)}</p>
       <h2 className="ex-focus-title">{commitmentLine(item, 140)}</h2>
       <p className="ex-focus-text" data-clamped={long && !open ? "true" : undefined}>
@@ -278,6 +325,7 @@ export function TargetColumn({
       <p className="ex-focus-finding">{finding}</p>
       {counts.total > 0 && <ToneKey counts={counts} />}
       {pair}
+      {extra}
       {apart.length > 0 && (
         <section className="ex-section">
           <h3 className="ex-sub">{t("apartList", { count: apart.length })}</h3>
@@ -365,6 +413,8 @@ export function GroupColumn({
   canGoBack,
   onBack,
   onClear,
+  onShare,
+  extra,
   pair,
 }: {
   kind: string;
@@ -390,6 +440,9 @@ export function GroupColumn({
   canGoBack: boolean;
   onBack: () => void;
   onClear: () => void;
+  onShare?: () => Promise<boolean>;
+  /** The group's reported actions and budget lines. */
+  extra?: ReactNode;
   pair: ReactNode;
 }) {
   const t = useTranslations("brief.explore");
@@ -410,7 +463,7 @@ export function GroupColumn({
   };
   return (
     <>
-      <Nav canGoBack={canGoBack} onBack={onBack} onClear={onClear} />
+      <Nav canGoBack={canGoBack} onBack={onBack} onClear={onClear} onShare={onShare} />
       <p className="ex-focus-doc">{kind}</p>
       <h2 className="ex-focus-title" title={full}>
         {name}
@@ -540,6 +593,7 @@ export function GroupColumn({
           />
         </section>
       )}
+      {extra}
       {members.length > 0 && (
         <section className="ex-section">
           <h3 className="ex-sub">{t("allTargetsOf", { count: members.length })}</h3>
@@ -597,6 +651,232 @@ export function SearchColumn({
           />
         )}
       />
+    </>
+  );
+}
+
+/** A reported action or budget line in the centre: what it is, how many
+ *  targets it serves (or may pull against), and those targets. */
+export function ItemColumn({
+  kind,
+  source,
+  item,
+  facts,
+  finding,
+  caveat,
+  lists,
+  docName,
+  selected,
+  onSelect,
+  onHover,
+  canGoBack,
+  onBack,
+  onClear,
+  previous,
+  next,
+  onShare,
+  pair,
+}: {
+  kind: string;
+  source: string;
+  item: BriefCommitment & { name?: string; code?: string };
+  /** The action's status or the budget line's spending, as its source states it. */
+  facts?: string;
+  finding: ReactNode;
+  caveat: string;
+  lists: { title: string; tone: "reinforce" | "apart"; rows: PartnerRow[]; testId: string }[];
+  docName: (id: string) => string;
+  selected: string | null;
+  onSelect: (id: string) => void;
+  onHover: (id: string | null) => void;
+  canGoBack: boolean;
+  onBack: () => void;
+  onClear: () => void;
+  previous?: () => void;
+  next?: () => void;
+  onShare?: () => Promise<boolean>;
+  pair: ReactNode;
+}) {
+  const t = useTranslations("brief.explore");
+  const [open, setOpen] = useState(false);
+  const long = item.text.length > 240;
+  return (
+    <>
+      <Nav
+        canGoBack={canGoBack}
+        onBack={onBack}
+        onClear={onClear}
+        previous={previous}
+        next={next}
+        onShare={onShare}
+      />
+      <p className="ex-focus-doc">
+        {kind} · {source}
+      </p>
+      <h2 className="ex-focus-title">
+        {item.code && <span className="ex-focus-code">{item.code} </span>}
+        {item.name ?? item.label}
+      </h2>
+      {facts && <p className="ex-focus-facts">{facts}</p>}
+      <p className="ex-focus-text" data-clamped={long && !open ? "true" : undefined}>
+        {item.text}
+      </p>
+      {long && (
+        <button type="button" className="brief-panel-more" onClick={() => setOpen((v) => !v)}>
+          {open ? t("less") : t("more")}
+        </button>
+      )}
+      <p className="ex-focus-finding">{finding}</p>
+      <p className="brief-panel-caveat ex-caveat">{caveat}</p>
+      {pair}
+      {lists
+        .filter((list) => list.rows.length > 0)
+        .map((list) => (
+          <section key={list.testId} className="ex-section">
+            <h3 className="ex-sub">{list.title}</h3>
+            <Expandable
+              items={list.rows}
+              preview={8}
+              render={(rows) => (
+                <MarkRows
+                  rows={rows.map((p) => ({
+                    key: p.id,
+                    hover: p.id,
+                    lines: [<TargetLine key="t" c={p.commitment} docName={docName} />],
+                    type: p.type,
+                  }))}
+                  tone={list.tone}
+                  selected={selected}
+                  onOpen={onSelect}
+                  onHover={onHover}
+                  testId={list.testId}
+                />
+              )}
+            />
+          </section>
+        ))}
+    </>
+  );
+}
+
+export interface CoverageRow {
+  key: string;
+  name: string;
+  /** Targets of the document: covered (reinforce), pulled against without
+   *  cover (apart), neither (none). */
+  counts: ToneCounts;
+  gaps: BriefCommitment[];
+}
+
+/** A whole layer in the centre (all reported actions of a kind, or all
+ *  budget lines): how many targets it covers, where the gaps are, and the
+ *  items that serve the most targets. */
+export function LayerColumn({
+  kind,
+  name,
+  figures,
+  finding,
+  caveat,
+  rowsTitle,
+  rows,
+  gapTitle,
+  ranked,
+  rankedTitle,
+  countsOf,
+  docName,
+  onFocus,
+  onHover,
+  onHoverArc,
+  canGoBack,
+  onBack,
+  onClear,
+  onShare,
+}: {
+  kind: string;
+  name: string;
+  figures: string;
+  finding: ReactNode;
+  caveat: string;
+  rowsTitle: string;
+  rows: CoverageRow[];
+  gapTitle: (count: number) => string;
+  ranked: RankedRow[];
+  rankedTitle: string;
+  countsOf: (id: string) => ToneCounts;
+  docName: (id: string) => string;
+  onFocus: (key: string) => void;
+  onHover: (id: string | null) => void;
+  onHoverArc: (key: string | null) => void;
+  canGoBack: boolean;
+  onBack: () => void;
+  onClear: () => void;
+  onShare?: () => Promise<boolean>;
+}) {
+  const [open, setOpen] = useState<string | null>(null);
+  return (
+    <>
+      <Nav canGoBack={canGoBack} onBack={onBack} onClear={onClear} onShare={onShare} />
+      <p className="ex-focus-doc">{kind}</p>
+      <h2 className="ex-focus-title">{name}</h2>
+      <p className="ex-focus-facts">{figures}</p>
+      <p className="ex-focus-finding">{finding}</p>
+      <p className="brief-panel-caveat ex-caveat">{caveat}</p>
+      {rows.length > 0 && (
+        <section className="ex-section">
+          <h3 className="ex-sub">{rowsTitle}</h3>
+          <ol className="ex-group-rows">
+            {rows.map((row) => (
+              <GroupRow
+                key={row.key}
+                name={row.name}
+                meta={`${row.counts.reinforce}/${row.counts.total}`}
+                counts={row.counts}
+                open={open === row.key}
+                onOpen={() => setOpen((cur) => (cur === row.key ? null : row.key))}
+                onHover={(on) => onHoverArc(on ? row.key : null)}
+                testId="explore-coverage-row"
+              >
+                {open === row.key && row.gaps.length > 0 && (
+                  <div className="ex-group-row-pairs">
+                    <h4 className="ex-sub ex-sub-small">{gapTitle(row.gaps.length)}</h4>
+                    <Expandable
+                      items={row.gaps}
+                      preview={8}
+                      render={(list) => (
+                        <TargetRows
+                          items={list}
+                          countsOf={countsOf}
+                          onOpen={onFocus}
+                          onHover={onHover}
+                          testId="explore-gap-target"
+                        />
+                      )}
+                    />
+                  </div>
+                )}
+              </GroupRow>
+            ))}
+          </ol>
+        </section>
+      )}
+      {ranked.length > 0 && (
+        <section className="ex-section">
+          <h3 className="ex-sub">{rankedTitle}</h3>
+          <Expandable
+            items={ranked}
+            render={(list) => (
+              <RankRows
+                rows={list}
+                tone="reinforce"
+                docName={docName}
+                onOpen={onFocus}
+                onHover={onHover}
+                testId="explore-layer-ranked"
+              />
+            )}
+          />
+        </section>
+      )}
     </>
   );
 }

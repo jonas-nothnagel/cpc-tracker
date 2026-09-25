@@ -96,3 +96,23 @@ describe("lines", () => {
     expect(s.lines).toEqual(["aligned", "apart"]);
   });
 });
+
+describe("layers", () => {
+  it("starts with the finance and implementation layers off", () => {
+    expect(initialExploreState().layers).toEqual([]);
+  });
+
+  it("switches a layer on and off, keeping the ring's order", () => {
+    let s = exploreReducer(initialExploreState(), { type: "layer", layer: "budget", on: true });
+    s = exploreReducer(s, { type: "layer", layer: "mitigation", on: true });
+    expect(s.layers).toEqual(["mitigation", "budget"]);
+    s = exploreReducer(s, { type: "layer", layer: "budget", on: false });
+    expect(s.layers).toEqual(["mitigation"]);
+  });
+
+  it("reads and writes the layers in a link", () => {
+    const state = parseExploreState({ layers: "budget,adaptation,nope" }, IDS, [...GROUPS]);
+    expect(state.layers).toEqual(["adaptation", "budget"]);
+    expect(exploreQuery(state)).toBe("layers=adaptation%2Cbudget");
+  });
+});

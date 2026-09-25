@@ -3,12 +3,21 @@
 import { useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import type { ToneCounts } from "@/lib/brief/compute";
+import type { ExploreItem } from "@/lib/brief/explore/model";
 import type { BriefCommitment } from "@/lib/brief/source";
 import { commitmentLine, useNumbers } from "../ink";
 import { ResultBar } from "../sections/documents";
 
 /** Rows shown before a quiet "Show all". */
 export const PREVIEW = 6;
+
+/** One readable line for a seat: a target's label or first words, a
+ *  reported action's name, a budget line's name. */
+export function lineOf(c: BriefCommitment | ExploreItem, max = 80): string {
+  const item = c as ExploreItem;
+  if (item.kind && item.kind !== "target") return item.name ?? item.label;
+  return commitmentLine(c, max);
+}
 
 /** A list that shows its first rows and the rest on request. */
 export function Expandable<T>({
@@ -74,7 +83,7 @@ export function RankRows({
             onFocus={() => onHover(row.commitment.id)}
             onBlur={() => onHover(null)}
           >
-            <span className="ex-rank-title">{commitmentLine(row.commitment)}</span>
+            <span className="ex-rank-title">{lineOf(row.commitment)}</span>
             <span className="ex-rank-meta">{docName(row.commitment.doc)}</span>
           </button>
           <span className={`ex-rank-bar ex-rank-bar-${tone}`} aria-hidden="true">
@@ -144,7 +153,7 @@ export function TargetLine({ c, docName }: { c: BriefCommitment; docName: (id: s
   return (
     <>
       <span className="brief-panel-row-doc">{docName(c.doc)} · </span>
-      {commitmentLine(c)}
+      {lineOf(c)}
     </>
   );
 }
@@ -245,7 +254,7 @@ export function TargetRows({
               onBlur={() => onHover?.(null)}
               title={c.text}
             >
-              <span className="ex-target-row-line">{commitmentLine(c)}</span>
+              <span className="ex-target-row-line">{lineOf(c)}</span>
               {counts.total > 0 && (
                 <span className="ex-target-row-bar" aria-hidden="true">
                   <ResultBar counts={counts} />
