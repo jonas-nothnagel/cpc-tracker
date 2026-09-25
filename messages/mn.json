@@ -497,19 +497,19 @@
         "steps": {
           "overall": {
             "title": "Ерөнхий уялдаа",
-            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots form a map of the documents, then gather around one target or document at a time."
+            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots form a map of the documents, then show each side of it on its own, then gather around one document at a time."
           },
           "themes": {
             "title": "Давтагдах сэдвүүд",
-            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Pointing at a theme brings its target pairs forward on the map; selecting it opens the theme with an example."
+            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Pointing at a theme outlines those pairs of documents on the map; selecting it opens the theme with an example."
           },
           "commitments": {
             "title": "Эхэлж хянах зорилтууд",
-            "body": "The targets involved in the most potential misalignments. The first sits at the centre of the dots with its target pairs, grouped by the other documents; selecting another target puts it there, and each dot opens its comparison."
+            "body": "The targets involved in the most potential misalignments. On the map only the potential misalignments remain, and within each document the targets involved in the most move to the front, where they are named. Pointing at a target brings its target pairs forward; selecting it keeps them there and offers to explore the target on the ring further down."
           },
           "documents": {
             "title": "Баримт бичгүүдийг зэрэгцүүлэн",
-            "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document places it at the centre of the dots, with its target pairs with each other document beside it; selecting a pair of documents opens the AI summary, the strongest aligned target pairs and the potential misalignments."
+            "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document, in the list or around the centre, places it at the centre of the dots, with its target pairs with each other document beside it; selecting a pair of documents in the list opens the AI summary, the strongest aligned target pairs and the potential misalignments."
           },
           "builder": {
             "title": "Тоймыг тохируулах",
@@ -517,7 +517,7 @@
           },
           "aligned": {
             "title": "Strongest alignments",
-            "body": "The targets with the most strong alignments with targets in other documents, counted as in the explorer. The first sits at the centre of the dots with its target pairs, grouped by the other documents; selecting another target puts it there, and each dot opens its comparison."
+            "body": "The targets with the most strong alignments with targets in other documents. On the map only the strong alignments remain, and within each document its most strongly aligned targets move to the front, where they are named. Pointing at a target brings its target pairs forward; selecting it keeps them there and offers to explore the target on the ring further down."
           },
           "map": {
             "title": "Map of the documents",

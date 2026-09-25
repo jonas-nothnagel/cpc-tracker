@@ -15,6 +15,7 @@ globalThis.ResizeObserver ??= class {
 } as never;
 import { defaultSelection } from "@/lib/brief/selection";
 import { initialExploreState } from "@/lib/brief/explore/state";
+import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
 import type { BriefSource } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
 
@@ -226,6 +227,18 @@ describe("BriefApp screen and print", () => {
     expect(scroll.mock.contexts).toContain(ring);
   });
 
+  it("walks the page from top to bottom: each stop of the walkthrough below the one before", () => {
+    renderApp(briefFixture({ themes: true }));
+    // The builder is the menu beside the page, visited last.
+    const stops = TOUR_STEPS.brief
+      .filter((step) => step.target !== "brief-builder")
+      .map((step) => document.querySelector(`[data-tour="${step.target}"]`));
+    expect(stops.every(Boolean)).toBe(true);
+    for (let k = 1; k < stops.length; k++) {
+      expect(stops[k - 1]!.compareDocumentPosition(stops[k]!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    }
+  });
+
   it("keeps the overview on screen whatever the printed brief holds", () => {
     renderApp(briefFixture({ themes: true }));
     const sections = screen.getByRole("group", { name: "In the printed brief" });
@@ -287,8 +300,8 @@ describe("BriefApp walkthrough", () => {
     expect(titles).toEqual([
       "Overall coherence",
       "Map of the documents",
-      "Recurring themes",
       "Strongest alignments",
+      "Recurring themes",
       "Targets to review first",
       "Documents side by side",
       "Customize the brief",
