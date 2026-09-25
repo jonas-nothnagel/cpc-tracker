@@ -66,6 +66,9 @@ export interface DrawerShellProps {
    *  returning to a panel visited earlier in this trail, which is restored to
    *  where it was left. */
   panelKey?: string;
+  /** "dim" (default) darkens and blurs the page; "light" keeps it in view,
+   *  for pages whose panels explain what stays visible beside them. */
+  scrim?: "dim" | "light";
   children: ReactNode;
 }
 
@@ -77,6 +80,7 @@ export function DrawerShell({
   dialogLabel,
   closeLabel,
   panelKey,
+  scrim = "dim",
   children,
 }: DrawerShellProps) {
   const t = useTranslations("common");
@@ -130,12 +134,16 @@ export function DrawerShell({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onBack, onClose]);
 
+  // The root clips, never the body: the app sets `html { overflow-x: hidden }`,
+  // so a clipping body would become its own scroll box and throw every sticky
+  // element on the page (a pinned chart, a side menu) out of the window.
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const root = document.documentElement;
+    const prev = root.style.overflow;
+    root.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev;
+      root.style.overflow = prev;
     };
   }, [open]);
 
@@ -174,7 +182,12 @@ export function DrawerShell({
         type="button"
         aria-label={closeLabel ?? t("close")}
         onClick={onClose}
-        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
+        data-scrim={scrim}
+        className={
+          scrim === "light"
+            ? "absolute inset-0 bg-[var(--undp-black)]/10"
+            : "absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
+        }
       />
       <aside
         ref={panelRef}

@@ -36,6 +36,12 @@ afterEach(() => {
 });
 
 describe("BriefPanels", () => {
+  it("keeps the brief in view beside a panel: a light scrim, no blur", () => {
+    renderPanels([{ kind: "commitment", id: "B6" }]);
+    const scrim = screen.getAllByRole("button", { name: "Close" }).find((b) => b.hasAttribute("data-scrim"));
+    expect(scrim).toHaveAttribute("data-scrim", "light");
+  });
+
   it("lists a pair of documents' potential misalignments through the busiest commitment first", () => {
     const { onPush } = renderPanels([{ kind: "docPair", a: "B", b: "C" }]);
     expect(screen.getByText("9 potential misalignments. Most frequent targets first.")).toBeTruthy();

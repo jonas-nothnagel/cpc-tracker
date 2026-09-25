@@ -715,6 +715,7 @@ export function BriefPanels({
       backLabel={t("back")}
       dialogLabel={dialogLabel}
       panelKey={keyOf(top)}
+      scrim="light"
     >
       {top.kind === "pair" && (
         <PairPanel
