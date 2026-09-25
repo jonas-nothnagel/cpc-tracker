@@ -251,6 +251,15 @@ describe("layoutHub", () => {
     expect(particles[order[0]].level).toBe("flagged");
   });
 
+  it("a target in focus on a phone: its few pairs leave its partners two lines for their names", () => {
+    const { data, particles: many } = corpus([15, 36, 16, 20, 15, 41, 27, 8]);
+    const target = layoutHub({ kind: "target", id: "D0_0" }, many, data, 390, 371);
+    const document = layoutHub({ kind: "doc", doc: "D0" }, many, data, 390, 371);
+    expect(target.focusLabel).toBeGreaterThanOrEqual(48);
+    expect(target.focusLabel).toBeGreaterThan(document.focusLabel);
+    for (const g of target.groups) expect(g.y0 - target.focusLabel).toBeGreaterThanOrEqual(0);
+  });
+
   it("a document in focus: its target pairs beside it, one cluster per other document", () => {
     const layout = layoutHub({ kind: "doc", doc: "A" }, particles, DATA, 800, 500);
     expect(visibleCount(layout)).toBe(72);

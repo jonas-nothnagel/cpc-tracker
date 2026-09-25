@@ -1774,6 +1774,8 @@
 [data-brief] .brief-hub-center-target {
   display: -webkit-box;
   overflow: hidden;
+  overflow-wrap: anywhere;
+  hyphens: auto;
   font-size: 1rem;
   line-height: 1.25;
   -webkit-line-clamp: 4;

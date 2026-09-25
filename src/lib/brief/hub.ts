@@ -434,6 +434,9 @@ export function layoutHub(
       width,
       height,
       ZOOM_DEEP * overviewPitch(particles, width, height),
+      // A target's clusters are small (one dot per target of the other
+      // document), so its partners' names can have more of each slot.
+      0.62,
     );
   } else {
     const partners = data.scope.docs.filter((d) => d.id !== stage.doc).map((d) => d.id);
@@ -470,6 +473,7 @@ function placeFocus(
   width: number,
   height: number,
   maxPitch: number,
+  labelShare = 0.45,
 ) {
   const cx = width / 2;
   const cy = height / 2;
@@ -486,7 +490,7 @@ function placeFocus(
   const columnWidth = Math.max(1, cx - middle / 2 - SPOKE - FOCUS_PAD);
   const slot = (height - FOCUS_PAD) / perSide;
   // Many partners on a short field: the names get less room (one line).
-  const band = Math.max(30, Math.min(FOCUS_LABEL, slot * 0.45));
+  const band = Math.max(30, Math.min(FOCUS_LABEL, slot * labelShare));
   layout.focusLabel = band;
   const boxH = Math.max(1, slot - band - FOCUS_PAD);
   const boxW = Math.max(1, Math.min(columnWidth, boxH * 2.2));
