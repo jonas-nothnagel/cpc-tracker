@@ -67,9 +67,17 @@ function coverageOf(p: RelationCounts): SeatTone {
   return p.none + p.partial + p.aligned > 0 ? "none" : "unrelated";
 }
 
+/** How far above the group's own share of potential misalignment a seat's
+ *  share must run, and how many it needs at least, to read as one. */
+const CONCENTRATION = 2;
+const MIN_APART = 2;
+
 /** The reading most of a seat's pairs have; potential misalignment wins a
- *  tie, as the reading worth a review. */
-function toneOf(p: RelationCounts): SeatTone {
+ *  tie, as the reading worth a review. It also leads where a seat's
+ *  potential misalignments with the group concentrate: at least two, at
+ *  twice the group's own share (`rate`) or more. In a large group a
+ *  majority alone would hide them. */
+function toneOf(p: RelationCounts, rate: number): SeatTone {
   const readings: [SeatTone, number][] = [
     ["apart", p.apart],
     ["reinforce", p.strong + p.aligned],
@@ -77,7 +85,10 @@ function toneOf(p: RelationCounts): SeatTone {
     ["none", p.none],
   ];
   const best = readings.reduce((a, b) => (b[1] > a[1] ? b : a));
-  return best[1] > 0 ? best[0] : "unrelated";
+  if (best[1] === 0) return "unrelated";
+  const total = p.apart + p.strong + p.aligned + p.partial + p.none;
+  if (p.apart >= MIN_APART && p.apart / total >= CONCENTRATION * rate) return "apart";
+  return best[0];
 }
 
 export interface GroupProfile {
@@ -121,7 +132,8 @@ export function groupProfile(model: ExploreModel, members: number[]): GroupProfi
   const relation = pairs.map((p, j) =>
     isMember[j] ? "unrelated" : (PRECEDENCE.find((r) => p[r] > 0) ?? "unrelated"),
   );
-  const tone = pairs.map((p, j) => (isMember[j] ? "unrelated" : crossKind(j) ? coverageOf(p) : toneOf(p)));
+  const rate = total > 0 ? totals.apart / total : 0;
+  const tone = pairs.map((p, j) => (isMember[j] ? "unrelated" : crossKind(j) ? coverageOf(p) : toneOf(p, rate)));
   return { members, isMember, pairs, relation, tone, totals, total };
 }
 

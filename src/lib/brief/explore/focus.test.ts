@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { scopeOf } from "../compute";
 import { briefFixture } from "../test-fixture";
-import { buildExploreModel } from "./model";
+import type { AlignmentLevel } from "@/types";
+import { LEVEL_CODES } from "../source";
+import { buildExploreModel, type ExploreItem, type ExploreModel } from "./model";
 import {
   focusKey,
   focusMembers,
@@ -90,6 +92,59 @@ describe("group tone", () => {
     expect(area.tone[at("C4")]).toBe("apart");
     // C1: partial, partial, potential misalignment.
     expect(area.tone[at("C1")]).toBe("partial");
+  });
+});
+
+/** A group of `size` targets and, per seat, its readings with each of them. */
+function modelOf(size: number, seats: Record<string, AlignmentLevel[]>) {
+  const ids = [...Array.from({ length: size }, (_, k) => `G${k + 1}`), ...Object.keys(seats)];
+  const n = ids.length;
+  const items = ids.map((id, i) => ({ id, doc: i < size ? "G" : "S", kind: "target" }) as unknown as ExploreItem);
+  const levels = new Uint8Array(n * n);
+  Object.entries(seats).forEach(([id, readings]) => {
+    const j = ids.indexOf(id);
+    readings.forEach((level, m) => {
+      levels[m * n + j] = LEVEL_CODES.indexOf(level) + 1;
+      levels[j * n + m] = LEVEL_CODES.indexOf(level) + 1;
+    });
+  });
+  const model: ExploreModel = { items, targets: n, index: new Map(ids.map((id, i) => [id, i])), levels, mechanisms: new Uint8Array(n * n) };
+  return { profile: groupProfile(model, Array.from({ length: size }, (_, k) => k)), seat: (id: string) => ids.indexOf(id) };
+}
+const readings = (flagged: number, high: number): AlignmentLevel[] => [
+  ...Array<AlignmentLevel>(flagged).fill("flagged"),
+  ...Array<AlignmentLevel>(high).fill("high"),
+];
+
+describe("group tone, where potential misalignments concentrate", () => {
+  it("marks a target whose potential misalignments with the group run at twice the group's own share or more", () => {
+    // 6 of the 70 pairs are potential misalignments (8.6%): hot has 3 of 10, warm 2 of 10.
+    const { profile, seat } = modelOf(10, {
+      hot: readings(3, 7),
+      warm: readings(2, 8),
+      one: readings(1, 9),
+      a: readings(0, 10),
+      b: readings(0, 10),
+      c: readings(0, 10),
+      d: readings(0, 10),
+    });
+    expect(profile.tone[seat("hot")]).toBe("apart");
+    expect(profile.tone[seat("warm")]).toBe("apart");
+    expect(profile.tone[seat("one")]).toBe("reinforce");
+    expect(profile.tone[seat("a")]).toBe("reinforce");
+  });
+
+  it("needs at least two potential misalignments, however quiet the rest of the group", () => {
+    const { profile, seat } = modelOf(10, { one: readings(1, 9), a: readings(0, 10), b: readings(0, 10) });
+    expect(profile.tone[seat("one")]).toBe("reinforce");
+  });
+
+  it("leaves a seat unmarked where potential misalignment is common across the group", () => {
+    // 12 of the 30 pairs (40%): 3 of 10 is below the group's own share.
+    const { profile, seat } = modelOf(10, { hot: readings(3, 7), x: readings(5, 5), y: readings(4, 6) });
+    expect(profile.tone[seat("hot")]).toBe("reinforce");
+    // Where it is the most common reading, it still leads (the tie goes to it).
+    expect(profile.tone[seat("x")]).toBe("apart");
   });
 });
 
