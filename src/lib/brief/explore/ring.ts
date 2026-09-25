@@ -210,29 +210,113 @@ export function placeLabels(
   }
   // Off the seats: a name box may not come nearer the centre than the seats'
   // outer edge. Side names move outward, top and bottom names away.
-  const clear = layout.rOuter + layout.radius + 2;
-  labels.forEach((l, k) => {
-    const { width, height } = sizeOf(k);
-    const top = l.y - height / 2;
-    const bot = l.y + height / 2;
-    if (l.align === "left" || l.align === "right") {
-      const ny = Math.max(top, Math.min(layout.cy, bot));
-      const dy = ny - layout.cy;
-      if (Math.abs(dy) >= clear) return;
-      const dx = Math.sqrt(clear * clear - dy * dy);
-      if (l.align === "left") l.x = Math.max(l.x, layout.cx + dx);
-      else l.x = Math.min(l.x, layout.cx - dx);
-      return;
-    }
-    const x0 = l.x - width / 2;
-    const nx = Math.max(x0, Math.min(layout.cx, x0 + width));
-    const dx = nx - layout.cx;
-    if (Math.abs(dx) >= clear) return;
-    const dy = Math.sqrt(clear * clear - dx * dx);
-    if (l.y < layout.cy) l.y = Math.min(l.y, layout.cy - dy - height / 2);
-    else l.y = Math.max(l.y, layout.cy + dy + height / 2);
-  });
+  const widths = labels.map((_, k) => sizeOf(k).width);
+  labels.forEach((l, k) => clearOfRing(l, widths[k], layout));
+  separateTopAndBottom(labels, widths, layout, gap);
   return labels;
+}
+
+/** Move a name box off the seats: side names outward, top and bottom names
+ *  further up or down. */
+function clearOfRing(l: RingLabel, width: number, layout: RingLayout) {
+  const clear = layout.rOuter + layout.radius + 2;
+  const top = l.y - l.height / 2;
+  const bot = l.y + l.height / 2;
+  if (l.align === "left" || l.align === "right") {
+    const ny = Math.max(top, Math.min(layout.cy, bot));
+    const dy = ny - layout.cy;
+    if (Math.abs(dy) >= clear) return;
+    const dx = Math.sqrt(clear * clear - dy * dy);
+    if (l.align === "left") l.x = Math.max(l.x, layout.cx + dx);
+    else l.x = Math.min(l.x, layout.cx - dx);
+    return;
+  }
+  const x0 = l.x - width / 2;
+  const nx = Math.max(x0, Math.min(layout.cx, x0 + width));
+  const dx = nx - layout.cx;
+  if (Math.abs(dx) >= clear) return;
+  const dy = Math.sqrt(clear * clear - dx * dx);
+  if (l.y < layout.cy) l.y = Math.min(l.y, layout.cy - dy - l.height / 2);
+  else l.y = Math.max(l.y, layout.cy + dy + l.height / 2);
+}
+
+interface Box {
+  x0: number;
+  x1: number;
+  y0: number;
+  y1: number;
+}
+
+function boxOf(l: RingLabel, width: number): Box {
+  const x0 = l.align === "left" ? l.x : l.align === "right" ? l.x - width : l.x - width / 2;
+  return { x0, x1: x0 + width, y0: l.y - l.height / 2, y1: l.y + l.height / 2 };
+}
+
+function overlapping(a: Box, b: Box, gap: number): boolean {
+  return a.x0 < b.x1 + gap && b.x0 < a.x1 + gap && a.y0 < b.y1 + gap && b.y0 < a.y1 + gap;
+}
+
+/**
+ * Names above and below the ring sit side by side, so they can meet where
+ * two arcs meet at the top or bottom (a lens's first area and its "Other
+ * targets"). Spread each row sideways; where a row runs out of room, lift
+ * every other name a row further out; and keep them clear of the side names
+ * by moving them further out, never onto the ring.
+ */
+function separateTopAndBottom(labels: RingLabel[], widths: number[], layout: RingLayout, gap: number) {
+  const width = layout.cx * 2;
+  for (let pass = 0; pass < 4; pass++) {
+    let moved = false;
+    for (const top of [true, false]) {
+      const row = labels
+        .map((l, k) => ({ l, w: widths[k] }))
+        .filter(({ l }) => l.align === "center" && (l.y < layout.cy) === top)
+        .sort((a, b) => a.l.x - b.l.x);
+      // Sideways first: each name starts after the one before it.
+      for (let i = 1; i < row.length; i++) {
+        const prev = boxOf(row[i - 1].l, row[i - 1].w);
+        const cur = boxOf(row[i].l, row[i].w);
+        if (overlapping(prev, cur, gap)) {
+          row[i].l.x += prev.x1 + gap - cur.x0;
+          moved = true;
+        }
+      }
+      // Back inside the stage if the row ran off its right edge.
+      const last = row[row.length - 1];
+      if (last) {
+        const spill = boxOf(last.l, last.w).x1 - (width - 4);
+        if (spill > 0) for (const item of row) item.l.x -= spill;
+      }
+      // Still crowded: every other name a row further out.
+      for (let i = 1; i < row.length; i++) {
+        const prev = boxOf(row[i - 1].l, row[i - 1].w);
+        const cur = boxOf(row[i].l, row[i].w);
+        if (overlapping(prev, cur, gap)) {
+          const lift = cur.y1 - cur.y0 + gap;
+          row[i].l.y += top ? -lift : lift;
+          moved = true;
+        }
+      }
+    }
+    // Clear of the names at the sides: move a top or bottom name further out.
+    for (let i = 0; i < labels.length; i++) {
+      const l = labels[i];
+      if (l.align !== "center") continue;
+      for (let j = 0; j < labels.length; j++) {
+        if (labels[j].align === "center") continue;
+        const a = boxOf(l, widths[i]);
+        const b = boxOf(labels[j], widths[j]);
+        if (!overlapping(a, b, gap)) continue;
+        l.y = l.y < layout.cy ? l.y - (a.y1 - b.y0 + gap) : l.y + (b.y1 - a.y0 + gap);
+        moved = true;
+      }
+    }
+    // A name moved sideways may have come over the ring's shoulder.
+    labels.forEach((l, k) => {
+      if (l.align === "center") clearOfRing(l, widths[k], layout);
+    });
+    if (!moved) break;
+  }
 }
 
 /** The seat nearest to a point, if it is within reach of it. */

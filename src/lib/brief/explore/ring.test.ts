@@ -197,3 +197,34 @@ describe("placeLabels clear of the ring", () => {
     }
   });
 });
+
+describe("placeLabels without overlaps", () => {
+  function box(l: { x: number; y: number; align: string; height: number }, width: number) {
+    const x0 = l.align === "left" ? l.x : l.align === "right" ? l.x - width : l.x - width / 2;
+    return { x0, x1: x0 + width, y0: l.y - l.height / 2, y1: l.y + l.height / 2 };
+  }
+  const overlaps = (a: ReturnType<typeof box>, b: ReturnType<typeof box>) =>
+    a.x0 < b.x1 - 0.5 && b.x0 < a.x1 - 0.5 && a.y0 < b.y1 - 0.5 && b.y0 < a.y1 - 0.5;
+
+  it("keeps names clear of each other where two arcs meet at the top or bottom", () => {
+    for (const sizes of [
+      // A small arc just after the top and a small one just before it, as
+      // with a lens's first area and its "Other targets".
+      [2, 30, 30, 30, 30, 30, 30, 30, 3],
+      [1, 20, 20, 20, 20, 20, 20, 20, 20, 2],
+      [36, 20, 41, 15, 27, 16, 15, 8],
+      [9, 38, 15, 12, 20, 10, 5, 2, 7, 60],
+    ]) {
+      const { arcs, n } = arcsOf(sizes);
+      const layout = layoutRing(arcs, n, 900, 800, { labelHeight: 90 });
+      const sizesOf = arcs.map(() => ({ width: 140, height: 62 }));
+      const labels = placeLabels(layout, sizesOf);
+      const boxes = labels.map((l) => box(l, 140));
+      for (let i = 0; i < boxes.length; i++) {
+        for (let j = i + 1; j < boxes.length; j++) {
+          expect(overlaps(boxes[i], boxes[j]), `${labels[i].key} and ${labels[j].key} in ${sizes}`).toBe(false);
+        }
+      }
+    }
+  });
+});
