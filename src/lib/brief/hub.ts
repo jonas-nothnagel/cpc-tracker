@@ -1,37 +1,78 @@
 import { getDocPairKey, getStorylineDocPairKeys } from "@/lib/coherence-briefing";
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
-import { toneOf } from "./compute";
+import { toneOf, type Tone } from "./compute";
 import { MAX_THEMES, type BriefData } from "./data";
 import { DOT_ORDER, layoutGroups } from "./dot-layout";
+import { targetLine } from "./text";
 
 /**
  * The coherence overview on screen: one field of dots, one per target pair,
  * that re-forms for each step of the overview. The same particles move
  * between stages: the ratings side by side, then the map of documents (each
- * dot at its two targets), brought forward for the question of a step, and
- * a target or a document in the centre with its pairs around it.
+ * dot at its two targets), then each side of it as its own landscape, and a
+ * document in the centre with its pairs around it.
  */
 export type HubTone = "reinforce" | "apart";
 
-/** What the map brings forward within a tone (or across all pairs). */
+/** What the map brings forward. */
 export type MapFocus =
-  /** The fewest targets that take part in half of the tone's pairs (strong
-   *  links for alignment), when they are few (see `Concentration`). */
+  /** The fewest targets that take part in half of a side's pairs, when they
+   *  are few (see `Concentration`). */
   | { kind: "top" }
-  /** A shown theme of the tone: its pairs between the documents it cites. */
+  /** A shown theme of the side: its pairs between the documents it cites. */
   | { kind: "theme"; index: number }
   | { kind: "mechanism"; mechanism: AlignmentMechanism }
   /** A document: its row and column. */
-  | { kind: "doc"; doc: string };
+  | { kind: "doc"; doc: string }
+  /** A target: its row and column. */
+  | { kind: "target"; id: string };
 
 export type HubStage =
   | { kind: "overview" }
-  | { kind: "map"; tone?: HubTone; focus?: MapFocus }
-  | { kind: "target"; id: string }
+  /**
+   * The map of documents. With a `side`, that side's own landscape: only its
+   * pairs (strong alignments, or potential misalignments), and within each
+   * document the targets that carry the side first, named. Without one,
+   * every pair where its two targets meet; `tone` brings one rating forward.
+   */
+  | { kind: "map"; side?: HubTone; tone?: Tone; focus?: MapFocus }
   | { kind: "doc"; doc: string };
 
 /** Targets each list of the overview shows at least. */
 export const HUB_TOP = 6;
+
+/** Most targets a side names from its headline; when its headline names
+ *  more, the first of its list are named instead. */
+export const NAMED_MAX = 8;
+
+/** Line height of a named target on the map (0.75rem type); a name that
+ *  takes two lines is `2 * MARK_LINE - 2` high. */
+export const MARK_LINE = 15;
+/** Least room a named target's name needs; with less it is left to the list. */
+const MARK_MIN = 60;
+/** Widest a named target's name runs beside the diagonal. */
+const MARK_MAX = 240;
+/** Rough width of one character of those names, and of the count after them. */
+const MARK_CHAR = 6.2;
+const MARK_COUNT = 24;
+/** Most characters of a target's line a name shows. */
+export const MARK_TEXT = 64;
+
+/** The pairs a side is made of: strong links for what works well, potential
+ *  misalignments for where to look closer. */
+export function sideLevel(side: HubTone): AlignmentLevel {
+  return side === "apart" ? "flagged" : "high";
+}
+
+/** The targets a side names on the map: its headline's, when they are few
+ *  enough to name; otherwise the first of the side's list. */
+export function namedTargets(data: BriefData, side: HubTone): string[] {
+  const c = side === "apart" ? data.concentration : data.strongConcentration;
+  if (c.concentrated && c.top.length > 0 && c.top.length <= NAMED_MAX) return c.top;
+  const list =
+    side === "apart" ? data.commitments.map((r) => r.commitment.id) : data.strongest.map((r) => r.commitment.id);
+  return list.slice(0, HUB_TOP);
+}
 
 export interface HubParticle {
   /** Index into DOT_ORDER. */
@@ -69,6 +110,27 @@ export interface HubAxis {
   labelY: number;
   labelWidth: number;
   labelHeight: number;
+  /** Where a thin line leads from a name that had to move away from its
+   *  document: a point on the document's stretch of the diagonal. */
+  lead: { x: number; y: number } | null;
+}
+
+/** A target the map names: its own point on the diagonal (where its row and
+ *  column meet), and its name, centred on `labelY`: right-aligned at
+ *  `labelX` beside the diagonal, or left-aligned there above the map. */
+export interface HubMark {
+  id: string;
+  doc: string;
+  /** Its pairs on the side shown. */
+  count: number;
+  x: number;
+  y: number;
+  labelX: number;
+  labelY: number;
+  labelWidth: number;
+  labelHeight: number;
+  align: "left" | "right";
+  lines: 1 | 2;
 }
 
 export interface HubLayout {
@@ -86,6 +148,10 @@ export interface HubLayout {
   groups: HubGroup[];
   /** The map's documents, in document order. */
   axis: HubAxis[];
+  /** The targets the map names, in document order. */
+  marks: HubMark[];
+  /** The map's cell: each pair is a square this wide (0 off the map). */
+  pitch: number;
   /** The target's or document's place in focus and the half-width kept for
    *  its name. */
   center: { x: number; y: number; half: number } | null;
@@ -115,8 +181,6 @@ const SPOKE = 34;
 /** A step with fewer pairs may draw its dots larger, up to this factor of
  *  the overview's size, so the same dots stay recognisable between steps. */
 export const ZOOM = 1.8;
-/** A single target's pairs zoom in further. */
-export const ZOOM_DEEP = 2.6;
 /** The smallest dot pitch around a document; below it a dot stands for several pairs. */
 const MIN_PITCH = 1.2;
 /** Line height of a document's name on the map (0.8125rem type). */
@@ -160,6 +224,8 @@ function emptyLayout(n: number): HubLayout {
     small: new Uint8Array(n),
     groups: [],
     axis: [],
+    marks: [],
+    pitch: 0,
     center: null,
     focusLabel: FOCUS_LABEL,
   };
@@ -239,27 +305,65 @@ function spread(centres: number[], heights: number[], top: number, bottom: numbe
  * The map of documents: the comparison triangle of the method page. Each
  * document's targets run along the diagonal; for two documents, the earlier
  * one's targets are rows and the later one's columns, so each pair of
- * documents is a block and each target pair a dot at its two targets. A
+ * documents is a block and each target pair a square at its two targets. A
  * document's own square stays empty: it is never compared with itself.
+ *
+ * On a side, only that side's pairs are shown, and each document's targets
+ * are re-sorted: the ones the side names first, then by how many of the
+ * side's pairs they are in, then document order. The side's pairs gather in
+ * the corner of their blocks, and its targets are named at the front of their
+ * documents. The map keeps its place and size on every side.
  */
-function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, width: number, height: number) {
+function placeMap(
+  layout: HubLayout,
+  particles: HubParticle[],
+  data: BriefData,
+  width: number,
+  height: number,
+  side: HubTone | null,
+  extra: string | null,
+) {
   const docs = data.scope.docs;
   const docIndex = new Map(docs.map((d, i) => [d.id, i]));
-  const sizes = docs.map(() => 0);
-  const rowOf = new Map<string, number>();
+  const level = side ? sideLevel(side) : null;
+  // How many of the side's pairs each target is in.
+  const count = new Map<string, number>();
+  if (level) {
+    for (const p of particles) {
+      if (p.level !== level) continue;
+      count.set(p.ca, (count.get(p.ca) ?? 0) + 1);
+      count.set(p.cb, (count.get(p.cb) ?? 0) + 1);
+    }
+  }
+  const has = (id: string) => (count.get(id) ?? 0) > 0;
+  const named = side ? namedTargets(data, side).filter(has) : [];
+  const rank = new Map(named.map((id, i) => [id, i]));
+  const byDoc: string[][] = docs.map(() => []);
   for (const c of data.scope.commitments) {
     const d = docIndex.get(c.doc);
-    if (d === undefined) continue;
-    rowOf.set(c.id, sizes[d]);
-    sizes[d] += 1;
+    if (d !== undefined) byDoc[d].push(c.id);
   }
+  if (side) {
+    const order = new Map(data.scope.commitments.map((c, i) => [c.id, i]));
+    const by = (id: string) => rank.get(id) ?? Infinity;
+    for (const list of byDoc) {
+      list.sort(
+        (x, y) =>
+          by(x) - by(y) || (count.get(y) ?? 0) - (count.get(x) ?? 0) || (order.get(x) ?? 0) - (order.get(y) ?? 0),
+      );
+    }
+  }
+  const sizes = byDoc.map((list) => list.length);
+  const rowOf = new Map<string, number>();
+  byDoc.forEach((list) => list.forEach((id, i) => rowOf.set(id, i)));
   const total = sizes.reduce((s, n) => s + n, 0);
   if (total === 0 || docs.length === 0) return;
   const pad = 6;
   // The names use the empty half under the diagonal: each is right-aligned
   // at its own stretch, so only the first documents need room at the left.
   // That room is what the names need in up to three lines, found in two
-  // passes (the stretches move with the dot size).
+  // passes (the stretches move with the cell size). Named targets fit into
+  // the room the names leave, so the map keeps its size on every side.
   const need = docs.map((d) => {
     const whole = d.name.length * AXIS_CHAR;
     if (whole <= AXIS_SHORT) return whole;
@@ -267,9 +371,9 @@ function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, 
     return Math.min(whole, Math.max(AXIS_SHORT, whole / AXIS_LINES, word));
   });
   const geometry = (room: number) => {
-    const side = Math.max(40, Math.min(width - room - 2 * pad, height - 2 * pad));
-    const gap = docs.length > 1 ? Math.min(6, Math.max(2, side * 0.012)) : 0;
-    const pitch = Math.max(0.05, (side - (docs.length - 1) * gap) / total);
+    const edge = Math.max(40, Math.min(width - room - 2 * pad, height - 2 * pad));
+    const gap = docs.length > 1 ? Math.min(6, Math.max(2, edge * 0.012)) : 0;
+    const pitch = Math.max(0.05, (edge - (docs.length - 1) * gap) / total);
     const off: number[] = [];
     let acc = 0;
     sizes.forEach((n, d) => {
@@ -288,12 +392,12 @@ function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, 
     geo = geometry(labelRoom);
   }
   const { gap, pitch, off } = geo;
+  layout.pitch = pitch;
   const used = total * pitch + (docs.length - 1) * gap;
   const x0 = Math.max(labelRoom + pad, (width - labelRoom - used) / 2 + labelRoom);
   const y0 = Math.max(pad, (height - used) / 2);
-  // Dots keep a visible size, but never wider than their pitch: overlapping
-  // dots would let the ink drawn last colour the block.
-  const radius = Math.min(pitch / 2, Math.max(0.4, pitch * 0.4));
+  // Each pair fills its cell: the canvas draws it as a square.
+  const radius = pitch / 2;
   const counts = new Map<string, number>();
   particles.forEach((p, i) => {
     let da = docIndex.get(p.a);
@@ -308,20 +412,21 @@ function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, 
     layout.x[i] = x0 + off[db] + rb * pitch + pitch / 2;
     layout.y[i] = y0 + off[da] + ra * pitch + pitch / 2;
     layout.r[i] = radius;
-    layout.visible[i] = 1;
+    layout.visible[i] = level === null || p.level === level ? 1 : 0;
     layout.alpha[i] = 1;
     layout.ink[i] = p.tone;
     layout.small[i] = 0;
     const key = `${da}:${db}`;
     counts.set(key, (counts.get(key) ?? 0) + 1);
   });
+  // A square for every pair of documents compared, whatever the side shows.
   for (let i = 0; i < docs.length; i++) {
     for (let j = i + 1; j < docs.length; j++) {
-      const count = counts.get(`${i}:${j}`) ?? 0;
-      if (count === 0) continue;
+      const n = counts.get(`${i}:${j}`) ?? 0;
+      if (n === 0) continue;
       layout.groups.push({
         key: getDocPairKey(docs[i].id, docs[j].id),
-        count,
+        count: n,
         x0: x0 + off[j],
         y0: y0 + off[i],
         x1: x0 + off[j] + sizes[j] * pitch,
@@ -330,79 +435,194 @@ function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, 
       });
     }
   }
-  const shown = docs.flatMap((d, k) => (sizes[k] > 0 ? [k] : []));
-  const labelX = shown.map((k) => x0 + off[k] - 8);
-  const labelWidth = labelX.map((x) => Math.max(24, Math.min(220, x - pad)));
-  const heights = shown.map((k, n) => {
+  // The names down the diagonal; on a side each document's named targets
+  // follow its name, and the name sits at the front of its stretch.
+  const marked = side ? [...named, ...(extra && !rank.has(extra) && has(extra) ? [extra] : [])] : [];
+  const byId = new Map(data.scope.commitments.map((c) => [c.id, c]));
+  const ownMarks = (k: number) =>
+    marked
+      .filter((id) => byId.get(id)?.doc === docs[k].id)
+      .sort((a, b) => (rowOf.get(a) ?? 0) - (rowOf.get(b) ?? 0));
+  const markWidth = (id: string) => {
+    const c = byId.get(id);
+    return (c ? targetLine(c, MARK_TEXT).length : 0) * MARK_CHAR + MARK_COUNT;
+  };
+  const mark = (id: string, k: number, labelX: number, labelY: number, labelWidth: number, align: "left" | "right", lines: 1 | 2) => {
+    const row = rowOf.get(id) ?? 0;
+    layout.marks.push({
+      id,
+      doc: docs[k].id,
+      count: count.get(id) ?? 0,
+      x: x0 + off[k] + row * pitch + pitch / 2,
+      y: y0 + off[k] + row * pitch + pitch / 2,
+      labelX,
+      labelY,
+      labelWidth,
+      labelHeight: lines === 2 ? 2 * MARK_LINE - 2 : MARK_LINE,
+      align,
+      lines,
+    });
+  };
+  // The first document has the least room beside the diagonal: with room
+  // above the map, its targets are named there instead, one line each.
+  const k0 = sizes.findIndex((n) => n > 0);
+  const above = k0 >= 0 ? ownMarks(k0) : [];
+  const overhead = above.length * MARK_LINE + 6;
+  const lifted = above.length > 0 && y0 - overhead >= 0;
+  if (lifted) {
+    const labelX = x0 + off[k0];
+    const room = Math.min(used, width - pad - labelX);
+    above.forEach((id, i) => {
+      const labelY = y0 - 6 - (above.length - 1 - i) * MARK_LINE - MARK_LINE / 2;
+      mark(id, k0, labelX, labelY, room, "left", 1);
+    });
+  }
+  type Item = { k: number; mark: string | null; height: number; want: number; width: number; lines: 1 | 2 };
+  const items: Item[] = [];
+  for (let k = 0; k < docs.length; k++) {
+    if (sizes[k] === 0) continue;
+    const right = x0 + off[k] - 8;
+    const width = Math.max(24, Math.min(220, right - pad));
     const chars = docs[k].name.length * AXIS_CHAR;
-    return Math.min(AXIS_LINES, Math.max(1, Math.ceil(chars / labelWidth[n]))) * AXIS_LINE;
-  });
+    const lines = Math.min(AXIS_LINES, Math.max(1, Math.ceil(chars / width)));
+    const h = lines * AXIS_LINE;
+    const stretch = sizes[k] * pitch;
+    items.push({ k, mark: null, height: h, want: side ? y0 + off[k] + h / 2 : y0 + off[k] + stretch / 2, width, lines: 1 });
+    if (lifted && k === k0) continue;
+    const room = Math.min(MARK_MAX, right - pad);
+    for (const id of ownMarks(k)) {
+      const two = markWidth(id) > room ? 2 : 1;
+      items.push({
+        k,
+        mark: id,
+        height: two === 2 ? 2 * MARK_LINE - 2 : MARK_LINE,
+        want: y0 + off[k] + (rowOf.get(id) ?? 0) * pitch + pitch / 2,
+        width,
+        lines: two,
+      });
+    }
+  }
+  const heights = items.map((it) => it.height);
   const centres = spread(
-    shown.map((k) => y0 + off[k] + (sizes[k] * pitch) / 2),
+    items.map((it) => it.want),
     heights,
     0,
     height,
   );
-  shown.forEach((k, n) => {
-    // Every document's own stretch lies on one line (x - x0 = y - y0): a
-    // name taller than its stretch stays left of that line at its top.
+  items.forEach((it, n) => {
+    const k = it.k;
     const top = centres[n] - heights[n] / 2;
-    const right = Math.min(labelX[n], x0 + (top - y0) - 8);
-    layout.axis.push({
-      key: docs[k].id,
-      square: {
-        x0: x0 + off[k],
-        y0: y0 + off[k],
-        x1: x0 + off[k] + sizes[k] * pitch,
-        y1: y0 + off[k] + sizes[k] * pitch,
-      },
-      labelX: right,
-      labelY: centres[n],
-      labelWidth: Math.max(24, Math.min(labelWidth[n], right - pad)),
-      labelHeight: heights[n],
-    });
+    // Every document's own stretch lies on one line (x - x0 = y - y0): a
+    // label taller than its stretch stays left of that line at its top.
+    const right = Math.min(x0 + off[k] - 8, x0 + (top - y0) - 8);
+    if (it.mark === null) {
+      const stretch = sizes[k] * pitch;
+      const moved = Math.abs(centres[n] - it.want) > 6;
+      const at = side ? pitch / 2 : stretch / 2;
+      layout.axis.push({
+        key: docs[k].id,
+        square: { x0: x0 + off[k], y0: y0 + off[k], x1: x0 + off[k] + stretch, y1: y0 + off[k] + stretch },
+        labelX: right,
+        labelY: centres[n],
+        labelWidth: Math.max(24, Math.min(it.width, right - pad)),
+        labelHeight: heights[n],
+        lead: moved ? { x: x0 + off[k] + at, y: y0 + off[k] + at } : null,
+      });
+      return;
+    }
+    const room = Math.min(MARK_MAX, right - pad);
+    if (room < MARK_MIN) return;
+    mark(it.mark, k, right, centres[n], room, "right", it.lines);
+    // A name squeezed by a crowded field keeps the height it was given.
+    layout.marks[layout.marks.length - 1].labelHeight = heights[n];
   });
+  layout.marks.sort((a, b) => docIndex.get(a.doc)! - docIndex.get(b.doc)! || a.y - b.y);
 }
 
-/** Whether a pair takes part in the question the map is asked. */
-function emphasis(
-  stage: Extract<HubStage, { kind: "map" }>,
-  data: BriefData,
-): ((p: HubParticle) => boolean) | null {
-  const focus = stage.focus;
+/** Whether a pair takes part in what a side's map is asked (null: all do). */
+function sideAsked(side: HubTone, focus: MapFocus | undefined, data: BriefData): ((p: HubParticle) => boolean) | null {
   if (!focus) return null;
-  if (focus.kind === "doc") return (p) => p.a === focus.doc || p.b === focus.doc;
-  if (focus.kind === "mechanism") return (p) => p.level === "flagged" && p.mechanism === focus.mechanism;
-  if (focus.kind === "theme") {
-    const rows = (stage.tone === "apart" ? data.apart : data.together).rows.slice(0, MAX_THEMES);
-    const row = rows[focus.index];
-    if (!row) return null;
-    const keys = getStorylineDocPairKeys(row.storyline);
-    return (p) => keys.has(getDocPairKey(p.a, p.b));
+  switch (focus.kind) {
+    case "doc":
+      return (p) => p.a === focus.doc || p.b === focus.doc;
+    case "target":
+      return (p) => p.ca === focus.id || p.cb === focus.id;
+    case "mechanism":
+      return (p) => p.mechanism === focus.mechanism;
+    case "theme": {
+      const rows = (side === "apart" ? data.apart : data.together).rows.slice(0, MAX_THEMES);
+      const row = rows[focus.index];
+      if (!row) return null;
+      const keys = getStorylineDocPairKeys(row.storyline);
+      return (p) => keys.has(getDocPairKey(p.a, p.b));
+    }
+    default: {
+      // The targets that carry the side, when they are few.
+      const c = side === "apart" ? data.concentration : data.strongConcentration;
+      if (!c.concentrated) return null;
+      const top = new Set(c.top);
+      return (p) => top.has(p.ca) || top.has(p.cb);
+    }
   }
-  // The targets that carry the tone, when they are few: their strong links,
-  // or their potential misalignments.
-  const c = stage.tone === "apart" ? data.concentration : data.strongConcentration;
-  if (!stage.tone || !c.concentrated) return null;
-  const top = new Set(c.top);
-  const level = stage.tone === "apart" ? "flagged" : "high";
-  return (p) => p.level === level && (top.has(p.ca) || top.has(p.cb));
 }
 
 function emphasize(layout: HubLayout, particles: HubParticle[], stage: Extract<HubStage, { kind: "map" }>, data: BriefData) {
+  const focus = stage.focus;
+  if (stage.side) {
+    const asked = sideAsked(stage.side, focus, data);
+    if (!asked) return;
+    // The side's own finding keeps the rest of the side in view; what the
+    // reader points at sets it further back.
+    const rest = focus?.kind === "top" ? MAP_MID : MAP_BACK;
+    particles.forEach((p, i) => {
+      if (layout.visible[i]) layout.alpha[i] = asked(p) ? 1 : rest;
+    });
+    return;
+  }
+  // The whole map: a document's row and column, or one rating, forward.
   const tone = stage.tone ? DOT_ORDER.indexOf(stage.tone) : -1;
-  const asked = emphasis(stage, data);
-  // The step's own finding keeps the rest of its tone in view; what the
-  // reader points at sets it further back.
-  const rest = tone < 0 ? MAP_FAINT : stage.focus?.kind === "top" ? MAP_MID : MAP_BACK;
+  const asked =
+    focus?.kind === "doc"
+      ? (p: HubParticle) => p.a === focus.doc || p.b === focus.doc
+      : tone >= 0
+        ? (p: HubParticle) => p.tone === tone
+        : null;
+  if (!asked) return;
   particles.forEach((p, i) => {
-    if (!layout.visible[i]) return;
-    const inTone = tone < 0 || p.tone === tone;
-    if (!inTone) layout.alpha[i] = MAP_FAINT;
-    else if (!asked) layout.alpha[i] = 1;
-    else if (asked(p)) layout.alpha[i] = 1;
-    else layout.alpha[i] = rest;
+    if (layout.visible[i]) layout.alpha[i] = asked(p) ? 1 : MAP_FAINT;
   });
+}
+
+/** Map placements by data, particles, size, side and extra name: pointing
+ *  at a theme, a type or a document only changes how far forward dots are. */
+const placed = new WeakMap<BriefData, WeakMap<HubParticle[], Map<string, HubLayout>>>();
+
+function placedMap(
+  particles: HubParticle[],
+  data: BriefData,
+  width: number,
+  height: number,
+  side: HubTone | null,
+  extra: string | null,
+): HubLayout {
+  let byParticles = placed.get(data);
+  if (!byParticles) {
+    byParticles = new WeakMap();
+    placed.set(data, byParticles);
+  }
+  let bySize = byParticles.get(particles);
+  if (!bySize) {
+    bySize = new Map();
+    byParticles.set(particles, bySize);
+  }
+  const key = `${width}x${height}:${side ?? ""}:${extra ?? ""}`;
+  let layout = bySize.get(key);
+  if (!layout) {
+    layout = emptyLayout(particles.length);
+    placeMap(layout, particles, data, width, height, side, extra);
+    bySize.set(key, layout);
+  }
+  return layout;
 }
 
 export function layoutHub(
@@ -427,23 +647,12 @@ export function layoutHub(
       height,
     );
   } else if (stage.kind === "map") {
-    placeMap(layout, particles, data, width, height);
-    emphasize(layout, particles, stage, data);
-  } else if (stage.kind === "target") {
-    const own = data.scope.commitments.find((c) => c.id === stage.id)?.doc;
-    const partners = data.scope.docs.filter((d) => d.id !== own).map((d) => d.id);
-    placeFocus(
-      layout,
-      particles,
-      partners,
-      (p, partner) => (p.ca === stage.id && p.b === partner) || (p.cb === stage.id && p.a === partner),
-      width,
-      height,
-      ZOOM_DEEP * overviewPitch(particles, width, height),
-      // A target's clusters are small (one dot per target of the other
-      // document), so its partners' names can have more of each slot.
-      0.62,
-    );
+    const extra = stage.side && stage.focus?.kind === "target" ? stage.focus.id : null;
+    const base = placedMap(particles, data, width, height, stage.side ?? null, extra);
+    // The placement is shared; how far forward each dot is is this stage's own.
+    const map = { ...base, alpha: base.alpha.slice() };
+    emphasize(map, particles, stage, data);
+    return map;
   } else {
     const partners = data.scope.docs.filter((d) => d.id !== stage.doc).map((d) => d.id);
     placeFocus(

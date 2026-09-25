@@ -32,24 +32,9 @@ export function useNumbers() {
 }
 
 /** First `max` characters of a verbatim text, cut at a word boundary. */
-export function clip(text: string, max: number): string {
-  const clean = text.replace(/\s+/g, " ").trim();
-  if (clean.length <= max) return clean;
-  const cut = clean.slice(0, max);
-  const space = cut.lastIndexOf(" ");
-  return `${(space > max * 0.6 ? cut.slice(0, space) : cut).replace(/[\s,;:.]+$/, "")}…`;
-}
-
-/** Labels shorter than this ("7 b)", "NBT 3") are clause numbers, not titles. */
-const TITLE_LABEL_LENGTH = 24;
+export { clip } from "@/lib/brief/text";
 
 /** A commitment as one readable line: its label, followed by the start of
  *  its verbatim text when the label is only a number. Clipped, never
  *  paraphrased. */
-export function commitmentLine(c: { label: string; text: string }, max = 80): string {
-  if (c.label.length >= TITLE_LABEL_LENGTH) return c.label;
-  const text = c.text.trim();
-  if (!text || text === c.label) return c.label;
-  if (text.startsWith(c.label)) return clip(text, max);
-  return `${c.label} ${clip(text, max)}`;
-}
+export { targetLine as commitmentLine } from "@/lib/brief/text";
