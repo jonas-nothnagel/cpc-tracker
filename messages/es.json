@@ -533,7 +533,7 @@
           },
           "centre": {
             "title": "The centre",
-            "body": "At rest the centre holds the whole picture: every target pair and how it reads. With a target at the centre, every other dot takes the colour of how it reads against it: green aligned, grey partially aligned, red potential misalignment, sorted within each document. Selecting the name of a document or policy area puts all its targets at the centre; empty space or All targets returns to every target."
+            "body": "At rest the centre holds the whole picture: every target pair and how it reads. With a target at the centre, every other dot takes the colour of how it reads against it: green aligned, grey partially aligned, red potential misalignment, sorted within each document. Selecting the name of a document or policy area puts all its targets at the centre; with a document at the centre, another document's name opens the two side by side. Empty space or All targets returns to every target."
           },
           "lines": {
             "title": "Lines",
