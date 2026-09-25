@@ -291,7 +291,9 @@ function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, 
   const used = total * pitch + (docs.length - 1) * gap;
   const x0 = Math.max(labelRoom + pad, (width - labelRoom - used) / 2 + labelRoom);
   const y0 = Math.max(pad, (height - used) / 2);
-  const radius = Math.max(0.4, pitch * 0.4);
+  // Dots keep a visible size, but never wider than their pitch: overlapping
+  // dots would let the ink drawn last colour the block.
+  const radius = Math.min(pitch / 2, Math.max(0.4, pitch * 0.4));
   const counts = new Map<string, number>();
   particles.forEach((p, i) => {
     let da = docIndex.get(p.a);

@@ -1899,6 +1899,11 @@
   background: #f7f7f7;
 }
 
+[data-brief] .brief-hub-kind:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: -2px;
+}
+
 [data-brief] .brief-hub-kind-main {
   display: flex;
   flex-direction: column;
@@ -1976,10 +1981,15 @@
     border-bottom: 1px solid var(--brief-hairline);
   }
 
-  /* A jump to a step lands below the field, not under it. */
+  /* A jump to a step, or the walkthrough's stop inside one, lands below
+     the field, not under it. */
   [data-brief] .brief-hub-step {
     padding-top: 1.5rem;
     padding-bottom: 4rem;
+    scroll-margin-top: calc(max(16rem, 44vh) + 1rem);
+  }
+
+  [data-brief] .brief-hub-step [data-tour] {
     scroll-margin-top: calc(max(16rem, 44vh) + 1rem);
   }
 

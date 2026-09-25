@@ -107,6 +107,35 @@ describe("DrawerShell chrome", () => {
     expect(root.style.overflow).toBe("visible");
   });
 
+  it("keeps the page's width when the lock takes away a classic scrollbar", () => {
+    const root = document.documentElement;
+    root.style.overflow = "";
+    root.style.paddingRight = "";
+    // A 15px Windows-style scrollbar, gone once the root clips.
+    const width = Object.getOwnPropertyDescriptor(Element.prototype, "clientWidth");
+    Object.defineProperty(root, "clientWidth", {
+      configurable: true,
+      get: () => window.innerWidth - (root.style.overflow === "hidden" ? 0 : 15),
+    });
+    try {
+      const { unmount } = render(
+        <NextIntlClientProvider locale="en" messages={en}>
+          <DrawerShell open onClose={vi.fn()} dialogLabel="Pair detail">
+            <DrawerHeader>
+              <h3>Potential misalignment</h3>
+            </DrawerHeader>
+          </DrawerShell>
+        </NextIntlClientProvider>,
+      );
+      expect(root.style.paddingRight).toBe("15px");
+      unmount();
+      expect(root.style.paddingRight).toBe("");
+    } finally {
+      delete (root as unknown as Record<string, unknown>).clientWidth;
+      if (width) Object.defineProperty(Element.prototype, "clientWidth", width);
+    }
+  });
+
   it("dims the page by default, and can keep it in view with a light scrim", () => {
     const { unmount } = render(
       <NextIntlClientProvider locale="en" messages={en}>

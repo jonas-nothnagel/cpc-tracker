@@ -90,7 +90,48 @@ steps should be more integrated and explorable as readers dive deeper.
   - the triangle is annotated;
   - plain copy uses the brief's vocabulary.
 
-Verdict pending.
+Verdict: "looks good"; the document hub and the document in focus liked ("really great").
+
+**Round 9 (2026-09-25, `7ae7a46`..`4f36453`):** Jonas: nail the coherence side (four
+components) before sectors, implementation, finance and the wheel. Asks: feature documents
+in the overview (the How it works triangle and the Explore ring as inspiration, the dot
+cloud as the baseline); the theme strips were "green bars" and the target strips "dots, no
+policy can be made from dots"; one explorable section per side; the old dashboard's "just 7
+targets carry 52%" takeaway, simply and honestly; panels greyed out the screen; subtle UNDP
+branding.
+- **Four components:** the overview (the ratings, then a map of the documents), what works
+  well, where to look closer, the document in focus (unchanged).
+- **The map:** the How it works triangle in the brief's inks. Each document's targets run
+  along the diagonal in the builder's colour; each block is a pair of documents; each dot
+  sits at its two targets. Names are spread apart and kept clear of the diagonal. The two
+  lead pairs are outlined. A block gives its figures on hover and opens on click; a
+  document's name brings its row and column forward and moves the document hub.
+- **One section per side:** the headline says how few targets carry it, as a union of
+  pairs (for example, "Of the 671 potential misalignments, 52% involve just 7 targets"). The
+  map brings those targets' pairs forward; pointing at a theme, a type or a document name
+  brings its pairs forward instead. The target list puts its first target in the centre
+  (the document hub's layout); a row picks another target and opens with its text and a way
+  to its panel. Each dot names its partner target and opens the comparison.
+- **Panels:** DrawerShell locks the root element, not body (with `html { overflow-x:
+  hidden }` a clipping body became its own scroll box and threw the sticky field and menu
+  off screen: the grey screen). Brief panels use a light scrim without blur.
+- **Branding:** UNDP's lockup at the landing's top left with the tool's name; small in each
+  printed running head.
+- **Walkthrough:** a new "Map of the documents" stop; the other stops describe the map and
+  the target in the centre.
+- Verified: 1,323 tests on a clean copy of the branch; all four countries and en/es/mn
+  print 3 pages; production walk without errors. Verdict pending.
+- Review fix pass (fresh review of `7ae7a46..4f36453`):
+  - panels keep the page's width with a classic (Windows) scrollbar;
+  - the walkthrough centres each stop, so the dots match its card;
+  - a theme or type shows its own tone on the map, whichever step leads;
+  - the map's dots never overlap on large corpora;
+  - the whole name at the centre opens the target.
+  Left for Jonas's rework of the two sections: "See all N of its target pairs" opens a
+  panel that lists only the aligned and potentially misaligned targets; the strongest
+  alignments list names 6 of the headline's K targets (K is 21 for Mongolia); each hover
+  re-lays the map (29 to 83 ms for Sri Lanka and Panama). Main's shared `Modal` still
+  locks `body` (the grey-screen bug class): fix on main, with the DrawerShell lock.
 
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
@@ -110,6 +151,12 @@ Verdict pending.
   - `coherence-dashboard.tsx` and `pair-drawer.tsx`: take main's version (the branch no
     longer changes either; the production drawer's "Open as a page" link was dropped at
     the second sync because it broke main's PairDrawer test).
+  - `src/components/ui/drawer-shell.tsx` (round 9): the branch locks scrolling on the root
+    element instead of body (taking a classic scrollbar's room as padding) and adds
+    `scrim="light"`. Keep both if main edits the shell; the root lock fixes sticky
+    elements behind every drawer, main's included.
+  - `tour/tour-overlay.tsx` (round 9 review): an added `scrollBlock="center"` mode for the
+    brief's walkthrough; main's tours keep their modes.
   - The local `main` ref lives in the main checkout and can lag GitHub. If
     `git log HEAD..origin/main` is non-empty after `git fetch origin`, merge `origin/main`
     instead of `main` (the second sync did this; the main checkout stays untouched).
@@ -211,7 +258,9 @@ compelling enough to forward to a colleague. This branch is the search for the a
 7. **One coherence overview** (`d68da55`..`94e8e67`): the scrolling hub, brief-style
    panels, hands-on How it works. Verdict: "better and better"; the document hub liked.
 8. **A deeper overview** (`9e612b4`): steps that dive deeper, documents set apart, How it
-   works aligned with the brief. Verdict pending.
+   works aligned with the brief. Verdict: "looks good"; the strips were unreadable.
+9. **The coherence side** (`7ae7a46`..`4f36453`): a map of the documents, one explorable
+   section per side, a target in the centre, UNDP branding. Verdict pending.
 
 The finding-page routes (`/{country}/finding/{pairKey}`, `/{country}/findings`) still exist
 on this branch as legacy surfaces; nothing in the brief links to them. Their lib layer
@@ -231,12 +280,14 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
   Back. Default = overall, areas of alignment, strongest alignments, potential misalignment,
   targets to review first, documents = 3 pages.
 - **Overview steps** (screen): overall (headline + legend; aligned and potential
-  misalignment lead to their steps); aligned (leading pair of documents headline; themes
-  numbered like the dot groups; strongest alignments by strong links); potential
-  misalignment (themes with resources involved; types of potential misalignment; targets to
-  review first); documents (one row per document, most aligned first; the open row sits at
-  the centre of the dots). Dots keep within 1.8x their landing size (2.6x in the steps that
-  single out a few targets); where even the smallest dot cannot fit every pair, one dot
+  misalignment lead to their sections); the map of the documents (the leading pairs,
+  linked and outlined); what works well (headline: how few targets carry the strong
+  alignments; themes that preview their pairs on the map; strongest alignments, the first
+  in the centre); where to look closer (headline: how few targets carry the potential
+  misalignments; themes and types that preview their pairs; the targets it names, the
+  first in the centre); documents (one row per document, most aligned first; the open row
+  sits at the centre of the dots). Every pair is one dot at its own place on the map (never
+  sampled). Around a document, where even the smallest dot cannot fit every pair, one dot
   stands for several, taken evenly, and the counts stay exact.
 - **Print sections:** overall (halftone field), areas of alignment / potential misalignment
   (theme list + one example per theme, quotes fitted to whole lines), strongest alignments,
@@ -303,6 +354,10 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
 7. How it works, step 14 (finance): the right-hand examples ("Pasture management
    programme", "Soil & fodder programme", "Wetland restoration target") look illustrative;
    check them against Mongolia's BER data or replace them with real rows.
+8. es/mn walkthrough: the "Targets to review first" body is an English placeholder like
+   the other rewritten stops. Translate with the rest once the English version is liked.
+9. The map on a phone is small (about 1.4 px per dot for Mongolia); readable as a pattern,
+   with names at 12px.
 
 ## How to resume
 

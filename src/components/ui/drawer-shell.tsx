@@ -137,13 +137,23 @@ export function DrawerShell({
   // The root clips, never the body: the app sets `html { overflow-x: hidden }`,
   // so a clipping body would become its own scroll box and throw every sticky
   // element on the page (a pinned chart, a side menu) out of the window.
+  // A classic (Windows-style) scrollbar goes with the lock: its room becomes
+  // padding, so nothing behind the panel shifts sideways.
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
-    const prev = root.style.overflow;
+    const prev = { overflow: root.style.overflow, paddingRight: root.style.paddingRight };
+    const scrollbar = () => window.innerWidth - root.clientWidth;
+    const before = scrollbar();
     root.style.overflow = "hidden";
+    const gutter = before - scrollbar();
+    if (gutter > 0) {
+      const padding = parseFloat(getComputedStyle(root).paddingRight) || 0;
+      root.style.paddingRight = `${padding + gutter}px`;
+    }
     return () => {
-      root.style.overflow = prev;
+      root.style.overflow = prev.overflow;
+      root.style.paddingRight = prev.paddingRight;
     };
   }, [open]);
 

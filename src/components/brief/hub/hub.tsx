@@ -86,6 +86,17 @@ function targetCounts(data: BriefData, id: string): { all: ToneCounts; byDoc: Ma
   return { all, byDoc };
 }
 
+/** A theme (`theme:<tone>:<n>`) or a type of potential misalignment
+ *  (`kind:<type>`) under the pointer: the map's tone and emphasis for it. */
+function previewOf(key: string | null): { tone: HubTone; focus: MapFocus } | null {
+  const theme = key ? /^theme:(reinforce|apart):(\d+)$/.exec(key) : null;
+  if (theme) return { tone: theme[1] as HubTone, focus: { kind: "theme", index: Number(theme[2]) } };
+  if (key?.startsWith("kind:")) {
+    return { tone: "apart", focus: { kind: "mechanism", mechanism: key.slice(5) as AlignmentMechanism } };
+  }
+  return null;
+}
+
 /**
  * The coherence overview on screen: the dot field of every target pair on
  * one side, the steps of the overview beside it, in four parts. The overall
@@ -117,7 +128,9 @@ export function Hub({
   const overall = useOverallHeadline(data);
 
   const [active, setActive] = useState<HubStep>("overview");
-  const [hover, setHover] = useState<{ key: string; step: HubStep } | null>(null);
+  // What the pointer or keyboard is on: its key, the step it sits in (none
+  // for the field itself) and the step that led when it arrived.
+  const [hover, setHover] = useState<{ key: string; home: HubStep | null; at: HubStep } | null>(null);
   // The targets the reader put in the centre, per list.
   const [picked, setPicked] = useState<{ strong: string | null; review: string | null }>({
     strong: null,
@@ -147,12 +160,28 @@ export function Hub({
 
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
-    // A step leads while it crosses the middle of the window.
+    // The step across the middle of the window, if any.
+    const middle = (): HubStep | null => {
+      const y = window.innerHeight / 2;
+      for (const el of root.current?.querySelectorAll<HTMLElement>("[data-step]") ?? []) {
+        const box = el.getBoundingClientRect();
+        if (box.top <= y && box.bottom >= y) return el.dataset.step as HubStep;
+      }
+      return null;
+    };
+    // A step leads while it crosses the middle of the window. When the lead
+    // leaves after a jump (the walkthrough, a link), the step now at the
+    // middle leads, even one that was in the band all along.
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           const step = (entry.target as HTMLElement).dataset.step as HubStep | undefined;
-          if (entry.isIntersecting && step) setActive(step);
+          if (!step) continue;
+          if (entry.isIntersecting) setActive(step);
+          else {
+            const next = middle();
+            if (next) setActive((cur) => (cur === step ? next : cur));
+          }
         }
       },
       { rootMargin: "-45% 0px -45% 0px" },
@@ -162,21 +191,25 @@ export function Hub({
     // Steps come and go with the selection (no pairs, no potential misalignment): observe anew.
   }, [hasPairs, hasApart, hasStrong]);
 
-  // What the pointer brought forward belongs to the step it was in.
-  const hovered = hover && hover.step === active ? hover.key : null;
-  const setHovered = (key: string | null) =>
+  // It holds while its own step leads, or until another step takes the lead
+  // (a row keeps focus after the reader scrolled away).
+  const hovered = hover && (hover.home === active || hover.at === active) ? hover.key : null;
+  const pointAt = (home: HubStep | null) => (key: string | null) =>
     setHover((prev) =>
-      key === null ? null : prev && prev.key === key && prev.step === active ? prev : { key, step: active },
+      key === null ? null : prev && prev.key === key && prev.home === home ? prev : { key, home, at: active },
     );
+  const setHovered = pointAt(null);
 
+  // A theme or type the reader points at shows its pairs on the map, in its
+  // own tone, whichever step leads.
+  const preview = previewOf(hovered);
   const mapFocus = (tone?: HubTone): MapFocus | undefined => {
-    if (hovered?.startsWith("theme:")) return { kind: "theme", index: Number(hovered.slice(6)) };
-    if (hovered?.startsWith("kind:")) return { kind: "mechanism", mechanism: hovered.slice(5) as AlignmentMechanism };
     if (hovered?.startsWith("axis:")) return { kind: "doc", doc: hovered.slice(5) };
     return tone ? { kind: "top" } : undefined;
   };
-  const stageSpec: HubStage =
-    active === "overview"
+  const stageSpec: HubStage = preview
+    ? { kind: "map", tone: preview.tone, focus: preview.focus }
+    : active === "overview"
       ? { kind: "overview" }
       : active === "map"
         ? { kind: "map", focus: mapFocus() }
@@ -246,7 +279,7 @@ export function Hub({
     }
     const openPair = () => onOpenDocPair?.(lead.a.id, lead.b.id);
     const block = getDocPairKey(lead.a.id, lead.b.id);
-    const point = (on: boolean) => setHovered(on ? block : null);
+    const point = (on: boolean) => pointAt("map")(on ? block : null);
     return th.rich(tone === "reinforce" ? "leadTogether" : "leadApart", {
       docA: lead.a.name,
       docB: lead.b.name,
@@ -460,10 +493,12 @@ export function Hub({
     (tone === "reinforce" ? data.together : data.apart).rows.slice(0, MAX_THEMES);
   const themeHover = (tone: "reinforce" | "apart") => (name: string | null) => {
     const index = name === null ? -1 : themeRows(tone).findIndex((r) => r.storyline.name === name);
-    setHovered(index >= 0 ? `theme:${index}` : null);
+    pointAt(tone)(index >= 0 ? `theme:${tone}:${index}` : null);
   };
   const hoveredTheme = (tone: "reinforce" | "apart") =>
-    hovered?.startsWith("theme:") ? (themeRows(tone)[Number(hovered.slice(6))]?.storyline.name ?? null) : null;
+    preview?.tone === tone && preview.focus.kind === "theme"
+      ? (themeRows(tone)[preview.focus.index]?.storyline.name ?? null)
+      : null;
 
   return (
     <div className="brief-hub" data-testid="brief-hub" ref={root}>
@@ -477,7 +512,7 @@ export function Hub({
           onSelect={onSelect}
           onCenter={inFocus ? () => onOpenCommitment?.(inFocus) : undefined}
           highlight={hovered && !hovered.includes(":") ? hovered : null}
-          outlined={active === "map" ? outlined : []}
+          outlined={active === "map" && !preview ? outlined : []}
           onHover={setHovered}
           center={center}
         />
@@ -582,9 +617,12 @@ export function Hub({
                         <li
                           key={m.mechanism}
                           className="brief-hub-kind"
+                          tabIndex={0}
                           data-hovered={hovered === `kind:${m.mechanism}` ? "true" : undefined}
-                          onPointerEnter={() => setHovered(`kind:${m.mechanism}`)}
-                          onPointerLeave={() => setHovered(null)}
+                          onPointerEnter={() => pointAt("apart")(`kind:${m.mechanism}`)}
+                          onPointerLeave={() => pointAt("apart")(null)}
+                          onFocus={() => pointAt("apart")(`kind:${m.mechanism}`)}
+                          onBlur={() => pointAt("apart")(null)}
                         >
                           <span className="brief-hub-kind-main">
                             <span className="brief-hub-kind-name">{tm(m.mechanism)}</span>
@@ -634,7 +672,7 @@ export function Hub({
                 open={openDoc}
                 onToggle={toggleDoc}
                 onOpenDocPair={onOpenDocPair}
-                onHoverPartner={setHovered}
+                onHoverPartner={pointAt("documents")}
                 tour="brief-documents"
               />
             </section>

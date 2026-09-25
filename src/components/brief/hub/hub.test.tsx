@@ -53,6 +53,12 @@ function enter(step: string) {
   act(() => entry.cb([{ target: entry.el, isIntersecting: true } as unknown as IntersectionObserverEntry], {} as IntersectionObserver));
 }
 
+function leave(step: string) {
+  const entry = [...observed].reverse().find((o) => (o.el as HTMLElement).dataset.step === step);
+  if (!entry) throw new Error(`no observed step ${step}`);
+  act(() => entry.cb([{ target: entry.el, isIntersecting: false } as unknown as IntersectionObserverEntry], {} as IntersectionObserver));
+}
+
 const stage = () => document.querySelector("[data-hub-stage]")?.getAttribute("data-hub-stage");
 const step = (name: string) => document.querySelector(`[data-step="${name}"]`) as HTMLElement;
 
@@ -82,6 +88,19 @@ describe("Hub", () => {
     expect(stage()).toBe("map:apart:top");
     enter("review");
     expect(stage()).toBe("target:B6");
+  });
+
+  it("after a jump, the step at the middle of the window leads, even one that never left it", () => {
+    renderHub();
+    enter("reinforce");
+    enter("strong");
+    // The walkthrough brings the themes to the middle: the targets' list
+    // leaves, while the themes' step was in view all along.
+    const middle = window.innerHeight / 2;
+    step("reinforce").getBoundingClientRect = () => ({ top: middle - 200, bottom: middle + 200 }) as DOMRect;
+    step("strong").getBoundingClientRect = () => ({ top: middle + 200, bottom: middle + 600 }) as DOMRect;
+    leave("strong");
+    expect(stage()).toBe("map:reinforce:top");
   });
 
   it("names on the map the most closely aligned pair and the pair with the most potential misalignment, as links", () => {
@@ -117,6 +136,34 @@ describe("Hub", () => {
     expect(stage()).toBe("map:reinforce:theme:0");
     fireEvent.blur(within(theme).getByRole("button"));
     expect(stage()).toBe("map:reinforce:top");
+  });
+
+  it("a theme reached by keyboard from the map shows its own tone, and keeps it as its step takes the lead", () => {
+    renderHub();
+    enter("map");
+    const theme = within(step("reinforce")).getAllByTestId("brief-theme-row")[0];
+    fireEvent.focus(within(theme).getByRole("button"));
+    expect(stage()).toBe("map:reinforce:theme:0");
+    enter("reinforce");
+    expect(stage()).toBe("map:reinforce:theme:0");
+    // A focused row gives way once the reader scrolls on to another step.
+    enter("documents");
+    expect(stage()).toBe("doc:A");
+  });
+
+  it("a theme pointed at while a target leads still shows on the map, and only in its own list", () => {
+    renderHub();
+    enter("strong");
+    expect(stage()).toBe("target:C1");
+    const theme = within(step("reinforce")).getAllByTestId("brief-theme-row")[0];
+    fireEvent.pointerEnter(theme);
+    expect(stage()).toBe("map:reinforce:theme:0");
+    expect(theme.getAttribute("data-hovered")).toBe("true");
+    for (const row of within(step("apart")).queryAllByTestId("brief-theme-row")) {
+      expect(row.getAttribute("data-hovered")).toBeNull();
+    }
+    fireEvent.pointerLeave(theme);
+    expect(stage()).toBe("target:C1");
   });
 
   it("the strongest alignments: the first target in the centre, another on request, and its pairs one click away", () => {

@@ -111,6 +111,7 @@ export function Builder({
           onNext={tour.next}
           onBack={tour.back}
           onClose={tour.close}
+          scrollBlock="center"
         />
       )}
 

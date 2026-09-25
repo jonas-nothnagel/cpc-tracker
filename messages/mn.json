@@ -505,7 +505,7 @@
           },
           "commitments": {
             "title": "Эхэлж хянах зорилтууд",
-            "body": "Хамгийн олон болзошгүй үл нийцэлд холбогдсон зорилтууд. Нэгийг сонгоход түүнтэй уялдаатай болон болзошгүй үл нийцэлтэй зорилтуудын жагсаалт гарна."
+            "body": "The targets involved in the most potential misalignments. The first sits at the centre of the dots with its target pairs, grouped by the other documents; selecting another target puts it there, and each dot opens its comparison."
           },
           "documents": {
             "title": "Баримт бичгүүдийг зэрэгцүүлэн",

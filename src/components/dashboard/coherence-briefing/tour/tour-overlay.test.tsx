@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../../messages/en.json";
 import { TourButton } from "./tour-button";
+import { TourOverlay } from "./tour-overlay";
 
 // jsdom implements neither ResizeObserver nor scrollIntoView.
 beforeAll(() => {
@@ -90,5 +91,52 @@ describe("TourButton + TourOverlay", () => {
     openTour();
     fireEvent.click(screen.getByRole("presentation"));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("in centre mode, brings a step's target to the middle of the window, below any sticky band", () => {
+    const scrollTo = vi.fn();
+    const saved = window.scrollTo;
+    window.scrollTo = scrollTo as never;
+    const el = document.createElement("div");
+    document.body.appendChild(el);
+    // 100px tall, resting low in a 768px window.
+    el.getBoundingClientRect = () => ({ top: 600, bottom: 700, left: 0, right: 300, width: 300, height: 100 }) as DOMRect;
+    try {
+      const { unmount } = render(
+        <NextIntlClientProvider locale="en" messages={en}>
+          <TourOverlay
+            tourId="wheel"
+            steps={[{ step: { id: "arcs", target: "wheel-arcs" }, el }]}
+            stepIndex={0}
+            onNext={vi.fn()}
+            onBack={vi.fn()}
+            onClose={vi.fn()}
+            scrollBlock="center"
+          />
+        </NextIntlClientProvider>,
+      );
+      expect(scrollTo).toHaveBeenLastCalledWith(expect.objectContaining({ top: 600 - (window.innerHeight - 100) / 2 }));
+      unmount();
+      // A sticky band above the steps (its height as the target's scroll
+      // margin): the target lands just below it instead.
+      el.style.scrollMarginTop = "500px";
+      render(
+        <NextIntlClientProvider locale="en" messages={en}>
+          <TourOverlay
+            tourId="wheel"
+            steps={[{ step: { id: "arcs", target: "wheel-arcs" }, el }]}
+            stepIndex={0}
+            onNext={vi.fn()}
+            onBack={vi.fn()}
+            onClose={vi.fn()}
+            scrollBlock="center"
+          />
+        </NextIntlClientProvider>,
+      );
+      expect(scrollTo).toHaveBeenLastCalledWith(expect.objectContaining({ top: 600 - 500 }));
+    } finally {
+      window.scrollTo = saved;
+      el.remove();
+    }
   });
 });

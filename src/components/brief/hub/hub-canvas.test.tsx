@@ -123,4 +123,20 @@ describe("HubCanvas", () => {
     expect(onCenter).toHaveBeenCalledTimes(1);
     expect(onSelect).not.toHaveBeenCalled();
   });
+
+  it("opens what is in focus from anywhere on its name, however many lines it takes", () => {
+    const stage = { kind: "target", id: "B6" } as const;
+    const layout = layoutHub(stage, PARTICLES, DATA, W, H);
+    const onCenter = vi.fn();
+    const { container } = render(
+      <HubCanvas data={DATA} stage={stage} labelFor={() => null} tipFor={tipFor} onCenter={onCenter} center={<span>B6</span>} />,
+    );
+    // A long name reaches well above the middle of the field.
+    const name = container.querySelector(".brief-hub-center") as HTMLElement;
+    const top = layout.center!.y - 120;
+    name.getBoundingClientRect = () =>
+      ({ left: layout.center!.x - 70, right: layout.center!.x + 70, top, bottom: layout.center!.y + 60 }) as DOMRect;
+    fireEvent.click(field(container), { clientX: layout.center!.x, clientY: top + 4 });
+    expect(onCenter).toHaveBeenCalledTimes(1);
+  });
 });

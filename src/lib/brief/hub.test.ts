@@ -177,6 +177,16 @@ describe("layoutHub", () => {
       }
     });
 
+    it("never lets dots overlap, so a block's colours read true in a large corpus", () => {
+      const { data, particles: many } = corpus([60, 50, 45, 40, 40, 40, 35, 30, 30, 30]);
+      const map = layoutHub({ kind: "map" }, many, data, 358, 370);
+      const side = map.axis[0].square.x1 - map.axis[0].square.x0;
+      const pitch = side / 60;
+      expect(pitch).toBeLessThan(0.8);
+      const shown = many.findIndex((_, i) => map.visible[i]);
+      expect(2 * map.r[shown]).toBeLessThanOrEqual(pitch + 1e-6);
+    });
+
     it("gives every pair its dot in a large corpus too, never a sample", () => {
       const { data, particles: many } = corpus([60, 45, 40, 38, 30, 30, 25, 20, 18, 12]);
       const map = layoutHub({ kind: "map" }, many, data, 480, 520);

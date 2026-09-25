@@ -247,6 +247,7 @@ export function HubCanvas({
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelsRef = useRef<HTMLDivElement>(null);
+  const centerRef = useRef<HTMLDivElement>(null);
   const state = useRef<DotState | null>(null);
   const seen = useRef(false);
   const settled = useRef(false);
@@ -382,11 +383,20 @@ export function HubCanvas({
     draw(canvas, state.current, layout, size.w, size.h, 1, member, bright, extras);
   }, [bright, layout, member, size, extras]);
 
-  const inCenter = (x: number, y: number) =>
-    layout.center !== null &&
-    center !== undefined &&
-    Math.abs(x - layout.center.x) <= layout.center.half &&
-    Math.abs(y - layout.center.y) <= layout.center.half * 0.75;
+  const inCenter = (x: number, y: number) => {
+    if (layout.center === null || center === undefined) return false;
+    // The name's own box as laid out: a long target takes several lines.
+    const box = centerRef.current?.getBoundingClientRect();
+    const wrap = wrapRef.current?.getBoundingClientRect();
+    if (box && wrap && box.bottom > box.top) {
+      const left = box.left - wrap.left;
+      const top = box.top - wrap.top;
+      return x >= left && x <= left + (box.right - box.left) && y >= top && y <= top + (box.bottom - box.top);
+    }
+    return (
+      Math.abs(x - layout.center.x) <= layout.center.half && Math.abs(y - layout.center.y) <= layout.center.half * 0.75
+    );
+  };
 
   const targetAt = (x: number, y: number): HubTarget | null => {
     // Around a target, each pair is its own way in.
@@ -511,6 +521,7 @@ export function HubCanvas({
         })}
         {focus && layout.center && center && (
           <div
+            ref={centerRef}
             className="brief-hub-center"
             data-clickable={onCenter ? "true" : undefined}
             style={{ left: layout.center.x, top: layout.center.y, width: layout.center.half * 2 - 8 }}

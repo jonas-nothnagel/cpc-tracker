@@ -505,7 +505,7 @@
           },
           "commitments": {
             "title": "Metas que conviene revisar primero",
-            "body": "Las metas que intervienen en más posibles desalineaciones. Al seleccionar una se listan las metas con las que está alineada y aquellas con posible desalineación."
+            "body": "The targets involved in the most potential misalignments. The first sits at the centre of the dots with its target pairs, grouped by the other documents; selecting another target puts it there, and each dot opens its comparison."
           },
           "documents": {
             "title": "Los documentos, uno junto a otro",
