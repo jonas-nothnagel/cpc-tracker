@@ -62,16 +62,17 @@ export interface SeatStyle {
   /** Part of a potential misalignment band: every other seat of the band is
    *  drawn small, the brief's checker texture, so the band reads without its red. */
   texture?: boolean;
-  /** A reported action or budget line: a square, not a target's dot. */
-  square?: boolean;
+  /** A reported action (square) or budget line (tilted square), not a
+   *  target's dot. */
+  shape?: "square" | "diamond";
 }
 
 export interface ArcLabel {
   name: string;
   sub?: string;
   dim?: boolean;
-  /** A layer's colour, shown as a small square before its name. */
-  swatch?: string;
+  /** A layer's colour and shape, shown before its name. */
+  swatch?: { color: string; shape: "square" | "diamond" };
   /** The name opens its arc as the centre. */
   selectable?: boolean;
 }
@@ -89,7 +90,8 @@ interface SeatState {
   b: Float32Array;
   s: Float32Array;
   hollow: Uint8Array;
-  square: Uint8Array;
+  /** 0 a dot, 1 a square, 2 a tilted square. */
+  shape: Uint8Array;
 }
 
 function seatState(n: number): SeatState {
@@ -101,7 +103,7 @@ function seatState(n: number): SeatState {
     b: new Float32Array(n),
     s: new Float32Array(n),
     hollow: new Uint8Array(n),
-    square: new Uint8Array(n),
+    shape: new Uint8Array(n),
   };
 }
 
@@ -225,9 +227,16 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
     if (!layout.placed[i]) continue;
     ctx.beginPath();
     const rr = radius * cur.s[i];
-    if (cur.square[i]) {
+    if (cur.shape[i] === 1) {
       const half = rr * 0.88;
       ctx.rect(cur.x[i] - half, cur.y[i] - half, half * 2, half * 2);
+    } else if (cur.shape[i] === 2) {
+      const half = rr * 1.18;
+      ctx.moveTo(cur.x[i], cur.y[i] - half);
+      ctx.lineTo(cur.x[i] + half, cur.y[i]);
+      ctx.lineTo(cur.x[i], cur.y[i] + half);
+      ctx.lineTo(cur.x[i] - half, cur.y[i]);
+      ctx.closePath();
     } else ctx.arc(cur.x[i], cur.y[i], rr, 0, Math.PI * 2);
     const color = `rgb(${cur.r[i] | 0},${cur.g[i] | 0},${cur.b[i] | 0})`;
     if (cur.hollow[i]) {
@@ -421,7 +430,7 @@ export function RingCanvas({
       to.b[i] = b;
       to.s[i] = small[i] ? 0.55 : 1;
       to.hollow[i] = styles[i]?.hollow ? 1 : 0;
-      cur.square[i] = styles[i]?.square ? 1 : 0;
+      cur.shape[i] = styles[i]?.shape === "square" ? 1 : styles[i]?.shape === "diamond" ? 2 : 0;
       if (Math.abs(to.x[i] - from.x[i]) > 0.5 || Math.abs(to.y[i] - from.y[i]) > 0.5) moves = true;
     }
     const frame = (p: number) => {
@@ -634,12 +643,26 @@ export function RingCanvas({
                     onLabel(l.key);
                   }}
                 >
-                  {label.swatch && <span className="ex-swatch" style={{ background: label.swatch }} aria-hidden="true" />}
+                  {label.swatch && (
+                    <span
+                      className="ex-swatch"
+                      data-shape={label.swatch.shape === "diamond" ? "diamond" : undefined}
+                      style={{ background: label.swatch.color }}
+                      aria-hidden="true"
+                    />
+                  )}
                   {label.name}
                 </button>
               ) : (
                 <span className="ex-label-name">
-                  {label.swatch && <span className="ex-swatch" style={{ background: label.swatch }} aria-hidden="true" />}
+                  {label.swatch && (
+                    <span
+                      className="ex-swatch"
+                      data-shape={label.swatch.shape === "diamond" ? "diamond" : undefined}
+                      style={{ background: label.swatch.color }}
+                      aria-hidden="true"
+                    />
+                  )}
                   {label.name}
                 </span>
               )}

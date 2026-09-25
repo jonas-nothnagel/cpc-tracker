@@ -1091,56 +1091,48 @@
   max-width: 21rem;
 }
 
-/* ── Layers: switches that read as switches ─────────────────────── */
+/* ── Layers: plain switches, told apart by their glyphs ─────────── */
 
 [data-brief] .ex-layers {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.6rem;
-  padding-left: 1.5rem;
-  border-left: 1px solid var(--brief-hairline);
-  font-size: 0.875rem;
+  align-items: baseline;
+  gap: 0.25rem 1.1rem;
+  font-size: 0.9375rem;
 }
 
-[data-brief] .ex-pill {
+[data-brief] .ex-layers button {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.35rem 0.8rem 0.35rem 0.65rem;
-  border: 1px solid var(--brief-hairline-strong);
-  border-radius: 999px;
-  background: #fff;
+  padding: 0.2rem 0.1rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
   color: var(--brief-ink);
   font: inherit;
-  font-weight: 500;
   cursor: pointer;
-  transition: border-color 150ms ease, background-color 150ms ease;
 }
 
-[data-brief] .ex-pill:hover {
-  border-color: var(--brief-ink);
+[data-brief] .ex-layers button:hover {
+  border-bottom-color: var(--brief-hairline-strong);
 }
 
-[data-brief] .ex-pill[aria-pressed="true"] {
-  border-color: var(--brief-ink);
-  background: var(--brief-ink);
-  color: #fff;
+[data-brief] .ex-layers button[aria-pressed="true"] {
+  border-bottom-color: var(--brief-ink);
+  font-weight: 600;
 }
 
-[data-brief] .ex-pill[aria-pressed="true"] .ex-swatch {
-  box-shadow: 0 0 0 1.5px #fff;
+/* Off, a layer's glyph is drawn as an outline in its colour; on, filled. */
+[data-brief] .ex-layers button[aria-pressed="false"] .ex-swatch {
+  background: transparent !important;
+  box-shadow: inset 0 0 0 1.6px var(--swatch);
 }
 
-[data-brief] .ex-pill:focus-visible {
-  outline: 2px solid var(--brief-blue);
-  outline-offset: 2px;
-}
-
-[data-brief] .ex-pill-n {
+[data-brief] .ex-layers-n {
   font-weight: 400;
+  color: var(--brief-muted);
   font-variant-numeric: tabular-nums;
-  opacity: 0.75;
 }
 
 /* A layer's colour as a small square, the shape of its seats. */
@@ -1153,8 +1145,15 @@
   vertical-align: 0.02em;
 }
 
-[data-brief] .ex-pill .ex-swatch {
+[data-brief] .ex-layers .ex-swatch {
   margin-right: 0;
+}
+
+/* Budget lines are tilted squares, on the ring and wherever they are named. */
+[data-brief] .ex-swatch[data-shape="diamond"] {
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
 }
 
 /* ── Every comparison, with the AI's first sentence ────────────── */

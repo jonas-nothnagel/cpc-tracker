@@ -21,8 +21,8 @@ export interface BrowseRow {
   counts: ToneCounts;
   /** Its targets, in document order. */
   targets: BriefCommitment[];
-  /** A layer's colour, shown as a small square before its name. */
-  swatch?: string;
+  /** A layer's colour and shape, shown before its name. */
+  swatch?: { color: string; shape: "square" | "diamond" };
 }
 
 /** A document (or policy area) to open: its name puts it in the centre, the
@@ -62,7 +62,14 @@ function BrowseGroup({
         </button>
         <button type="button" className="ex-browse-main" onClick={() => onFocus(row.key)}>
           <span className="ex-group-row-name">
-            {row.swatch && <span className="ex-swatch" style={{ background: row.swatch }} aria-hidden="true" />}
+            {row.swatch && (
+              <span
+                className="ex-swatch"
+                data-shape={row.swatch.shape === "diamond" ? "diamond" : undefined}
+                style={{ background: row.swatch.color }}
+                aria-hidden="true"
+              />
+            )}
             {row.name}
             <span className="ex-group-row-meta"> {row.meta}</span>
           </span>

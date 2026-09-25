@@ -143,6 +143,20 @@ function LineGlyph({ kind }: { kind: LineKind }) {
   );
 }
 
+/** A layer's glyph in its colour: a square for reported actions, a tilted
+ *  square for budget lines, as their seats are drawn on the ring. */
+function Swatch({ kind }: { kind: "action" | "budget" }) {
+  const color = kind === "action" ? RING_INK.action : RING_INK.budget;
+  return (
+    <span
+      className="ex-swatch"
+      data-shape={kind === "budget" ? "diamond" : undefined}
+      style={{ background: color, ["--swatch" as string]: color }}
+      aria-hidden="true"
+    />
+  );
+}
+
 /** The mark that stands for "in the centre", on the ring and in the middle. */
 function OriginDot() {
   return <span className="ex-origin-dot" aria-hidden="true" />;
@@ -373,7 +387,7 @@ export function Explore({
           style = { color: layerTint(c.kind, true), hollow: group.tone[i] === "unrelated" };
         } else style = toneStyle(group.tone[i]);
         if (searching && !matches.has(i)) style = { ...style, color: RING_INK.drained, texture: false };
-        return layer ? { ...style, square: true } : style;
+        return layer ? { ...style, shape: c.kind === "budget" ? ("diamond" as const) : ("square" as const) } : style;
       }),
     [model, group, searching, matches],
   );
@@ -423,7 +437,12 @@ export function Explore({
         const name = groupName(arc.key);
         const selectable = arc.key !== OTHER_GROUP;
         const arcLayer = arc.key.startsWith("layer:") ? (arc.key.slice(6) as LayerId) : null;
-        const swatch = arcLayer ? layerTint(arcLayer === "budget" ? "budget" : "action") : undefined;
+        const swatch = arcLayer
+          ? {
+              color: layerTint(arcLayer === "budget" ? "budget" : "action"),
+              shape: arcLayer === "budget" ? ("diamond" as const) : ("square" as const),
+            }
+          : undefined;
         if (!group) return { name, selectable, swatch };
         const others = arc.ids.filter((id) => !group.isMember[id]);
         if (others.length === 0) return { name, sub: t("inCentre"), dim: true, selectable, swatch };
@@ -737,7 +756,10 @@ export function Explore({
           meta: t(layer === "budget" ? "linesCount" : "actionsCount", { count: items.length }),
           counts: EMPTY_COUNTS,
           targets: items,
-          swatch: layerTint(layer === "budget" ? "budget" : "action"),
+          swatch: {
+            color: layerTint(layer === "budget" ? "budget" : "action"),
+            shape: layer === "budget" ? ("diamond" as const) : ("square" as const),
+          },
         };
       }),
     [available, model, layerName, t],
@@ -1212,28 +1234,26 @@ export function Explore({
             {actionLayers.length > 0 && (
               <button
                 type="button"
-                className="ex-pill"
                 aria-pressed={actionLayers.every((l) => state.layers.includes(l))}
                 onClick={() => {
                   const on = !actionLayers.every((l) => state.layers.includes(l));
                   for (const layer of actionLayers) dispatch({ type: "layer", layer, on });
                 }}
               >
-                <span className="ex-swatch" style={{ background: RING_INK.action }} aria-hidden="true" />
+                <Swatch kind="action" />
                 {t("toggleActions")}
-                <span className="ex-pill-n">{n(model.items.filter((c) => c.kind === "action").length)}</span>
+                <span className="ex-layers-n">{n(model.items.filter((c) => c.kind === "action").length)}</span>
               </button>
             )}
             {available.includes("budget") && (
               <button
                 type="button"
-                className="ex-pill"
                 aria-pressed={state.layers.includes("budget")}
                 onClick={() => dispatch({ type: "layer", layer: "budget", on: !state.layers.includes("budget") })}
               >
-                <span className="ex-swatch" style={{ background: RING_INK.budget }} aria-hidden="true" />
+                <Swatch kind="budget" />
                 {t("toggleBudget")}
-                <span className="ex-pill-n">{n(model.items.filter((c) => c.kind === "budget").length)}</span>
+                <span className="ex-layers-n">{n(model.items.filter((c) => c.kind === "budget").length)}</span>
               </button>
             )}
           </div>
