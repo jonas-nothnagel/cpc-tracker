@@ -21,6 +21,8 @@ export interface BrowseRow {
   counts: ToneCounts;
   /** Its targets, in document order. */
   targets: BriefCommitment[];
+  /** A layer's colour, shown as a small square before its name. */
+  swatch?: string;
 }
 
 /** A document (or policy area) to open: its name puts it in the centre, the
@@ -60,6 +62,7 @@ function BrowseGroup({
         </button>
         <button type="button" className="ex-browse-main" onClick={() => onFocus(row.key)}>
           <span className="ex-group-row-name">
+            {row.swatch && <span className="ex-swatch" style={{ background: row.swatch }} aria-hidden="true" />}
             {row.name}
             <span className="ex-group-row-meta"> {row.meta}</span>
           </span>
@@ -250,6 +253,75 @@ export interface PartnerRow {
   id: string;
   commitment: BriefCommitment;
   type?: string;
+  /** The first sentence of the AI explanation, once loaded. */
+  note?: string;
+}
+
+export interface ComparisonGroup {
+  title: string;
+  tone: "reinforce" | "apart" | "partial" | "none";
+  rows: PartnerRow[];
+  testId: string;
+}
+
+/** Every comparison of the centre, by reading, each with the first sentence
+ *  of its AI explanation: the verdicts to read in one pass. Closed at first. */
+function AllComparisons({
+  groups,
+  docName,
+  selected,
+  onSelect,
+  onHover,
+  open,
+  onToggle,
+}: {
+  groups: ComparisonGroup[];
+  docName: (id: string) => string;
+  selected: string | null;
+  onSelect: (id: string) => void;
+  onHover: (id: string | null) => void;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  const t = useTranslations("brief.explore");
+  const total = groups.reduce((sum, g) => sum + g.rows.length, 0);
+  if (total === 0) return null;
+  return (
+    <section className="ex-section ex-all">
+      <button type="button" className="ex-all-toggle" aria-expanded={open} onClick={onToggle}>
+        <span className="ex-chevron" aria-hidden="true" />
+        {open ? t("hideAll") : t("seeAll", { count: total })}
+      </button>
+      {open &&
+        groups
+          .filter((g) => g.rows.length > 0)
+          .map((g) => (
+            <div key={g.testId} className="ex-all-group">
+              <h4 className="ex-sub ex-sub-small">{g.title}</h4>
+              <Expandable
+                items={g.rows}
+                preview={10}
+                render={(list) => (
+                  <MarkRows
+                    rows={list.map((p) => ({
+                      key: p.id,
+                      hover: p.id,
+                      lines: [<TargetLine key="t" c={p.commitment} docName={docName} />],
+                      type: p.type,
+                      note: p.note,
+                    }))}
+                    tone={g.tone}
+                    selected={selected}
+                    onOpen={onSelect}
+                    onHover={onHover}
+                    testId={g.testId}
+                  />
+                )}
+              />
+            </div>
+          ))}
+    </section>
+  );
 }
 
 /** The column for one target in the centre: its text, how it reads against
@@ -271,6 +343,7 @@ export function TargetColumn({
   next,
   onShare,
   extra,
+  all = [],
   pair,
 }: {
   item: BriefCommitment;
@@ -290,10 +363,13 @@ export function TargetColumn({
   onShare?: () => Promise<boolean>;
   /** More about the target: its NR7 status, its reported actions and budget lines. */
   extra?: ReactNode;
+  /** Every comparison of the target, by reading. */
+  all?: ComparisonGroup[];
   pair: ReactNode;
 }) {
   const t = useTranslations("brief.explore");
   const [open, setOpen] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const long = item.text.length > 240;
   const rows = (list: PartnerRow[]) =>
     list.map((p) => ({
@@ -325,8 +401,17 @@ export function TargetColumn({
       <p className="ex-focus-finding">{finding}</p>
       {counts.total > 0 && <ToneKey counts={counts} />}
       {pair}
+      <AllComparisons
+        groups={all}
+        docName={docName}
+        selected={selected}
+        onSelect={onSelect}
+        onHover={onHover}
+        open={showAll}
+        onToggle={() => setShowAll((v) => !v)}
+      />
       {extra}
-      {apart.length > 0 && (
+      {!showAll && apart.length > 0 && (
         <section className="ex-section">
           <h3 className="ex-sub">{t("apartList", { count: apart.length })}</h3>
           <Expandable
@@ -345,7 +430,7 @@ export function TargetColumn({
           />
         </section>
       )}
-      {strong.length > 0 && (
+      {!showAll && strong.length > 0 && (
         <section className="ex-section">
           <h3 className="ex-sub">{t("strongList", { count: strong.length })}</h3>
           <Expandable
@@ -675,6 +760,7 @@ export function ItemColumn({
   previous,
   next,
   onShare,
+  all = [],
   pair,
 }: {
   kind: string;
@@ -695,10 +781,13 @@ export function ItemColumn({
   previous?: () => void;
   next?: () => void;
   onShare?: () => Promise<boolean>;
+  /** Every reading of the action or budget line, by reading. */
+  all?: ComparisonGroup[];
   pair: ReactNode;
 }) {
   const t = useTranslations("brief.explore");
   const [open, setOpen] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const long = item.text.length > 240;
   return (
     <>
@@ -729,7 +818,17 @@ export function ItemColumn({
       <p className="ex-focus-finding">{finding}</p>
       <p className="brief-panel-caveat ex-caveat">{caveat}</p>
       {pair}
-      {lists
+      <AllComparisons
+        groups={all}
+        docName={docName}
+        selected={selected}
+        onSelect={onSelect}
+        onHover={onHover}
+        open={showAll}
+        onToggle={() => setShowAll((v) => !v)}
+      />
+      {!showAll &&
+        lists
         .filter((list) => list.rows.length > 0)
         .map((list) => (
           <section key={list.testId} className="ex-section">

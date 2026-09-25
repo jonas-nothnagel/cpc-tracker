@@ -105,8 +105,8 @@ export function MarkRows({
   onHover,
   testId,
 }: {
-  rows: { key: string; lines: ReactNode[]; type?: string; hover?: string }[];
-  tone: "reinforce" | "apart" | "ink";
+  rows: { key: string; lines: ReactNode[]; type?: string; note?: string; hover?: string }[];
+  tone: "reinforce" | "apart" | "ink" | "partial" | "none";
   selected?: string | null;
   onOpen: (key: string) => void;
   onHover?: (id: string | null) => void;
@@ -130,7 +130,9 @@ export function MarkRows({
             onBlur={() => onHover?.(null)}
           >
             <span
-              className={`brief-panel-mark ${tone === "ink" ? "ex-mark-ink" : `brief-panel-mark-${tone}`}`}
+              className={`brief-panel-mark ${
+                tone === "reinforce" || tone === "apart" ? `brief-panel-mark-${tone}` : `ex-mark-${tone}`
+              }`}
               aria-hidden="true"
             />
             <span className="brief-panel-row-main">
@@ -140,6 +142,7 @@ export function MarkRows({
                 </span>
               ))}
               {row.type && <span className="brief-panel-row-type">{row.type}</span>}
+              {row.note && <span className="ex-row-note">{row.note}</span>}
             </span>
           </button>
         </li>

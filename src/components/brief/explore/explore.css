@@ -1090,3 +1090,121 @@
 [data-brief] .ex-tip {
   max-width: 21rem;
 }
+
+/* ── Layers: switches that read as switches ─────────────────────── */
+
+[data-brief] .ex-layers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--brief-hairline);
+  font-size: 0.875rem;
+}
+
+[data-brief] .ex-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.65rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brief-ink);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+[data-brief] .ex-pill:hover {
+  border-color: var(--brief-ink);
+}
+
+[data-brief] .ex-pill[aria-pressed="true"] {
+  border-color: var(--brief-ink);
+  background: var(--brief-ink);
+  color: #fff;
+}
+
+[data-brief] .ex-pill[aria-pressed="true"] .ex-swatch {
+  box-shadow: 0 0 0 1.5px #fff;
+}
+
+[data-brief] .ex-pill:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .ex-pill-n {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+/* A layer's colour as a small square, the shape of its seats. */
+[data-brief] .ex-swatch {
+  display: inline-block;
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-right: 0.35rem;
+  vertical-align: 0.02em;
+}
+
+[data-brief] .ex-pill .ex-swatch {
+  margin-right: 0;
+}
+
+/* ── Every comparison, with the AI's first sentence ────────────── */
+
+[data-brief] .ex-all {
+  margin-top: 0.75rem;
+}
+
+[data-brief] .ex-all-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0;
+  border: 0;
+  background: none;
+  color: var(--brief-ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-brief] .ex-all-toggle:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-brief] .ex-all-toggle[aria-expanded="true"] .ex-chevron {
+  transform: rotate(45deg);
+}
+
+[data-brief] .ex-all-group {
+  margin-top: 0.25rem;
+}
+
+[data-brief] .ex-row-note {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 0.15rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--brief-muted);
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ex-mark-partial {
+  background: #a9b3a4;
+}
+
+[data-brief] .ex-mark-none {
+  background: #cfcfc9;
+}

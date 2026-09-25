@@ -57,6 +57,7 @@ import {
   TargetColumn,
   type ArcRow,
   type BrowseRow,
+  type ComparisonGroup,
   type CoverageRow,
   type PartnerRow,
   type RankedRow,
@@ -78,6 +79,12 @@ const LINE_LEVEL: Record<LineKind, "high" | "medium" | "low" | "flagged"> = {
 };
 
 const EMPTY_COUNTS: ToneCounts = { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 };
+
+/** A layer's colour: its identity where a square has no reading of the centre. */
+function layerTint(kind: ExploreItem["kind"], pale = false): string {
+  if (kind === "action") return pale ? RING_INK.actionPale : RING_INK.action;
+  return pale ? RING_INK.budgetPale : RING_INK.budget;
+}
 
 /** A seat's ink against the centre: the reading most of its pairs have. */
 function toneStyle(tone: SeatTone): SeatStyle {
@@ -265,7 +272,9 @@ export function Explore({
     const query = new URLSearchParams({ country: source.countryId, id: singleId, locale });
     fetch(`/api/brief/readings?${query}`)
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error())))
-      .then((body: { readings: Record<string, Reading> }) => alive && setReadings({ id: singleId, map: body.readings }))
+      .then((body: { readings?: Record<string, Reading> }) =>
+        alive && setReadings({ id: singleId, map: body.readings ?? {} }),
+      )
       .catch(() => undefined);
     return () => {
       alive = false;
@@ -354,13 +363,17 @@ export function Explore({
   const styles = useMemo<SeatStyle[]>(
     () =>
       model.items.map((c, i) => {
-        let style: SeatStyle = !group
-          ? { color: searching ? RING_INK.ink : RING_INK.rest }
-          : group.isMember[i]
-            ? { color: RING_INK.ink }
-            : toneStyle(group.tone[i]);
+        const layer = c.kind !== "target";
+        let style: SeatStyle;
+        if (!group) style = { color: searching ? RING_INK.ink : layer ? layerTint(c.kind) : RING_INK.rest };
+        else if (group.isMember[i]) style = { color: RING_INK.ink };
+        else if (layer && group.tone[i] !== "reinforce" && group.tone[i] !== "apart") {
+          // An action or budget line with no reading of the centre keeps its
+          // colour, paler, so green and red stay the story.
+          style = { color: layerTint(c.kind, true), hollow: group.tone[i] === "unrelated" };
+        } else style = toneStyle(group.tone[i]);
         if (searching && !matches.has(i)) style = { ...style, color: RING_INK.drained, texture: false };
-        return c.kind === "target" ? style : { ...style, square: true };
+        return layer ? { ...style, square: true } : style;
       }),
     [model, group, searching, matches],
   );
@@ -409,22 +422,24 @@ export function Explore({
       arcs.map((arc) => {
         const name = groupName(arc.key);
         const selectable = arc.key !== OTHER_GROUP;
-        if (!group) return { name, selectable };
+        const arcLayer = arc.key.startsWith("layer:") ? (arc.key.slice(6) as LayerId) : null;
+        const swatch = arcLayer ? layerTint(arcLayer === "budget" ? "budget" : "action") : undefined;
+        if (!group) return { name, selectable, swatch };
         const others = arc.ids.filter((id) => !group.isMember[id]);
-        if (others.length === 0) return { name, sub: t("inCentre"), dim: true, selectable };
-        const layerArc = arc.key.startsWith("layer:") ? (arc.key.slice(6) as LayerId) : null;
+        if (others.length === 0) return { name, sub: t("inCentre"), dim: true, selectable, swatch };
+        const layerArc = arcLayer;
         // Across a layer and the targets, count seats (coverage), not pairs.
         const crossing = (layerArc !== null) !== (focusLayer !== null);
         if (crossing) {
           const c = seatTally(others);
-          if (c.total === 0) return { name, sub: t("sameDocument"), dim: true, selectable };
+          if (c.total === 0) return { name, sub: t("sameDocument"), dim: true, selectable, swatch };
           const budget = layerArc === "budget" || focusLayer === "budget";
           const sub = budget
             ? t("arcMatching", { count: c.reinforce, total: c.total })
             : c.apart > 0
               ? t("arcActions", { strong: c.reinforce, apart: c.apart, total: c.total })
               : t("arcActionsStrong", { strong: c.reinforce, total: c.total });
-          return { name, sub, selectable };
+          return { name, sub, selectable, swatch };
         }
         const c = tones(sumPairs(group, others));
         if (c.total === 0) return { name, sub: t("sameDocument"), dim: true, selectable };
@@ -722,6 +737,7 @@ export function Explore({
           meta: t(layer === "budget" ? "linesCount" : "actionsCount", { count: items.length }),
           counts: EMPTY_COUNTS,
           targets: items,
+          swatch: layerTint(layer === "budget" ? "budget" : "action"),
         };
       }),
     [available, model, layerName, t],
@@ -770,6 +786,49 @@ export function Explore({
             ? [{ id: c.id, commitment: c, type: relation === "apart" && c.kind === "target" ? typeOf(single, j) : undefined }]
             : [],
         );
+  /** Every comparison of the single seat in the centre with targets, by
+   *  reading, each with its AI sentence once loaded. */
+  const allComparisons = (): ComparisonGroup[] => {
+    if (single === null) return [];
+    const centreKind = model.items[single].kind;
+    const levels: { level: "flagged" | "high" | "medium" | "low" | "none"; tone: ComparisonGroup["tone"] }[] = [
+      { level: "flagged", tone: "apart" },
+      { level: "high", tone: "reinforce" },
+      { level: "medium", tone: "reinforce" },
+      { level: "low", tone: "partial" },
+      { level: "none", tone: "none" },
+    ];
+    const titleOf = (level: (typeof levels)[number]["level"], count: number) => {
+      const name =
+        centreKind === "budget"
+          ? level === "high"
+            ? t("tipBudgetMatch")
+            : tr(level)
+          : centreKind === "action" && level === "high"
+            ? t("tipActionStrong")
+            : centreKind === "action" && level === "flagged"
+              ? t("tipActionPull")
+              : tr(level);
+      return `${name} (${n(count)})`;
+    };
+    return levels
+      .filter(({ level }) => !(centreKind === "budget" && level === "flagged"))
+      .map(({ level, tone }) => {
+        const rows = model.items.flatMap((c, j) =>
+          j !== single && c.kind === "target" && levelBetween(model, single, j) === level
+            ? [
+                {
+                  id: c.id,
+                  commitment: c,
+                  type: level === "flagged" && centreKind === "target" ? typeOf(single, j) : undefined,
+                  note: readingOf(c.id)?.first,
+                },
+              ]
+            : [],
+        );
+        return { title: titleOf(level, rows.length), tone, rows, testId: `explore-all-${level}` };
+      });
+  };
   const stepper = (siblings: ExploreItem[], current: string) => {
     const place = siblings.findIndex((c) => c.id === current);
     const to = (k: number) => (siblings[k] ? () => focusOn(siblings[k].id) : undefined);
@@ -873,6 +932,7 @@ export function Explore({
         {...nav}
         {...steps}
         extra={extra}
+        all={allComparisons()}
         pair={pairView}
       />
     );
@@ -916,6 +976,7 @@ export function Explore({
         onHover={setHot}
         {...nav}
         {...steps}
+        all={allComparisons()}
         pair={pairView}
       />
     );
@@ -1146,29 +1207,33 @@ export function Explore({
           })}
         </div>
         {available.length > 0 && (
-          <div className="ex-lines ex-layers" role="group" aria-label={t("layers")}>
+          <div className="ex-layers" role="group" aria-label={t("layers")}>
             <span className="ex-group-label">{t("layers")}</span>
             {actionLayers.length > 0 && (
               <button
                 type="button"
+                className="ex-pill"
                 aria-pressed={actionLayers.every((l) => state.layers.includes(l))}
                 onClick={() => {
                   const on = !actionLayers.every((l) => state.layers.includes(l));
                   for (const layer of actionLayers) dispatch({ type: "layer", layer, on });
                 }}
               >
-                <span className="ex-square" aria-hidden="true" />
+                <span className="ex-swatch" style={{ background: RING_INK.action }} aria-hidden="true" />
                 {t("toggleActions")}
+                <span className="ex-pill-n">{n(model.items.filter((c) => c.kind === "action").length)}</span>
               </button>
             )}
             {available.includes("budget") && (
               <button
                 type="button"
+                className="ex-pill"
                 aria-pressed={state.layers.includes("budget")}
                 onClick={() => dispatch({ type: "layer", layer: "budget", on: !state.layers.includes("budget") })}
               >
-                <span className="ex-square" aria-hidden="true" />
+                <span className="ex-swatch" style={{ background: RING_INK.budget }} aria-hidden="true" />
                 {t("toggleBudget")}
+                <span className="ex-pill-n">{n(model.items.filter((c) => c.kind === "budget").length)}</span>
               </button>
             )}
           </div>

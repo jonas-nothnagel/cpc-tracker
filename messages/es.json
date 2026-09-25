@@ -3262,7 +3262,9 @@
       "toggleBudget": "Budget lines",
       "browseLayers": "Finance and implementation",
       "copyLink": "Copy link",
-      "copied": "Link copied"
+      "copied": "Link copied",
+      "seeAll": "See all {count, number} comparisons",
+      "hideAll": "Show fewer"
     }
   }
 }

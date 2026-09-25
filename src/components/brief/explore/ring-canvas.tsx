@@ -37,6 +37,14 @@ export const RING_INK = {
   rest: "#b9bfc7",
   drained: "#e6e8e4",
   hairline: "#e5e7eb",
+  /** Reported actions (BTR), in a calm tint of the design system's BTR violet,
+   *  and budget lines (BER) in ochre; paler where they do not relate to the
+   *  centre. Validated against green, red and the greys (normal vision and
+   *  protan/deutan). Green and red keep their meaning on these seats too. */
+  action: "#8577d2",
+  actionPale: "#c2bbe9",
+  budget: "#bf923a",
+  budgetPale: "#dfc99d",
 } as const;
 
 /** How each reading is drawn as a line: ink, width, opacity, dash. */
@@ -62,6 +70,8 @@ export interface ArcLabel {
   name: string;
   sub?: string;
   dim?: boolean;
+  /** A layer's colour, shown as a small square before its name. */
+  swatch?: string;
   /** The name opens its arc as the centre. */
   selectable?: boolean;
 }
@@ -624,10 +634,14 @@ export function RingCanvas({
                     onLabel(l.key);
                   }}
                 >
+                  {label.swatch && <span className="ex-swatch" style={{ background: label.swatch }} aria-hidden="true" />}
                   {label.name}
                 </button>
               ) : (
-                <span className="ex-label-name">{label.name}</span>
+                <span className="ex-label-name">
+                  {label.swatch && <span className="ex-swatch" style={{ background: label.swatch }} aria-hidden="true" />}
+                  {label.name}
+                </span>
               )}
               {label.sub && <span className="ex-label-sub">{label.sub}</span>}
             </div>

@@ -289,3 +289,19 @@ describe("Explore with finance and implementation", () => {
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("focus=A1"));
   });
 });
+
+describe("Explore: every comparison of the centre", () => {
+  it("lists every comparison of a target by reading, on request", () => {
+    renderExplore({ focus: "B5" });
+    const toggle = screen.getByRole("button", { name: "See all 12 comparisons" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(toggle);
+    // B5: 4 potential misalignments, 4 strong alignments, 4 partial.
+    expect(screen.getByRole("heading", { name: "Potential misalignment (4)" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Strong alignment (4)" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Partial alignment (4)" })).toBeInTheDocument();
+    expect(screen.getAllByTestId("explore-all-flagged")).toHaveLength(4);
+    // The short lists give way to the full one.
+    expect(screen.queryAllByTestId("explore-apart-row")).toHaveLength(0);
+  });
+});
