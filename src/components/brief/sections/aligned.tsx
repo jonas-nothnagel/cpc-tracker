@@ -46,6 +46,7 @@ export function StrongestList({
   selected,
   onSelect,
   openLabel,
+  hovered,
 }: {
   data: BriefData;
   testId: string;
@@ -56,6 +57,7 @@ export function StrongestList({
   selected?: string | null;
   onSelect?: (id: string) => void;
   openLabel?: (id: string) => string;
+  hovered?: string | null;
 }) {
   const t = useTranslations("brief.aligned");
   return (
@@ -76,6 +78,7 @@ export function StrongestList({
       selected={selected}
       onSelect={onSelect}
       openLabel={openLabel}
+      hovered={hovered}
     />
   );
 }

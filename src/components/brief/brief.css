@@ -1674,6 +1674,11 @@
   min-height: 62vh;
 }
 
+/* The map stays in its colours for most of a screen of scrolling. */
+[data-brief] .brief-hub-step[data-step="map"] {
+  min-height: 72vh;
+}
+
 [data-brief] .brief-hub-step:last-child {
   padding-bottom: 0;
 }
@@ -1711,24 +1716,10 @@
   line-height: 1.25;
 }
 
-/* The list that puts a target in the centre stays in view long enough for
-   its dots to be read. */
-[data-brief] .brief-hub-substep {
-  min-height: 40vh;
-}
-
-/* One section per side: its headline, themes and types, then its targets,
-   close together; the sides and the map keep the room between steps. */
-[data-brief] .brief-hub-part > .brief-hub-step:not(:last-child) {
-  padding-bottom: 2.75rem;
-}
-
-[data-brief] .brief-hub-part {
-  padding-bottom: 7rem;
-}
-
-[data-brief] .brief-hub-part > .brief-hub-step:last-child {
-  padding-bottom: 0;
+/* One section per side: its headline, its targets, then its themes (and
+   types), each part a little apart. */
+[data-brief] .brief-hub-side .brief-themes-title {
+  margin-top: 2.25rem;
 }
 
 /* The map's second finding, under its headline. */
@@ -1797,8 +1788,64 @@
   color: var(--brief-muted);
 }
 
+/* A target a side names on the map, with its count: beside the diagonal
+   (right-aligned), or above the map for the first document. Text stays in
+   ink; the dots carry the side's colour. */
+[data-brief] .brief-hub-mark {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  width: max-content;
+  transform: translate(-100%, -50%);
+  font-size: 0.75rem;
+  line-height: 13px;
+  color: var(--brief-ink);
+  transition: opacity 160ms ease;
+}
+
+[data-brief] .brief-hub-mark[data-align="left"] {
+  transform: translateY(-50%);
+}
+
+[data-brief] .brief-hub-mark[data-dim] {
+  opacity: 0.35;
+}
+
+[data-brief] .brief-hub-mark-name {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  text-align: right;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-hub-mark[data-lines="2"] .brief-hub-mark-name {
+  -webkit-line-clamp: 2;
+}
+
+[data-brief] .brief-hub-mark[data-align="left"] .brief-hub-mark-name {
+  text-align: left;
+}
+
+[data-brief] .brief-hub-mark[data-on] .brief-hub-mark-name {
+  font-weight: 600;
+}
+
+[data-brief] .brief-hub-mark-count {
+  flex: none;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A target pointed at in the list or on the map. */
+[data-brief] .brief-rank-row[data-hovered] {
+  background: #f7f7f7;
+}
+
 /* A picked target in the lists: marked, and open with its text and a way
-   to all its pairs. */
+   on. */
 [data-brief] .brief-rank-row[data-selected] {
   background: #f2f4f5;
   box-shadow: inset 3px 0 0 var(--brief-ink);
@@ -1997,8 +2044,8 @@
     min-height: 0;
   }
 
-  [data-brief] .brief-hub-part {
-    padding-bottom: 4rem;
+  [data-brief] .brief-hub-step[data-step="map"] {
+    min-height: 40vh;
   }
 }
 

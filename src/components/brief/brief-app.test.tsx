@@ -184,20 +184,21 @@ describe("BriefApp screen and print", () => {
     vi.unstubAllGlobals();
   });
 
-  it("opens on the coherence overview and takes the reader from the aligned group to its step", () => {
+  it("opens on the coherence overview and takes the reader from the aligned group on to the map", () => {
     const scroll = vi.mocked(Element.prototype.scrollIntoView);
     scroll.mockClear();
     renderApp(briefFixture({ themes: true }));
     expect(screen.getByTestId("brief-hub")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
     const targets = scroll.mock.contexts.map((el) => (el as HTMLElement).dataset.step);
-    expect(targets).toContain("reinforce");
+    // The next step, as scrolling reaches it: the map, not a step further on.
+    expect(targets).toEqual(["map"]);
   });
 
   it("moves focus to the step it leads to", () => {
     renderApp(briefFixture({ themes: true }));
     fireEvent.click(screen.getByRole("button", { name: "67% aligned" }));
-    const heading = document.querySelector('[data-step="reinforce"] h2');
+    const heading = document.querySelector('[data-step="map"] h2');
     expect(document.activeElement).toBe(heading);
   });
 

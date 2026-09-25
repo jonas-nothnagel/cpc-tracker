@@ -45,6 +45,7 @@ export function ReviewList({
   selected,
   onSelect,
   openLabel,
+  hovered,
 }: {
   data: BriefData;
   limit?: number;
@@ -56,6 +57,7 @@ export function ReviewList({
   selected?: string | null;
   onSelect?: (id: string) => void;
   openLabel?: (id: string) => string;
+  hovered?: string | null;
 }) {
   const t = useTranslations("brief.commitments");
   return (
@@ -75,6 +77,7 @@ export function ReviewList({
       selected={selected}
       onSelect={onSelect}
       openLabel={openLabel}
+      hovered={hovered}
     />
   );
 }

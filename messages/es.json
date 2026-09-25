@@ -3182,7 +3182,9 @@
       "focusNone": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned, with no potential misalignment.",
       "pairNames": "{docA} and {docB}",
       "centerPairs": "{count, plural, one {# target pair} other {# target pairs}}",
-      "openTarget": "See all {count, number} of its target pairs"
+      "openTarget": "See its aligned and potentially misaligned targets",
+      "exploreTarget": "Explore this target",
+      "countApart": "{count, plural, one {# potential misalignment} other {# potential misalignments}}"
     },
     "explore": {
       "title": "Explore the targets",

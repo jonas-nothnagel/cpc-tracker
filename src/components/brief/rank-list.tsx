@@ -17,8 +17,8 @@ const OPEN_TEXT = 360;
  * Targets ranked by a count: the target, its document and its partner
  * documents with their counts, then a halftone bar and the count. Used for
  * the strongest alignments (green) and the targets to review first (red).
- * With `onSelect`, a row picks its target (the overview puts it in the
- * centre) and the picked row opens: its text, and a way to all its pairs.
+ * With `onSelect`, a row picks its target (the overview keeps its pairs
+ * forward on the map) and the picked row opens: its text, and a way on.
  */
 export function RankList({
   items,
@@ -33,6 +33,7 @@ export function RankList({
   selected = null,
   onSelect,
   openLabel,
+  hovered = null,
 }: {
   items: RankItem[];
   tone: "reinforce" | "apart";
@@ -49,8 +50,10 @@ export function RankList({
   /** The picked target; rows become toggles that pick. */
   selected?: string | null;
   onSelect?: (id: string) => void;
-  /** The open row's way to the target's panel. */
+  /** The open row's way on (the ring, or the target's panel). */
   openLabel?: (id: string) => string;
+  /** The target pointed at here or on the map. */
+  hovered?: string | null;
 }) {
   const { n } = useNumbers();
   const docName = (id: string) => docs.find((d) => d.id === id)?.name ?? id;
@@ -71,6 +74,7 @@ export function RankList({
             className="brief-rank-row"
             data-testid={testId}
             data-selected={picked ? "true" : undefined}
+            data-hovered={hovered === id ? "true" : undefined}
             onPointerEnter={onHover ? () => onHover(id) : undefined}
             onPointerLeave={onHover ? () => onHover(null) : undefined}
           >
