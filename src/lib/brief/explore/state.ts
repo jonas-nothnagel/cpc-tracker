@@ -75,6 +75,10 @@ export function exploreReducer(state: ExploreState, action: ExploreAction): Expl
   }
 }
 
+/** Link parameters the explorer owns; the brief keeps them when it rewrites
+ *  its own. */
+export const EXPLORE_PARAMS = ["focus", "group", "layers", "pair"] as const;
+
 type Params = Record<string, string | string[] | undefined>;
 
 function first(value: string | string[] | undefined): string | undefined {

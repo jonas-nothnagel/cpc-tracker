@@ -579,36 +579,26 @@
   }
 }
 
-/* ── The page it sits on while it is being built ─────────────────── */
+/* ── Its place in the brief: a full-width finale after the overview ── */
 
-[data-brief] .ex-page {
-  max-width: 92rem;
+[data-brief] .brief-explore {
+  max-width: 96rem;
   margin: 0 auto;
-  padding: 1.75rem clamp(1rem, 3vw, 3rem) 3rem;
+  padding: 3.5rem clamp(1rem, 3vw, 3rem) 4rem;
+  border-top: 1px solid var(--brief-hairline);
+  scroll-margin-top: 1rem;
 }
 
-[data-brief] .ex-page-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 1rem;
+[data-brief] .brief-explore[hidden] {
+  display: none;
+}
+
+[data-brief] .brief-explore-title {
   margin: 0 0 1.25rem;
-}
-
-[data-brief] .ex-page-country {
-  margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
-  font-weight: 600;
-  line-height: 1.1;
-}
-
-[data-brief] .ex-page-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: var(--brief-muted);
+  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 /* ── Lines: which readings the ring draws ───────────────────────── */

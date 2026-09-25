@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { scopeOf, type Scope } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
@@ -12,6 +12,9 @@ import {
   type SectionId,
 } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
+import type { ExploreSetup } from "@/lib/brief/explore/setup";
+import { EXPLORE_PARAMS, exploreQuery, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
+import { Explore } from "./explore/explore";
 import { Builder } from "./builder";
 import { Flow } from "./flow";
 import { Hero } from "./hero";
@@ -46,13 +49,17 @@ export function BriefApp({
   source,
   initialSelection,
   preparedOn,
+  explore,
 }: {
   source: BriefSource;
   initialSelection: BriefSelection;
   preparedOn: string;
+  /** The explorer's layers, groupings and link state, from the server. */
+  explore?: ExploreSetup;
 }) {
   const tl = useTranslations("briefing.lens");
   const tp = useTranslations("brief.preview");
+  const tx = useTranslations("brief.explore");
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
   const [mode, setMode] = useState<"read" | "preview">("read");
@@ -82,8 +89,15 @@ export function BriefApp({
       setSelection(next);
       // A shallow URL update keeps the brief shareable without a server
       // round trip; every number is computed here from the source.
-      const query = selectionQuery(next, source);
-      const url = `${window.location.pathname}${query ? `?${query}` : ""}`;
+      const params = new URLSearchParams(selectionQuery(next, source));
+      // The explorer's part of the link stays as it is.
+      const current = new URLSearchParams(window.location.search);
+      for (const key of EXPLORE_PARAMS) {
+        const value = current.get(key);
+        if (value) params.set(key, value);
+      }
+      const query = params.toString();
+      const url = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
       window.history.replaceState(window.history.state, "", url);
     },
     [source],
@@ -97,6 +111,30 @@ export function BriefApp({
     [source, scope, selection.lens],
   );
   const lensName = selection.lens ? tl(selection.lens) : null;
+  const [exploreState, dispatchExplore] = useReducer(
+    exploreReducer,
+    explore?.initialState ?? initialExploreState(),
+  );
+  // The link carries the explorer's grouping and layers. A centre is read
+  // from a shared link once, but not written back, so a reload starts at rest.
+  const sharedFocus = useRef(exploreState.focus);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("group");
+    params.delete("layers");
+    if (exploreState.focus !== sharedFocus.current) {
+      params.delete("focus");
+      params.delete("pair");
+    }
+    for (const [key, value] of new URLSearchParams(exploreQuery({ ...exploreState, focus: null }))) {
+      params.set(key, value);
+    }
+    const query = params.toString();
+    const url = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+    window.history.replaceState(window.history.state, "", url);
+    // Only what the link carries.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exploreState.focus, exploreState.group, exploreState.layers]);
   // Say so whenever the commitments on the page are not the documents' own wording.
   const translation = scope.commitments.some((c) => c.translated === "machine")
     ? "machine"
@@ -192,6 +230,28 @@ export function BriefApp({
           />
         </div>
       </div>
+      {explore && (
+        <section
+          id="brief-explore"
+          className="brief-explore"
+          data-screen-only
+          hidden={preview}
+          aria-labelledby="brief-explore-title"
+        >
+          <h2 id="brief-explore-title" className="brief-explore-title">
+            {tx("title")}
+          </h2>
+          <Explore
+            source={source}
+            data={data}
+            state={exploreState}
+            dispatch={dispatchExplore}
+            groups={explore.groups}
+            layers={explore.layers}
+            initialPair={explore.initialPair}
+          />
+        </section>
+      )}
       <div data-screen-only>
         <BriefPanels
           stack={panels}

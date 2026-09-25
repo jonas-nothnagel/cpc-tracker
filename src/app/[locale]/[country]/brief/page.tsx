@@ -4,6 +4,7 @@ import { getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
 import { parseSelection } from "@/lib/brief/selection";
+import { exploreSetup } from "@/lib/brief/explore/setup";
 import { BriefApp } from "@/components/brief/brief-app";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -20,13 +21,9 @@ async function load(props: Props) {
   if (!entry || !entry.visible) return null;
   const result = getCountryDashboardPayload(entry.id, locale, null);
   if (result.kind !== "ok") return null;
-  const source = buildBriefSource({
-    countryId: entry.id,
-    countryName: entry.name,
-    data: result.payload.data as unknown as Record<string, unknown>,
-    locale,
-  });
-  return { locale, source };
+  const data = result.payload.data as unknown as Record<string, unknown>;
+  const source = buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale });
+  return { locale, source, data };
 }
 
 export async function generateMetadata(props: Props) {
@@ -40,12 +37,14 @@ export async function generateMetadata(props: Props) {
 export default async function BriefPage(props: Props) {
   const loaded = await load(props);
   if (!loaded) notFound();
-  const selection = parseSelection(await props.searchParams, loaded.source);
+  const searchParams = await props.searchParams;
+  const selection = parseSelection(searchParams, loaded.source);
   return (
     <BriefApp
       source={loaded.source}
       initialSelection={selection}
       preparedOn={new Date().toISOString()}
+      explore={exploreSetup({ data: loaded.data, source: loaded.source, docs: selection.docs, searchParams })}
     />
   );
 }

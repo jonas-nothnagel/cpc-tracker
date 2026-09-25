@@ -1,74 +1,19 @@
-import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
-import { getCountry } from "@/config/countries";
-import { getCountryDashboardPayload } from "@/lib/dashboard-data";
-import { buildBriefSource } from "@/lib/brief/source";
-import { parseSelection } from "@/lib/brief/selection";
-import { parseExploreState, type ExploreGroup } from "@/lib/brief/explore/state";
-import { focusKey } from "@/lib/brief/explore/focus";
-import { buildExploreLayers, layerIdsOf } from "@/lib/brief/explore/layers";
-import { ExploreApp } from "@/components/brief/explore/explore-app";
+import { redirect } from "@/i18n/navigation";
 
-// Pipeline output lives on the persistent volume and changes at runtime.
-export const dynamic = "force-dynamic";
-
+// Explore now lives in the brief, after the overview; old links land there.
 interface Props {
   params: Promise<{ locale: string; country: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-/** Lenses the ring can group by. The human rights lens is a draft whose
- *  areas leave most targets unclassified, so it is not offered here. */
-const RING_LENSES = new Set(["globe", "ipcc", "gga"]);
-
-async function load(props: Props) {
+export default async function ExploreRedirect(props: Props) {
   const { locale, country } = await props.params;
-  const entry = getCountry(country.toLowerCase());
-  if (!entry || !entry.visible) return null;
-  const result = getCountryDashboardPayload(entry.id, locale, null);
-  if (result.kind !== "ok") return null;
-  const data = result.payload.data as unknown as Record<string, unknown>;
-  const source = buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale });
-  return { locale, source, layers: buildExploreLayers(data, source) };
-}
-
-export async function generateMetadata(props: Props) {
-  const loaded = await load(props);
-  if (!loaded) return {};
-  const t = await getTranslations({ locale: loaded.locale, namespace: "brief.explore" });
-  return { title: t("metaTitle", { country: loaded.source.countryName }) };
-}
-
-export default async function ExplorePreviewPage(props: Props) {
-  const loaded = await load(props);
-  if (!loaded) notFound();
-  const { source, layers } = loaded;
-  const searchParams = await props.searchParams;
-  const selection = parseSelection(searchParams, source);
-  const groups: ExploreGroup[] = ["docs", ...source.lenses.map((l) => l.id).filter((id) => RING_LENSES.has(id))];
-  const inScope = new Set(selection.docs);
-  // What a link may put in the centre: a target, a document or a policy area.
-  const ids = new Set([
-    ...source.commitments.filter((c) => inScope.has(c.doc)).map((c) => c.id),
-    ...(layers ? layerIdsOf(layers) : []),
-    ...selection.docs.map((id) => focusKey({ kind: "doc", id })),
-    ...source.lenses
-      .filter((l) => RING_LENSES.has(l.id))
-      .flatMap((l) => l.categories.map((c) => focusKey({ kind: "area", lens: l.id, id: c.id }))),
-  ]);
-  const initialState = parseExploreState(searchParams, ids, groups);
-  // A shared comparison opens only next to the centre it was shared with.
-  const [pairA, pairB] = String(searchParams.pair ?? "").split("~");
-  const initialPair = initialState.focus === pairA && ids.has(pairB) ? { a: pairA, b: pairB } : null;
-  return (
-    <ExploreApp
-      source={source}
-      docs={selection.docs}
-      lens={selection.lens}
-      groups={groups}
-      initialState={initialState}
-      layers={layers}
-      initialPair={initialPair}
-    />
-  );
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(await props.searchParams)) {
+    for (const v of Array.isArray(value) ? value : value === undefined ? [] : [value]) {
+      query.append(key, v);
+    }
+  }
+  const q = query.toString();
+  redirect({ href: `/${country}/brief${q ? `?${q}` : ""}#brief-explore`, locale });
 }
