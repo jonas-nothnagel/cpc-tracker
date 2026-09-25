@@ -99,6 +99,16 @@ describe("BriefApp", () => {
     expect(window.location.search).toBe("?docs=A%2CB");
   });
 
+  it("carries UNDP's logo quietly: on the landing with the tool's name, and on every printed page", () => {
+    renderApp();
+    const brand = screen.getByRole("link", { name: "UNDP Policy Coherence Analyzer" });
+    expect(brand.getAttribute("href")).toBe("/");
+    expect(within(brand).getByRole("img", { name: "UNDP" }).getAttribute("src")).toBe("/undp-logo.png");
+    for (const sheet of screen.getAllByTestId("brief-sheet")) {
+      expect(sheet.querySelector("header img[alt='UNDP']")).toBeTruthy();
+    }
+  });
+
   it("dates the brief in UNDP style", () => {
     renderApp();
     expect(screen.getAllByText(/Prepared on 23 September 2026 with the Policy Coherence Analyzer/).length).toBeGreaterThan(0);

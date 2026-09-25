@@ -45,7 +45,11 @@ export function Sheets({
         return (
           <article key={i} className="brief-sheet" data-testid="brief-sheet" aria-label={pageLabel}>
             <header className="brief-sheet-head">
-              <span>{t("running", { country: countryName })}</span>
+              <span className="brief-sheet-brand">
+                {/* eslint-disable-next-line @next/next/no-img-element -- prints as is, at page size */}
+                <img src="/undp-logo.png" alt="UNDP" width={16} height={32} />
+                {t("running", { country: countryName })}
+              </span>
               <span>{pageLabel}</span>
             </header>
             <div className="brief-sheet-body">

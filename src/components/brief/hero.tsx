@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { MovingText } from "./moving-text";
 
 export function Hero({
@@ -26,12 +26,21 @@ export function Hero({
 }) {
   const t = useTranslations("brief.hero");
   const ts = useTranslations("brief.sheet");
+  const brand = useTranslations("header")("brand");
+  const locale = useLocale();
   // WCAG 2.2.2: moving content that runs on gets a pause control.
   const [paused, setPaused] = useState(false);
   return (
     <section className="brief-hero" data-screen-only>
       <MovingText lines={lines} paused={paused} />
       <div className="brief-hero-veil" aria-hidden="true" />
+      <div className="brief-hero-top">
+        <a className="brief-hero-brand" href={locale === "en" ? "/" : `/${locale}`}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- the app's own lockup, small and static */}
+          <img src="/undp-logo.png" alt="UNDP" width={22} height={44} />{" "}
+          <span>{brand}</span>
+        </a>
+      </div>
       <div className="brief-hero-content">
         <p className="brief-hero-kicker">{t("kicker", { country: countryName })}</p>
         <h1 className="brief-hero-statement">
