@@ -1203,3 +1203,34 @@
   margin-left: auto;
   font-size: 0.875rem;
 }
+
+/* ── Unfolding a target's problems, opening a pair of documents ── */
+
+[data-brief] .ex-rank-row[data-unfolds] {
+  grid-template-columns: 1.5rem 16px minmax(0, 1fr) minmax(48px, 80px) 30px;
+}
+
+[data-brief] .ex-rank-toggle {
+  width: 1.5rem;
+  height: 1.4rem;
+}
+
+[data-brief] .ex-rank-row[data-open] .ex-chevron {
+  transform: rotate(45deg);
+}
+
+[data-brief] .ex-rank-unfold {
+  grid-column: 1 / -1;
+  padding: 0.25rem 0 0.35rem 1.9rem;
+}
+
+[data-brief] .ex-row-actions {
+  margin: 0.2rem 0 0.4rem;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ex-tip-names {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.8125rem;
+}

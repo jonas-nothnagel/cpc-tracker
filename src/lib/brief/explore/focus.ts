@@ -211,3 +211,25 @@ export function pairsBetween(
       mine.get(m2)! - mine.get(m1)! || m1 - m2 || theirs.get(o2)! - theirs.get(o1)! || o1 - o2,
   );
 }
+
+/**
+ * The lines a seat in hand shows while a group is in the centre: from a seat
+ * outside the group, to the group's own targets it relates to; from one of
+ * the group's targets, to the targets outside it. Only the kinds of line
+ * switched on; the pairs themselves, so the reader sees what meets what.
+ */
+export function groupLinks(
+  model: ExploreModel,
+  profile: GroupProfile,
+  id: number,
+  kinds: Relation[],
+): { id: number; relation: Relation }[] {
+  const inside = profile.isMember[id] === 1;
+  const out: { id: number; relation: Relation }[] = [];
+  model.items.forEach((_, j) => {
+    if (j === id || (profile.isMember[j] === 1) === inside) return;
+    const relation = relationBetween(model, id, j);
+    if (relation !== null && kinds.includes(relation)) out.push({ id: j, relation });
+  });
+  return out;
+}

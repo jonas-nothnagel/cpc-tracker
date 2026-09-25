@@ -3289,7 +3289,12 @@
       "copied": "Link copied",
       "seeAll": "See all {count, number} comparisons",
       "hideAll": "Show fewer",
-      "howTo": "How to read"
+      "howTo": "How to read",
+      "centreDoc": "Put {name} in the centre",
+      "showProblems": "Show the potential misalignments of {name}",
+      "showAlignments": "Show the strong alignments of {name}",
+      "tipApartNames": "Potential misalignment with: {names}",
+      "tipApartNamesMore": "Potential misalignment with: {names} and {more, number} more"
     }
   }
 }

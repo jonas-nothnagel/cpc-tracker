@@ -55,6 +55,8 @@ export function RankRows({
   onOpen,
   onHover,
   testId,
+  unfold,
+  unfoldLabel,
 }: {
   rows: { commitment: BriefCommitment; value: number }[];
   tone: "reinforce" | "apart";
@@ -62,8 +64,12 @@ export function RankRows({
   onOpen: (id: string) => void;
   onHover: (id: string | null) => void;
   testId: string;
+  /** What a row unfolds to under a small arrow, e.g. the target's pairs. */
+  unfold?: (id: string) => ReactNode;
+  unfoldLabel?: (name: string) => string;
 }) {
   const { n } = useNumbers();
+  const [open, setOpen] = useState<string | null>(null);
   const max = Math.max(1, ...rows.map((r) => r.value));
   return (
     <ol className="ex-rank">
@@ -72,9 +78,22 @@ export function RankRows({
           key={row.commitment.id}
           className="ex-rank-row"
           data-testid={testId}
+          data-open={open === row.commitment.id ? "true" : undefined}
+          data-unfolds={unfold ? "true" : undefined}
           onPointerEnter={() => onHover(row.commitment.id)}
           onPointerLeave={() => onHover(null)}
         >
+          {unfold ? (
+            <button
+              type="button"
+              className="ex-browse-toggle ex-rank-toggle"
+              aria-expanded={open === row.commitment.id}
+              aria-label={unfoldLabel?.(lineOf(row.commitment, 60))}
+              onClick={() => setOpen((cur) => (cur === row.commitment.id ? null : row.commitment.id))}
+            >
+              <span className="ex-chevron" aria-hidden="true" />
+            </button>
+          ) : null}
           <span className="ex-rank-n">{i + 1}</span>
           <button
             type="button"
@@ -90,6 +109,7 @@ export function RankRows({
             <span style={{ width: `${((row.value / max) * 100).toFixed(1)}%` }} />
           </span>
           <span className="ex-rank-value">{n(row.value)}</span>
+          {unfold && open === row.commitment.id && <div className="ex-rank-unfold">{unfold(row.commitment.id)}</div>}
         </li>
       ))}
     </ol>
@@ -181,6 +201,7 @@ export function ToneKey({ counts, share = false }: { counts: ToneCounts; share?:
 
 /** A group of targets as a row: its name, its size, its result bar. */
 export function GroupRow({
+  id,
   name,
   meta,
   counts,
@@ -190,6 +211,7 @@ export function GroupRow({
   children,
   testId,
 }: {
+  id?: string;
   name: string;
   meta?: string;
   counts: ToneCounts;
@@ -201,6 +223,7 @@ export function GroupRow({
 }) {
   return (
     <li
+      id={id}
       className="ex-group-row"
       data-testid={testId}
       data-open={open ? "true" : undefined}

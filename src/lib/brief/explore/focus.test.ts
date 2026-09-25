@@ -10,6 +10,7 @@ import {
   pairsBetween,
   parseFocusKey,
   rankMembers,
+  groupLinks,
 } from "./focus";
 
 const SOURCE = briefFixture();
@@ -131,5 +132,33 @@ describe("pairsBetween", () => {
     expect(pairs.slice(0, 6).map(([a]) => MODEL.items[a].id)).toEqual(["B6", "B6", "B6", "B6", "B6", "B6"]);
     // Within B6's pairs, C4-C6 recur most (they also meet B5).
     expect(ids(pairs.slice(0, 3).map(([, b]) => b))).toEqual(["C4", "C5", "C6"]);
+  });
+});
+
+describe("groupLinks", () => {
+  const doc = groupProfile(MODEL, focusMembers(MODEL, parseFocusKey("doc:A"), SOURCE.lenses));
+  const kinds = ["strong", "apart"] as const;
+
+  it("runs a seat outside the centre's group only to the group's own targets", () => {
+    // B1 against A: strongly aligned with A1-A4, potential misalignment with A6.
+    const links = groupLinks(MODEL, doc, at("B1"), [...kinds]);
+    expect(links.map((l) => [MODEL.items[l.id].id, l.relation])).toEqual([
+      ["A1", "strong"],
+      ["A2", "strong"],
+      ["A3", "strong"],
+      ["A4", "strong"],
+      ["A6", "apart"],
+    ]);
+  });
+
+  it("runs one of the group's own targets only to targets outside the group", () => {
+    // A6: potential misalignment with all of B; with C only partially aligned.
+    const links = groupLinks(MODEL, doc, at("A6"), [...kinds]);
+    expect(links.map((l) => MODEL.items[l.id].id)).toEqual(["B1", "B2", "B3", "B4", "B5", "B6"]);
+    expect(links.every((l) => l.relation === "apart")).toBe(true);
+  });
+
+  it("draws only the kinds of line switched on", () => {
+    expect(groupLinks(MODEL, doc, at("B1"), ["apart"]).map((l) => MODEL.items[l.id].id)).toEqual(["A6"]);
   });
 });

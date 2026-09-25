@@ -10,6 +10,7 @@ import type { BriefData } from "@/lib/brief/data";
 import {
   focusKey,
   focusMembers,
+  groupLinks,
   groupProfile,
   groupSeatOrder,
   pairsBetween,
@@ -265,6 +266,9 @@ export function Explore({
   const [seat, setSeat] = useState<string | null>(null);
   const [hot, setHot] = useState<string | null>(null);
   const [hotArc, setHotArc] = useState<string | null>(null);
+  // With a document or area in the centre, another arc opened beside it:
+  // its pairs with the centre, from its name on the ring or its row.
+  const [partnerArc, setPartnerArc] = useState<string | null>(null);
   const lastFocus = useRef(state.focus);
   useEffect(() => {
     if (lastFocus.current !== state.focus) {
@@ -273,6 +277,7 @@ export function Explore({
       setSeat(null);
       setHot(null);
       setHotArc(null);
+      setPartnerArc(null);
     }
   }, [state.focus]);
   const pairRef = useRef<HTMLDivElement>(null);
@@ -411,8 +416,14 @@ export function Explore({
     });
     return out;
   }, [group, lines, model]);
+  // A seat in hand shows its own lines: at rest to every target it relates
+  // to; with a document or area in the centre, only across that group's edge
+  // (from outside to the group's targets, from inside to the rest).
   const neighbours = useCallback(
     (id: number): EdgeSpec[] => {
+      if (group && single === null) {
+        return groupLinks(model, group, id, lines as Relation[]).filter((l) => placed.has(l.id));
+      }
       const out: EdgeSpec[] = [];
       model.items.forEach((_, j) => {
         if (j === id) return;
@@ -421,7 +432,7 @@ export function Explore({
       });
       return out;
     },
-    [model, lines],
+    [model, lines, group, single, placed],
   );
 
   /** Seats of an arc by how they read against the centre (not pairs). */
@@ -521,6 +532,16 @@ export function Explore({
     ].filter(Boolean);
     return parts.length > 0 ? `${t("tipWith", { name: centreName() })} ${parts.join(", ")}` : t("sameDocument");
   };
+  /** Which targets across the centre's edge a seat may conflict with, by name. */
+  const namesAcross = (i: number): string | null => {
+    if (!group || single !== null) return null;
+    const apart = groupLinks(model, group, i, ["apart"]).map((l) => lineOf(model.items[l.id], 42));
+    if (apart.length === 0) return null;
+    const shown = apart.slice(0, 3).join("; ");
+    return apart.length > 3
+      ? t("tipApartNamesMore", { names: shown, more: apart.length - 3 })
+      : t("tipApartNames", { names: shown });
+  };
   const factsOf = (c: ExploreItem): string | null => {
     if (c.kind === "action" && c.status) return t("status", { status: c.status });
     if (c.kind === "budget" && c.spend && layers?.budget) {
@@ -553,6 +574,7 @@ export function Explore({
         <span className="ex-tip-line">{lineOf(c, 110)}</span>
         {facts && <span className="ex-tip-doc">{facts}</span>}
         {relation && <span className="ex-tip-rel">{relation}</span>}
+        {namesAcross(i) && <span className="ex-tip-names">{namesAcross(i)}</span>}
         {reading?.first && (
           <span className="ex-tip-ai">
             <span className="ex-tip-ai-label">{t("aiLabel")}</span> {clip(reading.first, 220)}
@@ -605,11 +627,13 @@ export function Explore({
   const background = () => {
     if (pair) setPair(null);
     else if (seat) setSeat(null);
+    else if (partnerArc) setPartnerArc(null);
     else if (state.focus) dispatch({ type: "clear" });
   };
   const escape = () => {
     if (pair) setPair(null);
     else if (seat) setSeat(null);
+    else if (partnerArc) setPartnerArc(null);
     else if (state.query) dispatch({ type: "query", text: "" });
     else if (state.focus) dispatch({ type: "back" });
   };
@@ -1180,6 +1204,16 @@ export function Explore({
         onHover={setHot}
         onHoverArc={setHotArc}
         onCloseSeat={() => setSeat(null)}
+        openRow={partnerArc}
+        onToggleRow={(key) => setPartnerArc((cur) => (cur === key ? null : key))}
+        onCentreRow={(key) => focusOn(arcFocusKey(key))}
+        pairsOf={(id, reading) => {
+          const m = model.index.get(id);
+          if (m === undefined) return [];
+          return groupLinks(model, group, m, [reading])
+            .filter((l) => model.items[l.id].kind === "target")
+            .map((l) => ({ a: model.items[m], b: model.items[l.id], type: reading === "apart" ? typeOf(m, l.id) : undefined }));
+        }}
         {...nav}
         extra={extra}
         pair={pairView}
@@ -1309,10 +1343,15 @@ export function Explore({
             onLine={openLine}
             onBackground={background}
             onEscape={escape}
-            onLabel={(key) => focusOn(arcFocusKey(key))}
+            onLabel={(key) => {
+              const ownArc = arcs.find((a) => a.key === key)?.ids.every((id) => group?.isMember[id]);
+              if ((activeKind === "doc" || activeKind === "area") && !key.startsWith("layer:") && !ownArc && key !== OTHER_GROUP) {
+                setPartnerArc((cur) => (cur === key ? null : key));
+              } else focusOn(arcFocusKey(key));
+            }}
             onReset={active ? () => dispatch({ type: "clear" }) : undefined}
             resetLabel={t("clear")}
-            hotArc={hotArc}
+            hotArc={hotArc ?? partnerArc}
             ariaLabel={t("ringLabel", { targets: model.targets, group: groupLabel(state.group) })}
           />
         </div>

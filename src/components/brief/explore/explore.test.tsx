@@ -334,3 +334,25 @@ describe("Explore: how to read", () => {
     expect(await screen.findByText("Every target on one ring")).toBeInTheDocument();
   });
 });
+
+describe("Explore: a document's problems, without leaving it", () => {
+  it("unfolds a target to review first into its potential misalignments", async () => {
+    renderExplore({ focus: "doc:A" });
+    const row = screen.getAllByTestId("explore-group-review-row")[0];
+    fireEvent.click(within(row).getByRole("button", { name: /Show the potential misalignments of/ }));
+    // A6: potential misalignment with all six B targets.
+    const pairs = within(row).getAllByTestId("explore-member-apart");
+    expect(pairs).toHaveLength(6);
+    fireEvent.click(within(pairs[0]).getByRole("button"));
+    expect(await screen.findByTestId("explore-pair")).toBeInTheDocument();
+  });
+
+  it("opens another document beside the centre, and can put it in the centre", () => {
+    renderExplore({ focus: "doc:A" });
+    const b = screen.getAllByTestId("explore-arc-row")[0];
+    fireEvent.click(within(b).getAllByRole("button")[0]);
+    expect(within(b).getAllByTestId("explore-arc-apart-row").length).toBeGreaterThan(0);
+    fireEvent.click(within(b).getByRole("button", { name: "Put Document B in the centre" }));
+    expect(within(side()).getByRole("heading", { name: "Document B" })).toBeInTheDocument();
+  });
+});

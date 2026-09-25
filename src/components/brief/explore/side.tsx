@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import type { ToneCounts } from "@/lib/brief/compute";
 import type { BriefCommitment } from "@/lib/brief/source";
@@ -502,6 +502,10 @@ export function GroupColumn({
   onHover,
   onHoverArc,
   onCloseSeat,
+  openRow,
+  onToggleRow,
+  onCentreRow,
+  pairsOf,
   canGoBack,
   onBack,
   onClear,
@@ -529,6 +533,13 @@ export function GroupColumn({
   onHover: (id: string | null) => void;
   onHoverArc: (key: string | null) => void;
   onCloseSeat: () => void;
+  /** The other document or area opened beside the centre (from its row or
+   *  its name on the ring), and how to open, close or centre one. */
+  openRow: string | null;
+  onToggleRow: (key: string) => void;
+  onCentreRow: (key: string) => void;
+  /** One of the group's targets: its pairs of a reading with targets outside. */
+  pairsOf: (id: string, reading: "apart" | "strong") => GroupPair[];
   canGoBack: boolean;
   onBack: () => void;
   onClear: () => void;
@@ -538,7 +549,12 @@ export function GroupColumn({
   pair: ReactNode;
 }) {
   const t = useTranslations("brief.explore");
-  const [open, setOpen] = useState<string | null>(null);
+  const open = openRow;
+  // A row opened from the ring comes into view beside it.
+  useEffect(() => {
+    if (!openRow) return;
+    document.getElementById(`ex-arc-${openRow}`)?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
+  }, [openRow]);
   const pairRows = (list: GroupPair[]) =>
     list.map((p) => ({
       key: `${p.a.id}~${p.b.id}`,
@@ -595,15 +611,21 @@ export function GroupColumn({
             {rows.map((row) => (
               <GroupRow
                 key={row.key}
+                id={`ex-arc-${row.key}`}
                 name={row.name}
                 counts={row.counts}
                 open={open === row.key}
-                onOpen={() => setOpen((cur) => (cur === row.key ? null : row.key))}
+                onOpen={() => onToggleRow(row.key)}
                 onHover={(on) => onHoverArc(on ? row.key : null)}
                 testId="explore-arc-row"
               >
                 {open === row.key && (
                   <div className="ex-group-row-pairs">
+                    <p className="ex-row-actions">
+                      <button type="button" className="ex-link" onClick={() => onCentreRow(row.key)}>
+                        {t("centreDoc", { name: row.name })}
+                      </button>
+                    </p>
                     {row.apart.length > 0 && (
                       <>
                         <h4 className="ex-sub ex-sub-small">{t("apartList", { count: row.apart.length })}</h4>
@@ -662,6 +684,17 @@ export function GroupColumn({
                 onOpen={onFocus}
                 onHover={onHover}
                 testId="explore-group-review-row"
+                unfold={(id) => (
+                  <MarkRows
+                    rows={pairRows(pairsOf(id, "apart"))}
+                    tone="apart"
+                    selected={selectedPair}
+                    onOpen={openPair}
+                    onHover={onHover}
+                    testId="explore-member-apart"
+                  />
+                )}
+                unfoldLabel={(name) => t("showProblems", { name })}
               />
             )}
           />
@@ -680,6 +713,17 @@ export function GroupColumn({
                 onOpen={onFocus}
                 onHover={onHover}
                 testId="explore-group-strong-row"
+                unfold={(id) => (
+                  <MarkRows
+                    rows={pairRows(pairsOf(id, "strong"))}
+                    tone="reinforce"
+                    selected={selectedPair}
+                    onOpen={openPair}
+                    onHover={onHover}
+                    testId="explore-member-strong"
+                  />
+                )}
+                unfoldLabel={(name) => t("showAlignments", { name })}
               />
             )}
           />

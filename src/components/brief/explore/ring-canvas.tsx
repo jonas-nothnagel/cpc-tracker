@@ -257,6 +257,16 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
     ctx.stroke();
   };
   if (f.focus !== null && layout.placed[f.focus]) ringAt(f.focus, 2.5, 1.4);
+  // The seats a seat in hand reaches: ringed in the ink of the reading, so
+  // the ends of its lines can be found.
+  for (const p of f.road) {
+    if (!layout.placed[p.id]) continue;
+    ctx.strokeStyle = LINE_STYLE[p.relation]?.ink ?? RING_INK.ink;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.arc(cur.x[p.id], cur.y[p.id], radius + 2.5, 0, Math.PI * 2);
+    ctx.stroke();
+  }
   // Where the centre came from: one soft ring widening from each of its seats.
   if (f.pulse) {
     ctx.save();
