@@ -225,6 +225,8 @@ describe("BriefApp screen and print", () => {
     // The ring puts it in the centre and says how it reads against the rest.
     expect(within(ring).getByText(/Potential misalignment with 2\./)).toBeTruthy();
     expect(scroll.mock.contexts).toContain(ring);
+    // Keyboard and screen-reader users arrive where the page went.
+    expect(document.activeElement).toBe(document.getElementById("brief-explore-title"));
   });
 
   it("walks the page from top to bottom: each stop of the walkthrough below the one before", () => {

@@ -235,14 +235,36 @@ describe("drawing the map", () => {
       const cells = calls.filter((c) => c.fn === "rect");
       expect(cells).toHaveLength(15);
       for (const c of cells) {
-        const [x, y, size] = c.args as number[];
+        const [x, y, w, h] = c.args as number[];
         expect(Number.isInteger(x * 2) && Number.isInteger(y * 2)).toBe(true);
-        expect(size).toBeGreaterThan(0);
+        expect(w).toBeGreaterThan(0);
+        expect(h).toBeGreaterThan(0);
       }
       // A lead from each named target to its point.
       expect(calls.filter((c) => c.fn === "lineTo").length).toBeGreaterThanOrEqual(layout.axis.length + layout.marks.length);
     } finally {
       window.matchMedia = media;
+    }
+  });
+});
+
+describe("the map on any screen", () => {
+  it("draws at the screen's own pixel ratio, so a 125% screen is as sharp as a Retina one", () => {
+    const ctx = new Proxy({ globalAlpha: 1 } as Record<string, unknown>, {
+      get: (target, key: string) => (key in target ? target[key] : () => undefined),
+    });
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ctx) as never;
+    const media = window.matchMedia;
+    const ratio = Object.getOwnPropertyDescriptor(window, "devicePixelRatio");
+    window.matchMedia = ((q: string) => ({ matches: q.includes("reduce"), media: q, addEventListener() {}, removeEventListener() {} })) as never;
+    Object.defineProperty(window, "devicePixelRatio", { configurable: true, value: 1.25 });
+    try {
+      const { container } = render(<HubCanvas data={DATA} stage={APART} labelFor={() => null} />);
+      expect((container.querySelector("canvas") as HTMLCanvasElement).width).toBe(Math.round(W * 1.25));
+    } finally {
+      window.matchMedia = media;
+      if (ratio) Object.defineProperty(window, "devicePixelRatio", ratio);
+      else delete (window as { devicePixelRatio?: number }).devicePixelRatio;
     }
   });
 });
@@ -266,10 +288,26 @@ describe("stageKey", () => {
 describe("the map's cells", () => {
   it("sit on the pixel grid, a device pixel apart when there is room", () => {
     // 2.41 css px at 2 device px each: 5 device px, 4 filled.
-    expect(cellRect(10.3, 20.7, 2.41, 2)).toEqual({ x: 9, y: 19.5, size: 2 });
+    expect(cellRect(10.3, 20.7, 2.41, 2)).toEqual({ x: 9, y: 19.5, w: 2, h: 2 });
     // Too small for a gap: the whole cell, never under one device pixel.
-    expect(cellRect(10, 10, 1, 2).size).toBe(1);
-    expect(cellRect(10, 10, 0.3, 2).size).toBe(0.5);
+    expect(cellRect(10, 10, 1, 2).w).toBe(1);
+    expect(cellRect(10, 10, 0.3, 2).w).toBe(0.5);
+  });
+
+  it("keep one device pixel between neighbours, whatever fraction of a pixel a cell is", () => {
+    for (const [pitch, dpr] of [[2.3, 2], [2.41, 2], [4.6, 1], [1.9, 1.5]]) {
+      const row = Array.from({ length: 16 }, (_, i) => cellRect(7.3 + i * pitch, 5, pitch, dpr));
+      for (let i = 1; i < row.length; i++) {
+        expect(row[i].x - (row[i - 1].x + row[i - 1].w)).toBeCloseTo(1 / dpr);
+      }
+    }
+  });
+
+  it("sit on the screen's own pixel grid at any scaling", () => {
+    for (const dpr of [1, 1.25, 1.5]) {
+      const c = cellRect(10.3, 20.7, 2.41, dpr);
+      for (const v of [c.x, c.y, c.w, c.h]) expect(Math.abs(v * dpr - Math.round(v * dpr))).toBeLessThan(1e-9);
+    }
   });
 
   it("are paler in a lighter ink, never transparent", () => {

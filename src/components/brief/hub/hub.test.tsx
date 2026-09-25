@@ -353,6 +353,24 @@ describe("Hub", () => {
     expect(stage()).toBe("map:apart:top");
   });
 
+  it("lets go of a picked target whose pairs on that side the selection drops", () => {
+    const { rerender } = renderHub();
+    enter("apart");
+    const a6 = within(step("apart"))
+      .getAllByTestId("hub-apart-row")
+      .find((r) => r.textContent?.includes("Commitment A6"))!;
+    fireEvent.click(within(a6).getByRole("button", { pressed: false }));
+    expect(stage()).toBe("map:apart:target:A6");
+    // Without document B, A6 stays in the brief with no potential misalignment left.
+    const withoutB = buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "C"]), null);
+    rerender(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Hub data={withoutB} />
+      </NextIntlClientProvider>,
+    );
+    expect(stage()).toBe("map:apart:top");
+  });
+
   it("builds the hub around the document the reader picks", () => {
     renderHub();
     enter("documents");

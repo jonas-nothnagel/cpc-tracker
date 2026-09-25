@@ -51,15 +51,24 @@ export function stageKey(stage: HubStage): string {
   return stage.kind;
 }
 
-/** A map cell on the device's pixel grid: its top left and its side, with
- *  a device pixel between cells when a cell has three or more. */
-export function cellRect(cx: number, cy: number, pitch: number, dpr: number): { x: number; y: number; size: number } {
-  const cell = Math.max(1, Math.round(pitch * dpr));
-  const fill = cell >= 3 ? cell - 1 : cell;
+/** A map cell on the device's pixel grid: both its edges snapped, so
+ *  neighbours share an edge and keep one device pixel between them (when a
+ *  cell has three or more), whatever fraction of a pixel a cell is. */
+export function cellRect(cx: number, cy: number, pitch: number, dpr: number): { x: number; y: number; w: number; h: number } {
+  const half = pitch / 2;
+  // A shared edge is computed from both of its cells; the bias keeps the two
+  // (equal but for floating point) on the same side of a half pixel.
+  const snap = (v: number) => Math.round(v * dpr + 1e-6);
+  const x0 = snap(cx - half);
+  const x1 = snap(cx + half);
+  const y0 = snap(cy - half);
+  const y1 = snap(cy + half);
+  const gap = Math.round(pitch * dpr) >= 3 ? 1 : 0;
   return {
-    x: Math.round((cx - pitch / 2) * dpr) / dpr,
-    y: Math.round((cy - pitch / 2) * dpr) / dpr,
-    size: fill / dpr,
+    x: x0 / dpr,
+    y: y0 / dpr,
+    w: Math.max(1, x1 - x0 - gap) / dpr,
+    h: Math.max(1, y1 - y0 - gap) / dpr,
   };
 }
 
@@ -156,7 +165,10 @@ function draw(
 ) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
-  const dpr = Math.max(2, window.devicePixelRatio || 1);
+  // The map sits on the screen's own pixel grid (a 125% screen as sharp as
+  // a Retina one); dots elsewhere are drawn at least at twice the size.
+  const screen = window.devicePixelRatio || 1;
+  const dpr = layout.pitch > 0 ? Math.max(1, screen) : Math.max(2, screen);
   if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
@@ -188,7 +200,7 @@ function draw(
   if (map && progress > 0) {
     ctx.globalAlpha = settledIn;
     ctx.fillStyle = PAPER;
-    const snap = (v: number) => Math.round(v * dpr) / dpr;
+    const snap = (v: number) => Math.round(v * dpr + 1e-6) / dpr;
     for (const g of layout.groups) {
       const x = snap(g.x0);
       const y = snap(g.y0);
@@ -252,7 +264,7 @@ function draw(
       ctx.fillStyle = mixInk(ink, PAPER, Number(step) / 20);
       for (const i of ids) {
         const c = cellRect(state.x[i], state.y[i], 2 * state.r[i], dpr);
-        ctx.rect(c.x, c.y, c.size, c.size);
+        ctx.rect(c.x, c.y, c.w, c.h);
       }
     } else {
       ctx.fillStyle = ink;

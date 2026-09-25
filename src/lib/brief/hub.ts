@@ -314,6 +314,18 @@ function spread(centres: number[], heights: number[], top: number, bottom: numbe
  * the corner of their blocks, and its targets are named at the front of their
  * documents. The map keeps its place and size on every side.
  */
+/** How many of a side's pairs each target is in. */
+function sideCounts(particles: HubParticle[], side: HubTone): Map<string, number> {
+  const level = sideLevel(side);
+  const count = new Map<string, number>();
+  for (const p of particles) {
+    if (p.level !== level) continue;
+    count.set(p.ca, (count.get(p.ca) ?? 0) + 1);
+    count.set(p.cb, (count.get(p.cb) ?? 0) + 1);
+  }
+  return count;
+}
+
 function placeMap(
   layout: HubLayout,
   particles: HubParticle[],
@@ -322,19 +334,11 @@ function placeMap(
   height: number,
   side: HubTone | null,
   extra: string | null,
+  count: Map<string, number> = new Map(),
 ) {
   const docs = data.scope.docs;
   const docIndex = new Map(docs.map((d, i) => [d.id, i]));
   const level = side ? sideLevel(side) : null;
-  // How many of the side's pairs each target is in.
-  const count = new Map<string, number>();
-  if (level) {
-    for (const p of particles) {
-      if (p.level !== level) continue;
-      count.set(p.ca, (count.get(p.ca) ?? 0) + 1);
-      count.set(p.cb, (count.get(p.cb) ?? 0) + 1);
-    }
-  }
   const has = (id: string) => (count.get(id) ?? 0) > 0;
   const named = side ? namedTargets(data, side).filter(has) : [];
   const rank = new Map(named.map((id, i) => [id, i]));
@@ -502,13 +506,33 @@ function placeMap(
       });
     }
   }
-  const heights = items.map((it) => it.height);
-  const centres = spread(
-    items.map((it) => it.want),
-    heights,
-    0,
-    height,
-  );
+  // Every label keeps the height its text needs. Where the field is too
+  // short for all of them, the targets' names take one line, then the
+  // targets carrying least go unnamed (never the one in focus): their rows
+  // and the list still name them.
+  const place = () => {
+    const hs = items.map((it) => it.height);
+    return { cs: spread(items.map((it) => it.want), hs, 0, height), hs };
+  };
+  const squeezed = ({ cs, hs }: { cs: number[]; hs: number[] }) =>
+    hs.some((h, i) => h < items[i].height - 1e-6) || (items.length > 0 && cs[0] < items[0].want - 0.5);
+  let placed = place();
+  if (squeezed(placed)) {
+    for (const it of items) {
+      if (it.mark === null || it.lines === 1) continue;
+      it.lines = 1;
+      it.height = MARK_LINE;
+    }
+    placed = place();
+  }
+  const droppable = [...named].reverse().filter((id) => id !== extra);
+  while (squeezed(placed) && droppable.length > 0) {
+    const id = droppable.shift();
+    const at = items.findIndex((it) => it.mark === id);
+    if (at >= 0) items.splice(at, 1);
+    placed = place();
+  }
+  const { cs: centres, hs: heights } = placed;
   items.forEach((it, n) => {
     const k = it.k;
     const top = centres[n] - heights[n] / 2;
@@ -593,9 +617,33 @@ function emphasize(layout: HubLayout, particles: HubParticle[], stage: Extract<H
   });
 }
 
-/** Map placements by data, particles, size, side and extra name: pointing
- *  at a theme, a type or a document only changes how far forward dots are. */
-const placed = new WeakMap<BriefData, WeakMap<HubParticle[], Map<string, HubLayout>>>();
+/** Most placements kept per selection: a few sizes, both sides, a target
+ *  in focus that needs its own name. */
+const PLACEMENTS = 8;
+
+interface Placements {
+  counts: Partial<Record<HubTone, Map<string, number>>>;
+  /** Most recently used last. */
+  entries: Map<string, HubLayout>;
+}
+
+/** Map placements by data and particles: pointing at a theme, a type, a
+ *  document or a named target only changes how far forward dots are. */
+const placements = new WeakMap<BriefData, WeakMap<HubParticle[], Placements>>();
+
+function placementsOf(particles: HubParticle[], data: BriefData): Placements {
+  let byParticles = placements.get(data);
+  if (!byParticles) {
+    byParticles = new WeakMap();
+    placements.set(data, byParticles);
+  }
+  let store = byParticles.get(particles);
+  if (!store) {
+    store = { counts: {}, entries: new Map() };
+    byParticles.set(particles, store);
+  }
+  return store;
+}
 
 function placedMap(
   particles: HubParticle[],
@@ -603,26 +651,35 @@ function placedMap(
   width: number,
   height: number,
   side: HubTone | null,
-  extra: string | null,
+  focus: string | null,
 ): HubLayout {
-  let byParticles = placed.get(data);
-  if (!byParticles) {
-    byParticles = new WeakMap();
-    placed.set(data, byParticles);
+  const store = placementsOf(particles, data);
+  let count: Map<string, number> | undefined;
+  if (side) {
+    count = store.counts[side] ?? sideCounts(particles, side);
+    store.counts[side] = count;
   }
-  let bySize = byParticles.get(particles);
-  if (!bySize) {
-    bySize = new Map();
-    byParticles.set(particles, bySize);
-  }
-  const key = `${width}x${height}:${side ?? ""}:${extra ?? ""}`;
-  let layout = bySize.get(key);
-  if (!layout) {
-    layout = emptyLayout(particles.length);
-    placeMap(layout, particles, data, width, height, side, extra);
-    bySize.set(key, layout);
-  }
-  return layout;
+  const get = (extra: string | null) => {
+    const key = `${width}x${height}:${side ?? ""}:${extra ?? ""}`;
+    const hit = store.entries.get(key);
+    if (hit) {
+      store.entries.delete(key);
+      store.entries.set(key, hit);
+      return hit;
+    }
+    const layout = emptyLayout(particles.length);
+    placeMap(layout, particles, data, width, height, side, extra, count);
+    store.entries.set(key, layout);
+    if (store.entries.size > PLACEMENTS) {
+      const oldest = store.entries.keys().next().value;
+      if (oldest !== undefined) store.entries.delete(oldest);
+    }
+    return layout;
+  };
+  const rest = get(null);
+  // A target in focus has its own placement only when it adds a name.
+  if (!side || !focus || !count || (count.get(focus) ?? 0) === 0 || rest.marks.some((m) => m.id === focus)) return rest;
+  return get(focus);
 }
 
 export function layoutHub(

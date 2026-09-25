@@ -393,6 +393,67 @@ describe("layoutHub", () => {
       expect(empty.marks).toEqual([]);
     });
 
+    it("on a phone, names what fits at its full height, and always the target in focus", () => {
+      const { data, particles: many } = corpus([15, 36, 16, 20, 15, 41, 27, 8, 3, 2, 30, 12]);
+      // Real lengths: long names for the first documents, long target titles.
+      const long = [
+        "Nationally Determined Contributions 3.0",
+        "National Biodiversity Strategy and Action Plan",
+        "National targets for implementation of the Paris Agreement",
+      ];
+      const docs = data.scope.docs.map((d, k) => ({ ...d, name: long[k] ?? d.name }));
+      const commitments = data.scope.commitments.map((c) => ({ ...c, label: `Expand the target called ${c.id} across the country` }));
+      const hot = docs.slice(0, 8).map((d) => `${d.id}_0`);
+      const flaggedMany = many.map((p) =>
+        hot.includes(p.ca) || hot.includes(p.cb) || p.ca === "D11_3" || p.cb === "D11_3"
+          ? { ...p, level: "flagged" as const, tone: DOT_ORDER.indexOf("apart") }
+          : p,
+      );
+      const named = {
+        ...data,
+        scope: { ...data.scope, docs, commitments },
+        concentration: { ...data.concentration, top: hot, concentrated: true },
+      };
+      const plain = layoutHub({ kind: "map" }, flaggedMany, named, 358, 371);
+      for (const a of plain.axis) expect(a.labelHeight % 16).toBe(0);
+      for (const focus of [{ kind: "top" } as const, { kind: "target", id: "D11_3" } as const]) {
+        const map = layoutHub({ kind: "map", side: "apart", focus }, flaggedMany, named, 358, 371);
+        // Every label keeps the height its text needs.
+        for (const a of map.axis) expect(a.labelHeight % 16).toBe(0);
+        for (const m of map.marks) expect([MARK_LINE, 2 * MARK_LINE - 2]).toContain(m.labelHeight);
+        const beside = [
+          ...map.axis.map((a) => ({ y: a.labelY, h: a.labelHeight })),
+          ...map.marks.filter((m) => m.align === "right").map((m) => ({ y: m.labelY, h: m.labelHeight })),
+        ].sort((p, q) => p.y - q.y);
+        for (let k = 1; k < beside.length; k++) {
+          expect(beside[k].y - beside[k - 1].y).toBeGreaterThanOrEqual((beside[k].h + beside[k - 1].h) / 2 - 1e-6);
+        }
+        // The first document keeps at least the room its name has on the whole map.
+        expect(map.axis[0].labelWidth).toBeGreaterThanOrEqual(plain.axis[0].labelWidth - 1e-6);
+        // So short a field leaves some targets unnamed, never the one in focus.
+        if (focus.kind === "top") expect(map.marks.length).toBeLessThan(hot.length);
+        else expect(map.marks.map((m) => m.id)).toContain("D11_3");
+      }
+    });
+
+    it("shares one placement between a side at rest and one of its named targets", () => {
+      const rest = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 800, 500);
+      const b6 = layoutHub({ kind: "map", side: "apart", focus: { kind: "target", id: "B6" } }, particles, DATA, 800, 500);
+      expect(b6.x).toBe(rest.x);
+      expect(b6.marks).toBe(rest.marks);
+    });
+
+    it("keeps only the recent placements", () => {
+      const first = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 811, 500);
+      for (let w = 700; w < 760; w += 5) {
+        layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, w, 500);
+      }
+      const again = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 811, 500);
+      expect(again.x).not.toBe(first.x);
+      const recent = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 755, 500);
+      expect(layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 755, 500).x).toBe(recent.x);
+    });
+
     it("keeps names and marks apart, inside the field and clear of the diagonal, with many documents", () => {
       const { data, particles: many } = corpus([15, 36, 16, 20, 15, 41, 27, 8, 3, 2, 30, 12]);
       // The first target of every other document carries potential misalignment with everything.

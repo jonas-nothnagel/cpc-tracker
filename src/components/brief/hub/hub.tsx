@@ -16,6 +16,7 @@ import {
   HUB_TOP,
   MARK_TEXT,
   pairInOrder,
+  sideLevel,
   type HubGroup,
   type HubMark,
   type HubStage,
@@ -150,10 +151,21 @@ export function Hub({
   const reviewLimit = concentration.concentrated
     ? Math.min(REVIEW_MAX, Math.max(HUB_TOP, concentration.top.length))
     : HUB_TOP;
-  // A picked target the selection no longer holds is let go.
+  // The targets with pairs on each side: a picked target the selection
+  // leaves without any is let go.
+  const onSide = useMemo(() => {
+    const sets: Record<HubTone, Set<string>> = { reinforce: new Set(), apart: new Set() };
+    for (const c of data.scope.comparisons) {
+      const side: HubTone | null = c.level === sideLevel("reinforce") ? "reinforce" : c.level === sideLevel("apart") ? "apart" : null;
+      if (!side) continue;
+      sets[side].add(c.a.id);
+      sets[side].add(c.b.id);
+    }
+    return sets;
+  }, [data]);
   const pickedOn = (side: HubTone) => {
     const id = picked[side];
-    return id !== null && data.scope.commitments.some((c) => c.id === id) ? id : null;
+    return id !== null && onSide[side].has(id) ? id : null;
   };
 
   useEffect(() => {

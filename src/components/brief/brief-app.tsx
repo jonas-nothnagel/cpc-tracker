@@ -156,6 +156,8 @@ export function BriefApp({
   const exploreTarget = (id: string) => {
     dispatchExplore({ type: "focus", id });
     document.getElementById("brief-explore")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Keyboard and screen-reader users arrive where the page went.
+    document.getElementById("brief-explore-title")?.focus({ preventScroll: true });
   };
 
   const readBrief = () =>
@@ -245,7 +247,7 @@ export function BriefApp({
           hidden={preview}
           aria-labelledby="brief-explore-title"
         >
-          <h2 id="brief-explore-title" className="brief-explore-title">
+          <h2 id="brief-explore-title" className="brief-explore-title" tabIndex={-1}>
             {tx("title")}
           </h2>
           <Explore
