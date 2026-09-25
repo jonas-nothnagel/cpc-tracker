@@ -33,8 +33,12 @@ MAX_PRECOMPUTE_DOCS = 4
 
 # Per-document single-hidden states are only precomputed for corpora up to
 # this many documents; larger corpora fall back to the lazy regen route for
-# anything beyond the default-hidden states.
-MAX_SINGLE_DOC_STATES = 10
+# anything beyond the default-hidden states. The cap must cover the largest
+# shipped corpus (tests/test_synthesis_states.py checks every
+# python/data/*-targets.json): above it, hiding any one document falls back to
+# full-corpus storylines and a live LLM call on the server. Each state costs one
+# corpus call plus the sector calls whose prompts changed.
+MAX_SINGLE_DOC_STATES = 12
 
 
 def canonical_hidden_key(hidden: list[str] | set[str]) -> str:
@@ -74,7 +78,7 @@ def precompute_hidden_states(
         states.append([doc])
     if len(capped) > 1:
         states.append(list(capped))
-    if all_doc_types is not None and len(all_doc_types) <= MAX_SINGLE_DOC_STATES:
+    if all_doc_types is not None and len(dict.fromkeys(all_doc_types)) <= MAX_SINGLE_DOC_STATES:
         for doc in dict.fromkeys(all_doc_types):
             states.append([doc])
     briefing_combo = list(dict.fromkeys([*default_hidden, *(secondary_doc_types or [])]))

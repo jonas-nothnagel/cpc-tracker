@@ -24,6 +24,7 @@ function view(overrides: Partial<PageViewEvent> = {}): PageViewEvent {
     country: "mongolia",
     viewport: "lg",
     ua: "chrome/linux",
+    viewerCountry: null,
     viewId: "abcd1234",
     analysisId: null,
     referrerRoute: null,

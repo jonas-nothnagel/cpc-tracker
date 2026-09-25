@@ -425,7 +425,7 @@ function yr(n: number | null): string {
 function fmt(n: number | null): string {
   if (n === null) return "";
   // Three decimals: the Red List Index moves in the third place.
-  return n.toLocaleString(undefined, { maximumFractionDigits: 3 });
+  return n.toLocaleString("en-US", { maximumFractionDigits: 3 });
 }
 
 // ── Model ───────────────────────────────────────────────────────────────────

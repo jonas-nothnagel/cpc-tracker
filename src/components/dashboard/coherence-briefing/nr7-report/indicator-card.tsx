@@ -17,7 +17,7 @@ import type { Nr7IndicatorSeries } from "@/types";
 
 const SERIES_SHOWN = 8;
 
-const fmt = (n: number) => n.toLocaleString(undefined, { maximumFractionDigits: 3 });
+const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 3 });
 
 export function IndicatorCard({
   indicator,
