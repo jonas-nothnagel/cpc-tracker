@@ -132,6 +132,8 @@ export function ThemeList({
                 className="brief-theme-button"
                 aria-pressed={selectedIndex === undefined ? undefined : on}
                 onClick={() => onSelect?.(row.storyline.name)}
+                onFocus={() => onHover?.(row.storyline.name)}
+                onBlur={() => onHover?.(null)}
               >
                 <span className="brief-theme-n" aria-hidden="true">
                   {i + 1}

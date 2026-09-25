@@ -112,6 +112,11 @@ describe("Hub", () => {
     expect(stage()).toBe("map:reinforce:theme:0");
     fireEvent.pointerLeave(theme);
     expect(stage()).toBe("map:reinforce:top");
+    // From the keyboard too.
+    fireEvent.focus(within(theme).getByRole("button"));
+    expect(stage()).toBe("map:reinforce:theme:0");
+    fireEvent.blur(within(theme).getByRole("button"));
+    expect(stage()).toBe("map:reinforce:top");
   });
 
   it("the strongest alignments: the first target in the centre, another on request, and its pairs one click away", () => {
