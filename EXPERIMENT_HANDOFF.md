@@ -133,6 +133,52 @@ branding.
   re-lays the map (29 to 83 ms for Sri Lanka and Panama). Main's shared `Modal` still
   locks `body` (the grey-screen bug class): fix on main, with the DrawerShell lock.
 
+**Round 10 (2026-09-25, `44638a3`..HEAD):** Jonas liked the design ("stay simplistic")
+but asked for one path that deepens step by step. Clicking green in the overall picture
+jumped past the map. The target-in-the-centre layout ran three times, blurring target
+level and document level; keep it for the document in focus only. The two sides should
+build from the dots and use the document squares, not copy the How it works triangle. The
+map's colours were hard to hit and the misalignment view looked blurry. A document around
+the centre should be clickable, the comparison was a text wall, and the ring should be
+considered. He chose variant B from sketches ("B is better"). Spec
+`docs/superpowers/specs/2026-09-25-coherence-brief-round10-design.md`, plan
+`docs/superpowers/plans/2026-09-25-coherence-brief-round10.md`.
+- **One path:** overall, map, what works well, where to look closer, documents. A rating in
+  the legend leads to the map with its pairs brought forward until the reader moves on; the
+  map step holds for most of a screen (`min-height: 72vh`).
+- **Each side is its own landscape on the map:**
+  - only its pairs: strong alignments, or potential misalignments;
+  - each document's targets re-sorted: the ones the side names, then by count, then
+    document order, so the side's pairs slide into the corner of their squares;
+  - its targets named at the front of their document, with counts: the headline's when
+    they are at most 8, else the list's first 6. The first document's names sit above the
+    map when there is room; names wrap to two lines where one is too narrow.
+  - Every pair of documents keeps a pale square, so empty squares read as empty.
+  - Lists come first under the headline, then themes (and types).
+  - Rows and names bring a target's row and column forward; a click keeps it, a second click
+    lets go. A theme outlines its pairs of documents.
+  - Every dot opens its comparison; every square opens its pair of documents.
+- **Sharp map:** each pair is a square on the device pixel grid; paler means a lighter opaque
+  ink (`mixInk`), never transparency. Placements are cached per side and size, so pointing
+  only recomputes emphasis (Sri Lanka about 8 ms, Mongolia about 3 ms).
+- **Single targets go to the ring:** a picked row offers "Explore this target", which puts it
+  in the ring's centre and scrolls there (`BriefApp` dispatches to the explore reducer);
+  without the ring the row opens the target's panel, relabelled "See its aligned and
+  potentially misaligned targets". The target stage is gone from the hub.
+- **Document in focus:** clicking another document around the centre (its name, bar or
+  dots) puts it in the centre and opens its row.
+- **One comparison for panel and ring** (`comparison.tsx`, `ai-text.tsx`):
+  - two stops, each with its document's colour square, name, bold title and text (4 lines,
+    "Full text");
+  - the rating's line from square to square: solid green, grey, dotted, dashed red;
+  - the AI explanation's first sentence with "More", confidence beside the heading.
+- **Walkthrough:** stops follow the page top to bottom (strongest alignments before
+  themes; pinned by a test); overall, aligned, themes, commitments and documents rewritten;
+  es/mn English placeholders.
+- Verified: full suite 1,369 passed (1 skipped), `tsc` clean (the merge of `origin/main` at
+  `c5ceefd` fixed the inherited `store.test.ts` error), all four countries' `/brief` render
+  (HTTP 200) with the five steps. Verdict pending.
+
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
   Start chats for this work from inside the worktree folder.
@@ -261,6 +307,9 @@ compelling enough to forward to a colleague. This branch is the search for the a
    works aligned with the brief. Verdict: "looks good"; the strips were unreadable.
 9. **The coherence side** (`7ae7a46`..`4f36453`): a map of the documents, one explorable
    section per side, a target in the centre, UNDP branding. Verdict pending.
+10. **Deep dive after deep dive** (`44638a3`..): one path; each side its own landscape on
+   the map (variant B: its targets first and named); a sharp map; single targets to the
+   ring; one comparison design. Verdict pending.
 
 The finding-page routes (`/{country}/finding/{pairKey}`, `/{country}/findings`) still exist
 on this branch as legacy surfaces; nothing in the brief links to them. Their lib layer
@@ -279,14 +328,15 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
   page size), inert and hidden; "Print or save as PDF" shows them as a preview with Print /
   Back. Default = overall, areas of alignment, strongest alignments, potential misalignment,
   targets to review first, documents = 3 pages.
-- **Overview steps** (screen): overall (headline + legend; aligned and potential
-  misalignment lead to their sections); the map of the documents (the leading pairs,
-  linked and outlined); what works well (headline: how few targets carry the strong
-  alignments; themes that preview their pairs on the map; strongest alignments, the first
-  in the centre); where to look closer (headline: how few targets carry the potential
-  misalignments; themes and types that preview their pairs; the targets it names, the
-  first in the centre); documents (one row per document, most aligned first; the open row
-  sits at the centre of the dots). Every pair is one dot at its own place on the map (never
+- **Overview steps** (screen, round 10): overall (headline + legend; aligned and potential
+  misalignment lead on to the map with their pairs brought forward); the map of the
+  documents (the leading pairs, linked and outlined); what works well and where to look
+  closer, each its own landscape on the map: only its pairs (strong alignments, potential
+  misalignments), each document's targets re-sorted so the side's come first and are named
+  with their counts, then the list of those targets, themes (and types) that bring their
+  pairs forward; documents (one row per document, most aligned first; the open row sits at
+  the centre of the dots, and another document is picked there too). A single target is
+  explored on the ring. Every pair is one square at its own place on the map (never
   sampled). Around a document, where even the smallest dot cannot fit every pair, one dot
   stands for several, taken evenly, and the counts stay exact.
 - **Print sections:** overall (halftone field), areas of alignment / potential misalignment
@@ -294,8 +344,9 @@ on this branch as legacy surfaces; nothing in the brief links to them. Their lib
   targets to review first, documents, by policy area (optional).
 - **Panels:** serif title with one plain line or the result bar under it. Pair of documents:
   the pipeline's AI summary (first sentence, rest on request), an AI-suggested starting
-  point, strongest aligned target pairs, potential misalignments. One comparison: both
-  targets quoted, joined by the rating's line, then the AI explanation. Theme: size, AI
+  point, strongest aligned target pairs, potential misalignments. One comparison (panel
+  and ring alike): two stops on the rating's line, each with its document's colour square,
+  title and text, then the AI explanation's first sentence. Theme: size, AI
   summary, example, starting point, documents by share. Thumbs + note on each AI text.
 - **Language:** targets, target pairs, aligned, partially aligned, potential misalignment,
   no clear relationship. Never commitment (the team's finance layer), reinforce, flagged.

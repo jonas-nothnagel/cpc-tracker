@@ -210,6 +210,43 @@ describe("HubCanvas", () => {
   });
 });
 
+describe("drawing the map", () => {
+  it("draws every side's pairs as squares on the grid, on a pale square per pair of documents", () => {
+    const calls: { fn: string; args: unknown[] }[] = [];
+    const record = (fn: string) => (...args: unknown[]) => void calls.push({ fn, args });
+    const ctx = new Proxy(
+      { globalAlpha: 1, fillStyle: "", strokeStyle: "", lineWidth: 1 } as Record<string, unknown>,
+      { get: (target, key: string) => (key in target ? target[key] : record(key)) },
+    );
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ctx) as never;
+    const media = window.matchMedia;
+    // Reduced motion: the field settles at once, so one draw shows the result.
+    window.matchMedia = ((q: string) => ({ matches: q.includes("reduce"), media: q, addEventListener() {}, removeEventListener() {} })) as never;
+    try {
+      render(<HubCanvas data={DATA} stage={APART} labelFor={() => null} markLabel={(m) => m.id} />);
+      // The last frame: everything after the last clear.
+      const last = calls.map((c) => c.fn).lastIndexOf("clearRect");
+      expect(last).toBeGreaterThanOrEqual(0);
+      calls.splice(0, last);
+      const layout = layoutHub(APART, PARTICLES, DATA, W, H);
+      // A pale square for each of the three pairs of documents.
+      expect(calls.filter((c) => c.fn === "fillRect")).toHaveLength(layout.groups.length);
+      // Each of the 15 potential misalignments as one square cell.
+      const cells = calls.filter((c) => c.fn === "rect");
+      expect(cells).toHaveLength(15);
+      for (const c of cells) {
+        const [x, y, size] = c.args as number[];
+        expect(Number.isInteger(x * 2) && Number.isInteger(y * 2)).toBe(true);
+        expect(size).toBeGreaterThan(0);
+      }
+      // A lead from each named target to its point.
+      expect(calls.filter((c) => c.fn === "lineTo").length).toBeGreaterThanOrEqual(layout.axis.length + layout.marks.length);
+    } finally {
+      window.matchMedia = media;
+    }
+  });
+});
+
 describe("stageKey", () => {
   it("names each arrangement and question of the field", () => {
     expect(stageKey({ kind: "overview" })).toBe("overview");
