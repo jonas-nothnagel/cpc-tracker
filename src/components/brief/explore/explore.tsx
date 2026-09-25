@@ -812,6 +812,7 @@ export function Explore({
         partner={pair.b}
         commitments={byId}
         docName={docName}
+        docColor={(id) => data.scope.docs.find((d) => d.id === id)?.color}
         onCentre={focusOn}
         onClose={() => setPair(null)}
       />

@@ -3108,6 +3108,8 @@
       "more": "More",
       "alignedPairs": "{count, plural, =0 {No aligned target pairs} one {# aligned target pair} other {# aligned target pairs, strongest first}}",
       "aiExplanation": "AI explanation",
+      "fullText": "Full text",
+      "shortText": "Show less",
       "rating": {
         "high": "Strong alignment",
         "medium": "Moderate alignment",

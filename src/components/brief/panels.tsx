@@ -7,11 +7,11 @@ import { FeedbackControl } from "@/components/dashboard/coherence-briefing/feedb
 import { findDocPair, partnersOf, strongestAligned, toneCounts, toneOf, type ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import type { FoundPair } from "@/lib/brief/pair";
-import { docCodeSegments, firstSentence } from "@/lib/brief/text";
 import type { BriefCommitment, BriefDocument, BriefSource } from "@/lib/brief/source";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { strandsByPathway } from "@/lib/pulse/strands";
-import type { AlignmentLevel } from "@/types";
+import { AiHeading, AiText, confidenceLabel, Explanation, FirstSentence, type DocNames } from "./ai-text";
+import { Comparison, type ComparisonSide } from "./comparison";
 import { ExamplePairView } from "./example-pair";
 import { commitmentLine, useNumbers } from "./ink";
 import { ResultBar } from "./sections/documents";
@@ -41,31 +41,6 @@ function keyOf(p: PanelState): string {
   }
 }
 
-/** The ink of a rating: the line between two quotes, the mark on a row. */
-function inkOf(level: AlignmentLevel): "reinforce" | "partial" | "apart" | "none" {
-  return toneOf(level);
-}
-
-type DocNames = { id: string; name: string }[];
-
-/** An AI text as written, with each document code it uses explained in a
- *  tooltip ("FSS": Food Supply and Security Measures). */
-function AiText({ text, docs }: { text: string; docs: DocNames }) {
-  return (
-    <>
-      {docCodeSegments(text, docs).map((seg, i) =>
-        typeof seg === "string" ? (
-          seg
-        ) : (
-          <abbr key={i} title={seg.name}>
-            {seg.code}
-          </abbr>
-        ),
-      )}
-    </>
-  );
-}
-
 /** The panel's title: the finding in serif, and one plain line under it. */
 function PanelTitle({ title, sub, children }: { title: ReactNode; sub?: ReactNode; children?: ReactNode }) {
   return (
@@ -74,28 +49,6 @@ function PanelTitle({ title, sub, children }: { title: ReactNode; sub?: ReactNod
       {sub && <p className="brief-panel-sub">{sub}</p>}
       {children}
     </>
-  );
-}
-
-/** The AI's own confidence in a reading, as the app words it. */
-function confidenceLabel(tc: (key: "high" | "medium" | "low") => string, value?: string | null): string | null {
-  return value === "high" || value === "medium" || value === "low" ? tc(value) : null;
-}
-
-/** An AI section's heading, with the AI's confidence beside it. */
-function AiHeading({ label, confidence }: { label: string; confidence: string | null }) {
-  return (
-    <h3 className="brief-panel-h">
-      {label}
-      {confidence && (
-        <>
-          <span className="brief-panel-sep" aria-hidden="true">
-            {" · "}
-          </span>
-          <span className="brief-panel-conf">{confidence}</span>
-        </>
-      )}
-    </h3>
   );
 }
 
@@ -118,17 +71,6 @@ function ResultStrip({ label, counts }: { label: string; counts: ToneCounts }) {
     >
       <ResultBar counts={counts} />
     </div>
-  );
-}
-
-function PanelQuote({ c, docName }: { c: BriefCommitment; docName: string }) {
-  return (
-    <blockquote className="brief-panel-quote">
-      <p className="brief-panel-quote-source">
-        {docName} · <span className="brief-panel-quote-label">{c.label}</span>
-      </p>
-      <p className="brief-panel-quote-text">{c.text}</p>
-    </blockquote>
   );
 }
 
@@ -179,7 +121,7 @@ function PairPanel({
     );
   }
   const { pair, targetA, targetB } = state.found;
-  const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
+  const docOf = (id: string) => data.scope.docs.find((d) => d.id === id);
   // The brief's own texts (and translation flags); the stored ones if absent.
   const commitmentOf = (target: FoundPair["targetA"]): BriefCommitment =>
     data.scope.commitments.find((c) => c.id === target.id) ?? {
@@ -188,8 +130,12 @@ function PairPanel({
       label: target.sourceLabel ?? target.id,
       text: target.text,
     };
-  const x = commitmentOf(targetA);
-  const y = commitmentOf(targetB);
+  const sideOf = (c: BriefCommitment): ComparisonSide => ({
+    label: c.label,
+    text: c.text,
+    docName: docOf(c.doc)?.name ?? c.doc,
+    color: docOf(c.doc)?.color ?? "#94a3b8",
+  });
   const flagged = pair.alignment === "flagged";
   const resources =
     flagged && pair.mechanism === "resource_competition" ? resourceLine(pair.contestedResources ?? []) : null;
@@ -202,23 +148,15 @@ function PairPanel({
         />
       </DrawerHeader>
       <div className="brief-panel-body">
-        <div className="brief-panel-pair">
-          <PanelQuote c={x} docName={docName(x.doc)} />
-          <span className={`brief-panel-link brief-panel-link-${inkOf(pair.alignment)}`} aria-hidden="true" />
-          <PanelQuote c={y} docName={docName(y.doc)} />
-        </div>
+        <Comparison first={sideOf(commitmentOf(targetA))} second={sideOf(commitmentOf(targetB))} tone={toneOf(pair.alignment)} />
         {pair.description && (
-          <section>
-            <h3 className="brief-panel-h">{t("aiExplanation")}</h3>
-            <p className="brief-panel-text">
-              <AiText text={pair.description} docs={docs} />
-            </p>
+          <Explanation text={pair.description} docs={docs} confidence={pair.confidence}>
             {resources && <p className="brief-panel-meta">{resources}</p>}
             {pair.descriptionTranslationPending && (
               <p className="brief-panel-caveat">{tp("rationaleTranslationPending")}</p>
             )}
             <p className="brief-panel-caveat">{tp("aiRationaleDisclaimer")}</p>
-          </section>
+          </Explanation>
         )}
       </div>
       {pair.description && (
@@ -242,23 +180,10 @@ function PairPanel({
 
 /** One labelled AI line: the first sentence, the rest on request. */
 function NoteLine({ label, text, docs }: { label: string; text: string; docs: DocNames }) {
-  const t = useTranslations("brief.panel");
-  const [more, setMore] = useState(false);
-  const { first, rest } = firstSentence(text);
   return (
     <div className="brief-panel-note">
       <h4 className="brief-panel-note-label">{label}</h4>
-      <p className="brief-panel-text">
-        <AiText text={more ? text : first} docs={docs} />
-        {rest && !more && (
-          <>
-            {" "}
-            <button type="button" className="brief-panel-more" onClick={() => setMore(true)}>
-              {t("more")}
-            </button>
-          </>
-        )}
-      </p>
+      <FirstSentence text={text} docs={docs} />
     </div>
   );
 }

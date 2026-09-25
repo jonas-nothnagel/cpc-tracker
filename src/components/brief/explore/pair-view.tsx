@@ -6,37 +6,16 @@ import { FeedbackControl } from "@/components/dashboard/coherence-briefing/feedb
 import { toneOf } from "@/lib/brief/compute";
 import type { FoundPair } from "@/lib/brief/pair";
 import type { ExploreItem } from "@/lib/brief/explore/model";
-import type { BriefCommitment } from "@/lib/brief/source";
+import { Explanation } from "../ai-text";
+import { Comparison, type ComparisonSide } from "../comparison";
 import { useResourceLine } from "../sections/themes";
-
-/** A target's text, a few lines at first, the rest on request. */
-function Quote({ c, docName }: { c: BriefCommitment; docName: string }) {
-  const item = c as ExploreItem;
-  const label = item.kind && item.kind !== "target" ? (item.code ? `${item.code} ${item.name}` : c.label) : c.label;
-  const t = useTranslations("brief.explore");
-  const [open, setOpen] = useState(false);
-  const long = c.text.length > 280;
-  return (
-    <blockquote className="brief-panel-quote">
-      <p className="brief-panel-quote-source">
-        {docName} · <span className="brief-panel-quote-label">{label}</span>
-      </p>
-      <p className="brief-panel-quote-text ex-quote" data-clamped={long && !open ? "true" : undefined}>
-        {c.text}
-      </p>
-      {long && (
-        <button type="button" className="brief-panel-more" onClick={() => setOpen((v) => !v)}>
-          {open ? t("less") : t("more")}
-        </button>
-      )}
-    </blockquote>
-  );
-}
+import { RING_INK } from "./ring-canvas";
 
 /**
- * One comparison beside the ring: the two targets joined by the rating's
- * line, the AI explanation (loaded on demand) with its caveat and the review
- * control, and a way to put the other target in the centre.
+ * One comparison beside the ring: the two targets as two stops on the
+ * rating's line (as in the brief's panel), the AI explanation (loaded on
+ * demand) with its caveat and the review control, and a way to put the
+ * other target in the centre.
  */
 export function PairView({
   countryId,
@@ -45,6 +24,7 @@ export function PairView({
   partner,
   commitments,
   docName,
+  docColor,
   countryName,
   onCentre,
   onClose,
@@ -57,6 +37,8 @@ export function PairView({
   partner: string;
   commitments: Map<string, ExploreItem>;
   docName: (id: string) => string;
+  /** A document's colour; reported actions and budget lines take their layer's. */
+  docColor?: (id: string) => string | undefined;
   countryName: string;
   onCentre: (id: string) => void;
   onClose: () => void;
@@ -94,6 +76,13 @@ export function PairView({
   const flagged = pair?.alignment === "flagged" && layer !== "budget";
   const resources =
     pair && flagged && pair.mechanism === "resource_competition" ? resourceLine(pair.contestedResources ?? []) : null;
+  const sideOf = (c: ExploreItem): ComparisonSide => ({
+    label: c.kind !== "target" && c.code ? `${c.code} ${c.name}` : c.label,
+    text: c.text,
+    docName: docName(c.doc),
+    color:
+      c.kind === "action" ? RING_INK.action : c.kind === "budget" ? RING_INK.budget : (docColor?.(c.doc) ?? RING_INK.rest),
+  });
 
   return (
     <section className="ex-pair" aria-live="polite" data-testid="explore-pair">
@@ -118,21 +107,13 @@ export function PairView({
         </span>
       </div>
       {first && second && (
-        <div className="brief-panel-pair">
-          <Quote c={first} docName={docName(first.doc)} />
-          <span
-            className={`brief-panel-link brief-panel-link-${pair ? toneOf(pair.alignment) : "none"}`}
-            aria-hidden="true"
-          />
-          <Quote c={second} docName={docName(second.doc)} />
-        </div>
+        <Comparison first={sideOf(first)} second={sideOf(second)} tone={pair ? toneOf(pair.alignment) : "none"} />
       )}
       {!current && <p className="brief-panel-caveat">{tp("loading")}</p>}
       {current?.status === "error" && <p className="brief-panel-caveat">{tp("error")}</p>}
       {pair?.description && (
         <div className="ex-pair-ai">
-          <h4 className="brief-panel-h">{tp("aiExplanation")}</h4>
-          <p className="brief-panel-text">{pair.description}</p>
+          <Explanation text={pair.description} confidence={pair.confidence} heading="h4" />
           {resources && <p className="brief-panel-meta">{resources}</p>}
           {pair.descriptionTranslationPending && (
             <p className="brief-panel-caveat">{td("rationaleTranslationPending")}</p>

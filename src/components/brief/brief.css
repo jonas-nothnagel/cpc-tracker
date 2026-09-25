@@ -2244,22 +2244,7 @@
   margin-top: 0.6rem;
 }
 
-/* Two targets, one above the other, joined by the rating's line. */
-[data-brief] .brief-panel-quote {
-  margin: 0;
-}
-
-[data-brief] .brief-panel-quote-source {
-  margin: 0 0 0.3rem;
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
-
-[data-brief] .brief-panel-quote-label {
-  font-weight: 600;
-  color: var(--brief-ink);
-}
-
+/* A target's own text in its panel. */
 [data-brief] .brief-panel-quote-text {
   margin: 0;
   font-family: var(--font-display);
@@ -2267,27 +2252,81 @@
   line-height: 1.5;
 }
 
-[data-brief] .brief-panel-link {
-  display: block;
-  width: 3rem;
-  height: 0;
-  margin: 1rem 0;
+/* Two targets compared: two stops on one line in the rating's ink, each
+   marked with its document's colour square, as on the map. */
+[data-brief] .brief-cmp {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
 }
 
-[data-brief] .brief-panel-link-reinforce {
-  border-top: 2px solid var(--brief-green);
+[data-brief] .brief-cmp-stop {
+  position: relative;
+  padding-left: 1.45rem;
 }
 
-[data-brief] .brief-panel-link-apart {
-  border-top: 2px dashed var(--brief-red);
+[data-brief] .brief-cmp-mark {
+  position: absolute;
+  top: 0.22rem;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
 }
 
-[data-brief] .brief-panel-link-partial {
-  border-top: 2px solid #a9b3a4;
+/* The line runs from the first square to the second. */
+[data-brief] .brief-cmp-stop:first-child::after {
+  content: "";
+  position: absolute;
+  top: calc(0.22rem + 14px);
+  bottom: calc(4px - 1.1rem - 0.22rem);
+  left: 4px;
+  border-left: 2px solid var(--brief-green);
 }
 
-[data-brief] .brief-panel-link-none {
-  border-top: 2px dotted #a9b3a4;
+[data-brief] .brief-cmp[data-tone="apart"] .brief-cmp-stop:first-child::after {
+  border-left: 2px dashed var(--brief-red);
+}
+
+[data-brief] .brief-cmp[data-tone="partial"] .brief-cmp-stop:first-child::after {
+  border-left-color: #a9b3a4;
+}
+
+[data-brief] .brief-cmp[data-tone="none"] .brief-cmp-stop:first-child::after {
+  border-left: 2px dotted #a9b3a4;
+}
+
+[data-brief] .brief-cmp-doc {
+  margin: 0 0 0.15rem;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-cmp-label {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-cmp-text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+[data-brief] .brief-cmp-text[data-clamped] {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-cmp-stop .brief-panel-more {
+  margin-top: 0.3rem;
 }
 
 /* Rows of targets or target pairs, marked with the rating's ink. */
