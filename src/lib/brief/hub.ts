@@ -342,6 +342,10 @@ function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, 
     height,
   );
   shown.forEach((k, n) => {
+    // Every document's own stretch lies on one line (x - x0 = y - y0): a
+    // name taller than its stretch stays left of that line at its top.
+    const top = centres[n] - heights[n] / 2;
+    const right = Math.min(labelX[n], x0 + (top - y0) - 8);
     layout.axis.push({
       key: docs[k].id,
       square: {
@@ -350,9 +354,9 @@ function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, 
         x1: x0 + off[k] + sizes[k] * pitch,
         y1: y0 + off[k] + sizes[k] * pitch,
       },
-      labelX: labelX[n],
+      labelX: right,
       labelY: centres[n],
-      labelWidth: labelWidth[n],
+      labelWidth: Math.max(24, Math.min(labelWidth[n], right - pad)),
       labelHeight: heights[n],
     });
   });

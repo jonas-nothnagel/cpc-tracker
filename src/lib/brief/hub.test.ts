@@ -161,6 +161,22 @@ describe("layoutHub", () => {
       }
     });
 
+    it("keeps each name clear of the diagonal, even a tall name beside a small document", () => {
+      const docs = ["Vision 2050", "Nationally Determined Contribution", "National targets for implementation of the Paris Agreement", "National Biodiversity Strategy & Action Plan", "National Adaptation Plan", "Food Supply and Security Measures", "LDN Targets", "Investing in Land Degradation Neutrality"];
+      const { data, particles: many } = corpus([15, 36, 16, 20, 15, 41, 27, 8]);
+      const named = { ...data, scope: { ...data.scope, docs: data.scope.docs.map((d, k) => ({ ...d, name: docs[k] })) } };
+      for (const [w, h] of [[450, 700], [500, 620], [390, 371]]) {
+        const map = layoutHub({ kind: "map" }, many, named, w, h);
+        const x0 = map.axis[0].square.x0;
+        const y0 = map.axis[0].square.y0;
+        for (const a of map.axis) {
+          // Every document's own stretch lies on one line, x - x0 = y - y0.
+          const top = a.labelY - a.labelHeight / 2;
+          expect(a.labelX).toBeLessThanOrEqual(x0 + (top - y0) + 1e-6);
+        }
+      }
+    });
+
     it("gives every pair its dot in a large corpus too, never a sample", () => {
       const { data, particles: many } = corpus([60, 45, 40, 38, 30, 30, 25, 20, 18, 12]);
       const map = layoutHub({ kind: "map" }, many, data, 480, 520);
