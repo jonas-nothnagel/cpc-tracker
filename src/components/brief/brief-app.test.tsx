@@ -261,6 +261,7 @@ describe("BriefApp walkthrough", () => {
     }
     expect(titles).toEqual([
       "Overall coherence",
+      "Map of the documents",
       "Recurring themes",
       "Strongest alignments",
       "Targets to review first",

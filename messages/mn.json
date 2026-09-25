@@ -497,11 +497,11 @@
         "steps": {
           "overall": {
             "title": "Ерөнхий уялдаа",
-            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots regroup by recurring theme, and around one document at a time."
+            "body": "Each dot is one target pair: two targets from different documents, compared by an AI model and grouped by the rating. Further down the page the same dots form a map of the documents, then gather around one target or document at a time."
           },
           "themes": {
             "title": "Давтагдах сэдвүүд",
-            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Each cluster of dots is one theme, numbered like the list; selecting either opens the theme with an example."
+            "body": "An AI model identifies recurring themes in the rated target pairs; each theme counts the target pairs between the documents it covers, so a pair can count toward more than one theme. Pointing at a theme brings its target pairs forward on the map; selecting it opens the theme with an example."
           },
           "commitments": {
             "title": "Эхэлж хянах зорилтууд",
@@ -517,7 +517,11 @@
           },
           "aligned": {
             "title": "Strongest alignments",
-            "body": "The targets with the most strong alignments with targets in other documents, counted as in the explorer. Selecting one lists the targets it is aligned with and those with potential misalignment."
+            "body": "The targets with the most strong alignments with targets in other documents, counted as in the explorer. The first sits at the centre of the dots with its target pairs, grouped by the other documents; selecting another target puts it there, and each dot opens its comparison."
+          },
+          "map": {
+            "title": "Map of the documents",
+            "body": "The same dots, one block for each pair of documents: each document's targets run along the diagonal, and each dot sits where its two targets meet. Pointing at a block or at a document's name gives its figures; selecting a block opens that pair of documents, and selecting a name puts that document at the centre further down."
           }
         }
       }

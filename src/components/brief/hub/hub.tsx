@@ -518,7 +518,7 @@ export function Hub({
 
         {hasPairs && (
           <>
-            <section className="brief-hub-step" data-step="map">
+            <section className="brief-hub-step" data-step="map" data-tour="brief-map">
               <h2 className="brief-hub-headline" tabIndex={-1}>
                 {leadLine("reinforce")}
               </h2>
