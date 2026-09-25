@@ -1658,10 +1658,129 @@
   line-height: 1.25;
 }
 
-/* The deeper steps (strongest alignments, types, targets to review first)
-   stay in view long enough for their dots to be read. */
+/* The list that puts a target in the centre stays in view long enough for
+   its dots to be read. */
 [data-brief] .brief-hub-substep {
-  min-height: 52vh;
+  min-height: 40vh;
+}
+
+/* One section per side: its headline, themes and types, then its targets,
+   close together; the sides and the map keep the room between steps. */
+[data-brief] .brief-hub-part > .brief-hub-step:not(:last-child) {
+  padding-bottom: 2.75rem;
+}
+
+[data-brief] .brief-hub-part {
+  padding-bottom: 7rem;
+}
+
+[data-brief] .brief-hub-part > .brief-hub-step:last-child {
+  padding-bottom: 0;
+}
+
+/* The map's second finding, under its headline. */
+[data-brief] .brief-hub-second {
+  max-width: 32em;
+  margin: -0.35rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+[data-brief] .brief-hub-sub-inline {
+  margin-top: 2rem;
+}
+
+/* The map's documents, along its diagonal: named at the left of their own
+   stretch, which carries the document's colour. */
+[data-brief] .brief-hub-axis {
+  position: absolute;
+  display: -webkit-box;
+  overflow: hidden;
+  transform: translate(-100%, -50%);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: right;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  transition: opacity 160ms ease;
+}
+
+[data-brief] .brief-hub-axis[data-compact] {
+  font-size: 0.75rem;
+}
+
+[data-brief] .brief-hub-axis[data-dim] {
+  opacity: 0.35;
+}
+
+/* A target in the centre: its line in the serif, a little smaller than a
+   document's name. */
+[data-brief] .brief-hub-center-target {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.25;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .brief-hub-center[data-clickable] .brief-hub-center-name {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+  text-underline-offset: 0.18em;
+}
+
+[data-brief] .brief-hub-canvas[data-center] {
+  cursor: pointer;
+}
+
+[data-brief] .brief-hub-tip-meta {
+  color: var(--brief-muted);
+}
+
+/* A picked target in the lists: marked, and open with its text and a way
+   to all its pairs. */
+[data-brief] .brief-rank-row[data-selected] {
+  background: #f2f4f5;
+  box-shadow: inset 3px 0 0 var(--brief-ink);
+}
+
+[data-brief] .brief-rank-row[data-selected] .brief-rank-n {
+  font-weight: 700;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-rank-more {
+  grid-column: 2 / -1;
+  padding: 0.35rem 0.5rem 0.6rem 0;
+}
+
+[data-brief] .brief-rank-text {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+[data-brief] .brief-rank-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brief-blue);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+[data-brief] .brief-rank-open:hover {
+  color: var(--brief-blue-dark);
 }
 
 /* A document named in a finding: set apart, and a way into it. */
@@ -1761,10 +1880,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Ranked targets beside the field: titles get two lines, bars less room. */
+/* Ranked targets beside the field: titles get two lines, bars less room;
+   room at the left for the mark of the target in the centre. */
 [data-brief] .brief-hub .brief-rank-row {
   grid-template-columns: 20px minmax(0, 1fr) minmax(64px, 110px) 40px;
   align-items: start;
+  padding-left: 0.6rem;
+  padding-right: 0.35rem;
 }
 
 [data-brief] .brief-hub .brief-rank-n,
@@ -1808,6 +1930,10 @@
 
   [data-brief] .brief-hub-step[data-step="overview"] {
     min-height: 0;
+  }
+
+  [data-brief] .brief-hub-part {
+    padding-bottom: 4rem;
   }
 }
 

@@ -3153,15 +3153,8 @@
       "focusPlain": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment.",
       "focusNone": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned, with no potential misalignment.",
       "pairNames": "{docA} and {docB}",
-      "bandTip": {
-        "reinforce": "{count, plural, one {# aligned target pair} other {# aligned target pairs}} in this theme",
-        "apart": "{count, plural, one {# potential misalignment} other {# potential misalignments}} in this theme"
-      },
-      "partTip": {
-        "strong": "{count, plural, one {# strong alignment} other {# strong alignments}} with {doc}",
-        "review": "{count, plural, one {# potential misalignment} other {# potential misalignments}} with {doc}"
-      },
-      "centerPairs": "{count, plural, one {# target pair} other {# target pairs}}"
+      "centerPairs": "{count, plural, one {# target pair} other {# target pairs}}",
+      "openTarget": "See all {count, number} of its target pairs"
     },
     "explore": {
       "title": "Explore the targets",

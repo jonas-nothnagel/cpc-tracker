@@ -43,12 +43,19 @@ export function StrongestList({
   tour,
   onOpen,
   onHover,
+  selected,
+  onSelect,
+  openLabel,
 }: {
   data: BriefData;
   testId: string;
   tour?: string;
   onOpen?: (id: string) => void;
   onHover?: (id: string | null) => void;
+  /** The picked target: rows pick instead of opening (see RankList). */
+  selected?: string | null;
+  onSelect?: (id: string) => void;
+  openLabel?: (id: string) => string;
 }) {
   const t = useTranslations("brief.aligned");
   return (
@@ -66,6 +73,9 @@ export function StrongestList({
       tour={tour}
       onOpen={onOpen}
       onHover={onHover}
+      selected={selected}
+      onSelect={onSelect}
+      openLabel={openLabel}
     />
   );
 }

@@ -1,26 +1,36 @@
 import { getDocPairKey, getStorylineDocPairKeys } from "@/lib/coherence-briefing";
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
 import { toneOf } from "./compute";
-import { MAX_THEMES, OTHER_THEME, type BriefData } from "./data";
+import { MAX_THEMES, type BriefData } from "./data";
 import { DOT_ORDER, layoutGroups } from "./dot-layout";
 
 /**
  * The coherence overview on screen: one field of dots, one per target pair,
  * that re-forms for each step of the overview. The same particles move
- * between stages, so a reader sees the aligned pairs of the overview become
- * the aligned themes, then the strongest alignments, or a document's pairs
- * gather around it.
+ * between stages: the ratings side by side, then the map of documents (each
+ * dot at its two targets), brought forward for the question of a step, and
+ * a target or a document in the centre with its pairs around it.
  */
-export type HubStage =
-  | { kind: "overview" }
-  | { kind: "reinforce" }
-  | { kind: "strong" }
-  | { kind: "apart" }
-  | { kind: "kinds" }
-  | { kind: "review" }
+export type HubTone = "reinforce" | "apart";
+
+/** What the map brings forward within a tone (or across all pairs). */
+export type MapFocus =
+  /** The fewest targets that take part in half of the tone's pairs (strong
+   *  links for alignment), when they are few (see `Concentration`). */
+  | { kind: "top" }
+  /** A shown theme of the tone: its pairs between the documents it cites. */
+  | { kind: "theme"; index: number }
+  | { kind: "mechanism"; mechanism: AlignmentMechanism }
+  /** A document: its row and column. */
   | { kind: "doc"; doc: string };
 
-/** Targets each list of the overview shows, and the canvas with it. */
+export type HubStage =
+  | { kind: "overview" }
+  | { kind: "map"; tone?: HubTone; focus?: MapFocus }
+  | { kind: "target"; id: string }
+  | { kind: "doc"; doc: string };
+
+/** Targets each list of the overview shows at least. */
 export const HUB_TOP = 6;
 
 export interface HubParticle {
@@ -34,27 +44,6 @@ export interface HubParticle {
   cb: string;
   level: AlignmentLevel;
   mechanism: AlignmentMechanism | null;
-  /** The shown theme of its tone that covers it (index), -1 when none. */
-  theme: number;
-  /** Its place among the top targets of its tone's list (strong links for
-   *  aligned pairs, potential misalignments for the others), -1 when none. */
-  target: number;
-  /** A copy for a second theme covering the pair (themes are coverage), or
-   *  for the second top target of a pair between two of them. */
-  ghost: false | "theme" | "target";
-  /** For a ghost, the particle it splits from; otherwise its own index. */
-  base: number;
-}
-
-/** One part of a group: a pair of documents within a theme, or a partner
- *  document of a target. */
-export interface HubPart {
-  key: string;
-  count: number;
-  x0: number;
-  y0: number;
-  x1: number;
-  y1: number;
 }
 
 export interface HubGroup {
@@ -64,11 +53,22 @@ export interface HubGroup {
   y0: number;
   x1: number;
   y1: number;
-  /** Around a document in focus: the side of it the group sits on. */
+  /** Around a target or document in focus: the side of it the group sits on. */
   side?: "left" | "right";
-  /** Where the group's label goes: above it (default) or to its left. */
-  labelAt?: "above" | "left";
-  parts?: HubPart[];
+  /** Where the group's label goes: above it (default), or nowhere (the
+   *  map's blocks are named by their documents on the diagonal). */
+  labelAt?: "above" | "none";
+}
+
+/** A document on the map's diagonal: its own (empty) square, and its name
+ *  to the left of it, right-aligned at `labelX` and centred on `labelY`. */
+export interface HubAxis {
+  key: string;
+  square: { x0: number; y0: number; x1: number; y1: number };
+  labelX: number;
+  labelY: number;
+  labelWidth: number;
+  labelHeight: number;
 }
 
 export interface HubLayout {
@@ -77,23 +77,33 @@ export interface HubLayout {
   r: Float32Array;
   /** 1 where the particle is shown in this stage. */
   visible: Uint8Array;
+  /** How far forward each shown dot is: 1, MAP_MID, MAP_BACK or MAP_FAINT. */
+  alpha: Float32Array;
   /** Index into HUB_INK. */
   ink: Uint8Array;
   /** 1 where the dot is drawn small (the checker texture of potential misalignment). */
   small: Uint8Array;
   groups: HubGroup[];
-  /** The focus document's place and the half-width kept for its name, in
-   *  the document stage. */
+  /** The map's documents, in document order. */
+  axis: HubAxis[];
+  /** The target's or document's place in focus and the half-width kept for
+   *  its name. */
   center: { x: number; y: number; half: number } | null;
-  /** Room kept at the left for the strips' labels. */
-  labelWidth: number;
-  /** Room above each cluster for its name, in the document stage. */
+  /** Room above each cluster for its name, around a target or document. */
   focusLabel: number;
 }
 
-/** Aligned, partially aligned, potential misalignment, no clear relationship,
- *  then the lighter inks for pairs outside every theme. */
-export const HUB_INK = ["#2a7443", "#a9b3a4", "#d2432c", "#cfcfc9", "#a8cbb2", "#f1b1a4"];
+/** Aligned, partially aligned, potential misalignment, no clear relationship. */
+export const HUB_INK = ["#2a7443", "#a9b3a4", "#d2432c", "#cfcfc9"];
+
+/** A pair of the step's tone that is not the one asked about (exact in
+ *  a Float32Array, like the other levels). */
+export const MAP_MID = 0.5;
+/** A pair of the tone outside the theme, type or document the reader
+ *  points at: further back, so what they point at stands out. */
+export const MAP_BACK = 0.25;
+/** A pair outside the step's question: kept for the shape of the map. */
+export const MAP_FAINT = 0.125;
 
 /** Room above the overview's groups for their labels. */
 const LABEL_BAND = 30;
@@ -105,13 +115,18 @@ const SPOKE = 34;
 /** A step with fewer pairs may draw its dots larger, up to this factor of
  *  the overview's size, so the same dots stay recognisable between steps. */
 export const ZOOM = 1.8;
-/** The steps that single out a few targets zoom in further. */
+/** A single target's pairs zoom in further. */
 export const ZOOM_DEEP = 2.6;
-/** Rows of dots in one strip of the strongest alignments, types of
- *  potential misalignment and targets to review first. */
-const STRIP_ROWS = 4;
-/** The smallest dot pitch; below it a dot stands for several pairs. */
+/** The smallest dot pitch around a document; below it a dot stands for several pairs. */
 const MIN_PITCH = 1.2;
+/** Line height of a document's name on the map (0.8125rem type). */
+const AXIS_LINE = 16;
+/** Most lines a document's name takes on the map. */
+const AXIS_LINES = 3;
+/** Rough width of one character of those names, for wrapping. */
+const AXIS_CHAR = 6.6;
+/** A name this wide keeps one line; longer ones wrap, never narrower. */
+const AXIS_SHORT = 100;
 
 /** The two documents of a pair key ("A<->B"), in the documents' own order,
  *  so a pair reads the same way in tips, panels and headlines. */
@@ -123,38 +138,15 @@ export function pairInOrder(key: string, docs: { id: string }[]): [string, strin
 }
 
 export function hubParticles(data: BriefData): HubParticle[] {
-  const shown = (rows: BriefData["together"]["rows"]) =>
-    rows.slice(0, MAX_THEMES).map((r) => getStorylineDocPairKeys(r.storyline));
-  const keys = { reinforce: shown(data.together.rows), apart: shown(data.apart.rows) };
-  const strong = data.strongest.slice(0, HUB_TOP).map((r) => r.commitment.id);
-  const review = data.commitments.slice(0, HUB_TOP).map((r) => r.commitment.id);
-  const base: HubParticle[] = [];
-  const ghosts: HubParticle[] = [];
-  data.scope.comparisons.forEach((c, i) => {
-    const tone = toneOf(c.level);
-    const sets = tone === "reinforce" ? keys.reinforce : tone === "apart" ? keys.apart : [];
-    const key = getDocPairKey(c.a.doc, c.b.doc);
-    const members = sets.flatMap((set, idx) => (set.has(key) ? [idx] : []));
-    // Strong links count toward the strongest alignments; every potential
-    // misalignment toward the targets to review first.
-    const top = c.level === "high" ? strong : tone === "apart" ? review : [];
-    const places = [top.indexOf(c.a.id), top.indexOf(c.b.id)].filter((k) => k >= 0).sort((x, y) => x - y);
-    const t = DOT_ORDER.indexOf(tone);
-    const common = {
-      tone: t,
-      a: c.a.doc,
-      b: c.b.doc,
-      ca: c.a.id,
-      cb: c.b.id,
-      level: c.level,
-      mechanism: c.mechanism ?? null,
-      base: i,
-    };
-    base.push({ ...common, theme: members[0] ?? -1, target: places[0] ?? -1, ghost: false });
-    for (const m of members.slice(1)) ghosts.push({ ...common, theme: m, target: -1, ghost: "theme" });
-    if (places.length === 2) ghosts.push({ ...common, theme: -1, target: places[1], ghost: "target" });
-  });
-  return [...base, ...ghosts];
+  return data.scope.comparisons.map((c) => ({
+    tone: DOT_ORDER.indexOf(toneOf(c.level)),
+    a: c.a.doc,
+    b: c.b.doc,
+    ca: c.a.id,
+    cb: c.b.id,
+    level: c.level,
+    mechanism: c.mechanism ?? null,
+  }));
 }
 
 function emptyLayout(n: number): HubLayout {
@@ -163,20 +155,19 @@ function emptyLayout(n: number): HubLayout {
     y: new Float32Array(n),
     r: new Float32Array(n),
     visible: new Uint8Array(n),
+    alpha: new Float32Array(n),
     ink: new Uint8Array(n),
     small: new Uint8Array(n),
     groups: [],
+    axis: [],
     center: null,
-    labelWidth: 0,
     focusLabel: FOCUS_LABEL,
   };
 }
 
 /** The dot pitch of the overview at this size: every pair, by rating. */
 function overviewPitch(particles: HubParticle[], width: number, height: number): number {
-  const counts = DOT_ORDER.map((_, t) => ({
-    count: particles.filter((p) => !p.ghost && p.tone === t).length,
-  }));
+  const counts = DOT_ORDER.map((_, t) => ({ count: particles.filter((p) => p.tone === t).length }));
   return layoutGroups(counts, 1, width, Math.max(1, height - LABEL_BAND)).pitch;
 }
 
@@ -198,6 +189,7 @@ function placeGroups(
       layout.y[id] = grid.ys[di] + LABEL_BAND;
       layout.r[id] = grid.radius;
       layout.visible[id] = 1;
+      layout.alpha[id] = 1;
       layout.ink[id] = m.ink(id);
       layout.small[id] = grid.small[di];
       di += 1;
@@ -206,122 +198,204 @@ function placeGroups(
   });
 }
 
-interface Member {
-  key: string;
-  /** The group's parts in order, each a list of particle ids. */
-  parts: { key: string; ids: number[] }[];
-  ink: number;
-  texture: boolean;
-}
-
-function countOf(m: Member): number {
-  return m.parts.reduce((s, p) => s + p.ids.length, 0);
-}
-
-/** Split ids into parts by a key, largest first (first seen breaks ties). */
-function partsBy(ids: number[], keyOf: (i: number) => string): { key: string; ids: number[] }[] {
-  const byKey = new Map<string, number[]>();
-  for (const id of ids) {
-    const k = keyOf(id);
-    const list = byKey.get(k);
-    if (list) list.push(id);
-    else byKey.set(k, [id]);
-  }
-  return [...byKey.entries()]
-    .map(([key, list]) => ({ key, ids: list }))
-    .sort((x, y) => y.ids.length - x.ids.length);
-}
-
 function dot(layout: HubLayout, id: number, x: number, y: number, pitch: number, ink: number, small: boolean) {
   layout.x[id] = x;
   layout.y[id] = y;
   layout.r[id] = Math.max(0.55, pitch * 0.34);
   layout.visible[id] = 1;
+  layout.alpha[id] = 1;
   layout.ink[id] = ink;
   layout.small[id] = small ? 1 : 0;
 }
 
-/**
- * Themes, targets or kinds of potential misalignment as strips one under
- * the other: a label on the left and the dots in a band of rows, one
- * segment per pair of documents or partner document (largest first) with
- * an empty column between segments. Strip lengths are in proportion to
- * their pairs. Ranked targets keep thin strips of four rows, like bars;
- * themes and kinds fill the room with more rows.
- */
-function placeStrips(
-  layout: HubLayout,
-  members: Member[],
-  width: number,
-  height: number,
-  maxPitch: number,
-  fill = false,
-) {
-  const present = members.filter((m) => countOf(m) > 0);
-  if (present.length === 0) return;
-  const labelWidth = Math.min(width * 0.36, 240);
-  layout.labelWidth = labelWidth;
-  const x0 = labelWidth + 16;
-  const areaW = Math.max(1, width - x0);
-  const gapY = Math.min(40, height / (present.length * 3));
-  const slotH = Math.max(1, (height - (present.length - 1) * gapY) / present.length);
-  const colsFor = (m: Member, rows: number) => {
-    const parts = m.parts.filter((p) => p.ids.length > 0);
-    return parts.reduce((s, p) => s + Math.ceil(p.ids.length / rows), 0) + parts.length - 1;
-  };
-  // Themes and kinds fill their slot with rows; ranked targets keep four.
-  const rowsAt = (p: number) => Math.max(1, fill ? Math.floor(slotH / p) : Math.min(STRIP_ROWS, Math.floor(slotH / p)));
-  let pitch = maxPitch;
-  for (let i = 0; i < 600 && pitch > MIN_PITCH; i++) {
-    const rows = rowsAt(pitch);
-    const widest = Math.max(1, ...present.map((m) => colsFor(m, rows)));
-    if (widest * pitch <= areaW && rows * pitch <= slotH) break;
-    pitch *= 0.97;
+/** Names moved apart where they would overlap, then back inside the field. */
+function spread(centres: number[], heights: number[], top: number, bottom: number): number[] {
+  const y = [...centres];
+  for (let k = 1; k < y.length; k++) {
+    const min = y[k - 1] + (heights[k - 1] + heights[k]) / 2;
+    if (y[k] < min) y[k] = min;
   }
-  pitch = Math.max(MIN_PITCH, pitch);
-  const rows = rowsAt(pitch);
-  // Too many pairs for the room even at the smallest dot: one dot stands
-  // for `unit` pairs, taken evenly along each segment; counts stay exact.
-  let unit = 1;
-  const fits = (u: number) =>
-    Math.max(
-      1,
-      ...present.map((m) => {
-        const parts = m.parts.filter((p) => p.ids.length > 0);
-        return parts.reduce((sum, p) => sum + Math.ceil(Math.ceil(p.ids.length / u) / rows), 0) + parts.length - 1;
-      }),
-    ) * pitch <= areaW;
-  while (!fits(unit) && unit < 100000) unit *= 2;
-  const stripH = rows * pitch;
-  const block = present.length * stripH + (present.length - 1) * gapY;
-  const top = Math.max(0, (height - block) / 2);
-  present.forEach((m, k) => {
-    const y0 = top + k * (stripH + gapY);
-    let col = 0;
-    const parts: HubPart[] = [];
-    m.parts.forEach((part) => {
-      if (part.ids.length === 0) return;
-      const c0 = col;
-      const shown = part.ids.filter((_, n) => n % unit === 0);
-      shown.forEach((id, n) => {
-        const cc = col + Math.floor(n / rows);
-        const rr = n % rows;
-        dot(layout, id, x0 + cc * pitch + pitch / 2, y0 + rr * pitch + pitch / 2, pitch, m.ink, m.texture && (cc + rr) % 2 === 1);
+  const last = y.length - 1;
+  if (last >= 0 && y[last] + heights[last] / 2 > bottom) y[last] = bottom - heights[last] / 2;
+  for (let k = last - 1; k >= 0; k--) {
+    const max = y[k + 1] - (heights[k + 1] + heights[k]) / 2;
+    if (y[k] > max) y[k] = max;
+  }
+  if (y.length > 0 && y[0] - heights[0] / 2 < top) {
+    // Too many names for the height: they share it evenly.
+    const total = heights.reduce((s, h) => s + h, 0);
+    const scale = Math.min(1, (bottom - top) / Math.max(1, total));
+    let at = top;
+    for (let k = 0; k < y.length; k++) {
+      heights[k] *= scale;
+      y[k] = at + heights[k] / 2;
+      at += heights[k];
+    }
+  }
+  return y;
+}
+
+/**
+ * The map of documents: the comparison triangle of the method page. Each
+ * document's targets run along the diagonal; for two documents, the earlier
+ * one's targets are rows and the later one's columns, so each pair of
+ * documents is a block and each target pair a dot at its two targets. A
+ * document's own square stays empty: it is never compared with itself.
+ */
+function placeMap(layout: HubLayout, particles: HubParticle[], data: BriefData, width: number, height: number) {
+  const docs = data.scope.docs;
+  const docIndex = new Map(docs.map((d, i) => [d.id, i]));
+  const sizes = docs.map(() => 0);
+  const rowOf = new Map<string, number>();
+  for (const c of data.scope.commitments) {
+    const d = docIndex.get(c.doc);
+    if (d === undefined) continue;
+    rowOf.set(c.id, sizes[d]);
+    sizes[d] += 1;
+  }
+  const total = sizes.reduce((s, n) => s + n, 0);
+  if (total === 0 || docs.length === 0) return;
+  const pad = 6;
+  // The names use the empty half under the diagonal: each is right-aligned
+  // at its own stretch, so only the first documents need room at the left.
+  // That room is what the names need in up to three lines, found in two
+  // passes (the stretches move with the dot size).
+  const need = docs.map((d) => {
+    const whole = d.name.length * AXIS_CHAR;
+    if (whole <= AXIS_SHORT) return whole;
+    const word = Math.max(...d.name.split(/\s+/).map((w) => w.length)) * AXIS_CHAR;
+    return Math.min(whole, Math.max(AXIS_SHORT, whole / AXIS_LINES, word));
+  });
+  const geometry = (room: number) => {
+    const side = Math.max(40, Math.min(width - room - 2 * pad, height - 2 * pad));
+    const gap = docs.length > 1 ? Math.min(6, Math.max(2, side * 0.012)) : 0;
+    const pitch = Math.max(0.05, (side - (docs.length - 1) * gap) / total);
+    const off: number[] = [];
+    let acc = 0;
+    sizes.forEach((n, d) => {
+      off.push(acc * pitch + d * gap);
+      acc += n;
+    });
+    return { gap, pitch, off };
+  };
+  let labelRoom = Math.min(150, Math.max(56, width * 0.2));
+  let geo = geometry(labelRoom);
+  for (let pass = 0; pass < 4; pass++) {
+    const wanted = Math.max(0, ...docs.map((_, k) => (sizes[k] > 0 ? need[k] + 8 - geo.off[k] : 0)));
+    const next = Math.min(Math.max(40, width * 0.3), Math.max(40, wanted));
+    if (Math.abs(next - labelRoom) < 0.5) break;
+    labelRoom = next;
+    geo = geometry(labelRoom);
+  }
+  const { gap, pitch, off } = geo;
+  const used = total * pitch + (docs.length - 1) * gap;
+  const x0 = Math.max(labelRoom + pad, (width - labelRoom - used) / 2 + labelRoom);
+  const y0 = Math.max(pad, (height - used) / 2);
+  const radius = Math.max(0.4, pitch * 0.4);
+  const counts = new Map<string, number>();
+  particles.forEach((p, i) => {
+    let da = docIndex.get(p.a);
+    let db = docIndex.get(p.b);
+    let ra = rowOf.get(p.ca);
+    let rb = rowOf.get(p.cb);
+    if (da === undefined || db === undefined || ra === undefined || rb === undefined || da === db) return;
+    if (da > db) {
+      [da, db] = [db, da];
+      [ra, rb] = [rb, ra];
+    }
+    layout.x[i] = x0 + off[db] + rb * pitch + pitch / 2;
+    layout.y[i] = y0 + off[da] + ra * pitch + pitch / 2;
+    layout.r[i] = radius;
+    layout.visible[i] = 1;
+    layout.alpha[i] = 1;
+    layout.ink[i] = p.tone;
+    layout.small[i] = 0;
+    const key = `${da}:${db}`;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  });
+  for (let i = 0; i < docs.length; i++) {
+    for (let j = i + 1; j < docs.length; j++) {
+      const count = counts.get(`${i}:${j}`) ?? 0;
+      if (count === 0) continue;
+      layout.groups.push({
+        key: getDocPairKey(docs[i].id, docs[j].id),
+        count,
+        x0: x0 + off[j],
+        y0: y0 + off[i],
+        x1: x0 + off[j] + sizes[j] * pitch,
+        y1: y0 + off[i] + sizes[i] * pitch,
+        labelAt: "none",
       });
-      col += Math.ceil(shown.length / rows);
-      parts.push({ key: part.key, count: part.ids.length, x0: x0 + c0 * pitch, x1: x0 + col * pitch, y0, y1: y0 + stripH });
-      col += 1;
+    }
+  }
+  const shown = docs.flatMap((d, k) => (sizes[k] > 0 ? [k] : []));
+  const labelX = shown.map((k) => x0 + off[k] - 8);
+  const labelWidth = labelX.map((x) => Math.max(24, Math.min(220, x - pad)));
+  const heights = shown.map((k, n) => {
+    const chars = docs[k].name.length * AXIS_CHAR;
+    return Math.min(AXIS_LINES, Math.max(1, Math.ceil(chars / labelWidth[n]))) * AXIS_LINE;
+  });
+  const centres = spread(
+    shown.map((k) => y0 + off[k] + (sizes[k] * pitch) / 2),
+    heights,
+    0,
+    height,
+  );
+  shown.forEach((k, n) => {
+    layout.axis.push({
+      key: docs[k].id,
+      square: {
+        x0: x0 + off[k],
+        y0: y0 + off[k],
+        x1: x0 + off[k] + sizes[k] * pitch,
+        y1: y0 + off[k] + sizes[k] * pitch,
+      },
+      labelX: labelX[n],
+      labelY: centres[n],
+      labelWidth: labelWidth[n],
+      labelHeight: heights[n],
     });
-    layout.groups.push({
-      key: m.key,
-      count: countOf(m),
-      x0,
-      x1: x0 + (col - 1) * pitch,
-      y0,
-      y1: y0 + stripH,
-      labelAt: "left",
-      parts,
-    });
+  });
+}
+
+/** Whether a pair takes part in the question the map is asked. */
+function emphasis(
+  stage: Extract<HubStage, { kind: "map" }>,
+  data: BriefData,
+): ((p: HubParticle) => boolean) | null {
+  const focus = stage.focus;
+  if (!focus) return null;
+  if (focus.kind === "doc") return (p) => p.a === focus.doc || p.b === focus.doc;
+  if (focus.kind === "mechanism") return (p) => p.level === "flagged" && p.mechanism === focus.mechanism;
+  if (focus.kind === "theme") {
+    const rows = (stage.tone === "apart" ? data.apart : data.together).rows.slice(0, MAX_THEMES);
+    const row = rows[focus.index];
+    if (!row) return null;
+    const keys = getStorylineDocPairKeys(row.storyline);
+    return (p) => keys.has(getDocPairKey(p.a, p.b));
+  }
+  // The targets that carry the tone, when they are few: their strong links,
+  // or their potential misalignments.
+  const c = stage.tone === "apart" ? data.concentration : data.strongConcentration;
+  if (!stage.tone || !c.concentrated) return null;
+  const top = new Set(c.top);
+  const level = stage.tone === "apart" ? "flagged" : "high";
+  return (p) => p.level === level && (top.has(p.ca) || top.has(p.cb));
+}
+
+function emphasize(layout: HubLayout, particles: HubParticle[], stage: Extract<HubStage, { kind: "map" }>, data: BriefData) {
+  const tone = stage.tone ? DOT_ORDER.indexOf(stage.tone) : -1;
+  const asked = emphasis(stage, data);
+  // The step's own finding keeps the rest of its tone in view; what the
+  // reader points at sets it further back.
+  const rest = tone < 0 ? MAP_FAINT : stage.focus?.kind === "top" ? MAP_MID : MAP_BACK;
+  particles.forEach((p, i) => {
+    if (!layout.visible[i]) return;
+    const inTone = tone < 0 || p.tone === tone;
+    if (!inTone) layout.alpha[i] = MAP_FAINT;
+    else if (!asked) layout.alpha[i] = 1;
+    else if (asked(p)) layout.alpha[i] = 1;
+    else layout.alpha[i] = rest;
   });
 }
 
@@ -334,94 +408,44 @@ export function layoutHub(
 ): HubLayout {
   const layout = emptyLayout(particles.length);
   if (width <= 0 || height <= 0) return layout;
-  const ids = (keep: (p: HubParticle) => boolean) =>
-    particles.flatMap((p, i) => (keep(p) ? [i] : []));
-  const docPair = (i: number) => getDocPairKey(particles[i].a, particles[i].b);
-  const apart = DOT_ORDER.indexOf("apart");
-  const reinforce = DOT_ORDER.indexOf("reinforce");
-
   if (stage.kind === "overview") {
     placeGroups(
       layout,
       DOT_ORDER.map((tone, t) => ({
         key: tone,
-        ids: ids((p) => !p.ghost && p.tone === t),
+        ids: particles.flatMap((p, i) => (p.tone === t ? [i] : [])),
         ink: () => t,
         texture: tone === "apart",
       })),
       width,
       height,
     );
-  } else if (stage.kind === "reinforce" || stage.kind === "apart") {
-    const maxPitch = ZOOM * overviewPitch(particles, width, height);
-    const t = DOT_ORDER.indexOf(stage.kind);
-    const rows = (stage.kind === "reinforce" ? data.together : data.apart).rows.slice(0, MAX_THEMES);
-    // One strip per theme, named at its left, split by the pairs of
-    // documents that carry it.
-    placeStrips(
+  } else if (stage.kind === "map") {
+    placeMap(layout, particles, data, width, height);
+    emphasize(layout, particles, stage, data);
+  } else if (stage.kind === "target") {
+    const own = data.scope.commitments.find((c) => c.id === stage.id)?.doc;
+    const partners = data.scope.docs.filter((d) => d.id !== own).map((d) => d.id);
+    placeFocus(
       layout,
-      [
-        ...rows.map((row, idx) => ({
-          key: row.storyline.name,
-          parts: partsBy(
-            ids((p) => p.ghost !== "target" && p.tone === t && p.theme === idx),
-            docPair,
-          ),
-          ink: t,
-          texture: stage.kind === "apart",
-        })),
-        {
-          key: OTHER_THEME,
-          parts: [{ key: OTHER_THEME, ids: ids((p) => !p.ghost && p.tone === t && p.theme === -1) }],
-          ink: stage.kind === "reinforce" ? 4 : 5,
-          texture: stage.kind === "apart",
-        },
-      ],
+      particles,
+      partners,
+      (p, partner) => (p.ca === stage.id && p.b === partner) || (p.cb === stage.id && p.a === partner),
       width,
       height,
-      maxPitch,
-      true,
-    );
-  } else if (stage.kind === "strong" || stage.kind === "review") {
-    const maxPitch = ZOOM_DEEP * overviewPitch(particles, width, height);
-    const t = stage.kind === "strong" ? reinforce : apart;
-    const top =
-      stage.kind === "strong"
-        ? data.strongest.slice(0, HUB_TOP).map((r) => r.commitment.id)
-        : data.commitments.slice(0, HUB_TOP).map((r) => r.commitment.id);
-    placeStrips(
-      layout,
-      top.map((id, k) => ({
-        key: id,
-        // Segments by the partner's document: the other target of each pair.
-        parts: partsBy(
-          ids((p) => p.ghost !== "theme" && p.tone === t && p.target === k && (stage.kind !== "strong" || p.level === "high")),
-          (i) => (particles[i].ca === id ? particles[i].b : particles[i].a),
-        ),
-        ink: t,
-        texture: stage.kind === "review",
-      })),
-      width,
-      height,
-      maxPitch,
-    );
-  } else if (stage.kind === "kinds") {
-    const maxPitch = ZOOM_DEEP * overviewPitch(particles, width, height);
-    placeStrips(
-      layout,
-      data.mix.map((m) => ({
-        key: m.mechanism,
-        parts: [{ key: m.mechanism, ids: ids((p) => !p.ghost && p.tone === apart && p.mechanism === m.mechanism) }],
-        ink: apart,
-        texture: true,
-      })),
-      width,
-      height,
-      maxPitch,
-      true,
+      ZOOM_DEEP * overviewPitch(particles, width, height),
     );
   } else {
-    placeFocus(layout, particles, data, stage.doc, width, height, ZOOM * overviewPitch(particles, width, height));
+    const partners = data.scope.docs.filter((d) => d.id !== stage.doc).map((d) => d.id);
+    placeFocus(
+      layout,
+      particles,
+      partners,
+      (p, partner) => (p.a === stage.doc && p.b === partner) || (p.b === stage.doc && p.a === partner),
+      width,
+      height,
+      ZOOM * overviewPitch(particles, width, height),
+    );
   }
   return layout;
 }
@@ -433,33 +457,28 @@ const FOCUS_ORDER = [2, 1, 3, 0];
 const FOCUS_PAD = 8;
 
 /**
- * A document in the centre and, on either side of it, its target pairs with
- * each other document as a cluster under that document's name: a hub with
- * the pairs themselves as its spokes. Other documents keep their order,
- * filling the left side first; both sides are centred on the document.
+ * A target or document in the centre and, on either side of it, its target
+ * pairs with each other document as a cluster under that document's name:
+ * a hub with the pairs themselves as its spokes. Other documents keep their
+ * order, filling the left side first; both sides are centred on the middle.
  */
 function placeFocus(
   layout: HubLayout,
   particles: HubParticle[],
-  data: BriefData,
-  doc: string,
+  partners: string[],
+  belongs: (p: HubParticle, partner: string) => boolean,
   width: number,
   height: number,
   maxPitch: number,
 ) {
-  const partners = data.scope.docs.filter((d) => d.id !== doc);
   const cx = width / 2;
   const cy = height / 2;
-  // The document's name and figures take the middle third (at most 12rem).
+  // The name in focus and its figures take the middle third (at most 12rem).
   const middle = Math.min(width / 3, 192);
   layout.center = { x: cx, y: cy, half: middle / 2 };
   const members = partners.map((partner) =>
     particles
-      .flatMap((p, i) =>
-        !p.ghost && ((p.a === doc && p.b === partner.id) || (p.b === doc && p.a === partner.id))
-          ? [i]
-          : [],
-      )
+      .flatMap((p, i) => (belongs(p, partner) ? [i] : []))
       .sort((i, j) => FOCUS_ORDER.indexOf(particles[i].tone) - FOCUS_ORDER.indexOf(particles[j].tone) || i - j),
   );
   const left = Math.ceil(partners.length / 2);
@@ -494,7 +513,7 @@ function placeFocus(
     const onLeft = k < left;
     const count = onLeft ? left : partners.length - left;
     const row = onLeft ? k : k - left;
-    // A shorter side is centred on the document.
+    // A shorter side is centred on the middle.
     const top = FOCUS_PAD + (perSide - count) * (slot / 2) + row * slot + band;
     const shown = list.filter((_, n) => n % unit === 0);
     const { cols, rows } = shape(shown.length);
@@ -509,7 +528,7 @@ function placeFocus(
         particles[id].tone === apart && (col + r) % 2 === 1);
     });
     layout.groups.push({
-      key: partners[k].id,
+      key: partners[k],
       count: list.length,
       x0,
       y0: top,

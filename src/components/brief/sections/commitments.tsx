@@ -42,6 +42,9 @@ export function ReviewList({
   tour,
   onOpen,
   onHover,
+  selected,
+  onSelect,
+  openLabel,
 }: {
   data: BriefData;
   limit?: number;
@@ -49,6 +52,10 @@ export function ReviewList({
   tour?: string;
   onOpen?: (id: string) => void;
   onHover?: (id: string | null) => void;
+  /** The picked target: rows pick instead of opening (see RankList). */
+  selected?: string | null;
+  onSelect?: (id: string) => void;
+  openLabel?: (id: string) => string;
 }) {
   const t = useTranslations("brief.commitments");
   return (
@@ -65,6 +72,9 @@ export function ReviewList({
       tour={tour}
       onOpen={onOpen}
       onHover={onHover}
+      selected={selected}
+      onSelect={onSelect}
+      openLabel={openLabel}
     />
   );
 }

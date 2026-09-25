@@ -164,6 +164,7 @@ export function BriefApp({
                 onOpenTheme={handlers.onOpenTheme}
                 onOpenCommitment={handlers.onOpenCommitment}
                 onOpenDocPair={handlers.onOpenDocPair}
+                onOpenPair={handlers.onOpenPair}
               />
             }
             sections={selection.sections.filter((id) => !OVERVIEW_SECTIONS.includes(id))}
