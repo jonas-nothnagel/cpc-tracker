@@ -264,6 +264,55 @@ describe("Hub", () => {
     });
   });
 
+  it("names each side in plain words above its finding", () => {
+    renderHub();
+    const aligned = step("reinforce");
+    expect(aligned.firstElementChild?.textContent).toBe("What works well");
+    expect(within(aligned).getByRole("heading", { level: 2 }).textContent).toBe(
+      "Strong alignments are spread across 12 targets.",
+    );
+    const apart = step("apart");
+    expect(apart.firstElementChild?.textContent).toBe("Where to look closer");
+    expect(within(apart).getByRole("heading", { level: 2 }).textContent).toBe(
+      "Of the 15 potential misalignments, 80% involve just 2 targets.",
+    );
+  });
+
+  it("a row reached by keyboard brings its target forward, as pointing does", () => {
+    renderHub();
+    enter("reinforce");
+    const row = within(step("reinforce")).getAllByTestId("hub-strong-row")[1];
+    const button = within(row).getByRole("button", { pressed: false });
+    fireEvent.focus(button);
+    expect(stage()).toBe("map:reinforce:target:C3");
+    expect(row.getAttribute("data-hovered")).toBe("true");
+    fireEvent.blur(button);
+    expect(stage()).toBe("map:reinforce:top");
+  });
+
+  it("lists every target the strong headline names on the map, when it names seven or eight", () => {
+    const ids = DATA.strongest.map((r) => r.commitment.id);
+    expect(ids.length).toBeGreaterThanOrEqual(8);
+    const withTop = (top: string[]) => ({
+      ...DATA,
+      strongConcentration: { ...DATA.strongConcentration, concentrated: true, top },
+    });
+    const { unmount } = render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Hub data={withTop(ids.slice(0, 7))} />
+      </NextIntlClientProvider>,
+    );
+    expect(within(step("reinforce")).getAllByTestId("hub-strong-row")).toHaveLength(7);
+    unmount();
+    // More than the map names from a headline: the list keeps its six.
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Hub data={withTop([...ids.slice(0, 8), "X9"])} />
+      </NextIntlClientProvider>,
+    );
+    expect(within(step("reinforce")).getAllByTestId("hub-strong-row")).toHaveLength(6);
+  });
+
   it("lists every target a concentrated finding names, when they are more than six", () => {
     const top = ["X1", "X2", "X3", "X4", "X5", "X6", "X7"];
     const data = { ...DATA, concentration: { ...DATA.concentration, top, concentrated: true } };

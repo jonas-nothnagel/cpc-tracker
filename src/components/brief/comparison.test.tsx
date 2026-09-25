@@ -49,8 +49,11 @@ describe("Comparison", () => {
     renderIn(<Comparison first={long} second={NBSAP} tone="apart" />);
     const text = screen.getByText(/Expand irrigated production capacity/);
     expect(text.getAttribute("data-clamped")).toBe("true");
+    // The toggle says whether the text is open, for screen readers too.
+    expect(screen.getByRole("button", { name: "Full text" }).getAttribute("aria-expanded")).toBe("false");
     fireEvent.click(screen.getByRole("button", { name: "Full text" }));
     expect(text.getAttribute("data-clamped")).toBeNull();
+    expect(screen.getByRole("button", { name: "Show less" }).getAttribute("aria-expanded")).toBe("true");
     fireEvent.click(screen.getByRole("button", { name: "Show less" }));
     expect(text.getAttribute("data-clamped")).toBe("true");
     // A short text needs no button.

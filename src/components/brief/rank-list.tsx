@@ -84,6 +84,9 @@ export function RankList({
               className="brief-rank-main"
               aria-pressed={onSelect ? picked : undefined}
               onClick={() => (onSelect ? onSelect(id) : onOpen?.(id))}
+              // From the keyboard too: a row in focus is pointed at.
+              onFocus={onHover ? () => onHover(id) : undefined}
+              onBlur={onHover ? () => onHover(null) : undefined}
               title={item.commitment.text}
             >
               <span className="brief-rank-title">{commitmentLine(item.commitment)}</span>

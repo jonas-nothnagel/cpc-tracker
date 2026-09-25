@@ -94,7 +94,7 @@ export interface HubGroup {
   y0: number;
   x1: number;
   y1: number;
-  /** Around a target or document in focus: the side of it the group sits on. */
+  /** Around the document in focus: the side of it the group sits on. */
   side?: "left" | "right";
   /** Where the group's label goes: above it (default), or nowhere (the
    *  map's blocks are named by their documents on the diagonal). */
@@ -152,10 +152,10 @@ export interface HubLayout {
   marks: HubMark[];
   /** The map's cell: each pair is a square this wide (0 off the map). */
   pitch: number;
-  /** The target's or document's place in focus and the half-width kept for
-   *  its name. */
+  /** The document in focus: its place and the half-width kept for its
+   *  name. */
   center: { x: number; y: number; half: number } | null;
-  /** Room above each cluster for its name, around a target or document. */
+  /** Room above each cluster for its name, around the document in focus. */
   focusLabel: number;
 }
 
@@ -301,6 +301,18 @@ function spread(centres: number[], heights: number[], top: number, bottom: numbe
   return y;
 }
 
+/** How many of a side's pairs each target is in. */
+function sideCounts(particles: HubParticle[], side: HubTone): Map<string, number> {
+  const level = sideLevel(side);
+  const count = new Map<string, number>();
+  for (const p of particles) {
+    if (p.level !== level) continue;
+    count.set(p.ca, (count.get(p.ca) ?? 0) + 1);
+    count.set(p.cb, (count.get(p.cb) ?? 0) + 1);
+  }
+  return count;
+}
+
 /**
  * The map of documents: the comparison triangle of the method page. Each
  * document's targets run along the diagonal; for two documents, the earlier
@@ -314,18 +326,6 @@ function spread(centres: number[], heights: number[], top: number, bottom: numbe
  * the corner of their blocks, and its targets are named at the front of their
  * documents. The map keeps its place and size on every side.
  */
-/** How many of a side's pairs each target is in. */
-function sideCounts(particles: HubParticle[], side: HubTone): Map<string, number> {
-  const level = sideLevel(side);
-  const count = new Map<string, number>();
-  for (const p of particles) {
-    if (p.level !== level) continue;
-    count.set(p.ca, (count.get(p.ca) ?? 0) + 1);
-    count.set(p.cb, (count.get(p.cb) ?? 0) + 1);
-  }
-  return count;
-}
-
 function placeMap(
   layout: HubLayout,
   particles: HubParticle[],
@@ -730,9 +730,11 @@ export function layoutHub(
 const FOCUS_ORDER = [2, 1, 3, 0];
 /** Margin around the field and between a cluster and the next name. */
 const FOCUS_PAD = 8;
+/** Most of a partner's slot its name may take on a short field. */
+const FOCUS_LABEL_SHARE = 0.45;
 
 /**
- * A target or document in the centre and, on either side of it, its target
+ * A document in the centre and, on either side of it, its target
  * pairs with each other document as a cluster under that document's name:
  * a hub with the pairs themselves as its spokes. Other documents keep their
  * order, filling the left side first; both sides are centred on the middle.
@@ -745,7 +747,6 @@ function placeFocus(
   width: number,
   height: number,
   maxPitch: number,
-  labelShare = 0.45,
 ) {
   const cx = width / 2;
   const cy = height / 2;
@@ -762,7 +763,7 @@ function placeFocus(
   const columnWidth = Math.max(1, cx - middle / 2 - SPOKE - FOCUS_PAD);
   const slot = (height - FOCUS_PAD) / perSide;
   // Many partners on a short field: the names get less room (one line).
-  const band = Math.max(30, Math.min(FOCUS_LABEL, slot * labelShare));
+  const band = Math.max(30, Math.min(FOCUS_LABEL, slot * FOCUS_LABEL_SHARE));
   layout.focusLabel = band;
   const boxH = Math.max(1, slot - band - FOCUS_PAD);
   const boxW = Math.max(1, Math.min(columnWidth, boxH * 2.2));

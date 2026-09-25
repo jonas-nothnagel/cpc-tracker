@@ -1683,6 +1683,14 @@
   padding-bottom: 0;
 }
 
+/* Which side of the map a step shows, in plain words above its finding. */
+[data-brief] .brief-hub-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
 [data-brief] .brief-hub-headline {
   max-width: 30em;
   margin: 0 0 1.25rem;
@@ -1758,19 +1766,6 @@
 
 [data-brief] .brief-hub-axis[data-dim] {
   opacity: 0.35;
-}
-
-/* A target in the centre: its line in the serif, a little smaller than a
-   document's name. */
-[data-brief] .brief-hub-center-target {
-  display: -webkit-box;
-  overflow: hidden;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-  font-size: 1rem;
-  line-height: 1.25;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
 }
 
 [data-brief] .brief-hub-center[data-clickable] .brief-hub-center-name {

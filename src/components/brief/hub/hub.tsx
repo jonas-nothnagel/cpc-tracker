@@ -15,6 +15,7 @@ import { DOT_ORDER } from "@/lib/brief/dot-layout";
 import {
   HUB_TOP,
   MARK_TEXT,
+  NAMED_MAX,
   pairInOrder,
   sideLevel,
   type HubGroup,
@@ -151,6 +152,11 @@ export function Hub({
   const reviewLimit = concentration.concentrated
     ? Math.min(REVIEW_MAX, Math.max(HUB_TOP, concentration.top.length))
     : HUB_TOP;
+  // The strongest alignments list every target the map names from its
+  // headline (up to eight), so each name on the map has its row.
+  const strong = data.strongConcentration;
+  const strongLimit =
+    strong.concentrated && strong.top.length <= NAMED_MAX ? Math.max(HUB_TOP, strong.top.length) : HUB_TOP;
   // The targets with pairs on each side: a picked target the selection
   // leaves without any is let go.
   const onSide = useMemo(() => {
@@ -607,6 +613,7 @@ export function Hub({
             </section>
 
             <section className="brief-hub-step brief-hub-side" data-step="reinforce">
+              <p className="brief-hub-kicker">{th("kickerReinforce")}</p>
               <h2 className="brief-hub-headline" tabIndex={-1}>
                 {concentrationHeadline(data.strongConcentration, "aligned")}
               </h2>
@@ -615,6 +622,7 @@ export function Hub({
                   <h3 className="brief-hub-sub">{ts("aligned")}</h3>
                   <StrongestList
                     data={data}
+                    limit={strongLimit}
                     testId="hub-strong-row"
                     tour="brief-aligned"
                     onOpen={openTarget}
@@ -637,6 +645,7 @@ export function Hub({
             </section>
 
             <section className="brief-hub-step brief-hub-side" data-step="apart">
+              <p className="brief-hub-kicker">{th("kickerApart")}</p>
               <h2 className="brief-hub-headline" tabIndex={-1}>
                 {concentrationHeadline(concentration, "commitments")}
               </h2>

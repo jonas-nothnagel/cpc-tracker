@@ -6,7 +6,7 @@ import { FeedbackControl } from "@/components/dashboard/coherence-briefing/feedb
 import { toneOf } from "@/lib/brief/compute";
 import type { FoundPair } from "@/lib/brief/pair";
 import type { ExploreItem } from "@/lib/brief/explore/model";
-import { Explanation } from "../ai-text";
+import { Explanation, type DocNames } from "../ai-text";
 import { Comparison, type ComparisonSide } from "../comparison";
 import { useResourceLine } from "../sections/themes";
 import { RING_INK } from "./ring-canvas";
@@ -25,6 +25,7 @@ export function PairView({
   commitments,
   docName,
   docColor,
+  docs,
   countryName,
   onCentre,
   onClose,
@@ -39,6 +40,8 @@ export function PairView({
   docName: (id: string) => string;
   /** A document's colour; reported actions and budget lines take their layer's. */
   docColor?: (id: string) => string | undefined;
+  /** The documents, so the codes the AI explanation uses are explained. */
+  docs?: DocNames;
   countryName: string;
   onCentre: (id: string) => void;
   onClose: () => void;
@@ -113,7 +116,7 @@ export function PairView({
       {current?.status === "error" && <p className="brief-panel-caveat">{tp("error")}</p>}
       {pair?.description && (
         <div className="ex-pair-ai">
-          <Explanation text={pair.description} confidence={pair.confidence} heading="h4" />
+          <Explanation text={pair.description} docs={docs} confidence={pair.confidence} heading="h4" />
           {resources && <p className="brief-panel-meta">{resources}</p>}
           {pair.descriptionTranslationPending && (
             <p className="brief-panel-caveat">{td("rationaleTranslationPending")}</p>

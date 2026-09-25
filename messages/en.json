@@ -3186,7 +3186,9 @@
       "centerPairs": "{count, plural, one {# target pair} other {# target pairs}}",
       "openTarget": "See its aligned and potentially misaligned targets",
       "exploreTarget": "Explore this target",
-      "countApart": "{count, plural, one {# potential misalignment} other {# potential misalignments}}"
+      "countApart": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
+      "kickerReinforce": "What works well",
+      "kickerApart": "Where to look closer"
     },
     "explore": {
       "title": "Explore the targets",

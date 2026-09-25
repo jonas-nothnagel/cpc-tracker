@@ -32,7 +32,7 @@ function Stop({ side }: { side: ComparisonSide }) {
         </p>
       )}
       {long && (
-        <button type="button" className="brief-panel-more" onClick={() => setOpen((v) => !v)}>
+        <button type="button" className="brief-panel-more" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
           {open ? t("shortText") : t("fullText")}
         </button>
       )}

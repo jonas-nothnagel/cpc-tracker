@@ -178,6 +178,16 @@ considered. He chose variant B from sketches ("B is better"). Spec
 - Verified: full suite 1,369 passed (1 skipped), `tsc` clean (the merge of `origin/main` at
   `c5ceefd` fixed the inherited `store.test.ts` error), all four countries' `/brief` render
   (HTTP 200) with the five steps. Verdict pending.
+- **Review fixes** (`1ea1596`, then the side labels): a picked target is let go when the
+  selection leaves it no pairs on that side; on a short field (phones) target names take one
+  line, then the ones carrying least go unnamed (never the one in focus), so labels keep
+  their full height; the map is drawn at the screen's own pixel ratio with both cell edges
+  snapped (sharp at 1x and 125%); placements shared and capped at 8; "Explore this target"
+  moves focus to the ring's title. Then: the two sides carry a plain label above their
+  finding ("What works well", "Where to look closer": Jonas could not find the first by
+  name); the strongest alignments list every target the map names from its headline (up to
+  8, as the targets to review first do); rows preview their target from the keyboard; "Full
+  text" says whether it is open; the ring's AI text explains document codes like the panel.
 
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.

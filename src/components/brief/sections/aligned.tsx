@@ -39,6 +39,7 @@ export function AlignedSection({
 
 export function StrongestList({
   data,
+  limit = RANK_ROWS,
   testId,
   tour,
   onOpen,
@@ -49,6 +50,8 @@ export function StrongestList({
   hovered,
 }: {
   data: BriefData;
+  /** Rows shown (its data holds eight). */
+  limit?: number;
   testId: string;
   tour?: string;
   onOpen?: (id: string) => void;
@@ -62,7 +65,7 @@ export function StrongestList({
   const t = useTranslations("brief.aligned");
   return (
     <RankList
-      items={data.strongest.slice(0, RANK_ROWS).map((row) => ({
+      items={data.strongest.slice(0, limit).map((row) => ({
         commitment: row.commitment,
         value: row.strong,
         partnerDocs: row.partnerDocs,
