@@ -41,6 +41,8 @@ export const RING_INK = {
 
 /** How each reading is drawn as a line: ink, width, opacity, dash. */
 const LINE_STYLE: Partial<Record<Relation, { ink: string; width: number; alpha: number; dash: number[] }>> = {
+  /** The centre's own targets, tied to it in ink. */
+  unrelated: { ink: RING_INK.ink, width: 1.1, alpha: 0.5, dash: [] },
   strong: { ink: RING_INK.green, width: 1.2, alpha: 0.6, dash: [] },
   aligned: { ink: RING_INK.green, width: 0.9, alpha: 0.26, dash: [] },
   partial: { ink: "#8f9a8a", width: 1, alpha: 0.5, dash: [1.5, 3] },
@@ -112,23 +114,38 @@ function tracePath(ctx: CanvasRenderingContext2D, path: EdgePath) {
   });
 }
 
-/** Lines of one kind in one pass, overprinting where they cross. */
+/** Width of a line standing for `weight` target pairs: one pair draws the
+ *  base width, more pairs widen it by their square root, up to three times. */
+function lineWidth(base: number, weight: number): number {
+  return base * Math.min(3, Math.sqrt(Math.max(1, weight)));
+}
+
+/** Lines of one kind and width in one pass each, overprinting where they cross. */
 function strokeLines(ctx: CanvasRenderingContext2D, paths: EdgePath[], alpha: number, drained = false) {
-  for (const relation of ["aligned", "partial", "strong", "apart"] as Relation[]) {
+  for (const relation of ["unrelated", "aligned", "partial", "strong", "apart"] as Relation[]) {
     const style = LINE_STYLE[relation];
     const list = paths.filter((p) => p.relation === relation);
     if (!style || list.length === 0) continue;
+    const byWidth = new Map<number, EdgePath[]>();
+    for (const p of list) {
+      const w = Math.round(lineWidth(style.width, p.weight) * 4) / 4;
+      byWidth.set(w, [...(byWidth.get(w) ?? []), p]);
+    }
     ctx.strokeStyle = drained ? "#cfd3cc" : style.ink;
     ctx.globalAlpha = alpha * (drained ? 0.45 : style.alpha);
-    ctx.lineWidth = style.width;
     ctx.setLineDash(style.dash);
-    ctx.beginPath();
-    for (const p of list) tracePath(ctx, p);
-    ctx.stroke();
+    for (const [width, group] of byWidth) {
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      for (const p of group) tracePath(ctx, p);
+      ctx.stroke();
+    }
   }
 }
 
 interface Frame {
+  /** Lines tying the centre to its own targets on the ring. */
+  tethers: EdgePath[];
   /** Seats of an arc brought forward; lines to other seats step back. */
   hotIds: Set<number> | null;
   layout: RingLayout;
@@ -173,6 +190,7 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
     ctx.lineCap = "round";
     // A seat in hand shows its own lines; the centre's step back.
     const peek = f.road.length > 0;
+    strokeLines(ctx, f.tethers, f.lineAlpha);
     if (f.hotIds && !peek) {
       strokeLines(ctx, f.flower.filter((p) => !f.hotIds!.has(p.id)), f.lineAlpha, true);
       strokeLines(ctx, f.flower.filter((p) => f.hotIds!.has(p.id)), f.lineAlpha);
@@ -183,7 +201,7 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
       const style = LINE_STYLE[hot.relation];
       ctx.globalAlpha = f.lineAlpha;
       ctx.strokeStyle = style?.ink ?? RING_INK.ink;
-      ctx.lineWidth = 2.6;
+      ctx.lineWidth = Math.max(2.6, lineWidth(style?.width ?? 1, hot.weight) + 1);
       ctx.setLineDash(hot.relation === "apart" ? [6, 4] : []);
       ctx.beginPath();
       tracePath(ctx, hot);
@@ -232,6 +250,7 @@ export function RingCanvas({
   n,
   styles,
   edges,
+  tethers = [],
   neighbours,
   focus,
   highlight,
@@ -256,6 +275,8 @@ export function RingCanvas({
   styles: SeatStyle[];
   /** Lines from the target in the centre. */
   edges: EdgeSpec[];
+  /** The centre's own seats, tied to it by a line each. */
+  tethers?: number[];
   /** A seat's own lines, shown while it is in hand. */
   neighbours: (id: number) => EdgeSpec[];
   focus: number | null;
@@ -296,6 +317,10 @@ export function RingCanvas({
   const placed = useMemo(() => placeLabels(layout, labels.map(labelSize)), [layout, labels]);
   const order = useMemo(() => arcs.flatMap((a) => a.ids), [arcs]);
   const flower = useMemo(() => flowerPaths(layout, arcs, edges), [layout, arcs, edges]);
+  const tetherPaths = useMemo(
+    () => flowerPaths(layout, arcs, tethers.map((id) => ({ id, relation: "unrelated" as const }))),
+    [layout, arcs, tethers],
+  );
   const sampled = useMemo(() => flower.map((p) => ({ id: p.id, pts: samplePath(p, 14) })), [flower]);
   const hot = hover ?? cursor ?? highlight;
   // At rest, a seat in hand shows its own lines round the centre. With a
@@ -410,6 +435,7 @@ export function RingCanvas({
       const canvas = canvasRef.current;
       if (!canvas || !state.current) return;
       paint(canvas, {
+        tethers: tetherPaths,
         hotIds,
         layout,
         cur: state.current,
@@ -424,7 +450,7 @@ export function RingCanvas({
       });
     };
     if (settled.current) drawRef.current(1);
-  }, [layout, flower, road, focus, hot, hotLine, hotIds, size.w, size.h]);
+  }, [layout, flower, tetherPaths, road, focus, hot, hotLine, hotIds, size.w, size.h]);
 
   const point = (e: { clientX: number; clientY: number }, el: HTMLElement) => {
     const box = el.getBoundingClientRect();

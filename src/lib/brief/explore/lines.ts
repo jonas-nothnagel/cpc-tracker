@@ -14,6 +14,9 @@ type Pt = [number, number];
 export interface EdgeSpec {
   id: number;
   relation: Relation;
+  /** Target pairs the line stands for (a document or area in the centre
+   *  can share several with one seat); one when absent. */
+  weight?: number;
 }
 
 export type Segment =
@@ -25,6 +28,7 @@ export type Segment =
 export interface EdgePath {
   id: number;
   relation: Relation;
+  weight: number;
   segments: Segment[];
   /** The centre of the ring, for arc segments. */
   cx: number;
@@ -83,6 +87,7 @@ export function flowerPaths(layout: RingLayout, arcs: ArcSpec[], edges: EdgeSpec
     return {
       id: e.id,
       relation: e.relation,
+      weight: e.weight ?? 1,
       cx: layout.cx,
       cy: layout.cy,
       segments: [
@@ -123,6 +128,7 @@ export function roadPaths(layout: RingLayout, from: number, edges: EdgeSpec[]): 
       return {
         id: e.id,
         relation: e.relation,
+        weight: e.weight ?? 1,
         cx: layout.cx,
         cy: layout.cy,
         segments: [

@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import type { ToneCounts } from "@/lib/brief/compute";
 import type { BriefCommitment } from "@/lib/brief/source";
 import { commitmentLine } from "../ink";
-import { Expandable, GroupRow, MarkRows, RankRows, TargetLine, ToneKey } from "./rows";
+import { ResultBar } from "../sections/documents";
+import { Expandable, GroupRow, MarkRows, RankRows, TargetLine, TargetRows, ToneKey } from "./rows";
 
 export interface RankedRow {
   commitment: BriefCommitment;
@@ -18,6 +19,68 @@ export interface BrowseRow {
   name: string;
   meta: string;
   counts: ToneCounts;
+  /** Its targets, in document order. */
+  targets: BriefCommitment[];
+}
+
+/** A document (or policy area) to open: its name puts it in the centre, the
+ *  chevron lists its targets, each of which can take the centre. */
+function BrowseGroup({
+  row,
+  countsOf,
+  onFocus,
+  onHover,
+  onHoverGroup,
+}: {
+  row: BrowseRow;
+  countsOf: (id: string) => ToneCounts;
+  onFocus: (key: string) => void;
+  onHover: (id: string | null) => void;
+  onHoverGroup: (key: string | null) => void;
+}) {
+  const t = useTranslations("brief.explore");
+  const [open, setOpen] = useState(false);
+  return (
+    <li
+      className="ex-browse-row"
+      data-testid="explore-browse-row"
+      data-open={open ? "true" : undefined}
+      onPointerEnter={() => onHoverGroup(row.key)}
+      onPointerLeave={() => onHoverGroup(null)}
+    >
+      <div className="ex-browse-head">
+        <button
+          type="button"
+          className="ex-browse-toggle"
+          aria-expanded={open}
+          aria-label={t("showTargets", { name: row.name })}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span className="ex-chevron" aria-hidden="true" />
+        </button>
+        <button type="button" className="ex-browse-main" onClick={() => onFocus(row.key)}>
+          <span className="ex-group-row-name">
+            {row.name}
+            <span className="ex-group-row-meta"> {row.meta}</span>
+          </span>
+        </button>
+        {row.counts.total > 0 && (
+          <span className="ex-group-row-bar" aria-hidden="true">
+            <ResultBar counts={row.counts} />
+          </span>
+        )}
+      </div>
+      {open && (
+        <TargetRows
+          items={row.targets}
+          countsOf={countsOf}
+          onOpen={onFocus}
+          onHover={onHover}
+          testId="explore-browse-target"
+        />
+      )}
+    </li>
+  );
 }
 
 /** The column beside the resting ring: where potential misalignment
@@ -29,6 +92,7 @@ export function RestColumn({
   strongest,
   browseTitle,
   browse,
+  countsOf,
   docName,
   onFocus,
   onHover,
@@ -39,6 +103,7 @@ export function RestColumn({
   strongest: RankedRow[];
   browseTitle: string;
   browse: BrowseRow[];
+  countsOf: (id: string) => ToneCounts;
   docName: (id: string) => string;
   onFocus: (key: string) => void;
   onHover: (id: string | null) => void;
@@ -89,14 +154,13 @@ export function RestColumn({
           <h3 className="ex-sub">{browseTitle}</h3>
           <ol className="ex-group-rows">
             {browse.map((row) => (
-              <GroupRow
+              <BrowseGroup
                 key={row.key}
-                name={row.name}
-                meta={row.meta}
-                counts={row.counts}
-                onOpen={() => onFocus(row.key)}
-                onHover={(on) => onHoverGroup(on ? row.key : null)}
-                testId="explore-browse-row"
+                row={row}
+                countsOf={countsOf}
+                onFocus={onFocus}
+                onHover={onHover}
+                onHoverGroup={onHoverGroup}
               />
             ))}
           </ol>
@@ -106,7 +170,20 @@ export function RestColumn({
   );
 }
 
-function Nav({ canGoBack, onBack, onClear }: { canGoBack: boolean; onBack: () => void; onClear: () => void }) {
+function Nav({
+  canGoBack,
+  onBack,
+  onClear,
+  previous,
+  next,
+}: {
+  canGoBack: boolean;
+  onBack: () => void;
+  onClear: () => void;
+  /** Step to the target before or after, in the same document. */
+  previous?: () => void;
+  next?: () => void;
+}) {
   const t = useTranslations("brief.explore");
   return (
     <nav className="ex-nav">
@@ -118,6 +195,18 @@ function Nav({ canGoBack, onBack, onClear }: { canGoBack: boolean; onBack: () =>
       <button type="button" className="ex-link" onClick={onClear}>
         {t("clear")}
       </button>
+      {(previous || next) && (
+        <span className="ex-step">
+          <button type="button" className="ex-link" onClick={previous} disabled={!previous}>
+            <span aria-hidden="true">‹ </span>
+            {t("previous")}
+          </button>
+          <button type="button" className="ex-link" onClick={next} disabled={!next}>
+            {t("next")}
+            <span aria-hidden="true"> ›</span>
+          </button>
+        </span>
+      )}
     </nav>
   );
 }
@@ -143,6 +232,8 @@ export function TargetColumn({
   canGoBack,
   onBack,
   onClear,
+  previous,
+  next,
   pair,
 }: {
   item: BriefCommitment;
@@ -157,6 +248,8 @@ export function TargetColumn({
   canGoBack: boolean;
   onBack: () => void;
   onClear: () => void;
+  previous?: () => void;
+  next?: () => void;
   pair: ReactNode;
 }) {
   const t = useTranslations("brief.explore");
@@ -171,7 +264,7 @@ export function TargetColumn({
     }));
   return (
     <>
-      <Nav canGoBack={canGoBack} onBack={onBack} onClear={onClear} />
+      <Nav canGoBack={canGoBack} onBack={onBack} onClear={onClear} previous={previous} next={next} />
       <p className="ex-focus-doc">{docName(item.doc)}</p>
       <h2 className="ex-focus-title">{commitmentLine(item, 140)}</h2>
       <p className="ex-focus-text" data-clamped={long && !open ? "true" : undefined}>
@@ -259,6 +352,8 @@ export function GroupColumn({
   rows,
   review,
   strongest,
+  members,
+  countsOf,
   seatPairs,
   docName,
   selectedPair,
@@ -281,6 +376,9 @@ export function GroupColumn({
   rows: ArcRow[];
   review: RankedRow[];
   strongest: RankedRow[];
+  /** The group's targets, in document order. */
+  members: BriefCommitment[];
+  countsOf: (id: string) => ToneCounts;
   seatPairs: SeatPairs | null;
   docName: (id: string) => string;
   selectedPair: string | null;
@@ -437,6 +535,24 @@ export function GroupColumn({
                 onOpen={onFocus}
                 onHover={onHover}
                 testId="explore-group-strong-row"
+              />
+            )}
+          />
+        </section>
+      )}
+      {members.length > 0 && (
+        <section className="ex-section">
+          <h3 className="ex-sub">{t("allTargetsOf", { count: members.length })}</h3>
+          <Expandable
+            items={members}
+            preview={8}
+            render={(list) => (
+              <TargetRows
+                items={list}
+                countsOf={countsOf}
+                onOpen={onFocus}
+                onHover={onHover}
+                testId="explore-group-target"
               />
             )}
           />

@@ -1,5 +1,5 @@
 import type { BriefLens, LensId } from "../source";
-import { levelBetween, relationOf, SEAT_ORDER, type ExploreModel, type Relation, type RelationCounts } from "./model";
+import { levelBetween, relationOf, type ExploreModel, type Relation, type RelationCounts } from "./model";
 
 /**
  * What can take the centre of the ring: one target, a whole document, or a
@@ -49,14 +49,38 @@ function empty(): RelationCounts {
  *  misalignment leads, as the reading most worth a review. */
 const PRECEDENCE: Relation[] = ["apart", "strong", "aligned", "partial", "none"];
 
+/** How a seat mostly reads against the centre: the brief's four tones, or
+ *  unrelated for the centre's own targets and seats never compared. */
+export type SeatTone = "reinforce" | "partial" | "none" | "apart" | "unrelated";
+
+/** Order of the seats within an arc by tone: potential misalignment from
+ *  one end, alignment at the other, as in the brief's result bar. */
+const TONE_ORDER: SeatTone[] = ["apart", "partial", "none", "unrelated", "reinforce"];
+
+/** The reading most of a seat's pairs have; potential misalignment wins a
+ *  tie, as the reading worth a review. */
+function toneOf(p: RelationCounts): SeatTone {
+  const readings: [SeatTone, number][] = [
+    ["apart", p.apart],
+    ["reinforce", p.strong + p.aligned],
+    ["partial", p.partial],
+    ["none", p.none],
+  ];
+  const best = readings.reduce((a, b) => (b[1] > a[1] ? b : a));
+  return best[1] > 0 ? best[0] : "unrelated";
+}
+
 export interface GroupProfile {
   members: number[];
   isMember: Uint8Array;
   /** Per seat: its target pairs with the group, by reading (zero for members). */
   pairs: RelationCounts[];
-  /** Per seat: its reading of the group; "unrelated" for members and for
-   *  seats never compared with any member. */
+  /** Per seat: its strongest signal with the group (any potential
+   *  misalignment first); "unrelated" for members and seats never compared. */
   relation: Relation[];
+  /** Per seat: the reading most of its pairs with the group have. For a
+   *  single target this is the one reading. */
+  tone: SeatTone[];
   /** All target pairs between the group and the rest, by reading. */
   totals: RelationCounts;
   total: number;
@@ -83,19 +107,29 @@ export function groupProfile(model: ExploreModel, members: number[]): GroupProfi
   const relation = pairs.map((p, j) =>
     isMember[j] ? "unrelated" : (PRECEDENCE.find((r) => p[r] > 0) ?? "unrelated"),
   );
-  return { members, isMember, pairs, relation, totals, total };
+  const tone = pairs.map((p, j) => (isMember[j] ? "unrelated" : toneOf(p)));
+  return { members, isMember, pairs, relation, tone, totals, total };
 }
 
-/** Seats of one arc in the order they sit against the group: by reading
- *  (potential misalignment from one end, strong alignment at the other),
- *  within a reading the seats with the most such pairs first. */
+/** Seats of one arc in the order they sit against the group: by the reading
+ *  most of their pairs have (potential misalignment from one end,
+ *  alignment at the other); within a reading, the larger share of potential
+ *  misalignment first, and strong alignment towards the far end. */
 export function groupSeatOrder(ids: number[], profile: GroupProfile): number[] {
+  const share = (id: number, key: "apart" | "strong") => {
+    const p = profile.pairs[id];
+    const total = p.apart + p.partial + p.none + p.aligned + p.strong;
+    return total > 0 ? p[key] / total : 0;
+  };
   return ids
-    .map((id, k) => {
-      const relation = profile.relation[id];
-      return { id, k, r: SEAT_ORDER.indexOf(relation), c: relation === "unrelated" ? 0 : profile.pairs[id][relation] };
-    })
-    .sort((x, y) => x.r - y.r || y.c - x.c || x.k - y.k)
+    .map((id, k) => ({
+      id,
+      k,
+      r: TONE_ORDER.indexOf(profile.tone[id]),
+      apart: share(id, "apart"),
+      strong: share(id, "strong"),
+    }))
+    .sort((x, y) => x.r - y.r || y.apart - x.apart || x.strong - y.strong || x.k - y.k)
     .map((x) => x.id);
 }
 

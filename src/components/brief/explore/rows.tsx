@@ -210,3 +210,51 @@ export function GroupRow({
     </li>
   );
 }
+
+/** Targets to browse, one row each: its label or first words and its own
+ *  result bar against every target in the other documents. */
+export function TargetRows({
+  items,
+  countsOf,
+  onOpen,
+  onHover,
+  testId,
+}: {
+  items: BriefCommitment[];
+  countsOf: (id: string) => ToneCounts;
+  onOpen: (id: string) => void;
+  onHover?: (id: string | null) => void;
+  testId: string;
+}) {
+  return (
+    <ol className="ex-target-rows">
+      {items.map((c) => {
+        const counts = countsOf(c.id);
+        return (
+          <li
+            key={c.id}
+            className="ex-target-row"
+            data-testid={testId}
+            onPointerEnter={() => onHover?.(c.id)}
+            onPointerLeave={() => onHover?.(null)}
+          >
+            <button
+              type="button"
+              onClick={() => onOpen(c.id)}
+              onFocus={() => onHover?.(c.id)}
+              onBlur={() => onHover?.(null)}
+              title={c.text}
+            >
+              <span className="ex-target-row-line">{commitmentLine(c)}</span>
+              {counts.total > 0 && (
+                <span className="ex-target-row-bar" aria-hidden="true">
+                  <ResultBar counts={counts} />
+                </span>
+              )}
+            </button>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}

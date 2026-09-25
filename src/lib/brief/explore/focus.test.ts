@@ -65,7 +65,42 @@ describe("groupProfile", () => {
   });
 });
 
+describe("group tone", () => {
+  it("reads each other target by the reading most of its pairs with the group have", () => {
+    const doc = groupProfile(MODEL, focusMembers(MODEL, parseFocusKey("doc:A"), SOURCE.lenses));
+    // B1: four strong alignments, one partial, one potential misalignment (with A6):
+    // mostly aligned, though it keeps a potential misalignment.
+    expect(doc.tone[at("B1")]).toBe("reinforce");
+    expect(doc.relation[at("B1")]).toBe("apart");
+    expect(doc.tone[at("A2")]).toBe("unrelated");
+  });
+
+  it("is the target's own reading for a group of one", () => {
+    const one = groupProfile(MODEL, [at("B5")]);
+    expect(one.tone[at("A6")]).toBe("apart");
+    expect(one.tone[at("A5")]).toBe("partial");
+    expect(one.tone[at("A1")]).toBe("reinforce");
+    expect(one.tone[at("B1")]).toBe("unrelated");
+  });
+
+  it("leads with potential misalignment where it is the most common reading", () => {
+    const area = groupProfile(MODEL, focusMembers(MODEL, parseFocusKey("area:globe:g2"), SOURCE.lenses));
+    // C4 against B4-B6: partial, potential misalignment, potential misalignment.
+    expect(area.tone[at("C4")]).toBe("apart");
+    // C1: partial, partial, potential misalignment.
+    expect(area.tone[at("C1")]).toBe("partial");
+  });
+});
+
 describe("groupSeatOrder", () => {
+  it("sorts an arc by most common reading, those with any potential misalignment towards the red end", () => {
+    const doc = groupProfile(MODEL, focusMembers(MODEL, parseFocusKey("doc:A"), SOURCE.lenses));
+    // Every B target is mostly aligned with A and has one potential misalignment;
+    // the moderately aligned ones sit before the strongly aligned ones.
+    const b = focusMembers(MODEL, parseFocusKey("doc:B"), SOURCE.lenses);
+    expect(ids(groupSeatOrder(b, doc))).toEqual(["B2", "B4", "B6", "B1", "B3", "B5"]);
+  });
+
   it("sorts an arc from potential misalignment to strong alignment, busiest first within a reading", () => {
     const profile = groupProfile(MODEL, focusMembers(MODEL, parseFocusKey("area:globe:g2"), SOURCE.lenses));
     // Against B4-B6: C4-C6 are in potential misalignment with both B5 and B6,

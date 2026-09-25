@@ -14,6 +14,7 @@ import {
   rankMembers,
   type FocusRef,
   type GroupProfile,
+  type SeatTone,
 } from "@/lib/brief/explore/focus";
 import type { EdgeSpec } from "@/lib/brief/explore/lines";
 import {
@@ -64,11 +65,10 @@ const LINE_LEVEL: Record<LineKind, "high" | "medium" | "low" | "flagged"> = {
   apart: "flagged",
 };
 
-/** A seat's ink against the centre. */
-function relationStyle(relation: Relation): SeatStyle {
-  switch (relation) {
-    case "strong":
-    case "aligned":
+/** A seat's ink against the centre: the reading most of its pairs have. */
+function toneStyle(tone: SeatTone): SeatStyle {
+  switch (tone) {
+    case "reinforce":
       return { color: RING_INK.green };
     case "partial":
       return { color: RING_INK.partial };
@@ -216,22 +216,32 @@ export function Explore({
   // target in the other documents: the rankings at rest.
   const restCounts = useMemo(() => {
     const size = model.items.length;
-    const apart = new Uint16Array(size);
-    const strong = new Uint16Array(size);
+    // Level codes: 1 high, 2 medium, 3 low, 4 none, 5 flagged (0: not compared).
+    const byLevel = Array.from({ length: 6 }, () => new Uint16Array(size));
     for (let a = 0; a < size; a++) {
       for (let b = a + 1; b < size; b++) {
         const level = model.levels[a * size + b];
-        if (level === 5) {
-          apart[a] += 1;
-          apart[b] += 1;
-        } else if (level === 1) {
-          strong[a] += 1;
-          strong[b] += 1;
-        }
+        if (level === 0) continue;
+        byLevel[level][a] += 1;
+        byLevel[level][b] += 1;
       }
     }
-    return { apart, strong };
+    return { apart: byLevel[5], strong: byLevel[1], byLevel };
   }, [model]);
+  // A target's own result bar: all its pairs with the other documents.
+  const countsOf = useCallback(
+    (id: string): ToneCounts => {
+      const i = model.index.get(id);
+      const { byLevel } = restCounts;
+      if (i === undefined) return { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 };
+      const reinforce = byLevel[1][i] + byLevel[2][i];
+      const partial = byLevel[3][i];
+      const none = byLevel[4][i];
+      const apart = byLevel[5][i];
+      return { reinforce, partial, none, apart, total: reinforce + partial + none + apart };
+    },
+    [model, restCounts],
+  );
   const ranked = (counts: Uint16Array): RankedRow[] =>
     model.items
       .map((commitment, i) => ({ commitment, value: counts[i], i }))
@@ -246,7 +256,7 @@ export function Explore({
           ? { color: searching ? RING_INK.ink : RING_INK.rest }
           : group.isMember[i]
             ? { color: RING_INK.ink, hollow: true }
-            : relationStyle(group.relation[i]);
+            : toneStyle(group.tone[i]);
         if (searching && !matches.has(i)) style = { ...style, color: RING_INK.drained, texture: false };
         return style;
       }),
@@ -261,7 +271,10 @@ export function Explore({
     const out: EdgeSpec[] = [];
     model.items.forEach((_, j) => {
       if (group.isMember[j]) return;
-      for (const kind of lines) if (group.pairs[j][kind] > 0) out.push({ id: j, relation: kind });
+      for (const kind of lines) {
+        const weight = group.pairs[j][kind];
+        if (weight > 0) out.push({ id: j, relation: kind, weight });
+      }
     });
     return out;
   }, [group, lines, model]);
@@ -455,6 +468,7 @@ export function Explore({
         name: d.name,
         meta: t("targetsCount", { count: d.count }),
         counts: data.docs.find((s) => s.doc.id === d.id)?.counts ?? { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 },
+        targets: model.items.filter((c) => c.doc === d.id),
       }));
     }
     return seatGroups
@@ -464,6 +478,7 @@ export function Explore({
         name: groupName(g.key),
         meta: t("targetsCount", { count: g.ids.length }),
         counts: tones(groupProfile(model, g.ids).totals),
+        targets: g.ids.map((i) => model.items[i]),
       }));
   }, [lens, data.scope.docs, data.docs, seatGroups, groupName, model, t]);
 
@@ -502,6 +517,7 @@ export function Explore({
         strongest={ranked(restCounts.strong)}
         browseTitle={lens ? tl(lens.id) : t("browseDocs")}
         browse={browse}
+        countsOf={countsOf}
         docName={docName}
         onFocus={focusOn}
         onHover={setHot}
@@ -510,6 +526,9 @@ export function Explore({
     );
   } else if (active.kind === "target") {
     const item = model.items[members[0]];
+    const siblings = model.items.filter((c) => c.doc === item.doc);
+    const place = siblings.findIndex((c) => c.id === item.id);
+    const stepTo = (k: number) => (siblings[k] ? () => focusOn(siblings[k].id) : undefined);
     const partnerRows = (relation: "apart" | "strong") =>
       model.items.flatMap((c, j) =>
         !group.isMember[j] && group.relation[j] === relation
@@ -548,6 +567,8 @@ export function Explore({
         canGoBack={state.trail.length > 0}
         onBack={() => dispatch({ type: "back" })}
         onClear={() => dispatch({ type: "clear" })}
+        previous={stepTo(place - 1)}
+        next={stepTo(place + 1)}
         pair={pairView}
       />
     );
@@ -608,6 +629,8 @@ export function Explore({
         rows={rows}
         review={memberRanks.apart.map((r) => ({ commitment: model.items[r.id], value: r.count }))}
         strongest={memberRanks.strong.map((r) => ({ commitment: model.items[r.id], value: r.count }))}
+        members={members.map((m) => model.items[m])}
+        countsOf={countsOf}
         seatPairs={seatPairs}
         docName={docName}
         selectedPair={pair ? `${pair.a}~${pair.b}` : null}
@@ -678,6 +701,7 @@ export function Explore({
             n={model.items.length}
             styles={styles}
             edges={edges}
+            tethers={group ? members : undefined}
             neighbours={neighbours}
             focus={focusTarget}
             highlight={highlight}

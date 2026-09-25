@@ -3205,7 +3205,11 @@
       "tipStrong": "{count, plural, one {# strong alignment} other {# strong alignments}}",
       "tipAligned": "{count, number} moderate",
       "tipPartial": "{count, number} partial",
-      "seatPairs": "{target}: {count, plural, one {# target pair} other {# target pairs}}"
+      "seatPairs": "{target}: {count, plural, one {# target pair} other {# target pairs}}",
+      "previous": "Previous target",
+      "next": "Next target",
+      "allTargetsOf": "All targets ({count, number})",
+      "showTargets": "Show the targets of {name}"
     }
   }
 }

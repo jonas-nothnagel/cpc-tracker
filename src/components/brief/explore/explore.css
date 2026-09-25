@@ -872,3 +872,143 @@
   font-size: 0.875rem;
   line-height: 1.4;
 }
+
+/* ── Browsing: documents that open to their targets ─────────────── */
+
+[data-brief] .ex-browse-row {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-browse-head {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr) minmax(7rem, 11rem);
+  align-items: center;
+  column-gap: 0.4rem;
+}
+
+[data-brief] .ex-browse-head:hover {
+  background: var(--brief-desk);
+}
+
+[data-brief] .ex-browse-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brief-muted);
+  cursor: pointer;
+}
+
+[data-brief] .ex-chevron {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 160ms ease;
+}
+
+[data-brief] .ex-browse-row[data-open] .ex-chevron {
+  transform: rotate(45deg);
+}
+
+[data-brief] .ex-browse-main {
+  min-width: 0;
+  padding: 0.55rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .ex-browse-main:hover .ex-group-row-name {
+  text-decoration: underline;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+  text-underline-offset: 3px;
+}
+
+/* One target per row with its own result bar. */
+[data-brief] .ex-target-rows {
+  margin: 0 0 0.5rem;
+  padding: 0 0 0 1.9rem;
+  list-style: none;
+}
+
+[data-brief] .ex-group-rows .ex-target-rows,
+[data-brief] .ex-section > div > .ex-target-rows {
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-section > div > .ex-target-rows {
+  padding-left: 0;
+}
+
+[data-brief] .ex-target-row {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ex-target-row:last-child {
+  border-bottom: 0;
+}
+
+[data-brief] .ex-target-row > button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6.5rem, 9.5rem);
+  align-items: center;
+  column-gap: 0.6rem;
+  width: 100%;
+  padding: 0.4rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .ex-target-row > button:hover {
+  background: var(--brief-desk);
+}
+
+[data-brief] .ex-target-row-line {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ex-target-row-bar .brief-pair-bar-row {
+  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  column-gap: 4px;
+}
+
+[data-brief] .ex-target-row-bar .brief-pair-bar {
+  height: 7px;
+}
+
+[data-brief] .ex-target-row-bar .brief-pair-value {
+  font-size: 11px;
+}
+
+/* Stepping through a document's targets. */
+[data-brief] .ex-step {
+  display: inline-flex;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+[data-brief] .ex-link:disabled {
+  color: var(--brief-muted);
+  text-decoration: none;
+  cursor: default;
+  opacity: 0.55;
+}

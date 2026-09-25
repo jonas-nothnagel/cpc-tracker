@@ -138,12 +138,12 @@ describe("Explore", () => {
   it("puts a whole document in the centre with its relations to every other document", () => {
     renderExplore();
     const docs = screen.getAllByTestId("explore-browse-row");
-    expect(docs.map((row) => within(row).getByRole("button").textContent)).toEqual([
+    expect(docs.map((row) => within(row).getByRole("button", { name: /^Document/ }).textContent)).toEqual([
       expect.stringContaining("Document A"),
       expect.stringContaining("Document B"),
       expect.stringContaining("Document C"),
     ]);
-    fireEvent.click(within(docs[0]).getByRole("button"));
+    fireEvent.click(within(docs[0]).getByRole("button", { name: /^Document A/ }));
     expect(within(side()).getByRole("heading", { name: "Document A" })).toBeInTheDocument();
     expect(within(side()).getByText("6 targets, 72 target pairs with the other documents")).toBeInTheDocument();
     const rows = screen.getAllByTestId("explore-arc-row");
@@ -156,12 +156,38 @@ describe("Explore", () => {
     expect(screen.getAllByTestId("explore-group-review-row")).toHaveLength(1);
   });
 
+  it("opens a document to its targets and centres the one chosen", () => {
+    renderExplore();
+    const b = screen.getAllByTestId("explore-browse-row")[1];
+    fireEvent.click(within(b).getByRole("button", { name: "Show the targets of Document B" }));
+    const targets = within(b).getAllByTestId("explore-browse-target");
+    expect(targets).toHaveLength(6);
+    fireEvent.click(within(targets[5]).getByRole("button"));
+    expect(within(side()).getByText(/Potential misalignment with 7\./)).toBeInTheDocument();
+  });
+
+  it("steps through the targets of the document in the centre", () => {
+    renderExplore({ focus: "B5" });
+    fireEvent.click(screen.getByRole("button", { name: /Next target/ }));
+    // B6 is next in document B.
+    expect(within(side()).getByText(/Potential misalignment with 7\./)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Next target/ })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: /Previous target/ }));
+    expect(within(side()).getByText(/Potential misalignment with 4\./)).toBeInTheDocument();
+  });
+
+  it("lists every target of the document in the centre", () => {
+    renderExplore({ focus: "doc:C" });
+    expect(screen.getByRole("heading", { name: "All targets (6)" })).toBeInTheDocument();
+    expect(screen.getAllByTestId("explore-group-target")).toHaveLength(6);
+  });
+
   it("puts a policy area in the centre when the ring is grouped by that lens", () => {
     renderExplore({ group: "globe" });
     const agriculture = screen
       .getAllByTestId("explore-browse-row")
       .find((row) => row.textContent?.includes("Agriculture"))!;
-    fireEvent.click(within(agriculture).getByRole("button"));
+    fireEvent.click(within(agriculture).getByRole("button", { name: /^Agriculture/ }));
     expect(within(side()).getByText("Policy area · Biodiversity")).toBeInTheDocument();
     expect(within(side()).getByRole("heading", { name: "Agriculture" })).toBeInTheDocument();
   });
