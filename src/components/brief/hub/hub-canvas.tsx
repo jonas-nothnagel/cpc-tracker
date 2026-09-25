@@ -17,6 +17,7 @@ import {
   type HubAxis,
   type HubGroup,
   type HubLayout,
+  type HubMark,
   type HubStage,
 } from "@/lib/brief/hub";
 
@@ -26,10 +27,11 @@ const MOVE_MS = 950;
 const FADE_MS = 260;
 /** Opacity of the groups the reader is not pointing at. */
 const DIM = 0.22;
+/** The map's squares of documents, under their pairs. */
+const PAPER = "#f0f0ee";
 
 export function stageKey(stage: HubStage): string {
   if (stage.kind === "doc") return `doc:${stage.doc}`;
-  if (stage.kind === "target") return `target:${stage.id}`;
   if (stage.kind === "map") {
     const f = stage.focus;
     const focus = !f
@@ -40,18 +42,48 @@ export function stageKey(stage: HubStage): string {
           ? `:kind:${f.mechanism}`
           : f.kind === "doc"
             ? `:doc:${f.doc}`
-            : ":top";
-    return `map${stage.tone ? `:${stage.tone}` : ""}${focus}`;
+            : f.kind === "target"
+              ? `:target:${f.id}`
+              : ":top";
+    if (stage.side) return `map:${stage.side}${focus}`;
+    return `map${stage.tone ? `:tone:${stage.tone}` : ""}${focus}`;
   }
   return stage.kind;
 }
 
+/** A map cell on the device's pixel grid: its top left and its side, with
+ *  a device pixel between cells when a cell has three or more. */
+export function cellRect(cx: number, cy: number, pitch: number, dpr: number): { x: number; y: number; size: number } {
+  const cell = Math.max(1, Math.round(pitch * dpr));
+  const fill = cell >= 3 ? cell - 1 : cell;
+  return {
+    x: Math.round((cx - pitch / 2) * dpr) / dpr,
+    y: Math.round((cy - pitch / 2) * dpr) / dpr,
+    size: fill / dpr,
+  };
+}
+
+function rgbOf(hex: string): [number, number, number] {
+  const h = hex.replace("#", "");
+  return [0, 2, 4].map((k) => parseInt(h.slice(k, k + 2), 16)) as [number, number, number];
+}
+
+/** An ink as far forward as `alpha`, mixed toward the paper instead of made
+ *  transparent, so a pale square stays as sharp as a full one. */
+export function mixInk(ink: string, paper: string, alpha: number): string {
+  const a = rgbOf(ink);
+  const b = rgbOf(paper);
+  const mix = a.map((v, k) => Math.round(v * alpha + b[k] * (1 - alpha)));
+  return `rgb(${mix.join(",")})`;
+}
+
 /** What is under the pointer: a group (a rating, a block of the map, a
- *  cluster around the centre), a document on the map's diagonal, or one
- *  target pair around a target in focus. */
+ *  document around the centre), a document on the map's diagonal, a target
+ *  the map names, or one target pair on a side of the map. */
 export type HubTarget =
   | { kind: "group"; group: HubGroup }
   | { kind: "axis"; axis: HubAxis }
+  | { kind: "mark"; mark: HubMark }
   | { kind: "dot"; index: number; group: HubGroup | null };
 
 interface DotState {
@@ -93,6 +125,14 @@ function axisBox(a: HubAxis) {
   return { x0: a.labelX - a.labelWidth, x1: a.labelX + 8, y0: a.labelY - a.labelHeight / 2, y1: a.labelY + a.labelHeight / 2 };
 }
 
+/** The room a named target's label may take, when its drawn box is unknown. */
+function markBox(m: HubMark) {
+  const half = m.labelHeight / 2;
+  return m.align === "left"
+    ? { x0: m.labelX - 4, x1: m.labelX + m.labelWidth, y0: m.labelY - half, y1: m.labelY + half }
+    : { x0: m.labelX - m.labelWidth, x1: m.labelX + 4, y0: m.labelY - half, y1: m.labelY + half };
+}
+
 /** The group each shown dot belongs to in a layout (-1 when none). */
 function membership(layout: HubLayout): Int16Array {
   const group = new Int16Array(layout.x.length).fill(-1);
@@ -112,7 +152,7 @@ function draw(
   progress: number,
   member: Int16Array,
   bright: number,
-  extras: { colors: Map<string, string>; outlined: string[]; axisFocus: string | null },
+  extras: { colors: Map<string, string>; outlined: string[]; axisFocus: string | null; markFocus: string | null },
 ) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -124,7 +164,7 @@ function draw(
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, w, h);
   const settledIn = Math.min(1, progress * 1.4);
-  // A target or document in focus: a curved spoke from its name to each cluster.
+  // A document in focus: a curved spoke from its name to each cluster.
   if (layout.center && progress > 0) {
     const { x: cx, y: cy, half } = layout.center;
     ctx.globalAlpha = settledIn;
@@ -143,8 +183,21 @@ function draw(
     });
     ctx.stroke();
   }
+  const map = layout.pitch > 0;
+  // The map: a pale square for every pair of documents, under its pairs.
+  if (map && progress > 0) {
+    ctx.globalAlpha = settledIn;
+    ctx.fillStyle = PAPER;
+    const snap = (v: number) => Math.round(v * dpr) / dpr;
+    for (const g of layout.groups) {
+      const x = snap(g.x0);
+      const y = snap(g.y0);
+      ctx.fillRect(x, y, snap(g.x1) - x, snap(g.y1) - y);
+    }
+  }
   // The map's diagonal: each document's own stretch in its colour, with a
-  // thin lead from a name that had to move away from it.
+  // thin lead from a name that had to move away from it, and from each
+  // named target to its own point.
   if (layout.axis.length > 0 && progress > 0) {
     for (const a of layout.axis) {
       const dim = extras.axisFocus !== null && extras.axisFocus !== a.key;
@@ -155,40 +208,63 @@ function draw(
       ctx.moveTo(a.square.x0, a.square.y0);
       ctx.lineTo(a.square.x1, a.square.y1);
       ctx.stroke();
-      const mid = (a.square.y0 + a.square.y1) / 2;
-      if (Math.abs(a.labelY - mid) > 6) {
+      if (a.lead) {
         ctx.strokeStyle = "#c3c8cf";
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(a.labelX + 3, a.labelY);
-        ctx.lineTo((a.square.x0 + a.square.x1) / 2 - 3, mid);
+        ctx.lineTo(a.lead.x - 3, a.lead.y);
         ctx.stroke();
       }
     }
+    ctx.strokeStyle = "#b9bfc7";
+    ctx.lineWidth = 1;
+    for (const m of layout.marks) {
+      const dim = extras.markFocus !== null && extras.markFocus !== m.id;
+      ctx.globalAlpha = settledIn * (dim ? 0.35 : 1);
+      ctx.beginPath();
+      if (m.align === "left") ctx.moveTo(m.labelX - 3, m.labelY);
+      else ctx.moveTo(m.labelX + 3, m.labelY);
+      ctx.lineTo(m.x - layout.pitch / 2 - 1, m.y);
+      ctx.stroke();
+    }
   }
-  // One path per ink and tenth of opacity keeps 13,000+ dots cheap.
+  // One path per ink and step of emphasis keeps 13,000+ dots cheap. On the
+  // map each pair is a square on the pixel grid in an opaque, lighter ink;
+  // a pair leaving the map fades out as a dot.
   const buckets = new Map<string, number[]>();
   for (let i = 0; i < state.x.length; i++) {
     let a = state.a[i];
     if (bright >= 0 && member[i] !== bright) a *= DIM;
     if (a < 0.03) continue;
-    const key = `${layout.ink[i]}:${Math.round(a * 10)}`;
+    const square = map && layout.visible[i] === 1;
+    const key = square ? `s:${layout.ink[i]}:${Math.round(a * 20)}` : `d:${layout.ink[i]}:${Math.round(a * 10)}`;
     const list = buckets.get(key);
     if (list) list.push(i);
     else buckets.set(key, [i]);
   }
   for (const [key, ids] of buckets) {
-    const [ink, alpha] = key.split(":").map(Number);
-    ctx.fillStyle = HUB_INK[ink] ?? HUB_INK[1];
-    ctx.globalAlpha = alpha / 10;
+    const [kind, inkKey, step] = key.split(":");
+    const ink = HUB_INK[Number(inkKey)] ?? HUB_INK[1];
     ctx.beginPath();
-    for (const i of ids) {
-      const r = layout.small[i] ? state.r[i] * 0.45 : state.r[i];
-      if (r >= 1.1) {
-        ctx.moveTo(state.x[i] + r, state.y[i]);
-        ctx.arc(state.x[i], state.y[i], r, 0, Math.PI * 2);
-      } else {
-        ctx.rect(state.x[i] - r, state.y[i] - r, 2 * r, 2 * r);
+    if (kind === "s") {
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = mixInk(ink, PAPER, Number(step) / 20);
+      for (const i of ids) {
+        const c = cellRect(state.x[i], state.y[i], 2 * state.r[i], dpr);
+        ctx.rect(c.x, c.y, c.size, c.size);
+      }
+    } else {
+      ctx.fillStyle = ink;
+      ctx.globalAlpha = Number(step) / 10;
+      for (const i of ids) {
+        const r = layout.small[i] ? state.r[i] * 0.45 : state.r[i];
+        if (r >= 1.1) {
+          ctx.moveTo(state.x[i] + r, state.y[i]);
+          ctx.arc(state.x[i], state.y[i], r, 0, Math.PI * 2);
+        } else {
+          ctx.rect(state.x[i] - r, state.y[i] - r, 2 * r, 2 * r);
+        }
       }
     }
     ctx.fill();
@@ -209,10 +285,11 @@ function draw(
 /**
  * The overview's field: one dot per target pair, re-forming for each step.
  * Dots that belong to the new step fly to their place (or only change how
- * far forward they are, on the map); the others fade where they are.
- * Labels sit beside the groups and along the map's diagonal; pointing at a
- * group, a document or (around a target) one pair names it, selecting it
- * opens it, and the name at the centre opens what is in focus.
+ * far forward they are); the others fade where they are. Labels sit beside
+ * the groups, along the map's diagonal and at the targets a side names;
+ * pointing at a group, a document, a named target or (on a side) one pair
+ * names it, selecting it opens it, and the name at the centre opens what is
+ * in focus.
  */
 export function HubCanvas({
   data,
@@ -226,6 +303,7 @@ export function HubCanvas({
   outlined = [],
   onHover,
   center,
+  markLabel,
 }: {
   data: BriefData;
   stage: HubStage;
@@ -239,15 +317,21 @@ export function HubCanvas({
   highlight?: string | null;
   /** Keys of groups to outline (blocks a finding names). */
   outlined?: string[];
-  /** A group's key, or `axis:<document>`, under the pointer (null when none). */
+  /** A group's key, `axis:<document>` or `target:<side>:<id>` under the
+   *  pointer (null when none). */
   onHover?: (key: string | null) => void;
-  /** Shown at the centre of a target or document in focus. */
+  /** Shown at the centre of a document in focus. */
   center?: ReactNode;
+  /** A named target's label on the map. */
+  markLabel?: (mark: HubMark) => ReactNode;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelsRef = useRef<HTMLDivElement>(null);
   const centerRef = useRef<HTMLDivElement>(null);
+  // Drawn names that are ways in: named targets, documents around the centre.
+  const markRefs = useRef(new Map<string, HTMLDivElement>());
+  const partnerRefs = useRef(new Map<string, HTMLDivElement>());
   const state = useRef<DotState | null>(null);
   const seen = useRef(false);
   const settled = useRef(false);
@@ -255,9 +339,11 @@ export function HubCanvas({
   const [size, setSize] = useState({ w: 0, h: 0 });
   // The tip belongs to the arrangement it was pointed at in: when the dots
   // re-form under a still pointer, an old name must not be read against new
-  // groups. On the map only the emphasis changes, so a name stays.
+  // groups. Within the map, or one side of it, only the emphasis changes,
+  // so a name stays.
   const key = stageKey(stage);
-  const placeKey = stage.kind === "map" ? "map" : key;
+  const side = stage.kind === "map" ? (stage.side ?? null) : null;
+  const placeKey = stage.kind === "map" ? `map${side ? `:${side}` : ""}` : key;
   const [pointed, setTip] = useState<{ target: HubTarget; x: number; y: number; stage: string } | null>(null);
   const [overCenter, setOverCenter] = useState(false);
   const tip = pointed && pointed.stage === placeKey ? pointed : null;
@@ -269,10 +355,11 @@ export function HubCanvas({
   const member = useMemo(() => membership(layout), [layout]);
   const colors = useMemo(() => new Map(data.scope.docs.map((d) => [d.id, d.color])), [data]);
   const axisFocus = stage.kind === "map" && stage.focus?.kind === "doc" ? stage.focus.doc : null;
+  const markFocus = stage.kind === "map" && stage.focus?.kind === "target" ? stage.focus.id : null;
   const outlineKey = outlined.join("|");
   const extras = useMemo(
-    () => ({ colors, outlined: outlineKey ? outlineKey.split("|") : [], axisFocus }),
-    [colors, outlineKey, axisFocus],
+    () => ({ colors, outlined: outlineKey ? outlineKey.split("|") : [], axisFocus, markFocus }),
+    [colors, outlineKey, axisFocus, markFocus],
   );
   // The pointer's group wins over a list row's.
   const tipKey =
@@ -398,15 +485,24 @@ export function HubCanvas({
     );
   };
 
+  /** An element's drawn box within the field, when it has one. */
+  const drawn = (el: HTMLElement | undefined) => {
+    const box = el?.getBoundingClientRect();
+    const wrap = wrapRef.current?.getBoundingClientRect();
+    if (!box || !wrap || box.bottom <= box.top || box.right <= box.left) return null;
+    return { x0: box.left - wrap.left, x1: box.right - wrap.left, y0: box.top - wrap.top, y1: box.bottom - wrap.top };
+  };
+
   const targetAt = (x: number, y: number): HubTarget | null => {
-    // Around a target, each pair is its own way in.
-    if (stage.kind === "target") {
+    // On a side, each pair is its own way in.
+    if (side) {
+      const reach = Math.max(layout.pitch, 4);
       let best = -1;
       let bestD = Infinity;
       for (let i = 0; i < layout.x.length; i++) {
         if (!layout.visible[i]) continue;
         const d = Math.hypot(layout.x[i] - x, layout.y[i] - y);
-        if (d <= Math.max(layout.r[i] + 2, 4) && d < bestD) {
+        if (d <= reach && d < bestD) {
           best = i;
           bestD = d;
         }
@@ -416,8 +512,20 @@ export function HubCanvas({
         return { kind: "dot", index: best, group: g >= 0 ? layout.groups[g] : null };
       }
     }
+    const mark = layout.marks.find((m) => inside(x, y, drawn(markRefs.current.get(m.id)) ?? markBox(m)));
+    if (mark) return { kind: "mark", mark };
     const axis = layout.axis.find((a) => inside(x, y, a.square, 2) || inside(x, y, axisBox(a)));
     if (axis) return { kind: "axis", axis };
+    if (stage.kind === "doc") {
+      // Around a document, another document is its name and figures as well
+      // as its dots.
+      const group = layout.groups.find((g) => {
+        const label = drawn(partnerRefs.current.get(g.key));
+        if (label && inside(x, y, label, 2)) return true;
+        return inside(x, y, { x0: g.x0, x1: g.x1, y0: g.y0 - layout.focusLabel, y1: g.y1 }, 6);
+      });
+      return group ? { kind: "group", group } : null;
+    }
     const group = layout.groups.find((g) => inside(x, y, g, layout.axis.length > 0 ? 0 : 6));
     return group ? { kind: "group", group } : null;
   };
@@ -434,9 +542,11 @@ export function HubCanvas({
         ? null
         : hit.kind === "axis"
           ? `axis:${hit.axis.key}`
-          : hit.kind === "group"
-            ? hit.group.key
-            : (hit.group?.key ?? null),
+          : hit.kind === "mark"
+            ? `target:${side ?? ""}:${hit.mark.id}`
+            : hit.kind === "group"
+              ? hit.group.key
+              : null,
     );
   };
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -450,7 +560,7 @@ export function HubCanvas({
     const hit = targetAt(x, y);
     if (hit && (clickable?.(hit) ?? true)) onSelect?.(hit);
   };
-  const focus = stage.kind === "doc" || stage.kind === "target";
+  const focus = stage.kind === "doc";
   const pointable = tip && onSelect && (clickable?.(tip.target) ?? true);
   const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
 
@@ -483,6 +593,26 @@ export function HubCanvas({
             {docName(a.key)}
           </div>
         ))}
+        {markLabel &&
+          layout.marks.map((m) => (
+            <div
+              key={m.id}
+              ref={(el) => {
+                if (el) markRefs.current.set(m.id, el);
+                else markRefs.current.delete(m.id);
+              }}
+              className="brief-hub-mark"
+              data-mark={m.id}
+              data-side={side ?? undefined}
+              data-align={m.align}
+              data-lines={m.lines}
+              data-dim={markFocus !== null && markFocus !== m.id ? "true" : undefined}
+              data-on={markFocus === m.id ? "true" : undefined}
+              style={{ left: m.labelX, top: m.labelY, maxWidth: m.labelWidth }}
+            >
+              {markLabel(m)}
+            </div>
+          ))}
         {layout.groups.map((g, k) => {
           if (g.labelAt === "none") return null;
           const dim = bright >= 0 && k !== bright ? "true" : undefined;
@@ -491,6 +621,10 @@ export function HubCanvas({
             return (
               <div
                 key={g.key}
+                ref={(el) => {
+                  if (el) partnerRefs.current.set(g.key, el);
+                  else partnerRefs.current.delete(g.key);
+                }}
                 className="brief-hub-label brief-hub-label-partner"
                 data-side={left ? "left" : "right"}
                 data-dim={dim}

@@ -4,7 +4,7 @@ import { buildBriefData } from "@/lib/brief/data";
 import { scopeOf } from "@/lib/brief/compute";
 import { hubParticles, layoutHub } from "@/lib/brief/hub";
 import { briefFixture } from "@/lib/brief/test-fixture";
-import { HubCanvas, type HubTarget } from "./hub-canvas";
+import { HubCanvas, cellRect, mixInk, stageKey, type HubTarget } from "./hub-canvas";
 
 const SOURCE = briefFixture({ themes: true });
 const DATA = buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "B", "C"]), null);
@@ -37,7 +37,11 @@ const tipFor = (t: HubTarget) =>
     ? `group ${t.group.key}`
     : t.kind === "axis"
       ? `axis ${t.axis.key}`
-      : `dot ${PARTICLES[t.index].ca}-${PARTICLES[t.index].cb}`;
+      : t.kind === "mark"
+        ? `mark ${t.mark.id}`
+        : `dot ${PARTICLES[t.index].ca}-${PARTICLES[t.index].cb}`;
+
+const APART = { kind: "map", side: "apart", focus: { kind: "top" } } as const;
 
 const field = (container: HTMLElement) => container.querySelector(".brief-hub-canvas") as HTMLElement;
 
@@ -52,7 +56,7 @@ describe("HubCanvas", () => {
     expect(screen.getByRole("presentation").textContent).toBe("group A<->C");
     // The dots re-form for the next step under a still pointer: the old
     // name must not be read against the new step's groups.
-    rerender(<HubCanvas data={DATA} stage={{ kind: "target", id: "B6" }} labelFor={() => null} tipFor={tipFor} />);
+    rerender(<HubCanvas data={DATA} stage={{ kind: "doc", doc: "A" }} labelFor={() => null} tipFor={tipFor} />);
     expect(screen.queryByRole("presentation")).toBeNull();
   });
 
@@ -88,23 +92,88 @@ describe("HubCanvas", () => {
     expect(screen.getByRole("presentation").textContent).toBe("axis B");
   });
 
-  it("around a target, names the pair under the pointer and opens it", () => {
-    const stage = { kind: "target", id: "B6" } as const;
-    const layout = layoutHub(stage, PARTICLES, DATA, W, H);
-    const i = PARTICLES.findIndex((p) => p.ca === "B6" && p.cb === "C2");
+  it("on a side, names the pair under the pointer and opens it", () => {
+    const layout = layoutHub(APART, PARTICLES, DATA, W, H);
+    const i = PARTICLES.findIndex((p) => p.ca === "B6" && p.cb === "C1");
     expect(layout.visible[i]).toBe(1);
     const onSelect = vi.fn();
     const { container } = render(
-      <HubCanvas data={DATA} stage={stage} labelFor={() => null} tipFor={tipFor} onSelect={onSelect} />,
+      <HubCanvas data={DATA} stage={APART} labelFor={() => null} tipFor={tipFor} onSelect={onSelect} />,
     );
     fireEvent.pointerMove(field(container), { clientX: layout.x[i], clientY: layout.y[i] });
-    expect(screen.getByRole("presentation").textContent).toBe("dot B6-C2");
+    expect(screen.getByRole("presentation").textContent).toBe("dot B6-C1");
     fireEvent.click(field(container), { clientX: layout.x[i], clientY: layout.y[i] });
     expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ kind: "dot", index: i }));
   });
 
+  it("keeps a side's tip while only its emphasis changes, and drops it on the other side", () => {
+    const layout = layoutHub(APART, PARTICLES, DATA, W, H);
+    const i = PARTICLES.findIndex((p) => p.ca === "B6" && p.cb === "C1");
+    const { container, rerender } = render(
+      <HubCanvas data={DATA} stage={APART} labelFor={() => null} tipFor={tipFor} />,
+    );
+    fireEvent.pointerMove(field(container), { clientX: layout.x[i], clientY: layout.y[i] });
+    const b6 = { kind: "map", side: "apart", focus: { kind: "target", id: "B6" } } as const;
+    rerender(<HubCanvas data={DATA} stage={b6} labelFor={() => null} tipFor={tipFor} />);
+    expect(screen.getByRole("presentation").textContent).toBe("dot B6-C1");
+    const strong = { kind: "map", side: "reinforce", focus: { kind: "top" } } as const;
+    rerender(<HubCanvas data={DATA} stage={strong} labelFor={() => null} tipFor={tipFor} />);
+    expect(screen.queryByRole("presentation")).toBeNull();
+  });
+
+  it("names the targets a side carries, and each name is a way to its target", () => {
+    const layout = layoutHub(APART, PARTICLES, DATA, W, H);
+    const b6 = layout.marks.find((m) => m.id === "B6")!;
+    const onHover = vi.fn();
+    const onSelect = vi.fn();
+    const { container } = render(
+      <HubCanvas
+        data={DATA}
+        stage={APART}
+        labelFor={() => null}
+        tipFor={tipFor}
+        onHover={onHover}
+        onSelect={onSelect}
+        markLabel={(m) => `${m.id} (${m.count})`}
+      />,
+    );
+    const names = [...container.querySelectorAll("[data-mark]")].map((el) => el.textContent);
+    expect(names).toEqual(["A6 (6)", "B6 (7)"]);
+    // The end of a name, beside the diagonal.
+    const at = { clientX: b6.labelX - 4, clientY: b6.labelY };
+    fireEvent.pointerMove(field(container), at);
+    expect(onHover).toHaveBeenLastCalledWith("target:apart:B6");
+    expect(screen.getByRole("presentation").textContent).toBe("mark B6");
+    fireEvent.click(field(container), at);
+    expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ kind: "mark", mark: b6 }));
+  });
+
+  it("sets the other names back while one target is in focus", () => {
+    const stage = { kind: "map", side: "apart", focus: { kind: "target", id: "B6" } } as const;
+    const { container } = render(
+      <HubCanvas data={DATA} stage={stage} labelFor={() => null} markLabel={(m) => m.id} />,
+    );
+    const a6 = container.querySelector('[data-mark="A6"]') as HTMLElement;
+    const b6 = container.querySelector('[data-mark="B6"]') as HTMLElement;
+    expect(a6.getAttribute("data-dim")).toBe("true");
+    expect(b6.getAttribute("data-on")).toBe("true");
+  });
+
+  it("around a document, another document is a way in by its name as well as its dots", () => {
+    const stage = { kind: "doc", doc: "A" } as const;
+    const layout = layoutHub(stage, PARTICLES, DATA, W, H);
+    const c = layout.groups.find((g) => g.key === "C")!;
+    const onSelect = vi.fn();
+    const { container } = render(
+      <HubCanvas data={DATA} stage={stage} labelFor={() => null} tipFor={tipFor} onSelect={onSelect} />,
+    );
+    // The name sits in the band above its dots.
+    fireEvent.click(field(container), { clientX: (c.x0 + c.x1) / 2, clientY: c.y0 - 20 });
+    expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ kind: "group", group: expect.objectContaining({ key: "C" }) }));
+  });
+
   it("opens what is in focus from its name at the centre", () => {
-    const stage = { kind: "target", id: "B6" } as const;
+    const stage = { kind: "doc", doc: "A" } as const;
     const layout = layoutHub(stage, PARTICLES, DATA, W, H);
     const onCenter = vi.fn();
     const onSelect = vi.fn();
@@ -116,7 +185,7 @@ describe("HubCanvas", () => {
         tipFor={tipFor}
         onSelect={onSelect}
         onCenter={onCenter}
-        center={<span>B6</span>}
+        center={<span>A</span>}
       />,
     );
     fireEvent.click(field(container), { clientX: layout.center!.x, clientY: layout.center!.y });
@@ -125,11 +194,11 @@ describe("HubCanvas", () => {
   });
 
   it("opens what is in focus from anywhere on its name, however many lines it takes", () => {
-    const stage = { kind: "target", id: "B6" } as const;
+    const stage = { kind: "doc", doc: "A" } as const;
     const layout = layoutHub(stage, PARTICLES, DATA, W, H);
     const onCenter = vi.fn();
     const { container } = render(
-      <HubCanvas data={DATA} stage={stage} labelFor={() => null} tipFor={tipFor} onCenter={onCenter} center={<span>B6</span>} />,
+      <HubCanvas data={DATA} stage={stage} labelFor={() => null} tipFor={tipFor} onCenter={onCenter} center={<span>A</span>} />,
     );
     // A long name reaches well above the middle of the field.
     const name = container.querySelector(".brief-hub-center") as HTMLElement;
@@ -138,5 +207,37 @@ describe("HubCanvas", () => {
       ({ left: layout.center!.x - 70, right: layout.center!.x + 70, top, bottom: layout.center!.y + 60 }) as DOMRect;
     fireEvent.click(field(container), { clientX: layout.center!.x, clientY: top + 4 });
     expect(onCenter).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("stageKey", () => {
+  it("names each arrangement and question of the field", () => {
+    expect(stageKey({ kind: "overview" })).toBe("overview");
+    expect(stageKey({ kind: "map" })).toBe("map");
+    expect(stageKey({ kind: "map", tone: "reinforce" })).toBe("map:tone:reinforce");
+    expect(stageKey({ kind: "map", focus: { kind: "doc", doc: "B" } })).toBe("map:doc:B");
+    expect(stageKey({ kind: "map", side: "reinforce", focus: { kind: "top" } })).toBe("map:reinforce:top");
+    expect(stageKey({ kind: "map", side: "apart", focus: { kind: "theme", index: 1 } })).toBe("map:apart:theme:1");
+    expect(stageKey({ kind: "map", side: "apart", focus: { kind: "mechanism", mechanism: "goal_conflict" } })).toBe(
+      "map:apart:kind:goal_conflict",
+    );
+    expect(stageKey({ kind: "map", side: "apart", focus: { kind: "target", id: "B6" } })).toBe("map:apart:target:B6");
+    expect(stageKey({ kind: "doc", doc: "A" })).toBe("doc:A");
+  });
+});
+
+describe("the map's cells", () => {
+  it("sit on the pixel grid, a device pixel apart when there is room", () => {
+    // 2.41 css px at 2 device px each: 5 device px, 4 filled.
+    expect(cellRect(10.3, 20.7, 2.41, 2)).toEqual({ x: 9, y: 19.5, size: 2 });
+    // Too small for a gap: the whole cell, never under one device pixel.
+    expect(cellRect(10, 10, 1, 2).size).toBe(1);
+    expect(cellRect(10, 10, 0.3, 2).size).toBe(0.5);
+  });
+
+  it("are paler in a lighter ink, never transparent", () => {
+    expect(mixInk("#d2432c", "#f0f0ee", 1)).toBe("rgb(210,67,44)");
+    expect(mixInk("#d2432c", "#f0f0ee", 0)).toBe("rgb(240,240,238)");
+    expect(mixInk("#000000", "#ffffff", 0.5)).toBe("rgb(128,128,128)");
   });
 });
