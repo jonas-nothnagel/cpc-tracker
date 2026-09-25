@@ -78,7 +78,7 @@
   grid-template-columns: minmax(0, 1fr) minmax(19rem, 25rem);
   align-items: start;
   gap: clamp(1.5rem, 3vw, 3rem);
-  padding-top: 1.25rem;
+  padding-top: 2.25rem;
 }
 
 /* The ring stays in view while the column scrolls past it. */
@@ -1196,4 +1196,10 @@
 
 [data-brief] .ex-mark-none {
   background: #cfcfc9;
+}
+
+/* "How to read": a quiet link at the end of the controls, as in the brief. */
+[data-brief] .ex-howto {
+  margin-left: auto;
+  font-size: 0.875rem;
 }

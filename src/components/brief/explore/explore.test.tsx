@@ -255,8 +255,15 @@ describe("Explore with finance and implementation", () => {
     expect(within(layers).getByRole("button", { name: /Budget lines/ })).toHaveAttribute("aria-pressed", "false");
   });
 
-  it("shows a target's reported actions, budget lines and NR7 status beside the ring", () => {
+  it("keeps finance and implementation out of the column until they are switched on", () => {
     renderLayered({ focus: "A1" });
+    expect(within(side()).queryByRole("heading", { name: "Reported actions" })).toBeNull();
+    expect(within(side()).queryByRole("heading", { name: "Budget lines" })).toBeNull();
+    expect(within(side()).queryByText("Limited progress")).toBeNull();
+  });
+
+  it("shows a target's reported actions, budget lines and NR7 status beside the ring", () => {
+    renderLayered({ focus: "A1", layers: ["mitigation", "adaptation", "budget"] });
     expect(within(side()).getByText("1 strongly aligned reported action.")).toBeInTheDocument();
     expect(within(side()).getByText("No matching budget line.")).toBeInTheDocument();
     expect(within(side()).getByText("Limited progress")).toBeInTheDocument();
@@ -272,7 +279,7 @@ describe("Explore with finance and implementation", () => {
   });
 
   it("puts a whole layer in the centre and says how many targets it covers", () => {
-    renderLayered();
+    renderLayered({ layers: ["budget"] });
     const budget = screen
       .getAllByTestId("explore-browse-row")
       .find((row) => row.textContent?.includes("Budget lines (BER)"))!;
@@ -297,11 +304,33 @@ describe("Explore: every comparison of the centre", () => {
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     fireEvent.click(toggle);
     // B5: 4 potential misalignments, 4 strong alignments, 4 partial.
-    expect(screen.getByRole("heading", { name: "Potential misalignment (4)" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Strong alignment (4)" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Partial alignment (4)" })).toBeInTheDocument();
+    const all = document.querySelector(".ex-all") as HTMLElement;
+    expect(within(all).getByRole("heading", { name: "Potential misalignment (4)" })).toBeInTheDocument();
+    expect(within(all).getByRole("heading", { name: "Strong alignment (4)" })).toBeInTheDocument();
+    expect(within(all).getByRole("heading", { name: "Partial alignment (4)" })).toBeInTheDocument();
     expect(screen.getAllByTestId("explore-all-flagged")).toHaveLength(4);
-    // The short lists give way to the full one.
-    expect(screen.queryAllByTestId("explore-apart-row")).toHaveLength(0);
+    // The short lists stay where they are; the full list opens after them.
+    expect(screen.getAllByTestId("explore-apart-row")).toHaveLength(4);
+  });
+});
+
+describe("Explore: how to read", () => {
+  // The walkthrough's overlay follows its target's size; jsdom has no ResizeObserver.
+  const savedObserver = globalThis.ResizeObserver;
+  beforeEach(() => {
+    globalThis.ResizeObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    } as unknown as typeof ResizeObserver;
+  });
+  afterEach(() => {
+    globalThis.ResizeObserver = savedObserver;
+  });
+
+  it("walks through the ring from a quiet link beside the controls", async () => {
+    renderExplore();
+    fireEvent.click(screen.getByRole("button", { name: "How to read" }));
+    expect(await screen.findByText("Every target on one ring")).toBeInTheDocument();
   });
 });

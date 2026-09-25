@@ -408,17 +408,7 @@ export function TargetColumn({
       <p className="ex-focus-finding">{finding}</p>
       {counts.total > 0 && <ToneKey counts={counts} />}
       {pair}
-      <AllComparisons
-        groups={all}
-        docName={docName}
-        selected={selected}
-        onSelect={onSelect}
-        onHover={onHover}
-        open={showAll}
-        onToggle={() => setShowAll((v) => !v)}
-      />
-      {extra}
-      {!showAll && apart.length > 0 && (
+      {apart.length > 0 && (
         <section className="ex-section">
           <h3 className="ex-sub">{t("apartList", { count: apart.length })}</h3>
           <Expandable
@@ -437,7 +427,7 @@ export function TargetColumn({
           />
         </section>
       )}
-      {!showAll && strong.length > 0 && (
+      {strong.length > 0 && (
         <section className="ex-section">
           <h3 className="ex-sub">{t("strongList", { count: strong.length })}</h3>
           <Expandable
@@ -456,6 +446,16 @@ export function TargetColumn({
           />
         </section>
       )}
+      {extra}
+      <AllComparisons
+        groups={all}
+        docName={docName}
+        selected={selected}
+        onSelect={onSelect}
+        onHover={onHover}
+        open={showAll}
+        onToggle={() => setShowAll((v) => !v)}
+      />
     </>
   );
 }
@@ -825,17 +825,7 @@ export function ItemColumn({
       <p className="ex-focus-finding">{finding}</p>
       <p className="brief-panel-caveat ex-caveat">{caveat}</p>
       {pair}
-      <AllComparisons
-        groups={all}
-        docName={docName}
-        selected={selected}
-        onSelect={onSelect}
-        onHover={onHover}
-        open={showAll}
-        onToggle={() => setShowAll((v) => !v)}
-      />
-      {!showAll &&
-        lists
+      {lists
         .filter((list) => list.rows.length > 0)
         .map((list) => (
           <section key={list.testId} className="ex-section">
@@ -861,6 +851,15 @@ export function ItemColumn({
             />
           </section>
         ))}
+      <AllComparisons
+        groups={all}
+        docName={docName}
+        selected={selected}
+        onSelect={onSelect}
+        onHover={onHover}
+        open={showAll}
+        onToggle={() => setShowAll((v) => !v)}
+      />
     </>
   );
 }

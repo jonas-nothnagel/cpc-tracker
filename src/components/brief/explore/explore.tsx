@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
+import { TourOverlay } from "@/components/dashboard/coherence-briefing/tour/tour-overlay";
+import { useTour } from "@/components/dashboard/coherence-briefing/tour/use-tour";
 import type { ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import {
@@ -202,6 +205,7 @@ export function Explore({
   const tn = useTranslations("labels.nr7");
   const ti = useTranslations("briefing.implementation.nr7");
   const locale = useLocale();
+  const tour = useTour();
   const { n, pct } = useNumbers();
 
   const model = useMemo(() => buildExploreModel(data.scope, layers), [data.scope, layers]);
@@ -851,6 +855,10 @@ export function Explore({
         return { title: titleOf(level, rows.length), tone, rows, testId: `explore-all-${level}` };
       });
   };
+  // Finance and implementation show beside the ring only when switched on.
+  const actionLayers = available.filter((l) => l !== "budget");
+  const actionsOn = actionLayers.length > 0 && actionLayers.some((l) => state.layers.includes(l));
+  const budgetOn = available.includes("budget") && state.layers.includes("budget");
   const stepper = (siblings: ExploreItem[], current: string) => {
     const place = siblings.findIndex((c) => c.id === current);
     const to = (k: number) => (siblings[k] ? () => focusOn(siblings[k].id) : undefined);
@@ -870,7 +878,10 @@ export function Explore({
         strongest={ranked(restCounts.strong)}
         browseTitle={lens ? tl(lens.id) : t("browseDocs")}
         browse={browse}
-        layerBrowse={layerBrowse}
+        layerBrowse={layerBrowse.filter((row) => {
+          const layer = parseFocusKey(row.key).id.slice(6);
+          return layer === "budget" ? budgetOn : actionsOn;
+        })}
         countsOf={countsOf}
         docName={docName}
         onFocus={focusOn}
@@ -890,12 +901,12 @@ export function Explore({
     const openPartner = (id: string) => setPair((cur) => (cur?.b === id ? null : { a: singleItem.id, b: id }));
     const extra = (
       <>
-        {nr7 && (
+        {actionsOn && nr7 && (
           <p className="ex-nr7">
             {ti("selfAssessment")} <strong>{tn(nr7 === "on_track" ? "onTrack" : nr7 === "no_progress" ? "noProgress" : nr7)}</strong>
           </p>
         )}
-        {(available.includes("mitigation") || available.includes("adaptation")) && (
+        {actionsOn && (
           <LayerSection
             title={t("sectionActions")}
             finding={
@@ -916,7 +927,7 @@ export function Explore({
             onHover={setHot}
           />
         )}
-        {available.includes("budget") && (
+        {budgetOn && (
           <LayerSection
             title={t("sectionBudget")}
             finding={t("targetBudget", { strong: budget.length })}
@@ -1115,9 +1126,9 @@ export function Explore({
         kinds.includes(c.kind) && group.pairs[j][relation] > 0 ? [{ id: c.id, commitment: c }] : [],
       );
     const extra =
-      available.length > 0 ? (
+      actionsOn || budgetOn ? (
         <>
-          {(available.includes("mitigation") || available.includes("adaptation")) && (
+          {actionsOn && (
             <LayerSection
               title={t("sectionActions")}
               finding={t("groupActions", { strong: layerRows(["action"], "strong").length })}
@@ -1133,7 +1144,7 @@ export function Explore({
               onHover={setHot}
             />
           )}
-          {available.includes("budget") && (
+          {budgetOn && (
             <LayerSection
               title={t("sectionBudget")}
               finding={t("groupBudget", { strong: layerRows(["budget"], "strong").length })}
@@ -1181,7 +1192,6 @@ export function Explore({
     () => (state.focus && members.length > 0 ? { key: state.focus, ids: members } : null),
     [state.focus, members],
   );
-  const actionLayers = available.filter((l) => l !== "budget");
 
   return (
     <div className="ex" data-testid="explore">
@@ -1214,7 +1224,7 @@ export function Explore({
             ))}
           </div>
         )}
-        <div className="ex-lines" role="group" aria-label={t("lines")}>
+        <div className="ex-lines" role="group" aria-label={t("lines")} data-tour="explore-lines">
           <span className="ex-group-label">{t("lines")}</span>
           {LINE_KINDS.map((kind) => {
             const on = lines.includes(kind);
@@ -1229,7 +1239,7 @@ export function Explore({
           })}
         </div>
         {available.length > 0 && (
-          <div className="ex-layers" role="group" aria-label={t("layers")}>
+          <div className="ex-layers" role="group" aria-label={t("layers")} data-tour="explore-layers">
             <span className="ex-group-label">{t("layers")}</span>
             {actionLayers.length > 0 && (
               <button
@@ -1257,6 +1267,24 @@ export function Explore({
               </button>
             )}
           </div>
+        )}
+        <button
+          type="button"
+          className="brief-button-quiet ex-howto"
+          onClick={(e) => tour.start(TOUR_STEPS.explore, e.currentTarget.closest(".ex"))}
+        >
+          {t("howTo")}
+        </button>
+        {tour.active && (
+          <TourOverlay
+            tourId="explore"
+            steps={tour.steps}
+            stepIndex={tour.stepIndex}
+            onNext={tour.next}
+            onBack={tour.back}
+            onClose={tour.close}
+            scrollBlock="center"
+          />
         )}
       </div>
 
@@ -1288,7 +1316,9 @@ export function Explore({
             ariaLabel={t("ringLabel", { targets: model.targets, group: groupLabel(state.group) })}
           />
         </div>
-        <aside className="ex-side">{side}</aside>
+        <aside className="ex-side" data-tour="explore-column">
+          {side}
+        </aside>
       </div>
     </div>
   );

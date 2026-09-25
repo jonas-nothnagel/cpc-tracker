@@ -28,7 +28,8 @@ export type BriefingTourId =
   | "sectors"
   | "whereToFocus"
   | "implementationCoverage"
-  | "brief";
+  | "brief"
+  | "explore";
 
 export interface TourStep {
   /** i18n key segment under `briefing.tour.{tourId}.steps`. */
@@ -44,6 +45,17 @@ export interface TourStep {
 }
 
 export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
+  // Explore, the brief's ring of targets: what the ring, its centre, its
+  // lines, its layers and the column beside it show, so the ring itself
+  // carries no reading instructions. The layers step drops where a country
+  // has no reported actions or budget lines.
+  explore: [
+    { id: "ring", target: "explore-ring", placement: "right" },
+    { id: "centre", target: "explore-centre", placement: "right" },
+    { id: "lines", target: "explore-lines", placement: "bottom" },
+    { id: "layers", target: "explore-layers", placement: "bottom" },
+    { id: "column", target: "explore-column", placement: "left" },
+  ],
   // The coherence brief (/{country}/brief): what each part of the page is,
   // so the page itself carries no reading instructions. Steps whose section
   // is not in the reader's brief are dropped.

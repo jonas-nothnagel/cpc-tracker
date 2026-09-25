@@ -352,7 +352,17 @@ export function RingCanvas({
   const [cursor, setCursor] = useState<number | null>(null);
   const [live, setLive] = useState("");
 
-  const layout = useMemo(() => layoutRing(arcs, n, size.w, size.h), [arcs, n, size.w, size.h]);
+  // Room above and below the ring for the tallest name, with its counts
+  // line whether or not one shows, so the ring keeps its size as the centre
+  // changes and a name at the top never meets the controls.
+  const labelRoom = useMemo(
+    () => Math.max(56, ...labels.map((l) => labelSize({ ...l, sub: "0 aligned, 0 potential misalignment" }).height)) + 16,
+    [labels],
+  );
+  const layout = useMemo(
+    () => layoutRing(arcs, n, size.w, size.h, { labelHeight: labelRoom }),
+    [arcs, n, size.w, size.h, labelRoom],
+  );
   const placed = useMemo(() => placeLabels(layout, labels.map(labelSize)), [layout, labels]);
   const order = useMemo(() => arcs.flatMap((a) => a.ids), [arcs]);
   const flower = useMemo(() => flowerPaths(layout, arcs, edges), [layout, arcs, edges]);
@@ -600,6 +610,7 @@ export function RingCanvas({
       tabIndex={0}
       data-pointer={hover !== null || hoverLine !== null ? "seat" : undefined}
       data-testid="explore-ring"
+      data-tour="explore-ring"
       onPointerMove={onMove}
       onPointerLeave={() => {
         setHover(null);
@@ -672,7 +683,11 @@ export function RingCanvas({
         })}
       </div>
       {layout.rCentre > 0 && (
-        <div className="ex-centre" style={{ left: layout.cx, top: layout.cy, width: centreSize, height: centreSize }}>
+        <div
+          className="ex-centre"
+          data-tour="explore-centre"
+          style={{ left: layout.cx, top: layout.cy, width: centreSize, height: centreSize }}
+        >
           {centre}
         </div>
       )}

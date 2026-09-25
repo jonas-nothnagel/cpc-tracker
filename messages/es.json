@@ -524,6 +524,30 @@
             "body": "The same dots, one block for each pair of documents: each document's targets run along the diagonal, and each dot sits where its two targets meet. Pointing at a block or at a document's name gives its figures; selecting a block opens that pair of documents, and selecting a name puts that document at the centre further down."
           }
         }
+      },
+      "explore": {
+        "steps": {
+          "ring": {
+            "title": "Every target on one ring",
+            "body": "Each dot is one target of the selected documents, set in the arc of its document; Group by sets the arcs by policy area instead. Pointing at a dot names the target; selecting it puts it at the centre."
+          },
+          "centre": {
+            "title": "The centre",
+            "body": "At rest the centre holds the whole picture: every target pair and how it reads. With a target at the centre, every other dot takes the colour of how it reads against it: green aligned, grey partially aligned, red potential misalignment, sorted within each document. Selecting the name of a document or policy area puts all its targets at the centre; empty space or All targets returns to every target."
+          },
+          "lines": {
+            "title": "Lines",
+            "body": "Lines run from the centre to its strong alignments (solid) and potential misalignments (dashed); the switches add moderate and partial alignment. Pointing at a line shows the AI model's rating and the first sentence of its explanation; selecting it opens the comparison, where the explanation can be rated."
+          },
+          "layers": {
+            "title": "Reported actions and budget lines",
+            "body": "Where a country has them, actions reported in its Biennial Transparency Report (BTR) and budget lines of its Biodiversity Expenditure Review (BER) join the ring as squares and tilted squares. Only a strongly aligned action, an action that may pull against a target, or a matching budget line counts; the links are AI-estimated."
+          },
+          "column": {
+            "title": "Beside the ring",
+            "body": "The column says what the ring shows: the text of the target at the centre, its potential misalignments and strong alignments, and at the end every comparison with the first sentence of its AI explanation. Previous and Next step through its document; Copy link shares the view."
+          }
+        }
       }
     },
     "explorer": {
@@ -3264,7 +3288,8 @@
       "copyLink": "Copy link",
       "copied": "Link copied",
       "seeAll": "See all {count, number} comparisons",
-      "hideAll": "Show fewer"
+      "hideAll": "Show fewer",
+      "howTo": "How to read"
     }
   }
 }
