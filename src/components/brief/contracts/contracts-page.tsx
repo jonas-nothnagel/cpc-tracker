@@ -5,8 +5,11 @@ import { useTranslations } from "next-intl";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
+import { MisalignedBlock } from "./misaligned-block";
 import { Overview } from "./overview";
 import { ContractsPanels } from "./panels";
+import { SynergyBlock } from "./synergy-block";
+import { TargetsBlock } from "./targets-block";
 import "../brief.css";
 import "./contracts.css";
 
@@ -40,6 +43,15 @@ export function ContractsPage({ setup, geo }: { setup: ContractsSetup; geo: GeoF
           onContract={(id) => open({ kind: "contract", id })}
           onTarget={(id) => open({ kind: "target", id })}
         />
+        <div className="ct-deeps">
+          <TargetsBlock setup={setup} onTarget={(id) => open({ kind: "target", id })} />
+          <SynergyBlock setup={setup} onContract={(id) => open({ kind: "contract", id })} />
+          <MisalignedBlock
+            setup={setup}
+            onContract={(id) => open({ kind: "contract", id })}
+            onTarget={(id) => open({ kind: "target", id })}
+          />
+        </div>
       </div>
       <ContractsPanels
         stack={stack}
