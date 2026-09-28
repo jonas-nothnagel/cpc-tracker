@@ -80,6 +80,31 @@ export interface ContractsFile {
   example: string | null;
 }
 
+/** One contract's record and the AI's explanations, fetched on request. */
+export interface ContractRecord {
+  id: string;
+  /** The title as published. */
+  original: string;
+  /** Machine translation, when there is one. */
+  english: string | null;
+  /** The public body buying (the record's own field; shown only here). */
+  buyer: string;
+  code: string;
+  /** goods, works, services, consulting, non_consulting, framework, turnkey, direct, e_shop, other */
+  type: string;
+  /** new, approved, sent, in_progress, closed, other */
+  stage: string;
+  start: string | null;
+  end: string | null;
+  url: string;
+  /** The purpose reading's one-line reason, in the language the AI wrote it. */
+  reason: string;
+  /** Contracts in the same tender. */
+  lots: number;
+  strong: { target: string; text: string }[];
+  misaligned: { target: string; text: string; confidence: string; mechanism: string | null }[];
+}
+
 export function parseContractsFile(raw: unknown): ContractsFile | null {
   if (!raw || typeof raw !== "object") return null;
   const f = raw as Partial<ContractsFile>;
