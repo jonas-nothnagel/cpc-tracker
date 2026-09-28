@@ -2597,3 +2597,95 @@
     break-after: auto;
   }
 }
+
+/* ── Policy areas: one row per area, a point cloud above each target ─ */
+
+[data-brief] .brief-av-field {
+  position: relative;
+}
+
+[data-brief] .brief-av-field canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+
+[data-brief] .brief-av-field[data-clickable] {
+  cursor: pointer;
+}
+
+[data-brief] .brief-av-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[data-brief] .brief-av-row {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  max-width: 100%;
+  font-size: 0.875rem;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1), color 0.3s;
+}
+
+[data-brief] .brief-av-name {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .brief-av-row[data-marked] .brief-av-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .brief-av-row[data-dim] {
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-av-row[data-dim] .brief-av-name {
+  font-weight: 400;
+}
+
+[data-brief] .brief-av-n {
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-av-of {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-av-of[data-side="apart"] {
+  color: var(--brief-red);
+}
+
+[data-brief] .brief-av-of[data-side="reinforce"] {
+  color: var(--brief-green);
+}
+
+[data-brief] .brief-av-cut {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-av-tip {
+  white-space: normal;
+  max-width: 17rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brief] .brief-av-row {
+    transition: none;
+  }
+}

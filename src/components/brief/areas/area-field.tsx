@@ -1,0 +1,238 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from "react";
+import {
+  CLOUD_MAX_LINES,
+  cloudDots,
+  layoutAreaField,
+  targetAt,
+  type AreaFieldRow,
+} from "@/lib/brief/area-layout";
+import type { AreaSide, TargetInk } from "@/lib/brief/areas";
+
+/** The picture's inks: targets in ink or set back, clouds in the side's ink. */
+const FIELD_INK = {
+  base: "#55606e",
+  pale: "#dcdfdb",
+  apart: "#d2432c",
+  reinforce: "#2a7443",
+  ring: "#232e3d",
+} as const;
+
+/** How long a change of shape takes. */
+const MOVE_MS = 850;
+
+interface Pose {
+  x: number;
+  y: number;
+  s: number;
+}
+
+const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+/**
+ * The policy-area picture: one row per area, a dot per target on the row's
+ * line and its point cloud above it. The rows come in drawing order; the
+ * clouds and inks say what the reader has chosen, and every change of shape
+ * moves the same dots. Pointing at a target gives its tip; selecting it
+ * hands it to `onPick`. The list beside the picture carries every way in by
+ * keyboard, so the picture is hidden from assistive technology.
+ */
+export function AreaField({
+  rows,
+  restClouds,
+  clouds,
+  inks,
+  side,
+  rowLabel,
+  marked,
+  dimmed,
+  pointed,
+  tipFor,
+  formatCount,
+  onPick,
+}: {
+  rows: AreaFieldRow[];
+  /** Each target's cloud at rest: the rows' heights. */
+  restClouds: Map<string, number>;
+  /** Each target's cloud now. */
+  clouds: Map<string, number>;
+  inks: Map<string, TargetInk>;
+  side: AreaSide;
+  rowLabel: (id: string) => ReactNode;
+  /** Rows whose names the reader points at, in pale yellow. */
+  marked: ReadonlySet<string>;
+  /** Rows set back while a pair of areas is open. */
+  dimmed: ReadonlySet<string>;
+  /** A target pointed at beside the picture: ringed. */
+  pointed: string | null;
+  tipFor: (id: string) => ReactNode;
+  formatCount: (n: number) => string;
+  onPick: (id: string) => void;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const poses = useRef(new Map<string, Pose>());
+  const [width, setWidth] = useState(0);
+  const [tip, setTip] = useState<{ id: string; x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const measure = () => setWidth((prev) => (prev === el.clientWidth ? prev : el.clientWidth));
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const layout = useMemo(() => layoutAreaField(rows, restClouds, width), [rows, restClouds, width]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || width === 0) return;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(layout.width * dpr);
+    canvas.height = Math.round(layout.height * dpr);
+    const ctx = canvas.getContext("2d");
+    const from = new Map(poses.current);
+    const to = new Map<string, Pose>();
+    for (const [id, at] of layout.at) to.set(id, { x: at.x, y: at.y, s: clouds.get(id) ?? 0 });
+    const cloudInk = side === "apart" ? FIELD_INK.apart : FIELD_INK.reinforce;
+
+    const paint = (k: number) => {
+      const now = new Map<string, Pose>();
+      if (ctx) {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, layout.width, layout.height);
+      }
+      for (const [id, end] of to) {
+        const start = from.get(id) ?? { x: end.x, y: end.y, s: 0 };
+        const pose = {
+          x: start.x + (end.x - start.x) * k,
+          y: start.y + (end.y - start.y) * k,
+          s: start.s + (end.s - start.s) * k,
+        };
+        now.set(id, pose);
+        if (!ctx) continue;
+        const { dots, cut } = cloudDots(Math.round(pose.s), layout.per);
+        ctx.fillStyle = cloudInk;
+        for (let d = 0; d < dots; d++) {
+          const col = d % layout.per;
+          const line = Math.floor(d / layout.per);
+          // Every other dot small: potential misalignment reads without its colour.
+          const r = side === "apart" && (col + line) % 2 === 1 ? layout.cloudR * 0.6 : layout.cloudR;
+          ctx.beginPath();
+          ctx.arc(pose.x + (col - (layout.per - 1) / 2) * layout.sp, pose.y - layout.lift - line * layout.sp, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (cut) {
+          // The break over a cloud stopped at its limit.
+          const top = pose.y - layout.lift - CLOUD_MAX_LINES * layout.sp - layout.sp;
+          ctx.fillRect(pose.x - (layout.per * layout.sp) / 2, top, layout.per * layout.sp, 1.5);
+        }
+        const ink = inks.get(id) ?? "base";
+        ctx.fillStyle = ink === "pale" ? FIELD_INK.pale : ink === "lit" ? cloudInk : FIELD_INK.base;
+        ctx.beginPath();
+        ctx.arc(pose.x, pose.y, layout.targetR, 0, Math.PI * 2);
+        ctx.fill();
+        if (ink === "focus" || id === pointed) {
+          ctx.strokeStyle = FIELD_INK.ring;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(pose.x, pose.y, layout.targetR + 2.5, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+      poses.current = now;
+    };
+
+    const moves = [...to].some(([id, end]) => {
+      const start = from.get(id);
+      return !start || Math.abs(start.x - end.x) > 0.5 || Math.abs(start.y - end.y) > 0.5 || Math.abs(start.s - end.s) > 0.01;
+    });
+    const still =
+      from.size === 0 ||
+      !moves ||
+      typeof requestAnimationFrame === "undefined" ||
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (still) {
+      paint(1);
+      return;
+    }
+    let frame = 0;
+    const begin = performance.now();
+    const tick = (time: number) => {
+      const k = Math.min(1, (time - begin) / MOVE_MS);
+      paint(ease(k));
+      if (k < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [layout, clouds, inks, side, pointed, width]);
+
+  const hit = (e: { clientX: number; clientY: number; currentTarget: HTMLDivElement }) => {
+    const box = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - box.left;
+    const y = e.clientY - box.top;
+    return { id: targetAt(layout, clouds, x, y), x, y };
+  };
+  const onMove = (e: PointerEvent<HTMLDivElement>) => {
+    const { id, x, y } = hit(e);
+    setTip(id ? { id, x: Math.min(Math.max(x, 140), Math.max(140, layout.width - 140)), y } : null);
+  };
+  const onClick = (e: MouseEvent<HTMLDivElement>) => {
+    const { id } = hit(e);
+    if (id) onPick(id);
+  };
+
+  const cuts = [...layout.at]
+    .filter(([id]) => cloudDots(clouds.get(id) ?? 0, layout.per).cut)
+    .map(([id, at]) => ({ id, x: at.x, y: at.y - layout.lift - CLOUD_MAX_LINES * layout.sp - layout.sp - 3 }));
+  const measured = width > 0;
+
+  return (
+    <div
+      ref={wrapRef}
+      className="brief-av-field"
+      data-clickable={tip ? "true" : undefined}
+      style={{ height: measured ? layout.height : undefined }}
+      onPointerMove={onMove}
+      onPointerLeave={() => setTip(null)}
+      onClick={onClick}
+    >
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        style={{ width: measured ? layout.width : 0, height: measured ? layout.height : 0 }}
+      />
+      {measured && (
+        <div className="brief-av-labels" aria-hidden="true">
+          {layout.rows.map((row) => (
+            <div
+              key={row.id}
+              className="brief-av-row"
+              data-row={row.id}
+              data-marked={marked.has(row.id) ? "true" : undefined}
+              data-dim={dimmed.has(row.id) ? "true" : undefined}
+              style={{ transform: `translateY(${row.y}px)` }}
+            >
+              {rowLabel(row.id)}
+            </div>
+          ))}
+          {cuts.map((cut) => (
+            <div key={cut.id} className="brief-av-cut" data-cut={cut.id} style={{ left: cut.x, top: cut.y }}>
+              {formatCount(clouds.get(cut.id) ?? 0)}
+            </div>
+          ))}
+        </div>
+      )}
+      {tip && (
+        <div className="brief-tip brief-av-tip" role="presentation" style={{ left: tip.x, top: Math.max(4, tip.y - 64) }}>
+          {tipFor(tip.id)}
+        </div>
+      )}
+    </div>
+  );
+}
