@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { Overview } from "./overview";
+import { ContractsPanels } from "./panels";
 import "../brief.css";
 import "./contracts.css";
 
@@ -20,8 +21,9 @@ export type PanelState = { kind: "contract"; id: string } | { kind: "target"; id
 export function ContractsPage({ setup, geo }: { setup: ContractsSetup; geo: GeoFile | null }) {
   const t = useTranslations("brief.contracts");
   const [lens, setLens] = useState<LensKey>((setup.lenses[0]?.id as LensKey) ?? "globe");
-  const [, setStack] = useState<PanelState[]>([]);
+  const [stack, setStack] = useState<PanelState[]>([]);
   const open = (p: PanelState) => setStack([p]);
+  const placeNames = useMemo(() => Object.fromEntries((geo?.features ?? []).map((f) => [f.code, f.name])), [geo]);
 
   return (
     <div data-brief className="brief-root">
@@ -39,6 +41,14 @@ export function ContractsPage({ setup, geo }: { setup: ContractsSetup; geo: GeoF
           onTarget={(id) => open({ kind: "target", id })}
         />
       </div>
+      <ContractsPanels
+        stack={stack}
+        setup={setup}
+        placeNames={placeNames}
+        onPush={(next) => setStack((s) => [...s, next])}
+        onBack={() => setStack((s) => s.slice(0, -1))}
+        onClose={() => setStack([])}
+      />
     </div>
   );
 }

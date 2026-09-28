@@ -295,3 +295,76 @@
   color: var(--brief-muted);
   font-variant-numeric: tabular-nums;
 }
+
+/* ── Panels: a contract in full, a target with its contracts ─────── */
+
+[data-brief] .ct-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.35rem 1.1rem;
+  margin: 0;
+}
+
+[data-brief] .ct-fact-label {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-fact-value {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-panel-targets {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-panel-target {
+  display: grid;
+  grid-template-columns: 3px minmax(0, 1fr);
+  column-gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-panel-target-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+[data-brief] .ct-panel-target-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-panel-target-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-brief] .ct-panel-target .brief-panel-text {
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-backing + .ct-backing {
+  margin-top: 0.75rem;
+}
+
+[data-brief] .ct-backing-list {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.875rem;
+}
