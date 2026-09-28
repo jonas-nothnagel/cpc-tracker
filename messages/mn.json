@@ -522,6 +522,10 @@
           "map": {
             "title": "Map of the documents",
             "body": "The same dots, one block for each pair of documents: each document's targets run along the diagonal, and each dot sits where its two targets meet. Pointing at a block or at a document's name gives its figures; selecting a block opens that pair of documents, and selecting a name puts that document at the centre further down."
+          },
+          "areas": {
+            "title": "By policy area",
+            "body": "Each row is one policy area of the chosen lens, with a dot for each of its targets. Above each target, one dot for each target pair it takes part in on the chosen side: potential misalignment or strong alignment. The list beside it names the pairs of policy areas that hold the most of them; opening one keeps only its target pairs, and selecting a target shows its partners in every row."
           }
         }
       },

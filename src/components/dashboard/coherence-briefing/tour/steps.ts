@@ -66,6 +66,7 @@ export const TOUR_STEPS: Record<BriefingTourId, TourStep[]> = {
     { id: "themes", target: "brief-themes", placement: "bottom" },
     { id: "commitments", target: "brief-commitments", placement: "top" },
     { id: "documents", target: "brief-documents", placement: "top" },
+    { id: "areas", target: "brief-areas", placement: "top" },
     { id: "builder", target: "brief-builder", placement: "right" },
   ],
   // The product-level first read: not "how to read this chart" but what the

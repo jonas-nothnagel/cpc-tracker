@@ -14,6 +14,7 @@ import {
 import type { BriefSource } from "@/lib/brief/source";
 import type { ExploreSetup } from "@/lib/brief/explore/setup";
 import { EXPLORE_PARAMS, exploreQuery, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
+import { AreasView } from "./areas/areas-view";
 import { Explore } from "./explore/explore";
 import { Builder } from "./builder";
 import { Flow } from "./flow";
@@ -219,9 +220,21 @@ export function BriefApp({
               ) : undefined
             }
             sections={selection.sections.filter((id) => !OVERVIEW_SECTIONS.includes(id))}
-            renderSection={(id) => (
-              <SectionView id={id} variant="screen" data={data} lensName={lensName} handlers={handlers} />
-            )}
+            renderSection={(id) =>
+              id === "areas" ? (
+                <AreasView
+                  source={source}
+                  data={data}
+                  lens={selection.lens}
+                  onLens={(next) => update({ ...selection, lens: next })}
+                  onExplore={explore ? exploreTarget : undefined}
+                  onOpenCommitment={handlers.onOpenCommitment}
+                  onOpenAreaPair={(pair) => setPanels([{ kind: "areaPair", ...pair }])}
+                />
+              ) : (
+                <SectionView id={id} variant="screen" data={data} lensName={lensName} handlers={handlers} />
+              )
+            }
           />
           <Sheets
             pages={pages}

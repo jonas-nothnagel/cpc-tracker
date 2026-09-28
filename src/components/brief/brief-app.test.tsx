@@ -320,6 +320,41 @@ describe("BriefApp screen and print", () => {
     fireEvent.click(within(sections).getByRole("checkbox", { name: /By policy area/ }));
     expect(flow.querySelector('[data-section="areas"]')).toBeNull();
   });
+
+  it("shows the policy areas as the component after the overview", () => {
+    renderApp(briefFixture({ themes: true }));
+    const hub = screen.getByTestId("brief-hub");
+    const areas = screen.getByTestId("brief-areas");
+    expect(hub.compareDocumentPosition(areas) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toContain("of the potential misalignments sit");
+  });
+
+  it("keeps the menu's policy areas and the component's choice as one", () => {
+    const base = briefFixture();
+    const source = {
+      ...base,
+      lenses: [
+        ...base.lenses,
+        { id: "ipcc" as const, taxonomyType: "sector", categories: [{ id: "s1", name: "Agriculture" }], primary: { A1: "s1" } },
+      ],
+    };
+    renderApp(source);
+    const areas = screen.getByTestId("brief-areas");
+    fireEvent.click(within(areas).getByRole("button", { name: "Mitigation sectors" }));
+    expect((screen.getByRole("radio", { name: "Mitigation sectors" }) as HTMLInputElement).checked).toBe(true);
+    expect(window.location.search).toContain("lens=ipcc");
+    fireEvent.click(screen.getByRole("radio", { name: "Biodiversity" }));
+    expect(within(areas).getByRole("button", { name: "Biodiversity" }).getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("opens a pair of policy areas' target pairs in a panel", () => {
+    renderApp(briefFixture({ themes: true }));
+    const areas = screen.getByTestId("brief-areas");
+    const second = within(areas).getAllByTestId("brief-area-pair")[1];
+    fireEvent.click(within(second).getByRole("button", { expanded: false }));
+    fireEvent.click(within(areas).getByRole("button", { name: "See the 3 target pairs" }));
+    expect(screen.getByRole("dialog", { name: "Target pairs between policy areas" })).toBeTruthy();
+  });
 });
 
 describe("BriefApp walkthrough", () => {
@@ -354,6 +389,7 @@ describe("BriefApp walkthrough", () => {
       "Recurring themes",
       "Targets to review first",
       "Documents side by side",
+      "By policy area",
       "Customize the brief",
     ]);
   });
