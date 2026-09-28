@@ -3288,6 +3288,67 @@
       "showAlignments": "Show the strong alignments of {name}",
       "tipApartNames": "Potential misalignment with: {names}",
       "tipApartNamesMore": "Potential misalignment with: {names} and {more, number} more"
+    },
+    "contracts": {
+      "metaTitle": "Public contracts: {country}",
+      "title": "Public contracts",
+      "money": {
+        "tugrik": "{unit, select, trillion {₮{amount} trillion} billion {₮{amount} billion} million {₮{amount} million} other {₮{amount}}}",
+        "usd": "{unit, select, trillion {US${amount} trillion} billion {US${amount} billion} million {US${amount} million} other {US${amount}}}"
+      },
+      "kicker": {
+        "record": "The record",
+        "purpose": "For nature and climate",
+        "areas": "Toward each policy area",
+        "places": "Where it lands"
+      },
+      "record": {
+        "headline": "{value} in {count} public contracts since {year}",
+        "second": "About {usd}. Contracts show where public money is committed to specific work: the step between a target and its delivery.",
+        "example": "See one contract in full",
+        "source": "{name}, {first} to {last} · contracted, not verified delivered · contracts the record lists twice count once"
+      },
+      "purpose": {
+        "headline": "₮{per100} of every ₮100 was contracted for work mainly for nature or climate",
+        "second": "₮{per100} more for work where nature or climate is a side benefit.",
+        "tag": "AI reading of each contract's title"
+      },
+      "set": {
+        "all": "All {count} contracts · {value}",
+        "principal": "{count} mainly for nature or climate · {value}",
+        "significant": "{count} with it as a side benefit · {value}",
+        "of": "of {value}"
+      },
+      "areas": {
+        "lens": "Policy areas",
+        "headline": "{area} holds {targets} of the {total} targets and {pct} of the money contracted mainly for nature or climate",
+        "second": "{area} draws {pct} with {targets, plural, one {# target} other {# targets}}.",
+        "headlineTop": "{area} draws {pct} of the money contracted mainly for nature or climate, with {targets, plural, one {# target} other {# targets}}",
+        "headlineEmpty": "No money contracted mainly for nature or climate falls in these policy areas",
+        "none": "No policy area",
+        "targets": "{count, plural, one {# target} other {# targets}}",
+        "largest": "Largest contracts in {area}"
+      },
+      "places": {
+        "headline": "{place} holds {pct} of the money contracted mainly for nature or climate; {second}, {pct2}",
+        "headlineOne": "{place} holds {pct} of the money contracted mainly for nature or climate",
+        "second": "{pct} of it names no single place.",
+        "noPlace": "No single place named · {value}",
+        "largest": "Largest contracts in {place}",
+        "none": "No single place named"
+      },
+      "tip": {
+        "more": "and {count, plural, one {# more contract} other {# more contracts}}",
+        "year": "{year}: {count} contracts · {value}",
+        "partial": "part of the year only",
+        "place": "{count, plural, one {# contract} other {# contracts}} · {value} mainly for nature or climate",
+        "untranslated": "not yet translated",
+        "open": "Select to see it in full"
+      },
+      "field": {
+        "label": "The public contract record as squares of ₮5 billion each",
+        "unit": "₮ trillion"
+      }
     }
   }
 }

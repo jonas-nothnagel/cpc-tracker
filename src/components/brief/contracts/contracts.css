@@ -1,0 +1,297 @@
+/* Public contracts beside the targets. Scoped to [data-brief] like the brief;
+   the overview reuses the brief's hub grid (.brief-hub, .brief-hub-step). */
+
+[data-brief] .ct-page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.75rem) clamp(1rem, 3vw, 2.5rem) 5rem;
+}
+
+[data-brief] .ct-head {
+  margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+[data-brief] .ct-country {
+  margin: 0 0 0.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* ── The stage: the set line above the field ─────────────────────── */
+
+[data-brief] .ct-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+[data-brief] .ct-setline {
+  flex: none;
+}
+
+[data-brief] .ct-setline-bar {
+  display: flex;
+  height: 8px;
+  background: var(--brief-none);
+}
+
+[data-brief] .ct-setline-bar[data-all] {
+  background: var(--brief-ink);
+}
+
+[data-brief] .ct-setline-seg {
+  display: block;
+  height: 100%;
+  transition:
+    width 600ms ease,
+    background-color 600ms ease;
+}
+
+[data-brief] .ct-setline-text {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--brief-ink);
+}
+
+[data-brief] .ct-setline-key i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 0.4rem;
+}
+
+[data-brief] .ct-setline-of {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-unit {
+  flex: none;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+  margin-bottom: -0.4rem;
+}
+
+[data-brief] .ct-field {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+[data-brief] .ct-field[data-clickable] {
+  cursor: pointer;
+}
+
+[data-brief] .ct-field canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .ct-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+
+[data-brief] .ct-labels[data-moving] {
+  opacity: 0;
+  transition: none;
+}
+
+[data-brief] .ct-label {
+  position: absolute;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--brief-ink);
+  font-variant-numeric: tabular-nums;
+  transform: translate(0, -100%);
+}
+
+[data-brief] .ct-label[data-align="middle"] {
+  transform: translate(-50%, -100%);
+}
+
+[data-brief] .ct-label[data-align="end"] {
+  transform: translate(-100%, -50%);
+}
+
+[data-brief] .ct-label[data-kind="rowTargets"],
+[data-brief] .ct-label[data-kind="rowValue"] {
+  transform: translate(0, -50%);
+}
+
+[data-brief] .ct-label[data-kind="rowTargets"] {
+  transform: translate(-100%, -50%);
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-label[data-kind="year"],
+[data-brief] .ct-label[data-thin] {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-label-button {
+  pointer-events: auto;
+  padding: 0 0.15rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-brief] .ct-label-button:hover,
+[data-brief] .ct-label-button:focus-visible,
+[data-brief] .ct-label-button[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-label-button[data-kind="place"] {
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+[data-brief] .ct-tip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-width: 250px;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--brief-hairline);
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+[data-brief] .ct-tip-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+[data-brief] .ct-tip-meta,
+[data-brief] .ct-tip-note {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+/* ── The steps ───────────────────────────────────────────────────── */
+
+[data-brief] .ct-step {
+  min-height: 70vh;
+}
+
+[data-brief] .ct-link {
+  display: inline-block;
+  margin: 0.25rem 0 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--brief-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--brief-hairline-strong);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+[data-brief] .ct-link:hover {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .ct-source,
+[data-brief] .ct-tag {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-lens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  margin: 0 0 0.9rem;
+}
+
+[data-brief] .ct-lens-option {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
+  cursor: pointer;
+  text-underline-offset: 4px;
+}
+
+[data-brief] .ct-lens-option[aria-pressed="true"] {
+  color: var(--brief-ink);
+  text-decoration: underline;
+}
+
+[data-brief] .ct-overview .brief-hub-sub[data-lit] {
+  background: var(--brief-highlight);
+  display: inline;
+}
+
+[data-brief] .ct-list {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-list-row {
+  display: grid;
+  width: 100%;
+  gap: 0.1rem;
+  padding: 0.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--brief-hairline);
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-list-row:hover .ct-list-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-brief] .ct-list-title {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+[data-brief] .ct-list-meta {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}

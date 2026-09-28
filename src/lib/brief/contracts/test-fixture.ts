@@ -1,4 +1,6 @@
+import type { BriefDocument, BriefLens } from "../source";
 import type { Contract, ContractsFile } from "./model";
+import type { ContractsSetup } from "./setup";
 
 /**
  * A small record for tests: two years, three documents (A, B, C), six
@@ -78,5 +80,27 @@ export function briefSide() {
     primary: { A1: "g_sustainable", A2: "g_sustainable", B1: "g_restoration", B2: "g_pollution", C1: "g_sustainable" } as Record<string, string>,
     budget: new Set(["C2"]),
     action: new Set(["A2"]),
+  };
+}
+
+/** The page's setup for component tests: the fixture record, three
+ *  documents, six targets, two lenses (Biodiversity, Mitigation sectors). */
+export function setupFixture(): ContractsSetup {
+  const side = briefSide();
+  const doc = (id: string, name: string): BriefDocument => ({ id, code: id, name, full: name, color: "#000000", count: 2, defaultOn: true });
+  const lenses: BriefLens[] = [
+    { id: "globe", taxonomyType: "globe", categories: side.categories, primary: side.primary },
+    { id: "ipcc", taxonomyType: "sector", categories: [{ id: "sector_waste", name: "Waste" }], primary: { A1: "sector_waste" } },
+  ];
+  return {
+    countryId: "mongolia",
+    countryName: "Mongolia",
+    file: contractsFixture(),
+    documents: [doc("A", "Document A"), doc("B", "Document B"), doc("C", "Document C")],
+    targets: side.targets,
+    lenses,
+    budget: [...side.budget],
+    action: [...side.action],
+    backing: { C2: { budget: ["71404 Water resources"], action: [] }, A2: { budget: [], action: ["Protect springs"] } },
   };
 }
