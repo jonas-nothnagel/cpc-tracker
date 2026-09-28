@@ -568,6 +568,9 @@ export function Explore({
         : groupText(i);
     const reading = single !== null && i !== single ? readingOf(c.id) : undefined;
     const facts = factsOf(c);
+    // A seat compared with the one in the centre: selecting it moves it to
+    // the centre, so the card says where the comparison opens.
+    const compared = single !== null && i !== single && levelBetween(model, single, i) !== null;
     return (
       <>
         <span className="ex-tip-doc">{docName(c.doc)}</span>
@@ -580,6 +583,7 @@ export function Explore({
             <span className="ex-tip-ai-label">{t("aiLabel")}</span> {clip(reading.first, 220)}
           </span>
         )}
+        {compared && <span className="ex-tip-open">{t("seatOpenComparison")}</span>}
       </>
     );
   };
@@ -1340,6 +1344,13 @@ export function Explore({
             centre={centre}
             tipFor={tipFor}
             lineTipFor={lineTipFor}
+            lineCue={
+              single !== null
+                ? t("lineOpenComparison")
+                : activeKind === "doc" || activeKind === "area"
+                  ? t("lineOpenPairs")
+                  : undefined
+            }
             describe={describe}
             onSeat={toCentre}
             onLine={openLine}

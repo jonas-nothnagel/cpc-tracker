@@ -125,6 +125,31 @@ describe("Explore", () => {
     expect(screen.getByRole("heading", { name: "Targets to review first" })).toBeInTheDocument();
   });
 
+  it("says on a paired seat how to compare it with the target in the centre", () => {
+    // Lay the ring out: jsdom has no sizes.
+    const saved = {
+      w: Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth"),
+      h: Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientHeight"),
+    };
+    Object.defineProperty(HTMLElement.prototype, "clientWidth", { configurable: true, get: () => 800 });
+    Object.defineProperty(HTMLElement.prototype, "clientHeight", { configurable: true, get: () => 600 });
+    try {
+      renderExplore({ focus: "B6" });
+      const ring = screen.getByRole("application");
+      const card = () => document.querySelector(".ex-tip")?.textContent ?? "";
+      // The first seat of A: compared with B6.
+      fireEvent.keyDown(ring, { key: "ArrowRight" });
+      expect(card()).toContain("Select its line to open the comparison");
+      // The first seat of B: B6's own document, never compared with it.
+      fireEvent.keyDown(ring, { key: "PageDown" });
+      expect(card()).not.toBe("");
+      expect(card()).not.toContain("Select its line to open the comparison");
+    } finally {
+      if (saved.w) Object.defineProperty(HTMLElement.prototype, "clientWidth", saved.w);
+      if (saved.h) Object.defineProperty(HTMLElement.prototype, "clientHeight", saved.h);
+    }
+  });
+
   it("switches kinds of lines on and off, with their counts for the target in the centre", () => {
     renderExplore({ focus: "A1" });
     const lines = screen.getByRole("group", { name: "Lines" });
@@ -270,12 +295,29 @@ describe("Explore with finance and implementation", () => {
     expect(screen.getAllByTestId("explore-action-strong")).toHaveLength(1);
   });
 
-  it("puts a reported action in the centre with the targets it serves and may pull against", () => {
+  it("puts a reported action in the centre with the targets it serves and those potentially misaligned with it", () => {
     renderLayered({ focus: "BTR_1" });
     expect(within(side()).getByText(/Reported mitigation action · Biennial Transparency Report \(BTR\)/)).toBeInTheDocument();
-    expect(within(side()).getByText("Strongly aligned with 1 target. May pull against 1 target.")).toBeInTheDocument();
+    expect(within(side()).getByText("Strongly aligned with 1 target. Potentially misaligned with 1 target.")).toBeInTheDocument();
+    expect(within(side()).getByRole("heading", { name: "Potentially misaligned targets (1)" })).toBeInTheDocument();
     expect(screen.getAllByTestId("explore-item-strong")).toHaveLength(1);
     expect(screen.getAllByTestId("explore-item-pull")).toHaveLength(1);
+  });
+
+  it("says in the agreed words when a reported action is potentially misaligned with the target in the centre", () => {
+    renderLayered({ focus: "B2", layers: ["mitigation", "adaptation"] });
+    expect(within(side()).getByText("No strongly aligned reported action. 1 potentially misaligned.")).toBeInTheDocument();
+    expect(screen.getAllByTestId("explore-action-pull")).toHaveLength(1);
+  });
+
+
+  it("counts the targets potentially misaligned with a reported action when the actions are in the centre", () => {
+    renderLayered({ focus: "doc:layer:mitigation", layers: ["mitigation"] });
+    expect(
+      within(side()).getByText(
+        "1 of 18 targets have a strongly aligned reported action. 1 target is potentially misaligned with a reported action.",
+      ),
+    ).toBeInTheDocument();
   });
 
   it("puts a whole layer in the centre and says how many targets it covers", () => {

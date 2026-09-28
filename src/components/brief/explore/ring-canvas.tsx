@@ -307,6 +307,7 @@ export function RingCanvas({
   centre,
   tipFor,
   lineTipFor,
+  lineCue,
   describe,
   onSeat,
   onLine,
@@ -337,6 +338,9 @@ export function RingCanvas({
   centre: ReactNode;
   tipFor: (id: number) => ReactNode;
   lineTipFor: (id: number) => ReactNode;
+  /** What a click on a line opens, in the line's card (none where it opens
+   *  nothing beside the ring). */
+  lineCue?: string;
   describe: (id: number) => string;
   onSeat: (id: number) => void;
   onLine: (id: number) => void;
@@ -721,6 +725,7 @@ export function RingCanvas({
           role="presentation"
         >
           {lineTipFor(hoverLine.id)}
+          {lineCue && <span className="ex-tip-open">{lineCue}</span>}
         </div>
       )}
       <p className="ex-live" aria-live="polite">

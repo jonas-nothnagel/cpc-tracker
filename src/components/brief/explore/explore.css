@@ -1109,6 +1109,17 @@
   color: var(--brief-muted);
 }
 
+/* What a click on the line under the pointer opens, as a link reads. */
+[data-brief] .ex-tip-open {
+  display: block;
+  margin-top: 5px;
+  color: var(--brief-blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(4, 104, 177, 0.4);
+  text-underline-offset: 3px;
+}
+
 [data-brief] .ex-tip {
   max-width: 21rem;
 }
