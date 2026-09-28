@@ -4,10 +4,11 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { DrawerHeader, DrawerShell } from "@/components/ui/drawer-shell";
 import { FeedbackControl } from "@/components/dashboard/coherence-briefing/feedback-control";
+import { areaPairDetail, lensAreas, OTHER_AREA, type AreaSide } from "@/lib/brief/areas";
 import { findDocPair, partnersOf, strongestAligned, toneCounts, toneOf, type ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import type { FoundPair } from "@/lib/brief/pair";
-import type { BriefCommitment, BriefDocument, BriefSource } from "@/lib/brief/source";
+import type { BriefCommitment, BriefDocument, BriefSource, LensId } from "@/lib/brief/source";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { strandsByPathway } from "@/lib/pulse/strands";
 import { AiHeading, AiText, confidenceLabel, Explanation, FirstSentence, type DocNames } from "./ai-text";
@@ -21,7 +22,8 @@ export type PanelState =
   | { kind: "pair"; a: string; b: string }
   | { kind: "docPair"; a: string; b: string }
   | { kind: "commitment"; id: string }
-  | { kind: "theme"; type: "reinforcement" | "friction"; name: string };
+  | { kind: "theme"; type: "reinforcement" | "friction"; name: string }
+  | { kind: "areaPair"; lens: LensId; key: string; side: AreaSide };
 
 /** Commitment lists show this many before "Show all". */
 const LIST_PREVIEW = 12;
@@ -36,6 +38,8 @@ function keyOf(p: PanelState): string {
       return `docs:${p.a}:${p.b}`;
     case "commitment":
       return `c:${p.id}`;
+    case "areaPair":
+      return `area:${p.lens}:${p.side}:${p.key}`;
     default:
       return `theme:${p.type}:${p.name}`;
   }
@@ -594,6 +598,88 @@ function ThemePanel({
   );
 }
 
+/** A pair of policy areas: the side's target pairs between them, those of
+ *  the most involved targets first, each a way to its comparison. The
+ *  area's own target stands on the left. */
+function AreaPairPanel({
+  data,
+  source,
+  lens,
+  pairKey,
+  side,
+  onOpenPair,
+}: {
+  data: BriefData;
+  source: BriefSource;
+  lens: LensId;
+  pairKey: string;
+  side: AreaSide;
+  onOpenPair: (aId: string, bId: string) => void;
+}) {
+  const t = useTranslations("brief.areaView");
+  const tp = useTranslations("brief.panel");
+  const [all, setAll] = useState(false);
+  const areas = useMemo(() => lensAreas(source, data.scope, lens), [source, data.scope, lens]);
+  const detail = useMemo(() => areaPairDetail(areas, data.scope, side, pairKey), [areas, data.scope, side, pairKey]);
+  const areaOf = useMemo(
+    () => new Map(areas.areas.flatMap((x) => x.targets.map((id) => [id, x.id] as [string, string]))),
+    [areas],
+  );
+  const [a, b] = pairKey.split("|");
+  const nameOf = (id: string) => areas.areas.find((x) => x.id === id)?.name ?? id;
+  const docName = (doc: string) => data.scope.docs.find((d) => d.id === doc)?.name ?? doc;
+  const shown = all ? detail.rows : detail.rows.slice(0, LIST_PREVIEW);
+  const cell = (c: BriefCommitment) => (
+    <span className="brief-panel-cell">
+      <span className="brief-panel-row-doc">{docName(c.doc)} · </span>
+      {commitmentLine(c)}
+    </span>
+  );
+  return (
+    <>
+      <DrawerHeader>
+        <h2 className="brief-panel-title brief-panel-title-pair">
+          {a === b ? (
+            t("within", { area: nameOf(a) })
+          ) : (
+            <>
+              <span className="brief-panel-pairdoc" data-testid="brief-areapair-area">
+                {nameOf(a)}
+              </span>
+              <span className="brief-sr-only"> {tp("and")} </span>
+              <span className="brief-panel-pairdoc" data-testid="brief-areapair-area">
+                {b === OTHER_AREA ? t("outsideShort") : nameOf(b)}
+              </span>
+            </>
+          )}
+        </h2>
+        <p className="brief-panel-sub">{t("panelSub", { count: detail.rows.length, pairs: detail.pairs, side })}</p>
+      </DrawerHeader>
+      <div className="brief-panel-body">
+        <ol className="brief-panel-rows brief-panel-pairrows">
+          {shown.map((c) => {
+            const [left, right] = areaOf.get(c.a.id) === a ? [c.a, c.b] : [c.b, c.a];
+            return (
+              <li key={`${c.a.id}__${c.b.id}`} className="brief-panel-row" data-testid="brief-areapair-row">
+                <button type="button" onClick={() => onOpenPair(c.a.id, c.b.id)}>
+                  <span className={`brief-panel-mark brief-panel-mark-${side}`} aria-hidden="true" />
+                  {cell(left)}
+                  {cell(right)}
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+        {!all && detail.rows.length > LIST_PREVIEW && (
+          <button type="button" className="brief-panel-more brief-panel-show-all" onClick={() => setAll(true)}>
+            {tp("showAll", { count: detail.rows.length })}
+          </button>
+        )}
+      </div>
+    </>
+  );
+}
+
 /**
  * The brief's drill-downs in one drawer with a back trail: a single
  * comparison (with its AI reading), a pair of documents, a commitment and
@@ -616,22 +702,25 @@ export function BriefPanels({
   onClose: () => void;
 }) {
   const t = useTranslations("brief.panel");
+  const ta = useTranslations("brief.areaView");
   const top = stack[stack.length - 1];
   if (!top) return null;
   const openPair = (a: string, b: string) => onPush({ kind: "pair", a, b });
   const dialogLabel =
     top.kind === "pair"
       ? t("pairDialog")
-      : top.kind === "theme"
-        ? t("themeDialog", { name: top.name })
-        : top.kind === "commitment"
-          ? t("commitmentDialog", {
-              label: data.scope.commitments.find((c) => c.id === top.id)?.label ?? top.id,
-            })
-          : t("docPairDialog", {
-              docA: data.scope.docs.find((d) => d.id === top.a)?.name ?? top.a,
-              docB: data.scope.docs.find((d) => d.id === top.b)?.name ?? top.b,
-            });
+      : top.kind === "areaPair"
+        ? ta("panelDialog")
+        : top.kind === "theme"
+          ? t("themeDialog", { name: top.name })
+          : top.kind === "commitment"
+            ? t("commitmentDialog", {
+                label: data.scope.commitments.find((c) => c.id === top.id)?.label ?? top.id,
+              })
+            : t("docPairDialog", {
+                docA: data.scope.docs.find((d) => d.id === top.a)?.name ?? top.a,
+                docB: data.scope.docs.find((d) => d.id === top.b)?.name ?? top.b,
+              });
   return (
     <DrawerShell
       open
@@ -664,6 +753,17 @@ export function BriefPanels({
           countryId={source.countryId}
           type={top.type}
           name={top.name}
+          onOpenPair={openPair}
+        />
+      )}
+      {top.kind === "areaPair" && (
+        <AreaPairPanel
+          key={keyOf(top)}
+          data={data}
+          source={source}
+          lens={top.lens}
+          pairKey={top.key}
+          side={top.side}
           onOpenPair={openPair}
         />
       )}

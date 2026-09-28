@@ -264,3 +264,28 @@ describe("BriefPanels", () => {
     await waitFor(() => expect(screen.getByText("Both claim the same wetland.")).toBeTruthy());
   });
 });
+
+describe("BriefPanels: a pair of policy areas", () => {
+  it("lists a pair of policy areas' target pairs, each a way to its comparison", () => {
+    const { onPush } = renderPanels([{ kind: "areaPair", lens: "globe", key: "g2|g5", side: "apart" }]);
+    expect(screen.getAllByTestId("brief-areapair-area").map((n) => n.textContent)).toEqual(["Agriculture", "Water"]);
+    expect(screen.getByText("3 of 9 target pairs show potential misalignment")).toBeTruthy();
+    const rows = screen.getAllByTestId("brief-areapair-row");
+    expect(rows).toHaveLength(3);
+    expect(rows[0].textContent).toContain("6 Commitment B6");
+    expect(rows[0].textContent).toContain("1 Commitment C1");
+    fireEvent.click(within(rows[0]).getByRole("button"));
+    expect(onPush).toHaveBeenCalledWith({ kind: "pair", a: "B6", b: "C1" });
+  });
+
+  it("puts the area's own target first when its partner sits outside the lens", () => {
+    renderPanels([{ kind: "areaPair", lens: "globe", key: "g2|__other", side: "apart" }]);
+    expect(screen.getAllByTestId("brief-areapair-area").map((n) => n.textContent)).toEqual([
+      "Agriculture",
+      "Targets outside these areas",
+    ]);
+    const first = screen.getAllByTestId("brief-areapair-row")[0];
+    expect(first.querySelectorAll(".brief-panel-cell")[0].textContent).toContain("Commitment B5");
+    expect(first.querySelectorAll(".brief-panel-cell")[1].textContent).toContain("Commitment A6");
+  });
+});
