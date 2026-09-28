@@ -231,8 +231,10 @@ export function cloudSizes(lens: LensAreas, links: SideLinks, side: AreaSide, fo
 
 /** Each area's row with its targets in drawing order: the tallest clouds at
  *  rest first (then document order); in the open pair of areas' two rows,
- *  the tallest clouds of that pair first; around a picked target, the
- *  target, then its partners, then the rest. */
+ *  the tallest clouds of that pair first; around a picked target, its
+ *  partners first in their rows, while its own row keeps the order it had
+ *  (`basis`: at rest, or with a pair of areas open), so the target stays
+ *  under the pointer and a second pick at the same spot lets it go. */
 export function rowOrder(
   lens: LensAreas,
   rest: Map<string, number>,
@@ -240,20 +242,24 @@ export function rowOrder(
   focus: AreaFocus,
   links: SideLinks,
   side: AreaSide,
+  basis: AreaFocus = { kind: "rest" },
 ): { id: string; targets: string[] }[] {
   const picked = focus.kind === "target" ? focus.id : null;
   const partners = picked ? new Set(links[side].get(picked) ?? []) : null;
-  const pair = focus.kind === "pair" ? focus.pair : null;
+  const pair = focus.kind === "pair" ? focus.pair : basis.kind === "pair" ? basis.pair : null;
   return lens.areas.map((area) => {
     const index = new Map(area.targets.map((id, i) => [id, i]));
     const byRest = (x: string, y: string) =>
       (rest.get(y) ?? 0) - (rest.get(x) ?? 0) || (index.get(x) ?? 0) - (index.get(y) ?? 0);
+    const inPair = pair !== null && (area.id === pair.a || area.id === pair.b);
+    const byPair = (x: string, y: string) =>
+      (pair?.involvement.get(y) ?? 0) - (pair?.involvement.get(x) ?? 0) || byRest(x, y);
     const targets = [...area.targets];
-    if (picked && partners) {
-      const rank = (id: string) => (id === picked ? 0 : partners.has(id) ? 1 : 2);
+    if (picked && partners && !area.targets.includes(picked)) {
+      const rank = (id: string) => (partners.has(id) ? 0 : 1);
       targets.sort((x, y) => rank(x) - rank(y) || byRest(x, y));
-    } else if (pair && (area.id === pair.a || area.id === pair.b)) {
-      targets.sort((x, y) => (clouds.get(y) ?? 0) - (clouds.get(x) ?? 0) || byRest(x, y));
+    } else if (inPair) {
+      targets.sort(byPair);
     } else {
       targets.sort(byRest);
     }

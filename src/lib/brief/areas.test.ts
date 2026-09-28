@@ -218,7 +218,16 @@ describe("the picture's states", () => {
     ]);
   });
 
-  it("puts a picked target first in its row and its partners first in theirs", () => {
+  it("keeps a picked target where it stood in its row, as at rest or in the open pair", () => {
+    // B5 stands second in its row; picking it must not move it under the pointer.
+    const focus = { kind: "target" as const, id: "B5" };
+    const clouds = cloudSizes(lens, links, "apart", focus);
+    expect(rowOrder(lens, rest, clouds, focus, links, "apart")[1].targets).toEqual(["B6", "B5", "B4"]);
+    const basis = { kind: "pair" as const, pair };
+    expect(rowOrder(lens, rest, clouds, focus, links, "apart", basis)[1].targets).toEqual(["B6", "B5", "B4"]);
+  });
+
+  it("keeps a picked target in place and puts its partners first in their rows", () => {
     // x3 is y1's only partner and the smallest cloud of its row.
     const small: LensAreas = {
       areas: [

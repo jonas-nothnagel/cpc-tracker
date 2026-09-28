@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cloudDots, layoutAreaField, targetAt } from "./area-layout";
+import { cloudDots, cutMarks, layoutAreaField, ROW_LABEL, targetAt } from "./area-layout";
 
 const ROWS = [
   { id: "r1", targets: ["a", "b"] },
@@ -67,5 +67,26 @@ describe("targetAt", () => {
     expect(targetAt(layout, REST, 25, 42)).toBe("b");
     expect(targetAt(layout, REST, 12, 10)).toBeNull();
     expect(targetAt(layout, REST, 150, 42)).toBeNull();
+  });
+});
+
+describe("cutMarks", () => {
+  it("keeps a cut cloud's count clear of its row's name", () => {
+    // Clouds come tallest first, so a cut cloud always leads its row, under the name.
+    const rest = new Map([
+      ["a", 211],
+      ["b", 3],
+    ]);
+    const layout = layoutAreaField([{ id: "r", targets: ["a", "b"] }], rest, 212);
+    const marks = cutMarks(layout, rest);
+    expect(marks.map((m) => m.id)).toEqual(["a"]);
+    expect(marks[0].top).toBeGreaterThanOrEqual(layout.rows[0].y + ROW_LABEL);
+    expect(marks[0].x).toBeCloseTo(layout.at.get("a")!.x);
+  });
+
+  it("marks only the clouds cut in the current state", () => {
+    const rest = new Map([["a", 211]]);
+    const layout = layoutAreaField([{ id: "r", targets: ["a"] }], rest, 212);
+    expect(cutMarks(layout, new Map([["a", 12]]))).toEqual([]);
   });
 });

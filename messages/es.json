@@ -3476,7 +3476,7 @@
       "headlineBetween": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and <second>{areaB}</second> targets.",
       "headlineWithin": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit within <first>{areaA}</first> targets.",
       "headlineOutside": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and targets outside these areas.",
-      "headlineNone": "Too few target pairs to compare.",
+      "headlineNone": "No target pairs in these policy areas {side, select, apart {show potential misalignment} other {are strongly aligned}}.",
       "scope": "{placed, number} of the {total, number} targets fall in one of these areas.",
       "within": "Within {area}",
       "outside": "{area} · targets outside these areas",

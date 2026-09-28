@@ -2673,8 +2673,9 @@
 
 [data-brief] .brief-av-cut {
   position: absolute;
-  transform: translate(-50%, -100%);
+  transform: translateX(-50%);
   font-size: 0.75rem;
+  line-height: 14px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }

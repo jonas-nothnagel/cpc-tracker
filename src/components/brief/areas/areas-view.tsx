@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {
   areaHeadline,
@@ -105,12 +105,18 @@ export function AreasView({
   const [pointedRows, setPointedRows] = useState<string[]>([]);
   const [pointedTarget, setPointedTarget] = useState<string | null>(null);
   const [fullText, setFullText] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const cardTitle = useRef<HTMLParagraphElement>(null);
+  // Where keyboard focus goes once a pick or "Back" has re-drawn the list.
+  const moveFocus = useRef<"card" | "pair" | null>(null);
   // A new lens lets the open pair and the picked target go, for good.
   const [seenLens, setSeenLens] = useState(active);
   if (seenLens !== active) {
     setSeenLens(active);
     setOpen(null);
     setPicked(null);
+    setPointedTarget(null);
+    setPointedRows([]);
   }
 
   const areas = useMemo(() => (active ? lensAreas(source, data.scope, active) : null), [source, data.scope, active]);
@@ -136,9 +142,14 @@ export function AreasView({
     () => (areas ? cloudSizes(areas, links, side, focus) : new Map<string, number>()),
     [areas, links, side, focusKey],
   );
+  // A picked target's row keeps the order it had, at rest or with its pair open.
+  const basisKey = focusId && openPair ? openPair.key : "";
   const rows = useMemo(
-    () => (areas ? rowOrder(areas, rest, clouds, focus, links, side) : []),
-    [areas, rest, clouds, focusKey],
+    () =>
+      areas
+        ? rowOrder(areas, rest, clouds, focus, links, side, focusId && openPair ? { kind: "pair", pair: openPair } : { kind: "rest" })
+        : [],
+    [areas, rest, clouds, focusKey, basisKey],
   );
   const inks = useMemo(
     () => (areas ? targetInks(areas, focus, links, side) : new Map<string, TargetInk>()),
@@ -149,6 +160,19 @@ export function AreasView({
     [areas, links, side, focusKey],
   );
   /* eslint-enable react-hooks/exhaustive-deps */
+
+  // Keyboard focus follows a pick to the target's card, and "Back" to its
+  // pair of areas (the buttons that were pressed are gone).
+  useEffect(() => {
+    const want = moveFocus.current;
+    moveFocus.current = null;
+    if (want === "card") cardTitle.current?.focus({ preventScroll: true });
+    if (want === "pair") {
+      const heads = root.current?.querySelectorAll<HTMLElement>(".brief-av-pair-head") ?? [];
+      const open = root.current?.querySelector<HTMLElement>('[data-open="true"] .brief-av-pair-head');
+      (open ?? heads[0])?.focus({ preventScroll: true });
+    }
+  }, [focusId]);
 
   if (!active || !areas || !pairs) return null;
 
@@ -164,19 +188,30 @@ export function AreasView({
   const commitment = (id: string) => data.scope.commitments.find((c) => c.id === id);
   const docName = (doc: string) => data.scope.docs.find((d) => d.id === doc)?.name ?? doc;
 
+  // Every choice forgets the target pointed at in the list: its button may be gone.
   const choose = (next: AreaSide) => {
     setSide(next);
     setOpen(null);
     setPicked(null);
+    setPointedTarget(null);
   };
   const toggle = (p: AreaPair) => {
     setOpen(openPair?.key === p.key ? null : p.key);
     setPicked(null);
+    setPointedTarget(null);
     setFullText(false);
   };
   const pick = (id: string) => {
-    setPicked(focusId === id ? null : id);
+    const letGo = focusId === id;
+    setPicked(letGo ? null : id);
+    setPointedTarget(null);
     setFullText(false);
+    if (!letGo) moveFocus.current = "card";
+  };
+  const back = () => {
+    setPicked(null);
+    setPointedTarget(null);
+    moveFocus.current = "pair";
   };
 
   const head = areaHeadline(pairs);
@@ -188,6 +223,7 @@ export function AreasView({
         onOpen={() => {
           setOpen(lead.key);
           setPicked(null);
+          setPointedTarget(null);
         }}
       >
         {chunks}
@@ -197,7 +233,7 @@ export function AreasView({
     );
   const headline =
     head.kind === "none"
-      ? t("headlineNone")
+      ? t("headlineNone", { side })
       : t.rich(
           head.kind === "within" ? "headlineWithin" : head.kind === "outside" ? "headlineOutside" : "headlineBetween",
           {
@@ -210,7 +246,7 @@ export function AreasView({
           },
         );
 
-  const card = (back: string) => {
+  const card = (backLabel: string) => {
     if (!focusId) return null;
     const c = commitment(focusId);
     if (!c) return null;
@@ -222,11 +258,11 @@ export function AreasView({
     const openTarget = onExplore ?? onOpenCommitment;
     return (
       <div className="brief-av-card" data-testid="brief-area-card">
-        <button type="button" className="brief-av-back" aria-label={t("backTo", { name: back })} onClick={() => setPicked(null)}>
+        <button type="button" className="brief-av-back" aria-label={t("backTo", { name: backLabel })} onClick={back}>
           <span aria-hidden="true">‹ </span>
-          {back}
+          {backLabel}
         </button>
-        <p className="brief-av-card-title">
+        <p className="brief-av-card-title" ref={cardTitle} tabIndex={-1}>
           <span>{c.label}</span>
         </p>
         <p className="brief-av-card-doc">{docName(c.doc)}</p>
@@ -335,7 +371,7 @@ export function AreasView({
   const max = pairs.top[0]?.count ?? 1;
 
   return (
-    <div className="brief-av" data-testid="brief-areas" data-tour="brief-areas">
+    <div className="brief-av" data-testid="brief-areas" data-tour="brief-areas" ref={root}>
       <div className="brief-av-picture">
         <AreaField
           rows={rows}
@@ -405,7 +441,7 @@ export function AreasView({
             })}
           </ol>
         )}
-        {pairs.rest.groups > 0 && (
+        {pairs.top.length > 0 && pairs.rest.groups > 0 && (
           <p className="brief-av-rest">
             {t("rest", { groups: pairs.rest.groups, count: pairs.rest.count, pairs: pairs.rest.pairs })}
           </p>

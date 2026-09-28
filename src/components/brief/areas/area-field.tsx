@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from "react";
 import {
-  CLOUD_MAX_LINES,
   cloudDots,
+  cutBreak,
+  cutMarks,
   layoutAreaField,
   targetAt,
   type AreaFieldRow,
@@ -129,8 +130,7 @@ export function AreaField({
         }
         if (cut) {
           // The break over a cloud stopped at its limit.
-          const top = pose.y - layout.lift - CLOUD_MAX_LINES * layout.sp - layout.sp;
-          ctx.fillRect(pose.x - (layout.per * layout.sp) / 2, top, layout.per * layout.sp, 1.5);
+          ctx.fillRect(pose.x - (layout.per * layout.sp) / 2, cutBreak(layout, pose.y), layout.per * layout.sp, 1.5);
         }
         const ink = inks.get(id) ?? "base";
         ctx.fillStyle = ink === "pale" ? FIELD_INK.pale : ink === "lit" ? cloudInk : FIELD_INK.base;
@@ -187,9 +187,7 @@ export function AreaField({
     if (id) onPick(id);
   };
 
-  const cuts = [...layout.at]
-    .filter(([id]) => cloudDots(clouds.get(id) ?? 0, layout.per).cut)
-    .map(([id, at]) => ({ id, x: at.x, y: at.y - layout.lift - CLOUD_MAX_LINES * layout.sp - layout.sp - 3 }));
+  const cuts = cutMarks(layout, clouds);
   const measured = width > 0;
 
   return (
@@ -222,7 +220,7 @@ export function AreaField({
             </div>
           ))}
           {cuts.map((cut) => (
-            <div key={cut.id} className="brief-av-cut" data-cut={cut.id} style={{ left: cut.x, top: cut.y }}>
+            <div key={cut.id} className="brief-av-cut" data-cut={cut.id} style={{ left: cut.x, top: cut.top }}>
               {formatCount(clouds.get(cut.id) ?? 0)}
             </div>
           ))}

@@ -9,7 +9,7 @@
 /** A cloud stops here; a taller one is cut, with its exact count on top. */
 export const CLOUD_MAX_LINES = 40;
 /** A row's name line, the room under it, and the room after the row. */
-const ROW_LABEL = 20;
+export const ROW_LABEL = 20;
 const ROW_GAP = 8;
 const ROW_AFTER = 16;
 /** Room kept at the field's two sides. */
@@ -19,6 +19,10 @@ const FIELD_BUDGET = 720;
 /** Spacing of the targets on a row. */
 const PITCH_MIN = 6.5;
 const PITCH_MAX = 12;
+/** Room a row keeps above its clouds for a cut cloud's count, and that
+ *  count's line height. */
+const CUT_ROOM = 16;
+const CUT_LINE = 14;
 
 export interface AreaFieldRow {
   id: string;
@@ -55,6 +59,11 @@ export function cloudDots(count: number, per: number): { dots: number; cut: bool
   return count > max ? { dots: max, cut: true } : { dots: count, cut: false };
 }
 
+/** Where the break over a cut cloud runs, for a target whose dot is at `y`. */
+export function cutBreak(layout: Pick<AreaFieldLayout, "lift" | "sp">, y: number): number {
+  return y - layout.lift - CLOUD_MAX_LINES * layout.sp - layout.sp;
+}
+
 export function layoutAreaField(rows: AreaFieldRow[], restClouds: Map<string, number>, width: number): AreaFieldLayout {
   const usable = Math.max(1, width - FIELD_PAD);
   const widest = Math.max(1, ...rows.map((r) => r.targets.length));
@@ -63,11 +72,12 @@ export function layoutAreaField(rows: AreaFieldRow[], restClouds: Map<string, nu
   const lift = Math.max(2, pitch * 0.4);
   const tallest = rows.map((r) => Math.max(0, ...r.targets.map((id) => restClouds.get(id) ?? 0)));
   const lines = (r: AreaFieldRow) => Math.max(1, Math.ceil(r.targets.length / perLine));
+  // The room each line of targets keeps above it for their clouds, and for a
+  // cut cloud's count when the row's tallest cloud at rest is cut.
+  const bandOf = (i: number, per: number, sp: number) =>
+    (cloudDots(tallest[i], per).cut ? CUT_ROOM : 0) + cloudLines(tallest[i], per) * sp + lift;
   const heightWith = (per: number, sp: number) =>
-    rows.reduce(
-      (h, r, i) => h + ROW_LABEL + ROW_GAP + lines(r) * (cloudLines(tallest[i], per) * sp + lift + pitch) + ROW_AFTER,
-      0,
-    );
+    rows.reduce((h, r, i) => h + ROW_LABEL + ROW_GAP + lines(r) * (bandOf(i, per, sp) + pitch) + ROW_AFTER, 0);
   let per = 2;
   let sp = Math.min(4.6, pitch / 2);
   if (heightWith(per, sp) > FIELD_BUDGET) {
@@ -79,8 +89,7 @@ export function layoutAreaField(rows: AreaFieldRow[], restClouds: Map<string, nu
   let y = 0;
   rows.forEach((r, i) => {
     tops.push({ id: r.id, y });
-    // The room each line of targets keeps above it for their clouds.
-    const band = cloudLines(tallest[i], per) * sp + lift;
+    const band = bandOf(i, per, sp);
     r.targets.forEach((id, j) => {
       const line = Math.floor(j / perLine);
       at.set(id, {
@@ -120,4 +129,15 @@ export function targetAt(layout: AreaFieldLayout, clouds: Map<string, number>, x
     }
   }
   return best;
+}
+
+/** The counts over the clouds cut in the current state: centred on the
+ *  target, their top edge in the room the row keeps above its clouds. */
+export function cutMarks(layout: AreaFieldLayout, clouds: Map<string, number>): { id: string; x: number; top: number }[] {
+  const marks: { id: string; x: number; top: number }[] = [];
+  for (const [id, at] of layout.at) {
+    if (!cloudDots(clouds.get(id) ?? 0, layout.per).cut) continue;
+    marks.push({ id, x: at.x, top: cutBreak(layout, at.y) - 2 - CUT_LINE });
+  }
+  return marks;
 }

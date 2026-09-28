@@ -118,21 +118,39 @@ describe("AreasView", () => {
     expect(screen.getAllByTestId("brief-area-target")).toHaveLength(4);
   });
 
-  it("picks a target on the picture, and lets it go on a second pick", () => {
+  it("picks a target on the picture, and lets it go on a second pick at the same spot", () => {
     renderView();
     const lens = lensAreas(SOURCE, DATA.scope, "globe");
     const links = sideLinks(DATA.scope);
     const rest = restClouds(lens, links, "apart");
-    const b6 = layoutAreaField(rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart"), rest, W).at.get("B6")!;
+    const at = layoutAreaField(rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart"), rest, W).at;
     const field = document.querySelector(".brief-av-field") as HTMLElement;
+    const b6 = at.get("B6")!;
     fireEvent.click(field, { clientX: b6.x, clientY: b6.y });
     const card = screen.getByTestId("brief-area-card");
     expect(within(card).getByText("6 Commitment B6")).toBeTruthy();
     expect(card.textContent).toContain("Potential misalignment with 7 targets: 3 in Water, 4 outside these areas.");
     expect(row("g5").textContent).toContain("3 of 3 targets");
-    // B6 already led its row, so it stays where it was.
     fireEvent.click(field, { clientX: b6.x, clientY: b6.y });
     expect(screen.queryByTestId("brief-area-card")).toBeNull();
+    // B5 stands second in its row: picked, it stays there, so the same spot lets it go.
+    const b5 = at.get("B5")!;
+    fireEvent.click(field, { clientX: b5.x, clientY: b5.y });
+    expect(within(screen.getByTestId("brief-area-card")).getByText("5 Commitment B5")).toBeTruthy();
+    fireEvent.click(field, { clientX: b5.x, clientY: b5.y });
+    expect(screen.queryByTestId("brief-area-card")).toBeNull();
+  });
+
+  it("takes keyboard focus to a picked target, and back to its pair of areas", () => {
+    renderView();
+    openSecond();
+    const c1 = screen.getAllByTestId("brief-area-target").find((t) => t.textContent?.includes("Commitment C1"))!;
+    fireEvent.click(c1);
+    const card = screen.getByTestId("brief-area-card");
+    expect(document.activeElement?.textContent).toBe("1 Commitment C1");
+    expect(card.contains(document.activeElement)).toBe(true);
+    fireEvent.click(within(card).getByRole("button", { name: "Back to Agriculture · Water" }));
+    expect(document.activeElement).toBe(within(pairRows()[1]).getByRole("button", { expanded: true }));
   });
 
   it("points from the headline's area names to their rows, and opens their pair", () => {
@@ -172,9 +190,12 @@ describe("AreasView", () => {
     expect(screen.queryByTestId("brief-area-target")).toBeNull();
   });
 
-  it("says so when the brief holds none of the side's target pairs", () => {
+  it("says so when no target pair in these areas is on the side, with nothing else listed", () => {
     renderView({ data: buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "C"]), "globe") });
-    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe("Too few target pairs to compare.");
+    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
+      "No target pairs in these policy areas show potential misalignment.",
+    );
     expect(screen.queryAllByTestId("brief-area-pair")).toHaveLength(0);
+    expect(document.querySelector(".brief-av-rest")).toBeNull();
   });
 });
