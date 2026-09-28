@@ -346,6 +346,19 @@ unreadable.
   clean on this round's files; all four `/brief` 200 with the component. The headless
   production print was not run (the sign-in gate never opens in production without a token);
   the unit tests pin 4 sheets.
+- Review fixes (`dc5ba96`, fresh reviewer on the whole round): a cut cloud's count sits in room
+  kept above the clouds, never over the row's name (every Sri Lanka lens); a picked target keeps
+  its place, so a second pick at the same spot lets it go; keyboard focus follows a pick to the
+  target and "Back" to its pair of areas; no stale ring after a list pick; with none of the
+  side's target pairs the headline says so plainly ("No target pairs in these policy areas show
+  potential misalignment.") and no rest line follows. For Jonas: the standard print still
+  carries the old section's headline ("{area} shows the highest share of potential
+  misalignment"), a different finding from the screen, until the component prints. Deferred
+  minors: the acronym tooltip is unreachable (label layer ignores the pointer); the sticky right
+  column can outgrow the window; a partial lens leaves most pairs unmentioned (Human rights: 620
+  of 671); the picture's labels are hidden from screen readers; the component's lens buttons lack
+  the menu's tooltips; canvas rough edges (restart stall, labels ahead of the dots, pixel ratio
+  not tracked); h2 to h4; two test gaps.
 - A parallel session built the public-contracts layer (`src/lib/brief/contracts/`,
   `src/components/brief/contracts/`) on this branch the same afternoon; message catalogs were
   staged key by key so neither session committed the other's work.
