@@ -5,6 +5,71 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## Public contracts page, round 1 (2026-09-28)
+
+`/{country}/brief/contracts` (Mongolia only): public contracts beside the targets, the finance and
+implementation side Jonas asked for ("coherence needs ambition, finance and implementation").
+Spec `docs/superpowers/specs/2026-09-28-public-contracts-design.md`, plan
+`docs/superpowers/plans/2026-09-28-public-contracts.md`. Jonas chose shape A (the record, narrowing)
+from real-data sketches; B (slope per area) was "complicated at first look", C (three records as
+dots) "too abstract: I can not make policy on dots and colors".
+
+- **Data** (deterministic, no AI): `python/scripts/build_contracts_layer.py` bakes the August NCTP
+  mirror (main checkout, `dev_data_scripts/nctp_mirror/data/`, gitignored; pass `--mirror`) into
+  `python/output/mongolia/gpt-5-4/contracts.json.gz` (page payload) and `contract-details.json.gz`
+  (records and AI explanations, served by `/api/brief/contracts?country=&contract=`).
+  - Each contract counts once: 1,631 records the source lists twice (same code, buyer,
+    supplier, amount; ₮1.53 trillion of copies) are dropped.
+  - 95 rejected and 63 other-currency contracts are left out.
+  - Result: 75,312 contracts, ₮48.78 trillion, snapshot February 2026 (crawl date; contract
+    start dates run ahead of it).
+- **Places**: the `contract_places.py` gazetteer reads the buyer and title (79% of the green value
+  placed). Outlines: Natural Earth admin-1, public domain, `src/data/geo/mongolia-aimags.json`
+  (Töv's label moved west of the capital).
+- **English titles**: 311 from August plus a 50-title sample (`contract-titles.en.json`, the
+  August prompt and cache). The full run (about 6,000 titles, a few US$) waits for Jonas's
+  check of the sample.
+- **Overview**: a sticky field of ₮5 billion squares (9,755 for Mongolia) beside four steps.
+  - The record by year.
+  - Nature and climate: ₮1.6 of every ₮100 mainly, ₮3.0 as a side benefit.
+  - Toward each policy area: only the money mainly for nature or climate, beside each area's
+    targets. The lens switch re-sorts; the finding is the area with the largest gap between its
+    share of the targets and its share of the money: "Sustainable use holds 75 of the 178
+    targets and 9%".
+  - Where it lands, a map draft: "Ulaanbaatar 35%, Ömnögovi 9%".
+  - A set line above the field keeps the whole record in view.
+- **Deep dives**, full width:
+  - the targets: 155 of 178 matched; the 23 without are named with what else is behind them;
+    16 have none of the three;
+  - what works well: 1,771 contracts serve targets in three or more documents; 1,102 of the
+    3,229 target pairs they serve are strongly aligned; 389 contracts sit on a fault line;
+  - where to look closer: 191 tenders (1,066 contracts) are potentially misaligned, 93% of
+    them with Resolution 91 targets, as per-target result bars.
+- **Panels**: a contract in full (record, AI readings, link to tender.gov.mn) and a target with
+  its contracts, tenders, budget lines and reported actions, plus "Explore this target".
+- **Rules applied** (two are new memories from the same day):
+  - numbers, not words;
+  - no document-coloured squares;
+  - pointing marks names, selecting re-shapes;
+  - one added dimension per view;
+  - "matching contract", never "funded";
+  - potential misalignment counted as tenders.
+- **Not in round 1**:
+  - the ring's contracts layer (next);
+  - payments (Glass Account);
+  - the fault-line deep dive beyond its list;
+  - English purpose reasons;
+  - a 90-contract spot check of the purpose reading;
+  - the review-sheet verdicts;
+  - a walkthrough, and es/mn copy (English placeholders);
+  - a "without the state mining companies" line (Jonas's call);
+  - a feedback control on contract explanations (needs a new surface);
+  - slimming the page payload (3.5 MB of HTML in dev).
+- Local only; nothing on Vercel until Jonas says so. A parallel session commits brief work in
+  the same worktree: `messages/*.json` are staged as HEAD plus the `brief.contracts` block only
+  (`.superpowers/sdd/2026-09-28-public-contracts/i18n/stage.py`), rebuilt right before each
+  commit.
+
 ## Status 2026-09-23: long-lived parallel track, now the coherence brief
 
 Jonas decided to develop this track in parallel with `main` for weeks to months. It may
