@@ -40,8 +40,12 @@ const NOTE_RUNS = 4;
 const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 const INK = "#232e3d";
-const PALE = "#b9c0c8";
 const HAIRLINE = "#d1d5db";
+/** The line, its shade and what is marked or chosen in UNDP Blue; while
+ *  something is marked the rest of the line pales. */
+const BLUE = "#0468b1";
+const BLUE_PALE = "#b9cfe6";
+const AREA = "#e8f0f8";
 
 const dayStart = (ts: string) => Date.parse(`${ts.slice(0, 10)}T00:00:00Z`);
 
@@ -276,7 +280,7 @@ export function RunningTotal({
           height={HEIGHT}
           className="block max-w-full overflow-visible"
         >
-          <path d={area} fill="#eef0f2" style={fade(400)} />
+          <path d={area} fill={AREA} style={fade(400)} />
           <line x1={0} x2={plotW} y1={base} y2={base} stroke={HAIRLINE} />
           {ticks.map((tick) => (
             <g key={tick.x}>
@@ -290,7 +294,7 @@ export function RunningTotal({
             d={line}
             pathLength={1}
             fill="none"
-            stroke={markedSteps.length ? PALE : INK}
+            stroke={markedSteps.length ? BLUE_PALE : BLUE}
             strokeWidth={1.75}
             strokeLinejoin="round"
             style={{
@@ -307,7 +311,7 @@ export function RunningTotal({
               x2={at(s)}
               y1={y(s.total - s.delta)}
               y2={y(s.total)}
-              stroke={INK}
+              stroke={BLUE}
               strokeWidth={3.5}
               strokeLinecap="round"
             />
@@ -361,8 +365,15 @@ export function RunningTotal({
                   }}
                   onPointerLeave={() => setActiveEvent(null)}
                 >
-                  <line x1={m.x} x2={m.x} y1={m.cy + MARKER_R} y2={m.stepTop} stroke={INK} strokeWidth={1} />
-                  <circle cx={m.x} cy={m.cy} r={MARKER_R} fill={on ? INK : "#fff"} stroke={INK} strokeWidth={1.25} />
+                  <line x1={m.x} x2={m.x} y1={m.cy + MARKER_R} y2={m.stepTop} stroke={on ? BLUE : INK} strokeWidth={1} />
+                  <circle
+                    cx={m.x}
+                    cy={m.cy}
+                    r={MARKER_R}
+                    fill={on ? BLUE : "#fff"}
+                    stroke={on ? BLUE : INK}
+                    strokeWidth={1.25}
+                  />
                   <text
                     x={m.x}
                     y={m.cy + 3.6}
@@ -443,8 +454,10 @@ export function RunningTotal({
                 >
                   <span
                     aria-hidden="true"
-                    className={`row-span-3 flex h-[18px] w-[18px] items-center justify-center self-start rounded-full border-[1.25px] border-[var(--undp-black)] text-[10.5px] font-semibold sm:row-span-1 sm:self-baseline ${
-                      on ? "bg-[var(--undp-black)] text-white" : "text-[var(--undp-black)]"
+                    className={`row-span-3 flex h-[18px] w-[18px] items-center justify-center self-start rounded-full border-[1.25px] text-[10.5px] font-semibold sm:row-span-1 sm:self-baseline ${
+                      on
+                        ? "border-[var(--undp-blue)] bg-[var(--undp-blue)] text-white"
+                        : "border-[var(--undp-black)] text-[var(--undp-black)]"
                     }`}
                   >
                     {e.n}

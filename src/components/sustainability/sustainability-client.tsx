@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -97,6 +97,8 @@ type LoadState =
 
 export function SustainabilityClient() {
   const t = useTranslations("sustainability");
+  const brand = useTranslations("header")("brand");
+  const locale = useLocale();
   const router = useRouter();
   const [state, setState] = useState<LoadState>({ status: "loading" });
 
@@ -128,6 +130,14 @@ export function SustainabilityClient() {
   return (
     <main className="max-w-6xl mx-auto px-5 sm:px-8 py-10">
       <header className="mb-8">
+        <a
+          href={locale === "en" ? "/" : `/${locale}`}
+          className="group mb-6 flex w-fit items-center gap-3 text-sm font-medium text-[var(--undp-black)]"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- the app's own lockup, small and static */}
+          <img src="/undp-logo.png" alt="UNDP" width={22} height={44} className="h-11 w-auto" />{" "}
+          <span className="underline-offset-4 group-hover:underline">{brand}</span>
+        </a>
         <button
           type="button"
           onClick={() => {
@@ -308,12 +318,12 @@ function Figures({
               onClick={() => onResource(r.key)}
               className={`group flex flex-col items-start border-t-2 pb-4 pr-4 pt-3 text-left transition-colors lg:px-5 lg:first:pl-0 ${
                 selected
-                  ? "border-[var(--undp-black)]"
+                  ? "border-[var(--undp-blue)]"
                   : "border-[var(--color-line)] hover:border-[var(--undp-gray)]"
               }`}
             >
               <span
-                className={`text-data ${selected ? "font-semibold text-[var(--undp-black)]" : "text-[var(--undp-gray)]"}`}
+                className={`text-data ${selected ? "font-semibold text-[var(--undp-blue)]" : "text-[var(--undp-gray)]"}`}
               >
                 {t(`figures.${r.label}`)}
               </span>

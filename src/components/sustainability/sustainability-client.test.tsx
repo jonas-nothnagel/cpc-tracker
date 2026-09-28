@@ -157,6 +157,13 @@ afterEach(() => {
 });
 
 describe("SustainabilityClient", () => {
+  it("carries the UNDP logo with the tool's name, leading home", () => {
+    renderPage();
+    const home = screen.getByRole("link", { name: "UNDP Policy Coherence Analyzer" });
+    expect(home.getAttribute("href")).toBe("/");
+    expect(home.querySelector("img")?.getAttribute("src")).toBe("/undp-logo.png");
+  });
+
   it("states the four totals, each with what it amounts to in everyday terms", async () => {
     renderPage();
     expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("AI sustainability footprint");

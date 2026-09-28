@@ -14,8 +14,9 @@ const LINES = 4;
 const COLUMNS = 100;
 /** Runs the open list shows before "Show all". */
 const RUNS_SHOWN = 12;
-const INK = "#232e3d";
-const PALE = "#cdd2d8";
+/** The dots in UNDP Blue; while a use is in focus the others pale. */
+const DOT = "#0468b1";
+const DOT_PALE = "#c6d9ec";
 
 /** Small deterministic PRNG, so the dots gather the same way every time. */
 function seeded(seed: number) {
@@ -48,10 +49,10 @@ function paint(
   ctx.clearRect(0, 0, w, h);
   const e = 1 - Math.pow(1 - progress, 3);
   const r = layout.radius;
-  // The use in focus in ink, the others pale; all in ink when none is.
+  // The use in focus in UNDP Blue, the others pale; all blue when none is.
   for (const inFocus of [false, true]) {
     if (inFocus && focusRow === null) break;
-    ctx.fillStyle = focusRow === null || inFocus ? INK : PALE;
+    ctx.fillStyle = focusRow === null || inFocus ? DOT : DOT_PALE;
     ctx.beginPath();
     for (let i = 0; i < layout.xs.length; i++) {
       if (focusRow !== null && (layout.row[i] === focusRow) !== inFocus) continue;
@@ -220,7 +221,7 @@ export function UseField({
         <p className="flex items-center gap-2 text-data text-[var(--undp-gray)]">
           <span
             aria-hidden="true"
-            className="inline-block rounded-full bg-[var(--undp-black)]"
+            className="inline-block rounded-full bg-[var(--undp-blue)]"
             style={{ width: 2 * layout.radius, height: 2 * layout.radius }}
           />
           {t("perDot", { amount: withSuffix(text(unit, resource)) })}
@@ -273,10 +274,10 @@ export function UseField({
                     style={narrow ? undefined : { width: labelWidth }}
                   >
                     <span
-                      className={`fp-row-name truncate font-semibold text-[var(--undp-black)] underline-offset-4 ${
+                      className={`fp-row-name truncate font-semibold underline-offset-4 ${
                         isChosen
-                          ? "underline decoration-2"
-                          : "decoration-[rgba(35,46,61,0.35)] group-hover:underline"
+                          ? "text-[var(--undp-blue)] underline decoration-2"
+                          : "text-[var(--undp-black)] decoration-[rgba(35,46,61,0.35)] group-hover:underline"
                       }`}
                     >
                       {nameOf(use)}
@@ -300,7 +301,7 @@ export function UseField({
       </div>
 
       {chosenUse && (
-        <div data-testid="fp-runs" className="mt-5 border-t-2 border-[var(--undp-black)] pt-3">
+        <div data-testid="fp-runs" className="mt-5 border-t-2 border-[var(--undp-blue)] pt-3">
           <div className="flex items-baseline justify-between gap-4">
             <p className="fp-runs-title font-semibold text-[var(--undp-black)]">{nameOf(chosenUse)}</p>
             <button
