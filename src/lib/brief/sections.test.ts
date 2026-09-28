@@ -3,7 +3,7 @@ import { paginate } from "./sections";
 import { DEFAULT_SECTIONS, SECTION_IDS } from "./selection";
 
 describe("paginate", () => {
-  it("lays the standard brief out on three pages", () => {
+  it("lays the standard brief out on four pages, the policy areas last", () => {
     expect(DEFAULT_SECTIONS).toEqual([
       "overall",
       "together",
@@ -11,11 +11,13 @@ describe("paginate", () => {
       "apart",
       "commitments",
       "documents",
+      "areas",
     ]);
     expect(paginate(DEFAULT_SECTIONS)).toEqual([
       { title: true, sections: ["overall", "together"] },
       { title: false, sections: ["aligned", "apart"] },
       { title: false, sections: ["commitments", "documents"] },
+      { title: false, sections: ["areas"] },
     ]);
   });
 

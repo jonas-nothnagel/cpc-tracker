@@ -83,10 +83,10 @@ beforeEach(() => window.history.replaceState(null, "", "/testland/brief"));
 afterEach(cleanup);
 
 describe("BriefApp", () => {
-  it("prints the standard brief on three pages", () => {
+  it("prints the standard brief on four pages", () => {
     renderApp();
-    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
-    expect(screen.getAllByTestId("brief-sheet")).toHaveLength(3);
+    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
+    expect(screen.getAllByTestId("brief-sheet")).toHaveLength(4);
   });
 
   it("states the scope on the title block and updates it when a document is left out", () => {
@@ -143,7 +143,7 @@ describe("BriefApp", () => {
     const sections = screen.getByRole("group", { name: "In the brief" });
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Strongest alignments/ }));
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
-    expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
+    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
     expect(window.location.search).toContain("sections=");
   });
 });
@@ -312,13 +312,13 @@ describe("BriefApp screen and print", () => {
     }
   });
 
-  it("adds the policy areas below the overview when the brief holds them", () => {
+  it("shows the policy areas below the overview in the standard brief, and leaves them out with the section", () => {
     renderApp();
     const flow = screen.getByTestId("brief-flow");
-    expect(flow.querySelector('[data-section="areas"]')).toBeNull();
+    expect(flow.querySelector('[data-section="areas"]')).not.toBeNull();
     const sections = screen.getByRole("group", { name: "In the brief" });
     fireEvent.click(within(sections).getByRole("checkbox", { name: /By policy area/ }));
-    expect(flow.querySelector('[data-section="areas"]')).not.toBeNull();
+    expect(flow.querySelector('[data-section="areas"]')).toBeNull();
   });
 });
 

@@ -19,7 +19,7 @@ export const SECTION_IDS: SectionId[] = [
   "areas",
 ];
 
-/** The standard brief: three full A4 pages. */
+/** The standard brief: four A4 pages, the policy areas last. */
 export const DEFAULT_SECTIONS: SectionId[] = [
   "overall",
   "together",
@@ -27,6 +27,7 @@ export const DEFAULT_SECTIONS: SectionId[] = [
   "apart",
   "commitments",
   "documents",
+  "areas",
 ];
 
 export interface BriefSelection {
