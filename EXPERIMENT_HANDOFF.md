@@ -189,6 +189,63 @@ considered. He chose variant B from sketches ("B is better"). Spec
   8, as the targets to review first do); rows preview their target from the keyboard; "Full
   text" says whether it is open; the ring's AI text explains document codes like the panel.
 
+**Round 11 (2026-09-28): the highlighter, on words only.** Jonas brought a newspaper data
+piece (salaries by age: one chart that highlights, annotates and re-colours as the reader
+moves on, with simple choices beside it) and asked to make "Where to look closer" clearer in
+that spirit, adding rather than removing. Diagnosis: a target's row on the map is about 2px
+high in Mongolia and about 1px in Sri Lanka, so pointing at "Irrigated agriculture
+expansion" only turned the other red from full to pale; the other names faded to 35% and were
+unreadable.
+- **First pass, rejected in part:** yellow strips (`#ffe98a`, multiplied over the squares)
+  along the focused target's row and column, and paler strips at rest for the headline's
+  targets. Jonas: the yellow too strong, "I don't think we need to color the dots as
+  rectangular lines"; the pale yellow is the better colour, but the strips at rest add no
+  understanding. Strips removed; the Highlighter Rule in DESIGN.md (and
+  `.impeccable/design.json`) now says words only, never over the dots, nothing at rest.
+- **Kept: counts in place.** With a target in focus, each block its row and column cross
+  shows its count there (under the row, beside the column; left of the column where the map
+  ends; spread apart in order where blocks are smaller than the numbers, as in Sri Lanka's
+  4-target documents). Real-data probe: no overlaps and nothing off the map, four
+  countries, both sides, three field sizes. Lib: `stripOf`, `stripCounts`, `layout.points`
+  in `src/lib/brief/hub.ts`.
+- **Kept: pale yellow on the words** (`#fff5c7`): the target's name on the map and its title
+  in the list (the one pointed at, else the one kept: `data-lit`). Names set back stay
+  readable in muted ink instead of fading (document names too).
+- Walkthrough: the two side stops mention the counts (es/mn keep English placeholders).
+- Jonas: "Coloring is good now. we keep it like that."
+- **Fixed: names gone after scrolling back** (a map with squares and leads but no names). A
+  move cut short left the names layer at opacity 0, and a following step in which no dot
+  moves (back to the same side, whose dots never left) never faded it in; now a step without
+  moving dots shows the names at once (reproduced in a test first).
+- **A target picked on the map brings its row into view:** its row opens and, when it is
+  out of the window, scrolls to the middle (rows carry `data-row`); a row in view stays put,
+  and letting the target go moves nothing.
+- **The ring (Explore), from Jonas's walk:** "Explore this target" -> a reported action
+  potentially misaligned with it -> clicking its seat centres it, but the misalignment's
+  details were hard to find. He chose to keep the two existing ways in (the line, the row)
+  and make the line say so: a hovered line's card ends with "Open the comparison" (one seat
+  in the centre) or "Open its target pairs" (a document or area in the centre); none with a
+  layer in the centre, where a line opens nothing beside the ring (a gap, left as is).
+- **A paired dot says where its comparison is:** with one seat in the centre, the card of a
+  dot compared with it ends with "Select its line to open the comparison" (selecting the dot
+  itself still centres it). Tested through the keyboard cursor, which shows the same card.
+- **Agreed vocabulary, throughout:** "may pull against" (reported actions) replaced by
+  "potential misalignment" / "potentially misaligned" in the ring; then, as a general rule,
+  every UI string in en/es/mn that described the relation in other words ("pull apart / in
+  different directions", "work against", "tension", "contradictions", "friction", "flagged
+  (for review)", "reinforce"): ~70 keys, two methodology sentences, the chat's chips and the
+  wording the chat model reads. Same change on main as PR #233
+  (`fix/potential-misalignment-wording`); here it is applied uncommitted, so merging main
+  later brings identical hunks. Left on purpose: the verbatim prompt quote on the methodology
+  page, the internal model-comparison page (legacy category columns, blind-rater rubric),
+  "flagged" where it is not our rating (BER review, estimated footprints), AI payload text.
+  Scripts: the session scratchpad's `sweep.py`, `sweep_pages.py`, `sweep_tests.py`.
+- Verified: full suite 1,457 passed (1 skipped), `tsc` clean, lint clean on changed files
+  (7 older files elsewhere in `src` already carried lint errors), locale parity, all four
+  `/brief`, `/brief/explore` and the dashboard 200. Next candidates if liked: counts for themes and
+  types, document colour squares in the list, a simple choice on the right (e.g. one
+  document).
+
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
   Start chats for this work from inside the worktree folder.
