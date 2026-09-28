@@ -155,6 +155,7 @@ def main() -> None:
     cols = [
         "id", "invitation_id", "contract_code", "contract_name", "contract_type_name", "amount",
         "currency_name", "status_name", "client_name", "supplier_name", "year", "start", "end", "contract_url",
+        "crawled_at",
     ]
     t = pd.read_parquet(mirror / "tenders.parquet", columns=cols)
     t["id"] = t["id"].astype(str)
@@ -219,8 +220,8 @@ def main() -> None:
             row[tier] = {"contracts": int(len(s)), "value": float(s["amount"].sum())}
         years.append(row)
     first_year, last_year = years[0]["year"], years[-1]["year"]
-    last_starts = [d for d in t.loc[t["year"] == last_year, "start"].map(valid_date) if d]
-    last_month = int(max(last_starts)[5:7]) if last_starts else 12
+    # The record runs to the platform's snapshot (start dates can lie ahead).
+    snapshot = str(t["crawled_at"].dropna().max())[:7]
 
     places = {i: place_of(t.at[i, "client_name"], t.at[i, "contract_name"]) for i in shown}
     contracts = []
@@ -286,7 +287,7 @@ def main() -> None:
             **SOURCE,
             "firstYear": first_year,
             "lastYear": last_year,
-            "lastMonth": last_month,
+            "snapshot": snapshot,
             "usdRate": USD_RATE,
             "duplicates": {"records": dup_records, "value": dup_value},
             "comparedOthers": int(sum(1 for i in compared if t.at[i, "tier"] == "none")),
