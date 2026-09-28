@@ -2,108 +2,22 @@
 
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { useEffect, useMemo, useState } from "react";
 
+import { FOOTPRINT_EVENTS } from "@/data/footprint-events";
 import { downloadFile } from "@/lib/download";
-import {
-  equivalentsMeaningful,
-  everydayEquivalents,
-} from "@/lib/footprint/equivalents";
-import { cumulativeByComponent } from "@/lib/footprint/rollup";
+import { everydayEquivalents } from "@/lib/footprint/equivalents";
 import type {
   FootprintEnvelope,
   FootprintMetrics,
   FootprintRollup,
   LedgerEvent,
-  RollupBucket,
 } from "@/lib/footprint/types";
-
-const UNDP_BLUE = "#0468b1";
-const UNDP_GRAY = "#55606e";
-
-const COMPONENT_KEY_SET = new Set<string>([
-  "dev_pipeline",
-  "user_pipeline",
-  "extract",
-  "chat",
-]);
-
-// Resolve a footprint-component key to its translated label, falling back to the
-// raw value for anything that is not a known component (e.g. model/region names).
-function componentLabel(
-  t: ReturnType<typeof useTranslations>,
-  value: unknown,
-): string {
-  const key = String(value);
-  return COMPONENT_KEY_SET.has(key) ? t(`components.${key}`) : key;
-}
-
-// Resolve a footprint-source key to its translated label, falling back to raw.
-const SOURCE_KEY_SET = new Set<string>([
-  "measured",
-  "estimated",
-  "api",
-  "unavailable",
-]);
-function sourceLabel(
-  t: ReturnType<typeof useTranslations>,
-  value: unknown,
-): string {
-  const key = String(value);
-  return SOURCE_KEY_SET.has(key) ? t(`sources.${key}`) : key;
-}
-
-// ---------------------------------------------------------------------------
-// Unit-friendly formatters. Each metric is stored in a small base unit (Wh, mL,
-// gCO2eq, ugSbeq) and promoted to a larger unit once it crosses 1000.
-// ---------------------------------------------------------------------------
-
-function num(value: number, maxFractionDigits = 2): string {
-  return value.toLocaleString(undefined, { maximumFractionDigits: maxFractionDigits });
-}
-
-function fmtCarbon(g: number): { value: string; unit: string } {
-  return g >= 1000
-    ? { value: num(g / 1000), unit: "kg CO2e" }
-    : { value: num(g, g < 10 ? 2 : 0), unit: "g CO2e" };
-}
-
-function fmtEnergy(wh: number): { value: string; unit: string } {
-  return wh >= 1000
-    ? { value: num(wh / 1000), unit: "kWh" }
-    : { value: num(wh, wh < 10 ? 2 : 0), unit: "Wh" };
-}
-
-function fmtWater(ml: number): { value: string; unit: string } {
-  return ml >= 1000
-    ? { value: num(ml / 1000), unit: "L" }
-    : { value: num(ml, ml < 10 ? 2 : 0), unit: "mL" };
-}
-
-function fmtMinerals(ug: number): { value: string; unit: string } {
-  return ug >= 1000
-    ? { value: num(ug / 1000), unit: "mg Sb-eq" }
-    : { value: num(ug, ug < 10 ? 2 : 0), unit: "ug Sb-eq" };
-}
-
-function compact(value: number): string {
-  return new Intl.NumberFormat(undefined, {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(value);
-}
+import { groupByUse, recordedSpan, regionsOf } from "@/lib/footprint/uses";
+import { useAmounts } from "./amounts";
+import { RESOURCES, type Resource } from "./resources";
+import { RunningTotal } from "./running-total";
+import { UseField } from "./use-field";
 
 // ---------------------------------------------------------------------------
 // Export. CSV is the full ledger (one row per recorded event); JSON is the
@@ -124,7 +38,7 @@ const CSV_COLUMNS = [
   "co2_geq",
   "minerals_ugsbeq",
   // Schema-2 bounds: empty cells on rows recorded before August 2026. The
-  // CSV is the full ledger, so the range shown on the tiles must be
+  // CSV is the full ledger, so the modelled ranges shown on the page must be
   // reproducible from it.
   "energy_wh_min",
   "energy_wh_max",
@@ -150,69 +64,18 @@ function toCsv(events: LedgerEvent[]): string {
   return rows.join("\n");
 }
 
-// ---------------------------------------------------------------------------
-// Presentational pieces
-// ---------------------------------------------------------------------------
-
-function MetricTile({
-  label,
-  value,
-  unit,
-  unitTitle,
-  sub,
-  range,
-}: {
-  label: string;
-  value: string;
-  unit: string;
-  unitTitle: string;
-  sub: string;
-  range?: string;
-}) {
-  return (
-    <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg p-5">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
-        {label}
-      </p>
-      <p className="text-3xl font-medium text-[var(--undp-blue)] tabular-nums mt-1">
-        {value}{" "}
-        <span
-          className="text-base font-normal text-[var(--undp-gray)] cursor-help"
-          title={unitTitle}
-        >
-          {unit}
-        </span>
-      </p>
-      <p className="text-xs text-[var(--undp-gray)] mt-0.5">{sub}</p>
-      {range && (
-        <p className="text-[10px] text-[var(--undp-gray)] mt-0.5 tabular-nums">
-          {range}
-        </p>
-      )}
-    </div>
-  );
-}
-
-// The modelled-uncertainty line is shown only when it is informative: enough
-// of the recorded carbon actually carries bounds (older rows contribute their
-// midpoint to both ends, which would render a fake zero-width range), and the
-// envelope is meaningfully wider than the midpoint display.
+// The modelled range is shown only when it is informative: enough of the
+// recorded carbon actually carries bounds (older rows contribute their
+// midpoint to both ends, which would render a fake zero-width range), and
+// the envelope is meaningfully wider than the midpoint.
 function envelopeRange(
   envelope: FootprintEnvelope,
   key: keyof FootprintMetrics,
   midpoint: number,
-  fmt: (v: number) => { value: string; unit: string },
-  label: (min: string, max: string) => string,
-): string | undefined {
-  if (envelope.bounded_share < 0.3 || midpoint <= 0) return undefined;
+): { min: number; max: number } | null {
+  if (envelope.bounded_share < 0.3 || midpoint <= 0) return null;
   const { min, max } = envelope[key];
-  if ((max - min) / midpoint < 0.02) return undefined;
-  const lo = fmt(min);
-  const hi = fmt(max);
-  // One shared unit reads as one range ("0.9 to 1.5 kg CO2e"); only a range
-  // that genuinely straddles a unit boundary keeps both units spelled out.
-  const minText = lo.unit === hi.unit ? lo.value : `${lo.value} ${lo.unit}`;
-  return label(minText, `${hi.value} ${hi.unit}`);
+  return (max - min) / midpoint < 0.02 ? null : { min, max };
 }
 
 // Everyday anchors round to one decimal while small, whole numbers once large.
@@ -220,191 +83,11 @@ function eqRound(v: number): number {
   return v >= 10 ? Math.round(v) : Math.round(v * 10) / 10;
 }
 
-function EquivalentsStrip({
-  totals,
-}: {
-  totals: FootprintMetrics;
-}) {
-  const t = useTranslations("sustainability");
-  if (!equivalentsMeaningful(totals)) return null;
-  const eq = everydayEquivalents(totals);
-  // The meaningfulness gate ORs the three anchors, so one can be legible
-  // while another still rounds to 0 -- and "about 0 full charges" informs
-  // nobody. Show only the anchors that survive rounding.
-  const anchors = [
-    { key: "ev", count: eqRound(eq.evCharges) },
-    { key: "petrol", count: eqRound(eq.petrolLitres) },
-    { key: "bathtubs", count: eqRound(eq.bathtubs) },
-  ].filter((a) => a.count > 0);
-  if (anchors.length === 0) return null;
-  const items = anchors.map((a) => t(`equivalents.${a.key}`, { count: a.count }));
-  return (
-    <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg px-5 py-4">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--undp-gray)]">
-        {t("equivalents.title")}
-      </p>
-      <p className="text-sm text-[var(--undp-black)] mt-1.5 leading-relaxed">
-        {items.map((item, i) => (
-          <span key={item}>
-            {item}
-            {i < items.length - 1 && (
-              <>
-                {/* Visual separator is aria-hidden; assistive tech gets a
-                    comma so the three claims do not run together. */}
-                <span className="sr-only">, </span>
-                <span aria-hidden="true" className="text-[var(--undp-gray)] mx-2">
-                  &middot;
-                </span>
-              </>
-            )}
-          </span>
-        ))}
-      </p>
-      <p className="text-[10px] text-[var(--undp-gray)] mt-1.5">
-        {t("equivalents.note")}
-      </p>
-    </div>
-  );
-}
-
-function BreakdownBars({
-  title,
-  data,
-  name,
-  fmt,
-}: {
-  title: string;
-  data: { label: string; value: number; calls: number }[];
-  name: string;
-  fmt: (v: number) => { value: string; unit: string };
-}) {
-  if (data.length === 0) return null;
-  return (
-    <div className="bg-white border border-gray-100 rounded-lg p-5">
-      <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">{title}</h3>
-      <ResponsiveContainer width="100%" height={Math.max(90, data.length * 46)}>
-        <BarChart
-          data={data}
-          layout="vertical"
-          margin={{ left: 4, right: 24, top: 0, bottom: 0 }}
-        >
-          <CartesianGrid horizontal={false} stroke="#f0f0f0" />
-          <XAxis
-            type="number"
-            tickFormatter={compact}
-            fontSize={11}
-            stroke={UNDP_GRAY}
-            tickLine={false}
-          />
-          <YAxis
-            type="category"
-            dataKey="label"
-            width={150}
-            fontSize={11}
-            stroke={UNDP_GRAY}
-            tickLine={false}
-            axisLine={false}
-          />
-          <Tooltip
-            cursor={{ fill: "rgba(4,104,177,0.06)" }}
-            formatter={(value) => {
-              const f = fmt(Number(value));
-              return `${f.value} ${f.unit}`;
-            }}
-          />
-          <Bar dataKey="value" name={name} fill={UNDP_BLUE} radius={[0, 3, 3, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-// Colour per source (component) for the stacked area chart. The four resource
-// metrics move proportionally, so charting them against each other is redundant;
-// the components do NOT, so cumulative-by-source is the one trend that adds
-// information. A selector picks which metric the chart (and the bars) show.
-const COMPONENT_COLORS: Record<string, string> = {
-  dev_pipeline: UNDP_BLUE,
-  user_pipeline: "#02a38a",
-  extract: "#d9a400",
-  chat: "#6f7d8c",
-};
-
-// Each metric's display label is resolved at render time via t(`tile.${tileKey}`)
-// so it stays translatable; module-level arrays cannot call hooks.
-const METRICS: {
-  key: keyof FootprintMetrics;
-  tileKey: "carbon" | "energy" | "water" | "minerals";
-  fmt: (v: number) => { value: string; unit: string };
-}[] = [
-  { key: "co2_geq", tileKey: "carbon", fmt: fmtCarbon },
-  { key: "energy_wh", tileKey: "energy", fmt: fmtEnergy },
-  { key: "water_ml", tileKey: "water", fmt: fmtWater },
-  { key: "minerals_ugsbeq", tileKey: "minerals", fmt: fmtMinerals },
-];
-
-function CumulativeImpact({
-  events,
-  metricKey,
-  metricLabel,
-  fmt,
-}: {
-  events: LedgerEvent[];
-  metricKey: keyof FootprintMetrics;
-  metricLabel: string;
-  fmt: (v: number) => { value: string; unit: string };
-}) {
-  const t = useTranslations("sustainability");
-  const { points, components } = cumulativeByComponent(events, metricKey);
-  if (points.length === 0) return null;
-  const metricLower = metricLabel.toLowerCase();
-  return (
-    <div className="bg-white border border-gray-100 rounded-lg p-5">
-      <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-1">
-        {t("charts.cumulativeOverTime", { metric: metricLabel })}
-      </h3>
-      <p className="text-xs text-[var(--undp-gray)] mb-3">
-        {t("charts.cumulativeDescription", { metric: metricLower })}
-      </p>
-      <ResponsiveContainer width="100%" height={260}>
-        <AreaChart data={points} margin={{ left: 4, right: 16, top: 4, bottom: 0 }}>
-          <CartesianGrid stroke="#f0f0f0" />
-          <XAxis dataKey="key" fontSize={11} stroke={UNDP_GRAY} tickLine={false} />
-          <YAxis
-            fontSize={11}
-            stroke={UNDP_GRAY}
-            tickFormatter={compact}
-            tickLine={false}
-            axisLine={false}
-          />
-          <Tooltip
-            formatter={(value, name) => {
-              const f = fmt(Number(value));
-              return [`${f.value} ${f.unit}`, componentLabel(t, name)];
-            }}
-          />
-          <Legend formatter={(value) => componentLabel(t, value)} />
-          {components.map((c) => (
-            <Area
-              key={c}
-              type="monotone"
-              dataKey={c}
-              stackId="metric"
-              name={c}
-              stroke={COMPONENT_COLORS[c] ?? UNDP_GRAY}
-              fill={COMPONENT_COLORS[c] ?? UNDP_GRAY}
-              fillOpacity={0.18}
-              strokeWidth={2}
-            />
-          ))}
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
+const quietLink =
+  "text-[var(--undp-black)] underline decoration-[rgba(35,46,61,0.35)] underline-offset-4 hover:text-[var(--undp-blue)] hover:decoration-current transition-colors";
 
 // ---------------------------------------------------------------------------
-// Main component
+// The page
 // ---------------------------------------------------------------------------
 
 type LoadState =
@@ -439,8 +122,11 @@ export function SustainabilityClient() {
     };
   }, [t]);
 
+  const data =
+    state.status === "ready" && state.data.totals.event_count > 0 ? state.data : null;
+
   return (
-    <main className="max-w-5xl mx-auto px-5 sm:px-8 py-10">
+    <main className="max-w-6xl mx-auto px-5 sm:px-8 py-10">
       <header className="mb-8">
         <button
           type="button"
@@ -452,29 +138,16 @@ export function SustainabilityClient() {
         >
           <span aria-hidden="true">&larr;</span> {t("back")}
         </button>
-        <h1
-          className="text-3xl sm:text-4xl text-[var(--undp-black)]"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {t("page.title")}
-        </h1>
-        <p className="text-[var(--undp-gray)] mt-2 max-w-2xl leading-relaxed">
-          {t("page.intro")}
-        </p>
-        <p className="text-xs text-[var(--undp-gray)] mt-3">
-          {t.rich("page.methodology", {
-            link: (chunks) => (
-              <a
-                href="https://ecologits.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-[var(--undp-blue)]"
-              >
-                {chunks}
-              </a>
-            ),
-          })}
-        </p>
+        <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+          <h1
+            className="text-3xl sm:text-4xl text-[var(--undp-black)]"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {t("title")}
+          </h1>
+          {data && <Downloads data={data} />}
+        </div>
+        {data && <Span events={data.events} />}
       </header>
 
       {state.status === "loading" && (
@@ -482,237 +155,225 @@ export function SustainabilityClient() {
       )}
 
       {state.status === "error" && (
-        <p className="text-sm text-[var(--undp-red)]">
+        <p className="text-sm text-[var(--undp-red)]" role="alert">
           {t("errors.withMessage", { message: state.message })}
         </p>
       )}
 
-      {state.status === "ready" && state.data.totals.event_count === 0 && (
-        <div className="bg-[var(--undp-light)] border border-gray-100 rounded-lg p-8 text-center">
-          <p className="text-sm text-[var(--undp-gray)]">{t("empty")}</p>
-        </div>
+      {state.status === "ready" && !data && (
+        <p className="text-sm text-[var(--undp-gray)]">{t("empty")}</p>
       )}
 
-      {state.status === "ready" && state.data.totals.event_count > 0 && (
-        <Dashboard data={state.data} />
-      )}
+      {data && <Monitor data={data} />}
     </main>
   );
 }
 
-function Dashboard({ data }: { data: FootprintRollup }) {
-  const t = useTranslations("sustainability");
-  const [metricKey, setMetricKey] = useState<keyof FootprintMetrics>("co2_geq");
-  const metric = METRICS.find((m) => m.key === metricKey) ?? METRICS[0];
-  const metricLabel = t(`tile.${metric.tileKey}`);
-
-  const { totals, envelope } = data;
-  const carbon = fmtCarbon(totals.co2_geq);
-  const energy = fmtEnergy(totals.energy_wh);
-  const water = fmtWater(totals.water_ml);
-  const minerals = fmtMinerals(totals.minerals_ugsbeq);
-  const rangeLabel = (min: string, max: string) => t("tile.range", { min, max });
-  const ranges = {
-    carbon: envelopeRange(envelope, "co2_geq", totals.co2_geq, fmtCarbon, rangeLabel),
-    energy: envelopeRange(envelope, "energy_wh", totals.energy_wh, fmtEnergy, rangeLabel),
-    water: envelopeRange(envelope, "water_ml", totals.water_ml, fmtWater, rangeLabel),
-    minerals: envelopeRange(
-      envelope,
-      "minerals_ugsbeq",
-      totals.minerals_ugsbeq,
-      fmtMinerals,
-      rangeLabel,
-    ),
-  };
-  const callsLabel = t("tile.callsLabel", { calls: compact(totals.call_count) });
-  const lastRecorded = data.latestTs
-    ? data.latestTs.slice(0, 10)
-    : t("tile.notAvailable");
-  const stamp = new Date().toISOString().slice(0, 10);
-
-  // Breakdown bars follow the selected metric (all four live in each bucket).
-  // Sort by the selected metric so the longest bar is always on top -- the
-  // buckets arrive sorted by carbon, which would otherwise misorder the bars
-  // when a different metric is chosen.
-  const toBars = (buckets: RollupBucket[], labelOf: (key: string) => string) =>
-    buckets
-      .map((b) => ({ label: labelOf(b.key), value: b[metricKey], calls: b.call_count }))
-      .sort((a, b) => b.value - a.value);
-  const componentBars = toBars(data.byComponent, (k) => componentLabel(t, k));
-  const modelBars = toBars(data.byModel, (k) => k);
-  const regionBars = toBars(data.byRegion, (k) => k);
-
-  const exportCsv = () =>
-    downloadFile(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv");
-  const exportJson = () =>
-    downloadFile(
-      `cpc-footprint-${stamp}.json`,
-      JSON.stringify(data, null, 2),
-      "application/json",
-    );
-
+/**
+ * The figures and what lies behind them. One of the four figures is the
+ * resource the field and the running total show; the use pointed at or chosen
+ * in the field is marked on the running total too.
+ */
+function Monitor({ data }: { data: FootprintRollup }) {
+  const [resource, setResource] = useState<Resource>("co2_geq");
+  const [pointed, setPointed] = useState<string | null>(null);
+  const [chosen, setChosen] = useState<string | null>(null);
+  const uses = useMemo(() => groupByUse(data.events), [data.events]);
+  const focusKey = pointed ?? chosen;
+  const focus = uses.find((u) => u.key === focusKey) ?? null;
   return (
-    <div className="space-y-8">
-      <div className="flex justify-end gap-2">
-        <button
-          type="button"
-          onClick={exportCsv}
-          className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
-        >
-          {t("exportCsv")}
-        </button>
-        <button
-          type="button"
-          onClick={exportJson}
-          className="text-xs font-medium text-[var(--undp-blue)] border border-[var(--undp-blue)]/30 rounded px-3 py-1.5 hover:bg-[var(--undp-blue)]/5 transition-colors"
-        >
-          {t("exportJson")}
-        </button>
-      </div>
-
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricTile
-          label={t("tile.carbon")}
-          value={carbon.value}
-          unit={carbon.unit}
-          unitTitle={t("tile.carbonUnitTitle")}
-          sub={callsLabel}
-          range={ranges.carbon}
-        />
-        <MetricTile
-          label={t("tile.energy")}
-          value={energy.value}
-          unit={energy.unit}
-          unitTitle={t("tile.energyUnitTitle")}
-          sub={t("tile.lastRecorded", { date: lastRecorded })}
-          range={ranges.energy}
-        />
-        <MetricTile
-          label={t("tile.water")}
-          value={water.value}
-          unit={water.unit}
-          unitTitle={t("tile.waterUnitTitle")}
-          sub={t("tile.waterSub")}
-          range={ranges.water}
-        />
-        <MetricTile
-          label={t("tile.minerals")}
-          value={minerals.value}
-          unit={minerals.unit}
-          unitTitle={t("tile.mineralsUnitTitle")}
-          sub={t("tile.mineralsSub")}
-          range={ranges.minerals}
-        />
-      </div>
-
-      <EquivalentsStrip totals={totals} />
-
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-[var(--undp-gray)]">
-            {t("metricSelector.label")}
-          </span>
-          {METRICS.map((m) => (
-            <button
-              key={m.key}
-              type="button"
-              onClick={() => setMetricKey(m.key)}
-              aria-pressed={m.key === metricKey}
-              className={`text-xs font-medium rounded-full px-3 py-1 border transition-colors ${
-                m.key === metricKey
-                  ? "bg-[var(--undp-blue)] text-white border-[var(--undp-blue)]"
-                  : "text-[var(--undp-gray)] border-gray-200 hover:border-[var(--undp-blue)]/40"
-              }`}
-            >
-              {t(`tile.${m.tileKey}`)}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <BreakdownBars
-            title={t("charts.byComponentMetric", { metric: metricLabel })}
-            data={componentBars}
-            name={metricLabel}
-            fmt={metric.fmt}
-          />
-          <BreakdownBars
-            title={t("charts.byModelMetric", { metric: metricLabel })}
-            data={modelBars}
-            name={metricLabel}
-            fmt={metric.fmt}
-          />
-          <BreakdownBars
-            title={t("charts.byRegionMetric", { metric: metricLabel })}
-            data={regionBars}
-            name={metricLabel}
-            fmt={metric.fmt}
-          />
-        </div>
-
-        <CumulativeImpact
-          events={data.events}
-          metricKey={metricKey}
-          metricLabel={metricLabel}
-          fmt={metric.fmt}
-        />
-      </div>
-
-      <EventsTable data={data} />
-    </div>
+    <>
+      <Figures data={data} resource={resource} onResource={setResource} />
+      <UseField
+        uses={uses}
+        resource={resource}
+        pointed={pointed}
+        chosen={chosen}
+        onPoint={setPointed}
+        onChoose={setChosen}
+      />
+      <RunningTotal
+        events={data.events}
+        resource={resource}
+        focus={focus ? { kind: focus.kind, country: focus.country } : null}
+        curated={FOOTPRINT_EVENTS}
+      />
+      <Sources events={data.events} />
+    </>
   );
 }
 
-function EventsTable({ data }: { data: FootprintRollup }) {
+/** The days the record covers, under the title. */
+function Span({ events }: { events: LedgerEvent[] }) {
   const t = useTranslations("sustainability");
-  const rows = [...data.events].sort((a, b) => b.ts.localeCompare(a.ts));
+  const { date } = useAmounts();
+  const span = recordedSpan(events);
+  if (!span) return null;
+  const sameYear = span.from.slice(0, 4) === span.to.slice(0, 4);
   return (
-    <div className="bg-white border border-gray-100 rounded-lg p-5 overflow-x-auto">
-      <h3 className="text-sm font-semibold text-[var(--undp-black)] mb-3">
-        {t("table.title")}
-      </h3>
-      <table className="w-full text-xs text-left border-collapse">
-        <thead>
-          <tr className="text-[var(--undp-gray)] border-b border-gray-100">
-            <th className="py-2 pr-3 font-semibold">{t("table.date")}</th>
-            <th className="py-2 pr-3 font-semibold">{t("table.component")}</th>
-            <th className="py-2 pr-3 font-semibold">{t("table.model")}</th>
-            <th className="py-2 pr-3 font-semibold">{t("table.region")}</th>
-            <th className="py-2 pr-3 font-semibold text-right">{t("table.calls")}</th>
-            <th className="py-2 pr-3 font-semibold text-right">{t("table.energy")}</th>
-            <th className="py-2 pr-3 font-semibold text-right">{t("table.carbon")}</th>
-            <th className="py-2 font-semibold">{t("table.basis")}</th>
-          </tr>
-        </thead>
-        <tbody className="text-[var(--undp-black)]">
-          {rows.map((e, i) => {
-            const energy = fmtEnergy(e.energy_wh);
-            const carbon = fmtCarbon(e.co2_geq);
-            return (
-              <tr key={`${e.ts}-${i}`} className="border-b border-gray-50">
-                <td className="py-2 pr-3 whitespace-nowrap">{e.ts.slice(0, 10)}</td>
-                <td className="py-2 pr-3 whitespace-nowrap">
-                  {componentLabel(t, e.component)}
-                </td>
-                <td className="py-2 pr-3 whitespace-nowrap">{e.model}</td>
-                <td className="py-2 pr-3 whitespace-nowrap">{e.region}</td>
-                <td className="py-2 pr-3 text-right tabular-nums">
-                  {e.call_count.toLocaleString()}
-                </td>
-                <td className="py-2 pr-3 text-right tabular-nums whitespace-nowrap">
-                  {energy.value} {energy.unit}
-                </td>
-                <td className="py-2 pr-3 text-right tabular-nums whitespace-nowrap">
-                  {carbon.value} {carbon.unit}
-                </td>
-                <td className="py-2 whitespace-nowrap text-[var(--undp-gray)]">
-                  {sourceLabel(t, e.source)}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <p className="mt-2 text-sm text-[var(--undp-gray)]">
+      {span.from === span.to
+        ? date(span.to)
+        : t("span", { from: date(span.from, !sameYear), to: date(span.to) })}
+    </p>
+  );
+}
+
+function Downloads({ data }: { data: FootprintRollup }) {
+  const t = useTranslations("sustainability");
+  const stamp = new Date().toISOString().slice(0, 10);
+  return (
+    <p className="flex items-baseline gap-3 text-sm text-[var(--undp-gray)]">
+      <span>{t("download")}</span>
+      <button
+        type="button"
+        title={t("downloadCsvTitle")}
+        className={quietLink}
+        onClick={() => downloadFile(`cpc-footprint-${stamp}.csv`, toCsv(data.events), "text/csv")}
+      >
+        {t("downloadCsv")}
+      </button>
+      <button
+        type="button"
+        title={t("downloadJsonTitle")}
+        className={quietLink}
+        onClick={() =>
+          downloadFile(
+            `cpc-footprint-${stamp}.json`,
+            JSON.stringify(data, null, 2),
+            "application/json",
+          )
+        }
+      >
+        {t("downloadJson")}
+      </button>
+    </p>
+  );
+}
+
+/**
+ * The four totals as plain figures, each with what it amounts to in everyday
+ * terms right under it, then the requests behind them. The figures are also
+ * the choice of resource for everything below: the one chosen carries an ink
+ * rule on top.
+ */
+function Figures({
+  data,
+  resource,
+  onResource,
+}: {
+  data: FootprintRollup;
+  resource: Resource;
+  onResource: (resource: Resource) => void;
+}) {
+  const t = useTranslations("sustainability");
+  const { amount, number, share } = useAmounts();
+  const { totals, envelope } = data;
+  const eq = everydayEquivalents(totals);
+  // An anchor that rounds to nothing informs nobody: leave it out.
+  const anchor = (key: "petrol" | "ev" | "bathtubs", count: number) => {
+    const rounded = eqRound(count);
+    return rounded > 0 ? t(`figures.${key}`, { count: rounded }) : null;
+  };
+  const notes: Record<Resource, string | null> = {
+    co2_geq: anchor("petrol", eq.petrolLitres),
+    energy_wh: anchor("ev", eq.evCharges),
+    water_ml: anchor("bathtubs", eq.bathtubs),
+    minerals_ugsbeq: t("figures.mineralsNote"),
+  };
+  const unitTitles: Partial<Record<Resource, string>> = {
+    co2_geq: t("figures.carbonUnitTitle"),
+    energy_wh: t("figures.energyUnitTitle"),
+    minerals_ugsbeq: t("figures.mineralsUnitTitle"),
+  };
+
+  const reused = data.events.reduce((sum, e) => sum + e.cached_call_count, 0);
+  const calls = number(totals.call_count);
+
+  return (
+    <section>
+      <div role="group" aria-label={t("select")} className="grid grid-cols-2 gap-y-2 lg:grid-cols-4">
+        {RESOURCES.map((r) => {
+          const value = amount(totals[r.key], r.key);
+          const unit = r.suffix ? `${value.unit} ${r.suffix}` : value.unit;
+          const range = envelopeRange(envelope, r.key, totals[r.key]);
+          const selected = r.key === resource;
+          const unitTitle = unitTitles[r.key];
+          return (
+            <button
+              key={r.key}
+              type="button"
+              data-testid="fp-figure"
+              aria-pressed={selected}
+              onClick={() => onResource(r.key)}
+              className={`group flex flex-col items-start border-t-2 pb-4 pr-4 pt-3 text-left transition-colors lg:px-5 lg:first:pl-0 ${
+                selected
+                  ? "border-[var(--undp-black)]"
+                  : "border-[var(--color-line)] hover:border-[var(--undp-gray)]"
+              }`}
+            >
+              <span
+                className={`text-data ${selected ? "font-semibold text-[var(--undp-black)]" : "text-[var(--undp-gray)]"}`}
+              >
+                {t(`figures.${r.label}`)}
+              </span>
+              <span className="fp-figure-value mt-1 text-3xl font-medium tabular-nums text-[var(--undp-black)]">
+                {value.value}{" "}
+                <span className="text-base font-normal text-[var(--undp-gray)]">
+                  {unitTitle ? (
+                    <abbr title={unitTitle} className="cursor-help no-underline">
+                      {unit}
+                    </abbr>
+                  ) : (
+                    unit
+                  )}
+                </span>
+              </span>
+              {notes[r.key] && (
+                <span className="fp-figure-note mt-1 text-data text-[var(--undp-black)]">{notes[r.key]}</span>
+              )}
+              {range && (
+                <span className="mt-0.5 text-caption tabular-nums text-[var(--undp-gray)]">
+                  {t("figures.range", {
+                    min: `${amount(range.min, r.key).value} ${amount(range.min, r.key).unit}`,
+                    max: `${amount(range.max, r.key).value} ${amount(range.max, r.key).unit}`,
+                  })}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <p className="mt-2 text-data text-[var(--undp-gray)]">
+        {reused > 0 && totals.call_count > 0
+          ? t("requestsReused", { calls, share: share(reused / totals.call_count) })
+          : t("requests", { calls })}
+      </p>
+    </section>
+  );
+}
+
+/** Where the figures come from: one line each, at the foot of the page. */
+function Sources({ events }: { events: LedgerEvent[] }) {
+  const t = useTranslations("sustainability");
+  return (
+    <footer className="mt-14 border-t border-[var(--color-line)] pt-4 space-y-1 text-caption text-[var(--undp-gray)]">
+      <p>
+        {t.rich("sources.method", {
+          regions: regionsOf(events).join(", "),
+          link: (chunks) => (
+            <a
+              href="https://ecologits.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-[var(--undp-blue)]"
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+      </p>
+      <p>{t("sources.equivalents")}</p>
+    </footer>
   );
 }

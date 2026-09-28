@@ -1818,83 +1818,67 @@
       "label": "AI footprint: <b>{value} CO2e</b>",
       "title": "AI sustainability footprint of this tool"
     },
-    "page": {
-      "title": "AI sustainability footprint",
-      "intro": "The estimated environmental cost of the AI computation behind this tool, covering document analysis, the inference pipeline, and the chatbot. This is a transparency record for reporting, not policy advice.",
-      "methodology": "AI-estimated using the <link>EcoLogits</link> methodology. Figures are modelled estimates, not meter readings, and carry a margin of uncertainty."
-    },
+    "title": "AI sustainability footprint",
     "back": "Back",
-    "loading": "Loading footprint data…",
-    "empty": "No footprint recorded yet. Run an analysis or send a chat message, and this page will start tracking the AI compute behind it.",
+    "span": "{from} to {to}",
+    "download": "Download",
+    "downloadCsv": "CSV",
+    "downloadCsvTitle": "The full record, as a spreadsheet",
+    "downloadJson": "JSON",
+    "downloadJsonTitle": "The full record, as data",
+    "loading": "Loading the footprint…",
+    "empty": "No footprint recorded yet. Every analysis and every chat answer is added here once it runs.",
     "errors": {
       "loadFailed": "Could not load footprint data",
       "withMessage": "Could not load footprint data: {message}"
     },
-    "exportCsv": "Export CSV",
-    "exportJson": "Export JSON",
-    "seriesCarbon": "Carbon",
-    "units": {
-      "gCO2e": "g CO2e"
+    "figures": {
+      "carbon": "Carbon",
+      "electricity": "Electricity",
+      "water": "Water",
+      "minerals": "Minerals",
+      "carbonUnitTitle": "CO2e: carbon dioxide equivalent",
+      "energyUnitTitle": "kWh: kilowatt hours; Wh: watt hours",
+      "mineralsUnitTitle": "Sb-eq: antimony equivalent, the measure of abiotic resource depletion (ADPe)",
+      "petrol": "{count, plural, one {About the carbon of burning one litre of petrol} other {About the carbon of burning # litres of petrol}}",
+      "ev": "{count, plural, one {About one full charge of a long-range electric car} other {About # full charges of a long-range electric car}}",
+      "bathtubs": "{count, plural, one {About one bathtub of water} other {About # bathtubs of water}}",
+      "mineralsNote": "Mineral resources used up, in antimony equivalent",
+      "range": "Modelled range: {min} to {max}"
     },
-    "components": {
-      "dev_pipeline": "Developer pipeline runs",
-      "user_pipeline": "User pipeline runs",
-      "extract": "Document extraction",
-      "chat": "Chatbot"
+    "select": "Show by resource",
+    "requests": "{calls} requests to AI models",
+    "requestsReused": "{calls} requests to AI models, {share} reused from earlier runs",
+    "byUse": "{resource} by use",
+    "perDot": "{amount} per dot",
+    "use": {
+      "extract": "Reading uploaded documents",
+      "chat": "Chat",
+      "other": "Other work"
+    },
+    "meta": {
+      "runs": "{count, plural, one {# run} other {# runs}}",
+      "models": "{count, plural, one {# model} other {# models}}",
+      "answers": "{count, plural, one {# answer} other {# answers}}"
+    },
+    "resources": "{carbon} CO2e · {energy} · {water} of water · {minerals} Sb-eq",
+    "entry": {
+      "requests": "{count, plural, one {# request} other {# requests}}",
+      "requestsReused": "{count, plural, one {# request} other {# requests}}, {reused, number} reused"
+    },
+    "showAll": "Show all {count, number}",
+    "close": "Close",
+    "overTime": "{resource} over time",
+    "events": "Events",
+    "timeline": {
+      "label": "Running total of {resource} from {from} to {to}, reaching {total}",
+      "step": "{name} +{amount}",
+      "then": "Total then: {amount}",
+      "more": "{count, plural, one {and one more} other {and # more}}"
     },
     "sources": {
-      "measured": "Measured",
-      "estimated": "Estimated",
-      "api": "Estimated (API)",
-      "unavailable": "Not available"
-    },
-    "tile": {
-      "carbon": "Carbon",
-      "carbonUnitTitle": "CO2e: carbon dioxide equivalent",
-      "energy": "Energy",
-      "energyUnitTitle": "kWh: kilowatt hours; Wh: watt hours",
-      "water": "Water",
-      "waterUnitTitle": "Water consumption footprint (data-centre cooling)",
-      "waterSub": "consumption footprint",
-      "minerals": "Minerals",
-      "mineralsUnitTitle": "ADPe: abiotic depletion potential, antimony (Sb) equivalent",
-      "mineralsSub": "abiotic resource use",
-      "callsLabel": "across {calls} model calls",
-      "lastRecorded": "last recorded {date}",
-      "notAvailable": "n/a",
-      "range": "modelled range: {min} to {max}"
-    },
-    "equivalents": {
-      "title": "In everyday terms",
-      "ev": "{count, plural, one {about one full charge of a long-range electric car} other {about # full charges of a long-range electric car}}",
-      "petrol": "{count, plural, one {the carbon of burning about one litre of petrol} other {the carbon of burning about # litres of petrol}}",
-      "bathtubs": "{count, plural, one {about one bathtub of cooling water} other {about # bathtubs of cooling water}}",
-      "note": "Illustrative comparisons: United States Environmental Protection Agency (EPA) petrol combustion factor (August 2026), a 75 to 100 kWh electric car battery, a 155-litre bathtub."
-    },
-    "charts": {
-      "carbonOverTime": "Carbon over time",
-      "byComponent": "Carbon by component",
-      "byModel": "Carbon by model",
-      "byRegion": "Carbon by region",
-      "byComponentMetric": "{metric} by component",
-      "byModelMetric": "{metric} by model",
-      "byRegionMetric": "{metric} by region",
-      "cumulativeOverTime": "Cumulative {metric} over time",
-      "cumulativeDescription": "Running total of {metric} to date, split by where it comes from. The four resources move in step, so each shows the same shape in its own units."
-    },
-    "table": {
-      "title": "Recorded activity",
-      "date": "Date",
-      "component": "Component",
-      "model": "Model",
-      "region": "Region",
-      "calls": "Calls",
-      "energy": "Energy",
-      "carbon": "Carbon",
-      "basis": "Basis"
-    },
-    "metricSelector": {
-      "label": "Break down by resource:"
+      "method": "Modelled estimates with <link>EcoLogits</link>, not meter readings. Electricity mix: {regions}.",
+      "equivalents": "Illustrative comparisons: United States Environmental Protection Agency (EPA) petrol combustion factor (August 2026), a 75 to 100 kWh electric car battery, a 155-litre bathtub."
     }
   },
   "finding": {

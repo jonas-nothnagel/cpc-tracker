@@ -1818,83 +1818,67 @@
       "label": "Huella de IA: <b>{value} CO2e</b>",
       "title": "Huella de sostenibilidad de IA de esta herramienta"
     },
-    "page": {
-      "title": "Huella de sostenibilidad de IA",
-      "intro": "El coste ambiental estimado de la computación de IA detrás de esta herramienta, cubriendo análisis de documentos, la canalización de inferencia y el chatbot. Es un registro de transparencia para reportar, no asesoría de política.",
-      "methodology": "Estimado por IA usando la metodología <link>EcoLogits</link>. Las cifras son estimaciones modeladas, no lecturas de medidor, y conllevan un margen de incertidumbre."
-    },
+    "title": "Huella de sostenibilidad de IA",
     "back": "Volver",
-    "loading": "Cargando datos de huella…",
-    "empty": "Aún no se ha registrado huella. Ejecute un análisis o envíe un mensaje de chat, y esta página empezará a rastrear el cómputo de IA detrás de ello.",
+    "span": "Del {from} al {to}",
+    "download": "Descargar",
+    "downloadCsv": "CSV",
+    "downloadCsvTitle": "El registro completo, como hoja de cálculo",
+    "downloadJson": "JSON",
+    "downloadJsonTitle": "El registro completo, como datos",
+    "loading": "Cargando la huella…",
+    "empty": "Aún no se ha registrado ninguna huella. Cada análisis y cada respuesta del chat se añade aquí en cuanto se ejecuta.",
     "errors": {
       "loadFailed": "No se pudieron cargar los datos de huella",
       "withMessage": "No se pudieron cargar los datos de huella: {message}"
     },
-    "exportCsv": "Exportar CSV",
-    "exportJson": "Exportar JSON",
-    "seriesCarbon": "Carbono",
-    "units": {
-      "gCO2e": "g CO2e"
+    "figures": {
+      "carbon": "Carbono",
+      "electricity": "Electricidad",
+      "water": "Agua",
+      "minerals": "Minerales",
+      "carbonUnitTitle": "CO2e: equivalente de dióxido de carbono",
+      "energyUnitTitle": "kWh: kilovatios-hora; Wh: vatios-hora",
+      "mineralsUnitTitle": "Sb-eq: equivalente de antimonio, la medida del agotamiento de recursos abióticos (ADPe)",
+      "petrol": "{count, plural, one {Aproximadamente el carbono de quemar un litro de gasolina} other {Aproximadamente el carbono de quemar # litros de gasolina}}",
+      "ev": "{count, plural, one {Aproximadamente una carga completa de un coche eléctrico de gran autonomía} other {Aproximadamente # cargas completas de un coche eléctrico de gran autonomía}}",
+      "bathtubs": "{count, plural, one {Aproximadamente una bañera de agua} other {Aproximadamente # bañeras de agua}}",
+      "mineralsNote": "Recursos minerales agotados, en equivalente de antimonio",
+      "range": "Rango modelado: de {min} a {max}"
     },
-    "components": {
-      "dev_pipeline": "Ejecuciones de canalización (desarrollo)",
-      "user_pipeline": "Ejecuciones de canalización (usuario)",
-      "extract": "Extracción de documentos",
-      "chat": "Chatbot"
+    "select": "Mostrar por recurso",
+    "requests": "{calls} solicitudes a modelos de IA",
+    "requestsReused": "{calls} solicitudes a modelos de IA, {share} reutilizadas de ejecuciones anteriores",
+    "byUse": "{resource} por uso",
+    "perDot": "{amount} por punto",
+    "use": {
+      "extract": "Lectura de documentos cargados",
+      "chat": "Chat",
+      "other": "Otros trabajos"
+    },
+    "meta": {
+      "runs": "{count, plural, one {# ejecución} other {# ejecuciones}}",
+      "models": "{count, plural, one {# modelo} other {# modelos}}",
+      "answers": "{count, plural, one {# respuesta} other {# respuestas}}"
+    },
+    "resources": "{carbon} CO2e · {energy} · {water} de agua · {minerals} Sb-eq",
+    "entry": {
+      "requests": "{count, plural, one {# solicitud} other {# solicitudes}}",
+      "requestsReused": "{count, plural, one {# solicitud} other {# solicitudes}}, {reused, number} reutilizadas"
+    },
+    "showAll": "Mostrar las {count, number}",
+    "close": "Cerrar",
+    "overTime": "{resource} a lo largo del tiempo",
+    "events": "Hitos",
+    "timeline": {
+      "label": "Total acumulado de {resource} del {from} al {to}, hasta {total}",
+      "step": "{name} +{amount}",
+      "then": "Total en ese momento: {amount}",
+      "more": "{count, plural, one {y uno más} other {y # más}}"
     },
     "sources": {
-      "measured": "Medido",
-      "estimated": "Estimado",
-      "api": "Estimado (API)",
-      "unavailable": "No disponible"
-    },
-    "tile": {
-      "carbon": "Carbono",
-      "carbonUnitTitle": "CO2e: equivalente de dióxido de carbono",
-      "energy": "Energía",
-      "energyUnitTitle": "kWh: kilovatios-hora; Wh: vatios-hora",
-      "water": "Agua",
-      "waterUnitTitle": "Huella de consumo de agua (enfriamiento de centros de datos)",
-      "waterSub": "huella de consumo",
-      "minerals": "Minerales",
-      "mineralsUnitTitle": "ADPe: potencial de agotamiento abiótico, equivalente de antimonio (Sb)",
-      "mineralsSub": "uso de recursos abióticos",
-      "callsLabel": "en {calls} llamadas al modelo",
-      "lastRecorded": "último registro {date}",
-      "notAvailable": "n/d",
-      "range": "rango modelado: {min} a {max}"
-    },
-    "equivalents": {
-      "title": "En términos cotidianos",
-      "ev": "{count, plural, one {aproximadamente una carga completa de un coche eléctrico de gran autonomía} other {aproximadamente # cargas completas de un coche eléctrico de gran autonomía}}",
-      "petrol": "{count, plural, one {el carbono de quemar aproximadamente un litro de gasolina} other {el carbono de quemar aproximadamente # litros de gasolina}}",
-      "bathtubs": "{count, plural, one {aproximadamente una bañera de agua de refrigeración} other {aproximadamente # bañeras de agua de refrigeración}}",
-      "note": "Comparaciones ilustrativas: factor de combustión de gasolina de la Agencia de Protección Ambiental de Estados Unidos (EPA, agosto de 2026), una batería de coche eléctrico de 75 a 100 kWh y una bañera de 155 litros."
-    },
-    "charts": {
-      "carbonOverTime": "Carbono a lo largo del tiempo",
-      "byComponent": "Carbono por componente",
-      "byModel": "Carbono por modelo",
-      "byRegion": "Carbono por región",
-      "byComponentMetric": "{metric} por componente",
-      "byModelMetric": "{metric} por modelo",
-      "byRegionMetric": "{metric} por región",
-      "cumulativeOverTime": "{metric} acumulado a lo largo del tiempo",
-      "cumulativeDescription": "Total acumulado de {metric} hasta la fecha, desglosado por su procedencia. Los cuatro recursos avanzan al mismo ritmo, por lo que cada uno muestra la misma forma en sus propias unidades."
-    },
-    "table": {
-      "title": "Actividad registrada",
-      "date": "Fecha",
-      "component": "Componente",
-      "model": "Modelo",
-      "region": "Región",
-      "calls": "Llamadas",
-      "energy": "Energía",
-      "carbon": "Carbono",
-      "basis": "Base"
-    },
-    "metricSelector": {
-      "label": "Desglosar por recurso:"
+      "method": "Estimaciones modeladas con <link>EcoLogits</link>, no lecturas de medidor. Combinación eléctrica: {regions}.",
+      "equivalents": "Comparaciones ilustrativas: factor de combustión de gasolina de la Agencia de Protección Ambiental de Estados Unidos (EPA, agosto de 2026), una batería de coche eléctrico de 75 a 100 kWh y una bañera de 155 litros."
     }
   },
   "finding": {
