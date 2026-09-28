@@ -38,7 +38,7 @@
     "hero": {
       "eyebrow": "UNDP AI Sprint Initiative",
       "title": "Nature-Climate Policy Coherence Analyzer",
-      "subtitle": "Where national climate, biodiversity, and land-use policies align, and where they may pull in different directions.",
+      "subtitle": "Where national climate, biodiversity, and land-use policies align, and where they are potentially misaligned.",
       "analyseCta": "Analyse policy documents",
       "exploreMenu": "Explore a pilot country",
       "pilotCountriesHeader": "Pilot countries",
@@ -123,9 +123,9 @@
       "corpusDocs": "{count, plural, one {document} other {documents}}",
       "corpusCaption": "What the briefing compares",
       "strong": "reach strong alignment",
-      "strongCaption": "Pairs that reinforce each other",
+      "strongCaption": "Strongly aligned pairs",
       "flagged": "{count, plural, one {potential misalignment} other {potential misalignments}}",
-      "flaggedCaption": "Pairs flagged for review",
+      "flaggedCaption": "Potentially misaligned pairs",
       "financeCaption": "Biodiversity Expenditure Review (BER) total",
       "implementation": "{count, plural, one {reported action} other {reported actions}}",
       "implementationCaption": "In the Biennial Transparency Report (BTR)",
@@ -145,7 +145,7 @@
       "direction": "Policy alignment",
       "docFocus": "One document in focus",
       "docPairs": "Document comparisons",
-      "frictionTypes": "Why pairs pull apart",
+      "frictionTypes": "Types of potential misalignment",
       "sectors": "Sectors",
       "whereToFocus": "Where to focus",
       "explore": "Explore",
@@ -157,7 +157,7 @@
         "label": "What the policies say"
       },
       "friction": {
-        "label": "Where they pull apart"
+        "label": "Where they are potentially misaligned"
       },
       "delivery": {
         "label": "Money and delivery"
@@ -218,7 +218,7 @@
           },
           "overview": {
             "title": "The headline numbers",
-            "body": "Each tile is one headline count: what was compared, where policies reinforce one another, and what was flagged as possible misalignment. Selecting a tile jumps to the part of the page that explains it."
+            "body": "Each tile is one headline count: what was compared, where policies are aligned, and what shows potential misalignment. Selecting a tile jumps to the part of the page that explains it."
           },
           "corpus": {
             "title": "The data behind it",
@@ -226,15 +226,15 @@
           },
           "questions": {
             "title": "One page, organized by question",
-            "body": "The briefing is a single scroll through four stops: what the policies say, where they pull apart, money and delivery, and a workbench to explore. This bar tracks where you are and jumps to any part."
+            "body": "The briefing is a single scroll through four stops: what the policies say, where they are potentially misaligned, money and delivery, and a workbench to explore. This bar tracks where you are and jumps to any part."
           },
           "policies": {
             "title": "First, the shared direction",
-            "body": "The opening sections show the themes that recur across the documents and where their targets reinforce one another: a baseline for planning, and the place to spot synergies between instruments."
+            "body": "The opening sections show the themes that recur across the documents and where their targets are aligned: a baseline for planning, and the place to spot synergies between instruments."
           },
           "friction": {
             "title": "Then, the pairs worth a closer look",
-            "body": "The middle sections group the target pairs the AI flagged as potential misalignments, by what the friction is about and where it concentrates. These flags are prompts for review, not verdicts: a starting list for reading the documents side by side."
+            "body": "The middle sections group the target pairs the AI rated as potential misalignments, by type and by where they concentrate. These ratings are prompts for review, not verdicts: a starting list for reading the documents side by side."
           },
           "delivery": {
             "title": "Whether delivery follows ambition",
@@ -261,7 +261,7 @@
           },
           "ribbons": {
             "title": "Ribbons connect documents",
-            "body": "Each ribbon links two documents whose targets were compared. Green shows pairs that support each other; the dashed red share shows pairs flagged as potential misalignments. Wider ribbons mean more compared pairs. These links are AI-estimated prompts for review, not verdicts."
+            "body": "Each ribbon links two documents whose targets were compared. Green shows aligned pairs; the dashed red share shows potentially misaligned pairs. Wider ribbons mean more compared pairs. These links are AI-estimated prompts for review, not verdicts."
           },
           "labels": {
             "title": "Labels name each document",
@@ -285,7 +285,7 @@
           },
           "colours": {
             "title": "Green and red show the balance",
-            "body": "Greener cells have a larger share of mutually supportive target pairs; redder cells have a larger share flagged as potential misalignments. These comparisons are AI-estimated starting points for review."
+            "body": "Greener cells have a larger share of aligned target pairs; redder cells a larger share of potentially misaligned ones. These comparisons are AI-estimated starting points for review."
           },
           "intensity": {
             "title": "Stronger colour, further from typical",
@@ -368,16 +368,16 @@
       "frictionTypes": {
         "steps": {
           "bar": {
-            "title": "One bar, split by kind of friction",
-            "body": "The bar splits all flagged target pairs by the kind of friction involved. Each segment's width is that kind's share; click a segment to see where it plays out."
+            "title": "One bar, split by type of potential misalignment",
+            "body": "The bar splits all potentially misaligned target pairs by type. Each segment's width is that type's share; click a segment to see where it plays out."
           },
           "mechanisms": {
             "title": "The three kinds, explained",
-            "body": "Each column names one kind of friction, with its share, its count, and a short description of what it means."
+            "body": "Each column names one type of potential misalignment, with its share, its count, and a short description of what it means."
           },
           "total": {
             "title": "The number behind the bar",
-            "body": "This is the total number of target pairs flagged for review as potential misalignments — the pairs the bar splits by kind."
+            "body": "This is the total number of potentially misaligned target pairs: the pairs the bar splits by type."
           }
         }
       },
@@ -385,7 +385,7 @@
         "steps": {
           "columns": {
             "title": "Two columns of recurring themes",
-            "body": "The left column groups themes where documents mostly support one another; the right column groups themes flagged as potential misalignments. The themes are AI-derived groupings of related target pairs."
+            "body": "The left column groups themes where documents are mostly aligned; the right column groups themes of potential misalignment. The themes are AI-derived groupings of related target pairs."
           },
           "card": {
             "title": "Each card is one theme",
@@ -405,7 +405,7 @@
           },
           "pairs": {
             "title": "The pairs worth reviewing",
-            "body": "Each row is one target pair flagged as a potential misalignment between the focused document and a peer document. Click a row for the full explanation. These flags are AI-estimated prompts for review, not verdicts."
+            "body": "Each row is one potentially misaligned target pair between the focused document and a peer document. Click a row for the full explanation. These ratings are AI-estimated prompts for review, not verdicts."
           }
         }
       },
@@ -417,7 +417,7 @@
           },
           "balance": {
             "title": "The green and red balance bar",
-            "body": "The bar's total length reflects how many target pairs were compared for the pairing; green is the share that support each other, red the share flagged as potential misalignments."
+            "body": "The bar's total length reflects how many target pairs were compared for the pairing; green is the aligned share, red the potentially misaligned share."
           },
           "sync": {
             "title": "The list and the matrix move together",
@@ -433,31 +433,31 @@
           },
           "columns": {
             "title": "Two measures per sector",
-            "body": "\"Targets\" counts how many targets fall in the sector; \"flagged share\" is the portion of its reviewed pairs flagged for review. Click either heading to sort by it."
+            "body": "\"Targets\" counts how many targets fall in the sector; \"Potential misalignment\" is the portion of its reviewed pairs rated as potential misalignment. Click either heading to sort by it."
           },
           "rows": {
             "title": "One row per sector",
             "body": "Each row is a sector with its two bars. Click a row to open the sector's detail; on larger screens, hovering highlights the sector on the wheel to the right."
           },
           "flagShare": {
-            "title": "Reading the flagged-share bar",
-            "body": "The red bar shows the share of reviewed target pairs flagged as potential misalignments. The small dark tick marks the average across all sectors shown, so you can see which sectors sit above or below it."
+            "title": "Reading the potential misalignment bar",
+            "body": "The red bar shows the share of reviewed target pairs rated as potential misalignments. The small dark tick marks the average across all sectors shown, so you can see which sectors sit above or below it."
           }
         }
       },
       "whereToFocus": {
         "steps": {
           "bar": {
-            "title": "Most friction traces to a few targets",
-            "body": "Each coloured chunk is one target, sized by the flagged pairs it accounts for and coloured by its source document. The grey tail is every other target. Click a chunk to open that target's profile."
+            "title": "Most potential misalignment traces to a few targets",
+            "body": "Each coloured chunk is one target, sized by the potentially misaligned pairs it accounts for and coloured by its source document. The grey tail is every other target. Click a chunk to open that target's profile."
           },
           "legend": {
             "title": "What the numbers mean",
-            "body": "This line states how many targets carry what share of all flagged pairs, and what the grey area stands for."
+            "body": "This line states how many targets carry what share of all potentially misaligned pairs, and what the grey area stands for."
           },
           "list": {
             "title": "The most contested targets",
-            "body": "Each row is one target with the number of flagged pairs it appears in, shown as a bar scaled to the top target. Click a row for the full profile. These counts come from AI-flagged pairs and are review prompts, not findings."
+            "body": "Each row is one target with the number of potentially misaligned pairs it appears in, shown as a bar scaled to the top target. Click a row for the full profile. These counts come from AI ratings and are review prompts, not findings."
           }
         }
       },
@@ -469,11 +469,11 @@
           },
           "visual": {
             "title": "The takeaways",
-            "body": "Climate: one bar per reported action, its length the policy commitments it may pull against, darker for design-level pairs. Biodiversity: one row per national target, the ones the report rates behind schedule first, with its rating and how many linked pairs are flagged for review."
+            "body": "Climate: one bar per reported action, its length the policy commitments it is potentially misaligned with, darker for design-level pairs. Biodiversity: one row per national target, the ones the report rates behind schedule first, with its rating and how many linked pairs show potential misalignment."
           },
           "row": {
             "title": "Opening a row",
-            "body": "A climate bar lists the commitments and why each was flagged (AI-estimated). A biodiversity row opens to what the report itself says holds the target back, the flagged pairs (each opens why it was flagged), and the full report entry; the column beside lists the plans that share the aim."
+            "body": "A climate bar lists the commitments and why each is potentially misaligned (AI-estimated). A biodiversity row opens to what the report itself says holds the target back, the potentially misaligned pairs (each opens the AI's reason), and the full report entry; the column beside lists the plans that share the aim."
           },
           "fullPicture": {
             "title": "The full picture",
@@ -485,11 +485,11 @@
         "steps": {
           "list": {
             "title": "One line per document",
-            "body": "For each plan, how many of its targets the AI judged strongly aligned with the national target opened on the left, and how many of those pairs are flagged for review."
+            "body": "For each plan, how many of its targets the AI judged strongly aligned with the national target opened on the left, and how many pairs show potential misalignment."
           },
           "docs": {
             "title": "The aligned targets",
-            "body": "Open a plan to list the targets one by one; a red dot and the words \"potential misalignment\" mark a pair flagged for review, and \"on N targets\" a pair that repeats on other national targets. Click a target to read it."
+            "body": "Open a plan to list the targets one by one; a red dot and the words \"potential misalignment\" mark a pair to review, and \"on N targets\" a pair that repeats on other national targets. Click a target to read it."
           }
         }
       },
@@ -581,7 +581,7 @@
     },
     "docMatrix": {
       "noScoredTitle": "{a} ↔ {b}: no scored pairs",
-      "cellTitle": "{a} ↔ {b}: {aligned, number} aligned · {flagged, number} flagged · click for the gaps",
+      "cellTitle": "{a} ↔ {b}: {aligned, number} aligned · {flagged, number} potentially misaligned · click for the gaps",
       "aligned": "Aligned",
       "flagged": "Potential misalignment",
       "legendHint": "deeper colour = further from the corpus's average alignment level",
@@ -674,7 +674,7 @@
         "showMore": "Show {count, number} more",
         "fallback": {
           "allPairs": "All target pairs ({count, number})",
-          "flaggedOnly": "Flagged target pairs ({count, number})",
+          "flaggedOnly": "Potentially misaligned target pairs ({count, number})",
           "showMisalignedOnly": "Show misaligned only",
           "showAligned": "Show aligned ({count, number})",
           "empty": "No target pairs to show."
@@ -689,7 +689,7 @@
           "reportWords": "the report's words",
           "noChallenges": "The report gives no key-challenges text for this target.",
           "repeats": "The biodiversity report's rows flag this target against {count, plural, one {# national target} other {# national targets}}.",
-          "seeAll": "All its flagged pairs"
+          "seeAll": "All its potentially misaligned pairs"
         },
         "budgetLineTag": "Budget line (BER)",
         "feedback": {
@@ -755,8 +755,8 @@
           "flagged": "Potential misalignment"
         },
         "legacy": {
-          "pullingTogether": "What's pulling together",
-          "pullingAgainst": "What's pulling against the rest",
+          "pullingTogether": "What is aligned",
+          "pullingAgainst": "What is potentially misaligned with the rest",
           "strongestAlignments": "Strongest alignments",
           "topFlagged": "Top potentially misaligned pairs"
         },
@@ -898,7 +898,7 @@
         "mixed": "{total, number} potentially misaligned pairs split across the three types. Click any segment to see how those pairs break down.",
         "dominant": "Of {total, number} potentially misaligned pairs, {label} accounts for {pct}%. Click any segment to see how those pairs break down by document, theme, and target."
       },
-      "reading": "The same <pair>pairs</pair>, sorted by what the friction is about: the goals, the resources, or the delivery."
+      "reading": "The same <pair>pairs</pair>, sorted by what the potential misalignment is about: the goals, the resources, or the delivery."
     },
     "docFocus": {
       "switcherAriaLabel": "Pick a document to focus on",
@@ -933,7 +933,7 @@
       "themesHeadline": "The themes that recur across the documents.",
       "strongAlignment": "strong alignment",
       "potentialMisalignment": "potential misalignment",
-      "flaggedDefinition": "Two targets the AI identified as possibly working against each other: a prompt for human review, not a settled finding. A real scored pair:",
+      "flaggedDefinition": "Two targets the AI rated as potentially misaligned, where pursuing one may make the other harder to reach: a prompt for human review, not a settled finding. A real scored pair:",
       "popoverAriaLabel": "Show an example of {term}",
       "clickToOpenPair": "Click the term to open this pair",
       "howPipelineBuilt": "How the pipeline built this view",
@@ -1104,7 +1104,7 @@
       "legend": {
         "matched": "has an aligned reported action",
         "unmatched": "none in this report",
-        "pull": "targets a reported action may pull against"
+        "pull": "targets potentially misaligned with a reported action"
       },
       "nr7": {
         "selfAssessment": "Country self-assessment (NR7):",
@@ -1117,7 +1117,7 @@
         "notIncluded": "Not yet included: indicator time series, budget execution, project-level delivery reporting."
       },
       "misalignment": {
-        "pullHeading": "A reported action may pull against"
+        "pullHeading": "Potentially misaligned with a reported action"
       },
       "status": {
         "planned": "Planned",
@@ -1131,8 +1131,8 @@
           "designLevel": "{count, plural, one {# design-level} other {# design-level}}",
           "adaptation": "adaptation action",
           "pairsSuffix": "pairs",
-          "ariaLabel": "{name}, {status}: may pull against {count, plural, one {# policy commitment} other {# policy commitments}}",
-          "rationaleHeading": "Why it was flagged (AI-estimated)",
+          "ariaLabel": "{name}, {status}: potentially misaligned with {count, plural, one {# policy commitment} other {# policy commitments}}",
+          "rationaleHeading": "Why it is potentially misaligned (AI-estimated)",
           "openPair": "Open the pair",
           "namedOn": "Named on this action:"
         },
@@ -1154,12 +1154,12 @@
         },
         "nr7Recurring": {
           "summary": "Pairs that repeat across targets",
-          "count": "{count, plural, one {# target in another plan} other {# targets in other plans}}, each flagged on two or more national targets",
-          "hitsLabel": "National targets this is flagged against",
+          "count": "{count, plural, one {# target in another plan} other {# targets in other plans}}, each potentially misaligned with two or more national targets",
+          "hitsLabel": "National targets it is potentially misaligned with",
           "hit": "National target {n}: rated {rating}",
           "showAll": "Show all {count}",
           "showFewer": "Show fewer",
-          "pairCount": "Flagged against {count} of the {targets} national targets{behind, plural, =0 {} one {, one of them rated behind schedule} other {, # of them rated behind schedule}}"
+          "pairCount": "Potentially misaligned with {count} of the {targets} national targets{behind, plural, =0 {} one {, one of them rated behind schedule} other {, # of them rated behind schedule}}"
         },
         "nr7CrossChecks": {
           "summary": "Ratings that do not match their own evidence",
@@ -1176,8 +1176,8 @@
         "aria": "Choose a report"
       },
       "climate": {
-        "headline": "{actions} of {country}'s {totalActions} reported climate actions may work against targets in its other plans.",
-        "headlineNone": "None of {country}'s reported climate actions appears to work against targets in its other plans.",
+        "headline": "{actions} of {country}'s {totalActions} reported climate actions are potentially misaligned with targets in its other plans.",
+        "headlineNone": "None of {country}'s reported climate actions is potentially misaligned with targets in its other plans.",
         "body": "{actions, plural, one {{underWay, plural, =0 {It is not under way yet} other {It is already under way}}} other {{underWay, plural, =0 {None of these {actions} is under way yet} one {# of these {actions} is already under way} other {# of these {actions} are already under way}}}}. Most of the targets involved are in the {docs}.",
         "bodyNone": "{reached} of {total} policy targets have a strongly aligned reported action; {outsideReach} have none. Matches are AI-estimated.",
         "docsPair": "{a} and the {b}",
@@ -1186,9 +1186,9 @@
           "coordination": "coordination-level"
         },
         "bar": {
-          "aria": "{name}: {count, plural, one {# flagged pair} other {# flagged pairs}}, {design} design-level"
+          "aria": "{name}: {count, plural, one {# potentially misaligned pair} other {# potentially misaligned pairs}}, {design} design-level"
         },
-        "start": "Start with the top {half, plural, one {bar: on its own it holds} other {# bars: together they hold}} half of the concerns. Open one to see the targets the action may work against and the AI's reason, then judge whether the concern holds.",
+        "start": "Start with the top {half, plural, one {bar: on its own it holds} other {# bars: together they hold}} half of the concerns. Open one to see the targets the action is potentially misaligned with and the AI's reason, then judge whether the concern holds.",
         "startCaveat": "AI-estimated review prompts, not findings. Bar length is the number of targets involved."
       },
       "biodiversity": {
@@ -1209,13 +1209,13 @@
         "startCaveat": "Computed from the report's own statements. Nothing on this tab is AI-generated.",
         "policyLinks": {
           "headline": "{country}'s biodiversity report rates {behind} of {targets} national targets behind schedule.",
-          "body": "Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. Most flagged pairs are with the {doc}.",
-          "bodyNoFlagged": "Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. None is flagged.",
+          "body": "Each row is one national target: its rating, and how many linked pairs the AI rated as potential misalignments. Most of them are with the {doc}.",
+          "bodyNoFlagged": "Each row is one national target: its rating, and how many linked pairs the AI rated as potential misalignments. None shows potential misalignment.",
           "start": "Start with the top row: what the report says holds it back, then whether the linked plans bear on it.",
           "caveat": "Ratings and the report's words are the report's own. Links to other plans are AI-estimated alignment between target texts: a prompt for review, not a record of delivery or funding.",
           "flaggedFaceCount": "{count} to review",
           "noneFlagged": "none to review",
-          "flaggedHeading": "Flagged pairs ({count})",
+          "flaggedHeading": "Potentially misaligned pairs ({count})",
           "reach": "Aligned strongly with {count, plural, one {# target} other {# targets}} in {docs, plural, one {# other document} other {# other documents}}.",
           "noLinks": "No target in the other documents was judged strongly aligned with it.",
           "challengesHeading": "What the report says holds it back",
@@ -1758,7 +1758,7 @@
       "targets": "Targets",
       "pairs": "Pairs",
       "high": "High",
-      "flagged": "Flagged",
+      "flagged": "Potentially misaligned",
       "energy": "Energy (Wh)",
       "co2": "CO₂e (g)",
       "water": "Water (mL)",
@@ -1887,7 +1887,7 @@
       "docsSame": "two commitments in {doc}",
       "flaggedResourceNamed": "Possible competition for {resources} between {docs}",
       "flaggedResource": "Possible competition for shared resources between {docs}",
-      "flaggedGoal": "Goals that may pull in different directions: {docs}",
+      "flaggedGoal": "Potentially misaligned goals: {docs}",
       "flaggedDeliveryContext": "Possible delivery and coordination gaps between {docs} in {context}",
       "flaggedDelivery": "Possible delivery and coordination gaps between {docs}",
       "flaggedGeneric": "Potential misalignment between {docs}",
@@ -1934,7 +1934,7 @@
       "delivery_friction": "Delivery & coordination"
     },
     "contradictionDescription": {
-      "goal_conflict": "The objectives themselves pull against each other: achieving one substantively means not achieving the other.",
+      "goal_conflict": "The objectives themselves conflict: achieving one substantively means not achieving the other.",
       "resource_competition": "The goals are compatible but compete for the same limited resource: land, water, budget, or capacity.",
       "delivery_friction": "The goals are compatible; the gap is in delivery: how one is implemented undermines the other (mismatched scale, timing, or coordination across actors)."
     },
@@ -2122,17 +2122,17 @@
       "statMisalignments": "Potential misalignments",
       "statTargetsTitle": "Browse all visible targets",
       "statAlignmentsTitle": "Browse all strong alignment pairs",
-      "statMisalignmentsTitle": "Browse all pairs flagged as possible/likely conflict",
+      "statMisalignmentsTitle": "Browse all potentially misaligned pairs",
       "strongestAlignments": "Strongest alignments",
       "mostConflictedTargets": "Most conflicted targets",
       "noStrongAlignments": "No strong alignments for the current selection.",
-      "noTensions": "No potential tensions for the current selection.",
+      "noTensions": "No potential misalignment for the current selection.",
       "allTargetsTitle": "All targets · {count, number}",
       "allAlignmentsTitle": "All alignments · {count, number}",
-      "allTensionsTitle": "All tensions · {count, number}",
+      "allTensionsTitle": "All potential misalignments · {count, number}",
       "emptyTargets": "No targets in this view.",
       "emptyAlignments": "No strong alignments in this view.",
-      "emptyTensions": "No tensions in this view.",
+      "emptyTensions": "No potential misalignment in this view.",
       "docTargetCount": " · {count, plural, one {1 target} other {# targets}}"
     },
     "category": {
@@ -2157,7 +2157,7 @@
       "topConflictsCount": "Top conflicts · {count, number}",
       "strongestAlignments": "Strongest alignments",
       "strongestAlignmentsCount": "Strongest alignments · {count, number}",
-      "noTensionsOther": "No tensions with other categories.",
+      "noTensionsOther": "No potential misalignment with other categories.",
       "noAlignsOther": "No alignments with other categories.",
       "noConflicts": "No conflicts in this category.",
       "noStrongAlignments": "No strong alignments in this category.",
@@ -2694,7 +2694,7 @@
       },
       "gaps": {
         "title": "Reporting gaps",
-        "footnote": "Counts use the IPCC sector recorded for each BTR action in the underlying data file; depending on the country, sectors were hand-curated from the BTR or parser-extracted. Government self-reports rarely surface contradictions, so absence of a reported action is not the same as absence of activity on the ground.",
+        "footnote": "Counts use the IPCC sector recorded for each BTR action in the underlying data file; depending on the country, sectors were hand-curated from the BTR or parser-extracted. Government self-reports rarely surface potential misalignments, so absence of a reported action is not the same as absence of activity on the ground.",
         "nationalSectorCoverage": "BTR mitigation reporting covers {covered, number} of {total, number} national sector categories. {names} {count, plural, one {is} other {are}} not covered by any reported mitigation action.",
         "ipccSectorCoverage": "BTR mitigation reporting covers {covered, number} of {total, number} IPCC sectors. {names} {count, plural, one {is} other {are}} not covered by any reported mitigation action.",
         "implementationStatus": "Only {implemented, number} of {total, number} reported BTR {total, plural, one {action is} other {actions are}} marked 'fully implemented'. The other {other, number} are ongoing, adopted or planned.",
@@ -2749,7 +2749,7 @@
     },
     "targetAtlas": {
       "title": "Target atlas",
-      "infoBox": "Items are connected when they share a relevant category in the selected <strong>lens</strong>. Horizontal = # cross-doc policy targets sharing a category. Vertical = # BTR actions + # BER programmes sharing a category.<red> Red ring</red> = LLM-flagged possible misalignments with other targets. See “How to read this” below the header for the full story.",
+      "infoBox": "Items are connected when they share a relevant category in the selected <strong>lens</strong>. Horizontal = # cross-doc policy targets sharing a category. Vertical = # BTR actions + # BER programmes sharing a category.<red> Red ring</red> = potential misalignments with other targets, as rated by the AI. See “How to read this” below the header for the full story.",
       "provenanceMethod": "Each dot is a policy target. Connections are inferred from LLM taxonomy classifications under the selected lens; the red ring comes from the same LLM pairwise alignment pass used by the coherency views. BTR actions and BER programmes contribute to the vertical <quoted>backing</quoted> axis only when they share a lens category with a target.",
       "provenanceCaveat": "Both axes depend on the chosen lens; switching lenses recomputes positions. The Atlas shows semantic coherence (shared categories), not material flows of money or implementation effort.",
       "provPolicyTargets": "Policy targets ({count, number})",
@@ -2775,10 +2775,10 @@
       "htrQuadrantsTitle": "What the four quadrants mean",
       "htrQuadWellSupported": "<strong>Well-supported (top right):</strong> linked to many other policy targets <em>and</em> to reported action or budget. The country's policy stack and its implementation/financing machinery both back this target. <eg>e.g. a renewable-energy target that recurs across NDC, NBSAP and NAP and is covered by BTR mitigation measures and a BER programme.</eg>",
       "htrQuadAmbitionGap": "<strong>Ambition gap (bottom right):</strong> echoed across many policies, but no reported action and no budget programme touches the same area. The classic <quoted>say-do</quoted> gap. <eg>e.g. a pollinator-habitat restoration target that several documents mention but no BTR action or BER programme covers.</eg>",
-      "htrQuadBackedIsolated": "<strong>Backed but isolated (top left):</strong> reported action or budget is there, but few other policy targets reinforce it. The country is doing or paying for something that stands on its own. <eg>e.g. an anti-desertification budget line that isn't strongly echoed in NBSAP, NDC or NAP.</eg>",
+      "htrQuadBackedIsolated": "<strong>Backed but isolated (top left):</strong> reported action or budget is there, but few other policy targets are aligned with it. The country is doing or paying for something that stands on its own. <eg>e.g. an anti-desertification budget line that isn't strongly echoed in NBSAP, NDC or NAP.</eg>",
       "htrQuadLimitedUptake": "<strong>Limited uptake (bottom left):</strong> few cross-policy links, few reported actions, few budget programmes in this area. Could be a strategic orphan, a very narrow target, or a poor fit for this lens. Worth a direct read before judging.",
       "htrLinksTitle": "What each kind of link shows",
-      "htrLinkPolicy": "<strong>Link to another policy target</strong> → two documents contain objectives that fall in the same thematic area. They reinforce each other.",
+      "htrLinkPolicy": "<strong>Link to another policy target</strong> → two documents contain objectives that fall in the same thematic area. They are aligned.",
       "htrLinkBtr": "<strong>Link to a BTR action</strong> → the country's Biennial Transparency Report lists a mitigation measure or adaptation action in the same thematic area. It means the country is <em>already doing something</em> related to this target.",
       "htrLinkBer": "<strong>Link to a BER programme</strong> → a named budget line in the Biodiversity Expenditure Review funds activity in the same thematic area. The country is <em>already paying for</em> something related. It's a count of programmes, not a currency amount; dollar totals per category live in the <em>Financing Coherence</em> section below.",
       "htrLensTitle": "Switching the lens changes everything",
@@ -2795,7 +2795,7 @@
       "axisX": "Coherence: cross-doc policy targets sharing a lens category",
       "axisY": "Backing: weighted by BTR execution stage and BER spend share",
       "quadWellSupported": "Well-supported",
-      "quadWellSupportedSub": "Reinforced across policies and backed by action or budget",
+      "quadWellSupportedSub": "Aligned across policies and backed by action or budget",
       "quadBackedIsolated": "Backed but isolated",
       "quadBackedIsolatedSub": "Implementation or budget without broad policy agreement",
       "quadAmbitionGap": "Ambition gap",
@@ -2810,9 +2810,9 @@
       "statCoherenceHint": "{count, plural, =0 {no cross-doc matches} one {cross-doc target} other {cross-doc targets}}",
       "statBudgetHint": "{count, plural, =0 {no BER bridges} one {BER programme} other {BER programmes}}",
       "statImplementationHint": "{count, plural, =0 {no BTR bridges} one {BTR action} other {BTR actions}}",
-      "flaggedMisalignments": "Flagged misalignments",
-      "highTensionTargets": "High-tension targets",
-      "highTensionLegend": "5+ flagged misalignments with other targets",
+      "flaggedMisalignments": "Potential misalignments",
+      "highTensionTargets": "Targets with many potential misalignments",
+      "highTensionLegend": "5+ potential misalignments with other targets",
       "rankTabPolicy": "Policy",
       "rankTabBudget": "Budget",
       "rankTabImplementation": "Implementation",
@@ -2832,13 +2832,13 @@
       "budgetBarTitlePlain": "{count, number} {count, plural, one {BER programme} other {BER programmes}}",
       "implActionTitle": "{count, number} {count, plural, one {BTR action} other {BTR actions}}",
       "close": "Close",
-      "misalignmentBadge": "{count, number} {count, plural, one {possible misalignment} other {possible misalignments}} with other targets (LLM-flagged)",
+      "misalignmentBadge": "{count, number} {count, plural, one {potential misalignment} other {potential misalignments}} with other targets (AI-estimated)",
       "lensOrphanFallback": "No relevant categories in the <strong>{lens}</strong> lens. Switch lens or enable <quoted>Hide lens-orphans</quoted> to refocus.",
       "lensCategories": "Lens categories ({count, number})",
       "bridgedPolicyTargets": "Bridged policy targets",
       "bridgedBtrActions": "Bridged BTR actions",
       "bridgedBerProgrammes": "Bridged BER programmes",
-      "contradictions": "Contradictions",
+      "contradictions": "Potential misalignments",
       "plusMore": "+ {count, number} more",
       "via": "via {categories}",
       "llmScoreTitle": "LLM-assessed pairwise alignment score"
@@ -2846,7 +2846,7 @@
     "visionAnchorCoverage": {
       "heading": "Operationalising {anchor}",
       "infoBoxIntro": "How does the rest of the country's policy stack relate to <strong>{anchorFull}</strong>? Each row is one {anchor} ambition; each column is a peripheral document. Bar segments show the strength of the AI-assessed relationships between each ambition and the targets in that document, colored by the seven-level alignment scale (only the levels present in the data are shown).",
-      "infoBoxNote": "These policy documents contain <strong>no outright conflicts flagged</strong> with {anchor}; the only friction signal the model emits here is <em>possible misalignment</em>. The default sort surfaces ambitions with the weakest operational backing first, since that is the actionable gap.",
+      "infoBoxNote": "These policy documents show <strong>no finding of conflict</strong> with {anchor}; the only negative reading the model gives here is <em>potential misalignment</em>. The default sort surfaces ambitions with the weakest operational backing first, since that is the actionable gap.",
       "provenanceMethod": "Each pair of (Vision target, peripheral target) is scored by an LLM on a seven-level alignment scale. Counts shown in each cell are aggregations of those per-pair judgements.",
       "provenanceCaveat": "Single-model judgements skew toward 'medium' alignment. Read the per-pair rationale in the click-through modals before treating any cell as a settled finding.",
       "viewSunburst": "Vision sunburst",
@@ -2884,7 +2884,7 @@
       "status": {
         "tension_heavy": {
           "label": "Misalignment-heavy",
-          "description": "Possible-misalignment links dominate the relationships with this ambition. Worth examining where the friction comes from."
+          "description": "Potential misalignments dominate the relationships with this ambition. Worth examining where they come from."
         },
         "sparse_strong_support": {
           "label": "Sparse strong support",
@@ -2920,7 +2920,7 @@
     },
     "potentialMisalignment": {
       "term": "potential misalignment",
-      "definition": "The two targets may pull against each other. This is a prompt for someone to review the pair, not a finding that the policies conflict."
+      "definition": "The AI rated the two targets as potentially misaligned: pursuing one may make the other harder to reach. This is a prompt for someone to review the pair, not a finding that the policies conflict."
     },
     "sectorLens": {
       "term": "sector lens",

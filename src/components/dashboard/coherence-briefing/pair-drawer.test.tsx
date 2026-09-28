@@ -63,8 +63,8 @@ describe("PairDrawer opened from a biodiversity report row", () => {
     // The counterpart repeats on two national targets: one link to every pair flagged on it.
     const repeats = screen.getByTestId("pair-nr7-repeats");
     expect(repeats).toHaveTextContent("The biodiversity report's rows flag this target against 2 national targets.");
-    expect(at("NDC_1 text")).toBeLessThan(at("All its flagged pairs"));
-    fireEvent.click(within(repeats).getByRole("button", { name: /All its flagged pairs/ }));
+    expect(at("NDC_1 text")).toBeLessThan(at("All its potentially misaligned pairs"));
+    fireEvent.click(within(repeats).getByRole("button", { name: /All its potentially misaligned pairs/ }));
     expect(onOpenTargetProfile).toHaveBeenCalledWith("NDC_1");
   });
 

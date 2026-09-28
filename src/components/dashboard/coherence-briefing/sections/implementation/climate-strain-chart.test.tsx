@@ -45,7 +45,7 @@ describe("ClimateStrainChart", () => {
     const bars = within(screen.getByRole("list")).getAllByRole("listitem");
     expect(bars).toHaveLength(5);
     const first = within(bars[0]).getByRole("button");
-    expect(first).toHaveAttribute("aria-label", "Action 1: 6 flagged pairs, 1 design-level");
+    expect(first).toHaveAttribute("aria-label", "Action 1: 6 potentially misaligned pairs, 1 design-level");
     expect(first).toHaveAttribute("data-tour", "review-row");
     expect(within(bars[1]).getByRole("button")).not.toHaveAttribute("data-tour");
     // Longest bar spans the track; every bar carries its count as text.
@@ -62,7 +62,7 @@ describe("ClimateStrainChart", () => {
     fireEvent.click(first);
     expect(first).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByText("Ongoing")).toBeInTheDocument();
-    expect(screen.getAllByText("Why it was flagged (AI-estimated)").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Why it is potentially misaligned (AI-estimated)").length).toBeGreaterThan(0);
     expect(screen.getByText("Rationale 1.0")).toBeInTheDocument();
     expect(screen.getByText("Design-level")).toBeInTheDocument();
     expect(screen.getByText(/Named on this action/)).toBeInTheDocument();

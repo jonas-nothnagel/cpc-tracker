@@ -81,7 +81,7 @@ describe("FullPicture", () => {
     expect(details.map((d) => d.id)).toEqual(["full-picture-nr7-recurring", "full-picture-nr7-cross-checks", "full-picture-nr7-indicators"]);
     expect(details[0].open).toBe(false);
     expect(screen.getByText("Pairs that repeat across targets")).toBeInTheDocument();
-    expect(screen.getByText("2 targets in other plans, each flagged on two or more national targets")).toBeInTheDocument();
+    expect(screen.getByText("2 targets in other plans, each potentially misaligned with two or more national targets")).toBeInTheDocument();
     act(() => latest!.setRecurringOpen(true));
     fireEvent.click(within(details[0]).getByRole("button", { name: "National target 4: rated No progress" }));
     expect(onSelectRow).toHaveBeenCalledWith("NT04");

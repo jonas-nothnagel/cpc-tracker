@@ -200,7 +200,7 @@ WHEN TO CALL A NAVIGATION TOOL
 When your answer names a specific pair, target, or document group as the focal evidence, you MUST also call the corresponding navigation tool:
 - "X versus Y" / "X conflicts with Y" -> select_pair(X_id, Y_id)
 - "X is the most contested target" -> select_target(X_id)
-- "Group G carries the most tensions" -> focus_category(G_id)
+- "Group G carries the most potential misalignments" -> focus_category(G_id)
 
 If the answer says "no matches in the data" or is purely descriptive of the dataset as a whole, do not call navigation tools.
 
@@ -466,9 +466,9 @@ function buildUserMessage(
   const r = ctx.rankings;
   const rankings = r
     ? [
-        fmtRanking("Top groups by potential tensions", r.topGroupsByTension),
+        fmtRanking("Top groups by potential misalignments", r.topGroupsByTension),
         fmtRanking("Top groups by high alignments", r.topGroupsByAlignment),
-        fmtRanking("Top targets by potential tensions", r.topTargetsByTension),
+        fmtRanking("Top targets by potential misalignments", r.topTargetsByTension),
         fmtRanking("Top targets by high alignments", r.topTargetsByAlignment),
       ]
         .filter(Boolean)
@@ -542,7 +542,7 @@ function buildUserMessage(
       `Detected topic: "${tr.categoryLabel}" (${tr.taxonomy} category id=${tr.categoryId}).`,
       `Suggested mode for this topic: ${modeLabel}.`,
       fmtRanking(
-        `Topic-scoped: top targets in "${tr.categoryLabel}" by tensions`,
+        `Topic-scoped: top targets in "${tr.categoryLabel}" by potential misalignments`,
         tr.byTension,
       ),
       fmtRanking(
@@ -851,7 +851,7 @@ function synthesizeAnswer(
         const btrSide = tA.doc === "BTR" ? tA : tB;
         const policySide = tA.doc === "BTR" ? tB : tA;
         sentences.push(
-          `Sharpest reported action versus plan tension: BTR ${btrSide.sourceLabel} versus ${policySide.full} (${sevLabel}).`,
+          `Sharpest potential misalignment between a reported action and a plan: BTR ${btrSide.sourceLabel} versus ${policySide.full} (${sevLabel}).`,
         );
         // Count of similar BTR-versus-policy pairs in the data.
         const btrPolicyPairs = (ctx.pairs ?? []).filter((p) => {
@@ -907,7 +907,7 @@ function synthesizeAnswer(
       );
       if (tensionRank && tensionRank.count > 0) {
         sentences.push(
-          `${group.label} carries ${tensionRank.count} tensions in the dataset.`,
+          `${group.label} carries ${tensionRank.count} potential misalignments in the dataset.`,
         );
       } else {
         sentences.push(`Focused on ${group.label}.`);
@@ -1452,7 +1452,7 @@ function buildSuggestions(
   );
 
   if (selectPair) {
-    add("Find similar tensions", "Find similar tensions elsewhere");
+    add("Find similar potential misalignments", "Find similar potential misalignments elsewhere");
     const tA = ctx.targetIndex.find((t) => t.id === selectPair.targetAId);
     if (tA) {
       add(
@@ -1507,7 +1507,7 @@ function buildSuggestions(
     const group = ctx.groups.find((g) => g.id === focusCategory.categoryId);
     const groupLabel = group?.label ?? focusCategory.categoryId;
     add(
-      `Drill into top tension in ${groupLabel}`,
+      `Drill into the top potential misalignment in ${groupLabel}`,
       `Which target in ${groupLabel} is the most contested?`,
     );
     add(

@@ -132,7 +132,7 @@ describe("Nr7PolicyLinkRows", () => {
     const row = rows()[0];
     const at = (text: string) => row.textContent!.indexOf(text);
     expect(at("What the report says holds it back")).toBeLessThan(at("Aligned strongly with 3 targets"));
-    expect(at("Aligned strongly with 3 targets")).toBeLessThan(at("Flagged pairs (3)"));
+    expect(at("Aligned strongly with 3 targets")).toBeLessThan(at("Potentially misaligned pairs (3)"));
     const review = within(row).getByTestId("policy-link-review");
     expect(within(review).getByRole("button", { name: "NDC · NDC_1" })).toBeInTheDocument();
     // A plain list: the box says what they are, no pill repeats it on every line.
