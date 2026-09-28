@@ -3447,7 +3447,7 @@
           "headline": "{count, plural, one {# contract, worth {value}, strongly matches} other {# contracts, worth {value}, strongly match}} targets in {min} or more documents at once",
           "axis": "documents served",
           "docs": "{count, plural, one {# document} other {# documents}}: {names}",
-          "agreement": "Of the {total} pairs of targets they serve, the policy analysis rates {high} strongly aligned and {flagged} potentially misaligned.",
+          "agreement": "Of the {total} pairs of targets they serve, the policy analysis rates {high} strongly aligned and {misaligned} potentially misaligned.",
           "more": "Show {count} more",
           "faultline": "{count, plural, one {# contract serves} other {# contracts serve}} two targets the policy analysis rates as potentially misaligned"
         },

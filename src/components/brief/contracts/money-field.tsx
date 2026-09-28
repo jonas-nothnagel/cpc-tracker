@@ -82,9 +82,12 @@ export function MoneyField({
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const shown = useRef<Shown | null>(null);
+  const labels = useRef<HTMLDivElement>(null);
+  const moving = useRef(false);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
-  const [moving, setMoving] = useState(false);
-  const [hover, setHover] = useState<{ point: FieldPoint; x: number; y: number } | null>(null);
+  // What the pointer is on, for the layout it was found in (a new layout
+  // leaves it behind without a state reset).
+  const [hover, setHover] = useState<{ point: FieldPoint; x: number; y: number; layout: unknown } | null>(null);
 
   useEffect(() => {
     const el = wrap.current;
@@ -112,7 +115,6 @@ export function MoneyField({
   );
 
   useEffect(() => {
-    setHover(null);
     const el = canvas.current;
     const g = el?.getContext?.("2d") ?? null;
     const n = layout.squares.length;
@@ -169,13 +171,18 @@ export function MoneyField({
       }
     };
 
+    // Names hide while the squares move, and come back once they settle.
+    const settle = (on: boolean) => {
+      moving.current = on;
+      if (labels.current) labels.current.toggleAttribute("data-moving", on);
+    };
     if (reduce || from === to) {
       shown.current = to;
       draw(to, 1);
-      setMoving(false);
+      settle(false);
       return;
     }
-    setMoving(true);
+    settle(true);
     const start = performance.now();
     let raf = 0;
     const frame = (now: number) => {
@@ -195,7 +202,7 @@ export function MoneyField({
       shown.current = cur;
       draw(cur, e);
       if (t < 1) raf = requestAnimationFrame(frame);
-      else setMoving(false);
+      else settle(false);
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
@@ -227,12 +234,13 @@ export function MoneyField({
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (moving) return;
+    if (moving.current) return;
     const { x, y } = local(e);
     const point = pointAt(x, y);
-    setHover(point ? { point, x, y } : null);
+    setHover(point ? { point, x, y, layout } : null);
   };
-  const tipContent = hover ? tip(hover.point) : null;
+  const current = hover && hover.layout === layout ? hover : null;
+  const tipContent = current ? tip(current.point) : null;
   const lit = (l: FieldLabel) =>
     selected !== null && (l.values.id === selected || l.values.code === selected) ? "" : undefined;
 
@@ -242,7 +250,7 @@ export function MoneyField({
       className="ct-field"
       role="img"
       aria-label={ariaLabel}
-      data-clickable={hover ? "" : undefined}
+      data-clickable={current ? "" : undefined}
       onPointerMove={onMove}
       onPointerLeave={() => setHover(null)}
       onClick={(e) => {
@@ -252,7 +260,7 @@ export function MoneyField({
       }}
     >
       <canvas ref={canvas} aria-hidden="true" />
-      <div className="ct-labels" data-moving={moving || undefined}>
+      <div ref={labels} className="ct-labels">
         {layout.labels.map((l) => {
           const content = label(l);
           if (content === null) return null;
@@ -285,13 +293,13 @@ export function MoneyField({
           );
         })}
       </div>
-      {hover && tipContent && (
+      {current && tipContent && (
         <div
           className="ct-tip"
           role="status"
           style={{
-            left: `${Math.min(hover.x + 14, box.w - 260)}px`,
-            top: `${hover.y + 14 > box.h - 90 ? hover.y - 90 : hover.y + 14}px`,
+            left: `${Math.min(current.x + 14, box.w - 260)}px`,
+            top: `${current.y + 14 > box.h - 90 ? current.y - 90 : current.y + 14}px`,
           }}
         >
           {tipContent}

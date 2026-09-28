@@ -84,7 +84,7 @@ describe("layoutField", () => {
 
   it("piles each place's squares on its point, the unnamed below the map", () => {
     const l = lay({ kind: "places" });
-    const visible = l.squares.map((s, i) => ({ s, slice: s.slice })).filter((q) => q.s.visible);
+    const visible = l.squares.map((s) => ({ s, slice: s.slice })).filter((q) => q.s.visible);
     expect(visible).toHaveLength(4);
     const proj = fitProjection(GEO, l.map!);
     const [kx, ky] = proj.point(GEO.features[0]);

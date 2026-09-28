@@ -53,7 +53,7 @@ export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onC
 
       {agreement.total > 0 && (
         <p className="brief-hub-second">
-          {t("agreement", { total: m.n(agreement.total), high: m.n(agreement.high), flagged: m.n(agreement.flagged) })}
+          {t("agreement", { total: m.n(agreement.total), high: m.n(agreement.high), misaligned: m.n(agreement.flagged) })}
         </p>
       )}
 

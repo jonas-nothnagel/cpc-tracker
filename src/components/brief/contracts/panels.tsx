@@ -55,7 +55,6 @@ function ContractPanel({
 
   useEffect(() => {
     let alive = true;
-    setState({ status: "loading" });
     const query = new URLSearchParams({ country: setup.countryId, contract: id });
     fetch(`/api/brief/contracts?${query}`)
       .then((res) => (res.ok ? (res.json() as Promise<ContractRecord>) : Promise.reject(new Error())))
