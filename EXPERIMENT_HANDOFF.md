@@ -311,6 +311,49 @@ unreadable.
   types, document colour squares in the list, a simple choice on the right (e.g. one
   document).
 
+**Round 12 (2026-09-28): policy areas, explorable.** Spec
+`docs/superpowers/specs/2026-09-28-coherence-brief-round12-policy-areas-design.md`, plan
+`docs/superpowers/plans/2026-09-28-coherence-brief-round12-policy-areas.md`.
+- **The menu's sections decide the screen too** (`189fe1d`): unchecking a section removes it
+  from the page as well as the print. Overall coherence keeps the overall picture and the map;
+  each list and its themes keep their own part of the two sides (a side goes once none is
+  kept); Documents side by side keeps the documents. The screen keeps its reading order; the
+  arrows order the print only. The group reads "In the brief".
+- **"By policy area" was not explorable** (Jonas: which targets are behind a figure?). Four
+  real-data sketch rounds (brainstorm companion, `.superpowers/brainstorm/`): document-coloured
+  squares failed ("as a human I can not grasp the message with colored boxes", not riso); the
+  map re-sorted by area was too complicated, but its right side (the list of pairs of areas)
+  "so clear", and a picture that re-sorts for the chosen taxonomy wanted; bands of pairs
+  combined too many dimensions; the bar chart of targets per area was "getting closer"; with
+  point clouds: "I like the visuals now". Pointing must not re-shape the picture.
+- **Built:** one row per area of the chosen lens (most targets first), a dot per target and,
+  above it, a riso point cloud of the target pairs it takes part in on the chosen side
+  (potential misalignment, checker-textured, or strong alignment); row heights fixed by the
+  clouds at rest; a cloud stops at 40 lines with a visible break and its exact count. Right:
+  "By policy area", a numeric headline ("28% of the potential misalignments sit within
+  Sustainable use targets."), the lens and the side as plain choices (the lens is the menu's
+  lens), the six pairs of areas holding the most (the rest summed), the scope line for lenses
+  that place only some targets ("· targets outside these areas"). Pointing marks row names in
+  pale yellow; opening a pair keeps only its target pairs in its two rows ("N of M targets")
+  and lists its most involved targets; picking a target (there or on the picture) shows its
+  partners in every row and the target, with "Explore this target". "See the N target pairs"
+  opens a new panel kind (`areaPair`). A new lens lets the choice go for good. Libs:
+  `src/lib/brief/areas.ts`, `src/lib/brief/area-layout.ts`; components:
+  `src/components/brief/areas/`. In the standard brief (4 printed pages; print keeps the bars).
+- Rulings: numbers, never words ("Half of" dropped); full area names, a trailing acronym in a
+  tooltip; the menu's policy-area choice stays for now, in step with the component's.
+- Verified: on a clean checkout of HEAD, full suite 1,568 passed (1 skipped), `tsc` clean, lint
+  clean on this round's files; all four `/brief` 200 with the component. The headless
+  production print was not run (the sign-in gate never opens in production without a token);
+  the unit tests pin 4 sheets.
+- A parallel session built the public-contracts layer (`src/lib/brief/contracts/`,
+  `src/components/brief/contracts/`) on this branch the same afternoon; message catalogs were
+  staged key by key so neither session committed the other's work.
+- Open: the component's printed version (then the menu's lens choice can go); es/mn
+  translations; the pipeline's `sectorSynthesis` in the panel; areas holding no target. When
+  finance or implementation layers come to policy areas, they are Mongolia-only (Jonas: the
+  other countries skip them for now).
+
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
   Start chats for this work from inside the worktree folder.
