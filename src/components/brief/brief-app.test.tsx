@@ -140,7 +140,7 @@ describe("BriefApp", () => {
 
   it("drops a page when sections are left out", () => {
     renderApp();
-    const sections = screen.getByRole("group", { name: "In the printed brief" });
+    const sections = screen.getByRole("group", { name: "In the brief" });
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Strongest alignments/ }));
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
     expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
@@ -241,12 +241,60 @@ describe("BriefApp screen and print", () => {
     }
   });
 
-  it("keeps the overview on screen whatever the printed brief holds", () => {
+  it("takes a section off the screen as well as the print, and brings it back", () => {
     renderApp(briefFixture({ themes: true }));
-    const sections = screen.getByRole("group", { name: "In the printed brief" });
+    const sections = screen.getByRole("group", { name: "In the brief" });
+    const aligned = () => document.querySelector<HTMLElement>('[data-step="reinforce"]');
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Areas of alignment/ }));
-    expect(screen.getByRole("button", { name: "67% aligned" })).toBeTruthy();
     expect(sheets().querySelector('[data-section="together"]')).toBeNull();
+    // What works well keeps its strongest alignments without its themes.
+    expect(within(aligned()!).queryAllByTestId("brief-theme-row")).toHaveLength(0);
+    expect(within(aligned()!).getAllByTestId("hub-strong-row").length).toBeGreaterThan(0);
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Strongest alignments/ }));
+    expect(aligned()).toBeNull();
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Areas of alignment/ }));
+    expect(within(aligned()!).getAllByTestId("brief-theme-row").length).toBeGreaterThan(0);
+    expect(within(aligned()!).queryAllByTestId("hub-strong-row")).toHaveLength(0);
+  });
+
+  it("leaves out the overall picture and the map with the overall coherence", () => {
+    renderApp(briefFixture({ themes: true }));
+    const sections = screen.getByRole("group", { name: "In the brief" });
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Overall coherence/ }));
+    expect(screen.queryByRole("button", { name: "67% aligned" })).toBeNull();
+    expect(document.querySelector('[data-step="overview"]')).toBeNull();
+    expect(document.querySelector('[data-step="map"]')).toBeNull();
+    expect(document.querySelector('[data-step="reinforce"]')).not.toBeNull();
+  });
+
+  it("keeps the targets to review first without the potential misalignment themes and types", () => {
+    renderApp(briefFixture({ themes: true }));
+    const sections = screen.getByRole("group", { name: "In the brief" });
+    const closer = () => document.querySelector<HTMLElement>('[data-step="apart"]');
+    expect(closer()!.querySelector(".brief-hub-kinds")).not.toBeNull();
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Potential misalignment/ }));
+    expect(within(closer()!).queryAllByTestId("brief-theme-row")).toHaveLength(0);
+    expect(closer()!.querySelector(".brief-hub-kinds")).toBeNull();
+    expect(within(closer()!).getAllByTestId("hub-apart-row").length).toBeGreaterThan(0);
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Targets to review first/ }));
+    expect(closer()).toBeNull();
+  });
+
+  it("leaves out the documents, and the whole overview once none of its sections is kept", () => {
+    renderApp(briefFixture({ themes: true }));
+    const sections = screen.getByRole("group", { name: "In the brief" });
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
+    expect(document.querySelector('[data-step="documents"]')).toBeNull();
+    for (const name of [
+      /Overall coherence/,
+      /Areas of alignment/,
+      /Strongest alignments/,
+      /Potential misalignment/,
+      /Targets to review first/,
+    ]) {
+      fireEvent.click(within(sections).getByRole("checkbox", { name }));
+    }
+    expect(screen.queryByTestId("brief-hub")).toBeNull();
   });
 
   it("goes from the landing straight into the overview, without repeating its figures", () => {
@@ -268,7 +316,7 @@ describe("BriefApp screen and print", () => {
     renderApp();
     const flow = screen.getByTestId("brief-flow");
     expect(flow.querySelector('[data-section="areas"]')).toBeNull();
-    const sections = screen.getByRole("group", { name: "In the printed brief" });
+    const sections = screen.getByRole("group", { name: "In the brief" });
     fireEvent.click(within(sections).getByRole("checkbox", { name: /By policy area/ }));
     expect(flow.querySelector('[data-section="areas"]')).not.toBeNull();
   });

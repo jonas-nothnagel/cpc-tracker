@@ -37,7 +37,8 @@ function driftLines(scope: Scope, max = 108): string[] {
   return lines;
 }
 
-/** Sections the coherence overview shows on screen; they print as sections. */
+/** Sections the coherence overview shows on screen, each while the brief
+ *  keeps it; they print as sections. */
 const OVERVIEW_SECTIONS: SectionId[] = ["overall", "together", "aligned", "apart", "commitments", "documents"];
 
 /**
@@ -205,14 +206,17 @@ export function BriefApp({
           <Flow
             hidden={preview}
             overview={
-              <Hub
-                data={data}
-                onOpenTheme={handlers.onOpenTheme}
-                onOpenCommitment={handlers.onOpenCommitment}
-                onOpenDocPair={handlers.onOpenDocPair}
-                onOpenPair={handlers.onOpenPair}
-                onExplore={explore ? exploreTarget : undefined}
-              />
+              selection.sections.some((id) => OVERVIEW_SECTIONS.includes(id)) ? (
+                <Hub
+                  data={data}
+                  sections={selection.sections}
+                  onOpenTheme={handlers.onOpenTheme}
+                  onOpenCommitment={handlers.onOpenCommitment}
+                  onOpenDocPair={handlers.onOpenDocPair}
+                  onOpenPair={handlers.onOpenPair}
+                  onExplore={explore ? exploreTarget : undefined}
+                />
+              ) : undefined
             }
             sections={selection.sections.filter((id) => !OVERVIEW_SECTIONS.includes(id))}
             renderSection={(id) => (

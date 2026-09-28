@@ -24,6 +24,7 @@ import {
   type HubTone,
   type MapFocus,
 } from "@/lib/brief/hub";
+import { SECTION_IDS, type SectionId } from "@/lib/brief/selection";
 import { getDocPairKey, getStorylineDocPairKeys } from "@/lib/coherence-briefing";
 import type { AlignmentMechanism } from "@/types";
 import { DOT_COLORS } from "../dot-field";
@@ -77,6 +78,16 @@ function DocName({
   );
 }
 
+/** The step across the middle of the window, if any. */
+function stepAtMiddle(root: HTMLElement | null): HubStep | null {
+  const y = window.innerHeight / 2;
+  for (const el of root?.querySelectorAll<HTMLElement>("[data-step]") ?? []) {
+    const box = el.getBoundingClientRect();
+    if (box.top <= y && box.bottom >= y) return el.dataset.step as HubStep;
+  }
+  return null;
+}
+
 /** A theme (`theme:<side>:<n>`), a type of potential misalignment
  *  (`kind:<type>`) or a target (`target:<side>:<id>`) under the pointer:
  *  the side of the map it belongs to, and what that side brings forward. */
@@ -99,10 +110,12 @@ function previewOf(key: string | null): { side: HubTone; focus: MapFocus } | nul
  * side of it as its own landscape (what works well, where to look closer),
  * its targets named on the map and listed, its themes and types brought
  * forward on request; and one document in the centre with its pairs with
- * every other. A single target is explored further on the ring.
+ * every other. A single target is explored further on the ring. Only the
+ * parts of the sections the brief keeps are shown.
  */
 export function Hub({
   data,
+  sections = SECTION_IDS,
   onOpenTheme,
   onOpenCommitment,
   onOpenDocPair,
@@ -110,6 +123,10 @@ export function Hub({
   onExplore,
 }: {
   data: BriefData;
+  /** The sections the brief keeps: the overall picture and the map go with
+   *  the overall coherence, each list and its themes with their own
+   *  section, a step once none of its parts is kept. */
+  sections?: readonly SectionId[];
   onOpenTheme?: (type: "reinforcement" | "friction", name: string) => void;
   onOpenCommitment?: (id: string) => void;
   onOpenDocPair?: (a: string, b: string) => void;
@@ -148,6 +165,21 @@ export function Hub({
   const hasApart = data.counts.apart > 0;
   const hasStrong = data.strongest.length > 0;
 
+  // The parts the brief keeps, and the steps that hold them.
+  const keeps = (id: SectionId) => sections.includes(id);
+  const keepsDocuments = keeps("documents");
+  const steps: HubStep[] = [];
+  if (keeps("overall")) steps.push("overview");
+  if (hasPairs) {
+    if (keeps("overall")) steps.push("map");
+    if (keeps("aligned") || keeps("together")) steps.push("reinforce");
+    if (keeps("commitments") || keeps("apart")) steps.push("apart");
+    if (keepsDocuments) steps.push("documents");
+  }
+  const stepsKey = steps.join(" ");
+  // The step that leads; while the brief no longer keeps it, the first one kept.
+  const lead: HubStep = steps.includes(active) ? active : (steps[0] ?? "overview");
+
   const concentration = data.concentration;
   const reviewLimit = concentration.concentrated
     ? Math.min(REVIEW_MAX, Math.max(HUB_TOP, concentration.top.length))
@@ -176,15 +208,6 @@ export function Hub({
 
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
-    // The step across the middle of the window, if any.
-    const middle = (): HubStep | null => {
-      const y = window.innerHeight / 2;
-      for (const el of root.current?.querySelectorAll<HTMLElement>("[data-step]") ?? []) {
-        const box = el.getBoundingClientRect();
-        if (box.top <= y && box.bottom >= y) return el.dataset.step as HubStep;
-      }
-      return null;
-    };
     // A step leads while it crosses the middle of the window. When the lead
     // leaves after a jump (the walkthrough, a link), the step now at the
     // middle leads, even one that was in the band all along.
@@ -195,7 +218,7 @@ export function Hub({
           if (!step) continue;
           if (entry.isIntersecting) setActive(step);
           else {
-            const next = middle();
+            const next = stepAtMiddle(root.current);
             if (next) setActive((cur) => (cur === step ? next : cur));
           }
         }
@@ -204,8 +227,17 @@ export function Hub({
     );
     root.current?.querySelectorAll("[data-step]").forEach((el) => io.observe(el));
     return () => io.disconnect();
-    // Steps come and go with the selection (no pairs at all): observe anew.
-  }, [hasPairs]);
+    // Steps come and go with the brief's sections and the selection (no
+    // pairs at all): observe anew.
+  }, [stepsKey]);
+
+  // A step the brief no longer keeps hands the lead to the step now at the
+  // middle of the window, else to the first one kept.
+  useEffect(() => {
+    const kept = stepsKey ? (stepsKey.split(" ") as HubStep[]) : [];
+    if (kept.length === 0 || kept.includes(active)) return;
+    setActive(stepAtMiddle(root.current) ?? kept[0]);
+  }, [stepsKey, active]);
 
   // A target picked on the map: once its row has opened, the row is brought
   // to the middle of the window unless it is already in view.
@@ -223,18 +255,18 @@ export function Hub({
   }, [picked]);
 
   // A rating brought forward on the map holds while the map leads.
-  const lastActive = useRef<HubStep>(active);
+  const lastLead = useRef<HubStep>(lead);
   useEffect(() => {
-    if (lastActive.current === "map" && active !== "map") setMapTone(null);
-    lastActive.current = active;
-  }, [active]);
+    if (lastLead.current === "map" && lead !== "map") setMapTone(null);
+    lastLead.current = lead;
+  }, [lead]);
 
   // It holds while its own step leads, or until another step takes the lead
   // (a row keeps focus after the reader scrolled away).
-  const hovered = hover && (hover.home === active || hover.at === active) ? hover.key : null;
+  const hovered = hover && (hover.home === lead || hover.at === lead) ? hover.key : null;
   const pointAt = (home: HubStep | null) => (key: string | null) =>
     setHover((prev) =>
-      key === null ? null : prev && prev.key === key && prev.home === home ? prev : { key, home, at: active },
+      key === null ? null : prev && prev.key === key && prev.home === home ? prev : { key, home, at: lead },
     );
   const setHovered = pointAt(null);
 
@@ -249,16 +281,16 @@ export function Hub({
   };
   const stageSpec: HubStage = preview
     ? { kind: "map", side: preview.side, focus: preview.focus }
-    : active === "overview"
+    : lead === "overview"
       ? { kind: "overview" }
-      : active === "map"
+      : lead === "map"
         ? {
             kind: "map",
             ...(mapTone ? { tone: mapTone } : {}),
             ...(axisDoc ? { focus: { kind: "doc", doc: axisDoc } } : {}),
           }
-        : active === "reinforce" || active === "apart"
-          ? { kind: "map", side: active, focus: sideFocus(active) }
+        : lead === "reinforce" || lead === "apart"
+          ? { kind: "map", side: lead, focus: sideFocus(lead) }
           : focus
             ? { kind: "doc", doc: focus }
             : { kind: "overview" };
@@ -348,7 +380,7 @@ export function Hub({
   // pairs on the map itself, a theme's pairs while it is pointed at.
   const previewTheme = preview?.focus.kind === "theme" ? themeRows(preview.side)[preview.focus.index] : undefined;
   const themeBlocks = previewTheme ? [...getStorylineDocPairKeys(previewTheme.storyline)] : null;
-  const outlined = themeBlocks ?? (active === "map" && !preview ? leadBlocks : []);
+  const outlined = themeBlocks ?? (lead === "map" && !preview ? leadBlocks : []);
 
   // A side's finding: how few targets carry it (a union of pairs, never a sum).
   const concentrationHeadline = (k: Concentration, section: "aligned" | "commitments") =>
@@ -494,6 +526,8 @@ export function Hub({
     );
   };
   const clickable = (t: HubTarget) => {
+    // A document's name leads on to the documents while the brief keeps them.
+    if (t.kind === "axis") return keepsDocuments;
     if (t.kind !== "group") return true;
     if (stage.kind === "overview") return t.group.key === "reinforce" || t.group.key === "apart";
     return true;
@@ -585,161 +619,175 @@ export function Hub({
         />
       </div>
       <div className="brief-hub-steps">
-        <section className="brief-hub-step" data-step="overview" data-tour="brief-overall">
-          <h2 className="brief-hub-headline" tabIndex={-1}>
-            {overall}
-          </h2>
-          {hasPairs && (
-            <ul className="brief-dots-legend brief-hub-legend">
-              {DOT_ORDER.filter((tone) => c[tone] > 0).map((tone) => {
-                const label = (
-                  <>
-                    <span className="brief-dots-key" style={{ background: DOT_COLORS[tone] }} aria-hidden="true" />
-                    <span className="brief-dots-pct">{pct(share(c[tone]))}</span>{" "}
-                    <span className="brief-dots-tone">{tb(`tone.${tone}`)}</span>
-                  </>
-                );
-                return (
-                  <li key={tone}>
-                    {tone === "reinforce" || tone === "apart" ? (
-                      <button type="button" className="brief-dots-link" onClick={() => showTone(tone)}>
-                        {label}
-                        <span className="brief-dots-arrow" aria-hidden="true">
-                          ↓
-                        </span>
-                      </button>
-                    ) : (
-                      label
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+        {steps.includes("overview") && (
+          <section className="brief-hub-step" data-step="overview" data-tour="brief-overall">
+            <h2 className="brief-hub-headline" tabIndex={-1}>
+              {overall}
+            </h2>
+            {hasPairs && (
+              <ul className="brief-dots-legend brief-hub-legend">
+                {DOT_ORDER.filter((tone) => c[tone] > 0).map((tone) => {
+                  const label = (
+                    <>
+                      <span className="brief-dots-key" style={{ background: DOT_COLORS[tone] }} aria-hidden="true" />
+                      <span className="brief-dots-pct">{pct(share(c[tone]))}</span>{" "}
+                      <span className="brief-dots-tone">{tb(`tone.${tone}`)}</span>
+                    </>
+                  );
+                  return (
+                    <li key={tone}>
+                      {tone === "reinforce" || tone === "apart" ? (
+                        <button type="button" className="brief-dots-link" onClick={() => showTone(tone)}>
+                          {label}
+                          <span className="brief-dots-arrow" aria-hidden="true">
+                            ↓
+                          </span>
+                        </button>
+                      ) : (
+                        label
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        )}
 
         {hasPairs && (
           <>
-            <section className="brief-hub-step" data-step="map" data-tour="brief-map">
-              <h2 className="brief-hub-headline" tabIndex={-1}>
-                {leadLine("reinforce")}
-              </h2>
-              {data.leading.apart && (
-                <p className="brief-hub-second" data-testid="hub-map-apart">
-                  {leadLine("apart")}
-                </p>
-              )}
-            </section>
+            {steps.includes("map") && (
+              <section className="brief-hub-step" data-step="map" data-tour="brief-map">
+                <h2 className="brief-hub-headline" tabIndex={-1}>
+                  {leadLine("reinforce")}
+                </h2>
+                {data.leading.apart && (
+                  <p className="brief-hub-second" data-testid="hub-map-apart">
+                    {leadLine("apart")}
+                  </p>
+                )}
+              </section>
+            )}
 
-            <section className="brief-hub-step brief-hub-side" data-step="reinforce">
-              <p className="brief-hub-kicker">{th("kickerReinforce")}</p>
-              <h2 className="brief-hub-headline" tabIndex={-1}>
-                {concentrationHeadline(data.strongConcentration, "aligned")}
-              </h2>
-              {hasStrong && (
-                <>
-                  <h3 className="brief-hub-sub">{ts("aligned")}</h3>
-                  <StrongestList
+            {steps.includes("reinforce") && (
+              <section className="brief-hub-step brief-hub-side" data-step="reinforce">
+                <p className="brief-hub-kicker">{th("kickerReinforce")}</p>
+                <h2 className="brief-hub-headline" tabIndex={-1}>
+                  {concentrationHeadline(data.strongConcentration, "aligned")}
+                </h2>
+                {keeps("aligned") && hasStrong && (
+                  <>
+                    <h3 className="brief-hub-sub">{ts("aligned")}</h3>
+                    <StrongestList
+                      data={data}
+                      limit={strongLimit}
+                      testId="hub-strong-row"
+                      tour="brief-aligned"
+                      onOpen={openTarget}
+                      selected={pickedOn("reinforce")}
+                      onSelect={pick("reinforce")}
+                      openLabel={openLabel}
+                      onHover={hoverTarget("reinforce")}
+                      hovered={hoveredTarget("reinforce")}
+                    />
+                  </>
+                )}
+                {keeps("together") && (
+                  <ThemeList
                     data={data}
-                    limit={strongLimit}
-                    testId="hub-strong-row"
-                    tour="brief-aligned"
-                    onOpen={openTarget}
-                    selected={pickedOn("reinforce")}
-                    onSelect={pick("reinforce")}
-                    openLabel={openLabel}
-                    onHover={hoverTarget("reinforce")}
-                    hovered={hoveredTarget("reinforce")}
+                    tone="reinforce"
+                    hovered={hoveredTheme("reinforce")}
+                    onHover={themeHover("reinforce")}
+                    onSelect={(name) => onOpenTheme?.("reinforcement", name)}
+                    tour="brief-themes"
                   />
-                </>
-              )}
-              <ThemeList
-                data={data}
-                tone="reinforce"
-                hovered={hoveredTheme("reinforce")}
-                onHover={themeHover("reinforce")}
-                onSelect={(name) => onOpenTheme?.("reinforcement", name)}
-                tour="brief-themes"
-              />
-            </section>
+                )}
+              </section>
+            )}
 
-            <section className="brief-hub-step brief-hub-side" data-step="apart">
-              <p className="brief-hub-kicker">{th("kickerApart")}</p>
-              <h2 className="brief-hub-headline" tabIndex={-1}>
-                {concentrationHeadline(concentration, "commitments")}
-              </h2>
-              {hasApart && (
-                <>
-                  <h3 className="brief-hub-sub">{ts("commitments")}</h3>
-                  <ReviewList
+            {steps.includes("apart") && (
+              <section className="brief-hub-step brief-hub-side" data-step="apart">
+                <p className="brief-hub-kicker">{th("kickerApart")}</p>
+                <h2 className="brief-hub-headline" tabIndex={-1}>
+                  {concentrationHeadline(concentration, "commitments")}
+                </h2>
+                {keeps("commitments") && hasApart && (
+                  <>
+                    <h3 className="brief-hub-sub">{ts("commitments")}</h3>
+                    <ReviewList
+                      data={data}
+                      limit={reviewLimit}
+                      testId="hub-apart-row"
+                      tour="brief-commitments"
+                      onOpen={openTarget}
+                      selected={pickedOn("apart")}
+                      onSelect={pick("apart")}
+                      openLabel={openLabel}
+                      onHover={hoverTarget("apart")}
+                      hovered={hoveredTarget("apart")}
+                    />
+                  </>
+                )}
+                {keeps("apart") && (
+                  <ThemeList
                     data={data}
-                    limit={reviewLimit}
-                    testId="hub-apart-row"
-                    tour="brief-commitments"
-                    onOpen={openTarget}
-                    selected={pickedOn("apart")}
-                    onSelect={pick("apart")}
-                    openLabel={openLabel}
-                    onHover={hoverTarget("apart")}
-                    hovered={hoveredTarget("apart")}
+                    tone="apart"
+                    hovered={hoveredTheme("apart")}
+                    onHover={themeHover("apart")}
+                    onSelect={(name) => onOpenTheme?.("friction", name)}
                   />
-                </>
-              )}
-              <ThemeList
-                data={data}
-                tone="apart"
-                hovered={hoveredTheme("apart")}
-                onHover={themeHover("apart")}
-                onSelect={(name) => onOpenTheme?.("friction", name)}
-              />
-              {data.mix.length > 0 && (
-                <>
-                  <h3 className="brief-hub-sub brief-hub-sub-inline">{th("kinds")}</h3>
-                  <ul className="brief-hub-kinds">
-                    {data.mix.map((m) => (
-                      <li
-                        key={m.mechanism}
-                        className="brief-hub-kind"
-                        tabIndex={0}
-                        data-hovered={hovered === `kind:${m.mechanism}` ? "true" : undefined}
-                        onPointerEnter={() => pointAt("apart")(`kind:${m.mechanism}`)}
-                        onPointerLeave={() => pointAt("apart")(null)}
-                        onFocus={() => pointAt("apart")(`kind:${m.mechanism}`)}
-                        onBlur={() => pointAt("apart")(null)}
-                      >
-                        <span className="brief-hub-kind-main">
-                          <span className="brief-hub-kind-name">{tm(m.mechanism)}</span>
-                          <span className="brief-hub-kind-desc">{td(m.mechanism)}</span>
-                        </span>
-                        <span className="brief-hub-kind-bar brief-screen-apart" aria-hidden="true">
-                          <span style={{ width: `${((m.count / mixTotal) * 100).toFixed(1)}%` }} />
-                        </span>
-                        <span className="brief-hub-kind-value">{pct(m.count / mixTotal)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </section>
+                )}
+                {keeps("apart") && data.mix.length > 0 && (
+                  <>
+                    <h3 className="brief-hub-sub brief-hub-sub-inline">{th("kinds")}</h3>
+                    <ul className="brief-hub-kinds">
+                      {data.mix.map((m) => (
+                        <li
+                          key={m.mechanism}
+                          className="brief-hub-kind"
+                          tabIndex={0}
+                          data-hovered={hovered === `kind:${m.mechanism}` ? "true" : undefined}
+                          onPointerEnter={() => pointAt("apart")(`kind:${m.mechanism}`)}
+                          onPointerLeave={() => pointAt("apart")(null)}
+                          onFocus={() => pointAt("apart")(`kind:${m.mechanism}`)}
+                          onBlur={() => pointAt("apart")(null)}
+                        >
+                          <span className="brief-hub-kind-main">
+                            <span className="brief-hub-kind-name">{tm(m.mechanism)}</span>
+                            <span className="brief-hub-kind-desc">{td(m.mechanism)}</span>
+                          </span>
+                          <span className="brief-hub-kind-bar brief-screen-apart" aria-hidden="true">
+                            <span style={{ width: `${((m.count / mixTotal) * 100).toFixed(1)}%` }} />
+                          </span>
+                          <span className="brief-hub-kind-value">{pct(m.count / mixTotal)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </section>
+            )}
 
-            <section className="brief-hub-step" data-step="documents">
-              <h2 className="brief-hub-headline" tabIndex={-1}>
-                {documentsHeadline}
-              </h2>
-              {takeaway && (
-                <p className="brief-hub-focus" data-testid="hub-focus">
-                  {takeaway}
-                </p>
-              )}
-              <DocList
-                data={data}
-                open={openDoc}
-                onToggle={toggleDoc}
-                onOpenDocPair={onOpenDocPair}
-                onHoverPartner={pointAt("documents")}
-                tour="brief-documents"
-              />
-            </section>
+            {steps.includes("documents") && (
+              <section className="brief-hub-step" data-step="documents">
+                <h2 className="brief-hub-headline" tabIndex={-1}>
+                  {documentsHeadline}
+                </h2>
+                {takeaway && (
+                  <p className="brief-hub-focus" data-testid="hub-focus">
+                    {takeaway}
+                  </p>
+                )}
+                <DocList
+                  data={data}
+                  open={openDoc}
+                  onToggle={toggleDoc}
+                  onOpenDocPair={onOpenDocPair}
+                  onHoverPartner={pointAt("documents")}
+                  tour="brief-documents"
+                />
+              </section>
+            )}
           </>
         )}
       </div>

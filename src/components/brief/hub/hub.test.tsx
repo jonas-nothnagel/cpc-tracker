@@ -7,6 +7,7 @@ import { buildBriefData } from "@/lib/brief/data";
 import { scopeOf } from "@/lib/brief/compute";
 import { briefFixture } from "@/lib/brief/test-fixture";
 import { hubParticles, layoutHub } from "@/lib/brief/hub";
+import type { SectionId } from "@/lib/brief/selection";
 import { Hub } from "./hub";
 
 const SOURCE = briefFixture({ themes: true });
@@ -113,6 +114,44 @@ describe("Hub", () => {
     enter("documents");
     expect(stage()).toBe("doc:A");
     expect(document.querySelectorAll("[data-step]")).toHaveLength(5);
+  });
+
+  it("a step the brief no longer keeps gives the lead back to one it keeps", () => {
+    const { rerender } = renderHub();
+    enter("documents");
+    expect(stage()).toBe("doc:A");
+    rerender(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Hub data={DATA} sections={["overall", "together", "aligned", "apart", "commitments"]} />
+      </NextIntlClientProvider>,
+    );
+    expect(document.querySelector('[data-step="documents"]')).toBeNull();
+    expect(stage()).toBe("overview");
+  });
+
+  it("a document's name on the map leads on to the documents only while the brief keeps them", () => {
+    withField(() => {
+      const hub = (sections?: SectionId[]) => (
+        <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+          <Hub data={DATA} sections={sections} />
+        </NextIntlClientProvider>
+      );
+      const { rerender } = render(hub());
+      enter("map");
+      const a = layoutHub({ kind: "map" }, hubParticles(DATA), DATA, 800, 500).axis.find((x) => x.key === "A")!;
+      const at = { clientX: a.labelX - 4, clientY: a.labelY };
+      const scroll = vi.mocked(Element.prototype.scrollIntoView);
+      scroll.mockClear();
+      fireEvent.click(field(), at);
+      expect(scroll.mock.contexts.map((el) => (el as HTMLElement).dataset.step)).toEqual(["documents"]);
+      rerender(hub(["overall", "together", "aligned", "apart", "commitments"]));
+      enter("map");
+      scroll.mockClear();
+      fireEvent.pointerMove(field(), at);
+      expect(field().getAttribute("data-clickable")).toBeNull();
+      fireEvent.click(field(), at);
+      expect(scroll).not.toHaveBeenCalled();
+    });
   });
 
   it("after a jump, the step at the middle of the window leads, even one that never left it", () => {

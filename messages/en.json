@@ -513,7 +513,7 @@
           },
           "builder": {
             "title": "Customize the brief",
-            "body": "Choose the documents and the policy areas, then the sections for the printed brief. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
+            "body": "Choose the documents and the policy areas, then the sections of the brief, on screen and in print. Print or save as PDF shows the pages before printing; the brief can also be shared as a link."
           },
           "aligned": {
             "title": "Strongest alignments",
@@ -2966,7 +2966,7 @@
       "commitments": "{count, plural, one {# target} other {# targets}}",
       "minDocuments": "At least two documents are needed for a comparison.",
       "lens": "Policy areas",
-      "sections": "In the printed brief",
+      "sections": "In the brief",
       "moveUp": "Move {section} up",
       "moveDown": "Move {section} down",
       "size": "{units, select, 1 {quarter page} 2 {half page} other {full page}}",
