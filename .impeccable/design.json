@@ -215,6 +215,11 @@
         "section": "colors"
       },
       {
+        "name": "The Highlighter Rule",
+        "body": "One pale yellow (#fff5c7) marks the name of what the reader is pointing at: its label on a chart and its line in the list beside it, like a highlighter pen over a line of text. Words only, never the data marks (no yellow strips or fills over them), and nothing at rest. One thing at a time. Never a page band, a status or a category colour.",
+        "section": "colors"
+      },
+      {
         "name": "The Headline-Is-The-Finding Rule",
         "body": "A section headline states the conclusion in plain language, not a topic label. The serif carries the finding; the body elaborates in <=35 words with the rest behind a disclosure.",
         "section": "typography"

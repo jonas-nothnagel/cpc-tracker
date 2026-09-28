@@ -148,6 +148,59 @@ describe("HubCanvas", () => {
     expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ kind: "mark", mark: b6 }));
   });
 
+  it("writes the count of the target in focus in each block its strip crosses, and none at rest", () => {
+    const b6 = { kind: "map", side: "apart", focus: { kind: "target", id: "B6" } } as const;
+    const { container, rerender } = render(<HubCanvas data={DATA} stage={b6} labelFor={() => null} />);
+    const counts = () =>
+      [...container.querySelectorAll("[data-count]")].map((el) => [el.getAttribute("data-count"), el.textContent]);
+    expect(counts()).toEqual([
+      ["A<->B", "1"],
+      ["B<->C", "6"],
+    ]);
+    // Under its row to the right, beside its column above.
+    expect(container.querySelector('[data-count="B<->C"]')?.getAttribute("data-align")).toBe("below");
+    expect(container.querySelector('[data-count="A<->B"]')?.getAttribute("data-align")).toBe("right");
+    rerender(<HubCanvas data={DATA} stage={APART} labelFor={() => null} />);
+    expect(counts()).toEqual([]);
+  });
+
+  it("brings the names back after a move cut short, even when the next step moves no dot", () => {
+    // Animation frames on demand.
+    let frames = new Map<number, FrameRequestCallback>();
+    let next = 1;
+    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+      frames.set(next, cb);
+      return next++;
+    });
+    vi.stubGlobal("cancelAnimationFrame", (id: number) => void frames.delete(id));
+    const frame = (t: number) => {
+      const due = [...frames.values()];
+      frames = new Map();
+      due.forEach((cb) => cb(t));
+    };
+    const strong = { kind: "map", side: "reinforce", focus: { kind: "top" } } as const;
+    try {
+      const { container, rerender } = render(<HubCanvas data={DATA} stage={APART} labelFor={() => null} />);
+      const labels = container.querySelector(".brief-hub-labels") as HTMLElement;
+      // (A browser's frame times start well above zero.)
+      frame(1000);
+      frame(5000);
+      expect(Number(labels.style.opacity)).toBeCloseTo(1);
+      // On to the other side: its dots start to move and the names wait...
+      rerender(<HubCanvas data={DATA} stage={strong} labelFor={() => null} />);
+      frame(6000);
+      frame(6100);
+      expect(Number(labels.style.opacity)).toBeCloseTo(0);
+      // ...but the reader scrolls back first. This side's dots never left.
+      rerender(<HubCanvas data={DATA} stage={APART} labelFor={() => null} />);
+      frame(7000);
+      frame(9000);
+      expect(Number(labels.style.opacity)).toBeCloseTo(1);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it("sets the other names back while one target is in focus", () => {
     const stage = { kind: "map", side: "apart", focus: { kind: "target", id: "B6" } } as const;
     const { container } = render(

@@ -505,7 +505,7 @@
           },
           "commitments": {
             "title": "Targets to review first",
-            "body": "The targets involved in the most potential misalignments. On the map only the potential misalignments remain, and within each document the targets involved in the most move to the front, where they are named. Pointing at a target brings its target pairs forward; selecting it keeps them there and offers to explore the target on the ring further down."
+            "body": "The targets involved in the most potential misalignments. On the map only the potential misalignments remain, and within each document the targets involved in the most move to the front, where they are named. Pointing at a target brings its target pairs forward, with its number of potential misalignments in each block; selecting it keeps them there and offers to explore the target on the ring further down."
           },
           "documents": {
             "title": "Documents side by side",
@@ -517,7 +517,7 @@
           },
           "aligned": {
             "title": "Strongest alignments",
-            "body": "The targets with the most strong alignments with targets in other documents. On the map only the strong alignments remain, and within each document its most strongly aligned targets move to the front, where they are named. Pointing at a target brings its target pairs forward; selecting it keeps them there and offers to explore the target on the ring further down."
+            "body": "The targets with the most strong alignments with targets in other documents. On the map only the strong alignments remain, and within each document its most strongly aligned targets move to the front, where they are named. Pointing at a target brings its target pairs forward, with its number of strong alignments in each block; selecting it keeps them there and offers to explore the target on the ring further down."
           },
           "map": {
             "title": "Map of the documents",

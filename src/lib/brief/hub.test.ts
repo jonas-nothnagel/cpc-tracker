@@ -14,6 +14,8 @@ import {
   namedTargets,
   pairInOrder,
   sideLevel,
+  stripCounts,
+  stripOf,
   type HubLayout,
   type HubParticle,
 } from "./hub";
@@ -612,6 +614,151 @@ describe("layoutHub", () => {
         }
       }
     }
+  });
+});
+
+describe("a target's strip and its counts", () => {
+  const particles = hubParticles(DATA);
+  const apart = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 800, 500);
+  const square = (key: string) => apart.axis.find((a) => a.key === key)!.square;
+  const block = (key: string) => apart.groups.find((g) => g.key === key)!;
+  const pairAt = (ca: string, cb: string) => particles.findIndex((p) => p.ca === ca && p.cb === cb);
+
+  describe("stripOf", () => {
+    it("runs a target's row from its point on the diagonal to the map's right edge, and its column up to the top", () => {
+      const b6 = stripOf(apart, "B6")!;
+      // B6 leads its document on this side: the first point on B's stretch.
+      expect(b6.x).toBeCloseTo(square("B").x0 + apart.pitch / 2);
+      expect(b6.y).toBeCloseTo(square("B").y0 + apart.pitch / 2);
+      expect(b6.top).toBeCloseTo(square("A").y0);
+      expect(b6.right).toBeCloseTo(square("C").x1);
+    });
+
+    it("carries the target's pairs: with later documents on its row, with earlier ones on its column", () => {
+      const b6 = stripOf(apart, "B6")!;
+      const row = pairAt("B6", "C1");
+      expect(apart.y[row]).toBeCloseTo(b6.y);
+      expect(apart.x[row]).toBeGreaterThan(b6.x);
+      expect(apart.x[row]).toBeLessThan(b6.right);
+      const column = pairAt("A6", "B6");
+      expect(apart.x[column]).toBeCloseTo(b6.x);
+      expect(apart.y[column]).toBeLessThan(b6.y);
+      expect(apart.y[column]).toBeGreaterThan(b6.top);
+    });
+
+    it("gives a target the side does not name its strip too", () => {
+      const c5 = stripOf(apart, "C5")!;
+      expect(apart.x[pairAt("B5", "C5")]).toBeCloseTo(c5.x);
+    });
+
+    it("covers its whole row, and keeps its room where a row is under a pixel and a half high", () => {
+      const b6 = stripOf(apart, "B6")!;
+      expect(b6.half).toBeGreaterThanOrEqual(apart.pitch / 2);
+      const { data, particles: many } = corpus([200, 200]);
+      const dense = layoutHub({ kind: "map" }, many, data, 800, 500);
+      expect(dense.pitch).toBeLessThan(1.5);
+      expect(stripOf(dense, "D1_0")!.half).toBeGreaterThanOrEqual(3);
+    });
+
+    it("none off the map, and none for a target outside the selection", () => {
+      expect(stripOf(layoutHub({ kind: "overview" }, particles, DATA, 800, 500), "B6")).toBeNull();
+      expect(stripOf(apart, "Z9")).toBeNull();
+    });
+  });
+
+  describe("stripCounts", () => {
+    it("counts a target's pairs in each block its strip crosses", () => {
+      expect(stripCounts(apart, particles, "B6").map((c) => [c.key, c.count])).toEqual([
+        ["A<->B", 1],
+        ["B<->C", 6],
+      ]);
+    });
+
+    it("leaves out the blocks without its pairs", () => {
+      expect(stripCounts(apart, particles, "A6").map((c) => [c.key, c.count])).toEqual([["A<->B", 6]]);
+    });
+
+    it("counts only the pairs the side shows", () => {
+      // A1 is strongly aligned with B1, B3, B5 and with C1, C3, C5.
+      const strong = layoutHub({ kind: "map", side: "reinforce", focus: { kind: "top" } }, particles, DATA, 800, 500);
+      expect(stripCounts(strong, particles, "A1").map((c) => [c.key, c.count])).toEqual([
+        ["A<->B", 3],
+        ["A<->C", 3],
+      ]);
+    });
+
+    it("puts each count beside the strip inside its block: under the row, beside the column", () => {
+      const b6 = stripOf(apart, "B6")!;
+      const [up, right] = stripCounts(apart, particles, "B6");
+      expect(up.align).toBe("right");
+      expect(up.x).toBeGreaterThan(b6.x + b6.half);
+      expect(up.y).toBeCloseTo((block("A<->B").y0 + block("A<->B").y1) / 2);
+      expect(right.align).toBe("below");
+      expect(right.x).toBeCloseTo((block("B<->C").x0 + block("B<->C").x1) / 2);
+      expect(right.y).toBeGreaterThan(b6.y + b6.half);
+      expect(right.y).toBeLessThan(block("B<->C").y1);
+    });
+
+    it("none for a target outside the selection", () => {
+      expect(stripCounts(apart, particles, "Z9")).toEqual([]);
+    });
+
+    /** A synthetic corpus in which every pair reads as potential misalignment. */
+    const flaggedCorpus = (sizes: number[]) => {
+      const { data, particles: all } = corpus(sizes);
+      return { data, particles: all.map((p) => ({ ...p, level: "flagged" as const })) };
+    };
+    const onApart = (id: string) => ({ kind: "map", side: "apart", focus: { kind: "target", id } }) as const;
+    // Rough size of a count's label: 12px digits, 3px either side, 14px high.
+    const widthOf = (count: number) => String(count).length * 7 + 6;
+
+    it("puts a count on the other side of the column when it would run off the map", () => {
+      // The last document is two targets wide: "20" does not fit to its right.
+      const { data, particles: many } = flaggedCorpus([20, 20, 2]);
+      const layout = layoutHub(onApart("D2_0"), many, data, 800, 500);
+      const strip = stripOf(layout, "D2_0")!;
+      const counts = stripCounts(layout, many, "D2_0");
+      expect(counts.map((c) => [c.key, c.count, c.align])).toEqual([
+        ["D0<->D2", 20, "left"],
+        ["D1<->D2", 20, "left"],
+      ]);
+      for (const c of counts) expect(c.x).toBeLessThanOrEqual(strip.x - strip.half);
+    });
+
+    it("keeps counts apart along the column, in order, where the blocks are too short for them", () => {
+      // D1 and D2 have one target each: their blocks are shorter than a count.
+      const { data, particles: many } = flaggedCorpus([40, 1, 1, 40]);
+      const layout = layoutHub(onApart("D3_0"), many, data, 800, 500);
+      const strip = stripOf(layout, "D3_0")!;
+      const counts = stripCounts(layout, many, "D3_0");
+      expect(counts.map((c) => [c.key, c.count])).toEqual([
+        ["D0<->D3", 40],
+        ["D1<->D3", 1],
+        ["D2<->D3", 1],
+      ]);
+      for (let k = 1; k < counts.length; k++) expect(counts[k].y - counts[k - 1].y).toBeGreaterThanOrEqual(14 - 1e-6);
+      for (const c of counts) {
+        expect(c.y - 7).toBeGreaterThanOrEqual(strip.top - 1e-6);
+        expect(c.y + 7).toBeLessThanOrEqual(strip.y);
+      }
+    });
+
+    it("keeps counts apart along the row, in order, where the blocks are too narrow for them", () => {
+      const { data, particles: many } = flaggedCorpus([40, 1, 1, 40]);
+      const layout = layoutHub(onApart("D0_0"), many, data, 800, 500);
+      const strip = stripOf(layout, "D0_0")!;
+      const counts = stripCounts(layout, many, "D0_0");
+      expect(counts.map((c) => [c.key, c.count, c.align])).toEqual([
+        ["D0<->D1", 1, "below"],
+        ["D0<->D2", 1, "below"],
+        ["D0<->D3", 40, "below"],
+      ]);
+      for (let k = 1; k < counts.length; k++) {
+        const room = (widthOf(counts[k].count) + widthOf(counts[k - 1].count)) / 2;
+        expect(counts[k].x - counts[k - 1].x).toBeGreaterThanOrEqual(room - 1e-6);
+      }
+      for (const c of counts) expect(c.x + widthOf(c.count) / 2).toBeLessThanOrEqual(strip.right + 1e-6);
+    });
   });
 });
 

@@ -207,6 +207,21 @@ export function Hub({
     // Steps come and go with the selection (no pairs at all): observe anew.
   }, [hasPairs]);
 
+  // A target picked on the map: once its row has opened, the row is brought
+  // to the middle of the window unless it is already in view.
+  const reveal = useRef<{ side: HubTone; id: string } | null>(null);
+  useEffect(() => {
+    const want = reveal.current;
+    if (!want) return;
+    reveal.current = null;
+    const rows = stepEl(want.side)?.querySelectorAll<HTMLElement>("[data-row]") ?? [];
+    const row = [...rows].find((el) => el.dataset.row === want.id);
+    if (!row) return;
+    const box = row.getBoundingClientRect();
+    if (box.top >= 0 && box.bottom <= window.innerHeight) return;
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [picked]);
+
   // A rating brought forward on the map holds while the map leads.
   const lastActive = useRef<HubStep>(active);
   useEffect(() => {
@@ -490,7 +505,11 @@ export function Hub({
       return;
     }
     if (t.kind === "mark") {
-      if (stage.kind === "map" && stage.side) pick(stage.side)(t.mark.id);
+      if (stage.kind === "map" && stage.side) {
+        // Picking (not letting go) shows the target's row beside the map.
+        if (pickedOn(stage.side) !== t.mark.id) reveal.current = { side: stage.side, id: t.mark.id };
+        pick(stage.side)(t.mark.id);
+      }
       return;
     }
     if (t.kind === "dot") {

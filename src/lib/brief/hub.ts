@@ -150,6 +150,9 @@ export interface HubLayout {
   axis: HubAxis[];
   /** The targets the map names, in document order. */
   marks: HubMark[];
+  /** Each target's own point on the map's diagonal, where its row and
+   *  column meet (empty off the map). */
+  points: Map<string, { x: number; y: number }>;
   /** The map's cell: each pair is a square this wide (0 off the map). */
   pitch: number;
   /** The document in focus: its place and the half-width kept for its
@@ -225,6 +228,7 @@ function emptyLayout(n: number): HubLayout {
     groups: [],
     axis: [],
     marks: [],
+    points: new Map(),
     pitch: 0,
     center: null,
     focusLabel: FOCUS_LABEL,
@@ -400,6 +404,12 @@ function placeMap(
   const used = total * pitch + (docs.length - 1) * gap;
   const x0 = Math.max(labelRoom + pad, (width - labelRoom - used) / 2 + labelRoom);
   const y0 = Math.max(pad, (height - used) / 2);
+  byDoc.forEach((list, k) =>
+    list.forEach((id, row) => {
+      const at = off[k] + row * pitch + pitch / 2;
+      layout.points.set(id, { x: x0 + at, y: y0 + at });
+    }),
+  );
   // Each pair fills its cell: the canvas draws it as a square.
   const radius = pitch / 2;
   const counts = new Map<string, number>();
@@ -723,6 +733,108 @@ export function layoutHub(
     );
   }
   return layout;
+}
+
+/** A target's row and column on the map, as a strip: from its own point
+ *  on the diagonal, its row runs right to the map's edge (its pairs with
+ *  later documents) and its column up to the map's top (with earlier ones).
+ *  Its numbers stand beside the strip. */
+export interface HubStrip {
+  id: string;
+  x: number;
+  y: number;
+  /** Half the strip's thickness. */
+  half: number;
+  top: number;
+  right: number;
+}
+
+/** A strip is its row and a little either side, never under 6px, so the
+ *  numbers beside it keep clear of its squares even where a row is under a
+ *  pixel high. */
+const STRIP_MIN_HALF = 3;
+const STRIP_PAD = 2;
+
+export function stripOf(layout: HubLayout, id: string): HubStrip | null {
+  const point = layout.points.get(id);
+  if (!point || layout.axis.length === 0) return null;
+  return {
+    id,
+    x: point.x,
+    y: point.y,
+    half: Math.max(STRIP_MIN_HALF, layout.pitch / 2 + STRIP_PAD),
+    top: Math.min(...layout.axis.map((a) => a.square.y0)),
+    right: Math.max(...layout.axis.map((a) => a.square.x1)),
+  };
+}
+
+/** How many of a target's pairs on the map's side sit in one block, and
+ *  where the number goes: under the strip in the middle of the block (its
+ *  row: `x` is the number's centre, `y` its top), or beside the strip level
+ *  with the block's middle (its column: `y` is the number's middle, `x` its
+ *  left edge, or its right edge when it had to go left of the strip). */
+export interface HubCount {
+  key: string;
+  count: number;
+  x: number;
+  y: number;
+  align: "below" | "right" | "left";
+}
+
+/** Room between a strip and its numbers. */
+const COUNT_GAP = 2;
+/** Rough size of a number's label (brief.css: 12px digits with 3px either
+ *  side, 14px high), to keep numbers apart and on the map. */
+const COUNT_DIGIT = 7;
+const COUNT_PAD = 6;
+const COUNT_HEIGHT = 14;
+
+function countWidth(count: number): number {
+  return String(count).length * COUNT_DIGIT + COUNT_PAD;
+}
+
+export function stripCounts(layout: HubLayout, particles: HubParticle[], id: string): HubCount[] {
+  const strip = stripOf(layout, id);
+  if (!strip) return [];
+  const count = new Map<string, number>();
+  particles.forEach((p, i) => {
+    if (!layout.visible[i] || (p.ca !== id && p.cb !== id)) return;
+    const key = getDocPairKey(p.a, p.b);
+    count.set(key, (count.get(key) ?? 0) + 1);
+  });
+  const counts: HubCount[] = [];
+  for (const g of layout.groups) {
+    const n = count.get(g.key);
+    if (!n) continue;
+    // The blocks level with its point are on its row; the others, above
+    // it, on its column.
+    const onRow = g.y0 <= strip.y && strip.y <= g.y1;
+    if (onRow) {
+      counts.push({ key: g.key, count: n, x: (g.x0 + g.x1) / 2, y: strip.y + strip.half + COUNT_GAP, align: "below" });
+      continue;
+    }
+    // Beside the column, on the side that keeps the number on the map.
+    const right = strip.x + strip.half + COUNT_GAP;
+    const fits = right + countWidth(n) <= strip.right;
+    counts.push({
+      key: g.key,
+      count: n,
+      x: fits ? right : strip.x - strip.half - COUNT_GAP,
+      y: (g.y0 + g.y1) / 2,
+      align: fits ? "right" : "left",
+    });
+  }
+  // Where blocks are smaller than their numbers, the numbers move apart
+  // along the strip, in order, and stay beside it.
+  const row = counts.filter((c) => c.align === "below");
+  spread(row.map((c) => c.x), row.map((c) => countWidth(c.count)), strip.x + strip.half, strip.right).forEach(
+    (x, k) => (row[k].x = x),
+  );
+  const column = counts.filter((c) => c.align !== "below");
+  spread(column.map((c) => c.y), column.map(() => COUNT_HEIGHT), strip.top, strip.y - strip.half).forEach(
+    (y, k) => (column[k].y = y),
+  );
+  return counts;
 }
 
 /** Red first, then partial, no clear relationship and aligned: each

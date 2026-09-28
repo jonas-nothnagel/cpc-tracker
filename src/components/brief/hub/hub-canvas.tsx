@@ -14,6 +14,7 @@ import {
   HUB_INK,
   hubParticles,
   layoutHub,
+  stripCounts,
   type HubAxis,
   type HubGroup,
   type HubLayout,
@@ -368,6 +369,11 @@ export function HubCanvas({
   const colors = useMemo(() => new Map(data.scope.docs.map((d) => [d.id, d.color])), [data]);
   const axisFocus = stage.kind === "map" && stage.focus?.kind === "doc" ? stage.focus.doc : null;
   const markFocus = stage.kind === "map" && stage.focus?.kind === "target" ? stage.focus.id : null;
+  // The target in focus: its count in each block its row and column cross.
+  const counts = useMemo(
+    () => (markFocus ? stripCounts(layout, particles, markFocus) : []),
+    [markFocus, layout, particles],
+  );
   const outlineKey = outlined.join("|");
   const extras = useMemo(
     () => ({ colors, outlined: outlineKey ? outlineKey.split("|") : [], axisFocus, markFocus }),
@@ -432,7 +438,9 @@ export function HubCanvas({
         cur.a[i] = from.a[i] + (to.a[i] - from.a[i]) * e;
       }
       draw(canvas, cur, layout, size.w, size.h, moved ? e : 1, member, p < 1 ? -1 : brightRef.current, extras);
-      if (moved) showLabels(p);
+      // Names wait for moving dots; where none moves they show at once, also
+      // after a move cut short while they were still waiting.
+      showLabels(moved ? p : 1);
       settled.current = p >= 1;
     };
     settled.current = false;
@@ -625,6 +633,18 @@ export function HubCanvas({
               {markLabel(m)}
             </div>
           ))}
+        {counts.map((c) => (
+          <div
+            // A new target in focus writes its counts anew.
+            key={`${markFocus}:${c.key}`}
+            className="brief-hub-count"
+            data-count={c.key}
+            data-align={c.align}
+            style={{ left: c.x, top: c.y }}
+          >
+            {c.count}
+          </div>
+        ))}
         {layout.groups.map((g, k) => {
           if (g.labelAt === "none") return null;
           const dim = bright >= 0 && k !== bright ? "true" : undefined;

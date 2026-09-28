@@ -278,6 +278,87 @@ describe("Hub", () => {
     );
   });
 
+  it("marks in the list the one target the map highlights: the one pointed at, else the one kept", () => {
+    renderHub();
+    enter("apart");
+    const rows = within(step("apart")).getAllByTestId("hub-apart-row");
+    const lit = () => rows.filter((r) => r.getAttribute("data-lit") === "true").map((r) => rows.indexOf(r));
+    expect(lit()).toEqual([]);
+    fireEvent.click(within(rows[0]).getByRole("button", { pressed: false }));
+    expect(lit()).toEqual([0]);
+    fireEvent.pointerEnter(rows[1]);
+    expect(lit()).toEqual([1]);
+    fireEvent.pointerLeave(rows[1]);
+    expect(lit()).toEqual([0]);
+  });
+
+  describe("a target picked on the map", () => {
+    const at = (top: number, bottom: number) =>
+      (() => ({ top, bottom, left: 0, right: 400, width: 400, height: bottom - top, x: 0, y: top, toJSON() {} })) as () => DOMRect;
+    const pickB6OnTheMap = () => {
+      const layout = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, hubParticles(DATA), DATA, 800, 500);
+      const b6 = layout.marks.find((m) => m.id === "B6")!;
+      fireEvent.click(field(), { clientX: b6.labelX - 4, clientY: b6.labelY });
+    };
+
+    it("brings its row, open, to the middle of the window when the row is out of view", () => {
+      withField(() => {
+        renderHub();
+        enter("apart");
+        const row = within(step("apart")).getAllByTestId("hub-apart-row")[0];
+        // Scrolled past: the row sits above the window.
+        row.getBoundingClientRect = at(-240, -60);
+        const scroll = vi.mocked(Element.prototype.scrollIntoView);
+        scroll.mockClear();
+        pickB6OnTheMap();
+        expect(within(row).getByRole("button", { pressed: true })).toBeTruthy();
+        expect(scroll.mock.contexts).toContain(row);
+        expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ block: "center" }));
+      });
+    });
+
+    it("leaves a row in view where it is", () => {
+      withField(() => {
+        renderHub();
+        enter("apart");
+        const row = within(step("apart")).getAllByTestId("hub-apart-row")[0];
+        row.getBoundingClientRect = at(200, 380);
+        const scroll = vi.mocked(Element.prototype.scrollIntoView);
+        scroll.mockClear();
+        pickB6OnTheMap();
+        expect(within(row).getByRole("button", { pressed: true })).toBeTruthy();
+        expect(scroll).not.toHaveBeenCalled();
+      });
+    });
+
+    it("letting it go on the map moves nothing", () => {
+      withField(() => {
+        renderHub();
+        enter("apart");
+        const row = within(step("apart")).getAllByTestId("hub-apart-row")[0];
+        row.getBoundingClientRect = at(-240, -60);
+        pickB6OnTheMap();
+        const scroll = vi.mocked(Element.prototype.scrollIntoView);
+        scroll.mockClear();
+        pickB6OnTheMap();
+        expect(within(row).getByRole("button", { pressed: false })).toBeTruthy();
+        expect(scroll).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  it("pointing at a target writes its count in each block of the map it crosses", () => {
+    withField(() => {
+      renderHub();
+      enter("apart");
+      const row = within(step("apart")).getAllByTestId("hub-apart-row")[0];
+      fireEvent.pointerEnter(row);
+      expect(stage()).toBe("map:apart:target:B6");
+      const counts = [...document.querySelectorAll("[data-count]")].map((el) => el.textContent);
+      expect(counts).toEqual(["1", "6"]);
+    });
+  });
+
   it("a row reached by keyboard brings its target forward, as pointing does", () => {
     renderHub();
     enter("reinforce");

@@ -58,6 +58,8 @@ export function RankList({
   const { n } = useNumbers();
   const docName = (id: string) => docs.find((d) => d.id === id)?.name ?? id;
   const max = Math.max(1, ...items.map((item) => item.value));
+  // The one target the map highlights: the one pointed at, else the one kept.
+  const lit = hovered ?? (onSelect ? selected : null);
   return (
     <ol className="brief-rank" data-tour={tour}>
       {items.map((item, i) => {
@@ -73,8 +75,10 @@ export function RankList({
             key={id}
             className="brief-rank-row"
             data-testid={testId}
+            data-row={id}
             data-selected={picked ? "true" : undefined}
             data-hovered={hovered === id ? "true" : undefined}
+            data-lit={lit === id ? "true" : undefined}
             onPointerEnter={onHover ? () => onHover(id) : undefined}
             onPointerLeave={onHover ? () => onHover(null) : undefined}
           >
@@ -89,7 +93,9 @@ export function RankList({
               onBlur={onHover ? () => onHover(null) : undefined}
               title={item.commitment.text}
             >
-              <span className="brief-rank-title">{commitmentLine(item.commitment)}</span>
+              <span className="brief-rank-title">
+                <span className="brief-rank-mark">{commitmentLine(item.commitment)}</span>
+              </span>
               <span className="brief-rank-meta">
                 {docName(item.commitment.doc)}
                 {partners ? ` · ${partners}` : ""}

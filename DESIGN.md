@@ -141,6 +141,8 @@ Semantic status only. Not decoration, not framework colour.
 
 **The One Ground Rule.** White is the only page ground, landing included; Surface Light marks grouped regions inside it, and on the landing a full-width Surface Light section with a hairline may separate one section from the next. No warm or tinted bands anywhere: a cream band reads as generated decoration, not as the product.
 
+**The Highlighter Rule.** One pale yellow (`#fff5c7`) marks the name of what the reader is pointing at: its label on a chart and its line in the list beside it, like a highlighter pen over a line of text, so the eye joins the two at once. It marks words only, never the data marks (a chart brings its marks forward by ink, never by strips or fills of yellow over them), and nothing at rest. One thing at a time. Never a page band or section ground, never a status, never a category colour.
+
 ## 3. Typography
 
 **Display Font:** Source Serif 4 (self-hosted variable woff2, SIL OFL) — falls back to `ui-serif, Georgia, Cambria, "Times New Roman", Times, serif`
