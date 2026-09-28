@@ -107,9 +107,40 @@ live events are never collapsed. Ratings-ledger rows (no `schema` key) keep
 exact-row identity: there `country` is identity, not metadata.
 
 `source` values: `measured` (live EcoLogits on Python responses), `estimated`
-(computed from call counts when a run was fully cache-served), `api` (hosted
-EcoLogits estimation for chat), `unavailable` (row recorded with null impacts
-because the model was unknown or the API was unreachable).
+(computed from call counts when a run was fully cache-served, or backfilled
+from cached answers, see 5b), `api` (hosted EcoLogits estimation for chat),
+`unavailable` (row recorded with null impacts because the model was unknown or
+the API was unreachable).
+
+### 5b. Backfilled rows (added 2026-09-25)
+
+Only `run_analysis.py` and `extract.py` append ledger rows. Scripts that call
+the model through `src.llm` count their footprint in memory and lose it when
+they exit. A day-by-day reconciliation of the LLM cache (one entry per live
+call) against the ledger found two such gaps since the ledger began, and
+`python/scripts/backfill_unrecorded_runs.py` adds them as `estimated` rows with
+a `backfill:` run id:
+
+- the Mongolia public procurement screening of 27 and 28 August: 407,137 live
+  gpt-5.4 calls, about 31 kg CO2e (range 24 to 38 kg);
+- snapshot and page translations after runs, 30 June to 23 September: 11
+  batches, 9,718 calls, 0.86 kg CO2e.
+
+Method: the calls are the cache entries written inside each batch's window;
+output tokens per call are the o200k tokens of the cached answer plus 3, exact
+against 10,827 entries that carry their recorded usage (no reasoning tokens);
+impacts come from `estimate_footprint_from_counts`. The same estimate for the
+two measured Sri Lanka runs of 18 and 23 September came out 3 to 20 percent
+high depending on the metric, so each metric is scaled by measured over
+estimated for those runs (carbon x0.952, energy and water x0.966, minerals
+x0.833). The Sri Lanka runs themselves were copied verbatim from the unmerged
+branch `data/sri-lanka-overhaul`; a later merge of that branch conflicts on the
+ledger and must keep one copy, which `src/lib/footprint/integrity.test.ts`
+enforces (no event may appear twice).
+
+Not included: work before the ledger began on 2 June 2026, the model probes
+and small extraction batches that also lack a row, embeddings (issue #130), and
+Claude Code sessions.
 
 Atomicity: a single `O_APPEND` write of a line below `PIPE_BUF` (4096 bytes) is
 POSIX-atomic, so concurrent appends from the pipeline and the chat route never
