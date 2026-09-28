@@ -3453,7 +3453,7 @@
         },
         "misaligned": {
           "kicker": "Where to look closer",
-          "headline": "{tenders, plural, one {# tender is} other {# tenders are}} potentially misaligned with a target; {pct} of them with targets of {doc}",
+          "headline": "{tenders, plural, one {# tender is} other {# tenders are}} potentially misaligned with a target; for {pct} of them, the target is in {doc}",
           "headlineOne": "{tenders, plural, one {# tender is} other {# tenders are}} potentially misaligned with a target",
           "headlineNone": "No tender is potentially misaligned with a target at high confidence",
           "second": "They hold {contracts, plural, one {# contract} other {# contracts}}: framework agreements are listed lot by lot.",

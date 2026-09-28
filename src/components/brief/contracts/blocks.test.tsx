@@ -59,7 +59,7 @@ describe("where to look closer", () => {
   it("counts the lots of one tender once, beside the target's strongly matching tenders", () => {
     wrap(<MisalignedBlock setup={setupFixture()} onContract={vi.fn()} onTarget={vi.fn()} />);
     expect(
-      screen.getByRole("heading", { name: "1 tender is potentially misaligned with a target; 100% of them with targets of Document C" }),
+      screen.getByRole("heading", { name: "1 tender is potentially misaligned with a target; for 100% of them, the target is in Document C" }),
     ).toBeInTheDocument();
     const row = screen.getByTestId("misaligned-C1");
     expect(within(row).getByText("1")).toBeInTheDocument();
