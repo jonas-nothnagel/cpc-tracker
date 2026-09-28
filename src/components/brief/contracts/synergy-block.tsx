@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { MIN_DOCS, synergy } from "@/lib/brief/contracts/synergy";
 import { targetLine } from "@/lib/brief/text";
+import { ContractTitle } from "./contract-title";
 import { useMoney } from "./money";
 
 /** Contracts listed at first, and added per "Show more". */
@@ -19,9 +20,11 @@ const PAGE = 8;
  */
 export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onContract: (id: string) => void }) {
   const t = useTranslations("brief.contracts.deep.synergy");
+  const td = useTranslations("brief.contracts.deep");
   const m = useMoney();
   const [shown, setShown] = useState(PAGE);
   const [faultOpen, setFaultOpen] = useState(false);
+  const [faultShown, setFaultShown] = useState(PAGE);
   const docOrder = useMemo(() => setup.documents.map((d) => d.id), [setup]);
   const docOf = useMemo(() => new Map(setup.targets.map((x) => [x.id, x.doc])), [setup]);
   const s = useMemo(() => synergy(setup.file.contracts, docOf, docOrder), [setup, docOf, docOrder]);
@@ -36,8 +39,15 @@ export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onC
   return (
     <section className="ct-deep" data-deep="synergy">
       <p className="brief-hub-kicker">{t("kicker")}</p>
-      <h2 className="brief-hub-headline">{t("headline", { count: s.count, value: m.tugrik(s.value), min: MIN_DOCS })}</h2>
+      <h2 className="brief-hub-headline">
+        {t("headline", {
+          count: s.count,
+          value: m.tugrik(s.value),
+          min: MIN_DOCS,
+        })}
+      </h2>
 
+      <p className="ct-tag">{td("aiTag")}</p>
       <figure className="ct-dist" aria-hidden="true">
         <div className="ct-dist-bars">
           {s.distribution.slice(1).map((count, i) => (
@@ -53,7 +63,11 @@ export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onC
 
       {agreement.total > 0 && (
         <p className="brief-hub-second">
-          {t("agreement", { total: m.n(agreement.total), high: m.n(agreement.high), misaligned: m.n(agreement.flagged) })}
+          {t("agreement", {
+            total: m.n(agreement.total),
+            high: m.n(agreement.high),
+            misaligned: m.n(agreement.flagged),
+          })}
         </p>
       )}
 
@@ -61,11 +75,16 @@ export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onC
         {s.rows.slice(0, shown).map(({ contract: c, docs }) => (
           <li key={c.id}>
             <button type="button" className="ct-list-row" onClick={() => onContract(c.id)}>
-              <span className="ct-list-title">{c.title}</span>
+              <ContractTitle contract={c} />
               <span className="ct-list-meta">
                 {m.tugrik(c.value)} · {c.year}
               </span>
-              <span className="ct-list-meta">{t("docs", { count: docs.length, names: docs.map(docName).join(", ") })}</span>
+              <span className="ct-list-meta">
+                {t("docs", {
+                  count: docs.length,
+                  names: docs.map(docName).join(", "),
+                })}
+              </span>
             </button>
           </li>
         ))}
@@ -83,25 +102,37 @@ export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onC
             <span aria-hidden="true"> {faultOpen ? "‹" : "›"}</span>
           </button>
           {faultOpen && (
-            <ul className="ct-list">
-              {faultline.slice(0, 12).map((f) => {
-                const c = contracts.get(f.contract);
-                const [a, b] = f.pairs[0];
-                const line = (id: string) => {
-                  const x = targets.get(id);
-                  return x ? `${docName(x.doc)}: ${targetLine(x, 70)}` : id;
-                };
-                return (
-                  <li key={f.contract}>
-                    <button type="button" className="ct-list-row" onClick={() => onContract(f.contract)}>
-                      <span className="ct-list-title">{c?.title ?? f.contract}</span>
-                      <span className="ct-list-meta">{line(a)}</span>
-                      <span className="ct-list-meta">{line(b)}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <>
+              <ul className="ct-list" data-testid="faultline-list">
+                {faultline.slice(0, faultShown).map((f) => {
+                  const c = contracts.get(f.contract);
+                  const [a, b] = f.pairs[0];
+                  const line = (id: string) => {
+                    const x = targets.get(id);
+                    return x ? `${docName(x.doc)}: ${targetLine(x, 70)}` : id;
+                  };
+                  return (
+                    <li key={f.contract}>
+                      <button type="button" className="ct-list-row" onClick={() => onContract(f.contract)}>
+                        <span className="ct-list-title">{c?.title ?? f.contract}</span>
+                        <span className="ct-list-meta">{line(a)}</span>
+                        <span className="ct-list-meta">{line(b)}</span>
+                        {f.pairs.length > 1 && (
+                          <span className="ct-list-meta">{t("morePairs", { count: f.pairs.length - 1 })}</span>
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+              {faultShown < faultline.length && (
+                <button type="button" className="ct-link" onClick={() => setFaultShown((v) => v + PAGE * 2)}>
+                  {t("more", {
+                    count: Math.min(PAGE * 2, faultline.length - faultShown),
+                  })}
+                </button>
+              )}
+            </>
           )}
         </div>
       )}

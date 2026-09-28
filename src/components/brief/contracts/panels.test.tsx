@@ -32,7 +32,12 @@ const RECORD: ContractRecord = {
   url: "https://www.tender.gov.mn/mn/contract/p1",
   reason: "Ойжуулалт нь байгаль орчны зорилготой.",
   lots: 1,
-  strong: [{ target: "A1", text: "The contract plants trees that cut waste emissions. More detail follows here." }],
+  strong: [
+    {
+      target: "A1",
+      text: "The contract plants trees that cut waste emissions. More detail follows here.",
+    },
+  ],
   misaligned: [],
 };
 
@@ -59,18 +64,27 @@ describe("a contract, in full", () => {
       vi.fn(async () => ({ ok: true, json: async () => RECORD })),
     );
     renderPanels([{ kind: "contract", id: "p1" }]);
-    expect(await screen.findByRole("heading", { name: "Afforestation of the green belt" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", {
+        name: "Afforestation of the green belt",
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByText(/Ногоон бүсийг ойжуулах/)).toBeInTheDocument();
     expect(screen.getByText("Khovd aimag procurement office")).toBeInTheDocument();
     expect(screen.getByText("Mainly for nature or climate")).toBeInTheDocument();
     expect(screen.getByText(/Cut emissions from waste/)).toBeInTheDocument();
     expect(screen.getByText(/The contract plants trees that cut waste emissions\./)).toBeInTheDocument();
-    const source = screen.getByRole("link", { name: /View on tender\.gov\.mn/ });
+    const source = screen.getByRole("link", {
+      name: /View on tender\.gov\.mn/,
+    });
     expect(source).toHaveAttribute("href", RECORD.url);
   });
 
   it("says so when the record cannot be loaded", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: false, json: async () => ({}) })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: false, json: async () => ({}) })),
+    );
     renderPanels([{ kind: "contract", id: "p1" }]);
     await waitFor(() => expect(screen.getByText("The contract's record could not be loaded.")).toBeInTheDocument());
   });

@@ -26,10 +26,19 @@ export function SetLine({ file, stage }: { file: ContractsFile; stage: Stage }) 
       <div className="ct-setline-bar" aria-hidden="true" data-all={record || undefined}>
         {!record && (
           <>
-            <span className="ct-setline-seg" style={{ width: width(principal.value), background: FIELD_INK.principal }} />
             <span
               className="ct-setline-seg"
-              style={{ width: width(significant.value), background: narrow ? FIELD_INK.rest : FIELD_INK.significant }}
+              style={{
+                width: width(principal.value),
+                background: FIELD_INK.principal,
+              }}
+            />
+            <span
+              className="ct-setline-seg"
+              style={{
+                width: width(significant.value),
+                background: narrow ? FIELD_INK.rest : FIELD_INK.significant,
+              }}
             />
           </>
         )}
@@ -41,12 +50,18 @@ export function SetLine({ file, stage }: { file: ContractsFile; stage: Stage }) 
           <>
             <span className="ct-setline-key">
               <i style={{ background: FIELD_INK.principal }} aria-hidden="true" />
-              {t("principal", { count: n(principal.contracts), value: tugrik(principal.value) })}
+              {t("principal", {
+                count: n(principal.contracts),
+                value: tugrik(principal.value),
+              })}
             </span>
             {!narrow && (
               <span className="ct-setline-key">
                 <i style={{ background: FIELD_INK.significant }} aria-hidden="true" />
-                {t("significant", { count: n(significant.contracts), value: tugrik(significant.value) })}
+                {t("significant", {
+                  count: n(significant.contracts),
+                  value: tugrik(significant.value),
+                })}
               </span>
             )}
             <span className="ct-setline-of">{t("of", { value: tugrik(total) })}</span>

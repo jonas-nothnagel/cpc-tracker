@@ -3,7 +3,7 @@ import { tmpdir } from "os";
 import { join } from "path";
 import { gzipSync } from "zlib";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { readContractsAt, readRecordAt } from "./load";
+import { readContractsAt, readMisalignedAt, readRecordAt } from "./load";
 import { contractsFixture } from "./test-fixture";
 
 let dir: string;
@@ -33,3 +33,18 @@ describe("reading the baked files", () => {
     expect(readRecordAt(dir, "nope")).toBeNull();
   });
 });
+
+describe("the explanations for one target", () => {
+  it("gathers every contract's potential-misalignment explanation for the target", () => {
+    write("contract-details.json.gz", {
+      n1: { original: "x", misaligned: [{ target: "C1", text: "Road haulage. More.", confidence: "high", mechanism: "goal_conflict" }] },
+      n2: { original: "y", misaligned: [{ target: "B1", text: "Other.", confidence: "medium", mechanism: null }] },
+      p1: { original: "z", misaligned: [] },
+    });
+    expect(readMisalignedAt(dir, "C1")).toEqual([
+      { contract: "n1", text: "Road haulage. More.", confidence: "high", mechanism: "goal_conflict" },
+    ]);
+    expect(readMisalignedAt(dir, "Z9")).toEqual([]);
+  });
+});
+

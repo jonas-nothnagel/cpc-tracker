@@ -18,15 +18,26 @@ export function useMoney() {
       return t("usd", { unit, amount: amount(a) });
     },
     /** Tugrik of every hundred, always one decimal ("1.6", "3.0"). */
-    per100: (share: number) => format.number(per100(share), { minimumFractionDigits: 1, maximumFractionDigits: 1 }),
+    per100: (share: number) =>
+      format.number(per100(share), {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
     n: (v: number) => format.number(v),
     pct: (share: number) => {
       if (share > 0 && share < 0.005) return `<${format.number(0.01, { style: "percent", maximumFractionDigits: 0 })}`;
-      return format.number(share, { style: "percent", maximumFractionDigits: 0 });
+      return format.number(share, {
+        style: "percent",
+        maximumFractionDigits: 0,
+      });
     },
     month: (ym: string) => {
       const [y, m] = ym.split("-").map(Number);
-      return format.dateTime(new Date(Date.UTC(y, (m || 1) - 1, 1)), { month: "long", year: "numeric", timeZone: "UTC" });
+      return format.dateTime(new Date(Date.UTC(y, (m || 1) - 1, 1)), {
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      });
     },
   };
 }

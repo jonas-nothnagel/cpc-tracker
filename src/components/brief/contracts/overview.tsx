@@ -9,11 +9,12 @@ import { NO_PLACE, tierTotals, type Contract, type LensKey } from "@/lib/brief/c
 import { placeFinding, placeKey, placeRows } from "@/lib/brief/contracts/places";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { targetLine } from "@/lib/brief/text";
+import { ContractTitle } from "./contract-title";
 import { MoneyField, type FieldPoint } from "./money-field";
 import { useMoney } from "./money";
 import { SetLine } from "./set-line";
 
-type Step = "record" | "purpose" | "areas" | "places";
+export type Step = "record" | "purpose" | "areas" | "places";
 
 /** Contracts listed beside a policy area or place. */
 const LIST_MAX = 5;
@@ -42,6 +43,7 @@ export function Overview({
   onLens,
   onContract,
   onTarget,
+  initialStep = "record",
 }: {
   setup: ContractsSetup;
   geo: GeoFile | null;
@@ -49,14 +51,19 @@ export function Overview({
   onLens: (lens: LensKey) => void;
   onContract: (id: string) => void;
   onTarget: (id: string) => void;
+  /** The step that leads before the reader scrolls (tests, deep links). */
+  initialStep?: Step;
 }) {
   const t = useTranslations("brief.contracts");
   const tl = useTranslations("briefing.lens");
   const format = useFormatter();
   const m = useMoney();
   const file = setup.file;
-  const steps = useMemo<Step[]>(() => (geo ? ["record", "purpose", "areas", "places"] : ["record", "purpose", "areas"]), [geo]);
-  const [active, setActive] = useState<Step>("record");
+  const steps = useMemo<Step[]>(
+    () => (geo ? ["record", "purpose", "areas", "places"] : ["record", "purpose", "areas"]),
+    [geo],
+  );
+  const [active, setActive] = useState<Step>(initialStep);
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,15 +93,30 @@ export function Overview({
   const lensSpec = setup.lenses.find((l) => l.id === lens) ?? setup.lenses[0] ?? null;
   const lensKey = (lensSpec?.id ?? "globe") as LensKey;
   const rows = useMemo(
-    () => (lensSpec ? areaRows(file.contracts, lensKey, lensSpec.categories, lensSpec.primary, setup.targets.map((x) => x.id)) : []),
+    () =>
+      lensSpec
+        ? areaRows(
+            file.contracts,
+            lensKey,
+            lensSpec.categories,
+            lensSpec.primary,
+            setup.targets.map((x) => x.id),
+          )
+        : [],
     [file, lensSpec, lensKey, setup],
   );
   const places = useMemo(() => placeRows(file.contracts), [file]);
   const principal = useMemo(() => tierTotals(file, "principal"), [file]);
   const significant = useMemo(() => tierTotals(file, "significant"), [file]);
   const ctx = useMemo(() => ({ rows, places, geo }), [rows, places, geo]);
-  const stage = useMemo<Stage>(() => (active === "areas" ? { kind: "areas", lens: lensKey } : { kind: active }), [active, lensKey]);
-  const areaF = useMemo(() => areaFinding(rows, setup.targets.length, principal.value), [rows, setup.targets.length, principal.value]);
+  const stage = useMemo<Stage>(
+    () => (active === "areas" ? { kind: "areas", lens: lensKey } : { kind: active }),
+    [active, lensKey],
+  );
+  const areaF = useMemo(
+    () => areaFinding(rows, setup.targets.length, principal.value),
+    [rows, setup.targets.length, principal.value],
+  );
   const placeF = useMemo(() => placeFinding(places, principal.value), [places, principal.value]);
 
   const [pickedArea, setPickedArea] = useState<string | null>(null);
@@ -119,7 +141,12 @@ export function Overview({
 
   const census = file.census;
   const rate = file.source.usdRate;
-  const pct1 = (share: number) => format.number(share, { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const pct1 = (share: number) =>
+    format.number(share, {
+      style: "percent",
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
 
   const label = (l: FieldLabel): ReactNode => {
     const v = l.values;
@@ -127,7 +154,10 @@ export function Overview({
       case "year":
         return String(v.year);
       case "columnValue":
-        return format.number(Number(v.value) / 1e12, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        return format.number(Number(v.value) / 1e12, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        });
       case "columnShare":
         return pct1(Number(v.share));
       case "rowName":
@@ -161,7 +191,12 @@ export function Overview({
         <>
           <span className="ct-tip-title">{placeName(p.code)}</span>
           {r && (
-            <span className="ct-tip-meta">{t("tip.place", { count: r.principal.contracts, value: m.tugrik(r.principal.value) })}</span>
+            <span className="ct-tip-meta">
+              {t("tip.place", {
+                count: r.principal.contracts,
+                value: m.tugrik(r.principal.value),
+              })}
+            </span>
           )}
         </>
       );
@@ -170,10 +205,17 @@ export function Overview({
     if (stage.kind === "record" || p.ink === "rest" || !main) {
       const y = file.years.find((q) => q.year === p.year);
       if (!y) return null;
-      const thin = file.years.length > 2 && (p.year === file.years[0].year || p.year === file.years[file.years.length - 1].year);
+      const thin =
+        file.years.length > 2 && (p.year === file.years[0].year || p.year === file.years[file.years.length - 1].year);
       return (
         <>
-          <span className="ct-tip-title">{t("tip.year", { year: y.year, count: m.n(y.contracts), value: m.tugrik(y.value) })}</span>
+          <span className="ct-tip-title">
+            {t("tip.year", {
+              year: y.year,
+              count: m.n(y.contracts),
+              value: m.tugrik(y.value),
+            })}
+          </span>
           {thin && <span className="ct-tip-meta">{t("tip.partial")}</span>}
         </>
       );
@@ -187,7 +229,9 @@ export function Overview({
         <span className="ct-tip-meta">
           {m.tugrik(main.value)} · {main.year}
         </span>
-        {p.slice && p.slice.parts > 1 && <span className="ct-tip-meta">{t("tip.more", { count: p.slice.parts - 1 })}</span>}
+        {p.slice && p.slice.parts > 1 && (
+          <span className="ct-tip-meta">{t("tip.more", { count: p.slice.parts - 1 })}</span>
+        )}
       </>
     );
   };
@@ -205,7 +249,7 @@ export function Overview({
       {list.map((c) => (
         <li key={c.id}>
           <button type="button" className="ct-list-row" onClick={() => onContract(c.id)}>
-            <span className="ct-list-title">{c.title}</span>
+            <ContractTitle contract={c} />
             <span className="ct-list-meta">
               {m.tugrik(c.value)} · {c.year}
             </span>
@@ -223,7 +267,11 @@ export function Overview({
         pct: m.pct(areaF.gap.moneyShare),
       })
     : areaF.top
-      ? t("areas.headlineTop", { area: areaF.top.row.name, pct: m.pct(areaF.top.moneyShare), targets: areaF.top.row.targets.length })
+      ? t("areas.headlineTop", {
+          area: areaF.top.row.name,
+          pct: m.pct(areaF.top.moneyShare),
+          targets: areaF.top.row.targets.length,
+        })
       : t("areas.headlineEmpty");
   const noPlaceShare = (() => {
     const rest = places.find((r) => r.id === NO_PLACE);
@@ -244,14 +292,19 @@ export function Overview({
           label={label}
           tip={tip}
           onSelect={onSelect}
-          selected={stage.kind === "areas" ? areaInFocus : stage.kind === "places" ? placeInFocus : null}
+          // Only a picked row or place is marked: nothing at rest (the Highlighter Rule).
+          selected={stage.kind === "areas" ? areaInView : stage.kind === "places" ? pickedPlace : null}
         />
       </div>
       <div className="brief-hub-steps">
         <section className="brief-hub-step ct-step" data-step="record">
           <p className="brief-hub-kicker">{t("kicker.record")}</p>
           <h2 className="brief-hub-headline" tabIndex={-1}>
-            {t("record.headline", { value: m.tugrik(census.value), count: m.n(census.contracts), year: file.source.firstYear })}
+            {t("record.headline", {
+              value: m.tugrik(census.value),
+              count: m.n(census.contracts),
+              year: file.source.firstYear,
+            })}
           </h2>
           <p className="brief-hub-second">{t("record.second", { usd: m.usd(census.value, rate) })}</p>
           {file.example && (
@@ -261,17 +314,25 @@ export function Overview({
             </button>
           )}
           <p className="ct-source">
-            {t("record.source", { name: file.source.name, first: file.source.firstYear, last: m.month(file.source.snapshot) })}
+            {t("record.source", {
+              name: file.source.name,
+              first: file.source.firstYear,
+              last: m.month(file.source.snapshot),
+            })}
           </p>
         </section>
 
         <section className="brief-hub-step ct-step" data-step="purpose">
           <p className="brief-hub-kicker">{t("kicker.purpose")}</p>
           <h2 className="brief-hub-headline" tabIndex={-1}>
-            {t("purpose.headline", { per100: m.per100(census.value > 0 ? principal.value / census.value : 0) })}
+            {t("purpose.headline", {
+              per100: m.per100(census.value > 0 ? principal.value / census.value : 0),
+            })}
           </h2>
           <p className="brief-hub-second">
-            {t("purpose.second", { per100: m.per100(census.value > 0 ? significant.value / census.value : 0) })}
+            {t("purpose.second", {
+              per100: m.per100(census.value > 0 ? significant.value / census.value : 0),
+            })}
           </p>
           <p className="ct-tag">{t("purpose.tag")}</p>
         </section>
@@ -296,7 +357,11 @@ export function Overview({
           </h2>
           {areaF.gap && areaF.top && areaF.top.row.id !== areaF.gap.row.id && (
             <p className="brief-hub-second">
-              {t("areas.second", { area: areaF.top.row.name, pct: m.pct(areaF.top.moneyShare), targets: areaF.top.row.targets.length })}
+              {t("areas.second", {
+                area: areaF.top.row.name,
+                pct: m.pct(areaF.top.moneyShare),
+                targets: areaF.top.row.targets.length,
+              })}
             </p>
           )}
           {areaInFocus && areaList.length > 0 && (
@@ -321,14 +386,19 @@ export function Overview({
                       second: placeName(placeF.second.id),
                       pct2: m.pct(placeF.second.share),
                     })
-                  : t("places.headlineOne", { place: placeName(placeF.first.id), pct: m.pct(placeF.first.share) })
+                  : t("places.headlineOne", {
+                      place: placeName(placeF.first.id),
+                      pct: m.pct(placeF.first.share),
+                    })
                 : t("areas.headlineEmpty")}
             </h2>
             {noPlaceShare > 0 && <p className="brief-hub-second">{t("places.second", { pct: m.pct(noPlaceShare) })}</p>}
             {placeInFocus && placeList.length > 0 && (
               <>
                 <h3 className="brief-hub-sub" data-lit={pickedPlace ? "" : undefined}>
-                  {t("places.largest", { place: placeInFocus === NO_PLACE ? t("places.none") : placeName(placeInFocus) })}
+                  {t("places.largest", {
+                    place: placeInFocus === NO_PLACE ? t("places.none") : placeName(placeInFocus),
+                  })}
                 </h3>
                 {contractRows(placeList)}
               </>

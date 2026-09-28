@@ -5,11 +5,12 @@ import { useFormatter, useTranslations } from "next-intl";
 import { DrawerHeader, DrawerShell } from "@/components/ui/drawer-shell";
 import { Link } from "@/i18n/navigation";
 import { misalignedRows } from "@/lib/brief/contracts/misaligned";
-import type { ContractRecord, LensKey } from "@/lib/brief/contracts/model";
+import type { Contract, ContractRecord, LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { targetLine } from "@/lib/brief/text";
 import { FirstSentence } from "../ai-text";
 import type { PanelState } from "./contracts-page";
+import { ContractTitle } from "./contract-title";
 import { useMoney } from "./money";
 
 /** Contracts a target's panel lists before "Show all". */
@@ -51,11 +52,17 @@ function ContractPanel({
   const format = useFormatter();
   const m = useMoney();
   const { targets, docs, contracts } = useLookups(setup);
-  const [state, setState] = useState<{ status: "loading" | "ok" | "error"; record?: ContractRecord }>({ status: "loading" });
+  const [state, setState] = useState<{
+    status: "loading" | "ok" | "error";
+    record?: ContractRecord;
+  }>({ status: "loading" });
 
   useEffect(() => {
     let alive = true;
-    const query = new URLSearchParams({ country: setup.countryId, contract: id });
+    const query = new URLSearchParams({
+      country: setup.countryId,
+      contract: id,
+    });
     fetch(`/api/brief/contracts?${query}`)
       .then((res) => (res.ok ? (res.json() as Promise<ContractRecord>) : Promise.reject(new Error())))
       .then((record) => alive && setState({ status: "ok", record }))
@@ -80,7 +87,13 @@ function ContractPanel({
     );
   }
 
-  const date = (iso: string) => format.dateTime(new Date(`${iso}T00:00:00Z`), { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  const date = (iso: string) =>
+    format.dateTime(new Date(`${iso}T00:00:00Z`), {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC",
+    });
   const placeName = (code: string | null | undefined) =>
     !code ? t("noPlace") : code === "several" ? t("several") : (placeNames[code] ?? code);
   const areas = contract
@@ -122,10 +135,20 @@ function ContractPanel({
       <div className="brief-panel-body">
         <dl className="ct-facts">
           <Fact label={t("value")}>
-            {t("valueUsd", { value: m.tugrik(contract?.value ?? 0), usd: m.usd(contract?.value ?? 0, setup.file.source.usdRate) })}
+            {t("valueUsd", {
+              value: m.tugrik(contract?.value ?? 0),
+              usd: m.usd(contract?.value ?? 0, setup.file.source.usdRate),
+            })}
           </Fact>
           {contract && <Fact label={t("year")}>{contract.year}</Fact>}
-          {record.start && record.end && <Fact label={t("dates")}>{t("datesRange", { start: date(record.start), end: date(record.end) })}</Fact>}
+          {record.start && record.end && (
+            <Fact label={t("dates")}>
+              {t("datesRange", {
+                start: date(record.start),
+                end: date(record.end),
+              })}
+            </Fact>
+          )}
           <Fact label={t("type")}>{t(`types.${record.type}` as "types.other")}</Fact>
           <Fact label={t("stage")}>{t(`stages.${record.stage}` as "stages.other")}</Fact>
           <Fact label={t("place")}>{placeName(contract?.place)}</Fact>
@@ -165,7 +188,10 @@ function ContractPanel({
                   s.text,
                   "apart",
                   <span className="brief-panel-row-type">
-                    {[s.mechanism ? tm(s.mechanism) : null, s.confidence ? t(`confidence.${s.confidence}` as "confidence.high") : null]
+                    {[
+                      s.mechanism ? tm(s.mechanism) : null,
+                      s.confidence ? t(`confidence.${s.confidence}` as "confidence.high") : null,
+                    ]
                       .filter(Boolean)
                       .join(" · ")}
                   </span>,
@@ -187,27 +213,41 @@ function ContractPanel({
   );
 }
 
-function TargetPanel({ id, setup, onContract }: { id: string; setup: ContractsSetup; onContract: (id: string) => void }) {
+function TargetPanel({
+  id,
+  setup,
+  onContract,
+}: {
+  id: string;
+  setup: ContractsSetup;
+  onContract: (id: string) => void;
+}) {
   const t = useTranslations("brief.contracts.panel");
   const m = useMoney();
   const { targets, docs, docOf } = useLookups(setup);
   const [all, setAll] = useState(false);
   const target = targets.get(id);
   const matching = useMemo(
-    () => setup.file.contracts.filter((c) => c.matches.includes(id)).sort((a, b) => b.value - a.value || a.id.localeCompare(b.id)),
+    () =>
+      setup.file.contracts
+        .filter((c) => c.matches.includes(id))
+        .sort((a, b) => b.value - a.value || a.id.localeCompare(b.id)),
     [setup, id],
   );
-  const tenders = useMemo(() => misalignedRows(setup.file.contracts, docOf).rows.find((r) => r.target === id)?.tenders ?? [], [setup, docOf, id]);
+  const tenders = useMemo(
+    () => misalignedRows(setup.file.contracts, docOf).rows.find((r) => r.target === id)?.tenders ?? [],
+    [setup, docOf, id],
+  );
   const backing = setup.backing[id] ?? { budget: [], action: [] };
   const value = matching.reduce((s, c) => s + c.value, 0);
   const shown = all ? matching : matching.slice(0, LIST_MAX);
 
-  const contractRow = (key: string, contractId: string, title: string, meta: string, tone: "reinforce" | "apart") => (
+  const contractRow = (key: string, contract: Contract, meta: string, tone: "reinforce" | "apart") => (
     <li key={key} className="brief-panel-row">
-      <button type="button" onClick={() => onContract(contractId)}>
+      <button type="button" onClick={() => onContract(contract.id)}>
         <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
         <span className="brief-panel-row-main">
-          <span className="brief-panel-row-line">{title}</span>
+          <ContractTitle contract={contract} className="brief-panel-row-line" />
           <span className="brief-panel-row-type">{meta}</span>
         </span>
       </button>
@@ -223,9 +263,16 @@ function TargetPanel({ id, setup, onContract }: { id: string; setup: ContractsSe
       <div className="brief-panel-body">
         <section>
           <p className="brief-panel-lead">
-            {matching.length > 0 ? t("targetCounts", { count: matching.length, value: m.tugrik(value) }) : t("noContracts")}
+            {matching.length > 0
+              ? t("targetCounts", {
+                  count: matching.length,
+                  value: m.tugrik(value),
+                })
+              : t("noContracts")}
           </p>
-          {tenders.length > 0 && <p className="brief-panel-meta">{t("misalignedTenders", { count: tenders.length })}</p>}
+          {tenders.length > 0 && (
+            <p className="brief-panel-meta">{t("misalignedTenders", { count: tenders.length })}</p>
+          )}
           {matching.length > 1 && <p className="brief-panel-caveat">{t("targetValueNote")}</p>}
         </section>
 
@@ -233,7 +280,7 @@ function TargetPanel({ id, setup, onContract }: { id: string; setup: ContractsSe
           <section>
             <h3 className="brief-panel-h">{t("contracts")}</h3>
             <ul className="brief-panel-rows">
-              {shown.map((c) => contractRow(c.id, c.id, c.title, `${m.tugrik(c.value)} · ${c.year}`, "reinforce"))}
+              {shown.map((c) => contractRow(c.id, c, `${m.tugrik(c.value)} · ${c.year}`, "reinforce"))}
             </ul>
             {!all && matching.length > LIST_MAX && (
               <button type="button" className="brief-panel-more" onClick={() => setAll(true)}>
@@ -250,9 +297,12 @@ function TargetPanel({ id, setup, onContract }: { id: string; setup: ContractsSe
               {tenders.map((g) =>
                 contractRow(
                   g.tender,
-                  g.lead.id,
-                  g.lead.title,
-                  t("tenderLine", { count: g.contracts.length, value: m.tugrik(g.value), year: g.lead.year }),
+                  g.lead,
+                  t("tenderLine", {
+                    count: g.contracts.length,
+                    value: m.tugrik(g.value),
+                    year: g.lead.year,
+                  }),
                   "apart",
                 ),
               )}
@@ -340,7 +390,13 @@ export function ContractsPanels({
       scrim="light"
     >
       {top.kind === "contract" ? (
-        <ContractPanel key={top.id} id={top.id} setup={setup} placeNames={placeNames} onTarget={(id) => onPush({ kind: "target", id })} />
+        <ContractPanel
+          key={top.id}
+          id={top.id}
+          setup={setup}
+          placeNames={placeNames}
+          onTarget={(id) => onPush({ kind: "target", id })}
+        />
       ) : (
         <TargetPanel key={top.id} id={top.id} setup={setup} onContract={(id) => onPush({ kind: "contract", id })} />
       )}

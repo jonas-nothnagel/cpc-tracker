@@ -15,13 +15,21 @@ import { useMoney } from "./money";
  */
 export function TargetsBlock({ setup, onTarget }: { setup: ContractsSetup; onTarget: (id: string) => void }) {
   const t = useTranslations("brief.contracts.deep.targets");
+  const td = useTranslations("brief.contracts.deep");
   const { n } = useMoney();
   const [showThin, setShowThin] = useState(false);
   const stats = useMemo(
     () => targetStats(setup.file.contracts, setup.targets, new Set(setup.budget), new Set(setup.action)),
     [setup],
   );
-  const cov = useMemo(() => coverage(stats, setup.documents.map((d) => d.id)), [stats, setup]);
+  const cov = useMemo(
+    () =>
+      coverage(
+        stats,
+        setup.documents.map((d) => d.id),
+      ),
+    [stats, setup],
+  );
   const docs = useMemo(
     () => [...cov.docs].sort((a, b) => b.none.length - a.none.length || a.covered / a.total - b.covered / b.total),
     [cov],
@@ -51,7 +59,11 @@ export function TargetsBlock({ setup, onTarget }: { setup: ContractsSetup; onTar
       <p className="brief-hub-kicker">{t("kicker")}</p>
       <h2 className="brief-hub-headline">
         {cov.none > 0
-          ? t("headline", { covered: n(cov.covered), total: n(cov.total), none: cov.none })
+          ? t("headline", {
+              covered: n(cov.covered),
+              total: n(cov.total),
+              none: cov.none,
+            })
           : t("headlineAll", { total: n(cov.total) })}
       </h2>
       {cov.none > 0 && cov.noneOfThree > 0 && (
@@ -63,13 +75,19 @@ export function TargetsBlock({ setup, onTarget }: { setup: ContractsSetup; onTar
           })}
         </p>
       )}
+      <p className="ct-tag">{td("aiTag")}</p>
       <ul className="ct-docs">
         {docs.map((d) => (
           <li key={d.doc} className="ct-doc" data-testid={`targets-doc-${d.doc}`}>
             <div className="ct-doc-row">
               <span className="ct-doc-name">{docName(d.doc)}</span>
               <span className="ct-cover" aria-hidden="true">
-                <span className="brief-seg brief-seg-reinforce" style={{ width: `${(d.covered / Math.max(1, d.total)) * 100}%` }} />
+                <span
+                  className="brief-seg brief-seg-reinforce"
+                  style={{
+                    width: `${(d.covered / Math.max(1, d.total)) * 100}%`,
+                  }}
+                />
               </span>
               <span className="ct-doc-count">{t("of", { covered: n(d.covered), total: n(d.total) })}</span>
             </div>
@@ -84,7 +102,9 @@ export function TargetsBlock({ setup, onTarget }: { setup: ContractsSetup; onTar
             <span aria-hidden="true"> {showThin ? "‹" : "›"}</span>
           </button>
           {showThin && (
-            <ul className="ct-target-list">{thin.map((s) => targetButton(s, `${docName(s.doc)} · ${t("contracts", { count: s.matching })}`))}</ul>
+            <ul className="ct-target-list">
+              {thin.map((s) => targetButton(s, `${docName(s.doc)} · ${t("contracts", { count: s.matching })}`))}
+            </ul>
           )}
         </div>
       )}

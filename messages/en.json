@@ -3449,7 +3449,8 @@
           "docs": "{count, plural, one {# document} other {# documents}}: {names}",
           "agreement": "Of the {total} pairs of targets they serve, the policy analysis rates {high} strongly aligned and {misaligned} potentially misaligned.",
           "more": "Show {count} more",
-          "faultline": "{count, plural, one {# contract serves} other {# contracts serve}} two targets the policy analysis rates as potentially misaligned"
+          "faultline": "{count, plural, one {# contract serves} other {# contracts serve}} two targets the policy analysis rates as potentially misaligned",
+          "morePairs": "{count, plural, one {and # more pair} other {and # more pairs}}"
         },
         "misaligned": {
           "kicker": "Where to look closer",
@@ -3462,7 +3463,8 @@
           "right": "strongly matching",
           "tender": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
           "tag": "AI-identified, for review"
-        }
+        },
+        "aiTag": "AI reading: each contract compared with the targets"
       }
     },
     "areaView": {

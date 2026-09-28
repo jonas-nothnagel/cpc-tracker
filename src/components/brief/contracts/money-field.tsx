@@ -33,7 +33,13 @@ const FALLBACK = { w: 640, h: 480 };
 
 /** What the pointer is on. */
 export type FieldPoint =
-  | { kind: "square"; index: number; ink: Ink; year: number; slice: Slice | null }
+  | {
+      kind: "square";
+      index: number;
+      ink: Ink;
+      year: number;
+      slice: Slice | null;
+    }
   | { kind: "target"; id: string; row: string }
   | { kind: "place"; code: string }
   | { kind: "row"; id: string };
@@ -84,10 +90,16 @@ export function MoneyField({
   const shown = useRef<Shown | null>(null);
   const labels = useRef<HTMLDivElement>(null);
   const moving = useRef(false);
+  const lastStage = useRef<Stage | null>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
   // What the pointer is on, for the layout it was found in (a new layout
   // leaves it behind without a state reset).
-  const [hover, setHover] = useState<{ point: FieldPoint; x: number; y: number; layout: unknown } | null>(null);
+  const [hover, setHover] = useState<{
+    point: FieldPoint;
+    x: number;
+    y: number;
+    layout: unknown;
+  } | null>(null);
 
   useEffect(() => {
     const el = wrap.current;
@@ -95,7 +107,8 @@ export function MoneyField({
     const measure = () => {
       const w = Math.round(el.clientWidth);
       const h = Math.round(el.clientHeight);
-      setSize(w > 0 && h > 0 ? { w, h } : FALLBACK);
+      const next = w > 0 && h > 0 ? { w, h } : FALLBACK;
+      setSize((cur) => (cur && cur.w === next.w && cur.h === next.h ? cur : next));
     };
     measure();
     if (typeof ResizeObserver === "undefined") return;
@@ -114,7 +127,11 @@ export function MoneyField({
     [layout],
   );
 
+  const measured = size !== null;
   useEffect(() => {
+    // Nothing is drawn before the field knows its size, so the first picture
+    // appears in place instead of gliding from a guess.
+    if (!measured) return;
     const el = canvas.current;
     const g = el?.getContext?.("2d") ?? null;
     const n = layout.squares.length;
@@ -124,7 +141,10 @@ export function MoneyField({
       a: Float32Array.from(layout.squares, (s) => (s.visible ? 1 : 0)),
       pitch: layout.pitch,
     };
-    const from = shown.current && shown.current.x.length === n ? shown.current : to;
+    // Squares move between steps; a new size only redraws them in place.
+    const stepped = lastStage.current !== null && lastStage.current !== stage;
+    lastStage.current = stage;
+    const from = stepped && shown.current && shown.current.x.length === n ? shown.current : to;
     const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
 
@@ -206,25 +226,33 @@ export function MoneyField({
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [layout, paths, model, stage, box.w, box.h]);
+  }, [measured, layout, paths, model, stage, box.w, box.h]);
 
   const pointAt = (px: number, py: number): FieldPoint | null => {
     const s = shown.current;
     if (!s) return null;
     for (const t of layout.targets) {
-      if (Math.hypot(t.x - px, t.y - py) <= Math.max(t.r + 1.5, layout.pitch * 0.55)) return { kind: "target", id: t.id, row: t.row };
+      if (Math.hypot(t.x - px, t.y - py) <= Math.max(t.r + 1.5, layout.pitch * 0.55))
+        return { kind: "target", id: t.id, row: t.row };
     }
     const half = s.pitch / 2;
     for (let i = s.x.length - 1; i >= 0; i--) {
       if (s.a[i] < 0.5) continue;
       if (Math.abs(s.x[i] - px) <= half && Math.abs(s.y[i] - py) <= half) {
-        return { kind: "square", index: i, ink: model.inks[i], year: model.years[i], slice: layout.squares[i].slice };
+        return {
+          kind: "square",
+          index: i,
+          ink: model.inks[i],
+          year: model.years[i],
+          slice: layout.squares[i].slice,
+        };
       }
     }
     const g = canvas.current?.getContext?.("2d");
     if (paths && g) {
       const dpr = window.devicePixelRatio || 1;
-      for (const p of paths) if (g.isPointInPath(p.path, px * dpr, py * dpr, "evenodd")) return { kind: "place", code: p.code };
+      for (const p of paths)
+        if (g.isPointInPath(p.path, px * dpr, py * dpr, "evenodd")) return { kind: "place", code: p.code };
     }
     return null;
   };
@@ -248,8 +276,6 @@ export function MoneyField({
     <div
       ref={wrap}
       className="ct-field"
-      role="img"
-      aria-label={ariaLabel}
       data-clickable={current ? "" : undefined}
       onPointerMove={onMove}
       onPointerLeave={() => setHover(null)}
@@ -259,15 +285,17 @@ export function MoneyField({
         if (point) onSelect(point);
       }}
     >
-      <canvas ref={canvas} aria-hidden="true" />
-      <div ref={labels} className="ct-labels">
+      <canvas ref={canvas} role="img" aria-label={ariaLabel} />
+      <div ref={labels} className="ct-labels" role="group" aria-label={ariaLabel}>
         {layout.labels.map((l) => {
           const content = label(l);
           if (content === null) return null;
           const style = { left: `${l.x}px`, top: `${l.y}px` };
           if (l.kind === "rowName" || l.kind === "place") {
             const point: FieldPoint =
-              l.kind === "rowName" ? { kind: "row", id: String(l.values.id) } : { kind: "place", code: String(l.values.code) };
+              l.kind === "rowName"
+                ? { kind: "row", id: String(l.values.id) }
+                : { kind: "place", code: String(l.values.code) };
             return (
               <button
                 key={l.key}
@@ -287,7 +315,14 @@ export function MoneyField({
             );
           }
           return (
-            <span key={l.key} className="ct-label" data-kind={l.kind} data-align={l.align} data-thin={l.values.thin ? "" : undefined} style={style}>
+            <span
+              key={l.key}
+              className="ct-label"
+              data-kind={l.kind}
+              data-align={l.align}
+              data-thin={l.values.thin ? "" : undefined}
+              style={style}
+            >
               {content}
             </span>
           );
@@ -296,7 +331,6 @@ export function MoneyField({
       {current && tipContent && (
         <div
           className="ct-tip"
-          role="status"
           style={{
             left: `${Math.min(current.x + 14, box.w - 260)}px`,
             top: `${current.y + 14 > box.h - 90 ? current.y - 90 : current.y + 14}px`,

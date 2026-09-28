@@ -32,6 +32,26 @@ export function readRecordAt(dir: string, id: string): ContractRecord | null {
   return record ? { id, ...record } : null;
 }
 
+/** One target's potential-misalignment explanation from each contract that
+ *  carries one, for the tenders listed under it. */
+export interface MisalignedReading {
+  contract: string;
+  text: string;
+  confidence: string;
+  mechanism: string | null;
+}
+
+export function readMisalignedAt(dir: string, target: string): MisalignedReading[] {
+  const all = readGzJson(join(dir, "contract-details.json.gz")) as Record<string, Partial<Omit<ContractRecord, "id">>> | null;
+  const out: MisalignedReading[] = [];
+  for (const [contract, record] of Object.entries(all ?? {})) {
+    for (const m of record.misaligned ?? []) {
+      if (m.target === target) out.push({ contract, text: m.text, confidence: m.confidence, mechanism: m.mechanism ?? null });
+    }
+  }
+  return out;
+}
+
 function outputDirOf(countryId: string): string | null {
   const d = derivePaths(null, countryId);
   return d.kind === "country" ? d.paths.outputDir : null;
@@ -45,4 +65,9 @@ export function loadContracts(countryId: string): ContractsFile | null {
 export function loadContractRecord(countryId: string, id: string): ContractRecord | null {
   const dir = outputDirOf(countryId);
   return dir ? readRecordAt(dir, id) : null;
+}
+
+export function loadMisalignedFor(countryId: string, target: string): MisalignedReading[] | null {
+  const dir = outputDirOf(countryId);
+  return dir ? readMisalignedAt(dir, target) : null;
 }

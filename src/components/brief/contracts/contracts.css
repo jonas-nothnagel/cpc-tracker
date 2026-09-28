@@ -545,14 +545,16 @@
   color: var(--brief-muted);
 }
 
-[data-brief] .ct-flow-head span:first-child {
-  grid-column: 2;
-  display: flex;
-  justify-content: space-between;
+/* The two sides' names sit over the bars, each at its own end of the
+   centre line, on the same grid as the rows' bars. */
+[data-brief] .ct-flow-label {
+  grid-column: 3 / span 2;
+  white-space: nowrap;
 }
 
-[data-brief] .ct-flow-head span:last-child {
-  display: none;
+[data-brief] .ct-flow-label-left {
+  grid-column: 1 / span 2;
+  text-align: right;
 }
 
 [data-brief] .ct-flows {
@@ -637,4 +639,18 @@
 
 [data-brief] .ct-flow-open {
   padding: 0 0 1rem;
+}
+
+[data-brief] .ct-tender-why {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0 0 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+[data-brief] .ct-untranslated {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
 }

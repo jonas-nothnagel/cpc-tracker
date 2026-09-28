@@ -82,6 +82,18 @@ describe("layoutField", () => {
     expect(l.labels.filter((x) => x.kind === "rowName")).toHaveLength(rows.length);
   });
 
+  it("keeps an area that has targets but no money: a named row, no squares, value 0", () => {
+    const withAbs = areaRows(file.contracts, "globe", side.categories, { ...side.primary, C2: "g_abs" }, side.targets.map((t) => t.id));
+    const abs = withAbs.find((r) => r.id === "g_abs");
+    expect(abs?.targets).toEqual(["C2"]);
+    expect(abs?.principal.value).toBe(0);
+    const l = layoutField(model, file, { kind: "areas", lens: "globe" }, box, { rows: withAbs, places, geo: GEO });
+    expect(l.labels.find((x) => x.kind === "rowName" && x.values.id === "g_abs")).toBeDefined();
+    expect(l.labels.find((x) => x.kind === "rowValue" && x.values.id === "g_abs")?.values.value).toBe(0);
+    expect(l.squares.filter((q) => q.visible && q.slice?.cell === "g_abs")).toHaveLength(0);
+    expect(l.squares.filter((q) => q.visible)).toHaveLength(4);
+  });
+
   it("piles each place's squares on its point, the unnamed below the map", () => {
     const l = lay({ kind: "places" });
     const visible = l.squares.map((s) => ({ s, slice: s.slice })).filter((q) => q.s.visible);
