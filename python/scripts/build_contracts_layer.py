@@ -9,6 +9,9 @@ with the targets), plus the country's targets and policy analysis, and writes:
   python/output/{country}/{model}/contract-details.json.gz  each shown
       contract's record and the AI's explanations, read server side
 
+The explanations predate the agreed vocabulary ("tension", "friction", "pulls
+against"); contract_wording.py rewords them, deterministically.
+
 Each contract is counted once. The record lists some contracts twice: the
 same contract code, buyer, supplier and amount, at two workflow stages. The
 copy at the most advanced stage is kept, and the readings of the dropped
@@ -39,6 +42,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from contract_places import AIMAGS, place_of  # noqa: E402
+from contract_wording import agreed_wording  # noqa: E402
 
 REPO = HERE.parents[1]
 
@@ -357,7 +361,7 @@ def main() -> None:
             "reasonEnglish": english_of(text(reason.get(i)), reasons_en),
             "lots": int(lots.get(t.at[i, "invitation_id"], 1)),
             "strong": [
-                {"target": r.target_id, "text": text(r.description)}
+                {"target": r.target_id, "text": agreed_wording(text(r.description))}
                 for r in strong_by[i].sort_values("target_id").itertuples()
             ]
             if i in strong_by
@@ -365,7 +369,7 @@ def main() -> None:
             "misaligned": [
                 {
                     "target": r.target_id,
-                    "text": text(r.description),
+                    "text": agreed_wording(text(r.description)),
                     "confidence": text(r.confidence),
                     "mechanism": text(r.mechanism) or None,
                 }

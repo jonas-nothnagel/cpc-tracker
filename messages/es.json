@@ -3308,7 +3308,7 @@
       },
       "record": {
         "headline": "{value} in {count} public contracts since {year}",
-        "second": "About {other}. Contracts show where public money is committed to specific work: the step between a target and its delivery.",
+        "second": "About {other}. Contracts show where public money is committed to specific work, before and after each target was adopted.",
         "example": "See one contract in full",
         "source": "{name}, {first} to {last} · contracted, not verified delivered · contracts the record lists twice count once"
       },
