@@ -136,8 +136,8 @@ function ContractPanel({
         <dl className="ct-facts">
           <Fact label={t("value")}>
             {t("valueUsd", {
-              value: m.tugrik(contract?.value ?? 0),
-              usd: m.usd(contract?.value ?? 0, setup.file.source.usdRate),
+              value: m.amount(contract?.value ?? 0),
+              other: m.other(contract?.value ?? 0),
             })}
           </Fact>
           {contract && <Fact label={t("year")}>{contract.year}</Fact>}
@@ -266,7 +266,7 @@ function TargetPanel({
             {matching.length > 0
               ? t("targetCounts", {
                   count: matching.length,
-                  value: m.tugrik(value),
+                  value: m.amount(value),
                 })
               : t("noContracts")}
           </p>
@@ -280,7 +280,7 @@ function TargetPanel({
           <section>
             <h3 className="brief-panel-h">{t("contracts")}</h3>
             <ul className="brief-panel-rows">
-              {shown.map((c) => contractRow(c.id, c, `${m.tugrik(c.value)} · ${c.year}`, "reinforce"))}
+              {shown.map((c) => contractRow(c.id, c, `${m.amount(c.value)} · ${c.year}`, "reinforce"))}
             </ul>
             {!all && matching.length > LIST_MAX && (
               <button type="button" className="brief-panel-more" onClick={() => setAll(true)}>
@@ -300,7 +300,7 @@ function TargetPanel({
                   g.lead,
                   t("tenderLine", {
                     count: g.contracts.length,
-                    value: m.tugrik(g.value),
+                    value: m.amount(g.value),
                     year: g.lead.year,
                   }),
                   "apart",

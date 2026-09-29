@@ -156,7 +156,7 @@ export function MisalignedBlock({
                                 <span className="ct-list-meta">
                                   {t("tender", {
                                     count: g.contracts.length,
-                                    value: m.tugrik(g.value),
+                                    value: m.amount(g.value),
                                     year: g.lead.year,
                                   })}
                                 </span>

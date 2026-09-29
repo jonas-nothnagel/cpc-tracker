@@ -654,3 +654,22 @@
   font-size: 0.75rem;
   color: var(--brief-muted);
 }
+
+/* The page's currency: plain text, underlined when on. */
+[data-brief] .ct-currency {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  margin-top: 0.9rem;
+  font-size: 0.9375rem;
+}
+
+[data-brief] .ct-currency-label {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-currency-rate {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}

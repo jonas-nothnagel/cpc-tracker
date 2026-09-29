@@ -3308,13 +3308,13 @@
       },
       "record": {
         "headline": "{value} in {count} public contracts since {year}",
-        "second": "About {usd}. Contracts show where public money is committed to specific work: the step between a target and its delivery.",
+        "second": "About {other}. Contracts show where public money is committed to specific work: the step between a target and its delivery.",
         "example": "See one contract in full",
         "source": "{name}, {first} to {last} · contracted, not verified delivered · contracts the record lists twice count once"
       },
       "purpose": {
-        "headline": "₮{per100} of every ₮100 was contracted for work mainly for nature or climate",
-        "second": "₮{per100} more for work where nature or climate is a side benefit.",
+        "headline": "{sign}{per100} of every {sign}100 was contracted for work mainly for nature or climate",
+        "second": "{sign}{per100} more for work where nature or climate is a side benefit.",
         "tag": "AI reading of each contract's title"
       },
       "set": {
@@ -3350,8 +3350,9 @@
         "open": "Select to see it in full"
       },
       "field": {
-        "label": "The public contract record as squares of ₮5 billion each",
-        "unit": "₮ trillion"
+        "label": "The public contract record as squares of {unit} each",
+        "unitMnt": "₮ trillion",
+        "unitUsd": "US$ billion"
       },
       "panel": {
         "back": "Back",
@@ -3363,7 +3364,7 @@
         "untranslated": "Not yet translated",
         "original": "Original: {text}",
         "value": "Value",
-        "valueUsd": "{value}, about {usd}",
+        "valueUsd": "{value}, about {other}",
         "year": "Year",
         "dates": "Dates",
         "datesRange": "{start} to {end}",
@@ -3465,6 +3466,12 @@
           "tag": "AI-identified, for review"
         },
         "aiTag": "AI reading: each contract compared with the targets"
+      },
+      "currency": {
+        "label": "Amounts in",
+        "mnt": "₮",
+        "usd": "US$",
+        "rate": "At ₮{rate} per US$, indicative"
       }
     },
     "areaView": {

@@ -140,7 +140,6 @@ export function Overview({
   const placeList = placeInFocus ? largest((c) => placeKey(c) === placeInFocus) : [];
 
   const census = file.census;
-  const rate = file.source.usdRate;
   const pct1 = (share: number) =>
     format.number(share, {
       style: "percent",
@@ -154,10 +153,7 @@ export function Overview({
       case "year":
         return String(v.year);
       case "columnValue":
-        return format.number(Number(v.value) / 1e12, {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        });
+        return m.column(Number(v.value));
       case "columnShare":
         return pct1(Number(v.share));
       case "rowName":
@@ -165,11 +161,11 @@ export function Overview({
       case "rowTargets":
         return t("areas.targets", { count: Number(v.count) });
       case "rowValue":
-        return Number(v.value) > 0 ? m.tugrik(Number(v.value)) : null;
+        return Number(v.value) > 0 ? m.amount(Number(v.value)) : null;
       case "place":
-        return `${String(v.name)} · ${m.tugrik(Number(v.value))}`;
+        return `${String(v.name)} · ${m.amount(Number(v.value))}`;
       case "noPlace":
-        return t("places.noPlace", { value: m.tugrik(Number(v.value)) });
+        return t("places.noPlace", { value: m.amount(Number(v.value)) });
     }
   };
 
@@ -194,7 +190,7 @@ export function Overview({
             <span className="ct-tip-meta">
               {t("tip.place", {
                 count: r.principal.contracts,
-                value: m.tugrik(r.principal.value),
+                value: m.amount(r.principal.value),
               })}
             </span>
           )}
@@ -213,7 +209,7 @@ export function Overview({
             {t("tip.year", {
               year: y.year,
               count: m.n(y.contracts),
-              value: m.tugrik(y.value),
+              value: m.amount(y.value),
             })}
           </span>
           {thin && <span className="ct-tip-meta">{t("tip.partial")}</span>}
@@ -227,7 +223,7 @@ export function Overview({
           {!main.translated && <span className="ct-tip-note"> ({t("tip.untranslated")})</span>}
         </span>
         <span className="ct-tip-meta">
-          {m.tugrik(main.value)} · {main.year}
+          {m.amount(main.value)} · {main.year}
         </span>
         {p.slice && p.slice.parts > 1 && (
           <span className="ct-tip-meta">{t("tip.more", { count: p.slice.parts - 1 })}</span>
@@ -251,7 +247,7 @@ export function Overview({
           <button type="button" className="ct-list-row" onClick={() => onContract(c.id)}>
             <ContractTitle contract={c} />
             <span className="ct-list-meta">
-              {m.tugrik(c.value)} · {c.year}
+              {m.amount(c.value)} · {c.year}
             </span>
           </button>
         </li>
@@ -282,13 +278,15 @@ export function Overview({
     <div className="brief-hub ct-overview" ref={root}>
       <div className="brief-hub-stage ct-stage">
         <SetLine file={file} stage={stage} />
-        {stage.kind === "record" && <span className="ct-unit">{t("field.unit")}</span>}
+        {stage.kind === "record" && (
+          <span className="ct-unit">{t(m.currency === "usd" ? "field.unitUsd" : "field.unitMnt")}</span>
+        )}
         <MoneyField
           model={model}
           file={file}
           stage={stage}
           ctx={ctx}
-          ariaLabel={t("field.label")}
+          ariaLabel={t("field.label", { unit: m.amount(5e9) })}
           label={label}
           tip={tip}
           onSelect={onSelect}
@@ -301,12 +299,12 @@ export function Overview({
           <p className="brief-hub-kicker">{t("kicker.record")}</p>
           <h2 className="brief-hub-headline" tabIndex={-1}>
             {t("record.headline", {
-              value: m.tugrik(census.value),
+              value: m.amount(census.value),
               count: m.n(census.contracts),
               year: file.source.firstYear,
             })}
           </h2>
-          <p className="brief-hub-second">{t("record.second", { usd: m.usd(census.value, rate) })}</p>
+          <p className="brief-hub-second">{t("record.second", { other: m.other(census.value) })}</p>
           {file.example && (
             <button type="button" className="ct-link" onClick={() => onContract(file.example!)}>
               {t("record.example")}
@@ -326,11 +324,13 @@ export function Overview({
           <p className="brief-hub-kicker">{t("kicker.purpose")}</p>
           <h2 className="brief-hub-headline" tabIndex={-1}>
             {t("purpose.headline", {
+              sign: m.sign,
               per100: m.per100(census.value > 0 ? principal.value / census.value : 0),
             })}
           </h2>
           <p className="brief-hub-second">
             {t("purpose.second", {
+              sign: m.sign,
               per100: m.per100(census.value > 0 ? significant.value / census.value : 0),
             })}
           </p>

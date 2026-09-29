@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ locale: string; country: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 async function load(props: Props) {
@@ -42,5 +43,12 @@ export async function generateMetadata(props: Props) {
 export default async function ContractsRoute(props: Props) {
   const loaded = await load(props);
   if (!loaded) notFound();
-  return <ContractsPage setup={loaded.setup} geo={GEO[loaded.setup.countryId] ?? null} />;
+  const { cur } = await props.searchParams;
+  return (
+    <ContractsPage
+      setup={loaded.setup}
+      geo={GEO[loaded.setup.countryId] ?? null}
+      initialCurrency={(Array.isArray(cur) ? cur[0] : cur) === "usd" ? "usd" : "mnt"}
+    />
+  );
 }

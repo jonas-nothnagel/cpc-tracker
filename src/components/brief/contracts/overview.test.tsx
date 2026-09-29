@@ -5,6 +5,7 @@ import en from "../../../../messages/en.json";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
+import { CurrencyProvider } from "./money";
 import { Overview } from "./overview";
 
 const GEO: GeoFile = {
@@ -94,6 +95,23 @@ describe("Overview", () => {
       screen.getByRole("heading", {
         name: "₮8.8 of every ₮100 was contracted for work mainly for nature or climate",
       }),
+    ).toBeInTheDocument();
+  });
+
+  it("states the same findings in US$ when the reader chooses it", () => {
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <div data-brief>
+          <CurrencyProvider currency="usd" rate={3500}>
+            <Overview setup={setupFixture()} geo={GEO} lens="globe" onLens={vi.fn()} onContract={vi.fn()} onTarget={vi.fn()} />
+          </CurrencyProvider>
+        </div>
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByRole("heading", { name: "US$71.4 million in 40 public contracts since 2024" })).toBeInTheDocument();
+    expect(screen.getByText(/About ₮250 billion\./)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "US$8.8 of every US$100 was contracted for work mainly for nature or climate" }),
     ).toBeInTheDocument();
   });
 

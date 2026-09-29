@@ -42,7 +42,7 @@ export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onC
       <h2 className="brief-hub-headline">
         {t("headline", {
           count: s.count,
-          value: m.tugrik(s.value),
+          value: m.amount(s.value),
           min: MIN_DOCS,
         })}
       </h2>
@@ -77,7 +77,7 @@ export function SynergyBlock({ setup, onContract }: { setup: ContractsSetup; onC
             <button type="button" className="ct-list-row" onClick={() => onContract(c.id)}>
               <ContractTitle contract={c} />
               <span className="ct-list-meta">
-                {m.tugrik(c.value)} · {c.year}
+                {m.amount(c.value)} · {c.year}
               </span>
               <span className="ct-list-meta">
                 {t("docs", {

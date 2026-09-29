@@ -14,7 +14,7 @@ import { useMoney } from "./money";
  */
 export function SetLine({ file, stage }: { file: ContractsFile; stage: Stage }) {
   const t = useTranslations("brief.contracts.set");
-  const { tugrik, n } = useMoney();
+  const { amount: tugrik, n } = useMoney();
   const total = file.census.value;
   const principal = tierTotals(file, "principal");
   const significant = tierTotals(file, "significant");
