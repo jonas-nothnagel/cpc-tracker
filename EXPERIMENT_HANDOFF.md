@@ -547,6 +547,31 @@ unreadable.
 - **Not in this round:** the How it works triangle keeps its diagonal; naming all eight
   documents on both edges (an empty first row and last column) was offered and not taken.
 
+**Policy areas, follow-up (2026-09-29): an area picked by its name.** Jonas saw "Sustainable
+use always stays selected". It was not a state bug. The list held only pairs of areas ranked
+by count, so the largest area took every slot: in Mongolia's biodiversity lens (potential
+misalignment side), Sustainable use holds 75 of 172 targets and is in 6 of the 6 pairs. One
+area also fills 5 of 6 in Panama's and Sri Lanka's biodiversity lens on the strong side.
+Pairs without it, such as Green economy · Protected areas (15 of 106), could not be opened.
+- **Built** (`79c15d4`):
+  - Each row's name picks its area. A second pick lets it go; from an open pair or a picked
+    target, the name returns to the area.
+  - The headline follows the pick: "12% of the potential misalignments involve Pollution
+    management targets."; with none, "No potential misalignments involve ... targets."
+  - The list holds every pair of areas the area is part of, the rest summed.
+  - Each cloud keeps the target pairs that involve the area, and rows without any are set
+    back. "‹ All pairs of areas" returns to the six.
+  - The area holds when the side changes, and goes with a new lens.
+- **Jonas's first look:** "what does 9 of 15 mean? ... 23 of 75 ... but here it says 56?"
+  and "still header is sustainable use?". The rows had counted targets beside a list of
+  target pairs. Now every row count uses the list's unit ("56 potential misalignments"); the
+  picked row shows its total, a pair within the area counted once. An open pair of areas
+  leaves its count to the list (memory `one-unit-per-view`).
+- **Focus** (`27d9253`): moves only for the keyboard or assistive technology
+  (`e.detail === 0`). A mouse pick had made Chrome draw the focus ring round the list's
+  title and a card's. A picked target's card still scrolls into view.
+- **Verified:** 1,700 tests pass (1 skipped), `tsc` and lint clean.
+
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
   Start chats for this work from inside the worktree folder.
