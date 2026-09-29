@@ -417,269 +417,6 @@
   padding-top: clamp(2.5rem, 5vw, 4rem);
 }
 
-[data-brief] .ct-deep {
-  max-width: 64rem;
-}
-
-[data-brief] .ct-deep abbr[title] {
-  text-decoration: underline dotted;
-  text-underline-offset: 3px;
-  cursor: help;
-}
-
-[data-brief] .ct-docs {
-  margin: 1.25rem 0 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--brief-hairline);
-}
-
-[data-brief] .ct-doc {
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--brief-hairline);
-}
-
-[data-brief] .ct-doc-row {
-  display: grid;
-  grid-template-columns: minmax(10rem, 22rem) minmax(0, 1fr) 5rem;
-  align-items: center;
-  gap: 1rem;
-}
-
-[data-brief] .ct-doc-name {
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-[data-brief] .ct-cover {
-  display: flex;
-  height: 12px;
-  background: var(--brief-none);
-}
-
-[data-brief] .ct-cover .brief-seg {
-  border-radius: 0;
-}
-
-[data-brief] .ct-doc-count {
-  font-size: 0.8125rem;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-
-[data-brief] .ct-target-list {
-  margin: 0.4rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-[data-brief] .ct-target-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
-  width: 100%;
-  padding: 0.3rem 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  text-align: left;
-  color: var(--brief-ink);
-  cursor: pointer;
-}
-
-[data-brief] .ct-target-text {
-  overflow: hidden;
-  font-size: 0.875rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-[data-brief] .ct-target-row:hover .ct-target-text {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-[data-brief] .ct-target-meta {
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-  white-space: nowrap;
-}
-
-[data-brief] .ct-target-meta[data-neither] {
-  color: var(--brief-ink);
-  font-weight: 600;
-}
-
-[data-brief] .ct-disclosure {
-  margin-top: 1rem;
-}
-
-[data-brief] .ct-dist {
-  margin: 1.25rem 0 1rem;
-  max-width: 26rem;
-}
-
-[data-brief] .ct-dist-bars {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  align-items: end;
-  gap: 6px;
-  height: 7.5rem;
-}
-
-[data-brief] .ct-dist-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: stretch;
-  height: 100%;
-  text-align: center;
-}
-
-[data-brief] .ct-dist-count {
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--brief-muted);
-}
-
-[data-brief] .ct-dist-col[data-on] .ct-dist-count {
-  color: var(--brief-ink);
-}
-
-[data-brief] .ct-dist-bar {
-  display: block;
-  min-height: 1px;
-  background: var(--brief-none);
-}
-
-[data-brief] .ct-dist-col[data-on] .ct-dist-bar {
-  background-image: radial-gradient(circle, var(--brief-green) 1.4px, transparent 1.65px);
-  background-size: 3px 3px;
-}
-
-[data-brief] .ct-dist-x {
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-}
-
-[data-brief] .ct-dist-axis {
-  margin-top: 0.15rem;
-  font-size: 0.75rem;
-  color: var(--brief-muted);
-  text-align: center;
-}
-
-[data-brief] .ct-deep .ct-list {
-  max-width: 48rem;
-}
-
-[data-brief] .ct-flow-head {
-  display: grid;
-  grid-template-columns: minmax(12rem, 26rem) minmax(0, 1fr);
-  gap: 1rem;
-  margin-top: 1.25rem;
-  font-size: 0.75rem;
-  color: var(--brief-muted);
-}
-
-/* The two sides' names sit over the bars, each at its own end of the
-   centre line, on the same grid as the rows' bars. */
-[data-brief] .ct-flow-label {
-  grid-column: 3 / span 2;
-  white-space: nowrap;
-}
-
-[data-brief] .ct-flow-label-left {
-  grid-column: 1 / span 2;
-  text-align: right;
-}
-
-[data-brief] .ct-flows {
-  margin: 0.35rem 0 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--brief-hairline);
-}
-
-[data-brief] .ct-flow {
-  border-bottom: 1px solid var(--brief-hairline);
-}
-
-[data-brief] .ct-flow-row {
-  display: grid;
-  grid-template-columns: minmax(12rem, 26rem) minmax(0, 1fr);
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  padding: 0.55rem 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  text-align: left;
-  color: var(--brief-ink);
-  cursor: pointer;
-}
-
-[data-brief] .ct-flow-name {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-[data-brief] .ct-flow-text {
-  overflow: hidden;
-  font-size: 0.875rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-[data-brief] .ct-flow-row:hover .ct-flow-text {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-[data-brief] .ct-flow-doc {
-  font-size: 0.75rem;
-  color: var(--brief-muted);
-}
-
-[data-brief] .ct-flow-bars {
-  display: grid;
-  grid-template-columns: 2.25rem minmax(0, 1fr) minmax(0, 1fr) 2.25rem;
-  align-items: center;
-  gap: 2px;
-}
-
-[data-brief] .ct-flow-side {
-  display: flex;
-  height: 12px;
-}
-
-[data-brief] .ct-flow-left {
-  justify-content: flex-end;
-  border-right: 1px solid var(--brief-ink);
-}
-
-[data-brief] .ct-flow-side .brief-seg {
-  border-radius: 0;
-}
-
-[data-brief] .ct-flow-value {
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-
-[data-brief] .ct-flow-value-end {
-  text-align: left;
-}
-
-[data-brief] .ct-flow-open {
-  padding: 0 0 1rem;
-}
-
 [data-brief] .ct-tender-why {
   display: flex;
   flex-direction: column;
@@ -809,15 +546,6 @@
 [data-brief] .ct-choice-label {
   font-size: 0.8125rem;
   color: var(--brief-muted);
-}
-
-[data-brief] .ct-docs-choice {
-  gap: 0.2rem 0.85rem;
-  align-items: baseline;
-}
-
-[data-brief] .ct-docs-choice .ct-lens-option {
-  font-size: 0.875rem;
 }
 
 [data-brief] .ct-sub {
@@ -1137,4 +865,178 @@
 [data-brief] .ct-plain-link:hover,
 [data-brief] .ct-plain-link:focus-visible {
   background: var(--brief-highlight);
+}
+
+/* ── Where to look closer ─────────────────────────────────────────── */
+
+[data-brief] .ct-closer {
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+  border-bottom: 0;
+}
+
+[data-brief] .ct-closer-left {
+  min-width: 0;
+}
+
+[data-brief] .ct-closer-field {
+  position: relative;
+  width: 100%;
+}
+
+[data-brief] .ct-closer-field canvas {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: block;
+}
+
+[data-brief] .ct-closer-rows {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+[data-brief] .ct-closer-rows li {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+[data-brief] .ct-closer-name {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0 0.15rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--brief-ink);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+[data-brief] .ct-closer-name-text {
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-closer-name:hover,
+[data-brief] .ct-closer-name:focus-visible,
+[data-brief] .ct-closer-name[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-closer-count {
+  position: absolute;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-closer-count-mis {
+  color: var(--brief-red);
+}
+
+[data-brief] .ct-closer-gaps {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-closer-gaps-head {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .ct-closer-gap {
+  margin: 0 0 0.75rem;
+}
+
+[data-brief] .ct-closer-gap-doc {
+  margin: 0 0 0.15rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-closer-gap ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: 1.5rem;
+}
+
+[data-brief] .ct-closer-gap li {
+  break-inside: avoid;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .ct-plain-link[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-closer-side {
+  position: sticky;
+  top: 4rem;
+  min-width: 0;
+}
+
+[data-brief] .ct-closer-text {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.2rem 0 0.4rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ct-tender-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-tender-open:hover,
+[data-brief] .ct-tender-open:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-brief] .ct-closer-tender[data-lit] .ct-tender-open {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-closer-matches {
+  margin: 0.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 900px) {
+  [data-brief] .ct-closer-side {
+    position: static;
+  }
+
+  [data-brief] .ct-closer-gap ul {
+    columns: 1;
+  }
 }

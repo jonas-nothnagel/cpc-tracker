@@ -3531,8 +3531,8 @@
         "top": "; for {pct} of them, the target is in {doc}",
         "inPlace": ", in {place}",
         "headlineNone": "No tender is potentially misaligned with {what}{place}",
-        "outnumber": "For {count} of these {total, plural, one {# target} other {# targets}}, they outnumber the strongly matching tenders.",
-        "outnumberNone": "For each of these {total, plural, one {# target} other {# targets}}, the strongly matching tenders outnumber them.",
+        "outnumber": "{total, plural, one {For this target, they outnumber the strongly matching tenders.} other {For {count} of these # targets, they outnumber the strongly matching tenders.}}",
+        "outnumberNone": "{total, plural, one {For this target, the strongly matching tenders outnumber them.} other {For each of these # targets, the strongly matching tenders outnumber them.}}",
         "gapsLine": "{count, plural, one {# other target has} other {# other targets have}} no strongly matching contract at all.",
         "gapsOnly": "{count, plural, one {# target has} other {# targets have}} no strongly matching contract at all.",
         "tag": "AI-identified, for review · a tender can hold many contracts",
@@ -3543,7 +3543,6 @@
         "back": "All targets",
         "misHead": "{count, plural, one {# tender} other {# tenders}} potentially misaligned",
         "tenderLine": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
-        "confidence": "{level} confidence",
         "more": "Show {count} more",
         "fewer": "Show fewer",
         "matchHead": "{count, plural, one {# tender} other {# tenders}} strongly matching · {value}",
@@ -3556,46 +3555,6 @@
         "tipMis": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
         "tipMatch": "{count, plural, one {# strongly matching tender} other {# strongly matching tenders}}",
         "rowsLabel": "Targets with potentially misaligned tenders"
-      },
-      "deep": {
-        "targets": {
-          "kicker": "The targets",
-          "headline": "{covered} of the {total} targets have a strongly matching contract; {none, plural, one {# has} other {# have}} none",
-          "headlineAll": "All {total} targets have a strongly matching contract",
-          "second": "{count, plural, one {# of them has} other {# of them have}} no matching budget line (<ber>BER</ber>) or reported action (<btr>BTR</btr>) either.",
-          "ber": "Biodiversity Expenditure Review",
-          "btr": "Biennial Transparency Report",
-          "of": "{covered} of {total}",
-          "budget": "budget line",
-          "action": "reported action",
-          "both": "budget line and reported action",
-          "neither": "neither",
-          "thin": "{count, plural, one {# target has} other {# targets have}} only 1 to 4 strongly matching contracts",
-          "contracts": "{count, plural, one {# contract} other {# contracts}}"
-        },
-        "synergy": {
-          "kicker": "What works well",
-          "headline": "{count, plural, one {# contract, worth {value}, strongly matches} other {# contracts, worth {value}, strongly match}} targets in {min} or more documents at once",
-          "axis": "documents served",
-          "docs": "{count, plural, one {# document} other {# documents}}: {names}",
-          "agreement": "Of the {total} pairs of targets they serve, the policy analysis rates {high} strongly aligned and {misaligned} potentially misaligned.",
-          "more": "Show {count} more",
-          "faultline": "{count, plural, one {# contract serves} other {# contracts serve}} two targets the policy analysis rates as potentially misaligned",
-          "morePairs": "{count, plural, one {and # more pair} other {and # more pairs}}"
-        },
-        "misaligned": {
-          "kicker": "Where to look closer",
-          "headline": "{tenders, plural, one {# tender is} other {# tenders are}} potentially misaligned with a target; for {pct} of them, the target is in {doc}",
-          "headlineOne": "{tenders, plural, one {# tender is} other {# tenders are}} potentially misaligned with a target",
-          "headlineNone": "No tender is potentially misaligned with a target at high confidence",
-          "second": "They hold {contracts, plural, one {# contract} other {# contracts}}: framework agreements are listed lot by lot.",
-          "compared": "Compared: the {green} contracts for nature or climate, and {others} others from coal, mining, energy and roads.",
-          "left": "tenders potentially misaligned",
-          "right": "strongly matching",
-          "tender": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
-          "tag": "AI-identified, for review"
-        },
-        "aiTag": "AI reading: each contract compared with the targets"
       }
     },
     "areaView": {
