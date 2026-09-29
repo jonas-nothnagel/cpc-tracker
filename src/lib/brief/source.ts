@@ -45,6 +45,8 @@ export interface BriefDocument {
   name: string;
   full: string;
   color: string;
+  /** Short name and a line of context under the map's column (`mapLabelOf`). */
+  mapLabel?: [string, string];
   /** Commitments this document contributes to the brief. */
   count: number;
   /** In the standard brief (not hidden or secondary in the country config). */
@@ -99,6 +101,19 @@ export function briefDocName(
   const full = (entry.fullLabel ?? "").replace(/\s*\([^)]*\)\s*$/, "").trim();
   if (full && full.length <= MAX_NAME_LENGTH) return full;
   return entry.mediumLabel || full || entry.id;
+}
+
+/** A document's short name under the map, over a line of context: its own
+ *  `mapLabel`, else its medium label's hint split off ("NP (Nature Pledge)"
+ *  gives NP / Nature Pledge), else its short label alone. */
+export function mapLabelOf(
+  entry: Pick<DocumentTypeEntry, "id" | "shortLabel" | "mediumLabel" | "mapLabel"> | undefined,
+  id: string,
+): [string, string] {
+  if (entry?.mapLabel && entry.mapLabel[0]) return [entry.mapLabel[0], entry.mapLabel[1] ?? ""];
+  const split = /^(.*?)\s*\((.+)\)\s*$/.exec(entry?.mediumLabel ?? "");
+  if (split && split[1]) return [split[1], split[2]];
+  return [entry?.shortLabel || entry?.mediumLabel || id, ""];
 }
 
 /** Whether the text shown for a raw target in this locale is a translation.
@@ -179,6 +194,7 @@ export function buildBriefSource(args: {
       name: entry ? briefDocName(entry) : id,
       full: entry?.fullLabel ?? id,
       color: entry?.color ?? "#94a3b8",
+      mapLabel: mapLabelOf(entry, id),
       count: counts.get(id) ?? 0,
       defaultOn: !offByDefault.has(id),
     };

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildBriefSource, briefDocName } from "./source";
+import { buildBriefSource, briefDocName, mapLabelOf } from "./source";
 
 const CONFIG = {
   documentTypes: [
@@ -101,6 +101,26 @@ describe("briefDocName", () => {
   });
 });
 
+describe("mapLabelOf", () => {
+  it("takes a document's own short name and context", () => {
+    expect(
+      mapLabelOf({ id: "NDC", shortLabel: "NDC", mediumLabel: "NDC", mapLabel: ["NDC", "Contribution"] }, "NDC"),
+    ).toEqual(["NDC", "Contribution"]);
+  });
+
+  it("splits the medium label's hint into the context", () => {
+    expect(mapLabelOf({ id: "NP", shortLabel: "NP", mediumLabel: "NP (Nature Pledge)" }, "NP")).toEqual([
+      "NP",
+      "Nature Pledge",
+    ]);
+  });
+
+  it("falls back to the short label alone", () => {
+    expect(mapLabelOf({ id: "FSS", shortLabel: "FSS", mediumLabel: "FSS" }, "FSS")).toEqual(["FSS", ""]);
+    expect(mapLabelOf(undefined, "X")).toEqual(["X", ""]);
+  });
+});
+
 describe("buildBriefSource", () => {
   const source = buildBriefSource({
     countryId: "mongolia",
@@ -138,6 +158,29 @@ describe("buildBriefSource", () => {
       ["NBSAP", "NBSAP", "National Biodiversity Strategy and Action Plan", 1, true],
       ["FSS", "FSS", "Food Supply and Security Measures", 1, false],
       ["LDNR", "NRVTS", "LDN Targets", 1, false],
+    ]);
+  });
+
+  it("gives each document its short name on the map: its own, else the medium label's split", () => {
+    const own = buildBriefSource({
+      countryId: "mongolia",
+      countryName: "Mongolia",
+      data: {
+        ...DATA,
+        countryConfig: {
+          ...CONFIG,
+          documentTypes: CONFIG.documentTypes.map((d) =>
+            d.id === "NBSAP" ? { ...d, mapLabel: ["Biodiv.", "2030"] } : d,
+          ),
+        },
+      },
+      locale: "en",
+    });
+    expect(own.documents.map((d) => [d.id, d.mapLabel])).toEqual([
+      ["NDC", ["NDC", "Climate"]],
+      ["NBSAP", ["Biodiv.", "2030"]],
+      ["FSS", ["FSS", ""]],
+      ["LDNR", ["NRVTS", ""]],
     ]);
   });
 

@@ -980,6 +980,11 @@ export interface DocumentTypeEntry {
   fullLabel: string;
   /** Hex color for charts and chips. Must follow UNDP Data Viz guidelines. */
   color: string;
+  /** The document's short name on the brief's map of documents, over a line
+   *  of context: e.g. ["NDC", "Contribution"]. Display only, never fed into
+   *  a pipeline prompt; approved by the team, never LLM-drafted. Without it
+   *  the map splits `mediumLabel` ("NDC (Climate)"). */
+  mapLabel?: [string, string];
   // The fields below are optional, display-only reference metadata shown in the
   // doc-focus panel so users from other ministries can place a document they
   // don't know. Every value MUST trace to a primary/official source (never

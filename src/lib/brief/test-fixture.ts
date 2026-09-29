@@ -110,6 +110,7 @@ export function briefFixture({
       name: `Document ${id}`,
       full: `Document ${id} (full title)`,
       color: "#0468b1",
+      mapLabel: [id, `Context ${id}`] as [string, string],
       count: PER_DOC,
       defaultOn: true,
     })),
