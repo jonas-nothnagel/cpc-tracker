@@ -103,7 +103,8 @@ export interface AreaPair {
 export interface AreaPairs {
   side: AreaSide;
   /** The pairs of areas holding the most of the side's target pairs: at
-   *  most TOP_AREA_PAIRS, none without any. */
+   *  most TOP_AREA_PAIRS, none without any; for a picked area, all of its
+   *  pairs of areas that hold any. */
   top: AreaPair[];
   /** Every other pair of areas, summed. */
   rest: { groups: number; pairs: number; count: number };
@@ -143,8 +144,9 @@ export function pairOf(c: ScopedComparison, p: Placing): { key: string; a: strin
   return { key: `${a}|${b}`, a, b };
 }
 
-/** The side's target pairs by pair of areas: the list's rows and the rest. */
-export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide): AreaPairs {
+/** The side's target pairs by pair of areas: the list's rows and the rest;
+ *  with an area picked, only that area's pairs of areas. */
+export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide, area: string | null = null): AreaPairs {
   const p = placing(lens);
   const level = sideLevel(side);
   const groups = new Map<string, AreaPair>();
@@ -172,15 +174,18 @@ export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide): AreaPa
   // outside the lens after every area.
   const name = (id: string) => p.name.get(id) ?? "";
   const outside = (g: AreaPair) => (g.b === OTHER_AREA ? 1 : 0);
-  const ranked = [...groups.values()].sort(
-    (x, y) =>
-      y.count - x.count ||
-      y.pairs - x.pairs ||
-      name(x.a).localeCompare(name(y.a)) ||
-      outside(x) - outside(y) ||
-      name(x.b).localeCompare(name(y.b)),
-  );
-  const top = ranked.filter((g) => g.count > 0).slice(0, TOP_AREA_PAIRS);
+  const ranked = [...groups.values()]
+    .filter((g) => area === null || g.a === area || g.b === area)
+    .sort(
+      (x, y) =>
+        y.count - x.count ||
+        y.pairs - x.pairs ||
+        name(x.a).localeCompare(name(y.a)) ||
+        outside(x) - outside(y) ||
+        name(x.b).localeCompare(name(y.b)),
+    );
+  const held = ranked.filter((g) => g.count > 0);
+  const top = area === null ? held.slice(0, TOP_AREA_PAIRS) : held;
   const shown = new Set(top.map((g) => g.key));
   const others = ranked.filter((g) => !shown.has(g.key));
   return {
@@ -209,8 +214,33 @@ export function areaHeadline(pairs: AreaPairs): AreaHeadline {
   return { kind, share: lead.count / pairs.total, a: lead.a, b: lead.b };
 }
 
-/** What the picture shows: every target at rest, one pair of areas, or one target. */
-export type AreaFocus = { kind: "rest" } | { kind: "pair"; pair: AreaPair } | { kind: "target"; id: string };
+/** What the picture shows: every target at rest, one area picked by its
+ *  name, one pair of areas, or one target. */
+export type AreaFocus =
+  | { kind: "rest" }
+  | { kind: "area"; area: string; involvement: Map<string, number> }
+  | { kind: "pair"; pair: AreaPair }
+  | { kind: "target"; id: string };
+
+/** An area picked by its name: each placed target's number of the side's
+ *  target pairs that involve the area, which is every one of the area's own
+ *  targets and, for any other target, those with the area's targets. */
+export function areaFocus(
+  lens: LensAreas,
+  links: SideLinks,
+  side: AreaSide,
+  id: string,
+): Extract<AreaFocus, { kind: "area" }> {
+  const own = new Set(lens.areas.find((area) => area.id === id)?.targets ?? []);
+  const involvement = new Map<string, number>();
+  for (const area of lens.areas) {
+    for (const target of area.targets) {
+      const partners = links[side].get(target) ?? [];
+      involvement.set(target, own.has(target) ? partners.length : partners.filter((p) => own.has(p)).length);
+    }
+  }
+  return { kind: "area", area: id, involvement };
+}
 
 /** A target's dot: in ink, set back, a partner of the picked target, or the picked target. */
 export type TargetInk = "base" | "pale" | "lit" | "focus";
@@ -222,11 +252,13 @@ export function restClouds(lens: LensAreas, links: SideLinks, side: AreaSide): M
   return out;
 }
 
-/** Each placed target's point cloud now: as at rest; with a pair of areas
- *  open, only its target pairs there (none in the other rows); none around
- *  a picked target. */
+/** Each placed target's point cloud now: as at rest; around a picked area,
+ *  its target pairs that involve the area; with a pair of areas open, only
+ *  its target pairs there (none in the other rows); none around a picked
+ *  target. */
 export function cloudSizes(lens: LensAreas, links: SideLinks, side: AreaSide, focus: AreaFocus): Map<string, number> {
   if (focus.kind === "rest") return restClouds(lens, links, side);
+  if (focus.kind === "area") return new Map(focus.involvement);
   const pair = focus.kind === "pair" ? focus.pair : null;
   const out = new Map<string, number>();
   for (const area of lens.areas) {
@@ -237,11 +269,13 @@ export function cloudSizes(lens: LensAreas, links: SideLinks, side: AreaSide, fo
 }
 
 /** Each area's row with its targets in drawing order: the tallest clouds at
- *  rest first (then document order); in the open pair of areas' two rows,
- *  the tallest clouds of that pair first; around a picked target, its
- *  partners first in their rows, while its own row keeps the order it had
- *  (`basis`: at rest, or with a pair of areas open), so the target stays
- *  under the pointer and a second pick at the same spot lets it go. */
+ *  rest first (then document order); around a picked area, in every row,
+ *  the tallest clouds of its target pairs first; in the open pair of
+ *  areas' two rows, the tallest clouds of that pair first; around a picked
+ *  target, its partners first in their rows, while its own row keeps the
+ *  order it had (`basis`: at rest, around a picked area, or with a pair of
+ *  areas open), so the target stays under the pointer and a second pick at
+ *  the same spot lets it go. */
 export function rowOrder(
   lens: LensAreas,
   rest: Map<string, number>,
@@ -253,20 +287,25 @@ export function rowOrder(
 ): { id: string; targets: string[] }[] {
   const picked = focus.kind === "target" ? focus.id : null;
   const partners = picked ? new Set(links[side].get(picked) ?? []) : null;
-  const pair = focus.kind === "pair" ? focus.pair : basis.kind === "pair" ? basis.pair : null;
+  // What the rows line up by: what is open, or around a picked target what was.
+  const shape = picked ? basis : focus;
   return lens.areas.map((area) => {
     const index = new Map(area.targets.map((id, i) => [id, i]));
     const byRest = (x: string, y: string) =>
       (rest.get(y) ?? 0) - (rest.get(x) ?? 0) || (index.get(x) ?? 0) - (index.get(y) ?? 0);
-    const inPair = pair !== null && (area.id === pair.a || area.id === pair.b);
-    const byPair = (x: string, y: string) =>
-      (pair?.involvement.get(y) ?? 0) - (pair?.involvement.get(x) ?? 0) || byRest(x, y);
+    const part =
+      shape.kind === "area"
+        ? shape.involvement
+        : shape.kind === "pair" && (area.id === shape.pair.a || area.id === shape.pair.b)
+          ? shape.pair.involvement
+          : null;
+    const byPart = (x: string, y: string) => (part?.get(y) ?? 0) - (part?.get(x) ?? 0) || byRest(x, y);
     const targets = [...area.targets];
     if (picked && partners && !area.targets.includes(picked)) {
       const rank = (id: string) => (partners.has(id) ? 0 : 1);
       targets.sort((x, y) => rank(x) - rank(y) || byRest(x, y));
-    } else if (inPair) {
-      targets.sort(byPair);
+    } else if (part) {
+      targets.sort(byPart);
     } else {
       targets.sort(byRest);
     }
@@ -274,15 +313,29 @@ export function rowOrder(
   });
 }
 
-/** "N of M targets" beside a row: its targets taking part in the open pair
- *  of areas, or the picked target's partners in it. None at rest. */
+/** The side's target pairs beside a row, as the list counts them: a picked
+ *  area's with the row's targets, and all of them in its own row (a pair
+ *  within it once); the picked target's with the row's targets. None at
+ *  rest or with a pair of areas open, whose count the list gives. */
 export function rowCounts(lens: LensAreas, focus: AreaFocus, links: SideLinks, side: AreaSide): Map<string, number> {
   const out = new Map<string, number>();
-  if (focus.kind === "pair") {
-    const { pair } = focus;
+  if (focus.kind === "area") {
     for (const area of lens.areas) {
-      if (area.id !== pair.a && area.id !== pair.b) continue;
-      out.set(area.id, area.targets.filter((id) => (pair.involvement.get(id) ?? 0) > 0).length);
+      if (area.id === focus.area) {
+        // Each target's pairs, less the second end of every pair within the area.
+        const own = new Set(area.targets);
+        let ends = 0;
+        let inside = 0;
+        for (const id of area.targets) {
+          const partners = links[side].get(id) ?? [];
+          ends += partners.length;
+          inside += partners.filter((p) => own.has(p)).length;
+        }
+        out.set(area.id, ends - inside / 2);
+        continue;
+      }
+      const count = area.targets.reduce((sum, id) => sum + (focus.involvement.get(id) ?? 0), 0);
+      if (count > 0) out.set(area.id, count);
     }
   } else if (focus.kind === "target") {
     const partners = new Set(links[side].get(focus.id) ?? []);
@@ -300,11 +353,13 @@ export function targetInks(lens: LensAreas, focus: AreaFocus, links: SideLinks, 
   const picked = focus.kind === "target" ? focus.id : null;
   const partners = picked ? new Set(links[side].get(picked) ?? []) : null;
   const pair = focus.kind === "pair" ? focus.pair : null;
+  const around = focus.kind === "area" ? focus : null;
   for (const area of lens.areas) {
     const inPair = pair !== null && (area.id === pair.a || area.id === pair.b);
     for (const id of area.targets) {
       if (picked) out.set(id, id === picked ? "focus" : partners?.has(id) ? "lit" : "pale");
       else if (pair) out.set(id, inPair ? "base" : "pale");
+      else if (around) out.set(id, area.id === around.area || (around.involvement.get(id) ?? 0) > 0 ? "base" : "pale");
       else out.set(id, "base");
     }
   }

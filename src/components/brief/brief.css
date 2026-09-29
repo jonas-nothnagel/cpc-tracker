@@ -2681,12 +2681,14 @@
   transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1), color 0.3s;
 }
 
-/* A name cut short reads in full on hover (its title), so it takes the
-   pointer; the picture beneath still gets the pointer's moves. */
+/* A name picks its area, and cut short reads in full on hover (its title),
+   so it takes the pointer; the picture beneath still gets the pointer's
+   moves. */
 [data-brief] .brief-av-name {
   overflow: hidden;
   font-weight: 600;
   text-overflow: ellipsis;
+  cursor: pointer;
   pointer-events: auto;
 }
 

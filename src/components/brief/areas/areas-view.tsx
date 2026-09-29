@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {
+  areaFocus,
   areaHeadline,
   areaPairs,
   cloudSizes,
@@ -37,28 +38,43 @@ export interface AreaPairRef {
   side: AreaSide;
 }
 
-/** An area named in the headline: it points at its row and opens its pair. */
+/** An area's name that points at its row: in the headline it opens its
+ *  pair of areas, on the picture it picks the area. */
 function AreaName({
   children,
+  className = "brief-docname",
+  title,
+  pressed,
   onPoint,
   onOpen,
 }: {
   children: ReactNode;
+  className?: string;
+  title?: string;
+  /** On the picture: whether its area is the one picked. */
+  pressed?: boolean;
   onPoint: (on: boolean) => void;
-  onOpen: () => void;
+  /** `byKey`: opened from the keyboard or assistive technology, not the pointer. */
+  onOpen: (byKey: boolean) => void;
 }) {
   const onKey = (e: KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      onOpen();
+      onOpen(true);
     }
   };
   return (
     <span
       role="button"
       tabIndex={0}
-      className="brief-docname"
-      onClick={onOpen}
+      className={className}
+      title={title}
+      aria-pressed={pressed}
+      onClick={(e) => {
+        // The picture beneath a name never reads the click as a target picked.
+        e.stopPropagation();
+        onOpen(e.detail === 0);
+      }}
       onKeyDown={onKey}
       onPointerEnter={() => onPoint(true)}
       onPointerLeave={() => onPoint(false)}
@@ -73,8 +89,8 @@ function AreaName({
 /**
  * Policy areas on screen: the bar chart of targets per area, each target
  * with its point cloud, beside the pairs of areas the chosen side's target
- * pairs fall between. Pointing marks names; opening a pair of areas or
- * picking a target re-shapes the picture.
+ * pairs fall between. Pointing marks names; picking an area by its name,
+ * opening a pair of areas or picking a target re-shapes the picture.
  */
 export function AreasView({
   source,
@@ -101,6 +117,8 @@ export function AreasView({
   const { n, pct } = useNumbers();
   const active = lens ?? source.lenses[0]?.id ?? null;
   const [side, setSide] = useState<AreaSide>("apart");
+  // The area picked by its name on the picture.
+  const [areaPick, setAreaPick] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
   const [picked, setPicked] = useState<string | null>(null);
   const [pointedRows, setPointedRows] = useState<string[]>([]);
@@ -108,14 +126,16 @@ export function AreasView({
   const [fullText, setFullText] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const cardTitle = useRef<HTMLParagraphElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
   // Where keyboard focus goes once a pick or "Back" has re-drawn the list.
-  const moveFocus = useRef<"card" | "pair" | null>(null);
+  const moveFocus = useRef<"card" | "headline" | "pair" | null>(null);
   // An opened pair of areas to bring into view once it has drawn.
   const revealPair = useRef(false);
-  // A new lens lets the open pair and the picked target go, for good.
+  // A new lens lets the picked area, the open pair and the picked target go, for good.
   const [seenLens, setSeenLens] = useState(active);
   if (seenLens !== active) {
     setSeenLens(active);
+    setAreaPick(null);
     setOpen(null);
     setPicked(null);
     setPointedTarget(null);
@@ -126,15 +146,25 @@ export function AreasView({
   const links = useMemo(() => sideLinks(data.scope), [data.scope]);
   const pairs = useMemo(() => (areas ? areaPairs(areas, data.scope, side) : null), [areas, data.scope, side]);
   const placed = useMemo(() => new Set(areas?.areas.flatMap((a) => a.targets) ?? []), [areas]);
-  // A choice holds while its pair of areas, or its target, is in the brief.
-  const openPair = open ? (pairs?.top.find((p) => p.key === open) ?? null) : null;
+  // A choice holds while its area, its pair of areas, or its target is in the brief.
+  const pickedArea = areaPick && areas?.areas.some((a) => a.id === areaPick) ? areaPick : null;
+  const around = useMemo(
+    () => (areas && pickedArea ? areaFocus(areas, links, side, pickedArea) : null),
+    [areas, links, side, pickedArea],
+  );
+  // The list beside the picture: the picked area's pairs of areas, else those holding the most.
+  const areaList = useMemo(
+    () => (areas && pickedArea ? areaPairs(areas, data.scope, side, pickedArea) : null),
+    [areas, data.scope, side, pickedArea],
+  );
+  const listed = areaList ?? pairs;
+  const openPair = open ? (listed?.top.find((p) => p.key === open) ?? null) : null;
   const focusId = picked && placed.has(picked) ? picked : null;
-  const focusKey = focusId ? `t:${focusId}` : openPair ? `p:${openPair.key}` : "rest";
-  const focus: AreaFocus = focusId
-    ? { kind: "target", id: focusId }
-    : openPair
-      ? { kind: "pair", pair: openPair }
-      : { kind: "rest" };
+  // What a picked target was picked from: the open pair, the picked area, or the whole picture.
+  const behind: AreaFocus = openPair ? { kind: "pair", pair: openPair } : (around ?? { kind: "rest" });
+  const behindKey = openPair ? `p:${openPair.key}` : pickedArea ? `a:${pickedArea}` : "rest";
+  const focusKey = focusId ? `t:${focusId}` : behindKey;
+  const focus: AreaFocus = focusId ? { kind: "target", id: focusId } : behind;
   const rest = useMemo(
     () => (areas ? restClouds(areas, links, side) : new Map<string, number>()),
     [areas, links, side],
@@ -145,13 +175,10 @@ export function AreasView({
     () => (areas ? cloudSizes(areas, links, side, focus) : new Map<string, number>()),
     [areas, links, side, focusKey],
   );
-  // A picked target's row keeps the order it had, at rest or with its pair open.
-  const basisKey = focusId && openPair ? openPair.key : "";
+  // A picked target's row keeps the order it had: at rest, around its area, or with its pair open.
+  const basisKey = focusId ? behindKey : "";
   const rows = useMemo(
-    () =>
-      areas
-        ? rowOrder(areas, rest, clouds, focus, links, side, focusId && openPair ? { kind: "pair", pair: openPair } : { kind: "rest" })
-        : [],
+    () => (areas ? rowOrder(areas, rest, clouds, focus, links, side, focusId ? behind : { kind: "rest" }) : []),
     [areas, rest, clouds, focusKey, basisKey],
   );
   const inks = useMemo(
@@ -164,8 +191,9 @@ export function AreasView({
   );
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  // Keyboard focus follows a pick to the target's card, and "Back" to its
-  // pair of areas (the buttons that were pressed are gone).
+  // Keyboard focus follows a pick to the target's card or to the headline
+  // naming the picked area, and "Back" to the list (the buttons that were
+  // pressed are gone).
   useEffect(() => {
     const want = moveFocus.current;
     moveFocus.current = null;
@@ -174,12 +202,16 @@ export function AreasView({
       title?.focus({ preventScroll: true });
       title?.closest<HTMLElement>(".brief-av-card")?.scrollIntoView?.({ block: "nearest" });
     }
+    if (want === "headline") {
+      headlineRef.current?.focus({ preventScroll: true });
+      headlineRef.current?.scrollIntoView?.({ block: "nearest" });
+    }
     if (want === "pair") {
       const heads = root.current?.querySelectorAll<HTMLElement>(".brief-av-pair-head") ?? [];
       const open = root.current?.querySelector<HTMLElement>('[data-open="true"] .brief-av-pair-head');
       (open ?? heads[0])?.focus({ preventScroll: true });
     }
-  }, [focusId]);
+  }, [focusId, pickedArea, open]);
 
   // The list beside the picture scrolls on its own when taller than the
   // window: an opened pair of areas comes into view there.
@@ -189,7 +221,7 @@ export function AreasView({
     root.current?.querySelector<HTMLElement>('[data-open="true"]')?.scrollIntoView?.({ block: "nearest" });
   }, [open]);
 
-  if (!active || !areas || !pairs) return null;
+  if (!active || !areas || !pairs || !listed) return null;
 
   const area = (id: string) => areas.areas.find((a) => a.id === id);
   const nameOf = (id: string) => area(id)?.name ?? id;
@@ -204,11 +236,31 @@ export function AreasView({
   const docName = (doc: string) => data.scope.docs.find((d) => d.id === doc)?.name ?? doc;
 
   // Every choice forgets the target pointed at in the list: its button may be gone.
+  // A picked area holds on the other side.
   const choose = (next: AreaSide) => {
     setSide(next);
     setOpen(null);
     setPicked(null);
     setPointedTarget(null);
+  };
+  // The picked area's name returns to the area from its open pair or a
+  // picked target; picked again, it lets the area go. Focus moves only for
+  // the keyboard: the pointer stays where it picked.
+  const pickArea = (id: string, byKey: boolean) => {
+    const letGo = pickedArea === id && !openPair && !focusId;
+    setAreaPick(letGo ? null : id);
+    setOpen(null);
+    setPicked(null);
+    setPointedTarget(null);
+    setFullText(false);
+    if (!letGo && byKey) moveFocus.current = "headline";
+  };
+  const allAreas = (byKey: boolean) => {
+    setAreaPick(null);
+    setOpen(null);
+    setPicked(null);
+    setPointedTarget(null);
+    if (byKey) moveFocus.current = "pair";
   };
   const toggle = (p: AreaPair) => {
     const opening = openPair?.key !== p.key;
@@ -249,7 +301,7 @@ export function AreasView({
     ) : (
       chunks
     );
-  const headline =
+  const lensHeadline = () =>
     head.kind === "none"
       ? t("headlineNone", { side })
       : t.rich(
@@ -263,6 +315,15 @@ export function AreasView({
             second: nameLink,
           },
         );
+  // A picked area's headline: the share of the side's target pairs that
+  // involve it, counted as its list and the rows count them.
+  const pickedHeadline = (id: string) => {
+    const count = listed.top.reduce((sum, p) => sum + p.count, listed.rest.count);
+    return count === 0
+      ? t("headlineAreaNone", { side, area: nameOf(id) })
+      : t("headlineArea", { pct: pct(count / pairs.total), side, area: nameOf(id) });
+  };
+  const headline = pickedArea ? pickedHeadline(pickedArea) : lensHeadline();
 
   const card = (backLabel: string) => {
     if (!focusId) return null;
@@ -361,16 +422,22 @@ export function AreasView({
     const count = counts.get(id);
     return (
       <>
-        <span className="brief-av-name" title={a.acronym ? `${a.name} (${a.acronym})` : a.name}>
+        <AreaName
+          className="brief-av-name"
+          title={a.acronym ? `${a.name} (${a.acronym})` : a.name}
+          pressed={pickedArea === id}
+          onPoint={(on) => setPointedRows(on ? [id] : [])}
+          onOpen={(byKey) => pickArea(id, byKey)}
+        >
           {a.name}
-        </span>
+        </AreaName>
         <span className="brief-av-n" aria-hidden="true">
           {n(a.targets.length)}
         </span>
         <span className="brief-sr-only">{t("targets", { count: a.targets.length })}</span>
         {count !== undefined && (
           <span className="brief-av-of" data-side={side}>
-            {t("rowOf", { count, total: a.targets.length })}
+            {t("rowPairs", { side, count })}
           </span>
         )}
       </>
@@ -389,13 +456,22 @@ export function AreasView({
       </>
     );
   };
-  const marked = new Set(pointedRows.length > 0 ? pointedRows : openPair && !focusId ? rowsOf(openPair) : []);
-  const dimmed = new Set(
-    focus.kind === "pair" ? areas.areas.filter((a) => !rowsOf(focus.pair).includes(a.id)).map((a) => a.id) : [],
+  const marked = new Set(
+    pointedRows.length > 0 ? pointedRows : focusId ? [] : openPair ? rowsOf(openPair) : pickedArea ? [pickedArea] : [],
   );
-  const max = pairs.top[0]?.count ?? 1;
+  // Set back: the rows outside an open pair, or without a target taking part with a picked area.
+  const dimmed = new Set(
+    focus.kind === "pair"
+      ? areas.areas.filter((a) => !rowsOf(focus.pair).includes(a.id)).map((a) => a.id)
+      : focus.kind === "area"
+        ? areas.areas.filter((a) => !counts.has(a.id)).map((a) => a.id)
+        : [],
+  );
+  const max = listed.top[0]?.count ?? 1;
   // The rest of the pairs of areas, summed, once the list names some.
-  const restShown = pairs.top.length > 0 && pairs.rest.groups > 0;
+  const restShown = listed.top.length > 0 && listed.rest.groups > 0;
+  // Between two targets outside the lens: no picked area's pairs.
+  const outsideShown = !pickedArea && pairs.outside > 0;
 
   return (
     <div className="brief-av" data-testid="brief-areas" data-tour="brief-areas" ref={root}>
@@ -418,7 +494,7 @@ export function AreasView({
       </div>
       <div className="brief-av-side">
         <p className="brief-hub-kicker">{t("kicker")}</p>
-        <h2 className="brief-hub-headline" tabIndex={-1}>
+        <h2 className="brief-hub-headline" tabIndex={-1} ref={headlineRef}>
           {headline}
         </h2>
         <p className="brief-av-choice" role="group" aria-label={t("lensGroup")}>
@@ -448,10 +524,21 @@ export function AreasView({
         {areas.placed < areas.total && (
           <p className="brief-av-scope">{t("scope", { placed: areas.placed, total: areas.total })}</p>
         )}
-        {focusId && !openPair && card(t("backAll"))}
-        {pairs.top.length > 0 && (
+        {focusId && !openPair && card(pickedArea ? nameOf(pickedArea) : t("backAll"))}
+        {pickedArea && (!focusId || openPair) && (
+          <button
+            type="button"
+            className="brief-av-back"
+            aria-label={t("backTo", { name: t("backAll") })}
+            onClick={(e) => allAreas(e.detail === 0)}
+          >
+            <span aria-hidden="true">‹ </span>
+            {t("backAll")}
+          </button>
+        )}
+        {listed.top.length > 0 && (
           <ol className="brief-av-pairs">
-            {pairs.top.map((p) => {
+            {listed.top.map((p) => {
               const isOpen = openPair?.key === p.key;
               return (
                 <li key={p.key} className="brief-av-pair" data-testid="brief-area-pair" data-open={isOpen ? "true" : undefined}>
@@ -478,13 +565,13 @@ export function AreasView({
             })}
           </ol>
         )}
-        {(restShown || pairs.outside > 0) && (
+        {(restShown || outsideShown) && (
           <p className="brief-av-rest">
             {restShown && (
-              <span>{t("rest", { groups: pairs.rest.groups, count: pairs.rest.count, pairs: pairs.rest.pairs })}</span>
+              <span>{t("rest", { groups: listed.rest.groups, count: listed.rest.count, pairs: listed.rest.pairs })}</span>
             )}
-            {restShown && pairs.outside > 0 && " "}
-            {pairs.outside > 0 && <span>{t("outsidePairs", { count: pairs.outside, side })}</span>}
+            {restShown && outsideShown && " "}
+            {outsideShown && <span>{t("outsidePairs", { count: pairs.outside, side })}</span>}
           </p>
         )}
       </div>

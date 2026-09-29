@@ -3,6 +3,7 @@ import { scopeOf } from "./compute";
 import { briefFixture } from "./test-fixture";
 import type { BriefSource } from "./source";
 import {
+  areaFocus,
   areaHeadline,
   areaPairDetail,
   areaPairs,
@@ -141,6 +142,33 @@ describe("areaPairs", () => {
     expect(pairs.top.map((p) => p.key)).toEqual(["a1|b1", "a1|b2", "a1|b3", "a1|b4", "a1|b5", "a1|b6"]);
     expect(pairs.rest).toEqual({ groups: 54, pairs: 102, count: 9 });
   });
+
+  it("lists, for a picked area, its pairs of areas that hold any of the side's target pairs, the rest summed", () => {
+    const pairs = areaPairs(lens, ALL, "apart", "g5");
+    expect(pairs.top.map((p) => [p.key, p.count, p.pairs])).toEqual([["g2|g5", 3, 9]]);
+    // Water's other pairs: with Protected areas (9) and with targets outside the lens (18).
+    expect(pairs.rest).toEqual({ groups: 2, pairs: 27, count: 0 });
+    expect(pairs.total).toBe(15);
+  });
+
+  it("names every pair of areas a picked area holds, past six", () => {
+    // B6's potential misalignments: A6 (area a1) and C1-C6 (areas c1-c6), one each.
+    const categories = [
+      { id: "a1", name: "A6 area" },
+      ...[1, 2, 3, 4, 5, 6].map((i) => ({ id: `b${i}`, name: `B${i} area` })),
+      ...[1, 2, 3, 4, 5, 6].map((i) => ({ id: `c${i}`, name: `C${i} area` })),
+    ];
+    const primary: Record<string, string> = { A6: "a1" };
+    for (const i of [1, 2, 3, 4, 5, 6]) {
+      primary[`B${i}`] = `b${i}`;
+      primary[`C${i}`] = `c${i}`;
+    }
+    const source = withPrimary(primary, categories);
+    const scope = scopeOf(source, ["A", "B", "C"]);
+    const pairs = areaPairs(lensAreas(source, scope, "globe"), scope, "apart", "b6");
+    expect(pairs.top.map((p) => p.key)).toEqual(["a1|b6", "b6|c1", "b6|c2", "b6|c3", "b6|c4", "b6|c5", "b6|c6"]);
+    expect(pairs.rest).toEqual({ groups: 1, pairs: 5, count: 0 });
+  });
 });
 
 describe("areaHeadline", () => {
@@ -265,9 +293,9 @@ describe("the picture's states", () => {
     ]);
   });
 
-  it("counts each row's targets taking part: in the open pair, or as the picked target's partners", () => {
-    expect(Object.fromEntries(rowCounts(lens, { kind: "pair", pair }, links, "apart"))).toEqual({ g2: 1, g5: 3 });
+  it("counts, beside each row, the picked target's target pairs there; none at rest or with a pair open", () => {
     expect(Object.fromEntries(rowCounts(lens, { kind: "target", id: "B6" }, links, "apart"))).toEqual({ g5: 3 });
+    expect(rowCounts(lens, { kind: "pair", pair }, links, "apart").size).toBe(0);
     expect(rowCounts(lens, { kind: "rest" }, links, "apart").size).toBe(0);
   });
 
@@ -281,6 +309,103 @@ describe("the picture's states", () => {
       "pale",
       "pale",
     ]);
+  });
+
+  it("counts, around a picked area, each target's target pairs that involve it: all of its own targets', the others' with it", () => {
+    // Agriculture's own B6 keeps all 7; Water's C1 keeps its one with B6.
+    expect(Object.fromEntries(areaFocus(lens, links, "apart", "g2").involvement)).toEqual({
+      A1: 0,
+      A2: 0,
+      A3: 0,
+      B4: 1,
+      B5: 4,
+      B6: 7,
+      C1: 1,
+      C2: 1,
+      C3: 1,
+    });
+    // Around Water, B6 keeps only its 3 with Water's targets.
+    const water = areaFocus(lens, links, "apart", "g5");
+    expect(water.area).toBe("g5");
+    expect(Object.fromEntries(cloudSizes(lens, links, "apart", water))).toEqual({
+      A1: 0,
+      A2: 0,
+      A3: 0,
+      B4: 0,
+      B5: 0,
+      B6: 3,
+      C1: 1,
+      C2: 1,
+      C3: 1,
+    });
+  });
+
+  it("counts, beside each row, a picked area's target pairs there, as the list does, and all of them in its own row", () => {
+    // Agriculture's 12: 3 with Water's targets, 9 with targets outside the lens.
+    expect(Object.fromEntries(rowCounts(lens, areaFocus(lens, links, "apart", "g2"), links, "apart"))).toEqual({
+      g2: 12,
+      g5: 3,
+    });
+    // Protected areas holds no potential misalignment: its row still says so.
+    expect(Object.fromEntries(rowCounts(lens, areaFocus(lens, links, "apart", "g1"), links, "apart"))).toEqual({
+      g1: 0,
+    });
+  });
+
+  it("counts a target pair within a picked area once in its own row", () => {
+    // A6 against B1 and B2, all three in Protected areas; A6 against B3-B6, outside the lens.
+    const source = withPrimary({ A6: "g1", B1: "g1", B2: "g1", C1: "g5" });
+    const scope = scopeOf(source, ["A", "B", "C"]);
+    const own = lensAreas(source, scope, "globe");
+    const ownLinks = sideLinks(scope);
+    expect(Object.fromEntries(rowCounts(own, areaFocus(own, ownLinks, "apart", "g1"), ownLinks, "apart"))).toEqual({
+      g1: 6,
+    });
+    expect(areaPairs(own, scope, "apart", "g1").top.map((p) => [p.key, p.count])).toEqual([
+      [`g1|${OTHER_AREA}`, 4],
+      ["g1|g1", 2],
+    ]);
+  });
+
+  it("inks a picked area's targets and those taking part with it; the rest set back", () => {
+    const water = targetInks(lens, areaFocus(lens, links, "apart", "g5"), links, "apart");
+    expect([water.get("C1"), water.get("B6"), water.get("B5"), water.get("A1")]).toEqual(["base", "base", "pale", "pale"]);
+    const protectedAreas = targetInks(lens, areaFocus(lens, links, "apart", "g1"), links, "apart");
+    expect([protectedAreas.get("A1"), protectedAreas.get("B6")]).toEqual(["base", "pale"]);
+  });
+
+  it("lines up every row around a picked area by those target pairs, and keeps a target picked there in place", () => {
+    // Around Y, x3 (y1's only partner) leads its row; x1 stays second when picked.
+    const small: LensAreas = {
+      areas: [
+        { id: "X", name: "X", acronym: null, order: 0, targets: ["x1", "x2", "x3"] },
+        { id: "Y", name: "Y", acronym: null, order: 1, targets: ["y1"] },
+      ],
+      placed: 4,
+      total: 4,
+    };
+    const handLinks: SideLinks = {
+      apart: new Map([
+        ["y1", ["x3"]],
+        ["x3", ["y1"]],
+      ]),
+      reinforce: new Map(),
+    };
+    const handRest = new Map([
+      ["x1", 5],
+      ["x2", 3],
+      ["x3", 1],
+      ["y1", 1],
+    ]);
+    const around = areaFocus(small, handLinks, "apart", "Y");
+    const rows = rowOrder(small, handRest, cloudSizes(small, handLinks, "apart", around), around, handLinks, "apart");
+    expect(rows).toEqual([
+      { id: "X", targets: ["x3", "x1", "x2"] },
+      { id: "Y", targets: ["y1"] },
+    ]);
+    const focus = { kind: "target" as const, id: "x1" };
+    const clouds = cloudSizes(small, handLinks, "apart", focus);
+    expect(rowOrder(small, handRest, clouds, focus, handLinks, "apart", around)[0].targets).toEqual(["x3", "x1", "x2"]);
   });
 
   it("says where a picked target's partners sit", () => {

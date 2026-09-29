@@ -525,7 +525,7 @@
           },
           "areas": {
             "title": "By policy area",
-            "body": "Each row is one policy area of the chosen lens, with a dot for each of its targets. Above each target, one dot for each target pair it takes part in on the chosen side: potential misalignment or strong alignment. The list beside it names the pairs of policy areas that hold the most of them; opening one keeps only its target pairs, and selecting a target shows its partners in every row."
+            "body": "Each row is one policy area of the chosen lens, with a dot for each of its targets. Above each target, one dot for each target pair it takes part in on the chosen side: potential misalignment or strong alignment. The list beside it names the pairs of policy areas that hold the most of them; opening one keeps only its target pairs, and selecting a target shows its partners in every row. Selecting the name of a policy area lists its pairs of areas and keeps only the target pairs its targets take part in."
           }
         }
       },
@@ -3577,6 +3577,8 @@
       "headlineWithin": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit within <first>{areaA}</first> targets.",
       "headlineOutside": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and targets outside these areas.",
       "headlineNone": "No target pairs in these policy areas {side, select, apart {show potential misalignment} other {are strongly aligned}}.",
+      "headlineArea": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",
+      "headlineAreaNone": "No {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",
       "scope": "{placed, number} of the {total, number} targets fall in one of these areas.",
       "within": "Within {area}",
       "outside": "{area} · targets outside these areas",
@@ -3584,7 +3586,7 @@
       "between": "{areaA} · {areaB}",
       "share": "{pct} of {pairs, number} target pairs",
       "rest": "The other {groups, plural, one {pair of areas} other {# pairs of areas}}: {count, number} of their {pairs, number} target pairs.",
-      "rowOf": "{count, number} of {total, number} targets",
+      "rowPairs": "{side, select, apart {{count, plural, one {# potential misalignment} other {# potential misalignments}}} other {{count, plural, one {# strong alignment} other {# strong alignments}}}}",
       "involved": "{area} targets most involved",
       "seePairs": "See the {count, plural, one {# target pair} other {# target pairs}}",
       "backAll": "All pairs of areas",

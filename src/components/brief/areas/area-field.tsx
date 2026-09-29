@@ -38,8 +38,9 @@ const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
  * clouds and inks say what the reader has chosen, and every change of shape
  * moves the same dots. Pointing at a target gives its tip; selecting it
  * hands it to `onPick`. The canvas is hidden from assistive technology; the
- * rows' names and counts are read as a list, and the list beside the
- * picture carries every way in by keyboard.
+ * rows' names and counts are read as a list, each name (from `rowLabel`) a
+ * way to its area, and the list beside the picture carries every other way
+ * in by keyboard.
  */
 export function AreaField({
   rows,
@@ -66,9 +67,9 @@ export function AreaField({
   rowLabel: (id: string) => ReactNode;
   /** The name the rows are read under. */
   listLabel: string;
-  /** Rows whose names the reader points at, in pale yellow. */
+  /** Rows whose names are in pale yellow: pointed at, or what the picture shows. */
   marked: ReadonlySet<string>;
-  /** Rows set back while a pair of areas is open. */
+  /** Rows set back while an area or a pair of areas is picked. */
   dimmed: ReadonlySet<string>;
   /** A target pointed at beside the picture: ringed. */
   pointed: string | null;
