@@ -109,6 +109,14 @@ go with blue and build the full brief for me to see it now". Spec
     relevance threshold, 14.7% of contract-lens pairs name two or more areas) and the page keeps
     the top area only, so money is counted once per lens; 16.5% of those top areas score under
     0.5 (a weak best guess, kept like a target's primary).
+- **Walk 3** (2026-09-29): "I dont see left even though right is still to explore and to scroll".
+  Cause: the sticky field sticks only while the steps run on below it; the policy areas step is
+  the last, and its table (longer than a screen) ended with the section, so the field was pushed
+  off the top while the table was still read. The last step now keeps going under its end by the
+  field's bottom less half the window (`--ct-stage-top` + `--ct-stage-height` - 50vh, desktop
+  only; `51e8a3c`). The two earlier guesses (replayed moves, the 30% lead line) were real but not
+  this. The new footprint is an event on the /sustainability running total ("Public contracts in
+  English", `acb4610`).
 - **Open**:
   - Jonas's next walk;
   - es/mn copy (English placeholders);
