@@ -107,3 +107,30 @@ describe("a target, with its contracts", () => {
     expect(screen.getByText("71404 Water resources")).toBeInTheDocument();
   });
 });
+
+describe("a list of contracts", () => {
+  it("lists them by value, marks a title not yet translated, and opens one in full", () => {
+    const setup = setupFixture();
+    const p3 = setup.file.contracts.find((c) => c.id === "p3")!;
+    p3.title = "Бэлчээр хамгаалах";
+    p3.translated = false;
+    const onPush = vi.fn();
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <div data-brief>
+          <ContractsPanels stack={[{ kind: "list", title: "Contracts for Restoration", ids: ["p3", "p1", "p2"] }]} setup={setup} onPush={onPush} onBack={vi.fn()} onClose={vi.fn()} />
+        </div>
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByRole("heading", { name: "Contracts for Restoration" })).toBeInTheDocument();
+    const rows = screen.getAllByRole("button").filter((b) => b.classList.contains("ct-list-row"));
+    expect(rows.map((b) => b.textContent)).toEqual([
+      expect.stringContaining("Contract p1"),
+      expect.stringContaining("Contract p2"),
+      expect.stringContaining("Бэлчээр хамгаалах"),
+    ]);
+    expect(screen.getByText("Бэлчээр хамгаалах")).toHaveAttribute("lang", "mn");
+    fireEvent.click(rows[0]);
+    expect(onPush).toHaveBeenCalledWith({ kind: "contract", id: "p1" });
+  });
+});

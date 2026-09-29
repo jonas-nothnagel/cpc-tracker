@@ -2,10 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import { emptyFocus, type Focus } from "@/lib/brief/contracts/focus";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { MisalignedBlock } from "./misaligned-block";
+import { FocusBar } from "./focus-bar";
 import { CurrencyProvider, type Currency } from "./money";
 import { Overview } from "./overview";
 import { ContractsPanels } from "./panels";
@@ -15,7 +17,10 @@ import "../brief.css";
 import "./contracts.css";
 
 /** A contract or a target opened in the panel, as a trail. */
-export type PanelState = { kind: "contract"; id: string } | { kind: "target"; id: string };
+export type PanelState =
+  | { kind: "contract"; id: string }
+  | { kind: "target"; id: string }
+  | { kind: "list"; title: string; ids: string[] };
 
 /**
  * Public contracts beside the targets, on a page of its own: the overview
@@ -33,7 +38,11 @@ export function ContractsPage({
   initialCurrency?: Currency;
 }) {
   const t = useTranslations("brief.contracts");
-  const [lens, setLens] = useState<LensKey>((setup.lenses[0]?.id as LensKey) ?? "globe");
+  // One focus for the whole page: every view answers it. A new lens lets the
+  // policy area go (its categories are the old lens's).
+  const [focus, setFocus] = useState<Focus>(() => emptyFocus((setup.lenses[0]?.id as LensKey) ?? "globe"));
+  const onFocus = (patch: Partial<Focus>) =>
+    setFocus((cur) => ({ ...cur, ...patch, ...(patch.lens && patch.lens !== cur.lens ? { area: null } : {}) }));
   const [stack, setStack] = useState<PanelState[]>([]);
   const [currency, setCurrency] = useState<Currency>(initialCurrency);
   const rate = setup.file.source.usdRate;
@@ -82,13 +91,15 @@ export function ContractsPage({
               </div>
             )}
           </header>
+          <FocusBar setup={setup} focus={focus} placeNames={placeNames} onFocus={onFocus} />
           <Overview
             setup={setup}
             geo={geo}
-            lens={lens}
-            onLens={setLens}
+            focus={focus}
+            onFocus={onFocus}
             onContract={(id) => open({ kind: "contract", id })}
             onTarget={(id) => open({ kind: "target", id })}
+            onList={(list) => open({ kind: "list", ...list })}
           />
           <div className="ct-deeps">
             <TargetsBlock setup={setup} onTarget={(id) => open({ kind: "target", id })} />

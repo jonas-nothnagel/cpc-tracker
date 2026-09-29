@@ -349,10 +349,64 @@ function TargetPanel({
   );
 }
 
+/** Contracts a list panel shows at first, and adds per "Show more". */
+const LIST_PAGE = 20;
+
+/** A place's or a policy area's contracts (in focus), largest first. */
+function ListPanel({
+  title,
+  ids,
+  setup,
+  onContract,
+}: {
+  title: string;
+  ids: string[];
+  setup: ContractsSetup;
+  onContract: (id: string) => void;
+}) {
+  const t = useTranslations("brief.contracts.panel.list");
+  const m = useMoney();
+  const { contracts } = useLookups(setup);
+  const [shown, setShown] = useState(LIST_PAGE);
+  const list = ids
+    .map((id) => contracts.get(id))
+    .filter((c): c is Contract => c !== undefined)
+    .sort((a, b) => b.value - a.value || a.id.localeCompare(b.id));
+  const total = list.reduce((s, c) => s + c.value, 0);
+  return (
+    <>
+      <DrawerHeader>
+        <h2 className="brief-panel-title">{title}</h2>
+        <p className="brief-panel-sub">{t("count", { count: list.length, value: m.amount(total) })}</p>
+      </DrawerHeader>
+      <div className="brief-panel-body">
+        <ul className="ct-list">
+          {list.slice(0, shown).map((c) => (
+            <li key={c.id}>
+              <button type="button" className="ct-list-row" onClick={() => onContract(c.id)}>
+                <ContractTitle contract={c} />
+                <span className="ct-list-meta">
+                  {m.amount(c.value)} · {c.year}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        {shown < list.length && (
+          <button type="button" className="ct-link" onClick={() => setShown((v) => v + LIST_PAGE)}>
+            {t("more", { count: Math.min(LIST_PAGE, list.length - shown) })}
+          </button>
+        )}
+      </div>
+    </>
+  );
+}
+
 /**
  * The contracts page's drill-downs in one drawer with a back trail: a
- * contract in full (its record, the AI's readings, its source) and a target
- * with its contracts. Opening one from inside the other pushes onto the trail.
+ * contract in full (its record, the AI's readings, its source), a target
+ * with its contracts, and a list of contracts. Opening one from inside
+ * another pushes onto the trail.
  */
 export function ContractsPanels({
   stack,
@@ -376,9 +430,12 @@ export function ContractsPanels({
   const contract = top.kind === "contract" ? setup.file.contracts.find((c) => c.id === top.id) : undefined;
   const target = top.kind === "target" ? setup.targets.find((x) => x.id === top.id) : undefined;
   const dialogLabel =
-    top.kind === "contract"
-      ? t("contractDialog", { title: contract?.title ?? top.id })
-      : t("targetDialog", { label: target ? targetLine(target, 60) : top.id });
+    top.kind === "list"
+      ? t("list.dialog", { title: top.title })
+      : top.kind === "contract"
+        ? t("contractDialog", { title: contract?.title ?? top.id })
+        : t("targetDialog", { label: target ? targetLine(target, 60) : top.id });
+  const key = top.kind === "list" ? `list:${top.title}` : `${top.kind}:${top.id}`;
   return (
     <DrawerShell
       open
@@ -386,10 +443,12 @@ export function ContractsPanels({
       onBack={stack.length > 1 ? onBack : undefined}
       backLabel={t("back")}
       dialogLabel={dialogLabel}
-      panelKey={`${top.kind}:${top.id}`}
+      panelKey={key}
       scrim="light"
     >
-      {top.kind === "contract" ? (
+      {top.kind === "list" ? (
+        <ListPanel key={key} title={top.title} ids={top.ids} setup={setup} onContract={(id) => onPush({ kind: "contract", id })} />
+      ) : top.kind === "contract" ? (
         <ContractPanel
           key={top.id}
           id={top.id}

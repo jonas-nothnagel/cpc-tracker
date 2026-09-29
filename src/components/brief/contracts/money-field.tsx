@@ -4,25 +4,35 @@ import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode
 import {
   layoutField,
   type FieldLabel,
+  type FieldLayout,
   type FieldModel,
   type Ink,
   type LayoutContext,
+  type Mark,
+  type MarkInk,
   type Stage,
 } from "@/lib/brief/contracts/field";
 import type { ContractsFile } from "@/lib/brief/contracts/model";
 import type { Slice } from "@/lib/brief/contracts/units";
 import { cellRect, mixInk } from "../hub/hub-canvas";
 
-/** The field's inks: the record in ink, then deep green for money mainly for
- *  nature or climate, light green where it is a side benefit, pale for the
- *  rest. Outlines and targets stay in the brief's neutral inks. */
+/** The field's inks. Money is UNDP blue (the UNDP data viz library's main
+ *  graph colour): deep where it is mainly for nature or climate, light where
+ *  it is a side benefit, pale for the rest, ink for the whole record. Green
+ *  and red keep the brief's meaning: strongly matching, potentially
+ *  misaligned. Target dots and outlines stay in the neutral inks. */
 export const FIELD_INK = {
   record: "#232e3d",
-  principal: "#2a7443",
-  significant: "#9cc7a8",
+  principal: "#0468b1",
+  significant: "#b5d5f5",
   rest: "#e4e6e9",
   outline: "#cfd3d8",
-  target: "#232e3d",
+  target: "#6b7684",
+  targetNone: "#d5d9df",
+  match: "#2a7443",
+  mis: "#d2432c",
+  leader: "#c9ced6",
+  anchor: "#55606e",
 } as const;
 
 /** How long the squares take to move between steps, in milliseconds. */
@@ -33,13 +43,8 @@ const FALLBACK = { w: 640, h: 480 };
 
 /** What the pointer is on. */
 export type FieldPoint =
-  | {
-      kind: "square";
-      index: number;
-      ink: Ink;
-      year: number;
-      slice: Slice | null;
-    }
+  | { kind: "square"; index: number; ink: Ink; year: number; slice: Slice | null }
+  | { kind: "mark"; cell: string; ink: MarkInk }
   | { kind: "target"; id: string; row: string }
   | { kind: "place"; code: string }
   | { kind: "row"; id: string };
@@ -53,15 +58,25 @@ interface Shown {
 
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
+/** The whole record is drawn in ink; every other step in the money's inks. */
 function inkOf(ink: Ink, stage: Stage): string {
-  return stage.kind === "record" ? FIELD_INK.record : FIELD_INK[ink];
+  if (stage.kind === "record" || (stage.kind === "places" && stage.layer === "all")) return FIELD_INK.record;
+  return FIELD_INK[ink];
 }
+
+const markInk = (m: Mark) => (m.ink === "principal" ? FIELD_INK.principal : FIELD_INK[m.ink]);
+
+/** The place or row a point names, for marking its label. */
+const pointId = (p: FieldPoint | null) =>
+  p === null ? null : p.kind === "place" ? p.code : p.kind === "row" ? p.id : p.kind === "mark" ? p.cell : null;
 
 /**
  * The overview's field: the record as squares of equal money that move from
- * one layout to the next as the steps change. Pointing at a square names the
- * contract behind it; pointing never re-lays the field. Selecting a square
- * opens its contract, a target its panel, a row or place its list.
+ * one layout to the next as the steps change, and an overlay (a focus's finer
+ * squares, or the tenders' dots) that crossfades in while the squares step
+ * aside. Pointing names what is under the pointer and marks its label;
+ * pointing never re-lays the field. Selecting opens a contract or a target,
+ * or puts a place or a policy area in focus.
  */
 export function MoneyField({
   model,
@@ -72,7 +87,9 @@ export function MoneyField({
   label,
   tip,
   onSelect,
+  onPoint,
   selected,
+  pointed = null,
 }: {
   model: FieldModel;
   file: ContractsFile;
@@ -82,24 +99,24 @@ export function MoneyField({
   label: (l: FieldLabel) => ReactNode;
   tip: (p: FieldPoint) => ReactNode | null;
   onSelect: (p: FieldPoint) => void;
-  /** The row or place kept forward: its name is marked. */
+  /** What the pointer is on, for the page to mark its line in a list. */
+  onPoint?: (p: FieldPoint | null) => void;
+  /** The place or area in focus: its name is marked and its outline inked. */
   selected: string | null;
+  /** A place or area pointed at from elsewhere (a list row). */
+  pointed?: string | null;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const shown = useRef<Shown | null>(null);
+  const shownOverlay = useRef<FieldLayout["overlay"]>(null);
   const labels = useRef<HTMLDivElement>(null);
   const moving = useRef(false);
   const lastStage = useRef<Stage | null>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
   // What the pointer is on, for the layout it was found in (a new layout
   // leaves it behind without a state reset).
-  const [hover, setHover] = useState<{
-    point: FieldPoint;
-    x: number;
-    y: number;
-    layout: unknown;
-  } | null>(null);
+  const [hover, setHover] = useState<{ point: FieldPoint; x: number; y: number; layout: unknown } | null>(null);
 
   useEffect(() => {
     const el = wrap.current;
@@ -127,6 +144,10 @@ export function MoneyField({
     [layout],
   );
 
+  const current = hover && hover.layout === layout ? hover : null;
+  const litId = pointId(current?.point ?? null) ?? pointed;
+  const outlined = useMemo(() => [...new Set([litId, selected].filter((x): x is string => x !== null))], [litId, selected]);
+
   const measured = size !== null;
   useEffect(() => {
     // Nothing is drawn before the field knows its size, so the first picture
@@ -141,12 +162,31 @@ export function MoneyField({
       a: Float32Array.from(layout.squares, (s) => (s.visible ? 1 : 0)),
       pitch: layout.pitch,
     };
-    // Squares move between steps; a new size only redraws them in place.
+    // Squares move between steps (and between a step's layers or foci); a new
+    // size or a new pointer only redraws them in place.
     const stepped = lastStage.current !== null && lastStage.current !== stage;
     lastStage.current = stage;
     const from = stepped && shown.current && shown.current.x.length === n ? shown.current : to;
+    const fromOverlay = stepped ? shownOverlay.current : layout.overlay;
     const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    const inkFor = (i: number) => inkOf(layout.squares[i]?.ink ?? model.inks[i], stage);
+
+    const drawOverlay = (o: FieldLayout["overlay"], alpha: number) => {
+      if (!g || !o || alpha < 0.02) return;
+      for (const m of o.marks) {
+        const color = alpha >= 0.99 ? markInk(m) : mixInk(markInk(m), PAPER, alpha);
+        g.fillStyle = color;
+        if (m.shape === "dot") {
+          g.beginPath();
+          g.arc(m.x, m.y, Math.max(1, o.pitch * 0.38), 0, Math.PI * 2);
+          g.fill();
+        } else {
+          const r = cellRect(m.x, m.y, o.pitch, dpr);
+          g.fillRect(r.x, r.y, r.w, r.h);
+        }
+      }
+    };
 
     const draw = (cur: Shown, e: number) => {
       if (!el || !g) return;
@@ -167,13 +207,28 @@ export function MoneyField({
           g.fill(p.path, "evenodd");
           g.stroke(p.path);
         }
+        g.strokeStyle = FIELD_INK.record;
+        g.lineWidth = 1.6;
+        for (const p of paths) if (outlined.includes(p.code)) g.stroke(p.path);
+        g.lineWidth = 1;
+        g.strokeStyle = FIELD_INK.leader;
+        for (const l of layout.leaders) {
+          g.beginPath();
+          g.moveTo(l.x1, l.y1);
+          g.lineTo(l.x2, l.y2);
+          g.stroke();
+          g.fillStyle = FIELD_INK.anchor;
+          g.beginPath();
+          g.arc(l.x1, l.y1, 1.6, 0, Math.PI * 2);
+          g.fill();
+        }
         g.globalAlpha = 1;
       }
       let last = "";
       for (let i = 0; i < n; i++) {
         const a = cur.a[i];
         if (a < 0.02) continue;
-        const color = a >= 0.99 ? inkOf(model.inks[i], stage) : mixInk(inkOf(model.inks[i], stage), PAPER, a);
+        const color = a >= 0.99 ? inkFor(i) : mixInk(inkFor(i), PAPER, a);
         if (color !== last) {
           g.fillStyle = color;
           last = color;
@@ -181,9 +236,11 @@ export function MoneyField({
         const r = cellRect(cur.x[i], cur.y[i], cur.pitch, dpr);
         g.fillRect(r.x, r.y, r.w, r.h);
       }
+      if (fromOverlay !== layout.overlay) drawOverlay(fromOverlay, 1 - e);
+      drawOverlay(layout.overlay, e);
       if (layout.targets.length > 0) {
-        g.fillStyle = mixInk(FIELD_INK.target, PAPER, e);
         for (const t of layout.targets) {
+          g.fillStyle = mixInk(FIELD_INK[t.ink], PAPER, e);
           g.beginPath();
           g.arc(t.x, t.y, t.r, 0, Math.PI * 2);
           g.fill();
@@ -196,8 +253,9 @@ export function MoneyField({
       moving.current = on;
       if (labels.current) labels.current.toggleAttribute("data-moving", on);
     };
-    if (reduce || from === to) {
+    if (reduce || (from === to && fromOverlay === layout.overlay)) {
       shown.current = to;
+      shownOverlay.current = layout.overlay;
       draw(to, 1);
       settle(false);
       return;
@@ -222,38 +280,46 @@ export function MoneyField({
       shown.current = cur;
       draw(cur, e);
       if (t < 1) raf = requestAnimationFrame(frame);
-      else settle(false);
+      else {
+        shownOverlay.current = layout.overlay;
+        settle(false);
+      }
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [measured, layout, paths, model, stage, box.w, box.h]);
+  }, [measured, layout, paths, model, stage, box.w, box.h, outlined]);
 
   const pointAt = (px: number, py: number): FieldPoint | null => {
     const s = shown.current;
-    if (!s) return null;
     for (const t of layout.targets) {
-      if (Math.hypot(t.x - px, t.y - py) <= Math.max(t.r + 1.5, layout.pitch * 0.55))
-        return { kind: "target", id: t.id, row: t.row };
+      if (Math.hypot(t.x - px, t.y - py) <= Math.max(t.r + 1.5, 3)) return { kind: "target", id: t.id, row: t.row };
     }
-    const half = s.pitch / 2;
-    for (let i = s.x.length - 1; i >= 0; i--) {
-      if (s.a[i] < 0.5) continue;
-      if (Math.abs(s.x[i] - px) <= half && Math.abs(s.y[i] - py) <= half) {
-        return {
-          kind: "square",
-          index: i,
-          ink: model.inks[i],
-          year: model.years[i],
-          slice: layout.squares[i].slice,
-        };
+    if (layout.overlay) {
+      const half = layout.overlay.pitch / 2 + 0.5;
+      for (const m of layout.overlay.marks) {
+        if (Math.abs(m.x - px) <= half && Math.abs(m.y - py) <= half) {
+          return layout.map ? { kind: "place", code: m.cell } : { kind: "mark", cell: m.cell, ink: m.ink };
+        }
       }
+    }
+    if (s) {
+      const half = s.pitch / 2;
+      for (let i = s.x.length - 1; i >= 0; i--) {
+        if (s.a[i] < 0.5) continue;
+        if (Math.abs(s.x[i] - px) <= half && Math.abs(s.y[i] - py) <= half) {
+          return { kind: "square", index: i, ink: model.inks[i], year: model.years[i], slice: layout.squares[i].slice };
+        }
+      }
+    }
+    for (const b of layout.blocks) {
+      if (b.n > 0 && px >= b.x - 1 && px <= b.x + b.w + 1 && py >= b.y - 1 && py <= b.y + b.h + 1) return { kind: "place", code: b.code };
     }
     const g = canvas.current?.getContext?.("2d");
     if (paths && g) {
       const dpr = window.devicePixelRatio || 1;
-      for (const p of paths)
-        if (g.isPointInPath(p.path, px * dpr, py * dpr, "evenodd")) return { kind: "place", code: p.code };
+      for (const p of paths) if (g.isPointInPath(p.path, px * dpr, py * dpr, "evenodd")) return { kind: "place", code: p.code };
     }
+    for (const b of layout.bands) if (py >= b.y && py <= b.y + b.h) return { kind: "row", id: b.id };
     return null;
   };
 
@@ -261,16 +327,21 @@ export function MoneyField({
     const r = e.currentTarget.getBoundingClientRect();
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   };
+  const point = (next: FieldPoint | null, x = 0, y = 0) => {
+    const before = pointId(hover?.layout === layout ? (hover?.point ?? null) : null);
+    setHover(next ? { point: next, x, y, layout } : null);
+    if (pointId(next) !== before) onPoint?.(next);
+  };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
     if (moving.current) return;
     const { x, y } = local(e);
-    const point = pointAt(x, y);
-    setHover(point ? { point, x, y, layout } : null);
+    point(pointAt(x, y), x, y);
   };
-  const current = hover && hover.layout === layout ? hover : null;
   const tipContent = current ? tip(current.point) : null;
-  const lit = (l: FieldLabel) =>
-    selected !== null && (l.values.id === selected || l.values.code === selected) ? "" : undefined;
+  const lit = (l: FieldLabel) => {
+    const id = l.values.id ?? l.values.code;
+    return id !== undefined && (id === selected || id === litId) ? "" : undefined;
+  };
 
   return (
     <div
@@ -278,11 +349,11 @@ export function MoneyField({
       className="ct-field"
       data-clickable={current ? "" : undefined}
       onPointerMove={onMove}
-      onPointerLeave={() => setHover(null)}
+      onPointerLeave={() => point(null)}
       onClick={(e) => {
         const { x, y } = local(e as unknown as PointerEvent<HTMLElement>);
-        const point = pointAt(x, y);
-        if (point) onSelect(point);
+        const p = pointAt(x, y);
+        if (p) onSelect(p);
       }}
     >
       <canvas ref={canvas} role="img" aria-label={ariaLabel} />
@@ -291,11 +362,9 @@ export function MoneyField({
           const content = label(l);
           if (content === null) return null;
           const style = { left: `${l.x}px`, top: `${l.y}px` };
-          if (l.kind === "rowName" || l.kind === "place") {
-            const point: FieldPoint =
-              l.kind === "rowName"
-                ? { kind: "row", id: String(l.values.id) }
-                : { kind: "place", code: String(l.values.code) };
+          if (l.kind === "rowName" || l.kind === "place" || l.kind === "band") {
+            const target: FieldPoint =
+              l.kind === "rowName" ? { kind: "row", id: String(l.values.id) } : { kind: "place", code: String(l.values.code) };
             return (
               <button
                 key={l.key}
@@ -307,8 +376,10 @@ export function MoneyField({
                 style={style}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onSelect(point);
+                  onSelect(target);
                 }}
+                onPointerEnter={() => onPoint?.(target)}
+                onPointerLeave={() => onPoint?.(null)}
               >
                 {content}
               </button>

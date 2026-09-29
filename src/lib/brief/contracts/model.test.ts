@@ -11,7 +11,8 @@ describe("parseContractsFile", () => {
   it("keeps the whole record by place, and refuses a malformed one", () => {
     const file = parseContractsFile(contractsFixture());
     expect(file?.places?.reduce((s, p) => s + p.value, 0)).toBe(250e9);
-    const { places: _omit, ...without } = contractsFixture();
+    const without: Partial<ReturnType<typeof contractsFixture>> = contractsFixture();
+    delete without.places;
     expect(parseContractsFile(without)?.places).toBeUndefined();
     expect(parseContractsFile({ ...contractsFixture(), places: "x" })).toBeNull();
   });

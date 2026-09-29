@@ -3303,8 +3303,8 @@
       "kicker": {
         "record": "The record",
         "purpose": "For nature and climate",
-        "areas": "Toward each policy area",
-        "places": "Where it lands"
+        "places": "Where it lands",
+        "areas": "What the money is for"
       },
       "record": {
         "headline": "{value} in {count} public contracts since {year}",
@@ -3315,7 +3315,8 @@
       "purpose": {
         "headline": "{sign}{per100} of every {sign}100 was contracted for work mainly for nature or climate",
         "second": "{sign}{per100} more for work where nature or climate is a side benefit.",
-        "tag": "AI reading of each contract's title"
+        "tag": "AI reading of each contract's title",
+        "focusLine": "{name}: {first} in {firstYear}, {last} in {lastYear}."
       },
       "set": {
         "all": "All {count} contracts · {value}",
@@ -3325,34 +3326,111 @@
       },
       "areas": {
         "lens": "Policy areas",
-        "headline": "{area} holds {targets} of the {total} targets and {pct} of the money contracted mainly for nature or climate",
-        "second": "{area} draws {pct} with {targets, plural, one {# target} other {# targets}}.",
-        "headlineTop": "{area} draws {pct} of the money contracted mainly for nature or climate, with {targets, plural, one {# target} other {# targets}}",
+        "headline": "{area} holds {tshare} of {targets} and {mshare} of the money contracted mainly for nature or climate{place}",
+        "headlineTop": "{area} draws {mshare} of the money contracted mainly for nature or climate{place}, with {tshare} of {targets}",
         "headlineEmpty": "No money contracted mainly for nature or climate falls in these policy areas",
+        "second": "{area} draws {mshare}, with {tshare} of the targets.",
+        "targetsAll": "the targets",
+        "targetsOf": "the {doc} targets",
+        "inPlace": " in {place}",
         "none": "No policy area",
-        "targets": "{count, plural, one {# target} other {# targets}}",
-        "largest": "Largest contracts in {area}"
+        "headMoney": "Mainly for nature or climate",
+        "headTargets": "Targets",
+        "headTargetsOf": "Targets of {doc}",
+        "tableLead": "Their targets, with",
+        "tableRed": "potentially misaligned tenders",
+        "tableGreen": "a strongly matching contract",
+        "of": "{green} of {total}",
+        "back": "All policy areas",
+        "facts": "{value} in {count, plural, one {# contract} other {# contracts}} mainly for nature or climate · {targets, plural, one {# target} other {# targets}}",
+        "synergy": "{share} of its contracts with a strong match serve 3 or more documents at once (all areas: {base})",
+        "rowsHead": "{count, plural, one {# target} other {# targets}}",
+        "rowsRed": "tenders potentially misaligned",
+        "rowsGreen": "strongly matching tenders",
+        "more": "and {count} more with a strongly matching contract",
+        "without": "{count, plural, one {# target} other {# targets}} without a strongly matching contract",
+        "seeContracts": "See its {count, plural, one {# contract} other {# contracts}}",
+        "listTitle": "Contracts for {area}"
       },
       "places": {
-        "headline": "{place} holds {pct} of the money contracted mainly for nature or climate; {second}, {pct2}",
-        "headlineOne": "{place} holds {pct} of the money contracted mainly for nature or climate",
-        "second": "{pct} of it names no single place.",
-        "noPlace": "No single place named · {value}",
-        "largest": "Largest contracts in {place}",
-        "none": "No single place named"
+        "layers": "What the map shows",
+        "layer": {
+          "money": "Mainly for nature or climate",
+          "match": "Strongly matching",
+          "mis": "Potentially misaligned"
+        },
+        "switch": "Money shown",
+        "switchMoney": "Mainly for nature or climate",
+        "switchAll": "All contracts",
+        "area": "Policy area",
+        "areaAll": "All policy areas",
+        "doc": "Document",
+        "docAll": "All",
+        "noPlace": "No single place named",
+        "perHundred": "{sign}{per100} per {sign}100",
+        "tenders": "{count, plural, one {# tender} other {# tenders}}",
+        "headlineAll": "{pct} of the money in the record was contracted in {capital}; {pctNone} names no single place",
+        "secondAll": "Buyers that serve the whole country, such as state companies and national agencies, name no single place.",
+        "headlineRate": "In {place}, {sign}{per100} of every {sign}100 contracted went to work mainly for nature or climate; across the record, {sign}{overall}",
+        "secondRate": "{capital} holds {pct} of that money: {sign}{per100} of every {sign}100 contracted there.",
+        "headlineOver": "{place} holds {share} of the money {focus}, against {base} of all money mainly for nature or climate",
+        "headlineTop": "{place} holds {share} of the money {focus}",
+        "headlineNone": "No money contracted mainly for nature or climate {focus}",
+        "one": "Most of it is one contract: {title}, {value}.",
+        "noneShare": "{pct} names no single place.",
+        "also": "The {count, plural, one {# contract} other {# contracts}} strongly matching its targets also strongly match",
+        "alone": "{pct} of them serve no other document.",
+        "what": {
+          "target": "a target",
+          "doc": "{doc} targets",
+          "area": "{area} targets",
+          "both": "{doc} targets in {area}"
+        },
+        "headlineMatch": "{count, plural, one {# tender strongly matches} other {# tenders strongly match}} {what}; {pctNone} name no single place, {pctTop} are in {top}",
+        "headlineMatchOver": "{place} holds {share} of the {count, plural, one {# tender} other {# tenders}} strongly matching {what}, against {base} of all strongly matching tenders",
+        "headlineMatchEmpty": "No tender strongly matches {what}",
+        "headlineMis": "{none} of the {count, plural, one {# potentially misaligned tender} other {# potentially misaligned tenders}}{with} {none, plural, one {names} other {name}} no single place; {placed} {placed, plural, one {names} other {name}} an aimag or the capital",
+        "misWith": " with {what}",
+        "secondMis": "The {none} hold {noneValue}; the {placed}, {placedValue}.",
+        "headlineMisEmpty": "No tender is potentially misaligned with {what}",
+        "tagMatch": "AI reading: each contract compared with the targets",
+        "tagMis": "AI-identified, for review",
+        "back": "All places",
+        "facts": "{all} in {count, plural, one {# contract} other {# contracts}} · {green} in {greenCount, plural, one {# contract} other {# contracts}} mainly for nature or climate, {sign}{per100} of every {sign}100",
+        "factsFocus": "{all} in {count, plural, one {# contract} other {# contracts}} · {green} in {greenCount, plural, one {# contract} other {# contracts}} mainly for nature or climate {focus}",
+        "factsTenders": "{count, plural, one {# tender} other {# tenders}} {kind, select, mis {potentially misaligned with} other {strongly matching}} {what} · {value}",
+        "byArea": "By policy area ({lens})",
+        "matched": "Its contracts strongly match {count, plural, one {# target} other {# targets}}",
+        "seeContracts": "See its {count, plural, one {# contract} other {# contracts}}",
+        "listTitle": "Contracts in {place}",
+        "more": "Show {count} more",
+        "fewer": "Show fewer",
+        "tenderLine": "{contracts, plural, one {# contract} other {# contracts}} · {value} · {year} · {targets, plural, one {# target} other {# targets}}",
+        "andMore": "and {count} more",
+        "tipAll": "{value} in {count, plural, one {# contract} other {# contracts}}",
+        "tipGreen": "{value} mainly for nature or climate: {sign}{per100} of every {sign}100",
+        "tipFocus": "{value} {focus}",
+        "tipTenders": "{count, plural, one {# tender} other {# tenders}} {kind, select, mis {potentially misaligned with} other {strongly matching}} {what}"
       },
       "tip": {
         "more": "and {count, plural, one {# more contract} other {# more contracts}}",
         "year": "{year}: {count} contracts · {value}",
         "partial": "part of the year only",
-        "place": "{count, plural, one {# contract} other {# contracts}} · {value} mainly for nature or climate",
         "untranslated": "not yet translated",
-        "open": "Select to see it in full"
+        "open": "Select to see it in full",
+        "row": "{name}: {value} in {count, plural, one {# contract} other {# contracts}}",
+        "targetMatched": "{count, plural, one {# strongly matching contract} other {# strongly matching contracts}}",
+        "targetNone": "No strongly matching contract",
+        "targetMis": "{count, plural, one {# tender} other {# tenders}} potentially misaligned"
       },
       "field": {
         "label": "The public contract record as squares of {unit} each",
         "unitMnt": "₮ trillion",
-        "unitUsd": "US$ billion"
+        "unitUsd": "US$ billion",
+        "unitFocusMnt": "₮ billion",
+        "unitFocusUsd": "US$ million",
+        "unitSquare": "One square: {value}",
+        "unitDot": "One dot: one tender"
       },
       "panel": {
         "back": "Back",
@@ -3425,7 +3503,59 @@
         "action": "Reported actions (Biennial Transparency Report)",
         "noBacking": "No matching budget line or reported action",
         "explore": "Explore this target",
-        "noContracts": "No strongly matching contract"
+        "noContracts": "No strongly matching contract",
+        "list": {
+          "dialog": "Contracts: {title}",
+          "count": "{count, plural, one {# contract} other {# contracts}} · {value}",
+          "more": "Show {count} more"
+        }
+      },
+      "currency": {
+        "label": "Amounts in",
+        "mnt": "₮",
+        "usd": "US$",
+        "rate": "At ₮{rate} per US$, indicative"
+      },
+      "focus": {
+        "label": "Focus",
+        "none": "the whole record",
+        "clear": "Clear {name}",
+        "name": "Money {parts}",
+        "area": "for {area}",
+        "doc": "strongly matching {doc} targets",
+        "place": "in {place}"
+      },
+      "closer": {
+        "kicker": "Where to look closer",
+        "headline": "{count, plural, one {# tender is} other {# tenders are}} potentially misaligned with {what}{place}{top}",
+        "top": "; for {pct} of them, the target is in {doc}",
+        "inPlace": ", in {place}",
+        "headlineNone": "No tender is potentially misaligned with {what}{place}",
+        "outnumber": "For {count} of these {total, plural, one {# target} other {# targets}}, they outnumber the strongly matching tenders.",
+        "outnumberNone": "For each of these {total, plural, one {# target} other {# targets}}, the strongly matching tenders outnumber them.",
+        "gapsLine": "{count, plural, one {# other target has} other {# other targets have}} no strongly matching contract at all.",
+        "gapsOnly": "{count, plural, one {# target has} other {# targets have}} no strongly matching contract at all.",
+        "tag": "AI-identified, for review · a tender can hold many contracts",
+        "gaps": "No strongly matching contract anywhere",
+        "gapsDoc": "{doc} · {count}",
+        "topHead": "The tenders behind the most potential misalignments",
+        "topLine": "{tenders, plural, one {# tender} other {# tenders}} · {contracts, plural, one {# contract} other {# contracts}} · {year} · {targets, plural, one {# target} other {# targets}}",
+        "back": "All targets",
+        "misHead": "{count, plural, one {# tender} other {# tenders}} potentially misaligned",
+        "tenderLine": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
+        "confidence": "{level} confidence",
+        "more": "Show {count} more",
+        "fewer": "Show fewer",
+        "matchHead": "{count, plural, one {# tender} other {# tenders}} strongly matching · {value}",
+        "matchNone": "No strongly matching contract",
+        "places": "Where its strongly matching contracts are",
+        "explore": "Explore this target",
+        "tenderMis": "Potentially misaligned with {count, plural, one {# target} other {# targets}}",
+        "why": "Why, for {target}",
+        "open": "Open the contract",
+        "tipMis": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
+        "tipMatch": "{count, plural, one {# strongly matching tender} other {# strongly matching tenders}}",
+        "rowsLabel": "Targets with potentially misaligned tenders"
       },
       "deep": {
         "targets": {
@@ -3466,12 +3596,6 @@
           "tag": "AI-identified, for review"
         },
         "aiTag": "AI reading: each contract compared with the targets"
-      },
-      "currency": {
-        "label": "Amounts in",
-        "mnt": "₮",
-        "usd": "US$",
-        "rate": "At ₮{rate} per US$, indicative"
       }
     },
     "areaView": {

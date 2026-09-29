@@ -140,8 +140,47 @@
 }
 
 [data-brief] .ct-label[data-kind="rowTargets"] {
-  transform: translate(-100%, -50%);
   color: var(--brief-muted);
+}
+
+/* Column heads, units and the band's names hang from their point; a place's
+   name sits centred under its point, its figure on a second line. */
+[data-brief] .ct-label[data-kind="head"],
+[data-brief] .ct-label[data-kind="unit"],
+[data-brief] .ct-label[data-kind="band"] {
+  transform: none;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-label[data-kind="unit"][data-align="end"] {
+  transform: translateX(-100%);
+}
+
+[data-brief] .ct-label[data-kind="head"] {
+  font-size: 0.75rem;
+}
+
+[data-brief] .ct-label-button[data-kind="place"] {
+  transform: translateX(-50%);
+  text-align: center;
+  line-height: 1.15;
+}
+
+[data-brief] .ct-label-button[data-kind="place"] small,
+[data-brief] .ct-label-button[data-kind="band"] small {
+  font-weight: 400;
+  font-size: 0.6875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-label-button[data-kind="place"] small {
+  display: block;
+}
+
+[data-brief] .ct-label-button[data-kind="band"] {
+  transform: none;
+  font-size: 0.75rem;
+  color: var(--brief-ink);
 }
 
 [data-brief] .ct-label[data-kind="year"],
@@ -672,4 +711,430 @@
 [data-brief] .ct-currency-rate {
   font-size: 0.75rem;
   color: var(--brief-muted);
+}
+
+/* ── Round 2: one focus across the page ─────────────────────────── */
+
+/* The focus, in view while the page scrolls. */
+[data-brief] .ct-focusbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.1rem;
+  margin: 0 0 1.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  background: rgba(255, 255, 255, 0.96);
+  font-size: 0.9375rem;
+}
+
+[data-brief] .ct-focusbar-label {
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-focusbar-none {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-focusbar-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+[data-brief] .ct-focusbar-clear {
+  padding: 0 0.15rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 400;
+  color: var(--brief-muted);
+  cursor: pointer;
+}
+
+[data-brief] .ct-focusbar-clear:hover,
+[data-brief] .ct-focusbar-clear:focus-visible {
+  color: var(--brief-ink);
+}
+
+/* The sticky field sits below the focus line. */
+[data-brief] .ct-overview .brief-hub-stage {
+  top: max(3.75rem, calc(50vh - 31cqw + 1.25rem));
+  height: min(calc(100vh - 5rem), 62cqw);
+}
+
+[data-brief] .ct-switch {
+  flex: none;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-switch .ct-lens-option {
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-focus-line {
+  font-weight: 600;
+}
+
+[data-brief] .ct-focus-choices {
+  margin: 0 0 0.75rem;
+}
+
+[data-brief] .ct-select-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  margin: 0 0 0.45rem;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-select-line select {
+  max-width: 22rem;
+  padding: 0 0.15rem;
+  border: 0;
+  border-bottom: 1px solid var(--brief-hairline-strong);
+  background: none;
+  font: inherit;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-choice-label {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-docs-choice {
+  gap: 0.2rem 0.85rem;
+  align-items: baseline;
+}
+
+[data-brief] .ct-docs-choice .ct-lens-option {
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-sub {
+  margin: 1rem 0 0.3rem;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-codes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-codes b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .ct-more {
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-pick {
+  margin-top: 1rem;
+}
+
+[data-brief] .ct-back {
+  display: inline-block;
+  margin: 0.3rem 0 0.2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+  cursor: pointer;
+}
+
+[data-brief] .ct-back:hover,
+[data-brief] .ct-back:focus-visible {
+  color: var(--brief-ink);
+}
+
+[data-brief] .ct-pick-name {
+  display: inline;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+[data-brief] .ct-pick-name[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-pick-facts {
+  margin: 0.35rem 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--brief-muted);
+}
+
+/* Places ranked by what the map shows. */
+[data-brief] .ct-rank {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-rank li {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-rank-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 7rem) 6.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.4rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-rank-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .ct-rank-row:hover .ct-rank-name,
+[data-brief] .ct-rank-row:focus-visible .ct-rank-name,
+[data-brief] .ct-rank-row[data-lit] .ct-rank-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-rank-bar {
+  display: block;
+  height: 8px;
+  background: var(--brief-track);
+}
+
+[data-brief] .ct-rank-bar i {
+  display: block;
+  height: 100%;
+}
+
+[data-brief] .ct-bar-money i {
+  background: #0468b1;
+}
+
+[data-brief] .ct-bar-record i {
+  background: var(--brief-ink);
+}
+
+[data-brief] .ct-bar-match i {
+  background-image: radial-gradient(circle, var(--brief-green) 1.4px, transparent 1.65px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-bar-mis i {
+  background-image: radial-gradient(circle, var(--brief-red) 1.3px, transparent 1.55px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-rank-num {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* A place's money by policy area. */
+[data-brief] .ct-mini {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 7rem) 6.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.2rem 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-mini-bar {
+  display: block;
+  height: 7px;
+  background: var(--brief-track);
+}
+
+[data-brief] .ct-mini-bar i {
+  display: block;
+  height: 100%;
+  background: #0468b1;
+}
+
+[data-brief] .ct-mini-num {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+[data-brief] .ct-tenders {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-tender-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-tender-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Every policy area's targets: potentially misaligned (left of the line)
+   beside strongly matching (right). */
+[data-brief] .ct-bf-head,
+[data-brief] .ct-bf {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem 4.5rem 4.5rem 4.25rem;
+  align-items: center;
+  column-gap: 0.35rem;
+}
+
+[data-brief] .ct-bf-head {
+  margin: 0.2rem 0 0.2rem;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-bf-head span:nth-child(2) {
+  grid-column: 2 / span 2;
+  text-align: right;
+}
+
+[data-brief] .ct-bf-head span:nth-child(3) {
+  grid-column: 4 / span 2;
+}
+
+[data-brief] .ct-bf-list {
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-bf {
+  width: 100%;
+  padding: 0.4rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-bf-name {
+  overflow: hidden;
+  padding-right: 0.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .ct-bf:hover .ct-bf-name,
+[data-brief] .ct-bf:focus-visible .ct-bf-name,
+[data-brief] .ct-bf[data-lit] .ct-bf-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-bf-red,
+[data-brief] .ct-bf-green {
+  display: flex;
+  height: 9px;
+}
+
+[data-brief] .ct-bf-red {
+  justify-content: flex-end;
+  border-right: 1px solid var(--brief-ink);
+}
+
+[data-brief] .ct-bf-red i {
+  display: block;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--brief-red) 1.3px, transparent 1.55px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-bf-green i {
+  display: block;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--brief-green) 1.4px, transparent 1.65px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-bf-red-n {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--brief-red);
+}
+
+[data-brief] .ct-bf-green-n {
+  padding-left: 0.25rem;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-brief] .ct-details {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-details summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-brief] .ct-details ul {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-plain-link {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  padding: 0.2rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-plain-link:hover,
+[data-brief] .ct-plain-link:focus-visible {
+  background: var(--brief-highlight);
 }
