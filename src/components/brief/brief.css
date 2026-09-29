@@ -1750,8 +1750,8 @@
   margin-top: 2rem;
 }
 
-/* The map's documents, along its diagonal: named at the left of their own
-   stretch, which carries the document's colour. */
+/* The map's documents on its edges: a row's name at the left edge beside
+   its colour bar (right-aligned, up to three lines). */
 [data-brief] .brief-hub-axis {
   position: absolute;
   display: -webkit-box;
@@ -1774,6 +1774,41 @@
 [data-brief] .brief-hub-axis[data-dim] {
   color: var(--brief-muted);
   font-weight: 500;
+}
+
+/* A column's name under the map: centred under its column, a short name
+   over a line of context (Jonas's mockup 7). */
+[data-brief] .brief-hub-axis[data-edge="column"] {
+  display: block;
+  overflow: hidden;
+  transform: translateX(-50%);
+  font-size: 0.78125rem;
+  line-height: 15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+[data-brief] .brief-hub-axis-context {
+  display: block;
+  overflow: hidden;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+  text-overflow: ellipsis;
+}
+
+/* A pointed block's two documents, and a pointed document's names: pale
+   yellow on the words only. */
+[data-brief] .brief-hub-axis[data-on] .brief-hub-axis-name {
+  background: linear-gradient(
+    to bottom,
+    transparent 12%,
+    var(--brief-highlight) 12%,
+    var(--brief-highlight) 94%,
+    transparent 94%
+  );
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 [data-brief] .brief-hub-center[data-clickable] .brief-hub-center-name {

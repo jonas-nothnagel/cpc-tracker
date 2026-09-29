@@ -62,14 +62,11 @@ describe("HubCanvas", () => {
 
   it("keeps a name under the pointer while only the map's emphasis changes", () => {
     const layout = layoutHub({ kind: "map" }, PARTICLES, DATA, W, H);
-    const b = layout.axis.find((a) => a.key === "B")!;
+    const b = layout.axis.find((a) => a.edge === "row" && a.key === "B")!;
     const { container, rerender } = render(
       <HubCanvas data={DATA} stage={{ kind: "map" }} labelFor={() => null} tipFor={tipFor} />,
     );
-    fireEvent.pointerMove(field(container), {
-      clientX: (b.square.x0 + b.square.x1) / 2,
-      clientY: (b.square.y0 + b.square.y1) / 2,
-    });
+    fireEvent.pointerMove(field(container), { clientX: b.bar.x0, clientY: (b.bar.y0 + b.bar.y1) / 2 });
     // Pointing at a document brings it forward: the dots stay where they are.
     rerender(
       <HubCanvas data={DATA} stage={{ kind: "map", focus: { kind: "doc", doc: "B" } }} labelFor={() => null} tipFor={tipFor} />,
@@ -77,19 +74,43 @@ describe("HubCanvas", () => {
     expect(screen.getByRole("presentation").textContent).toBe("axis B");
   });
 
-  it("names the documents along the map's diagonal, and a document under the pointer", () => {
+  it("names the rows at the left and the columns under the map, and a document under the pointer", () => {
     const layout = layoutHub({ kind: "map" }, PARTICLES, DATA, W, H);
     const { container } = render(
       <HubCanvas data={DATA} stage={{ kind: "map" }} labelFor={() => null} tipFor={tipFor} />,
     );
-    const names = [...container.querySelectorAll("[data-axis]")].map((el) => el.textContent);
-    expect(names).toEqual(["Document A", "Document B", "Document C"]);
-    const b = layout.axis.find((a) => a.key === "B")!;
-    fireEvent.pointerMove(field(container), {
-      clientX: (b.square.x0 + b.square.x1) / 2,
-      clientY: (b.square.y0 + b.square.y1) / 2,
-    });
+    const rows = [...container.querySelectorAll('[data-edge="row"]')].map((el) => el.textContent);
+    const cols = [...container.querySelectorAll('[data-edge="column"]')].map((el) => el.textContent);
+    expect(rows).toEqual(["Document B", "Document C"]);
+    // A column's short name over its line of context.
+    expect(cols).toEqual(["AContext A", "BContext B"]);
+    const b = layout.axis.find((a) => a.edge === "row" && a.key === "B")!;
+    fireEvent.pointerMove(field(container), { clientX: b.bar.x0, clientY: (b.bar.y0 + b.bar.y1) / 2 });
     expect(screen.getByRole("presentation").textContent).toBe("axis B");
+    const a = layout.axis.find((x) => x.edge === "column" && x.key === "A")!;
+    fireEvent.pointerMove(field(container), { clientX: a.labelX, clientY: a.labelY + a.labelHeight / 2 });
+    expect(screen.getByRole("presentation").textContent).toBe("axis A");
+  });
+
+  it("pointing at a block marks its row's and its column's names, and nothing at rest", () => {
+    const layout = layoutHub({ kind: "map" }, PARTICLES, DATA, W, H);
+    const block = layout.groups.find((g) => g.key === "A<->C")!;
+    const { container } = render(
+      <HubCanvas data={DATA} stage={{ kind: "map" }} labelFor={() => null} tipFor={tipFor} />,
+    );
+    expect(container.querySelectorAll(".brief-hub-axis[data-on]")).toHaveLength(0);
+    fireEvent.pointerMove(field(container), { clientX: (block.x0 + block.x1) / 2, clientY: (block.y0 + block.y1) / 2 });
+    const on = [...container.querySelectorAll(".brief-hub-axis[data-on]")].map(
+      (el) => `${el.getAttribute("data-edge")}:${el.getAttribute("data-axis")}`,
+    );
+    expect(on.sort()).toEqual(["column:A", "row:C"]);
+    // Pointing at a document marks both its names.
+    const b = layout.axis.find((a) => a.edge === "row" && a.key === "B")!;
+    fireEvent.pointerMove(field(container), { clientX: b.bar.x0, clientY: (b.bar.y0 + b.bar.y1) / 2 });
+    const named = [...container.querySelectorAll(".brief-hub-axis[data-on]")].map(
+      (el) => `${el.getAttribute("data-edge")}:${el.getAttribute("data-axis")}`,
+    );
+    expect(named.sort()).toEqual(["column:B", "row:B"]);
   });
 
   it("on a side, names the pair under the pointer and opens it", () => {
@@ -139,8 +160,8 @@ describe("HubCanvas", () => {
     );
     const names = [...container.querySelectorAll("[data-mark]")].map((el) => el.textContent);
     expect(names).toEqual(["A6 (6)", "B6 (7)"]);
-    // The end of a name, beside the diagonal.
-    const at = { clientX: b6.labelX - 4, clientY: b6.labelY };
+    // The start of a name, in the empty half where its row ends.
+    const at = { clientX: b6.labelX + 4, clientY: b6.labelY };
     fireEvent.pointerMove(field(container), at);
     expect(onHover).toHaveBeenLastCalledWith("target:apart:B6");
     expect(screen.getByRole("presentation").textContent).toBe("mark B6");
@@ -157,9 +178,9 @@ describe("HubCanvas", () => {
       ["A<->B", "1"],
       ["B<->C", "6"],
     ]);
-    // Under its row to the right, beside its column above.
-    expect(container.querySelector('[data-count="B<->C"]')?.getAttribute("data-align")).toBe("below");
-    expect(container.querySelector('[data-count="A<->B"]')?.getAttribute("data-align")).toBe("right");
+    // Under its row (with the earlier document), beside its column (with the later one).
+    expect(container.querySelector('[data-count="A<->B"]')?.getAttribute("data-align")).toBe("below");
+    expect(container.querySelector('[data-count="B<->C"]')?.getAttribute("data-align")).toBe("right");
     rerender(<HubCanvas data={DATA} stage={APART} labelFor={() => null} />);
     expect(counts()).toEqual([]);
   });

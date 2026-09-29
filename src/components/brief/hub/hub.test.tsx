@@ -139,7 +139,8 @@ describe("Hub", () => {
       const { rerender } = render(hub());
       enter("map");
       const a = layoutHub({ kind: "map" }, hubParticles(DATA), DATA, 800, 500).axis.find((x) => x.key === "A")!;
-      const at = { clientX: a.labelX - 4, clientY: a.labelY };
+      // A is the first document: a column, named under the map.
+      const at = { clientX: a.labelX, clientY: a.labelY + a.labelHeight / 2 };
       const scroll = vi.mocked(Element.prototype.scrollIntoView);
       scroll.mockClear();
       fireEvent.click(field(), at);
