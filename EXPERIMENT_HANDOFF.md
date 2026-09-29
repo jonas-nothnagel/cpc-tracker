@@ -489,6 +489,46 @@ unreadable.
   finance or implementation layers come to policy areas, they are Mongolia-only (Jonas: the
   other countries skip them for now).
 
+**Round 13 (2026-09-29): the map of documents, named on its edges.** Spec
+`docs/superpowers/specs/2026-09-29-coherence-brief-round13-map-edges-design.md`, plan
+`docs/superpowers/plans/2026-09-29-coherence-brief-round13-map-edges.md`.
+- **Why:** Jonas liked the map, but asked for experiments that make clearer what it shows and
+  which two documents a block compares.
+- **Sketch rounds** ran in their own companion window
+  (`.superpowers/brainstorm/12462-1790678217/content/`, real data, all four countries):
+  - A, B, C: he picked A (names on the outer edges) over B (the triangle turned 45°) and C
+    (pairs side by side).
+  - At eight documents A was "very blurry and unreadable". Today's map "looked cleaner",
+    because the sketch had changed the squares, the two tones and added numbers
+    (memory `sketch-on-exact-rendering`).
+  - Redrawn on today's own drawing, A beat "today + the pair traced on hover": "easier to read
+    even with the cost of double labels".
+  - Tilted column names were not elegant. From his own mockups he chose 7 in one aligned row.
+- **Built** (`c8a37bf`, `a0bde5e`, `7d8023f`, `d853b7b`, `a400d7a`, `a1936ce`): the map is a
+  lower triangle in today's squares, tones and gaps, with no numbers in the blocks.
+  - Rows are documents 2..N, named at the left edge beside a colour bar.
+  - Columns are documents 1..N-1, named under the map: a short name over a smaller line of
+    context, on one baseline. Where they do not fit, every second one drops a row, joined to
+    its bar by a thin line.
+  - Short names come from the new config field `mapLabel` (Mongolia: Jonas's Vision / 2050,
+    NDC / Contribution, Paris / Agreement, Biodiv. / 2030, Adapt. / Plan, Food / Measures,
+    LDN / Targets, LDN / Investment). Elsewhere the `mediumLabel` "ACR (context)" is split.
+  - Named targets stand above the map (the first document's), in the empty half where their
+    row ends (the middle documents'), or under their row's name (the last document's).
+  - The room above the map is the same on every side, so the map keeps its place and size.
+  - Pointing at a block marks its row's and its column's names and draws two hairlines along
+    the white gaps back to both bars.
+  - A target in focus keeps its counts per block (its row now runs from the left edge, its
+    column down to the bottom).
+  - `spread` no longer squeezes every name to the top when the first one sits near the top
+    edge (Sri Lanka's first row hit this in the sketches).
+  - The walkthrough's map stop says rows are named at the left and columns under the map.
+- **Verified:** full suite 1,673 passed (1 skipped), `tsc` clean, lint clean on the changed
+  files, all four `/brief` 200. A fresh process loads Mongolia's `mapLabel`s through the real
+  loader. A long-running dev server keeps the old config cached until it restarts.
+- **Not in this round:** the How it works triangle keeps its diagonal; naming all eight
+  documents on both edges (an empty first row and last column) was offered and not taken.
+
 - **Where:** worktree `/Users/jonas/github/cpc-tracker/.claude/worktrees/coherence-pulse`
   on branch `experiment/coherence-pulse`. The main checkout stays on `main`, untouched.
   Start chats for this work from inside the worktree folder.
