@@ -89,6 +89,26 @@ go with blue and build the full brief for me to see it now". Spec
   - the focus line is opaque and the focus is named in each step;
   - step 2 lists what the money is for by policy area.
   Full suite: 156 files, 1,661 tests. Deferred minors are in the ledger (`.superpowers/sdd/…/progress.md`).
+- **Walk 2** (2026-09-29; Jonas: "the more complete the data the better (dont forget to keep
+  track with the sustainabiliy environmental footprint)"):
+  - every contract on the page has its buyer (529 names) and its purpose reason (4,786) in
+    English, by `python/scripts/translate_contracts.py` (was `translate_contract_titles.py`): one
+    prompt, cache namespace and file per field (`contract-buyers.en.json`,
+    `contract-reasons.en.json`); an answer left in Mongolian script is asked for once more in
+    Latin script only (3 were). The bake adds `buyerEnglish` and `reasonEnglish`; the panel names
+    the buyer among the facts and gives the reason under the purpose verdict;
+  - footprint: the script appends measured rows (`contracts-translation:<field>`, 5,361 calls,
+    171 g CO2e); the title run of 28 and 29 September is backfilled (`backfill:contract-titles`,
+    4,599 calls, 147 g, estimated). Ledger: 67 rows, 75.1 kg;
+  - scrolling: a step leads once its top passes a line 30% down the window
+    (`src/lib/brief/contracts/lead.ts`), not while it crosses the middle: the map's long step had
+    given way to the policy areas while its end was still being read;
+  - "No strongly matching contract anywhere": one line per target under its document's code, cut
+    at the column's edge, the whole target on hover (was two ragged columns);
+  - classification facts for the answer to Jonas: the ranker is multi-label (at the 0.5
+    relevance threshold, 14.7% of contract-lens pairs name two or more areas) and the page keeps
+    the top area only, so money is counted once per lens; 16.5% of those top areas score under
+    0.5 (a weak best guess, kept like a target's primary).
 - **Open**:
   - Jonas's next walk;
   - es/mn copy (English placeholders);
