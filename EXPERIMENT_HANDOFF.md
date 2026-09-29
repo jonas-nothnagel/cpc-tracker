@@ -26,9 +26,13 @@ dots) "too abstract: I can not make policy on dots and colors".
 - **Places**: the `contract_places.py` gazetteer reads the buyer and title (79% of the green value
   placed). Outlines: Natural Earth admin-1, public domain, `src/data/geo/mongolia-aimags.json`
   (Töv's label moved west of the capital).
-- **English titles**: 311 from August plus a 50-title sample (`contract-titles.en.json`, the
-  August prompt and cache). The full run (about 6,000 titles, a few US$) waits for Jonas's
-  check of the sample.
+- **English titles**: all 5,913 contracts on the page read in English (2026-09-29, Jonas: "lets have a
+  complete dataset"): 4,549 machine-translated with the August prompt, model and cache into
+  `contract-titles.en.json`, the original kept in each record. Caveat seen in the output: the
+  model sometimes expands soum abbreviations into aimag names.
+- **Currency**: a plain switch under the title ("Amounts in ₮ · US$") restates every amount at
+  the indicative ₮3,500 per US$, named beside the switch; `?cur=usd` opens the page in US$.
+  Jonas declined a "without the state mining companies" line: keep the big picture.
 - **Overview**: a sticky field of ₮5 billion squares (9,755 for Mongolia) beside four steps.
   - The record by year.
   - Nature and climate: ₮1.6 of every ₮100 mainly, ₮3.0 as a side benefit.
@@ -62,7 +66,6 @@ dots) "too abstract: I can not make policy on dots and colors".
   - a 90-contract spot check of the purpose reading;
   - the review-sheet verdicts;
   - a walkthrough, and es/mn copy (English placeholders);
-  - a "without the state mining companies" line (Jonas's call);
   - a feedback control on contract explanations (needs a new surface);
   - slimming the page payload (3.5 MB of HTML in dev).
 - Local only; nothing on Vercel until Jonas says so. A parallel session commits brief work in
