@@ -23,7 +23,8 @@ const RECORD: ContractRecord = {
   id: "p1",
   original: "Ногоон бүсийг ойжуулах",
   english: "Afforestation of the green belt",
-  buyer: "Khovd aimag procurement office",
+  buyer: "Ховд аймгийн Худалдан авах ажиллагааны газар",
+  buyerEnglish: "Khovd aimag Procurement Agency",
   code: "ABC/2024/1",
   type: "works",
   stage: "approved",
@@ -31,6 +32,7 @@ const RECORD: ContractRecord = {
   end: "2024-07-01",
   url: "https://www.tender.gov.mn/mn/contract/p1",
   reason: "Ойжуулалт нь байгаль орчны зорилготой.",
+  reasonEnglish: "Afforestation has an environmental objective.",
   lots: 1,
   strong: [
     {
@@ -67,18 +69,32 @@ describe("a contract, in full", () => {
     expect(await screen.findByRole("heading", { name: "Afforestation of the green belt" })).toBeInTheDocument();
     expect(screen.getByText("Public procurement contract")).toBeInTheDocument();
     expect(screen.getByText("₮10 billion")).toBeInTheDocument();
-    // English only: no Mongolian original, no buyer the record names in Mongolian.
+    // English only: the buyer and the reason in English, nothing in Mongolian.
+    expect(screen.getByText("Khovd aimag Procurement Agency")).toBeInTheDocument();
     expect(screen.queryByText(/Ногоон бүсийг ойжуулах/)).toBeNull();
     expect(screen.queryByText(/Ойжуулалт/)).toBeNull();
-    expect(screen.queryByText("Khovd aimag procurement office")).toBeNull();
+    expect(screen.queryByText(/Ховд аймгийн/)).toBeNull();
     const reading = screen.getByRole("region", { name: "The pipeline's reading" });
     expect(within(reading).getByText("Mainly for nature or climate")).toBeInTheDocument();
+    expect(within(reading).getByText("Afforestation has an environmental objective.")).toBeInTheDocument();
     expect(within(reading).getByText("Pollution management")).toBeInTheDocument();
     expect(within(reading).getByText("Waste")).toBeInTheDocument();
     expect(within(reading).getByText("1 strongly matching")).toBeInTheDocument();
     expect(within(reading).getByRole("button", { name: /Cut emissions from waste/ })).toBeInTheDocument();
     const source = screen.getByRole("link", { name: /View on tender\.gov\.mn/ });
     expect(source).toHaveAttribute("href", RECORD.url);
+  });
+
+  it("leaves out a buyer or a reason that has no English, rather than show the Mongolian", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, json: async () => ({ ...RECORD, buyerEnglish: null, reasonEnglish: null }) })),
+    );
+    renderPanels([{ kind: "contract", id: "p1" }]);
+    expect(await screen.findByRole("heading", { name: "Afforestation of the green belt" })).toBeInTheDocument();
+    expect(screen.queryByText("Buyer")).toBeNull();
+    expect(screen.queryByText(/Ховд аймгийн/)).toBeNull();
+    expect(screen.queryByText(/Ойжуулалт/)).toBeNull();
   });
 
   it("says so when the record cannot be loaded", async () => {

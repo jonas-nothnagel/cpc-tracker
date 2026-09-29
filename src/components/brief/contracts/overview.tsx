@@ -32,6 +32,7 @@ import {
   type FocusParts,
 } from "@/lib/brief/contracts/focus";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
+import { LEAD_LINE, leadingStep } from "@/lib/brief/contracts/lead";
 import { NO_PLACE, type Contract, type LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { largestRemainder, squaresFor, UNIT } from "@/lib/brief/contracts/units";
@@ -60,16 +61,6 @@ const PLACE_TENDERS = 4;
 const MANY_DOCS = 3;
 /** An area's synergy share is stated from this many contracts. */
 const SYNERGY_MIN = 20;
-
-/** The step across the middle of the window, if any. */
-function stepAtMiddle(root: HTMLElement | null): Step | null {
-  const y = window.innerHeight / 2;
-  for (const el of root?.querySelectorAll<HTMLElement>("[data-step]") ?? []) {
-    const box = el.getBoundingClientRect();
-    if (box.top <= y && box.bottom >= y) return el.dataset.step as Step;
-  }
-  return null;
-}
 
 const byValue = (a: Contract, b: Contract) => b.value - a.value || a.id.localeCompare(b.id);
 
@@ -114,24 +105,29 @@ export function Overview({
   const [pointed, setPointed] = useState<string | null>(null);
   const root = useRef<HTMLDivElement>(null);
 
+  // The step whose top has passed the lead line leads, measured once a frame
+  // while the page scrolls (and at once when it opens part way down).
   useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const step = (entry.target as HTMLElement).dataset.step as Step | undefined;
-          if (!step) continue;
-          if (entry.isIntersecting) setActive(step);
-          else {
-            const next = stepAtMiddle(root.current);
-            if (next) setActive((cur) => (cur === step ? next : cur));
-          }
-        }
-      },
-      { rootMargin: "-45% 0px -45% 0px" },
-    );
-    root.current?.querySelectorAll("[data-step]").forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const tops = [...(root.current?.querySelectorAll<HTMLElement>("[data-step]") ?? [])].map((el) => ({
+        step: el.dataset.step as Step,
+        top: el.getBoundingClientRect().top,
+      }));
+      setActive(leadingStep(tops, window.innerHeight * LEAD_LINE) ?? steps[0]);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    if (window.scrollY > 0) onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [steps]);
 
   // ── The focus, as each step reads it ───────────────────────────────

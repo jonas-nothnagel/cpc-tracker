@@ -141,6 +141,7 @@ function ContractPanel({
               })}
             </Fact>
           )}
+          {record.buyerEnglish && <Fact label={t("buyer")}>{record.buyerEnglish}</Fact>}
           <Fact label={t("type")}>{t(`types.${record.type}` as "types.other")}</Fact>
           <Fact label={t("stage")}>{t(`stages.${record.stage}` as "stages.other")}</Fact>
           <Fact label={t("place")}>{placeName(contract?.place)}</Fact>
@@ -156,6 +157,7 @@ function ContractPanel({
                   <i aria-hidden="true" data-tier={contract.tier} />
                   {t(`tier.${contract.tier}`)}
                 </span>
+                {record.reasonEnglish && <span className="ct-reading-reason">{record.reasonEnglish}</span>}
               </Fact>
             )}
             {areas.length > 0 && (

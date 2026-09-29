@@ -67,11 +67,14 @@ describe("where to look closer", () => {
     );
   });
 
-  it("gathers the targets no contract strongly matches, by document", () => {
+  it("gathers the targets no contract strongly matches, one line each under its document", () => {
     renderBlock();
     const gaps = screen.getByRole("group", { name: "No strongly matching contract anywhere" });
-    expect(within(gaps).getByText("C · 1")).toBeInTheDocument();
-    expect(within(gaps).getByRole("button", { name: /Reform harmful subsidies/ })).toBeInTheDocument();
+    expect(within(gaps).getByRole("term").textContent).toBe("C");
+    const line = within(gaps).getByRole("button", { name: "2 Reform harmful subsidies" });
+    // The line is cut at the column's edge; the whole target is on hover.
+    expect(line).toHaveAttribute("title", "2 Reform harmful subsidies");
+    expect(within(gaps).queryByText("C · 1")).toBeNull();
   });
 
   it("merges tenders with the same title at rest, and one opens its target with that tender first", () => {

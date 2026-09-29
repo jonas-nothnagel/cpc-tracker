@@ -376,23 +376,33 @@ export function CloserBlock({
         {gaps.length > 0 && (
           <div className="ct-closer-gaps" role="group" aria-label={t("closer.gaps")}>
             <h3 className="ct-closer-gaps-head">{t("closer.gaps")}</h3>
-            {gaps.map((g) => (
-              <div key={g.doc} className="ct-closer-gap">
-                <p className="ct-closer-gap-doc">{t("closer.gapsDoc", { doc: code(g.doc), count: g.ids.length })}</p>
-                <ul>
-                  {g.ids.map((id) => {
-                    const x = targets.get(id);
-                    return (
-                      <li key={id}>
-                        <button type="button" className="ct-plain-link" data-lit={target === id ? "" : undefined} onClick={() => pick(id)}>
-                          {x ? targetLine(x, 90) : id}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
+            <dl className="ct-gaps">
+              {gaps.map((g) => (
+                <div key={g.doc} className="ct-gaps-doc">
+                  <dt>
+                    <abbr title={docs.get(g.doc)?.name}>{code(g.doc)}</abbr>
+                  </dt>
+                  <dd>
+                    <ul>
+                      {g.ids.map((id) => {
+                        const x = targets.get(id);
+                        const line = x ? targetLine(x, 400) : id;
+                        const label = x && line.startsWith(x.label) ? x.label : "";
+                        return (
+                          <li key={id}>
+                            {/* One line, cut at the column's edge; the whole target on hover. */}
+                            <button type="button" className="ct-gaps-line" data-lit={target === id ? "" : undefined} onClick={() => pick(id)} title={line}>
+                              {label && <span className="ct-gaps-label">{label}</span>}
+                              {line.slice(label.length)}
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         )}
       </div>

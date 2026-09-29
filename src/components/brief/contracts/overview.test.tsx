@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
@@ -109,6 +109,70 @@ const SETUP = setupFixture();
 
 
 afterEach(cleanup);
+
+describe("while the page scrolls", () => {
+  /** A 1000px window whose animation frames run when the test flushes them, one frame at a time. */
+  function frames(scrollY = 0) {
+    vi.stubGlobal("innerHeight", 1000);
+    vi.stubGlobal("scrollY", scrollY);
+    let next = 1;
+    let queue = new Map<number, FrameRequestCallback>();
+    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+      queue.set(next, cb);
+      return next++;
+    });
+    vi.stubGlobal("cancelAnimationFrame", (id: number) => queue.delete(id));
+    return () =>
+      act(() => {
+        const run = queue;
+        queue = new Map();
+        run.forEach((cb) => cb(0));
+      });
+  }
+  /** Where each step's top sits in the window. */
+  function tops(at: Record<string, number>) {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
+      return { top: at[this.dataset.step ?? ""] ?? 0 } as DOMRect;
+    });
+  }
+  const mapLeads = () => screen.queryByRole("group", { name: "Money shown" }) !== null;
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  it("keeps the step before until the map's step passes a line 30% down the window", () => {
+    const flush = frames();
+    tops({ record: -2000, purpose: -300, places: 400, areas: 2400 });
+    renderOverview();
+    fireEvent.scroll(window);
+    flush();
+    expect(mapLeads()).toBe(false);
+    expect(document.querySelector(".ct-unit")).toBeNull();
+    tops({ record: -2100, purpose: -400, places: 290, areas: 2300 });
+    fireEvent.scroll(window);
+    flush();
+    expect(mapLeads()).toBe(true);
+  });
+
+  it("keeps the map while its long step is still being read, with the next step past the middle", () => {
+    const flush = frames();
+    tops({ record: -3000, purpose: -2000, places: -700, areas: 450 });
+    renderOverview();
+    fireEvent.scroll(window);
+    flush();
+    expect(mapLeads()).toBe(true);
+  });
+
+  it("leads with the step in view when the page opens part way down", () => {
+    const flush = frames(2600);
+    tops({ record: -3000, purpose: -2000, places: 100, areas: 1500 });
+    renderOverview();
+    flush();
+    expect(mapLeads()).toBe(true);
+  });
+});
 
 describe("Overview", () => {
   it("walks from the record to where it lands, then what the money is for", () => {

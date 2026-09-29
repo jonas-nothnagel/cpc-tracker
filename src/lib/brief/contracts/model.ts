@@ -97,8 +97,10 @@ export interface ContractRecord {
   original: string;
   /** Machine translation, when there is one. */
   english: string | null;
-  /** The public body buying (the record's own field; shown only here). */
+  /** The public body buying, as the record names it (in Mongolian). */
   buyer: string;
+  /** The buyer's name machine-translated to English; null until translated. */
+  buyerEnglish?: string | null;
   code: string;
   /** goods, works, services, consulting, non_consulting, framework, turnkey, direct, e_shop, other */
   type: string;
@@ -109,6 +111,8 @@ export interface ContractRecord {
   url: string;
   /** The purpose reading's one-line reason, in the language the AI wrote it. */
   reason: string;
+  /** The reason in English (machine-translated when the AI wrote it in Mongolian); null until translated. */
+  reasonEnglish?: string | null;
   /** Contracts in the same tender. */
   lots: number;
   strong: { target: string; text: string }[];

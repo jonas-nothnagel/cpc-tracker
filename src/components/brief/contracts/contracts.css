@@ -961,28 +961,69 @@
   font-weight: 600;
 }
 
-[data-brief] .ct-closer-gap {
-  margin: 0 0 0.75rem;
+/* One document per group: its code, then its targets one line each. */
+[data-brief] .ct-gaps {
+  margin: 0;
 }
 
-[data-brief] .ct-closer-gap-doc {
-  margin: 0 0 0.15rem;
+[data-brief] .ct-gaps-doc {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  column-gap: 1rem;
+  padding: 0.35rem 0;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-gaps-doc dt {
   font-size: 0.8125rem;
   font-weight: 600;
+  line-height: 1.75;
   color: var(--brief-muted);
 }
 
-[data-brief] .ct-closer-gap ul {
+[data-brief] .ct-gaps-doc abbr {
+  text-decoration: none;
+}
+
+[data-brief] .ct-gaps-doc dd {
+  min-width: 0;
+  margin: 0;
+}
+
+[data-brief] .ct-gaps-doc ul {
   margin: 0;
   padding: 0;
   list-style: none;
-  columns: 2;
-  column-gap: 1.5rem;
 }
 
-[data-brief] .ct-closer-gap li {
-  break-inside: avoid;
+[data-brief] .ct-gaps-line {
+  display: block;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
   font-size: 0.8125rem;
+  line-height: 1.75;
+  color: var(--brief-ink);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+[data-brief] .ct-gaps-line:hover,
+[data-brief] .ct-gaps-line:focus-visible {
+  text-decoration: underline;
+}
+
+[data-brief] .ct-gaps-line[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-gaps-label {
+  font-weight: 600;
 }
 
 [data-brief] .ct-plain-link[data-lit] {
@@ -1037,10 +1078,6 @@
 @media (max-width: 900px) {
   [data-brief] .ct-closer-side {
     position: static;
-  }
-
-  [data-brief] .ct-closer-gap ul {
-    columns: 1;
   }
 }
 
@@ -1160,6 +1197,14 @@
 
 [data-brief] .ct-reading-tier i[data-tier="none"] {
   background: var(--brief-track);
+}
+
+[data-brief] .ct-reading-reason {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--brief-muted);
 }
 
 [data-brief] .ct-reading-areas {
