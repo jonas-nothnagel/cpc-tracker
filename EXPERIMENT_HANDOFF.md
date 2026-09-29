@@ -356,12 +356,19 @@ unreadable.
   side's target pairs the headline says so plainly ("No target pairs in these policy areas show
   potential misalignment.") and no rest line follows. For Jonas: the standard print still
   carries the old section's headline ("{area} shows the highest share of potential
-  misalignment"), a different finding from the screen, until the component prints. Deferred
-  minors: the acronym tooltip is unreachable (label layer ignores the pointer); the sticky right
-  column can outgrow the window; a partial lens leaves most pairs unmentioned (Human rights: 620
-  of 671); the picture's labels are hidden from screen readers; the component's lens buttons lack
-  the menu's tooltips; canvas rough edges (restart stall, labels ahead of the dots, pixel ratio
-  not tracked); h2 to h4; two test gaps.
+  misalignment"), a different finding from the screen, until the component prints.
+- Deferred review items, all fixed (`63c2afc`, 2026-09-29, Jonas: "run the fixes for deferred
+  completely"): the list side is never taller than the window (it scrolls on its own, as the
+  menu does; an opened pair and a picked target come into view there); names cut short read in
+  full on hover, acronym included; a partial lens says where the rest of the side's pairs are
+  ("620 potential misalignments fall between targets outside these areas" for Mongolia's human
+  rights lens); screen readers hear the rows as a list with their number of targets; the lens
+  choices carry the menu's explanations (shared `lens-tooltip.ts`); the picture no longer
+  restarts a move when a target is pointed at, holds tips and cut counts until the dots arrive,
+  takes the dot under the pointer mid-move, draws sharp after a move to another screen and never
+  draws a dot behind its start; h3 under the headline; partners end with "N elsewhere"; the bar
+  track is `--brief-track`; tests pin a lens change with a target picked and wrapped-line
+  clearance. Clean checkout: 1,603 tests pass (1 skipped), `tsc` clean.
 - A parallel session built the public-contracts layer (`src/lib/brief/contracts/`,
   `src/components/brief/contracts/`) on this branch the same afternoon; message catalogs were
   staged key by key so neither session committed the other's work.
