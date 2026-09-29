@@ -5,6 +5,78 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## Public contracts: two live fixes and the development-side probe (2026-09-29)
+
+**Live fixes** (`6dbce85`; footprint rows `8e9ae0f`). Jonas: "the two live vercel problems we can
+fix and push".
+- The AI's explanations of a contract against a target used retired words: "tension" (312),
+  "contradiction" (55), "friction" (912), "pulls/works against" (400). The first sentences were
+  clean, but "more" showed the rest. `python/scripts/contract_wording.py` rewords them in the bake,
+  deterministically, with no model and no new prompt text. A strong qualifier ("direct",
+  "concrete") becomes "likely conflict"; a bare noun becomes "possible conflict" or "possible
+  misalignment"; the verbs become "may conflict with". "Contradiction" is always negated in the
+  record, so it becomes "conflict". "Work against" as a noun ("afforestation work against
+  desertification") stays. Re-baked, `contracts.json.gz` is byte-identical and only the 1,311
+  explanations differ; `python/tests/test_contract_wording.py` checks every explanation on the page.
+- The record line said contracts are "the step between a target and its delivery". The share of
+  strongly matching money from contracts that start on or after a document's publication:
+  - NDC 3.0: 4%;
+  - NAP: 30%;
+  - Res. 91: 46%;
+  - NBSAP: 0% against the February 2026 filing, 49% against the first filing (August 2024);
+  - FSS: 80%;
+  - Vision 2050: 96%.
+
+  For the newest documents, contracts are the baseline, not the delivery. The line now reads
+  "Contracts show where public money is committed to specific work, before and after each target
+  was adopted." (es/mn carry the English placeholder).
+- Verified on `6dbce85` in a scratch worktree: 1,700 tests, 60 Python tests, `pnpm build` green.
+  Lint's 3 errors predate the commit (`model-comparison/analysis-sections.tsx`,
+  `funding-network/use-force-simulation.ts`).
+
+**The development-side probe** (not on any page). Code:
+`dev_data_scripts/nctp_mirror/probe_development_side.py`. Data: `data/probe_plan.parquet`,
+`probe_pilot.parquet`, `probe_alignment.parquet`. Both are in the main checkout and gitignored.
+- Why: the brief's lead finding is "52% of the 671 potential misalignments involve 7 targets"; six
+  of them are farming and livestock targets. The August run paired targets only with contracts
+  screened as mainly or partly for nature or climate, plus a coal-and-mining keyword net. Crop,
+  seed, fertiliser, fodder, farm machinery and livestock-farm contracts (about 2,100, ~₮880bn) were
+  under 10% compared with any target; road construction (₮4.9T) 6%.
+- Prompt version: `e464f9e` (27 August, 20:56) added an untrusted-input clause to the analyst
+  system prompt. That changes every decomposition, so today's code misses every August cache
+  entry; all August verdicts (both passes) used the earlier text. The probe imports an export of
+  `e464f9e^` (`PROBE_SRC`); `--check-cache` rebuilt 20 August calls: 20/20 hits, same verdicts.
+- Rule, fixed before any verdict: the 11 targets in 30 or more potential misalignments. For each,
+  the nearest 350 contract texts (BGE-M3), keeping those August never compared with it: 2,379
+  comparisons over 1,357 texts, with August's prompts, model, rubric and cache namespaces.
+- New strongly matching contracts, with the page's cleaning:
+  - fodder production (FSS_18): +170, ₮16.6bn;
+  - rural relocation for farming (FSS_13): +36, ₮16.2bn;
+  - intensive beef and dairy (FSS_28): +44, ₮7.5bn;
+  - irrigated agriculture, new cropland, cash crops: +5 to 6 each, ₮0.4 to 0.6bn.
+
+  The 8 development targets go from ₮24bn to ₮61bn. Of their 379 potential misalignments, the
+  money leans to the nature or climate side in 291 (was 325). The crop side stays small, which now
+  reads as a finding; the livestock side was hidden.
+- Yield of strong verdicts by similarity rank falls from 25% (ranks 1-50) to 4.6% (301-350).
+  Fodder still yields 22% at 301-350, so its figure is a lower bound.
+- 40 new potentially misaligned pairs, all medium confidence, so none would show on the page: pasture
+  wells, roads, the Ömnögovi industrial park, a tailings expansion, a concentrator upgrade.
+- Hand check of 50 verdicts (Claude reading the Mongolian titles, not ground truth):
+  - strong: 19 of 30 agree, 1 unclear, 10 generous (institutional food and feed purchases against
+    food-production targets, generic farm inputs against cash-crop expansion, one industrial park
+    "ҮТП" read as a protected area);
+  - potentially misaligned: 13 of 20 plausible.
+
+  The added money is an upper bound.
+- Footprint: 305.6 g CO2e measured (3,747 calls) plus the pilot's 21.6 g backfilled. The pilot's
+  row failed on August's older ledger function. Cost about US$6-7 at August's all-in input-token
+  rate.
+- Open:
+  - Jonas: does the development side go into the paper-versus-contracts bar?
+  - a Mongolian-speaking check of the added matches;
+  - preserve the script on `data/mongolia-nctp-procurement`.
+
 ## Public contracts page, round 2 (2026-09-29)
 
 Built after three rounds of real-data sketches in the brainstorm companion
