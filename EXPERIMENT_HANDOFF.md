@@ -5,6 +5,76 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## Public contracts page, round 2 (2026-09-29)
+
+Built after three rounds of real-data sketches in the brainstorm companion
+(`.superpowers/brainstorm/97699-1790671665/content/round2.html` … `round3c.html`). Jonas: "lets
+go with blue and build the full brief for me to see it now". Spec
+`docs/superpowers/specs/2026-09-29-public-contracts-round2-design.md`, plan
+`docs/superpowers/plans/2026-09-29-public-contracts-round2.md`.
+
+- **One focus** (`src/lib/brief/contracts/focus.ts`): a policy area (under the lens in use), a
+  document and a place, each optional. A sticky line under the title names them, each with ✕.
+  Every view answers the parts that are not its own axis:
+  - step 2: all three parts;
+  - the map: area and document on the money, targets in focus for the tenders; the place is the
+    selection;
+  - the policy areas: document and place on the money, document on the targets;
+  - the deep dive: targets by document and area, contracts by place.
+- **Colours**: money in UNDP blue #0468B1 (the UNDP data viz library's main graph colour), side
+  benefit #B5D5F5, the record in ink. Green and red mean strongly matching and potentially
+  misaligned only (Jonas: green for money was confusing next to alignment; ink and ochre "not
+  great").
+- **Order**: record → nature and climate → where it lands (map) → what the money is for. The map
+  moved up ("it combines a lot of information in one visual element").
+- **Step 2** answers the focus. The focus money keeps the blue in each year and the rest turns
+  light; one line gives its first and last full years: "Money for Pollution management: ₮6.9
+  billion in 2019, ₮126.8 billion in 2025."
+- **The map**:
+  - the right side offers "Mainly for nature or climate · Strongly matching · Potentially
+    misaligned", then a policy-area select and document choices;
+  - "All contracts" is a switch above the map (the whole record by place, a new bake field);
+  - UB and "No single place named" sit in a band below the map (`GeoFile.band`);
+  - blocks never overlap (`resolveBlocks`), and names are placed clear of them or shown on
+    pointing (`placeLabels`);
+  - a focus is drawn as finer squares (the unit is named in the corner), tenders as one dot each.
+- **Map headlines** (numbers, guarded):
+  - the highest rate: Govi-Altai ₮8.4 per ₮100 against ₮1.6 overall;
+  - a focus's over-represented place (at least ₮3B and 3%, a 5% share, 1.5 times its usual
+    share), with a one-contract warning. Example: Res. 91 money in Govi-Altai, 13% against 3%, is
+    mostly one ₮17.7B wastewater plant;
+  - tenders by place; the misaligned side names no aimag ("77 of the 191 … name no single place;
+    114 name an aimag or the capital").
+  - With a document in focus: "also strongly match" shares; 64% of Res. 91's contracts serve no
+    other document.
+- **Policy areas** (sketch B):
+  - one line of blue squares per area, sorted by money, with the targets as grey dots from 61% of
+    the width;
+  - on the right, every area's targets with potentially misaligned tenders (red) beside those with
+    a strongly matching contract (green, "14 of 15");
+  - an area in focus opens its facts, its synergy share (3+ documents), its targets as red|green
+    rows, those without, and its contracts behind a link.
+- **Where to look closer** (`closer-block.tsx`) replaces the three round-1 deep dives:
+  - rows of targets with a dot per tender, full target wording, cut clouds with a visible gap;
+  - the targets no contract strongly matches anywhere, by document;
+  - at rest, the tenders behind the most potential misalignments, merged by title;
+  - a target opens its tenders with the AI's first sentence and confidence (fetched), its
+    strongly matching tenders, where they are, and "Explore this target".
+- **Removed**:
+  - BER and BTR columns (Jonas: not to be mixed with contracts);
+  - the synergy histogram;
+  - the round-1 lists of largest contracts (now "See its N contracts ›" in a list panel).
+- **Commits**: `5bd6778` (spec, plan), `427c8c0` (bake), `99d50c1` (focus, angles), `8830346`
+  (field), `72deeee` (overview, focus bar, list panel), `d38bc85` (deep dive). No attribution
+  lines.
+- **Open**:
+  - Jonas's walk through the built page;
+  - es/mn copy (English placeholders);
+  - the ring's contracts layer;
+  - the 90-contract spot check;
+  - the review-sheet verdicts;
+  - payload size.
+
 ## Public contracts page, round 1 (2026-09-28)
 
 `/{country}/brief/contracts` (Mongolia only): public contracts beside the targets, the finance and
