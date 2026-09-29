@@ -521,7 +521,7 @@
           },
           "map": {
             "title": "Map of the documents",
-            "body": "The same dots, one block for each pair of documents: each document's targets run along the diagonal, and each dot sits where its two targets meet. Pointing at a block or at a document's name gives its figures; selecting a block opens that pair of documents, and selecting a name puts that document at the centre further down."
+            "body": "The same dots, one block for each pair of documents: each row is a document named at the left, each column a document named under the map, and each dot sits where its two targets meet. Pointing at a block names its two documents and gives its figures; selecting a block opens that pair of documents, and selecting a name puts that document at the centre further down."
           },
           "areas": {
             "title": "By policy area",

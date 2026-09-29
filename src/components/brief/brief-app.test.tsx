@@ -241,6 +241,13 @@ describe("BriefApp screen and print", () => {
     }
   });
 
+  it("the walkthrough reads the map by its edges: rows named at the left, columns under it", () => {
+    const body = en.briefing.tour.brief.steps.map.body;
+    expect(body).toMatch(/each row is a document named at the left/);
+    expect(body).toMatch(/each column a document named under the map/);
+    expect(body).not.toMatch(/diagonal/);
+  });
+
   it("takes a section off the screen as well as the print, and brings it back", () => {
     renderApp(briefFixture({ themes: true }));
     const sections = screen.getByRole("group", { name: "In the brief" });
