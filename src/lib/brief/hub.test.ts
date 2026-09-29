@@ -12,6 +12,7 @@ import {
   layoutHub,
   MARK_LINE,
   namedTargets,
+  pairGuides,
   pairInOrder,
   sideLevel,
   spread,
@@ -49,6 +50,19 @@ function corpus(sizes: number[]): { data: BriefData; particles: HubParticle[] } 
     }
   }
   return { data: { ...DATA, scope: { ...DATA.scope, docs, commitments } }, particles };
+}
+
+const rowsOf = (l: HubLayout) => l.axis.filter((a) => a.edge === "row");
+const colsOf = (l: HubLayout) => l.axis.filter((a) => a.edge === "column");
+
+/** The map's own box: its blocks, without the names around it. */
+function mapBox(l: HubLayout) {
+  return {
+    x0: Math.min(...l.groups.map((g) => g.x0)),
+    x1: Math.max(...l.groups.map((g) => g.x1)),
+    y0: Math.min(...l.groups.map((g) => g.y0)),
+    y1: Math.max(...l.groups.map((g) => g.y1)),
+  };
 }
 
 describe("spread", () => {
@@ -119,50 +133,56 @@ describe("layoutHub", () => {
       expect(places.size).toBe(108);
     });
 
-    it("puts each dot at its two targets: the earlier document's in rows, the later one's in columns", () => {
+    it("puts each dot at its two targets: the later document's in rows, the earlier one's in columns", () => {
       const at = (ca: string, cb: string) => {
         const i = particles.findIndex((p) => p.ca === ca && p.cb === cb);
         return { x: layout.x[i], y: layout.y[i] };
       };
-      const a1b1 = at("A1", "B1");
-      const a1b6 = at("A1", "B6");
-      const a6b1 = at("A6", "B1");
-      expect(a1b6.y).toBeCloseTo(a1b1.y);
-      expect(a1b6.x).toBeGreaterThan(a1b1.x);
-      expect(a6b1.x).toBeCloseTo(a1b1.x);
-      expect(a6b1.y).toBeGreaterThan(a1b1.y);
-      // A target keeps its row across the blocks of its document.
-      expect(at("A3", "C2").y).toBeCloseTo(at("A3", "B5").y);
-      // And its column: B4 against A and against C (B is earlier than C, so rows there).
-      expect(at("A2", "B4").x).toBeLessThan(at("B4", "C1").x);
+      // A is earlier than B: A's targets are columns, B's rows.
+      expect(at("A1", "B6").x).toBeCloseTo(at("A1", "B1").x);
+      expect(at("A1", "B6").y).toBeGreaterThan(at("A1", "B1").y);
+      expect(at("A6", "B1").y).toBeCloseTo(at("A1", "B1").y);
+      expect(at("A6", "B1").x).toBeGreaterThan(at("A1", "B1").x);
+      // A target keeps its column across its document's blocks, and its row.
+      expect(at("A3", "C2").x).toBeCloseTo(at("A3", "B5").x);
+      expect(at("A2", "B4").y).toBeCloseTo(at("A5", "B4").y);
+      expect(at("B4", "C1").x).toBeCloseTo(at("B4", "C6").x);
+      // Each block knows the documents of its rows and its columns.
+      expect(layout.groups.map((g) => [g.key, g.row, g.column])).toEqual([
+        ["A<->B", "B", "A"],
+        ["A<->C", "C", "A"],
+        ["B<->C", "C", "B"],
+      ]);
     });
 
-    it("names the documents along the diagonal, each next to its own empty square", () => {
-      expect(layout.axis.map((a) => a.key)).toEqual(["A", "B", "C"]);
-      for (let k = 1; k < layout.axis.length; k++) {
-        expect(layout.axis[k].labelX).toBeGreaterThan(layout.axis[k - 1].labelX);
-        expect(layout.axis[k].labelY).toBeGreaterThan(layout.axis[k - 1].labelY);
+    it("names every row at the left edge and every column under the map", () => {
+      const box = mapBox(layout);
+      expect(rowsOf(layout).map((a) => a.key)).toEqual(["B", "C"]);
+      expect(colsOf(layout).map((a) => a.key)).toEqual(["A", "B"]);
+      for (const a of rowsOf(layout)) {
+        expect(a.labelX).toBeLessThan(box.x0);
+        expect(a.bar.x0).toBeLessThan(box.x0);
+        expect(a.bar.x0).toBeGreaterThan(a.labelX);
+        expect(a.labelWidth).toBeGreaterThan(0);
       }
-      for (const axis of layout.axis) {
-        // A document is never compared with itself: its square stays empty.
-        for (let i = 0; i < particles.length; i++) {
-          const x = layout.x[i];
-          const y = layout.y[i];
-          expect(x > axis.square.x0 && x < axis.square.x1 && y > axis.square.y0 && y < axis.square.y1).toBe(false);
-        }
-        expect(axis.labelX).toBeLessThanOrEqual(axis.square.x0);
-        expect(axis.labelWidth).toBeGreaterThan(0);
+      for (const a of colsOf(layout)) {
+        expect(a.labelY).toBeGreaterThan(box.y1);
+        expect(a.bar.y0).toBeGreaterThan(box.y1);
+        expect(a.bar.y0).toBeLessThan(a.labelY);
+        // Centred under its column, on one baseline with the others.
+        expect(a.labelX).toBeCloseTo((a.bar.x0 + a.bar.x1) / 2);
+        expect(a.lead).toBeNull();
       }
+      expect(new Set(colsOf(layout).map((a) => a.labelY)).size).toBe(1);
     });
 
     it("takes the width its names leave: short names, a larger map", () => {
       const narrow = layoutHub({ kind: "map" }, particles, DATA, 500, 620);
-      const right = Math.max(...narrow.groups.map((g) => g.x1));
-      const left = Math.min(...narrow.axis.map((a) => a.square.x0));
-      expect(right - left).toBeGreaterThan(0.8 * 500);
-      // The first name still has its room.
-      expect(narrow.axis[0].labelWidth).toBeGreaterThanOrEqual("Document A".length * 6.6);
-      expect(right).toBeLessThanOrEqual(500);
+      const box = mapBox(narrow);
+      expect(box.x1 - box.x0).toBeGreaterThan(0.78 * 500);
+      // The rows' names still have their room.
+      expect(rowsOf(narrow)[0].labelWidth).toBeGreaterThanOrEqual("Document B".length * 6.6);
+      expect(box.x1).toBeLessThanOrEqual(500);
     });
 
     it("keeps its labels apart and inside the field, even with many small documents", () => {
@@ -174,42 +194,45 @@ describe("layoutHub", () => {
         expect(map.y[i]).toBeGreaterThanOrEqual(0);
         expect(map.y[i]).toBeLessThanOrEqual(371);
       }
-      for (let k = 1; k < map.axis.length; k++) {
-        expect(map.axis[k].labelY - map.axis[k - 1].labelY).toBeGreaterThanOrEqual(
-          (map.axis[k].labelHeight + map.axis[k - 1].labelHeight) / 2 - 1e-6,
+      const rows = rowsOf(map);
+      for (let k = 1; k < rows.length; k++) {
+        expect(rows[k].labelY - rows[k - 1].labelY).toBeGreaterThanOrEqual(
+          (rows[k].labelHeight + rows[k - 1].labelHeight) / 2 - 1e-6,
         );
       }
-      for (const axis of map.axis) {
-        expect(axis.labelY - axis.labelHeight / 2).toBeGreaterThanOrEqual(-1e-6);
-        expect(axis.labelY + axis.labelHeight / 2).toBeLessThanOrEqual(371 + 1e-6);
+      for (const a of rows) {
+        expect(a.labelY - a.labelHeight / 2).toBeGreaterThanOrEqual(-1e-6);
+        expect(a.labelY + a.labelHeight / 2).toBeLessThanOrEqual(371 + 1e-6);
+        expect(a.labelX - a.labelWidth).toBeGreaterThanOrEqual(-1e-6);
+      }
+      for (const a of colsOf(map)) {
+        expect(a.labelX - a.labelWidth / 2).toBeGreaterThanOrEqual(-1e-6);
+        expect(a.labelX + a.labelWidth / 2).toBeLessThanOrEqual(390 + 1e-6);
+        expect(a.labelY + a.labelHeight).toBeLessThanOrEqual(371 + 1e-6);
       }
     });
 
-    it("keeps each name clear of the diagonal, even a tall name beside a small document", () => {
+    it("keeps every name clear of the map, even a tall name beside a small document", () => {
       const docs = ["Vision 2050", "Nationally Determined Contribution", "National targets for implementation of the Paris Agreement", "National Biodiversity Strategy & Action Plan", "National Adaptation Plan", "Food Supply and Security Measures", "LDN Targets", "Investing in Land Degradation Neutrality"];
       const { data, particles: many } = corpus([15, 36, 16, 20, 15, 41, 27, 8]);
       const named = { ...data, scope: { ...data.scope, docs: data.scope.docs.map((d, k) => ({ ...d, name: docs[k] })) } };
       for (const [w, h] of [[450, 700], [500, 620], [390, 371]]) {
         const map = layoutHub({ kind: "map" }, many, named, w, h);
-        const x0 = map.axis[0].square.x0;
-        const y0 = map.axis[0].square.y0;
-        for (const a of map.axis) {
-          // Every document's own stretch lies on one line, x - x0 = y - y0.
-          const top = a.labelY - a.labelHeight / 2;
-          expect(a.labelX).toBeLessThanOrEqual(x0 + (top - y0) + 1e-6);
-        }
+        const box = mapBox(map);
+        for (const a of rowsOf(map)) expect(a.labelX).toBeLessThanOrEqual(box.x0 - 8);
+        for (const a of colsOf(map)) expect(a.labelY).toBeGreaterThanOrEqual(box.y1 + 8);
       }
     });
 
     it("never lets dots overlap, so a block's colours read true in a large corpus", () => {
       const { data, particles: many } = corpus([60, 50, 45, 40, 40, 40, 35, 30, 30, 30]);
       const map = layoutHub({ kind: "map" }, many, data, 358, 370);
-      const side = map.axis[0].square.x1 - map.axis[0].square.x0;
-      const pitch = side / 60;
-      expect(pitch).toBeLessThan(0.8);
-      expect(map.pitch).toBeCloseTo(pitch);
+      expect(map.pitch).toBeLessThan(0.8);
       const shown = many.findIndex((_, i) => map.visible[i]);
-      expect(2 * map.r[shown]).toBeLessThanOrEqual(pitch + 1e-6);
+      expect(2 * map.r[shown]).toBeLessThanOrEqual(map.pitch + 1e-6);
+      // Every pair has a cell of its own.
+      const cells = new Set(many.map((_, i) => `${map.x[i].toFixed(3)},${map.y[i].toFixed(3)}`));
+      expect(cells.size).toBe(many.length);
     });
 
     it("draws each pair as a square the size of its cell", () => {
@@ -218,17 +241,17 @@ describe("layoutHub", () => {
       expect(2 * layout.r[shown]).toBeCloseTo(layout.pitch);
     });
 
-    it("leads a name back to its document only when it had to move away", () => {
+    it("leads a row's name back to its bar only when it had to move away", () => {
       for (const a of layout.axis) expect(a.lead).toBeNull();
       const { data, particles: many } = corpus([30, 4, 3, 5, 40, 2, 6, 25, 3, 3, 20, 8]);
       const crowded = layoutHub({ kind: "map" }, many, data, 390, 371);
-      const moved = crowded.axis.filter((a) => a.lead !== null);
+      const moved = rowsOf(crowded).filter((a) => a.lead !== null);
       expect(moved.length).toBeGreaterThan(0);
       for (const a of moved) {
-        // The lead ends on the document's own stretch of the diagonal.
-        expect(a.lead!.x - a.square.x0).toBeCloseTo(a.lead!.y - a.square.y0);
-        expect(a.lead!.y).toBeGreaterThanOrEqual(a.square.y0);
-        expect(a.lead!.y).toBeLessThanOrEqual(a.square.y1);
+        // The lead ends just left of the row's bar, within its band.
+        expect(a.lead!.x1).toBeCloseTo(a.bar.x0 - 2);
+        expect(a.lead!.y1).toBeGreaterThanOrEqual(a.bar.y0);
+        expect(a.lead!.y1).toBeLessThanOrEqual(a.bar.y1);
       }
     });
 
@@ -237,6 +260,54 @@ describe("layoutHub", () => {
       const map = layoutHub({ kind: "map" }, many, data, 480, 520);
       expect(visibleCount(map)).toBe(many.length);
       expect(map.groups.reduce((s, g) => s + g.count, 0)).toBe(many.length);
+    });
+
+    it("two documents: one block, one row name, one column name", () => {
+      const two = buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "C"]), null);
+      const map = layoutHub({ kind: "map" }, hubParticles(two), two, 800, 500);
+      expect(map.groups.map((g) => g.key)).toEqual(["A<->C"]);
+      expect(map.axis.map((a) => [a.edge, a.key])).toEqual([
+        ["row", "C"],
+        ["column", "A"],
+      ]);
+    });
+
+    it("a document without targets gets neither row nor column", () => {
+      const { data, particles: many } = corpus([5, 0, 4, 3]);
+      const map = layoutHub({ kind: "map" }, many, data, 600, 500);
+      expect(map.axis.some((a) => a.key === "D1")).toBe(false);
+      expect(rowsOf(map).map((a) => a.key)).toEqual(["D2", "D3"]);
+      expect(colsOf(map).map((a) => a.key)).toEqual(["D0", "D2"]);
+    });
+
+    it("narrow columns: every second name drops a row, joined to its bar, all inside the field", () => {
+      const { data, particles: many } = corpus([91, 16, 4, 192, 4, 33, 9, 55]);
+      const labelled = {
+        ...data,
+        scope: {
+          ...data.scope,
+          docs: data.scope.docs.map((d) => ({ ...d, mapLabel: [d.id, "Land degradation"] as [string, string] })),
+        },
+      };
+      const map = layoutHub({ kind: "map" }, many, labelled, 640, 760);
+      const cols = colsOf(map);
+      const tops = [...new Set(cols.map((a) => a.labelY))].sort((p, q) => p - q);
+      expect(tops).toHaveLength(2);
+      cols.forEach((a, n) => {
+        expect(a.labelY).toBe(tops[n % 2]);
+        if (n % 2 === 1) expect(a.lead).not.toBeNull();
+        expect(a.labelX - a.labelWidth / 2).toBeGreaterThanOrEqual(-1e-6);
+        expect(a.labelX + a.labelWidth / 2).toBeLessThanOrEqual(640 + 1e-6);
+      });
+      // Names in one row never overlap.
+      for (const row of tops) {
+        const same = cols.filter((a) => a.labelY === row).sort((p, q) => p.labelX - q.labelX);
+        for (let k = 1; k < same.length; k++) {
+          expect(same[k].labelX - same[k].labelWidth / 2).toBeGreaterThanOrEqual(
+            same[k - 1].labelX + same[k - 1].labelWidth / 2 - 1e-6,
+          );
+        }
+      }
     });
   });
 
@@ -274,8 +345,9 @@ describe("layoutHub", () => {
         ["A<->C", 36],
         ["B<->C", 36],
       ]);
-      // The documents and the map keep their place and size.
-      expect(apart.axis.map((a) => a.square)).toEqual(plain.axis.map((a) => a.square));
+      // The documents and the map keep their place and size on every side.
+      expect(apart.axis.map((a) => a.bar)).toEqual(plain.axis.map((a) => a.bar));
+      expect(apart.groups.map((g) => [g.x0, g.y0, g.x1, g.y1])).toEqual(plain.groups.map((g) => [g.x0, g.y0, g.x1, g.y1]));
     });
 
     it("puts the side's targets first in their document, so its pairs gather in the corner", () => {
@@ -285,50 +357,48 @@ describe("layoutHub", () => {
       expect(apart.x[i]).toBeCloseTo(plain.x[corner]);
       expect(apart.y[i]).toBeCloseTo(plain.y[corner]);
       // Then by how many of the side's pairs a target is in: C4-C6 (two each)
-      // before C1-C3 (one each), so B5 x C4 takes C's first column.
+      // before C1-C3 (one each), so B5 x C4 takes C's first row.
       const b5c4 = particles.findIndex((p) => p.ca === "B5" && p.cb === "C4");
-      const firstColumnOfC = plain.axis.find((a) => a.key === "C")!.square.x0 + apart.pitch / 2;
-      expect(apart.x[b5c4]).toBeCloseTo(firstColumnOfC);
+      const firstRowOfC = apart.axis.find((a) => a.edge === "row" && a.key === "C")!.bar.y0 + apart.pitch / 2;
+      expect(apart.y[b5c4]).toBeCloseTo(firstRowOfC);
     });
 
-    it("names the targets that carry it, with their counts, at the front of their document", () => {
+    it("names the targets that carry it, with their counts: the first document's above the map, the others where their row ends", () => {
       expect(namedTargets(DATA, "apart")).toEqual(["B6", "A6"]);
       expect(apart.marks.map((m) => [m.id, m.doc, m.count])).toEqual([
         ["A6", "A", 6],
         ["B6", "B", 7],
       ]);
-      for (const m of apart.marks) {
-        const axis = apart.axis.find((a) => a.key === m.doc)!;
-        // Its own point: the first on the document's stretch of the diagonal.
-        expect(m.y).toBeCloseTo(axis.square.y0 + apart.pitch / 2);
-        expect(m.x).toBeCloseTo(axis.square.x0 + apart.pitch / 2);
-        // Its name under the document's name, on the same side of the diagonal.
-        expect(m.labelY).toBeGreaterThan(axis.labelY);
-        expect(m.labelX).toBeLessThanOrEqual(axis.square.x0);
-        expect(m.labelWidth).toBeGreaterThan(0);
-      }
-    });
-
-    it("gives a long name two lines where one would not hold it", () => {
-      // "6 Commitment B6 Verbatim text of commitment B6." is wider than B's room.
-      const b6 = apart.marks.find((m) => m.id === "B6")!;
-      expect(b6.lines).toBe(2);
-      expect(b6.labelHeight).toBe(2 * MARK_LINE - 2);
-      expect(b6.align).toBe("right");
-    });
-
-    it("names the first document's targets above the map when there is room for them", () => {
-      // A taller field leaves room above the map: the first document's
-      // targets are named there, from the start of its stretch.
-      const tall = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 800, 900);
-      const a = tall.axis.find((x) => x.key === "A")!;
-      const a6 = tall.marks.find((m) => m.id === "A6")!;
+      const box = mapBox(apart);
+      const a6 = apart.marks.find((m) => m.id === "A6")!;
       expect(a6.align).toBe("left");
-      expect(a6.labelX).toBeCloseTo(a.square.x0);
-      expect(a6.labelY + a6.labelHeight / 2).toBeLessThanOrEqual(a.square.y0);
-      expect(a6.labelWidth).toBeGreaterThan(400);
-      // Without that room they follow the document's name, as the others do.
-      expect(apart.marks.find((m) => m.id === "A6")!.align).toBe("right");
+      expect(a6.labelX).toBeCloseTo(box.x0);
+      expect(a6.labelY + a6.labelHeight / 2).toBeLessThanOrEqual(box.y0);
+      // Its lead ends at the top of its column.
+      expect(a6.y).toBeCloseTo(box.y0 - 1);
+      expect(a6.x).toBeCloseTo(apart.lines.get("A6")!.column!.x);
+      const b6 = apart.marks.find((m) => m.id === "B6")!;
+      const row = apart.lines.get("B6")!.row!;
+      expect(b6.align).toBe("left");
+      expect(b6.labelX).toBeGreaterThan(row.x1);
+      // Its lead ends where its row ends.
+      expect(b6.x).toBeCloseTo(row.x1 + 1);
+      expect(b6.y).toBeCloseTo(row.y);
+    });
+
+    it("the last document's named targets follow its name at the left, in two lines where one would not hold them", () => {
+      // C has no column: C5, in focus, is named under C's row name.
+      const one = layoutHub({ kind: "map", side: "apart", focus: { kind: "target", id: "C5" } }, particles, DATA, 800, 500);
+      const c5 = one.marks.find((m) => m.id === "C5")!;
+      const c = one.axis.find((a) => a.edge === "row" && a.key === "C")!;
+      expect(c5.align).toBe("right");
+      expect(c5.labelX).toBeCloseTo(c.labelX);
+      expect(c5.labelY).toBeGreaterThan(c.labelY);
+      // "5 Commitment C5 Verbatim text of commitment C5." is wider than the room.
+      expect(c5.lines).toBe(2);
+      expect(c5.labelHeight).toBe(2 * MARK_LINE - 2);
+      // Its lead ends where its row starts.
+      expect(c5.x).toBeCloseTo(mapBox(one).x0 - 1);
     });
 
     it("at rest: the named targets' pairs full, the side's other pairs paler", () => {
@@ -436,24 +506,25 @@ describe("layoutHub", () => {
         concentration: { ...data.concentration, top: hot, concentrated: true },
       };
       const plain = layoutHub({ kind: "map" }, flaggedMany, named, 358, 371);
-      for (const a of plain.axis) expect(a.labelHeight % 16).toBe(0);
+      for (const a of rowsOf(plain)) expect(a.labelHeight % 16).toBe(0);
       for (const focus of [{ kind: "top" } as const, { kind: "target", id: "D11_3" } as const]) {
         const map = layoutHub({ kind: "map", side: "apart", focus }, flaggedMany, named, 358, 371);
         // Every label keeps the height its text needs.
-        for (const a of map.axis) expect(a.labelHeight % 16).toBe(0);
+        for (const a of rowsOf(map)) expect(a.labelHeight % 16).toBe(0);
         for (const m of map.marks) expect([MARK_LINE, 2 * MARK_LINE - 2]).toContain(m.labelHeight);
+        // At the left edge, names never overlap.
         const beside = [
-          ...map.axis.map((a) => ({ y: a.labelY, h: a.labelHeight })),
+          ...rowsOf(map).map((a) => ({ y: a.labelY, h: a.labelHeight })),
           ...map.marks.filter((m) => m.align === "right").map((m) => ({ y: m.labelY, h: m.labelHeight })),
         ].sort((p, q) => p.y - q.y);
         for (let k = 1; k < beside.length; k++) {
           expect(beside[k].y - beside[k - 1].y).toBeGreaterThanOrEqual((beside[k].h + beside[k - 1].h) / 2 - 1e-6);
         }
-        // The first document keeps at least the room its name has on the whole map.
-        expect(map.axis[0].labelWidth).toBeGreaterThanOrEqual(plain.axis[0].labelWidth - 1e-6);
-        // So short a field leaves some targets unnamed, never the one in focus.
-        if (focus.kind === "top") expect(map.marks.length).toBeLessThan(hot.length);
-        else expect(map.marks.map((m) => m.id)).toContain("D11_3");
+        // The rows' names keep the room they have on the whole map.
+        expect(rowsOf(map)[0].labelWidth).toBeGreaterThanOrEqual(rowsOf(plain)[0].labelWidth - 1e-6);
+        // Whatever goes unnamed, never the target in focus.
+        expect(map.marks.length).toBeLessThanOrEqual(hot.length + 1);
+        if (focus.kind === "target") expect(map.marks.map((m) => m.id)).toContain("D11_3");
       }
     });
 
@@ -475,7 +546,7 @@ describe("layoutHub", () => {
       expect(layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 755, 500).x).toBe(recent.x);
     });
 
-    it("keeps names and marks apart, inside the field and clear of the diagonal, with many documents", () => {
+    it("keeps names and marks apart and inside the field, clear of the squares, with many documents", () => {
       const { data, particles: many } = corpus([15, 36, 16, 20, 15, 41, 27, 8, 3, 2, 30, 12]);
       // The first target of every other document carries potential misalignment with everything.
       const hot = data.scope.docs.filter((_, k) => k % 2 === 0).map((d) => `${d.id}_0`);
@@ -486,21 +557,32 @@ describe("layoutHub", () => {
       for (const [w, h] of [[560, 620], [390, 371]]) {
         const map = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, flaggedMany, named, w, h);
         expect(map.marks.length).toBeGreaterThan(0);
-        const labels = [
-          ...map.axis.map((a) => ({ y: a.labelY, h: a.labelHeight, x: a.labelX, above: false })),
-          ...map.marks.map((m) => ({ y: m.labelY, h: m.labelHeight, x: m.labelX, above: m.align === "left" })),
+        const box = mapBox(map);
+        const left = [
+          ...rowsOf(map).map((a) => ({ y: a.labelY, h: a.labelHeight })),
+          ...map.marks.filter((m) => m.align === "right").map((m) => ({ y: m.labelY, h: m.labelHeight })),
         ].sort((p, q) => p.y - q.y);
-        for (let k = 1; k < labels.length; k++) {
-          expect(labels[k].y - labels[k - 1].y).toBeGreaterThanOrEqual((labels[k].h + labels[k - 1].h) / 2 - 1e-6);
+        const stair = map.marks.filter((m) => m.align === "left" && m.labelY > box.y0).sort((p, q) => p.labelY - q.labelY);
+        for (const list of [left, stair.map((m) => ({ y: m.labelY, h: m.labelHeight }))]) {
+          for (let k = 1; k < list.length; k++) {
+            expect(list[k].y - list[k - 1].y).toBeGreaterThanOrEqual((list[k].h + list[k - 1].h) / 2 - 1e-6);
+          }
+          for (const l of list) {
+            expect(l.y - l.h / 2).toBeGreaterThanOrEqual(-1e-6);
+            expect(l.y + l.h / 2).toBeLessThanOrEqual(h + 1e-6);
+          }
         }
-        const x0 = map.axis[0].square.x0;
-        const y0 = map.axis[0].square.y0;
-        for (const l of labels) {
-          expect(l.y - l.h / 2).toBeGreaterThanOrEqual(-1e-6);
-          expect(l.y + l.h / 2).toBeLessThanOrEqual(h + 1e-6);
-          // Names beside the diagonal stay left of it; names above the map stay above it.
-          if (l.above) expect(l.y + l.h / 2).toBeLessThanOrEqual(y0 + 1e-6);
-          else expect(l.x).toBeLessThanOrEqual(x0 + (l.y - l.h / 2 - y0) + 1e-6);
+        // A name in the empty half starts right of every block at its height.
+        for (const m of stair) {
+          for (const g of map.groups) {
+            if (g.y1 >= m.labelY - m.labelHeight / 2 && g.y0 <= m.labelY + m.labelHeight / 2) {
+              expect(m.labelX).toBeGreaterThanOrEqual(g.x1);
+            }
+          }
+        }
+        // Names above the map stay above it.
+        for (const m of map.marks.filter((x) => x.align === "left" && x.labelY < box.y0)) {
+          expect(m.labelY + m.labelHeight / 2).toBeLessThanOrEqual(box.y0 + 1e-6);
         }
       }
     });
@@ -639,44 +721,23 @@ describe("layoutHub", () => {
 describe("a target's strip and its counts", () => {
   const particles = hubParticles(DATA);
   const apart = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, particles, DATA, 800, 500);
-  const square = (key: string) => apart.axis.find((a) => a.key === key)!.square;
-  const block = (key: string) => apart.groups.find((g) => g.key === key)!;
-  const pairAt = (ca: string, cb: string) => particles.findIndex((p) => p.ca === ca && p.cb === cb);
 
   describe("stripOf", () => {
-    it("runs a target's row from its point on the diagonal to the map's right edge, and its column up to the top", () => {
+    it("runs a target's row from the left edge to where its row ends, and its column down to the bottom", () => {
       const b6 = stripOf(apart, "B6")!;
-      // B6 leads its document on this side: the first point on B's stretch.
-      expect(b6.x).toBeCloseTo(square("B").x0 + apart.pitch / 2);
-      expect(b6.y).toBeCloseTo(square("B").y0 + apart.pitch / 2);
-      expect(b6.top).toBeCloseTo(square("A").y0);
-      expect(b6.right).toBeCloseTo(square("C").x1);
+      const box = mapBox(apart);
+      expect(b6.row!.x0).toBeCloseTo(box.x0);
+      expect(b6.row!.x1).toBeCloseTo(apart.groups.find((g) => g.key === "A<->B")!.x1);
+      expect(b6.column!.y1).toBeCloseTo(box.y1);
+      expect(b6.column!.y0).toBeCloseTo(apart.groups.find((g) => g.key === "B<->C")!.y0);
+      expect(b6.half).toBeGreaterThanOrEqual(3);
     });
 
-    it("carries the target's pairs: with later documents on its row, with earlier ones on its column", () => {
-      const b6 = stripOf(apart, "B6")!;
-      const row = pairAt("B6", "C1");
-      expect(apart.y[row]).toBeCloseTo(b6.y);
-      expect(apart.x[row]).toBeGreaterThan(b6.x);
-      expect(apart.x[row]).toBeLessThan(b6.right);
-      const column = pairAt("A6", "B6");
-      expect(apart.x[column]).toBeCloseTo(b6.x);
-      expect(apart.y[column]).toBeLessThan(b6.y);
-      expect(apart.y[column]).toBeGreaterThan(b6.top);
-    });
-
-    it("gives a target the side does not name its strip too", () => {
-      const c5 = stripOf(apart, "C5")!;
-      expect(apart.x[pairAt("B5", "C5")]).toBeCloseTo(c5.x);
-    });
-
-    it("covers its whole row, and keeps its room where a row is under a pixel and a half high", () => {
-      const b6 = stripOf(apart, "B6")!;
-      expect(b6.half).toBeGreaterThanOrEqual(apart.pitch / 2);
-      const { data, particles: many } = corpus([200, 200]);
-      const dense = layoutHub({ kind: "map" }, many, data, 800, 500);
-      expect(dense.pitch).toBeLessThan(1.5);
-      expect(stripOf(dense, "D1_0")!.half).toBeGreaterThanOrEqual(3);
+    it("the first document's targets have only a column, the last's only a row", () => {
+      expect(stripOf(apart, "A6")!.row).toBeNull();
+      expect(stripOf(apart, "A6")!.column).not.toBeNull();
+      expect(stripOf(apart, "C5")!.column).toBeNull();
+      expect(stripOf(apart, "C5")!.row).not.toBeNull();
     });
 
     it("none off the map, and none for a target outside the selection", () => {
@@ -686,98 +747,53 @@ describe("a target's strip and its counts", () => {
   });
 
   describe("stripCounts", () => {
-    it("counts a target's pairs in each block its strip crosses", () => {
-      expect(stripCounts(apart, particles, "B6").map((c) => [c.key, c.count])).toEqual([
-        ["A<->B", 1],
-        ["B<->C", 6],
-      ]);
+    const map = layoutHub({ kind: "map", side: "apart", focus: { kind: "target", id: "B6" } }, particles, DATA, 800, 500);
+
+    it("counts a target's shown pairs in each block, under its row or beside its column", () => {
+      const counts = stripCounts(map, particles, "B6");
+      const b6 = stripOf(map, "B6")!;
+      expect(counts.length).toBeGreaterThan(0);
+      for (const c of counts) {
+        const g = map.groups.find((x) => x.key === c.key)!;
+        if (g.row === "B") {
+          expect(c.align).toBe("below");
+          expect(c.y).toBeCloseTo(b6.row!.y + b6.half + 2);
+        } else {
+          expect(g.column).toBe("B");
+          expect(["right", "left"]).toContain(c.align);
+        }
+      }
+      const shown = particles.filter((p, i) => map.visible[i] && (p.ca === "B6" || p.cb === "B6")).length;
+      expect(counts.reduce((s, c) => s + c.count, 0)).toBe(shown);
     });
 
-    it("leaves out the blocks without its pairs", () => {
-      expect(stripCounts(apart, particles, "A6").map((c) => [c.key, c.count])).toEqual([["A<->B", 6]]);
-    });
-
-    it("counts only the pairs the side shows", () => {
-      // A1 is strongly aligned with B1, B3, B5 and with C1, C3, C5.
-      const strong = layoutHub({ kind: "map", side: "reinforce", focus: { kind: "top" } }, particles, DATA, 800, 500);
-      expect(stripCounts(strong, particles, "A1").map((c) => [c.key, c.count])).toEqual([
-        ["A<->B", 3],
-        ["A<->C", 3],
-      ]);
-    });
-
-    it("puts each count beside the strip inside its block: under the row, beside the column", () => {
-      const b6 = stripOf(apart, "B6")!;
-      const [up, right] = stripCounts(apart, particles, "B6");
-      expect(up.align).toBe("right");
-      expect(up.x).toBeGreaterThan(b6.x + b6.half);
-      expect(up.y).toBeCloseTo((block("A<->B").y0 + block("A<->B").y1) / 2);
-      expect(right.align).toBe("below");
-      expect(right.x).toBeCloseTo((block("B<->C").x0 + block("B<->C").x1) / 2);
-      expect(right.y).toBeGreaterThan(b6.y + b6.half);
-      expect(right.y).toBeLessThan(block("B<->C").y1);
+    it("counts for a target with only a column: the first document's", () => {
+      const counts = stripCounts(map, particles, "A6");
+      expect(counts.length).toBeGreaterThan(0);
+      for (const c of counts) expect(c.align).not.toBe("below");
     });
 
     it("none for a target outside the selection", () => {
-      expect(stripCounts(apart, particles, "Z9")).toEqual([]);
+      expect(stripCounts(map, particles, "Z9")).toEqual([]);
     });
+  });
+});
 
-    /** A synthetic corpus in which every pair reads as potential misalignment. */
-    const flaggedCorpus = (sizes: number[]) => {
-      const { data, particles: all } = corpus(sizes);
-      return { data, particles: all.map((p) => ({ ...p, level: "flagged" as const })) };
-    };
-    const onApart = (id: string) => ({ kind: "map", side: "apart", focus: { kind: "target", id } }) as const;
-    // Rough size of a count's label: 12px digits, 3px either side, 14px high.
-    const widthOf = (count: number) => String(count).length * 7 + 6;
+describe("pairGuides", () => {
+  const particles = hubParticles(DATA);
+  const map = layoutHub({ kind: "map" }, particles, DATA, 800, 500);
 
-    it("puts a count on the other side of the column when it would run off the map", () => {
-      // The last document is two targets wide: "20" does not fit to its right.
-      const { data, particles: many } = flaggedCorpus([20, 20, 2]);
-      const layout = layoutHub(onApart("D2_0"), many, data, 800, 500);
-      const strip = stripOf(layout, "D2_0")!;
-      const counts = stripCounts(layout, many, "D2_0");
-      expect(counts.map((c) => [c.key, c.count, c.align])).toEqual([
-        ["D0<->D2", 20, "left"],
-        ["D1<->D2", 20, "left"],
-      ]);
-      for (const c of counts) expect(c.x).toBeLessThanOrEqual(strip.x - strip.half);
-    });
+  it("runs from the gap corner of a block left to the rows' bars and down to the columns' bars", () => {
+    const g = map.groups.find((x) => x.key === "B<->C")!;
+    const [row, column] = pairGuides(map, g);
+    const half = map.edges!.gap / 2;
+    expect(row).toEqual({ x0: g.x0 - half, y0: g.y0 - half, x1: map.edges!.rowBar, y1: g.y0 - half });
+    expect(column).toEqual({ x0: g.x0 - half, y0: g.y0 - half, x1: g.x0 - half, y1: map.edges!.columnBar });
+  });
 
-    it("keeps counts apart along the column, in order, where the blocks are too short for them", () => {
-      // D1 and D2 have one target each: their blocks are shorter than a count.
-      const { data, particles: many } = flaggedCorpus([40, 1, 1, 40]);
-      const layout = layoutHub(onApart("D3_0"), many, data, 800, 500);
-      const strip = stripOf(layout, "D3_0")!;
-      const counts = stripCounts(layout, many, "D3_0");
-      expect(counts.map((c) => [c.key, c.count])).toEqual([
-        ["D0<->D3", 40],
-        ["D1<->D3", 1],
-        ["D2<->D3", 1],
-      ]);
-      for (let k = 1; k < counts.length; k++) expect(counts[k].y - counts[k - 1].y).toBeGreaterThanOrEqual(14 - 1e-6);
-      for (const c of counts) {
-        expect(c.y - 7).toBeGreaterThanOrEqual(strip.top - 1e-6);
-        expect(c.y + 7).toBeLessThanOrEqual(strip.y);
-      }
-    });
-
-    it("keeps counts apart along the row, in order, where the blocks are too narrow for them", () => {
-      const { data, particles: many } = flaggedCorpus([40, 1, 1, 40]);
-      const layout = layoutHub(onApart("D0_0"), many, data, 800, 500);
-      const strip = stripOf(layout, "D0_0")!;
-      const counts = stripCounts(layout, many, "D0_0");
-      expect(counts.map((c) => [c.key, c.count, c.align])).toEqual([
-        ["D0<->D1", 1, "below"],
-        ["D0<->D2", 1, "below"],
-        ["D0<->D3", 40, "below"],
-      ]);
-      for (let k = 1; k < counts.length; k++) {
-        const room = (widthOf(counts[k].count) + widthOf(counts[k - 1].count)) / 2;
-        expect(counts[k].x - counts[k - 1].x).toBeGreaterThanOrEqual(room - 1e-6);
-      }
-      for (const c of counts) expect(c.x + widthOf(c.count) / 2).toBeLessThanOrEqual(strip.right + 1e-6);
-    });
+  it("none off the map", () => {
+    const overview = layoutHub({ kind: "overview" }, particles, DATA, 800, 500);
+    expect(pairGuides(overview, overview.groups[0])).toEqual([]);
   });
 });
 

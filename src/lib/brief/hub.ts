@@ -97,32 +97,58 @@ export interface HubGroup {
   /** Around the document in focus: the side of it the group sits on. */
   side?: "left" | "right";
   /** Where the group's label goes: above it (default), or nowhere (the
-   *  map's blocks are named by their documents on the diagonal). */
+   *  map's blocks are named by their documents on its edges). */
   labelAt?: "above" | "none";
+  /** On the map: the documents whose targets are the block's rows (the later
+   *  one) and its columns (the earlier one). */
+  row?: string;
+  column?: string;
 }
 
-/** A document on the map's diagonal: its own (empty) square, and its name
- *  to the left of it, right-aligned at `labelX` and centred on `labelY`. */
+/** A stretch of line on the field. */
+export interface HubSegment {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+}
+
+/** A document's name on an edge of the map, beside its colour bar: a row's
+ *  at the left edge (right-aligned at `labelX`, centred on `labelY`), a
+ *  column's under the map (centred on `labelX`, its top at `labelY`). */
 export interface HubAxis {
   key: string;
-  square: { x0: number; y0: number; x1: number; y1: number };
+  edge: "row" | "column";
+  /** The colour bar along the edge: a row's left of its band, a column's under it. */
+  bar: HubSegment;
   labelX: number;
   labelY: number;
   labelWidth: number;
   labelHeight: number;
-  /** Where a thin line leads from a name that had to move away from its
-   *  document: a point on the document's stretch of the diagonal. */
-  lead: { x: number; y: number } | null;
+  /** A thin line from a name that moved away (a row's), or dropped to a
+   *  second row (a column's), to its bar. */
+  lead: HubSegment | null;
 }
 
-/** A target the map names: its own point on the diagonal (where its row and
- *  column meet), and its name, centred on `labelY`: right-aligned at
- *  `labelX` beside the diagonal, or left-aligned there above the map. */
+/** A target on the map: its row (its pairs with earlier documents, from the
+ *  left edge to where its document's row ends) and its column (with later
+ *  documents, from where its document's column starts to the bottom edge).
+ *  The first document has no row, the last no column. */
+export interface HubLines {
+  row: { y: number; x0: number; x1: number } | null;
+  column: { x: number; y0: number; y1: number } | null;
+}
+
+/** A target the map names, and its name centred on `labelY`: left-aligned at
+ *  `labelX` above the map or in its empty half, or right-aligned there at
+ *  the left edge. */
 export interface HubMark {
   id: string;
   doc: string;
   /** Its pairs on the side shown. */
   count: number;
+  /** Where its lead ends: its column's top above the map, its row's end in
+   *  the empty half, or its row's start at the left edge. */
   x: number;
   y: number;
   labelX: number;
@@ -146,13 +172,16 @@ export interface HubLayout {
   /** 1 where the dot is drawn small (the checker texture of potential misalignment). */
   small: Uint8Array;
   groups: HubGroup[];
-  /** The map's documents, in document order. */
+  /** The map's document names: the rows', then the columns', each in
+   *  document order. */
   axis: HubAxis[];
   /** The targets the map names, in document order. */
   marks: HubMark[];
-  /** Each target's own point on the map's diagonal, where its row and
-   *  column meet (empty off the map). */
-  points: Map<string, { x: number; y: number }>;
+  /** Each target's row and column on the map (empty off the map). */
+  lines: Map<string, HubLines>;
+  /** The map's edges: the rows' bars, the columns' bars, and the gap
+   *  between blocks (null off the map). */
+  edges: { rowBar: number; columnBar: number; gap: number } | null;
   /** The map's cell: each pair is a square this wide (0 off the map). */
   pitch: number;
   /** The document in focus: its place and the half-width kept for its
@@ -194,6 +223,22 @@ const AXIS_LINES = 3;
 const AXIS_CHAR = 6.6;
 /** A name this wide keeps one line; longer ones wrap, never narrower. */
 const AXIS_SHORT = 100;
+/** How far a document's colour bar stands from the map's edge. */
+const BAR_OFFSET = 7;
+/** Room between a row's name and the map (the bar stands in it). */
+const ROW_NAME_GAP = 14;
+/** Widest a row's name runs, in up to three lines. */
+const ROW_NAME_MAX = 150;
+/** A column's name: per character of its short name (0.78rem semibold)
+ *  and of its context (0.69rem), its line height, the room above it and
+ *  between its two rows. */
+const COLUMN_CHAR = 6.4;
+const CONTEXT_CHAR = 5.3;
+const COLUMN_LINE = 15;
+const COLUMN_TOP = 13;
+const COLUMN_ROW_GAP = 6;
+/** Room between a row's end and a target named there. */
+const STAIR_GAP = 10;
 
 /** The two documents of a pair key ("A<->B"), in the documents' own order,
  *  so a pair reads the same way in tips, panels and headlines. */
@@ -228,7 +273,8 @@ function emptyLayout(n: number): HubLayout {
     groups: [],
     axis: [],
     marks: [],
-    points: new Map(),
+    lines: new Map(),
+    edges: null,
     pitch: 0,
     center: null,
     focusLabel: FOCUS_LABEL,
@@ -322,17 +368,20 @@ function sideCounts(particles: HubParticle[], side: HubTone): Map<string, number
 }
 
 /**
- * The map of documents: the comparison triangle of the method page. Each
- * document's targets run along the diagonal; for two documents, the earlier
- * one's targets are rows and the later one's columns, so each pair of
- * documents is a block and each target pair a square at its two targets. A
- * document's own square stays empty: it is never compared with itself.
+ * The map of documents, named on its edges (round 13): a lower triangle.
+ * Each document but the first is a row, named at the left edge; each but the
+ * last is a column, named under the map (a short name over a line of
+ * context). For two documents, the earlier one's targets are columns and the
+ * later one's rows, so each pair of documents is a block and each target pair
+ * a square at its two targets.
  *
  * On a side, only that side's pairs are shown, and each document's targets
  * are re-sorted: the ones the side names first, then by how many of the
  * side's pairs they are in, then document order. The side's pairs gather in
- * the corner of their blocks, and its targets are named at the front of their
- * documents. The map keeps its place and size on every side.
+ * the corner of their blocks. Its targets are named above the map (the first
+ * document's), in the empty half where their row ends (the others), or under
+ * their row's name (the last document's). The map keeps its place and size
+ * on every side.
  */
 function placeMap(
   layout: HubLayout,
@@ -368,53 +417,118 @@ function placeMap(
   const sizes = byDoc.map((list) => list.length);
   const rowOf = new Map<string, number>();
   byDoc.forEach((list) => list.forEach((id, i) => rowOf.set(id, i)));
-  const total = sizes.reduce((s, n) => s + n, 0);
-  if (total === 0 || docs.length === 0) return;
+  // Rows are every document but the first, columns every document but the
+  // last (a document without targets has neither): every row starts at the
+  // left edge, every column ends at the bottom edge.
+  const present = docs.map((_, k) => k).filter((k) => sizes[k] > 0);
+  if (present.length < 2) return;
+  const rows = present.slice(1);
+  const cols = present.slice(0, -1);
+  const k0 = present[0];
+  const last = present[present.length - 1];
   const pad = 6;
-  // The names use the empty half under the diagonal: each is right-aligned
-  // at its own stretch, so only the first documents need room at the left.
-  // That room is what the names need in up to three lines, found in two
-  // passes (the stretches move with the cell size). Named targets fit into
-  // the room the names leave, so the map keeps its size on every side.
-  const need = docs.map((d) => {
-    const whole = d.name.length * AXIS_CHAR;
-    if (whole <= AXIS_SHORT) return whole;
-    const word = Math.max(...d.name.split(/\s+/).map((w) => w.length)) * AXIS_CHAR;
-    return Math.min(whole, Math.max(AXIS_SHORT, whole / AXIS_LINES, word));
-  });
-  const geometry = (room: number) => {
-    const edge = Math.max(40, Math.min(width - room - 2 * pad, height - 2 * pad));
-    const gap = docs.length > 1 ? Math.min(6, Math.max(2, edge * 0.012)) : 0;
-    const pitch = Math.max(0.05, (edge - (docs.length - 1) * gap) / total);
-    const off: number[] = [];
-    let acc = 0;
-    sizes.forEach((n, d) => {
-      off.push(acc * pitch + d * gap);
-      acc += n;
-    });
-    return { gap, pitch, off };
+  const marked = side ? [...named, ...(extra && !rank.has(extra) && has(extra) ? [extra] : [])] : [];
+  const byId = new Map(data.scope.commitments.map((c) => [c.id, c]));
+  const ownMarks = (k: number) =>
+    marked
+      .filter((id) => byId.get(id)?.doc === docs[k].id)
+      .sort((a, b) => (rowOf.get(a) ?? 0) - (rowOf.get(b) ?? 0));
+  const markWidth = (id: string) => {
+    const c = byId.get(id);
+    return (c ? targetLine(c, MARK_TEXT).length : 0) * MARK_CHAR + MARK_COUNT;
   };
-  let labelRoom = Math.min(150, Math.max(56, width * 0.2));
-  let geo = geometry(labelRoom);
-  for (let pass = 0; pass < 4; pass++) {
-    const wanted = Math.max(0, ...docs.map((_, k) => (sizes[k] > 0 ? need[k] + 8 - geo.off[k] : 0)));
-    const next = Math.min(Math.max(40, width * 0.3), Math.max(40, wanted));
-    if (Math.abs(next - labelRoom) < 0.5) break;
-    labelRoom = next;
-    geo = geometry(labelRoom);
+  // The rows' names: up to three lines at the left, never wider than a
+  // third of the field.
+  const need = (k: number) => {
+    const whole = docs[k].name.length * AXIS_CHAR;
+    if (whole <= AXIS_SHORT) return whole;
+    const word = Math.max(...docs[k].name.split(/\s+/).map((w) => w.length)) * AXIS_CHAR;
+    return Math.min(whole, Math.max(AXIS_SHORT, whole / AXIS_LINES, word));
+  };
+  const nameWidth = Math.min(ROW_NAME_MAX, width * 0.3, Math.max(40, ...rows.map(need)));
+  const x0Min = pad + nameWidth + ROW_NAME_GAP;
+  // The first document is a column only: its named targets stand above the
+  // map. Their room is the same on every side, so the map keeps its place
+  // and size: as many lines as either side names there, at least one (for a
+  // target in focus), never more than a fifth of the field.
+  const firstOn = (s: HubTone) => {
+    const c = sideCounts(particles, s);
+    return namedTargets(data, s).filter((id) => (c.get(id) ?? 0) > 0 && byId.get(id)?.doc === docs[k0].id).length;
+  };
+  const cap = Math.max(1, Math.floor((height * 0.2) / MARK_LINE));
+  const aboveLines = Math.min(cap, Math.max(1, firstOn("reinforce"), firstOn("apart")));
+  const top = pad + aboveLines * MARK_LINE + 6;
+  let first = ownMarks(k0);
+  if (first.length > aboveLines) {
+    // The most carrying keep their line, and always the target in focus.
+    const kept = new Set(
+      [...(extra && first.includes(extra) ? [extra] : []), ...first.filter((id) => id !== extra)].slice(0, aboveLines),
+    );
+    first = first.filter((id) => kept.has(id));
   }
-  const { gap, pitch, off } = geo;
+  // The columns' names: a short name over a line of context.
+  const colLabel = (k: number): [string, string] => docs[k].mapLabel ?? [docs[k].code || docs[k].id, ""];
+  const colWidth = (k: number) => {
+    const [name, context] = colLabel(k);
+    return Math.max(name.length * COLUMN_CHAR, context.length * CONTEXT_CHAR) + 4;
+  };
+  const colHeight = (k: number) => (colLabel(k)[1] ? 2 : 1) * COLUMN_LINE;
+  const labelH = Math.max(...cols.map(colHeight));
+  const below = (n: number) => COLUMN_TOP + n * labelH + (n - 1) * COLUMN_ROW_GAP + pad;
+  const colsN = cols.reduce((s, k) => s + sizes[k], 0);
+  const rowsN = rows.reduce((s, k) => s + sizes[k], 0);
+  const geometry = (room: number) => {
+    const availW = width - x0Min - pad;
+    const availH = height - top - room;
+    const edge = Math.max(40, Math.min(availW, availH));
+    const gap = present.length > 2 ? Math.min(6, Math.max(2, edge * 0.012)) : 0;
+    const pitch = Math.max(
+      0.05,
+      Math.min((availW - (cols.length - 1) * gap) / colsN, (availH - (rows.length - 1) * gap) / rowsN),
+    );
+    const mapW = colsN * pitch + (cols.length - 1) * gap;
+    const mapH = rowsN * pitch + (rows.length - 1) * gap;
+    const x0 = x0Min + Math.max(0, (availW - mapW) / 2);
+    const y0 = top + Math.max(0, (availH - mapH) / 2);
+    const colX = new Map<number, number>();
+    let at = x0;
+    for (const k of cols) {
+      colX.set(k, at);
+      at += sizes[k] * pitch + gap;
+    }
+    const rowY = new Map<number, number>();
+    at = y0;
+    for (const k of rows) {
+      rowY.set(k, at);
+      at += sizes[k] * pitch + gap;
+    }
+    return { gap, pitch, x0, y0, colX, rowY, bottom: y0 + mapH };
+  };
+  let geo = geometry(below(1));
+  const centresOf = (g: typeof geo) => cols.map((k) => g.colX.get(k)! + (sizes[k] * g.pitch) / 2);
+  // One baseline when the names fit side by side, else two rows.
+  const fits = (c: number[]) =>
+    cols.every((k, n) => n === 0 || c[n - 1] + colWidth(cols[n - 1]) / 2 + 8 <= c[n] - colWidth(k) / 2) &&
+    c[c.length - 1] + colWidth(cols[cols.length - 1]) / 2 <= width - pad;
+  const twoRows = !fits(centresOf(geo));
+  if (twoRows) geo = geometry(below(2));
+  const { gap, pitch, x0, y0, colX, rowY, bottom } = geo;
   layout.pitch = pitch;
-  const used = total * pitch + (docs.length - 1) * gap;
-  const x0 = Math.max(labelRoom + pad, (width - labelRoom - used) / 2 + labelRoom);
-  const y0 = Math.max(pad, (height - used) / 2);
-  byDoc.forEach((list, k) =>
-    list.forEach((id, row) => {
-      const at = off[k] + row * pitch + pitch / 2;
-      layout.points.set(id, { x: x0 + at, y: y0 + at });
-    }),
-  );
-  // Each pair fills its cell: the canvas draws it as a square.
+  layout.edges = { rowBar: x0 - BAR_OFFSET, columnBar: bottom + BAR_OFFSET, gap };
+  const before = (k: number) => present[present.indexOf(k) - 1];
+  const after = (k: number) => present[present.indexOf(k) + 1];
+  const rowEnd = (k: number) => colX.get(before(k))! + sizes[before(k)] * pitch;
+  for (const k of present) {
+    byDoc[k].forEach((id, i) => {
+      const at = i * pitch + pitch / 2;
+      layout.lines.set(id, {
+        row: rowY.has(k) ? { y: rowY.get(k)! + at, x0, x1: rowEnd(k) } : null,
+        column: colX.has(k) ? { x: colX.get(k)! + at, y0: rowY.get(after(k))!, y1: bottom } : null,
+      });
+    });
+  }
+  // Each pair fills its cell at its two targets: the earlier document's in
+  // columns, the later one's in rows.
   const radius = pitch / 2;
   const counts = new Map<string, number>();
   particles.forEach((p, i) => {
@@ -427,8 +541,11 @@ function placeMap(
       [da, db] = [db, da];
       [ra, rb] = [rb, ra];
     }
-    layout.x[i] = x0 + off[db] + rb * pitch + pitch / 2;
-    layout.y[i] = y0 + off[da] + ra * pitch + pitch / 2;
+    const cx = colX.get(da);
+    const ry = rowY.get(db);
+    if (cx === undefined || ry === undefined) return;
+    layout.x[i] = cx + ra * pitch + pitch / 2;
+    layout.y[i] = ry + rb * pitch + pitch / 2;
     layout.r[i] = radius;
     layout.visible[i] = level === null || p.level === level ? 1 : 0;
     layout.alpha[i] = 1;
@@ -438,41 +555,40 @@ function placeMap(
     counts.set(key, (counts.get(key) ?? 0) + 1);
   });
   // A square for every pair of documents compared, whatever the side shows.
-  for (let i = 0; i < docs.length; i++) {
-    for (let j = i + 1; j < docs.length; j++) {
+  for (const i of cols) {
+    for (const j of rows) {
+      if (j <= i) continue;
       const n = counts.get(`${i}:${j}`) ?? 0;
       if (n === 0) continue;
       layout.groups.push({
         key: getDocPairKey(docs[i].id, docs[j].id),
         count: n,
-        x0: x0 + off[j],
-        y0: y0 + off[i],
-        x1: x0 + off[j] + sizes[j] * pitch,
-        y1: y0 + off[i] + sizes[i] * pitch,
+        x0: colX.get(i)!,
+        y0: rowY.get(j)!,
+        x1: colX.get(i)! + sizes[i] * pitch,
+        y1: rowY.get(j)! + sizes[j] * pitch,
         labelAt: "none",
+        row: docs[j].id,
+        column: docs[i].id,
       });
     }
   }
-  // The names down the diagonal; on a side each document's named targets
-  // follow its name, and the name sits at the front of its stretch.
-  const marked = side ? [...named, ...(extra && !rank.has(extra) && has(extra) ? [extra] : [])] : [];
-  const byId = new Map(data.scope.commitments.map((c) => [c.id, c]));
-  const ownMarks = (k: number) =>
-    marked
-      .filter((id) => byId.get(id)?.doc === docs[k].id)
-      .sort((a, b) => (rowOf.get(a) ?? 0) - (rowOf.get(b) ?? 0));
-  const markWidth = (id: string) => {
-    const c = byId.get(id);
-    return (c ? targetLine(c, MARK_TEXT).length : 0) * MARK_CHAR + MARK_COUNT;
-  };
-  const mark = (id: string, k: number, labelX: number, labelY: number, labelWidth: number, align: "left" | "right", lines: 1 | 2) => {
-    const row = rowOf.get(id) ?? 0;
+  const mark = (
+    id: string,
+    k: number,
+    labelX: number,
+    labelY: number,
+    labelWidth: number,
+    align: "left" | "right",
+    lines: 1 | 2,
+    end: { x: number; y: number },
+  ) => {
     layout.marks.push({
       id,
       doc: docs[k].id,
       count: count.get(id) ?? 0,
-      x: x0 + off[k] + row * pitch + pitch / 2,
-      y: y0 + off[k] + row * pitch + pitch / 2,
+      x: end.x,
+      y: end.y,
       labelX,
       labelY,
       labelWidth,
@@ -481,55 +597,35 @@ function placeMap(
       lines,
     });
   };
-  // The first document has the least room beside the diagonal: with room
-  // above the map, its targets are named there instead, one line each.
-  const k0 = sizes.findIndex((n) => n > 0);
-  const above = k0 >= 0 ? ownMarks(k0) : [];
-  const overhead = above.length * MARK_LINE + 6;
-  const lifted = above.length > 0 && y0 - overhead >= 0;
-  if (lifted) {
-    const labelX = x0 + off[k0];
-    const room = Math.min(used, width - pad - labelX);
-    above.forEach((id, i) => {
-      const labelY = y0 - 6 - (above.length - 1 - i) * MARK_LINE - MARK_LINE / 2;
-      mark(id, k0, labelX, labelY, room, "left", 1);
-    });
-  }
-  type Item = { k: number; mark: string | null; height: number; want: number; width: number; lines: 1 | 2 };
+  // Rows: each document's name at the left edge, at the front of its band
+  // on a side, else its middle; the last document, which has no column,
+  // keeps its named targets under its name. Where the field is too short,
+  // those names take one line, then the ones carrying least go unnamed
+  // (never the one in focus).
+  type Item = { k: number; mark: string | null; height: number; want: number; lines: 1 | 2 };
   const items: Item[] = [];
-  for (let k = 0; k < docs.length; k++) {
-    if (sizes[k] === 0) continue;
-    const right = x0 + off[k] - 8;
-    const width = Math.max(24, Math.min(220, right - pad));
-    const chars = docs[k].name.length * AXIS_CHAR;
-    const lines = Math.min(AXIS_LINES, Math.max(1, Math.ceil(chars / width)));
+  for (const k of rows) {
+    const lines = Math.min(AXIS_LINES, Math.max(1, Math.ceil((docs[k].name.length * AXIS_CHAR) / nameWidth)));
     const h = lines * AXIS_LINE;
-    const stretch = sizes[k] * pitch;
-    items.push({ k, mark: null, height: h, want: side ? y0 + off[k] + h / 2 : y0 + off[k] + stretch / 2, width, lines: 1 });
-    if (lifted && k === k0) continue;
-    const room = Math.min(MARK_MAX, right - pad);
+    const band = sizes[k] * pitch;
+    items.push({ k, mark: null, height: h, want: side ? rowY.get(k)! + h / 2 : rowY.get(k)! + band / 2, lines: 1 });
+    if (k !== last) continue;
     for (const id of ownMarks(k)) {
-      const two = markWidth(id) > room ? 2 : 1;
+      const two = markWidth(id) > nameWidth + 30 ? 2 : 1;
       items.push({
         k,
         mark: id,
         height: two === 2 ? 2 * MARK_LINE - 2 : MARK_LINE,
-        want: y0 + off[k] + (rowOf.get(id) ?? 0) * pitch + pitch / 2,
-        width,
+        want: rowY.get(k)! + (rowOf.get(id) ?? 0) * pitch + pitch / 2,
         lines: two,
       });
     }
   }
-  // Every label keeps the height its text needs. Where the field is too
-  // short for all of them, the targets' names take one line, then the
-  // targets carrying least go unnamed (never the one in focus): their rows
-  // and the list still name them.
   const place = () => {
     const hs = items.map((it) => it.height);
     return { cs: spread(items.map((it) => it.want), hs, 0, height), hs };
   };
-  const squeezed = ({ cs, hs }: { cs: number[]; hs: number[] }) =>
-    hs.some((h, i) => h < items[i].height - 1e-6) || (items.length > 0 && cs[0] < items[0].want - 0.5);
+  const squeezed = ({ hs }: { cs: number[]; hs: number[] }) => hs.some((h, i) => h < items[i].height - 1e-6);
   let placed = place();
   if (squeezed(placed)) {
     for (const it of items) {
@@ -539,40 +635,114 @@ function placeMap(
     }
     placed = place();
   }
-  const droppable = [...named].reverse().filter((id) => id !== extra);
-  while (squeezed(placed) && droppable.length > 0) {
-    const id = droppable.shift();
+  const leftDrop = [...ownMarks(last)].reverse().filter((id) => id !== extra);
+  while (squeezed(placed) && leftDrop.length > 0) {
+    const id = leftDrop.shift();
     const at = items.findIndex((it) => it.mark === id);
     if (at >= 0) items.splice(at, 1);
     placed = place();
   }
-  const { cs: centres, hs: heights } = placed;
   items.forEach((it, n) => {
+    const y = placed.cs[n];
     const k = it.k;
-    const top = centres[n] - heights[n] / 2;
-    // Every document's own stretch lies on one line (x - x0 = y - y0): a
-    // label taller than its stretch stays left of that line at its top.
-    const right = Math.min(x0 + off[k] - 8, x0 + (top - y0) - 8);
+    const bandY = rowY.get(k)!;
     if (it.mark === null) {
-      const stretch = sizes[k] * pitch;
-      const moved = Math.abs(centres[n] - it.want) > 6;
-      const at = side ? pitch / 2 : stretch / 2;
+      const at = side ? pitch / 2 : (sizes[k] * pitch) / 2;
       layout.axis.push({
         key: docs[k].id,
-        square: { x0: x0 + off[k], y0: y0 + off[k], x1: x0 + off[k] + stretch, y1: y0 + off[k] + stretch },
-        labelX: right,
-        labelY: centres[n],
-        labelWidth: Math.max(24, Math.min(it.width, right - pad)),
-        labelHeight: heights[n],
-        lead: moved ? { x: x0 + off[k] + at, y: y0 + off[k] + at } : null,
+        edge: "row",
+        bar: { x0: x0 - BAR_OFFSET, y0: bandY, x1: x0 - BAR_OFFSET, y1: bandY + sizes[k] * pitch },
+        labelX: x0 - ROW_NAME_GAP,
+        labelY: y,
+        labelWidth: nameWidth,
+        labelHeight: placed.hs[n],
+        lead:
+          Math.abs(y - it.want) > 6
+            ? { x0: x0 - ROW_NAME_GAP + 3, y0: y, x1: x0 - BAR_OFFSET - 2, y1: bandY + at }
+            : null,
       });
       return;
     }
-    const room = Math.min(MARK_MAX, right - pad);
-    if (room < MARK_MIN) return;
-    mark(it.mark, k, right, centres[n], room, "right", it.lines);
+    mark(it.mark, k, x0 - ROW_NAME_GAP, y, nameWidth + 30, "right", it.lines, {
+      x: x0 - 1,
+      y: bandY + (rowOf.get(it.mark) ?? 0) * pitch + pitch / 2,
+    });
     // A name squeezed by a crowded field keeps the height it was given.
-    layout.marks[layout.marks.length - 1].labelHeight = heights[n];
+    layout.marks[layout.marks.length - 1].labelHeight = placed.hs[n];
+  });
+  // Columns: a short name over a line of context under each column, on one
+  // baseline; where they do not fit side by side, every second one drops a
+  // row and a thin line joins it to its bar. A name in the first row keeps
+  // clear of its neighbours' lines.
+  const centres = centresOf(geo);
+  const barY = bottom + BAR_OFFSET;
+  cols.forEach((k, n) => {
+    const lower = twoRows && n % 2 === 1;
+    const c = centres[n];
+    // The stretch a name may take: the field, and in two rows the room
+    // between its neighbours' lines (first row) or halfway to the next
+    // names of its own row (second row).
+    let lo = pad;
+    let hi = width - pad;
+    if (twoRows && lower) {
+      if (n - 2 >= 0) lo = Math.max(lo, (centres[n - 2] + c) / 2 + 6);
+      if (n + 2 < centres.length) hi = Math.min(hi, (c + centres[n + 2]) / 2 - 6);
+    } else if (twoRows) {
+      if (n - 1 >= 0) lo = Math.max(lo, centres[n - 1] + 7);
+      if (n + 1 < centres.length) hi = Math.min(hi, centres[n + 1] - 7);
+    }
+    const w = Math.max(0, Math.min(colWidth(k), hi - lo));
+    const cx = Math.min(hi - w / 2, Math.max(lo + w / 2, c));
+    const labelY = bottom + COLUMN_TOP + (lower ? labelH + COLUMN_ROW_GAP : 0);
+    layout.axis.push({
+      key: docs[k].id,
+      edge: "column",
+      bar: { x0: colX.get(k)!, y0: barY, x1: colX.get(k)! + sizes[k] * pitch, y1: barY },
+      labelX: cx,
+      labelY,
+      labelWidth: w,
+      labelHeight: colHeight(k),
+      lead: lower || Math.abs(cx - c) > 2 ? { x0: c, y0: barY + 2, x1: cx, y1: labelY - 3 } : null,
+    });
+  });
+  // The first document's named targets above the map, at the front of its column.
+  first.forEach((id, i) => {
+    const labelY = y0 - 6 - (first.length - 1 - i) * MARK_LINE - MARK_LINE / 2;
+    mark(id, k0, colX.get(k0)!, labelY, Math.max(MARK_MIN, width - pad - colX.get(k0)!), "left", 1, {
+      x: colX.get(k0)! + (rowOf.get(id) ?? 0) * pitch + pitch / 2,
+      y: y0 - 1,
+    });
+  });
+  // The middle documents' named targets in the empty half, where their row
+  // ends: spread apart above the last row, stepping right where a lower row
+  // runs further; where they do not fit, the ones carrying least go unnamed
+  // (never the one in focus).
+  let stair = present
+    .slice(1, -1)
+    .flatMap((k) => ownMarks(k).map((id) => ({ id, k, want: rowY.get(k)! + (rowOf.get(id) ?? 0) * pitch + pitch / 2 })));
+  const floor = rowY.get(last)! - 2;
+  const fitStair = () => {
+    const hs = stair.map(() => MARK_LINE);
+    return { cs: spread(stair.map((s) => s.want), hs, y0, floor), hs };
+  };
+  let sp = fitStair();
+  const stairDrop = stair
+    .map((s) => s.id)
+    .filter((id) => id !== extra)
+    .sort((a, b) => (rank.get(b) ?? -1) - (rank.get(a) ?? -1));
+  while (sp.hs.some((h) => h < MARK_LINE - 1e-6) && stairDrop.length > 0) {
+    const id = stairDrop.shift();
+    stair = stair.filter((s) => s.id !== id);
+    sp = fitStair();
+  }
+  const bands = rows.map((k) => ({ y0: rowY.get(k)!, y1: rowY.get(k)! + sizes[k] * pitch, end: rowEnd(k) }));
+  stair.forEach((s, n) => {
+    const y = sp.cs[n];
+    const lo = y - MARK_LINE / 2;
+    const hi = y + MARK_LINE / 2;
+    const end = Math.max(rowEnd(s.k), ...bands.filter((b) => b.y0 < hi + gap && b.y1 > lo - gap).map((b) => b.end));
+    const x = end + STAIR_GAP;
+    mark(s.id, s.k, x, y, Math.max(MARK_MIN, width - pad - x), "left", 1, { x: rowEnd(s.k) + 1, y: s.want });
   });
   layout.marks.sort((a, b) => docIndex.get(a.doc)! - docIndex.get(b.doc)! || a.y - b.y);
 }
@@ -739,37 +909,24 @@ export function layoutHub(
   return layout;
 }
 
-/** A target's row and column on the map, as a strip: from its own point
- *  on the diagonal, its row runs right to the map's edge (its pairs with
- *  later documents) and its column up to the map's top (with earlier ones).
- *  Its numbers stand beside the strip. */
+/** A target's row and column on the map, each a strip a little wider than
+ *  its cells (never under 6px), so the numbers beside it keep clear of its
+ *  squares even where a row is under a pixel high. */
 export interface HubStrip {
   id: string;
-  x: number;
-  y: number;
+  row: HubLines["row"];
+  column: HubLines["column"];
   /** Half the strip's thickness. */
   half: number;
-  top: number;
-  right: number;
 }
 
-/** A strip is its row and a little either side, never under 6px, so the
- *  numbers beside it keep clear of its squares even where a row is under a
- *  pixel high. */
 const STRIP_MIN_HALF = 3;
 const STRIP_PAD = 2;
 
 export function stripOf(layout: HubLayout, id: string): HubStrip | null {
-  const point = layout.points.get(id);
-  if (!point || layout.axis.length === 0) return null;
-  return {
-    id,
-    x: point.x,
-    y: point.y,
-    half: Math.max(STRIP_MIN_HALF, layout.pitch / 2 + STRIP_PAD),
-    top: Math.min(...layout.axis.map((a) => a.square.y0)),
-    right: Math.max(...layout.axis.map((a) => a.square.x1)),
-  };
+  const lines = layout.lines.get(id);
+  if (!lines || (!lines.row && !lines.column)) return null;
+  return { id, row: lines.row, column: lines.column, half: Math.max(STRIP_MIN_HALF, layout.pitch / 2 + STRIP_PAD) };
 }
 
 /** How many of a target's pairs on the map's side sit in one block, and
@@ -806,24 +963,24 @@ export function stripCounts(layout: HubLayout, particles: HubParticle[], id: str
     const key = getDocPairKey(p.a, p.b);
     count.set(key, (count.get(key) ?? 0) + 1);
   });
+  const right = Math.max(...layout.groups.map((g) => g.x1));
   const counts: HubCount[] = [];
   for (const g of layout.groups) {
     const n = count.get(g.key);
     if (!n) continue;
-    // The blocks level with its point are on its row; the others, above
-    // it, on its column.
-    const onRow = g.y0 <= strip.y && strip.y <= g.y1;
-    if (onRow) {
-      counts.push({ key: g.key, count: n, x: (g.x0 + g.x1) / 2, y: strip.y + strip.half + COUNT_GAP, align: "below" });
+    // The blocks level with its row are on its row; the others on its column.
+    if (strip.row && g.y0 <= strip.row.y && strip.row.y <= g.y1) {
+      counts.push({ key: g.key, count: n, x: (g.x0 + g.x1) / 2, y: strip.row.y + strip.half + COUNT_GAP, align: "below" });
       continue;
     }
+    if (!strip.column) continue;
     // Beside the column, on the side that keeps the number on the map.
-    const right = strip.x + strip.half + COUNT_GAP;
-    const fits = right + countWidth(n) <= strip.right;
+    const after = strip.column.x + strip.half + COUNT_GAP;
+    const fits = after + countWidth(n) <= right;
     counts.push({
       key: g.key,
       count: n,
-      x: fits ? right : strip.x - strip.half - COUNT_GAP,
+      x: fits ? after : strip.column.x - strip.half - COUNT_GAP,
       y: (g.y0 + g.y1) / 2,
       align: fits ? "right" : "left",
     });
@@ -831,14 +988,30 @@ export function stripCounts(layout: HubLayout, particles: HubParticle[], id: str
   // Where blocks are smaller than their numbers, the numbers move apart
   // along the strip, in order, and stay beside it.
   const row = counts.filter((c) => c.align === "below");
-  spread(row.map((c) => c.x), row.map((c) => countWidth(c.count)), strip.x + strip.half, strip.right).forEach(
-    (x, k) => (row[k].x = x),
-  );
+  if (strip.row) {
+    const { x0, x1 } = strip.row;
+    spread(row.map((c) => c.x), row.map((c) => countWidth(c.count)), x0, x1).forEach((x, k) => (row[k].x = x));
+  }
   const column = counts.filter((c) => c.align !== "below");
-  spread(column.map((c) => c.y), column.map(() => COUNT_HEIGHT), strip.top, strip.y - strip.half).forEach(
-    (y, k) => (column[k].y = y),
-  );
+  if (strip.column) {
+    const { y0, y1 } = strip.column;
+    spread(column.map((c) => c.y), column.map(() => COUNT_HEIGHT), y0, y1).forEach((y, k) => (column[k].y = y));
+  }
   return counts;
+}
+
+/** A pointed block traced to its two documents' bars along the white gaps:
+ *  from the gap corner above-left of it, left to the rows' bars and down to
+ *  the columns' bars, never over a square. */
+export function pairGuides(layout: HubLayout, group: HubGroup): HubSegment[] {
+  if (!layout.edges || group.row === undefined) return [];
+  const half = layout.edges.gap / 2;
+  const x = group.x0 - half;
+  const y = group.y0 - half;
+  return [
+    { x0: x, y0: y, x1: layout.edges.rowBar, y1: y },
+    { x0: x, y0: y, x1: x, y1: layout.edges.columnBar },
+  ];
 }
 
 /** Red first, then partial, no clear relationship and aligned: each
