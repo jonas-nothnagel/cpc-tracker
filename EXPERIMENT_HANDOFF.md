@@ -512,17 +512,25 @@ unreadable.
   - Redrawn on today's own drawing, A beat "today + the pair traced on hover": "easier to read
     even with the cost of double labels".
   - Tilted column names were not elegant. From his own mockups he chose 7 in one aligned row.
-- **Built** (`c8a37bf`, `a0bde5e`, `7d8023f`, `d853b7b`, `a400d7a`, `a1936ce`): the map is a
-  lower triangle in today's squares, tones and gaps, with no numbers in the blocks.
+- **Built** (`c8a37bf`, `a0bde5e`, `7d8023f`, `d853b7b`, `a400d7a`, `a1936ce`; final-review
+  fixes `27548f1`): the map is a lower triangle in today's squares, tones and gaps, with no
+  numbers in the blocks.
   - Rows are documents 2..N, named at the left edge beside a colour bar.
   - Columns are documents 1..N-1, named under the map: a short name over a smaller line of
-    context, on one baseline. Where they do not fit, every second one drops a row, joined to
-    its bar by a thin line.
+    context, on one baseline. One row holds while every name, whole, still stands under its
+    own column (Mongolia's eight at laptop sizes). Otherwise every second name drops a row
+    and hangs from its column by a straight line through a gap the first row keeps clear
+    (Panama, Sri Lanka). Only lines of context shorten, never a short name. On a phone with
+    eight documents (Sri Lanka at 427px and narrower), the names fall back to spreading, and
+    a line can cross a name (ruled; a clean phone layout needs a third row or bent lines).
   - Short names come from the new config field `mapLabel` (Mongolia: Jonas's Vision / 2050,
     NDC / Contribution, Paris / Agreement, Biodiv. / 2030, Adapt. / Plan, Food / Measures,
     LDN / Targets, LDN / Investment). Elsewhere the `mediumLabel` "ACR (context)" is split.
   - Named targets stand above the map (the first document's), in the empty half where their
-    row ends (the middle documents'), or under their row's name (the last document's).
+    row ends (the middle documents', one document's names on one edge), or under their row's
+    name (the last document's, and any without room in the empty half).
+  - Row names and the names at the left stay beside and above the map, clear of the column
+    names. On a short field they give up whole lines, and the canvas clamps them.
   - The room above the map is the same on every side, so the map keeps its place and size.
   - Pointing at a block marks its row's and its column's names and draws two hairlines along
     the white gaps back to both bars.
@@ -531,8 +539,10 @@ unreadable.
   - `spread` no longer squeezes every name to the top when the first one sits near the top
     edge (Sri Lanka's first row hit this in the sketches).
   - The walkthrough's map stop says rows are named at the left and columns under the map.
-- **Verified:** full suite 1,673 passed (1 skipped), `tsc` clean, lint clean on the changed
-  files, all four `/brief` 200. A fresh process loads Mongolia's `mapLabel`s through the real
+- **Verified:** full suite 1,679 passed (1 skipped), `tsc` clean, lint clean on the changed
+  files, all four `/brief` 200. `hub.test.ts` checks four real-shaped corpora (Panama with
+  its 206-target REDD+ strategy, Sri Lanka's 4-target documents, Côte d'Ivoire, Mongolia) at
+  seven field sizes: every name inside the field, apart, whole, and clear of every line. A fresh process loads Mongolia's `mapLabel`s through the real
   loader. A long-running dev server keeps the old config cached until it restarts.
 - **Not in this round:** the How it works triangle keeps its diagonal; naming all eight
   documents on both edges (an empty first row and last column) was offered and not taken.
