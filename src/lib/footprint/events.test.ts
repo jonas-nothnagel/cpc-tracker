@@ -113,6 +113,16 @@ describe("the curated events", () => {
     }
   });
 
+  it("name the public contracts' English: every title, buyer and reason run of 28 and 29 September", () => {
+    const event = FOOTPRINT_EVENTS.find((e) => e.id === "contracts-english");
+    expect(event).toBeDefined();
+    const runs = ledger.filter(
+      (r) => (r.run_id === "backfill:contract-titles" || r.run_id?.startsWith("contracts-translation:")) && r.ts <= event!.to,
+    );
+    expect(runs.length).toBeGreaterThan(0);
+    expect(eventRows(event!, ledger)).toEqual(runs);
+  });
+
   it("never count a run twice", () => {
     const counted = FOOTPRINT_EVENTS.flatMap((e) => eventRows(e, ledger));
     expect(new Set(counted).size).toBe(counted.length);

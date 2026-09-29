@@ -176,4 +176,21 @@ export const FOOTPRINT_EVENTS: FootprintEvent[] = [
     },
     source: "branch data/sri-lanka-overhaul (07a6015); python/scripts/backfill_unrecorded_runs.py",
   },
+  {
+    id: "contracts-english",
+    from: "2026-09-28T00:00:00Z",
+    to: "2026-09-29T23:59:59Z",
+    runIds: ["backfill:contract-titles", "contracts-translation:"],
+    title: {
+      en: "Public contracts in English",
+      es: "Contratos públicos en inglés",
+      mn: "Төрийн гэрээ англи хэлээр",
+    },
+    detail: {
+      en: "The titles, buyers and purpose readings of the 5,913 Mongolian public contracts on the contracts page translated into English.",
+      es: "Los títulos, los compradores y las lecturas de propósito de los 5.913 contratos públicos de Mongolia en la página de contratos se tradujeron al inglés.",
+      mn: "Гэрээний хуудсан дахь Монголын 5,913 төрийн гэрээний нэр, худалдан авагч, зорилгын үнэлгээг англи хэлнээ орчуулсан.",
+    },
+    source: "commit bd2f472 (python/scripts/translate_contracts.py records its runs); python/scripts/backfill_unrecorded_runs.py (the titles of 28 and 29 September)",
+  },
 ];
