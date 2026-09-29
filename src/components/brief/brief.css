@@ -1766,6 +1766,14 @@
   transition: opacity 160ms ease;
 }
 
+[data-brief] .brief-hub-axis[data-lines="1"] {
+  -webkit-line-clamp: 1;
+}
+
+[data-brief] .brief-hub-axis[data-lines="2"] {
+  -webkit-line-clamp: 2;
+}
+
 [data-brief] .brief-hub-axis[data-compact] {
   font-size: 0.75rem;
 }
@@ -1785,6 +1793,7 @@
   font-size: 0.78125rem;
   line-height: 15px;
   text-align: center;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

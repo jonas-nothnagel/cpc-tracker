@@ -5,6 +5,7 @@ import { briefFixture } from "./test-fixture";
 import { DOT_ORDER } from "./dot-layout";
 import {
   FOCUS_LABEL,
+  fitAlong,
   MAP_BACK,
   MAP_FAINT,
   MAP_MID,
@@ -64,6 +65,32 @@ function mapBox(l: HubLayout) {
     y1: Math.max(...l.groups.map((g) => g.y1)),
   };
 }
+
+describe("fitAlong", () => {
+  it("keeps each box within its own bounds and apart from the next, near its wanted place", () => {
+    const at = fitAlong(
+      [
+        { want: 0, width: 10, lo: 0, hi: 5 },
+        { want: 5, width: 0, lo: 12, hi: 20 },
+        { want: 8, width: 10, lo: 0, hi: 30 },
+      ],
+      4,
+    );
+    expect(at).toEqual([0, 14, 18]);
+  });
+
+  it("none when the boxes cannot all fit", () => {
+    expect(
+      fitAlong(
+        [
+          { want: 0, width: 10, lo: 0, hi: 0 },
+          { want: 0, width: 10, lo: 0, hi: 12 },
+        ],
+        4,
+      ),
+    ).toBeNull();
+  });
+});
 
 describe("spread", () => {
   it("keeps the first name inside the field and the others in place", () => {
@@ -712,6 +739,130 @@ describe("layoutHub", () => {
           expect(layout.x[i]).toBeLessThanOrEqual(w);
           expect(layout.y[i]).toBeGreaterThanOrEqual(0);
           expect(layout.y[i]).toBeLessThanOrEqual(h);
+        }
+      }
+    }
+  });
+});
+
+describe("the map's names on real-sized corpora", () => {
+  // Four corpora shaped like the pilot countries, with their real document
+  // names and short names: a 206-target document, 4-target documents, long names.
+  const REAL: { sizes: number[]; names: string[]; labels: [string, string][] }[] = [
+    {
+      sizes: [36, 30, 17, 17, 206, 30, 14, 11],
+      names: ["Pacto de Panamá con la Naturaleza", "Plan Estratégico de Gobierno 2025-2029", "PENCYT (Science & Innovation Plan)", "Plan Nacional de Seguridad Hídrica", "Estrategia Nacional REDD+", "Hoja de Ruta del Nature Pledge", "Plan Indicativo de Ordenamiento Territorial Ambiental", "Programa Nacional de Restauración Forestal"],
+      labels: [["NP", "Nature Pledge"], ["PEG", "Gov't Strategic Plan"], ["PENCYT", "Science & Innovation Plan"], ["PNSH", "Water Security"], ["ENR", "REDD+ Strategy"], ["HR", "Nature Pledge Roadmap"], ["PIOTA", "Canal Watershed Plan"], ["PNRF", "Forest Restoration"]],
+    },
+    {
+      sizes: [91, 16, 4, 192, 4, 33, 9, 55],
+      names: ["Nationally Determined Contributions 3.0", "Draft National Biodiversity Strategy and Action Plan", "Land Degradation Neutrality document", "National Agriculture Policy", "Physical Planning Policy & Plan - 2048", "National Water Resources Policy of Sri Lanka", "The National Fisheries and Aquaculture Policy", "National Mineral Policy"],
+      labels: [["NDC", "Climate Change"], ["NBSAP", "Nature"], ["LDN", "Land degradation"], ["NAP", "Agriculture"], ["PPPP", "Physical planning"], ["NWRP", "Water"], ["NFAP", "Fisheries"], ["NMP", "Minerals"]],
+    },
+    {
+      sizes: [181, 21, 7],
+      names: ["Nationally Determined Contributions 3.0", "National Biodiversity Targets", "Land Degradation Neutrality targets"],
+      labels: [["NDC", "Climate"], ["NBT", "Nature"], ["LDN", "Land degradation"]],
+    },
+    {
+      sizes: [15, 36, 16, 20, 15, 41, 27, 8],
+      names: ["Vision 2050", "Nationally Determined Contribution", "National targets for implementation of the Paris Agreement", "National biodiversity targets for 2030", "National Adaptation Plan to Climate Change", "Food Supply and Security Measures", "LDN Targets", "Investing in Land Degradation Neutrality"],
+      labels: [["Vision", "2050"], ["NDC", "Contribution"], ["Paris", "Agreement"], ["Biodiv.", "2030"], ["Adapt.", "Plan"], ["Food", "Measures"], ["LDN", "Targets"], ["LDN", "Investment"]],
+    },
+  ];
+  const FIELDS = [[1000, 620], [800, 500], [640, 760], [560, 384], [497, 622], [427, 535], [358, 371]];
+  type Box = { x0: number; y0: number; x1: number; y1: number; what: string };
+  const boxes = (l: HubLayout): Box[] => [
+    ...l.axis.map((a) =>
+      a.edge === "row"
+        ? { x0: a.labelX - a.labelWidth, x1: a.labelX, y0: a.labelY - a.labelHeight / 2, y1: a.labelY + a.labelHeight / 2, what: `row ${a.key}` }
+        : { x0: a.labelX - a.labelWidth / 2, x1: a.labelX + a.labelWidth / 2, y0: a.labelY, y1: a.labelY + a.labelHeight, what: `column ${a.key}` },
+    ),
+    ...l.marks.map((m) =>
+      m.align === "left"
+        ? { x0: m.labelX, x1: m.labelX + m.labelWidth, y0: m.labelY - m.labelHeight / 2, y1: m.labelY + m.labelHeight / 2, what: `mark ${m.id}` }
+        : { x0: m.labelX - m.labelWidth, x1: m.labelX, y0: m.labelY - m.labelHeight / 2, y1: m.labelY + m.labelHeight / 2, what: `mark ${m.id}` },
+    ),
+  ];
+  const overlap = (a: Box, b: Box) => a.x0 < b.x1 - 0.5 && b.x0 < a.x1 - 0.5 && a.y0 < b.y1 - 0.5 && b.y0 < a.y1 - 0.5;
+  const through = (s: { x0: number; y0: number; x1: number; y1: number }, b: Box) => {
+    for (let t = 0; t <= 1; t += 0.02) {
+      const x = s.x0 + (s.x1 - s.x0) * t;
+      const y = s.y0 + (s.y1 - s.y0) * t;
+      if (x > b.x0 + 1 && x < b.x1 - 1 && y > b.y0 + 1 && y < b.y1 - 1) return true;
+    }
+    return false;
+  };
+
+  it("keeps every name inside the field, apart from the others and from their lines, and every short name whole", () => {
+    for (const real of REAL) {
+      const { data, particles: many } = corpus(real.sizes);
+      const docs = data.scope.docs.map((d, k) => ({ ...d, name: real.names[k], mapLabel: real.labels[k] }));
+      const commitments = data.scope.commitments.map((c) => ({ ...c, label: `Expand the target called ${c.id} across the country` }));
+      const hot = [0, 1, 3, real.sizes.length - 2, real.sizes.length - 1].filter((k, i, a) => a.indexOf(k) === i && k < real.sizes.length).map((k) => `D${k}_0`);
+      const flaggedMany = many.map((p) =>
+        hot.includes(p.ca) || hot.includes(p.cb) ? { ...p, level: "flagged" as const, tone: DOT_ORDER.indexOf("apart") } : p,
+      );
+      const named = {
+        ...data,
+        scope: { ...data.scope, docs, commitments },
+        concentration: { ...data.concentration, top: hot, concentrated: true },
+      };
+      const last = real.sizes.length - 1;
+      const middle = Math.min(1, last - 1);
+      const stages = [
+        { kind: "map" } as const,
+        { kind: "map", side: "apart", focus: { kind: "top" } } as const,
+        { kind: "map", side: "apart", focus: { kind: "target", id: `D${middle}_3` } } as const,
+        { kind: "map", side: "apart", focus: { kind: "target", id: `D${last}_2` } } as const,
+        { kind: "map", side: "apart", focus: { kind: "target", id: "D0_4" } } as const,
+      ];
+      for (const [w, h] of FIELDS) {
+        for (const stage of stages) {
+          const map = layoutHub(stage, flaggedMany, named, w, h);
+          const where = `${real.sizes.length} documents, ${w}x${h}, ${stage.side ?? "plain"} ${stage.focus?.kind === "target" ? stage.focus.id : ""}`;
+          const all = boxes(map);
+          for (const b of all) {
+            expect(b.x0, `${b.what} left edge, ${where}`).toBeGreaterThanOrEqual(-0.5);
+            expect(b.x1, `${b.what} right edge, ${where}`).toBeLessThanOrEqual(w + 0.5);
+            expect(b.y0, `${b.what} top, ${where}`).toBeGreaterThanOrEqual(-0.5);
+            expect(b.y1, `${b.what} bottom, ${where}`).toBeLessThanOrEqual(h + 0.5);
+          }
+          for (let i = 0; i < all.length; i++) {
+            for (let j = i + 1; j < all.length; j++) {
+              expect(overlap(all[i], all[j]), `${all[i].what} and ${all[j].what}, ${where}`).toBe(false);
+            }
+          }
+          // A line joining a name to its column or row never runs through
+          // another name. (On a phone's field, eight documents' names fall
+          // back to spreading, and a line may cross a neighbour.)
+          const lines = [
+            ...map.axis.flatMap((a) => (a.lead ? [{ s: a.lead, what: `${a.edge} ${a.key}` }] : [])),
+            ...map.marks.map((m) => ({
+              s: { x0: m.align === "left" ? m.labelX - 3 : m.labelX + 3, y0: m.labelY, x1: m.x, y1: m.y },
+              what: `mark ${m.id}`,
+            })),
+          ];
+          if (w >= 480) {
+            for (const l of lines) {
+              for (const b of all) {
+                if (b.what === l.what) continue;
+                expect(through(l.s, b), `${l.what}'s line through ${b.what}, ${where}`).toBe(false);
+              }
+            }
+          }
+          // A column's short name is never cut.
+          for (const a of map.axis.filter((x) => x.edge === "column")) {
+            const k = docs.findIndex((d) => d.id === a.key);
+            expect(a.labelWidth, `column ${a.key} width, ${where}`).toBeGreaterThanOrEqual(real.labels[k][0].length * 6.4);
+          }
+          // The target in focus is always named, whole, inside the field.
+          if (stage.focus?.kind === "target") {
+            const id = stage.focus.id;
+            if (flaggedMany.some((p) => p.level === "flagged" && (p.ca === id || p.cb === id))) {
+              expect(map.marks.map((m) => m.id), `focus ${id}, ${where}`).toContain(id);
+            }
+          }
         }
       }
     }

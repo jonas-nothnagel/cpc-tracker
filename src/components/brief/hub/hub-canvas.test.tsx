@@ -92,6 +92,22 @@ describe("HubCanvas", () => {
     expect(screen.getByRole("presentation").textContent).toBe("axis A");
   });
 
+  it("a row's name keeps to the whole lines the map gives it on a short field", () => {
+    const long = "A national plan with a name long enough to need three lines at the map's left edge";
+    const data = { ...DATA, scope: { ...DATA.scope, docs: DATA.scope.docs.map((d) => ({ ...d, name: long })) } };
+    Object.defineProperty(HTMLElement.prototype, "clientHeight", { configurable: true, get: () => 150 });
+    const layout = layoutHub({ kind: "map" }, PARTICLES, data, W, 150);
+    const rows = layout.axis.filter((a) => a.edge === "row");
+    // The field is too short for two three-line names: they give up lines.
+    expect(rows.some((a) => a.labelHeight < 48)).toBe(true);
+    const { container } = render(<HubCanvas data={data} stage={{ kind: "map" }} labelFor={() => null} tipFor={tipFor} />);
+    for (const a of rows) {
+      const el = container.querySelector(`[data-edge="row"][data-axis="${a.key}"]`) as HTMLElement;
+      expect(el.getAttribute("data-lines")).toBe(String(Math.max(1, Math.floor(a.labelHeight / 16 + 0.01))));
+      expect(el.style.maxHeight).toBe(`${a.labelHeight}px`);
+    }
+  });
+
   it("pointing at a block marks its row's and its column's names, and nothing at rest", () => {
     const layout = layoutHub({ kind: "map" }, PARTICLES, DATA, W, H);
     const block = layout.groups.find((g) => g.key === "A<->C")!;

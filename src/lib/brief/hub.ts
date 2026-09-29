@@ -227,16 +227,31 @@ const BAR_OFFSET = 7;
 const ROW_NAME_GAP = 14;
 /** Widest a row's name runs, in up to three lines. */
 const ROW_NAME_MAX = 150;
-/** A column's name: per character of its short name (0.78rem semibold)
- *  and of its context (0.69rem), its line height, the room above it and
- *  between its two rows. */
-const COLUMN_CHAR = 6.4;
-const CONTEXT_CHAR = 5.3;
+/** A column's name: its line height, the room above it, between its two
+ *  rows, and between two names in a row. */
 const COLUMN_LINE = 15;
+const COLUMN_GAP = 8;
+/** In two rows, the room between the bars and the first row of names, where
+ *  a name moved off its column hangs from it by a short line. */
+const COLUMN_THREAD = 7;
 const COLUMN_TOP = 13;
 const COLUMN_ROW_GAP = 6;
 /** Room between a row's end and a target named there. */
 const STAIR_GAP = 10;
+
+/** Rough width of a column's short name (0.78rem semibold) or of its line
+ *  of context (0.69rem): capitals and figures run wider than small letters
+ *  ("NWRP" is about 33px). */
+function columnTextWidth(text: string, context: boolean): number {
+  let w = 0;
+  for (const ch of text) {
+    if (ch === " ") w += 3.2;
+    else if (/[A-Z0-9]/.test(ch)) w += 8.2;
+    else if (/[a-z]/.test(ch)) w += 6.3;
+    else w += 4.5;
+  }
+  return (context ? 0.84 : 1) * w + 4;
+}
 
 /** The two documents of a pair key ("A<->B"), in the documents' own order,
  *  so a pair reads the same way in tips, panels and headlines. */
@@ -353,6 +368,36 @@ export function spread(centres: number[], heights: number[], top: number, bottom
   return y;
 }
 
+/**
+ * Boxes along a line, in order: each within its own bounds, at least `gap`
+ * from the next, as near its wanted place as the others allow. Null when
+ * they cannot all fit. Places and bounds are left edges.
+ */
+export function fitAlong(boxes: { want: number; width: number; lo: number; hi: number }[], gap: number): number[] | null {
+  const n = boxes.length;
+  if (n === 0) return [];
+  const early: number[] = [];
+  boxes.forEach((b, i) => early.push(i === 0 ? b.lo : Math.max(b.lo, early[i - 1] + boxes[i - 1].width + gap)));
+  const late: number[] = new Array(n);
+  for (let i = n - 1; i >= 0; i--) {
+    late[i] = i === n - 1 ? boxes[i].hi : Math.min(boxes[i].hi, late[i + 1] - boxes[i].width - gap);
+  }
+  if (early.some((e, i) => e > late[i] + 1e-6)) return null;
+  // Apart evenly first, as names are, then each held within its own range.
+  const centres = spread(
+    boxes.map((b) => b.want + b.width / 2),
+    boxes.map((b) => b.width + gap),
+    early[0] - gap / 2,
+    late[n - 1] + boxes[n - 1].width + gap / 2,
+  );
+  const at: number[] = [];
+  boxes.forEach((b, i) => {
+    const a = Math.min(late[i], Math.max(early[i], centres[i] - b.width / 2));
+    at.push(i === 0 ? a : Math.max(a, at[i - 1] + boxes[i - 1].width + gap));
+  });
+  return at;
+}
+
 /** How many of a side's pairs each target is in. */
 function sideCounts(particles: HubParticle[], side: HubTone): Map<string, number> {
   const level = sideLevel(side);
@@ -466,13 +511,13 @@ function placeMap(
   }
   // The columns' names: a short name over a line of context.
   const colLabel = (k: number): [string, string] => docs[k].mapLabel ?? [docs[k].code || docs[k].id, ""];
-  const colWidth = (k: number) => {
-    const [name, context] = colLabel(k);
-    return Math.max(name.length * COLUMN_CHAR, context.length * CONTEXT_CHAR) + 4;
-  };
+  // A short name is never cut; its line of context may shorten.
+  const nameWidthOf = (k: number) => columnTextWidth(colLabel(k)[0], false);
+  const fullWidthOf = (k: number) => Math.max(nameWidthOf(k), colLabel(k)[1] ? columnTextWidth(colLabel(k)[1], true) : 0);
   const colHeight = (k: number) => (colLabel(k)[1] ? 2 : 1) * COLUMN_LINE;
   const labelH = Math.max(...cols.map(colHeight));
-  const below = (n: number) => COLUMN_TOP + n * labelH + (n - 1) * COLUMN_ROW_GAP + pad;
+  const below = (n: number) =>
+    COLUMN_TOP + (n > 1 ? COLUMN_THREAD : 0) + n * labelH + (n - 1) * COLUMN_ROW_GAP + pad;
   const colsN = cols.reduce((s, k) => s + sizes[k], 0);
   const rowsN = rows.reduce((s, k) => s + sizes[k], 0);
   const geometry = (room: number) => {
@@ -502,15 +547,39 @@ function placeMap(
     }
     return { gap, pitch, x0, y0, colX, rowY, bottom: y0 + mapH };
   };
+  // A row of the columns' names, right of the rows' names: each centred
+  // under its column, spread apart where neighbours would touch. Where the
+  // row cannot hold them all, the lines of context shorten, never a short name.
+  type Geometry = ReturnType<typeof geometry>;
+  const nameRow = (g: Geometry, row: number[]) => {
+    const from = g.x0 - ROW_NAME_GAP + 2;
+    const to = width - pad;
+    const names = row.map(nameWidthOf);
+    const full = row.map(fullWidthOf);
+    const slack = full.reduce((s, w, i) => s + w - names[i], 0);
+    const excess = full.reduce((s, w) => s + w, 0) + (row.length - 1) * COLUMN_GAP - (to - from);
+    const cut = excess > 0 && slack > 0 ? Math.min(1, excess / slack) : 0;
+    const widths = full.map((w, i) => w - (w - names[i]) * cut);
+    const xs = spread(
+      row.map((k) => g.colX.get(k)! + (sizes[k] * g.pitch) / 2),
+      widths.map((w) => w + COLUMN_GAP),
+      from - COLUMN_GAP / 2,
+      to + COLUMN_GAP / 2,
+    );
+    return { widths, xs, fits: excess <= 1e-6 };
+  };
+  // A name stands under its own column while its middle does.
+  const underOwn = (g: Geometry, k: number, x: number) =>
+    x >= g.colX.get(k)! - 0.5 && x <= g.colX.get(k)! + sizes[k] * g.pitch + 0.5;
+  // One row while every name, whole, still stands under its own column;
+  // else every second name drops to a second row.
   let geo = geometry(below(1));
-  const centresOf = (g: typeof geo) => cols.map((k) => g.colX.get(k)! + (sizes[k] * g.pitch) / 2);
-  // One baseline when the names fit side by side, else two rows.
-  const fits = (c: number[]) =>
-    cols.every((k, n) => n === 0 || c[n - 1] + colWidth(cols[n - 1]) / 2 + 8 <= c[n] - colWidth(k) / 2) &&
-    c[c.length - 1] + colWidth(cols[cols.length - 1]) / 2 <= width - pad;
-  const twoRows = !fits(centresOf(geo));
+  const one = nameRow(geo, cols);
+  const twoRows = !one.fits || cols.some((k, i) => !underOwn(geo, k, one.xs[i]));
   if (twoRows) geo = geometry(below(2));
   const { gap, pitch, x0, y0, colX, rowY, bottom } = geo;
+  // The top of the columns' names.
+  const namesTop = bottom + COLUMN_TOP + (twoRows ? COLUMN_THREAD : 0);
   layout.pitch = pitch;
   layout.edges = { rowBar: x0 - BAR_OFFSET, columnBar: bottom + BAR_OFFSET, gap };
   const before = (k: number) => present[present.indexOf(k) - 1];
@@ -595,33 +664,61 @@ function placeMap(
       lines,
     });
   };
+  // The middle documents' named targets stand in the empty half, where
+  // their row ends: spread apart above the last row, stepping right where a
+  // lower row runs further, one document's names on one edge so that no lead
+  // crosses a name of its own. A name without room there (at least
+  // MARK_MIN) stands under its row's name at the left instead.
+  const bands = rows.map((k) => ({ y0: rowY.get(k)!, y1: rowY.get(k)! + sizes[k] * pitch, end: rowEnd(k) }));
+  const floor = rowY.get(last)! - gap - 1;
+  const stairX = (y: number, k: number) => {
+    const lo = y - MARK_LINE / 2;
+    const hi = y + MARK_LINE / 2;
+    return Math.max(rowEnd(k), ...bands.filter((b) => b.y0 < hi + gap && b.y1 > lo - gap).map((b) => b.end)) + STAIR_GAP;
+  };
+  let stair = present
+    .slice(1, -1)
+    .flatMap((k) => ownMarks(k).map((id) => ({ id, k, want: rowY.get(k)! + (rowOf.get(id) ?? 0) * pitch + pitch / 2 })));
+  const atLeft = new Set<string>();
+  const fitStair = () => {
+    const hs = stair.map(() => MARK_LINE);
+    return { cs: spread(stair.map((st) => st.want), hs, y0, floor), hs };
+  };
+  let sp = fitStair();
+  for (;;) {
+    const cramped = stair.filter(
+      (st, n) => sp.hs[n] < MARK_LINE - 1e-6 || width - pad - stairX(sp.cs[n], st.k) < MARK_MIN,
+    );
+    if (cramped.length === 0) break;
+    for (const st of cramped) atLeft.add(st.id);
+    stair = stair.filter((st) => !atLeft.has(st.id));
+    sp = fitStair();
+  }
   // Rows: each document's name at the left edge, at the front of its band
-  // on a side, else its middle; the last document, which has no column,
-  // keeps its named targets under its name. Where the field is too short,
-  // those names take one line, then the ones carrying least go unnamed
-  // (never the one in focus).
-  type Item = { k: number; mark: string | null; height: number; want: number; lines: 1 | 2 };
+  // on a side, else its middle; after it, the named targets that stand at
+  // the left (the last document's, which has no column, and those without
+  // room in the empty half). They stay beside and above the map, clear of
+  // the columns' names. Where the field is too short, those targets' names
+  // take one line, then the ones carrying least go unnamed (never the one in
+  // focus), then the rows' longest names give up a line each.
+  const leftRoom = Math.min(nameWidth + 30, x0 - ROW_NAME_GAP - pad);
+  type Item = { k: number; mark: string | null; height: number; lines: number };
   const items: Item[] = [];
   for (const k of rows) {
     const lines = Math.min(AXIS_LINES, Math.max(1, Math.ceil((docs[k].name.length * AXIS_CHAR) / nameWidth)));
-    const h = lines * AXIS_LINE;
-    const band = sizes[k] * pitch;
-    items.push({ k, mark: null, height: h, want: side ? rowY.get(k)! + h / 2 : rowY.get(k)! + band / 2, lines: 1 });
-    if (k !== last) continue;
-    for (const id of ownMarks(k)) {
-      const two = markWidth(id) > nameWidth + 30 ? 2 : 1;
-      items.push({
-        k,
-        mark: id,
-        height: two === 2 ? 2 * MARK_LINE - 2 : MARK_LINE,
-        want: rowY.get(k)! + (rowOf.get(id) ?? 0) * pitch + pitch / 2,
-        lines: two,
-      });
+    items.push({ k, mark: null, height: lines * AXIS_LINE, lines });
+    for (const id of ownMarks(k).filter((x) => k === last || atLeft.has(x))) {
+      const two = markWidth(id) > leftRoom ? 2 : 1;
+      items.push({ k, mark: id, height: two === 2 ? 2 * MARK_LINE - 2 : MARK_LINE, lines: two });
     }
   }
+  const wantOf = (it: Item) =>
+    it.mark !== null
+      ? rowY.get(it.k)! + (rowOf.get(it.mark) ?? 0) * pitch + pitch / 2
+      : rowY.get(it.k)! + (side ? it.height : sizes[it.k] * pitch) / 2;
   const place = () => {
     const hs = items.map((it) => it.height);
-    return { cs: spread(items.map((it) => it.want), hs, 0, height), hs };
+    return { cs: spread(items.map(wantOf), hs, 0, namesTop - 4), hs };
   };
   const squeezed = ({ hs }: { cs: number[]; hs: number[] }) => hs.some((h, i) => h < items[i].height - 1e-6);
   let placed = place();
@@ -633,11 +730,20 @@ function placeMap(
     }
     placed = place();
   }
-  const leftDrop = [...ownMarks(last)].reverse().filter((id) => id !== extra);
+  const leftDrop = items
+    .flatMap((it) => (it.mark !== null && it.mark !== extra ? [it.mark] : []))
+    .sort((a, b) => (rank.get(b) ?? -1) - (rank.get(a) ?? -1));
   while (squeezed(placed) && leftDrop.length > 0) {
     const id = leftDrop.shift();
     const at = items.findIndex((it) => it.mark === id);
     if (at >= 0) items.splice(at, 1);
+    placed = place();
+  }
+  while (squeezed(placed)) {
+    const longest = items.filter((it) => it.mark === null && it.lines > 1).sort((a, b) => b.lines - a.lines)[0];
+    if (!longest) break;
+    longest.lines -= 1;
+    longest.height = longest.lines * AXIS_LINE;
     placed = place();
   }
   items.forEach((it, n) => {
@@ -655,13 +761,13 @@ function placeMap(
         labelWidth: nameWidth,
         labelHeight: placed.hs[n],
         lead:
-          Math.abs(y - it.want) > 6
+          Math.abs(y - wantOf(it)) > 6
             ? { x0: x0 - ROW_NAME_GAP + 3, y0: y, x1: x0 - BAR_OFFSET - 2, y1: bandY + at }
             : null,
       });
       return;
     }
-    mark(it.mark, k, x0 - ROW_NAME_GAP, y, nameWidth + 30, "right", it.lines, {
+    mark(it.mark, k, x0 - ROW_NAME_GAP, y, leftRoom, "right", it.lines === 2 ? 2 : 1, {
       x: x0 - 1,
       y: bandY + (rowOf.get(it.mark) ?? 0) * pitch + pitch / 2,
     });
@@ -669,40 +775,107 @@ function placeMap(
     layout.marks[layout.marks.length - 1].labelHeight = placed.hs[n];
   });
   // Columns: a short name over a line of context under each column, on one
-  // baseline; where they do not fit side by side, every second one drops a
-  // row and a thin line joins it to its bar. A name in the first row keeps
-  // clear of its neighbours' lines.
-  const centres = centresOf(geo);
+  // baseline. In two rows, every second name drops to the second row and
+  // hangs from its column by a straight line, through a gap the first row
+  // keeps clear; a first-row name that cannot stand under its column hangs
+  // from it by a short line. The lines of context shorten where a row cannot
+  // hold its names, never a short name.
   const barY = bottom + BAR_OFFSET;
-  cols.forEach((k, n) => {
-    const lower = twoRows && n % 2 === 1;
-    const c = centres[n];
-    // The stretch a name may take: the field, and in two rows the room
-    // between its neighbours' lines (first row) or halfway to the next
-    // names of its own row (second row).
-    let lo = pad;
-    let hi = width - pad;
-    if (twoRows && lower) {
-      if (n - 2 >= 0) lo = Math.max(lo, (centres[n - 2] + c) / 2 + 6);
-      if (n + 2 < centres.length) hi = Math.min(hi, (c + centres[n + 2]) / 2 - 6);
-    } else if (twoRows) {
-      if (n - 1 >= 0) lo = Math.max(lo, centres[n - 1] + 7);
-      if (n + 1 < centres.length) hi = Math.min(hi, centres[n + 1] - 7);
+  const from = x0 - ROW_NAME_GAP + 2;
+  const to = width - pad;
+  const rowTop = (r: number) => namesTop + r * (labelH + COLUMN_ROW_GAP);
+  const spanOf = (k: number) => ({ l: colX.get(k)!, r: colX.get(k)! + sizes[k] * pitch });
+  const widthAt = (k: number, cut: number) => fullWidthOf(k) - (fullWidthOf(k) - nameWidthOf(k)) * cut;
+  // A name holds its line at least this far inside its edges.
+  const hold = (w: number) => Math.min(4, w / 2);
+  const CUTS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
+  type ColumnName = { k: number; row: number; cx: number; w: number; lead: [number, number] | null };
+  const hanging = (drop: 0 | 1): ColumnName[] | null => {
+    const drops = (n: number) => n % 2 === drop;
+    const lower = cols.filter((_, n) => drops(n));
+    // The first row: its names, each over some of its column, and the gaps
+    // for the second row's lines, each within its column.
+    let up: { at: number[]; cut: number } | null = null;
+    for (const cut of CUTS) {
+      const at = fitAlong(
+        cols.map((k, n) => {
+          const { l, r } = spanOf(k);
+          const mid = (l + r) / 2;
+          if (drops(n)) {
+            // Within its column, and far enough inside the field for its name to hold it.
+            const h = hold(nameWidthOf(k));
+            return { want: mid, width: 0, lo: Math.max(from + h, Math.min(mid, l + 1)), hi: Math.min(to - h, Math.max(mid, r - 1)) };
+          }
+          const w = widthAt(k, cut);
+          return { want: mid - w / 2, width: w, lo: Math.max(from, l - w + hold(w)), hi: Math.min(to - w, r - hold(w)) };
+        }),
+        COLUMN_GAP / 2,
+      );
+      if (at) {
+        up = { at, cut };
+        break;
+      }
     }
-    const w = Math.max(0, Math.min(colWidth(k), hi - lo));
-    const cx = Math.min(hi - w / 2, Math.max(lo + w / 2, c));
-    const labelY = bottom + COLUMN_TOP + (lower ? labelH + COLUMN_ROW_GAP : 0);
-    layout.axis.push({
-      key: docs[k].id,
-      edge: "column",
-      bar: { x0: colX.get(k)!, y0: barY, x1: colX.get(k)! + sizes[k] * pitch, y1: barY },
-      labelX: cx,
-      labelY,
-      labelWidth: w,
-      labelHeight: colHeight(k),
-      lead: lower || Math.abs(cx - c) > 2 ? { x0: c, y0: barY + 2, x1: cx, y1: labelY - 3 } : null,
+    if (!up) return null;
+    const pass = (k: number) => up!.at[cols.indexOf(k)];
+    // The second row: each name around its line.
+    let down: { at: number[]; cut: number } | null = null;
+    for (const cut of CUTS) {
+      const at = fitAlong(
+        lower.map((k) => {
+          const w = widthAt(k, cut);
+          const t = pass(k);
+          return { want: t - w / 2, width: w, lo: Math.max(from, t - w + hold(w)), hi: Math.min(to - w, t - hold(w)) };
+        }),
+        COLUMN_GAP,
+      );
+      if (at) {
+        down = { at, cut };
+        break;
+      }
+    }
+    if (!down) return null;
+    return cols.map((k, n) => {
+      if (drops(n)) {
+        const w = widthAt(k, down!.cut);
+        return { k, row: 1, cx: down!.at[lower.indexOf(k)] + w / 2, w, lead: [pass(k), pass(k)] };
+      }
+      const w = widthAt(k, up!.cut);
+      const a = up!.at[n];
+      const cx = a + w / 2;
+      const { l, r } = spanOf(k);
+      const t = Math.min(r, a + w - hold(w), Math.max(l, a + hold(w), cx));
+      return { k, row: 0, cx, w, lead: cx >= l - 0.5 && cx <= r + 0.5 ? null : [t, t] };
     });
-  });
+  };
+  // Where the names cannot hang that way (a phone's field with eight
+  // documents), each row spreads its names and a line joins each moved one
+  // to its column.
+  const plain = (): ColumnName[] =>
+    (twoRows ? [cols.filter((_, n) => n % 2 === 0), cols.filter((_, n) => n % 2 === 1)] : [cols]).flatMap((row, r) => {
+      const { widths, xs } = nameRow(geo, row);
+      return row.map((k, i) => {
+        const { l, r: right } = spanOf(k);
+        const cx = xs[i];
+        const joined = r > 0 || !underOwn(geo, k, cx);
+        return { k, row: r, cx, w: widths[i], lead: joined ? ([Math.min(right, Math.max(l, cx)), cx] as [number, number]) : null };
+      });
+    });
+  for (const c of (twoRows ? (hanging(1) ?? hanging(0)) : null) ?? plain()) {
+    const { l, r } = spanOf(c.k);
+    layout.axis.push({
+      key: docs[c.k].id,
+      edge: "column",
+      bar: { x0: l, y0: barY, x1: r, y1: barY },
+      labelX: c.cx,
+      labelY: rowTop(c.row),
+      labelWidth: c.w,
+      labelHeight: colHeight(c.k),
+      lead: c.lead ? { x0: c.lead[0], y0: barY + 2, x1: c.lead[1], y1: rowTop(c.row) - 3 } : null,
+    });
+  }
+  // Rows' names first, then columns', each in document order.
+  layout.axis.sort((a, b) => (a.edge === b.edge ? docIndex.get(a.key)! - docIndex.get(b.key)! : a.edge === "row" ? -1 : 1));
   // The first document's named targets above the map, at the front of its column.
   first.forEach((id, i) => {
     const labelY = y0 - 6 - (first.length - 1 - i) * MARK_LINE - MARK_LINE / 2;
@@ -711,36 +884,12 @@ function placeMap(
       y: y0 - 1,
     });
   });
-  // The middle documents' named targets in the empty half, where their row
-  // ends: spread apart above the last row, stepping right where a lower row
-  // runs further; where they do not fit, the ones carrying least go unnamed
-  // (never the one in focus).
-  let stair = present
-    .slice(1, -1)
-    .flatMap((k) => ownMarks(k).map((id) => ({ id, k, want: rowY.get(k)! + (rowOf.get(id) ?? 0) * pitch + pitch / 2 })));
-  const floor = rowY.get(last)! - 2;
-  const fitStair = () => {
-    const hs = stair.map(() => MARK_LINE);
-    return { cs: spread(stair.map((s) => s.want), hs, y0, floor), hs };
-  };
-  let sp = fitStair();
-  const stairDrop = stair
-    .map((s) => s.id)
-    .filter((id) => id !== extra)
-    .sort((a, b) => (rank.get(b) ?? -1) - (rank.get(a) ?? -1));
-  while (sp.hs.some((h) => h < MARK_LINE - 1e-6) && stairDrop.length > 0) {
-    const id = stairDrop.shift();
-    stair = stair.filter((s) => s.id !== id);
-    sp = fitStair();
-  }
-  const bands = rows.map((k) => ({ y0: rowY.get(k)!, y1: rowY.get(k)! + sizes[k] * pitch, end: rowEnd(k) }));
-  stair.forEach((s, n) => {
-    const y = sp.cs[n];
-    const lo = y - MARK_LINE / 2;
-    const hi = y + MARK_LINE / 2;
-    const end = Math.max(rowEnd(s.k), ...bands.filter((b) => b.y0 < hi + gap && b.y1 > lo - gap).map((b) => b.end));
-    const x = end + STAIR_GAP;
-    mark(s.id, s.k, x, y, Math.max(MARK_MIN, width - pad - x), "left", 1, { x: rowEnd(s.k) + 1, y: s.want });
+  // The middle documents' named targets with room in the empty half.
+  const edgeOf = new Map<number, number>();
+  stair.forEach((st, n) => edgeOf.set(st.k, Math.max(edgeOf.get(st.k) ?? 0, stairX(sp.cs[n], st.k))));
+  stair.forEach((st, n) => {
+    const x = edgeOf.get(st.k)!;
+    mark(st.id, st.k, x, sp.cs[n], width - pad - x, "left", 1, { x: rowEnd(st.k) + 1, y: st.want });
   });
   layout.marks.sort((a, b) => docIndex.get(a.doc)! - docIndex.get(b.doc)! || a.y - b.y);
 }

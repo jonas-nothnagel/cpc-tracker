@@ -662,7 +662,14 @@ export function HubCanvas({
               data-on={on ? "true" : undefined}
               data-dim={axisFocus !== null && axisFocus !== a.key ? "true" : undefined}
               data-compact={size.w < 480 ? "true" : undefined}
-              style={{ left: a.labelX, top: a.labelY, width: a.labelWidth }}
+              // A row's name keeps to the whole lines the map gave it.
+              data-lines={a.edge === "row" ? Math.max(1, Math.floor(a.labelHeight / 16 + 0.01)) : undefined}
+              style={{
+                left: a.labelX,
+                top: a.labelY,
+                width: a.labelWidth,
+                maxHeight: a.edge === "row" ? a.labelHeight : undefined,
+              }}
             >
               {a.edge === "row" ? (
                 <span className="brief-hub-axis-name">{docName(a.key)}</span>
