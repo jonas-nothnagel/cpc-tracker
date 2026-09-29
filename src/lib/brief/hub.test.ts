@@ -14,6 +14,7 @@ import {
   namedTargets,
   pairInOrder,
   sideLevel,
+  spread,
   stripCounts,
   stripOf,
   type HubLayout,
@@ -49,6 +50,24 @@ function corpus(sizes: number[]): { data: BriefData; particles: HubParticle[] } 
   }
   return { data: { ...DATA, scope: { ...DATA.scope, docs, commitments } }, particles };
 }
+
+describe("spread", () => {
+  it("keeps the first name inside the field and the others in place", () => {
+    // The first name's own place lies within half its height of the top.
+    const ys = spread([16, 33.5, 159.5, 284.5], [48, 32, 32, 32], 6, 754);
+    expect(ys[0]).toBeCloseTo(30);
+    expect(ys[1]).toBeCloseTo(70);
+    expect(ys[2]).toBeCloseTo(159.5);
+    expect(ys[3]).toBeCloseTo(284.5);
+  });
+
+  it("still shares the height evenly when the names cannot fit", () => {
+    const hs = [40, 40, 40];
+    const ys = spread([10, 20, 30], hs, 0, 60);
+    expect(ys[0] - hs[0] / 2).toBeCloseTo(0);
+    expect(ys[2] + hs[2] / 2).toBeCloseTo(60);
+  });
+});
 
 describe("hubParticles", () => {
   it("makes one particle per target pair, with its documents, targets and reading", () => {

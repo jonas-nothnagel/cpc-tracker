@@ -279,8 +279,12 @@ function dot(layout: HubLayout, id: number, x: number, y: number, pitch: number,
 }
 
 /** Names moved apart where they would overlap, then back inside the field. */
-function spread(centres: number[], heights: number[], top: number, bottom: number): number[] {
+export function spread(centres: number[], heights: number[], top: number, bottom: number): number[] {
   const y = [...centres];
+  // The first name is held inside the field before the others follow: a
+  // first name whose own place lies near the top no longer counts as a
+  // field too short for all of them.
+  if (y.length > 0) y[0] = Math.max(y[0], top + heights[0] / 2);
   for (let k = 1; k < y.length; k++) {
     const min = y[k - 1] + (heights[k - 1] + heights[k]) / 2;
     if (y[k] < min) y[k] = min;
@@ -291,7 +295,7 @@ function spread(centres: number[], heights: number[], top: number, bottom: numbe
     const max = y[k + 1] - (heights[k + 1] + heights[k]) / 2;
     if (y[k] > max) y[k] = max;
   }
-  if (y.length > 0 && y[0] - heights[0] / 2 < top) {
+  if (y.length > 0 && y[0] - heights[0] / 2 < top - 1e-6) {
     // Too many names for the height: they share it evenly.
     const total = heights.reduce((s, h) => s + h, 0);
     const scale = Math.min(1, (bottom - top) / Math.max(1, total));
