@@ -67,8 +67,30 @@ go with blue and build the full brief for me to see it now". Spec
 - **Commits**: `5bd6778` (spec, plan), `427c8c0` (bake), `99d50c1` (focus, angles), `8830346`
   (field), `72deeee` (overview, focus bar, list panel), `d38bc85` (deep dive). No attribution
   lines.
+- **Walk 1 and review fixes** (`1974711`): a fresh review (0 Critical, 9 Important) plus Jonas's
+  first walk. Fixed:
+  - the map's "No money" headline when all the focus money names no place;
+  - moves replayed on every place or area choice;
+  - the phone field override;
+  - map names colliding at phone widths (the unit now sits on its own line above the map, band
+    names are measured and shortened, the whole map shrinks until no two blocks touch);
+  - blocks answering as contracts;
+  - a hanging "…, 0% are in .";
+  - "No policy area" in the map's choice;
+  - one square at least;
+  - the step-4 AI tag;
+  - a payload without `places`.
+  Also done:
+  - BER and BTR are off the page (target panel and setup);
+  - the contract panel reads as a "Public procurement contract", in English only, with the
+    pipeline's reading as purpose, policy areas and targets;
+  - the lens is switchable on the map;
+  - the targets behind each place are listed;
+  - the focus line is opaque and the focus is named in each step;
+  - step 2 lists what the money is for by policy area.
+  Full suite: 156 files, 1,661 tests. Deferred minors are in the ledger (`.superpowers/sdd/…/progress.md`).
 - **Open**:
-  - Jonas's walk through the built page;
+  - Jonas's next walk;
   - es/mn copy (English placeholders);
   - the ring's contracts layer;
   - the 90-contract spot check;
