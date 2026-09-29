@@ -494,11 +494,23 @@
 }
 
 /* The sticky field sits below the focus line; on a phone the brief's own
-   field (44vh at the top) only moves down by the line's height. */
+   field (44vh at the top) only moves down by the line's height. The field
+   sticks only while the steps run on below it, so the last step (whose table
+   is longer than a screen) keeps going under its end: the field stays whole
+   until that end has risen to the middle of the window. */
 @media (min-width: 821px) {
+  [data-brief] .ct-overview {
+    --ct-stage-top: max(3.75rem, calc(50vh - 31cqw + 1.25rem));
+    --ct-stage-height: min(calc(100vh - 5rem), 62cqw);
+  }
+
   [data-brief] .ct-overview .brief-hub-stage {
-    top: max(3.75rem, calc(50vh - 31cqw + 1.25rem));
-    height: min(calc(100vh - 5rem), 62cqw);
+    top: var(--ct-stage-top);
+    height: var(--ct-stage-height);
+  }
+
+  [data-brief] .ct-overview .brief-hub-step:last-child {
+    padding-bottom: max(0px, calc(var(--ct-stage-top) + var(--ct-stage-height) - 50vh));
   }
 }
 
