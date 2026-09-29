@@ -48,10 +48,8 @@ export const NAMED_MAX = 8;
 /** Line height of a named target on the map (0.75rem type); a name that
  *  takes two lines is `2 * MARK_LINE - 2` high. */
 export const MARK_LINE = 15;
-/** Least room a named target's name needs; with less it is left to the list. */
+/** Least room a named target's name is given. */
 const MARK_MIN = 60;
-/** Widest a named target's name runs beside the diagonal. */
-const MARK_MAX = 240;
 /** Rough width of one character of those names, and of the count after them. */
 const MARK_CHAR = 6.2;
 const MARK_COUNT = 24;
