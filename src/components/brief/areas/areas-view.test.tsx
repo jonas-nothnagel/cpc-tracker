@@ -166,6 +166,23 @@ describe("AreasView", () => {
     expect(document.activeElement).toBe(within(pairRows()[1]).getByRole("button", { expanded: true }));
   });
 
+  it("leaves focus where the pointer picked a target, still bringing its card into view", () => {
+    const seen: Element[] = [];
+    Element.prototype.scrollIntoView = vi.fn(function (this: Element) {
+      seen.push(this);
+    });
+    renderView();
+    openSecond();
+    const c1 = screen.getAllByTestId("brief-area-target").find((t) => t.textContent?.includes("Commitment C1"))!;
+    fireEvent.click(c1, { detail: 1 });
+    const card = screen.getByTestId("brief-area-card");
+    expect(card.contains(document.activeElement)).toBe(false);
+    expect(seen.some((el) => card.contains(el))).toBe(true);
+    fireEvent.click(within(card).getByRole("button", { name: "Back to Agriculture · Water" }), { detail: 1 });
+    expect(document.activeElement).not.toBe(within(pairRows()[1]).getByRole("button", { expanded: true }));
+    delete (Element.prototype as { scrollIntoView?: unknown }).scrollIntoView;
+  });
+
   it("points from the headline's area names to their rows, and opens their pair", () => {
     renderView();
     const name = within(screen.getByRole("heading", { level: 2 })).getByRole("button", { name: "Agriculture" });

@@ -129,8 +129,9 @@ export function AreasView({
   const headlineRef = useRef<HTMLHeadingElement>(null);
   // Where keyboard focus goes once a pick or "Back" has re-drawn the list.
   const moveFocus = useRef<"card" | "headline" | "pair" | null>(null);
-  // An opened pair of areas to bring into view once it has drawn.
+  // An opened pair of areas, or a picked target's card, to bring into view once it has drawn.
   const revealPair = useRef(false);
+  const revealCard = useRef(false);
   // A new lens lets the picked area, the open pair and the picked target go, for good.
   const [seenLens, setSeenLens] = useState(active);
   if (seenLens !== active) {
@@ -191,17 +192,18 @@ export function AreasView({
   );
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  // Keyboard focus follows a pick to the target's card or to the headline
-  // naming the picked area, and "Back" to the list (the buttons that were
-  // pressed are gone).
+  // A picked target's card comes into view. Keyboard focus follows a pick
+  // to the card or to the headline naming the picked area, and "Back" to
+  // the list (the buttons that were pressed are gone); the pointer's focus
+  // stays where it was, so no focus ring appears.
   useEffect(() => {
     const want = moveFocus.current;
     moveFocus.current = null;
-    if (want === "card") {
-      const title = cardTitle.current;
-      title?.focus({ preventScroll: true });
-      title?.closest<HTMLElement>(".brief-av-card")?.scrollIntoView?.({ block: "nearest" });
+    if (revealCard.current) {
+      revealCard.current = false;
+      cardTitle.current?.closest<HTMLElement>(".brief-av-card")?.scrollIntoView?.({ block: "nearest" });
     }
+    if (want === "card") cardTitle.current?.focus({ preventScroll: true });
     if (want === "headline") {
       headlineRef.current?.focus({ preventScroll: true });
       headlineRef.current?.scrollIntoView?.({ block: "nearest" });
@@ -270,17 +272,21 @@ export function AreasView({
     setPointedTarget(null);
     setFullText(false);
   };
-  const pick = (id: string) => {
+  // `byKey`: picked from the keyboard or assistive technology; the picture's
+  // clicks are the pointer's.
+  const pick = (id: string, byKey = false) => {
     const letGo = focusId === id;
     setPicked(letGo ? null : id);
     setPointedTarget(null);
     setFullText(false);
-    if (!letGo) moveFocus.current = "card";
+    if (letGo) return;
+    revealCard.current = true;
+    if (byKey) moveFocus.current = "card";
   };
-  const back = () => {
+  const back = (byKey: boolean) => {
     setPicked(null);
     setPointedTarget(null);
-    moveFocus.current = "pair";
+    if (byKey) moveFocus.current = "pair";
   };
 
   const head = areaHeadline(pairs);
@@ -341,7 +347,12 @@ export function AreasView({
     const openTarget = onExplore ?? onOpenCommitment;
     return (
       <div className="brief-av-card" data-testid="brief-area-card">
-        <button type="button" className="brief-av-back" aria-label={t("backTo", { name: backLabel })} onClick={back}>
+        <button
+          type="button"
+          className="brief-av-back"
+          aria-label={t("backTo", { name: backLabel })}
+          onClick={(e) => back(e.detail === 0)}
+        >
           <span aria-hidden="true">‹ </span>
           {backLabel}
         </button>
@@ -391,7 +402,7 @@ export function AreasView({
                       type="button"
                       className="brief-av-target"
                       data-testid="brief-area-target"
-                      onClick={() => pick(id)}
+                      onClick={(e) => pick(id, e.detail === 0)}
                       onPointerEnter={() => setPointedTarget(id)}
                       onPointerLeave={() => setPointedTarget(null)}
                       onFocus={() => setPointedTarget(id)}
@@ -489,7 +500,7 @@ export function AreasView({
           tipFor={tipFor}
           formatCount={n}
           listLabel={t("lensGroup")}
-          onPick={pick}
+          onPick={(id) => pick(id)}
         />
       </div>
       <div className="brief-av-side">
