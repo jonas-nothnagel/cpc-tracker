@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
@@ -58,25 +58,26 @@ afterEach(() => {
 });
 
 describe("a contract, in full", () => {
-  it("shows the record, its readings and the way to its source", async () => {
+  it("reads as a public procurement contract: its record in English, then the pipeline's reading", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => ({ ok: true, json: async () => RECORD })),
     );
     renderPanels([{ kind: "contract", id: "p1" }]);
-    expect(
-      await screen.findByRole("heading", {
-        name: "Afforestation of the green belt",
-      }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Ногоон бүсийг ойжуулах/)).toBeInTheDocument();
-    expect(screen.getByText("Khovd aimag procurement office")).toBeInTheDocument();
-    expect(screen.getByText("Mainly for nature or climate")).toBeInTheDocument();
-    expect(screen.getByText(/Cut emissions from waste/)).toBeInTheDocument();
-    expect(screen.getByText(/The contract plants trees that cut waste emissions\./)).toBeInTheDocument();
-    const source = screen.getByRole("link", {
-      name: /View on tender\.gov\.mn/,
-    });
+    expect(await screen.findByRole("heading", { name: "Afforestation of the green belt" })).toBeInTheDocument();
+    expect(screen.getByText("Public procurement contract")).toBeInTheDocument();
+    expect(screen.getByText("₮10 billion")).toBeInTheDocument();
+    // English only: no Mongolian original, no buyer the record names in Mongolian.
+    expect(screen.queryByText(/Ногоон бүсийг ойжуулах/)).toBeNull();
+    expect(screen.queryByText(/Ойжуулалт/)).toBeNull();
+    expect(screen.queryByText("Khovd aimag procurement office")).toBeNull();
+    const reading = screen.getByRole("region", { name: "The pipeline's reading" });
+    expect(within(reading).getByText("Mainly for nature or climate")).toBeInTheDocument();
+    expect(within(reading).getByText("Pollution management")).toBeInTheDocument();
+    expect(within(reading).getByText("Waste")).toBeInTheDocument();
+    expect(within(reading).getByText("1 strongly matching")).toBeInTheDocument();
+    expect(within(reading).getByRole("button", { name: /Cut emissions from waste/ })).toBeInTheDocument();
+    const source = screen.getByRole("link", { name: /View on tender\.gov\.mn/ });
     expect(source).toHaveAttribute("href", RECORD.url);
   });
 
@@ -101,10 +102,11 @@ describe("a target, with its contracts", () => {
     expect(onPush).toHaveBeenCalledWith({ kind: "contract", id: "p1" });
   });
 
-  it("names what else is behind a target without a contract", () => {
+  it("keeps budget lines and reported actions off this page", () => {
     renderPanels([{ kind: "target", id: "C2" }]);
     expect(screen.getByText("No strongly matching contract")).toBeInTheDocument();
-    expect(screen.getByText("71404 Water resources")).toBeInTheDocument();
+    expect(screen.queryByText("71404 Water resources")).toBeNull();
+    expect(screen.queryByText(/Also behind this target/)).toBeNull();
   });
 });
 

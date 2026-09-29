@@ -9,6 +9,7 @@ import {
   mapFinding,
   moneyByPlace,
   rateFinding,
+  squaresOf,
   targetStats,
   tenderFinding,
   tenders,
@@ -166,5 +167,13 @@ describe("the targets", () => {
     const top = topTenders(list, 5);
     expect(top[0]).toMatchObject({ title: "Coal for heating", tenders: ["t12", "t13"], contracts: 2, targets: 2 });
     expect(top).toHaveLength(2);
+  });
+});
+
+describe("squares for a sum", () => {
+  it("gives any money at least one square, and none to nothing", () => {
+    expect(squaresOf(2e6, 5e6)).toBe(1);
+    expect(squaresOf(0, 5e6)).toBe(0);
+    expect(squaresOf(10e9, 5e9)).toBe(2);
   });
 });

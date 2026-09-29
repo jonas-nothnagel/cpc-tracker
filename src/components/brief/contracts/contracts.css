@@ -116,6 +116,10 @@
   transition: none;
 }
 
+[data-brief] .ct-labels[data-moving] .ct-label-button {
+  pointer-events: none;
+}
+
 [data-brief] .ct-label {
   position: absolute;
   white-space: nowrap;
@@ -398,16 +402,6 @@
   font-size: 0.875rem;
 }
 
-[data-brief] .ct-backing + .ct-backing {
-  margin-top: 0.75rem;
-}
-
-[data-brief] .ct-backing-list {
-  margin: 0.25rem 0 0;
-  padding-left: 1.1rem;
-  font-size: 0.875rem;
-}
-
 /* ── The deep dives, full width under the overview ───────────────── */
 
 [data-brief] .ct-deeps {
@@ -464,7 +458,7 @@
   margin: 0 0 1.5rem;
   padding: 0.6rem 0;
   border-bottom: 1px solid var(--brief-hairline);
-  background: rgba(255, 255, 255, 0.96);
+  background: #fff;
   font-size: 0.9375rem;
 }
 
@@ -499,10 +493,19 @@
   color: var(--brief-ink);
 }
 
-/* The sticky field sits below the focus line. */
-[data-brief] .ct-overview .brief-hub-stage {
-  top: max(3.75rem, calc(50vh - 31cqw + 1.25rem));
-  height: min(calc(100vh - 5rem), 62cqw);
+/* The sticky field sits below the focus line; on a phone the brief's own
+   field (44vh at the top) only moves down by the line's height. */
+@media (min-width: 821px) {
+  [data-brief] .ct-overview .brief-hub-stage {
+    top: max(3.75rem, calc(50vh - 31cqw + 1.25rem));
+    height: min(calc(100vh - 5rem), 62cqw);
+  }
+}
+
+@media (max-width: 820px) {
+  [data-brief] .ct-overview .brief-hub-stage {
+    top: 2.75rem;
+  }
 }
 
 [data-brief] .ct-switch {
@@ -578,7 +581,7 @@
 }
 
 [data-brief] .ct-back {
-  display: inline-block;
+  display: block;
   margin: 0.3rem 0 0.2rem;
   padding: 0;
   border: 0;
@@ -595,8 +598,8 @@
 }
 
 [data-brief] .ct-pick-name {
-  display: inline;
-  margin: 0;
+  display: table;
+  margin: 0.15rem 0 0;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -1039,4 +1042,162 @@
   [data-brief] .ct-closer-gap ul {
     columns: 1;
   }
+}
+
+/* The page's focus, named in each step it shapes. */
+[data-brief] .ct-focus-note {
+  margin: -0.2rem 0 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--brief-ink);
+}
+
+[data-brief] .ct-lens-small {
+  margin: 0 0 0.4rem;
+}
+
+[data-brief] .ct-lens-small .ct-lens-option {
+  font-size: 0.875rem;
+}
+
+/* The targets behind a place, each a way to the target. */
+[data-brief] .ct-target-rows {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-target-rows li {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-target-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.35rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-target-row-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .ct-target-row:hover .ct-target-row-name,
+[data-brief] .ct-target-row:focus-visible .ct-target-row-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-target-row-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--brief-muted);
+  white-space: nowrap;
+}
+
+/* ── A contract in full: the record, then the pipeline's reading ───── */
+
+[data-brief] .ct-panel-kind {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-panel-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.75rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+[data-brief] .ct-panel-value-other {
+  font-family: var(--font-sans, inherit);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-reading {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-reading-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+}
+
+[data-brief] .ct-reading-tier i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #0468b1;
+}
+
+[data-brief] .ct-reading-tier i[data-tier="significant"] {
+  background: #b5d5f5;
+}
+
+[data-brief] .ct-reading-tier i[data-tier="none"] {
+  background: var(--brief-track);
+}
+
+[data-brief] .ct-reading-areas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-reading-areas li + li {
+  margin-top: 0.15rem;
+}
+
+[data-brief] .ct-reading-lens {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-reading-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+}
+
+[data-brief] .ct-reading-mis {
+  color: var(--brief-red);
+}
+
+[data-brief] .ct-panel-strong {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-panel-strong li {
+  display: grid;
+  grid-template-columns: 3px minmax(0, 1fr);
+  column-gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
 }

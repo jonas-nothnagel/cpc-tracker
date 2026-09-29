@@ -10,6 +10,7 @@ import {
   mapFinding,
   moneyByPlace,
   rateFinding,
+  squaresOf,
   statOf,
   targetStats,
   tenderFinding,
@@ -19,7 +20,7 @@ import {
   type TenderDot,
 } from "@/lib/brief/contracts/angles";
 import { MIN_GAP, MIN_TARGET_SHARE, NO_AREA } from "@/lib/brief/contracts/areas";
-import { buildField, type AreaRowB, type FieldLabel, type LayoutContext, type OverlaySpec, type Stage } from "@/lib/brief/contracts/field";
+import { buildField, type AreaRowB, type FieldLabel, type LabelSize, type LayoutContext, type OverlaySpec, type Stage } from "@/lib/brief/contracts/field";
 import {
   contractArea,
   contractInFocus,
@@ -52,6 +53,9 @@ export interface ContractList {
 
 /** Places listed before "Show more"; an area's targets listed. */
 const LIST_MAX = 8;
+/** A place's targets and tenders, kept short so the step stays beside its map. */
+const PLACE_TARGETS = 5;
+const PLACE_TENDERS = 4;
 /** Contracts serving targets in this many documents or more serve many at once. */
 const MANY_DOCS = 3;
 /** An area's synergy share is stated from this many contracts. */
@@ -151,24 +155,38 @@ export function Overview({
   const mapFocused = focus.area !== null || focus.doc !== null;
 
   /** "Money for Restoration, strongly matching Res. 91 targets, in Govi-Altai". */
+  const areaPart = (id: string) => (id === NO_AREA ? t("focus.noArea") : t("focus.area", { area: areaName(id) }));
   const focusName = () => {
     const parts: string[] = [];
-    if (focus.area !== null) parts.push(t("focus.area", { area: areaName(focus.area) }));
+    if (focus.area !== null) parts.push(areaPart(focus.area));
     if (focus.doc !== null) parts.push(t("focus.doc", { doc: docCode(focus.doc) }));
     if (focus.place !== null) parts.push(t("focus.place", { place: placeName(focus.place) }));
     return t("focus.name", { parts: parts.join(", ") });
   };
   /** The same focus as a phrase after "the money": "for Restoration, strongly matching …". */
   const focusPhrase = () =>
-    [focus.area !== null ? t("focus.area", { area: areaName(focus.area) }) : null, focus.doc !== null ? t("focus.doc", { doc: docCode(focus.doc) }) : null]
+    [focus.area !== null ? areaPart(focus.area) : null, focus.doc !== null ? t("focus.doc", { doc: docCode(focus.doc) }) : null]
       .filter(Boolean)
       .join(", ");
   /** Which targets: "a target", "Res. 91 targets", "Restoration targets", "Res. 91 targets in Restoration". */
   const whatTargets = () => {
-    const area = focus.area !== null ? areaName(focus.area) : null;
     const doc = focus.doc !== null ? docCode(focus.doc) : null;
+    if (focus.area === NO_AREA) return doc ? t("places.what.bothNoArea", { doc }) : t("places.what.noArea");
+    const area = focus.area !== null ? areaName(focus.area) : null;
     return doc && area ? t("places.what.both", { doc, area }) : doc ? t("places.what.doc", { doc }) : area ? t("places.what.area", { area }) : t("places.what.target");
   };
+  /** "Focus: Restoration · Document C · Khovd", in each step the focus shapes. */
+  const focusNote = anyFocus
+    ? t("focus.note", {
+        parts: [
+          focus.area !== null ? areaName(focus.area) : null,
+          focus.doc !== null ? (docs.get(focus.doc)?.name ?? focus.doc) : null,
+          focus.place !== null ? placeName(focus.place) : null,
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      })
+    : null;
 
   // ── Step 2: the years ──────────────────────────────────────────────
   const yearValues = useMemo(() => (anyFocus ? yearFocus(file.contracts, keep({ area: true, doc: true, place: true })) : null), [anyFocus, file, keep]);
@@ -198,7 +216,7 @@ export function Overview({
     if (focusMoney) {
       const total = [...focusMoney.values()].reduce((s, v) => s + v, 0);
       const unit = unitFor(total);
-      const n = largestRemainder(placeCodes.map((c) => focusMoney.get(c) ?? 0), Math.round(total / unit));
+      const n = largestRemainder(placeCodes.map((c) => focusMoney.get(c) ?? 0), squaresOf(total, unit));
       return { shape: "square", ink: "principal", unit, cells: placeCodes.map((id, i) => ({ id, n: n[i] })) };
     }
     return null;
@@ -209,12 +227,13 @@ export function Overview({
     if (tenderList) return tenderList.filter((d) => d.place === code).length;
     if (showAll) return file.places?.find((p) => p.code === code)?.value ?? 0;
     if (focusMoney) return focusMoney.get(code) ?? 0;
-    return rates?.rates.get(code) ?? 0;
+    if (!rates) return principalByPlace.get(code) ?? 0;
+    return rates.rates.get(code) ?? 0;
   };
   const placeValueText = (code: string): string => {
     if (tenderList) return t("places.tenders", { count: placeValue(code) });
-    if (showAll || focusMoney) return m.amount(placeValue(code));
-    return t("places.perHundred", { sign: m.sign, per100: m.per100(rates?.rates.get(code) ?? 0) });
+    if (showAll || focusMoney || !rates) return m.amount(placeValue(code));
+    return t("places.perHundred", { sign: m.sign, per100: m.per100(rates.rates.get(code) ?? 0) });
   };
 
   // ── Step 4: the policy areas ───────────────────────────────────────
@@ -229,6 +248,8 @@ export function Overview({
       r.ids.push(c.id);
       out.set(a, r);
     }
+    const value = new Map(file.contracts.map((c) => [c.id, c.value]));
+    for (const r of out.values()) r.ids.sort((x, y) => (value.get(y) ?? 0) - (value.get(x) ?? 0) || x.localeCompare(y));
     return out;
   }, [file, keep, lensKey, fctx]);
   const rows = useMemo<AreaRowB[]>(() => {
@@ -253,7 +274,7 @@ export function Overview({
     if (focus.doc === null && focus.place === null) return null;
     const total = rows.reduce((s, r) => s + r.value, 0);
     const unit = unitFor(total);
-    const n = largestRemainder(rows.map((r) => r.value), Math.round(total / unit));
+    const n = largestRemainder(rows.map((r) => r.value), squaresOf(total, unit));
     return { shape: "square", ink: "principal", unit, cells: rows.map((r, i) => ({ id: r.id, n: n[i] })) };
   }, [focus.doc, focus.place, rows]);
 
@@ -265,17 +286,23 @@ export function Overview({
     return { kind: "record" };
   }, [active, focus.lens, focus.area, focus.doc, focus.place, showAll, layer, lensKey]);
   const nameSizes = useMemo(() => {
-    const sizes = new Map<string, { w: number; h: number }>();
+    const sizes = new Map<string, LabelSize>();
     for (const code of placeCodes) {
       const name = placeName(code);
-      sizes.set(code, { w: Math.max(name.length * 6.4, placeValueText(code).length * 5.6) + 6, h: 27 });
+      const value = placeValueText(code);
+      sizes.set(code, {
+        w: Math.max(name.length * 6.4, value.length * 5.6) + 6,
+        h: 27,
+        line: name.length * 6.8 + value.length * 6.1 + 22,
+        name: name.length * 6.8 + 8,
+      });
     }
     return sizes;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placeCodes, tenderList, focusMoney, showAll, rates, m.currency]);
   const ctx = useMemo<LayoutContext>(() => {
     if (stage.kind === "purpose") return { yearFocus: yearCtx };
-    if (stage.kind === "places") return { geo, overlay: mapOverlay, labelSize: (code) => nameSizes.get(code) ?? { w: 72, h: 27 } };
+    if (stage.kind === "places") return { geo, overlay: mapOverlay, labelSize: (code) => nameSizes.get(code) ?? { w: 72, h: 27, line: 180, name: 90 } };
     if (stage.kind === "areas") return { rows, overlay: areaOverlay };
     return {};
   }, [stage.kind, yearCtx, geo, mapOverlay, nameSizes, rows, areaOverlay]);
@@ -311,7 +338,9 @@ export function Overview({
           </>
         );
       case "band":
-        return (
+        return v.short ? (
+          placeName(String(v.code))
+        ) : (
           <>
             {placeName(String(v.code))}
             <small> · {placeValueText(String(v.code))}</small>
@@ -347,7 +376,7 @@ export function Overview({
         <>
           <span className="ct-tip-title">{placeName(p.code)}</span>
           {total && <span className="ct-tip-meta">{t("places.tipAll", { value: m.amount(total.value), count: total.contracts })}</span>}
-          {rates && (
+          {rates && !tenderList && (
             <span className="ct-tip-meta">
               {t("places.tipGreen", { value: m.amount(principalByPlace.get(p.code) ?? 0), sign: m.sign, per100: m.per100(rates.rates.get(p.code) ?? 0) })}
             </span>
@@ -451,6 +480,7 @@ export function Overview({
 
         <section className="brief-hub-step ct-step" data-step="purpose">
           <p className="brief-hub-kicker">{t("kicker.purpose")}</p>
+          {focusNote && <p className="ct-focus-note">{focusNote}</p>}
           <h2 className="brief-hub-headline" tabIndex={-1}>
             {t("purpose.headline", { sign: m.sign, per100: m.per100(census.value > 0 ? principalTotal / census.value : 0) })}
           </h2>
@@ -467,18 +497,29 @@ export function Overview({
             </p>
           )}
           <p className="ct-tag">{t("purpose.tag")}</p>
+          <LensChoices setup={setup} focus={focus} onFocus={onFocus} label={t("areas.lens")} />
+          <AreaMoneyList
+            rows={rows}
+            label={t("purpose.byArea")}
+            areaName={areaName}
+            amount={m.amount}
+            focusArea={focus.area}
+            pointed={pointed}
+            onPoint={setPointed}
+            onPick={(id) => onFocus({ area: focus.area === id ? null : id })}
+          />
         </section>
 
         {geo && (
           <section className="brief-hub-step ct-step" data-step="places">
             <PlacesSide
-              {...{ t, m, setup, geo, focus, onFocus, onList, layer, setLayer, showAll, capital, rates, principalByPlace, focusMoney, tenderList, allMatch, keep, docOf, fctx, lensKey, placeName, areaName, docCode, focusPhrase, whatTargets, placeValue, placeValueText, more, setMore, pointed, setPointed }}
+              {...{ t, m, setup, geo, focus, onFocus, onList, onTarget, layer, setLayer, showAll, capital, rates, principalByPlace, focusMoney, tenderList, allMatch, keep, docOf, fctx, lensKey, placeName, areaName, docCode, focusPhrase, whatTargets, placeValue, placeValueText, more, setMore, pointed, setPointed, focusNote, targetsById }}
             />
           </section>
         )}
 
         <section className="brief-hub-step ct-step" data-step="areas">
-          <AreasSide {...{ t, tl, m, setup, focus, onFocus, onList, onTarget, rows, stats, areaMoney, lensKey, fctx, docOf, areaName, docCode, placeName, pointed, setPointed, targetsById }} />
+          <AreasSide {...{ t, tl, m, setup, focus, onFocus, onList, onTarget, rows, stats, areaMoney, lensKey, fctx, docOf, areaName, docCode, placeName, pointed, setPointed, targetsById, focusNote }} />
         </section>
       </div>
     </div>
@@ -498,6 +539,7 @@ function PlacesSide(props: {
   focus: Focus;
   onFocus: (patch: Partial<Focus>) => void;
   onList: (list: ContractList) => void;
+  onTarget: (id: string) => void;
   layer: MapLayer;
   setLayer: (l: MapLayer) => void;
   showAll: boolean;
@@ -522,6 +564,8 @@ function PlacesSide(props: {
   setMore: (v: boolean) => void;
   pointed: string | null;
   setPointed: (v: string | null) => void;
+  focusNote: string | null;
+  targetsById: Map<string, { id: string; doc: string; label: string; text: string }>;
 }) {
   const { t, m, setup, geo, focus, onFocus, onList, layer, setLayer, showAll, capital, rates, principalByPlace, focusMoney, tenderList, allMatch } = props;
   const file = setup.file;
@@ -548,14 +592,15 @@ function PlacesSide(props: {
     if (!f.total) headline = t("places.headlineMatchEmpty", { what: props.whatTargets() });
     else if (f.over)
       headline = t("places.headlineMatchOver", { place: props.placeName(f.over.code), share: m.pct(f.over.share), count: f.total, what: props.whatTargets(), base: m.pct(f.over.baseShare) });
-    else
+    else if (f.top)
       headline = t("places.headlineMatch", {
         count: f.total,
         what: mapFocused ? props.whatTargets() : t("places.what.target"),
         pctNone: m.pct(f.noneShare),
-        pctTop: m.pct(f.top?.share ?? 0),
-        top: f.top ? props.placeName(f.top.code) : "",
+        pctTop: m.pct(f.top.share),
+        top: props.placeName(f.top.code),
       });
+    else headline = t("places.headlineMatchUnplaced", { count: f.total, what: mapFocused ? props.whatTargets() : t("places.what.target"), pctNone: m.pct(f.noneShare) });
     if (f.total) tag = t("places.tagMatch");
   } else if (showAll) {
     const ub = record.find((p) => p.code === capital)?.value ?? 0;
@@ -564,7 +609,8 @@ function PlacesSide(props: {
     lines.push(t("places.secondAll"));
   } else if (focusMoney) {
     const f = mapFinding(focusMoney, principalByPlace, file.contracts, props.keep({ area: true, doc: true }));
-    if (!f.lead) headline = t("places.headlineNone", { focus: props.focusPhrase() });
+    if (!f.lead)
+      headline = f.total > 0 ? t("places.headlineUnplaced", { pct: m.pct(f.noneShare), focus: props.focusPhrase() }) : t("places.headlineNone", { focus: props.focusPhrase() });
     else if (f.lead.over)
       headline = t("places.headlineOver", { place: props.placeName(f.lead.code), share: m.pct(f.lead.share), focus: props.focusPhrase(), base: m.pct(f.lead.baseShare) });
     else headline = t("places.headlineTop", { place: props.placeName(f.lead.code), share: m.pct(f.lead.share), focus: props.focusPhrase() });
@@ -587,7 +633,10 @@ function PlacesSide(props: {
           </>
         );
     }
-  } else if (rates?.top) {
+  } else if (!rates) {
+    const f = mapFinding(principalByPlace, principalByPlace, file.contracts, () => true);
+    headline = f.lead ? t("places.headlineShare", { place: props.placeName(f.lead.code), pct: m.pct(f.lead.share) }) : t("areas.headlineEmpty");
+  } else if (rates.top) {
     const ubGreen = capital ? (principalByPlace.get(capital) ?? 0) : 0;
     headline = t("places.headlineRate", { place: props.placeName(rates.top.code), sign: m.sign, per100: m.per100(rates.top.rate), overall: m.per100(rates.overall) });
     if (capital) lines.push(t("places.secondRate", { capital: props.placeName(capital), pct: m.pct(principalTotal ? ubGreen / principalTotal : 0), sign: m.sign, per100: m.per100(rates.rates.get(capital) ?? 0) }));
@@ -608,20 +657,33 @@ function PlacesSide(props: {
     if (!picked) return null;
     if (tenderList) {
       const mine = tenderList.filter((d) => d.place === picked).sort((a, b) => b.targets.length - a.targets.length || b.value - a.value);
+      const perTarget = new Map<string, number>();
+      for (const d of mine) for (const x of d.targets) perTarget.set(x, (perTarget.get(x) ?? 0) + 1);
+      const topTargets = [...perTarget.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], undefined, { numeric: true }));
       return (
         <>
           <p className="ct-pick-facts">
             {t("places.factsTenders", { count: mine.length, kind: layer, what: props.whatTargets(), value: m.amount(mine.reduce((s, d) => s + d.value, 0)) })}
           </p>
+          {topTargets.length > 0 && (
+            <TargetRows
+              heading={layer === "mis" ? t("places.targetsMis") : t("places.targetsMatch")}
+              rows={topTargets.slice(0, PLACE_TARGETS).map(([id, n]) => ({ id, count: t("places.targetTenders", { count: n }) }))}
+              more={topTargets.length > PLACE_TARGETS ? t("places.andMore", { count: topTargets.length - PLACE_TARGETS }) : null}
+              targetsById={props.targetsById}
+              docCode={props.docCode}
+              onTarget={props.onTarget}
+            />
+          )}
           <ul className="ct-tenders">
-            {mine.slice(0, 6).map((d) => (
+            {mine.slice(0, PLACE_TENDERS).map((d) => (
               <li key={d.tender} className="ct-tender-line">
                 <span className="ct-tender-title">{d.lead.title}</span>
                 <span className="ct-list-meta">{t("places.tenderLine", { contracts: d.lots.length, value: m.amount(d.value), year: d.lead.year, targets: d.targets.length })}</span>
               </li>
             ))}
           </ul>
-          {mine.length > 6 && <p className="ct-more">{t("places.andMore", { count: mine.length - 6 })}</p>}
+          {mine.length > PLACE_TENDERS && <p className="ct-more">{t("places.andMore", { count: mine.length - PLACE_TENDERS })}</p>}
         </>
       );
     }
@@ -644,6 +706,9 @@ function PlacesSide(props: {
       matched.get(d)!.add(x);
     }
     const nMatched = new Set(mine.flatMap((c) => c.matches)).size;
+    const perTarget = new Map<string, number>();
+    for (const c of mine) for (const x of c.matches) perTarget.set(x, (perTarget.get(x) ?? 0) + 1);
+    const topTargets = [...perTarget.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], undefined, { numeric: true }));
     return (
       <>
         <p className="ct-pick-facts">
@@ -677,6 +742,14 @@ function PlacesSide(props: {
                   </span>
                 ))}
             </p>
+            <TargetRows
+              heading={t("places.targetsMoney")}
+              rows={topTargets.slice(0, PLACE_TARGETS).map(([id, n]) => ({ id, count: t("places.targetContracts", { count: n }) }))}
+              more={null}
+              targetsById={props.targetsById}
+              docCode={props.docCode}
+              onTarget={props.onTarget}
+            />
           </>
         )}
         {mine.length > 0 && (
@@ -692,6 +765,7 @@ function PlacesSide(props: {
   return (
     <>
       <p className="brief-hub-kicker">{t("kicker.places")}</p>
+      {props.focusNote && <p className="ct-focus-note">{props.focusNote}</p>}
       <div className="ct-lens" role="group" aria-label={t("places.layers")}>
         {(["money", "match", "mis"] as const).map((l) => (
           <button key={l} type="button" className="ct-lens-option" aria-pressed={layer === l} onClick={() => setLayer(l)}>
@@ -701,6 +775,7 @@ function PlacesSide(props: {
       </div>
       {!showAll && (
         <div className="ct-focus-choices">
+          <LensChoices setup={setup} focus={focus} onFocus={onFocus} label={t("areas.lens")} small />
           <label className="ct-select-line">
             <span className="ct-choice-label">{t("places.area")}</span>
             <select value={focus.area ?? ""} onChange={(e) => onFocus({ area: e.target.value || null })}>
@@ -710,8 +785,8 @@ function PlacesSide(props: {
                   {c.name}
                 </option>
               ))}
+              <option value={NO_AREA}>{t("areas.none")}</option>
             </select>
-            <span className="ct-choice-label">{tl(lens?.id ?? "globe")}</span>
           </label>
           <div className="ct-lens ct-docs-choice" role="group" aria-label={t("places.doc")}>
             <span className="ct-choice-label">{t("places.doc")}</span>
@@ -798,6 +873,7 @@ function AreasSide(props: {
   pointed: string | null;
   setPointed: (v: string | null) => void;
   targetsById: Map<string, { id: string; doc: string; label: string; text: string }>;
+  focusNote: string | null;
 }) {
   const { t, tl, m, setup, focus, onFocus, onList, rows, stats } = props;
   const file = setup.file;
@@ -852,6 +928,7 @@ function AreasSide(props: {
   if (!sel) {
     body = (
       <>
+        <p className="ct-tag">{t("places.tagMatch")}</p>
         <p className="ct-sub">{t("areas.tableLead")}</p>
         <div className="ct-bf-head" aria-hidden="true">
           <span />
@@ -886,7 +963,7 @@ function AreasSide(props: {
       .sort((a, b) => statOf(stats, b).mis.size - statOf(stats, a).mis.size || statOf(stats, b).match.size - statOf(stats, a).match.size);
     const without = ids.filter((x) => statOf(stats, x).match.size === 0);
     const max = Math.max(1, ...withContracts.map((x) => Math.max(statOf(stats, x).mis.size, statOf(stats, x).match.size)));
-    const listIds = [...(money?.ids ?? [])].sort((a, b) => (file.contracts.find((c) => c.id === b)?.value ?? 0) - (file.contracts.find((c) => c.id === a)?.value ?? 0));
+    const listIds = money?.ids ?? [];
     body = (
       <div className="ct-pick">
         <button type="button" className="ct-back" onClick={() => onFocus({ area: null })}>
@@ -960,6 +1037,7 @@ function AreasSide(props: {
   return (
     <>
       <p className="brief-hub-kicker">{t("kicker.areas")}</p>
+      {props.focusNote && <p className="ct-focus-note">{props.focusNote}</p>}
       <div className="ct-lens" role="group" aria-label={t("areas.lens")}>
         {setup.lenses.map((l) => (
           <button key={l.id} type="button" className="ct-lens-option" aria-pressed={l.id === focus.lens} onClick={() => onFocus({ lens: l.id as LensKey, area: null })}>
@@ -975,3 +1053,116 @@ function AreasSide(props: {
     </>
   );
 }
+
+/** The lens as plain choices; a new lens lets the policy area in focus go. */
+function LensChoices({
+  setup,
+  focus,
+  onFocus,
+  label,
+  small = false,
+}: {
+  setup: ContractsSetup;
+  focus: Focus;
+  onFocus: (patch: Partial<Focus>) => void;
+  label: string;
+  small?: boolean;
+}) {
+  const tl = useTranslations("briefing.lens");
+  return (
+    <div className={`ct-lens${small ? " ct-lens-small" : ""}`} role="group" aria-label={label}>
+      {setup.lenses.map((l) => (
+        <button key={l.id} type="button" className="ct-lens-option" aria-pressed={l.id === focus.lens} onClick={() => l.id !== focus.lens && onFocus({ lens: l.id as LensKey, area: null })}>
+          {tl(l.id)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** What the money mainly for nature or climate is for, by policy area: a
+ *  plain ranked list, each area a way to the focus. */
+function AreaMoneyList({
+  rows,
+  label,
+  areaName,
+  amount,
+  focusArea,
+  pointed,
+  onPoint,
+  onPick,
+}: {
+  rows: AreaRowB[];
+  label: string;
+  areaName: (id: string) => string;
+  amount: (v: number) => string;
+  focusArea: string | null;
+  pointed: string | null;
+  onPoint: (id: string | null) => void;
+  onPick: (id: string) => void;
+}) {
+  const shown = rows.filter((r) => r.value > 0);
+  const max = Math.max(1, ...shown.map((r) => r.value));
+  return (
+    <ul className="ct-rank" aria-label={label}>
+      {shown.map((r) => (
+        <li key={r.id}>
+          <button
+            type="button"
+            className="ct-rank-row"
+            data-lit={pointed === r.id || focusArea === r.id ? "" : undefined}
+            onClick={() => onPick(r.id)}
+            onPointerEnter={() => onPoint(r.id)}
+            onPointerLeave={() => onPoint(null)}
+          >
+            <span className="ct-rank-name">{areaName(r.id)}</span>
+            <span className="ct-rank-bar ct-bar-money">
+              <i style={{ width: `${(r.value / max) * 100}%` }} />
+            </span>
+            <span className="ct-rank-num">{amount(r.value)}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Targets behind a place, each a way to the target. */
+function TargetRows({
+  heading,
+  rows,
+  more,
+  targetsById,
+  docCode,
+  onTarget,
+}: {
+  heading: string;
+  rows: { id: string; count: string }[];
+  more: string | null;
+  targetsById: Map<string, { id: string; doc: string; label: string; text: string }>;
+  docCode: (id: string) => string;
+  onTarget: (id: string) => void;
+}) {
+  return (
+    <>
+      <p className="ct-sub">{heading}</p>
+      <ul className="ct-target-rows">
+        {rows.map((r) => {
+          const x = targetsById.get(r.id);
+          return (
+            <li key={r.id}>
+              <button type="button" className="ct-target-row" title={x ? targetLine(x, 240) : r.id} onClick={() => onTarget(r.id)}>
+                <span className="ct-target-row-name">
+                  {x ? `${docCode(x.doc)} · ${targetLine(x, 70)}` : r.id}
+                </span>
+                <span className="ct-target-row-count">{r.count}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      {more && <p className="ct-more">{more}</p>}
+    </>
+  );
+}
+

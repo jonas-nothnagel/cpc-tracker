@@ -5,6 +5,7 @@ import en from "../../../../messages/en.json";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import { emptyFocus, type Focus } from "@/lib/brief/contracts/focus";
+import { buildField, layoutField } from "@/lib/brief/contracts/field";
 import { CurrencyProvider, type Currency } from "./money";
 import { Overview, type Step } from "./overview";
 
@@ -26,23 +27,24 @@ const GEO: GeoFile = {
 };
 
 function renderOverview(
-  opts: { geo?: GeoFile | null; focus?: Partial<Focus>; step?: Step; currency?: Currency } = {},
+  opts: { geo?: GeoFile | null; focus?: Partial<Focus>; step?: Step; currency?: Currency; setup?: ReturnType<typeof setupFixture> } = {},
 ) {
   const onFocus = vi.fn();
   const onContract = vi.fn();
   const onList = vi.fn();
+  const onTarget = vi.fn();
   const focus = { ...emptyFocus("globe"), ...opts.focus };
   const utils = render(
     <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
       <CurrencyProvider currency={opts.currency ?? "mnt"} rate={3500}>
         <div data-brief>
           <Overview
-            setup={setupFixture()}
+            setup={opts.setup ?? setupFixture()}
             geo={opts.geo === undefined ? GEO : opts.geo}
             focus={focus}
             onFocus={onFocus}
             onContract={onContract}
-            onTarget={vi.fn()}
+            onTarget={onTarget}
             onList={onList}
             initialStep={opts.step}
           />
@@ -50,10 +52,61 @@ function renderOverview(
       </CurrencyProvider>
     </NextIntlClientProvider>,
   );
-  return { ...utils, onFocus, onContract, onList };
+  return { ...utils, onFocus, onContract, onList, onTarget };
 }
 
 const step = (name: string) => document.querySelector<HTMLElement>(`[data-step="${name}"]`)!;
+
+/** A measured field (700 by 560), so the canvas draws and moves. */
+function measured<T>(run: () => T): T {
+  const width = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
+  const height = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientHeight");
+  Object.defineProperty(HTMLElement.prototype, "clientWidth", { configurable: true, get: () => 700 });
+  Object.defineProperty(HTMLElement.prototype, "clientHeight", { configurable: true, get: () => 560 });
+  vi.stubGlobal(
+    "ResizeObserver",
+    class {
+      constructor(private cb: () => void) {}
+      observe() {
+        this.cb();
+      }
+      disconnect() {}
+    },
+  );
+  try {
+    return run();
+  } finally {
+    vi.unstubAllGlobals();
+    // The sizes live on Element.prototype: the stub on HTMLElement goes again.
+    if (width) Object.defineProperty(HTMLElement.prototype, "clientWidth", width);
+    else delete (HTMLElement.prototype as unknown as Record<string, unknown>).clientWidth;
+    if (height) Object.defineProperty(HTMLElement.prototype, "clientHeight", height);
+    else delete (HTMLElement.prototype as unknown as Record<string, unknown>).clientHeight;
+  }
+}
+
+function overviewAt(focus: Partial<Focus>, step: Step, onFocus = vi.fn(), onContract = vi.fn()) {
+  return (
+    <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+      <CurrencyProvider currency="mnt" rate={3500}>
+        <div data-brief>
+          <Overview
+            setup={SETUP}
+            geo={GEO}
+            focus={{ ...emptyFocus("globe"), ...focus }}
+            onFocus={onFocus}
+            onContract={onContract}
+            onTarget={vi.fn()}
+            onList={vi.fn()}
+            initialStep={step}
+          />
+        </div>
+      </CurrencyProvider>
+    </NextIntlClientProvider>
+  );
+}
+const SETUP = setupFixture();
+
 
 afterEach(cleanup);
 
@@ -160,29 +213,124 @@ describe("Overview", () => {
   });
 
   it("opens on the measured field at once: no glide from a first guess at its size", () => {
-    const width = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
-    const height = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientHeight");
-    Object.defineProperty(HTMLElement.prototype, "clientWidth", { configurable: true, get: () => 700 });
-    Object.defineProperty(HTMLElement.prototype, "clientHeight", { configurable: true, get: () => 560 });
-    vi.stubGlobal(
-      "ResizeObserver",
-      class {
-        constructor(private cb: () => void) {}
-        observe() {
-          this.cb();
-        }
-        disconnect() {}
-      },
+    measured(() => {
+      const raf = vi.spyOn(window, "requestAnimationFrame");
+      try {
+        renderOverview();
+        expect(raf).not.toHaveBeenCalled();
+      } finally {
+        raf.mockRestore();
+      }
+    });
+  });
+  it("redraws in place when a place or an area is chosen: the squares do not replay their move", () => {
+    measured(() => {
+      const { rerender } = render(overviewAt({}, "places"));
+      const raf = vi.spyOn(window, "requestAnimationFrame");
+      try {
+        rerender(overviewAt({ place: "MN-043" }, "places"));
+        expect(raf).not.toHaveBeenCalled();
+      } finally {
+        raf.mockRestore();
+      }
+    });
+    cleanup();
+    measured(() => {
+      const { rerender } = render(overviewAt({}, "areas"));
+      const raf = vi.spyOn(window, "requestAnimationFrame");
+      try {
+        rerender(overviewAt({ area: "g_restoration" }, "areas"));
+        expect(raf).not.toHaveBeenCalled();
+      } finally {
+        raf.mockRestore();
+      }
+    });
+  });
+
+  it("selects a place from its block on the map, never a contract", () => {
+    const onFocus = vi.fn();
+    const onContract = vi.fn();
+    render(overviewAt({}, "places", onFocus, onContract));
+    const l = layoutField(buildField(SETUP.file), SETUP.file, { kind: "places", layer: "money", key: "" }, { w: 640, h: 480 }, { geo: GEO });
+    const khovd = l.blocks.find((b) => b.code === "MN-043")!;
+    fireEvent.click(document.querySelector(".ct-field")!, { clientX: khovd.x + khovd.w / 2, clientY: khovd.y + khovd.h / 2 });
+    expect(onFocus).toHaveBeenCalledWith({ place: "MN-043" });
+    expect(onContract).not.toHaveBeenCalled();
+  });
+  it("says so when all the money in focus names no single place, instead of 'No money'", () => {
+    renderOverview({ step: "places", focus: { area: "g_sustainable" } });
+    expect(within(step("places")).getByRole("heading", { level: 2 }).textContent).toBe(
+      "100% of the money for Sustainable use names no single place",
     );
-    const raf = vi.spyOn(window, "requestAnimationFrame");
-    try {
-      renderOverview();
-      expect(raf).not.toHaveBeenCalled();
-    } finally {
-      raf.mockRestore();
-      vi.unstubAllGlobals();
-      if (width) Object.defineProperty(HTMLElement.prototype, "clientWidth", width);
-      if (height) Object.defineProperty(HTMLElement.prototype, "clientHeight", height);
+  });
+
+  it("falls back to shares of the money where the record by place is missing", () => {
+    const setup = setupFixture();
+    delete setup.file.places;
+    renderOverview({ step: "places", setup });
+    expect(within(step("places")).getByRole("heading", { level: 2 }).textContent).toBe(
+      "Khovd holds 64% of the money contracted mainly for nature or climate",
+    );
+    expect(document.body.textContent).not.toMatch(/per ₮100/);
+  });
+
+  it("tags the policy areas' targets table as an AI reading", () => {
+    renderOverview({ step: "areas" });
+    expect(within(step("areas")).getByText("AI reading: each contract compared with the targets")).toBeInTheDocument();
+  });
+
+  it("never leaves a sentence hanging when every strongly matching tender names no single place", () => {
+    const setup = setupFixture();
+    setup.file.contracts.push({ id: "x1", tender: "tx", year: 2025, tier: "principal", value: 1e9, title: "Subsidy reform study", translated: true, place: null, areas: {}, matches: ["C2"], misaligned: [] });
+    renderOverview({ step: "places", setup, focus: { area: "none" } });
+    fireEvent.click(within(within(step("places")).getByRole("group", { name: "What the map shows" })).getByRole("button", { name: "Strongly matching" }));
+    expect(within(step("places")).getByRole("heading", { level: 2 }).textContent).toBe(
+      "1 tender strongly matches targets with no policy area; 100% name no single place",
+    );
+  });
+
+  it("offers 'No policy area' in the map's policy-area choice, and shows it when in focus", () => {
+    renderOverview({ step: "places", focus: { area: "none" } });
+    const select = within(step("places")).getByRole("combobox") as HTMLSelectElement;
+    expect(select.value).toBe("none");
+    expect(select.selectedOptions[0].textContent).toBe("No policy area");
+  });
+
+  it("lets the map change the lens as well", () => {
+    const { onFocus } = renderOverview({ step: "places" });
+    const lenses = within(step("places")).getByRole("group", { name: "Policy areas" });
+    fireEvent.click(within(lenses).getByRole("button", { name: "Mitigation sectors" }));
+    expect(onFocus).toHaveBeenCalledWith({ lens: "ipcc", area: null });
+  });
+
+  it("names the targets behind a place's tenders, each a way to the target", () => {
+    const { onTarget } = renderOverview({ step: "places", focus: { place: "none" } });
+    fireEvent.click(within(within(step("places")).getByRole("group", { name: "What the map shows" })).getByRole("button", { name: "Potentially misaligned" }));
+    const target = within(step("places")).getByRole("button", { name: /Shift freight to rail/ });
+    expect(target.textContent).toContain("1 tender");
+    fireEvent.click(target);
+    expect(onTarget).toHaveBeenCalledWith("C1");
+  });
+
+  it("shows what the money is for already beside the years, an area a way to the focus", () => {
+    const { onFocus } = renderOverview({ step: "purpose" });
+    const areas = within(step("purpose")).getByRole("list", { name: "By policy area" });
+    expect(within(areas).getAllByRole("button").map((b) => b.querySelector(".ct-rank-name")?.textContent)).toEqual([
+      "Pollution management",
+      "Restoration",
+      "Sustainable use",
+      "No policy area",
+    ]);
+    fireEvent.click(within(areas).getByRole("button", { name: /Restoration/ }));
+    expect(onFocus).toHaveBeenCalledWith({ area: "g_restoration" });
+  });
+
+  it("names the page's focus in each step it shapes", () => {
+    renderOverview({ focus: { doc: "C", place: "MN-043" } });
+    for (const name of ["purpose", "places", "areas"]) {
+      expect(within(step(name)).getByText("Focus: Document C · Khovd")).toBeInTheDocument();
     }
+    expect(within(step("record")).queryByText(/Focus:/)).toBeNull();
   });
 });
+

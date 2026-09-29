@@ -167,14 +167,23 @@ export interface OverlaySpec {
   cells: { id: string; n: number }[];
 }
 
+export interface LabelSize {
+  w: number;
+  h: number;
+  line?: number;
+  name?: number;
+}
+
 export interface LayoutContext {
   rows?: AreaRowB[];
   geo?: GeoFile | null;
   overlay?: OverlaySpec | null;
   /** The money in focus in each year, as squares and as money, in year order. */
   yearFocus?: { squares: number[]; values: number[] } | null;
-  /** A place's name on the map as the page writes it, measured. */
-  labelSize?: (code: string) => { w: number; h: number };
+  /** A place's name on the map as the page writes it, measured: `w` and `h`
+   *  for a name over its figure, `line` for "name · figure" in the band below
+   *  the map, `name` for the name alone. */
+  labelSize?: (code: string) => LabelSize;
 }
 
 // ── By year ──────────────────────────────────────────────────────────
@@ -334,12 +343,16 @@ const BAND_SHARE = 0.3;
 const BAND_MIN = 90;
 const BAND_MAX = 170;
 const BAND_NAME = 18;
-const BAND_GAP = 28;
-const DEFAULT_NAME = { w: 72, h: 26 };
+const BAND_GAP = 24;
+/** A line above the map for the size of one square (or one dot). */
+const UNIT_LINE = 18;
+const DEFAULT_NAME: LabelSize = { w: 72, h: 26, line: 180, name: 90 };
+/** The smallest pitch a block is drawn at. */
+const MIN_PITCH = 1.2;
 
 function mapFrame(box: { w: number; h: number }, geo: GeoFile) {
   const band = Math.round(Math.min(BAND_MAX, Math.max(BAND_MIN, box.h * BAND_SHARE)));
-  const map: Box = { x: 6, y: 6, w: Math.max(40, box.w - 12), h: Math.max(40, box.h - band - 12) };
+  const map: Box = { x: 6, y: UNIT_LINE, w: Math.max(40, box.w - 12), h: Math.max(40, box.h - band - UNIT_LINE - 6) };
   const proj = fitProjection(geo, map);
   const features = new Map(geo.features.map((f) => [f.code, f]));
   const anchors = new Map([...features].map(([code, f]) => [code, proj.point(f)]));
@@ -354,29 +367,73 @@ type Frame = ReturnType<typeof mapFrame>;
 /** Largest pitch at which the band's blocks still fit its height. */
 function bandPitch(frame: Frame, counts: Map<string, number>, cap: number): number {
   const most = Math.max(1, ...frame.bandCodes.map((c) => counts.get(c) ?? 0));
-  return Math.max(1.2, Math.min(cap, frame.bandH / Math.ceil(Math.sqrt(most))));
+  return Math.max(MIN_PITCH, Math.min(cap, frame.bandH / Math.ceil(Math.sqrt(most))));
 }
 
-function mapBlocks(frame: Frame, counts: Map<string, number>, pitch: number): { blocks: Block[]; leaders: Leader[] } {
-  const shape = (n: number) => {
-    const cols = Math.max(1, Math.ceil(Math.sqrt(n)));
-    return { cols, w: n > 0 ? cols * pitch : 0, h: n > 0 ? Math.ceil(n / cols) * pitch : 0 };
+/** Columns for a block: square where it can be, wider where the rows would
+ *  run out of room below. */
+function blockCols(n: number, pitch: number, maxRows: number): number {
+  return Math.max(1, Math.ceil(Math.sqrt(n)), Math.ceil(n / Math.max(1, Math.floor(maxRows))));
+}
+
+function overlapping(blocks: { x: number; y: number; w: number; h: number }[]): boolean {
+  for (let i = 0; i < blocks.length; i++)
+    for (let j = i + 1; j < blocks.length; j++) {
+      const a = blocks[i];
+      const b = blocks[j];
+      if (a.x < b.x + b.w - 0.5 && b.x < a.x + a.w - 0.5 && a.y < b.y + b.h - 0.5 && b.y < a.y + a.h - 0.5) return true;
+    }
+  return false;
+}
+
+/**
+ * The band's places left to right below the map (the unnamed first), each as
+ * wide as its block or its name, whichever is wider: the full "name · figure"
+ * when every name fits the width, the names alone when not.
+ */
+function bandRow(frame: Frame, counts: Map<string, number>, pitch: number, box: { w: number }, ctx: LayoutContext) {
+  const items = frame.bandCodes
+    .map((code) => {
+      const n = counts.get(code) ?? 0;
+      const cols = blockCols(n, pitch, frame.bandH / pitch);
+      const size = ctx.labelSize?.(code) ?? DEFAULT_NAME;
+      return { code, n, cols, w: n > 0 ? cols * pitch : 0, h: n > 0 ? Math.ceil(n / cols) * pitch : 0, line: size.line ?? DEFAULT_NAME.line!, name: size.name ?? DEFAULT_NAME.name! };
+    })
+    .filter((it) => it.n > 0);
+  const place = (short: boolean) => {
+    let right = 0;
+    return items.map((it, i) => {
+      const lw = short ? it.name : it.line;
+      const occupied = Math.max(it.w, lw);
+      const anchor = frame.anchors.get(it.code);
+      const x = i === 0 ? frame.map.x : Math.max(right + BAND_GAP, anchor ? anchor[0] - occupied / 2 : right + BAND_GAP);
+      right = x + occupied;
+      return { ...it, x, occupied, short };
+    });
   };
-  const band: Block[] = [];
-  let right = frame.map.x - BAND_GAP;
-  for (const code of frame.bandCodes) {
-    const n = counts.get(code) ?? 0;
-    const { w, h } = shape(n);
-    const anchor = frame.anchors.get(code);
-    const x = Math.max(right + BAND_GAP, anchor ? anchor[0] - w / 2 : frame.map.x);
-    band.push({ code, x, y: frame.bandTop, w, h, n });
-    right = x + Math.max(w, 150);
+  let row = place(false);
+  if (row.length > 0 && row[row.length - 1].x + row[row.length - 1].occupied > box.w - 4) row = place(true);
+  // Still too wide: the last places move left, as far as the one before allows.
+  for (let i = row.length - 1; i > 0; i--) {
+    const over = row[i].x + row[i].occupied - (box.w - 4);
+    if (over <= 0) break;
+    const room = row[i].x - (row[i - 1].x + row[i - 1].occupied + 8);
+    row[i].x -= Math.min(over, Math.max(0, room));
   }
+  return row;
+}
+
+function mapBlocks(frame: Frame, counts: Map<string, number>, pitch: number, box: { w: number }, ctx: LayoutContext): { blocks: Block[]; leaders: Leader[]; bandShort: Map<string, boolean> } {
+  const row = bandRow(frame, counts, pitch, box, ctx);
+  const band: Block[] = row.map((it) => ({ code: it.code, x: it.x, y: frame.bandTop, w: it.w, h: it.h, n: it.n }));
+  const bandShort = new Map(row.map((it) => [it.code, it.short]));
   const loose = [...frame.features.keys()]
     .filter((code) => !frame.bandCodes.includes(code) && (counts.get(code) ?? 0) > 0)
     .map((code) => {
       const n = counts.get(code) ?? 0;
-      const { w, h } = shape(n);
+      const cols = blockCols(n, pitch, Infinity);
+      const w = cols * pitch;
+      const h = Math.ceil(n / cols) * pitch;
       const [ax, ay] = frame.anchors.get(code)!;
       return { code, x: ax - w / 2, y: ay - h / 2, w, h, n };
     });
@@ -392,19 +449,31 @@ function mapBlocks(frame: Frame, counts: Map<string, number>, pitch: number): { 
     const anchor = frame.anchors.get(b.code);
     if (anchor && b.n > 0) leaders.push({ code: b.code, x1: anchor[0], y1: anchor[1], x2: b.x + b.w / 2, y2: b.y - BAND_NAME - 2 });
   }
-  return { blocks: [...band, ...resolved], leaders };
+  return { blocks: [...band, ...resolved], leaders, bandShort };
+}
+
+/** The whole map at the largest pitch (from `pitch` down) at which no two
+ *  places' blocks touch. */
+function fitBlocks(frame: Frame, counts: Map<string, number>, pitch: number, box: { w: number }, ctx: LayoutContext) {
+  let p = pitch;
+  for (let tries = 0; ; tries++) {
+    const r = mapBlocks(frame, counts, p, box, ctx);
+    const onMap = r.blocks.filter((b) => !frame.bandCodes.includes(b.code));
+    if (!overlapping(onMap) || p <= MIN_PITCH || tries >= 6) return { ...r, pitch: p };
+    p = Math.max(MIN_PITCH, p * 0.85);
+  }
 }
 
 function cellAt(b: Block, k: number, pitch: number) {
-  const cols = Math.max(1, Math.ceil(Math.sqrt(b.n)));
+  const cols = Math.max(1, Math.round(b.w / pitch));
   return { x: b.x + (k % cols) * pitch + pitch / 2, y: b.y + Math.floor(k / cols) * pitch + pitch / 2 };
 }
 
-function placeNames(frame: Frame, blocks: Block[], ctx: LayoutContext, all: boolean): FieldLabel[] {
+function placeNames(frame: Frame, blocks: Block[], ctx: LayoutContext, all: boolean, bandShort: Map<string, boolean>): FieldLabel[] {
   const labels: FieldLabel[] = [];
   for (const b of blocks) {
-    if (!frame.bandCodes.includes(b.code)) continue;
-    labels.push({ key: `band:${b.code}`, kind: "band", x: b.x, y: b.y - BAND_NAME + 2, align: "start", values: { code: b.code } });
+    if (!frame.bandCodes.includes(b.code) || b.n === 0) continue;
+    labels.push({ key: `band:${b.code}`, kind: "band", x: b.x, y: b.y - BAND_NAME + 2, align: "start", values: { code: b.code, short: bandShort.get(b.code) ?? false } });
   }
   const byCode = new Map(blocks.map((b) => [b.code, b]));
   const order = [...frame.features.keys()]
@@ -418,7 +487,7 @@ function placeNames(frame: Frame, blocks: Block[], ctx: LayoutContext, all: bool
     return { key: code, ...size, around: b && b.n > 0 ? { x: b.x, y: b.y, w: b.w, h: b.h } : { x: ax, y: ay, w: 0, h: 0 } };
   });
   const obstacles = blocks.filter((b) => b.n > 0).map((b) => ({ x: b.x - 1, y: b.y - 1, w: b.w + 2, h: b.h + 2 }));
-  const bounds = { x: 0, y: 0, w: frame.map.x * 2 + frame.map.w, h: frame.bandTop - BAND_NAME - 4 };
+  const bounds = { x: 0, y: UNIT_LINE, w: frame.map.x * 2 + frame.map.w, h: frame.bandTop - BAND_NAME - 4 - UNIT_LINE };
   const at = placeLabels(items, obstacles, bounds);
   for (const code of order) {
     const r = at.get(code);
@@ -480,8 +549,9 @@ function placeLayout(model: FieldModel, file: ContractsFile, stage: Extract<Stag
   }
 
   const all = stage.layer === "all";
-  const squarePitch = all ? bandPitch(frame, counts, 3) : Math.min(bandPitch(frame, counts, 6), Math.max(3, frame.map.w / 110));
-  const { blocks, leaders } = mapBlocks(frame, counts, squarePitch);
+  const fitted = fitBlocks(frame, counts, all ? bandPitch(frame, counts, 3) : Math.min(bandPitch(frame, counts, 6), Math.max(3, frame.map.w / 110)), box, ctx);
+  const { blocks, leaders, bandShort } = fitted;
+  const squarePitch = fitted.pitch;
   const byCode = new Map(blocks.map((b) => [b.code, b]));
   const next = new Map<string, number>();
   const squares: Placed[] = model.inks.map((ink, i) => {
@@ -499,14 +569,14 @@ function placeLayout(model: FieldModel, file: ContractsFile, stage: Extract<Stag
     const oc = new Map<string, number>();
     for (const c of spec.cells) oc.set(known(c.id), (oc.get(known(c.id)) ?? 0) + c.n);
     const cap = spec.shape === "dot" ? (spec.ink === "mis" ? 5.5 : 4) : 6;
-    const pitch = Math.min(bandPitch(frame, oc, cap), Math.max(3, frame.map.w / 110));
-    const ob = mapBlocks(frame, oc, pitch);
+    const ob = fitBlocks(frame, oc, Math.min(bandPitch(frame, oc, cap), Math.max(3, frame.map.w / 110)), box, ctx);
+    const pitch = ob.pitch;
     const marks: Mark[] = [];
     for (const b of ob.blocks) for (let k = 0; k < b.n; k++) marks.push({ ...cellAt(b, k, pitch), shape: spec.shape, ink: spec.ink, cell: b.code });
     return {
       squares: squares.map((q) => ({ ...q, visible: false })),
       pitch: squarePitch,
-      labels: [...placeNames(frame, ob.blocks, ctx, false), { key: "unit", kind: "unit", x: box.w - 4, y: frame.bandTop - BAND_NAME - 2, align: "end", values: { unit: spec.unit, shape: spec.shape } }],
+      labels: [...placeNames(frame, ob.blocks, ctx, false, ob.bandShort), { key: "unit", kind: "unit", x: box.w - 4, y: 1, align: "end", values: { unit: spec.unit, shape: spec.shape } }],
       targets: [],
       outlines: frame.outlines,
       map: frame.map,
@@ -519,7 +589,7 @@ function placeLayout(model: FieldModel, file: ContractsFile, stage: Extract<Stag
   return {
     squares,
     pitch: squarePitch,
-    labels: [...placeNames(frame, blocks, ctx, true), { key: "unit", kind: "unit", x: box.w - 4, y: frame.bandTop - BAND_NAME - 2, align: "end", values: { unit: UNIT, shape: "square" } }],
+    labels: [...placeNames(frame, blocks, ctx, true, bandShort), { key: "unit", kind: "unit", x: box.w - 4, y: 1, align: "end", values: { unit: UNIT, shape: "square" } }],
     targets: [],
     outlines: frame.outlines,
     map: frame.map,

@@ -105,8 +105,5 @@ export function setupFixture(): ContractsSetup {
     documents: [doc("A", "Document A"), doc("B", "Document B"), doc("C", "Document C")],
     targets: side.targets,
     lenses,
-    budget: [...side.budget],
-    action: [...side.action],
-    backing: { C2: { budget: ["71404 Water resources"], action: [] }, A2: { budget: [], action: ["Protect springs"] } },
   };
 }

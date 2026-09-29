@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildField, layoutField, placeLabels, resolveBlocks, type AreaRowB, type FieldLayout, type LayoutContext, type Stage } from "./field";
+import mongoliaOutlines from "@/data/geo/mongolia-aimags.json";
+import { buildField, layoutField, placeLabels, resolveBlocks, type AreaRowB, type FieldLayout, type FieldModel, type LayoutContext, type Stage } from "./field";
 import { fitProjection, type GeoFile } from "./geo";
 import { NO_PLACE } from "./model";
 import { contractsFixture } from "./test-fixture";
@@ -212,4 +213,82 @@ describe("the policy areas", () => {
     const ys = new Set(l.overlay!.marks.filter((m) => m.cell === "g_pollution").map((m) => Math.round(m.y)));
     expect(ys.size).toBe(1);
   });
+});
+
+describe("the map on Mongolia's own outlines", () => {
+  // Whole-record money by place (trillion tugrik, the Mongolia bake) and
+  // tender counts by place, rounded: realistic loads for the layout.
+  const RECORD: [string, number][] = [
+    ["none", 26.15], ["MN-1", 11.91], ["MN-039", 1.16], ["MN-053", 1.11], ["MN-069", 0.8], ["MN-047", 0.78],
+    ["MN-043", 0.69], ["MN-061", 0.65], ["MN-037", 0.56], ["MN-035", 0.56], ["MN-041", 0.52], ["MN-055", 0.48],
+    ["MN-063", 0.46], ["MN-057", 0.4], ["MN-046", 0.38], ["MN-051", 0.36], ["MN-049", 0.33], ["MN-073", 0.3],
+    ["MN-065", 0.29], ["MN-067", 0.28], ["MN-071", 0.27], ["MN-059", 0.21], ["MN-064", 0.13],
+  ];
+  const MATCH: [string, number][] = [
+    ["none", 639], ["MN-1", 551], ["MN-053", 207], ["MN-061", 141], ["MN-035", 128], ["MN-067", 109], ["MN-041", 106],
+    ["MN-047", 101], ["MN-043", 95], ["MN-039", 90], ["MN-051", 88], ["MN-065", 85], ["MN-057", 80], ["MN-069", 75],
+    ["MN-046", 70], ["MN-037", 66], ["MN-049", 60], ["MN-063", 55], ["MN-055", 50], ["MN-073", 45], ["MN-071", 40],
+    ["MN-059", 35], ["MN-064", 20],
+  ];
+  const MIS: [string, number][] = [
+    ["none", 77], ["MN-041", 23], ["MN-049", 15], ["MN-065", 11], ["MN-043", 10], ["MN-1", 8], ["MN-073", 7], ["MN-035", 7],
+    ["MN-055", 6], ["MN-046", 6], ["MN-053", 5], ["MN-063", 2], ["MN-064", 2], ["MN-047", 2], ["MN-037", 2], ["MN-071", 2],
+  ];
+  const real: GeoFile = { ...(mongoliaOutlines as unknown as GeoFile), band: ["MN-1"] };
+  const nameOf = (code: string) => (code === "none" ? "No single place named" : (real.features.find((f) => f.code === code)?.name ?? code));
+  // As the page measures them: a name over its figure, or one line "name · figure" in the band.
+  const labelSize = (code: string) => ({
+    w: Math.max(nameOf(code).length * 6.4, 14 * 5.6) + 6,
+    h: 27,
+    name: nameOf(code).length * 6.8 + 4,
+    line: (nameOf(code).length + 17) * 6.3 + 4,
+  });
+  const bigModel: FieldModel = {
+    inks: [...new Array(155).fill("principal"), ...new Array(291).fill("significant"), ...new Array(9309).fill("rest")],
+    years: new Array(9755).fill(2024),
+    yearOrder: [2024],
+    yearSlices: new Array(9755).fill(null),
+    columns: [{ year: 2024, principal: 155, significant: 291, rest: 9309 }],
+  };
+  const bigFile = {
+    ...file,
+    years: [{ ...file.years[0], year: 2024, contracts: 75312, value: 48.78e12 }],
+    places: RECORD.map(([code, t]) => ({ code, contracts: 1000, value: t * 1e12 })),
+    contracts: [],
+  };
+  const dots = (rows: [string, number][], ink: "match" | "mis") => ({ shape: "dot" as const, ink, unit: 1, cells: rows.map(([id, n]) => ({ id, n })) });
+  const overlap = (a: { x: number; y: number; w: number; h: number }, b: { x: number; y: number; w: number; h: number }) =>
+    a.x < b.x + b.w - 0.5 && b.x < a.x + a.w - 0.5 && a.y < b.y + b.h - 0.5 && b.y < a.y + a.h - 0.5;
+
+  for (const size of [{ w: 328, h: 380 }, { w: 360, h: 400 }, { w: 520, h: 420 }, { w: 660, h: 500 }]) {
+    for (const [name, stage, overlay] of [
+      ["all contracts", { kind: "places", layer: "all", key: "" }, null],
+      ["strongly matching", { kind: "places", layer: "match", key: "" }, dots(MATCH, "match")],
+      ["potentially misaligned", { kind: "places", layer: "mis", key: "" }, dots(MIS, "mis")],
+    ] as const) {
+      it(`keeps ${name} readable at ${size.w}×${size.h}: blocks, band names, unit and names clear and inside`, () => {
+        const l = layoutField(bigModel, bigFile, stage as Stage, size, { geo: real, overlay, labelSize });
+        const blocks = l.blocks.filter((b) => b.n > 0);
+        for (const b of blocks) {
+          expect(b.x).toBeGreaterThanOrEqual(-0.5);
+          expect(b.x + b.w).toBeLessThanOrEqual(size.w + 0.5);
+          expect(b.y + b.h).toBeLessThanOrEqual(size.h + 0.5);
+        }
+        for (let i = 0; i < blocks.length; i++) for (let j = i + 1; j < blocks.length; j++) expect(overlap(blocks[i], blocks[j])).toBe(false);
+        const boxes = l.labels
+          .filter((x) => x.kind === "band" || x.kind === "place" || x.kind === "unit")
+          .map((x) => {
+            const s = labelSize(String(x.values.code ?? ""));
+            const w = x.kind === "band" ? (x.values.short ? s.name : s.line) : x.kind === "unit" ? 120 : s.w;
+            const left = x.align === "middle" ? x.x - w / 2 : x.align === "end" ? x.x - w : x.x;
+            return { kind: x.kind, x: left, y: x.y, w, h: x.kind === "place" ? 26 : 14 };
+          });
+        for (const b of boxes) {
+          expect(b.x).toBeGreaterThanOrEqual(-0.5);
+          expect(b.x + b.w).toBeLessThanOrEqual(size.w + 0.5);
+        }
+        for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) expect(overlap(boxes[i], boxes[j])).toBe(false);
+      });
+    }
+  }
 });

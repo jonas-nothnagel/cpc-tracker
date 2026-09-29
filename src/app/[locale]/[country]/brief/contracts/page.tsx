@@ -3,7 +3,6 @@ import { getTranslations } from "next-intl/server";
 import { getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
-import { buildExploreLayers } from "@/lib/brief/explore/layers";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { GEO } from "@/lib/brief/contracts/geo-data";
@@ -27,7 +26,7 @@ async function load(props: Props) {
   if (result.kind !== "ok") return null;
   const data = result.payload.data as unknown as Record<string, unknown>;
   const source = buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale });
-  return { locale, setup: contractsSetup({ file, source, layers: buildExploreLayers(data, source) }) };
+  return { locale, setup: contractsSetup({ file, source }) };
 }
 
 export async function generateMetadata(props: Props) {

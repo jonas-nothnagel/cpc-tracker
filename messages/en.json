@@ -3316,7 +3316,8 @@
         "headline": "{sign}{per100} of every {sign}100 was contracted for work mainly for nature or climate",
         "second": "{sign}{per100} more for work where nature or climate is a side benefit.",
         "tag": "AI reading of each contract's title",
-        "focusLine": "{name}: {first} in {firstYear}, {last} in {lastYear}."
+        "focusLine": "{name}: {first} in {firstYear}, {last} in {lastYear}.",
+        "byArea": "By policy area"
       },
       "set": {
         "all": "All {count} contracts · {value}",
@@ -3384,7 +3385,9 @@
           "target": "a target",
           "doc": "{doc} targets",
           "area": "{area} targets",
-          "both": "{doc} targets in {area}"
+          "both": "{doc} targets in {area}",
+          "noArea": "targets with no policy area",
+          "bothNoArea": "{doc} targets with no policy area"
         },
         "headlineMatch": "{count, plural, one {# tender strongly matches} other {# tenders strongly match}} {what}; {pctNone} name no single place, {pctTop} are in {top}",
         "headlineMatchOver": "{place} holds {share} of the {count, plural, one {# tender} other {# tenders}} strongly matching {what}, against {base} of all strongly matching tenders",
@@ -3410,7 +3413,15 @@
         "tipAll": "{value} in {count, plural, one {# contract} other {# contracts}}",
         "tipGreen": "{value} mainly for nature or climate: {sign}{per100} of every {sign}100",
         "tipFocus": "{value} {focus}",
-        "tipTenders": "{count, plural, one {# tender} other {# tenders}} {kind, select, mis {potentially misaligned with} other {strongly matching}} {what}"
+        "tipTenders": "{count, plural, one {# tender} other {# tenders}} {kind, select, mis {potentially misaligned with} other {strongly matching}} {what}",
+        "headlineUnplaced": "{pct} of the money {focus} names no single place",
+        "headlineShare": "{place} holds {pct} of the money contracted mainly for nature or climate",
+        "headlineMatchUnplaced": "{count, plural, one {# tender strongly matches} other {# tenders strongly match}} {what}; {pctNone} name no single place",
+        "targetsMis": "The targets they are potentially misaligned with",
+        "targetsMatch": "The targets they strongly match",
+        "targetsMoney": "The targets its contracts strongly match most",
+        "targetTenders": "{count, plural, one {# tender} other {# tenders}}",
+        "targetContracts": "{count, plural, one {# contract} other {# contracts}}"
       },
       "tip": {
         "more": "and {count, plural, one {# more contract} other {# more contracts}}",
@@ -3438,11 +3449,7 @@
         "targetDialog": "Target: {label}",
         "loading": "Loading the contract's record…",
         "error": "The contract's record could not be loaded.",
-        "machine": "Machine translation",
         "untranslated": "Not yet translated",
-        "original": "Original: {text}",
-        "value": "Value",
-        "valueUsd": "{value}, about {other}",
         "year": "Year",
         "dates": "Dates",
         "datesRange": "{start} to {end}",
@@ -3451,7 +3458,6 @@
         "place": "Place",
         "several": "Several places",
         "noPlace": "No place named",
-        "buyer": "Buyer",
         "tender": "Tender",
         "lotsLine": "{count, plural, one {The only contract in its tender} other {One of # contracts in its tender}}",
         "types": {
@@ -3474,16 +3480,12 @@
           "closed": "Closed",
           "other": "Other"
         },
-        "reading": "The AI's reading",
         "tier": {
           "principal": "Mainly for nature or climate",
           "significant": "Nature or climate as a side benefit",
           "none": "Not for nature or climate"
         },
-        "reason": "Its reason, as the AI wrote it in Mongolian",
         "areas": "Policy areas",
-        "matches": "{count, plural, one {Strongly matches # target} other {Strongly matches # targets}}",
-        "misaligned": "{count, plural, one {Potentially misaligned with # target} other {Potentially misaligned with # targets}}",
         "confidence": {
           "high": "High confidence",
           "medium": "Medium confidence",
@@ -3498,17 +3500,23 @@
         "tenders": "Potentially misaligned tenders",
         "tenderLine": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
         "showAll": "Show all {count}",
-        "backing": "Also behind this target",
-        "budget": "Budget lines (Biodiversity Expenditure Review)",
-        "action": "Reported actions (Biennial Transparency Report)",
-        "noBacking": "No matching budget line or reported action",
         "explore": "Explore this target",
         "noContracts": "No strongly matching contract",
         "list": {
           "dialog": "Contracts: {title}",
           "count": "{count, plural, one {# contract} other {# contracts}} · {value}",
           "more": "Show {count} more"
-        }
+        },
+        "kind": "Public procurement contract",
+        "titleNote": "Title machine-translated from Mongolian",
+        "about": "about {other}",
+        "readingHead": "The pipeline's reading",
+        "purpose": "Purpose",
+        "targets": "Targets",
+        "strongCount": "{count} strongly matching",
+        "misCount": "{count} potentially misaligned",
+        "allTargets": "Show all {count} strongly matching targets",
+        "fewerTargets": "Show fewer"
       },
       "currency": {
         "label": "Amounts in",
@@ -3523,7 +3531,9 @@
         "name": "Money {parts}",
         "area": "for {area}",
         "doc": "strongly matching {doc} targets",
-        "place": "in {place}"
+        "place": "in {place}",
+        "noArea": "with no policy area",
+        "note": "Focus: {parts}"
       },
       "closer": {
         "kicker": "Where to look closer",

@@ -99,7 +99,7 @@ describe("where to look closer", () => {
     expect(screen.getByText("High confidence")).toBeInTheDocument();
   });
 
-  it("never shows a late answer for one target under another", async () => {
+  it("never shows a late answer for one target under another, even for a contract both share", async () => {
     const answers: ((v: unknown) => void)[] = [];
     vi.stubGlobal(
       "fetch",
@@ -110,13 +110,27 @@ describe("where to look closer", () => {
           }),
       ),
     );
-    renderBlock({ extra: [coal] });
+    const setup = setupFixture();
+    // Lot n1 of tender t10 is potentially misaligned with C1 and with A1.
+    setup.file.contracts.find((c) => c.id === "n1")!.misaligned = ["C1", "A1"];
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <div data-brief>
+          <CloserBlock setup={setup} focus={emptyFocus("globe")} onContract={vi.fn()} />
+        </div>
+      </NextIntlClientProvider>,
+    );
     fireEvent.click(screen.getByRole("button", { name: /^C · 1/ }));
     fireEvent.click(screen.getByRole("button", { name: /^A · 1/ }));
     await act(async () => {
       answers[0]({ ok: true, json: async () => ({ misaligned: [{ contract: "n1", text: "About freight to rail.", confidence: "high", mechanism: null }] }) });
     });
     expect(screen.queryByText("About freight to rail.")).toBeNull();
+  });
+
+  it("names the page's focus above its finding", () => {
+    renderBlock({ focus: { doc: "C" } });
+    expect(screen.getByText("Focus: Document C")).toBeInTheDocument();
   });
 
   it("answers the page's focus: a document keeps its own targets", () => {

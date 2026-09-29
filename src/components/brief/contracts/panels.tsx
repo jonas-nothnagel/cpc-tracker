@@ -15,6 +15,8 @@ import { useMoney } from "./money";
 
 /** Contracts a target's panel lists before "Show all". */
 const LIST_MAX = 12;
+/** Strongly matching targets a contract's panel names before "Show all". */
+const STRONG_SHOWN = 5;
 
 function useLookups(setup: ContractsSetup) {
   return useMemo(() => {
@@ -56,6 +58,7 @@ function ContractPanel({
     status: "loading" | "ok" | "error";
     record?: ContractRecord;
   }>({ status: "loading" });
+  const [allTargets, setAllTargets] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -100,46 +103,35 @@ function ContractPanel({
     ? (Object.entries(contract.areas) as [LensKey, string][])
         .map(([lens, area]) => {
           const name = setup.lenses.find((l) => l.id === lens)?.categories.find((c) => c.id === area)?.name;
-          return name ? `${tl(lens)}: ${name}` : null;
+          return name ? { lens, name } : null;
         })
-        .filter((x): x is string => x !== null)
+        .filter((x): x is { lens: LensKey; name: string } => x !== null)
     : [];
-  const targetRow = (target: string, text: string, tone: "reinforce" | "apart", extra?: ReactNode) => {
-    const x = targets.get(target);
+  const value = contract?.value ?? 0;
+  const strong = record.strong.map((x) => x.target);
+  const shownStrong = allTargets ? strong : strong.slice(0, STRONG_SHOWN);
+  const targetButton = (id: string) => {
+    const x = targets.get(id);
     return (
-      <li key={target} className="ct-panel-target">
-        <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
-        <div className="ct-panel-target-main">
-          <button type="button" className="ct-panel-target-name" onClick={() => onTarget(target)}>
-            {x ? targetLine(x, 120) : target}
-          </button>
-          <span className="brief-panel-row-doc">{x ? (docs.get(x.doc)?.name ?? x.doc) : ""}</span>
-          {extra}
-          <div className="brief-panel-text">
-            <FirstSentence text={text} />
-          </div>
-        </div>
-      </li>
+      <button type="button" className="ct-panel-target-name" onClick={() => onTarget(id)}>
+        {x ? `${docs.get(x.doc)?.code ?? x.doc} · ${targetLine(x, 110)}` : id}
+      </button>
     );
   };
 
   return (
     <>
       <DrawerHeader>
+        <p className="ct-panel-kind">{t("kind")}</p>
         <h2 className="brief-panel-title">{record.english ?? record.original}</h2>
-        <p className="brief-panel-sub">
-          <span className="brief-panel-sub-line">{record.english ? t("machine") : t("untranslated")}</span>
-          {record.english && <span className="brief-panel-sub-line">{t("original", { text: record.original })}</span>}
-        </p>
+        <p className="brief-panel-sub">{record.english ? t("titleNote") : t("untranslated")}</p>
       </DrawerHeader>
       <div className="brief-panel-body">
+        <p className="ct-panel-value">
+          <span>{m.amount(value)}</span>
+          {m.other(value) !== m.amount(value) && <span className="ct-panel-value-other">{t("about", { other: m.other(value) })}</span>}
+        </p>
         <dl className="ct-facts">
-          <Fact label={t("value")}>
-            {t("valueUsd", {
-              value: m.amount(contract?.value ?? 0),
-              other: m.other(contract?.value ?? 0),
-            })}
-          </Fact>
           {contract && <Fact label={t("year")}>{contract.year}</Fact>}
           {record.start && record.end && (
             <Fact label={t("dates")}>
@@ -152,54 +144,76 @@ function ContractPanel({
           <Fact label={t("type")}>{t(`types.${record.type}` as "types.other")}</Fact>
           <Fact label={t("stage")}>{t(`stages.${record.stage}` as "stages.other")}</Fact>
           <Fact label={t("place")}>{placeName(contract?.place)}</Fact>
-          <Fact label={t("buyer")}>{record.buyer}</Fact>
           {record.lots > 1 && <Fact label={t("tender")}>{t("lotsLine", { count: record.lots })}</Fact>}
         </dl>
 
-        <section>
-          <h3 className="brief-panel-h">{t("reading")}</h3>
-          {contract && <p className="brief-panel-text">{t(`tier.${contract.tier}`)}</p>}
-          {record.reason && (
-            <p className="brief-panel-caveat">
-              {t("reason")}: {record.reason}
-            </p>
+        <section className="ct-reading" aria-label={t("readingHead")}>
+          <h3 className="brief-panel-h">{t("readingHead")}</h3>
+          <dl className="ct-facts">
+            {contract && (
+              <Fact label={t("purpose")}>
+                <span className="ct-reading-tier">
+                  <i aria-hidden="true" data-tier={contract.tier} />
+                  {t(`tier.${contract.tier}`)}
+                </span>
+              </Fact>
+            )}
+            {areas.length > 0 && (
+              <Fact label={t("areas")}>
+                <ul className="ct-reading-areas">
+                  {areas.map((a) => (
+                    <li key={a.lens}>
+                      <span className="ct-reading-lens">{tl(a.lens)}</span> <span>{a.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Fact>
+            )}
+            <Fact label={t("targets")}>
+              <span className="ct-reading-counts">
+                <span>{t("strongCount", { count: record.strong.length })}</span>
+                {record.misaligned.length > 0 && <span className="ct-reading-mis">{t("misCount", { count: record.misaligned.length })}</span>}
+              </span>
+            </Fact>
+          </dl>
+
+          {record.misaligned.length > 0 && (
+            <ul className="ct-panel-targets">
+              {record.misaligned.map((x) => (
+                <li key={x.target} className="ct-panel-target">
+                  <span className="brief-panel-mark brief-panel-mark-apart" aria-hidden="true" />
+                  <div className="ct-panel-target-main">
+                    {targetButton(x.target)}
+                    <div className="brief-panel-text">
+                      <FirstSentence text={x.text} />
+                    </div>
+                    <span className="brief-panel-row-type">
+                      {[x.mechanism ? tm(x.mechanism) : null, x.confidence ? t(`confidence.${x.confidence}` as "confidence.high") : null].filter(Boolean).join(" · ")}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
-          {areas.length > 0 && (
-            <p className="brief-panel-meta">
-              {t("areas")}: {areas.join(" · ")}
-            </p>
+
+          {strong.length > 0 && (
+            <>
+              <ul className="ct-panel-strong">
+                {shownStrong.map((id) => (
+                  <li key={id}>
+                    <span className="brief-panel-mark brief-panel-mark-reinforce" aria-hidden="true" />
+                    {targetButton(id)}
+                  </li>
+                ))}
+              </ul>
+              {strong.length > STRONG_SHOWN && (
+                <button type="button" className="ct-back" onClick={() => setAllTargets((v) => !v)}>
+                  {allTargets ? t("fewerTargets") : t("allTargets", { count: strong.length })}
+                </button>
+              )}
+            </>
           )}
         </section>
-
-        {record.strong.length > 0 && (
-          <section>
-            <h3 className="brief-panel-h">{t("matches", { count: record.strong.length })}</h3>
-            <ul className="ct-panel-targets">{record.strong.map((s) => targetRow(s.target, s.text, "reinforce"))}</ul>
-          </section>
-        )}
-
-        {record.misaligned.length > 0 && (
-          <section>
-            <h3 className="brief-panel-h">{t("misaligned", { count: record.misaligned.length })}</h3>
-            <ul className="ct-panel-targets">
-              {record.misaligned.map((s) =>
-                targetRow(
-                  s.target,
-                  s.text,
-                  "apart",
-                  <span className="brief-panel-row-type">
-                    {[
-                      s.mechanism ? tm(s.mechanism) : null,
-                      s.confidence ? t(`confidence.${s.confidence}` as "confidence.high") : null,
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </span>,
-                ),
-              )}
-            </ul>
-          </section>
-        )}
 
         <p className="brief-panel-caveat">{t("caveat")}</p>
         {record.url && (
@@ -238,7 +252,6 @@ function TargetPanel({
     () => misalignedRows(setup.file.contracts, docOf).rows.find((r) => r.target === id)?.tenders ?? [],
     [setup, docOf, id],
   );
-  const backing = setup.backing[id] ?? { budget: [], action: [] };
   const value = matching.reduce((s, c) => s + c.value, 0);
   const shown = all ? matching : matching.slice(0, LIST_MAX);
 
@@ -309,36 +322,6 @@ function TargetPanel({
             </ul>
           </section>
         )}
-
-        <section>
-          <h3 className="brief-panel-h">{t("backing")}</h3>
-          {backing.budget.length === 0 && backing.action.length === 0 ? (
-            <p className="brief-panel-text">{t("noBacking")}</p>
-          ) : (
-            <>
-              {backing.budget.length > 0 && (
-                <div className="ct-backing">
-                  <p className="brief-panel-note-label">{t("budget")}</p>
-                  <ul className="ct-backing-list">
-                    {backing.budget.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {backing.action.length > 0 && (
-                <div className="ct-backing">
-                  <p className="brief-panel-note-label">{t("action")}</p>
-                  <ul className="ct-backing-list">
-                    {backing.action.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </>
-          )}
-        </section>
 
         <Link className="ct-link" href={`/${setup.countryId}/brief/explore?focus=${encodeURIComponent(id)}`}>
           {t("explore")}

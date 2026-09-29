@@ -66,6 +66,11 @@ function inkOf(ink: Ink, stage: Stage): string {
 
 const markInk = (m: Mark) => (m.ink === "principal" ? FIELD_INK.principal : FIELD_INK[m.ink]);
 
+/** What makes the squares move: a new step, layer, lens or overlay. A place or
+ *  a policy area chosen within a step only redraws the field in place. */
+const moveKey = (s: Stage) =>
+  s.kind === "places" ? `places|${s.layer}|${s.key}` : s.kind === "areas" ? `areas|${s.lens}|${s.key}` : s.kind;
+
 /** The place or row a point names, for marking its label. */
 const pointId = (p: FieldPoint | null) =>
   p === null ? null : p.kind === "place" ? p.code : p.kind === "row" ? p.id : p.kind === "mark" ? p.cell : null;
@@ -112,7 +117,10 @@ export function MoneyField({
   const shownOverlay = useRef<FieldLayout["overlay"]>(null);
   const labels = useRef<HTMLDivElement>(null);
   const moving = useRef(false);
-  const lastStage = useRef<Stage | null>(null);
+  const lastKey = useRef<string | null>(null);
+  // Pointing and choosing redraw what is drawn; they never restart a move.
+  const outlinedRef = useRef<string[]>([]);
+  const repaint = useRef<(() => void) | null>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
   // What the pointer is on, for the layout it was found in (a new layout
   // leaves it behind without a state reset).
@@ -147,6 +155,10 @@ export function MoneyField({
   const current = hover && hover.layout === layout ? hover : null;
   const litId = pointId(current?.point ?? null) ?? pointed;
   const outlined = useMemo(() => [...new Set([litId, selected].filter((x): x is string => x !== null))], [litId, selected]);
+  useEffect(() => {
+    outlinedRef.current = outlined;
+    if (!moving.current) repaint.current?.();
+  }, [outlined]);
 
   const measured = size !== null;
   useEffect(() => {
@@ -163,9 +175,10 @@ export function MoneyField({
       pitch: layout.pitch,
     };
     // Squares move between steps (and between a step's layers or foci); a new
-    // size or a new pointer only redraws them in place.
-    const stepped = lastStage.current !== null && lastStage.current !== stage;
-    lastStage.current = stage;
+    // size, a place or area chosen, or a new pointer only redraws them in place.
+    const key = moveKey(stage);
+    const stepped = lastKey.current !== null && lastKey.current !== key;
+    lastKey.current = key;
     const from = stepped && shown.current && shown.current.x.length === n ? shown.current : to;
     const fromOverlay = stepped ? shownOverlay.current : layout.overlay;
     const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -209,7 +222,7 @@ export function MoneyField({
         }
         g.strokeStyle = FIELD_INK.record;
         g.lineWidth = 1.6;
-        for (const p of paths) if (outlined.includes(p.code)) g.stroke(p.path);
+        for (const p of paths) if (outlinedRef.current.includes(p.code)) g.stroke(p.path);
         g.lineWidth = 1;
         g.strokeStyle = FIELD_INK.leader;
         for (const l of layout.leaders) {
@@ -253,6 +266,7 @@ export function MoneyField({
       moving.current = on;
       if (labels.current) labels.current.toggleAttribute("data-moving", on);
     };
+    repaint.current = () => draw(shown.current ?? to, 1);
     if (reduce || (from === to && fromOverlay === layout.overlay)) {
       shown.current = to;
       shownOverlay.current = layout.overlay;
@@ -287,10 +301,21 @@ export function MoneyField({
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [measured, layout, paths, model, stage, box.w, box.h, outlined]);
+  }, [measured, layout, paths, model, stage, box.w, box.h]);
 
   const pointAt = (px: number, py: number): FieldPoint | null => {
     const s = shown.current;
+    if (layout.map) {
+      for (const b of layout.blocks) {
+        if (b.n > 0 && px >= b.x - 1 && px <= b.x + b.w + 1 && py >= b.y - 1 && py <= b.y + b.h + 1) return { kind: "place", code: b.code };
+      }
+      const g = canvas.current?.getContext?.("2d");
+      if (paths && g) {
+        const dpr = window.devicePixelRatio || 1;
+        for (const p of paths) if (g.isPointInPath(p.path, px * dpr, py * dpr, "evenodd")) return { kind: "place", code: p.code };
+      }
+      return null;
+    }
     for (const t of layout.targets) {
       if (Math.hypot(t.x - px, t.y - py) <= Math.max(t.r + 1.5, 3)) return { kind: "target", id: t.id, row: t.row };
     }

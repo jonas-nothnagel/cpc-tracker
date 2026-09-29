@@ -16,6 +16,11 @@ export function unitFor(total: number, want = 100): number {
   return UNITS[UNITS.length - 1];
 }
 
+/** How many squares of `unit` a sum fills: any money at least one. */
+export function squaresOf(total: number, unit: number): number {
+  return total > 0 ? Math.max(1, Math.round(total / unit)) : 0;
+}
+
 const add = <K>(m: Map<K, number>, k: K, v: number) => m.set(k, (m.get(k) ?? 0) + v);
 const sumOf = (m: Map<string, number>) => [...m.values()].reduce((s, v) => s + v, 0);
 

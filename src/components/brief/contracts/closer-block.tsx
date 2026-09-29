@@ -172,12 +172,25 @@ export function CloserBlock({
 
   // ── The words ─────────────────────────────────────────────────────
   const what = () => {
-    const area = focus.area !== null ? (focus.area === NO_AREA ? t("areas.none") : (lens?.categories.find((c) => c.id === focus.area)?.name ?? focus.area)) : null;
     const doc = focus.doc !== null ? code(focus.doc) : null;
+    if (focus.area === NO_AREA) return doc ? t("places.what.bothNoArea", { doc }) : t("places.what.noArea");
+    const area = focus.area !== null ? (lens?.categories.find((c) => c.id === focus.area)?.name ?? focus.area) : null;
     return doc && area ? t("places.what.both", { doc, area }) : doc ? t("places.what.doc", { doc }) : area ? t("places.what.area", { area }) : t("places.what.target");
   };
   const placeName = (c: string) => (c === NO_PLACE ? t("places.noPlace") : (placeNames[c] ?? c));
   const inPlace = focus.place !== null ? t("closer.inPlace", { place: placeName(focus.place) }) : "";
+  const focusNote =
+    focus.area !== null || focus.doc !== null || focus.place !== null
+      ? t("focus.note", {
+          parts: [
+            focus.area !== null ? (focus.area === NO_AREA ? t("areas.none") : (lens?.categories.find((c) => c.id === focus.area)?.name ?? focus.area)) : null,
+            focus.doc !== null ? (docs.get(focus.doc)?.name ?? focus.doc) : null,
+            focus.place !== null ? placeName(focus.place) : null,
+          ]
+            .filter(Boolean)
+            .join(" · "),
+        })
+      : null;
   const tenderCount = new Set(inScope.map((d) => d.tender)).size;
   const perDoc = new Map<string, number>();
   for (const d of inScope) for (const doc of new Set(d.targets.map((x) => docOf.get(x)).filter((x): x is string => !!x))) perDoc.set(doc, (perDoc.get(doc) ?? 0) + 1);
@@ -385,6 +398,7 @@ export function CloserBlock({
       </div>
       <aside className="ct-closer-side">
         <p className="brief-hub-kicker">{t("closer.kicker")}</p>
+        {focusNote && <p className="ct-focus-note">{focusNote}</p>}
         <h2 className="brief-hub-headline">{headline}</h2>
         {second && <p className="brief-hub-second">{second}</p>}
         <p className="ct-tag">{t("closer.tag")}</p>
