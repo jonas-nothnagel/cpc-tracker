@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { layoutAreaField } from "@/lib/brief/area-layout";
 import { AreaField } from "./area-field";
 
@@ -31,9 +31,11 @@ const REST = new Map([
   ["c", 0],
 ]);
 
-function renderField(overrides: Partial<Parameters<typeof AreaField>[0]> = {}) {
+type Props = Parameters<typeof AreaField>[0];
+
+function renderField(overrides: Partial<Props> = {}) {
   const onPick = vi.fn();
-  const { container } = render(
+  const field = (over: Partial<Props>) => (
     <AreaField
       rows={ROWS}
       restClouds={REST}
@@ -41,6 +43,7 @@ function renderField(overrides: Partial<Parameters<typeof AreaField>[0]> = {}) {
       inks={new Map()}
       side="apart"
       rowLabel={(id) => `row ${id}`}
+      listLabel="Policy areas"
       marked={new Set()}
       dimmed={new Set()}
       pointed={null}
@@ -48,9 +51,34 @@ function renderField(overrides: Partial<Parameters<typeof AreaField>[0]> = {}) {
       formatCount={(n) => String(n)}
       onPick={onPick}
       {...overrides}
-    />,
+      {...over}
+    />
   );
-  return { onPick, field: container.querySelector(".brief-av-field") as HTMLElement };
+  const { container, rerender } = render(field({}));
+  return {
+    onPick,
+    field: container.querySelector(".brief-av-field") as HTMLElement,
+    canvas: container.querySelector("canvas") as HTMLCanvasElement,
+    rerender: (over: Partial<Props>) => rerender(field(over)),
+  };
+}
+
+/** Frames run by hand, at the times the test gives. */
+function manualFrames() {
+  let queue: FrameRequestCallback[] = [];
+  vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+    queue.push(cb);
+    return queue.length;
+  });
+  vi.stubGlobal("cancelAnimationFrame", () => {
+    queue = [];
+  });
+  vi.spyOn(performance, "now").mockReturnValue(0);
+  return (time: number) => {
+    const run = queue;
+    queue = [];
+    for (const cb of run) cb(time);
+  };
 }
 
 describe("AreaField", () => {
@@ -83,5 +111,80 @@ describe("AreaField", () => {
     renderField({ restClouds: clouds, clouds });
     expect(document.querySelector('[data-cut="a"]')?.textContent).toBe("211");
     expect(document.querySelector('[data-cut="b"]')).toBeNull();
+  });
+
+  it("gives screen readers the rows as a list", () => {
+    renderField();
+    const list = screen.getByRole("list", { name: "Policy areas" });
+    expect(within(list).getAllByRole("listitem").map((r) => r.textContent)).toEqual(["row r1", "row r2"]);
+  });
+
+  it("keeps a move going when a target is pointed at meanwhile, naming no target until the dots arrive", () => {
+    const step = manualFrames();
+    const { field, rerender } = renderField();
+    const moved = new Map([
+      ["a", 1],
+      ["b", 0],
+      ["c", 0],
+    ]);
+    rerender({ clouds: moved });
+    expect(field.getAttribute("data-moving")).toBe("true");
+    const a = layoutAreaField(ROWS, REST, W).at.get("a")!;
+    fireEvent.pointerMove(field, { clientX: a.x, clientY: a.y - 2 });
+    expect(screen.queryByRole("presentation")).toBeNull();
+    step(425);
+    rerender({ clouds: moved, pointed: "a" });
+    step(850);
+    expect(field.getAttribute("data-moving")).toBeNull();
+    fireEvent.pointerMove(field, { clientX: a.x, clientY: a.y - 2 });
+    expect(screen.getByRole("presentation").textContent).toBe("target a");
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it("never draws a dot behind where its move began", () => {
+    const step = manualFrames();
+    const arcs: { x: number; r: number }[] = [];
+    const ctx = new Proxy(
+      {},
+      {
+        get: (_, key) => (key === "arc" ? (x: number, _y: number, r: number) => arcs.push({ x, r }) : () => {}),
+        set: () => true,
+      },
+    );
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ctx) as never;
+    const flat = new Map([
+      ["a", 0],
+      ["b", 0],
+      ["c", 0],
+    ]);
+    const { rerender } = renderField({ restClouds: flat, clouds: flat });
+    const layout = layoutAreaField(ROWS, flat, W);
+    const left = layout.at.get("a")!.x;
+    // a and b trade places: a moves right, b left.
+    rerender({ rows: [{ id: "r1", targets: ["b", "a"] }, ROWS[1]], restClouds: flat, clouds: flat });
+    arcs.length = 0;
+    // A first frame stamped before the move began.
+    step(-100);
+    const dots = arcs.filter((a) => a.r === layout.targetR).map((a) => a.x);
+    expect(Math.min(...dots)).toBeGreaterThanOrEqual(left - 1e-9);
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it("draws sharp again when the window moves to a screen of another pixel density", () => {
+    const listeners: (() => void)[] = [];
+    vi.stubGlobal(
+      "matchMedia",
+      () => ({ matches: false, addEventListener: (_: string, cb: () => void) => listeners.push(cb), removeEventListener: () => {} }),
+    );
+    Object.defineProperty(window, "devicePixelRatio", { configurable: true, value: 1 });
+    const { canvas } = renderField();
+    expect(canvas.width).toBe(W);
+    Object.defineProperty(window, "devicePixelRatio", { configurable: true, value: 2 });
+    act(() => listeners.forEach((cb) => cb()));
+    expect(canvas.width).toBe(2 * W);
+    Object.defineProperty(window, "devicePixelRatio", { configurable: true, value: 1 });
+    vi.unstubAllGlobals();
   });
 });

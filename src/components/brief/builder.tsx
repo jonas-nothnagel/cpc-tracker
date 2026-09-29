@@ -9,6 +9,7 @@ import { routing } from "@/i18n/routing";
 import { SECTION_UNITS } from "@/lib/brief/sections";
 import { SECTION_IDS, type BriefSelection, type SectionId } from "@/lib/brief/selection";
 import type { BriefSource, LensId } from "@/lib/brief/source";
+import { lensTooltipKey } from "./lens-tooltip";
 
 /**
  * The brief's controls: which documents, which policy-area lens, which
@@ -78,8 +79,10 @@ export function Builder({
   };
 
   const lensLabel = (id: LensId) => tl(id);
-  const lensTooltip = (id: LensId) =>
-    id === "gga" ? tl("ggaTooltip") : id === "hr" ? tl("hrTooltip") : undefined;
+  const lensTooltip = (id: LensId) => {
+    const key = lensTooltipKey(id);
+    return key ? tl(key) : undefined;
+  };
 
   return (
     <aside

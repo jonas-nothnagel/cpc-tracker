@@ -16,7 +16,13 @@ const SOURCE: BriefSource = {
   ...BASE,
   lenses: [
     ...BASE.lenses,
-    { id: "ipcc", taxonomyType: "sector", categories: [{ id: "s1", name: "Agriculture" }], primary: { A1: "s1" } },
+    {
+      id: "ipcc",
+      taxonomyType: "sector",
+      categories: [{ id: "s1", name: "Land use, land-use change and forestry (LULUCF)" }],
+      primary: { A1: "s1" },
+    },
+    { id: "hr", taxonomyType: "hr", categories: [{ id: "h1", name: "Gender equality" }], primary: { B6: "h1" } },
   ],
 };
 const DATA = buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "B", "C"]), "globe");
@@ -197,5 +203,89 @@ describe("AreasView", () => {
     );
     expect(screen.queryAllByTestId("brief-area-pair")).toHaveLength(0);
     expect(document.querySelector(".brief-av-rest")).toBeNull();
+  });
+
+  it("says where the side's other target pairs are when both of their targets sit outside the lens", () => {
+    renderView();
+    expect(screen.getByText("3 potential misalignments fall between targets outside these areas.")).toBeTruthy();
+  });
+
+  it("gives the lens choices the menu's explanations", () => {
+    renderView();
+    expect(screen.getByRole("button", { name: "Human rights" }).getAttribute("title")).toBe(en.briefing.lens.hrTooltip);
+    expect(screen.getByRole("button", { name: "Biodiversity" }).getAttribute("title")).toBeNull();
+  });
+
+  it("names each area in full on request, its acronym included", () => {
+    renderView();
+    expect(row("g1").querySelector(".brief-av-name")?.getAttribute("title")).toBe("Protected areas");
+    cleanup();
+    renderView({ lens: "ipcc" });
+    const name = row("s1").querySelector(".brief-av-name")!;
+    expect(name.textContent).toBe("Land use, land-use change and forestry");
+    expect(name.getAttribute("title")).toBe("Land use, land-use change and forestry (LULUCF)");
+  });
+
+  it("reads each row to screen readers with its number of targets", () => {
+    renderView();
+    const list = screen.getByRole("list", { name: "Policy areas" });
+    expect(within(list).getAllByRole("listitem")[0].textContent).toContain("3 targets");
+  });
+
+  it("heads the most involved targets one level under the headline", () => {
+    renderView();
+    openSecond();
+    expect(screen.getByRole("heading", { level: 3, name: "Agriculture targets most involved" })).toBeTruthy();
+  });
+
+  it("brings an opened pair of areas and a picked target into view", () => {
+    const seen: Element[] = [];
+    Element.prototype.scrollIntoView = vi.fn(function (this: Element) {
+      seen.push(this);
+    });
+    renderView();
+    openSecond();
+    expect(seen.some((el) => el.closest("[data-open]") === pairRows()[1])).toBe(true);
+    seen.length = 0;
+    const c1 = screen.getAllByTestId("brief-area-target").find((t) => t.textContent?.includes("Commitment C1"))!;
+    fireEvent.click(c1);
+    expect(seen.some((el) => screen.getByTestId("brief-area-card").contains(el))).toBe(true);
+    delete (Element.prototype as { scrollIntoView?: unknown }).scrollIntoView;
+  });
+
+  it("ends a picked target's partners with a count, not an ellipsis, when they spread wider", () => {
+    // B6's seven partners: one each in six areas, and C6 outside the lens.
+    const categories = [1, 2, 3, 4, 5, 6, 7].map((i) => ({ id: `z${i}`, name: `Area ${i}` }));
+    const spread: BriefSource = {
+      ...BASE,
+      lenses: [
+        {
+          ...BASE.lenses[0],
+          categories,
+          primary: { A6: "z1", C1: "z2", C2: "z3", C3: "z4", C4: "z5", C5: "z6", B6: "z7" },
+        },
+      ],
+    };
+    const data = buildBriefData(spread, scopeOf(spread, ["A", "B", "C"]), "globe");
+    renderView({ source: spread, data });
+    const lens = lensAreas(spread, data.scope, "globe");
+    const links = sideLinks(data.scope);
+    const rest = restClouds(lens, links, "apart");
+    const b6 = layoutAreaField(rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart"), rest, W).at.get("B6")!;
+    fireEvent.click(document.querySelector(".brief-av-field") as HTMLElement, { clientX: b6.x, clientY: b6.y });
+    expect(screen.getByTestId("brief-area-card").textContent).toContain(
+      "Potential misalignment with 7 targets: 1 in Area 1, 1 in Area 2, 1 in Area 3, 4 elsewhere.",
+    );
+  });
+
+  it("lets a picked target go when the lens changes, for good", () => {
+    const { rerender } = renderView();
+    openSecond();
+    fireEvent.click(screen.getAllByTestId("brief-area-target")[0]);
+    expect(screen.getByTestId("brief-area-card")).toBeTruthy();
+    rerender({ lens: "ipcc" });
+    expect(screen.queryByTestId("brief-area-card")).toBeNull();
+    rerender({ lens: "globe" });
+    expect(screen.queryByTestId("brief-area-card")).toBeNull();
   });
 });

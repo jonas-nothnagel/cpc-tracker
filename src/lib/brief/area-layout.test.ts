@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cloudDots, cutMarks, layoutAreaField, ROW_LABEL, targetAt } from "./area-layout";
+import { cloudDots, cloudLines, cutMarks, layoutAreaField, ROW_LABEL, targetAt } from "./area-layout";
 
 const ROWS = [
   { id: "r1", targets: ["a", "b"] },
@@ -41,6 +41,17 @@ describe("layoutAreaField", () => {
     const next = layout.at.get("t13")!;
     expect(next.x).toBeCloseTo(first.x);
     expect(next.y - first.y).toBeCloseTo(layout.lift + layout.pitch);
+  });
+
+  it("keeps a wrapped line's clouds clear of the line of targets above it", () => {
+    const targets = Array.from({ length: 30 }, (_, i) => `t${i}`);
+    // t13 opens the second line with the row's tallest cloud.
+    const rest = new Map(targets.map((id) => [id, id === "t13" ? 10 : 0]));
+    const layout = layoutAreaField([{ id: "r", targets }], rest, 100);
+    const above = layout.at.get("t0")!;
+    const below = layout.at.get("t13")!;
+    const cloudTop = below.y - layout.lift - cloudLines(10, layout.per) * layout.sp;
+    expect(cloudTop).toBeGreaterThanOrEqual(above.y + layout.targetR);
   });
 
   it("takes three dots a line when two would make the field too tall", () => {

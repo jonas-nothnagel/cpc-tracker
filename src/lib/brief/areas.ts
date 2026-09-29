@@ -107,6 +107,8 @@ export interface AreaPairs {
   top: AreaPair[];
   /** Every other pair of areas, summed. */
   rest: { groups: number; pairs: number; count: number };
+  /** The side's target pairs between two targets the lens does not place. */
+  outside: number;
   /** All the side's target pairs in scope, placed or not. */
   total: number;
 }
@@ -147,11 +149,15 @@ export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide): AreaPa
   const level = sideLevel(side);
   const groups = new Map<string, AreaPair>();
   let total = 0;
+  let unplaced = 0;
   for (const c of scope.comparisons) {
     const on = c.level === level;
     if (on) total += 1;
     const at = pairOf(c, p);
-    if (!at) continue;
+    if (!at) {
+      if (on) unplaced += 1;
+      continue;
+    }
     let group = groups.get(at.key);
     if (!group) {
       group = { ...at, pairs: 0, count: 0, involvement: new Map() };
@@ -185,6 +191,7 @@ export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide): AreaPa
       pairs: others.reduce((sum, g) => sum + g.pairs, 0),
       count: others.reduce((sum, g) => sum + g.count, 0),
     },
+    outside: unplaced,
     total,
   };
 }

@@ -3501,7 +3501,10 @@
       "partnersOutside": "{count, number} outside these areas",
       "tip": "{side, select, apart {potential misalignment with} other {strongly aligned with}} {count, plural, one {# target} other {# targets}}",
       "panelSub": "{count, number} of {pairs, number} target pairs {side, select, apart {show potential misalignment} other {are strongly aligned}}",
-      "panelDialog": "Target pairs between policy areas"
+      "panelDialog": "Target pairs between policy areas",
+      "targets": "{count, plural, one {# target} other {# targets}}",
+      "outsidePairs": "{side, select, apart {{count, plural, one {# potential misalignment falls} other {# potential misalignments fall}}} other {{count, plural, one {# strong alignment falls} other {# strong alignments fall}}}} between targets outside these areas.",
+      "partnersElsewhere": "{count, number} elsewhere"
     }
   }
 }

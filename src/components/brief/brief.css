@@ -14,6 +14,8 @@
   --brief-red: #d2432c;
   --brief-partial: #cdd3c9;
   --brief-none: #e9e9e6;
+  /* The empty part of a bar. */
+  --brief-track: #efefec;
   /* The highlighter: the name of what the reader points at, on the map and
      in the list beside it. Words only: never over the dots, never a page
      band or a status. */
@@ -2635,10 +2637,13 @@
   transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1), color 0.3s;
 }
 
+/* A name cut short reads in full on hover (its title), so it takes the
+   pointer; the picture beneath still gets the pointer's moves. */
 [data-brief] .brief-av-name {
   overflow: hidden;
   font-weight: 600;
   text-overflow: ellipsis;
+  pointer-events: auto;
 }
 
 [data-brief] .brief-av-row[data-marked] .brief-av-name {
@@ -2676,8 +2681,14 @@
   transform: translateX(-50%);
   font-size: 0.75rem;
   line-height: 14px;
+  transition: opacity 0.3s;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+
+/* A cut cloud's count waits while the dots travel. */
+[data-brief] .brief-av-field[data-moving] .brief-av-cut {
+  opacity: 0;
 }
 
 [data-brief] .brief-av-tip {
@@ -2686,7 +2697,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-brief] .brief-av-row {
+  [data-brief] .brief-av-row,
+  [data-brief] .brief-av-cut {
     transition: none;
   }
 }
@@ -2700,10 +2712,15 @@
   align-items: start;
 }
 
+/* The list side stays in view beside a taller picture and is never taller
+   than the window: past that it scrolls on its own, as the menu does. */
 [data-brief] .brief-av-side {
   position: sticky;
   top: 1.25rem;
   min-width: 0;
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
 }
 
 [data-brief] .brief-av-choice {
@@ -2788,7 +2805,7 @@
 [data-brief] .brief-av-pair-bar {
   position: relative;
   height: 8px;
-  background: #efefec;
+  background: var(--brief-track);
 }
 
 [data-brief] .brief-av-pair-bar > span {
@@ -2931,5 +2948,8 @@
 
   [data-brief] .brief-av-side {
     position: static;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 }

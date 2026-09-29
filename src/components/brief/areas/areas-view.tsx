@@ -23,6 +23,7 @@ import type { BriefData } from "@/lib/brief/data";
 import type { BriefSource, LensId } from "@/lib/brief/source";
 import { LONG_TEXT } from "../comparison";
 import { commitmentLine, useNumbers } from "../ink";
+import { lensTooltipKey } from "../lens-tooltip";
 import { AreaField } from "./area-field";
 
 const SIDES: AreaSide[] = ["apart", "reinforce"];
@@ -109,6 +110,8 @@ export function AreasView({
   const cardTitle = useRef<HTMLParagraphElement>(null);
   // Where keyboard focus goes once a pick or "Back" has re-drawn the list.
   const moveFocus = useRef<"card" | "pair" | null>(null);
+  // An opened pair of areas to bring into view once it has drawn.
+  const revealPair = useRef(false);
   // A new lens lets the open pair and the picked target go, for good.
   const [seenLens, setSeenLens] = useState(active);
   if (seenLens !== active) {
@@ -166,13 +169,25 @@ export function AreasView({
   useEffect(() => {
     const want = moveFocus.current;
     moveFocus.current = null;
-    if (want === "card") cardTitle.current?.focus({ preventScroll: true });
+    if (want === "card") {
+      const title = cardTitle.current;
+      title?.focus({ preventScroll: true });
+      title?.closest<HTMLElement>(".brief-av-card")?.scrollIntoView?.({ block: "nearest" });
+    }
     if (want === "pair") {
       const heads = root.current?.querySelectorAll<HTMLElement>(".brief-av-pair-head") ?? [];
       const open = root.current?.querySelector<HTMLElement>('[data-open="true"] .brief-av-pair-head');
       (open ?? heads[0])?.focus({ preventScroll: true });
     }
   }, [focusId]);
+
+  // The list beside the picture scrolls on its own when taller than the
+  // window: an opened pair of areas comes into view there.
+  useEffect(() => {
+    if (!revealPair.current) return;
+    revealPair.current = false;
+    root.current?.querySelector<HTMLElement>('[data-open="true"]')?.scrollIntoView?.({ block: "nearest" });
+  }, [open]);
 
   if (!active || !areas || !pairs) return null;
 
@@ -196,7 +211,9 @@ export function AreasView({
     setPointedTarget(null);
   };
   const toggle = (p: AreaPair) => {
-    setOpen(openPair?.key === p.key ? null : p.key);
+    const opening = openPair?.key !== p.key;
+    setOpen(opening ? p.key : null);
+    revealPair.current = opening;
     setPicked(null);
     setPointedTarget(null);
     setFullText(false);
@@ -222,6 +239,7 @@ export function AreasView({
         onPoint={(on) => setPointedRows(on ? rowsOf(lead) : [])}
         onOpen={() => {
           setOpen(lead.key);
+          revealPair.current = true;
           setPicked(null);
           setPointedTarget(null);
         }}
@@ -250,10 +268,14 @@ export function AreasView({
     if (!focusId) return null;
     const c = commitment(focusId);
     if (!c) return null;
+    // Where its partners sit: the three areas holding most, then the rest
+    // as one count, so the counts always add up.
     const by = partnersByArea(areas, links, side, focusId);
-    const parts = by.areas.slice(0, 3).map((x) => t("partnersIn", { count: x.count, area: nameOf(x.id) }));
-    if (by.outside > 0 && parts.length < 3) parts.push(t("partnersOutside", { count: by.outside }));
-    const more = by.areas.length + (by.outside > 0 ? 1 : 0) > parts.length;
+    const shown = by.areas.slice(0, 3).map((x) => ({ count: x.count, text: t("partnersIn", { count: x.count, area: nameOf(x.id) }) }));
+    if (by.outside > 0 && shown.length < 3) shown.push({ count: by.outside, text: t("partnersOutside", { count: by.outside }) });
+    const elsewhere = by.total - shown.reduce((sum, x) => sum + x.count, 0);
+    const parts = shown.map((x) => x.text);
+    if (elsewhere > 0) parts.push(t("partnersElsewhere", { count: elsewhere }));
     const long = c.text.trim().length > LONG_TEXT;
     const openTarget = onExplore ?? onOpenCommitment;
     return (
@@ -278,7 +300,7 @@ export function AreasView({
         )}
         <p className="brief-av-card-partners">
           {t("partners", { side, count: by.total })}
-          {parts.length > 0 ? `: ${parts.join(", ")}${more ? ", …" : ""}` : ""}.
+          {parts.length > 0 ? `: ${parts.join(", ")}` : ""}.
         </p>
         {openTarget && (
           <button type="button" className="brief-av-link" onClick={() => openTarget(focusId)}>
@@ -298,7 +320,7 @@ export function AreasView({
           .slice(0, INVOLVED_MAX);
         return (
           <div key={areaId}>
-            <h4 className="brief-av-sub">{t("involved", { area: nameOf(areaId) })}</h4>
+            <h3 className="brief-av-sub">{t("involved", { area: nameOf(areaId) })}</h3>
             <ul className="brief-av-targets">
               {top.map((id) => {
                 const c = commitment(id);
@@ -339,10 +361,13 @@ export function AreasView({
     const count = counts.get(id);
     return (
       <>
-        <span className="brief-av-name" title={a.acronym ? `${a.name} (${a.acronym})` : undefined}>
+        <span className="brief-av-name" title={a.acronym ? `${a.name} (${a.acronym})` : a.name}>
           {a.name}
         </span>
-        <span className="brief-av-n">{n(a.targets.length)}</span>
+        <span className="brief-av-n" aria-hidden="true">
+          {n(a.targets.length)}
+        </span>
+        <span className="brief-sr-only">{t("targets", { count: a.targets.length })}</span>
         {count !== undefined && (
           <span className="brief-av-of" data-side={side}>
             {t("rowOf", { count, total: a.targets.length })}
@@ -369,6 +394,8 @@ export function AreasView({
     focus.kind === "pair" ? areas.areas.filter((a) => !rowsOf(focus.pair).includes(a.id)).map((a) => a.id) : [],
   );
   const max = pairs.top[0]?.count ?? 1;
+  // The rest of the pairs of areas, summed, once the list names some.
+  const restShown = pairs.top.length > 0 && pairs.rest.groups > 0;
 
   return (
     <div className="brief-av" data-testid="brief-areas" data-tour="brief-areas" ref={root}>
@@ -385,6 +412,7 @@ export function AreasView({
           pointed={pointedTarget}
           tipFor={tipFor}
           formatCount={n}
+          listLabel={t("lensGroup")}
           onPick={pick}
         />
       </div>
@@ -394,11 +422,20 @@ export function AreasView({
           {headline}
         </h2>
         <p className="brief-av-choice" role="group" aria-label={t("lensGroup")}>
-          {source.lenses.map((l) => (
-            <button key={l.id} type="button" aria-pressed={l.id === active} onClick={() => onLens(l.id)}>
-              {tl(l.id)}
-            </button>
-          ))}
+          {source.lenses.map((l) => {
+            const tip = lensTooltipKey(l.id);
+            return (
+              <button
+                key={l.id}
+                type="button"
+                aria-pressed={l.id === active}
+                title={tip ? tl(tip) : undefined}
+                onClick={() => onLens(l.id)}
+              >
+                {tl(l.id)}
+              </button>
+            );
+          })}
         </p>
         <p className="brief-av-choice" role="group" aria-label={t("sideGroup")}>
           {SIDES.map((s) => (
@@ -441,9 +478,13 @@ export function AreasView({
             })}
           </ol>
         )}
-        {pairs.top.length > 0 && pairs.rest.groups > 0 && (
+        {(restShown || pairs.outside > 0) && (
           <p className="brief-av-rest">
-            {t("rest", { groups: pairs.rest.groups, count: pairs.rest.count, pairs: pairs.rest.pairs })}
+            {restShown && (
+              <span>{t("rest", { groups: pairs.rest.groups, count: pairs.rest.count, pairs: pairs.rest.pairs })}</span>
+            )}
+            {restShown && pairs.outside > 0 && " "}
+            {pairs.outside > 0 && <span>{t("outsidePairs", { count: pairs.outside, side })}</span>}
           </p>
         )}
       </div>

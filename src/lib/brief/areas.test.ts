@@ -99,6 +99,13 @@ describe("areaPairs", () => {
     expect(pairs.rest).toEqual({ groups: 4, pairs: 54, count: 0 });
   });
 
+  it("counts the side's target pairs that fall between two targets outside the lens", () => {
+    // 15 potential misalignments: 12 touch a placed target, 3 (A6 with B1-B3) touch none.
+    expect(areaPairs(lens, ALL, "apart").outside).toBe(3);
+    // 36 strong alignments: 29 in the list, 7 between targets outside the lens.
+    expect(areaPairs(lens, ALL, "reinforce").outside).toBe(7);
+  });
+
   it("knows each target's part in a pair of areas", () => {
     const pair = areaPairs(lens, ALL, "apart").top[1];
     expect(Object.fromEntries(pair.involvement)).toEqual({ B6: 3, C1: 1, C2: 1, C3: 1 });

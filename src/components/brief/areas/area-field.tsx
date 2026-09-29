@@ -7,6 +7,7 @@ import {
   cutMarks,
   layoutAreaField,
   targetAt,
+  type AreaFieldLayout,
   type AreaFieldRow,
 } from "@/lib/brief/area-layout";
 import type { AreaSide, TargetInk } from "@/lib/brief/areas";
@@ -36,8 +37,9 @@ const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
  * line and its point cloud above it. The rows come in drawing order; the
  * clouds and inks say what the reader has chosen, and every change of shape
  * moves the same dots. Pointing at a target gives its tip; selecting it
- * hands it to `onPick`. The list beside the picture carries every way in by
- * keyboard, so the picture is hidden from assistive technology.
+ * hands it to `onPick`. The canvas is hidden from assistive technology; the
+ * rows' names and counts are read as a list, and the list beside the
+ * picture carries every way in by keyboard.
  */
 export function AreaField({
   rows,
@@ -46,6 +48,7 @@ export function AreaField({
   inks,
   side,
   rowLabel,
+  listLabel,
   marked,
   dimmed,
   pointed,
@@ -61,6 +64,8 @@ export function AreaField({
   inks: Map<string, TargetInk>;
   side: AreaSide;
   rowLabel: (id: string) => ReactNode;
+  /** The name the rows are read under. */
+  listLabel: string;
   /** Rows whose names the reader points at, in pale yellow. */
   marked: ReadonlySet<string>;
   /** Rows set back while a pair of areas is open. */
@@ -74,7 +79,13 @@ export function AreaField({
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const poses = useRef(new Map<string, Pose>());
+  // The target pointed at beside the picture, read by every frame: pointing
+  // repaints a settled picture and never restarts a move.
+  const pointedRef = useRef(pointed);
+  const moving = useRef(false);
+  const settle = useRef<(() => void) | null>(null);
   const [width, setWidth] = useState(0);
+  const [dpr, setDpr] = useState(() => (typeof window === "undefined" ? 1 : window.devicePixelRatio || 1));
   const [tip, setTip] = useState<{ id: string; x: number; y: number } | null>(null);
 
   useEffect(() => {
@@ -88,12 +99,27 @@ export function AreaField({
     return () => ro.disconnect();
   }, []);
 
+  // The screen's pixel density, followed when the window moves to another screen.
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
+    let query: MediaQueryList | null = null;
+    const follow = () => {
+      const ratio = window.devicePixelRatio || 1;
+      setDpr(ratio);
+      query?.removeEventListener("change", follow);
+      query = window.matchMedia(`(resolution: ${ratio}dppx)`);
+      query.addEventListener("change", follow);
+    };
+    follow();
+    return () => query?.removeEventListener("change", follow);
+  }, []);
+
   const layout = useMemo(() => layoutAreaField(rows, restClouds, width), [rows, restClouds, width]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || width === 0) return;
-    const dpr = window.devicePixelRatio || 1;
+    const wrap = wrapRef.current;
+    if (!canvas || !wrap || width === 0) return;
     canvas.width = Math.round(layout.width * dpr);
     canvas.height = Math.round(layout.height * dpr);
     const ctx = canvas.getContext("2d");
@@ -101,6 +127,12 @@ export function AreaField({
     const to = new Map<string, Pose>();
     for (const [id, at] of layout.at) to.set(id, { x: at.x, y: at.y, s: clouds.get(id) ?? 0 });
     const cloudInk = side === "apart" ? FIELD_INK.apart : FIELD_INK.reinforce;
+    // Tips and cut counts wait while the dots travel.
+    const setMoving = (on: boolean) => {
+      moving.current = on;
+      if (on) wrap.dataset.moving = "true";
+      else delete wrap.dataset.moving;
+    };
 
     const paint = (k: number) => {
       const now = new Map<string, Pose>();
@@ -137,7 +169,7 @@ export function AreaField({
         ctx.beginPath();
         ctx.arc(pose.x, pose.y, layout.targetR, 0, Math.PI * 2);
         ctx.fill();
-        if (ink === "focus" || id === pointed) {
+        if (ink === "focus" || id === pointedRef.current) {
           ctx.strokeStyle = FIELD_INK.ring;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -147,6 +179,7 @@ export function AreaField({
       }
       poses.current = now;
     };
+    settle.current = () => paint(1);
 
     const moves = [...to].some(([id, end]) => {
       const start = from.get(id);
@@ -158,32 +191,61 @@ export function AreaField({
       typeof requestAnimationFrame === "undefined" ||
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (still) {
+      setMoving(false);
       paint(1);
       return;
     }
+    setMoving(true);
     let frame = 0;
     const begin = performance.now();
     const tick = (time: number) => {
-      const k = Math.min(1, (time - begin) / MOVE_MS);
+      // A first frame may be stamped before the move began.
+      const k = Math.min(1, Math.max(0, (time - begin) / MOVE_MS));
       paint(ease(k));
       if (k < 1) frame = requestAnimationFrame(tick);
+      else setMoving(false);
     };
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [layout, clouds, inks, side, pointed, width]);
+    return () => {
+      cancelAnimationFrame(frame);
+      setMoving(false);
+    };
+  }, [layout, clouds, inks, side, width, dpr]);
 
+  useEffect(() => {
+    pointedRef.current = pointed;
+    if (!moving.current) settle.current?.();
+  }, [pointed]);
+
+  // Where the dots are now: mid-move, a selection goes to the dot under the pointer.
+  const live = (): { place: AreaFieldLayout; clouds: Map<string, number> } => {
+    if (!moving.current) return { place: layout, clouds };
+    const at = new Map<string, { x: number; y: number }>();
+    const now = new Map<string, number>();
+    for (const [id, p] of poses.current) {
+      at.set(id, { x: p.x, y: p.y });
+      now.set(id, Math.round(p.s));
+    }
+    return { place: { ...layout, at }, clouds: now };
+  };
   const hit = (e: { clientX: number; clientY: number; currentTarget: HTMLDivElement }) => {
     const box = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - box.left;
     const y = e.clientY - box.top;
-    return { id: targetAt(layout, clouds, x, y), x, y };
+    const { place, clouds: now } = live();
+    return { id: targetAt(place, now, x, y), x, y };
   };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (moving.current) {
+      if (tip) setTip(null);
+      return;
+    }
     const { id, x, y } = hit(e);
     setTip(id ? { id, x: Math.min(Math.max(x, 140), Math.max(140, layout.width - 140)), y } : null);
   };
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
     const { id } = hit(e);
+    setTip(null);
     if (id) onPick(id);
   };
 
@@ -206,25 +268,30 @@ export function AreaField({
         style={{ width: measured ? layout.width : 0, height: measured ? layout.height : 0 }}
       />
       {measured && (
-        <div className="brief-av-labels" aria-hidden="true">
-          {layout.rows.map((row) => (
-            <div
-              key={row.id}
-              className="brief-av-row"
-              data-row={row.id}
-              data-marked={marked.has(row.id) ? "true" : undefined}
-              data-dim={dimmed.has(row.id) ? "true" : undefined}
-              style={{ transform: `translateY(${row.y}px)` }}
-            >
-              {rowLabel(row.id)}
-            </div>
-          ))}
-          {cuts.map((cut) => (
-            <div key={cut.id} className="brief-av-cut" data-cut={cut.id} style={{ left: cut.x, top: cut.top }}>
-              {formatCount(clouds.get(cut.id) ?? 0)}
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="brief-av-labels" role="list" aria-label={listLabel}>
+            {layout.rows.map((row) => (
+              <div
+                key={row.id}
+                role="listitem"
+                className="brief-av-row"
+                data-row={row.id}
+                data-marked={marked.has(row.id) ? "true" : undefined}
+                data-dim={dimmed.has(row.id) ? "true" : undefined}
+                style={{ transform: `translateY(${row.y}px)` }}
+              >
+                {rowLabel(row.id)}
+              </div>
+            ))}
+          </div>
+          <div className="brief-av-labels" aria-hidden="true">
+            {cuts.map((cut) => (
+              <div key={cut.id} className="brief-av-cut" data-cut={cut.id} style={{ left: cut.x, top: cut.top }}>
+                {formatCount(clouds.get(cut.id) ?? 0)}
+              </div>
+            ))}
+          </div>
+        </>
       )}
       {tip && (
         <div className="brief-tip brief-av-tip" role="presentation" style={{ left: tip.x, top: Math.max(4, tip.y - 64) }}>
