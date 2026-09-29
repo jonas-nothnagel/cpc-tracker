@@ -19,6 +19,9 @@ export interface GeoFeature {
 export interface GeoFile {
   source: string;
   features: GeoFeature[];
+  /** Places drawn below the map rather than on it (a capital too small for
+   *  its money), after the contracts that name no single place. */
+  band?: string[];
 }
 
 export interface Box {
