@@ -95,6 +95,11 @@ BATCHES = [
     # Sri Lanka, after its runs on the new corpus.
     Batch("backfill:translation-2026-09-18-sri-lanka", "sri-lanka", "2026-09-18T00:00:00Z", "2026-09-19T00:00:00Z", ("snapshot_translation_",)),
     Batch("backfill:translation-2026-09-23-sri-lanka", "sri-lanka", "2026-09-23T00:00:00Z", "2026-09-24T00:00:00Z", ("snapshot_translation_",)),
+    # English titles for the public contracts page: a sample on 28 September,
+    # the rest on 29 September (scripts/translate_contracts.py records its own
+    # footprint from then on).
+    Batch("backfill:contract-titles", "mongolia", "2026-09-28T00:00:00Z", "2026-09-29T00:00:00Z", ("tender_mt_v1",)),
+    Batch("backfill:contract-titles", "mongolia", "2026-09-29T00:00:00Z", "2026-09-29T09:00:00Z", ("tender_mt_v1",)),
 ]
 
 # The measured Sri Lanka runs the estimate is calibrated against: the window

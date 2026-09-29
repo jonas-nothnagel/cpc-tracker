@@ -129,6 +129,24 @@ def dedupe(df: pd.DataFrame) -> tuple[pd.DataFrame, int, float]:
     return out, len(dropped), float(df.loc[dropped.index, "amount"].sum())
 
 
+CYRILLIC = re.compile("[\u0400-\u04ff]")
+
+
+def english_of(text: str | None, lookup: dict[str, str]) -> str | None:
+    """A record text in English: its machine translation, or the text itself
+    when it is English already (no Cyrillic). Never the Mongolian."""
+    if not text or not text.strip():
+        return None
+    found = lookup.get(text) or lookup.get(text.strip())
+    if found:
+        return found
+    return None if CYRILLIC.search(text) else text.strip()
+
+
+def lookup_file(path: Path) -> dict[str, str]:
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
 def gz_json(path: Path, payload: object) -> None:
     raw = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     path.write_bytes(gzip.compress(raw, mtime=0))
@@ -206,9 +224,9 @@ def main() -> None:
     misaligned = flagged.groupby("tender_id")["target_id"].apply(lambda s: sorted(set(s))).to_dict()
 
     mt: dict[str, str] = json.loads((mirror / "mt_lookup.json").read_text())
-    extra = out_dir / "contract-titles.en.json"
-    if extra.exists():
-        mt.update(json.loads(extra.read_text()))
+    mt.update(lookup_file(out_dir / "contract-titles.en.json"))
+    buyers_en = lookup_file(out_dir / "contract-buyers.en.json")
+    reasons_en = lookup_file(out_dir / "contract-reasons.en.json")
 
     def english(name: str | None) -> str | None:
         if not name:
@@ -328,6 +346,7 @@ def main() -> None:
             "original": name.strip(),
             "english": english(name),
             "buyer": text(t.at[i, "client_name"]),
+            "buyerEnglish": english_of(text(t.at[i, "client_name"]), buyers_en),
             "code": text(t.at[i, "contract_code"]),
             "type": type_key(t.at[i, "contract_type_name"]),
             "stage": stage_key(t.at[i, "status_name"]),
@@ -335,6 +354,7 @@ def main() -> None:
             "end": valid_date(t.at[i, "end"]),
             "url": text(t.at[i, "contract_url"]),
             "reason": text(reason.get(i)),
+            "reasonEnglish": english_of(text(reason.get(i)), reasons_en),
             "lots": int(lots.get(t.at[i, "invitation_id"], 1)),
             "strong": [
                 {"target": r.target_id, "text": text(r.description)}

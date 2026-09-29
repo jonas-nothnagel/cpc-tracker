@@ -10,7 +10,7 @@ import pandas as pd
 # The bake lives in python/scripts (not a package); put it on the path.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from build_contracts_layer import dedupe, place_totals, stage_key, type_key, valid_date  # noqa: E402
+from build_contracts_layer import dedupe, english_of, place_totals, stage_key, type_key, valid_date  # noqa: E402
 
 
 def frame(rows):
@@ -88,3 +88,13 @@ def test_places_sum_to_the_record_several_counting_as_none():
     ]
     assert sum(r["value"] for r in rows) == df["amount"].sum()
 
+
+def test_english_of_looks_up_mongolian_and_keeps_english_as_it_is():
+    lookup = {"Ойн газар": "Forest Agency"}
+    assert english_of("Ойн газар", lookup) == "Forest Agency"
+    assert english_of(" Ойн газар ", lookup) == "Forest Agency"
+    # The purpose screen wrote a few reasons in English already.
+    assert english_of("Bio-preparation for pest control.", lookup) == "Bio-preparation for pest control."
+    # Never the Mongolian as a stand-in for English.
+    assert english_of("Усны газар", lookup) is None
+    assert english_of("", lookup) is None

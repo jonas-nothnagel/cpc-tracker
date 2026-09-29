@@ -114,9 +114,9 @@ the API was unreachable).
 
 ### 5b. Backfilled rows (added 2026-09-25)
 
-Only `run_analysis.py` and `extract.py` append ledger rows. Scripts that call
-the model through `src.llm` count their footprint in memory and lose it when
-they exit. A day-by-day reconciliation of the LLM cache (one entry per live
+Only `run_analysis.py`, `extract.py` and (since 29 September)
+`translate_contracts.py` append ledger rows. Other scripts that call the model
+through `src.llm` count their footprint in memory and lose it when they exit. A day-by-day reconciliation of the LLM cache (one entry per live
 call) against the ledger found two such gaps since the ledger began, and
 `python/scripts/backfill_unrecorded_runs.py` adds them as `estimated` rows with
 a `backfill:` run id:
@@ -124,7 +124,12 @@ a `backfill:` run id:
 - the Mongolia public procurement screening of 27 and 28 August: 407,137 live
   gpt-5.4 calls, about 31 kg CO2e (range 24 to 38 kg);
 - snapshot and page translations after runs, 30 June to 23 September: 11
-  batches, 9,718 calls, 0.86 kg CO2e.
+  batches, 9,718 calls, 0.86 kg CO2e;
+- the English titles of the public contracts page, 28 and 29 September: 4,599
+  calls, 0.15 kg CO2e (added 29 September). The same script,
+  `python/scripts/translate_contracts.py`, now records its own measured rows
+  (run id `contracts-translation:<field>`): the buyers and the purpose reasons
+  of 29 September with their samples and retries, 5,361 calls, 0.17 kg CO2e.
 
 Method: the calls are the cache entries written inside each batch's window;
 output tokens per call are the o200k tokens of the cached answer plus 3, exact
