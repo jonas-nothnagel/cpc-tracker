@@ -47,6 +47,12 @@ export function contractsFixture(): ContractsFile {
       excluded: { otherCurrency: 0, rejected: 0 },
     },
     census: { contracts: 40, tenders: 30, value: 250e9 },
+    places: [
+      { code: "none", contracts: 20, value: 150e9 },
+      { code: "MN-1", contracts: 12, value: 60e9 },
+      { code: "MN-043", contracts: 6, value: 30e9 },
+      { code: "MN-057", contracts: 2, value: 10e9 },
+    ],
     years: [
       { year: 2024, contracts: 15, value: 100e9, principal: { contracts: 2, value: 14e9 }, significant: { contracts: 1, value: 8e9 } },
       { year: 2025, contracts: 25, value: 150e9, principal: { contracts: 3, value: 8e9 }, significant: { contracts: 3, value: 8e9 } },

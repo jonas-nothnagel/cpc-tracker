@@ -134,6 +134,15 @@ def gz_json(path: Path, payload: object) -> None:
     path.write_bytes(gzip.compress(raw, mtime=0))
 
 
+def place_totals(t: pd.DataFrame) -> list[dict]:
+    """Every contract of the record by the one place its buyer or title names
+    ("none" where it names no place or several), largest first."""
+    codes = [place_of(b, n) for b, n in zip(t["client_name"], t["contract_name"])]
+    keys = pd.Series([c if c and c != "several" else "none" for c in codes], index=t.index)
+    g = t.groupby(keys)["amount"].agg(["size", "sum"]).sort_values("sum", ascending=False)
+    return [{"code": str(k), "contracts": int(r["size"]), "value": float(r["sum"])} for k, r in g.iterrows()]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--mirror", type=Path, default=REPO / "dev_data_scripts/nctp_mirror/data")
@@ -299,6 +308,8 @@ def main() -> None:
             "value": float(t["amount"].sum()),
         },
         "years": years,
+        # The whole record by place, for the map's all-contracts view.
+        "places": place_totals(t),
         "contracts": contracts,
         "agreement": agreement,
         "faultline": faultline,

@@ -50,6 +50,14 @@ export interface Contract {
   misaligned: string[];
 }
 
+/** The whole record in one place: a region's ISO 3166-2 code, or NO_PLACE
+ *  where a contract names no single place. */
+export interface PlaceTotal {
+  code: string;
+  contracts: number;
+  value: number;
+}
+
 export interface ContractsFile {
   version: 1;
   source: {
@@ -69,6 +77,8 @@ export interface ContractsFile {
   };
   census: { contracts: number; tenders: number; value: number };
   years: ContractYear[];
+  /** Every contract of the record by place (bakes before round 2 have none). */
+  places?: PlaceTotal[];
   contracts: Contract[];
   /** The policy analysis on the target pairs served by contracts matching
    *  targets in three or more documents, each pair once. */
@@ -110,6 +120,7 @@ export function parseContractsFile(raw: unknown): ContractsFile | null {
   const f = raw as Partial<ContractsFile>;
   if (f.version !== 1 || !f.source || !f.census) return null;
   if (!Array.isArray(f.years) || !Array.isArray(f.contracts)) return null;
+  if (f.places !== undefined && !Array.isArray(f.places)) return null;
   return f as ContractsFile;
 }
 

@@ -10,7 +10,7 @@ import pandas as pd
 # The bake lives in python/scripts (not a package); put it on the path.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from build_contracts_layer import dedupe, stage_key, type_key, valid_date  # noqa: E402
+from build_contracts_layer import dedupe, place_totals, stage_key, type_key, valid_date  # noqa: E402
 
 
 def frame(rows):
@@ -67,3 +67,24 @@ def test_dates_outside_the_record_are_dropped():
     assert valid_date("2024-05-01 00:00:00") == "2024-05-01"
     assert valid_date("5377-01-01") is None
     assert valid_date(None) is None
+
+
+def test_places_sum_to_the_record_several_counting_as_none():
+    df = pd.DataFrame(
+        [
+            ["Ховд аймгийн Худалдан авах ажиллагааны газар", "Ундны ус", 3e9],
+            ["Ховд аймгийн газар", "Сургууль", 1e9],
+            ["Сүхбаатар дүүргийн Засаг даргын Тамгын газар", "Цэцэрлэгт хүрээлэн", 2e9],
+            ["Ойн газар", "Ойн цэвэрлэгээнд ашиглагдах машин", 5e9],
+            ["Ховд аймгийн газар", "Увс аймгийн ажил", 4e9],
+        ],
+        columns=["client_name", "contract_name", "amount"],
+    )
+    rows = place_totals(df)
+    assert rows == [
+        {"code": "none", "contracts": 2, "value": 9e9},
+        {"code": "MN-043", "contracts": 2, "value": 4e9},
+        {"code": "MN-1", "contracts": 1, "value": 2e9},
+    ]
+    assert sum(r["value"] for r in rows) == df["amount"].sum()
+
