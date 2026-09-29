@@ -100,6 +100,11 @@ BATCHES = [
     # footprint from then on).
     Batch("backfill:contract-titles", "mongolia", "2026-09-28T00:00:00Z", "2026-09-29T00:00:00Z", ("tender_mt_v1",)),
     Batch("backfill:contract-titles", "mongolia", "2026-09-29T00:00:00Z", "2026-09-29T09:00:00Z", ("tender_mt_v1",)),
+    # The pilot of the development-side probe (dev_data_scripts/nctp_mirror/
+    # probe_development_side.py, 100 comparisons): its ledger call failed on
+    # August's older ledger function. The full run that followed recorded its
+    # own measured row (contracts-probe:development-side).
+    Batch("backfill:contracts-probe-pilot", "mongolia", "2026-09-29T15:25:00Z", "2026-09-29T15:25:30Z", ("tender_alignment_v1", "decompose")),
 ]
 
 # The measured Sri Lanka runs the estimate is calibrated against: the window
