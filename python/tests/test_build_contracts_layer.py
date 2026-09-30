@@ -10,7 +10,7 @@ import pandas as pd
 # The bake lives in python/scripts (not a package); put it on the path.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from build_contracts_layer import dedupe, english_of, place_totals, stage_key, type_key, valid_date  # noqa: E402
+from build_contracts_layer import dedupe, english_of, place_totals, read_pairs, stage_key, type_key, valid_date  # noqa: E402
 
 
 def frame(rows):
@@ -98,3 +98,14 @@ def test_english_of_looks_up_mongolian_and_keeps_english_as_it_is():
     # Never the Mongolian as a stand-in for English.
     assert english_of("Усны газар", lookup) is None
     assert english_of("", lookup) is None
+
+
+def test_later_comparisons_join_augusts_only_when_asked(tmp_path):
+    cols = ["tender_id", "target_id", "alignment", "description", "mechanism", "confidence"]
+    pd.DataFrame([[1, "NDC_1", "high", "x", None, None]], columns=cols).to_parquet(tmp_path / "alignment_consolidated.parquet")
+    pd.DataFrame([["2", "FSS_18", "high", "y", None, None]], columns=cols).to_parquet(tmp_path / "probe_alignment.parquet")
+    pd.DataFrame([["3", "FSS_29", "low", "z", None, None]], columns=cols).to_parquet(tmp_path / "probe_alignment_unmatched.parquet")
+    pd.DataFrame([["9", "FSS_29", "high", "p", None, None]], columns=cols).to_parquet(tmp_path / "probe_pilot.parquet")
+    assert sorted(zip(read_pairs(tmp_path).tender_id, read_pairs(tmp_path).target_id)) == [("1", "NDC_1")]
+    pairs = read_pairs(tmp_path, later=True)
+    assert sorted(zip(pairs.tender_id, pairs.target_id)) == [("1", "NDC_1"), ("2", "FSS_18"), ("3", "FSS_29")]

@@ -3,7 +3,8 @@
 Deterministic: no AI, no re-run. Reads the August mirror of Mongolia's public
 procurement portal (tender.gov.mn, via the NCTP staging platform) with the AI
 readings made then (purpose screen, policy-area classification, comparison
-with the targets), plus the country's targets and policy analysis, and writes:
+with the targets), with --later also the later comparisons made the same way
+(read_pairs), plus the country's targets and policy analysis, and writes:
 
   python/output/{country}/{model}/contracts.json.gz         the page payload
   python/output/{country}/{model}/contract-details.json.gz  each shown
@@ -151,6 +152,25 @@ def lookup_file(path: Path) -> dict[str, str]:
     return json.loads(path.read_text()) if path.exists() else {}
 
 
+def read_pairs(mirror: Path, later: bool = False) -> pd.DataFrame:
+    """Every comparison of a contract with a target on the page: August's
+    (alignment_consolidated.parquet), and with later=True also the later ones
+    made with August's prompts, model and rubric (probe_alignment*.parquet: the
+    development-side probe of 29 September, the targets without a match of 30
+    September). Pilot files are samples of those runs and are left out.
+
+    The later ones stay out until reviewed: their strong matches include
+    contracts in the target's sector that do not use its instrument (267
+    school-food purchases rated as delivering a bill on children's food)."""
+    cols = ["tender_id", "target_id", "alignment", "description", "mechanism", "confidence"]
+    files = [mirror / "alignment_consolidated.parquet"]
+    if later:
+        files += sorted(mirror.glob("probe_alignment*.parquet"))
+    pairs = pd.concat([pd.read_parquet(f, columns=cols) for f in files], ignore_index=True)
+    pairs["tender_id"] = pairs["tender_id"].astype(str)
+    return pairs
+
+
 def gz_json(path: Path, payload: object) -> None:
     raw = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     path.write_bytes(gzip.compress(raw, mtime=0))
@@ -170,6 +190,7 @@ def main() -> None:
     ap.add_argument("--mirror", type=Path, default=REPO / "dev_data_scripts/nctp_mirror/data")
     ap.add_argument("--country", default="mongolia")
     ap.add_argument("--model", default="gpt-5-4")
+    ap.add_argument("--later", action="store_true", help="include the later comparisons (read_pairs), once reviewed")
     args = ap.parse_args()
     mirror: Path = args.mirror
     out_dir = REPO / "python/output" / args.country / args.model
@@ -217,8 +238,8 @@ def main() -> None:
         if r.taxonomy in LENSES:
             areas.setdefault(r.tender_id, {})[r.taxonomy] = r.category
 
-    pairs = pd.read_parquet(mirror / "alignment_consolidated.parquet")
-    pairs["tender_id"] = pairs["tender_id"].astype(str).map(canon)
+    pairs = read_pairs(mirror, later=args.later)
+    pairs["tender_id"] = pairs["tender_id"].map(canon)
     pairs = pairs[pairs["tender_id"].isin(t.index) & pairs["target_id"].isin(doc_of)]
     pairs = pairs.drop_duplicates(["tender_id", "target_id"])
     compared = set(pairs["tender_id"])
