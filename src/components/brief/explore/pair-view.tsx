@@ -7,6 +7,7 @@ import { toneOf } from "@/lib/brief/compute";
 import type { FoundPair } from "@/lib/brief/pair";
 import type { ExploreItem } from "@/lib/brief/explore/model";
 import { Explanation, type DocNames } from "../ai-text";
+import { BothContracts } from "../both-contracts";
 import { Comparison, type ComparisonSide } from "../comparison";
 import { useResourceLine } from "../sections/themes";
 import { RING_INK } from "./ring-canvas";
@@ -14,8 +15,9 @@ import { RING_INK } from "./ring-canvas";
 /**
  * One comparison beside the ring: the two targets as two stops on the
  * rating's line (as in the brief's panel), the AI explanation (loaded on
- * demand) with its caveat and the review control, and a way to put the
- * other target in the centre.
+ * demand) with its caveat and the review control, the contracts serving both
+ * targets of a potential misalignment where there are any, and a way to put
+ * the other target in the centre.
  */
 export function PairView({
   countryId,
@@ -139,6 +141,7 @@ export function PairView({
           />
         </div>
       )}
+      {found?.both && <BothContracts both={found.both} countryId={countryId} />}
     </section>
   );
 }

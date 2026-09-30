@@ -3081,6 +3081,9 @@
       "worksAgainst": "{count, plural, =0 {No potential misalignment in this selection} one {Potential misalignment with # target} other {Potential misalignment with # targets}}",
       "worksWith": "{count, plural, =0 {Aligned with no target in this selection} one {Aligned with # target} other {Aligned with # targets}}",
       "showAll": "Show all {count, number}",
+      "bothHeading": "Contracts serving both targets",
+      "bothCount": "{count, plural, one {# contract} other {# contracts}}, {value}",
+      "bothItem": "{value} · {year}",
       "themeDialog": "Theme: {name}",
       "themeKind": {
         "reinforcement": "Recurring theme of alignment, identified by AI",

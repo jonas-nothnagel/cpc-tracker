@@ -3081,6 +3081,9 @@
       "worksAgainst": "{count, plural, =0 {Ninguna posible desalineación en esta selección} one {Posible desalineación con # meta} other {Posible desalineación con # metas}}",
       "worksWith": "{count, plural, =0 {Alineada con ninguna meta en esta selección} one {Alineada con # meta} other {Alineada con # metas}}",
       "showAll": "Mostrar los {count, number}",
+      "bothHeading": "Contracts serving both targets",
+      "bothCount": "{count, plural, one {# contract} other {# contracts}}, {value}",
+      "bothItem": "{value} · {year}",
       "themeDialog": "Tema: {name}",
       "themeKind": {
         "reinforcement": "Tema recurrente de alineación, identificado por IA",

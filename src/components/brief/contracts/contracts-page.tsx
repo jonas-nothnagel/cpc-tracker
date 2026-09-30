@@ -29,11 +29,15 @@ export function ContractsPage({
   setup,
   geo,
   initialCurrency = "mnt",
+  initialContract,
 }: {
   setup: ContractsSetup;
   geo: GeoFile | null;
   /** From the link (?cur=usd): the currency the page opens in. */
   initialCurrency?: Currency;
+  /** From the link (?contract=id, e.g. from the brief's comparison): the
+   *  contract whose panel the page opens with. */
+  initialContract?: string;
 }) {
   const t = useTranslations("brief.contracts");
   // One focus for the whole page: every view answers it. A new lens lets the
@@ -41,7 +45,9 @@ export function ContractsPage({
   const [focus, setFocus] = useState<Focus>(() => emptyFocus((setup.lenses[0]?.id as LensKey) ?? "globe"));
   const onFocus = (patch: Partial<Focus>) =>
     setFocus((cur) => ({ ...cur, ...patch, ...(patch.lens && patch.lens !== cur.lens ? { area: null } : {}) }));
-  const [stack, setStack] = useState<PanelState[]>([]);
+  const [stack, setStack] = useState<PanelState[]>(() =>
+    initialContract ? [{ kind: "contract", id: initialContract }] : [],
+  );
   const [currency, setCurrency] = useState<Currency>(initialCurrency);
   const rate = setup.file.source.usdRate;
   const format = useFormatter();

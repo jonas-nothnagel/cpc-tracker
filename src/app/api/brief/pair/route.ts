@@ -1,14 +1,18 @@
 /**
  * One comparison with both commitments, for the coherence brief's drill-downs.
  * The brief ships only compact ratings to the browser; the AI reading and the
- * full commitment records load here on demand. Unknown countries are rejected
- * by the registry before any file access.
+ * full commitment records load here on demand. A potential misalignment in a
+ * country with a baked contract record also carries the contracts that serve
+ * both of its targets. Unknown countries are rejected by the registry before
+ * any file access.
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { findPair } from "@/lib/brief/pair";
+import { servingBoth } from "@/lib/brief/contracts/both";
+import { loadContracts } from "@/lib/brief/contracts/load";
 import { routing } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -34,5 +38,7 @@ export async function GET(request: NextRequest) {
     locale,
   );
   if (!found) return NextResponse.json({ error: "Unknown comparison" }, { status: 404 });
-  return NextResponse.json(found, { headers: { "Cache-Control": "no-store" } });
+  const file = found.pair.alignment === "flagged" ? loadContracts(entry.id) : null;
+  const both = file ? servingBoth(file, found.pair.targetAId, found.pair.targetBId) : null;
+  return NextResponse.json(both ? { ...found, both } : found, { headers: { "Cache-Control": "no-store" } });
 }

@@ -3081,6 +3081,9 @@
       "worksAgainst": "{count, plural, =0 {Энэ сонголтод болзошгүй үл нийцэл алга} one {# зорилттой болзошгүй үл нийцэлтэй} other {# зорилттой болзошгүй үл нийцэлтэй}}",
       "worksWith": "{count, plural, =0 {Энэ сонголтод уялдаатай зорилт алга} one {# зорилттой уялдаатай} other {# зорилттой уялдаатай}}",
       "showAll": "Бүгдийг харуулах ({count, number})",
+      "bothHeading": "Contracts serving both targets",
+      "bothCount": "{count, plural, one {# contract} other {# contracts}}, {value}",
+      "bothItem": "{value} · {year}",
       "themeDialog": "Сэдэв: {name}",
       "themeKind": {
         "reinforcement": "Уялдааны давтагдах сэдэв, хиймэл оюун тодорхойлсон",

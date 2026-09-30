@@ -1,5 +1,6 @@
 import { normalizeTarget } from "@/lib/normalize-target";
 import type { AlignmentLevel, AlignmentMechanism, AlignmentResult, Target } from "@/types";
+import type { ServingBoth } from "./contracts/both";
 import { firstSentence } from "./text";
 
 /** Longest commitment id the endpoint will look up; real ids are short. */
@@ -9,6 +10,9 @@ export interface FoundPair {
   pair: AlignmentResult;
   targetA: Target;
   targetB: Target;
+  /** A potential misalignment's contracts serving both targets, where the
+   *  country has a contract record and there are any. */
+  both?: ServingBoth;
 }
 
 /**

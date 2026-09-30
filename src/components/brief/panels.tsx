@@ -13,6 +13,7 @@ import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { strandsByPathway } from "@/lib/pulse/strands";
 import { AiHeading, AiText, confidenceLabel, Explanation, FirstSentence, type DocNames } from "./ai-text";
 import { Comparison, type ComparisonSide } from "./comparison";
+import { BothContracts } from "./both-contracts";
 import { ExamplePairView } from "./example-pair";
 import { commitmentLine, useNumbers } from "./ink";
 import { ResultBar } from "./sections/documents";
@@ -162,6 +163,7 @@ function PairPanel({
             <p className="brief-panel-caveat">{tp("aiRationaleDisclaimer")}</p>
           </Explanation>
         )}
+        {state.found.both && <BothContracts both={state.found.both} countryId={countryId} />}
       </div>
       {pair.description && (
         <FeedbackControl

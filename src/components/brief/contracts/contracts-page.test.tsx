@@ -37,6 +37,17 @@ describe("ContractsPage", () => {
     expect(new URLSearchParams(window.location.search).get("cur")).toBe("usd");
   });
 
+  it("opens the contract the link names in its panel", () => {
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <ContractsPage setup={setupFixture()} geo={null} initialContract="p1" />
+      </NextIntlClientProvider>,
+    );
+    expect(vi.mocked(fetch)).toHaveBeenCalledWith(expect.stringContaining("contract=p1"));
+    vi.unstubAllGlobals();
+  });
+
   it("opens in US$ when the link asks for it", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">

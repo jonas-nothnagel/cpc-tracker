@@ -42,12 +42,16 @@ export async function generateMetadata(props: Props) {
 export default async function ContractsRoute(props: Props) {
   const loaded = await load(props);
   if (!loaded) notFound();
-  const { cur } = await props.searchParams;
+  const { cur, contract } = await props.searchParams;
+  const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+  // Only a contract the page lists opens (a link from the brief names one).
+  const opened = loaded.setup.file.contracts.some((c) => c.id === first(contract)) ? first(contract) : undefined;
   return (
     <ContractsPage
       setup={loaded.setup}
       geo={GEO[loaded.setup.countryId] ?? null}
-      initialCurrency={(Array.isArray(cur) ? cur[0] : cur) === "usd" ? "usd" : "mnt"}
+      initialCurrency={first(cur) === "usd" ? "usd" : "mnt"}
+      initialContract={opened}
     />
   );
 }

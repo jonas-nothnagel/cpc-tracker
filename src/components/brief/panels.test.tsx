@@ -242,6 +242,24 @@ describe("BriefPanels", () => {
     expect(await screen.findByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeTruthy();
   });
 
+  it("lists the contracts that serve both targets of a potential misalignment", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        json: async () => ({
+          pair: { targetAId: "B6", targetBId: "C4", alignment: "flagged", description: "Both claim the same wetland." },
+          targetA: { id: "B6", text: "Text B6", sourceDocument: "B", sourceLabel: "6 Commitment B6", country: "Testland", isQuantitative: false, isTimeBound: false },
+          targetB: { id: "C4", text: "Text C4", sourceDocument: "C", sourceLabel: "4 Commitment C4", country: "Testland", isQuantitative: false, isTimeBound: false },
+          both: { contracts: [{ id: "c1", title: "Wetland restoration with grazing plan", year: 2024, value: 1.2e9 }], value: 1.2e9 },
+        }),
+      })),
+    );
+    renderPanels([{ kind: "pair", a: "B6", b: "C4" }]);
+    const list = await screen.findByRole("region", { name: "Contracts serving both targets" });
+    expect(within(list).getByRole("link").getAttribute("href")).toMatch(/\/brief\/contracts\?contract=c1$/);
+  });
+
   it("loads one comparison with its AI reading", async () => {
     vi.stubGlobal(
       "fetch",

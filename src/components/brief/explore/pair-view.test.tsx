@@ -62,4 +62,36 @@ describe("PairView", () => {
     expect((await screen.findByTitle("Food Supply and Security Measures")).textContent).toBe("FSS");
     expect(screen.getByTitle("National Biodiversity Strategy & Action Plan").textContent).toBe("NBSAP");
   });
+
+  it("lists the contracts that serve both targets of a potential misalignment", async () => {
+    const answer = await (globalThis.fetch as unknown as () => Promise<{ json: () => Promise<object> }>)();
+    const body = await answer.json();
+    globalThis.fetch = vi.fn(async () => ({
+      ok: true,
+      json: async () => ({
+        ...body,
+        both: { contracts: [{ id: "c1", title: "Soil protection on farmland", year: 2024, value: 2.9e9 }], value: 2.9e9 },
+      }),
+    })) as never;
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <div data-brief>
+          <PairView
+            countryId="mongolia"
+            countryName="Mongolia"
+            a="FSS_1"
+            b="NBSAP_3"
+            partner="NBSAP_3"
+            commitments={ITEMS}
+            docName={(id) => DOCS.find((d) => d.id === id)?.name ?? id}
+            docs={DOCS}
+            onCentre={() => {}}
+            onClose={() => {}}
+          />
+        </div>
+      </NextIntlClientProvider>,
+    );
+    const list = await screen.findByRole("region", { name: "Contracts serving both targets" });
+    expect(list.querySelector("a")).toHaveAttribute("href", "/mongolia/brief/contracts?contract=c1");
+  });
 });
