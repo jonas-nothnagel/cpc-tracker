@@ -1820,9 +1820,9 @@
   "sustainability": {
     "chip": {
       "label": "Huella de IA: <b>{value} CO2e</b>",
-      "title": "Huella de sostenibilidad de IA de esta herramienta"
+      "title": "Panel de huella ambiental"
     },
-    "title": "Huella de sostenibilidad de IA",
+    "title": "Panel de huella ambiental",
     "back": "Volver",
     "span": "Del {from} al {to}",
     "download": "Descargar",
@@ -2309,7 +2309,7 @@
       "analysisTitle": "Prototipos · Análisis {id} | CPC Analyzer"
     },
     "sustainability": {
-      "title": "Huella de Sostenibilidad de IA | CPC Analyzer",
+      "title": "Panel de huella ambiental | CPC Analyzer",
       "description": "Huella ambiental estimada de la computación de IA detrás del CPC Analyzer, para reporte de transparencia."
     },
     "methodology": {

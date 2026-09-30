@@ -1820,9 +1820,9 @@
   "sustainability": {
     "chip": {
       "label": "AI ул мөр: <b>{value} CO2e</b>",
-      "title": "Энэ хэрэгслийн AI тогтвортой байдлын ул мөр"
+      "title": "Байгаль орчны ул мөрийн хяналтын самбар"
     },
-    "title": "AI тогтвортой байдлын ул мөр",
+    "title": "Байгаль орчны ул мөрийн хяналтын самбар",
     "back": "Буцах",
     "span": "{from} - {to}",
     "download": "Татах",
@@ -2309,7 +2309,7 @@
       "analysisTitle": "Прототипүүд · Шинжилгээ {id} | CPC Analyzer"
     },
     "sustainability": {
-      "title": "AI тогтвортой байдлын ул мөр | CPC Analyzer",
+      "title": "Байгаль орчны ул мөрийн хяналтын самбар | CPC Analyzer",
       "description": "Ил тод тайлагналд зориулсан CPC Analyzer-н ард байгаа AI тооцооллын тооцоолсон байгаль орчны ул мөр."
     },
     "methodology": {

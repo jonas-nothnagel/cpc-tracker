@@ -166,7 +166,7 @@ describe("SustainabilityClient", () => {
 
   it("states the four totals, each with what it amounts to in everyday terms", async () => {
     renderPage();
-    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("AI sustainability footprint");
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Environmental Footprint Dashboard");
     const figures = await screen.findAllByTestId("fp-figure");
     expect(figures.map((f) => text(f.querySelector(".fp-figure-value")))).toEqual([
       "20 kg CO2e",

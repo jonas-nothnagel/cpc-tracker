@@ -1820,9 +1820,9 @@
   "sustainability": {
     "chip": {
       "label": "AI footprint: <b>{value} CO2e</b>",
-      "title": "AI sustainability footprint of this tool"
+      "title": "Environmental Footprint Dashboard"
     },
-    "title": "AI sustainability footprint",
+    "title": "Environmental Footprint Dashboard",
     "back": "Back",
     "span": "{from} to {to}",
     "download": "Download",
@@ -2309,7 +2309,7 @@
       "analysisTitle": "Prototypes · Analysis {id} | CPC Analyzer"
     },
     "sustainability": {
-      "title": "AI Sustainability Footprint | CPC Analyzer",
+      "title": "Environmental Footprint Dashboard | CPC Analyzer",
       "description": "Estimated environmental footprint of the AI computation behind the CPC Analyzer, for transparency reporting."
     },
     "methodology": {
