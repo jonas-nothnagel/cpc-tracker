@@ -5,6 +5,50 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## Contracts serving both targets; the 23 targets without a match (2026-09-30)
+
+- **Contracts serving both targets** (`98ce821`), Jonas's pick over a money bar per potential
+  misalignment. A contracts-only bar would mislead: 22 of the 56 FSS and Vision 2050 targets are
+  delivered through loans, subsidies, tax breaks or funds, which never pass through tenders.
+  - The pair API adds `both` (`servingBoth` in `src/lib/brief/contracts/both.ts`, from the
+    bake's fault-line list) for a potential misalignment in a country with a contract record:
+    122 of Mongolia's 671 have one.
+  - `BothContracts` (`src/components/brief/both-contracts.tsx`) lists them under the AI
+    explanation in the brief's comparison panel and the ring's pair view: count and amount, the
+    five largest with "Show all", amount and year per row, the contracts page's caveat, blue
+    marks.
+  - A row opens `/{country}/brief/contracts?contract=<id>`, which the page now reads (only a
+    contract it lists).
+  - Checked on the dev server: FSS_15 × NAP_4 has 5 contracts, ₮8.0 billion, "soil protection
+    and fertility improvement of farmland".
+- **The 23 targets listed as having no strongly matching contract** (probe `--name unmatched`,
+  6,723 comparisons, 783.2 g CO2e measured, about US$16-18).
+  - 17 of the 23 have candidate matches, for example:
+    - potato and vegetable cellars (₮9.9 billion) against FSS 3.8 storage;
+    - bee houses against beekeeping;
+    - milk-processing workshops against new dairy plants;
+    - breed improvement against NITIPA_9.
+  - Still none: NBSAP_16 (harmful subsidies), NITIPA_10, NITIPA_15, NDC_40, ILDN_6, NRVTS_27.
+  - Problem: the rubric rates a contract in the target's sector as strongly matching even when
+    the target works through another instrument. FSS_2 is a bill to the State Great Khural, yet
+    267 school-food purchases were rated as delivering it. FSS_34 (raise meal allowances) got
+    326, mostly meal purchases. 593 of the run's 759 strong matches sit in those two targets.
+    Strong matches carry no confidence, so nothing filters them.
+  - So the bake takes these comparisons only with `--later` (`8a60ba6`); without it the page
+    data is byte-identical. With it: 172 of 178 targets matched, 6,787 contracts shown (874 need
+    English titles), the fault line and the 191 potentially misaligned tenders unchanged.
+  - Next: a Mongolian-speaking reviewer's check; perhaps a second "does it use the target's
+    instrument?" pass (new prompt text, for Jonas's review) before any larger run.
+- **Contract documents:** 73,152 contracts (95%) have a PDF, but only in the vendor's private
+  bucket (`gs://voyager-transparency/…`, 403). tender.gov.mn shows them to people behind a
+  Cloudflare check, which is not for scripts. Using them needs the vendor's or the country
+  office's cooperation, and a data-protection look (signatures, names, bank details).
+- **Sizes of the larger options** (no calls made):
+  - every remaining target's nearest never-compared contracts: 145 targets, 32,237 comparisons;
+  - a development-pressure net (roads and bridges 2,563; power 752; wells 714; urban 334; land
+    48; industrial parks 36; 4,385 contracts, ~₮9T) × 10 nearest targets: 43,850 comparisons;
+  - the whole never-compared record: 70,206 raw records × 10 targets, ~700,000 comparisons.
+
 ## Public contracts: two live fixes and the development-side probe (2026-09-29)
 
 **Live fixes** (`6dbce85`; footprint rows `8e9ae0f`). Jonas: "the two live vercel problems we can
