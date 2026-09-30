@@ -105,6 +105,9 @@ BATCHES = [
     # August's older ledger function. The full run that followed recorded its
     # own measured row (contracts-probe:development-side).
     Batch("backfill:contracts-probe-pilot", "mongolia", "2026-09-29T15:25:00Z", "2026-09-29T15:25:30Z", ("tender_alignment_v1", "decompose")),
+    # The test of the three-answer re-check draft (57 calls, 30 September),
+    # run from a scratch harness that did not write its own row.
+    Batch("backfill:contracts-recheck-v3-test", "mongolia", "2026-09-30T17:37:00Z", "2026-09-30T17:38:00Z", ("contract_delivers_v3_draft",)),
 ]
 
 # The measured Sri Lanka runs the estimate is calibrated against: the window
