@@ -10,6 +10,13 @@ Why the instrument: August's comparison of contracts with targets rated contract
 sector as delivering it even when the target works through another instrument (267 school-food
 purchases against a bill on children's meals). The re-check asks whether a contract carries out
 or directly prepares what the target commits to.
+
+Re-check v3 (approved by Jonas the same day, replacing v2 before anything was applied): v2 asked
+the title to show the target's own measure, and 52% of its 9,865 removals rested on "the title
+does not state", stripping valid nature matches (protection of critically endangered wildlife
+from species conservation). v3 judges the kind of work and adds "cannot_tell": delivers keeps a
+strong match, different_means drops it to related, cannot_tell keeps the earlier verdict for the
+human check.
 """
 
 from __future__ import annotations
@@ -18,7 +25,7 @@ import json
 import re
 
 INSTRUMENT_NAMESPACE = "contract_instrument_v1"
-RECHECK_NAMESPACE = "contract_delivers_v2"
+RECHECK_NAMESPACE = "contract_delivers_v3"
 
 INSTRUMENTS = (
     "construction_works",
@@ -32,7 +39,7 @@ INSTRUMENTS = (
     "software_it",
     "other",
 )
-VERDICTS = ("delivers", "related", "unrelated")
+VERDICTS = ("delivers", "different_means", "cannot_tell")
 
 INSTRUMENT_SYSTEM = """You classify a public procurement contract from Mongolia by its instrument: the kind of spending it is. You see only the contract's title as published (in Mongolian), the buying organisation and the portal's contract type. Choose exactly one category. Decide from what the title states; use "other" when the title does not say what is bought."""
 
@@ -55,13 +62,15 @@ Categories:
 Answer with JSON only: {{"instrument": "<category>", "clear": true or false}}
 "clear" is false when the title leaves the kind of spending uncertain."""
 
-DELIVERS_SYSTEM = """You check whether a public procurement contract carries out a specific national policy target, or only works in the same field.
+DELIVERS_SYSTEM = """You check whether a public procurement contract carries out a specific national policy target, or only works in the same field. Contract titles are short, so they rarely repeat a target's details: judge the kind of work.
 
-The contract delivers the target when what it buys carries out or directly prepares something the target commits to: it builds, repairs, equips, designs, studies, supplies or supports the very thing or the very people the target names, in the way the target describes. For example, a feasibility study for a new wastewater plant delivers a target to build wastewater treatment, and vehicles for a ranger service deliver a target to strengthen protected-area management.
+Answer "delivers" when the kind of work the contract buys is the kind of work the target calls for: it builds, repairs, equips, designs, studies, supplies or supports the thing or the people the target names, even if the title does not repeat the target's details. For example, a feasibility study for a new wastewater plant delivers a target to build wastewater treatment, and vehicles for a ranger service deliver a target to strengthen protected-area management.
 
-The contract only relates to the target when it shares the sector, place or beneficiaries but does something else. For example, food bought for a hospital's own kitchen does not deliver a law on patients' nutrition, and fuel bought for a ministry's cars does not deliver a target on clean transport. Routine supplies for an organisation's own running rarely deliver a target.
+Answer "different_means" when the contract clearly does something else in the same field. For example, food bought for a hospital's own kitchen does not deliver a law on patients' nutrition, and fuel bought for a ministry's cars does not deliver a target on clean transport. Routine supplies for an organisation's own running rarely deliver a target.
 
-Judge only from the texts given; do not assume facts that are not stated."""
+Answer "cannot_tell" when the title is too short or too general to judge.
+
+Judge only from the texts given."""
 
 DELIVERS_USER = """Policy target ({doc}): {target}
 Target activities: {activities}
@@ -71,7 +80,7 @@ Contract title (English, machine translation): {title_en}
 Buyer: {buyer}
 Kind of spending: {instrument}
 
-Answer with JSON only: {{"verdict": "delivers" or "related" or "unrelated", "reason": "<one plain English sentence, no names of people or companies>"}}"""
+Answer with JSON only: {{"verdict": "delivers" or "different_means" or "cannot_tell", "reason": "<one plain English sentence, no names of people or companies>"}}"""
 
 
 def _json(raw: str | None) -> dict:
@@ -93,7 +102,8 @@ def instrument_of(raw: str | None) -> tuple[str, bool]:
 
 
 def verdict_of(raw: str | None) -> tuple[str, str]:
-    """The re-check's verdict and its one-sentence reason; an answer outside the three is unreadable."""
+    """The re-check's verdict and its one-sentence reason; an answer outside the three (including
+    v2's "related" and "unrelated") is unreadable."""
     answer = _json(raw)
     verdict = answer.get("verdict")
     if verdict not in VERDICTS:

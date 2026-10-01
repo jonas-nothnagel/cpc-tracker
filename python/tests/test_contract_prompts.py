@@ -22,10 +22,23 @@ def test_an_unknown_or_broken_instrument_answer_is_other_and_unclear():
 
 
 def test_a_verdict_is_read_with_its_reason():
-    assert verdict_of('{"verdict": "related", "reason": "Food for a school kitchen, not a law."}') == (
-        "related",
+    assert verdict_of('{"verdict": "different_means", "reason": "Food for a school kitchen, not a law."}') == (
+        "different_means",
         "Food for a school kitchen, not a law.",
     )
+    assert verdict_of('{"verdict": "cannot_tell", "reason": "The title is too general."}')[0] == "cannot_tell"
+
+
+def test_a_verdict_from_the_retired_two_way_reading_is_unreadable():
+    assert verdict_of('{"verdict": "related", "reason": "x"}') == ("unreadable", "")
+
+
+def test_the_re_check_judges_the_kind_of_work_and_has_three_answers():
+    from contract_prompts import DELIVERS_SYSTEM, DELIVERS_USER, RECHECK_NAMESPACE
+
+    assert "judge the kind of work" in DELIVERS_SYSTEM
+    assert '"delivers" or "different_means" or "cannot_tell"' in DELIVERS_USER
+    assert RECHECK_NAMESPACE == "contract_delivers_v3"
 
 
 def test_an_unreadable_verdict_keeps_nothing():
@@ -46,4 +59,4 @@ def test_the_categories_are_the_approved_ones():
         "software_it",
         "other",
     )
-    assert VERDICTS == ("delivers", "related", "unrelated")
+    assert VERDICTS == ("delivers", "different_means", "cannot_tell")
