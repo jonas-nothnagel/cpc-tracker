@@ -5,6 +5,44 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## Public contracts in the brief, up to the map (2026-10-02)
+
+Jonas: "Merge the Finance component into the current mongolia brief, but only up to the map
+(including map ofc). Not the other ones we are still working on." He agreed the design in chat;
+for the ring: "we can just work with connecting targets again ... Adding the contracts can be
+done in the next step." Commits `65da8ad` (feature) and `5ac8f3e` (overview fix).
+- **Where**: a section of its own after "By policy area", before the ring
+  (`src/components/brief/contracts/contracts-section.tsx`).
+  - The contracts overview shows `steps={record, purpose, places}` beside its field.
+  - Above it: a title in the ring's style, the ₮ · US$ switch (`CurrencySwitch`, now shared
+    with the page) and the focus line.
+  - "What the money is for" and "Where to look closer" stay on `/brief/contracts` only.
+- **Menu**: "Public contracts" under "In the brief", marked "on screen only".
+  - `SECTION_UNITS.contracts = 0`; `paginate` skips it, so the brief still prints on 4 pages.
+  - Offered only where `source.contracts` is set: the brief page sets it when `loadContracts`
+    finds a record (Mongolia).
+- **The brief's lens and documents**:
+  - the section's lens choices write the menu's lens; under Human rights it reads by
+    Biodiversity (no contract carries a human rights reading);
+  - `scopeSetup` keeps the brief's documents and cuts each contract's matches and potential
+    misalignments to their targets. The money stays whole, and the setup is returned unchanged
+    while every document is in;
+  - a contract's panel names only the targets in the brief's documents.
+- **Ring**: "Explore this target" in a target's panel closes the panel, then (next task) puts
+  the target in the ring's centre. Done at once, the drawer's focus restore pulled the page back
+  to the opener. The contract rows under a potential misalignment still open `/brief/contracts`
+  (the next step, with a contracts layer on the ring).
+- **Link**: `?cur=usd` survives menu changes; one `CurrencyProvider` wraps the page.
+- **Overview fix**: Jonas saw "<1%" cut at the field's right edge. Mongolia's last two groups
+  (potential misalignment 5%, no clear link <1%) were about 40px wide together. `layoutGroups`
+  now takes a minimum group width, and the overview gives each group `COLUMN_LABEL` (44px).
+- **Cost**: the contract record travels with the page. The Mongolia brief grew from 203 KB to
+  611 KB gzipped (dev measure).
+- **Verified**: 1,756 tests pass, tsc clean, eslint clean on the touched files; `/brief` returns
+  200 for all four countries and in es/mn.
+- **Open**: a walkthrough stop for the section; es/mn copy (English placeholders, as on the
+  page); contracts in the ring; payload size.
+
 ## The map's card, human rights on the ring, the centre's bar in words (2026-10-01)
 
 Jonas's feedback on the brief and the ring, all four agreed before building.
