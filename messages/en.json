@@ -2973,7 +2973,7 @@
       "sections": "In the brief",
       "moveUp": "Move {section} up",
       "moveDown": "Move {section} down",
-      "size": "{units, select, 1 {quarter page} 2 {half page} other {full page}}",
+      "size": "{units, select, 0 {on screen only} 1 {quarter page} 2 {half page} other {full page}}",
       "pages": "{count, plural, one {Prints on # page} other {Prints on # pages}}",
       "print": "Print or save as PDF",
       "copyLink": "Copy link to this brief",
@@ -3003,7 +3003,8 @@
       "commitments": "Targets to review first",
       "documents": "Documents side by side",
       "areas": "By policy area",
-      "aligned": "Strongest alignments"
+      "aligned": "Strongest alignments",
+      "contracts": "Public contracts"
     },
     "tone": {
       "reinforce": "aligned",

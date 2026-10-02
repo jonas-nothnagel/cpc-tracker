@@ -1,23 +1,15 @@
-import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
+import es from "../../../../messages/es.json";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
+import { scopeSetup, type ContractsSetup } from "@/lib/brief/contracts/setup";
 import type { ContractRecord } from "@/lib/brief/contracts/model";
 import { ContractsPanels } from "./panels";
 import type { PanelState } from "./contracts-page";
 
 vi.mock("@/lib/analytics/client", () => ({ track: vi.fn() }));
-// next-intl's createNavigation imports next/navigation in a way vitest cannot
-// resolve; the panel only needs an anchor here (as in finding-card.test).
-vi.mock("@/i18n/navigation", () => ({
-  Link: ({ href, children, ...rest }: ComponentProps<"a">) => (
-    <a href={typeof href === "string" ? href : "#"} {...rest}>
-      {children}
-    </a>
-  ),
-}));
 
 const RECORD: ContractRecord = {
   id: "p1",
@@ -43,11 +35,23 @@ const RECORD: ContractRecord = {
   misaligned: [],
 };
 
-function renderPanels(stack: PanelState[], onPush = vi.fn()) {
+function renderPanels(
+  stack: PanelState[],
+  onPush = vi.fn(),
+  opts: { onExplore?: (id: string) => void; locale?: "en" | "es"; setup?: ContractsSetup } = {},
+) {
+  const locale = opts.locale ?? "en";
   render(
-    <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+    <NextIntlClientProvider locale={locale} messages={locale === "es" ? es : en} timeZone="UTC">
       <div data-brief>
-        <ContractsPanels stack={stack} setup={setupFixture()} onPush={onPush} onBack={vi.fn()} onClose={vi.fn()} />
+        <ContractsPanels
+          stack={stack}
+          setup={opts.setup ?? setupFixture()}
+          onPush={onPush}
+          onBack={vi.fn()}
+          onClose={vi.fn()}
+          onExplore={opts.onExplore}
+        />
       </div>
     </NextIntlClientProvider>,
   );
@@ -97,6 +101,26 @@ describe("a contract, in full", () => {
     expect(screen.queryByText(/Ойжуулалт/)).toBeNull();
   });
 
+  it("names only the targets in the brief's documents, each one the ring can take", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        json: async () => ({
+          ...RECORD,
+          strong: [...RECORD.strong, { target: "C1", text: "It also shifts freight to rail." }],
+          misaligned: [{ target: "C1", text: "It may pull against rail freight.", confidence: "high", mechanism: null }],
+        }),
+      })),
+    );
+    renderPanels([{ kind: "contract", id: "p1" }], vi.fn(), { setup: scopeSetup(setupFixture(), ["A", "B"]) });
+    const reading = await screen.findByRole("region", { name: "The pipeline's reading" });
+    expect(within(reading).getByText("1 strongly matching")).toBeInTheDocument();
+    expect(within(reading).queryByText(/potentially misaligned/)).toBeNull();
+    expect(within(reading).queryByRole("button", { name: /Shift freight to rail/ })).toBeNull();
+    expect(within(reading).getByRole("button", { name: /Cut emissions from waste/ })).toBeInTheDocument();
+  });
+
   it("says so when the record cannot be loaded", async () => {
     vi.stubGlobal(
       "fetch",
@@ -116,6 +140,22 @@ describe("a target, with its contracts", () => {
     expect(screen.getByText(/3 contracts/)).toBeInTheDocument();
     fireEvent.click(screen.getByText("Contract p1"));
     expect(onPush).toHaveBeenCalledWith({ kind: "contract", id: "p1" });
+  });
+
+  it("takes the target to the ring's own page, in the reader's language", () => {
+    renderPanels([{ kind: "target", id: "C1" }]);
+    expect(screen.getByRole("link", { name: /Explore this target/ })).toHaveAttribute("href", "/mongolia/brief/explore?focus=C1");
+    cleanup();
+    renderPanels([{ kind: "target", id: "C1" }], vi.fn(), { locale: "es" });
+    expect(screen.getByRole("link", { name: /Explore this target/ })).toHaveAttribute("href", "/es/mongolia/brief/explore?focus=C1");
+  });
+
+  it("puts the target in the centre of the ring on the same page where the brief has one", () => {
+    const onExplore = vi.fn();
+    renderPanels([{ kind: "target", id: "C1" }], vi.fn(), { onExplore });
+    expect(screen.queryByRole("link", { name: /Explore this target/ })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: /Explore this target/ }));
+    expect(onExplore).toHaveBeenCalledWith("C1");
   });
 
   it("keeps budget lines and reported actions off this page", () => {

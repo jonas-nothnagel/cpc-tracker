@@ -2973,7 +2973,7 @@
       "sections": "Хэсгүүд",
       "moveUp": "{section}-ийг дээш зөөх",
       "moveDown": "{section}-ийг доош зөөх",
-      "size": "{units, select, 1 {хуудасны дөрөвний нэг} 2 {хагас хуудас} other {бүтэн хуудас}}",
+      "size": "{units, select, 0 {зөвхөн дэлгэц дээр} 1 {хуудасны дөрөвний нэг} 2 {хагас хуудас} other {бүтэн хуудас}}",
       "pages": "{count, plural, one {# хуудсанд хэвлэгдэнэ} other {# хуудсанд хэвлэгдэнэ}}",
       "print": "Хэвлэх эсвэл PDF хэлбэрээр хадгалах",
       "copyLink": "Энэ тоймын холбоосыг хуулах",
@@ -3003,7 +3003,8 @@
       "commitments": "Эхэлж хянах зорилтууд",
       "documents": "Баримт бичгүүдийг зэрэгцүүлэн",
       "areas": "Бодлогын чиглэлээр",
-      "aligned": "Strongest alignments"
+      "aligned": "Strongest alignments",
+      "contracts": "Public contracts"
     },
     "tone": {
       "reinforce": "уялдаатай",

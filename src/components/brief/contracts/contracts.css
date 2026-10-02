@@ -1258,3 +1258,28 @@
   padding: 0.45rem 0;
   border-bottom: 1px solid var(--brief-hairline);
 }
+
+/* ── In the brief: a section of its own after the policy areas ───── */
+
+/* Named as the ring is named: a serif title, the currency beneath it. */
+[data-brief] .ct-brief-head {
+  margin: 0 0 0.75rem;
+}
+
+[data-brief] .ct-brief-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+[data-brief] .ct-brief-head .ct-currency {
+  margin-top: 0.6rem;
+}
+
+/* The section's own rule closes it: no second one under the steps. */
+[data-brief] .brief-flow-section .ct-overview {
+  padding-bottom: 0;
+  border-bottom: 0;
+}

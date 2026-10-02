@@ -7,7 +7,7 @@ import { TourOverlay } from "@/components/dashboard/coherence-briefing/tour/tour
 import { useTour } from "@/components/dashboard/coherence-briefing/tour/use-tour";
 import { routing } from "@/i18n/routing";
 import { SECTION_UNITS } from "@/lib/brief/sections";
-import { SECTION_IDS, type BriefSelection, type SectionId } from "@/lib/brief/selection";
+import { allowedSections, SECTION_IDS, type BriefSelection, type SectionId } from "@/lib/brief/selection";
 import type { BriefSource, LensId } from "@/lib/brief/source";
 import { lensTooltipKey } from "./lens-tooltip";
 
@@ -51,7 +51,8 @@ export function Builder({
     onChange({ ...selection, docs: next });
   };
 
-  const allowed = SECTION_IDS.filter((id) => id !== "areas" || source.lenses.length > 0);
+  const offered = allowedSections(source);
+  const allowed = SECTION_IDS.filter((id) => offered.has(id));
   const unselected = allowed.filter((id) => !selection.sections.includes(id));
   const toggleSection = (id: SectionId) => {
     const on = selection.sections.includes(id);

@@ -12,6 +12,7 @@ describe("paginate", () => {
       "commitments",
       "documents",
       "areas",
+      "contracts",
     ]);
     expect(paginate(DEFAULT_SECTIONS)).toEqual([
       { title: true, sections: ["overall", "together"] },
@@ -35,13 +36,27 @@ describe("paginate", () => {
     ]);
   });
 
+  it("never prints a section shown on screen only", () => {
+    expect(paginate(["overall", "contracts", "together"])).toEqual([
+      { title: true, sections: ["overall", "together"] },
+    ]);
+  });
+
   it("prints a title page even without sections", () => {
     expect(paginate([])).toEqual([{ title: true, sections: [] }]);
   });
 
-  it("keeps every section, in order, when all are chosen", () => {
+  it("keeps every printed section, in order, when all are chosen", () => {
     const pages = paginate(SECTION_IDS);
-    expect(pages.flatMap((p) => p.sections)).toEqual(SECTION_IDS);
+    expect(pages.flatMap((p) => p.sections)).toEqual([
+      "overall",
+      "together",
+      "aligned",
+      "apart",
+      "commitments",
+      "documents",
+      "areas",
+    ]);
     expect(SECTION_IDS).not.toContain("map");
     expect(pages).toHaveLength(4);
   });

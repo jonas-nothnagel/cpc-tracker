@@ -43,6 +43,9 @@ import { SetLine } from "./set-line";
 
 export type Step = "record" | "purpose" | "places" | "areas";
 
+/** Every step, in reading order. */
+const ALL_STEPS: readonly Step[] = ["record", "purpose", "places", "areas"];
+
 /** What the map shows. */
 export type MapLayer = "money" | "match" | "mis";
 
@@ -71,6 +74,7 @@ const byValue = (a: Contract, b: Contract) => b.value - a.value || a.id.localeCo
  * policy area beside the areas' targets. The squares re-form as each step
  * crosses the middle of the window. The page's focus (a policy area, a
  * document, a place) is answered by every step, and chosen in the steps.
+ * The brief shows the steps up to the map.
  */
 export function Overview({
   setup,
@@ -81,6 +85,7 @@ export function Overview({
   onTarget,
   onList,
   initialStep = "record",
+  steps: shown = ALL_STEPS,
 }: {
   setup: ContractsSetup;
   geo: GeoFile | null;
@@ -91,13 +96,21 @@ export function Overview({
   onList: (list: ContractList) => void;
   /** The step that leads before the reader scrolls (tests, deep links). */
   initialStep?: Step;
+  /** The steps shown, in reading order: all four on the contracts page; the
+   *  map's only where the country has outlines. */
+  steps?: readonly Step[];
 }) {
   const t = useTranslations("brief.contracts");
   const tl = useTranslations("briefing.lens");
   const format = useFormatter();
   const m = useMoney();
   const file = setup.file;
-  const steps = useMemo<Step[]>(() => (geo ? ["record", "purpose", "places", "areas"] : ["record", "purpose", "areas"]), [geo]);
+  // Keyed by content: a list passed inline does not re-measure the steps on every render.
+  const stepKey = shown.join();
+  const steps = useMemo<Step[]>(() => {
+    const wanted = stepKey.split(",");
+    return ALL_STEPS.filter((s) => wanted.includes(s) && (s !== "places" || geo !== null));
+  }, [stepKey, geo]);
   const [active, setActive] = useState<Step>(initialStep);
   const [layer, setLayer] = useState<MapLayer>("money");
   const [all, setAll] = useState(false);
@@ -459,54 +472,58 @@ export function Overview({
         />
       </div>
       <div className="brief-hub-steps">
-        <section className="brief-hub-step ct-step" data-step="record">
-          <p className="brief-hub-kicker">{t("kicker.record")}</p>
-          <h2 className="brief-hub-headline" tabIndex={-1}>
-            {t("record.headline", { value: m.amount(census.value), count: m.n(census.contracts), year: file.source.firstYear })}
-          </h2>
-          <p className="brief-hub-second">{t("record.second", { other: m.other(census.value) })}</p>
-          {file.example && (
-            <button type="button" className="ct-link" onClick={() => onContract(file.example!)}>
-              {t("record.example")}
-              <span aria-hidden="true"> ›</span>
-            </button>
-          )}
-          <p className="ct-source">{t("record.source", { name: file.source.name, first: file.source.firstYear, last: m.month(file.source.snapshot) })}</p>
-        </section>
+        {steps.includes("record") && (
+          <section className="brief-hub-step ct-step" data-step="record">
+            <p className="brief-hub-kicker">{t("kicker.record")}</p>
+            <h2 className="brief-hub-headline" tabIndex={-1}>
+              {t("record.headline", { value: m.amount(census.value), count: m.n(census.contracts), year: file.source.firstYear })}
+            </h2>
+            <p className="brief-hub-second">{t("record.second", { other: m.other(census.value) })}</p>
+            {file.example && (
+              <button type="button" className="ct-link" onClick={() => onContract(file.example!)}>
+                {t("record.example")}
+                <span aria-hidden="true"> ›</span>
+              </button>
+            )}
+            <p className="ct-source">{t("record.source", { name: file.source.name, first: file.source.firstYear, last: m.month(file.source.snapshot) })}</p>
+          </section>
+        )}
 
-        <section className="brief-hub-step ct-step" data-step="purpose">
-          <p className="brief-hub-kicker">{t("kicker.purpose")}</p>
-          {focusNote && <p className="ct-focus-note">{focusNote}</p>}
-          <h2 className="brief-hub-headline" tabIndex={-1}>
-            {t("purpose.headline", { sign: m.sign, per100: m.per100(census.value > 0 ? principalTotal / census.value : 0) })}
-          </h2>
-          <p className="brief-hub-second">{t("purpose.second", { sign: m.sign, per100: m.per100(census.value > 0 ? significantTotal / census.value : 0) })}</p>
-          {yearValues && full.length >= 2 && (
-            <p className="brief-hub-second ct-focus-line">
-              {t("purpose.focusLine", {
-                name: focusName(),
-                first: m.amount(yearValues.get(full[0]) ?? 0),
-                firstYear: full[0],
-                last: m.amount(yearValues.get(full[full.length - 1]) ?? 0),
-                lastYear: full[full.length - 1],
-              })}
-            </p>
-          )}
-          <p className="ct-tag">{t("purpose.tag")}</p>
-          <LensChoices setup={setup} focus={focus} onFocus={onFocus} label={t("areas.lens")} />
-          <AreaMoneyList
-            rows={rows}
-            label={t("purpose.byArea")}
-            areaName={areaName}
-            amount={m.amount}
-            focusArea={focus.area}
-            pointed={pointed}
-            onPoint={setPointed}
-            onPick={(id) => onFocus({ area: focus.area === id ? null : id })}
-          />
-        </section>
+        {steps.includes("purpose") && (
+          <section className="brief-hub-step ct-step" data-step="purpose">
+            <p className="brief-hub-kicker">{t("kicker.purpose")}</p>
+            {focusNote && <p className="ct-focus-note">{focusNote}</p>}
+            <h2 className="brief-hub-headline" tabIndex={-1}>
+              {t("purpose.headline", { sign: m.sign, per100: m.per100(census.value > 0 ? principalTotal / census.value : 0) })}
+            </h2>
+            <p className="brief-hub-second">{t("purpose.second", { sign: m.sign, per100: m.per100(census.value > 0 ? significantTotal / census.value : 0) })}</p>
+            {yearValues && full.length >= 2 && (
+              <p className="brief-hub-second ct-focus-line">
+                {t("purpose.focusLine", {
+                  name: focusName(),
+                  first: m.amount(yearValues.get(full[0]) ?? 0),
+                  firstYear: full[0],
+                  last: m.amount(yearValues.get(full[full.length - 1]) ?? 0),
+                  lastYear: full[full.length - 1],
+                })}
+              </p>
+            )}
+            <p className="ct-tag">{t("purpose.tag")}</p>
+            <LensChoices setup={setup} focus={focus} onFocus={onFocus} label={t("areas.lens")} />
+            <AreaMoneyList
+              rows={rows}
+              label={t("purpose.byArea")}
+              areaName={areaName}
+              amount={m.amount}
+              focusArea={focus.area}
+              pointed={pointed}
+              onPoint={setPointed}
+              onPick={(id) => onFocus({ area: focus.area === id ? null : id })}
+            />
+          </section>
+        )}
 
-        {geo && (
+        {geo && steps.includes("places") && (
           <section className="brief-hub-step ct-step" data-step="places">
             <PlacesSide
               {...{ t, m, setup, geo, focus, onFocus, onList, onTarget, layer, setLayer, showAll, capital, rates, principalByPlace, focusMoney, tenderList, allMatch, keep, docOf, fctx, lensKey, placeName, areaName, docCode, focusPhrase, whatTargets, placeValue, placeValueText, more, setMore, pointed, setPointed, focusNote, targetsById }}
@@ -514,9 +531,11 @@ export function Overview({
           </section>
         )}
 
-        <section className="brief-hub-step ct-step" data-step="areas">
-          <AreasSide {...{ t, tl, m, setup, focus, onFocus, onList, onTarget, rows, stats, areaMoney, lensKey, fctx, docOf, areaName, docCode, placeName, pointed, setPointed, targetsById, focusNote }} />
-        </section>
+        {steps.includes("areas") && (
+          <section className="brief-hub-step ct-step" data-step="areas">
+            <AreasSide {...{ t, tl, m, setup, focus, onFocus, onList, onTarget, rows, stats, areaMoney, lensKey, fctx, docOf, areaName, docCode, placeName, pointed, setPointed, targetsById, focusNote }} />
+          </section>
+        )}
       </div>
     </div>
   );

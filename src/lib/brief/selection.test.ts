@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  DEFAULT_SECTIONS,
   defaultSelection,
   parseSelection,
   selectionQuery,
@@ -31,7 +30,15 @@ describe("defaultSelection", () => {
     expect(defaultSelection(SOURCE)).toEqual({
       docs: ["NP", "PEG", "PNSH"],
       lens: "globe",
-      sections: DEFAULT_SECTIONS,
+      sections: [
+        "overall",
+        "together",
+        "aligned",
+        "apart",
+        "commitments",
+        "documents",
+        "areas",
+      ],
     });
   });
 
@@ -42,6 +49,23 @@ describe("defaultSelection", () => {
 
   it("has no lens when the country has none", () => {
     expect(defaultSelection({ ...SOURCE, lenses: [] }).lens).toBeNull();
+  });
+
+  it("ends with the public contracts where the country has a contract record", () => {
+    expect(defaultSelection({ ...SOURCE, contracts: true }).sections).toEqual([
+      "overall",
+      "together",
+      "aligned",
+      "apart",
+      "commitments",
+      "documents",
+      "areas",
+      "contracts",
+    ]);
+  });
+
+  it("leaves the public contracts out where the country has no contract record", () => {
+    expect(defaultSelection(SOURCE).sections).not.toContain("contracts");
   });
 });
 
@@ -71,12 +95,28 @@ describe("parseSelection", () => {
   });
 
   it("falls back to the standard sections when none survive", () => {
-    expect(parseSelection({ sections: "bogus" }, SOURCE).sections).toEqual(DEFAULT_SECTIONS);
+    expect(parseSelection({ sections: "bogus" }, SOURCE).sections).toEqual([
+      "overall",
+      "together",
+      "aligned",
+      "apart",
+      "commitments",
+      "documents",
+      "areas",
+    ]);
   });
 
   it("drops the policy-area section when the country has no lens", () => {
     const source = { ...SOURCE, lenses: [] };
     expect(parseSelection({ sections: "areas,overall" }, source).sections).toEqual(["overall"]);
+  });
+
+  it("keeps the public contracts from a link only where the country has a contract record", () => {
+    expect(parseSelection({ sections: "contracts,overall" }, SOURCE).sections).toEqual(["overall"]);
+    expect(parseSelection({ sections: "contracts,overall" }, { ...SOURCE, contracts: true }).sections).toEqual([
+      "contracts",
+      "overall",
+    ]);
   });
 
   it("reads the first value of a repeated parameter", () => {
@@ -87,6 +127,11 @@ describe("parseSelection", () => {
 describe("selectionQuery", () => {
   it("is empty for the standard brief", () => {
     expect(selectionQuery(defaultSelection(SOURCE), SOURCE)).toBe("");
+  });
+
+  it("is empty for the standard brief with public contracts too", () => {
+    const source = { ...SOURCE, contracts: true };
+    expect(selectionQuery(defaultSelection(source), source)).toBe("");
   });
 
   it("writes only what differs from the standard brief and round-trips", () => {

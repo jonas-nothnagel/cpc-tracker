@@ -89,6 +89,9 @@ export interface BriefSource {
   /** AI syntheses per pair of documents; empty when the pipeline wrote none. */
   pairNotes?: BriefPairNote[];
   model: string | null;
+  /** Set where a public contract record is baked for the country: the brief
+   *  then offers its public contracts (on screen only). */
+  contracts?: boolean;
 }
 
 /** A document's name for running text: its full name without a trailing

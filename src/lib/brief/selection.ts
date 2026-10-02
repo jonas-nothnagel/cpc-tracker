@@ -7,7 +7,8 @@ export type SectionId =
   | "apart"
   | "commitments"
   | "documents"
-  | "areas";
+  | "areas"
+  | "contracts";
 
 export const SECTION_IDS: SectionId[] = [
   "overall",
@@ -17,9 +18,11 @@ export const SECTION_IDS: SectionId[] = [
   "commitments",
   "documents",
   "areas",
+  "contracts",
 ];
 
-/** The standard brief: four A4 pages, the policy areas last. */
+/** The standard brief: four A4 pages, the policy areas last; then, on screen
+ *  where the country has a contract record, the public contracts. */
 export const DEFAULT_SECTIONS: SectionId[] = [
   "overall",
   "together",
@@ -28,6 +31,7 @@ export const DEFAULT_SECTIONS: SectionId[] = [
   "commitments",
   "documents",
   "areas",
+  "contracts",
 ];
 
 export interface BriefSelection {
@@ -57,8 +61,14 @@ function sameList(a: readonly string[], b: readonly string[]): boolean {
   return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
-function allowedSections(source: BriefSource): Set<SectionId> {
-  return new Set(SECTION_IDS.filter((id) => id !== "areas" || source.lenses.length > 0));
+/** The sections a country's brief can hold: the policy areas need a lens,
+ *  the public contracts a contract record. */
+export function allowedSections(source: BriefSource): Set<SectionId> {
+  return new Set(
+    SECTION_IDS.filter(
+      (id) => (id !== "areas" || source.lenses.length > 0) && (id !== "contracts" || source.contracts === true),
+    ),
+  );
 }
 
 export function defaultSelection(source: BriefSource): BriefSelection {

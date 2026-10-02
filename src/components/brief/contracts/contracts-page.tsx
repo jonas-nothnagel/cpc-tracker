@@ -1,12 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { emptyFocus, type Focus } from "@/lib/brief/contracts/focus";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { CloserBlock } from "./closer-block";
+import { CurrencySwitch } from "./currency-switch";
 import { FocusBar } from "./focus-bar";
 import { CurrencyProvider, type Currency } from "./money";
 import { Overview } from "./overview";
@@ -50,21 +51,6 @@ export function ContractsPage({
   );
   const [currency, setCurrency] = useState<Currency>(initialCurrency);
   const rate = setup.file.source.usdRate;
-  const format = useFormatter();
-  const tc = useTranslations("brief.contracts.currency");
-  // The choice travels with the link, so a shared page opens as it was read.
-  const choose = (next: Currency) => {
-    setCurrency(next);
-    const params = new URLSearchParams(window.location.search);
-    if (next === "usd") params.set("cur", "usd");
-    else params.delete("cur");
-    const query = params.toString();
-    window.history.replaceState(
-      window.history.state,
-      "",
-      `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`,
-    );
-  };
   const open = (p: PanelState) => setStack([p]);
   const placeNames = useMemo(() => Object.fromEntries((geo?.features ?? []).map((f) => [f.code, f.name])), [geo]);
 
@@ -75,25 +61,7 @@ export function ContractsPage({
           <header className="ct-head">
             <p className="ct-country">{setup.countryName}</p>
             <h1 className="ct-title">{t("title")}</h1>
-            {rate > 0 && (
-              <div className="ct-currency" role="group" aria-label={tc("label")}>
-                <span className="ct-currency-label">{tc("label")}</span>
-                {(["mnt", "usd"] as const).map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    className="ct-lens-option"
-                    aria-pressed={currency === c}
-                    onClick={() => choose(c)}
-                  >
-                    {tc(c)}
-                  </button>
-                ))}
-                {currency === "usd" && (
-                  <span className="ct-currency-rate">{tc("rate", { rate: format.number(rate) })}</span>
-                )}
-              </div>
-            )}
+            <CurrencySwitch currency={currency} rate={rate} onChange={setCurrency} />
           </header>
           <FocusBar setup={setup} focus={focus} placeNames={placeNames} onFocus={onFocus} />
           <Overview

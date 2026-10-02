@@ -27,7 +27,14 @@ const GEO: GeoFile = {
 };
 
 function renderOverview(
-  opts: { geo?: GeoFile | null; focus?: Partial<Focus>; step?: Step; currency?: Currency; setup?: ReturnType<typeof setupFixture> } = {},
+  opts: {
+    geo?: GeoFile | null;
+    focus?: Partial<Focus>;
+    step?: Step;
+    steps?: Step[];
+    currency?: Currency;
+    setup?: ReturnType<typeof setupFixture>;
+  } = {},
 ) {
   const onFocus = vi.fn();
   const onContract = vi.fn();
@@ -47,6 +54,7 @@ function renderOverview(
             onTarget={onTarget}
             onList={onList}
             initialStep={opts.step}
+            steps={opts.steps}
           />
         </div>
       </CurrencyProvider>
@@ -183,6 +191,16 @@ describe("Overview", () => {
   it("drops the map step where the country has no outlines", () => {
     renderOverview({ geo: null });
     expect([...document.querySelectorAll("[data-step]")].map((el) => (el as HTMLElement).dataset.step)).toEqual(["record", "purpose", "areas"]);
+  });
+
+  it("shows only the steps it is given, up to the map", () => {
+    renderOverview({ steps: ["record", "purpose", "places"] });
+    expect([...document.querySelectorAll("[data-step]")].map((el) => (el as HTMLElement).dataset.step)).toEqual(["record", "purpose", "places"]);
+  });
+
+  it("still drops the map from the steps it is given where the country has no outlines", () => {
+    renderOverview({ geo: null, steps: ["record", "purpose", "places"] });
+    expect([...document.querySelectorAll("[data-step]")].map((el) => (el as HTMLElement).dataset.step)).toEqual(["record", "purpose"]);
   });
 
   it("states the record and its share for nature or climate in numbers", () => {

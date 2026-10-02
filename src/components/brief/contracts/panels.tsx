@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { DrawerHeader, DrawerShell } from "@/components/ui/drawer-shell";
-import { Link } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 import { misalignedRows } from "@/lib/brief/contracts/misaligned";
 import type { Contract, ContractRecord, LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
@@ -108,7 +108,9 @@ function ContractPanel({
         .filter((x): x is { lens: LensKey; name: string } => x !== null)
     : [];
   const value = contract?.value ?? 0;
-  const strong = record.strong.map((x) => x.target);
+  // The targets the page holds: in the brief, those in its documents.
+  const misaligned = record.misaligned.filter((x) => targets.has(x.target));
+  const strong = record.strong.map((x) => x.target).filter((x) => targets.has(x));
   const shownStrong = allTargets ? strong : strong.slice(0, STRONG_SHOWN);
   const targetButton = (id: string) => {
     const x = targets.get(id);
@@ -173,15 +175,15 @@ function ContractPanel({
             )}
             <Fact label={t("targets")}>
               <span className="ct-reading-counts">
-                <span>{t("strongCount", { count: record.strong.length })}</span>
-                {record.misaligned.length > 0 && <span className="ct-reading-mis">{t("misCount", { count: record.misaligned.length })}</span>}
+                <span>{t("strongCount", { count: strong.length })}</span>
+                {misaligned.length > 0 && <span className="ct-reading-mis">{t("misCount", { count: misaligned.length })}</span>}
               </span>
             </Fact>
           </dl>
 
-          {record.misaligned.length > 0 && (
+          {misaligned.length > 0 && (
             <ul className="ct-panel-targets">
-              {record.misaligned.map((x) => (
+              {misaligned.map((x) => (
                 <li key={x.target} className="ct-panel-target">
                   <span className="brief-panel-mark brief-panel-mark-apart" aria-hidden="true" />
                   <div className="ct-panel-target-main">
@@ -233,13 +235,17 @@ function TargetPanel({
   id,
   setup,
   onContract,
+  onExplore,
 }: {
   id: string;
   setup: ContractsSetup;
   onContract: (id: string) => void;
+  /** Puts the target in the centre of the ring on the same page (the brief). */
+  onExplore?: (id: string) => void;
 }) {
   const t = useTranslations("brief.contracts.panel");
   const m = useMoney();
+  const locale = useLocale();
   const { targets, docs, docOf } = useLookups(setup);
   const [all, setAll] = useState(false);
   const target = targets.get(id);
@@ -325,10 +331,21 @@ function TargetPanel({
           </section>
         )}
 
-        <Link className="ct-link" href={`/${setup.countryId}/brief/explore?focus=${encodeURIComponent(id)}`}>
-          {t("explore")}
-          <span aria-hidden="true"> ›</span>
-        </Link>
+        {onExplore ? (
+          <button type="button" className="ct-link" onClick={() => onExplore(id)}>
+            {t("explore")}
+            <span aria-hidden="true"> ›</span>
+          </button>
+        ) : (
+          // As the brief's other links: English URLs carry no locale prefix.
+          <a
+            className="ct-link"
+            href={`${locale === routing.defaultLocale ? "" : `/${locale}`}/${setup.countryId}/brief/explore?focus=${encodeURIComponent(id)}`}
+          >
+            {t("explore")}
+            <span aria-hidden="true"> ›</span>
+          </a>
+        )}
       </div>
     </>
   );
@@ -400,6 +417,7 @@ export function ContractsPanels({
   onPush,
   onBack,
   onClose,
+  onExplore,
 }: {
   stack: PanelState[];
   setup: ContractsSetup;
@@ -408,6 +426,9 @@ export function ContractsPanels({
   onPush: (next: PanelState) => void;
   onBack: () => void;
   onClose: () => void;
+  /** Where the page has the ring (the brief): a target goes to its centre
+   *  there, rather than to the ring's own page. */
+  onExplore?: (id: string) => void;
 }) {
   const t = useTranslations("brief.contracts.panel");
   const top = stack[stack.length - 1];
@@ -442,7 +463,13 @@ export function ContractsPanels({
           onTarget={(id) => onPush({ kind: "target", id })}
         />
       ) : (
-        <TargetPanel key={top.id} id={top.id} setup={setup} onContract={(id) => onPush({ kind: "contract", id })} />
+        <TargetPanel
+          key={top.id}
+          id={top.id}
+          setup={setup}
+          onContract={(id) => onPush({ kind: "contract", id })}
+          onExplore={onExplore}
+        />
       )}
     </DrawerShell>
   );

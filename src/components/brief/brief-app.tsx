@@ -15,6 +15,8 @@ import type { BriefSource } from "@/lib/brief/source";
 import type { ExploreSetup } from "@/lib/brief/explore/setup";
 import { EXPLORE_PARAMS, exploreQuery, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
 import { AreasView } from "./areas/areas-view";
+import { ContractsSection, type BriefContracts } from "./contracts/contracts-section";
+import { CurrencyProvider, type Currency } from "./contracts/money";
 import { Explore } from "./explore/explore";
 import { Builder } from "./builder";
 import { Flow } from "./flow";
@@ -52,12 +54,18 @@ export function BriefApp({
   initialSelection,
   preparedOn,
   explore,
+  contracts,
+  initialCurrency = "mnt",
 }: {
   source: BriefSource;
   initialSelection: BriefSelection;
   preparedOn: string;
   /** The explorer's layers, groupings and link state, from the server. */
   explore?: ExploreSetup;
+  /** The country's public contract record, where one is baked. */
+  contracts?: BriefContracts;
+  /** From the link (?cur=usd): the currency the contracts open in. */
+  initialCurrency?: Currency;
 }) {
   const tl = useTranslations("briefing.lens");
   const tp = useTranslations("brief.preview");
@@ -65,6 +73,7 @@ export function BriefApp({
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
   const [mode, setMode] = useState<"read" | "preview">("read");
+  const [currency, setCurrency] = useState<Currency>(initialCurrency);
   // Where the reader was on the flowing page when the preview opened.
   const readScroll = useRef(0);
   const printRef = useRef<HTMLButtonElement>(null);
@@ -92,9 +101,9 @@ export function BriefApp({
       // A shallow URL update keeps the brief shareable without a server
       // round trip; every number is computed here from the source.
       const params = new URLSearchParams(selectionQuery(next, source));
-      // The explorer's part of the link stays as it is.
+      // The explorer's part of the link, and the currency, stay as they are.
       const current = new URLSearchParams(window.location.search);
-      for (const key of EXPLORE_PARAMS) {
+      for (const key of [...EXPLORE_PARAMS, "cur"]) {
         const value = current.get(key);
         if (value) params.set(key, value);
       }
@@ -171,7 +180,7 @@ export function BriefApp({
   };
   const preview = mode === "preview";
 
-  return (
+  const page = (
     <div data-brief className="brief-root">
       <Hero
         countryName={source.countryName}
@@ -218,9 +227,21 @@ export function BriefApp({
                 />
               ) : undefined
             }
-            sections={selection.sections.filter((id) => !OVERVIEW_SECTIONS.includes(id))}
+            sections={selection.sections.filter(
+              (id) => !OVERVIEW_SECTIONS.includes(id) && (id !== "contracts" || contracts !== undefined),
+            )}
             renderSection={(id) =>
-              id === "areas" ? (
+              id === "contracts" && contracts ? (
+                <ContractsSection
+                  contracts={contracts}
+                  docs={selection.docs}
+                  lens={selection.lens}
+                  onLens={(next) => update({ ...selection, lens: next })}
+                  currency={currency}
+                  onCurrency={setCurrency}
+                  onExplore={explore ? exploreTarget : undefined}
+                />
+              ) : id === "areas" ? (
                 <AreasView
                   source={source}
                   data={data}
@@ -288,5 +309,11 @@ export function BriefApp({
         />
       </div>
     </div>
+  );
+  // One currency for every amount on the page, the contracts under a comparison too.
+  return (
+    <CurrencyProvider currency={currency} rate={contracts?.setup.file.source.usdRate ?? 0}>
+      {page}
+    </CurrencyProvider>
   );
 }

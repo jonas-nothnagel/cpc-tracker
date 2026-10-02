@@ -5,6 +5,9 @@ import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
 import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
+import { loadContracts } from "@/lib/brief/contracts/load";
+import { contractsSetup } from "@/lib/brief/contracts/setup";
+import { GEO } from "@/lib/brief/contracts/geo-data";
 import { BriefApp } from "@/components/brief/brief-app";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -22,8 +25,11 @@ async function load(props: Props) {
   const result = getCountryDashboardPayload(entry.id, locale, null);
   if (result.kind !== "ok") return null;
   const data = result.payload.data as unknown as Record<string, unknown>;
-  const source = buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale });
-  return { locale, source, data };
+  // A country whose contract record is baked also shows its public contracts.
+  const file = loadContracts(entry.id);
+  const source = { ...buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale }), contracts: file !== null };
+  const contracts = file ? { setup: contractsSetup({ file, source }), geo: GEO[entry.id] ?? null } : undefined;
+  return { locale, source, data, contracts };
 }
 
 export async function generateMetadata(props: Props) {
@@ -39,12 +45,15 @@ export default async function BriefPage(props: Props) {
   if (!loaded) notFound();
   const searchParams = await props.searchParams;
   const selection = parseSelection(searchParams, loaded.source);
+  const cur = Array.isArray(searchParams.cur) ? searchParams.cur[0] : searchParams.cur;
   return (
     <BriefApp
       source={loaded.source}
       initialSelection={selection}
       preparedOn={new Date().toISOString()}
       explore={exploreSetup({ data: loaded.data, source: loaded.source, docs: selection.docs, searchParams })}
+      contracts={loaded.contracts}
+      initialCurrency={cur === "usd" ? "usd" : "mnt"}
     />
   );
 }

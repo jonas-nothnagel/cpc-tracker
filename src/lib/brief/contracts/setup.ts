@@ -29,3 +29,29 @@ export function contractsSetup(args: { file: ContractsFile; source: BriefSource 
     lenses: source.lenses.filter((l) => PAGE_LENSES.has(l.id)),
   };
 }
+
+/**
+ * The setup as a brief of these documents reads it: their documents and
+ * targets, and each contract's strong matches and potential misalignments
+ * with those targets only. The money stays whole (every contract, the
+ * record's totals). The setup itself while every document is in the brief.
+ */
+export function scopeSetup(setup: ContractsSetup, docs: readonly string[]): ContractsSetup {
+  const keep = new Set(docs);
+  if (setup.documents.every((d) => keep.has(d.id))) return setup;
+  const targets = setup.targets.filter((x) => keep.has(x.doc));
+  const inScope = new Set(targets.map((x) => x.id));
+  return {
+    ...setup,
+    documents: setup.documents.filter((d) => keep.has(d.id)),
+    targets,
+    file: {
+      ...setup.file,
+      contracts: setup.file.contracts.map((c) => ({
+        ...c,
+        matches: c.matches.filter((id) => inScope.has(id)),
+        misaligned: c.misaligned.filter((id) => inScope.has(id)),
+      })),
+    },
+  };
+}

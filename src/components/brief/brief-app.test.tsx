@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import { BriefApp } from "./brief-app";
@@ -18,6 +18,9 @@ import { initialExploreState } from "@/lib/brief/explore/state";
 import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
 import type { BriefSource } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
+import { contractsSetup } from "@/lib/brief/contracts/setup";
+import { contractsFixture } from "@/lib/brief/contracts/test-fixture";
+import type { GeoFile } from "@/lib/brief/contracts/geo";
 
 const IDS = ["A1", "A2", "A3", "B1", "B2", "C1", "C2"];
 const I = Object.fromEntries(IDS.map((id, i) => [id, i]));
@@ -435,5 +438,113 @@ describe("BriefApp accessibility and provenance", () => {
     // The overview opens with its first document open.
     fireEvent.click(within(within(flow).getAllByTestId("brief-pair-row")[0]).getByRole("button"));
     expect(screen.getByRole("dialog").closest("[data-screen-only]")).not.toBeNull();
+  });
+});
+
+describe("BriefApp public contracts", () => {
+  const ring = (x0: number, y0: number, x1: number, y1: number): [number, number][] => [
+    [x0, y0],
+    [x1, y0],
+    [x1, y1],
+    [x0, y1],
+    [x0, y0],
+  ];
+  const GEO: GeoFile = {
+    source: "test",
+    features: [
+      { code: "MN-043", name: "Khovd", point: [91, 47], rings: [ring(90, 46, 92, 48)] },
+      { code: "MN-1", name: "Ulaanbaatar", point: [106.5, 47.5], rings: [ring(106, 47, 107, 48)] },
+    ],
+    band: ["MN-1"],
+  };
+  const WITH: BriefSource = {
+    ...SOURCE,
+    contracts: true,
+    lenses: [
+      ...SOURCE.lenses,
+      { id: "ipcc", taxonomyType: "sector", categories: [{ id: "sector_waste", name: "Waste" }], primary: { A1: "sector_waste" } },
+    ],
+  };
+  const CONTRACTS = { setup: contractsSetup({ file: contractsFixture(), source: WITH }), geo: GEO };
+
+  function renderWith(opts: { explore?: boolean } = {}) {
+    return render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <BriefApp
+          source={WITH}
+          initialSelection={defaultSelection(WITH)}
+          preparedOn="2026-09-23T10:00:00.000Z"
+          contracts={CONTRACTS}
+          explore={
+            opts.explore ? { layers: null, groups: ["docs"], initialState: initialExploreState(), initialPair: null } : undefined
+          }
+        />
+      </NextIntlClientProvider>,
+    );
+  }
+  const section = () => document.getElementById("brief-flow-contracts");
+
+  it("offers them in the menu, on screen only, where the country has a contract record", () => {
+    renderWith();
+    const menu = screen.getByRole("group", { name: "In the brief" });
+    expect(within(menu).getByRole("checkbox", { name: /Public contracts/ }).closest("label")?.textContent).toContain("on screen only");
+    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
+  });
+
+  it("never offers them where the country has no contract record", () => {
+    renderApp();
+    expect(within(screen.getByRole("group", { name: "In the brief" })).queryByRole("checkbox", { name: /Public contracts/ })).toBeNull();
+    expect(section()).toBeNull();
+  });
+
+  it("shows them after the policy areas, up to the map, and leaves them out with the section", () => {
+    renderWith();
+    const areas = document.getElementById("brief-flow-areas")!;
+    expect(areas.compareDocumentPosition(section()!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(section()!).getByRole("heading", { level: 2, name: "Public contracts" })).toBeTruthy();
+    expect([...section()!.querySelectorAll<HTMLElement>("[data-step]")].map((el) => el.dataset.step)).toEqual([
+      "record",
+      "purpose",
+      "places",
+    ]);
+    fireEvent.click(within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Public contracts/ }));
+    expect(section()).toBeNull();
+    expect(window.location.search).toContain("sections=");
+  });
+
+  it("keeps the currency in the link while the brief changes", () => {
+    renderWith();
+    fireEvent.click(within(section()!).getByRole("button", { name: "US$" }));
+    expect(within(section()!).getByRole("heading", { name: /^US\$71\.4 million in 40 public contracts/ })).toBeTruthy();
+    fireEvent.click(screen.getByRole("checkbox", { name: /Document C/ }));
+    const params = new URLSearchParams(window.location.search);
+    expect(params.get("cur")).toBe("usd");
+    expect(params.get("docs")).toBe("A,B");
+  });
+
+  it("keeps the menu's policy areas and the contracts' choice as one", () => {
+    renderWith();
+    const purpose = section()!.querySelector<HTMLElement>('[data-step="purpose"]')!;
+    fireEvent.click(within(within(purpose).getByRole("group", { name: "Policy areas" })).getByRole("button", { name: "Climate mitigation" }));
+    expect((screen.getByRole("radio", { name: "Climate mitigation" }) as HTMLInputElement).checked).toBe(true);
+    fireEvent.click(screen.getByRole("radio", { name: "Biodiversity" }));
+    expect(within(within(purpose).getByRole("group", { name: "Policy areas" })).getByRole("button", { name: "Biodiversity" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
+  it("hands a target from the contracts to the ring, and goes there", async () => {
+    const scroll = vi.mocked(Element.prototype.scrollIntoView);
+    renderWith({ explore: true });
+    const places = section()!.querySelector<HTMLElement>('[data-step="places"]')!;
+    fireEvent.click(within(places).getByRole("button", { name: /^Khovd/ }));
+    fireEvent.click(within(places).getByRole("button", { name: /Text of B1/ }));
+    scroll.mockClear();
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: /Explore this target/ }));
+    const ringSection = document.getElementById("brief-explore") as HTMLElement;
+    await waitFor(() => expect(scroll.mock.contexts).toContain(ringSection));
+    expect(document.activeElement).toBe(document.getElementById("brief-explore-title"));
+    expect(screen.queryByRole("dialog")).toBeNull();
   });
 });
