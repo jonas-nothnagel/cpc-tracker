@@ -132,7 +132,7 @@ describe("locale lock against messages/*.json", () => {
     ["whereToFocus.bar.segmentTitle", (m) => m.briefing.whereToFocus.bar.segmentTitle,
       ["click to open", "pulse para abrir", "нээхийн тулд дарна уу"]],
     ["lens.ipcc", (m) => m.briefing.lens.ipcc,
-      ["Mitigation sectors", "Sectores de mitigación", "Бууруулах салбарууд"]],
+      ["Climate mitigation", "Mitigación climática", "Уур амьсгалын өөрчлөлтийг сааруулах"]],
     ["lens.gga", (m) => m.briefing.lens.gga,
       ["Climate adaptation", "Adaptación climática", "Уур амьсгалын дасан зохицол"]],
     ["sectors.filter.misaligned", (m) => m.briefing.sectors.filter.misaligned,

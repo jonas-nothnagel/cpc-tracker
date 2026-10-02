@@ -207,7 +207,7 @@ describe("AreasView", () => {
   it("offers the lens as a plain choice, the brief's own", () => {
     const { onLens } = renderView();
     expect(screen.getByRole("button", { name: "Biodiversity" }).getAttribute("aria-pressed")).toBe("true");
-    fireEvent.click(screen.getByRole("button", { name: "Mitigation sectors" }));
+    fireEvent.click(screen.getByRole("button", { name: "Climate mitigation" }));
     expect(onLens).toHaveBeenCalledWith("ipcc");
   });
 

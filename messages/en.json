@@ -190,7 +190,7 @@
     },
     "lens": {
       "globe": "Biodiversity",
-      "ipcc": "Mitigation sectors",
+      "ipcc": "Climate mitigation",
       "country": "Country sectors",
       "gga": "Climate adaptation",
       "hr": "Human rights",
@@ -2028,13 +2028,13 @@
     "controls": {
       "groupDocuments": "Documents",
       "groupGlobe": "Biodiversity",
-      "groupSectors": "Mitigation sectors",
+      "groupSectors": "Climate mitigation",
       "groupDocumentsTitle": "Group the wheel by source document",
       "groupGlobeTitle": "Group by biodiversity category (GLOBE taxonomy)",
       "groupSectorsTitle": "Group by climate mitigation sector (IPCC)",
       "groupOptionDocument": "By Document Type",
       "groupOptionGlobe": "By Biodiversity Category",
-      "groupOptionSector": "By Mitigation Sector",
+      "groupOptionSector": "By Climate Mitigation",
       "filterHighContra": "Strong + potential misalignment",
       "filterHighMedium": "High + Medium",
       "filterAll": "All connections",
@@ -2530,7 +2530,7 @@
       "infoBerPeriod": "BER period: {period}.",
       "lensLabel": "Lens",
       "lensGlobe": "Biodiversity",
-      "lensSector": "Mitigation sectors",
+      "lensSector": "Climate mitigation",
       "lensNbs": "Nature-based solutions (NBS)",
       "lensBerProgramme": "BER programmes (28)",
       "envAll": "All",
@@ -2591,7 +2591,7 @@
       "barChartNote": "A bar-chart view disaggregated by ministry will follow once the BER program-to-ministry mapping is wired (separate workstream).",
       "viewLabels": {
         "globe_sub": "Biodiversity subcategories (BIOFIN GLOBE)",
-        "sector": "Mitigation sectors (IPCC)"
+        "sector": "Climate mitigation (IPCC)"
       },
       "globeSub": {
         "taxonomyLabel": "Biodiversity category / subcategory",
@@ -2649,7 +2649,7 @@
     "implementationCoverage": {
       "groupMode": {
         "byNationalSector": "By National Sector Categories",
-        "byIpccSector": "By Mitigation sector (standardised)",
+        "byIpccSector": "By Climate mitigation (standardised)",
         "default": "Default (Climate Mitigation + Adaptation Goals)",
         "byBiodiversity": "By Biodiversity Taxonomy",
         "byGga": "By Climate adaptation (Global Goal on Adaptation)",
@@ -2762,7 +2762,7 @@
       "lensLabel": "Lens",
       "lensSelectTitle": "The connecting taxonomy. Two items are linked (on both axes) if they share a relevant category.",
       "lensGlobe": "Biodiversity",
-      "lensSector": "Mitigation sectors",
+      "lensSector": "Climate mitigation",
       "lensNbs": "Nature-based solutions (NBS)",
       "hideLensOrphans": "Hide lens-orphans",
       "connectionLines": "LLM connection lines",

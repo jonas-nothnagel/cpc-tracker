@@ -347,8 +347,8 @@ describe("BriefApp screen and print", () => {
     };
     renderApp(source);
     const areas = screen.getByTestId("brief-areas");
-    fireEvent.click(within(areas).getByRole("button", { name: "Mitigation sectors" }));
-    expect((screen.getByRole("radio", { name: "Mitigation sectors" }) as HTMLInputElement).checked).toBe(true);
+    fireEvent.click(within(areas).getByRole("button", { name: "Climate mitigation" }));
+    expect((screen.getByRole("radio", { name: "Climate mitigation" }) as HTMLInputElement).checked).toBe(true);
     expect(window.location.search).toContain("lens=ipcc");
     fireEvent.click(screen.getByRole("radio", { name: "Biodiversity" }));
     expect(within(areas).getByRole("button", { name: "Biodiversity" }).getAttribute("aria-pressed")).toBe("true");

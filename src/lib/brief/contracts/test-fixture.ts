@@ -90,7 +90,7 @@ export function briefSide() {
 }
 
 /** The page's setup for component tests: the fixture record, three
- *  documents, six targets, two lenses (Biodiversity, Mitigation sectors). */
+ *  documents, six targets, two lenses (Biodiversity, Climate mitigation). */
 export function setupFixture(): ContractsSetup {
   const side = briefSide();
   const doc = (id: string, name: string): BriefDocument => ({ id, code: id, name, full: name, color: "#000000", count: 2, defaultOn: true });

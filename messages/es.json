@@ -190,7 +190,7 @@
     },
     "lens": {
       "globe": "Biodiversidad",
-      "ipcc": "Sectores de mitigación",
+      "ipcc": "Mitigación climática",
       "country": "Sectores del país",
       "gga": "Adaptación climática",
       "hr": "Derechos humanos",
@@ -2028,13 +2028,13 @@
     "controls": {
       "groupDocuments": "Documentos",
       "groupGlobe": "Biodiversidad",
-      "groupSectors": "Sectores de mitigación",
+      "groupSectors": "Mitigación climática",
       "groupDocumentsTitle": "Agrupar la rueda por documento de origen",
       "groupGlobeTitle": "Agrupar por categoría de biodiversidad (taxonomía GLOBE)",
       "groupSectorsTitle": "Agrupar por sector de mitigación climática (IPCC)",
       "groupOptionDocument": "Por tipo de documento",
       "groupOptionGlobe": "Por categoría de biodiversidad",
-      "groupOptionSector": "Por sector de mitigación",
+      "groupOptionSector": "Por mitigación climática",
       "filterHighContra": "Fuerte + posible desalineación",
       "filterHighMedium": "Alta + Media",
       "filterAll": "Todas las conexiones",
@@ -2530,7 +2530,7 @@
       "infoBerPeriod": "Período BER: {period}.",
       "lensLabel": "Lente",
       "lensGlobe": "Biodiversidad",
-      "lensSector": "Sectores de mitigación",
+      "lensSector": "Mitigación climática",
       "lensNbs": "Soluciones basadas en la naturaleza (NBS)",
       "lensBerProgramme": "Programas BER (28)",
       "envAll": "Todos",
@@ -2591,7 +2591,7 @@
       "barChartNote": "Una vista de gráfico de barras desagregada por ministerio se añadirá una vez que se conecte el mapeo de programa a ministerio del BER (flujo de trabajo independiente).",
       "viewLabels": {
         "globe_sub": "Subcategorías de biodiversidad (BIOFIN GLOBE)",
-        "sector": "Sectores de mitigación (IPCC)"
+        "sector": "Mitigación climática (IPCC)"
       },
       "globeSub": {
         "taxonomyLabel": "Categoría / subcategoría de biodiversidad",
@@ -2649,7 +2649,7 @@
     "implementationCoverage": {
       "groupMode": {
         "byNationalSector": "Por categorías sectoriales nacionales",
-        "byIpccSector": "Por sector de mitigación (estandarizado)",
+        "byIpccSector": "Por mitigación climática (estandarizado)",
         "default": "Predeterminado (Mitigación climática + Metas de adaptación)",
         "byBiodiversity": "Por taxonomía de biodiversidad",
         "byGga": "Por adaptación climática (Objetivo Mundial de Adaptación)",
@@ -2762,7 +2762,7 @@
       "lensLabel": "Lente",
       "lensSelectTitle": "La taxonomía que conecta. Dos elementos se vinculan (en ambos ejes) si comparten una categoría relevante.",
       "lensGlobe": "Biodiversidad",
-      "lensSector": "Sectores de mitigación",
+      "lensSector": "Mitigación climática",
       "lensNbs": "Soluciones basadas en la naturaleza (NBS)",
       "hideLensOrphans": "Ocultar huérfanos del lente",
       "connectionLines": "Líneas de conexión del LLM",

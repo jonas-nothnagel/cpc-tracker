@@ -363,7 +363,7 @@ describe("Overview", () => {
   it("lets the map change the lens as well", () => {
     const { onFocus } = renderOverview({ step: "places" });
     const lenses = within(step("places")).getByRole("group", { name: "Policy areas" });
-    fireEvent.click(within(lenses).getByRole("button", { name: "Mitigation sectors" }));
+    fireEvent.click(within(lenses).getByRole("button", { name: "Climate mitigation" }));
     expect(onFocus).toHaveBeenCalledWith({ lens: "ipcc", area: null });
   });
 
