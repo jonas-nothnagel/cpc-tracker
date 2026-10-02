@@ -15,6 +15,9 @@ const PSEUDO_DOCUMENTS = new Set(["BTR", "BER"]);
  *  takes over (Mongolia's LDN report title runs to 87 characters). */
 const MAX_NAME_LENGTH = 60;
 
+/** A target label that is only a clause number: "6", "2.1". */
+const BARE_NUMBER = /^\d+(?:\.\d+)*$/;
+
 export type LensId = "globe" | "ipcc" | "gga" | "hr";
 
 /** Index = code in `BriefSource.comparisons`. */
@@ -172,6 +175,11 @@ export function buildBriefSource(args: {
     ...[...present].filter((id) => !configDocs.some((d) => d.id === id)).sort(),
   ];
   const rank = new Map(docOrder.map((id, i) => [id, i]));
+  // A label that is only a number ("6") takes its document's code ("NBT 6"),
+  // so it never reads as a count beside the figures in a row.
+  const codeOf = new Map(configDocs.map((d) => [d.id, d.shortLabel || d.id]));
+  const labelOf = (t: Target) =>
+    BARE_NUMBER.test(t.sourceLabel) ? `${codeOf.get(t.sourceDocument) ?? t.sourceDocument} ${t.sourceLabel}` : t.sourceLabel;
 
   const commitments: BriefCommitment[] = targets
     .map((t, i) => ({ t, i }))
@@ -182,7 +190,7 @@ export function buildBriefSource(args: {
     )
     .map(({ t }) => {
       const flag = translated.get(t.id);
-      const c: BriefCommitment = { id: t.id, doc: t.sourceDocument, label: t.sourceLabel, text: t.text };
+      const c: BriefCommitment = { id: t.id, doc: t.sourceDocument, label: labelOf(t), text: t.text };
       return flag ? { ...c, translated: flag } : c;
     });
   const indexOf = new Map(commitments.map((c, i) => [c.id, i]));

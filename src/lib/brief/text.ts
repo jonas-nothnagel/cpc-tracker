@@ -64,13 +64,30 @@ export function clip(text: string, max: number): string {
 /** Labels shorter than this ("7 b)", "NBT 3") are clause numbers, not titles. */
 const TITLE_LABEL_LENGTH = 24;
 
+/** A clause number closing a label, also before a note in brackets:
+ *  "Agriculture and food security 30", "Objective 7 (Adaptation)",
+ *  "Action line 3.3.4.1.1.a.1". A year ("… by 2030") is not one. */
+const CLAUSE_END = /(?:^|\s)\d{1,3}(?:\.(?:\d{1,3}|[a-z]))*$/i;
+
+/** The fewest characters of text that follow a long clause label. */
+const MIN_CLAUSE_TEXT = 20;
+
+/** A label that says what its target is about: long, and not the name of a
+ *  section with a clause number. */
+function isTitle(label: string): boolean {
+  return label.length >= TITLE_LABEL_LENGTH && !CLAUSE_END.test(label.replace(/\s*\([^)]*\)\s*$/, ""));
+}
+
 /** A target as one readable line: its label, followed by the start of its
- *  verbatim text when the label is only a number. Clipped, never
+ *  verbatim text when the label does not say what the target is about (a
+ *  clause number, or a section's name with one). Clipped, never
  *  paraphrased. */
 export function targetLine(c: { label: string; text: string }, max = 80): string {
-  if (c.label.length >= TITLE_LABEL_LENGTH) return c.label;
+  if (isTitle(c.label)) return c.label;
   const text = c.text.trim();
   if (!text || text === c.label) return c.label;
   if (text.startsWith(c.label)) return clip(text, max);
-  return `${c.label} ${clip(text, max)}`;
+  // A short label leaves the text the whole length; a long one shares it.
+  const room = c.label.length < TITLE_LABEL_LENGTH ? max : Math.max(max - c.label.length - 1, MIN_CLAUSE_TEXT);
+  return `${c.label} ${clip(text, room)}`;
 }

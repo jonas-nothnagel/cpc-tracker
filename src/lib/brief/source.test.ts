@@ -145,6 +145,27 @@ describe("buildBriefSource", () => {
     });
   });
 
+  it("puts the document's code before a label that is only a number", () => {
+    const numbered = buildBriefSource({
+      countryId: "cote-divoire",
+      countryName: "Côte d'Ivoire",
+      data: {
+        ...DATA,
+        targets: [
+          { ...target("NBSAP_6", "NBSAP"), sourceLabel: "6" },
+          { ...target("LDNR_2", "LDNR"), sourceLabel: "2.1" },
+          { ...target("NDC_7", "NDC"), sourceLabel: "7 b)" },
+        ],
+      },
+      locale: "en",
+    });
+    expect(numbered.commitments.map((c) => [c.id, c.label])).toEqual([
+      ["NDC_7", "7 b)"],
+      ["NBSAP_6", "NBSAP 6"],
+      ["LDNR_2", "NRVTS 2.1"],
+    ]);
+  });
+
   it("encodes cross-document comparisons as [a, b, level, mechanism]", () => {
     // high = 0, low = 2, flagged = 4; resource_competition = 2
     expect(source.comparisons).toEqual([0, 2, 0, 0, 2, 3, 4, 2, 1, 3, 2, 0]);
