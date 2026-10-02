@@ -45,6 +45,9 @@ export function layoutGroups(
   unit: number,
   width: number,
   height: number,
+  /** Each group takes at least this much of the width (room for a name
+   *  above it), where the field has it for every group. */
+  minWidth = 0,
 ): GroupLayout {
   const present = specs
     .map((spec, index) => ({
@@ -68,10 +71,11 @@ export function layoutGroups(
   if (total === 0 || width <= 0 || height <= 0) return empty;
 
   const gapPitches = 2;
+  const least = present.length * minWidth < width ? minWidth : 0;
   const fits = (pitch: number) => {
     const rows = Math.max(1, Math.floor(height / pitch));
-    const cols = present.reduce((s, g) => s + Math.ceil(g.dots / rows), 0);
-    return cols * pitch + (present.length - 1) * gapPitches * pitch <= width;
+    const span = present.reduce((s, g) => s + Math.max(Math.ceil(g.dots / rows) * pitch, least), 0);
+    return span + (present.length - 1) * gapPitches * pitch <= width;
   };
   let pitch = Math.sqrt((width * height) / total);
   for (let i = 0; i < 600 && !fits(pitch); i++) pitch *= 0.985;
@@ -95,9 +99,9 @@ export function layoutGroups(
       group[n] = g.index;
       if (g.texture && (col + row) % 2 === 1) small[n] = 1;
     }
-    x += Math.ceil(g.dots / rows) * pitch;
-    groups.push({ index: g.index, count: g.count, dots: g.dots, x0, x1: x });
-    x += gapPitches * pitch;
+    const x1 = x0 + Math.ceil(g.dots / rows) * pitch;
+    groups.push({ index: g.index, count: g.count, dots: g.dots, x0, x1 });
+    x = Math.max(x1, x0 + least) + gapPitches * pitch;
   }
   return { pitch, radius: Math.max(0.55, pitch * 0.34), rows, groups, xs, ys, group, small };
 }

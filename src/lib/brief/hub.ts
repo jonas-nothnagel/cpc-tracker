@@ -203,6 +203,9 @@ export const MAP_FAINT = 0.125;
 
 /** Room above the overview's groups for their labels. */
 const LABEL_BAND = 30;
+/** The overview's narrowest group: room for its share above it ("<1%"),
+ *  so a name never runs into the next one or past the field's edge. */
+export const COLUMN_LABEL = 44;
 /** Room above each cluster around a document in focus, for the other
  *  document's name (two lines) and its shares. */
 export const FOCUS_LABEL = 74;
@@ -297,7 +300,7 @@ function emptyLayout(n: number): HubLayout {
 /** The dot pitch of the overview at this size: every pair, by rating. */
 function overviewPitch(particles: HubParticle[], width: number, height: number): number {
   const counts = DOT_ORDER.map((_, t) => ({ count: particles.filter((p) => p.tone === t).length }));
-  return layoutGroups(counts, 1, width, Math.max(1, height - LABEL_BAND)).pitch;
+  return layoutGroups(counts, 1, width, Math.max(1, height - LABEL_BAND), COLUMN_LABEL).pitch;
 }
 
 /** The overview: the four ratings side by side, like the landing field. */
@@ -309,7 +312,7 @@ function placeGroups(
 ) {
   const present = members.filter((m) => m.ids.length > 0);
   const specs = present.map((m) => ({ count: m.ids.length, texture: m.texture }));
-  const grid = layoutGroups(specs, 1, width, Math.max(1, height - LABEL_BAND));
+  const grid = layoutGroups(specs, 1, width, Math.max(1, height - LABEL_BAND), COLUMN_LABEL);
   let di = 0;
   grid.groups.forEach((g) => {
     const m = present[g.index];

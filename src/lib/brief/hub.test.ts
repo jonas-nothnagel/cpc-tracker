@@ -5,6 +5,7 @@ import { briefFixture } from "./test-fixture";
 import { DOT_ORDER } from "./dot-layout";
 import {
   cardPlace,
+  COLUMN_LABEL,
   FOCUS_LABEL,
   fitAlong,
   MAP_BACK,
@@ -139,6 +140,15 @@ describe("layoutHub", () => {
       ["partial", 21],
       ["apart", 15],
     ]);
+  });
+
+  it("overview: each group leaves room for its share above it, up to the next group or the field's edge", () => {
+    // A narrow field: the last group is a single column of dots.
+    const layout = layoutHub({ kind: "overview" }, particles, DATA, 200, 400);
+    layout.groups.forEach((g, k) => {
+      const next = layout.groups[k + 1]?.x0 ?? 200;
+      expect(next - g.x0).toBeGreaterThanOrEqual(COLUMN_LABEL);
+    });
   });
 
   describe("the map of documents", () => {

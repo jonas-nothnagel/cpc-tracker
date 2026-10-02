@@ -72,6 +72,21 @@ describe("layoutGroups", () => {
     expect(layout.group.length).toBe(40);
   });
 
+  it("gives each group at least the width asked for: room for a name above it, up to the next group or the field's edge", () => {
+    const layout = layoutGroups([{ count: 300 }, { count: 30 }, { count: 1 }], 1, 200, 100, 40);
+    const [a, b, c] = layout.groups;
+    expect(b.x0 - a.x0).toBeGreaterThanOrEqual(40);
+    expect(c.x0 - b.x0).toBeGreaterThanOrEqual(40);
+    expect(200 - c.x0).toBeGreaterThanOrEqual(40);
+    // The dots stay inside the field and inside their own group.
+    for (let i = 0; i < layout.xs.length; i++) {
+      const g = layout.groups.find((x) => x.index === layout.group[i])!;
+      expect(layout.xs[i]).toBeGreaterThanOrEqual(g.x0);
+      expect(layout.xs[i]).toBeLessThanOrEqual(g.x1);
+      expect(layout.xs[i]).toBeLessThanOrEqual(200);
+    }
+  });
+
   it("thins every other dot of a textured group only", () => {
     const layout = layoutGroups([{ count: 30 }, { count: 10, texture: true }], 1, 200, 40);
     let thin = 0;
