@@ -3,10 +3,6 @@ import { focusKey } from "./focus";
 import { buildExploreLayers, layerIdsOf, type ExploreLayers } from "./layers";
 import { parseExploreState, type ExploreGroup, type ExploreState } from "./state";
 
-/** Lenses the ring can group by. The human rights lens is a draft whose
- *  areas leave most targets unclassified, so it is not offered here. */
-const RING_LENSES = new Set(["globe", "ipcc", "gga"]);
-
 export interface ExploreSetup {
   layers: ExploreLayers | null;
   groups: ExploreGroup[];
@@ -31,14 +27,14 @@ export function exploreSetup(args: {
 }): ExploreSetup {
   const { data, source, docs, searchParams } = args;
   const layers = buildExploreLayers(data, source);
-  const groups: ExploreGroup[] = ["docs", ...source.lenses.map((l) => l.id).filter((id) => RING_LENSES.has(id))];
+  // Every lens the source holds; a lens seats only the targets in its areas
+  // (the human rights lens few of them) and says so beside the choice.
+  const groups: ExploreGroup[] = ["docs", ...source.lenses.map((l) => l.id)];
   const inScope = new Set(docs);
   const ids = new Set([
     ...source.commitments.filter((c) => inScope.has(c.doc)).map((c) => c.id),
     ...docs.map((id) => focusKey({ kind: "doc", id })),
-    ...source.lenses
-      .filter((l) => RING_LENSES.has(l.id))
-      .flatMap((l) => l.categories.map((c) => focusKey({ kind: "area", lens: l.id, id: c.id }))),
+    ...source.lenses.flatMap((l) => l.categories.map((c) => focusKey({ kind: "area", lens: l.id, id: c.id }))),
     ...(layers ? layerIdsOf(layers) : []),
   ]);
   const initialState = parseExploreState(searchParams, ids, groups);

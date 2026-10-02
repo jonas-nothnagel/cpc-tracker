@@ -73,8 +73,6 @@ export interface ArcLabel {
   dim?: boolean;
   /** A layer's colour and shape, shown before its name. */
   swatch?: { color: string; shape: "square" | "diamond" };
-  /** The name opens its arc as the centre. */
-  selectable?: boolean;
 }
 
 function rgb(hex: string): [number, number, number] {
@@ -659,7 +657,7 @@ export function RingCanvas({
               data-dim={label.dim || (hotArc !== null && hotArc !== l.key) ? "true" : undefined}
               style={{ left: l.x, top: l.y }}
             >
-              {label.selectable && onLabel ? (
+              {onLabel ? (
                 <button
                   type="button"
                   className="ex-label-name ex-label-button"

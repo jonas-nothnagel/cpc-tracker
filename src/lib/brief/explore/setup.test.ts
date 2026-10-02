@@ -22,6 +22,19 @@ describe("exploreSetup", () => {
     expect(setup.layers?.items).toHaveLength(3);
   });
 
+  it("offers every lens the source holds, human rights too", () => {
+    const hr = { id: "hr" as const, taxonomyType: "hr", categories: [{ id: "hr1", name: "Right to water" }], primary: { B5: "hr1" } };
+    const setup = exploreSetup({
+      data: LAYER_DATA,
+      source: { ...SOURCE, lenses: [...SOURCE.lenses, hr] },
+      docs: DOCS,
+      searchParams: { group: "hr", focus: "area:hr:hr1" },
+    });
+    expect(setup.groups).toEqual(["docs", "globe", "hr"]);
+    expect(setup.initialState.group).toBe("hr");
+    expect(setup.initialState.focus).toBe("area:hr:hr1");
+  });
+
   it("opens a shared comparison only beside the centre it was shared with", () => {
     const setup = exploreSetup({ data: LAYER_DATA, source: SOURCE, docs: DOCS, searchParams: { focus: "A1", pair: "B1~B2" } });
     expect(setup.initialPair).toBeNull();

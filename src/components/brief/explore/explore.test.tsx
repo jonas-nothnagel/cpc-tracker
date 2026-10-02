@@ -256,6 +256,52 @@ describe("Explore", () => {
   });
 });
 
+describe("Explore: a lens and its scope", () => {
+  // A draft lens that places few targets: B5 and C4 engage its one area.
+  const HR = {
+    id: "hr" as const,
+    taxonomyType: "hr",
+    categories: [{ id: "hr1", name: "Right to water" }],
+    primary: { B5: "hr1", C4: "hr1" },
+  };
+  const WITH_HR = { ...SOURCE, lenses: [...SOURCE.lenses, HR] };
+
+  function LensHarness({ initial }: { initial?: Partial<ExploreState> }) {
+    const [state, dispatch] = useReducer(exploreReducer, { ...initialExploreState(), ...initial });
+    return <Explore source={WITH_HR} data={DATA} state={state} dispatch={dispatch} groups={["docs", "globe", "hr"]} />;
+  }
+  const renderLens = (initial?: Partial<ExploreState>) =>
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <LensHarness initial={initial} />
+      </NextIntlClientProvider>,
+    );
+
+  it("seats only the targets in the lens's areas, and says how many of all fall in one", () => {
+    renderLens({ group: "globe" });
+    expect(screen.getByRole("application", { name: /^9 targets on a ring, grouped by Biodiversity/ })).toBeInTheDocument();
+    expect(screen.getByText("9 of the 18 targets fall in one of these areas.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Documents" }));
+    expect(screen.getByRole("application", { name: /^18 targets on a ring, grouped by Documents/ })).toBeInTheDocument();
+    expect(screen.queryByText(/fall in one of these areas/)).toBeNull();
+  });
+
+  it("offers human rights with its draft note", () => {
+    renderLens();
+    const hr = screen.getByRole("button", { name: "Human rights" });
+    expect(hr.getAttribute("title")).toMatch(/Draft under expert review/);
+    fireEvent.click(hr);
+    expect(screen.getByRole("application", { name: /^2 targets on a ring, grouped by Human rights/ })).toBeInTheDocument();
+    expect(screen.getByText("2 of the 18 targets fall in one of these areas.")).toBeInTheDocument();
+  });
+
+  it("puts a target outside every area in the centre, read against the targets the lens seats", () => {
+    renderLens({ group: "hr", focus: "A1" });
+    expect(within(side()).getByText(/Aligned with 12 of the 12 targets it was compared with\./)).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: /^2 targets on a ring, grouped by Human rights/ })).toBeInTheDocument();
+  });
+});
+
 describe("Explore with finance and implementation", () => {
   const LAYERS = buildExploreLayers(LAYER_DATA, SOURCE);
 

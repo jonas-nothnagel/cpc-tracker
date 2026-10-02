@@ -533,7 +533,7 @@
         "steps": {
           "ring": {
             "title": "Every target on one ring",
-            "body": "Each dot is one target of the selected documents, set in the arc of its document; Group by sets the arcs by policy area instead. Pointing at a dot names the target; selecting it puts it at the centre."
+            "body": "Each dot is one target of the selected documents, set in the arc of its document. Group by sets the arcs by policy area instead, with the targets that fall in one. Pointing at a dot names the target; selecting it puts it at the centre."
           },
           "centre": {
             "title": "The centre",
@@ -3188,7 +3188,6 @@
       "searchCount": "{count, plural, =0 {No target matches.} one {# target matches.} other {# targets match.}}",
       "group": "Group by",
       "groupDocs": "Documents",
-      "other": "Other targets",
       "restCentre": "{targets, plural, one {# target} other {# targets}} in {documents, plural, one {# document} other {# documents}}",
       "reviewFirst": "Targets to review first",
       "strongest": "Strongest alignments",
@@ -3293,7 +3292,8 @@
       "showProblems": "Show the potential misalignments of {name}",
       "showAlignments": "Show the strong alignments of {name}",
       "tipApartNames": "Potential misalignment with: {names}",
-      "tipApartNamesMore": "Potential misalignment with: {names} and {more, number} more"
+      "tipApartNamesMore": "Potential misalignment with: {names} and {more, number} more",
+      "lensScope": "{placed, number} of the {total, number} targets fall in one of these areas."
     },
     "contracts": {
       "metaTitle": "Public contracts: {country}",

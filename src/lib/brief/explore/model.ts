@@ -31,9 +31,6 @@ export type Relation = "apart" | "partial" | "none" | "unrelated" | "aligned" | 
  *  were not compared (the centre's own document) sit in the middle. */
 export const SEAT_ORDER: Relation[] = ["apart", "partial", "none", "unrelated", "aligned", "strong"];
 
-/** Key of the arc holding the targets outside every area of a lens. */
-export const OTHER_GROUP = "__other";
-
 export interface ExploreModel {
   items: ExploreItem[];
   /** Seats before this index are targets; the rest are layer items. */
@@ -206,17 +203,17 @@ export function groupByDocument(model: ExploreModel, docs: Pick<BriefDocument, "
     .filter((g) => g.ids.length > 0);
 }
 
-/** One arc per policy area of a lens (its own order), then the targets the
- *  lens leaves outside every area. Layer seats are not in any area. */
+/** One arc per policy area of a lens, in its own order. A target outside
+ *  every area has no seat: the absence of an area is never an arc of its
+ *  own. Layer seats are not in any area. */
 export function groupByLens(model: ExploreModel, lens: BriefLens): SeatGroup[] {
   const targets = model.items.slice(0, model.targets);
-  const groups = lens.categories.map((cat) => ({
-    key: cat.id,
-    ids: targets.flatMap((c, i) => (lens.primary[c.id] === cat.id ? [i] : [])),
-  }));
-  const known = new Set(lens.categories.map((c) => c.id));
-  const other = targets.flatMap((c, i) => (known.has(lens.primary[c.id] ?? "") ? [] : [i]));
-  return [...groups, { key: OTHER_GROUP, ids: other }].filter((g) => g.ids.length > 0);
+  return lens.categories
+    .map((cat) => ({
+      key: cat.id,
+      ids: targets.flatMap((c, i) => (lens.primary[c.id] === cat.id ? [i] : [])),
+    }))
+    .filter((g) => g.ids.length > 0);
 }
 
 /** One arc per layer, in LAYER order, for the layers switched on. */

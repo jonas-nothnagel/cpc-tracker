@@ -258,8 +258,8 @@ function overlapping(a: Box, b: Box, gap: number): boolean {
 
 /**
  * Names above and below the ring sit side by side, so they can meet where
- * two arcs meet at the top or bottom (a lens's first area and its "Other
- * targets"). Spread each row sideways; where a row runs out of room, lift
+ * two arcs meet at the top or bottom (a lens's first and last areas).
+ * Spread each row sideways; where a row runs out of room, lift
  * every other name a row further out; and keep them clear of the side names
  * by moving them further out, never onto the ring.
  */

@@ -71,6 +71,14 @@
   font-weight: 600;
 }
 
+/* A lens that leaves targets outside its areas says how many it seats, on
+   a line of its own under the choices. */
+[data-brief] .ex-group-scope {
+  flex-basis: 100%;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
 /* ── The ring beside its column ─────────────────────────────────── */
 
 [data-brief] .ex-body {

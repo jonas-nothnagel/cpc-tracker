@@ -10,7 +10,6 @@ import {
   relationOf,
   seatOrder,
   toneCountsOf,
-  OTHER_GROUP,
   arcTally,
 } from "./model";
 
@@ -94,13 +93,12 @@ describe("grouping", () => {
     ]);
   });
 
-  it("groups seats by policy area, in the lens's order, the rest last", () => {
+  it("groups seats by policy area, in the lens's order; a target outside every area has no seat", () => {
     const groups = groupByLens(MODEL, SOURCE.lenses[0]);
     expect(groups.map((g) => [g.key, g.ids.length])).toEqual([
       ["g1", 3],
       ["g2", 3],
       ["g5", 3],
-      [OTHER_GROUP, 9],
     ]);
   });
 });

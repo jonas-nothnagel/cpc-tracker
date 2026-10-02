@@ -31,7 +31,6 @@ import {
   levelBetween,
   mechanismBetween,
   relationBetween,
-  OTHER_GROUP,
   type ExploreItem,
   type Relation,
   type RelationCounts,
@@ -254,6 +253,9 @@ export function Explore({
     [seatGroups, group],
   );
   const placed = useMemo(() => new Set(arcs.flatMap((a) => a.ids)), [arcs]);
+  // The targets on the ring: all of them by document, only those in its
+  // areas by a lens.
+  const seated = useMemo(() => [...placed].filter((i) => i < model.targets).length, [placed, model.targets]);
   const matches = useMemo(
     () => new Set(searchTargets(model.items, state.query).filter((i) => placed.has(i))),
     [model, state.query, placed],
@@ -315,12 +317,11 @@ export function Explore({
   const byId = useMemo(() => new Map(model.items.map((c) => [c.id, c])), [model]);
   const groupName = useCallback(
     (key: string) => {
-      if (key === OTHER_GROUP) return t("other");
       if (key.startsWith("layer:")) return layerName(key.slice(6) as LayerId);
       if (!lens) return docName(key);
       return lens.categories.find((c) => c.id === key)?.name ?? key;
     },
-    [lens, docName, layerName, t],
+    [lens, docName, layerName],
   );
   const arcFocusKey = useCallback(
     (key: string) =>
@@ -450,7 +451,6 @@ export function Explore({
     () =>
       arcs.map((arc) => {
         const name = groupName(arc.key);
-        const selectable = arc.key !== OTHER_GROUP;
         const arcLayer = arc.key.startsWith("layer:") ? (arc.key.slice(6) as LayerId) : null;
         const swatch = arcLayer
           ? {
@@ -458,30 +458,30 @@ export function Explore({
               shape: arcLayer === "budget" ? ("diamond" as const) : ("square" as const),
             }
           : undefined;
-        if (!group) return { name, selectable, swatch };
+        if (!group) return { name, swatch };
         const others = arc.ids.filter((id) => !group.isMember[id]);
-        if (others.length === 0) return { name, sub: t("inCentre"), dim: true, selectable, swatch };
+        if (others.length === 0) return { name, sub: t("inCentre"), dim: true, swatch };
         const layerArc = arcLayer;
         // Across a layer and the targets, count seats (coverage), not pairs.
         const crossing = (layerArc !== null) !== (focusLayer !== null);
         if (crossing) {
           const c = seatTally(others);
-          if (c.total === 0) return { name, sub: t("sameDocument"), dim: true, selectable, swatch };
+          if (c.total === 0) return { name, sub: t("sameDocument"), dim: true, swatch };
           const budget = layerArc === "budget" || focusLayer === "budget";
           const sub = budget
             ? t("arcMatching", { count: c.reinforce, total: c.total })
             : c.apart > 0
               ? t("arcActions", { strong: c.reinforce, apart: c.apart, total: c.total })
               : t("arcActionsStrong", { strong: c.reinforce, total: c.total });
-          return { name, sub, selectable, swatch };
+          return { name, sub, swatch };
         }
         const c = tones(sumPairs(group, others));
-        if (c.total === 0) return { name, sub: t("sameDocument"), dim: true, selectable };
+        if (c.total === 0) return { name, sub: t("sameDocument"), dim: true };
         const sub =
           c.apart > 0
             ? t("arcCounts", { aligned: c.reinforce, apart: c.apart })
             : t("arcCountsAligned", { aligned: c.reinforce });
-        return { name, sub, selectable };
+        return { name, sub };
       }),
     // seatTally reads group, which is in the list.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -768,15 +768,13 @@ export function Explore({
         targets: model.items.filter((c) => c.doc === d.id),
       }));
     }
-    return groupByLens(model, lens)
-      .filter((g) => g.key !== OTHER_GROUP)
-      .map((g) => ({
-        key: focusKey({ kind: "area", lens: lens.id, id: g.key }),
-        name: groupName(g.key),
-        meta: t("targetsCount", { count: g.ids.length }),
-        counts: tones(groupProfile(model, g.ids).totals),
-        targets: g.ids.map((i) => model.items[i]),
-      }));
+    return groupByLens(model, lens).map((g) => ({
+      key: focusKey({ kind: "area", lens: lens.id, id: g.key }),
+      name: groupName(g.key),
+      meta: t("targetsCount", { count: g.ids.length }),
+      counts: tones(groupProfile(model, g.ids).totals),
+      targets: g.ids.map((i) => model.items[i]),
+    }));
   }, [lens, data.scope.docs, data.docs, groupName, model, t]);
   const layerBrowse = useMemo<BrowseRow[]>(
     () =>
@@ -1257,11 +1255,14 @@ export function Explore({
                 type="button"
                 aria-pressed={state.group === g}
                 onClick={() => dispatch({ type: "group", group: g })}
-                title={g === "gga" ? tl("ggaTooltip") : undefined}
+                title={g === "gga" ? tl("ggaTooltip") : g === "hr" ? tl("hrTooltip") : undefined}
               >
                 {groupLabel(g)}
               </button>
             ))}
+            {lens && seated < model.targets && (
+              <span className="ex-group-scope">{t("lensScope", { placed: seated, total: model.targets })}</span>
+            )}
           </div>
         )}
         <div className="ex-lines" role="group" aria-label={t("lines")} data-tour="explore-lines">
@@ -1358,14 +1359,14 @@ export function Explore({
             onEscape={escape}
             onLabel={(key) => {
               const ownArc = arcs.find((a) => a.key === key)?.ids.every((id) => group?.isMember[id]);
-              if ((activeKind === "doc" || activeKind === "area") && !key.startsWith("layer:") && !ownArc && key !== OTHER_GROUP) {
+              if ((activeKind === "doc" || activeKind === "area") && !key.startsWith("layer:") && !ownArc) {
                 setPartnerArc((cur) => (cur === key ? null : key));
               } else focusOn(arcFocusKey(key));
             }}
             onReset={active ? () => dispatch({ type: "clear" }) : undefined}
             resetLabel={t("clear")}
             hotArc={hotArc ?? partnerArc}
-            ariaLabel={t("ringLabel", { targets: model.targets, group: groupLabel(state.group) })}
+            ariaLabel={t("ringLabel", { targets: seated, group: groupLabel(state.group) })}
           />
         </div>
         <aside className="ex-side" data-tour="explore-column">
