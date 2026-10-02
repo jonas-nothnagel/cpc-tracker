@@ -5,6 +5,43 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## The map's card, human rights on the ring, the centre's bar in words (2026-10-01)
+
+Jonas's feedback on the brief and the ring, all four agreed before building.
+- **Human rights on the ring.** It was left out on purpose (`RING_LENSES` in setup.ts): the
+  draft lens places 27 of Mongolia's 178 targets, 34 of 100 in Panama, 56 of 404 in Sri Lanka,
+  27 of 209 in Côte d'Ivoire. Kept as it was, the rest would have filled one "Other targets"
+  arc, 85% of the ring, which Lea's August review ruled out.
+  - Every lens is offered now. A lens seats only the targets in its areas; no lens has an
+    "Other targets" arc any more (Biodiversity loses 6 Mongolia targets from the ring).
+  - Under Group by: "27 of the 178 targets fall in one of these areas." (the policy-area view's
+    sentence), only while a lens leaves targets out. Human rights carries its draft note as
+    its tooltip, as Climate adaptation does.
+  - A target outside every area can still take the centre. The ring then shows how the seated
+    targets read against it; the column keeps its full counts.
+- **"Mitigation sectors" is "Climate mitigation"** wherever the lens is named: 7 keys in each
+  catalog. Spanish "Mitigación climática", Mongolian "Уур амьсгалын өөрчлөлтийг сааруулах"
+  (machine translation, like the rest). The analytics matcher keeps the old names too, since
+  stored clicks carry them. Words naming one sector ("Mitigation sector" legend heads) stay.
+- **The map reads blocks on every step.** On What works well and Where to look closer each
+  pair had its own tooltip; Jonas read the map as target-level because of it. Now the pointer
+  gives the block there too, with the map step's card, and a click opens the pair of documents.
+  Single pairs stay reachable from the lists, the named targets and the ring.
+- **The block's card**: the two documents on lines of their own, each beside its colour bar as
+  on the map's edges, then the figures. It sits just above the block (under it for the top
+  rows), lined up with it, and stays put while the pointer moves within the block, so the
+  block and its neighbours stay visible (`cardPlace` in hub.ts; measured once per block).
+- **The ring's centre bar in words.** A colleague asked what the bar under a target means.
+  A target's bar now has "163 target pairs with the other documents" above it and the key
+  with shares under it, as the centre shows at rest; a document's or area's bar has the key.
+  The target's text in the centre stops at four lines to make room (the column has the rest).
+- Verified: 1,725 tests pass, tsc clean, no new lint findings; `/brief` and
+  `/brief/explore?group=hr` return 200 for all four countries; Mongolia under Human rights
+  seats 27 of 178.
+
+> **Waiting on the reviewer (2 October 2026):** pick up the contracts work from
+> `docs/nctp-procurement/2026-10-02-review-handover.md`.
+
 ## Contracts serving both targets; the 23 targets without a match (2026-09-30)
 
 - **Contracts serving both targets** (`98ce821`), Jonas's pick over a money bar per potential
