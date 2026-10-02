@@ -697,9 +697,13 @@ export function Explore({
           {titled && <p className="ex-centre-label">{clip(singleItem.label, 90)}</p>}
           <p className="ex-centre-text">{titled ? clip(singleItem.text, 200) : commitmentLine(singleItem, 200)}</p>
           {counts.total > 0 && (
-            <div className="ex-centre-bar">
-              <ResultBar counts={counts} />
-            </div>
+            <>
+              <p className="ex-centre-count">{t("targetFigures", { pairs: counts.total })}</p>
+              <div className="ex-centre-bar">
+                <ResultBar counts={counts} />
+              </div>
+              <ToneKey counts={counts} share />
+            </>
           )}
         </div>
       );
@@ -733,9 +737,12 @@ export function Explore({
         <>
           <p className="ex-centre-count">{t("groupFigures", { targets: members.length, pairs: group!.total })}</p>
           {counts.total > 0 && (
-            <div className="ex-centre-bar">
-              <ResultBar counts={counts} />
-            </div>
+            <>
+              <div className="ex-centre-bar">
+                <ResultBar counts={counts} />
+              </div>
+              <ToneKey counts={counts} share />
+            </>
           )}
         </>
       )}

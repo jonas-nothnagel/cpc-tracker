@@ -719,6 +719,11 @@
   text-align: left;
 }
 
+/* What a target's bar counts, just above it. */
+[data-brief] .ex-centre-count + .ex-centre-bar {
+  margin-top: 0.3rem;
+}
+
 [data-brief] .ex-centre-bar .brief-pair-bar {
   height: 10px;
 }
@@ -744,8 +749,9 @@
   -webkit-box-orient: vertical;
 }
 
+/* Four lines leave room for the bar's words; the column holds the rest. */
 [data-brief] .ex-centre-card .ex-centre-text {
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
 }
 
 [data-brief] .ex-pair-tools {

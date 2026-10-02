@@ -302,6 +302,24 @@ describe("Explore: a lens and its scope", () => {
   });
 });
 
+describe("Explore: the centre's bar in words", () => {
+  const card = () => document.querySelector(".ex-centre-card") as HTMLElement;
+  const key = () => [...card().querySelectorAll(".ex-key li")].map((li) => li.textContent);
+
+  it("says what a target's bar counts, and names its colours with their shares", () => {
+    // B6: 12 target pairs, 4 aligned, 1 partially aligned, 7 potential misalignment.
+    renderExplore({ focus: "B6" });
+    expect(within(card()).getByText("12 target pairs with the other documents")).toBeInTheDocument();
+    expect(key()).toEqual(["33% aligned", "8% partially aligned", "58% potential misalignment"]);
+  });
+
+  it("names the colours of a document's bar as well", () => {
+    // B: 72 target pairs, 42 aligned, 15 partially aligned, 15 potential misalignment.
+    renderExplore({ focus: "doc:B" });
+    expect(key()).toEqual(["58% aligned", "21% partially aligned", "21% potential misalignment"]);
+  });
+});
+
 describe("Explore with finance and implementation", () => {
   const LAYERS = buildExploreLayers(LAYER_DATA, SOURCE);
 

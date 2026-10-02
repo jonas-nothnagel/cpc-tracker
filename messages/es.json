@@ -3293,7 +3293,8 @@
       "showAlignments": "Show the strong alignments of {name}",
       "tipApartNames": "Potential misalignment with: {names}",
       "tipApartNamesMore": "Potential misalignment with: {names} and {more, number} more",
-      "lensScope": "{placed, number} of the {total, number} targets fall in one of these areas."
+      "lensScope": "{placed, number} of the {total, number} targets fall in one of these areas.",
+      "targetFigures": "{pairs, plural, one {# target pair} other {# target pairs}} with the other documents"
     },
     "contracts": {
       "metaTitle": "Public contracts: {country}",
