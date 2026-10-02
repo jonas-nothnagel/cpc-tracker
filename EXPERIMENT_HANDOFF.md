@@ -5,6 +5,53 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## The brief on every country's data (2026-10-02)
+
+Jonas: "could we try to also implement the same design (minus finance ...) for Panama? Or all
+countries basically?" The brief already ran on one codebase for all five visible countries
+(Mongolia, Panama, Sri Lanka, Côte d'Ivoire, Country X); only the public contracts are
+Mongolia's, offered where a contract record is baked. On Panama's ring he ruled: "if we have
+BER tagged for panama we can keep it in the ring". It is: each of the 33 budget lines has a
+primary Biodiversity, Climate mitigation and Climate adaptation area, and was compared with all
+368 targets (`budget_alignment.json`, 12,144 rows). So the ring keeps its 33 budget lines and
+27 reported actions. Reading each country's rendered page text (no screenshots) found what reads
+worse than on Mongolia's data; step 1 (agreed, built) fixes it with rules, not per-country code:
+- **A pair of documents leading both sides** (Côte d'Ivoire: National Biodiversity Targets ×
+  LDN is 86% aligned and 11% potential misalignment, both the highest of its 3 pairs) was named
+  in two superlatives in a row, which read as a contradiction. The map step now says it once:
+  `brief.hub.leadBoth`. The only pair of documents (a brief of two documents) is described, not
+  ranked: `brief.hub.leadOnly`. The printed sections keep their own lines (each stands alone).
+- **A label that is only a number** (Côte d'Ivoire: 21 NBT and 7 LDN targets) read as a count
+  beside the rank and the row's figures ("6 Recover 7200 hectares … 28"). `buildBriefSource`
+  puts the document's code before it: "LDN 6", "NBT 20" (as Sri Lanka's data already labels them).
+- **A long label that is a section's name with a clause number** ("Agriculture and food security
+  30", "Objective 7 (Adaptation)") was shown alone, as if it were a title, so the row never said
+  what the target is. `targetLine` now follows it with the start of the text, sharing the line's
+  length (at least 20 characters of text). Affected: Country X 102 targets, Sri Lanka 18,
+  Panama's REDD+ Strategy 134 (hidden by default), Mongolia 8 (NDC "Animal husbandry and
+  pastureland 1-4", Res. 91 "Cross-sector objective 1-4"; none is in Mongolia's default lists,
+  whose page text is unchanged). Titles stay alone, a year at the end included ("Protected areas
+  30% by 2030"), as does a topic in brackets ("1.1 Actions to Implement (integrate local
+  productive chains)").
+- **Tests**: unit tests per rule, and `src/lib/brief/countries.integration.test.ts` reads every
+  visible country's committed data and lists any target named by a number alone or cut at a
+  clause number. On the old code it fails in the five places above.
+- **Verified**: 1,773 tests pass, tsc clean, eslint clean on the touched files; `/brief` 200 for
+  the five countries and in es/mn; the Mongolia and Panama page text is identical to the live one.
+- **Step 2, after Jonas walks Panama in English**: Spanish for the brief. About 200 of its
+  strings outside the contracts still read English on the Spanish page (the ring, the
+  walkthrough, policy areas, panels), which the Panama focal group's report of 23 July asked to
+  fix ("correcting content that is still in English").
+- **Not in this pass**: Sri Lanka's brief shows the 404-target set the country office replaced
+  on 16 September (it drops fisheries and minerals; its top theme of potential misalignment is
+  mineral land reservation); the new set waits on the local branch `data/sri-lanka-overhaul` for
+  the office's taxonomy. Hand-picked map names (the fallbacks read "PEG / Gov't Strategic Plan"
+  in English and the Spanish names on the Spanish page; `mapLabel` cannot be localised yet).
+  English names for Panama's budget lines (32 of 33 are the review's own Spanish abbreviations,
+  e.g. "Fort Gest. Eco. y Admón. Finan."). Re-runs of Panama and Côte d'Ivoire on the newer
+  prompt (both on v2.1 from June). One doubled REDD+ label in `panama-targets.json`
+  ("Action line 3.3.2.4.4Action line 3.3.2.4.4"), flagged only.
+
 ## Public contracts in the brief, up to the map (2026-10-02)
 
 Jonas: "Merge the Finance component into the current mongolia brief, but only up to the map
