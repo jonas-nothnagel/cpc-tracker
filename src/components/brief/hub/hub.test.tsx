@@ -40,12 +40,29 @@ afterEach(() => {
   HTMLCanvasElement.prototype.getContext = saved.ctx;
 });
 
-function renderHub(handlers = {}) {
+function renderHub(handlers = {}, data = DATA) {
   return render(
     <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-      <Hub data={DATA} {...handlers} />
+      <Hub data={data} {...handlers} />
     </NextIntlClientProvider>,
   );
+}
+
+/** The fixture with every target pair outside A~B partially aligned, so A~B
+ *  leads both sides: 24 of 36 aligned (67%), 6 of 36 potential misalignment
+ *  (17%); A~C and B~C have neither. */
+function sameLeadData() {
+  const docOf = (i: number) => SOURCE.commitments[i].doc;
+  const comparisons = [...SOURCE.comparisons];
+  for (let k = 0; k < comparisons.length; k += 4) {
+    const pair = [docOf(comparisons[k]), docOf(comparisons[k + 1])].sort().join("~");
+    if (pair !== "A~B") {
+      comparisons[k + 2] = 2;
+      comparisons[k + 3] = 0;
+    }
+  }
+  const source = { ...SOURCE, comparisons };
+  return buildBriefData(source, scopeOf(source, ["A", "B", "C"]), null);
 }
 
 function enter(step: string) {
@@ -182,6 +199,27 @@ describe("Hub", () => {
     );
     fireEvent.click(within(apart).getByRole("button", { name: "Document B" }));
     expect(onOpenDocPair).toHaveBeenLastCalledWith("B", "C");
+  });
+
+  it("names a pair of documents once when it leads both sides, with both shares", () => {
+    const onOpenDocPair = vi.fn();
+    renderHub({ onOpenDocPair }, sameLeadData());
+    const map = step("map");
+    expect(within(map).getByRole("heading").textContent).toBe(
+      "Document A and Document B have both the highest share of aligned target pairs (67%) and the highest share of potential misalignment (17%).",
+    );
+    expect(within(map).queryByTestId("hub-map-apart")).toBeNull();
+    fireEvent.click(within(map).getByRole("button", { name: "Document B" }));
+    expect(onOpenDocPair).toHaveBeenLastCalledWith("A", "B");
+  });
+
+  it("gives the only pair of documents its shares, without ranking it", () => {
+    renderHub({}, buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "B"]), null));
+    const map = step("map");
+    expect(within(map).getByRole("heading").textContent).toBe(
+      "Between Document A and Document B, 67% of target pairs are aligned and 17% show potential misalignment.",
+    );
+    expect(within(map).queryByTestId("hub-map-apart")).toBeNull();
   });
 
   it("what works well: one section, its targets first, then its themes, each brought forward on the map", () => {

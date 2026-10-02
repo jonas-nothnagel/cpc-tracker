@@ -7,6 +7,7 @@ import {
   MIN_PAIR_COMPARISONS,
   shareOf,
   type Concentration,
+  type DocPairStat,
   type Tone,
   type ToneCounts,
 } from "@/lib/brief/compute";
@@ -339,6 +340,17 @@ export function Hub({
 
   // Findings that name documents: the names lead into the documents, and
   // pointing at them brings their block forward on the map.
+  const pairNames = (pair: DocPairStat) => {
+    const openPair = () => onOpenDocPair?.(pair.a.id, pair.b.id);
+    const block = getDocPairKey(pair.a.id, pair.b.id);
+    const point = (on: boolean) => pointAt("map")(on ? block : null);
+    const name = (chunks: ReactNode) => (
+      <DocName onSelect={openPair} onHover={point}>
+        {chunks}
+      </DocName>
+    );
+    return { docA: pair.a.name, docB: pair.b.name, first: name, second: name };
+  };
   const leadLine = (tone: "reinforce" | "apart") => {
     const lead = data.leading[tone];
     const key = tone === "reinforce" ? "together" : "apart";
@@ -347,25 +359,29 @@ export function Hub({
         pct: pct(data.counts.total > 0 ? data.counts[tone] / data.counts.total : 0),
       });
     }
-    const openPair = () => onOpenDocPair?.(lead.a.id, lead.b.id);
-    const block = getDocPairKey(lead.a.id, lead.b.id);
-    const point = (on: boolean) => pointAt("map")(on ? block : null);
     return th.rich(tone === "reinforce" ? "leadTogether" : "leadApart", {
-      docA: lead.a.name,
-      docB: lead.b.name,
+      ...pairNames(lead),
       pct: pct(shareOf(lead.counts, tone)),
-      first: (chunks) => (
-        <DocName onSelect={openPair} onHover={point}>
-          {chunks}
-        </DocName>
-      ),
-      second: (chunks) => (
-        <DocName onSelect={openPair} onHover={point}>
-          {chunks}
-        </DocName>
-      ),
     });
   };
+  // The map's finding. The only pair of documents is described, not ranked;
+  // a pair that leads both sides is named once with both shares, so the two
+  // findings never read as contradicting each other.
+  const onlyPair = data.pairs.length === 1 ? data.pairs[0] : null;
+  const leadsBoth = (() => {
+    const { reinforce, apart } = data.leading;
+    return reinforce && apart && reinforce.a.id === apart.a.id && reinforce.b.id === apart.b.id ? reinforce : null;
+  })();
+  const bothShares = (pair: DocPairStat) => ({
+    ...pairNames(pair),
+    aligned: pct(shareOf(pair.counts, "reinforce")),
+    apart: pct(shareOf(pair.counts, "apart")),
+  });
+  const mapLead = onlyPair
+    ? th.rich("leadOnly", bothShares(onlyPair))
+    : leadsBoth
+      ? th.rich("leadBoth", bothShares(leadsBoth))
+      : leadLine("reinforce");
   const leadBlocks = [data.leading.reinforce, data.leading.apart]
     .filter((p): p is NonNullable<typeof p> => p !== null)
     .map((p) => getDocPairKey(p.a.id, p.b.id));
@@ -637,9 +653,9 @@ export function Hub({
             {steps.includes("map") && (
               <section className="brief-hub-step" data-step="map" data-tour="brief-map">
                 <h2 className="brief-hub-headline" tabIndex={-1}>
-                  {leadLine("reinforce")}
+                  {mapLead}
                 </h2>
-                {data.leading.apart && (
+                {data.leading.apart && !onlyPair && !leadsBoth && (
                   <p className="brief-hub-second" data-testid="hub-map-apart">
                     {leadLine("apart")}
                   </p>

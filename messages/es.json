@@ -3170,6 +3170,8 @@
       "kinds": "Types of potential misalignment",
       "leadTogether": "<first>{docA}</first> y <second>{docB}</second> son los más alineados: {pct} de sus pares de metas.",
       "leadApart": "<first>{docA}</first> y <second>{docB}</second> tienen la mayor proporción de posible desalineación: {pct} de sus pares de metas.",
+      "leadBoth": "<first>{docA}</first> y <second>{docB}</second> tienen a la vez la mayor proporción de pares de metas alineados ({aligned}) y la mayor proporción de posible desalineación ({apart}).",
+      "leadOnly": "Entre <first>{docA}</first> y <second>{docB}</second>, el {aligned} de los pares de metas están alineados y el {apart} muestran una posible desalineación.",
       "documentsLead": "Alignment with the other documents ranges from {low} for <first>{docLow}</first> to {high} for <second>{docHigh}</second>.",
       "focus": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment, the highest share with <other>{partner}</other> ({partnerShare}).",
       "focusPlain": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment.",

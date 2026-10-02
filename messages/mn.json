@@ -3170,6 +3170,8 @@
       "kinds": "Types of potential misalignment",
       "leadTogether": "<first>{docA}</first> ба <second>{docB}</second> хамгийн уялдаатай: зорилтын хосуудын {pct}.",
       "leadApart": "<first>{docA}</first> ба <second>{docB}</second>-д болзошгүй үл нийцлийн хувь хамгийн өндөр: зорилтын хосуудын {pct}.",
+      "leadBoth": "<first>{docA}</first> ба <second>{docB}</second> хамгийн уялдаатай (зорилтын хосуудын {aligned}) бөгөөд болзошгүй үл нийцлийн хувь нь мөн хамгийн өндөр ({apart}).",
+      "leadOnly": "<first>{docA}</first> ба <second>{docB}</second>-ын хооронд зорилтын хосуудын {aligned} нь уялдаатай, {apart} нь болзошгүй үл нийцэлтэй байна.",
       "documentsLead": "Alignment with the other documents ranges from {low} for <first>{docLow}</first> to {high} for <second>{docHigh}</second>.",
       "focus": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment, the highest share with <other>{partner}</other> ({partnerShare}).",
       "focusPlain": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment.",

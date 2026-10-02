@@ -3170,6 +3170,8 @@
       "kinds": "Types of potential misalignment",
       "leadTogether": "<first>{docA}</first> and <second>{docB}</second> are the most closely aligned: {pct} of their target pairs.",
       "leadApart": "<first>{docA}</first> and <second>{docB}</second> have the highest share of potential misalignment: {pct} of their target pairs.",
+      "leadBoth": "<first>{docA}</first> and <second>{docB}</second> have both the highest share of aligned target pairs ({aligned}) and the highest share of potential misalignment ({apart}).",
+      "leadOnly": "Between <first>{docA}</first> and <second>{docB}</second>, {aligned} of target pairs are aligned and {apart} show potential misalignment.",
       "documentsLead": "Alignment with the other documents ranges from {low} for <first>{docLow}</first> to {high} for <second>{docHigh}</second>.",
       "focus": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment, the highest share with <other>{partner}</other> ({partnerShare}).",
       "focusPlain": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment.",
