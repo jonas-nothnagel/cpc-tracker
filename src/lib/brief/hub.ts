@@ -1161,6 +1161,26 @@ export function pairGuides(layout: HubLayout, group: HubGroup): HubSegment[] {
   ];
 }
 
+/** Room between a pointed block and its card. */
+const CARD_GAP = 6;
+/** Least room between a card and the field's edges. */
+const CARD_EDGE = 4;
+
+/** Where a pointed block's card goes: lined up with the block's left edge,
+ *  just above the block, or under it where the room above is too short;
+ *  always inside the field. */
+export function cardPlace(
+  block: { x0: number; y0: number; x1: number; y1: number },
+  card: { w: number; h: number },
+  field: { w: number; h: number },
+): { left: number; top: number; place: "above" | "below" } {
+  const left = Math.max(CARD_EDGE, Math.min(block.x0, field.w - card.w - CARD_EDGE));
+  const above = block.y0 - CARD_GAP - card.h;
+  if (above >= 0) return { left, top: above, place: "above" };
+  const below = Math.min(block.y1 + CARD_GAP, field.h - card.h - CARD_EDGE);
+  return { left, top: Math.max(CARD_EDGE, below), place: "below" };
+}
+
 /** Red first, then partial, no clear relationship and aligned: each
  *  cluster reads as bands of its composition. */
 const FOCUS_ORDER = [2, 1, 3, 0];

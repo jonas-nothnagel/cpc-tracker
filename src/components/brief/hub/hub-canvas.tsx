@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -11,6 +12,7 @@ import {
 } from "react";
 import type { BriefData } from "@/lib/brief/data";
 import {
+  cardPlace,
   HUB_INK,
   hubParticles,
   layoutHub,
@@ -90,13 +92,12 @@ export function mixInk(ink: string, paper: string, alpha: number): string {
 }
 
 /** What is under the pointer: a group (a rating, a block of the map, a
- *  document around the centre), a document's name on the map's edge, a target
- *  the map names, or one target pair on a side of the map. */
+ *  document around the centre), a document's name on the map's edge, or a
+ *  target the map names. A single pair is read as its block. */
 export type HubTarget =
   | { kind: "group"; group: HubGroup }
   | { kind: "axis"; axis: HubAxis }
-  | { kind: "mark"; mark: HubMark }
-  | { kind: "dot"; index: number; group: HubGroup | null };
+  | { kind: "mark"; mark: HubMark };
 
 interface DotState {
   x: Float32Array;
@@ -327,9 +328,9 @@ function draw(
  * Dots that belong to the new step fly to their place (or only change how
  * far forward they are); the others fade where they are. Labels sit beside
  * the groups, on the map's edges and at the targets a side names;
- * pointing at a group, a document, a named target or (on a side) one pair
- * names it, selecting it opens it, and the name at the centre opens what is
- * in focus.
+ * pointing at a group, a document or a named target names it (a pair's
+ * square is read as its block), selecting it opens it, and the name at the
+ * centre opens what is in focus.
  */
 export function HubCanvas({
   data,
@@ -407,16 +408,29 @@ export function HubCanvas({
     [colors, outlineKey, axisFocus, markFocus],
   );
   // The pointer's group wins over a list row's.
-  const tipKey =
-    tip?.target.kind === "group" ? tip.target.group.key : tip?.target.kind === "dot" ? tip.target.group?.key : undefined;
+  const tipKey = tip?.target.kind === "group" ? tip.target.group.key : undefined;
   const tipGroup = tipKey === undefined ? -1 : layout.groups.findIndex((g) => g.key === tipKey);
   const listed = highlight === null ? -1 : layout.groups.findIndex((g) => g.key === highlight);
   const bright = tipGroup >= 0 ? tipGroup : listed;
-  // The pointed block (or the block of a pointed square), traced to its
-  // two documents; its row's and its column's names are marked.
+  // The pointed block, traced to its two documents; its row's and its
+  // column's names are marked.
   const pointedGroup = tipGroup >= 0 ? layout.groups[tipGroup] : null;
   const guides = useMemo(() => (pointedGroup ? pairGuides(layout, pointedGroup) : []), [layout, pointedGroup]);
   const guidesRef = useRef<HubSegment[]>([]);
+  // A block of the map is named in a card set by the block, not the
+  // pointer, so it stays while the pointer moves within the block. The card
+  // is measured before it shows, once per block.
+  const tipRef = useRef<HTMLDivElement>(null);
+  const anchor = layout.pitch > 0 && tip?.target.kind === "group" ? tip.target.group : null;
+  const anchorKey = anchor ? `${placeKey}:${anchor.key}` : null;
+  const [measured, setMeasured] = useState<{ key: string; w: number; h: number } | null>(null);
+  useLayoutEffect(() => {
+    const el = tipRef.current;
+    if (!el || !anchorKey) return;
+    const next = { key: anchorKey, w: el.offsetWidth, h: el.offsetHeight };
+    setMeasured((prev) => (prev && prev.key === next.key && prev.w === next.w && prev.h === next.h ? prev : next));
+  }, [anchorKey, size.w, size.h]);
+  const card = anchor && measured?.key === anchorKey ? cardPlace(anchor, measured, size) : null;
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -558,24 +572,6 @@ export function HubCanvas({
   };
 
   const targetAt = (x: number, y: number): HubTarget | null => {
-    // On a side, each pair is its own way in.
-    if (side) {
-      const reach = Math.max(layout.pitch, 4);
-      let best = -1;
-      let bestD = Infinity;
-      for (let i = 0; i < layout.x.length; i++) {
-        if (!layout.visible[i]) continue;
-        const d = Math.hypot(layout.x[i] - x, layout.y[i] - y);
-        if (d <= reach && d < bestD) {
-          best = i;
-          bestD = d;
-        }
-      }
-      if (best >= 0) {
-        const g = member[best];
-        return { kind: "dot", index: best, group: g >= 0 ? layout.groups[g] : null };
-      }
-    }
     const mark = layout.marks.find((m) => inside(x, y, drawn(markRefs.current.get(m.id)) ?? markBox(m)));
     if (mark) return { kind: "mark", mark };
     const axis = layout.axis.find((a) => inside(x, y, barBox(a)) || inside(x, y, axisBox(a)));
@@ -766,7 +762,19 @@ export function HubCanvas({
         )}
       </div>
       {tip && tipFor && (
-        <div className="brief-tip brief-hub-tip" style={{ left: tip.x, top: Math.max(4, tip.y - 64) }} role="presentation">
+        <div
+          ref={tipRef}
+          className="brief-tip brief-hub-tip"
+          data-place={anchor ? (card?.place ?? "measuring") : undefined}
+          style={
+            !anchor
+              ? { left: tip.x, top: Math.max(4, tip.y - 64) }
+              : card
+                ? { left: card.left, top: card.top }
+                : { left: 0, top: 0, visibility: "hidden" }
+          }
+          role="presentation"
+        >
           {tipFor(tip.target)}
         </div>
       )}

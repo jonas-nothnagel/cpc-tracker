@@ -3173,7 +3173,6 @@
       "focus": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment, the highest share with <other>{partner}</other> ({partnerShare}).",
       "focusPlain": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment.",
       "focusNone": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned, with no potential misalignment.",
-      "pairNames": "{docA} and {docB}",
       "centerPairs": "{count, plural, one {# target pair} other {# target pairs}}",
       "openTarget": "See its aligned and potentially misaligned targets",
       "exploreTarget": "Explore this target",

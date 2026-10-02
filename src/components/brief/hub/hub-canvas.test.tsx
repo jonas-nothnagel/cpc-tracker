@@ -33,13 +33,7 @@ afterEach(() => {
 });
 
 const tipFor = (t: HubTarget) =>
-  t.kind === "group"
-    ? `group ${t.group.key}`
-    : t.kind === "axis"
-      ? `axis ${t.axis.key}`
-      : t.kind === "mark"
-        ? `mark ${t.mark.id}`
-        : `dot ${PARTICLES[t.index].ca}-${PARTICLES[t.index].cb}`;
+  t.kind === "group" ? `group ${t.group.key}` : t.kind === "axis" ? `axis ${t.axis.key}` : `mark ${t.mark.id}`;
 
 const APART = { kind: "map", side: "apart", focus: { kind: "top" } } as const;
 
@@ -129,7 +123,64 @@ describe("HubCanvas", () => {
     expect(named.sort()).toEqual(["column:B", "row:B"]);
   });
 
-  it("on a side, names the pair under the pointer and opens it", () => {
+  describe("a block's card", () => {
+    const own = {
+      w: Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth"),
+      h: Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight"),
+    };
+    // jsdom measures nothing: every card is 200 by 90.
+    beforeEach(() => {
+      Object.defineProperty(HTMLElement.prototype, "offsetWidth", { configurable: true, get: () => 200 });
+      Object.defineProperty(HTMLElement.prototype, "offsetHeight", { configurable: true, get: () => 90 });
+    });
+    afterEach(() => {
+      if (own.w) Object.defineProperty(HTMLElement.prototype, "offsetWidth", own.w);
+      if (own.h) Object.defineProperty(HTMLElement.prototype, "offsetHeight", own.h);
+    });
+    const at = (card: HTMLElement) => ({ left: parseFloat(card.style.left), top: parseFloat(card.style.top) });
+
+    it("sits just above the block, lined up with it, and stays while the pointer moves within the block", () => {
+      const layout = layoutHub({ kind: "map" }, PARTICLES, DATA, W, H);
+      const block = layout.groups.find((g) => g.key === "A<->C")!;
+      const { container } = render(
+        <HubCanvas data={DATA} stage={{ kind: "map" }} labelFor={() => null} tipFor={tipFor} />,
+      );
+      fireEvent.pointerMove(field(container), { clientX: block.x0 + 3, clientY: block.y1 - 3 });
+      const card = screen.getByRole("presentation");
+      const first = at(card);
+      expect(first.left).toBeCloseTo(block.x0);
+      // Clear of the block, close above it.
+      expect(first.top + 90).toBeLessThanOrEqual(block.y0);
+      expect(first.top + 90).toBeGreaterThan(block.y0 - 12);
+      fireEvent.pointerMove(field(container), { clientX: block.x1 - 3, clientY: block.y0 + 3 });
+      expect(at(card)).toEqual(first);
+    });
+
+    it("sits under a block of the top row, where the room above is too short", () => {
+      const layout = layoutHub({ kind: "map" }, PARTICLES, DATA, W, H);
+      const block = layout.groups.find((g) => g.key === "A<->B")!;
+      expect(block.y0).toBeLessThan(90);
+      const { container } = render(
+        <HubCanvas data={DATA} stage={{ kind: "map" }} labelFor={() => null} tipFor={tipFor} />,
+      );
+      fireEvent.pointerMove(field(container), { clientX: (block.x0 + block.x1) / 2, clientY: (block.y0 + block.y1) / 2 });
+      const top = at(screen.getByRole("presentation")).top;
+      expect(top).toBeGreaterThanOrEqual(block.y1);
+      expect(top).toBeLessThan(block.y1 + 12);
+    });
+
+    it("on a side as well", () => {
+      const layout = layoutHub(APART, PARTICLES, DATA, W, H);
+      const block = layout.groups.find((g) => g.key === "B<->C")!;
+      const { container } = render(<HubCanvas data={DATA} stage={APART} labelFor={() => null} tipFor={tipFor} />);
+      fireEvent.pointerMove(field(container), { clientX: block.x0 + 3, clientY: block.y1 - 3 });
+      const first = at(screen.getByRole("presentation"));
+      expect(first.left).toBeCloseTo(block.x0);
+      expect(first.top + 90).toBeLessThanOrEqual(block.y0);
+    });
+  });
+
+  it("on a side, a pair's square reads as its block: the block is named and opened, as on the map", () => {
     const layout = layoutHub(APART, PARTICLES, DATA, W, H);
     const i = PARTICLES.findIndex((p) => p.ca === "B6" && p.cb === "C1");
     expect(layout.visible[i]).toBe(1);
@@ -138,9 +189,11 @@ describe("HubCanvas", () => {
       <HubCanvas data={DATA} stage={APART} labelFor={() => null} tipFor={tipFor} onSelect={onSelect} />,
     );
     fireEvent.pointerMove(field(container), { clientX: layout.x[i], clientY: layout.y[i] });
-    expect(screen.getByRole("presentation").textContent).toBe("dot B6-C1");
+    expect(screen.getByRole("presentation").textContent).toBe("group B<->C");
     fireEvent.click(field(container), { clientX: layout.x[i], clientY: layout.y[i] });
-    expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ kind: "dot", index: i }));
+    expect(onSelect).toHaveBeenCalledWith(
+      expect.objectContaining({ kind: "group", group: expect.objectContaining({ key: "B<->C" }) }),
+    );
   });
 
   it("keeps a side's tip while only its emphasis changes, and drops it on the other side", () => {
@@ -152,7 +205,7 @@ describe("HubCanvas", () => {
     fireEvent.pointerMove(field(container), { clientX: layout.x[i], clientY: layout.y[i] });
     const b6 = { kind: "map", side: "apart", focus: { kind: "target", id: "B6" } } as const;
     rerender(<HubCanvas data={DATA} stage={b6} labelFor={() => null} tipFor={tipFor} />);
-    expect(screen.getByRole("presentation").textContent).toBe("dot B6-C1");
+    expect(screen.getByRole("presentation").textContent).toBe("group B<->C");
     const strong = { kind: "map", side: "reinforce", focus: { kind: "top" } } as const;
     rerender(<HubCanvas data={DATA} stage={strong} labelFor={() => null} tipFor={tipFor} />);
     expect(screen.queryByRole("presentation")).toBeNull();

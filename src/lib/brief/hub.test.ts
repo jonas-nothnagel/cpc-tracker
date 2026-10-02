@@ -4,6 +4,7 @@ import { scopeOf } from "./compute";
 import { briefFixture } from "./test-fixture";
 import { DOT_ORDER } from "./dot-layout";
 import {
+  cardPlace,
   FOCUS_LABEL,
   fitAlong,
   MAP_BACK,
@@ -945,6 +946,36 @@ describe("pairGuides", () => {
   it("none off the map", () => {
     const overview = layoutHub({ kind: "overview" }, particles, DATA, 800, 500);
     expect(pairGuides(overview, overview.groups[0])).toEqual([]);
+  });
+});
+
+describe("cardPlace", () => {
+  const field = { w: 800, h: 500 };
+  const block = { x0: 100, y0: 200, x1: 160, y1: 260 };
+  const card = { w: 240, h: 90 };
+
+  it("sets a block's card just above the block, lined up with its left edge", () => {
+    expect(cardPlace(block, card, field)).toEqual({ left: 100, top: 104, place: "above" });
+  });
+
+  it("sets it under the block when the room above is too short", () => {
+    expect(cardPlace({ ...block, y0: 60, y1: 120 }, card, field)).toEqual({ left: 100, top: 126, place: "below" });
+  });
+
+  it("keeps it inside the field at the right edge", () => {
+    expect(cardPlace({ x0: 700, y0: 200, x1: 760, y1: 260 }, card, field)).toEqual({
+      left: 556,
+      top: 104,
+      place: "above",
+    });
+  });
+
+  it("keeps it inside the field at the bottom when neither side has room", () => {
+    expect(cardPlace({ x0: 10, y0: 20, x1: 60, y1: 110 }, { w: 100, h: 90 }, { w: 300, h: 150 })).toEqual({
+      left: 10,
+      top: 56,
+      place: "below",
+    });
   });
 });
 

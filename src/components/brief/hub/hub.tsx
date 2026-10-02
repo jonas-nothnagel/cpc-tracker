@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {
   findDocPair,
@@ -119,7 +119,6 @@ export function Hub({
   onOpenTheme,
   onOpenCommitment,
   onOpenDocPair,
-  onOpenPair,
   onExplore,
 }: {
   data: BriefData;
@@ -130,7 +129,6 @@ export function Hub({
   onOpenTheme?: (type: "reinforcement" | "friction", name: string) => void;
   onOpenCommitment?: (id: string) => void;
   onOpenDocPair?: (a: string, b: string) => void;
-  onOpenPair?: (a: string, b: string) => void;
   /** Puts a target in the centre of the ring further down. */
   onExplore?: (id: string) => void;
 }) {
@@ -326,10 +324,6 @@ export function Hub({
   const c = data.counts;
   const share = (v: number) => (c.total > 0 ? v / c.total : 0);
   const docName = (id: string) => data.scope.docs.find((d) => d.id === id)?.name ?? id;
-  const pairNames = (key: string) => {
-    const [a, b] = pairInOrder(key, data.scope.docs);
-    return { a, b, names: th("pairNames", { docA: docName(a), docB: docName(b) }) };
-  };
   const pairStat = (a: string, b: string) => findDocPair(data.pairs, a, b);
   const commitment = (id: string) => data.scope.commitments.find((x) => x.id === id);
   const mixTotal = data.mix.reduce((sum, m) => sum + m.count, 0);
@@ -478,19 +472,6 @@ export function Hub({
         </>
       );
     }
-    if (t.kind === "dot") {
-      const p = data.scope.comparisons[t.index];
-      if (!p) return null;
-      return (
-        <>
-          <strong>{tb(`panel.rating.${p.level}`)}</strong>
-          <br />
-          {commitmentLine(p.a, 70)} <span className="brief-hub-tip-meta">{docName(p.a.doc)}</span>
-          <br />
-          {commitmentLine(p.b, 70)} <span className="brief-hub-tip-meta">{docName(p.b.doc)}</span>
-        </>
-      );
-    }
     const g = t.group;
     if (stage.kind === "overview") {
       const tone = g.key as Tone;
@@ -501,17 +482,19 @@ export function Hub({
       );
     }
     if (stage.kind === "map") {
-      const pair = pairNames(g.key);
-      const counts = pairStat(pair.a, pair.b)?.counts;
+      // A block's two documents apart, each beside its colour as on the
+      // map's edges, then their figures.
+      const [a, b] = pairInOrder(g.key, data.scope.docs);
+      const counts = pairStat(a, b)?.counts;
+      const colour = (id: string) => data.scope.docs.find((d) => d.id === id)?.color;
       return (
         <>
-          <strong>{pair.names}</strong>
-          {counts && (
-            <>
-              <br />
-              {pairCounts(counts)}
-            </>
-          )}
+          {[a, b].map((id) => (
+            <span key={id} className="brief-hub-tip-doc" style={{ "--doc": colour(id) } as CSSProperties}>
+              {docName(id)}
+            </span>
+          ))}
+          {counts && <span className="brief-hub-tip-figures">{pairCounts(counts)}</span>}
         </>
       );
     }
@@ -546,18 +529,13 @@ export function Hub({
       }
       return;
     }
-    if (t.kind === "dot") {
-      const p = data.scope.comparisons[t.index];
-      if (p) onOpenPair?.(p.a.id, p.b.id);
-      return;
-    }
     const g = t.group;
     if (stage.kind === "overview") showTone(g.key as HubTone);
     // Around a document, another document takes the centre.
     else if (stage.kind === "doc") focusDoc(g.key);
     else if (stage.kind === "map") {
-      const pair = pairNames(g.key);
-      onOpenDocPair?.(pair.a, pair.b);
+      const [a, b] = pairInOrder(g.key, data.scope.docs);
+      onOpenDocPair?.(a, b);
     }
   };
 

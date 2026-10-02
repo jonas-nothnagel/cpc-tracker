@@ -285,10 +285,36 @@ describe("Hub", () => {
     expect(stage()).toBe(`map:apart:target:${DATA.commitments[1].commitment.id}`);
   });
 
-  it("on the map, a named target is a way to its row, and a dot to its comparison", () => {
+  it("a pointed block's card names its two documents apart, each in its colour, then their figures", () => {
     withField(() => {
-      const onOpenPair = vi.fn();
-      renderHub({ onOpenPair });
+      const colours = ["#111111", "#222222", "#333333"];
+      const data = {
+        ...DATA,
+        scope: { ...DATA.scope, docs: DATA.scope.docs.map((d, i) => ({ ...d, color: colours[i] })) },
+      };
+      render(
+        <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+          <Hub data={data} />
+        </NextIntlClientProvider>,
+      );
+      enter("map");
+      const layout = layoutHub({ kind: "map" }, hubParticles(data), data, 800, 500);
+      const block = layout.groups.find((g) => g.key === "A<->C")!;
+      fireEvent.pointerMove(field(), { clientX: (block.x0 + block.x1) / 2, clientY: (block.y0 + block.y1) / 2 });
+      const card = screen.getByRole("presentation");
+      const names = [...card.querySelectorAll<HTMLElement>(".brief-hub-tip-doc")];
+      expect(names.map((el) => el.textContent)).toEqual(["Document A", "Document C"]);
+      expect(names.map((el) => el.style.getPropertyValue("--doc"))).toEqual(["#111111", "#333333"]);
+      expect(card.querySelector(".brief-hub-tip-figures")?.textContent).toBe(
+        "36 target pairs: 83% aligned, 17% partially aligned, 0% potential misalignment",
+      );
+    });
+  });
+
+  it("on the map, a named target is a way to its row, and a block to its pair of documents", () => {
+    withField(() => {
+      const onOpenDocPair = vi.fn();
+      renderHub({ onOpenDocPair });
       enter("apart");
       const layout = layoutHub({ kind: "map", side: "apart", focus: { kind: "top" } }, hubParticles(DATA), DATA, 800, 500);
       const b6 = layout.marks.find((m) => m.id === "B6")!;
@@ -298,9 +324,10 @@ describe("Hub", () => {
       expect(stage()).toBe("map:apart:target:B6");
       const row = within(step("apart")).getAllByTestId("hub-apart-row")[0];
       expect(within(row).getByRole("button", { pressed: true })).toBeTruthy();
+      // A single pair's square opens its whole block: the two documents.
       const i = DATA.scope.comparisons.findIndex((x) => x.a.id === "B6" && x.b.id === "C2");
       fireEvent.click(field(), { clientX: layout.x[i], clientY: layout.y[i] });
-      expect(onOpenPair).toHaveBeenCalledWith("B6", "C2");
+      expect(onOpenDocPair).toHaveBeenCalledWith("B", "C");
     });
   });
 

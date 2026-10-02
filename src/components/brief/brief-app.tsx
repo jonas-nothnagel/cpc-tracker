@@ -214,7 +214,6 @@ export function BriefApp({
                   onOpenTheme={handlers.onOpenTheme}
                   onOpenCommitment={handlers.onOpenCommitment}
                   onOpenDocPair={handlers.onOpenDocPair}
-                  onOpenPair={handlers.onOpenPair}
                   onExplore={explore ? exploreTarget : undefined}
                 />
               ) : undefined
