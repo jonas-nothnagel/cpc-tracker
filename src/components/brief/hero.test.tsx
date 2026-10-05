@@ -3,11 +3,12 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
+import mn from "../../../messages/mn.json";
 import { Hero } from "./hero";
 
-const MESSAGES = { en, es } as const;
+const MESSAGES = { en, es, mn } as const;
 
-function hero(locale: "en" | "es", countryId = "panama", countryName = "Panama") {
+function hero(locale: "en" | "es" | "mn", countryId = "panama", countryName = "Panama") {
   return render(
     <NextIntlClientProvider locale={locale} messages={MESSAGES[locale]} timeZone="UTC">
       <Hero
@@ -34,13 +35,26 @@ afterEach(() => {
 });
 
 describe("Hero", () => {
-  it("offers the brief in each language, the current one marked", () => {
+  it("offers the brief in English and the country's own language, the current one marked", () => {
     hero("en");
     const nav = screen.getByRole("navigation", { name: "Language" });
     expect(within(nav).getByText("English")).toHaveAttribute("aria-current", "true");
     expect(within(nav).queryByRole("link", { name: "English" })).toBeNull();
     expect(within(nav).getByRole("link", { name: "Español" })).toHaveAttribute("href", "/es/panama/brief");
-    expect(within(nav).getByRole("link", { name: "Монгол" })).toHaveAttribute("href", "/mn/panama/brief");
+    expect(within(nav).queryByText("Монгол")).toBeNull();
+  });
+
+  it("names English in its link, so the switch back sticks", () => {
+    hero("mn", "mongolia", "Mongolia");
+    const nav = screen.getByRole("navigation", { name: "Хэл" });
+    expect(within(nav).getByText("Монгол")).toHaveAttribute("aria-current", "true");
+    expect(within(nav).getByRole("link", { name: "English" })).toHaveAttribute("href", "/en/mongolia/brief");
+    expect(within(nav).queryByText("Español")).toBeNull();
+  });
+
+  it("offers no choice of language where the brief is in English only", () => {
+    hero("en", "sri-lanka", "Sri Lanka");
+    expect(screen.queryByRole("navigation", { name: "Language" })).toBeNull();
   });
 
   it("keeps the reader's choices when the language changes", () => {
@@ -48,7 +62,7 @@ describe("Hero", () => {
     hero("es");
     const english = screen.getByRole("link", { name: "English" });
     fireEvent.click(english);
-    expect(english).toHaveAttribute("href", "/panama/brief?docs=NP%2CPEG&cur=usd");
+    expect(english).toHaveAttribute("href", "/en/panama/brief?docs=NP%2CPEG&cur=usd");
   });
 
   it("says the interface is machine-translated only where it is", () => {
@@ -59,19 +73,10 @@ describe("Hero", () => {
     expect(screen.queryByText("Machine translation")).toBeNull();
   });
 
-  it("opens the other countries' briefs from the country's name, in the current language", () => {
+  it("names its country and offers no other", () => {
     hero("es");
-    const name = screen.getByRole("button", { name: /Panama/ });
-    expect(name).toHaveAttribute("aria-expanded", "false");
-    fireEvent.click(name);
-    expect(name).toHaveAttribute("aria-expanded", "true");
-    const list = screen.getByRole("list", { name: "Otros países" });
-    const links = within(list).getAllByRole("link");
-    expect(links.map((a) => [a.textContent, a.getAttribute("href")])).toEqual([
-      ["Mongolia", "/es/mongolia/brief"],
-      ["Sri Lanka", "/es/sri-lanka/brief"],
-      ["Côte d'Ivoire", "/es/cote-divoire/brief"],
-      ["Country X", "/es/countryx/brief"],
-    ]);
+    expect(screen.getByText(/Panama/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Panama/ })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Mongolia" })).toBeNull();
   });
 });

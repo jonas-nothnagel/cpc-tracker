@@ -2949,7 +2949,6 @@
     "metaTitle": "{country}: nota de coherencia de políticas",
     "hero": {
       "kicker": "{country} · Nota de coherencia de políticas",
-      "otherCountries": "Otros países",
       "commitments": "{count, plural, one {# meta.} other {# metas.}}",
       "documents": "{count, plural, one {# documento de política.} other {# documentos de política.}}",
       "comparisons": "{count, plural, one {# par de metas comparado.} other {# pares de metas comparados.}}",

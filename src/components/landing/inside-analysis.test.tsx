@@ -3,13 +3,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
+import es from "../../../messages/es.json";
 import { InsideAnalysis } from "./inside-analysis";
 
 // next-intl's createNavigation imports next/navigation in a way vitest cannot
 // resolve; the section only needs an anchor here (as in finding-card.test).
 vi.mock("@/i18n/navigation", () => ({
-  Link: ({ href, children, ...rest }: ComponentProps<"a">) => (
-    <a href={typeof href === "string" ? href : "#"} {...rest}>
+  Link: ({ href, locale, children, ...rest }: ComponentProps<"a"> & { locale?: string }) => (
+    <a href={typeof href === "string" ? href : "#"} data-locale={locale} {...rest}>
       {children}
     </a>
   ),
@@ -61,9 +62,9 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-function renderSection() {
+function renderSection(locale: "en" | "es" = "en") {
   return render(
-    <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+    <NextIntlClientProvider locale={locale} messages={locale === "es" ? es : en} timeZone="UTC">
       <InsideAnalysis countries={COUNTRIES} />
     </NextIntlClientProvider>,
   );
@@ -102,6 +103,13 @@ describe("InsideAnalysis", () => {
       "href",
       "/mongolia/brief",
     );
+  });
+
+  it("opens a brief in the reader's language where its country offers it, else in English", async () => {
+    renderSection("es");
+    expect(await screen.findByRole("link", { name: /Leer la nota de Panama/ })).not.toHaveAttribute("data-locale");
+    fireEvent.click(screen.getByRole("button", { name: "Mongolia" }));
+    expect(await screen.findByRole("link", { name: /Leer la nota de Mongolia/ })).toHaveAttribute("data-locale", "en");
   });
 
   it("draws the field with each group's share over it", async () => {

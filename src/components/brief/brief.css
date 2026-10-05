@@ -154,53 +154,6 @@
   color: var(--brief-muted);
 }
 
-/* The country's name in the kicker opens the other countries' briefs. */
-[data-brief] .brief-hero-country {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  border: 0;
-  padding: 0;
-  background: none;
-  color: var(--brief-ink);
-  font: inherit;
-  cursor: pointer;
-}
-
-[data-brief] .brief-hero-country:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-[data-brief] .brief-hero-country svg {
-  transition: transform 150ms ease;
-}
-
-[data-brief] .brief-hero-country[aria-expanded="true"] svg {
-  transform: rotate(180deg);
-}
-
-[data-brief] .brief-hero-countries {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1.4rem;
-  margin: -0.5rem 0 1.4rem;
-  padding: 0;
-  list-style: none;
-  font-size: 0.9375rem;
-}
-
-[data-brief] .brief-hero-countries a {
-  color: var(--brief-ink);
-  text-decoration: underline;
-  text-decoration-color: rgba(35, 46, 61, 0.35);
-  text-underline-offset: 4px;
-}
-
-[data-brief] .brief-hero-countries a:hover {
-  text-decoration-color: currentColor;
-}
-
 [data-brief] .brief-hero-brand {
   display: inline-flex;
   align-items: center;

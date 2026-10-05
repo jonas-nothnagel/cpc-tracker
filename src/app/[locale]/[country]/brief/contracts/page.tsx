@@ -1,8 +1,9 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
+import { briefInEnglish } from "@/lib/brief/language-gate";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { GEO } from "@/lib/brief/contracts/geo-data";
@@ -40,6 +41,11 @@ export async function generateMetadata(props: Props) {
 /** Public contracts beside the targets: a page of its own for countries whose
  *  contract record has been baked (python/scripts/build_contracts_layer.py). */
 export default async function ContractsRoute(props: Props) {
+  // A brief is in English and its country's own language only.
+  const { locale, country } = await props.params;
+  const entry = getCountry(country.toLowerCase());
+  const english = entry && briefInEnglish(entry, locale, "brief/contracts", await props.searchParams);
+  if (english) redirect(english);
   const loaded = await load(props);
   if (!loaded) notFound();
   const { cur, contract } = await props.searchParams;

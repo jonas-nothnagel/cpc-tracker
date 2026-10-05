@@ -12,7 +12,8 @@
  */
 
 import { useEffect, useId, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { countryLocaleSwitch, getCountry } from "@/config/countries";
 import { Link } from "@/i18n/navigation";
 
 interface HeroCtaProps {
@@ -44,6 +45,7 @@ function Chevron({ open }: { open: boolean }) {
 
 export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
   const t = useTranslations("landing");
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -163,6 +165,8 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
                 <li key={c.id}>
                   <Link
                     href={`/${c.id}/brief`}
+                    // A brief opens in the reader's language where its country offers it, else in English.
+                    locale={countryLocaleSwitch(getCountry(c.id) ?? {}, locale)}
                     onClick={() => setOpen(false)}
                     className="block rounded-md px-3 py-2.5 text-body font-medium text-[var(--undp-black)] transition-colors hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)] focus:outline-none"
                   >

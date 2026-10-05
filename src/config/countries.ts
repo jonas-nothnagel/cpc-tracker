@@ -16,6 +16,8 @@
  * reveal point is an explicit commit.
  */
 
+import type { Locale } from "@/i18n/routing";
+
 /** Canonical country id — lowercased slug matching /^[a-z][a-z0-9-]{1,30}$/. */
 export type CountryId = string;
 
@@ -40,6 +42,10 @@ export interface CountryEntry {
    *  section but not yet a live destination. Pair with `visible: false` so it
    *  never leaks into live country lists. */
   comingSoon?: boolean;
+  /** The app's languages, besides English, that the country's pages are
+   *  offered in: its own language where the app has one. A country's brief is
+   *  shared with that country directly, so it offers no other country's. */
+  languages?: Exclude<Locale, "en">[];
   /** Feature-presence flags. When false, the corresponding dashboard section
    *  hides rather than renders empty. */
   has: {
@@ -86,6 +92,7 @@ export const COUNTRIES: CountryEntry[] = [
     iso3: "mng",
     status: "pilot",
     visible: true,
+    languages: ["mn"],
     has: {
       coherence: true,
       btr: { mitigation: true, adaptation: true },
@@ -99,6 +106,7 @@ export const COUNTRIES: CountryEntry[] = [
     iso3: "pan",
     status: "demo",
     visible: true, // Flipped in PR2 after translation, country config, and pipeline run landed.
+    languages: ["es"],
     has: {
       coherence: true,
       btr: { mitigation: true, adaptation: false },
@@ -205,6 +213,25 @@ export function listVisibleCountries(): CountryEntry[] {
  */
 export function listComingSoonCountries(): CountryEntry[] {
   return COUNTRIES.filter((c) => c.comingSoon);
+}
+
+/** The languages a country's pages are offered in, English first. */
+export function countryLocales(entry: Pick<CountryEntry, "languages">): Locale[] {
+  return ["en", ...(entry.languages ?? [])];
+}
+
+/** The language a country's pages open in for a reader in `locale`: theirs
+ *  where the country offers it, else English. */
+export function countryLocaleFor(entry: Pick<CountryEntry, "languages">, locale: string): Locale {
+  return countryLocales(entry).find((l) => l === locale) ?? "en";
+}
+
+/** The language a link into a country's pages switches to, or undefined
+ *  where the reader's own is offered (a named language always takes a
+ *  prefix, so naming the current one would add a redirect). */
+export function countryLocaleSwitch(entry: Pick<CountryEntry, "languages">, locale: string): Locale | undefined {
+  const to = countryLocaleFor(entry, locale);
+  return to === locale ? undefined : to;
 }
 
 // ─── Module-load validation ─────────────────────────────────────────────────

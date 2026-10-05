@@ -18,7 +18,8 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { countryLocaleSwitch, getCountry } from "@/config/countries";
 import { Link } from "@/i18n/navigation";
 import { DotField } from "@/components/brief/dot-field";
 import { useNumbers } from "@/components/brief/ink";
@@ -66,6 +67,7 @@ function Finding({ country, data }: { country: string; data: BriefOverview }) {
 
 export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
   const t = useTranslations("landing.inside");
+  const locale = useLocale();
   const [selected, setSelected] = useState<string | null>(null);
 
   // Pick the starting country at random on mount (client-only) so no country
@@ -130,6 +132,8 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
           {selected && selectedName ? (
             <Link
               href={`/${selected}/brief`}
+              // A brief opens in the reader's language where its country offers it, else in English.
+              locale={countryLocaleSwitch(getCountry(selected) ?? {}, locale)}
               className="mt-8 inline-flex items-center gap-2 text-body font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
             >
               {t("preview.readBrief", { name: selectedName })}

@@ -2949,7 +2949,6 @@
     "metaTitle": "{country}: бодлогын уялдааны товч тойм",
     "hero": {
       "kicker": "{country} · Бодлогын уялдааны товч тойм",
-      "otherCountries": "Бусад улс",
       "commitments": "{count, plural, one {# зорилт.} other {# зорилт.}}",
       "documents": "{count, plural, one {бодлогын # баримт бичиг.} other {бодлогын # баримт бичиг.}}",
       "comparisons": "{count, plural, one {Харьцуулсан # зорилтын хос.} other {Харьцуулсан # зорилтын хос.}}",

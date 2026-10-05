@@ -1,8 +1,9 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
+import { briefInEnglish } from "@/lib/brief/language-gate";
 import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
 import { ExplorePage } from "@/components/brief/explore/explore-page";
@@ -37,6 +38,11 @@ export async function generateMetadata(props: Props) {
 /** The brief's explorer on a page of its own, to share on its own; the same
  *  link parameters as in the brief (documents, centre, grouping, layers). */
 export default async function ExploreStandalonePage(props: Props) {
+  // A brief is in English and its country's own language only.
+  const { locale, country } = await props.params;
+  const entry = getCountry(country.toLowerCase());
+  const english = entry && briefInEnglish(entry, locale, "brief/explore", await props.searchParams);
+  if (english) redirect(english);
   const loaded = await load(props);
   if (!loaded) notFound();
   const searchParams = await props.searchParams;

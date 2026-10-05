@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   COUNTRIES,
+  countryLocaleFor,
+  countryLocales,
   getCountry,
   listCountries,
   listVisibleCountries,
@@ -121,6 +123,24 @@ describe("getCountry", () => {
     } finally {
       panama.aliases = originalAliases;
     }
+  });
+});
+
+describe("a country's languages", () => {
+  it("offers each country in English and its own language only", () => {
+    expect(countryLocales(getCountry("mongolia")!)).toEqual(["en", "mn"]);
+    expect(countryLocales(getCountry("panama")!)).toEqual(["en", "es"]);
+    expect(countryLocales(getCountry("sri-lanka")!)).toEqual(["en"]);
+    expect(countryLocales(getCountry("cote-divoire")!)).toEqual(["en"]);
+    expect(countryLocales(getCountry("countryx")!)).toEqual(["en"]);
+  });
+
+  it("opens a country in the reader's language where it is offered, else in English", () => {
+    expect(countryLocaleFor(getCountry("mongolia")!, "mn")).toBe("mn");
+    expect(countryLocaleFor(getCountry("mongolia")!, "es")).toBe("en");
+    expect(countryLocaleFor(getCountry("panama")!, "es")).toBe("es");
+    expect(countryLocaleFor(getCountry("panama")!, "mn")).toBe("en");
+    expect(countryLocaleFor(getCountry("sri-lanka")!, "es")).toBe("en");
   });
 });
 
