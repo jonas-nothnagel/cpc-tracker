@@ -3,6 +3,10 @@ import type { Tone, ToneCounts } from "./compute";
 /** Left-to-right order of the groups in the overall picture. */
 export const DOT_ORDER: Tone[] = ["reinforce", "partial", "apart", "none"];
 
+/** The overview's narrowest group: room for its share above it ("<1%"),
+ *  so a name never runs into the next one or past the field's edge. */
+export const COLUMN_LABEL = 44;
+
 /** One group of dots: how many target pairs, and whether to draw it with
  *  the checker texture (every other dot small), the second channel that
  *  tells potential misalignment apart without relying on red and green. */

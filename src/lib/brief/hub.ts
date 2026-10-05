@@ -2,7 +2,7 @@ import { getDocPairKey, getStorylineDocPairKeys } from "@/lib/coherence-briefing
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
 import { toneOf, type Tone } from "./compute";
 import { MAX_THEMES, type BriefData } from "./data";
-import { DOT_ORDER, layoutGroups } from "./dot-layout";
+import { COLUMN_LABEL, DOT_ORDER, layoutGroups } from "./dot-layout";
 import { targetLine } from "./text";
 
 /**
@@ -203,9 +203,7 @@ export const MAP_FAINT = 0.125;
 
 /** Room above the overview's groups for their labels. */
 const LABEL_BAND = 30;
-/** The overview's narrowest group: room for its share above it ("<1%"),
- *  so a name never runs into the next one or past the field's edge. */
-export const COLUMN_LABEL = 44;
+export { COLUMN_LABEL };
 /** Room above each cluster around a document in focus, for the other
  *  document's name (two lines) and its shares. */
 export const FOCUS_LABEL = 74;

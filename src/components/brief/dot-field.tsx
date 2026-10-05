@@ -11,7 +11,7 @@ import {
 } from "react";
 import { useTranslations } from "next-intl";
 import type { Tone, ToneCounts } from "@/lib/brief/compute";
-import { DOT_ORDER, layoutGroups, type GroupLayout } from "@/lib/brief/dot-layout";
+import { COLUMN_LABEL, DOT_ORDER, layoutGroups, type GroupLayout } from "@/lib/brief/dot-layout";
 import { INK, useNumbers } from "./ink";
 
 /** Most dots drawn; above this one dot stands for several target pairs. */
@@ -98,11 +98,19 @@ function paint(
   ctx.globalAlpha = 1;
 }
 
+/** A mixed entrance holds still a moment before the dots sort, and sorts
+ *  more slowly than they settle from a scatter, so the move can be read. */
+const SORT_HOLD_MS = 650;
+const SORT_MS = 1900;
+const SETTLE_MS = 1400;
+
 /**
  * A halftone field of target pairs, one ink dot each (or one per `unit`),
  * in groups side by side. The dots settle into their groups the first time
  * the field is seen and again whenever `replay` changes; `still` draws them
- * settled at once (the printed brief), and so does reduced motion.
+ * settled at once (the printed brief), and so does reduced motion. They
+ * settle from a scatter over the field, or, with a `mixed` entrance, sort
+ * themselves out of the finished field with every dot on another's seat.
  */
 export function DotCanvas({
   groups,
@@ -113,6 +121,8 @@ export function DotCanvas({
   onHover,
   onSelect,
   labelled = false,
+  minWidth = 0,
+  entrance = "scatter",
   className = "",
 }: {
   groups: CanvasGroup[];
@@ -124,6 +134,9 @@ export function DotCanvas({
   onHover?: (key: string | null) => void;
   onSelect?: (key: string) => void;
   labelled?: boolean;
+  /** Least width of a group (room for its label above it). */
+  minWidth?: number;
+  entrance?: "scatter" | "mixed";
   className?: string;
 }) {
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -145,8 +158,9 @@ export function DotCanvas({
         unit,
         size.w,
         size.h,
+        minWidth,
       ),
-    [shape, unit, size.w, size.h],
+    [shape, unit, size.w, size.h, minWidth],
   );
   const colors = groups.map((g) => g.color).join(",");
   const hoveredIndex = hovered === null ? -1 : groups.findIndex((g) => g.key === hovered);
@@ -194,7 +208,7 @@ export function DotCanvas({
           const [count, texture] = s.split(":");
           return { count: Number(count), texture: texture === "1" };
         });
-        paint(canvas, layoutGroups(specs, unit, w, h), palette, w, h, 1, null, null);
+        paint(canvas, layoutGroups(specs, unit, w, h, minWidth), palette, w, h, 1, null, null);
       } else {
         paint(canvas, layout, palette, size.w, size.h, 1, null, null);
       }
@@ -214,18 +228,35 @@ export function DotCanvas({
       finish();
       return detach;
     }
-    const rand = seeded(layout.group.length * 7919 + 17 + replay);
-    const from = new Float32Array(layout.group.length * 2);
-    for (let i = 0; i < layout.group.length; i++) {
-      from[2 * i] = rand() * size.w;
-      from[2 * i + 1] = rand() * size.h;
+    const n = layout.group.length;
+    const rand = seeded(n * 7919 + 17 + replay);
+    const from = new Float32Array(n * 2);
+    const mixed = entrance === "mixed";
+    if (mixed) {
+      // Every dot starts on another dot's seat: the finished field, mixed.
+      const seat = Array.from({ length: n }, (_, i) => i);
+      for (let i = n - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [seat[i], seat[j]] = [seat[j], seat[i]];
+      }
+      for (let i = 0; i < n; i++) {
+        from[2 * i] = layout.xs[seat[i]];
+        from[2 * i + 1] = layout.ys[seat[i]];
+      }
+    } else {
+      for (let i = 0; i < n; i++) {
+        from[2 * i] = rand() * size.w;
+        from[2 * i + 1] = rand() * size.h;
+      }
     }
     paint(canvas, layout, palette, size.w, size.h, 0, from, null);
+    const hold = mixed ? SORT_HOLD_MS : 0;
+    const duration = mixed ? SORT_MS : SETTLE_MS;
     let frame = 0;
     let start = 0;
     const step = (now: number) => {
       if (!start) start = now;
-      const p = Math.min(1, (now - start) / 1400);
+      const p = Math.min(1, Math.max(0, now - start - hold) / duration);
       paint(canvas, layout, palette, size.w, size.h, p, from, null);
       if (p < 1) frame = requestAnimationFrame(step);
       else {
@@ -248,7 +279,7 @@ export function DotCanvas({
       cancelAnimationFrame(frame);
       detach();
     };
-  }, [layout, size, colors, still, replay, shape, unit]);
+  }, [layout, size, colors, still, replay, shape, unit, minWidth, entrance]);
 
   useEffect(() => {
     dimRef.current = dimExcept;
@@ -323,11 +354,17 @@ export function DotField({
   still = false,
   onFocusTone,
   focusTones = ["reinforce", "apart"],
+  shares = false,
+  entrance = "scatter",
 }: {
   counts: ToneCounts;
   still?: boolean;
   onFocusTone?: (tone: "reinforce" | "apart") => void;
   focusTones?: ("reinforce" | "apart")[];
+  /** Each group's share over it, as in the overview on screen; every group
+   *  is then wide enough for its share. */
+  shares?: boolean;
+  entrance?: "scatter" | "mixed";
 }) {
   const t = useTranslations("brief");
   const { n, pct } = useNumbers();
@@ -342,6 +379,7 @@ export function DotField({
     color: DOT_COLORS[tone],
     texture: tone === "apart",
     selectable: focusable(tone),
+    label: pct(share(tone)),
     tip: (
       <>
         <strong>{n(counts[tone])}</strong> {t(`tone.${tone}`)} ({pct(share(tone))})
@@ -355,6 +393,9 @@ export function DotField({
         groups={groups}
         unit={Math.max(1, Math.ceil(counts.total / MAX_DOTS))}
         still={still}
+        labelled={shares}
+        minWidth={shares ? COLUMN_LABEL : 0}
+        entrance={entrance}
         onSelect={(key) => {
           if (focusable(key as Tone)) onFocusTone?.(key as "reinforce" | "apart");
         }}
