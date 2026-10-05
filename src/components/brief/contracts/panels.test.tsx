@@ -147,7 +147,7 @@ describe("a target, with its contracts", () => {
     expect(screen.getByRole("link", { name: /Explore this target/ })).toHaveAttribute("href", "/mongolia/brief/explore?focus=C1");
     cleanup();
     renderPanels([{ kind: "target", id: "C1" }], vi.fn(), { locale: "es" });
-    expect(screen.getByRole("link", { name: /Explore this target/ })).toHaveAttribute("href", "/es/mongolia/brief/explore?focus=C1");
+    expect(screen.getByRole("link", { name: /Explorar esta meta/ })).toHaveAttribute("href", "/es/mongolia/brief/explore?focus=C1");
   });
 
   it("puts the target in the centre of the ring on the same page where the brief has one", () => {
