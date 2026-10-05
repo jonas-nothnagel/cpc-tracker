@@ -1,35 +1,28 @@
 import { notFound } from "next/navigation";
-import { CoherenceDashboard } from "@/components/dashboard/coherence-dashboard";
+import { redirect } from "@/i18n/navigation";
 import { getCountry, isValidCountryId } from "@/config/countries";
 
-interface StandalonePageProps {
-  params: Promise<{ country: string }>;
+// A country's address opens its brief, in the link's language and with the
+// choices the link carries. The previous dashboard stays at
+// /dashboard?country=<id>, so links shared before keep working there.
+interface Props {
+  params: Promise<{ locale: string; country: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export async function generateMetadata({ params }: StandalonePageProps) {
-  const { country } = await params;
+export default async function CountryPage(props: Props) {
+  const { locale, country } = await props.params;
   const lower = country.toLowerCase();
-  const entry = isValidCountryId(lower) ? getCountry(lower) : undefined;
-  if (!entry?.visible) return { title: "CPC Analyzer" };
-  return { title: `${entry.name} | CPC Analyzer` };
-}
-
-export default async function StandaloneCountryPage({ params }: StandalonePageProps) {
-  const { country } = await params;
-  const lower = country.toLowerCase();
-
   if (!isValidCountryId(lower)) notFound();
   const entry = getCountry(lower);
   if (!entry?.visible) notFound();
 
-  // Render a shell and let the client fetch /api/dashboard (pre-gzipped, cached)
-  // instead of inlining the full ~40 MB payload into the no-store HTML, which
-  // dominated server TTFB on Azure. See src/app/dashboard/page.tsx.
-  return (
-    <CoherenceDashboard
-      key={`standalone:${entry.id}`}
-      country={entry.id}
-      basePath={`/${entry.id}`}
-    />
-  );
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(await props.searchParams)) {
+    for (const v of Array.isArray(value) ? value : value === undefined ? [] : [value]) {
+      query.append(key, v);
+    }
+  }
+  const q = query.toString();
+  redirect({ href: `/${entry.id}/brief${q ? `?${q}` : ""}`, locale });
 }
