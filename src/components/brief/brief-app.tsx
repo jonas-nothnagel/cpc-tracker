@@ -184,6 +184,7 @@ export function BriefApp({
   const page = (
     <div data-brief className="brief-root">
       <Hero
+        countryId={source.countryId}
         countryName={source.countryName}
         commitments={scope.commitments.length}
         documents={scope.docs.length}

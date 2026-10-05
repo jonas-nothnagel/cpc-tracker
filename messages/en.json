@@ -2949,6 +2949,7 @@
     "metaTitle": "{country}: Policy coherence brief",
     "hero": {
       "kicker": "{country} · Policy coherence brief",
+      "otherCountries": "Other countries",
       "commitments": "{count, plural, one {# target.} other {# targets.}}",
       "documents": "{count, plural, one {# policy document.} other {# policy documents.}}",
       "comparisons": "{count, plural, one {# target pair compared.} other {# target pairs compared.}}",
