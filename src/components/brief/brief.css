@@ -2661,12 +2661,11 @@
 
 /* ── Print: exactly the sheets ───────────────────────────────────── */
 
-@media print {
-  @page {
-    size: A4;
-    margin: 0;
-  }
+/* The A4 page itself is set in print-page.css, which only the brief
+   imports: everything in this file stays inside [data-brief], so the
+   landing can borrow the brief's dot field without changing how it prints. */
 
+@media print {
   [data-brief] {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;

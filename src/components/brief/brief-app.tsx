@@ -27,6 +27,7 @@ import { clip } from "./ink";
 import { SectionView, type SectionHandlers } from "./section-view";
 import { Sheets, TitleBlock } from "./sheets";
 import "./brief.css";
+import "./print-page.css";
 
 /** Verbatim commitments for the landing, dealt across documents in turn. */
 function driftLines(scope: Scope, max = 108): string[] {

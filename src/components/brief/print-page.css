@@ -1,0 +1,10 @@
+/* The printed brief: A4 sheets that carry their own margins. Apart from
+   brief.css, whose rules all stay inside [data-brief], because a page rule
+   applies to the whole document of any page that loads it. */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
