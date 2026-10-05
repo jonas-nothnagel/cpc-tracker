@@ -96,15 +96,23 @@ export function HeroVideo({ poster, mp4, webm, children }: HeroVideoProps) {
         {children}
       </div>
 
-      {/* Pause / play control for the looping video (WCAG 2.2.2). */}
+      {/* Pause / play control for the looping video (WCAG 2.2.2): the
+          brief's plain glyph, on the darkest corner of the scrim. */}
       {showVideo ? (
         <button
           type="button"
           onClick={toggle}
           aria-label={isPlaying ? t("pauseAria") : t("playAria")}
-          className="absolute bottom-5 left-5 z-20 rounded-full border border-white/40 bg-black/25 px-3 py-1.5 text-caption font-medium text-white backdrop-blur-sm transition-colors hover:bg-black/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          title={isPlaying ? t("pause") : t("play")}
+          className="absolute bottom-5 left-5 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/50 text-white transition-colors hover:border-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
-          {isPlaying ? t("pause") : t("play")}
+          <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+            {isPlaying ? (
+              <path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor" />
+            ) : (
+              <path d="M3 1.5v9l7.5-4.5z" fill="currentColor" />
+            )}
+          </svg>
         </button>
       ) : null}
     </section>

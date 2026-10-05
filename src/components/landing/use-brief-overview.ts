@@ -1,58 +1,58 @@
 "use client";
 
 /**
- * Data for the landing page's live coherence wheel.
+ * Figures for the landing's preview of a country's brief.
  *
- * One slim request per country (`/api/dashboard?slice=wheel`: target ids and
- * documents, drawable pairs, the country config), cached in memory for the
- * life of the mounted landing so switching back to a country is instant. Once
- * the first wheel is on screen the remaining pilots are fetched during idle
- * time, so every later pill click is a cache hit; the prefetch is skipped when
- * the browser signals a data-saver preference.
+ * One small request per country (`/api/brief/overview`: its standard
+ * documents, targets and how every target pair reads), cached in memory for
+ * the life of the mounted landing so switching back to a country is instant.
+ * Once the first figures are on screen the remaining countries are fetched
+ * during idle time, so every later switch is a cache hit; the prefetch is
+ * skipped when the browser signals a data-saver preference.
  *
  * The hook derives `data` from the cache for the *currently* selected country
- * only: the moment the selection changes, the previous country's wheel is
+ * only: the moment the selection changes, the previous country's figures are
  * gone and the caller shows its loading state, instead of leaving the old
- * wheel on screen until the new payload lands. A country whose last attempt
+ * picture on screen until the new answer lands. A country whose last attempt
  * failed is retried the next time it is selected, so a transient error (a
  * container restart, a brief offline moment during the idle prefetch) does
  * not stick for the life of the page.
  *
- * The locale is fixed for a mounted landing (a language switch navigates to a
- * new `[locale]` segment and remounts), so the cache is keyed by country only.
+ * The figures do not depend on the language (the page formats them), so the
+ * request carries the country only.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { CountryConfig, WheelAlignment, WheelTarget } from "@/types";
+import type { BriefOverview } from "@/lib/brief/overview";
 import { saveDataRequested } from "./save-data";
 
-export interface WheelPreviewData {
-  targets: WheelTarget[];
-  alignments: WheelAlignment[];
-  countryConfig: CountryConfig | null;
+type CacheEntry = { kind: "ok"; data: BriefOverview } | { kind: "failed" };
+
+export function overviewUrl(country: string): string {
+  return `/api/brief/overview?country=${encodeURIComponent(country)}`;
 }
 
-type CacheEntry = { kind: "ok"; data: WheelPreviewData } | { kind: "failed" };
-
-export function wheelSliceUrl(country: string, locale: string): string {
-  const localeQuery =
-    locale && locale !== "en" ? `&locale=${encodeURIComponent(locale)}` : "";
-  return `/api/dashboard?country=${encodeURIComponent(country)}&slice=wheel${localeQuery}`;
+function isOverview(value: unknown): value is BriefOverview {
+  const v = value as Partial<BriefOverview> | null;
+  const counts = v?.counts;
+  return (
+    typeof v?.documents === "number" &&
+    typeof v.targets === "number" &&
+    typeof v.lead === "string" &&
+    typeof counts?.total === "number" &&
+    typeof counts.reinforce === "number" &&
+    typeof counts.partial === "number" &&
+    typeof counts.apart === "number" &&
+    typeof counts.none === "number"
+  );
 }
 
-async function loadSlice(country: string, locale: string): Promise<CacheEntry> {
+async function loadOverview(country: string): Promise<CacheEntry> {
   try {
-    const r = await fetch(wheelSliceUrl(country, locale));
+    const r = await fetch(overviewUrl(country));
     if (!r.ok) return { kind: "failed" };
-    const d = (await r.json()) as Record<string, unknown>;
-    return {
-      kind: "ok",
-      data: {
-        targets: (d.targets ?? []) as WheelTarget[],
-        alignments: (d.alignment ?? []) as WheelAlignment[],
-        countryConfig: (d.countryConfig ?? null) as CountryConfig | null,
-      },
-    };
+    const d: unknown = await r.json();
+    return isOverview(d) ? { kind: "ok", data: d } : { kind: "failed" };
   } catch {
     return { kind: "failed" };
   }
@@ -74,19 +74,17 @@ function scheduleIdle(cb: () => void): () => void {
   return () => clearTimeout(id);
 }
 
-export function useWheelPreview({
+export function useBriefOverview({
   countries,
   selected,
-  locale,
   prefetch = true,
 }: {
-  /** Every country the pills can select; prefetched after the first load.
+  /** Every country the switch can select; prefetched after the first load.
    *  Callers keep the array identity stable (memoised) between renders. */
   countries: string[];
   selected: string | null;
-  locale: string;
   prefetch?: boolean;
-}): { data: WheelPreviewData | null; failed: boolean } {
+}): { data: BriefOverview | null; failed: boolean } {
   const [cache, setCache] = useState<ReadonlyMap<string, CacheEntry>>(() => new Map());
   // Mirror of `cache` for effects and callbacks, so they can read the latest
   // entries without re-running on every insert. Written only via `commit`.
@@ -105,13 +103,13 @@ export function useWheelPreview({
     async (country: string) => {
       if (inflight.current.has(country)) return;
       inflight.current.add(country);
-      const entry = await loadSlice(country, locale);
+      const entry = await loadOverview(country);
       inflight.current.delete(country);
       commit((next) => {
         next.set(country, entry);
       });
     },
-    [locale, commit],
+    [commit],
   );
 
   useEffect(() => {

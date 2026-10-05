@@ -16,7 +16,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 interface HeroCtaProps {
-  /** Live pilot countries — each links to its dashboard. */
+  /** Live pilot countries — each links to its brief. */
   countries: { id: string; name: string }[];
   /** Countries announced as forthcoming — shown greyed and non-clickable.
    *  Empty today; the section renders only when populated. */
@@ -162,7 +162,7 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
               {countries.map((c) => (
                 <li key={c.id}>
                   <Link
-                    href={`/dashboard?country=${c.id}`}
+                    href={`/${c.id}/brief`}
                     onClick={() => setOpen(false)}
                     className="block rounded-md px-3 py-2.5 text-body font-medium text-[var(--undp-black)] transition-colors hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)] focus:outline-none"
                   >

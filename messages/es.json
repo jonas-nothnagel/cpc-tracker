@@ -45,16 +45,10 @@
       "comingSoonTag": "Pronto"
     },
     "inside": {
-      "eyebrow": "Dentro del análisis",
-      "title": "Cada meta de política, mapeada contra todas las demás",
-      "body": "Cada cinta enlaza dos documentos nacionales de política. El verde muestra dónde sus metas están en fuerte alineación; los hilos rojos marcan una posible desalineación que merece una mirada más cercana.",
-      "disclaimer": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+      "aiTag": "Análisis asistido por IA, para validación por personas expertas nacionales.",
       "preview": {
         "countrySwitcherAria": "Elija un país para previsualizar",
-        "wheelAriaWithCountry": "Vista previa en vivo de la rueda de coherencia de políticas para {name}: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
-        "wheelAria": "Vista previa en vivo de la rueda de coherencia de políticas: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
-        "openDashboardWithCountry": "Abrir el panel de {name}",
-        "openDashboard": "Abrir el panel completo",
+        "readBrief": "Leer la nota de {name}",
         "unavailable": "La vista previa de {name} no está disponible en este momento."
       }
     },
@@ -67,11 +61,11 @@
       },
       "step2": {
         "title": "Análisis automatizado",
-        "body": "La IA clasifica cada meta por tema y sector, luego evalúa qué tan bien se alinean las metas entre distintas políticas."
+        "body": "La IA clasifica cada meta por área de política y la compara con cada meta de los demás documentos para identificar ámbitos de alineación y de posible desalineación."
       },
       "step3": {
-        "title": "Explorar resultados",
-        "body": "Panel interactivo que muestra la cobertura de la política, los patrones de alineación y las áreas donde la coordinación podría fortalecerse."
+        "title": "Leer la nota",
+        "body": "La nota de cada país muestra dónde las metas están alineadas y dónde muestran una posible desalineación, por documento y por área de política. Puede imprimirse o explorarse meta por meta."
       }
     },
     "abbr": {

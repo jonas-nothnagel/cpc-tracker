@@ -45,7 +45,7 @@ export default async function Home({
         </div>
       </HeroVideo>
 
-      {/* Inside the analysis — live coherence wheel */}
+      {/* A country's brief, previewed: its finding, figures and dot field */}
       <InsideAnalysis
         countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
       />
@@ -60,7 +60,7 @@ export default async function Home({
           </h2>
           <div className="grid gap-10 md:grid-cols-3 md:gap-12">
             <div>
-              <span className="font-display text-headline-lg font-semibold text-[var(--undp-blue)]/80">
+              <span className="font-display text-headline-lg font-semibold text-[var(--undp-black)]">
                 1
               </span>
               <h3 className="mb-2 mt-3 text-body font-semibold text-[var(--undp-black)]">
@@ -83,7 +83,7 @@ export default async function Home({
               </p>
             </div>
             <div>
-              <span className="font-display text-headline-lg font-semibold text-[var(--undp-blue)]/80">
+              <span className="font-display text-headline-lg font-semibold text-[var(--undp-black)]">
                 2
               </span>
               <h3 className="mb-2 mt-3 text-body font-semibold text-[var(--undp-black)]">
@@ -94,7 +94,7 @@ export default async function Home({
               </p>
             </div>
             <div>
-              <span className="font-display text-headline-lg font-semibold text-[var(--undp-blue)]/80">
+              <span className="font-display text-headline-lg font-semibold text-[var(--undp-black)]">
                 3
               </span>
               <h3 className="mb-2 mt-3 text-body font-semibold text-[var(--undp-black)]">
@@ -123,7 +123,7 @@ export default async function Home({
               {t("footer.undp")}
             </span>
           </div>
-          <span className="text-caption text-[var(--undp-gray)]/60">
+          <span className="text-caption text-[var(--undp-gray)]">
             {t("footer.initiative")}
           </span>
         </div>

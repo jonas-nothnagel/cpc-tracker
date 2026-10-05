@@ -1,0 +1,32 @@
+/* The brief's dot field on the landing: a taller field, each group's share
+   over it, and the legend, at the sizes of the brief's own overview
+   (.brief-hub-label and .brief-flow in brief.css). */
+
+[data-brief].landing-field .brief-dots-field {
+  flex: none;
+  height: clamp(200px, 24vw, 290px);
+}
+
+[data-brief].landing-field .brief-dots-labels {
+  height: 30px;
+}
+
+[data-brief].landing-field .brief-dots-label {
+  bottom: 6px;
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  color: var(--brief-ink);
+}
+
+[data-brief].landing-field .brief-dots-legend {
+  gap: 0.5rem 1.75rem;
+  margin-top: 0.9rem;
+}
+
+[data-brief].landing-field .brief-dots-pct {
+  font-size: 1rem;
+}
+
+[data-brief].landing-field .brief-dots-tone {
+  font-size: 0.9375rem;
+}

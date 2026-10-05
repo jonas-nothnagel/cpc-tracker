@@ -1,53 +1,75 @@
 "use client";
 
 /**
- * "Inside the analysis" landing section. A single client island so the country
- * toggle, the body copy's CTA, and the live coherence wheel share one
+ * The landing's preview of a country's brief: the finding it opens with, its
+ * figures, the dot field of every target pair, and the way in. A single
+ * client island so the country choice, the copy and the field share one
  * selected-country state.
  *
- * It reuses the prototype's own Centerpiece so the home page and the dashboard
- * read as one product. Country-agnostic: every visible pilot is an equal toggle
+ * It reuses the brief's own headline, figures and dot field, and the brief's
+ * own counts (`/api/brief/overview`), so the landing and the brief always
+ * read the same. Country-agnostic: every visible country is an equal choice
  * and the starting country is picked at random on mount, so the landing never
- * structurally favours one country. Sits below the fold, so it fetches
- * client-side through `useWheelPreview` (a slim per-country wheel slice, cached
- * and prefetched; see that hook). While a country loads the wheel column shows
- * its skeleton; if a country's data is unavailable the band stays, with a short
- * caption in place of the wheel, so the other pills keep working.
- *
- * Documents a country soft-hides by default (countryConfig.defaultHiddenDocTypes,
- * e.g. Panama's ENR) are filtered out here too, so the landing wheel matches the
- * dashboard's default view rather than showing a document the dashboard omits.
+ * structurally favours one. One country at a time: shares depend on each
+ * country's documents, so they are not set side by side. Sits below the fold,
+ * so it fetches client-side through `useBriefOverview` (cached and
+ * prefetched; see that hook). If a country's figures are unavailable, the
+ * section says so and still links to the brief.
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import {
-  Centerpiece,
-  WheelLegend,
-} from "@/components/dashboard/coherence-briefing/centerpiece";
-import type { WheelState } from "@/components/dashboard/coherence-briefing/centerpiece/wheel";
-import { useWheelPreview } from "./use-wheel-preview";
-
-// Group by document, no focus/filter.
-const WHEEL_STATE: WheelState = {
-  groupBy: "document",
-  focus: null,
-  filter: "all",
-};
+import { DotField } from "@/components/brief/dot-field";
+import { useNumbers } from "@/components/brief/ink";
+import type { BriefOverview } from "@/lib/brief/overview";
+import { useBriefOverview } from "./use-brief-overview";
+import "@/components/brief/brief.css";
+import "./landing.css";
 
 export interface PreviewCountry {
   id: string;
   name: string;
 }
 
+function useFinding(country: string, data: BriefOverview) {
+  const t = useTranslations("brief");
+  const { pct } = useNumbers();
+  const { counts } = data;
+  const share = (v: number) => pct(counts.total > 0 ? v / counts.total : 0);
+  return {
+    headline: t(`overall.headline.${data.lead}`, {
+      country,
+      aligned: share(counts.reinforce),
+      partial: share(counts.partial),
+      apart: share(counts.apart),
+    }),
+    figures: [
+      t("hero.documents", { count: data.documents }),
+      t("hero.commitments", { count: data.targets }),
+      t("hero.comparisons", { count: counts.total }),
+    ].join(" "),
+  };
+}
+
+function Finding({ country, data }: { country: string; data: BriefOverview }) {
+  const { headline, figures } = useFinding(country, data);
+  return (
+    <>
+      <h2 className="font-display text-headline font-semibold leading-tight text-[var(--undp-black)] md:text-headline-lg">
+        {headline}
+      </h2>
+      <p className="mt-4 text-body text-[var(--undp-gray)]">{figures}</p>
+    </>
+  );
+}
+
 export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
   const t = useTranslations("landing.inside");
-  const locale = useLocale();
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Pick the starting country at random on mount (client-only) so neither pilot
-  // is structurally favoured. SSR renders the skeleton.
+  // Pick the starting country at random on mount (client-only) so no country
+  // is structurally favoured. SSR renders the loading state.
   useEffect(() => {
     if (countries.length === 0) return;
     const pick = countries[Math.floor(Math.random() * countries.length)].id;
@@ -56,137 +78,79 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
   }, [countries]);
 
   const countryIds = useMemo(() => countries.map((c) => c.id), [countries]);
-  const { data, failed } = useWheelPreview({ countries: countryIds, selected, locale });
-
-  // Drop documents the country soft-hides by default so the landing wheel
-  // matches the briefing's default view: the briefing seeds its hidden set
-  // from countryConfig.defaultHiddenDocTypes plus secondaryDocTypes (e.g.
-  // Panama's ENR and its tier-2 documents); the landing has no toggle, so it
-  // honours the same default set.
-  const visible = useMemo(() => {
-    if (!data) return null;
-    const hidden = new Set([
-      ...(data.countryConfig?.defaultHiddenDocTypes ?? []),
-      ...(data.countryConfig?.secondaryDocTypes ?? []),
-    ]);
-    if (hidden.size === 0) return data;
-    const targets = data.targets.filter((t) => !hidden.has(t.sourceDocument));
-    const ids = new Set(targets.map((t) => t.id));
-    const alignments = data.alignments.filter(
-      (a) => ids.has(a.targetAId) && ids.has(a.targetBId),
-    );
-    return { ...data, targets, alignments };
-  }, [data]);
-
+  const { data, failed } = useBriefOverview({ countries: countryIds, selected });
   const selectedName = countries.find((c) => c.id === selected)?.name;
 
   return (
     <section className="border-t border-line bg-white py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-6">
-        {countries.length > 1 ? (
-          <div
-            className="mb-10 flex items-center justify-center gap-1.5"
-            role="group"
-            aria-label={t("preview.countrySwitcherAria")}
-          >
-            {countries.map((c) => {
-              const isActive = c.id === selected;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => setSelected(c.id)}
-                  aria-pressed={isActive}
-                  className={`rounded-full border px-3.5 py-1 text-caption font-medium transition-colors ${
-                    isActive
-                      ? "border-[var(--undp-black)] bg-[var(--undp-black)] text-white"
-                      : "border-gray-300 bg-white text-[var(--undp-gray)] hover:border-[var(--undp-black)] hover:text-[var(--undp-black)]"
-                  }`}
-                >
-                  {c.name}
-                </button>
-              );
-            })}
-          </div>
-        ) : null}
-
-        <div className="grid items-start gap-12 md:grid-cols-[4fr_5fr] md:gap-16">
-          {/* Left column: copy, legend, disclaimer, CTA */}
-          <div>
-            <p className="mb-4 text-data font-medium text-[var(--undp-gray)]">
-              {t("eyebrow")}
-            </p>
-            <h2 className="font-display mb-5 text-headline font-semibold leading-tight text-[var(--undp-black)] md:text-headline-lg">
-              {t("title")}
-            </h2>
-            <p className="mb-6 max-w-md text-base leading-relaxed text-[var(--undp-gray)] md:text-lg">
-              {t("body")}
-            </p>
-
-            <WheelLegend justify="start" />
-
-            <p className="mt-6 max-w-sm text-caption leading-relaxed text-[var(--undp-gray)]/70">
-              {t("disclaimer")}
-            </p>
-
-            {selected ? (
-              <div className="mt-8">
-                <Link
-                  href={`/dashboard?country=${selected}`}
-                  className="inline-flex items-center gap-2 text-body font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
-                >
-                  {selectedName
-                    ? t("preview.openDashboardWithCountry", { name: selectedName })
-                    : t("preview.openDashboard")}
-                  <span aria-hidden="true">&rarr;</span>
-                </Link>
-              </div>
-            ) : null}
-          </div>
-
-          {/* Right column: the wheel */}
-          <div>
-            {!visible ? (
-              <div aria-busy={!failed}>
-                <div
-                  className={`mx-auto aspect-square w-full max-w-[560px] rounded-full bg-[var(--undp-black)]/[0.04] ${failed ? "" : "animate-pulse"}`}
-                />
-                {failed && selectedName ? (
-                  <p
-                    role="status"
-                    className="mt-6 text-center text-caption text-[var(--undp-gray)]"
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-[5fr_6fr] md:gap-16">
+        <div>
+          {countries.length > 1 ? (
+            <div
+              className="mb-8 flex flex-wrap gap-x-6 gap-y-2"
+              role="group"
+              aria-label={t("preview.countrySwitcherAria")}
+            >
+              {countries.map((c) => {
+                const isActive = c.id === selected;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setSelected(c.id)}
+                    aria-pressed={isActive}
+                    className={`text-body transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--undp-blue)] ${
+                      isActive
+                        ? "font-semibold text-[var(--undp-black)] underline decoration-2 underline-offset-[6px]"
+                        : "text-[var(--undp-gray)] hover:text-[var(--undp-black)]"
+                    }`}
                   >
-                    {t("preview.unavailable", { name: selectedName })}
-                  </p>
-                ) : null}
-              </div>
+                    {c.name}
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+
+          <div className="min-h-[10rem]" aria-live="polite">
+            {data && selectedName ? (
+              <Finding country={selectedName} data={data} />
+            ) : failed && selectedName ? (
+              <p role="status" className="text-body text-[var(--undp-gray)]">
+                {t("preview.unavailable", { name: selectedName })}
+              </p>
             ) : (
-              <div
-                // Keyed by country so the enter animation replays on a switch.
-                key={selected ?? "none"}
-                className="wheel-enter"
-                role="img"
-                aria-label={
-                  selectedName
-                    ? t("preview.wheelAriaWithCountry", { name: selectedName })
-                    : t("preview.wheelAria")
-                }
-              >
-                <div className="wheel-breathe mx-auto w-full max-w-[620px]">
-                  <Centerpiece
-                    targets={visible.targets}
-                    alignments={visible.alignments}
-                    // The landing groups by document, which reads no classifications.
-                    classifications={[]}
-                    countryConfig={visible.countryConfig}
-                    state={WHEEL_STATE}
-                    showPicker={false}
-                    showLegend={false}
-                  />
-                </div>
+              <div aria-hidden="true" className="space-y-3">
+                <div className="h-8 w-full animate-pulse bg-[var(--undp-black)]/[0.05]" />
+                <div className="h-8 w-4/5 animate-pulse bg-[var(--undp-black)]/[0.05]" />
               </div>
             )}
           </div>
+
+          {selected && selectedName ? (
+            <Link
+              href={`/${selected}/brief`}
+              className="mt-8 inline-flex items-center gap-2 text-body font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
+            >
+              {t("preview.readBrief", { name: selectedName })}
+              <span aria-hidden="true">&rarr;</span>
+            </Link>
+          ) : null}
+
+          <p className="mt-6 text-caption text-[var(--undp-gray)]">{t("aiTag")}</p>
+        </div>
+
+        <div data-brief className="landing-field">
+          {data ? (
+            // Keyed by country, so on a switch the field starts mixed again
+            // and sorts itself.
+            <DotField key={selected} counts={data.counts} shares entrance="mixed" />
+          ) : (
+            <div
+              aria-hidden="true"
+              className={`mt-[30px] h-[clamp(200px,24vw,290px)] bg-[var(--undp-black)]/[0.04] ${failed ? "" : "animate-pulse"}`}
+            />
+          )}
         </div>
       </div>
     </section>

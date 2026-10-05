@@ -45,16 +45,10 @@
       "comingSoonTag": "Soon"
     },
     "inside": {
-      "eyebrow": "Inside the analysis",
-      "title": "Every policy target, mapped against every other",
-      "body": "Each ribbon links two national policy documents. Green shows where their targets are in strong alignment; red threads mark a potential misalignment worth a closer look.",
-      "disclaimer": "AI-generated analysis. Treat as a prompt to review, not a settled finding.",
+      "aiTag": "AI-assisted analysis for validation by national experts.",
       "preview": {
         "countrySwitcherAria": "Choose a country to preview",
-        "wheelAriaWithCountry": "Live preview of the policy coherence wheel for {name}: aligned and potentially misaligned target pairs across national policy documents.",
-        "wheelAria": "Live preview of the policy coherence wheel: aligned and potentially misaligned target pairs across national policy documents.",
-        "openDashboardWithCountry": "Open the {name} dashboard",
-        "openDashboard": "Open the full dashboard",
+        "readBrief": "Read the {name} brief",
         "unavailable": "Preview not available for {name} right now."
       }
     },
@@ -67,11 +61,11 @@
       },
       "step2": {
         "title": "Automated analysis",
-        "body": "AI classifies each target by theme and sector, then assesses how well targets across different policies align with each other."
+        "body": "AI classifies each target by policy area and compares it with every target in the other documents to identify areas of alignment and potential misalignment."
       },
       "step3": {
-        "title": "Explore results",
-        "body": "Interactive dashboard showing policy coverage, alignment patterns, and areas where coordination could be strengthened."
+        "title": "Read the brief",
+        "body": "Each country's brief shows where targets are aligned and where they show potential misalignment, by document and by policy area. It can be printed or explored target by target."
       }
     },
     "abbr": {
