@@ -5,6 +5,43 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## The landing previews the brief (2026-10-05)
+
+Jonas asked to bring the landing in line with the brief's design, starting with "Inside the
+analysis" (the old wheel, captions on how to read it, pills, a link to the old dashboard). The
+video hero stays; the page keeps its own sections ("adjust, don't transplant").
+- **Inside the analysis** previews a country's brief: the country as plain text choices (random
+  first pick), the brief's own headline (`brief.overall.headline.*`) and figures
+  (`brief.hero.*`), the brief's dot field, "Read the {name} brief" to `/{country}/brief`, and
+  one AI tag in the brief's words. The eyebrow, the reading captions, the wheel legend and the
+  faded disclaimer are gone.
+- **The field**: after three rounds of real-data sketches in the brainstorm companion
+  (`.superpowers/brainstorm/289-1791189863/content/`: one seed head, half ring, seed heads per
+  reading; a flower of documents, the map as seed heads, a meadow of targets; then squares
+  only) Jonas chose "B": today's squares, starting mixed and sorting themselves, each group's
+  share over it as in the brief's overview. "not too complicated like E. keep it simple".
+  Built as two options on the brief's `DotField` (`shares`, `entrance="mixed"`), off by
+  default, so the brief is unchanged. `COLUMN_LABEL` moved to dot-layout.ts (hub.ts
+  re-exports it), so the landing does not pull in hub.ts.
+- **Figures**: `GET /api/brief/overview?country=` returns `briefOverview(source)`
+  (src/lib/brief/overview.ts): the brief's default selection, its documents, targets and tone
+  counts, a few numbers, cached with the payload. The landing and the brief therefore always
+  read the same: Panama is 4 documents (the old wheel drew 5, the BTR as an arc).
+- **Elsewhere on the page**: the hero's country menu opens the briefs; its pause control is
+  the brief's plain glyph; How it works has ink numbers and steps 2-3 in the brief's
+  vocabulary (en/es/mn); the footer line is no longer faded.
+- **Print**: the brief's `@page` rule moved to `print-page.css`, imported by brief-app only, so
+  brief.css stays inside `[data-brief]` for pages that borrow its components.
+- **Unused now**: the dashboard API's `slice=wheel` (route.ts and dashboard-data.ts are shared
+  with main; remove when this lands there) and `.wheel-enter`/`.wheel-breathe` (removed).
+- **Verified**: 1,786 tests pass, tsc and eslint clean, `/`, `/es`, `/mn` and the briefs 200.
+- **Open items to make the brief the default for every country**, in the agreed order:
+  `/{country}` opens the brief (the old dashboard stays reachable by URL); a language and
+  country switch inside the brief; Spanish and Mongolian for the brief (about 200 strings
+  outside the contracts); hand-picked map names beyond Mongolia, English names for Panama's
+  budget lines, the doubled REDD+ label; then data (Sri Lanka's new set, v2.2 re-runs: Jonas's
+  go). Uploads and the chat still live only in the old dashboard.
+
 ## The brief on every country's data (2026-10-02)
 
 Jonas: "could we try to also implement the same design (minus finance ...) for Panama? Or all
