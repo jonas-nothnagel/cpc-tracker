@@ -1175,6 +1175,9 @@ export interface BerBudgetProgram {
   descriptionEs?: string;
   /** Optional English UI description. See `descriptionEs`. */
   descriptionEn?: string;
+  /** True where the UI descriptions carry a descriptive layer written with AI
+   *  (Panama's Tablas_adicionales); the UI labels them so. */
+  descriptionAiGenerated?: boolean;
   type: "environmental" | "non_environmental";
 }
 

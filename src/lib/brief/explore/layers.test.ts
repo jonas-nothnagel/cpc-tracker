@@ -40,12 +40,90 @@ describe("buildExploreLayers", () => {
     ]);
   });
 
+  it("marks no description as written with AI unless the review says so", () => {
+    expect(layers.items.filter((i) => i.aiWritten)).toEqual([]);
+  });
+
   it("gives an NBSAP target its least advanced NR7 status", () => {
     expect(layers.nr7).toEqual({ A1: "limited", A2: "unknown" });
   });
 
   it("is absent for a country without reported actions or budget lines", () => {
     expect(buildExploreLayers({ targets: [], alignment: [] }, SOURCE)).toBeNull();
+  });
+});
+
+describe("a budget line's names and description", () => {
+  // One of Panama's lines, as the review abbreviates it, with the text written
+  // for the AI that compared it, and the team's list of its written-out names.
+  const SOURCE_NAME = "Fort Gest. Eco. y Admón. Finan.";
+  const PANAMA: Record<string, unknown> = {
+    budgetPseudoTargets: [
+      {
+        id: "BER_BER_PA_10_01",
+        sourceLabel: `BER_PA_10_01 ${SOURCE_NAME}`,
+        text: `${SOURCE_NAME}. Description sourced from the descriptive layer (LLM-generated). Expenditure: 2024: 1 million PAB.`,
+        expenditure: { "2024": 1 },
+      },
+    ],
+    berData: {
+      currency: "PAB",
+      unit: "million",
+      period: { start: 2015, end: 2024 },
+      programs: [
+        {
+          code: "BER_PA_10_01",
+          name: SOURCE_NAME,
+          description: `Programme "${SOURCE_NAME}" under the MINISTERIO DE ECONOMÍA Y FINANZAS.`,
+          descriptionEs: `Programa «${SOURCE_NAME}» en Ministerio de Economía y Finanzas.`,
+          descriptionEn: `Programme "${SOURCE_NAME}" under the Ministry of Economy and Finance.`,
+          descriptionAiGenerated: true,
+        },
+      ],
+    },
+  };
+  const NAMES = {
+    names: {
+      BER_PA_10_01: {
+        es: "Fortalecimiento Gestión Económica y Administración Financiera",
+        en: "Strengthening economic management and financial administration",
+      },
+    },
+  };
+  const line = (locale: string, names: typeof NAMES | null = NAMES) =>
+    buildExploreLayers(PANAMA, SOURCE, { locale, names })!.items[0];
+
+  it("names the line in English by its machine translation, flagged as one, the review's own name kept", () => {
+    const en = line("en");
+    expect(en.code).toBe("BER_PA_10_01");
+    expect(en.name).toBe("Strengthening economic management and financial administration");
+    expect(en.translated).toBe("machine");
+    expect(en.original).toBe(SOURCE_NAME);
+  });
+
+  it("names the line in Spanish with the review's abbreviations written out", () => {
+    const es = line("es");
+    expect(es.name).toBe("Fortalecimiento Gestión Económica y Administración Financiera");
+    expect(es.translated).toBeUndefined();
+    expect(es.original).toBe(SOURCE_NAME);
+  });
+
+  it("shows the review's own description in the page's language, not the text written for the AI", () => {
+    expect(line("en").text).toBe(`Programme "${SOURCE_NAME}" under the Ministry of Economy and Finance.`);
+    expect(line("es").text).toBe(`Programa «${SOURCE_NAME}» en Ministerio de Economía y Finanzas.`);
+    expect(line("mn").text).toBe(`Programme "${SOURCE_NAME}" under the Ministry of Economy and Finance.`);
+  });
+
+  it("marks the description as written with AI where the review says so", () => {
+    expect(line("en").aiWritten).toBe(true);
+    expect(line("es").aiWritten).toBe(true);
+  });
+
+  it("keeps the review's own name where the list names no line", () => {
+    const plain = line("en", null);
+    expect(plain.name).toBe(SOURCE_NAME);
+    expect(plain.original).toBeUndefined();
+    expect(plain.translated).toBeUndefined();
   });
 });
 

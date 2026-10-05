@@ -543,3 +543,24 @@ def test_assemble_ber_payload_preserves_legacy_description_field_for_cache_stabi
     assert legacy == _render_description(p)
     # Sanity: legacy still uses the Spanish institution name (LLM-input form).
     assert "MINISTERIO DE AMBIENTE" in legacy
+
+
+def test_assemble_ber_payload_flags_descriptions_written_with_ai():
+    """The review's descriptive layer is LLM-generated (Tablas_adicionales),
+    so a programme's UI description is labelled AI-generated wherever it
+    carries that layer's text, and only there."""
+    described = ProgrammePseudo(
+        institution_idx=1, programme_idx=1,
+        institution_name="MINISTERIO DE AMBIENTE", programme_name="Sanidad",
+        values={2020: 1.0}, desc_es="ES body", desc_en="EN body",
+        fuente_url="", derived_from_row_count=1, is_overhead=False,
+    )
+    bare = ProgrammePseudo(
+        institution_idx=1, programme_idx=2,
+        institution_name="MINISTERIO DE AMBIENTE", programme_name="Otro",
+        values={2020: 1.0}, desc_es="", desc_en="",
+        fuente_url="", derived_from_row_count=1, is_overhead=False,
+    )
+    payload = assemble_ber_payload([described, bare])
+    assert payload["programs"][0]["descriptionAiGenerated"] is True
+    assert payload["programs"][1]["descriptionAiGenerated"] is False

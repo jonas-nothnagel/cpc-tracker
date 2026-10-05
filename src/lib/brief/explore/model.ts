@@ -19,6 +19,8 @@ export interface ExploreItem extends BriefCommitment {
   /** For actions and budget lines, the fields of their `LayerItem`. */
   name?: string;
   code?: string;
+  original?: string;
+  aiWritten?: true;
   status?: string;
   spend?: LayerItem["spend"];
 }
@@ -74,6 +76,9 @@ export function buildExploreModel(scope: Scope, layers?: ExploreLayers | null): 
       layer: it.layer,
       name: it.name,
       ...(it.code ? { code: it.code } : {}),
+      ...(it.original ? { original: it.original } : {}),
+      ...(it.translated ? { translated: it.translated } : {}),
+      ...(it.aiWritten ? { aiWritten: true as const } : {}),
       ...(it.status ? { status: it.status } : {}),
       ...(it.spend ? { spend: it.spend } : {}),
     })),

@@ -6,6 +6,7 @@ import { buildBriefSource } from "@/lib/brief/source";
 import { briefInEnglish } from "@/lib/brief/language-gate";
 import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
+import { loadBerNames } from "@/lib/brief/ber-names";
 import { ExplorePage } from "@/components/brief/explore/explore-page";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -52,7 +53,14 @@ export default async function ExploreStandalonePage(props: Props) {
       source={loaded.source}
       docs={selection.docs}
       lens={selection.lens}
-      setup={exploreSetup({ data: loaded.data, source: loaded.source, docs: selection.docs, searchParams })}
+      setup={exploreSetup({
+        data: loaded.data,
+        source: loaded.source,
+        docs: selection.docs,
+        searchParams,
+        locale: loaded.locale,
+        berNames: loadBerNames(loaded.source.countryId),
+      })}
     />
   );
 }

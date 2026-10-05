@@ -462,3 +462,61 @@ describe("Explore: a document's problems, without leaving it", () => {
     expect(within(side()).getByRole("heading", { name: "Document B" })).toBeInTheDocument();
   });
 });
+
+describe("a budget line named in translation", () => {
+  const OWN = "Fort Gest. Eco. y Admón. Finan.";
+  const PANAMA = {
+    budgetPseudoTargets: [
+      { id: "BER_BER_PA_10_01", sourceLabel: `BER_PA_10_01 ${OWN}`, text: `${OWN}. (LLM-generated)`, expenditure: { "2024": 1 } },
+    ],
+    budgetAlignment: [{ targetAId: "A2", targetBId: "BER_BER_PA_10_01", alignment: "high" }],
+    berData: {
+      currency: "PAB",
+      unit: "million",
+      period: { start: 2015, end: 2024 },
+      programs: [
+        {
+          code: "BER_PA_10_01",
+          name: OWN,
+          description: OWN,
+          descriptionEn: `Programme "${OWN}" under the Ministry of Economy and Finance.`,
+          descriptionAiGenerated: true,
+        },
+      ],
+    },
+  };
+  const NAMES = { names: { BER_PA_10_01: { en: "Strengthening economic management and financial administration" } } };
+
+  function renderLine() {
+    const layers = buildExploreLayers(PANAMA, SOURCE, { locale: "en", names: NAMES })!;
+    function View() {
+      const [state, dispatch] = useReducer(exploreReducer, {
+        ...initialExploreState(),
+        focus: "BER_BER_PA_10_01",
+        layers: ["budget"],
+      });
+      return <Explore source={SOURCE} data={DATA} state={state} dispatch={dispatch} groups={["docs"]} layers={layers} />;
+    }
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <View />
+      </NextIntlClientProvider>,
+    );
+  }
+
+  it("is marked as a machine translation, with the review's own name on hover", () => {
+    renderLine();
+    const title = within(side()).getByRole("heading", { level: 2 });
+    expect(title).toHaveTextContent("Strengthening economic management and financial administration");
+    expect(within(title).getByText("machine translation")).toHaveAttribute("title", `In the review: ${OWN}`);
+  });
+
+  it("labels the review's description as written with AI", () => {
+    renderLine();
+    const label = within(side()).getByText("AI-generated:");
+    expect(label).toHaveAttribute("title", "Written with AI for the review's table of descriptions");
+    expect(label.closest("p")).toHaveTextContent(
+      `AI-generated: Programme "${OWN}" under the Ministry of Economy and Finance.`,
+    );
+  });
+});

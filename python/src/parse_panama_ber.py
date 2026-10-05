@@ -564,6 +564,8 @@ def assemble_ber_payload(pseudos: list[ProgrammePseudo]) -> dict[str, Any]:
             "description": _render_description(p),
             "descriptionEs": _render_description_es(p),
             "descriptionEn": _render_description_en(p),
+            # The descriptive layer is LLM-generated; the UI labels it so.
+            "descriptionAiGenerated": bool(p.desc_en or p.desc_es),
             "type": "environmental",
         })
         expenditure.append({

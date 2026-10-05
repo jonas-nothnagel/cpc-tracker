@@ -1080,6 +1080,26 @@
   font-weight: 400;
 }
 
+/* A name shown in translation says so; the source's own name is on hover. */
+[data-brief] .ex-focus-tag {
+  margin-left: 0.45em;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+  white-space: nowrap;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+/* A description its source wrote with AI, said so before it. */
+[data-brief] .ex-focus-ai {
+  color: var(--brief-muted);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
 [data-brief] .ex-focus-facts {
   margin: 0.35rem 0 0;
   font-size: 0.875rem;

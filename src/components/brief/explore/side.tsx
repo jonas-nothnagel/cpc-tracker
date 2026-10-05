@@ -816,7 +816,7 @@ export function ItemColumn({
 }: {
   kind: string;
   source: string;
-  item: BriefCommitment & { name?: string; code?: string };
+  item: BriefCommitment & { name?: string; code?: string; original?: string; aiWritten?: true };
   /** The action's status or the budget line's spending, as its source states it. */
   facts?: string;
   finding: ReactNode;
@@ -853,12 +853,27 @@ export function ItemColumn({
       <p className="ex-focus-doc">
         {kind} · {source}
       </p>
-      <h2 className="ex-focus-title">
+      <h2
+        className="ex-focus-title"
+        title={item.original && !item.translated ? t("originalName", { name: item.original }) : undefined}
+      >
         {item.code && <span className="ex-focus-code">{item.code} </span>}
         {item.name ?? item.label}
+        {item.translated && (
+          <span className="ex-focus-tag" title={item.original ? t("originalName", { name: item.original }) : undefined}>
+            {t("translated")}
+          </span>
+        )}
       </h2>
       {facts && <p className="ex-focus-facts">{facts}</p>}
       <p className="ex-focus-text" data-clamped={long && !open ? "true" : undefined}>
+        {item.aiWritten && (
+          <>
+            <span className="ex-focus-ai" title={t("aiWrittenNote")}>
+              {t("aiWritten")}
+            </span>{" "}
+          </>
+        )}
         {item.text}
       </p>
       {long && (

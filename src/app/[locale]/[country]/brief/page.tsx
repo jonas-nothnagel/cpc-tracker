@@ -6,6 +6,7 @@ import { buildBriefSource } from "@/lib/brief/source";
 import { briefInEnglish } from "@/lib/brief/language-gate";
 import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
+import { loadBerNames } from "@/lib/brief/ber-names";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { GEO } from "@/lib/brief/contracts/geo-data";
@@ -57,7 +58,14 @@ export default async function BriefPage(props: Props) {
       source={loaded.source}
       initialSelection={selection}
       preparedOn={new Date().toISOString()}
-      explore={exploreSetup({ data: loaded.data, source: loaded.source, docs: selection.docs, searchParams })}
+      explore={exploreSetup({
+        data: loaded.data,
+        source: loaded.source,
+        docs: selection.docs,
+        searchParams,
+        locale: loaded.locale,
+        berNames: loadBerNames(loaded.source.countryId),
+      })}
       contracts={loaded.contracts}
       initialCurrency={cur === "usd" ? "usd" : "mnt"}
     />

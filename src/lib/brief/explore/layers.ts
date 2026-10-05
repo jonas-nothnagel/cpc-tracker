@@ -1,6 +1,7 @@
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
 import type { Nr7Status } from "@/lib/labels";
 import { LEVEL_CODES, MECHANISM_CODES, type BriefSource } from "../source";
+import type { BerNames } from "../ber-names";
 
 /**
  * The implementation and finance layers of the ring, where a country has
@@ -23,7 +24,16 @@ export interface LayerItem {
   /** The label without its budget code, for running text. */
   name: string;
   code?: string;
+  /** The source's own name where the name shown differs from it (written
+   *  out, or translated): kept for the reader to check against. */
+  original?: string;
+  /** The name shown is a machine translation of the source's, as a
+   *  target's text is flagged (`BriefCommitment.translated`). */
+  translated?: "machine";
   text: string;
+  /** The description shown was written with AI for its source, as the
+   *  review says of its own (`descriptionAiGenerated`): labelled so. */
+  aiWritten?: true;
   /** A reported action's status as the BTR states it ("Ongoing"). */
   status?: string;
   /** A budget line's spending over the years the review reports. */
@@ -48,8 +58,23 @@ function asRecord(value: unknown): Record<string, unknown> | null {
   return value && typeof value === "object" ? (value as Record<string, unknown>) : null;
 }
 
-export function buildExploreLayers(data: Record<string, unknown>, source: BriefSource): ExploreLayers | null {
+/** A budget line's description from the review, in the reader's language. */
+function describe(program: Record<string, unknown>, locale: string): string {
+  const pick = (key: string) => (typeof program[key] === "string" && program[key] ? String(program[key]) : null);
+  return (locale === "es" ? pick("descriptionEs") : pick("descriptionEn")) ?? pick("description") ?? String(program.name ?? "");
+}
+
+export function buildExploreLayers(
+  data: Record<string, unknown>,
+  source: BriefSource,
+  { locale = "en", names = null }: { locale?: string; names?: BerNames | null } = {},
+): ExploreLayers | null {
   const items: LayerItem[] = [];
+  // The review's own record of each budget line: its name, and its
+  // description in the reader's language (never the text written for the AI).
+  const programs = new Map(
+    ((asRecord(data.berData)?.programs as Record<string, unknown>[] | undefined) ?? []).map((p) => [String(p.code), p]),
+  );
   const raws = ((data.targets as Record<string, unknown>[]) ?? []).filter((t) => t.sourceDocument === "BTR");
   for (const layer of ["mitigation", "adaptation"] as const) {
     for (const t of raws) {
@@ -70,14 +95,23 @@ export function buildExploreLayers(data: Record<string, unknown>, source: BriefS
     const label = String(t.sourceLabel ?? t.id);
     const [first, ...rest] = label.split(" ");
     const coded = rest.length > 0 && /\d/.test(first);
+    const program = coded ? programs.get(first) : undefined;
+    const own = program?.name ? String(program.name) : coded ? rest.join(" ") : label;
+    // Spanish shows the review's abbreviations written out; other languages
+    // the English machine translation, flagged as one.
+    const listed = coded ? names?.names[first] : undefined;
+    const shown = locale === "es" ? listed?.es : listed?.en;
     const values = Object.values(asRecord(t.expenditure) ?? {}).filter((v): v is number => typeof v === "number");
     items.push({
       id: String(t.id),
       layer: "budget",
       label,
-      name: coded ? rest.join(" ") : label,
+      name: shown ?? own,
       ...(coded ? { code: first } : {}),
-      text: String(t.text ?? label),
+      ...(shown && shown !== own ? { original: own } : {}),
+      ...(shown && locale !== "es" && listed?.en === shown ? { translated: "machine" as const } : {}),
+      text: program ? describe(program, locale) : String(t.text ?? label),
+      ...(program?.descriptionAiGenerated === true ? { aiWritten: true as const } : {}),
       spend: { total: Math.round(values.reduce((s, v) => s + v, 0) * 1000) / 1000, years: values.length },
     });
   }
