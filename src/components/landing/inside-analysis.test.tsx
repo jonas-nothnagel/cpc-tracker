@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import { InsideAnalysis } from "./inside-analysis";
@@ -110,9 +110,10 @@ describe("InsideAnalysis", () => {
     vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(560);
     vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(260);
     renderSection();
-    await screen.findByRole("heading", { name: /^Across Panama's policies/ });
-    const shares = [...document.querySelectorAll(".brief-dots-label")].map((el) => el.textContent);
-    expect(shares).toEqual(["89%", "8%", "3%", "<1%"]);
+    // The field measures itself once mounted, so its shares follow the
+    // headline by a render.
+    const shares = () => [...document.querySelectorAll(".brief-dots-label")].map((el) => el.textContent);
+    await waitFor(() => expect(shares()).toEqual(["89%", "8%", "3%", "<1%"]));
   });
 
   it("says when a country's preview is unavailable, and still links to its brief", async () => {
