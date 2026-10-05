@@ -1,4 +1,5 @@
 import { normalizeTarget } from "@/lib/normalize-target";
+import { shortName } from "./abbreviate";
 import { loadDocPairSyntheses, type CorpusThemesPayload } from "@/lib/coherence-briefing";
 import type {
   AlignmentLevel,
@@ -109,17 +110,19 @@ export function briefDocName(
   return entry.mediumLabel || full || entry.id;
 }
 
-/** A document's short name under the map, over a line of context: its own
- *  `mapLabel`, else its medium label's hint split off ("NP (Nature Pledge)"
- *  gives NP / Nature Pledge), else its short label alone. */
+/** A document's name under the map, by the same rules for every country:
+ *  its code over its plain name in the page's language (the config's
+ *  `plainName`, else its medium label's hint: "NP (Nature Pledge)"), long
+ *  words in their standard short form where the name runs long. */
 export function mapLabelOf(
-  entry: Pick<DocumentTypeEntry, "id" | "shortLabel" | "mediumLabel" | "mapLabel"> | undefined,
+  entry: Pick<DocumentTypeEntry, "id" | "shortLabel" | "mediumLabel" | "plainName"> | undefined,
   id: string,
+  locale: string,
 ): [string, string] {
-  if (entry?.mapLabel && entry.mapLabel[0]) return [entry.mapLabel[0], entry.mapLabel[1] ?? ""];
   const split = /^(.*?)\s*\((.+)\)\s*$/.exec(entry?.mediumLabel ?? "");
-  if (split && split[1]) return [split[1], split[2]];
-  return [entry?.shortLabel || entry?.mediumLabel || id, ""];
+  const code = entry?.shortLabel || split?.[1] || entry?.mediumLabel || id;
+  const plain = entry?.plainName || split?.[2] || "";
+  return [code, plain ? shortName(plain, locale) : ""];
 }
 
 /** Whether the text shown for a raw target in this locale is a translation.
@@ -205,7 +208,7 @@ export function buildBriefSource(args: {
       name: entry ? briefDocName(entry) : id,
       full: entry?.fullLabel ?? id,
       color: entry?.color ?? "#94a3b8",
-      mapLabel: mapLabelOf(entry, id),
+      mapLabel: mapLabelOf(entry, id, locale),
       count: counts.get(id) ?? 0,
       defaultOn: !offByDefault.has(id),
     };

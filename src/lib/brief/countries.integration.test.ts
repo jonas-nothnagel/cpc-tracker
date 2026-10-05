@@ -1,5 +1,7 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { COUNTRIES } from "@/config/countries";
+import { COUNTRIES, countryLocales, getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "./source";
 import { targetLine } from "./text";
@@ -36,5 +38,46 @@ describe.each(VISIBLE)("the brief's targets in %s", (id, name) => {
         /(?:^|\D)\d{1,3}$/.test(c.label.replace(/\s*\([^)]*\)\s*$/, "")),
     );
     expect(alone.map((c) => `${c.id}: "${c.label}"`)).toEqual([]);
+  });
+});
+
+// The map names every document by the same rules in every country: its code
+// over its plain name, in the page's language. Reported actions, budget lines
+// and the catch-all are layers, never on the map.
+const LAYERS = new Set(["BTR", "BER", "OTHER"]);
+
+describe.each(VISIBLE)("the map's names in %s", (id) => {
+  const config = JSON.parse(readFileSync(join(process.cwd(), "python", "data", `${id}-country-config.json`), "utf8"));
+  const docs = (config.documentTypes as { id: string; plainName?: string; labels?: Record<string, { plainName?: string }> }[])
+    .filter((d) => !LAYERS.has(d.id));
+  // A brief is in English and its country's own language only.
+  const own: string[] = countryLocales(getCountry(id)!).filter((l) => l !== "en");
+
+  it("gives every document a plain name in English and in the country's own language", () => {
+    const missing = docs.flatMap((d) => [
+      ...(d.plainName ? [] : [`${d.id}: en`]),
+      ...own.filter((l) => !d.labels?.[l]?.plainName).map((l) => `${d.id}: ${l}`),
+    ]);
+    expect(missing).toEqual([]);
+  });
+
+  it("carries no other country's language", () => {
+    const foreign = docs.flatMap((d) =>
+      Object.keys(d.labels ?? {})
+        .filter((l) => !own.includes(l))
+        .map((l) => `${d.id}: ${l}`),
+    );
+    expect(foreign).toEqual([]);
+  });
+});
+
+describe("Mongolia's brief in Mongolian", () => {
+  it("names every document in Mongolian", () => {
+    const result = getCountryDashboardPayload("mongolia", "mn", null);
+    if (result.kind !== "ok") throw new Error(result.error);
+    const data = result.payload.data as unknown as Record<string, unknown>;
+    const { documents } = buildBriefSource({ countryId: "mongolia", countryName: "Mongolia", data, locale: "mn" });
+    const latin = documents.filter((d) => !LAYERS.has(d.id) && !/\p{Script=Cyrillic}/u.test(d.name));
+    expect(latin.map((d) => `${d.id}: ${d.name}`)).toEqual([]);
   });
 });

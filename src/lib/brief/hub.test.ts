@@ -5,7 +5,9 @@ import { briefFixture } from "./test-fixture";
 import { DOT_ORDER } from "./dot-layout";
 import {
   cardPlace,
+  axisLines,
   COLUMN_LABEL,
+  columnTextWidth,
   FOCUS_LABEL,
   fitAlong,
   MAP_BACK,
@@ -67,6 +69,43 @@ function mapBox(l: HubLayout) {
     y1: Math.max(...l.groups.map((g) => g.y1)),
   };
 }
+
+describe("a column name's width", () => {
+  // Real widths from the app's own Source Sans 3 (public/fonts), at the map's
+  // sizes: a short name at 13px semibold, its line of context at 11px.
+  const REAL: [string, boolean, number][] = [
+    ["Vision 2050", false, 63.1],
+    ["Алсын хараа 2050", false, 102.6],
+    ["91-р тогтоол", false, 73.9],
+    ["Long-term dev. policy", true, 100.0],
+    ["Seguridad Hídrica", true, 82.4],
+    ["Уур амьсгал", true, 57.9],
+    ["Урт хугацааны хөгжил", true, 107.2],
+    ["Газрын доройтлын зорилт", true, 128.9],
+  ];
+  it.each(REAL)("leaves %s the room its letters take", (text, context, real) => {
+    const width = columnTextWidth(text, context);
+    expect(width).toBeGreaterThanOrEqual(real);
+    expect(width).toBeLessThanOrEqual(real * 1.3);
+  });
+});
+
+describe("a row name's lines", () => {
+  // Lines each name takes when wrapped in the app's Source Sans 3
+  // (public/fonts) at the rows' 13px semibold: long Mongolian words wrap
+  // early, so a count of letters alone falls a line short.
+  const REAL: [string, number, number][] = [
+    ["Үндэсний хэмжээнд тодорхойлсон хувь нэмэр", 150, 3],
+    ["Газрын доройтлын саармагжуулалтын зорилтууд", 150, 3],
+    ["Биологийн төрөл зүйлийн 2030 оны үндэсний зорилтууд", 120, 3],
+    ["National Adaptation Plan to Climate Change", 150, 2],
+    ["National targets for implementation of the Paris Agreement", 120, 3],
+  ];
+  it.each(REAL)("gives %s at %ipx the lines its words take", (name, width, lines) => {
+    expect(axisLines(name, width)).toBeGreaterThanOrEqual(lines);
+    expect(axisLines(name, width)).toBeLessThanOrEqual(lines + 1);
+  });
+});
 
 describe("fitAlong", () => {
   it("keeps each box within its own bounds and apart from the next, near its wanted place", () => {
@@ -778,7 +817,14 @@ describe("the map's names on real-sized corpora", () => {
     {
       sizes: [15, 36, 16, 20, 15, 41, 27, 8],
       names: ["Vision 2050", "Nationally Determined Contribution", "National targets for implementation of the Paris Agreement", "National biodiversity targets for 2030", "National Adaptation Plan to Climate Change", "Food Supply and Security Measures", "LDN Targets", "Investing in Land Degradation Neutrality"],
-      labels: [["Vision", "2050"], ["NDC", "Contribution"], ["Paris", "Agreement"], ["Biodiv.", "2030"], ["Adapt.", "Plan"], ["Food", "Measures"], ["LDN", "Targets"], ["LDN", "Investment"]],
+      labels: [["Vision 2050", "Long-term dev. policy"], ["NDC", "Climate"], ["Res. 91", "Paris Agreement"], ["NBSAP", "Nature"], ["NAP", "Adaptation"], ["FSS", "Food supply"], ["NRVTS", "Land degr. targets"], ["ILDN", "Land degr. invest."]],
+    },
+    {
+      // Mongolia's brief in Mongolian: the codes stay as they are (a short
+      // name is never cut, and "Алсын хараа 2050" crowds narrower fields).
+      sizes: [15, 36, 16, 20, 15, 41, 27, 8],
+      names: ["Алсын хараа 2050", "Үндэсний хэмжээнд тодорхойлсон хувь нэмэр", "Парисын хэлэлцээрийн үндэсний зорилтууд", "Биологийн төрөл зүйлийн 2030 оны үндэсний зорилтууд", "Дасан зохицох үндэсний төлөвлөгөө", "Хүнсний хангамж, аюулгүй байдлыг хангах арга хэмжээ", "Газрын доройтлын саармагжуулалтын зорилтууд", "Газрын доройтлын саармагжуулалтад хөрөнгө оруулах нь"],
+      labels: [["Vision 2050", "Урт хугацааны хөгжил"], ["NDC", "Уур амьсгал"], ["Res. 91", "Парисын хэлэлцээр"], ["NBSAP", "Байгаль"], ["NAP", "Дасан зохицох"], ["FSS", "Хүнсний хангамж"], ["NRVTS", "Газрын доройтлын зорилт"], ["ILDN", "Газрын доройтлын хөрөнгө оруулалт"]],
     },
   ];
   const FIELDS = [[1000, 620], [800, 500], [640, 760], [560, 384], [497, 622], [427, 535], [358, 371]];
@@ -831,7 +877,7 @@ describe("the map's names on real-sized corpora", () => {
       for (const [w, h] of FIELDS) {
         for (const stage of stages) {
           const map = layoutHub(stage, flaggedMany, named, w, h);
-          const where = `${real.sizes.length} documents, ${w}x${h}, ${stage.side ?? "plain"} ${stage.focus?.kind === "target" ? stage.focus.id : ""}`;
+          const where = `${real.labels[0].join(" / ")}'s ${real.sizes.length} documents, ${w}x${h}, ${stage.side ?? "plain"} ${stage.focus?.kind === "target" ? stage.focus.id : ""}`;
           const all = boxes(map);
           for (const b of all) {
             expect(b.x0, `${b.what} left edge, ${where}`).toBeGreaterThanOrEqual(-0.5);

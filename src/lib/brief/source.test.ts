@@ -102,22 +102,32 @@ describe("briefDocName", () => {
 });
 
 describe("mapLabelOf", () => {
-  it("takes a document's own short name and context", () => {
+  it("names a document by its code over its plain name", () => {
     expect(
-      mapLabelOf({ id: "NDC", shortLabel: "NDC", mediumLabel: "NDC", mapLabel: ["NDC", "Contribution"] }, "NDC"),
-    ).toEqual(["NDC", "Contribution"]);
+      mapLabelOf({ id: "FSS", shortLabel: "FSS", mediumLabel: "FSS", plainName: "Food supply" }, "FSS", "en"),
+    ).toEqual(["FSS", "Food supply"]);
   });
 
-  it("splits the medium label's hint into the context", () => {
-    expect(mapLabelOf({ id: "NP", shortLabel: "NP", mediumLabel: "NP (Nature Pledge)" }, "NP")).toEqual([
+  it("takes the plain name from the medium label's hint where the config gives none", () => {
+    expect(mapLabelOf({ id: "NP", shortLabel: "NP", mediumLabel: "NP (Nature Pledge)" }, "NP", "en")).toEqual([
       "NP",
       "Nature Pledge",
     ]);
   });
 
-  it("falls back to the short label alone", () => {
-    expect(mapLabelOf({ id: "FSS", shortLabel: "FSS", mediumLabel: "FSS" }, "FSS")).toEqual(["FSS", ""]);
-    expect(mapLabelOf(undefined, "X")).toEqual(["X", ""]);
+  it("shortens a long plain name by the shared rules", () => {
+    expect(
+      mapLabelOf(
+        { id: "PEG", shortLabel: "PEG", mediumLabel: "PEG (Gov't Strategic Plan)", plainName: "Government Strategic Plan" },
+        "PEG",
+        "en",
+      ),
+    ).toEqual(["PEG", "Gov. Strat. Plan"]);
+  });
+
+  it("falls back to the code alone", () => {
+    expect(mapLabelOf({ id: "FSS", shortLabel: "FSS", mediumLabel: "FSS" }, "FSS", "en")).toEqual(["FSS", ""]);
+    expect(mapLabelOf(undefined, "X", "en")).toEqual(["X", ""]);
   });
 });
 
@@ -182,8 +192,8 @@ describe("buildBriefSource", () => {
     ]);
   });
 
-  it("gives each document its short name on the map: its own, else the medium label's split", () => {
-    const own = buildBriefSource({
+  it("names each document on the map by its code over its plain name, shortened by the shared rules", () => {
+    const named = buildBriefSource({
       countryId: "mongolia",
       countryName: "Mongolia",
       data: {
@@ -191,17 +201,21 @@ describe("buildBriefSource", () => {
         countryConfig: {
           ...CONFIG,
           documentTypes: CONFIG.documentTypes.map((d) =>
-            d.id === "NBSAP" ? { ...d, mapLabel: ["Biodiv.", "2030"] } : d,
+            d.id === "NBSAP"
+              ? { ...d, plainName: "Nature" }
+              : d.id === "LDNR"
+                ? { ...d, plainName: "Land degradation targets" }
+                : d,
           ),
         },
       },
       locale: "en",
     });
-    expect(own.documents.map((d) => [d.id, d.mapLabel])).toEqual([
+    expect(named.documents.map((d) => [d.id, d.mapLabel])).toEqual([
       ["NDC", ["NDC", "Climate"]],
-      ["NBSAP", ["Biodiv.", "2030"]],
+      ["NBSAP", ["NBSAP", "Nature"]],
       ["FSS", ["FSS", ""]],
-      ["LDNR", ["NRVTS", ""]],
+      ["LDNR", ["NRVTS", "Land degr. targets"]],
     ]);
   });
 

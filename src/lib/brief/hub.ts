@@ -241,17 +241,45 @@ const COLUMN_ROW_GAP = 6;
 const STAIR_GAP = 10;
 
 /** Rough width of a column's short name (0.78rem semibold) or of its line
- *  of context (0.69rem): capitals and figures run wider than small letters
- *  ("NWRP" is about 33px). */
-function columnTextWidth(text: string, context: boolean): number {
+ *  of context (0.69rem), a little over the real one: capitals and figures run
+ *  wider than small letters ("NWRP" is about 33px), and Cyrillic letters
+ *  wider than Latin ones (Source Sans 3: 7.4px a small letter at 13px). */
+export function columnTextWidth(text: string, context: boolean): number {
   let w = 0;
   for (const ch of text) {
     if (ch === " ") w += 3.2;
     else if (/[A-Z0-9]/.test(ch)) w += 8.2;
     else if (/[a-z]/.test(ch)) w += 6.3;
+    else if (/\p{Script=Cyrillic}/u.test(ch)) w += /\p{Lu}/u.test(ch) ? 9.1 : 7.4;
+    else if (/\p{Lu}/u.test(ch)) w += 8.2;
+    else if (/\p{Ll}/u.test(ch)) w += 6.3;
     else w += 4.5;
   }
   return (context ? 0.84 : 1) * w + 4;
+}
+
+/** Rough width of a row's name (0.81rem semibold): 6.6px a character, a
+ *  Cyrillic letter 7.4px (Source Sans 3). */
+function axisTextWidth(text: string): number {
+  let w = 0;
+  for (const ch of text) w += /\p{Script=Cyrillic}/u.test(ch) ? 7.4 : AXIS_CHAR;
+  return w;
+}
+
+/** The lines a row's name takes at a width: wrapped word by word, as the
+ *  browser does (long words wrap early), and never fewer than its letters
+ *  fill. */
+export function axisLines(name: string, width: number): number {
+  let lines = 1;
+  let line = 0;
+  for (const word of name.split(/\s+/).filter(Boolean)) {
+    const w = axisTextWidth(word);
+    if (line > 0 && line + 3.2 + w > width) {
+      lines += 1;
+      line = w;
+    } else line += (line > 0 ? 3.2 : 0) + w;
+  }
+  return Math.max(lines, Math.ceil(axisTextWidth(name) / width));
 }
 
 /** The two documents of a pair key ("A<->B"), in the documents' own order,
@@ -484,9 +512,9 @@ function placeMap(
   // The rows' names: up to three lines at the left, never wider than a
   // third of the field.
   const need = (k: number) => {
-    const whole = docs[k].name.length * AXIS_CHAR;
+    const whole = axisTextWidth(docs[k].name);
     if (whole <= AXIS_SHORT) return whole;
-    const word = Math.max(...docs[k].name.split(/\s+/).map((w) => w.length)) * AXIS_CHAR;
+    const word = Math.max(...docs[k].name.split(/\s+/).map(axisTextWidth));
     return Math.min(whole, Math.max(AXIS_SHORT, whole / AXIS_LINES, word));
   };
   const nameWidth = Math.min(ROW_NAME_MAX, width * 0.3, Math.max(40, ...rows.map(need)));
@@ -706,7 +734,7 @@ function placeMap(
   type Item = { k: number; mark: string | null; height: number; lines: number };
   const items: Item[] = [];
   for (const k of rows) {
-    const lines = Math.min(AXIS_LINES, Math.max(1, Math.ceil((docs[k].name.length * AXIS_CHAR) / nameWidth)));
+    const lines = Math.min(AXIS_LINES, Math.max(1, axisLines(docs[k].name, nameWidth)));
     items.push({ k, mark: null, height: lines * AXIS_LINE, lines });
     for (const id of ownMarks(k).filter((x) => k === last || atLeft.has(x))) {
       const two = markWidth(id) > leftRoom ? 2 : 1;
