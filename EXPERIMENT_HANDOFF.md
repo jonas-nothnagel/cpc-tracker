@@ -41,6 +41,72 @@ video hero stays; the page keeps its own sections ("adjust, don't transplant").
   outside the contracts); hand-picked map names beyond Mongolia, English names for Panama's
   budget lines, the doubled REDD+ label; then data (Sri Lanka's new set, v2.2 re-runs: Jonas's
   go). Uploads and the chat still live only in the old dashboard.
+- **Done the same day**:
+  - `/{country}` redirects to `/{country}/brief` in the link's language, keeping its query
+    (5318a05); `/dashboard?country=` still serves the old dashboard.
+  - The brief's top bar: English · Español · Монгол (the reader's choices kept, read from the
+    address at the click) and the country's name in the kicker opening the other countries'
+    briefs (7e1a75f). Language names live in `src/i18n/locale-labels.ts`, shared with the app's
+    switcher (importing the switcher pulled next-intl navigation into vitest).
+  - A flaky landing test fixed at its cause: the field measures itself after mounting, so its
+    shares follow the headline by a render; the test now waits for them (13fa944).
+  - **Spanish and Mongolian for the whole brief**: 438 strings each (`brief.*` with the
+    contracts, the ring and policy areas, plus `briefing.tour.brief` and `briefing.tour.explore`)
+    that still read English. Terms follow the existing catalogs (es: nota, meta, par de metas,
+    posible desalineación, área de política, Informe Bienal de Transparencia (BTR), Revisión del
+    Gasto en Biodiversidad (BER), línea presupuestaria, acciones reportadas, licitación; mn:
+    тойм, зорилт, зорилтын хос, болзошгүй үл нийцэл, бодлогын чиглэл, төсвийн мөр, гэрээ,
+    тендер). Machine translation, flagged as such in the top bar. Left as in English on purpose:
+    "US$" and three lines that are only placeholders (es also "flora", "fauna"). Every string
+    parses with intl-messageformat; the parity test passes; the es/mn briefs of Panama and
+    Mongolia show no English interface text (target texts are data). One contracts test looked
+    for the English placeholder on the Spanish page and now looks for "Explorar esta meta".
+- **Done 2026-10-05**:
+  - **Map names from one set of rules**: each column reads its document's code over its plain
+    name, shortened by one shared list of short forms per language (`src/lib/brief/abbreviate.ts`:
+    Government → Gov., Strategic → Strat., …; a word is never dropped). Every config's documents
+    carry a display-only `plainName` plus `labels.es/mn.plainName` (machine translation);
+    Mongolia's hand-picked `mapLabel`s are gone. Mongolian has no short forms, so its long names
+    take the map's second label row, then "…". The pipeline never reads `plainName`.
+  - **Panama's budget lines by name**: `python/data/panama-ber-names.json` (display only) holds
+    each line's name with the review's abbreviations written out (es; the list in its `_meta`,
+    no word added) and an English machine translation, shown on the en/mn pages flagged
+    "machine translation" with the review's own name on hover.
+  - **The ring's budget-line card** shows the review's description in the page's language, not
+    the text written for the AI. That descriptive layer was written with AI (Tablas_adicionales),
+    so each description opens with "AI-generated:". The flag is `descriptionAiGenerated`, emitted
+    by `parse_panama_ber.py` and added to panama-ber.json by hand (the source spreadsheet is not
+    in the repo; the file changed by that key only). The pipeline reads only code, name,
+    description, type and spending, so no prompt or cache changes.
+  - **REDD+**: the doubled label now reads "Action line 3.3.2.4.4" (panama-targets.json).
+  - **Verified**: 1,815 tests pass, 44 parser tests pass, tsc and eslint clean; the briefs of all
+    five countries return 200 in en/es/mn with the names above.
+- **Jonas's rules, 2026-10-05** (memory `brief_per_country`): a brief is shared with its country
+  directly, so it is in English and the country's own language only, and it offers no other
+  country.
+  - `CountryEntry.languages` (Mongolia `mn`, Panama `es`; the others English only), with
+    `countryLocales` / `countryLocaleFor` / `countryLocaleSwitch` in `src/config/countries.ts`.
+  - The top bar offers English and the country's language (nothing for English-only countries);
+    its country menu is gone (country choice lives on the landing only).
+  - A brief, explore or contracts page opened in a language its country does not offer goes to
+    the same page in English (`src/lib/brief/language-gate.ts`). The landing's links open a brief
+    in the reader's language where offered, else in English.
+  - **Fixed: switching back to English.** Opening a Mongolian page saves `NEXT_LOCALE=mn`; the
+    English link pointed at the bare address, which the middleware sends back to the saved
+    language. Every language link now names its language (`/en/...`), which switches the cookie.
+  - Translations follow the rule: Mongolia's config carries Mongolian only (now also its
+    documents' names, after the app's existing Mongolian terms), Panama's Spanish only, the other
+    countries none. The codes "Vision 2050" and "Res. 91" stay as they are on the Mongolian map,
+    like NDC or NAP: a code is never cut, and "Алсын хараа 2050" crowded narrower fields.
+  - **Fixed: Mongolian names cut on the map.** The width estimates knew Latin letters only (a
+    Cyrillic letter counted as punctuation, 23-31% short), so names were cut with "…". Column
+    and row names are now measured with Cyrillic letters (calibrated on `public/fonts`' Source
+    Sans 3), and a row's lines come from wrapping word by word (long Mongolian words wrap early).
+    The real-size map test includes Mongolia's Mongolian names at every field size.
+  - Verified: 1,842 tests pass, tsc and eslint clean; the language switches walked with a cookie
+    jar on the dev server.
+  - Open: the country's own name in the kicker and headlines is still English ("Mongolia",
+    "Panama"); the Mongolian messages attach case endings to it ("{country}-ын").
 
 ## The brief on every country's data (2026-10-02)
 
