@@ -9,7 +9,7 @@ import { routing } from "@/i18n/routing";
 import { SECTION_UNITS } from "@/lib/brief/sections";
 import { allowedSections, SECTION_IDS, type BriefSelection, type SectionId } from "@/lib/brief/selection";
 import type { BriefSource, LensId } from "@/lib/brief/source";
-import { lensTooltipKey } from "./lens-tooltip";
+import { lensTooltip } from "./lens-tooltip";
 
 /**
  * The brief's controls: which documents, which policy-area lens, which
@@ -80,10 +80,6 @@ export function Builder({
   };
 
   const lensLabel = (id: LensId) => tl(id);
-  const lensTooltip = (id: LensId) => {
-    const key = lensTooltipKey(id);
-    return key ? tl(key) : undefined;
-  };
 
   return (
     <aside
@@ -146,7 +142,7 @@ export function Builder({
         <fieldset className="brief-builder-group">
           <legend>{t("lens")}</legend>
           {source.lenses.map((l) => (
-            <label key={l.id} className="brief-check" title={lensTooltip(l.id)}>
+            <label key={l.id} className="brief-check" title={lensTooltip(l, tl)}>
               <input
                 type="radio"
                 name="brief-lens"

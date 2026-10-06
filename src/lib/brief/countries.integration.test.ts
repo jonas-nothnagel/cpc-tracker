@@ -81,3 +81,39 @@ describe("Mongolia's brief in Mongolian", () => {
     expect(latin.map((d) => `${d.id}: ${d.name}`)).toEqual([]);
   });
 });
+
+// Sri Lanka's country office set its own adaptation sectors, standing in for
+// the GGA areas, and a loss and damage lens (python/data/sri-lanka-taxonomies.json).
+describe("Sri Lanka's lenses", () => {
+  const result = getCountryDashboardPayload("sri-lanka", "en", null);
+  if (result.kind !== "ok") throw new Error(`sri-lanka: ${result.error}`);
+  const data = result.payload.data as unknown as Record<string, unknown>;
+  const source = buildBriefSource({ countryId: "sri-lanka", countryName: "Sri Lanka", data, locale: "en" });
+
+  it("are the office's: its adaptation sectors instead of the GGA areas, and loss and damage", () => {
+    expect(source.lenses.map((l) => l.id)).toEqual(["globe", "ipcc", "adaptation", "lossDamage", "hr"]);
+    expect(source.lenses.find((l) => l.id === "adaptation")!.categories.map((c) => c.name)).toEqual([
+      "Agriculture and food",
+      "Livestock",
+      "Fisheries",
+      "Biodiversity",
+      "Health",
+      "Tourism",
+      "Infrastructure and human settlements",
+      "Water",
+      "Coastal and marine",
+    ]);
+  });
+
+  it("name their source on the lens itself", () => {
+    for (const id of ["adaptation", "lossDamage"]) {
+      expect(source.lenses.find((l) => l.id === id)!.tooltip).toMatch(/UNDP country office/);
+    }
+  });
+
+  it("hold in loss and damage only the targets that address it, not every target", () => {
+    const members = Object.keys(source.lenses.find((l) => l.id === "lossDamage")!.primary).length;
+    expect(members).toBeGreaterThan(0);
+    expect(members).toBeLessThan(source.commitments.length / 2);
+  });
+});

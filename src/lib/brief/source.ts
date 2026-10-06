@@ -5,6 +5,7 @@ import type {
   AlignmentLevel,
   AlignmentMechanism,
   CountryConfig,
+  CountryTaxonomy,
   DocumentTypeEntry,
   Target,
 } from "@/types";
@@ -19,7 +20,7 @@ const MAX_NAME_LENGTH = 60;
 /** A target label that is only a clause number: "6", "2.1". */
 const BARE_NUMBER = /^\d+(?:\.\d+)*$/;
 
-export type LensId = "globe" | "ipcc" | "gga" | "hr";
+export type LensId = "globe" | "ipcc" | "gga" | "adaptation" | "lossDamage" | "hr";
 
 /** Index = code in `BriefSource.comparisons`. */
 export const LEVEL_CODES = ["high", "medium", "low", "none", "flagged"] as const;
@@ -63,6 +64,9 @@ export interface BriefLens {
   categories: { id: string; name: string }[];
   /** Commitment id -> its primary category under this lens. */
   primary: Record<string, string>;
+  /** A country's own lens names its source here (from its taxonomy file,
+   *  English); the global lenses' attributions live in the catalog. */
+  tooltip?: string;
 }
 
 /** The pipeline's AI synthesis for one pair of documents (the dashboard's
@@ -139,10 +143,16 @@ function translationOf(
   return "translation";
 }
 
-const LENS_SPECS: { id: LensId; key: string; taxonomyType: string }[] = [
+/** The lenses in menu order. A global lens reads its categories from the
+ *  payload key; a country's own lens (`own`) from `countryTaxonomies`, so it
+ *  appears only for a country that sets it. Sri Lanka's adaptation sectors
+ *  stand in for the GGA areas, whose records the pipeline then never writes. */
+const LENS_SPECS: { id: LensId; key?: string; taxonomyType: string; own?: true }[] = [
   { id: "globe", key: "globeCategories", taxonomyType: "globe" },
   { id: "ipcc", key: "sectors", taxonomyType: "sector" },
   { id: "gga", key: "ggaCategories", taxonomyType: "gga" },
+  { id: "adaptation", taxonomyType: "adaptation", own: true },
+  { id: "lossDamage", taxonomyType: "loss_damage", own: true },
   { id: "hr", key: "hrCategories", taxonomyType: "hr" },
 ];
 
@@ -236,11 +246,16 @@ export function buildBriefSource(args: {
       taxonomyType: string;
       isPrimary?: boolean;
     }[]) ?? [];
+  const ownTaxonomies = (data.countryTaxonomies as CountryTaxonomy[] | undefined) ?? [];
   const lenses: BriefLens[] = [];
   for (const spec of LENS_SPECS) {
-    const categories = ((data[spec.key] as { id: string; name: string }[]) ?? []).map(
-      (c) => ({ id: String(c.id), name: String(c.name) }),
-    );
+    const own = spec.own
+      ? ownTaxonomies.find((t) => t.taxonomyType === spec.taxonomyType)
+      : undefined;
+    const raw = spec.own
+      ? (own?.categories ?? [])
+      : ((data[spec.key!] as { id: string; name: string }[]) ?? []);
+    const categories = raw.map((c) => ({ id: String(c.id), name: String(c.name) }));
     if (categories.length === 0) continue;
     const known = new Set(categories.map((c) => c.id));
     const primary: Record<string, string> = {};
@@ -250,7 +265,13 @@ export function buildBriefSource(args: {
       primary[c.targetId] = c.categoryId;
     }
     if (Object.keys(primary).length === 0) continue;
-    lenses.push({ id: spec.id, taxonomyType: spec.taxonomyType, categories, primary });
+    lenses.push({
+      id: spec.id,
+      taxonomyType: spec.taxonomyType,
+      categories,
+      primary,
+      ...(own?.tooltip ? { tooltip: own.tooltip } : {}),
+    });
   }
 
   const pairNotes: BriefPairNote[] = loadDocPairSyntheses(data)

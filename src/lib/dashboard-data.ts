@@ -38,6 +38,7 @@ import type {
   AlignmentLevel,
   BlindEvaluationReport,
   BlindPairSample,
+  CountryTaxonomy,
   ModelAgreementSummary,
   ModelComparisonReport,
   ModelDisagreementRow,
@@ -427,6 +428,10 @@ export interface DashboardResponse {
   globeSubcategories: unknown[];
   ggaCategories: unknown[];
   hrCategories: unknown[];
+  /** Lenses the country sets for itself (`{country}-taxonomies.json`):
+   *  type, the global lens it stands in for, its attribution and its
+   *  categories' ids and names. Empty for every other country. */
+  countryTaxonomies: CountryTaxonomy[];
   classifications: unknown[];
   alignment: unknown[];
   btrData: Record<string, unknown> | null;
@@ -510,6 +515,18 @@ export function assembleDashboardData(
     hr_categories?: unknown[];
   }>(join(dataDir, "categories.json"));
   const classifications = readJson<unknown[]>(join(outputDir, "classifications.json"));
+  // The country's own lenses. Descriptions stay behind: they are prompt text
+  // for the pipeline, and the browser needs only the names.
+  const countryTaxonomies: CountryTaxonomy[] = (
+    readJson<{ taxonomies?: CountryTaxonomy[] }>(
+      join(dataDir, deriveCountryFile(targetsFile, "taxonomies")),
+    )?.taxonomies ?? []
+  ).map((t) => ({
+    taxonomyType: t.taxonomyType,
+    ...(t.replaces ? { replaces: t.replaces } : {}),
+    ...(t.tooltip ? { tooltip: t.tooltip } : {}),
+    categories: t.categories.map((c) => ({ id: c.id, name: c.name })),
+  }));
   // Read the sparse per-locale rationale overlay for one alignment file.
   // Deliberately NOT readLocalizedJson: that swaps a whole file, and these are
   // maps merged onto the English records. See src/lib/locale-text.
@@ -915,6 +932,7 @@ export function assembleDashboardData(
         (categories.hr_categories ?? []) as Record<string, unknown>[],
         locale,
       ),
+      countryTaxonomies,
       classifications: finalClassifications,
       alignment: finalAlignment,
       btrData: btrData ?? null,

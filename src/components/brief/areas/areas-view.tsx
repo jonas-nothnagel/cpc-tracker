@@ -24,7 +24,7 @@ import type { BriefData } from "@/lib/brief/data";
 import type { BriefSource, LensId } from "@/lib/brief/source";
 import { LONG_TEXT } from "../comparison";
 import { commitmentLine, useNumbers } from "../ink";
-import { lensTooltipKey } from "../lens-tooltip";
+import { lensTooltip } from "../lens-tooltip";
 import { AreaField } from "./area-field";
 
 const SIDES: AreaSide[] = ["apart", "reinforce"];
@@ -509,20 +509,17 @@ export function AreasView({
           {headline}
         </h2>
         <p className="brief-av-choice" role="group" aria-label={t("lensGroup")}>
-          {source.lenses.map((l) => {
-            const tip = lensTooltipKey(l.id);
-            return (
-              <button
-                key={l.id}
-                type="button"
-                aria-pressed={l.id === active}
-                title={tip ? tl(tip) : undefined}
-                onClick={() => onLens(l.id)}
-              >
-                {tl(l.id)}
-              </button>
-            );
-          })}
+          {source.lenses.map((l) => (
+            <button
+              key={l.id}
+              type="button"
+              aria-pressed={l.id === active}
+              title={lensTooltip(l, tl)}
+              onClick={() => onLens(l.id)}
+            >
+              {tl(l.id)}
+            </button>
+          ))}
         </p>
         <p className="brief-av-choice" role="group" aria-label={t("sideGroup")}>
           {SIDES.map((s) => (

@@ -228,6 +228,48 @@ describe("buildBriefSource", () => {
     ]);
   });
 
+  it("offers a country's own lenses beside the global ones, each with its own attribution", () => {
+    const own = buildBriefSource({
+      countryId: "sri-lanka",
+      countryName: "Sri Lanka",
+      data: {
+        ...DATA,
+        countryTaxonomies: [
+          {
+            taxonomyType: "adaptation",
+            replaces: "gga",
+            tooltip: "Sri Lanka's adaptation sectors",
+            categories: [
+              { id: "lk_water", name: "Water" },
+              { id: "lk_health", name: "Health" },
+            ],
+          },
+          {
+            taxonomyType: "loss_damage",
+            tooltip: "Loss and damage, from the NDC",
+            categories: [{ id: "lk_loss_damage", name: "Loss and damage" }],
+          },
+        ],
+        classifications: [
+          ...DATA.classifications,
+          { targetId: "NDC_1", categoryId: "lk_water", taxonomyType: "adaptation", isPrimary: true },
+          { targetId: "NBSAP_1", categoryId: "lk_health", taxonomyType: "adaptation", isPrimary: true },
+          { targetId: "NDC_1", categoryId: "lk_loss_damage", taxonomyType: "loss_damage", isPrimary: true },
+          { targetId: "NBSAP_1", categoryId: "lk_loss_damage", taxonomyType: "loss_damage", isPrimary: false },
+        ],
+      },
+      locale: "en",
+    });
+    expect(own.lenses.map((l) => [l.id, l.taxonomyType, l.tooltip])).toEqual([
+      ["globe", "globe", undefined],
+      ["adaptation", "adaptation", "Sri Lanka's adaptation sectors"],
+      ["lossDamage", "loss_damage", "Loss and damage, from the NDC"],
+    ]);
+    const lossDamage = own.lenses.find((l) => l.id === "lossDamage")!;
+    expect(lossDamage.categories).toEqual([{ id: "lk_loss_damage", name: "Loss and damage" }]);
+    expect(lossDamage.primary).toEqual({ NDC_1: "lk_loss_damage" });
+  });
+
   it("carries the country and the model", () => {
     expect(source.countryId).toBe("mongolia");
     expect(source.countryName).toBe("Mongolia");

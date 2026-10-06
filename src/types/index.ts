@@ -223,6 +223,19 @@ export interface GgaCategory {
   source?: string;
 }
 
+/** A lens a country sets for itself (`python/data/{country}-taxonomies.json`),
+ *  as the dashboard payload carries it: no descriptions, which are pipeline
+ *  prompt text. Sri Lanka's adaptation sectors (`replaces: "gga"`) and its
+ *  loss and damage lens are the first. */
+export interface CountryTaxonomy {
+  taxonomyType: string;
+  /** The global lens it stands in for on this country. */
+  replaces?: string;
+  /** Its source, in English, shown as the lens's tooltip. */
+  tooltip?: string;
+  categories: { id: string; name: string }[];
+}
+
 /**
  * A human rights theme — one of the nine themes in the UNDP guidance
  * "Human rights themes for AI Flagship Policy Coherence Tracker", which builds

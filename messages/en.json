@@ -187,6 +187,8 @@
       "ipcc": "Climate mitigation",
       "country": "Country sectors",
       "gga": "Climate adaptation",
+      "adaptation": "Climate adaptation",
+      "lossDamage": "Loss and damage",
       "hr": "Human rights",
       "ggaTooltip": "Global Goal on Adaptation: the seven thematic targets of the UAE Framework for Global Climate Resilience (UNFCCC decision 2/CMA.5)",
       "hrTooltip": "Nine human rights themes from UNDP guidance for this tool, building on UN Environment Management Group guidance on integrating human rights in national biodiversity planning. Shows which themes the reviewed documents engage. Draft under expert review."

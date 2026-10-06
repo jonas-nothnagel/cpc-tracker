@@ -66,6 +66,7 @@ import {
   type RankedRow,
   type SeatPairs,
 } from "./side";
+import { lensTooltip } from "../lens-tooltip";
 import "./explore.css";
 
 /** Labels shorter than this are clause numbers ("7 b)"), not titles. */
@@ -1262,7 +1263,7 @@ export function Explore({
                 type="button"
                 aria-pressed={state.group === g}
                 onClick={() => dispatch({ type: "group", group: g })}
-                title={g === "gga" ? tl("ggaTooltip") : g === "hr" ? tl("hrTooltip") : undefined}
+                title={g === "docs" ? undefined : lensTooltip(source.lenses.find((l) => l.id === g) ?? { id: g }, tl)}
               >
                 {groupLabel(g)}
               </button>
