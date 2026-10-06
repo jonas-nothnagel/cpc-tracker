@@ -93,18 +93,18 @@
         ],
         "sector_tags": [
           {
-            "taxonomy": "gga",
-            "category_id": "gga_ecosystems_biodiversity",
-            "count": 62
+            "taxonomy": "adaptation",
+            "category_id": "lk_biodiversity",
+            "count": 55
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_infrastructure_settlements",
-            "count": 35
+            "taxonomy": "adaptation",
+            "category_id": "lk_infrastructure_settlements",
+            "count": 39
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_agriculture_food",
+            "taxonomy": "adaptation",
+            "category_id": "lk_agriculture_food",
             "count": 9
           },
           {
@@ -136,6 +136,11 @@
             "taxonomy": "hr",
             "category_id": "hr_participation",
             "count": 13
+          },
+          {
+            "taxonomy": "loss_damage",
+            "category_id": "lk_loss_damage",
+            "count": 20
           },
           {
             "taxonomy": "sector",
@@ -269,18 +274,18 @@
         ],
         "sector_tags": [
           {
-            "taxonomy": "gga",
-            "category_id": "gga_ecosystems_biodiversity",
-            "count": 85
+            "taxonomy": "adaptation",
+            "category_id": "lk_biodiversity",
+            "count": 81
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_agriculture_food",
-            "count": 35
+            "taxonomy": "adaptation",
+            "category_id": "lk_agriculture_food",
+            "count": 33
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_water",
+            "taxonomy": "adaptation",
+            "category_id": "lk_infrastructure_settlements",
             "count": 23
           },
           {
@@ -312,6 +317,11 @@
             "taxonomy": "hr",
             "category_id": "hr_indigenous_local_communities",
             "count": 24
+          },
+          {
+            "taxonomy": "loss_damage",
+            "category_id": "lk_loss_damage",
+            "count": 26
           },
           {
             "taxonomy": "sector",
@@ -437,19 +447,19 @@
         ],
         "sector_tags": [
           {
-            "taxonomy": "gga",
-            "category_id": "gga_ecosystems_biodiversity",
-            "count": 76
+            "taxonomy": "adaptation",
+            "category_id": "lk_biodiversity",
+            "count": 75
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_infrastructure_settlements",
-            "count": 40
+            "taxonomy": "adaptation",
+            "category_id": "lk_infrastructure_settlements",
+            "count": 41
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_agriculture_food",
-            "count": 35
+            "taxonomy": "adaptation",
+            "category_id": "lk_agriculture_food",
+            "count": 32
           },
           {
             "taxonomy": "globe",
@@ -480,6 +490,11 @@
             "taxonomy": "hr",
             "category_id": "hr_indigenous_local_communities",
             "count": 21
+          },
+          {
+            "taxonomy": "loss_damage",
+            "category_id": "lk_loss_damage",
+            "count": 22
           },
           {
             "taxonomy": "sector",
@@ -599,19 +614,19 @@
         ],
         "sector_tags": [
           {
-            "taxonomy": "gga",
-            "category_id": "gga_ecosystems_biodiversity",
-            "count": 49
+            "taxonomy": "adaptation",
+            "category_id": "lk_biodiversity",
+            "count": 41
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_infrastructure_settlements",
-            "count": 9
+            "taxonomy": "adaptation",
+            "category_id": "lk_infrastructure_settlements",
+            "count": 11
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_water",
-            "count": 5
+            "taxonomy": "adaptation",
+            "category_id": "lk_water",
+            "count": 7
           },
           {
             "taxonomy": "globe",
@@ -642,6 +657,11 @@
             "taxonomy": "hr",
             "category_id": "hr_participation",
             "count": 8
+          },
+          {
+            "taxonomy": "loss_damage",
+            "category_id": "lk_loss_damage",
+            "count": 7
           },
           {
             "taxonomy": "sector",
@@ -780,14 +800,19 @@
         ],
         "sector_tags": [
           {
-            "taxonomy": "gga",
-            "category_id": "gga_ecosystems_biodiversity",
-            "count": 13
+            "taxonomy": "adaptation",
+            "category_id": "lk_biodiversity",
+            "count": 12
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_agriculture_food",
-            "count": 11
+            "taxonomy": "adaptation",
+            "category_id": "lk_agriculture_food",
+            "count": 10
+          },
+          {
+            "taxonomy": "adaptation",
+            "category_id": "lk_water",
+            "count": 1
           },
           {
             "taxonomy": "globe",
@@ -818,6 +843,11 @@
             "taxonomy": "hr",
             "category_id": "hr_information_education",
             "count": 4
+          },
+          {
+            "taxonomy": "loss_damage",
+            "category_id": "lk_loss_damage",
+            "count": 3
           },
           {
             "taxonomy": "sector",
@@ -973,19 +1003,19 @@
         ],
         "sector_tags": [
           {
-            "taxonomy": "gga",
-            "category_id": "gga_ecosystems_biodiversity",
-            "count": 25
+            "taxonomy": "adaptation",
+            "category_id": "lk_biodiversity",
+            "count": 20
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_infrastructure_settlements",
-            "count": 3
+            "taxonomy": "adaptation",
+            "category_id": "lk_infrastructure_settlements",
+            "count": 4
           },
           {
-            "taxonomy": "gga",
-            "category_id": "gga_livelihoods",
-            "count": 3
+            "taxonomy": "adaptation",
+            "category_id": "lk_coastal_marine",
+            "count": 4
           },
           {
             "taxonomy": "globe",
@@ -1016,6 +1046,11 @@
             "taxonomy": "hr",
             "category_id": "hr_participation",
             "count": 5
+          },
+          {
+            "taxonomy": "loss_damage",
+            "category_id": "lk_loss_damage",
+            "count": 7
           },
           {
             "taxonomy": "sector",
@@ -1166,18 +1201,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 62
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 55
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 39
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
                 "count": 9
               },
               {
@@ -1209,6 +1244,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 13
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 20
               },
               {
                 "taxonomy": "sector",
@@ -1342,18 +1382,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 85
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 81
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 33
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 23
               },
               {
@@ -1385,6 +1425,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 24
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 26
               },
               {
                 "taxonomy": "sector",
@@ -1510,19 +1555,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 76
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 75
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 40
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 41
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -1553,6 +1598,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 21
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -1672,19 +1722,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 49
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 41
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 9
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 11
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 5
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 7
               },
               {
                 "taxonomy": "globe",
@@ -1715,6 +1765,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 8
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -1853,14 +1908,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -1891,6 +1951,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -2046,19 +2111,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 25
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 20
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 3
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 4
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 3
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 4
               },
               {
                 "taxonomy": "globe",
@@ -2089,6 +2154,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -2260,19 +2330,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 76
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 74
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 36
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 33
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -2303,6 +2373,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 23
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 25
               },
               {
                 "taxonomy": "sector",
@@ -2426,18 +2501,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 77
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 75
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 31
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 22
               },
               {
@@ -2469,6 +2544,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 23
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 26
               },
               {
                 "taxonomy": "sector",
@@ -2588,18 +2668,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 34
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 24
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 22
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 18
               },
               {
@@ -2631,6 +2711,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_business",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -2748,19 +2833,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 49
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 41
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 12
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 14
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 6
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 8
               },
               {
                 "taxonomy": "globe",
@@ -2791,6 +2876,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -2920,14 +3010,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 12
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 11
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 10
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 9
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -2958,6 +3053,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -3103,19 +3203,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 24
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 19
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 4
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
                 "count": 3
-              },
-              {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -3146,6 +3246,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -3304,19 +3409,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 62
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 55
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 39
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 20
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 21
               },
               {
                 "taxonomy": "globe",
@@ -3347,6 +3452,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 16
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 23
               },
               {
                 "taxonomy": "sector",
@@ -3464,18 +3574,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 76
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 72
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 32
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 35
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 21
               },
               {
@@ -3507,6 +3617,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 19
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -3615,18 +3730,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 49
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 47
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 19
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 18
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 10
               },
               {
@@ -3658,6 +3773,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 8
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 12
               },
               {
                 "taxonomy": "sector",
@@ -3783,19 +3903,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 52
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 43
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 6
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 8
               },
               {
                 "taxonomy": "globe",
@@ -3826,6 +3946,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -3980,19 +4105,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 25
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 19
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 5
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
                 "count": 3
-              },
-              {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -4023,6 +4148,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -4145,13 +4275,13 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
                 "count": 6
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 2
               },
               {
@@ -4334,19 +4464,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 70
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 64
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 29
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 31
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 16
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 14
               },
               {
                 "taxonomy": "globe",
@@ -4377,6 +4507,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 16
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 19
               },
               {
                 "taxonomy": "sector",
@@ -4510,19 +4645,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 70
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 66
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 36
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 40
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -4553,6 +4688,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 20
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 25
               },
               {
                 "taxonomy": "sector",
@@ -4673,19 +4813,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 61
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 60
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 40
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 41
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 31
               },
               {
                 "taxonomy": "globe",
@@ -4716,6 +4856,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 17
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 21
               },
               {
                 "taxonomy": "sector",
@@ -4840,19 +4985,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 40
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 32
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
               },
               {
                 "taxonomy": "globe",
@@ -4883,6 +5028,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -5028,19 +5178,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 18
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 5
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
                 "count": 3
-              },
-              {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -5071,6 +5221,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 6
               },
               {
                 "taxonomy": "sector",
@@ -5194,14 +5349,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 12
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 11
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -5232,6 +5392,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -5391,19 +5556,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 59
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 53
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 28
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 32
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 19
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 20
               },
               {
                 "taxonomy": "globe",
@@ -5433,6 +5598,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
+                "count": 15
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 15
               },
               {
@@ -5560,19 +5730,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 73
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 72
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
                 "count": 30
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 25
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 28
               },
               {
                 "taxonomy": "globe",
@@ -5603,6 +5773,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 23
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 17
               },
               {
                 "taxonomy": "sector",
@@ -5743,19 +5918,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 82
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 80
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 37
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 30
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 31
               },
               {
                 "taxonomy": "globe",
@@ -5786,6 +5961,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 24
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 18
               },
               {
                 "taxonomy": "sector",
@@ -5905,19 +6085,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 49
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 41
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 9
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 11
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 5
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 7
               },
               {
                 "taxonomy": "globe",
@@ -5948,6 +6128,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 8
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -6084,18 +6269,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 12
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 11
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 12
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 11
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 3
               },
               {
@@ -6126,6 +6311,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
+                "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 4
               },
               {
@@ -6274,18 +6464,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 23
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 19
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 3
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 4
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
                 "count": 3
               },
               {
@@ -6317,6 +6507,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 6
               },
               {
                 "taxonomy": "sector",
@@ -6472,19 +6667,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 82
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 77
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 20
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 10
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 14
               },
               {
                 "taxonomy": "globe",
@@ -6515,6 +6710,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 18
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 15
               },
               {
                 "taxonomy": "sector",
@@ -6642,19 +6842,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 76
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 75
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 40
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 41
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -6685,6 +6885,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 21
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -6811,19 +7016,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 61
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 57
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 34
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 24
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 25
               },
               {
                 "taxonomy": "globe",
@@ -6854,6 +7059,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 17
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 25
               },
               {
                 "taxonomy": "sector",
@@ -6962,18 +7172,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 2
               },
               {
@@ -7005,6 +7215,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -7153,19 +7368,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 25
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 19
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 1
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 5
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 1
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 2
               },
               {
                 "taxonomy": "globe",
@@ -7196,6 +7411,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -7333,18 +7553,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 10
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 8
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 2
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 3
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
                 "count": 2
               },
               {
@@ -7375,6 +7595,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
+                "count": 2
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 2
               },
               {
@@ -7538,19 +7763,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 50
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 48
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 31
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 15
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 14
               },
               {
                 "taxonomy": "globe",
@@ -7580,6 +7805,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_business",
+                "count": 10
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 10
               },
               {
@@ -7721,19 +7951,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 50
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 51
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 37
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 36
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 31
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 28
               },
               {
                 "taxonomy": "globe",
@@ -7764,6 +7994,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 14
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 16
               },
               {
                 "taxonomy": "sector",
@@ -7886,19 +8121,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 41
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 44
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 34
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 32
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 31
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 27
               },
               {
                 "taxonomy": "globe",
@@ -7929,6 +8164,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 11
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 12
               },
               {
                 "taxonomy": "sector",
@@ -8048,18 +8288,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 32
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 30
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 13
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 5
               },
               {
@@ -8091,6 +8331,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 3
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 5
               },
               {
                 "taxonomy": "sector",
@@ -8218,13 +8463,13 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
                 "count": 7
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
                 "count": 6
               },
               {
@@ -8382,18 +8627,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 6
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 5
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_cultural_heritage",
-                "count": 1
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 2
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
                 "count": 1
               },
               {
@@ -8424,6 +8669,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_business",
+                "count": 1
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 1
               },
               {
@@ -8580,19 +8830,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 85
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 79
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 22
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 21
-              },
-              {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 18
               },
               {
                 "taxonomy": "globe",
@@ -8623,6 +8873,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 19
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 23
               },
               {
                 "taxonomy": "sector",
@@ -8763,19 +9018,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 85
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 82
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 34
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 32
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 33
               },
               {
                 "taxonomy": "globe",
@@ -8805,6 +9060,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
+                "count": 25
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 25
               },
               {
@@ -8937,19 +9197,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 77
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 76
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 32
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 30
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -8980,6 +9240,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 23
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -9105,19 +9370,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 52
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 43
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 6
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 8
               },
               {
                 "taxonomy": "globe",
@@ -9148,6 +9413,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -9285,14 +9555,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -9323,6 +9598,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -9476,19 +9756,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 25
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 19
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 5
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
                 "count": 3
-              },
-              {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -9519,6 +9799,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -9674,18 +9959,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 61
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 54
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 34
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 36
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 21
               },
               {
@@ -9717,6 +10002,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 16
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -9839,19 +10129,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 76
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 75
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 22
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 23
               },
               {
                 "taxonomy": "globe",
@@ -9882,6 +10172,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 21
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -9995,19 +10290,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 84
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 78
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 17
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 19
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 15
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 14
               },
               {
                 "taxonomy": "globe",
@@ -10038,6 +10333,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 17
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 19
               },
               {
                 "taxonomy": "sector",
@@ -10157,19 +10457,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 51
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 42
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 6
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 8
               },
               {
                 "taxonomy": "globe",
@@ -10200,6 +10500,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -10338,14 +10643,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -10376,6 +10686,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -10519,18 +10834,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 10
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 8
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 2
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 3
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
                 "count": 2
               },
               {
@@ -10561,6 +10876,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
+                "count": 2
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 2
               },
               {
@@ -10711,19 +11031,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 59
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 53
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 19
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 20
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 10
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 14
               },
               {
                 "taxonomy": "globe",
@@ -10753,6 +11073,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
+                "count": 15
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 15
               },
               {
@@ -10880,18 +11205,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
                 "count": 49
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 31
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 28
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
                 "count": 28
               },
               {
@@ -10923,6 +11248,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 14
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 15
               },
               {
                 "taxonomy": "sector",
@@ -11049,19 +11379,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 76
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 74
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 36
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 33
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -11092,6 +11422,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 21
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -11217,19 +11552,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 52
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 43
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 6
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 8
               },
               {
                 "taxonomy": "globe",
@@ -11260,6 +11595,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -11404,18 +11744,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 3
               },
               {
@@ -11447,6 +11787,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 4
               },
               {
                 "taxonomy": "sector",
@@ -11603,19 +11948,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 25
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 20
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 3
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 4
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 3
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 4
               },
               {
                 "taxonomy": "globe",
@@ -11646,6 +11991,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -11809,19 +12159,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 62
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 55
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 36
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 40
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 20
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 21
               },
               {
                 "taxonomy": "globe",
@@ -11852,6 +12202,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 16
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 23
               },
               {
                 "taxonomy": "sector",
@@ -11986,19 +12341,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 84
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 81
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 40
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 42
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -12029,6 +12384,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 22
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 25
               },
               {
                 "taxonomy": "sector",
@@ -12156,19 +12516,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 76
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 75
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 38
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 40
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 31
               },
               {
                 "taxonomy": "globe",
@@ -12199,6 +12559,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 22
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 25
               },
               {
                 "taxonomy": "sector",
@@ -12325,19 +12690,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 52
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 43
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 6
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 8
               },
               {
                 "taxonomy": "globe",
@@ -12368,6 +12733,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -12506,14 +12876,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -12544,6 +12919,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -12686,19 +13066,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 24
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 18
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 1
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 5
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 1
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 2
               },
               {
                 "taxonomy": "globe",
@@ -12729,6 +13109,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
@@ -12889,19 +13274,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 62
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 55
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 36
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 40
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_water",
-                "count": 20
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 21
               },
               {
                 "taxonomy": "globe",
@@ -12932,6 +13317,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 16
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 23
               },
               {
                 "taxonomy": "sector",
@@ -13066,19 +13456,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 61
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 57
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 41
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 42
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 34
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -13109,6 +13499,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 17
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 25
               },
               {
                 "taxonomy": "sector",
@@ -13244,19 +13639,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 54
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 52
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 48
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 50
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 34
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 31
               },
               {
                 "taxonomy": "globe",
@@ -13287,6 +13682,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 17
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -13411,18 +13811,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 40
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 32
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
                 "count": 11
               },
               {
@@ -13454,6 +13854,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 9
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 12
               },
               {
                 "taxonomy": "sector",
@@ -13608,19 +14013,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 23
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 17
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 2
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 5
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 2
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 3
               },
               {
                 "taxonomy": "globe",
@@ -13651,6 +14056,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 6
               },
               {
                 "taxonomy": "sector",
@@ -13788,18 +14198,18 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 9
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 8
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
                 "count": 2
               },
               {
@@ -13830,6 +14240,11 @@
               {
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
+                "count": 3
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
                 "count": 3
               },
               {
@@ -14000,19 +14415,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 85
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 79
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 37
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 40
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 17
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 14
               },
               {
                 "taxonomy": "globe",
@@ -14043,6 +14458,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 17
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 20
               },
               {
                 "taxonomy": "sector",
@@ -14174,19 +14594,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 77
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 75
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 41
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 45
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 35
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 32
               },
               {
                 "taxonomy": "globe",
@@ -14217,6 +14637,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_indigenous_local_communities",
                 "count": 23
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 22
               },
               {
                 "taxonomy": "sector",
@@ -14340,19 +14765,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
                 "count": 44
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 30
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 25
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 16
+                "taxonomy": "adaptation",
+                "category_id": "lk_tourism",
+                "count": 13
               },
               {
                 "taxonomy": "globe",
@@ -14383,6 +14808,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 8
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 12
               },
               {
                 "taxonomy": "sector",
@@ -14500,19 +14930,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 52
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 43
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 14
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 16
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 4
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 6
               },
               {
                 "taxonomy": "globe",
@@ -14543,6 +14973,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 8
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 11
               },
               {
                 "taxonomy": "sector",
@@ -14680,14 +15115,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 13
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 12
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_agriculture_food",
-                "count": 11
+                "taxonomy": "adaptation",
+                "category_id": "lk_agriculture_food",
+                "count": 10
+              },
+              {
+                "taxonomy": "adaptation",
+                "category_id": "lk_water",
+                "count": 1
               },
               {
                 "taxonomy": "globe",
@@ -14718,6 +15158,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_information_education",
                 "count": 4
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 3
               },
               {
                 "taxonomy": "sector",
@@ -14872,19 +15317,19 @@
             ],
             "sector_tags": [
               {
-                "taxonomy": "gga",
-                "category_id": "gga_ecosystems_biodiversity",
-                "count": 25
+                "taxonomy": "adaptation",
+                "category_id": "lk_biodiversity",
+                "count": 20
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_infrastructure_settlements",
-                "count": 3
+                "taxonomy": "adaptation",
+                "category_id": "lk_infrastructure_settlements",
+                "count": 4
               },
               {
-                "taxonomy": "gga",
-                "category_id": "gga_livelihoods",
-                "count": 3
+                "taxonomy": "adaptation",
+                "category_id": "lk_coastal_marine",
+                "count": 4
               },
               {
                 "taxonomy": "globe",
@@ -14915,6 +15360,11 @@
                 "taxonomy": "hr",
                 "category_id": "hr_participation",
                 "count": 5
+              },
+              {
+                "taxonomy": "loss_damage",
+                "category_id": "lk_loss_damage",
+                "count": 7
               },
               {
                 "taxonomy": "sector",
