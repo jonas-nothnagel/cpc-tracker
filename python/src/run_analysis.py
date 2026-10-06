@@ -27,6 +27,7 @@ import logging
 import os
 import re
 import time
+from collections.abc import Sequence
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -40,6 +41,7 @@ from .config import (
     country_display_name,
 )
 from .classify import rank_classification
+from .country_taxonomies import load_country_taxonomies, replaced_lenses
 from .classify_globe import (
     classify_globe_subcategories,
     derive_globe_top_level_classifications,
@@ -78,7 +80,11 @@ from .budget_align import (
 )
 from .synthesize_doc_pairs import synthesize_doc_pairs
 from .synthesize_corpus import synthesize_corpus
-from .synthesize_by_sector import build_sector_category_names, synthesize_by_sector
+from .synthesize_by_sector import (
+    DEFAULT_TAXONOMY_ALLOWLIST,
+    build_sector_category_names,
+    synthesize_by_sector,
+)
 from .synthesis_states import (
     canonical_hidden_key,
     filter_doc_pair_records,
@@ -107,11 +113,17 @@ async def classify_active_taxonomies(
     gga_categories: list[dict],
     hr_categories: list[dict],
     cache_suffix: str,
+    country_taxonomies: Sequence[dict] = (),
 ) -> dict[str, list[dict]]:
     """Ranked classification of items (targets or BTR/BER pseudo-targets)
     against the active taxonomies (config.ACTIVE_TAXONOMIES). Single source
     of truth for the gating so the three call sites cannot drift; paused
     taxonomies return empty lists and downstream consumers degrade to empty.
+
+    `country_taxonomies` are the country's own lenses (see
+    country_taxonomies.py), classified after the global ones under their own
+    types and returned together under "country_taxonomies". A global lens one
+    of them `replaces` is skipped for this country and returns empty.
 
     GLOBE prefers the fine-grained subcategory classifier (calibrated on
     BIOFIN expert examples) when available; top-level `globe` records are
@@ -126,12 +138,14 @@ async def classify_active_taxonomies(
         "globe_sub": [],
         "gga": [],
         "hr": [],
+        "country_taxonomies": [],
     }
+    replaced = replaced_lenses(country_taxonomies)
     if "nbs" in ACTIVE_TAXONOMIES:
         out["nbs"] = await rank_classification(items, nbs_categories, "nbs")
-    if "sector" in ACTIVE_TAXONOMIES:
+    if "sector" in ACTIVE_TAXONOMIES and "sector" not in replaced:
         out["sector"] = await rank_classification(items, sectors, "sector")
-    if "globe" in ACTIVE_TAXONOMIES:
+    if "globe" in ACTIVE_TAXONOMIES and "globe" not in replaced:
         if globe_subcategories and globe_few_shot_examples:
             out["globe_sub"] = await classify_globe_subcategories(
                 items,
@@ -147,10 +161,14 @@ async def classify_active_taxonomies(
             )
         else:
             out["globe"] = await rank_classification(items, globe_categories, "globe")
-    if gga_categories and "gga" in ACTIVE_TAXONOMIES:
+    if gga_categories and "gga" in ACTIVE_TAXONOMIES and "gga" not in replaced:
         out["gga"] = await rank_classification(items, gga_categories, "gga")
-    if hr_categories and "hr" in ACTIVE_TAXONOMIES:
+    if hr_categories and "hr" in ACTIVE_TAXONOMIES and "hr" not in replaced:
         out["hr"] = await rank_classification(items, hr_categories, "hr")
+    for tax in country_taxonomies:
+        out["country_taxonomies"] += await rank_classification(
+            items, tax["categories"], tax["taxonomyType"]
+        )
     return out
 
 
@@ -489,6 +507,22 @@ async def main() -> None:
                 f"{len(adp_data.get('adaptationGoals', []))} goals"
             )
 
+        # The country's own lenses (Sri Lanka: its adaptation sectors, standing
+        # in for GGA, and loss and damage), classified beside the global ones
+        # wherever those run; see country_taxonomies.py. [] for every other country.
+        country_taxonomies = load_country_taxonomies(
+            DATA_DIR / derive_country_file(args.targets_file, "taxonomies")
+        )
+        if country_taxonomies:
+            logger.info(
+                "Country taxonomies: "
+                + ", ".join(
+                    f"{t['taxonomyType']} ({len(t['categories'])} categories"
+                    + (f", replaces {t['replaces']})" if t.get("replaces") else ")")
+                    for t in country_taxonomies
+                )
+            )
+
         # 2. Quantitative and time-bound detection
         write_status(1, "Quantitative detection", f"Analysing {len(targets)} targets for quantitative and time-bound phrases", started_at=started_at)
         logger.info("STEP 1: Quantitative and time-bound detection")
@@ -523,6 +557,7 @@ async def main() -> None:
             gga_categories=gga_categories,
             hr_categories=hr_categories,
             cache_suffix="targets",
+            country_taxonomies=country_taxonomies,
         )
         nbs_classifications = target_cls["nbs"]
         sector_classifications = target_cls["sector"]
@@ -538,6 +573,7 @@ async def main() -> None:
             + globe_sub_classifications
             + gga_classifications
             + hr_classifications
+            + target_cls["country_taxonomies"]
         )
 
         # Country-specific adaptation-goal classification (e.g. Mongolia APNDC).
@@ -711,6 +747,7 @@ async def main() -> None:
                     gga_categories=gga_categories,
                     hr_categories=hr_categories,
                     cache_suffix="btr",
+                    country_taxonomies=country_taxonomies,
                 )
                 btr_nbs = btr_cls["nbs"]
                 btr_sectors = btr_cls["sector"]
@@ -721,6 +758,7 @@ async def main() -> None:
 
                 all_classifications.extend(
                     btr_nbs + btr_globe + btr_sectors + btr_globe_sub + btr_gga + btr_hr
+                    + btr_cls["country_taxonomies"]
                 )
 
                 # Write back the primary sector onto pseudo-targets and
@@ -837,6 +875,7 @@ async def main() -> None:
                     gga_categories=gga_categories,
                     hr_categories=hr_categories,
                     cache_suffix="ber",
+                    country_taxonomies=country_taxonomies,
                 )
                 ber_nbs = ber_cls["nbs"]
                 ber_sectors = ber_cls["sector"]
@@ -847,6 +886,7 @@ async def main() -> None:
 
                 all_classifications.extend(
                     ber_nbs + ber_globe + ber_sectors + ber_globe_sub + ber_gga + ber_hr
+                    + ber_cls["country_taxonomies"]
                 )
 
                 # Re-save classifications with BER entries included
@@ -972,6 +1012,7 @@ async def main() -> None:
                 "globe_sub": globe_subcategories,
                 "gga": gga_categories,
                 "hr": hr_categories,
+                **{t["taxonomyType"]: t["categories"] for t in country_taxonomies},
             },
             country_config=(
                 json.loads(config_path.read_text())
@@ -980,6 +1021,13 @@ async def main() -> None:
             ),
             adaptation_data=adp_data,
         )
+
+        # The country's own lenses get sector cards and theme tags like the
+        # global ones.
+        sector_allowlist = DEFAULT_TAXONOMY_ALLOWLIST + tuple(
+            t["taxonomyType"] for t in country_taxonomies
+        )
+        lens_taxonomies = ACTIVE_TAXONOMIES | {t["taxonomyType"] for t in country_taxonomies}
 
         # Precompute the corpus + sector storylines for each toggle state the
         # document filter can reach: the full corpus (""), every single-doc-
@@ -1016,6 +1064,7 @@ async def main() -> None:
                 state_doc_pairs, country_name,
                 targets=state_targets, alignment=state_alignment,
                 classifications=all_classifications,
+                lens_taxonomies=lens_taxonomies,
             )
             corpus_states[key] = corpus_state
 
@@ -1023,6 +1072,7 @@ async def main() -> None:
                 state_targets, state_alignment, all_classifications,
                 category_names=sector_category_names,
                 doc_type_labels=doc_type_labels,
+                taxonomy_allowlist=sector_allowlist,
             )
             sector_states[key] = sector_state
             logger.info(
