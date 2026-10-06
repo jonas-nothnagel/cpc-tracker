@@ -533,7 +533,7 @@
           },
           "centre": {
             "title": "El centro",
-            "body": "En reposo, el centro muestra el panorama completo: cada par de metas y cómo se lee. Con una meta en el centro, cada uno de los demás puntos toma el color de cómo se lee frente a ella: verde alineado, gris parcialmente alineado, rojo posible desalineación, ordenados dentro de cada documento. Al seleccionar el nombre de un documento o de un área de política, todas sus metas pasan al centro. Un punto se vuelve rojo donde sus posibles desalineaciones con esas metas destacan: al menos dos, y al menos el doble de frecuentes que en el conjunto del centro. El nombre de otro documento abre ambos, uno junto al otro; un espacio vacío o «Todas las metas» vuelve a todas las metas."
+            "body": "En reposo, el centro muestra cada par de metas entre los puntos del anillo y cómo se lee. Con una meta en el centro, cada uno de los demás puntos toma el color de cómo se lee frente a ella: verde alineado, gris parcialmente alineado, rojo posible desalineación, ordenados dentro de cada documento. Al seleccionar el nombre de un documento o de un área de política, todas sus metas pasan al centro. Un punto se vuelve rojo donde sus posibles desalineaciones con esas metas destacan: al menos dos, y al menos el doble de frecuentes que en el conjunto del centro. El nombre de otro documento abre ambos, uno junto al otro; un espacio vacío o «Todas las metas» vuelve a todas las metas."
           },
           "lines": {
             "title": "Líneas",
@@ -3297,6 +3297,9 @@
       "tipApartNames": "Posible desalineación con: {names}",
       "tipApartNamesMore": "Posible desalineación con: {names} y {more, number} más",
       "lensScope": "{placed, number} de las {total, number} metas se encuentran en una de estas áreas.",
+      "lensHeadlineConcentrated": "De las {total, number} posibles desalineaciones entre las metas de {areas, plural, one {esta área} other {estas áreas}}, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
+      "lensHeadlineSpread": "La posible desalineación entre las metas de {areas, plural, one {esta área} other {estas áreas}} se reparte entre {contested, plural, one {# meta} other {# metas}}.",
+      "lensHeadlineEmpty": "Ninguna posible desalineación entre las metas de {areas, plural, one {esta área} other {estas áreas}}.",
       "targetFigures": "{pairs, plural, one {# par de metas} other {# pares de metas}} con los demás documentos"
     },
     "contracts": {

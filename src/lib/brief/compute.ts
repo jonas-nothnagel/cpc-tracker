@@ -99,6 +99,20 @@ export function scopeOf(source: BriefSource, docIds: string[]): Scope {
   return { docs, commitments, comparisons, alignment, targets, hiddenDocs };
 }
 
+/** Restrict a scope to some of its targets and the pairs between them. */
+export function scopeAmong(scope: Scope, ids: ReadonlySet<string>): Scope {
+  const commitments = scope.commitments.filter((c) => ids.has(c.id));
+  const docs = new Set(commitments.map((c) => c.doc));
+  return {
+    docs: scope.docs.filter((d) => docs.has(d.id)),
+    commitments,
+    comparisons: scope.comparisons.filter((c) => ids.has(c.a.id) && ids.has(c.b.id)),
+    alignment: scope.alignment.filter((r) => ids.has(r.targetAId) && ids.has(r.targetBId)),
+    targets: scope.targets.filter((t) => ids.has(t.id)),
+    hiddenDocs: scope.hiddenDocs,
+  };
+}
+
 // ─── Tones and the overall verdict ──────────────────────────────────
 
 export interface ToneCounts {

@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
 import { TourOverlay } from "@/components/dashboard/coherence-briefing/tour/tour-overlay";
 import { useTour } from "@/components/dashboard/coherence-briefing/tour/use-tour";
-import type { ToneCounts } from "@/lib/brief/compute";
+import { concentrationOf, scopeAmong, toneCounts, type ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import {
   focusKey,
@@ -32,6 +32,7 @@ import {
   mechanismBetween,
   relationBetween,
   type ExploreItem,
+  type ExploreModel,
   type Relation,
   type RelationCounts,
 } from "@/lib/brief/explore/model";
@@ -83,6 +84,38 @@ const LINE_LEVEL: Record<LineKind, "high" | "medium" | "low" | "flagged"> = {
 };
 
 const EMPTY_COUNTS: ToneCounts = { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 };
+
+/** Each target's readings with the targets of the other documents (no
+ *  actions or budget lines), by level code: 1 high, 2 medium, 3 low, 4 none,
+ *  5 flagged. With `among`, only the pairs between the targets it marks. */
+function levelCounts(model: ExploreModel, among: Uint8Array | null) {
+  const size = model.items.length;
+  const byLevel = Array.from({ length: 6 }, () => new Uint16Array(size));
+  for (let a = 0; a < model.targets; a++) {
+    if (among && !among[a]) continue;
+    for (let b = a + 1; b < model.targets; b++) {
+      if (among && !among[b]) continue;
+      const level = model.levels[a * size + b];
+      if (level === 0) continue;
+      byLevel[level][a] += 1;
+      byLevel[level][b] += 1;
+    }
+  }
+  return { apart: byLevel[5], strong: byLevel[1], byLevel };
+}
+
+/** A target's own bar from per-level counts. */
+function countsReader(model: ExploreModel, byLevel: Uint16Array[]) {
+  return (id: string): ToneCounts => {
+    const i = model.index.get(id);
+    if (i === undefined) return EMPTY_COUNTS;
+    const reinforce = byLevel[1][i] + byLevel[2][i];
+    const partial = byLevel[3][i];
+    const none = byLevel[4][i];
+    const apart = byLevel[5][i];
+    return { reinforce, partial, none, apart, total: reinforce + partial + none + apart };
+  };
+}
 
 /** A layer's colour: its identity where a square has no reading of the centre. */
 function layerTint(kind: ExploreItem["kind"], pale = false): string {
@@ -257,6 +290,29 @@ export function Explore({
   // The targets on the ring: all of them by document, only those in its
   // areas by a lens.
   const seated = useMemo(() => [...placed].filter((i) => i < model.targets).length, [placed, model.targets]);
+  // A lens that seats only some targets narrows the view at rest to them:
+  // the centre, the column and the cards count only the pairs between the
+  // targets on the ring. A target or group in the centre still reads
+  // against every target.
+  const ring = useMemo(() => {
+    if (!lens) return null;
+    const areas = groupByLens(model, lens);
+    const ids = areas.flatMap((g) => g.ids);
+    if (ids.length === model.targets) return null;
+    const mask = new Uint8Array(model.items.length);
+    for (const i of ids) mask[i] = 1;
+    const scope = scopeAmong(data.scope, new Set(ids.map((i) => model.items[i].id)));
+    return {
+      mask,
+      areas: areas.length,
+      counts: toneCounts(scope.comparisons),
+      concentration: concentrationOf(scope),
+      targets: ids.length,
+      documents: scope.docs.length,
+    };
+  }, [lens, model, data.scope]);
+  // What the centre counts at rest: every target pair, or those on the ring.
+  const restFigures = ring ?? { counts: data.counts, targets: model.targets, documents: data.scope.docs.length };
   const matches = useMemo(
     () => new Set(searchTargets(model.items, state.query).filter((i) => placed.has(i))),
     [model, state.query, placed],
@@ -332,36 +388,14 @@ export function Explore({
     [state.group],
   );
 
-  // Each target's readings with every target in the other documents (no
-  // actions or budget lines): the rankings at rest and each target's own bar.
-  const restCounts = useMemo(() => {
-    const size = model.items.length;
-    const targets = model.targets;
-    // Level codes: 1 high, 2 medium, 3 low, 4 none, 5 flagged (0: not compared).
-    const byLevel = Array.from({ length: 6 }, () => new Uint16Array(size));
-    for (let a = 0; a < targets; a++) {
-      for (let b = a + 1; b < targets; b++) {
-        const level = model.levels[a * size + b];
-        if (level === 0) continue;
-        byLevel[level][a] += 1;
-        byLevel[level][b] += 1;
-      }
-    }
-    return { apart: byLevel[5], strong: byLevel[1], byLevel };
-  }, [model]);
-  const countsOf = useCallback(
-    (id: string): ToneCounts => {
-      const i = model.index.get(id);
-      const { byLevel } = restCounts;
-      if (i === undefined) return EMPTY_COUNTS;
-      const reinforce = byLevel[1][i] + byLevel[2][i];
-      const partial = byLevel[3][i];
-      const none = byLevel[4][i];
-      const apart = byLevel[5][i];
-      return { reinforce, partial, none, apart, total: reinforce + partial + none + apart };
-    },
-    [model, restCounts],
-  );
+  // Each target's readings with every target in the other documents: each
+  // target's own bar beside a centre.
+  const restCounts = useMemo(() => levelCounts(model, null), [model]);
+  const countsOf = useMemo(() => countsReader(model, restCounts.byLevel), [model, restCounts]);
+  // At rest, with the targets on the ring only: the rankings, their bars and
+  // the cards.
+  const ringCounts = useMemo(() => (ring ? levelCounts(model, ring.mask) : restCounts), [model, ring, restCounts]);
+  const ringCountsOf = useMemo(() => countsReader(model, ringCounts.byLevel), [model, ringCounts]);
   const ranked = (counts: Uint16Array): RankedRow[] =>
     model.items
       .slice(0, model.targets)
@@ -560,7 +594,7 @@ export function Explore({
     const c = model.items[i];
     const relation = !group
       ? c.kind === "target"
-        ? t("restTip", { apart: restCounts.apart[i], strong: restCounts.strong[i] })
+        ? t("restTip", { apart: ringCounts.apart[i], strong: ringCounts.strong[i] })
         : c.kind === "budget"
           ? t("restTipBudget", { count: itemCounts.strong[i] })
           : t("restTipAction", { strong: itemCounts.strong[i], apart: itemCounts.apart[i] })
@@ -674,16 +708,16 @@ export function Explore({
 
   const centre = !active ? (
     <div className="ex-centre-rest">
-      <p className="ex-centre-figure">{n(data.counts.total)}</p>
-      <p className="ex-centre-caption">{tf("comparisons", { count: data.counts.total })}</p>
-      {data.counts.total > 0 && (
+      <p className="ex-centre-figure">{n(restFigures.counts.total)}</p>
+      <p className="ex-centre-caption">{tf("comparisons", { count: restFigures.counts.total })}</p>
+      {restFigures.counts.total > 0 && (
         <div className="ex-centre-bar">
-          <ResultBar counts={data.counts} />
+          <ResultBar counts={restFigures.counts} />
         </div>
       )}
-      <ToneKey counts={data.counts} share />
+      <ToneKey counts={restFigures.counts} share />
       <p className="ex-centre-count">
-        {t("restCentre", { targets: model.targets, documents: data.scope.docs.length })}
+        {t("restCentre", { targets: restFigures.targets, documents: restFigures.documents })}
       </p>
     </div>
   ) : activeKind === "target" && singleItem ? (
@@ -753,9 +787,20 @@ export function Explore({
   const highlight = hot ? (model.index.get(hot) ?? null) : null;
   const selectedLine = pair ? (model.index.get(pair.b) ?? null) : seat ? (model.index.get(seat) ?? null) : null;
 
-  const concentration = data.concentration;
-  const restHeadline =
-    concentration.total === 0
+  const concentration = ring?.concentration ?? data.concentration;
+  // By a lens that seats only some targets, the headline names whose pairs it counts.
+  const restHeadline = ring
+    ? concentration.total === 0
+      ? t("lensHeadlineEmpty", { areas: ring.areas })
+      : concentration.concentrated
+        ? t("lensHeadlineConcentrated", {
+            areas: ring.areas,
+            pct: pct(concentration.share),
+            total: concentration.total,
+            top: concentration.top.length,
+          })
+        : t("lensHeadlineSpread", { areas: ring.areas, contested: concentration.contested })
+    : concentration.total === 0
       ? tc("headlineEmpty")
       : concentration.concentrated
         ? tc("headlineConcentrated", {
@@ -780,10 +825,10 @@ export function Explore({
       key: focusKey({ kind: "area", lens: lens.id, id: g.key }),
       name: groupName(g.key),
       meta: t("targetsCount", { count: g.ids.length }),
-      counts: tones(groupProfile(model, g.ids).totals),
+      counts: tones(groupProfile(model, g.ids, ring?.mask ?? null).totals),
       targets: g.ids.map((i) => model.items[i]),
     }));
-  }, [lens, data.scope.docs, data.docs, groupName, model, t]);
+  }, [lens, data.scope.docs, data.docs, groupName, model, ring, t]);
   const layerBrowse = useMemo<BrowseRow[]>(
     () =>
       available.map((layer) => {
@@ -910,15 +955,15 @@ export function Explore({
     side = (
       <RestColumn
         headline={restHeadline}
-        review={ranked(restCounts.apart)}
-        strongest={ranked(restCounts.strong)}
+        review={ranked(ringCounts.apart)}
+        strongest={ranked(ringCounts.strong)}
         browseTitle={lens ? tl(lens.id) : t("browseDocs")}
         browse={browse}
         layerBrowse={layerBrowse.filter((row) => {
           const layer = parseFocusKey(row.key).id.slice(6);
           return layer === "budget" ? budgetOn : actionsOn;
         })}
-        countsOf={countsOf}
+        countsOf={ringCountsOf}
         docName={docName}
         onFocus={focusOn}
         onHover={setHot}

@@ -533,7 +533,7 @@
           },
           "centre": {
             "title": "The centre",
-            "body": "At rest the centre holds the whole picture: every target pair and how it reads. With a target at the centre, every other dot takes the colour of how it reads against it: green aligned, grey partially aligned, red potential misalignment, sorted within each document. Selecting the name of a document or policy area puts all its targets at the centre. A dot then turns red where its potential misalignments with those targets stand out: at least two, and at least twice as frequent as across the centre as a whole. Another document's name opens the two side by side; empty space or All targets returns to every target."
+            "body": "At rest the centre holds every target pair between the dots on the ring and how it reads. With a target at the centre, every other dot takes the colour of how it reads against it: green aligned, grey partially aligned, red potential misalignment, sorted within each document. Selecting the name of a document or policy area puts all its targets at the centre. A dot then turns red where its potential misalignments with those targets stand out: at least two, and at least twice as frequent as across the centre as a whole. Another document's name opens the two side by side; empty space or All targets returns to every target."
           },
           "lines": {
             "title": "Lines",
@@ -3297,6 +3297,9 @@
       "tipApartNames": "Potential misalignment with: {names}",
       "tipApartNamesMore": "Potential misalignment with: {names} and {more, number} more",
       "lensScope": "{placed, number} of the {total, number} targets fall in one of these areas.",
+      "lensHeadlineConcentrated": "Of the {total, number} potential misalignments between the targets in {areas, plural, one {this area} other {these areas}}, {pct} involve just {top, plural, one {one target} other {# targets}}.",
+      "lensHeadlineSpread": "Potential misalignment between the targets in {areas, plural, one {this area} other {these areas}} is spread across {contested, plural, one {# target} other {# targets}}.",
+      "lensHeadlineEmpty": "No potential misalignment between the targets in {areas, plural, one {this area} other {these areas}}.",
       "targetFigures": "{pairs, plural, one {# target pair} other {# target pairs}} with the other documents"
     },
     "contracts": {

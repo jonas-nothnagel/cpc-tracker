@@ -6,7 +6,7 @@ import en from "../../../../messages/en.json";
 import { buildBriefData } from "@/lib/brief/data";
 import { scopeOf } from "@/lib/brief/compute";
 import { briefFixture } from "@/lib/brief/test-fixture";
-import { exploreReducer, initialExploreState, type ExploreState } from "@/lib/brief/explore/state";
+import { exploreReducer, initialExploreState, type ExploreGroup, type ExploreState } from "@/lib/brief/explore/state";
 import { buildExploreLayers } from "@/lib/brief/explore/layers";
 import { LAYER_DATA } from "@/lib/brief/explore/test-layers";
 import { Explore } from "./explore";
@@ -266,16 +266,41 @@ describe("Explore: a lens and its scope", () => {
   };
   const WITH_HR = { ...SOURCE, lenses: [...SOURCE.lenses, HR] };
 
-  function LensHarness({ initial }: { initial?: Partial<ExploreState> }) {
+  function LensHarness({
+    initial,
+    source = WITH_HR,
+    groups = ["docs", "globe", "hr"],
+  }: {
+    initial?: Partial<ExploreState>;
+    source?: typeof WITH_HR;
+    groups?: ExploreGroup[];
+  }) {
     const [state, dispatch] = useReducer(exploreReducer, { ...initialExploreState(), ...initial });
-    return <Explore source={WITH_HR} data={DATA} state={state} dispatch={dispatch} groups={["docs", "globe", "hr"]} />;
+    return <Explore source={source} data={DATA} state={state} dispatch={dispatch} groups={groups} />;
   }
-  const renderLens = (initial?: Partial<ExploreState>) =>
+  const renderLens = (initial?: Partial<ExploreState>, source?: typeof WITH_HR, groups?: ExploreGroup[]) =>
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <LensHarness initial={initial} />
+        <LensHarness initial={initial} source={source} groups={groups} />
       </NextIntlClientProvider>,
     );
+  // Lay the ring out: jsdom has no sizes, and the centre and the cards need room.
+  function sized(run: () => void) {
+    const w = vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(800);
+    const h = vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(600);
+    try {
+      run();
+    } finally {
+      w.mockRestore();
+      h.mockRestore();
+    }
+  }
+  /** A ranked list beside the ring as "target value" rows. */
+  const ranked = (testId: string) =>
+    screen.queryAllByTestId(testId).map((row) => {
+      const id = row.querySelector(".ex-rank-title")?.textContent?.match(/Commitment ([A-C]\d)/)?.[1];
+      return `${id} ${row.querySelector(".ex-rank-value")?.textContent}`;
+    });
 
   it("seats only the targets in the lens's areas, and says how many of all fall in one", () => {
     renderLens({ group: "globe" });
@@ -284,6 +309,95 @@ describe("Explore: a lens and its scope", () => {
     fireEvent.click(screen.getByRole("button", { name: "Documents" }));
     expect(screen.getByRole("application", { name: /^18 targets on a ring, grouped by Documents/ })).toBeInTheDocument();
     expect(screen.queryByText(/fall in one of these areas/)).toBeNull();
+  });
+
+  // At rest the centre counts the pairs between the targets on the ring.
+  // Biodiversity seats A1-A3, B4-B6 and C1-C3: A~B and A~C 9 aligned each,
+  // B~C 6 partial (B4, B5 x C1-C3) and 3 potential misalignment (B6 x
+  // C1-C3). Human rights seats B5 and C4: one pair, a potential misalignment.
+  it("rests on the pairs between the targets the lens seats", () => {
+    sized(() => {
+      renderLens({ group: "globe" });
+      const rest = () => document.querySelector(".ex-centre-rest") as HTMLElement;
+      const key = () => [...rest().querySelectorAll(".ex-key li")].map((li) => li.textContent);
+      expect(within(rest()).getByText("27")).toBeInTheDocument();
+      expect(key()).toEqual(["67% aligned", "22% partially aligned", "11% potential misalignment"]);
+      expect(within(rest()).getByText("9 targets in 3 documents")).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Human rights" }));
+      expect(within(rest()).getByText("1")).toBeInTheDocument();
+      expect(within(rest()).getByText("target pair compared")).toBeInTheDocument();
+      expect(key()).toEqual(["100% potential misalignment"]);
+      expect(within(rest()).getByText("2 targets in 2 documents")).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Documents" }));
+      expect(within(rest()).getByText("108")).toBeInTheDocument();
+      expect(key()).toEqual(["67% aligned", "19% partially aligned", "14% potential misalignment"]);
+      expect(within(rest()).getByText("18 targets in 3 documents")).toBeInTheDocument();
+    });
+  });
+
+  // The column at rest reads the same pairs. B6 is potentially misaligned
+  // with C1-C3. A1-A3 align strongly with B5 and with C1 and C3: three
+  // strong alignments each for A1-A3, B5, C1 and C3.
+  it("ranks the targets the lens seats by their pairs with each other", () => {
+    renderLens({ group: "globe" });
+    expect(
+      screen.getByRole("heading", {
+        name: "Potential misalignment between the targets in these areas is spread across 4 targets.",
+      }),
+    ).toBeInTheDocument();
+    expect(ranked("explore-review-row")).toEqual(["B6 3", "C1 1", "C2 1", "C3 1"]);
+    expect(ranked("explore-strong-row")).toEqual(["A1 3", "A2 3", "A3 3", "B5 3", "C1 3", "C3 3"]);
+    fireEvent.click(screen.getByRole("button", { name: "Human rights" }));
+    expect(
+      screen.getByRole("heading", {
+        name: "Potential misalignment between the targets in this area is spread across 2 targets.",
+      }),
+    ).toBeInTheDocument();
+    expect(ranked("explore-review-row")).toEqual(["B5 1", "C4 1"]);
+    expect(ranked("explore-strong-row")).toEqual([]);
+  });
+
+  // A lens whose targets never pull against each other: A1 and B1 align
+  // strongly. Each has potential misalignments only with targets it does not seat.
+  it("says so when the targets a lens seats show no potential misalignment with each other", () => {
+    const LOSS = {
+      id: "lossDamage" as const,
+      taxonomyType: "lossDamage",
+      categories: [{ id: "ld1", name: "Loss and damage" }],
+      primary: { A1: "ld1", B1: "ld1" },
+    };
+    renderLens({ group: "lossDamage" }, { ...SOURCE, lenses: [...SOURCE.lenses, LOSS] }, ["docs", "lossDamage"]);
+    expect(
+      screen.getByRole("heading", { name: "No potential misalignment between the targets in this area." }),
+    ).toBeInTheDocument();
+    expect(ranked("explore-review-row")).toEqual([]);
+    expect(ranked("explore-strong-row")).toEqual(["A1 1", "B1 1"]);
+  });
+
+  it("counts a seat's pairs with the other targets on the ring when pointed at", () => {
+    sized(() => {
+      renderLens({ group: "globe" });
+      fireEvent.keyDown(screen.getByRole("application"), { key: "ArrowRight" });
+      // A1: strong alignments with B5, C1 and C3 on the ring (six with every target).
+      expect(document.querySelector(".ex-tip")?.textContent).toContain("No potential misalignment, 3 strong alignments");
+    });
+  });
+
+  it("bars each policy area by its pairs with the other targets on the ring", () => {
+    renderLens({ group: "globe" });
+    const bar = (name: string) =>
+      [
+        ...screen
+          .getAllByTestId("explore-browse-row")
+          .find((row) => row.textContent?.includes(name))!
+          .querySelectorAll(".brief-pair-value"),
+      ].map((v) => v.textContent);
+    // Agriculture (B4-B6) with A1-A3 and C1-C3: 9 aligned, 6 partially
+    // aligned, 3 potential misalignment (with every target, 12 of each).
+    expect(bar("Agriculture")).toEqual(["17%", "50%"]);
+    // Human rights has one area: no other targets on the ring, no bar.
+    fireEvent.click(screen.getByRole("button", { name: "Human rights" }));
+    expect(bar("Right to water")).toEqual([]);
   });
 
   it("offers human rights with its draft note", () => {

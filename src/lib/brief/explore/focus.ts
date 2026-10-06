@@ -107,7 +107,9 @@ export interface GroupProfile {
   total: number;
 }
 
-export function groupProfile(model: ExploreModel, members: number[]): GroupProfile {
+/** `among`, when given, marks the only seats that count as the group's
+ *  partners, e.g. the targets a lens seats on the ring. */
+export function groupProfile(model: ExploreModel, members: number[], among: Uint8Array | null = null): GroupProfile {
   const n = model.items.length;
   const isMember = new Uint8Array(n);
   for (const m of members) isMember[m] = 1;
@@ -115,7 +117,7 @@ export function groupProfile(model: ExploreModel, members: number[]): GroupProfi
   const totals = empty();
   let total = 0;
   for (let j = 0; j < n; j++) {
-    if (isMember[j]) continue;
+    if (isMember[j] || (among && !among[j])) continue;
     for (const m of members) {
       const relation = relationBetween(model, m, j);
       if (relation === null) continue;
