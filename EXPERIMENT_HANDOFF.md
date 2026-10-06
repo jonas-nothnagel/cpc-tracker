@@ -5,6 +5,40 @@ Written 2026-08-06 to freeze the state of a three-round design experiment and th
 behind it, so a future session (human or Claude) can resume cold. Companion context lives in
 Claude's project memory under `finding-cards-experiment`.
 
+## Sri Lanka's new corpus and the country office's own lenses (2026-10-06)
+
+The country office's taxonomy arrived (`Sri Lanka/Sectors for Sri Lanka.docx`, 24 Sep 2026), so
+the parked overhaul shipped with it, as agreed ("taxonomy arrives, full overhaul, ship once").
+- **Corpus**: `data/sri-lanka-overhaul` merged in (d6a3035): 225 targets across 12 documents,
+  prompt v2.3, 315 potential misalignments; config conflict resolved to the twelve documents,
+  each with a `plainName` from its medium label.
+- **Lenses** (Jonas's calls, 6 Oct): Climate mitigation, Biodiversity and Human rights unchanged;
+  **Climate adaptation** for Sri Lanka is its nine NDC 3.0 sectors (Agriculture and food,
+  Livestock, Fisheries, Biodiversity, Health, Tourism, Infrastructure and human settlements,
+  Water, Coastal and marine) instead of the GGA areas; **Loss and damage** is a lens of its own
+  with one area. A one-area lens has nothing to rank, so a target counts in it only at a
+  relevance score of 0.5 or more: 26 of 225 (3 of them only for "institutional coordination",
+  which the office's description lists as a key action).
+- **Provenance**: names and descriptions are the office's text, checked against the public NDC
+  3.0 PDF: the four GGA paragraphs are verbatim; the NDC paragraphs are close extracts with
+  light edits; the loss and damage definition and caveat are not in NDC 3.0 and are kept,
+  labelled as country-office text. `dev_data_scripts/ingest_sri_lanka_taxonomies_24sep26.py`
+  writes `python/data/sri-lanka-taxonomies.json`, pinned on the document's text.
+- **Pipeline**: a country may set its own lenses (`python/src/country_taxonomies.py`); they are
+  classified beside the global ones and may replace one for that country. Run surgically:
+  `classify_country_taxonomies.py` (450 calls, 39.9 g) and `rerun_sector_synthesis_country.py`
+  (130 cards across 13 states, 27.2 g); theme tags recomputed from the cache with no new
+  wording; alignment untouched.
+- **Brief and ring**: two lens slots (`adaptation`, `lossDamage`), named in the catalogs; their
+  tooltips name their source from the taxonomy file.
+- **Spanish summaries for Sri Lanka removed** (Sri Lanka is English only); the old dashboard
+  falls back to English. Revert that one commit to restore them.
+- **Verified**: 1,846 tests (incl. Sri Lanka's lenses on real data), 614 Python tests, tsc,
+  `pnpm build` green; `/sri-lanka/brief` and `/brief/explore` 200 on the production build.
+  eslint's 3 errors sit in untouched files (model comparison, funding network, analytics test).
+- **Open**: the corpus itself is still not reviewed by the country office; the sector summaries
+  keep the known "rather than a direct contradiction" phrasing (0.15 per card, as before).
+
 ## The landing previews the brief (2026-10-05)
 
 Jonas asked to bring the landing in line with the brief's design, starting with "Inside the
