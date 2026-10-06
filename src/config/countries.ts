@@ -120,7 +120,9 @@ export const COUNTRIES: CountryEntry[] = [
     iso3: "lka",
     status: "pilot",
     // Coherence-only (Level 1): the CO delivered policy targets only, now across
-    // eight documents (NDC 3.0, draft NBSAP, LDN, NAP, PPPP, NWRP, NFAP, NMP).
+    // twelve documents (NDC 3.0, draft NBSAP, LDN, NAgP, NEnvP, NEneP, NWRP,
+    // NLTP, NTP, NPWM, NWP, NPPPP). This list replaced the previous eight on
+    // 18 Sep 2026; minerals (NMP) and fisheries (NFAP) are no longer included.
     // No BTR / BER / NR7 data, so those sections auto-hide.
     visible: true,
     has: {

@@ -1,0 +1,464 @@
+[
+  {
+    "id": "NWRP_1",
+    "text": "Facilitate and assist nation building while ensuring optimal water resources for domestic, national food security and environmental needs including wildlife as primary requirements",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Facilitate and assist nation building while ensuring optimal water resources for domestic, national food security and environmental needs including wildlife as primary requirements",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_2",
+    "text": "Identify nation building plans and sectoral water requirements, priorities and provide optimal water allocation while assessing water requirements in each sector. • Assess Basin wise and Aquifer wise water availability. • Establish norms for equity, priority and appropriate allocation of water and monitoring",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 1",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Identify nation building plans and sectoral water requirements, priorities and provide optimal water allocation while assessing water requirements in each sector. • Assess Basin wise and Aquifer wise water availability. • Establish norms for equity, priority and appropriate allocation of water and monitoring",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_3",
+    "text": "Conserve and establish the rightful value of the water and watershed resources",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conserve and establish the rightful value of the water and watershed resources",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_4",
+    "text": "Establish water quality standards for different sources and uses. • Monitor water quality changes. • Create awareness of rightful value of water among the society. • Encourage civil society involvements in monitoring sustainable water quality adherence. • Punish the violators of water regulations. • A mechanism should be introduced to establish standards to major rivers based on present water quality and to change the standard limits upon improvement of the water quality of respective rivers",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 2",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Establish water quality standards for different sources and uses. • Monitor water quality changes. • Create awareness of rightful value of water among the society. • Encourage civil society involvements in monitoring sustainable water quality adherence. • Punish the violators of water regulations. • A mechanism should be introduced to establish standards to major rivers based on present water quality and to change the standard limits upon improvement of the water quality of respective rivers",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_5",
+    "text": "Guidance and strengthening the existing laws, propose suitable institutional mechanism and identify the strategies for implementation",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Guidance and strengthening the existing laws, propose suitable institutional mechanism and identify the strategies for implementation",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_6",
+    "text": "List out water related laws and identify the gaps • Recognize the current and future water requirements and amend the legislations appropriately. • Identify the changes that are necessary for a smooth implementation",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 3",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "List out water related laws and identify the gaps • Recognize the current and future water requirements and amend the legislations appropriately. • Identify the changes that are necessary for a smooth implementation",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_7",
+    "text": "Ensure flexible water allocation criteria which will promote social harmony among competing water resource users",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensure flexible water allocation criteria which will promote social harmony among competing water resource users",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_8",
+    "text": "Promotion of participatory decision making. • Introduction of water conservation techniques. • Methods for new re-allocations during period of crisis through consultative process. • Work out an appropriate compensation system",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 4",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promotion of participatory decision making. • Introduction of water conservation techniques. • Methods for new re-allocations during period of crisis through consultative process. • Work out an appropriate compensation system",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_9",
+    "text": "Recognize water rights of past, current and new users amicably",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Recognize water rights of past, current and new users amicably",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_10",
+    "text": "Identify riparian rights. Study the current demand. Assess the water demand of new users. • Identify the new institutional mechanisms of water resources development and management. • Assess transferability of water quantity. • Recognize the share of current water usage while comparing with internationally accepted benchmarks",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 5",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Identify riparian rights. Study the current demand. Assess the water demand of new users. • Identify the new institutional mechanisms of water resources development and management. • Assess transferability of water quantity. • Recognize the share of current water usage while comparing with internationally accepted benchmarks",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_11",
+    "text": "Promote adherence to water quality standards in the maintenance of quality of all water for various water users",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote adherence to water quality standards in the maintenance of quality of all water for various water users",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_12",
+    "text": "Establish water quality standards for different uses • Establish water quantity standards for different users based on internationally accepted bench marks. • Monitor the water quality by using Water Quality Index in rivers and open water bodies. • Introduction of a mechanism to establish water quality standards for major rivers based on their present water quality and to change the standard limits upon improvement of the water quality in respective rivers periodically. • Monitor the parameters of discharging waste water",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 6",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Establish water quality standards for different uses • Establish water quantity standards for different users based on internationally accepted bench marks. • Monitor the water quality by using Water Quality Index in rivers and open water bodies. • Introduction of a mechanism to establish water quality standards for major rivers based on their present water quality and to change the standard limits upon improvement of the water quality in respective rivers periodically. • Monitor the parameters of discharging waste water",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_13",
+    "text": "Promote sustainable management practices on surface water on the basis of river basin plans",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote sustainable management practices on surface water on the basis of river basin plans",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_14",
+    "text": "Develop appropriate river basin plans based on current and future needs. • Catchment area and reservation protection, • Monitoring, regulating of effluent discharges",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 7",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop appropriate river basin plans based on current and future needs. • Catchment area and reservation protection, • Monitoring, regulating of effluent discharges",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_15",
+    "text": "Taking actions to conserve aquifers by formulating appropriate land use plans",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 8",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Taking actions to conserve aquifers by formulating appropriate land use plans",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_16",
+    "text": "Preparation of appropriate development plans at the divisional level with the participation of community and development stakeholders • Identification of activities related to conservation of catchment areas during the preparation of development plans and during implementation stages • Regulate the conservation, development and management of water resources in accordance with the appropriate land use policies without any prejudice to beneficiaries",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 8",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Preparation of appropriate development plans at the divisional level with the participation of community and development stakeholders • Identification of activities related to conservation of catchment areas during the preparation of development plans and during implementation stages • Regulate the conservation, development and management of water resources in accordance with the appropriate land use policies without any prejudice to beneficiaries",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_17",
+    "text": "Conserve the upper watersheds, wetlands, riverine systems ensuring sustainability of water sources",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 9",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conserve the upper watersheds, wetlands, riverine systems ensuring sustainability of water sources",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_18",
+    "text": "Prepare appropriate guidelines for upper watershed management in accordance with accepted watershed management policies",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 9",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Prepare appropriate guidelines for upper watershed management in accordance with accepted watershed management policies",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_19",
+    "text": "Ensure combined use of surface and groundwater for optimum benefits while recognizing the inter-dependency",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 10",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensure combined use of surface and groundwater for optimum benefits while recognizing the inter-dependency",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_20",
+    "text": "Develop aquifer basin plans and identify re-charge zones. • Regular monitoring and baseline data development. • Promote sustainable management practices and development of ground water resources preventing over exploitation, on the basis of identified aquifers",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 10",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop aquifer basin plans and identify re-charge zones. • Regular monitoring and baseline data development. • Promote sustainable management practices and development of ground water resources preventing over exploitation, on the basis of identified aquifers",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_21",
+    "text": "Identify Climate Change impacts on the water sector and review planning and management strategies periodically to ensure mitigation",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 11",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Identify Climate Change impacts on the water sector and review planning and management strategies periodically to ensure mitigation",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_22",
+    "text": "Conduct action research and identify vulnerability on water sector due to Climate Change. • Identify and implement mitigatory measures which can be in-built in all short-term, medium term and long-term action plans or projects",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 11",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Conduct action research and identify vulnerability on water sector due to Climate Change. • Identify and implement mitigatory measures which can be in-built in all short-term, medium term and long-term action plans or projects",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_23",
+    "text": "Ensure that national, provincial and local interests are harmonized in development and management of water resources",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 12",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Ensure that national, provincial and local interests are harmonized in development and management of water resources",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_24",
+    "text": "Promote regional development in line with river basins or sharing water among basins for both flood and drought management",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 12",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote regional development in line with river basins or sharing water among basins for both flood and drought management",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_25",
+    "text": "Highlight the economic value of water to prevent wastage and inefficient use",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 13",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Highlight the economic value of water to prevent wastage and inefficient use",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_26",
+    "text": "Considering the capital, maintenance and operational costs, highlight the value of water resources infrastructure. • Make aware the users, beneficiaries and general public over the capital investment made by the state on development activities and more specifically on operation, maintenance and rehabilitation costs of the infrastructure for society to appreciate the value of this eco system services",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 13",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Considering the capital, maintenance and operational costs, highlight the value of water resources infrastructure. • Make aware the users, beneficiaries and general public over the capital investment made by the state on development activities and more specifically on operation, maintenance and rehabilitation costs of the infrastructure for society to appreciate the value of this eco system services",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_27",
+    "text": "Recognize traditions and customs when planning water resource conservation and development activities",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 14",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Recognize traditions and customs when planning water resource conservation and development activities",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_28",
+    "text": "Obtain local level stakeholder participation in development and management activities and encourage traditions and customs to be introduced in promoting best practices • Take necessary action to promote local technology and traditional water management systems",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 14",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Obtain local level stakeholder participation in development and management activities and encourage traditions and customs to be introduced in promoting best practices • Take necessary action to promote local technology and traditional water management systems",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_29",
+    "text": "Adopt the current international policies, practices, benchmarks, development goals and management principles that are accepted by the Government of Sri Lanka in all future strategic planning",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 15",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Adopt the current international policies, practices, benchmarks, development goals and management principles that are accepted by the Government of Sri Lanka in all future strategic planning",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_30",
+    "text": "Develop regular interactions with international professional institutions, UN agencies and International development partners and research institutions to acquire updated information and knowledge on international policies, benchmarks and best practices. • Encourage subject related institutions to enter into MoU or treaties which will eventually benefit the water resource users and water managers",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 15",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Develop regular interactions with international professional institutions, UN agencies and International development partners and research institutions to acquire updated information and knowledge on international policies, benchmarks and best practices. • Encourage subject related institutions to enter into MoU or treaties which will eventually benefit the water resource users and water managers",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_31",
+    "text": "Promote stakeholder participation in decision making in conservation, development and management of water resources through a transparent approach to ensure good governance",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 16",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Promote stakeholder participation in decision making in conservation, development and management of water resources through a transparent approach to ensure good governance",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_32",
+    "text": "Institutionalize committees at various levels to make decisions on water related issues and to recognize all relevant stakeholders. • Develop appropriate mechanisms to share information related to commonly faced problems and to provide solutions under the guidance of the National Water Resource Council",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Strategy 16",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Institutionalize committees at various levels to make decisions on water related issues and to recognize all relevant stakeholders. • Develop appropriate mechanisms to share information related to commonly faced problems and to provide solutions under the guidance of the National Water Resource Council",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  },
+  {
+    "id": "NWRP_33",
+    "text": "Introducing modern water technical methods as per the international c o n s u m i n g standards following an extensive study of water consumption while carrying out agricultural needs",
+    "sourceDocument": "NWRP",
+    "sourceLabel": "Policy 17",
+    "country": "Sri Lanka",
+    "sources": [
+      {
+        "sourceText": "Introducing modern water technical methods as per the international c o n s u m i n g standards following an extensive study of water consumption while carrying out agricultural needs",
+        "url": ""
+      }
+    ],
+    "textCleanup": "verbatim"
+  }
+]

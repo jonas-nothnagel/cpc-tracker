@@ -3,7 +3,7 @@ import { ambientRibbonInk, RAMP_END, RAMP_START } from "./ribbon-density";
 
 // Real corpus sizes the ramp has to serve (flagged pairs per country).
 const COTE_DIVOIRE_FLAGGED = 128;
-const SRI_LANKA_FLAGGED = 866;
+const SRI_LANKA_FLAGGED = 315;
 const PANAMA_FLAGGED = 1172;
 
 describe("ambientRibbonInk (default mode)", () => {
@@ -26,11 +26,15 @@ describe("ambientRibbonInk (flagged mode)", () => {
   });
 
   it("thins a large flagged set instead of drawing it at full ink", () => {
-    const sl = ambientRibbonInk(SRI_LANKA_FLAGGED, "flagged");
-    expect(sl.opacity).toBeLessThan(0.2);
-    expect(sl.opacity).toBeGreaterThan(0.08);
-    expect(sl.strokeWidth).toBe(1);
+    // Panama is the largest flagged set any country produces, and sits on the floor.
     expect(ambientRibbonInk(PANAMA_FLAGGED, "flagged")).toEqual({ opacity: 0.08, strokeWidth: 1 });
+    // Sri Lanka sits mid-ramp: clearly thinned from full ink and full width,
+    // still readable.
+    const sl = ambientRibbonInk(SRI_LANKA_FLAGGED, "flagged");
+    expect(sl.opacity).toBeLessThan(0.45);
+    expect(sl.opacity).toBeGreaterThan(0.2);
+    expect(sl.strokeWidth).toBeLessThan(1.5);
+    expect(sl.strokeWidth).toBeGreaterThan(1);
   });
 
   it("leaves a mid-sized flagged set readable", () => {

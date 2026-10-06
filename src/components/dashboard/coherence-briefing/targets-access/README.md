@@ -24,9 +24,9 @@ having no link at all. `publicSourceUrl` resolves to something openable.
 |---|---|
 | Verbatim source quote | **100%** — every target, all three countries |
 | Page numbers | **none** — `pages` is empty on every span, everywhere |
-| Section | Mongolia 41/178, Sri Lanka 9/404, Panama 0/368 |
+| Section | Mongolia 41/178, Sri Lanka 0/225, Panama 0/368 |
 | Usable span URL | Mongolia 87 (all public), Panama 36 of 249, Sri Lanka 0 |
-| Country-config document URL | Panama 7/9, Mongolia 8/11, Sri Lanka 2/8 |
+| Country-config document URL | Panama 7/9, Mongolia 8/11, Sri Lanka 1/12 |
 
 **Nothing here may claim a page.** The quote is the locator. If page location is
 added later (`extract_validation.py` already has a four-level quote matcher and
@@ -42,8 +42,8 @@ countries arrive with new legitimate government domains (`legalinfo.mn`,
 `mef.gob.pa`, `pancanal.com`) and an allowlist would silently swallow them —
 the opposite of the failure worth guarding against.
 
-Returning `null` is a real outcome, not a bug. Sri Lanka has a public URL for 2
-of 8 documents; a row with no link is honest where a dead one is not.
+Returning `null` is a real outcome, not a bug. Sri Lanka has a public URL for 1
+of 12 documents; a row with no link is honest where a dead one is not.
 
 ## Turning it off without deleting code
 
