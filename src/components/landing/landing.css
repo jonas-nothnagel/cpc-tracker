@@ -30,3 +30,42 @@
 [data-brief].landing-field .brief-dots-tone {
   font-size: 0.9375rem;
 }
+
+/* The landing's hero is the brief's (.brief-hero), with the targets over
+   the whole of it. Rows keep their height (a row that shrinks to fit cuts
+   its words) and run past the edges, which clip them, so the country menu
+   can still open past the hero. The brief's veil keeps the title clear,
+   reaching further right because the landing's title is longer than the
+   brief's figures; a band behind the navigation keeps its links clear. */
+
+[data-brief].landing-paper .brief-hero {
+  overflow: visible;
+}
+
+[data-brief].landing-paper .brief-drift {
+  overflow: hidden;
+  padding: 0;
+}
+
+[data-brief].landing-paper .brief-drift-row {
+  flex-shrink: 0;
+}
+
+[data-brief].landing-paper .brief-hero-veil {
+  background:
+    linear-gradient(
+      90deg,
+      #fff 0%,
+      rgba(255, 255, 255, 0.96) 42%,
+      rgba(255, 255, 255, 0.78) 62%,
+      rgba(255, 255, 255, 0.28) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.85) 0,
+      rgba(255, 255, 255, 0.85) 64px,
+      rgba(255, 255, 255, 0) 112px,
+      rgba(255, 255, 255, 0) calc(100% - 56px),
+      #fff 100%
+    );
+}

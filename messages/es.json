@@ -76,12 +76,6 @@
     "footer": {
       "undp": "Programa de las Naciones Unidas para el Desarrollo",
       "initiative": "Iniciativa Sprint de IA"
-    },
-    "heroVideo": {
-      "pauseAria": "Pausar vídeo de fondo",
-      "playAria": "Reproducir vídeo de fondo",
-      "pause": "Pausar",
-      "play": "Reproducir"
     }
   },
   "dashboard": {

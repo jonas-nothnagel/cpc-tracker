@@ -76,12 +76,6 @@
     "footer": {
       "undp": "United Nations Development Programme",
       "initiative": "AI Sprint Initiative"
-    },
-    "heroVideo": {
-      "pauseAria": "Pause background video",
-      "playAria": "Play background video",
-      "pause": "Pause",
-      "play": "Play"
     }
   },
   "dashboard": {

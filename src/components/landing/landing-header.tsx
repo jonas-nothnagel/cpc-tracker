@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * Landing header. Sits transparent over the dark cinematic hero (white logo +
- * nav), then turns into a solid white bar once the user scrolls past the top of
- * the hero. Bespoke to the home page so it does not affect the shared Header
- * used on /dashboard and /prototypes.
+ * Landing header. Sits transparent over the white hero, in ink, then turns
+ * into a solid white bar with a hairline once the user scrolls past the top
+ * of the hero. Bespoke to the home page so it does not affect the shared
+ * Header used on /dashboard and /prototypes.
  */
 
 import Image from "next/image";
@@ -34,8 +34,8 @@ export function LandingHeader() {
     >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
-          {/* The UNDP logo is a self-contained blue lockup, so it reads on both
-              the dark hero and the white scrolled header without recolouring. */}
+          {/* The UNDP logo is a self-contained blue lockup: it reads on white
+              without recolouring. */}
           <Image
             src="/undp-logo.png"
             alt="UNDP"
@@ -44,36 +44,24 @@ export function LandingHeader() {
             priority
             className="h-11 w-auto"
           />
-          <span
-            className={`hidden text-body font-medium transition-colors duration-300 sm:block ${
-              scrolled ? "text-[var(--undp-black)]" : "text-white"
-            }`}
-          >
+          <span className="hidden text-body font-medium text-[var(--undp-black)] sm:block">
             {t("brand")}
           </span>
         </Link>
         <nav className="flex items-center gap-8 text-body">
           <Link
             href="/methodology"
-            className={`transition-colors duration-300 ${
-              scrolled
-                ? "text-[var(--undp-gray)] hover:text-[var(--undp-blue)]"
-                : "text-white/90 hover:text-white"
-            }`}
+            className="text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-blue)]"
           >
             {t("nav.howItWorks")}
           </Link>
           <Link
             href="/upload"
-            className={`transition-colors duration-300 ${
-              scrolled
-                ? "text-[var(--undp-gray)] hover:text-[var(--undp-blue)]"
-                : "text-white/90 hover:text-white"
-            }`}
+            className="text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-blue)]"
           >
             {t("nav.uploadData")}
           </Link>
-          <LanguageSwitcher onDark={!scrolled} />
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>
