@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How the CPC Analyzer works · Pipeline architecture</title>
+<title>Шинжилгээ хэрхэн хийгддэг вэ | Бодлогын уялдаа шинжлэгч</title>
 <style>
   /* Self-hosted typefaces, shared with the app (same files, same URLs → shared
      browser cache). Relative paths so the file also opens standalone. */
@@ -34,19 +34,14 @@
   :root {
     --undp-blue: #0468b1; --undp-blue-dark: #035293;
     --undp-black: #232e3d; --undp-gray: #55606e;
-    --undp-light: #f7f7f7; --undp-paper: #faf8f4; --undp-white: #fff;
+    --undp-light: #f7f7f7; --undp-white: #fff;
     --border-100: #f3f4f6; --border-200: #e5e7eb; --border-300: #d1d5db;
-    --align-flagged: #dc2626; --align-medium: #7bc96f; --align-high: #196127;
-    --mech-goal: #b91c1c; --mech-resource: #ea580c; --mech-delivery: #d97706;
-    --doc-ndc: #0468b1; --doc-nbsap: #0d9488; --doc-nap: #b45309; --doc-ldn: #78716c; --doc-btr: #7c3aed;
-    --ex: #b45309; --an: #0468b1; --sy: #196127; --agent: #7c3aed;
+    --align-high: #196127;
+    --doc-ndc: #0468b1; --doc-nbsap: #0d9488;
     --font-sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-serif: "Source Serif 4", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
-    --shadow-card: none;
-    --shadow-pop: 0 14px 34px -10px rgba(35,46,61,0.20), 0 4px 10px -6px rgba(35,46,61,0.1);
-    --ground: #f7f7f7;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
@@ -57,7 +52,7 @@
   .serif { font-family: var(--font-serif); letter-spacing: -0.01em; }
   abbr { text-decoration: none; border-bottom: 1px dotted currentColor; cursor: help; }
 
-  /* top bar */
+  /* Top bar: the tool's name, the printable summary, the example switch. */
   .topbar { flex: none; z-index: 40; display: flex; align-items: center; justify-content: space-between;
     gap: 16px; padding: 12px 24px; background: #fff; border-bottom: 1px solid var(--border-200); }
   .topbar .brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
@@ -66,704 +61,473 @@
   .topbar .ttl { font-size: 13px; font-weight: 600; white-space: nowrap; }
   .topbar .ttl b { font-family: var(--font-serif); font-weight: 600; }
   .topbar .ttl span { color: var(--undp-gray); font-weight: 400; }
-  .seg { display: inline-flex; background: var(--undp-light); border: 1px solid var(--border-200); border-radius: 999px; padding: 3px; gap: 2px; }
-  .seg button { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 12px;
-    padding: 5px 14px; border-radius: 999px; color: var(--undp-gray); transition: all .2s var(--ease); }
-  .seg button[aria-pressed="true"] { background: var(--undp-black); color: #fff; }
-  .topbar-right { display: flex; align-items: center; gap: 16px; }
-  .brief-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500;
+  .topbar-right { display: flex; align-items: center; gap: 22px; }
+  .brief-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
     color: var(--undp-blue); text-decoration: none; white-space: nowrap; transition: color .2s var(--ease); }
   .brief-link:hover { color: var(--undp-blue-dark); text-decoration: underline; }
   .brief-link svg { flex: none; }
-  @media (max-width: 820px) { .topbar .ttl span { display: none; } .brief-link { font-size: 11px; } }
+  /* The example switch is plain text, underlined while the example shows. */
+  .ex-toggle { display: inline-flex; align-items: center; gap: 7px; padding: 0; border: 0; background: none;
+    color: var(--undp-black); font: inherit; font-size: 13px; white-space: nowrap; cursor: pointer;
+    text-decoration: none; text-underline-offset: 4px; }
+  .ex-toggle[aria-pressed="true"] { text-decoration: underline; }
+  .ex-toggle:hover { color: var(--undp-blue); }
+  .ex-toggle svg { flex: none; }
+  .mt-note { font-size: 12px; color: var(--undp-gray); white-space: nowrap; }
+  @media (max-width: 980px) { .mt-note { display: none; } }
+  .topbar :focus-visible, .controls :focus-visible { outline: 2px solid var(--undp-blue); outline-offset: 2px; }
+  @media (max-width: 820px) { .topbar .ttl span { display: none; } }
+  @media (max-width: 720px) { .ex-toggle .lbl { display: none; } }
   @media (max-width: 640px) { .brief-link { display: none; } }
 
-  /* layout: map (left) + panel (right) */
+  /* Layout: the scene (left) and the step's panel (right). */
   .work { flex: 1; display: flex; min-height: 0; }
-  .mapwrap { position: relative; flex: 1; overflow: hidden; min-width: 0; background: var(--ground); }
-  .board { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
-  .board.animating { transition: transform .8s var(--ease); }
+  .mapwrap { position: relative; flex: 1; overflow: hidden; min-width: 0; background: #fff; }
 
-  .edges { position: absolute; top: 0; left: 0; overflow: visible; pointer-events: none; z-index: 2; }
-  .edge { fill: none; stroke: #cbd3ce; stroke-width: 1.8; stroke-dasharray: 1; stroke-dashoffset: 1;
-    transition: stroke-dashoffset .7s var(--ease), opacity .4s; opacity: 0; }
-  .edge.drawn { stroke-dashoffset: 0; opacity: 1; }
-  .edge.feed.drawn { stroke: #ddd0b5; stroke-width: 1.4; stroke-dasharray: 6 5 !important; stroke-dashoffset: 0; opacity: 0.8; }
-  .elabel { display: none; position: absolute; z-index: 3; font-size: 10.5px; font-weight: 600;
-    color: var(--undp-black); background: #fff; border: 1px solid var(--border-200); border-radius: 999px;
-    padding: 3px 9px; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); box-shadow: var(--shadow-card); white-space: nowrap; }
-  .elabel.shown { opacity: 1; }
-  .elabel .dt { color: var(--undp-gray); }
+  /* The scene: one ink dot per target, then per target pair, on a white
+     ground (methodology-scene.js); captions state each step's result. */
+  .scene { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  .scene-cap { position: absolute; left: 56px; right: 56px; top: 40px; z-index: 5; pointer-events: none; }
+  .sc-phase { display: flex; gap: 10px; align-items: baseline; margin: 0 0 6px; font-size: 13px; color: var(--undp-gray); }
+  .sc-step { font-weight: 600; color: #232e3d; }
+  .sc-phase-name { color: var(--undp-gray); }
+  .sc-text { margin: 0; max-width: 32em; font-family: var(--font-serif); font-size: clamp(21px, 2.1vw, 27px);
+    font-weight: 500; line-height: 1.22; letter-spacing: -0.005em; color: var(--undp-black); }
+  .scene-labels { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; }
+  .sl { position: absolute; font-size: 12px; line-height: 1.3; color: var(--undp-gray); white-space: nowrap; }
+  /* Document and cluster labels wrap within their column or cluster and grow
+     upward from a shared baseline, so long names never run into a neighbour. */
+  .sl.sl-up { transform: translateY(-100%); white-space: normal; }
+  .sl.sl-up .nm { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    hyphens: auto; overflow-wrap: anywhere; }
+  .sl.sl-up .ct { display: block; margin-top: 2px; font-weight: 600; color: var(--undp-gray); font-variant-numeric: tabular-nums; }
+  .sl .n { font-weight: 600; color: var(--undp-black); font-variant-numeric: tabular-nums; }
+  .sl.sl-doc { font-size: 13px; color: var(--undp-black); }
+  .sl.sl-doc .n { margin-left: 4px; font-weight: 600; color: var(--undp-gray); }
+  .sl.sl-doc.sl-tight { font-size: 12px; }
+  .sl.sl-doc.sl-tight .nm { -webkit-line-clamp: 5; }
+  .sl.sl-cluster { max-width: 190px; white-space: normal; font-size: 12.5px; color: var(--undp-black); }
+  .sl.sl-cluster .n { margin-right: 3px; }
+  .sl.sl-legend { font-size: 14px; color: var(--undp-black); }
+  .sl.sl-legend .n { margin-right: 4px; }
+  .sl.sl-legend .key { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; vertical-align: 0; }
+  .sl.sl-legend .gap { display: inline-block; width: 22px; }
+  .sl.sl-num { font-size: 13px; color: var(--undp-gray); }
+  .sl.sl-center { transform: translate(-50%, -50%); }
+  .sl.sl-list { white-space: normal; }
+  .sl.sl-list.sl-top { transform: translateY(-100%); }
+  .sl .themes { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; }
+  .sl .themes li { max-width: 440px; font-size: 12.5px; color: var(--undp-black); }
+  .sl .themes .n { display: inline-block; width: 14px; color: var(--undp-gray); }
+  .sl .themes .c { margin-left: 4px; color: var(--undp-gray); font-variant-numeric: tabular-nums; }
+  .sl.sl-foot { font-size: 13px; color: var(--undp-black); }
+  .sl .squares { display: inline-flex; flex-wrap: wrap; gap: 3px; max-width: 360px; margin-right: 10px; vertical-align: middle; }
+  .sl .squares i { display: inline-block; width: 8px; height: 8px; }
+  .sl.sl-human .person { display: inline-block; width: 22px; height: 22px;
+    background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='5' r='2.6' fill='none' stroke='%239a6b34' stroke-width='1.4'/%3E%3Cpath d='M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2' fill='none' stroke='%239a6b34' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  /* Hands-on overlays on the scenes (Sep 2026, round 7): the targets and
+     parts the step is about, word for word, set in the brief's type. */
+  .sl.sl-cards { white-space: normal; }
+  .sl .quotes { display: flex; gap: 20px; }
+  .sl .quotes .qcard { flex: 1 1 0; }
+  .sl .qcard { padding: 12px 14px; background: #fff; border: 1px solid var(--border-200); color: var(--undp-black); }
+  .sl .q-src { margin: 0 0 5px; font-size: 12px; color: var(--undp-gray); }
+  .sl .q-src b { font-weight: 600; color: var(--undp-black); }
+  .sl .q-text { margin: 0; font-family: var(--font-serif); font-size: 14.5px; line-height: 1.45; }
+  .sl .qcard-small .q-text { display: -webkit-box; overflow: hidden; font-size: 13px; -webkit-line-clamp: 5; -webkit-box-orient: vertical; }
+  .sl .qcard-small .q-src { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .sl mark { padding: 0 2px; border-radius: 2px; color: inherit; }
+  .sl mark.num { background: #dcebf7; }
+  .sl mark.date { background: #f7e6d2; }
+  .sl .q-check { margin: 9px 0 0; font-size: 13px; color: var(--undp-black); }
+  .sl .q-check span { display: inline-block; width: 16px; color: var(--align-high); font-weight: 700; }
+  .sl .q-note { margin: 6px 0 0; font-size: 11.5px; color: var(--undp-gray); }
+  /* Names along the comparison triangle's diagonal, right-aligned. */
+  .sl.sl-diag { transform: translate(-100%, -50%); white-space: normal; text-align: right; font-size: 12px; color: var(--undp-black); }
+  .sl.sl-diag .nm { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .sl.sl-note { white-space: normal; font-size: 11.5px; line-height: 1.3; color: var(--undp-gray); }
+  .sl.sl-note-r { transform: translate(-100%, -50%); text-align: right; }
+  .sl.sl-legend-small { font-size: 12.5px; white-space: normal; }
+  .sl .parts2 { display: flex; gap: 18px; }
+  .sl .pcard { width: 320px; padding: 12px 14px; background: #fff; border: 1px solid var(--border-200); white-space: normal; }
+  .sl .pcard dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 10px; margin: 8px 0 0; }
+  .sl .pcard dt { font-size: 12px; font-weight: 600; color: var(--undp-gray); }
+  .sl .pcard dd { display: -webkit-box; overflow: hidden; margin: 0; font-size: 12.5px; line-height: 1.35; color: var(--undp-black);
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .sl.sl-callout { transform: translateY(-100%); display: flex; flex-direction: column; gap: 2px; padding: 7px 10px;
+    background: #fff; border: 1px solid var(--border-200); white-space: nowrap; }
+  .sl.sl-callout-mid { transform: translateY(-50%); font-size: 12.5px; color: #232e3d; }
+  .sl.sl-keys { display: flex; flex-direction: column; gap: 4px; }
+  .sl.sl-keyrow { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  .sl .keyitem { white-space: nowrap; }
+  .sl .keyline { display: block; }
+  .sl .verdict { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--undp-black); }
+  .sl .verdict .o { width: 9px; height: 9px; border: 2px solid #d2432c; border-radius: 50%; }
+  .sl .why { font-size: 12px; color: var(--undp-gray); }
 
-  /* phase bands */
-  .band { position: absolute; border-radius: 8px; z-index: 0; border: 1px solid transparent;
-    opacity: 0; transition: opacity .6s var(--ease), border-color .4s, background .4s; }
-  .band.shown { opacity: 1; }
-  .band.ex, .band.an, .band.sy { background: rgba(255,255,255,0.55); }
-  .band.active.ex, .band.active.an, .band.active.sy { border-color: var(--border-200); background: #fff; }
-  .band-label { position: absolute; z-index: 1; display: flex; flex-direction: column; gap: 2px; opacity: 0; transition: opacity .6s var(--ease); }
-  .band-label.shown { opacity: 1; }
-  .band-label .k { font-size: 12px; font-weight: 600; padding: 0; margin-bottom: 5px; align-self: flex-start; }
-  .band-label .n { font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: var(--undp-black); letter-spacing: -0.01em; }
-  .band-label.ex .k { color: var(--ex); } .band-label.an .k { color: var(--an); } .band-label.sy .k { color: var(--sy); }
-
-  /* map nodes */
-  .node { position: absolute; width: 178px; min-height: 62px; height: auto; z-index: 5; cursor: pointer;
-    background: #fff; border: 1px solid var(--border-200); border-radius: 8px; box-shadow: var(--shadow-card);
-    padding: 11px 14px 11px 30px; display: flex; align-items: center; gap: 10px;
-    opacity: 0; transform: translateY(10px) scale(0.97);
-    transition: opacity .5s var(--ease), transform .5s var(--ease), box-shadow .25s, border-color .25s; }
-  .node::before { content: ""; position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 7px; height: 7px; border-radius: 50%; background: var(--an); }
-  .node.shown { opacity: 1; transform: none; }
-  .node .nnum { font-family: var(--font-serif); font-size: 15px; font-weight: 600; color: var(--undp-gray); flex: none; min-width: 18px; font-variant-numeric: tabular-nums; }
-  .node .ntext { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .node .nt { font-family: var(--font-serif); font-size: 13.5px; font-weight: 600; line-height: 1.18; letter-spacing: -0.01em; color: var(--undp-black); }
-  .node .nb { font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--undp-gray); line-height: 1.3; }
-  .node.active { border-color: var(--undp-black); box-shadow: 0 0 0 3px rgba(35,46,61,0.07), var(--shadow-pop); transform: scale(1.03); }
-  .node.agent::before { background: var(--agent); }
-  .node .atag { position: absolute; top: -8px; right: 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.07em;
-    text-transform: uppercase; background: #fff; border: 1px solid rgba(124,58,237,0.35); color: var(--agent); padding: 2px 7px; border-radius: 999px; }
-  .node .ltag { position: absolute; top: -8px; right: 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.06em;
-    background: #fff; border: 1px solid rgba(25,97,39,0.35); color: var(--sy); padding: 2px 7px; border-radius: 999px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .board.animating { transition: none; } .node { transition: opacity .2s; transform: none; } .edge, .elabel { transition: opacity .2s; }
-  }
-
-  /* controls */
-  .controls { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 30;
-    display: flex; align-items: center; gap: 8px; padding: 7px 11px; background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(8px); border: 1px solid var(--border-200); border-radius: 999px; box-shadow: var(--shadow-pop); }
-  .controls .sep { width: 1px; height: 20px; background: var(--border-200); }
+  /* Plain controls under the scene: previous, play, next, and the numbered
+     steps, the reader's place filled in, a gap where the phase changes,
+     the reviewer's steps in the reviewer's colour. */
+  .controls { position: absolute; left: 56px; bottom: 28px; z-index: 30; display: flex; align-items: center; gap: 8px; }
   .cbtn { border: 0; background: transparent; cursor: pointer; color: var(--undp-black); width: 32px; height: 32px;
     border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; padding: 0; transition: background .2s; }
   .cbtn:hover { background: var(--undp-light); }
-  .cbtn.primary { background: var(--undp-blue); color: #fff; width: 38px; height: 38px; }
+  .cbtn.primary { background: var(--undp-blue); color: #fff; width: 38px; height: 38px; border-radius: 0; }
   .cbtn.primary:hover { background: var(--undp-blue-dark); }
   .cbtn:disabled { opacity: 0.3; cursor: default; background: transparent; }
   .cbtn .ico { width: 15px; height: 15px; display: block; }
-  .dots { display: flex; align-items: center; gap: 5px; padding: 0 3px; }
-  .dots button { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--border-300); background: #fff; padding: 0; cursor: pointer; transition: all .2s; }
-  .dots button[aria-current="true"] { background: var(--undp-blue); border-color: var(--undp-blue); transform: scale(1.35); }
-  .dots button.seen { border-color: var(--undp-blue); }
+  .dots { display: flex; align-items: center; gap: 4px; padding: 0 3px; }
+  .dots button { width: 24px; height: 24px; padding: 0; border-radius: 50%; border: 1px solid var(--border-300); background: #fff;
+    color: var(--undp-gray); font: 600 11px/1 var(--font-sans, inherit); font-variant-numeric: tabular-nums; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; transition: all .2s; }
+  .dots button.phase-start { margin-left: 10px; }
+  .dots button.seen { border-color: #232e3d; color: #232e3d; }
+  .dots button.human { border-color: #9a6b34; color: #9a6b34; }
+  .dots button[aria-current="step"] { background: #232e3d; border-color: #232e3d; color: #fff; }
+  .dots button.human[aria-current="step"] { background: #9a6b34; border-color: #9a6b34; }
+  .dots button:hover { border-color: var(--undp-blue); color: var(--undp-blue); }
+  .dots button[aria-current="step"]:hover { color: #fff; }
   @media (max-width: 760px) { .dots { display: none; } }
 
-  /* detail panel */
+  /* The step's panel: its title, what happens in plain words, the example
+     pair where it adds to the scene, then the technical details. */
   .panel { flex: none; width: clamp(360px, 38%, 488px); background: #fff; border-left: 1px solid var(--border-200);
     position: relative; overflow: hidden; }
-  .pstep { position: absolute; inset: 0; padding: 30px 30px 26px; overflow-y: auto;
+  .pstep { position: absolute; inset: 0; padding: 40px 40px 48px; overflow-y: auto;
     opacity: 0; transform: translateY(10px); visibility: hidden; pointer-events: none;
     transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s linear .45s; }
-  .pstep.on { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s; }
-  .p-eyebrow { font-size: 12px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .p-eyebrow .pp { padding: 0; }
-  .p-eyebrow.ex .pp { color: var(--ex); } .p-eyebrow.an .pp { color: var(--an); } .p-eyebrow.sy .pp { color: var(--sy); }
-  .p-eyebrow .ps { color: var(--undp-gray); font-weight: 600; }
-  .p-title { font-family: var(--font-serif); font-weight: 600; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.13; margin-bottom: 14px; }
-  .p-say { font-size: 15.5px; line-height: 1.62; color: #3c4654; }
+  .pstep.on { opacity: 1; transform: none; visibility: visible; pointer-events: auto;
+    transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s; }
+  .p-title { font-weight: 500; font-size: clamp(25px, 2.2vw, 31px); line-height: 1.18; letter-spacing: -0.005em;
+    color: #232e3d; margin: 0 0 16px; }
+  .p-say { font-size: 16px; line-height: 1.62; color: #232e3d; }
   .p-say strong { color: var(--undp-black); font-weight: 600; }
-  .p-viz { margin: 22px 0 4px; display: flex; justify-content: center; }
-  .p-viz > * { width: 100%; max-width: 400px; }
-  .p-note { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--border-100); }
-  .p-note .nl { font-size: 12px; font-weight: 600; color: var(--undp-gray); margin-bottom: 8px; }
-  .p-tech, .p-deep { display: none; }
-  body.show-deep .p-tech, body.show-deep .p-deep { display: block; }
-  .p-tech .tx { font-size: 13px; line-height: 1.6; color: var(--undp-gray); }
-  .p-tech .tx code { font-family: var(--font-mono); font-size: 0.88em; background: var(--undp-light); padding: 1px 5px; border-radius: 4px; color: var(--undp-black); }
-  .p-tech .specs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }
-  .p-tech .specs span { font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border-200); border-radius: 4px; padding: 2px 8px; color: var(--undp-gray); }
-  .p-deep { margin-top: 16px; }
+  .p-viz { margin: 24px 0 4px; }
+  .p-viz > * { width: 100%; max-width: 440px; }
+  .p-note { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border-200); }
+  .p-note .nl { font-size: 13px; font-weight: 600; color: #232e3d; margin-bottom: 8px; }
+  .p-deep { margin-top: 18px; padding-top: 0; border-top: 0; }
+  .p-tech .tx { font-size: 14px; line-height: 1.62; color: #3c4654; }
+  .p-tech .tx code, .ptext code { font-family: var(--font-mono); font-size: 0.88em; color: #232e3d; }
+  .p-tech .specs { display: flex; flex-wrap: wrap; margin-top: 10px; }
+  .p-tech .specs span { font-size: 12.5px; color: var(--undp-gray); }
+  .p-tech .specs span + span::before { content: "·"; padding: 0 7px; }
 
-  /* ===== worked-example overlay (orthogonal to depth) ===== */
-  .p-example { display: none; margin-top: 18px; }
-  body.show-example .p-example { display: block; }
-  .ex-card { border: 1px solid var(--border-200);
-    background: var(--undp-light); border-radius: 8px; padding: 12px 14px; }
-  .ex-card .exl { font-size: 12px; font-weight: 600;
-    color: var(--undp-gray); margin-bottom: 9px; display: flex; align-items: center; gap: 7px; }
-  .ex-card .exl .dotm { display: none; }
-  .ex-card .exb { font-size: 12.5px; line-height: 1.5; color: #3c4654; }
-  .ex-card .exb b { color: var(--undp-black); font-weight: 600; }
-  .ex-pair { display: flex; flex-direction: column; gap: 7px; margin: 10px 0 2px; }
-  .ex-t { border: 1px solid var(--border-200); border-radius: 7px; padding: 8px 10px; background: #fff; }
-  .ex-t .ex-doc { font-size: 10.5px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; color: var(--undp-gray); }
-  .ex-t .ex-doc .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
-  .ex-t .ex-txt { font-size: 11.5px; line-height: 1.4; color: var(--undp-black); }
-  .ex-verdict { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 11.5px; font-weight: 700; color: var(--align-flagged); }
-  .ex-verdict .o { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--align-flagged); flex: none; }
-  .ex-facets { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
-
-  /* example toggle in the top bar */
-  .ex-toggle { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border-300);
-    background: #fff; color: var(--undp-gray); border-radius: 999px; padding: 6px 13px; font: inherit;
-    font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s var(--ease); white-space: nowrap; }
-  .ex-toggle:hover { border-color: var(--undp-blue); color: var(--undp-blue); }
-  .ex-toggle[aria-pressed="true"] { background: var(--undp-blue); border-color: var(--undp-blue); color: #fff; }
-  .ex-toggle svg { flex: none; }
-  @media (max-width: 720px) { .ex-toggle .lbl { display: none; } .ex-toggle { padding: 6px 9px; } }
-
-  /* ===== human-in-the-loop nodes ===== */
-  .node.human { background: #fff; border-color: var(--border-200); }
-  .node.human::before { background: #a87f4a; }
-  .node.human .htag { display: none; }
-  .node.human.active { border-color: var(--undp-black); box-shadow: 0 0 0 3px rgba(35,46,61,0.07), var(--shadow-pop); }
-  .node .glyph { width: 14px; height: 14px; flex: none; color: #a87f4a; }
-
-  /* feedback loop-back edge + its label */
-  .edge.fb { stroke: #c9b48d; stroke-width: 1.6; stroke-dasharray: 2 5; stroke-linecap: round; }
-  .edge.fb.drawn { opacity: 0.55; }
-  .fb-lab { display: none; position: absolute; z-index: 3; font-family: var(--font-sans); font-size: 9.5px; font-weight: 600;
-    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px;
-    padding: 3px 9px; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); white-space: nowrap; }
-  .fb-lab.shown { opacity: 1; }
-
-  /* node-kind legend */
-  .legend { position: absolute; right: 16px; top: 14px; z-index: 25; display: flex; flex-wrap: wrap; gap: 5px 14px;
-    background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border: 1px solid var(--border-200);
-    border-radius: 10px; padding: 8px 12px; box-shadow: var(--shadow-card); font-size: 10.5px; color: var(--undp-gray); }
-  .legend .li { display: inline-flex; align-items: center; gap: 6px; }
-  .legend .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .legend .sw.ai { background: var(--an); }
-  .legend .sw.agent { background: var(--agent); }
-  .legend .sw.human { background: #a87f4a; }
-  @media (max-width: 820px) { .legend { display: none; } }
-
-  /* lens-switch visual (classify step) + inline human marker */
-  .lens-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; justify-content: center; }
-  .lens-chip { font-size: 11.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-300); background: #fff; color: var(--undp-gray); }
-  .lens-chip.on { background: var(--undp-blue); border-color: var(--undp-blue); color: #fff; font-weight: 600; }
-  .lens-cap { font-size: 11px; color: var(--undp-gray); text-align: center; margin-top: 10px; }
-  .lens-cap b { color: var(--undp-black); font-weight: 600; }
-  .you-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
-    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px; padding: 3px 9px; }
-  .you-tag svg { width: 11px; height: 11px; }
-  .ex-label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600;
-    color: var(--undp-gray); margin-bottom: 9px; }
-  .ex-label .dotm { width: 6px; height: 6px; border-radius: 50%; background: var(--doc-nap); flex: none; }
-
-  /* clean prompt component (not raw code) */
-  .prompt { border: 1px solid var(--border-200); border-radius: 11px; overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
+  /* The prompt, as plain rows. */
+  .prompt { border: 1px solid var(--border-200); background: #fff; }
   .prow { display: flex; gap: 11px; padding: 11px 13px; border-bottom: 1px solid var(--border-100); }
   .prow:last-child { border-bottom: none; }
-  .prow.out { background: rgba(25,97,39,0.04); }
-  .role { flex: none; font-size: 9px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; height: fit-content; margin-top: 1px; }
-  .role.sys { background: rgba(4,104,177,0.12); color: var(--undp-blue); }
-  .role.usr { background: var(--undp-light); color: var(--undp-gray); }
-  .role.out { background: rgba(25,97,39,0.13); color: var(--align-high); }
-  .role.code { background: rgba(124,58,237,0.12); color: var(--agent); }
-  .ptext { font-size: 12.5px; line-height: 1.55; color: var(--undp-black); }
+  .prow.out { background: #fafafa; }
+  .role { flex: none; min-width: 58px; margin-top: 1px; font-size: 12px; font-weight: 600; color: var(--undp-gray); }
+  .ptext { font-size: 13px; line-height: 1.55; color: var(--undp-black); }
   .ptext .lead { color: var(--undp-gray); }
   .ptext ul { margin: 5px 0 0; padding-left: 16px; }
   .ptext li { margin: 3px 0; color: var(--undp-gray); }
   .ptext li b { color: var(--undp-black); font-weight: 600; }
-  .ptext code { font-family: var(--font-mono); font-size: 0.86em; background: var(--undp-light); padding: 1px 5px; border-radius: 4px; color: var(--undp-blue); }
-  .ptext .ret { display: inline-flex; flex-wrap: wrap; gap: 4px; }
-  .ptext .ret span { font-family: var(--font-mono); font-size: 10.5px; background: rgba(25,97,39,0.08); color: var(--align-high); border-radius: 4px; padding: 1px 6px; }
+  .ptext .ret { display: inline-flex; flex-wrap: wrap; }
+  .ptext .ret span { font-family: var(--font-mono); font-size: 12px; color: #232e3d; }
+  .ptext .ret span + span::before { content: "·"; padding: 0 5px; color: var(--undp-gray); }
 
-  /* intro */
+  /* How much potential misalignment, and of which type (step 12). */
+  .mini-lab { margin-bottom: 7px; font-size: 13px; font-weight: 600; color: #232e3d; }
+  .mini-cap { margin-top: 7px; font-size: 13px; color: var(--undp-gray); }
+  .mini-cap b { color: var(--undp-black); }
+  .kind-bar { display: flex; gap: 2px; height: 12px; }
+  .kind-bar i { display: block; height: 100%; }
+  .kind-bar i.apart, .kbar i { background-image: radial-gradient(circle, #d2432c 1.2px, transparent 1.45px); background-size: 3px 3px; }
+  .kind-bar i.rest { background: #e9e9e6; }
+  .kind-rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-100); }
+  .kind-rows li { display: grid; grid-template-columns: minmax(0, 1fr) 120px 40px; align-items: center; column-gap: 10px;
+    padding: 7px 0; border-bottom: 1px solid var(--border-100); font-size: 13px; color: #232e3d; }
+  .kind-rows b { text-align: right; font-variant-numeric: tabular-nums; }
+  .kbar { display: block; height: 9px; }
+  .kbar i { display: block; height: 100%; min-width: 3px; }
+
+  /* The example pair, shown only where it adds to the scene: plain rows
+     under a quiet label, each target marked with its document's colour as
+     on the brief's map; the rating as the brief's comparison draws it. */
+  .p-example { display: none; margin-top: 30px; }
+  body.show-example .p-example { display: block; }
+  .ex-head { margin: 0 0 8px; font-size: 13px; color: var(--undp-gray); }
+  .ex-rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-200); }
+  .ex-rows li { display: grid; grid-template-columns: 10px minmax(0, 1fr); column-gap: 12px; padding: 9px 0;
+    border-bottom: 1px solid var(--border-200); }
+  .sq { display: block; width: 10px; height: 10px; border-radius: 2px; }
+  .ex-rows .sq { margin-top: 5px; }
+  .ex-who { font-size: 13px; line-height: 1.4; color: var(--undp-gray); }
+  .ex-what { font-size: 15px; line-height: 1.45; color: #232e3d; }
+  .ex-line { font-size: 15px; line-height: 1.58; color: #232e3d; }
+  .ex-verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; margin: 0 0 14px;
+    font-size: 15px; font-weight: 600; color: #232e3d; }
+  .ex-verdict .o { width: 10px; height: 10px; border: 2px solid #d2432c; border-radius: 50%; }
+  .ex-verdict .sep { color: var(--undp-gray); font-weight: 400; }
+  .ex-verdict .sub { font-weight: 400; }
+  .ex-cmp { display: flex; flex-direction: column; gap: 14px; margin: 0 0 16px; }
+  .ex-stop { position: relative; padding-left: 22px; }
+  .ex-stop .sq { position: absolute; top: 4px; left: 0; }
+  .ex-stop:first-child::after { content: ""; position: absolute; top: 18px; bottom: -14px; left: 4px;
+    border-left: 2px dashed #d2432c; }
+  .ex-label { font-family: var(--font-serif); font-size: 16px; font-weight: 600; line-height: 1.3; color: #232e3d; }
+  .ex-ai { margin: 0 0 3px; font-size: 13px; color: var(--undp-gray); }
+
+  /* Intro: one line and Start. */
   .intro { position: absolute; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
-    background: rgba(247,247,247,0.9); backdrop-filter: blur(3px); transition: opacity .6s var(--ease); }
+    background: rgba(255,255,255,0.96); transition: opacity .6s var(--ease); }
   .intro.gone { opacity: 0; pointer-events: none; }
   .intro .card { max-width: 540px; text-align: center; padding: 0 28px; }
-  .intro .eyebrow { font-size: 13px; font-weight: 600; color: var(--undp-gray); }
   .intro h1 { font-family: var(--font-serif); font-weight: 600; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.08; margin: 16px 0 14px; }
   .intro p { font-size: 16px; line-height: 1.6; color: var(--undp-gray); max-width: 46ch; margin: 0 auto 26px; }
   .intro .start { display: inline-flex; align-items: center; gap: 10px; background: var(--undp-blue); color: #fff;
     border: 0; border-radius: 0; padding: 13px 24px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .2s; }
   .intro .start:hover { background: var(--undp-blue-dark); }
-  .intro .auto { display: block; margin-top: 14px; font-size: 12px; color: var(--undp-gray); }
 
   @media (max-width: 820px) {
     .work { flex-direction: column; }
     .panel { width: auto; border-left: none; border-top: 1px solid var(--border-200); height: 46%; }
     .mapwrap { height: 54%; }
   }
-
-  /* ===== mini-visual atoms ===== */
-  .vstack { display: flex; flex-direction: column; gap: 11px; width: 100%; }
-  .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-  .doc-card { position: relative; border: 1px solid var(--border-200); border-radius: 8px; padding: 12px 13px; overflow: hidden; background: #fff; }
-  .doc-card .spine { display: none; }
-  .doc-card .abbr { font-size: 15px; font-weight: 700; margin-top: 4px; }
-  .doc-card .full { font-size: 10.5px; color: var(--undp-gray); line-height: 1.3; margin-top: 4px; }
-  .doc-card .conv { margin-top: 11px; display: flex; align-items: center; gap: 7px; min-height: 17px; }
-  .doc-card .conv img { height: 17px; width: auto; }
-  .doc-card .conv .cnt { font-size: 11.5px; color: var(--undp-gray); }
-  .chunk { border: 1px solid var(--border-200); border-radius: 8px; padding: 11px 13px; background: #fff; }
-  .chunk .ch-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .chunk .pg { font-size: 10.5px; color: var(--undp-gray); }
-  .txt-line { height: 6px; border-radius: 3px; background: var(--border-100); margin: 5px 0; }
-  .tag-pill { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 999px; }
-  .tag-keep { background: rgba(25,97,39,0.12); color: var(--align-high); }
-  .tag-drop { background: var(--undp-light); color: var(--undp-gray); }
-  .chunk.dropped { opacity: 0.55; }
-  .src-quote { background: var(--undp-paper); border: 1px solid var(--border-200); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; line-height: 1.45; color: var(--undp-black); width: 100%; }
-  .src-quote .lab { font-size: 11px; color: var(--undp-gray); display: block; margin-bottom: 6px; }
-  .src-quote .hl { background: rgba(4,104,177,0.14); border-radius: 3px; padding: 0 2px; box-shadow: inset 0 -1px 0 rgba(4,104,177,0.4); }
-  .flow-arrow { color: var(--border-300); font-size: 17px; line-height: 1; margin: 3px 0; text-align: center; }
-  .target-card { border: 1px solid var(--border-200); border-radius: 8px; padding: 13px 14px; width: 100%; background: #fff; }
-  .target-card .tc-doc { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
-  .target-card .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .target-card .tc-label { font-size: 11px; font-weight: 600; color: var(--undp-gray); }
-  .target-card .tc-text { font-size: 13px; line-height: 1.45; color: var(--undp-black); }
-  .prov { margin-top: 11px; padding-top: 9px; border-top: 1px solid var(--border-100); display: flex; align-items: center; gap: 8px; }
-  .prov .badge { font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
-  .prov .cleaned { background: rgba(180,83,9,0.12); color: var(--doc-nap); }
-  .prov small { font-size: 10.5px; color: var(--undp-gray); }
-  .claimchip { font-family: var(--font-mono); font-size: 11px; background: rgba(25,97,39,0.08); color: var(--align-high); border: 1px solid rgba(25,97,39,0.2); border-radius: 4px; padding: 1px 6px; }
-  .check-row { display: flex; align-items: center; gap: 9px; }
-  .check { width: 15px; height: 15px; border-radius: 50%; background: var(--align-high); color: #fff; font-size: 9px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
-  .stamp { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(25,97,39,0.3); background: rgba(25,97,39,0.06); color: var(--align-high); border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: 600; }
-  .detect-card { border: 1px solid var(--border-200); border-radius: 8px; padding: 14px 15px; width: 100%; background: #fff; }
-  .detect-card .dt-text { font-size: 14px; line-height: 1.55; color: var(--undp-black); }
-  .mark-num { background: rgba(4,104,177,0.14); box-shadow: inset 0 -1px 0 rgba(4,104,177,0.45); border-radius: 3px; padding: 0 3px; }
-  .mark-yr { background: rgba(180,83,9,0.16); box-shadow: inset 0 -1px 0 rgba(180,83,9,0.5); border-radius: 3px; padding: 0 3px; }
-  .flag-row { display: flex; gap: 9px; margin-top: 13px; flex-wrap: wrap; }
-  .flag { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-  .flag .d { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .flag.q { background: rgba(4,104,177,0.1); color: var(--undp-blue); }
-  .flag.t { background: rgba(180,83,9,0.12); color: var(--doc-nap); }
-  .chip-grid { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
-  .chip { font-size: 11.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-200); background: #fff; color: var(--undp-gray); }
-  .chip.on { background: rgba(13,148,136,0.12); border-color: rgba(13,148,136,0.4); color: #0d7a70; font-weight: 600; }
-  .field-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border-100); width: 100%; }
-  .field-row:last-child { border-bottom: none; }
-  .field-row .fk { flex: none; width: 84px; font-size: 10.5px; font-weight: 600; color: var(--undp-gray); padding-top: 2px; }
-  .field-row .fv { font-size: 12px; line-height: 1.4; color: var(--undp-black); }
-  .scale { width: 100%; }
-  .scale-marker { position: relative; height: 0; }
-  .scale-marker .pin { position: absolute; transform: translateX(-50%); top: -2px; }
-  .scale-marker .pin .v { font-size: 11px; font-weight: 700; color: var(--undp-black); white-space: nowrap; background: #fff; border: 1px solid var(--border-300); border-radius: 999px; padding: 3px 10px; box-shadow: var(--shadow-card); }
-  .scale-marker .pin .tick { width: 2px; height: 9px; background: var(--undp-black); margin: 2px auto 0; }
-  .scale-track { display: flex; gap: 5px; width: 100%; margin-top: 0; }
-  .scale-cap { font-size: 11.5px; color: var(--undp-gray); margin-bottom: 9px; text-align: center; }
-  .scale-cap b { color: var(--undp-black); font-weight: 600; }
-  .scale-seg.sel { box-shadow: 0 0 0 2.5px var(--undp-black); position: relative; z-index: 2; }
-  .scale-seg { flex: 1; text-align: center; font-size: 11px; font-weight: 600; color: #fff; padding: 7px 3px; border-radius: 4px; }
-  .scale-divider { display: flex; align-items: center; gap: 9px; margin: 14px 0 10px; }
-  .scale-divider .ln { flex: 1; height: 1px; background: var(--border-200); }
-  .scale-divider .or { font-size: 10.5px; color: var(--undp-gray); white-space: nowrap; }
-  .flagged-panel { border: 1px dashed var(--align-flagged); background: rgba(220,38,38,0.04); border-radius: 8px; padding: 11px 13px; width: 100%; }
-  .flagged-panel .fh { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--align-flagged); }
-  .flagged-panel .fh .o { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--align-flagged); }
-  .facet-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
-  .facet { font-size: 9.5px; font-weight: 700; border-radius: 4px; padding: 3px 8px; display: inline-flex; gap: 5px; align-items: center; }
-  .facet .fl { font-weight: 500; opacity: 0.7; }
-  .pair-cap { font-size: 11px; color: var(--undp-gray); margin-top: 8px; text-align: center; }
-  .pair-cap b { color: var(--undp-black); font-weight: 600; }
-  .gauge-row { display: flex; gap: 11px; width: 100%; }
-  .gauge { flex: 1; border: 1px solid var(--border-200); border-radius: 8px; padding: 11px; text-align: center; background: #fff; }
-  .gauge .gv { font-family: var(--font-serif); font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .gauge .gl { font-size: 10px; color: var(--undp-gray); margin-top: 2px; }
-  .wheel-legend { display: flex; flex-wrap: wrap; gap: 5px 14px; justify-content: center; font-size: 10.5px; color: var(--undp-gray); margin-top: 8px; }
-  .wheel-legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .wheel-legend .ln { width: 16px; height: 3px; border-radius: 2px; }
-  .mini-lab { font-size: 11px; font-weight: 600; color: var(--undp-gray); margin-bottom: 7px; }
-  .mini-cap { font-size: 11.5px; color: var(--undp-gray); margin-top: 7px; }
-  .mini-cap b { color: var(--undp-black); }
-  .conc-bar, .mech-bar { display: flex; gap: 3px; height: 15px; width: 100%; }
-  .conc-bar span, .mech-bar span { border-radius: 3px; }
-  .mech-leg { font-size: 10.5px; color: var(--undp-gray); margin-top: 7px; line-height: 1.5; }
-  .fin-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
-  .fin-row { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
-  .fin-prog { flex: 1; text-align: right; color: var(--undp-black); }
-  .fin-tgt { flex: 1; color: var(--undp-black); }
-  .fin-link { font-family: var(--font-mono); font-size: 9px; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
-  .fin-link.ok { background: rgba(25,97,39,0.1); color: var(--align-high); }
-  .fin-link.gap { background: rgba(220,38,38,0.08); color: var(--align-flagged); }
-  .fin-caveat { font-size: 10.5px; color: var(--undp-gray); margin-top: 11px; font-style: italic; line-height: 1.45; }
-  .impl-row { display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 0; border-bottom: 1px solid var(--border-100); font-size: 12px; color: var(--undp-black); }
-  .impl-row:last-child { border-bottom: none; }
-  .impl-status { margin-left: auto; font-size: 9px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
-  .impl-status.way { background: rgba(25,97,39,0.12); color: var(--align-high); }
-  .impl-status.mis { background: rgba(220,38,38,0.1); color: var(--align-flagged); }
+  @media (prefers-reduced-motion: reduce) {
+    .pstep, .pstep.on, .intro { transition: none; }
+  }
 </style>
 </head>
 <body class="show-example">
 
 <div class="topbar">
   <div class="brand">
-    <a href="/" target="_top" aria-label="Back to the CPC Analyzer home"><img src="/undp-logo.png" alt="UNDP"></a>
+    <a href="/mn" target="_top" aria-label="Бодлогын уялдаа шинжлэгчийн нүүр хуудас руу буцах"><img src="/undp-logo.png" alt="UNDP"></a>
     <div class="div"></div>
-    <div class="ttl"><b>CPC Analyzer</b> <span>· How the analysis works</span></div>
+    <div class="ttl"><b>Бодлогын уялдаа шинжлэгч</b> <span>· Шинжилгээ хэрхэн хийгддэг вэ</span></div>
   </div>
   <div class="topbar-right">
-    <a class="brief-link" href="/methodology-brief.mn.html" target="_blank" rel="noopener" title="Open the printable 2-page summary">
-      <svg viewbox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M4 1.5h6L13 4.5v10H4z M10 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
-      2-page brief
+    <span class="mt-note">Машин орчуулга</span>
+    <a class="brief-link" href="/methodology-brief.mn.html" target="_blank" rel="noopener" title="Аргачлал хэвлэх 2 хуудсанд">
+      <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M4 1.5h6L13 4.5v10H4z M10 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      2 хуудасны хураангуй
     </a>
-    <button id="exToggle" class="ex-toggle" type="button" aria-pressed="true" title="Follow one real example through every step"><svg viewbox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 8s2.5-4.6 7-4.6S15 8 15 8s-2.5 4.6-7 4.6S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3"></path><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"></circle></svg>
-      <span class="lbl">Жишээг дагах</span></button>
-    <div class="seg" role="group" aria-label="Detail level">
-      <button id="depthPlain" aria-pressed="true">Энгийн</button>
-      <button id="depthDeep" aria-pressed="false">Гүнзгий судалгаа</button>
-    </div>
+    <button id="exToggle" class="ex-toggle" type="button" aria-pressed="true" title="Монгол Улсын нэг хос зорилтыг алхам бүрээр дагах">
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 8s2.5-4.6 7-4.6S15 8 15 8s-2.5 4.6-7 4.6S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      <span class="lbl">Жишээг дагах</span>
+    </button>
   </div>
 </div>
 
 <div class="work">
   <div class="mapwrap" id="mapwrap">
-    <div class="board" id="board">
-      <svg class="edges" id="edges"><defs>
-        <marker id="arrow" markerwidth="9" markerheight="9" refx="6.5" refy="4.5" orient="auto" markerunits="userSpaceOnUse">
-          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#cbd3ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </marker>
-        <marker id="arrowF" markerwidth="9" markerheight="9" refx="6.5" refy="4.5" orient="auto" markerunits="userSpaceOnUse">
-          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#ddd0b5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </marker>
-      </defs></svg>
-    </div>
+    <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+    <div id="sceneLabels" class="scene-labels" aria-hidden="true"></div>
+    <div id="sceneCap" class="scene-cap" aria-live="polite"></div>
     <div class="intro" id="intro">
       <div class="card">
-        <p class="eyebrow">Арга зүй · Хэрхэн ажилладаг вэ</p>
-        <h1 class="serif">Алхам алхмаар шинжилгээний дамжлага</h1>
-        <p>Үндэсний бодлогын баримт бичгүүдийн багцаас бодлогын уялдааны зураглал хүртэл: үе шат бүр, оролцогч бүр, мөн тэдгээр хэрхэн холбогдож буй нь. Диаграмм зүүн талаас бүрэлдэн бий болж, харин самбар алхам бүрийг энгийн хэлээр тайлбарлана.</p>
-        <button class="start" id="startBtn"><svg width="14" height="14" viewbox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"></path></svg>
-          Танилцуулгыг эхлүүлэх</button>
-        <span class="auto">It begins automatically in a moment.</span>
-        <span class="auto">A worked example is threaded through every step; it can be switched off with <b>Follow an example</b> in the top bar.</span>
-        <span class="auto"><a href="/methodology-brief.mn.html" target="_blank" rel="noopener" style="color:var(--undp-blue);text-decoration:none">A printable 2-page brief is also available</a></span>
+        <h1 class="serif">Шинжилгээ хэрхэн хийгддэг вэ</h1>
+        <p>Бодлогын баримт бичгээс уялдааны товч тойм хүртэл, алхам алхмаар.</p>
+        <button class="start" id="startBtn">
+          <svg width="14" height="14" viewBox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/></svg>
+          Эхлэх
+        </button>
       </div>
     </div>
-    <div class="legend" aria-hidden="true">
-      <span class="li"><span class="sw ai"></span> AI step</span>
-      <span class="li"><span class="sw agent"></span> Specialist agent</span>
-      <span class="li"><span class="sw human"></span> Human step</span>
-    </div>
     <div class="controls">
-      <button class="cbtn" id="prev" aria-label="Previous" title="Previous (←)"><svg class="ico" viewbox="0 0 16 16"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
-      <button class="cbtn primary" id="play" aria-label="Play" title="Play / pause"><svg class="ico" id="playIco" viewbox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"></path></svg></button>
-      <button class="cbtn" id="next" aria-label="Next" title="Next (→)"><svg class="ico" viewbox="0 0 16 16"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+      <button class="cbtn" id="prev" aria-label="Өмнөх" title="Өмнөх (←)"><svg class="ico" viewBox="0 0 16 16"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="cbtn primary" id="play" aria-label="Тоглуулах" title="Тоглуулах / зогсоох"><svg class="ico" id="playIco" viewBox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/></svg></button>
+      <button class="cbtn" id="next" aria-label="Дараах" title="Дараах (→)"><svg class="ico" viewBox="0 0 16 16"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="sep"></div>
       <div class="dots" id="dots"></div>
-      <div class="sep"></div>
-      <button class="cbtn" id="fit" aria-label="Fit whole diagram" title="Fit whole diagram"><svg class="ico" viewbox="0 0 16 16"><path d="M2 6 V2 H6 M10 2 H14 V6 M14 10 V14 H10 M6 14 H2 V10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
     </div>
   </div>
 
   <div class="panel" id="panel">
 
     <div class="pstep" data-i="0">
-      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 01</span></p>
-      <h2 class="p-title serif">Бодлогын баримт бичгүүдийг байршуулах</h2>
-      <p class="p-say">Энэ арга нь <strong>зорилт тогтоосон үндэсний бодлогын баримт бичгийн ямар ч багцад</strong> ажиллана. Хэрэглэгч хоёр буюу түүнээс олон баримт бичгийг тус бүрийг нь <strong>PDF, Word эсвэл текст файл</strong> хэлбэрээр, төрлөөр нь шошголон өгнө. Түгээмэл жишээнд <abbr title="Nationally Determined Contribution">NDC</abbr>, <abbr title="National Biodiversity Strategy and Action Plan">NBSAP</abbr>, <abbr title="National Adaptation Plan">NAP</abbr> эсвэл <abbr title="Land Degradation Neutrality target">LDN</abbr> зорилт, мөн салбарын стратегиуд орно.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="ex-label"><span class="dotm"></span> Example set · Mongolia</div>
-        <div class="doc-grid">
-        <div class="doc-card"><div class="spine" style="background:var(--doc-ndc)"></div><div class="abbr" style="color:var(--doc-ndc)">NDC</div><div class="full">Nationally Determined Contribution</div><div class="conv"><img src="/unfccc.png" alt="UNFCCC"><span class="cnt">27 targets</span></div></div>
-        <div class="doc-card"><div class="spine" style="background:var(--doc-nbsap)"></div><div class="abbr" style="color:var(--doc-nbsap)">NBSAP</div><div class="full">Biodiversity Strategy &amp; Action Plan</div><div class="conv"><img src="/cbd_logo.png" alt="CBD"><span class="cnt">20 targets</span></div></div>
-        <div class="doc-card"><div class="spine" style="background:var(--doc-nap)"></div><div class="abbr" style="color:var(--doc-nap)">NAP</div><div class="full">National Adaptation Plan</div><div class="conv"><span class="cnt">15 targets</span></div></div>
-        <div class="doc-card"><div class="spine" style="background:var(--doc-ldn)"></div><div class="abbr" style="color:var(--doc-ldn)">LDN +</div><div class="full">Land Degradation &amp; sectoral plans</div><div class="conv"><img src="/unccd.png" alt="UNCCD"><span class="cnt">optional</span></div></div>
-      </div></div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">Энэхүү тайлбарчилсан танилцуулга нь Монгол Улсын хоёр баримт бичгийг дагаж мөрдөнө: түүний <b>NBSAP</b> (биологийн олон янз байдал) болон түүний <b>NDC</b> (уур амьсгал). Тус бүрээс нэг зорилтыг сонгон авч, дүгнэлт хүртэл мөрдөнө.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Баримт бичгүүд <code>POST /api/extract</code>-ээр орж ирдэг; баримт бичгийн төрлийг файл тус бүрээр бүртгэдэг. Ажилласан жишээнд Монгол Улсын бодит шинжилгээг ашигласан (NDC 36, NBSAP 20, NAP 15 зорилт).</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>doc-type tagged</span></div></div>
+      <h2 class="p-title serif">Бодлогын баримт бичгүүдийг оруулах</h2>
+      <p class="p-say">Энэ арга нь зорилт тодорхойлсон аливаа үндэсний бодлогын баримт бичигт тохирно. Хэрэглэгч хоёр буюу түүнээс дээш баримт бичгийг <strong>PDF, Word эсвэл текст файл</strong> хэлбэрээр оруулж, баримт бичиг бүрийн төрлийг заана. Жишээ нь <abbr title="Үндэсний хэмжээнд тодорхойлсон хувь нэмэр">NDC</abbr>, <abbr title="Биологийн төрөл зүйлийн үндэсний стратеги, үйл ажиллагааны төлөвлөгөө">NBSAP</abbr>, <abbr title="Дасан зохицох үндэсний төлөвлөгөө">NAP</abbr>, <abbr title="Газрын доройтлын саармагжуулалт">LDN</abbr>-ийн зорилтууд эсвэл салбарын стратеги.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Баримт бичгүүд <code>POST /api/extract</code>-ээр орж, баримт бичгийн төрлийг файл бүрээр бүртгэнэ. Энэ хуудасны жишээ нь Монгол Улсын шинжилгээ: 8 баримт бичиг, 178 зорилт.</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>файл бүрийн баримт бичгийн төрөл</span></div></div>
     </div>
 
     <div class="pstep" data-i="1">
-      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 02</span></p>
-      <h2 class="p-title serif">Бүх хуудсыг унш, чухлыг нь хадгал</h2>
-      <p class="p-say">Энэ хэрэгсэл нь хүснэгтүүдийг оролцуулан баримт бичиг бүрийг <strong>хуудас хуудас бүрээр</strong> уншиж, хэсэг бүр хаанаас авсныг бүртгэн хадгалдаг. Өмнөх үг, хавсралтууд болон хэвшмэл текстийг тусад нь ялгадаг тул нягт нямбай ажил нь үнэхээр амлалтуудыг агуулсан хэсгүүдэд төвлөрдөг.</p>
-      <div class="p-viz"><div class="vstack">
-        <div class="chunk"><div class="ch-head"><span class="pg">chunk 1 · pp. 1–4</span><span class="tag-pill tag-keep">Kept</span></div><div class="txt-line" style="width:92%"></div><div class="txt-line" style="width:100%"></div><div class="txt-line" style="width:74%"></div></div>
-        <div class="chunk"><div class="ch-head"><span class="pg">chunk 2 · pp. 5–9</span><span class="tag-pill tag-keep">Kept</span></div><div class="txt-line" style="width:100%"></div><div class="txt-line" style="width:84%"></div></div>
-        <div class="chunk dropped"><div class="ch-head"><span class="pg">chunk 3 · annex</span><span class="tag-pill tag-drop">Set aside</span></div><div class="txt-line" style="width:66%"></div></div>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Хуудас-мэдрэмжтэй парсерууд (<code>pymupdf</code>, <code>python-docx</code>) хуудасны хүрээг хадгалдаг; текстийг ~30k тэмдэгтээр 2k давхцалтайгаар хэсэгчлэн хуваадаг. Дараа нь хөнгөн жингийн хамааралтай байдлын шүүлтүүр хэсэг бүрийг хадгалах эсвэл хасах шийдвэр гаргадаг бөгөөд зориудаар болгоомжтой байдлаар тохируулсан байдаг.</p><div class="specs"><span>~30k chunks</span><span>2k overlap</span><span>keep-on-doubt</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+      <h2 class="p-title serif">Баримт бичиг бүрийг хуудас хуудсаар нь унших</h2>
+      <p class="p-say">Баримт бичиг бүрийг хүснэгтийн хамт <strong>хуудас хуудсаар нь</strong> уншиж, хэсэг бүр хуудасны дугаараа хадгална. Оршил, хавсралт, стандарт текстийг хасдаг тул зорилт гаргах ажил зорилт тодорхойлсон хэсгүүдэд төвлөрнө.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Хуудсыг таних задлагчид (<code>pymupdf</code>, <code>python-docx</code>) хуудасны хүрээг хадгална. Текстийг ойролцоогоор 30,000 тэмдэгттэй, 2,000 тэмдэгтийн давхцалтай хэсгүүдэд хувааж, хөнгөн шүүлтүүр хэсэг бүрийг үлдээх эсвэл хасна; эргэлзээтэй үед үлдээнэ.</p><div class="specs"><span>~30k хэсэг</span><span>2k давхцал</span><span>эргэлзвэл үлдээх</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Заавар</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Sort one document chunk. Reply <code>KEEP</code> or <code>DROP</code>.</div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">Does this passage contain concrete policy targets or commitments, or is it preface, boilerplate or annex?</span> <code>{chunk}</code></div></div>
-          <div class="prow out"><span class="role out">Rule</span><div class="ptext">Defaults to <b>KEEP</b> whenever unsure, the cost is lost efficiency, never a missed target.</div></div>
+          <div class="prow"><span class="role sys">Систем</span><div class="ptext">Баримт бичгийн нэг хэсгийг ангил. <code>KEEP</code> эсвэл <code>DROP</code> гэж хариул.</div></div>
+          <div class="prow"><span class="role usr">Хэрэглэгч</span><div class="ptext"><span class="lead">Энэ хэсэгт бодлогын тодорхой зорилт, амлалт байна уу, эсвэл оршил, стандарт текст, хавсралт уу?</span> <code>{chunk}</code></div></div>
+          <div class="prow out"><span class="role out">Дүрэм</span><div class="ptext">Эргэлзвэл <b>KEEP</b>: илүү нэг удаа унших нь алдсан зорилтоос бага зардалтай.</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="2">
-      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 03</span></p>
-      <h2 class="p-title serif">Зорилт бүрийг үгчлэн гаргаж авна уу</h2>
-      <p class="p-say">Холбогдох хэсгүүдээс <strong>бодлогын зорилт</strong> бүрийг авсан яг өгүүлбэрийнх нь хамт тэмдэглэдэг. Үг хэллэгийг бага зэрэг цэгцэлж болох ч (илүүдэл шошгыг хасах зэрэг) хэзээ ч өөрөөр найруулж, хураангуйлж эсвэл дэлгэрүүлдэггүй бөгөөд зорилт бүрийг хэрхэн тэмдэглэснийг харуулахын тулд шошголодог.</p>
-      <div class="p-viz"><div class="vstack" style="gap:6px">
-        <div class="src-quote"><span class="lab">SOURCE · NBSAP · Target 1</span>"<span class="hl">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</span>"</div>
-        <div class="flow-arrow">↓</div>
-        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</div><div class="prov"><span class="badge cleaned">verbatim</span><small>recorded word for word</small></div></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · хоёр дахь зорилт</p>
-        <div class="ex-pair">
-          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">"Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability."</div></div>
-        </div>
-        <p class="exb" style="margin-top:9px">Дээрх <b>NBSAP Зорилт 1</b>-тэй хамт энэ нь танилцуулгын явцад мөрдөн дагасан хос бөгөөд тус бүрийг үгчлэн тэмдэглэсэн.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Хатуу <em>үгчлэн буулгах гэрээ</em>: <code>sourceText</code> нь тэмдэгт бүрээр нь яг хуулбарлагдсан; харагдах <code>text</code> нь зөвхөн детерминист цэвэрлэгээг зөвшөөрнө (тоон шошгыг хасах, тасарсан мөрүүдийг нэгтгэх). Зорилтот бүр эх сурвалжууд болон хуудасны дугаараа хадгална.</p><div class="specs"><span>verbatim contract</span><span>sources[]</span><span>verbatim · cleaned · synthesis</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+      <h2 class="p-title serif">Зорилт бүрийг үг үсгээр нь гаргах</h2>
+      <p class="p-say">Холбогдох хэсгүүдээс <strong>бодлогын зорилт</strong> бүрийг гарсан өгүүлбэртэй нь яг хэвээр бүртгэнэ. Найруулгыг бага зэрэг цэгцэлж болно, жишээ нь илүүдэл шошгыг хасна, гэхдээ өөрчилж бичих, хураангуйлах, дэлгэрүүлэхгүй бөгөөд зорилт бүрийг хэрхэн бүртгэснийг тэмдэглэнэ.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Үг үсгийн чанд дүрэм: <code>sourceText</code>-ийг тэмдэгт тэмдэгтээр нь хуулна; харагдах <code>text</code>-д зөвхөн тогтсон цэвэрлэгээ (тоон шошго хасах, тасарсан мөрийг нийлүүлэх) хийнэ. Зорилт бүр эх сурвалж, хуудасны дугаараа хадгална.</p><div class="specs"><span>үг үсгийн дүрэм</span><span>sources[]</span><span>эх хэвээр · цэвэрлэсэн · нэгтгэсэн</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Заавар</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Extract policy targets. Rules:<ul><li><b>эх текст</b> = тэмдэгт бүрээр нь, яг хуулсан</li><li><b>текст</b> = зөвхөн хөнгөн цэвэрлэгээ, дахин найруулахгүй, хураангуйлахгүй</li><li>every number, %, year or scope must already appear in the source</li></ul></div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">few-shot Mongolia examples</span> + <code>{chunk}</code></div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>text</span><span>sourceText</span><span>textCleanup</span><span>pageNumbers</span></span></div></div>
+          <div class="prow"><span class="role sys">Систем</span><div class="ptext">Бодлогын зорилтуудыг гарга. Дүрэм:<ul><li><b>sourceText</b> = тэмдэгт тэмдэгтээр нь яг хуулсан</li><li><b>text</b> = зөвхөн хөнгөн цэвэрлэгээ, өөрчилж бичих, хураангуйлахгүй</li><li>тоо, %, он, хамрах хүрээ бүр эх сурвалжид байх ёстой</li></ul></div></div>
+          <div class="prow"><span class="role usr">Хэрэглэгч</span><div class="ptext"><span class="lead">Монгол Улсын few-shot жишээнүүд</span> + <code>{chunk}</code></div></div>
+          <div class="prow out"><span class="role out">Буцаах үр дүн</span><div class="ptext"><span class="ret"><span>text</span><span>sourceText</span><span>textCleanup</span><span>pageNumbers</span></span></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="3">
-      <p class="p-eyebrow ex"><span class="pp">1-р үе шат · Олборлолт</span><span class="ps">Алхам 04</span></p>
-      <h2 class="p-title serif">Нэгтгэнэ үү, дараа нь юу ч зохиогоогүй эсэхийг шалгана уу</h2>
-      <p class="p-say">Хэсгүүд давхцдаг тул ижил зорилтыг хоёр удаа авч болно. Давхардлуудыг <strong>нэг бичилт болгон нэгтгэдэг</strong> (эх сурвалжийн бүх эшлэлийг нь хадгалан), дараа нь тоо баримт, он, нэрлэсэн хүрээ бүрийг <strong>эх баримт бичигтэй тулган шалгадаг</strong>.</p>
-      <div class="p-viz"><div class="vstack" style="gap:9px">
-        <div class="target-card"><div class="tc-text">Restore <span class="claimchip">20,000 ha</span> of degraded pastureland <span class="claimchip">by 2030</span>.</div></div>
-        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"20,000 ha" found in source</span></div>
-        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"2030" found in source</span></div>
-        <div class="stamp">Every claim traced to the source</div>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Нэгтгэх нь эх сурвалж бүрийг хадгалсан хэвээр ойролцоо давхардлуудыг нэгтгэдэг; хоорондоо зөрчилдөх тоонууд тусдаа зорилтууд хэвээр үлдэнэ. Дараа нь <code>validate_claim_grounding</code> локал орчинд ажиллаж, таарахгүй тохиолдолд хяналтын самбарт шалгалтын тэмдэг болгон харуулдаг <code>_provenanceFlag</code>-ийг тэмдэглэнэ.</p><div class="specs"><span>merge, keep sources</span><span>local validator</span><span>provenance flags</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгийрүүлсэн шалгалт</p>
+      <h2 class="p-title serif">Давхардлыг нэгтгэж, тоо баримтыг шалгах</h2>
+      <p class="p-say">Давхцсан хэсгүүдээс нэг зорилт хоёр удаа гарч болно. Давхардлыг бүх эх ишлэлийг нь хадгалсан <strong>нэг бичлэг болгон нэгтгэж</strong>, тоо, он, нэрлэсэн хүрээ бүрийг <strong>эх баримт бичигтэй тулгаж шалгана</strong>.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Нэгтгэл нь бараг давхардсан зорилтуудыг нийлүүлж, бүх эх сурвалжийг хадгална; өөр тоотой зорилтууд тусдаа үлдэнэ. Дараа нь дотоод шалгалт (<code>validate_claim_grounding</code>) тоо бүрийг эх ишлэлээс хайж, олдохгүй бол зорилтыг хянуулахаар тэмдэглэнэ (<code>_provenanceFlag</code>).</p><div class="specs"><span>нэгтгэх, эх сурвалж хадгалах</span><span>дотоод шалгалт</span><span>хянуулахаар тэмдэглэсэн</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Шалгалт</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">Consolidate (LLM)</span><div class="ptext">Merge duplicates, preserve every source; keep contradicting numbers as separate targets.</div></div>
-          <div class="prow out"><span class="role code">Validate (code)</span><div class="ptext">for every <code>%</code>, year, <code>ha</code>, <code>tCO2e</code>… in the text:<br>  if it appears in no source quote → flag for review</div></div>
+          <div class="prow"><span class="role sys">Нэгтгэх (LLM)</span><div class="ptext">Давхардлыг нэгтгэж, бүх эх сурвалжийг хадгал; өөр тоотой зорилтуудыг тусад нь үлдээ.</div></div>
+          <div class="prow out"><span class="role code">Шалгах (код)</span><div class="ptext">текст дэх <code>%</code>, он, <code>ha</code>, <code>tCO2e</code>… бүрийн хувьд:<br>&nbsp;&nbsp;аль ч эх ишлэлд байхгүй бол → хянуулахаар тэмдэглэх</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="13">
-      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Хүний оролцоотой</span><span class="ps">Зорилтот хяналт</span></p>
-      <h2 class="p-title serif">Баталгаажуулах олборлосон зорилтууд</h2>
-      <p class="p-say">Аливаа шинжилгээ эхлэхээс өмнө, ялган авсан зорилтуудыг хэрэглэгчид хянан үзэхээр буцаан хүргэдэг. Тус бүрийг <strong>эх сурвалжтай нь тулган шалгадаг</strong> бөгөөд уншигч ямар нэг зүйлийг орхигдуулсан тохиолдолд хадгалж үлдээх, хасах, засварлах, эсвэл нөхөн нэмдэг. Хянагч уг багцыг баталгаажуулах хүртэл дараагийн үйл явц үргэлжлэхгүй тул шинжилгээ нь үргэлж баталгаажсан зорилтуудаас эхэлдэг.</p>
-      <div class="p-viz"><div class="vstack" style="gap:8px">
-        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span><span class="tag-pill tag-keep" style="margin-left:auto">Kept</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity…</div></div>
-        <div class="target-card" style="opacity:.55"><div class="tc-doc"><span class="dot" style="background:var(--doc-nap)"></span><span class="tc-label">NAP · foreword line</span><span class="tag-pill tag-drop" style="margin-left:auto">Removed</span></div><div class="tc-text">Not a target. Removed by the reviewer.</div></div>
-        <div class="check-row"><span class="check" style="background:#a87f4a">+</span><span style="font-size:12px;color:var(--undp-black)">Add a target the extraction missed</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">Монголын хянагч харьцуулалт эхлэхээс өмнө <b>NBSAP Target 1</b> болон <b>NDC Water resources 2</b>-ыг хадгалж, хоёуланг нь эх сурвалжийн хуудсуудтай нь тулган шалгадаг.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Энэ нь байршуулах шидтэний олборлолтыг хянах алхам юм: зорилтуудыг хадгалах, хасах, засварлах (текст болон хуудасны дугаар), эсвэл гараар нэмэх боломжтой. Татгалзсан зорилтууд pairing эсвэл alignment үе шатанд хэзээ ч ордоггүй.</p><div class="specs"><span>human review</span><span>keep · edit · add</span><span>gates analysis</span></div></div>
+      <h2 class="p-title serif">Зорилтуудыг баталгаажуулах</h2>
+      <p class="p-say">Харьцуулалт эхлэхээс өмнө гаргасан зорилтуудыг хэрэглэгчид буцааж өгнө. Зорилт бүрийг <strong>эх сурвалжтай нь тулгаж</strong>, хадгалах, засах эсвэл хасах бөгөөд дутуу гарсан зорилтыг нэмж болно. Шинжилгээ зөвхөн баталгаажсан багцаас эхэлнэ.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Энэ бол оруулах хөтчийн хяналтын алхам: зорилтыг хадгалах, хасах, засах (текст, хуудасны дугаар) эсвэл гараар нэмж болно. Татгалзсан зорилтууд хослуулах, үнэлэх алхамд орохгүй.</p><div class="specs"><span>хүний хяналт</span><span>хадгалах · засах · нэмэх</span><span>шинжилгээг эхлүүлнэ</span></div></div>
     </div>
 
     <div class="pstep" data-i="4">
-      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">Алхам 05</span></p>
-      <h2 class="p-title serif">Хэмжиж болохуйц бөгөөд хугацаатай зүйлийг тэмдэглэ</h2>
-      <p class="p-say">Зорилт бүрийн хувьд, тухайн зорилтод <strong>хэмжиж болохуйц үр дүн</strong> (тоо хэмжээ, хувь хэмжээ, талбай) агуулагдсан эсэх болон <strong>хугацаагаар хязгаарлагдсан</strong> (эцсийн хугацаатай) эсэхийг хэрэгсэл тэмдэглэдэг. Эдгээр нь амлалт хэрэгжилтэд хэр бэлэн байгааг илтгэх эрт үеийн үзүүлэлтүүд бөгөөд яг таг хэллэгүүдийг хэвээр хадгалдаг.</p>
-      <div class="p-viz"><div class="vstack">
-        <div class="detect-card"><span class="lab" style="font-family:var(--font-mono);font-size:10px;color:var(--undp-gray);display:block;margin-bottom:8px">NDC · pastureland target</span><div class="dt-text">Reduce overgrazing on <span class="mark-num">50%</span> of degraded pastures <span class="mark-yr">by 2030</span>.</div></div>
-        <div class="flag-row"><span class="flag q"><span class="d"></span> Measurable: "50%"</span><span class="flag t"><span class="d"></span> Time-bound: "by 2030"</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb"><b>NBSAP</b>-ын зорилт нь хугацаатай (<b>"2030 он гэхэд"</b>). <b>NDC</b>-ийн усны зорилт нь технологи болон үр дүнг нэрлэсэн боловч нэгтгэсэн гол тоон үзүүлэлтгүй тул энд чанарын шинжтэй гэж уншигдана.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Зорилтуудыг <code>isQuantitative</code> / <code>isTimeBound</code>-ийн хувьд 12-оор багцлан үнэлж, хэлцүүдийг буцаана. Захиргааны лавлагааг ("Article 2") хасна. Олон хэлтэй, нэмэлт NLP хамааралгүй.</p><div class="specs"><span>batched ×12</span><span>phrase-level</span><span>multilingual</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · prompt</p>
+      <h2 class="p-title serif">Тоо ба хугацааг тэмдэглэх</h2>
+      <p class="p-say">Зорилт бүрийн хувьд <strong>хэмжигдэхүйц үр дүн</strong> (тоо, хувь, талбай) агуулж байгаа эсэх, <strong>хугацаатай</strong> (он эсвэл эцсийн хугацаа) эсэхийг тэмдэглэж, яг тэр хэллэгийг хадгална. Энэ хоёр нь амлалт хэрэгжихэд хэр бэлэн байгааг харуулах эрт үеийн үзүүлэлт юм.</p>
+      <div class="p-example">
+        <p class="ex-head">Жишээ хос</p>
+        <ul class="ex-rows">
+          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Биологийн төрөл зүйлийн 2030 оны үндэсний зорилтууд (NBSAP, Биологийн олон янз байдлын тухай конвенцид илгээсэн)">NBSAP</abbr> · 1 Орон зайн төлөвлөлт</p><p class="ex-what">Огноо: «2030 он гэхэд»</p></div></li>
+          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Үндэсний хэмжээнд тодорхойлсон хувь нэмэр (NDC 3.0)">NDC</abbr> · Усны нөөц 2</p><p class="ex-what">Тоо ч, огноо ч байхгүй</p></div></li>
+        </ul>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Зорилтуудыг 12-оор нь багцалж <code>isQuantitative</code>, <code>isTimeBound</code>-ийг шалгаад хэллэгийг буцаана. Захиргааны лавлагааг («2-р зүйл») хасна. Ямар ч хэлэнд ажиллах бөгөөд хэл боловсруулах нэмэлт сан шаардахгүй.</p><div class="specs"><span>12-оор багцлах</span><span>хэллэгийн түвшинд</span><span>олон хэлтэй</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Заавар</p>
         <div class="prompt">
-          <div class="prow"><span class="role usr">User</span><div class="ptext">For each target, return:<ul><li><b>тоон үзүүлэлттэй юу?</b> тодорхой тоо / % / хэмжээ</li><li><b>хугацаагаар хязгаарлагдсан уу?</b> жил эсвэл хугацааны хүрээ</li><li>ignore <code>Article 2</code> / <code>Target 3</code> references; return the exact phrases</li></ul></div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>isQuantitative</span><span>isTimeBound</span><span>phrases[]</span></span></div></div>
+          <div class="prow"><span class="role usr">Хэрэглэгч</span><div class="ptext">Зорилт бүрийн хувьд буцаа:<ul><li><b>isQuantitative?</b> тодорхой тоо / % / хэмжээ</li><li><b>isTimeBound?</b> он эсвэл хугацаа</li><li><code>Article 2</code> / <code>Target 3</code> гэх мэт лавлагааг тооцохгүй; яг тэр хэллэгийг буцаа</li></ul></div></div>
+          <div class="prow out"><span class="role out">Буцаах үр дүн</span><div class="ptext"><span class="ret"><span>isQuantitative</span><span>isTimeBound</span><span>phrases[]</span></span></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="5">
-      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">Алхам 06</span></p>
-      <h2 class="p-title serif">Зорилго бүрийг ангиллаар нь ангилна уу</h2>
-      <p class="p-say">Зорилт бүрийг нийтлэгдсэн лавлах хүрээнүүдийн дагуу үнэлдэг: <strong><abbr title="Intergovernmental Panel on Climate Change">IPCC</abbr>-ийн хүлэмжийн хийн тооллогын салбарууд</strong>, <strong><abbr title="Global Biodiversity Expenditure taxonomy (BIOFIN 2024)">GLOBE</abbr> ангилал зүй</strong>, мөн <strong>Дэлхийн уур амьсгалын тэсвэржилтийн UAE хүрээний уур амьсгалын тэсвэржилтийн зорилтууд</strong> (<abbr title="Global Goal on Adaptation">GGA</abbr>). Зорилт бүр нэг <strong>үндсэн</strong> ангиллыг хадгалж, түүнчлэн тодорхой хамаарах бусад ангиллыг мөн агуулна. Эдгээр харах өнцгүүдийг харилцан сольж болно: хяналтын самбар дээр идэвхтэй харах өнцгийг <strong>нэг товшилтоор сольж</strong> болох бөгөөд ангиллыг өөрийг нь дахин ажиллуулахгүйгээр ижил зорилтууд өөр ангилал зүйн дагуу дахин бүлэглэгдэнэ. Мөн улс орон бүр ангиллуудыг тохируулах эсвэл өөрийн ангиллыг нэмэх боломжтой.</p>
-      <div class="p-viz"><div style="width:100%"><div class="chip-grid">
-        <span class="chip on">Agriculture &amp; livestock</span><span class="chip on">Forest &amp; land use</span>
-        <span class="chip">Wetlands</span><span class="chip on">Grasslands &amp; soils</span>
-        <span class="chip">Coastal &amp; marine</span><span class="chip on">Climate mitigation</span>
-        <span class="chip">Water resources</span><span class="chip">Adaptation</span>
+      <h2 class="p-title serif">Зорилт бүрийг бодлогын чиглэлээр ангилах</h2>
+      <p class="p-say">Зорилт бүрийг хэвлэгдсэн лавлах хүрээнүүдтэй харьцуулан оноо өгнө, ангиллын хүрээ тус бүрт нэг: <strong>Биологийн төрөл зүйл</strong> (<abbr title="Биологийн олон янз байдлын зарлагын дэлхийн ангилал (BIOFIN 2024)">GLOBE</abbr> ангилал), <strong>Уур амьсгалын өөрчлөлтийг сааруулах</strong> (<abbr title="Уур амьсгалын өөрчлөлтийн асуудлаарх Засгийн газар хоорондын мэргэжилтнүүдийн хороо">IPCC</abbr>-ийн хүлэмжийн хийн тооллогын салбарууд), <strong>Уур амьсгалын дасан зохицол</strong> (Уур амьсгалын дэлхийн тэсвэрлэлтийн хүрээ) болон <strong>Хүний эрх</strong> (НҮБ-ын Хөгжлийн Хөтөлбөрийн удирдамж, шинжээчдийн хянаж буй төсөл). Зорилт бүр нэг үндсэн чиглэл болон тодорхой холбоотой бусад чиглэлээ хадгалдаг тул товч тойм шинэ шинжилгээгүйгээр ангиллын хүрээгээ сольж болно. Улс орон өөрийн ангиллын хүрээг нэмж болно.</p>
+      <div class="p-example">
+        <p class="ex-head">Жишээ хос, Биологийн төрөл зүйлийн ангиллаар</p>
+        <ul class="ex-rows">
+          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Биологийн төрөл зүйлийн 2030 оны үндэсний зорилтууд (NBSAP, Биологийн олон янз байдлын тухай конвенцид илгээсэн)">NBSAP</abbr> · 1 Орон зайн төлөвлөлт</p><p class="ex-what">Биологийн төрөл зүйлийн төлөвлөлт ба санхүүжилт</p></div></li>
+          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Үндэсний хэмжээнд тодорхойлсон хувь нэмэр (NDC 3.0)">NDC</abbr> · Усны нөөц 2</p><p class="ex-what">Тогтвортой ашиглалт</p></div></li>
+        </ul>
       </div>
-      <div class="lens-row" style="margin-top:14px">
-        <span class="lens-chip on">GLOBE</span>
-        <span class="lens-chip">IPCC sectors</span>
-        <span class="lens-chip">Climate resilience</span>
-        <span class="lens-chip">Country</span>
-      </div>
-      <p class="lens-cap"><span class="you-tag"><svg viewbox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M4 13c0-2.3 1.8-3.8 4-3.8s4 1.5 4 3.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg> Хэрэглэгчийн сонгосон харах өнцөг</span> Солиход бүх харагдац дахин бүлэглэгдэх бөгөөд дахин шинжилгээ хийхгүй.</p>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · GLOBE-ийн өнцгөөс</p>
-        <div class="ex-pair">
-          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-nbsap)"></span> NBSAP · Target 1</div><div class="ex-txt">Primary category: <b>Biodiversity planning and finance</b></div></div>
-          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">Primary category: <b>Sustainable use</b></div></div>
-        </div>
-        <p class="exb" style="margin-top:9px">IPCC салбарууд руу эсвэл тухайн улсын өөрийн тогтоосон ангилал руу шилжихэд хоёр зорилтыг хоёуланг нь дахин бүлэглэнэ, дахин шинжилгээ хийхгүй.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Тус бүрийн <code>(зорилт × ангилал)</code>-д хамаарлын оноо (0–1); хамгийн өндөр оноотой ангилал нь <code>primary</code> болж, харин хамаарлын босгоос дээш бүх ангиллыг <code>relevant</code> гэж тэмдэглэнэ (хос горим). Таксономиуд: nature-based solutions, IPCC салбарууд, дэд ангиллуудтай GLOBE таксономи, GGA-ийн уур амьсгалын тэсвэржилтийн долоон сэдэв (Уур амьсгалын дэлхийн тэсвэржилтийн UAE хүрээ, 2/CMA.5 шийдвэр), мөн улс орон бүрээр тохируулах боломжтой дасан зохицох нэмэлт зорилтууд; улсын төлөөлөгчийн газар өөрийн харах өнцгийг тодорхойлж болно, жишээлбэл Шри Ланка GGA-ийн сэдвүүдийн оронд NDC 3.0-ийн дасан зохицох есөн салбар болон алдагдал ба хохирлын харах өнцгийг ашигладаг. Ганц ангилалтай харах өнцөгт эрэмбэлэх зүйл байхгүй тул зорилт нь зөвхөн хамаарлын босгоос дээш үед түүнд хамаарна. Хамгийн их дуудлага шаарддаг алхам (<em>n × c</em> оноо) тул үр дүнг кэшлэнэ.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>GGA</span><span>primary + relevant</span><span>cached</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Зорилт ба ангилал бүрийн <code>(зорилт × ангилал)</code> хамаарлын оноо (0&ndash;1); хамгийн өндөр оноотой ангилал <code>primary</code> болж, хамаарлын босгоос дээш бусад нь <code>relevant</code> гэж тэмдэглэгдэнэ. Ангиллын хүрээнүүд: дэд ангиллуудтай GLOBE ангилал, IPCC-ийн хүлэмжийн хийн тооллогын салбарууд, Дасан зохицох дэлхийн зорилгын уур амьсгалын тэсвэрлэлтийн долоон зорилт (Уур амьсгалын дэлхийн тэсвэрлэлтийн хүрээ, 2/CMA.5 шийдвэр), хүний эрхийн есөн сэдэв, мөн улс орон ирүүлсэн бол түүний дасан зохицох зорилтууд. Байгальд суурилсан шийдлүүдийг түр зогсоосон. Улсын төлөөлөгчийн газар өөрийн ангиллын хүрээг тогтоож болно: Шри Ланка Дасан зохицох дэлхийн зорилгын оронд NDC 3.0-ийн дасан зохицох есөн салбар, мөн хохирол, хор уршгийн ангиллыг ашигласан. Ганц ангилалтай хүрээнд эрэмбэлэх зүйлгүй тул зорилт зөвхөн хамаарлын босгоос дээш үед тооцогдоно. Энэ нь хамгийн олон дуудлагатай алхам (<em>n × c</em> оноо) тул үр дүнг кэшлэнэ.</p><div class="specs"><span>GLOBE</span><span>IPCC-ийн салбарууд</span><span>GGA</span><span>хүний эрх</span><span>primary + relevant</span><span>кэшлэсэн</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Заавар</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Policy specialist. Categories: <code>{NBS · IPCC sectors · GLOBE · GGA, or the country's own set}</code></div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext">Category: <code>{name}</code> – <code>{description}</code><br>Target: <code>{target text}</code><br>How relevant is the target to this category?</div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext">a relevance <b>score</b> (0–1) per category – the highest becomes <code>primary</code>, others above the threshold are tagged <code>relevant</code></div></div>
+          <div class="prow"><span class="role sys">Систем</span><div class="ptext">Бодлогын мэргэжилтэн. Ангиллууд: <code>{GLOBE · IPCC-ийн салбарууд · GGA · хүний эрх, эсвэл тухайн улсын өөрийн багц}</code></div></div>
+          <div class="prow"><span class="role usr">Хэрэглэгч</span><div class="ptext">Ангилал: <code>{name}</code> &ndash; <code>{description}</code><br>Зорилт: <code>{target text}</code><br>Энэ зорилт уг ангилалд хэр хамааралтай вэ?</div></div>
+          <div class="prow out"><span class="role out">Буцаах үр дүн</span><div class="ptext">ангилал бүрийн хамаарлын <b>оноо</b> (0&ndash;1); хамгийн өндөр нь <code>primary</code>, босгоос дээш бусад нь <code>relevant</code> болно</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="6">
-      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">Алхам 07</span></p>
-      <h2 class="p-title serif">Баримт бичгүүдийн бүх зорилтыг харьцуул</h2>
-      <p class="p-say">Бодлогын уялдаа нь <strong>өөр өөр</strong> баримт бичгүүд хоорондоо хэрхэн холбогдож байгаатай холбоотой тул зорилт бүрийг <strong>өөр</strong> баримт бичгийн зорилт бүртэй хослуулдаг бөгөөд хэзээ ч өөртэй нь өөрийг нь харьцуулдаггүй. Хос бүрийг шалган үздэг; урьдчилан юу ч шүүж хасдаггүй тул салбар хоорондын бодит уялдаа холбоог хэзээ ч орхигдуулдаггүй.</p>
-      <div class="p-viz"><svg id="pairSvg" viewbox="0 0 360 190" width="100%" role="img" aria-label="Targets in two documents linked by cross-document pairs" style="max-width:360px">
-        <text x="64" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0d7a70" font-weight="600">NBSAP</text>
-        <text x="296" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0468b1" font-weight="600">NDC</text>
-        <g id="pairLines" stroke-linecap="round"></g><g id="pairNodesL"></g><g id="pairNodesR"></g>
-      </svg><p class="pair-cap"><b>1,560 хос</b> энэ жишээнд · тодруулсан = жишээ хос</p></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb"><b>NBSAP</b>-ын орон зайн төлөвлөлтийн зорилт болон <b>NDC</b>-ийн усны зорилт нь <b>1,560 хосын нэг</b> болдог. Дараа нь хэрэгсэл тэдгээр нь бие биеэ дэмжиж байгаа эсэх, эсвэл хоорондоо холдож байгаа эсэхийг шалгана.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Өөр өөр баримт бичгийн хослол бүрийн огтлолцсон үржвэр, давхардлыг арилгасан: 20×36 + 20×15 + 36×15 = 1,560. Урьдчилсан шүүлтүүр хэрэглэдэггүй тул үнэлгээ түүнийг авч үзэхээс өмнө салбар хоорондын жинхэнэ холбоос хэзээ ч шүүгдэн хасагдахгүй.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгийрүүлэн авч үзэх · логик</p>
+      <h2 class="p-title serif">Баримт бичгүүдийн хооронд зорилт бүрийг хослуулах</h2>
+      <p class="p-say">Уялдаа нь <strong>өөр өөр баримт бичгүүд</strong> хоорондоо хэрхэн холбогдохыг хардаг тул зорилт бүрийг бусад баримт бичгийн зорилт бүртэй хослуулж, өөрийн баримт бичгийн зорилтуудтай хослуулахгүй. Хос бүрийг урьдчилсан шүүлтүүргүйгээр үнэлдэг тул алс холын салбаруудын холбоосыг ч уншина.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Өөр баримт бичгүүдийн хослол бүрийн үржвэр, хос бүрийг нэг удаа тоолно: Монгол Улсын 8 баримт бичиг, 178 зорилтын хувьд 13,404 зорилтын хос (зөвхөн NBSAP × NDC гэхэд 20 × 36 = 720). Үнэлэхээс өмнө шүүлтүүр хэрэглэхгүй.</p><div class="specs"><span>зөвхөн өөр баримт бичгүүд</span><span>урьдчилсан шүүлтүүргүй</span><span>хос бүр нэг удаа</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Логик</p>
         <div class="prompt">
-          <div class="prow"><span class="role code">Code (no LLM)</span><div class="ptext">group targets by document → take the Cartesian product of each <em>different-document</em> pairing → de-duplicate by pair.</div></div>
+          <div class="prow"><span class="role code">Код (LLM-гүй)</span><div class="ptext">зорилтуудыг баримт бичгээр бүлэглэх → <em>өөр баримт бичгүүдийн</em> хослол бүрийн декартын үржвэрийг авах → давхардсан хосыг хасах.</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="7">
-      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">08-р алхам · Агент 1</span></p>
-      <h2 class="p-title serif">Зорилт бүрийг түүний бүрэлдэхүүн хэсгүүдэд хуваа</h2>
-      <p class="p-say">Хоёр зорилтыг харьцуулахаас өмнө эхний мэргэшсэн агент болох <strong>Зорилтын шинжээч</strong> нь тус бүрийг таван энгийн бүрэлдэхүүн хэсэгт хуваадаг: түүний зорилго, санал болгож буй арга хэмжээ, экосистем, хэн хариуцах, мөн хүлээгдэж буй үр дүн. Бүтэцчилсэн хэсгүүдийг харьцуулах нь уялдаа нь үг тааруулахад бус, бодлогын агуулгад тулгуурлахыг илэрхийлнэ.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="src-quote" style="background:#fff;margin-bottom:9px"><span class="lab">NDC · pastureland target</span>Establish collaborative management practices for pastures and expand pasture restoration.</div>
-        <div class="field-row"><span class="fk">Goal</span><span class="fv">Sustainable, collaborative pasture management</span></div>
-        <div class="field-row"><span class="fk">Action</span><span class="fv">Collaborative practices; expand restoration</span></div>
-        <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Pastures and grassland</span></div>
-        <div class="field-row"><span class="fk">Audience</span><span class="fv">Land managers, farmers</span></div>
-        <div class="field-row"><span class="fk">Outcome</span><span class="fv">More sustainable, more restored pasture</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · задлан ангилсан NDC зорилт</p>
-        <div style="margin-top:4px">
-          <div class="field-row"><span class="fk">Goal</span><span class="fv">Water-sector resilience and secure water availability</span></div>
-          <div class="field-row"><span class="fk">Action</span><span class="fv">Headwater protection and monitoring, plus water infrastructure: ponds, reservoirs, managed aquifer recharge, hydropower feasibility and flow transfer</span></div>
-          <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Rivers, groundwater, glaciers, lakes, wetlands, upstream basins</span></div>
-          <div class="field-row"><span class="fk">Audience</span><span class="fv">Local governments, private sector, industry; livestock and households</span></div>
-          <div class="field-row"><span class="fk">Outcome</span><span class="fv">More secure water; restored aquatic and wetland ecosystems</span></div>
-        </div>
-        <p class="exb" style="margin-top:9px">Action талбар дахь дэд бүтэц нь харьцуулалтыг NBSAP зорилтот түвшинтэй тулган үнэлэх үндэс болдог.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Agent 1 таван талбарыг гарган авдаг бөгөөд зөвхөн бодит баримтад тулгуурлаж, зорилтот текстээс давсан ямар ч дүгнэлт хийдэггүй. Задлан ангилалт (Agent 1)-ыг үнэлгээ (Agent 2)-ээс тусгаарлах нь үнэлгээг улс орнууд болон хүрээнүүдийн хэмжээнд үндэслэлтэй, тогтвортой байлгадаг.</p><div class="specs"><span>Agent 1 · Target Analyst</span><span>5 fields</span><span>factual only</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+      <h2 class="p-title serif">Зорилт бүрийг бүрэлдэхүүн хэсгүүдэд задлах</h2>
+      <p class="p-say">Хоёр зорилтыг харьцуулахаас өмнө хиймэл оюуны эхний агент болох <strong>Зорилтын шинжээч</strong> зорилт бүрийг таван хэсэгт задална: зорилго, санал болгож буй арга хэмжээ, экосистем буюу бүс, хариуцагч, хүлээгдэж буй үр дүн. Эдгээр хэсгийг харьцуулснаар үнэлгээ зорилт бүрийн юу хийхээр зорьж буйд тулгуурлана.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">1-р агент таван талбарыг зөвхөн баримтад тулгуурлан, зорилтын текстээс хэтэрсэн дүгнэлтгүйгээр гаргана. Задлалыг (1-р агент) үнэлгээнээс (2-р агент) тусад нь байлгаснаар үнэлгээ баримтад тулгуурласан, улс орон, хүрээ хооронд нийцтэй байна.</p><div class="specs"><span>1-р агент · Зорилтын шинжээч</span><span>5 талбар</span><span>зөвхөн баримт</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Заавар</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Target Analyst. Extract, factually, no inference beyond what the target states.</div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext">From <code>{target}</code>, extract:<ul><li><b>Зорилго / Зорилт</b></li><li><b>Үйл ажиллагаа / Интервенц</b></li><li><b>Экосистем / Талбай</b></li><li><b>Зорилтот бүлэг</b></li><li><b>Хүлээгдэж буй нөлөө / Үр дүн</b></li></ul></div></div>
+          <div class="prow"><span class="role sys">Систем</span><div class="ptext">Зорилтын шинжээч. Зорилтод дурдсанаас хэтрэлгүй, зөвхөн баримтыг гарга.</div></div>
+          <div class="prow"><span class="role usr">Хэрэглэгч</span><div class="ptext"><code>{target}</code>-ээс гарга:<ul><li><b>Зорилго</b></li><li><b>Арга хэмжээ / Оролцоо</b></li><li><b>Экосистем / Бүс</b></li><li><b>Хамрах бүлэг</b></li><li><b>Хүлээгдэж буй нөлөө / Үр дүн</b></li></ul></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="8">
-      <p class="p-eyebrow an"><span class="pp">2-р үе шат · Шинжилгээ</span><span class="ps">09-р алхам · Агент 2</span></p>
-      <h2 class="p-title serif">Хос хэр зэрэг нийцэж байгааг үнэл</h2>
-      <p class="p-say">Хоёр дахь агент болох <strong>Уялдааны зөвлөх</strong> нь зөвхөн хоёр задаргааг хүлээн авч, тухайн хосыг <strong>таван түвшний шатлал</strong> дээр байршуулдаг, эсвэл зөвхөн бодит зөрчилдөөн биш, бодитоор нэрлэж болох үрэлт байгаа үед л нэг <strong>"Болзошгүй үл нийцэл"</strong> тэмдэглэгээг гаргадаг. Зөвхөн сул холбоосыг "Хэсэгчилсэн" хэвээр үлдээнэ. Үнэлгээ бүр богино үндэслэлтэй байна.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="scale">
-          <p class="scale-cap">Эерэг тал: <b>дөрвөн түвшин</b>, Үгүй-гээс Өндөр хүртэл</p>
-          <div class="scale-track">
-            <div class="scale-seg" style="background:var(--undp-gray)">No</div>
-            <div class="scale-seg" style="background:#9bbf6a">Partial</div>
-            <div class="scale-seg" style="background:var(--align-medium)">Medium</div>
-            <div class="scale-seg" style="background:var(--align-high)">High</div>
-          </div>
+      <h2 class="p-title serif">Зорилтын хос бүрийг үнэлэх</h2>
+      <p class="p-say">Хиймэл оюуны хоёр дахь агент болох <strong>Уялдааны зөвлөх</strong> зөвхөн хоёр задлалыг хүлээн авч, хосыг үнэлнэ: хүчтэй, дунд зэргийн эсвэл хэсэгчилсэн уялдаа, эсвэл тодорхой холбоогүй. Хоёр зорилт хэрхэн харилцан нөлөөлж байгааг нэрлэж чадсан үед л хосыг <strong>болзошгүй үл нийцэл</strong> гэж үнэлнэ: нийтлэг нөөц, ижил газар, эсвэл нэг нь нөгөөдөө хүрэхийг хүндрүүлэх. Сул холбоос хэсэгчилсэн хэвээр үлдэнэ. Үнэлгээ бүр товч тайлбартай.</p>
+      <div class="p-example">
+        <p class="ex-head">Жишээ хос</p>
+        <p class="ex-verdict"><span class="o" aria-hidden="true"></span>Болзошгүй үл нийцэл<span class="sep">·</span><span class="sub">Нөөцийн төлөөх өрсөлдөөн: газар</span><span class="sep">·</span><span class="sub">Зохицуулах боломжтой</span></p>
+        <div class="ex-cmp">
+          <div class="ex-stop"><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><p class="ex-who">Биологийн төрөл зүйлийн 2030 оны үндэсний зорилтууд</p><p class="ex-label">1 Орон зайн төлөвлөлт</p></div>
+          <div class="ex-stop"><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><p class="ex-who">Үндэсний хэмжээнд тодорхойлсон хувь нэмэр</p><p class="ex-label">Усны нөөц 2</p></div>
         </div>
-        <div class="scale-divider"><span class="ln"></span><span class="or">or, when a friction is named</span><span class="ln"></span></div>
-        <div class="flagged-panel">
-          <div class="fh"><span class="o"></span> Potential misalignment</div>
-          <div class="facet-row">
-            <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
-            <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
-            <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
-          </div>
-        </div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · дүгнэлт</p>
-        <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
-        <div class="ex-facets">
-          <span class="facet" style="background:rgba(234,88,12,0.12);color:#ea580c"><span class="fl">Mechanism</span> Resource competition</span>
-          <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
-          <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
-        </div>
-        <p class="exb" style="margin-top:10px">Хоёр зорилт хоёулаа экосистемийн хамгаалал, төлөвлөлтийг дэмждэг боловч NDC нь мөн ус хуримтлуулах байгууламж, усжуулалтын цөөрөм, суваг, бэлчээрийн усжуулалтыг нэрлэсэн бөгөөд эдгээр нь NBSAP зорилтын хамгаалдаг экосистемүүдтэй өрсөлдөж болзошгүй. Бүсчлэл, экологийн урсгалын хамгаалалт, биологийн олон янз байдалд ээлтэй байршил сонголт нь тэдгээрийг нийцтэй байлгана.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx"><code>gpt-5.4</code> дээр ажилладаг (private Azure, давтагдахуйц үр дүнгийн тулд temperature 0). Түвшин нь none / low ("Хэсэгчилсэн") / medium / high / flagged бөгөөд <strong>"Болзошгүй үл нийцэл"</strong> гэж харагдана. Тэмдэглэгээ нь механизм, удирдах боломж, итгэлийн түвшнийг нэмдэг тул хянагч зөвхөн ноцтой байдлын тоо биш, харин яагаад хосыг тэмдэглэснийг <em>хардаг</em>.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · the prompt</p>
+        <p class="ex-ai">Хиймэл оюуны тайлбар · Дунд итгэл</p>
+        <p class="ex-line">Хоёр зорилт хоёулаа экосистемийг хамгаалах, төлөвлөхийг дэмждэг боловч NDC-д мөн ус хуримтлуулах байгууламж, усалгааны цөөрөм, суваг, хоолой, бэлчээрийн усалгаа, өрхийн усан хангамж, тодорхой голын сав газарт урсацыг нөхцөлтэйгээр тогтоон барих, шилжүүлэх зэргийг дурдсан бөгөөд эдгээр нь газар ашиглалтын төлөвлөлтөөр дамжуулан бүх нутаг дэвсгэрт байгалийн экосистемийг хадгалж, цаашдын доройтлоос сэргийлэх NBSAP-ын зорилттой өрсөлдөж болзошгүй.</p>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx"><code>gpt-5.4</code> (Azure OpenAI, давтагдах үр дүнгийн тулд температур 0) дээр ажиллана. Боловсруулалт <code>none</code>, <code>low</code>, <code>medium</code>, <code>high</code> эсвэл <code>flagged</code> гэж хадгалдаг; товч тойм эдгээрийг тодорхой холбоогүй, хэсэгчилсэн, дунд зэргийн, хүчтэй уялдаа, болзошгүй үл нийцэл гэж харуулна. Болзошгүй үл нийцэл нь мөн төрөл, зохицуулах боломж, итгэлийн түвшингээ бүртгэдэг тул хянагч яагаад ийм үнэлгээ өгснийг харна.</p><div class="specs"><span>2-р агент · gpt-5.4</span><span>5 түвшин + 3 шинж</span><span>температур 0</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Заавар</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Compare two target decompositions. Choose a level: <code>none</code> / <code>low</code> / <code>medium</code> / <code>high</code>, or <code>flagged</code>.<ul><li>Тодорхой үрэлтийг нэрлэж болох үед <b>зөвхөн</b> тэмдэглэнэ үү (хамтын нөөц, ижил газар, нэг нь нөгөөгөө сулруулах)</li><li>зөвхөн сул холбоо → <b>бага</b>, тэмдэглээгүй</li></ul>If flagged, also return:<ul><li><b>механизм</b>: зорилгын үл нийцэл · нөөцийн өрсөлдөөн · хэрэгжилтийн саад</li><li><b>удирдах боломж</b>: удирдаж болохуйц · суурь</li><li><b>итгэлцүүр</b>: бага · дунд · өндөр</li></ul></div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext">A: <code>{decomposition A}</code><br>B: <code>{decomposition B}</code></div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>alignment</span><span>mechanism</span><span>manageability</span><span>confidence</span><span>rationale</span></span><br><span class="lead" style="font-size:11px">shown to users as "Potential misalignment"</span></div></div>
+          <div class="prow"><span class="role sys">Систем</span><div class="ptext">Зорилтын хоёр задлалыг харьцуул. Түвшин сонго: <code>none</code> / <code>low</code> / <code>medium</code> / <code>high</code>, эсвэл <code>flagged</code>.<ul><li>Тодорхой харилцан нөлөөллийг (нийтлэг нөөц, ижил газар, нэг нь нөгөөгөө сулруулах) нэрлэж чадвал <b>л</b> <code>flagged</code> сонго</li><li>зүгээр л сул холбоос → <b>low</b>, <code>flagged</code> биш</li></ul><code>flagged</code> бол мөн буцаа:<ul><li><b>mechanism</b>: <code>goal_conflict</code> · <code>resource_competition</code> · <code>delivery_friction</code></li><li><b>manageability</b>: зохицуулах боломжтой · суурь</li><li><b>confidence</b>: бага · дунд · өндөр</li></ul></div></div>
+          <div class="prow"><span class="role usr">Хэрэглэгч</span><div class="ptext">A: <code>{decomposition A}</code><br>B: <code>{decomposition B}</code></div></div>
+          <div class="prow out"><span class="role out">Буцаах үр дүн</span><div class="ptext"><span class="ret"><span>alignment</span><span>mechanism</span><span>manageability</span><span>confidence</span><span>rationale</span></span><br><span class="lead">товч тоймд «Болзошгүй үл нийцэл» гэж харагдана</span></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="9">
-      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Нэгтгэл</span><span class="ps">10-р алхам</span></p>
-      <h2 class="p-title serif">Оноо өгч, бүх дүр зургийг зурагла</h2>
-      <p class="p-say">Эцэст нь, цаашид AI оролцуулахгүйгээр, хувь тус бүрийн үнэлгээнүүд нь баримт бичиг бүрийн хосын хоорондох <strong>уялдааны оноо</strong> болж нэгтгэгдэж, мөн илүү нарийвчлан авч үзэхээр <strong>тэмдэглэгдсэн хосын тоо хэд болохыг</strong> энгийнээр тоолдог. Эдгээр нь хяналтын самбарыг бүрдүүлдэг: уялдааны хүрд, нийцлийн дулааны зураглал болон сэдвийн задаргаа.</p>
-      <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
-        <div class="gauge-row"><div class="gauge"><div class="gv">70%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">19</div><div class="gl">pairs flagged (of 720)</div></div></div>
-        <svg id="wheelSvg" viewbox="0 0 320 320" width="210" height="210" role="img" aria-label="Coherence wheel" style="overflow:visible"></svg>
-        <div class="wheel-legend"><span><span class="ln" style="background:var(--align-high)"></span> Aligned</span><span><span class="ln" style="background:repeating-linear-gradient(90deg,var(--align-flagged) 0 4px,transparent 4px 7px)"></span> Potential misalignment</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · хаана хамаарах нь</p><p class="exb">Жишээ хос нь NDC болон NBSAP хоорондын <b>тэмдэглэгдсэн 19-өөс 1</b> юм. Бусад <b>720 хосоос 701</b> хос нь эерэг шкал дээр байрлаж байна (тэдгээрийн 660 нь дунд эсвэл өндөр), тиймээс нэг тэмдэглэгээ <b>70%</b> оноонд бараг нөлөөлөхгүй, гэхдээ энэ нь одоо дугуй дээр харагдаж, хянан үзэхэд бэлэн болсон байна.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx"><code>Оноо = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. Монгол Улсын NDC болон NBSAP-ийн хувьд энэ нь 720 хосын хэмжээнд 70% бөгөөд үүнээс 19 нь хянан үзэхээр тэмдэглэгдсэн. Бүх уламжлагдсан хэмжүүрүүдийг дотоодод тооцоолдог, загварын дуудлага 0.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
+      <h2 class="p-title serif">Үнэлгээг нэгтгэх</h2>
+      <p class="p-say">Нэмэлт хиймэл оюун ашиглахгүйгээр үнэлгээг тоолно: <strong>уялдаатай</strong> (хүчтэй эсвэл дунд зэргийн уялдаа), хэсэгчлэн уялдаатай, эсвэл <strong>болзошгүй үл нийцэлтэй</strong> зорилтын хосуудын эзлэх хувийг бүх багц, баримт бичгийн хос бүр, бодлогын чиглэл бүрээр гаргана. Уялдааны товч тойм яг эдгээр хувийг харуулдаг.</p>
+      <div class="p-example">
+        <p class="ex-head">Жишээ хос</p>
+        <p class="ex-line">NDC ба NBSAP-ын хооронд 720 зорилтын хосын 92% нь уялдаатай, 3% нь болзошгүй үл нийцэлтэй. Энэ хос бол тэдгээр 19-ийн нэг.</p>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Тооллогыг загвар дуудахгүйгээр дотооддоо хийнэ. «Уялдаатай» нь хүчтэй ба дунд зэргийн уялдааг тоолно. Монгол Улсын хувьд: 13,404 зорилтын хосын 66% нь уялдаатай, 29% нь хэсэгчлэн уялдаатай, 5% нь болзошгүй үл нийцэлтэй.</p><div class="specs"><span>зорилтын хосын эзлэх хувь</span><span>баримт бичгийн хосоор</span><span>бодлогын чиглэлээр</span><span>дотоод тооцоо</span></div></div>
     </div>
 
     <div class="pstep" data-i="10">
-      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Нэгтгэл</span><span class="ps">11-р алхам</span></p>
-      <h2 class="p-title serif">Илэрч буй давтагдах хэв шинжүүдийг гаргаж ирнэ үү</h2>
-      <p class="p-say">Хос бүрийн хүрээнд, хэрэгсэл нь Болзошгүй үл нийцэл <strong>хэр их</strong> байгааг болон энэ нь <strong>ямар төрөл</strong> болохыг харуулдаг. Энэ нь юуг түрүүнд шалгаж үзэхийг заасан байдлаар хүрээлэгдсэн: дүгнэлт биш, харин хянан үзэхэд зориулсан сануулга. Үр дүн бүр <strong>AI-ийн тусламжтай бөгөөд эх сурвалжийн тексттэй мөрдөн холбогдох боломжтой</strong>, эцсийн тайлбар нь үндэсний шинжээчдийн мэдэлд байна.</p>
-      <div class="p-viz"><div style="width:100%">
-        <p class="mini-lab">Хэд нь тэмдэглэгдсэн бэ</p>
-        <div class="conc-bar"><span style="flex:.05;background:var(--align-flagged)"></span><span style="flex:.95;background:var(--border-200)"></span></div>
-        <p class="mini-cap">Ойролцоогоор <b>20 хос тутмын 1</b>-ыг хянан шалгахаар тэмдэглэсэн байна (13,404-өөс 671). Ихэнх хосууд нийцэж байгаа тул анхаарлаа тэмдэглэсэн хэсгүүдэд төвлөрүүлэх хэрэгтэй.</p>
-        <p class="mini-lab" style="margin-top:16px">Энэ ямар төрөл вэ</p>
-        <div class="mech-bar"><span style="flex:.32;background:var(--mech-resource)"></span><span style="flex:.59;background:var(--mech-delivery)"></span><span style="flex:.09;background:var(--mech-goal)"></span></div>
-        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Өрсөлдөх нөөц 32%   <b style="color:var(--mech-delivery)">●</b> Хэрэгжилт 59%   <b style="color:var(--mech-goal)">●</b> Зөрчилтэй зорилгууд 9%</p>
+      <h2 class="p-title serif">Давтагдах сэдвийг илрүүлэх</h2>
+      <p class="p-say">Бүх хосын хүрээнд хиймэл оюуны нэгтгэл уялдаатай болон болзошгүй үл нийцэлтэй хосуудыг <strong>давтагдах сэдвүүдээр</strong> бүлэглэж, болзошгүй үл нийцэл бүрийг төрлөөр нь тоолно. Энэ хоёр нь эхлээд хаашаа харахыг заана; эцсийн тайлбарыг үндэсний шинжээчид өгнө.</p>
+      <div class="p-viz"><div>
+        <p class="mini-lab">Болзошгүй үл нийцэлтэй зорилтын хосууд</p>
+        <div class="kind-bar"><i class="apart" style="width:5%"></i><i class="rest" style="width:95%"></i></div>
+        <p class="mini-cap">Монгол Улсын зорилтын хосуудын <b>5%</b> (671 / 13,404)</p>
+        <p class="mini-lab" style="margin-top:20px">Болзошгүй үл нийцлийн төрлүүд</p>
+        <ul class="kind-rows">
+          <li><span>Хэрэгжилт ба зохицуулалт</span><span class="kbar"><i style="width:59%"></i></span><b>59%</b></li>
+          <li><span>Нөөцийн төлөөх өрсөлдөөн</span><span class="kbar"><i style="width:32%"></i></span><b>32%</b></li>
+          <li><span>Зөрчилдөх зорилго</span><span class="kbar"><i style="width:9%"></i></span><b>9%</b></li>
+        </ul>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">NDC болон NBSAP-ийн хослолд, <b>720 хосоос 19</b> хосыг тэмдэглэсэн бөгөөд тэдгээрийн ихэнх нь <b>хэрэгжилтийн</b> төрөл. Жишээ хос нь <b>нөөцийн өрсөлдөөний</b> тэмдэглэгээ: усны дэд бүтцийг орон зайн төлөвлөлттэй уялдуулах нь үүнийг хөнгөвчлөх болно.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Нэгтгэлийн давхарга нь механизмын хослолыг уншиж, баримт бичгийн хосуудын хооронд давтагдан илэрч буй Болзошгүй үл нийцлийг, мөн харагдахуйц нотолгоонд тулгуурласан, хэзээ ч зааварчилсан бус, болгоомжтой томьёолсон замналын чиглүүлгүүдийн хамт ил гаргадаг. Монгол Улсын баримт бичгийн санд тэмдэглэгдсэн хувь хэмжээ ойролцоогоор 5% бөгөөд цөөн хэдэн зорилтод бус, олон зорилтын хүрээнд тархсан байна.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+      <div class="p-example">
+        <p class="ex-head">Жишээ хос</p>
+        <p class="ex-line">NDC ба NBSAP-ын хоорондох болзошгүй 19 үл нийцлийн 12 нь хэрэгжилт ба зохицуулалттай, 7 нь нөөцийн төлөөх өрсөлдөөнтэй холбоотой. Энэ хос бол тэдгээр 7-гийн нэг бөгөөд холбогдох нөөц нь газар.</p>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Нэгтгэлийн алхам төрлүүдийн харьцаа болон түүний цаадах хосуудыг уншиж, баримт бичгийн хосуудын хүрээнд давтагдах сэдвүүдийг бүлэглэнэ; сэдвийн самбарт харуулсан нотолгоонд тулгуурласан, хиймэл оюуны санал болгосон эхлэл нэмэгдэж болно. Монгол Улсын багцад зорилтын хосуудын 5% нь болзошгүй үл нийцэлтэй бөгөөд тэдгээрийн 52% нь ердөө 7 зорилттой холбоотой.</p><div class="specs"><span>давтагдах сэдвүүд</span><span>төрлийн харьцаа</span><span>хиймэл оюуны санал болгосон эхлэл</span></div></div>
     </div>
 
     <div class="pstep" data-i="14">
-      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Хүний оролцоотой</span><span class="ps">Санал хүсэлт</span></p>
-      <h2 class="p-title serif">Ойлголтуудыг сайжруулахын тулд үнэлнэ үү</h2>
-      <p class="p-say">Хяналтын самбар дээрх AI-ийн дүгнэлт бүрийг үнэлэх боломжтой. Сонголтоор тэмдэглэл хавсаргах боломжтой <strong>эрхий хурууг дээш эсвэл доош</strong> гэсэн үнэлгээ нь уншлага хаана хэрэгтэй байсан, мөн хаана хангалтгүй байсныг бүртгэнэ. Санал хүсэлт нь нэргүйгээр хадгалагддаг бөгөөд энэ нь <strong>цаашдын ажиллуулалтад мэдээлэл өгдөг</strong> тул шинжилгээ цаг хугацааны явцад сайжирдаг.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets support ecosystem protection and planning, but the NDC also names water infrastructure that can compete with the ecosystems the NBSAP target protects…"</div>
-          <div class="prov" style="justify-content:space-between">
-            <span style="font-size:11.5px;color:var(--undp-gray)">Was this assessment helpful?</span>
-            <span style="display:inline-flex;gap:9px;align-items:center">
-              <svg width="15" height="15" viewbox="0 0 16 16" aria-hidden="true"><path d="M4 7h2v7H4z" fill="#196127"></path><path d="M6.5 7l2.3-3.6c.6-.1 1.2.4 1.2 1V6.4h2.7c.7 0 1.2.6 1 1.3l-.7 3.6c-.1.5-.6.9-1.1.9H6.5z" fill="#196127"></path></svg>
-              <svg width="15" height="15" viewbox="0 0 16 16" aria-hidden="true"><path d="M4 2h2v7H4z" fill="var(--align-flagged)"></path><path d="M6.5 9l2.3 3.6c.6.1 1.2-.4 1.2-1V9.6h2.7c.7 0 1.2-.6 1-1.3l-.7-3.6c-.1-.5-.6-.9-1.1-.9H6.5z" fill="var(--align-flagged)"></path></svg>
-              <span style="font-size:11px;color:var(--undp-blue)">Add a note</span>
-            </span>
-          </div>
-        </div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ</p><p class="exb">Усны болон орон зайн төлөвлөлтийн зорилтууд хоорондоо зөрчилдөнө гэж санал нийлэхгүй байгаа хянагч <b>энэ үндэслэлийг доош үнэлж</b>, шалтгааныг тэмдэглэж болно. Хариу нь яг энэ текстийн дагуу бүртгэгдэж, дараагийн ажиллуулалтад мэдээлэл өгнө.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">Санал хүсэлтийг зорилтот-хосын үндэслэлүүд болон баримт бичгийн-хосын нэгтгэлүүд дээр (<code>POST /api/feedback</code>) яг AI текстэд түлхүүрлэсэн зөвхөн нэмэгддэг бүртгэлд хадгалдаг тул дамжуулгыг дахин ажиллуулсны дараа ч үнэлгээ тайлбарлагдахуйц хэвээр байна.</p><div class="specs"><span>thumbs + note</span><span>anonymous</span><span>append-only ledger</span></div></div>
+      <h2 class="p-title serif">Хиймэл оюуны тайлбарыг үнэлэх</h2>
+      <p class="p-say">Товч тойм дахь хиймэл оюуны тайлбар бүрийг <strong>эрхий хуруу дээш эсвэл доош</strong> болон сонголтоор бичих тэмдэглэлээр үнэлж болно. Үнэлгээ нэргүй бөгөөд хамаарах текстийнхээ хамт хадгалагддаг тул хянагчид аль тайлбар тус болсон, аль нь дутуу байсныг харж, баг дараагийн ажиллуулалтыг сайжруулахад ашиглаж болно.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">Үнэлгээг зорилтын хосын тайлбар, баримт бичгийн хосын хураангуй, сэдвийн хураангуй дээр (<code>POST /api/feedback</code>) хиймэл оюуны яг тэр текстэд холбосон, зөвхөн нэмэх боломжтой бүртгэлд хадгална. Ингэснээр боловсруулалтыг дахин ажиллуулсны дараа ч үнэлгээ ойлгомжтой хэвээр үлдэнэ.</p><div class="specs"><span>эрхий хуруу + тэмдэглэл</span><span>нэргүй</span><span>зөвхөн нэмэх бүртгэл</span></div></div>
     </div>
 
     <div class="pstep" data-i="11">
-      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Хэрэгжилт</span><span class="ps">12-р алхам · 2-р түвшин</span></p>
-      <h2 class="p-title serif">Follow the finance</h2>
-      <p class="p-say">Ижил арга нь <strong>budget expenditure review</strong>-ийн хөтөлбөр бүрийн тодорхойлолтыг зорилтуудын тексттэй харьцуулж, хянагдсан зарцуулалт хаана амбицтай тохирч байгааг, мөн амбицад тохирох төсвийн мөр байхгүй байгаа газрыг харуулдаг.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="fin-list">
-          <div class="fin-row"><span class="fin-prog">Pasture management programme</span><span class="fin-link ok">тохирно →</span><span class="fin-tgt">Pasture restoration target</span></div>
-          <div class="fin-row"><span class="fin-prog">Soil &amp; fodder programme</span><span class="fin-link ok">тохирно →</span><span class="fin-tgt">Sustainable agriculture</span></div>
-          <div class="fin-row"><span class="fin-prog" style="color:var(--undp-gray)">– no programme –</span><span class="fin-link gap">тохирох мөргүй →</span><span class="fin-tgt">Wetland restoration target</span></div>
-        </div>
-        <p class="fin-caveat">A <abbr title="budget expenditure review">BER</abbr> нь байршуулсан тоймд багтсан хөтөлбөрүүдийг л хамардаг бөгөөд энэ нь үндэсний зардлын нэг хэсэг юм. Тойм нь зарцуулалтыг тодорхойлдог; хөтөлбөр-зорилтын холбоос бүрийг тойм биш, Tracker-ийн AI-ийн тодорхойлолтуудын харьцуулалт үүсгэдэг.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">2-р түвшин, санхүү. <abbr title="budget expenditure review">BER</abbr> хөтөлбөрүүд нь псевдо-зорилтууд болж, ангилах → задлах → нийцүүлэх гэсэн ижил ажлын урсгалаар дамжина; санхүүжилтийн харагдац нь хөтөлбөрүүд болон тайлагнасан арга хэмжээнүүдийг нийтлэг ангиллаар холбодог. Зорилтын «тохирох зарцуулалт» нь тодорхойлолт нь түүнтэй тохирсон хөтөлбөрүүдийн нийлбэр (харьцангуй хэмжээ бөгөөд санхүүжилтийн хүрэлцээ хэзээ ч биш); хөтөлбөр тохирсон зорилт бүрээ дэмждэг тул зорилт тус бүрийн тоо давхцаж, харин баримт бичгийн нийт дүн хөтөлбөр бүрийг нэг л удаа тоолдог. Монгол Улс болон Панамд нэвтрүүлсэн.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia · Panama (BER)</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · дахин ашиглалт</p>
+      <h2 class="p-title serif">Төсвийн хөтөлбөрүүдийг зорилтуудтай харьцуулах</h2>
+      <p class="p-say">Ижил алхмууд <strong>Биологийн олон янз байдлын зарлагын тойм (BER)</strong>-ын хөтөлбөрүүдийг зорилтуудтай харьцуулж, аль зорилтод хянасан зарлагад тохирох хөтөлбөр байгааг харуулна.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">2-р түвшин, санхүү. BER-ийн хөтөлбөрүүд хуурмаг зорилт болж, ангилах, задлах, үнэлэх ижил алхмуудыг дамжина. Зорилтын тохирох зарлага нь тайлбар нь уг зорилттой уялдсан хөтөлбөрүүдийн нийлбэр бөгөөд санхүүжилтийн хүрэлцээг бус, харьцангуй хэмжээг илэрхийлнэ. Хөтөлбөр нь уялдсан зорилт бүрт тооцогддог тул зорилт тус бүрийн дүн давхцаж болох ч баримт бичгийн нийт дүнд хөтөлбөр бүрийг нэг удаа тоолно. BER зөвхөн хянасан хөтөлбөрүүдээ буюу улсын зарлагын нэг хэсгийг хамардаг; зарлагыг тодорхойлдог бөгөөд зорилттой холбох холбоос бүр хиймэл оюуны тайлбар харьцуулалтаас гардаг. Монгол Улс, Панамд боломжтой.</p><div class="specs"><span>2-р түвшин · санхүү</span><span>ижил алхмууд</span><span>Монгол Улс · Панам</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Дахин ашиглалт</p>
         <div class="prompt">
-          <div class="prow"><span class="role code">Same workflow</span><div class="ptext">BER programme → <em>pseudo-target</em> → classify → Agent 1 decompose → Agent 2 align against each policy target.</div></div>
+          <div class="prow"><span class="role code">Ижил урсгал</span><div class="ptext">BER-ийн хөтөлбөр → <em>хуурмаг зорилт</em> → ангилах → 1-р агент задлах → 2-р агент бодлогын зорилт бүртэй харьцуулж үнэлэх.</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="12">
-      <p class="p-eyebrow sy"><span class="pp">3-р үе шат · Хэрэгжилт</span><span class="ps">13-р алхам · 3-р түвшин</span></p>
-      <h2 class="p-title serif">Хэрэгжилтийг хянах</h2>
-      <p class="p-say">Мөн энэ нь <strong>тайлагнасан арга хэмжээнүүдийг</strong> (ил тод байдлын тайлан болон үндэсний тайлангаас) амлалтуудтай харьцуулдаг: юу <strong>хэрэгжиж байгаа</strong> вэ, мөн тайлагнасан арга хэмжээ нь зорилгын эсрэг чиглэж буй газар хаана байна вэ.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="target-card" style="margin-bottom:10px"><div class="tc-doc"><span class="dot" style="background:var(--doc-nap)"></span><span class="tc-label">Commitment · pasture restoration</span></div></div>
-        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Rotational grazing programme <span class="impl-status way">Under way</span></div>
-        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Community pasture agreements <span class="impl-status way">Under way</span></div>
-        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--align-flagged);flex:none"></span> Feed-import subsidy <span class="impl-status mis">Potential misalignment</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ажилласан жишээ · хураангуйгаар</p><p class="exb">Танилцуулга нь NBSAP-ийн орон зайн төлөвлөлтийн зорилт болон NDC-ийн усны зорилт гэсэн нэг хосыг байршуулахаас эхлээд хянан үзэхэд бэлэн, тэмдэглэгдсэн бодлогын уялдааны дүгнэлт хүртэл дагаж үзүүлэв. 2 ба 3-р түвшин нь тухайн өгөгдөл байгаа бүх тохиолдолд төсөв болон тайлагнасан арга хэмжээнүүдэд ижил алхмуудыг хэрэглэнэ.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Техникийн</p><p class="tx">3-р түвшин, хүргэлт. Мэдээлсэн арга хэмжээнүүд (<abbr title="Biennial Transparency Report">BTR</abbr>, үндэсний тайлангууд) нь ижил хоёр-агентын ажлын урсгалаар дамжин псевдо-зорилтууд болдог; тохируулсан prompt нь арга хэмжээ бүр зорилт тус бүрийг "шууд хэрэгжүүлдэг, хэсэгчлэн дэмждэг, эсвэл ямар ч хамааралгүй" эсэхийг асуудаг. Хэрэгжиж байна.</p><div class="specs"><span>Level 3 · delivery</span><span>BTR · <abbr title="Seventh National Report to the CBD">NR7</abbr></span><span>in progress</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Гүнзгий судалгаа · асуулт</p>
+      <h2 class="p-title serif">Мэдээлсэн арга хэмжээг зорилтуудтай харьцуулах</h2>
+      <p class="p-say">Ижил алхмууд <strong>Хоёр жил тутмын ил тод байдлын тайлан (BTR)</strong> болон үндэсний тайлангуудад мэдээлсэн арга хэмжээг зорилтуудтай харьцуулна: мэдээлсэн арга хэмжээ аль зорилтод чиглэж байгаа, аль арга хэмжээ зорилттой болзошгүй үл нийцэлтэй байгааг харуулна.</p>
+      <div class="p-note p-tech"><p class="nl">Техникийн дэлгэрэнгүй</p><p class="tx">3-р түвшин, хэрэгжилт. Мэдээлсэн арга хэмжээнүүд (BTR, мөн Биологийн олон янз байдлын тухай конвенцид ирүүлсэн долоо дахь үндэсний тайлан буюу NR7 зэрэг үндэсний тайлангууд) хоёр агентын ижил алхмаар хуурмаг зорилт болно; тохируулсан заавар нь арга хэмжээ зорилт бүрийг шууд хэрэгжүүлж байгаа, хэсэгчлэн дэмжиж байгаа, эсвэл холбоогүй эсэхийг асууна. Мэдээлсэн арга хэмжээ нь улсын өөрийн тайлагнал буюу хэрэгжилтийг харах нэг өнцөг юм. Монгол Улс, Панамд боломжтой; NR7 нь Монгол Улсад.</p><div class="specs"><span>3-р түвшин · хэрэгжилт</span><span>BTR · NR7</span><span>Монгол Улс · Панам</span></div></div>
+      <div class="p-note p-deep"><p class="nl">Асуулт</p>
         <div class="prompt">
-          <div class="prow"><span class="role usr">Adapted Agent 2</span><div class="ptext">Does this reported measure <b>directly implement</b>, <b>partially support</b>, or have <b>no relationship to</b> the target?</div></div>
+          <div class="prow"><span class="role usr">Тохируулсан 2-р агент</span><div class="ptext">Энэ мэдээлсэн арга хэмжээ зорилтыг <b>шууд хэрэгжүүлж</b> байна уу, <b>хэсэгчлэн дэмжиж</b> байна уу, эсвэл <b>холбоогүй</b> юу?</div></div>
         </div>
       </div>
     </div>
@@ -771,148 +535,46 @@
   </div>
 </div>
 
+<script src="methodology-scene.js"></script>
 <script>
 (function () {
-  var DOCC = { ndc: "#0468b1", nbsap: "#0d9488", nap: "#b45309" };
-  // map nodes, one per panel step
+  // The walkthrough's steps in order; i is the panel's data-i.
   var NODES = [
-    { i: 0,  ph: "ex", t: "Баримт бичиг байршуулах",       b: "Оролт · бодлогын баримт бичгүүд" },
-    { i: 1,  ph: "ex", t: "Бүх хуудсыг унших",        b: "Хуудас тус бүрээр унших" },
-    { i: 2,  ph: "ex", t: "Үгчлэн ялган авах",       b: "Үг үгээр" },
-    { i: 3,  ph: "ex", t: "Нэгтгэж баталгаажуулах",   b: "Нэгтгэх · нэхэмжлэлийн шалгалт" },
-    { i: 13, ph: "an", kind: "human", t: "Зорилтуудыг баталгаажуулах", b: "Хадгалах · засах · нэмэх" },
-    { i: 4,  ph: "an", t: "Хэмжигдэхүйц & хугацаатай",     b: "Тоо хэмжээнд суурилсан · хугацаатай" },
-    { i: 5,  ph: "an", t: "Ангиллаар ангилах",   b: "NbS · IPCC · GLOBE · GGA · шилжүүлж болох" },
-    { i: 6,  ph: "an", t: "Баримт бичгүүдийн хооронд харьцуулах",    b: "Баримт бичиг хоорондын бүх хослол" },
-    { i: 7,  ph: "an", t: "Задлах",              b: "5 бүтэцлэгдсэн талбар", agent: "Agent 1" },
-    { i: 8,  ph: "an", t: "Уялдааг үнэлэх",       b: "5 түвшин, эсвэл тэмдэглэгээ", agent: "Agent 2" },
-    { i: 9,  ph: "sy", t: "Оноо өгөх ба зураглах",            b: "Уялдаа · дугуй" },
-    { i: 10, ph: "sy", t: "Давтагдах хэв маяг",     b: "Концентраци ба төрөл" },
-    { i: 14, ph: "sy", kind: "human", t: "Ойлголтуудыг үнэлэх", b: "Эрхий хуруу · тэмдэглэл" },
-    { i: 11, ph: "sy", t: "Санхүүжилтийг дагах",     b: "Төсвийн хяналт (BER)", level: "L2" },
-    { i: 12, ph: "sy", t: "Хэрэгжилтийг хянах",   b: "BTR · NR7", level: "L3" }
+    { i: 0,  ph: "ex", t: "Баримт бичиг оруулах" },
+    { i: 1,  ph: "ex", t: "Хуудас бүрийг унших" },
+    { i: 2,  ph: "ex", t: "Зорилтыг үгчлэн гаргах" },
+    { i: 3,  ph: "ex", t: "Нэгтгэж, тоог шалгах" },
+    { i: 13, ph: "ex", kind: "human", t: "Зорилт баталгаажуулах" },
+    { i: 4,  ph: "an", t: "Тоо, хугацаа тэмдэглэх" },
+    { i: 5,  ph: "an", t: "Чиглэлээр ангилах" },
+    { i: 6,  ph: "an", t: "Баримт бичгүүдээр хослуулах" },
+    { i: 7,  ph: "an", t: "5 хэсэгт задлах" },
+    { i: 8,  ph: "an", t: "Хос бүрийг үнэлэх" },
+    { i: 9,  ph: "sy", t: "Үнэлгээг нэгтгэх" },
+    { i: 10, ph: "sy", t: "Давтагдах сэдэв илрүүлэх" },
+    { i: 14, ph: "sy", kind: "human", t: "Тайлбарыг үнэлэх" },
+    { i: 11, ph: "sy", t: "Төсвийн хөтөлбөрүүд", level: "L2" },
+    { i: 12, ph: "sy", t: "Мэдээлсэн арга хэмжээ", level: "L3" }
   ];
-  // lane layout. array order = visual order = play order; n.i is the stable id used by panels + edges.
-  var COL = 200, NW = 178, NH = 66;
-  var LANE = { ex: 40, an: 226, sy: 412 };
-  var IDX = { ex: 0, an: 0, sy: 0 };
-  NODES.forEach(function (n) { n.x = 30 + IDX[n.ph] * COL; n.y = LANE[n.ph]; IDX[n.ph]++; });
-  var byI = {}, AIDX = {}; NODES.forEach(function (n, k) { byI[n.i] = n; AIDX[n.i] = k; });
-
-  var EDGES = [
-    [0,1],[1,2],[2,3],[3,13,"cross","Targets","confirmed"],
-    [13,4],[4,5],[5,6],[6,7],[7,8],[8,9,"cross","Coherence","5-level + facets"],
-    [9,10],[10,14],[8,11,"feed"],[8,12,"feed"],[14,5,"fb","Feedback","improves future analysis"]
-  ];
-
-  var board = document.getElementById("board");
-  var edgesSvg = document.getElementById("edges");
-  var mapwrap = document.getElementById("mapwrap");
   var dotsWrap = document.getElementById("dots");
   var psteps = Array.prototype.slice.call(document.querySelectorAll(".pstep"));
   var N = NODES.length;
-
-  // build node elements
-  NODES.forEach(function (n, k) {
-    var el = document.createElement("div");
-    el.className = "node " + n.ph + (n.agent ? " agent" : "") + (n.kind === "human" ? " human" : "");
-    el.style.left = n.x + "px"; el.style.top = n.y + "px";
-    var badge = n.kind === "human" ? '<span class="htag">Human</span>'
-      : (n.agent ? '<span class="atag">' + n.agent + "</span>" : (n.level ? '<span class="ltag">' + n.level + "</span>" : ""));
-    var num = n.kind === "human"
-      ? '<span class="nnum"><svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>'
-      : '<span class="nnum">' + ("0" + (n.i + 1)).slice(-2) + '</span>';
-    el.innerHTML = badge + num + '<span class="ntext"><span class="nt">' + n.t + '</span><span class="nb">' + n.b + "</span></span>";
-    el.addEventListener("click", function () { stop(); goTo(k, true); });
-    board.appendChild(el);
-    n.el = el;
-  });
-
-  // phase bands
-  var PH = { ex: "Олборлолт", an: "Шинжилгээ", sy: "Нэгтгэл ба хүргэлт" };
-  var PHK = { ex: "Баримт бичгүүд → зорилтууд", an: "Зорилтууд → Бодлогын уялдаа", sy: "Хэв маяг, санхүүжилт ба хэрэгжилт" };
-  var bands = {};
-  Object.keys(PH).forEach(function (ph) {
-    var ns = NODES.filter(function (n) { return n.ph === ph; });
-    var minX = Math.min.apply(null, ns.map(function (n) { return n.x; })) - 22;
-    var maxX = Math.max.apply(null, ns.map(function (n) { return n.x + NW; })) + 22;
-    var top = ns[0].y - 16, bot = ns[0].y + NH + 16;
-    var band = document.createElement("div");
-    band.className = "band " + ph;
-    band.style.left = minX + "px"; band.style.top = top + "px"; band.style.width = (maxX - minX) + "px"; band.style.height = (bot - top) + "px";
-    board.insertBefore(band, board.firstChild);
-    var label = document.createElement("div");
-    label.className = "band-label " + ph;
-    label.style.left = minX + "px"; label.style.top = (top - 64) + "px";
-    label.innerHTML = '<span class="k">' + PH[ph] + '</span><span class="n serif">' + PHK[ph] + "</span>";
-    board.appendChild(label);
-    bands[ph] = { band: band, label: label };
-  });
-
-  // edges + artifact labels
-  EDGES.forEach(function (e) {
-    var a = byI[e[0]], b = byI[e[1]], feed = e[2] === "feed", cross = e[2] === "cross", fb = e[2] === "fb";
-    var sx = a.x + NW, sy = a.y + NH / 2, tx = b.x, ty = b.y + NH / 2;
-    var mx = (sx + tx) / 2;
-    var d = "M " + sx + " " + sy + " C " + mx + " " + sy + " " + mx + " " + ty + " " + (tx - 8) + " " + ty;
-    var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    p.setAttribute("d", d); p.setAttribute("class", "edge" + (feed ? " feed" : "") + (fb ? " fb" : ""));
-    p.setAttribute("marker-end", "url(#" + (feed || fb ? "arrowF" : "arrow") + ")");
-    var len = p.getTotalLength(); p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
-    p.dataset.stage = Math.max(AIDX[e[0]], AIDX[e[1]]);
-    edgesSvg.appendChild(p); e.el = p;
-    if ((cross || fb) && e[3]) {
-      var lab = document.createElement("div");
-      lab.className = fb ? "fb-lab" : "elabel";
-      lab.style.left = mx + "px"; lab.style.top = ((sy + ty) / 2) + "px";
-      lab.innerHTML = fb ? e[3] : (e[3] + ' <span class="dt">· ' + e[4] + "</span>");
-      board.appendChild(lab); e.lab = lab; e.labStage = Math.max(AIDX[e[0]], AIDX[e[1]]);
-    }
-  });
-
-  var bw = Math.max.apply(null, NODES.map(function (n) { return n.x + NW; })) + 40;
-  var bh = LANE.sy + NH + 40;
-  board.style.width = bw + "px"; board.style.height = bh + "px";
-  edgesSvg.setAttribute("width", bw); edgesSvg.setAttribute("height", bh);
-
-  // ---- transform ----
-  var view = { s: 1, tx: 0, ty: 0 };
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function apply(animate) { board.classList.toggle("animating", !!animate && !reduce); board.style.transform = "translate(" + view.tx + "px," + view.ty + "px) scale(" + view.s + ")"; }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-  function VW() { return mapwrap.clientWidth; } function VH() { return mapwrap.clientHeight; }
-  function fitNodes(list, animate) {
-    var x0 = Math.min.apply(null, list.map(function (n) { return n.x; })) - 34;
-    var x1 = Math.max.apply(null, list.map(function (n) { return n.x + NW; })) + 34;
-    var y0 = Math.min.apply(null, list.map(function (n) { return n.y; })) - 60;
-    var y1 = Math.max.apply(null, list.map(function (n) { return n.y + NH; })) + 30;
-    var s = clamp(Math.min((VW() - 80) / (x1 - x0), (VH() - 120) / (y1 - y0)), 0.25, 1.15);
-    var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
-    view.s = s; view.tx = VW() / 2 - s * cx; view.ty = VH() / 2 - s * cy; apply(animate !== false);
-  }
 
   // ---- state ----
   var cur = 0;
   function render() {
-    NODES.forEach(function (n, k) { n.el.classList.toggle("shown", k <= cur); n.el.classList.toggle("active", k === cur); });
-    EDGES.forEach(function (e) {
-      var on = parseInt(e.el.dataset.stage, 10) <= cur; e.el.classList.toggle("drawn", on);
-      if (e.lab) e.lab.classList.toggle("shown", e.labStage <= cur);
-    });
-    var actPh = NODES[cur].ph, shown = {}; NODES.forEach(function (n, k) { if (k <= cur) shown[n.ph] = 1; });
-    Object.keys(bands).forEach(function (ph) {
-      bands[ph].band.classList.toggle("shown", !!shown[ph]); bands[ph].label.classList.toggle("shown", !!shown[ph]);
-      bands[ph].band.classList.toggle("active", ph === actPh);
-    });
     psteps.forEach(function (p) { p.classList.toggle("on", +p.dataset.i === NODES[cur].i); });
-    Array.prototype.forEach.call(dotsWrap.children, function (d, i) { d.setAttribute("aria-current", i === cur ? "true" : "false"); d.classList.toggle("seen", i <= cur); });
+    Array.prototype.forEach.call(dotsWrap.children, function (d, i) {
+      if (i === cur) d.setAttribute("aria-current", "step"); else d.removeAttribute("aria-current");
+      d.classList.toggle("seen", i < cur);
+    });
     document.getElementById("prev").disabled = cur === 0;
+    if (window.MethodScene) window.MethodScene.go(cur, '<span class="sc-step">Алхам ' + (cur + 1) + ' / ' + N + '</span><span class="sc-phase-name">' + phaseOf(NODES[cur]) + "</span>");
     try { localStorage.setItem("cpc_phases2_stage", String(cur)); } catch (e) {}
   }
-  function goTo(i, animate) {
+  function goTo(i) {
     cur = clamp(i, 0, N - 1); render();
-    // keep every node up to the active one framed, so the build is visible
-    fitNodes(NODES.slice(0, cur + 1), animate);
   }
   function next() { if (cur < N - 1) goTo(cur + 1, true); else stop(); }
   function prev() { if (cur > 0) goTo(cur - 1, true); }
@@ -923,55 +585,32 @@
   function start() { if (cur >= N - 1) goTo(0, true); document.getElementById("playIco").innerHTML = '<rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor"/><rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor"/>'; timer = setInterval(function () { if (cur >= N - 1) stop(); else next(); }, 3600); }
   function stop() { if (timer) { clearInterval(timer); timer = null; } document.getElementById("playIco").innerHTML = '<path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/>'; }
 
-  for (var k = 0; k < N; k++) { (function (j) { var b = document.createElement("button"); b.setAttribute("aria-label", "Step " + (j + 1)); b.addEventListener("click", function () { stop(); goTo(j, true); }); dotsWrap.appendChild(b); })(k); }
+  // Numbered steps, a gap where the phase changes; the reader's place is filled in.
+  function phaseOf(node) {
+    if (node.kind === "human") return "Хүний оролцоо";
+    if (node.level === "L2") return "2-р түвшин · Санхүү";
+    if (node.level === "L3") return "3-р түвшин · Хэрэгжилт";
+    return { ex: "Зорилт гаргах", an: "Шинжилгээ", sy: "Нэгтгэл" }[node.ph];
+  }
+  for (var k = 0; k < N; k++) { (function (j) {
+    var b = document.createElement("button");
+    b.textContent = String(j + 1);
+    b.setAttribute("aria-label", "Алхам " + (j + 1) + ": " + NODES[j].t);
+    b.title = NODES[j].t;
+    if (NODES[j].kind === "human") b.className = "human";
+    if (j > 0 && NODES[j].ph !== NODES[j - 1].ph) b.classList.add("phase-start");
+    b.addEventListener("click", function () { stop(); goTo(j, true); });
+    dotsWrap.appendChild(b);
+  })(k); }
 
   document.getElementById("next").addEventListener("click", function () { stop(); next(); });
   document.getElementById("prev").addEventListener("click", function () { stop(); prev(); });
   document.getElementById("play").addEventListener("click", function () { playing() ? stop() : start(); });
-  document.getElementById("fit").addEventListener("click", function () { stop(); cur = N - 1; render(); fitNodes(NODES, true); });
   window.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { stop(); next(); } else if (e.key === "ArrowLeft") { stop(); prev(); } });
 
-  var dP = document.getElementById("depthPlain"), dD = document.getElementById("depthDeep");
-  function depth(m) { document.body.classList.toggle("show-deep", m === "deep"); dP.setAttribute("aria-pressed", String(m === "plain")); dD.setAttribute("aria-pressed", String(m === "deep")); }
-  dP.addEventListener("click", function () { depth("plain"); }); dD.addEventListener("click", function () { depth("deep"); });
 
   var exT = document.getElementById("exToggle");
-  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); });
-
-  // ---- diagrams ----
-  function buildPairs() {
-    var L = document.getElementById("pairNodesL"), R = document.getElementById("pairNodesR"), G = document.getElementById("pairLines");
-    var lx = 64, rx = 296, top = 34, gap = 24, nL = 6, nR = 6;
-    function nd(x, y, c) { var e = document.createElementNS("http://www.w3.org/2000/svg", "circle"); e.setAttribute("cx", x); e.setAttribute("cy", y); e.setAttribute("r", 4.5); e.setAttribute("fill", "#fff"); e.setAttribute("stroke", c); e.setAttribute("stroke-width", 2); return e; }
-    var ly = [], ry = [];
-    for (var i = 0; i < nL; i++) { ly.push(top + i * gap); L.appendChild(nd(lx, top + i * gap, DOCC.nbsap)); }
-    for (var j = 0; j < nR; j++) { ry.push(top + j * gap); R.appendChild(nd(rx, top + j * gap, DOCC.ndc)); }
-    [[0,1],[0,3],[1,1],[2,4],[3,2],[3,5],[4,0],[5,3],[2,2],[1,4]].forEach(function (lk) {
-      var p = document.createElementNS("http://www.w3.org/2000/svg", "path"); var x1 = lx + 4.5, y1 = ly[lk[0]], x2 = rx - 4.5, y2 = ry[lk[1]], mx = (x1 + x2) / 2;
-      p.setAttribute("d", "M " + x1 + " " + y1 + " C " + mx + " " + y1 + " " + mx + " " + y2 + " " + x2 + " " + y2); p.setAttribute("fill", "none");
-      var hot = lk[0] === 1 && lk[1] === 1; p.setAttribute("stroke", hot ? DOCC.ndc : "#cbd5d1"); p.setAttribute("stroke-width", hot ? 2.2 : 1.1); p.setAttribute("opacity", hot ? 0.95 : 0.5); G.appendChild(p);
-    });
-  }
-  function buildWheel() {
-    var svg = document.getElementById("wheelSvg"); var NS = "http://www.w3.org/2000/svg";
-    var cx = 160, cy = 160, R = 124, band = 9, TAU = Math.PI * 2, gap = 6 * Math.PI / 180;
-    var docs = [{ id: "ndc", s: "NDC", c: DOCC.ndc, n: 7 }, { id: "nbsap", s: "NBSAP", c: DOCC.nbsap, n: 6 }, { id: "nap", s: "NAP", c: DOCC.nap, n: 5 }];
-    var tot = docs.reduce(function (a, d) { return a + d.n; }, 0), av = TAU - gap * docs.length, cur2 = -gap / 2, ang = {};
-    function pol(r, a) { var t = a - Math.PI / 2; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; }
-    function arc(r, a0, a1) { var p0 = pol(r, a0), p1 = pol(r, a1), lg = (a1 - a0) > Math.PI ? 1 : 0; return "M " + p0[0] + " " + p0[1] + " A " + r + " " + r + " 0 " + lg + " 1 " + p1[0] + " " + p1[1]; }
-    docs.forEach(function (d) {
-      var sp = av * (d.n / tot), a0 = cur2 + gap, a1 = a0 + sp, pd = sp * 0.14, i0 = a0 + pd, i1 = a1 - pd;
-      for (var i = 0; i < d.n; i++) { var f = d.n === 1 ? 0.5 : i / (d.n - 1); ang[d.id + i] = i0 + (i1 - i0) * f; }
-      var ap = document.createElementNS(NS, "path"); ap.setAttribute("d", arc(R - band / 2, a0, a1)); ap.setAttribute("fill", "none"); ap.setAttribute("stroke", d.c); ap.setAttribute("stroke-width", band); svg.appendChild(ap);
-      var md = (a0 + a1) / 2, lp = pol(R + 15, md), tx = document.createElementNS(NS, "text"); tx.setAttribute("x", lp[0]); tx.setAttribute("y", lp[1]);
-      var cv = Math.cos(md - Math.PI / 2); tx.setAttribute("text-anchor", cv > 0.1 ? "start" : cv < -0.1 ? "end" : "middle"); tx.setAttribute("dominant-baseline", "middle");
-      tx.setAttribute("font-size", "12"); tx.setAttribute("font-weight", "600"); tx.setAttribute("font-family", "var(--font-sans)"); tx.setAttribute("fill", d.c); tx.textContent = d.s; svg.appendChild(tx);
-      cur2 = a1;
-    });
-    var prs = [["ndc0","nbsap1","a"],["ndc2","nbsap3","a"],["ndc4","nap1","a"],["nbsap0","nap2","a"],["ndc1","nap0","a"],["ndc5","nbsap4","a"],["nbsap2","nap3","a"],["ndc3","nbsap5","f"],["ndc6","nap4","f"],["nbsap0","ndc4","a"]];
-    var rE = R - band - 6; prs.sort(function (p) { return p[2] === "f" ? 1 : -1; });
-    prs.forEach(function (pr) { var aA = ang[pr[0]], aB = ang[pr[1]]; if (aA == null || aB == null) return; var A = pol(rE, aA), B = pol(rE, aB), c1 = pol(rE * 0.16, aA), c2 = pol(rE * 0.16, aB); var p = document.createElementNS(NS, "path"); p.setAttribute("d", "M " + A[0] + " " + A[1] + " C " + c1[0] + " " + c1[1] + " " + c2[0] + " " + c2[1] + " " + B[0] + " " + B[1]); p.setAttribute("fill", "none"); p.setAttribute("stroke-linecap", "round"); var f = pr[2] === "f"; p.setAttribute("stroke", f ? "#dc2626" : "#196127"); p.setAttribute("stroke-width", f ? 1.6 : 2.2); if (f) p.setAttribute("stroke-dasharray", "5 4"); p.setAttribute("opacity", f ? 0.7 : 0.5); svg.insertBefore(p, svg.firstChild); });
-  }
+  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); if (window.MethodScene) window.MethodScene.refresh(); });
 
   // ---- intro / boot ----
   var intro = document.getElementById("intro"), booted = false, autoTimer = null;
@@ -979,12 +618,13 @@
   document.getElementById("startBtn").addEventListener("click", boot);
 
   function init() {
-    depth("plain");
-    buildPairs(); buildWheel();
-    cur = 0; render(); goTo(0, false);
+    if (window.MethodScene) window.MethodScene.init();
+    // A link can open one step directly (#step=8), without the intro or autoplay.
+    var m = /step=(\d+)/.exec(window.location.hash);
+    if (m) { booted = true; intro.classList.add("gone"); goTo(parseInt(m[1], 10) - 1); return; }
+    cur = 0; render();
     autoTimer = setTimeout(boot, 2800);
   }
-  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { fitNodes(NODES.slice(0, cur + 1), false); }, 130); });
   if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
 })();
 </script>

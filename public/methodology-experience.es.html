@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>How the CPC Analyzer works · Pipeline architecture</title>
+<title>Cómo funciona el análisis | Analizador de Coherencia de Políticas</title>
 <style>
   /* Self-hosted typefaces, shared with the app (same files, same URLs → shared
      browser cache). Relative paths so the file also opens standalone. */
@@ -34,19 +34,14 @@
   :root {
     --undp-blue: #0468b1; --undp-blue-dark: #035293;
     --undp-black: #232e3d; --undp-gray: #55606e;
-    --undp-light: #f7f7f7; --undp-paper: #faf8f4; --undp-white: #fff;
+    --undp-light: #f7f7f7; --undp-white: #fff;
     --border-100: #f3f4f6; --border-200: #e5e7eb; --border-300: #d1d5db;
-    --align-flagged: #dc2626; --align-medium: #7bc96f; --align-high: #196127;
-    --mech-goal: #b91c1c; --mech-resource: #ea580c; --mech-delivery: #d97706;
-    --doc-ndc: #0468b1; --doc-nbsap: #0d9488; --doc-nap: #b45309; --doc-ldn: #78716c; --doc-btr: #7c3aed;
-    --ex: #b45309; --an: #0468b1; --sy: #196127; --agent: #7c3aed;
+    --align-high: #196127;
+    --doc-ndc: #0468b1; --doc-nbsap: #0d9488;
     --font-sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-serif: "Source Serif 4", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
-    --shadow-card: none;
-    --shadow-pop: 0 14px 34px -10px rgba(35,46,61,0.20), 0 4px 10px -6px rgba(35,46,61,0.1);
-    --ground: #f7f7f7;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
@@ -57,7 +52,7 @@
   .serif { font-family: var(--font-serif); letter-spacing: -0.01em; }
   abbr { text-decoration: none; border-bottom: 1px dotted currentColor; cursor: help; }
 
-  /* top bar */
+  /* Top bar: the tool's name, the printable summary, the example switch. */
   .topbar { flex: none; z-index: 40; display: flex; align-items: center; justify-content: space-between;
     gap: 16px; padding: 12px 24px; background: #fff; border-bottom: 1px solid var(--border-200); }
   .topbar .brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
@@ -66,704 +61,473 @@
   .topbar .ttl { font-size: 13px; font-weight: 600; white-space: nowrap; }
   .topbar .ttl b { font-family: var(--font-serif); font-weight: 600; }
   .topbar .ttl span { color: var(--undp-gray); font-weight: 400; }
-  .seg { display: inline-flex; background: var(--undp-light); border: 1px solid var(--border-200); border-radius: 999px; padding: 3px; gap: 2px; }
-  .seg button { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 12px;
-    padding: 5px 14px; border-radius: 999px; color: var(--undp-gray); transition: all .2s var(--ease); }
-  .seg button[aria-pressed="true"] { background: var(--undp-black); color: #fff; }
-  .topbar-right { display: flex; align-items: center; gap: 16px; }
-  .brief-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500;
+  .topbar-right { display: flex; align-items: center; gap: 22px; }
+  .brief-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
     color: var(--undp-blue); text-decoration: none; white-space: nowrap; transition: color .2s var(--ease); }
   .brief-link:hover { color: var(--undp-blue-dark); text-decoration: underline; }
   .brief-link svg { flex: none; }
-  @media (max-width: 820px) { .topbar .ttl span { display: none; } .brief-link { font-size: 11px; } }
+  /* The example switch is plain text, underlined while the example shows. */
+  .ex-toggle { display: inline-flex; align-items: center; gap: 7px; padding: 0; border: 0; background: none;
+    color: var(--undp-black); font: inherit; font-size: 13px; white-space: nowrap; cursor: pointer;
+    text-decoration: none; text-underline-offset: 4px; }
+  .ex-toggle[aria-pressed="true"] { text-decoration: underline; }
+  .ex-toggle:hover { color: var(--undp-blue); }
+  .ex-toggle svg { flex: none; }
+  .mt-note { font-size: 12px; color: var(--undp-gray); white-space: nowrap; }
+  @media (max-width: 980px) { .mt-note { display: none; } }
+  .topbar :focus-visible, .controls :focus-visible { outline: 2px solid var(--undp-blue); outline-offset: 2px; }
+  @media (max-width: 820px) { .topbar .ttl span { display: none; } }
+  @media (max-width: 720px) { .ex-toggle .lbl { display: none; } }
   @media (max-width: 640px) { .brief-link { display: none; } }
 
-  /* layout: map (left) + panel (right) */
+  /* Layout: the scene (left) and the step's panel (right). */
   .work { flex: 1; display: flex; min-height: 0; }
-  .mapwrap { position: relative; flex: 1; overflow: hidden; min-width: 0; background: var(--ground); }
-  .board { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
-  .board.animating { transition: transform .8s var(--ease); }
+  .mapwrap { position: relative; flex: 1; overflow: hidden; min-width: 0; background: #fff; }
 
-  .edges { position: absolute; top: 0; left: 0; overflow: visible; pointer-events: none; z-index: 2; }
-  .edge { fill: none; stroke: #cbd3ce; stroke-width: 1.8; stroke-dasharray: 1; stroke-dashoffset: 1;
-    transition: stroke-dashoffset .7s var(--ease), opacity .4s; opacity: 0; }
-  .edge.drawn { stroke-dashoffset: 0; opacity: 1; }
-  .edge.feed.drawn { stroke: #ddd0b5; stroke-width: 1.4; stroke-dasharray: 6 5 !important; stroke-dashoffset: 0; opacity: 0.8; }
-  .elabel { display: none; position: absolute; z-index: 3; font-size: 10.5px; font-weight: 600;
-    color: var(--undp-black); background: #fff; border: 1px solid var(--border-200); border-radius: 999px;
-    padding: 3px 9px; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); box-shadow: var(--shadow-card); white-space: nowrap; }
-  .elabel.shown { opacity: 1; }
-  .elabel .dt { color: var(--undp-gray); }
+  /* The scene: one ink dot per target, then per target pair, on a white
+     ground (methodology-scene.js); captions state each step's result. */
+  .scene { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  .scene-cap { position: absolute; left: 56px; right: 56px; top: 40px; z-index: 5; pointer-events: none; }
+  .sc-phase { display: flex; gap: 10px; align-items: baseline; margin: 0 0 6px; font-size: 13px; color: var(--undp-gray); }
+  .sc-step { font-weight: 600; color: #232e3d; }
+  .sc-phase-name { color: var(--undp-gray); }
+  .sc-text { margin: 0; max-width: 32em; font-family: var(--font-serif); font-size: clamp(21px, 2.1vw, 27px);
+    font-weight: 500; line-height: 1.22; letter-spacing: -0.005em; color: var(--undp-black); }
+  .scene-labels { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; }
+  .sl { position: absolute; font-size: 12px; line-height: 1.3; color: var(--undp-gray); white-space: nowrap; }
+  /* Document and cluster labels wrap within their column or cluster and grow
+     upward from a shared baseline, so long names never run into a neighbour. */
+  .sl.sl-up { transform: translateY(-100%); white-space: normal; }
+  .sl.sl-up .nm { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    hyphens: auto; overflow-wrap: anywhere; }
+  .sl.sl-up .ct { display: block; margin-top: 2px; font-weight: 600; color: var(--undp-gray); font-variant-numeric: tabular-nums; }
+  .sl .n { font-weight: 600; color: var(--undp-black); font-variant-numeric: tabular-nums; }
+  .sl.sl-doc { font-size: 13px; color: var(--undp-black); }
+  .sl.sl-doc .n { margin-left: 4px; font-weight: 600; color: var(--undp-gray); }
+  .sl.sl-doc.sl-tight { font-size: 12px; }
+  .sl.sl-doc.sl-tight .nm { -webkit-line-clamp: 5; }
+  .sl.sl-cluster { max-width: 190px; white-space: normal; font-size: 12.5px; color: var(--undp-black); }
+  .sl.sl-cluster .n { margin-right: 3px; }
+  .sl.sl-legend { font-size: 14px; color: var(--undp-black); }
+  .sl.sl-legend .n { margin-right: 4px; }
+  .sl.sl-legend .key { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; vertical-align: 0; }
+  .sl.sl-legend .gap { display: inline-block; width: 22px; }
+  .sl.sl-num { font-size: 13px; color: var(--undp-gray); }
+  .sl.sl-center { transform: translate(-50%, -50%); }
+  .sl.sl-list { white-space: normal; }
+  .sl.sl-list.sl-top { transform: translateY(-100%); }
+  .sl .themes { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; }
+  .sl .themes li { max-width: 440px; font-size: 12.5px; color: var(--undp-black); }
+  .sl .themes .n { display: inline-block; width: 14px; color: var(--undp-gray); }
+  .sl .themes .c { margin-left: 4px; color: var(--undp-gray); font-variant-numeric: tabular-nums; }
+  .sl.sl-foot { font-size: 13px; color: var(--undp-black); }
+  .sl .squares { display: inline-flex; flex-wrap: wrap; gap: 3px; max-width: 360px; margin-right: 10px; vertical-align: middle; }
+  .sl .squares i { display: inline-block; width: 8px; height: 8px; }
+  .sl.sl-human .person { display: inline-block; width: 22px; height: 22px;
+    background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='5' r='2.6' fill='none' stroke='%239a6b34' stroke-width='1.4'/%3E%3Cpath d='M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2' fill='none' stroke='%239a6b34' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  /* Hands-on overlays on the scenes (Sep 2026, round 7): the targets and
+     parts the step is about, word for word, set in the brief's type. */
+  .sl.sl-cards { white-space: normal; }
+  .sl .quotes { display: flex; gap: 20px; }
+  .sl .quotes .qcard { flex: 1 1 0; }
+  .sl .qcard { padding: 12px 14px; background: #fff; border: 1px solid var(--border-200); color: var(--undp-black); }
+  .sl .q-src { margin: 0 0 5px; font-size: 12px; color: var(--undp-gray); }
+  .sl .q-src b { font-weight: 600; color: var(--undp-black); }
+  .sl .q-text { margin: 0; font-family: var(--font-serif); font-size: 14.5px; line-height: 1.45; }
+  .sl .qcard-small .q-text { display: -webkit-box; overflow: hidden; font-size: 13px; -webkit-line-clamp: 5; -webkit-box-orient: vertical; }
+  .sl .qcard-small .q-src { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .sl mark { padding: 0 2px; border-radius: 2px; color: inherit; }
+  .sl mark.num { background: #dcebf7; }
+  .sl mark.date { background: #f7e6d2; }
+  .sl .q-check { margin: 9px 0 0; font-size: 13px; color: var(--undp-black); }
+  .sl .q-check span { display: inline-block; width: 16px; color: var(--align-high); font-weight: 700; }
+  .sl .q-note { margin: 6px 0 0; font-size: 11.5px; color: var(--undp-gray); }
+  /* Names along the comparison triangle's diagonal, right-aligned. */
+  .sl.sl-diag { transform: translate(-100%, -50%); white-space: normal; text-align: right; font-size: 12px; color: var(--undp-black); }
+  .sl.sl-diag .nm { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .sl.sl-note { white-space: normal; font-size: 11.5px; line-height: 1.3; color: var(--undp-gray); }
+  .sl.sl-note-r { transform: translate(-100%, -50%); text-align: right; }
+  .sl.sl-legend-small { font-size: 12.5px; white-space: normal; }
+  .sl .parts2 { display: flex; gap: 18px; }
+  .sl .pcard { width: 320px; padding: 12px 14px; background: #fff; border: 1px solid var(--border-200); white-space: normal; }
+  .sl .pcard dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 10px; margin: 8px 0 0; }
+  .sl .pcard dt { font-size: 12px; font-weight: 600; color: var(--undp-gray); }
+  .sl .pcard dd { display: -webkit-box; overflow: hidden; margin: 0; font-size: 12.5px; line-height: 1.35; color: var(--undp-black);
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .sl.sl-callout { transform: translateY(-100%); display: flex; flex-direction: column; gap: 2px; padding: 7px 10px;
+    background: #fff; border: 1px solid var(--border-200); white-space: nowrap; }
+  .sl.sl-callout-mid { transform: translateY(-50%); font-size: 12.5px; color: #232e3d; }
+  .sl.sl-keys { display: flex; flex-direction: column; gap: 4px; }
+  .sl.sl-keyrow { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  .sl .keyitem { white-space: nowrap; }
+  .sl .keyline { display: block; }
+  .sl .verdict { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--undp-black); }
+  .sl .verdict .o { width: 9px; height: 9px; border: 2px solid #d2432c; border-radius: 50%; }
+  .sl .why { font-size: 12px; color: var(--undp-gray); }
 
-  /* phase bands */
-  .band { position: absolute; border-radius: 8px; z-index: 0; border: 1px solid transparent;
-    opacity: 0; transition: opacity .6s var(--ease), border-color .4s, background .4s; }
-  .band.shown { opacity: 1; }
-  .band.ex, .band.an, .band.sy { background: rgba(255,255,255,0.55); }
-  .band.active.ex, .band.active.an, .band.active.sy { border-color: var(--border-200); background: #fff; }
-  .band-label { position: absolute; z-index: 1; display: flex; flex-direction: column; gap: 2px; opacity: 0; transition: opacity .6s var(--ease); }
-  .band-label.shown { opacity: 1; }
-  .band-label .k { font-size: 12px; font-weight: 600; padding: 0; margin-bottom: 5px; align-self: flex-start; }
-  .band-label .n { font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: var(--undp-black); letter-spacing: -0.01em; }
-  .band-label.ex .k { color: var(--ex); } .band-label.an .k { color: var(--an); } .band-label.sy .k { color: var(--sy); }
-
-  /* map nodes */
-  .node { position: absolute; width: 178px; min-height: 62px; height: auto; z-index: 5; cursor: pointer;
-    background: #fff; border: 1px solid var(--border-200); border-radius: 8px; box-shadow: var(--shadow-card);
-    padding: 11px 14px 11px 30px; display: flex; align-items: center; gap: 10px;
-    opacity: 0; transform: translateY(10px) scale(0.97);
-    transition: opacity .5s var(--ease), transform .5s var(--ease), box-shadow .25s, border-color .25s; }
-  .node::before { content: ""; position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 7px; height: 7px; border-radius: 50%; background: var(--an); }
-  .node.shown { opacity: 1; transform: none; }
-  .node .nnum { font-family: var(--font-serif); font-size: 15px; font-weight: 600; color: var(--undp-gray); flex: none; min-width: 18px; font-variant-numeric: tabular-nums; }
-  .node .ntext { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .node .nt { font-family: var(--font-serif); font-size: 13.5px; font-weight: 600; line-height: 1.18; letter-spacing: -0.01em; color: var(--undp-black); }
-  .node .nb { font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--undp-gray); line-height: 1.3; }
-  .node.active { border-color: var(--undp-black); box-shadow: 0 0 0 3px rgba(35,46,61,0.07), var(--shadow-pop); transform: scale(1.03); }
-  .node.agent::before { background: var(--agent); }
-  .node .atag { position: absolute; top: -8px; right: 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.07em;
-    text-transform: uppercase; background: #fff; border: 1px solid rgba(124,58,237,0.35); color: var(--agent); padding: 2px 7px; border-radius: 999px; }
-  .node .ltag { position: absolute; top: -8px; right: 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.06em;
-    background: #fff; border: 1px solid rgba(25,97,39,0.35); color: var(--sy); padding: 2px 7px; border-radius: 999px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .board.animating { transition: none; } .node { transition: opacity .2s; transform: none; } .edge, .elabel { transition: opacity .2s; }
-  }
-
-  /* controls */
-  .controls { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 30;
-    display: flex; align-items: center; gap: 8px; padding: 7px 11px; background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(8px); border: 1px solid var(--border-200); border-radius: 999px; box-shadow: var(--shadow-pop); }
-  .controls .sep { width: 1px; height: 20px; background: var(--border-200); }
+  /* Plain controls under the scene: previous, play, next, and the numbered
+     steps, the reader's place filled in, a gap where the phase changes,
+     the reviewer's steps in the reviewer's colour. */
+  .controls { position: absolute; left: 56px; bottom: 28px; z-index: 30; display: flex; align-items: center; gap: 8px; }
   .cbtn { border: 0; background: transparent; cursor: pointer; color: var(--undp-black); width: 32px; height: 32px;
     border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; padding: 0; transition: background .2s; }
   .cbtn:hover { background: var(--undp-light); }
-  .cbtn.primary { background: var(--undp-blue); color: #fff; width: 38px; height: 38px; }
+  .cbtn.primary { background: var(--undp-blue); color: #fff; width: 38px; height: 38px; border-radius: 0; }
   .cbtn.primary:hover { background: var(--undp-blue-dark); }
   .cbtn:disabled { opacity: 0.3; cursor: default; background: transparent; }
   .cbtn .ico { width: 15px; height: 15px; display: block; }
-  .dots { display: flex; align-items: center; gap: 5px; padding: 0 3px; }
-  .dots button { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--border-300); background: #fff; padding: 0; cursor: pointer; transition: all .2s; }
-  .dots button[aria-current="true"] { background: var(--undp-blue); border-color: var(--undp-blue); transform: scale(1.35); }
-  .dots button.seen { border-color: var(--undp-blue); }
+  .dots { display: flex; align-items: center; gap: 4px; padding: 0 3px; }
+  .dots button { width: 24px; height: 24px; padding: 0; border-radius: 50%; border: 1px solid var(--border-300); background: #fff;
+    color: var(--undp-gray); font: 600 11px/1 var(--font-sans, inherit); font-variant-numeric: tabular-nums; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; transition: all .2s; }
+  .dots button.phase-start { margin-left: 10px; }
+  .dots button.seen { border-color: #232e3d; color: #232e3d; }
+  .dots button.human { border-color: #9a6b34; color: #9a6b34; }
+  .dots button[aria-current="step"] { background: #232e3d; border-color: #232e3d; color: #fff; }
+  .dots button.human[aria-current="step"] { background: #9a6b34; border-color: #9a6b34; }
+  .dots button:hover { border-color: var(--undp-blue); color: var(--undp-blue); }
+  .dots button[aria-current="step"]:hover { color: #fff; }
   @media (max-width: 760px) { .dots { display: none; } }
 
-  /* detail panel */
+  /* The step's panel: its title, what happens in plain words, the example
+     pair where it adds to the scene, then the technical details. */
   .panel { flex: none; width: clamp(360px, 38%, 488px); background: #fff; border-left: 1px solid var(--border-200);
     position: relative; overflow: hidden; }
-  .pstep { position: absolute; inset: 0; padding: 30px 30px 26px; overflow-y: auto;
+  .pstep { position: absolute; inset: 0; padding: 40px 40px 48px; overflow-y: auto;
     opacity: 0; transform: translateY(10px); visibility: hidden; pointer-events: none;
     transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s linear .45s; }
-  .pstep.on { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s; }
-  .p-eyebrow { font-size: 12px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .p-eyebrow .pp { padding: 0; }
-  .p-eyebrow.ex .pp { color: var(--ex); } .p-eyebrow.an .pp { color: var(--an); } .p-eyebrow.sy .pp { color: var(--sy); }
-  .p-eyebrow .ps { color: var(--undp-gray); font-weight: 600; }
-  .p-title { font-family: var(--font-serif); font-weight: 600; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.13; margin-bottom: 14px; }
-  .p-say { font-size: 15.5px; line-height: 1.62; color: #3c4654; }
+  .pstep.on { opacity: 1; transform: none; visibility: visible; pointer-events: auto;
+    transition: opacity .45s var(--ease), transform .45s var(--ease), visibility 0s; }
+  .p-title { font-weight: 500; font-size: clamp(25px, 2.2vw, 31px); line-height: 1.18; letter-spacing: -0.005em;
+    color: #232e3d; margin: 0 0 16px; }
+  .p-say { font-size: 16px; line-height: 1.62; color: #232e3d; }
   .p-say strong { color: var(--undp-black); font-weight: 600; }
-  .p-viz { margin: 22px 0 4px; display: flex; justify-content: center; }
-  .p-viz > * { width: 100%; max-width: 400px; }
-  .p-note { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--border-100); }
-  .p-note .nl { font-size: 12px; font-weight: 600; color: var(--undp-gray); margin-bottom: 8px; }
-  .p-tech, .p-deep { display: none; }
-  body.show-deep .p-tech, body.show-deep .p-deep { display: block; }
-  .p-tech .tx { font-size: 13px; line-height: 1.6; color: var(--undp-gray); }
-  .p-tech .tx code { font-family: var(--font-mono); font-size: 0.88em; background: var(--undp-light); padding: 1px 5px; border-radius: 4px; color: var(--undp-black); }
-  .p-tech .specs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }
-  .p-tech .specs span { font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border-200); border-radius: 4px; padding: 2px 8px; color: var(--undp-gray); }
-  .p-deep { margin-top: 16px; }
+  .p-viz { margin: 24px 0 4px; }
+  .p-viz > * { width: 100%; max-width: 440px; }
+  .p-note { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border-200); }
+  .p-note .nl { font-size: 13px; font-weight: 600; color: #232e3d; margin-bottom: 8px; }
+  .p-deep { margin-top: 18px; padding-top: 0; border-top: 0; }
+  .p-tech .tx { font-size: 14px; line-height: 1.62; color: #3c4654; }
+  .p-tech .tx code, .ptext code { font-family: var(--font-mono); font-size: 0.88em; color: #232e3d; }
+  .p-tech .specs { display: flex; flex-wrap: wrap; margin-top: 10px; }
+  .p-tech .specs span { font-size: 12.5px; color: var(--undp-gray); }
+  .p-tech .specs span + span::before { content: "·"; padding: 0 7px; }
 
-  /* ===== worked-example overlay (orthogonal to depth) ===== */
-  .p-example { display: none; margin-top: 18px; }
-  body.show-example .p-example { display: block; }
-  .ex-card { border: 1px solid var(--border-200);
-    background: var(--undp-light); border-radius: 8px; padding: 12px 14px; }
-  .ex-card .exl { font-size: 12px; font-weight: 600;
-    color: var(--undp-gray); margin-bottom: 9px; display: flex; align-items: center; gap: 7px; }
-  .ex-card .exl .dotm { display: none; }
-  .ex-card .exb { font-size: 12.5px; line-height: 1.5; color: #3c4654; }
-  .ex-card .exb b { color: var(--undp-black); font-weight: 600; }
-  .ex-pair { display: flex; flex-direction: column; gap: 7px; margin: 10px 0 2px; }
-  .ex-t { border: 1px solid var(--border-200); border-radius: 7px; padding: 8px 10px; background: #fff; }
-  .ex-t .ex-doc { font-size: 10.5px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; color: var(--undp-gray); }
-  .ex-t .ex-doc .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
-  .ex-t .ex-txt { font-size: 11.5px; line-height: 1.4; color: var(--undp-black); }
-  .ex-verdict { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 11.5px; font-weight: 700; color: var(--align-flagged); }
-  .ex-verdict .o { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--align-flagged); flex: none; }
-  .ex-facets { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
-
-  /* example toggle in the top bar */
-  .ex-toggle { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border-300);
-    background: #fff; color: var(--undp-gray); border-radius: 999px; padding: 6px 13px; font: inherit;
-    font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s var(--ease); white-space: nowrap; }
-  .ex-toggle:hover { border-color: var(--undp-blue); color: var(--undp-blue); }
-  .ex-toggle[aria-pressed="true"] { background: var(--undp-blue); border-color: var(--undp-blue); color: #fff; }
-  .ex-toggle svg { flex: none; }
-  @media (max-width: 720px) { .ex-toggle .lbl { display: none; } .ex-toggle { padding: 6px 9px; } }
-
-  /* ===== human-in-the-loop nodes ===== */
-  .node.human { background: #fff; border-color: var(--border-200); }
-  .node.human::before { background: #a87f4a; }
-  .node.human .htag { display: none; }
-  .node.human.active { border-color: var(--undp-black); box-shadow: 0 0 0 3px rgba(35,46,61,0.07), var(--shadow-pop); }
-  .node .glyph { width: 14px; height: 14px; flex: none; color: #a87f4a; }
-
-  /* feedback loop-back edge + its label */
-  .edge.fb { stroke: #c9b48d; stroke-width: 1.6; stroke-dasharray: 2 5; stroke-linecap: round; }
-  .edge.fb.drawn { opacity: 0.55; }
-  .fb-lab { display: none; position: absolute; z-index: 3; font-family: var(--font-sans); font-size: 9.5px; font-weight: 600;
-    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px;
-    padding: 3px 9px; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); white-space: nowrap; }
-  .fb-lab.shown { opacity: 1; }
-
-  /* node-kind legend */
-  .legend { position: absolute; right: 16px; top: 14px; z-index: 25; display: flex; flex-wrap: wrap; gap: 5px 14px;
-    background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border: 1px solid var(--border-200);
-    border-radius: 10px; padding: 8px 12px; box-shadow: var(--shadow-card); font-size: 10.5px; color: var(--undp-gray); }
-  .legend .li { display: inline-flex; align-items: center; gap: 6px; }
-  .legend .sw { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .legend .sw.ai { background: var(--an); }
-  .legend .sw.agent { background: var(--agent); }
-  .legend .sw.human { background: #a87f4a; }
-  @media (max-width: 820px) { .legend { display: none; } }
-
-  /* lens-switch visual (classify step) + inline human marker */
-  .lens-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; justify-content: center; }
-  .lens-chip { font-size: 11.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-300); background: #fff; color: var(--undp-gray); }
-  .lens-chip.on { background: var(--undp-blue); border-color: var(--undp-blue); color: #fff; font-weight: 600; }
-  .lens-cap { font-size: 11px; color: var(--undp-gray); text-align: center; margin-top: 10px; }
-  .lens-cap b { color: var(--undp-black); font-weight: 600; }
-  .you-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
-    color: #8a6736; background: #fdfaf3; border: 1px solid rgba(168,127,74,0.4); border-radius: 999px; padding: 3px 9px; }
-  .you-tag svg { width: 11px; height: 11px; }
-  .ex-label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600;
-    color: var(--undp-gray); margin-bottom: 9px; }
-  .ex-label .dotm { width: 6px; height: 6px; border-radius: 50%; background: var(--doc-nap); flex: none; }
-
-  /* clean prompt component (not raw code) */
-  .prompt { border: 1px solid var(--border-200); border-radius: 11px; overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
+  /* The prompt, as plain rows. */
+  .prompt { border: 1px solid var(--border-200); background: #fff; }
   .prow { display: flex; gap: 11px; padding: 11px 13px; border-bottom: 1px solid var(--border-100); }
   .prow:last-child { border-bottom: none; }
-  .prow.out { background: rgba(25,97,39,0.04); }
-  .role { flex: none; font-size: 9px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; height: fit-content; margin-top: 1px; }
-  .role.sys { background: rgba(4,104,177,0.12); color: var(--undp-blue); }
-  .role.usr { background: var(--undp-light); color: var(--undp-gray); }
-  .role.out { background: rgba(25,97,39,0.13); color: var(--align-high); }
-  .role.code { background: rgba(124,58,237,0.12); color: var(--agent); }
-  .ptext { font-size: 12.5px; line-height: 1.55; color: var(--undp-black); }
+  .prow.out { background: #fafafa; }
+  .role { flex: none; min-width: 58px; margin-top: 1px; font-size: 12px; font-weight: 600; color: var(--undp-gray); }
+  .ptext { font-size: 13px; line-height: 1.55; color: var(--undp-black); }
   .ptext .lead { color: var(--undp-gray); }
   .ptext ul { margin: 5px 0 0; padding-left: 16px; }
   .ptext li { margin: 3px 0; color: var(--undp-gray); }
   .ptext li b { color: var(--undp-black); font-weight: 600; }
-  .ptext code { font-family: var(--font-mono); font-size: 0.86em; background: var(--undp-light); padding: 1px 5px; border-radius: 4px; color: var(--undp-blue); }
-  .ptext .ret { display: inline-flex; flex-wrap: wrap; gap: 4px; }
-  .ptext .ret span { font-family: var(--font-mono); font-size: 10.5px; background: rgba(25,97,39,0.08); color: var(--align-high); border-radius: 4px; padding: 1px 6px; }
+  .ptext .ret { display: inline-flex; flex-wrap: wrap; }
+  .ptext .ret span { font-family: var(--font-mono); font-size: 12px; color: #232e3d; }
+  .ptext .ret span + span::before { content: "·"; padding: 0 5px; color: var(--undp-gray); }
 
-  /* intro */
+  /* How much potential misalignment, and of which type (step 12). */
+  .mini-lab { margin-bottom: 7px; font-size: 13px; font-weight: 600; color: #232e3d; }
+  .mini-cap { margin-top: 7px; font-size: 13px; color: var(--undp-gray); }
+  .mini-cap b { color: var(--undp-black); }
+  .kind-bar { display: flex; gap: 2px; height: 12px; }
+  .kind-bar i { display: block; height: 100%; }
+  .kind-bar i.apart, .kbar i { background-image: radial-gradient(circle, #d2432c 1.2px, transparent 1.45px); background-size: 3px 3px; }
+  .kind-bar i.rest { background: #e9e9e6; }
+  .kind-rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-100); }
+  .kind-rows li { display: grid; grid-template-columns: minmax(0, 1fr) 120px 40px; align-items: center; column-gap: 10px;
+    padding: 7px 0; border-bottom: 1px solid var(--border-100); font-size: 13px; color: #232e3d; }
+  .kind-rows b { text-align: right; font-variant-numeric: tabular-nums; }
+  .kbar { display: block; height: 9px; }
+  .kbar i { display: block; height: 100%; min-width: 3px; }
+
+  /* The example pair, shown only where it adds to the scene: plain rows
+     under a quiet label, each target marked with its document's colour as
+     on the brief's map; the rating as the brief's comparison draws it. */
+  .p-example { display: none; margin-top: 30px; }
+  body.show-example .p-example { display: block; }
+  .ex-head { margin: 0 0 8px; font-size: 13px; color: var(--undp-gray); }
+  .ex-rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-200); }
+  .ex-rows li { display: grid; grid-template-columns: 10px minmax(0, 1fr); column-gap: 12px; padding: 9px 0;
+    border-bottom: 1px solid var(--border-200); }
+  .sq { display: block; width: 10px; height: 10px; border-radius: 2px; }
+  .ex-rows .sq { margin-top: 5px; }
+  .ex-who { font-size: 13px; line-height: 1.4; color: var(--undp-gray); }
+  .ex-what { font-size: 15px; line-height: 1.45; color: #232e3d; }
+  .ex-line { font-size: 15px; line-height: 1.58; color: #232e3d; }
+  .ex-verdict { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; margin: 0 0 14px;
+    font-size: 15px; font-weight: 600; color: #232e3d; }
+  .ex-verdict .o { width: 10px; height: 10px; border: 2px solid #d2432c; border-radius: 50%; }
+  .ex-verdict .sep { color: var(--undp-gray); font-weight: 400; }
+  .ex-verdict .sub { font-weight: 400; }
+  .ex-cmp { display: flex; flex-direction: column; gap: 14px; margin: 0 0 16px; }
+  .ex-stop { position: relative; padding-left: 22px; }
+  .ex-stop .sq { position: absolute; top: 4px; left: 0; }
+  .ex-stop:first-child::after { content: ""; position: absolute; top: 18px; bottom: -14px; left: 4px;
+    border-left: 2px dashed #d2432c; }
+  .ex-label { font-family: var(--font-serif); font-size: 16px; font-weight: 600; line-height: 1.3; color: #232e3d; }
+  .ex-ai { margin: 0 0 3px; font-size: 13px; color: var(--undp-gray); }
+
+  /* Intro: one line and Start. */
   .intro { position: absolute; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
-    background: rgba(247,247,247,0.9); backdrop-filter: blur(3px); transition: opacity .6s var(--ease); }
+    background: rgba(255,255,255,0.96); transition: opacity .6s var(--ease); }
   .intro.gone { opacity: 0; pointer-events: none; }
   .intro .card { max-width: 540px; text-align: center; padding: 0 28px; }
-  .intro .eyebrow { font-size: 13px; font-weight: 600; color: var(--undp-gray); }
   .intro h1 { font-family: var(--font-serif); font-weight: 600; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.08; margin: 16px 0 14px; }
   .intro p { font-size: 16px; line-height: 1.6; color: var(--undp-gray); max-width: 46ch; margin: 0 auto 26px; }
   .intro .start { display: inline-flex; align-items: center; gap: 10px; background: var(--undp-blue); color: #fff;
     border: 0; border-radius: 0; padding: 13px 24px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .2s; }
   .intro .start:hover { background: var(--undp-blue-dark); }
-  .intro .auto { display: block; margin-top: 14px; font-size: 12px; color: var(--undp-gray); }
 
   @media (max-width: 820px) {
     .work { flex-direction: column; }
     .panel { width: auto; border-left: none; border-top: 1px solid var(--border-200); height: 46%; }
     .mapwrap { height: 54%; }
   }
-
-  /* ===== mini-visual atoms ===== */
-  .vstack { display: flex; flex-direction: column; gap: 11px; width: 100%; }
-  .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-  .doc-card { position: relative; border: 1px solid var(--border-200); border-radius: 8px; padding: 12px 13px; overflow: hidden; background: #fff; }
-  .doc-card .spine { display: none; }
-  .doc-card .abbr { font-size: 15px; font-weight: 700; margin-top: 4px; }
-  .doc-card .full { font-size: 10.5px; color: var(--undp-gray); line-height: 1.3; margin-top: 4px; }
-  .doc-card .conv { margin-top: 11px; display: flex; align-items: center; gap: 7px; min-height: 17px; }
-  .doc-card .conv img { height: 17px; width: auto; }
-  .doc-card .conv .cnt { font-size: 11.5px; color: var(--undp-gray); }
-  .chunk { border: 1px solid var(--border-200); border-radius: 8px; padding: 11px 13px; background: #fff; }
-  .chunk .ch-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .chunk .pg { font-size: 10.5px; color: var(--undp-gray); }
-  .txt-line { height: 6px; border-radius: 3px; background: var(--border-100); margin: 5px 0; }
-  .tag-pill { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 999px; }
-  .tag-keep { background: rgba(25,97,39,0.12); color: var(--align-high); }
-  .tag-drop { background: var(--undp-light); color: var(--undp-gray); }
-  .chunk.dropped { opacity: 0.55; }
-  .src-quote { background: var(--undp-paper); border: 1px solid var(--border-200); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; line-height: 1.45; color: var(--undp-black); width: 100%; }
-  .src-quote .lab { font-size: 11px; color: var(--undp-gray); display: block; margin-bottom: 6px; }
-  .src-quote .hl { background: rgba(4,104,177,0.14); border-radius: 3px; padding: 0 2px; box-shadow: inset 0 -1px 0 rgba(4,104,177,0.4); }
-  .flow-arrow { color: var(--border-300); font-size: 17px; line-height: 1; margin: 3px 0; text-align: center; }
-  .target-card { border: 1px solid var(--border-200); border-radius: 8px; padding: 13px 14px; width: 100%; background: #fff; }
-  .target-card .tc-doc { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
-  .target-card .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .target-card .tc-label { font-size: 11px; font-weight: 600; color: var(--undp-gray); }
-  .target-card .tc-text { font-size: 13px; line-height: 1.45; color: var(--undp-black); }
-  .prov { margin-top: 11px; padding-top: 9px; border-top: 1px solid var(--border-100); display: flex; align-items: center; gap: 8px; }
-  .prov .badge { font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
-  .prov .cleaned { background: rgba(180,83,9,0.12); color: var(--doc-nap); }
-  .prov small { font-size: 10.5px; color: var(--undp-gray); }
-  .claimchip { font-family: var(--font-mono); font-size: 11px; background: rgba(25,97,39,0.08); color: var(--align-high); border: 1px solid rgba(25,97,39,0.2); border-radius: 4px; padding: 1px 6px; }
-  .check-row { display: flex; align-items: center; gap: 9px; }
-  .check { width: 15px; height: 15px; border-radius: 50%; background: var(--align-high); color: #fff; font-size: 9px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
-  .stamp { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(25,97,39,0.3); background: rgba(25,97,39,0.06); color: var(--align-high); border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: 600; }
-  .detect-card { border: 1px solid var(--border-200); border-radius: 8px; padding: 14px 15px; width: 100%; background: #fff; }
-  .detect-card .dt-text { font-size: 14px; line-height: 1.55; color: var(--undp-black); }
-  .mark-num { background: rgba(4,104,177,0.14); box-shadow: inset 0 -1px 0 rgba(4,104,177,0.45); border-radius: 3px; padding: 0 3px; }
-  .mark-yr { background: rgba(180,83,9,0.16); box-shadow: inset 0 -1px 0 rgba(180,83,9,0.5); border-radius: 3px; padding: 0 3px; }
-  .flag-row { display: flex; gap: 9px; margin-top: 13px; flex-wrap: wrap; }
-  .flag { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-  .flag .d { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .flag.q { background: rgba(4,104,177,0.1); color: var(--undp-blue); }
-  .flag.t { background: rgba(180,83,9,0.12); color: var(--doc-nap); }
-  .chip-grid { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
-  .chip { font-size: 11.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-200); background: #fff; color: var(--undp-gray); }
-  .chip.on { background: rgba(13,148,136,0.12); border-color: rgba(13,148,136,0.4); color: #0d7a70; font-weight: 600; }
-  .field-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border-100); width: 100%; }
-  .field-row:last-child { border-bottom: none; }
-  .field-row .fk { flex: none; width: 84px; font-size: 10.5px; font-weight: 600; color: var(--undp-gray); padding-top: 2px; }
-  .field-row .fv { font-size: 12px; line-height: 1.4; color: var(--undp-black); }
-  .scale { width: 100%; }
-  .scale-marker { position: relative; height: 0; }
-  .scale-marker .pin { position: absolute; transform: translateX(-50%); top: -2px; }
-  .scale-marker .pin .v { font-size: 11px; font-weight: 700; color: var(--undp-black); white-space: nowrap; background: #fff; border: 1px solid var(--border-300); border-radius: 999px; padding: 3px 10px; box-shadow: var(--shadow-card); }
-  .scale-marker .pin .tick { width: 2px; height: 9px; background: var(--undp-black); margin: 2px auto 0; }
-  .scale-track { display: flex; gap: 5px; width: 100%; margin-top: 0; }
-  .scale-cap { font-size: 11.5px; color: var(--undp-gray); margin-bottom: 9px; text-align: center; }
-  .scale-cap b { color: var(--undp-black); font-weight: 600; }
-  .scale-seg.sel { box-shadow: 0 0 0 2.5px var(--undp-black); position: relative; z-index: 2; }
-  .scale-seg { flex: 1; text-align: center; font-size: 11px; font-weight: 600; color: #fff; padding: 7px 3px; border-radius: 4px; }
-  .scale-divider { display: flex; align-items: center; gap: 9px; margin: 14px 0 10px; }
-  .scale-divider .ln { flex: 1; height: 1px; background: var(--border-200); }
-  .scale-divider .or { font-size: 10.5px; color: var(--undp-gray); white-space: nowrap; }
-  .flagged-panel { border: 1px dashed var(--align-flagged); background: rgba(220,38,38,0.04); border-radius: 8px; padding: 11px 13px; width: 100%; }
-  .flagged-panel .fh { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--align-flagged); }
-  .flagged-panel .fh .o { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--align-flagged); }
-  .facet-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
-  .facet { font-size: 9.5px; font-weight: 700; border-radius: 4px; padding: 3px 8px; display: inline-flex; gap: 5px; align-items: center; }
-  .facet .fl { font-weight: 500; opacity: 0.7; }
-  .pair-cap { font-size: 11px; color: var(--undp-gray); margin-top: 8px; text-align: center; }
-  .pair-cap b { color: var(--undp-black); font-weight: 600; }
-  .gauge-row { display: flex; gap: 11px; width: 100%; }
-  .gauge { flex: 1; border: 1px solid var(--border-200); border-radius: 8px; padding: 11px; text-align: center; background: #fff; }
-  .gauge .gv { font-family: var(--font-serif); font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .gauge .gl { font-size: 10px; color: var(--undp-gray); margin-top: 2px; }
-  .wheel-legend { display: flex; flex-wrap: wrap; gap: 5px 14px; justify-content: center; font-size: 10.5px; color: var(--undp-gray); margin-top: 8px; }
-  .wheel-legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .wheel-legend .ln { width: 16px; height: 3px; border-radius: 2px; }
-  .mini-lab { font-size: 11px; font-weight: 600; color: var(--undp-gray); margin-bottom: 7px; }
-  .mini-cap { font-size: 11.5px; color: var(--undp-gray); margin-top: 7px; }
-  .mini-cap b { color: var(--undp-black); }
-  .conc-bar, .mech-bar { display: flex; gap: 3px; height: 15px; width: 100%; }
-  .conc-bar span, .mech-bar span { border-radius: 3px; }
-  .mech-leg { font-size: 10.5px; color: var(--undp-gray); margin-top: 7px; line-height: 1.5; }
-  .fin-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
-  .fin-row { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
-  .fin-prog { flex: 1; text-align: right; color: var(--undp-black); }
-  .fin-tgt { flex: 1; color: var(--undp-black); }
-  .fin-link { font-family: var(--font-mono); font-size: 9px; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
-  .fin-link.ok { background: rgba(25,97,39,0.1); color: var(--align-high); }
-  .fin-link.gap { background: rgba(220,38,38,0.08); color: var(--align-flagged); }
-  .fin-caveat { font-size: 10.5px; color: var(--undp-gray); margin-top: 11px; font-style: italic; line-height: 1.45; }
-  .impl-row { display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 0; border-bottom: 1px solid var(--border-100); font-size: 12px; color: var(--undp-black); }
-  .impl-row:last-child { border-bottom: none; }
-  .impl-status { margin-left: auto; font-size: 9px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
-  .impl-status.way { background: rgba(25,97,39,0.12); color: var(--align-high); }
-  .impl-status.mis { background: rgba(220,38,38,0.1); color: var(--align-flagged); }
+  @media (prefers-reduced-motion: reduce) {
+    .pstep, .pstep.on, .intro { transition: none; }
+  }
 </style>
 </head>
 <body class="show-example">
 
 <div class="topbar">
   <div class="brand">
-    <a href="/" target="_top" aria-label="Back to the CPC Analyzer home"><img src="/undp-logo.png" alt="UNDP"></a>
+    <a href="/es" target="_top" aria-label="Volver al inicio del Analizador de Coherencia de Políticas"><img src="/undp-logo.png" alt="UNDP"></a>
     <div class="div"></div>
-    <div class="ttl"><b>CPC Analyzer</b> <span>· How the analysis works</span></div>
+    <div class="ttl"><b>Analizador de Coherencia de Políticas</b> <span>· Cómo funciona el análisis</span></div>
   </div>
   <div class="topbar-right">
-    <a class="brief-link" href="/methodology-brief.es.html" target="_blank" rel="noopener" title="Open the printable 2-page summary">
-      <svg viewbox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M4 1.5h6L13 4.5v10H4z M10 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
-      2-page brief
+    <span class="mt-note">Traducción automática</span>
+    <a class="brief-link" href="/methodology-brief.es.html" target="_blank" rel="noopener" title="El método en dos páginas para imprimir">
+      <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M4 1.5h6L13 4.5v10H4z M10 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      Resumen de 2 páginas
     </a>
-    <button id="exToggle" class="ex-toggle" type="button" aria-pressed="true" title="Follow one real example through every step"><svg viewbox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 8s2.5-4.6 7-4.6S15 8 15 8s-2.5 4.6-7 4.6S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3"></path><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"></circle></svg>
-      <span class="lbl">Ver un ejemplo</span></button>
-    <div class="seg" role="group" aria-label="Detail level">
-      <button id="depthPlain" aria-pressed="true">Liso</button>
-      <button id="depthDeep" aria-pressed="false">Análisis profundo</button>
-    </div>
+    <button id="exToggle" class="ex-toggle" type="button" aria-pressed="true" title="Seguir un par de metas de Mongolia a lo largo de los pasos">
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 8s2.5-4.6 7-4.6S15 8 15 8s-2.5 4.6-7 4.6S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      <span class="lbl">Seguir un ejemplo</span>
+    </button>
   </div>
 </div>
 
 <div class="work">
   <div class="mapwrap" id="mapwrap">
-    <div class="board" id="board">
-      <svg class="edges" id="edges"><defs>
-        <marker id="arrow" markerwidth="9" markerheight="9" refx="6.5" refy="4.5" orient="auto" markerunits="userSpaceOnUse">
-          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#cbd3ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </marker>
-        <marker id="arrowF" markerwidth="9" markerheight="9" refx="6.5" refy="4.5" orient="auto" markerunits="userSpaceOnUse">
-          <path d="M1 1 L7 4.5 L1 8" fill="none" stroke="#ddd0b5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </marker>
-      </defs></svg>
-    </div>
+    <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+    <div id="sceneLabels" class="scene-labels" aria-hidden="true"></div>
+    <div id="sceneCap" class="scene-cap" aria-live="polite"></div>
     <div class="intro" id="intro">
       <div class="card">
-        <p class="eyebrow">Metodología · Cómo funciona</p>
-        <h1 class="serif">La canalización de análisis, paso a paso</h1>
-        <p>De un conjunto de documentos nacionales de política a un mapa de coherencia: cada fase, cada agente y cómo se conectan. El diagrama se construye a la izquierda mientras el panel explica cada paso en lenguaje claro.</p>
-        <button class="start" id="startBtn"><svg width="14" height="14" viewbox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"></path></svg>
-          Iniciar el recorrido</button>
-        <span class="auto">It begins automatically in a moment.</span>
-        <span class="auto">A worked example is threaded through every step; it can be switched off with <b>Follow an example</b> in the top bar.</span>
-        <span class="auto"><a href="/methodology-brief.es.html" target="_blank" rel="noopener" style="color:var(--undp-blue);text-decoration:none">A printable 2-page brief is also available</a></span>
+        <h1 class="serif">Cómo funciona el análisis</h1>
+        <p>De los documentos de política a la nota de coherencia, paso a paso.</p>
+        <button class="start" id="startBtn">
+          <svg width="14" height="14" viewBox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/></svg>
+          Comenzar
+        </button>
       </div>
     </div>
-    <div class="legend" aria-hidden="true">
-      <span class="li"><span class="sw ai"></span> AI step</span>
-      <span class="li"><span class="sw agent"></span> Specialist agent</span>
-      <span class="li"><span class="sw human"></span> Human step</span>
-    </div>
     <div class="controls">
-      <button class="cbtn" id="prev" aria-label="Previous" title="Previous (←)"><svg class="ico" viewbox="0 0 16 16"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
-      <button class="cbtn primary" id="play" aria-label="Play" title="Play / pause"><svg class="ico" id="playIco" viewbox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"></path></svg></button>
-      <button class="cbtn" id="next" aria-label="Next" title="Next (→)"><svg class="ico" viewbox="0 0 16 16"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+      <button class="cbtn" id="prev" aria-label="Anterior" title="Anterior (←)"><svg class="ico" viewBox="0 0 16 16"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="cbtn primary" id="play" aria-label="Reproducir" title="Reproducir / pausar"><svg class="ico" id="playIco" viewBox="0 0 16 16"><path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/></svg></button>
+      <button class="cbtn" id="next" aria-label="Siguiente" title="Siguiente (→)"><svg class="ico" viewBox="0 0 16 16"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="sep"></div>
       <div class="dots" id="dots"></div>
-      <div class="sep"></div>
-      <button class="cbtn" id="fit" aria-label="Fit whole diagram" title="Fit whole diagram"><svg class="ico" viewbox="0 0 16 16"><path d="M2 6 V2 H6 M10 2 H14 V6 M14 10 V14 H10 M6 14 H2 V10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
     </div>
   </div>
 
   <div class="panel" id="panel">
 
     <div class="pstep" data-i="0">
-      <p class="p-eyebrow ex"><span class="pp">Fase 1 · Extracción</span><span class="ps">Paso 01</span></p>
-      <h2 class="p-title serif">Subir los documentos de política</h2>
-      <p class="p-say">El método funciona para <strong>cualquier conjunto de documentos nacionales de política que establezcan metas</strong>. El usuario proporciona dos o más, cada uno como un <strong>archivo PDF, Word o de texto</strong> y etiquetado con su tipo. Ejemplos comunes son una <abbr title="Nationally Determined Contribution">NDC</abbr>, una <abbr title="National Biodiversity Strategy and Action Plan">NBSAP</abbr>, un <abbr title="National Adaptation Plan">NAP</abbr> o una meta de <abbr title="Land Degradation Neutrality target">LDN</abbr>, además de estrategias sectoriales.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="ex-label"><span class="dotm"></span> Example set · Mongolia</div>
-        <div class="doc-grid">
-        <div class="doc-card"><div class="spine" style="background:var(--doc-ndc)"></div><div class="abbr" style="color:var(--doc-ndc)">NDC</div><div class="full">Nationally Determined Contribution</div><div class="conv"><img src="/unfccc.png" alt="UNFCCC"><span class="cnt">27 targets</span></div></div>
-        <div class="doc-card"><div class="spine" style="background:var(--doc-nbsap)"></div><div class="abbr" style="color:var(--doc-nbsap)">NBSAP</div><div class="full">Biodiversity Strategy &amp; Action Plan</div><div class="conv"><img src="/cbd_logo.png" alt="CBD"><span class="cnt">20 targets</span></div></div>
-        <div class="doc-card"><div class="spine" style="background:var(--doc-nap)"></div><div class="abbr" style="color:var(--doc-nap)">NAP</div><div class="full">National Adaptation Plan</div><div class="conv"><span class="cnt">15 targets</span></div></div>
-        <div class="doc-card"><div class="spine" style="background:var(--doc-ldn)"></div><div class="abbr" style="color:var(--doc-ldn)">LDN +</div><div class="full">Land Degradation &amp; sectoral plans</div><div class="conv"><img src="/unccd.png" alt="UNCCD"><span class="cnt">optional</span></div></div>
-      </div></div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">Este recorrido sigue dos de los documentos de Mongolia: su <b>NBSAP</b> (biodiversidad) y su <b>NDC</b> (clima). Se rastrea una meta de cada uno hasta llegar a la conclusión.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Los documentos ingresan mediante <code>POST /api/extract</code>; el tipo de documento se registra por archivo. El ejemplo práctico utiliza el análisis real de Mongolia (NDC 36, NBSAP 20, NAP 15 metas).</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>doc-type tagged</span></div></div>
+      <h2 class="p-title serif">Cargar los documentos de política</h2>
+      <p class="p-say">El método funciona con cualquier conjunto de documentos nacionales de política que fijen metas. La persona usuaria carga dos o más, como <strong>archivos PDF, Word o de texto</strong>, e indica el tipo de cada documento, por ejemplo una <abbr title="Contribución Determinada a Nivel Nacional">NDC</abbr>, un <abbr title="Estrategia y Plan de Acción Nacional sobre Biodiversidad">NBSAP</abbr>, un <abbr title="Plan Nacional de Adaptación">NAP</abbr>, metas de <abbr title="Neutralidad en la Degradación de las Tierras">LDN</abbr> o una estrategia sectorial.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Los documentos entran por <code>POST /api/extract</code> y el tipo de documento se registra por archivo. El ejemplo de esta página es el análisis de Mongolia: 8 documentos y 178 metas.</p><div class="specs"><span>PDF</span><span>DOCX</span><span>TXT</span><span>tipo de documento por archivo</span></div></div>
     </div>
 
     <div class="pstep" data-i="1">
-      <p class="p-eyebrow ex"><span class="pp">Fase 1 · Extracción</span><span class="ps">Paso 02</span></p>
-      <h2 class="p-title serif">Lea cada página, conserve lo que importa</h2>
-      <p class="p-say">La herramienta lee cada documento <strong>página por página</strong>, incluidas las tablas, y realiza un seguimiento de dónde proviene cada pasaje. Los prólogos, anexos y texto estándar se dejan de lado, de modo que el trabajo minucioso se centra en los pasajes que realmente contienen compromisos.</p>
-      <div class="p-viz"><div class="vstack">
-        <div class="chunk"><div class="ch-head"><span class="pg">chunk 1 · pp. 1–4</span><span class="tag-pill tag-keep">Kept</span></div><div class="txt-line" style="width:92%"></div><div class="txt-line" style="width:100%"></div><div class="txt-line" style="width:74%"></div></div>
-        <div class="chunk"><div class="ch-head"><span class="pg">chunk 2 · pp. 5–9</span><span class="tag-pill tag-keep">Kept</span></div><div class="txt-line" style="width:100%"></div><div class="txt-line" style="width:84%"></div></div>
-        <div class="chunk dropped"><div class="ch-head"><span class="pg">chunk 3 · annex</span><span class="tag-pill tag-drop">Set aside</span></div><div class="txt-line" style="width:66%"></div></div>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Los analizadores conscientes de la página (<code>pymupdf</code>, <code>python-docx</code>) preservan los intervalos de página; el texto se divide en fragmentos de ~30k caracteres con una superposición de 2k. Luego, un filtro ligero de relevancia conserva o descarta cada fragmento, y es deliberadamente conservador.</p><div class="specs"><span>~30k chunks</span><span>2k overlap</span><span>keep-on-doubt</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la instrucción</p>
+      <h2 class="p-title serif">Leer cada documento página por página</h2>
+      <p class="p-say">Cada documento se lee <strong>página por página</strong>, tablas incluidas, y cada pasaje conserva su número de página. Los prólogos, anexos y textos estándar se dejan de lado, de modo que la extracción se concentra en los pasajes que fijan metas.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Analizadores que respetan las páginas (<code>pymupdf</code>, <code>python-docx</code>) conservan los rangos de páginas. El texto se divide en fragmentos de unos 30.000 caracteres con un solapamiento de 2000 caracteres, y un filtro ligero de pertinencia conserva o descarta cada fragmento, y lo conserva ante la duda.</p><div class="specs"><span>fragmentos de ~30k</span><span>solapamiento de 2k</span><span>conservar ante la duda</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La instrucción</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Sort one document chunk. Reply <code>KEEP</code> or <code>DROP</code>.</div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">Does this passage contain concrete policy targets or commitments, or is it preface, boilerplate or annex?</span> <code>{chunk}</code></div></div>
-          <div class="prow out"><span class="role out">Rule</span><div class="ptext">Defaults to <b>KEEP</b> whenever unsure, the cost is lost efficiency, never a missed target.</div></div>
+          <div class="prow"><span class="role sys">Sistema</span><div class="ptext">Clasifica un fragmento del documento. Responde <code>KEEP</code> o <code>DROP</code>.</div></div>
+          <div class="prow"><span class="role usr">Usuario</span><div class="ptext"><span class="lead">¿Contiene este pasaje metas o compromisos de política concretos, o es un prefacio, texto estándar o un anexo?</span> <code>{chunk}</code></div></div>
+          <div class="prow out"><span class="role out">Regla</span><div class="ptext">Ante la duda, <b>KEEP</b>: una lectura de más cuesta menos que una meta perdida.</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="2">
-      <p class="p-eyebrow ex"><span class="pp">Fase 1 · Extracción</span><span class="ps">Paso 03</span></p>
-      <h2 class="p-title serif">Extrae cada objetivo, palabra por palabra</h2>
-      <p class="p-say">De los pasajes pertinentes, cada <strong>meta de política</strong> se registra junto con la oración exacta de la que proviene. La redacción puede ajustarse ligeramente (eliminando una etiqueta suelta), pero nunca se reformula, resume ni embellece, y cada meta está etiquetada para mostrar cómo.</p>
-      <div class="p-viz"><div class="vstack" style="gap:6px">
-        <div class="src-quote"><span class="lab">SOURCE · NBSAP · Target 1</span>"<span class="hl">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</span>"</div>
-        <div class="flow-arrow">↓</div>
-        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.</div><div class="prov"><span class="badge cleaned">verbatim</span><small>recorded word for word</small></div></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · el segundo objetivo</p>
-        <div class="ex-pair">
-          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">"Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability."</div></div>
-        </div>
-        <p class="exb" style="margin-top:9px">Junto con el <b>NBSAP Target 1</b> anterior, este es el par rastreado a lo largo del recorrido, cada uno registrado palabra por palabra.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Un <em>contrato literal estricto</em>: <code>sourceText</code> se copia carácter por carácter; el <code>text</code> mostrado permite solo una limpieza determinista (eliminar una etiqueta numérica, volver a unir líneas partidas). Cada objetivo conserva sus fuentes y números de página.</p><div class="specs"><span>verbatim contract</span><span>sources[]</span><span>verbatim · cleaned · synthesis</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la instrucción</p>
+      <h2 class="p-title serif">Extraer cada meta, palabra por palabra</h2>
+      <p class="p-say">De los pasajes pertinentes, cada <strong>meta de política</strong> se registra con la frase exacta de la que procede. La redacción puede ordenarse ligeramente, por ejemplo quitando una etiqueta suelta, pero no se reformula, resume ni amplía, y cada meta lleva una marca que indica cómo se registró.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Un contrato literal estricto: <code>sourceText</code> se copia carácter por carácter; el <code>text</code> mostrado solo admite una limpieza determinista (quitar una etiqueta numérica, unir líneas cortadas). Cada meta conserva sus fuentes y números de página.</p><div class="specs"><span>contrato literal</span><span>sources[]</span><span>literal · limpiado · síntesis</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La instrucción</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Extract policy targets. Rules:<ul><li><b>texto fuente</b> = copiado textualmente, carácter por carácter</li><li><b>texto</b> = limpieza ligera solamente, sin reformulación ni resumen</li><li>every number, %, year or scope must already appear in the source</li></ul></div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext"><span class="lead">few-shot Mongolia examples</span> + <code>{chunk}</code></div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>text</span><span>sourceText</span><span>textCleanup</span><span>pageNumbers</span></span></div></div>
+          <div class="prow"><span class="role sys">Sistema</span><div class="ptext">Extrae las metas de política. Reglas:<ul><li><b>sourceText</b> = copiado literalmente, carácter por carácter</li><li><b>text</b> = solo una limpieza ligera, sin reformular ni resumir</li><li>cada número, %, año o alcance debe figurar ya en la fuente</li></ul></div></div>
+          <div class="prow"><span class="role usr">Usuario</span><div class="ptext"><span class="lead">ejemplos few-shot de Mongolia</span> + <code>{chunk}</code></div></div>
+          <div class="prow out"><span class="role out">Devuelve</span><div class="ptext"><span class="ret"><span>text</span><span>sourceText</span><span>textCleanup</span><span>pageNumbers</span></span></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="3">
-      <p class="p-eyebrow ex"><span class="pp">Fase 1 · Extracción</span><span class="ps">Paso 04</span></p>
-      <h2 class="p-title serif">Consolidar, luego verificar que no se haya inventado nada</h2>
-      <p class="p-say">Debido a que las secciones se superponen, la misma meta puede recogerse dos veces. Los duplicados se <strong>fusionan en una sola entrada</strong> (manteniendo todas sus citas de origen), y luego cada cifra, año y marco mencionado se <strong>verifica nuevamente con el documento original</strong>.</p>
-      <div class="p-viz"><div class="vstack" style="gap:9px">
-        <div class="target-card"><div class="tc-text">Restore <span class="claimchip">20,000 ha</span> of degraded pastureland <span class="claimchip">by 2030</span>.</div></div>
-        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"20,000 ha" found in source</span></div>
-        <div class="check-row"><span class="check">✓</span><span style="font-size:12px;color:var(--undp-black)">"2030" found in source</span></div>
-        <div class="stamp">Every claim traced to the source</div>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">La consolidación fusiona los casi duplicados (manteniendo cada fuente); los números contradictorios permanecen como objetivos separados. Luego, <code>validate_claim_grounding</code> se ejecuta localmente; una ausencia marca un <code>_provenanceFlag</code> que el panel muestra como una insignia de revisión.</p><div class="specs"><span>merge, keep sources</span><span>local validator</span><span>provenance flags</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la verificación</p>
+      <h2 class="p-title serif">Unir duplicados y verificar las cifras</h2>
+      <p class="p-say">Las secciones que se solapan pueden captar la misma meta dos veces. Los duplicados se <strong>unen en una sola entrada</strong> que conserva todas sus citas de origen, y cada cifra, año y marco mencionado se <strong>verifica con el documento original</strong>.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">La consolidación une los casi duplicados y conserva todas las fuentes; las metas con cifras distintas quedan separadas. Después, una verificación local (<code>validate_claim_grounding</code>) busca cada cifra en las citas de origen y, si no la encuentra, marca la meta para revisión (<code>_provenanceFlag</code>).</p><div class="specs"><span>unir, conservar fuentes</span><span>verificación local</span><span>marcada para revisión</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La verificación</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">Consolidate (LLM)</span><div class="ptext">Merge duplicates, preserve every source; keep contradicting numbers as separate targets.</div></div>
-          <div class="prow out"><span class="role code">Validate (code)</span><div class="ptext">for every <code>%</code>, year, <code>ha</code>, <code>tCO2e</code>… in the text:<br>  if it appears in no source quote → flag for review</div></div>
+          <div class="prow"><span class="role sys">Consolidar (LLM)</span><div class="ptext">Une los duplicados y conserva todas las fuentes; mantén separadas las metas con cifras distintas.</div></div>
+          <div class="prow out"><span class="role code">Validar (código)</span><div class="ptext">para cada <code>%</code>, año, <code>ha</code>, <code>tCO2e</code>… del texto:<br>&nbsp;&nbsp;si no aparece en ninguna cita de origen → marcar para revisión</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="13">
-      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Humano en el circuito</span><span class="ps">Revisión del objetivo</span></p>
-      <h2 class="p-title serif">Confirmar los objetivos extraídos</h2>
-      <p class="p-say">Antes de que se ejecute cualquier análisis, las metas extraídas se devuelven al usuario para su revisión. Cada una se <strong>verifica con respecto a su fuente</strong> y se conserva, elimina, corrige o complementa cuando el lector omitió algo. Nada avanza hasta que un revisor haya confirmado el conjunto, por lo que el análisis siempre comienza a partir de metas validadas.</p>
-      <div class="p-viz"><div class="vstack" style="gap:8px">
-        <div class="target-card"><div class="tc-doc"><span class="dot" style="background:var(--doc-nbsap)"></span><span class="tc-label">NBSAP · Target 1</span><span class="tag-pill tag-keep" style="margin-left:auto">Kept</span></div><div class="tc-text">By 2030, reduce biodiversity loss and maintain ecological integrity…</div></div>
-        <div class="target-card" style="opacity:.55"><div class="tc-doc"><span class="dot" style="background:var(--doc-nap)"></span><span class="tc-label">NAP · foreword line</span><span class="tag-pill tag-drop" style="margin-left:auto">Removed</span></div><div class="tc-text">Not a target. Removed by the reviewer.</div></div>
-        <div class="check-row"><span class="check" style="background:#a87f4a">+</span><span style="font-size:12px;color:var(--undp-black)">Add a target the extraction missed</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">La persona revisora de Mongolia mantiene <b>NBSAP Target 1</b> y <b>NDC Water resources 2</b>, verificando ambos con sus páginas de origen, antes de que comience la comparación.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Este es el paso de revisión de la extracción en el asistente de carga: los objetivos pueden conservarse, descartarse, editarse (texto y números de página) o añadirse manualmente. Los objetivos rechazados nunca pasan a las etapas de emparejamiento o alineación.</p><div class="specs"><span>human review</span><span>keep · edit · add</span><span>gates analysis</span></div></div>
+      <h2 class="p-title serif">Confirmar las metas</h2>
+      <p class="p-say">Antes de cualquier comparación, las metas extraídas vuelven a la persona usuaria. Cada una se <strong>verifica con su fuente</strong> y se conserva, corrige o elimina, y pueden añadirse las metas que la extracción haya omitido. El análisis solo parte de un conjunto confirmado.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Es el paso de revisión del asistente de carga: las metas pueden conservarse, descartarse, editarse (texto y números de página) o añadirse a mano. Las metas rechazadas no entran en los pasos de emparejamiento ni de calificación.</p><div class="specs"><span>revisión humana</span><span>conservar · editar · añadir</span><span>habilita el análisis</span></div></div>
     </div>
 
     <div class="pstep" data-i="4">
-      <p class="p-eyebrow an"><span class="pp">Fase 2 · Análisis</span><span class="ps">Paso 05</span></p>
-      <h2 class="p-title serif">Marcar lo que es medible y con plazos definidos</h2>
-      <p class="p-say">Para cada objetivo, la herramienta señala si contiene un <strong>resultado medible</strong> (una cifra, un porcentaje, una superficie) y si está <strong>delimitado en el tiempo</strong> (una fecha límite). Estos son indicadores tempranos de cuán preparado para la implementación está un compromiso, y se conservan las frases exactas.</p>
-      <div class="p-viz"><div class="vstack">
-        <div class="detect-card"><span class="lab" style="font-family:var(--font-mono);font-size:10px;color:var(--undp-gray);display:block;margin-bottom:8px">NDC · pastureland target</span><div class="dt-text">Reduce overgrazing on <span class="mark-num">50%</span> of degraded pastures <span class="mark-yr">by 2030</span>.</div></div>
-        <div class="flag-row"><span class="flag q"><span class="d"></span> Measurable: "50%"</span><span class="flag t"><span class="d"></span> Time-bound: "by 2030"</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">El objetivo de la <b>NBSAP</b> está sujeto a un plazo (<b>"para 2030"</b>). El objetivo hídrico de la <b>NDC</b> menciona tecnologías y resultados, pero no una única cifra principal, por lo que aquí se interpreta como cualitativo.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Los objetivos se evalúan en lotes de 12 para <code>isQuantitative</code> / <code>isTimeBound</code>, devolviendo las frases. Se excluyen las referencias administrativas ("Article 2"). Multilingüe, sin dependencias adicionales de NLP.</p><div class="specs"><span>batched ×12</span><span>phrase-level</span><span>multilingual</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la instrucción</p>
+      <h2 class="p-title serif">Anotar cifras y plazos</h2>
+      <p class="p-say">Para cada meta, la herramienta anota si contiene un <strong>resultado medible</strong> (una cifra, un porcentaje, una superficie) y si tiene <strong>plazo definido</strong> (un año o una fecha límite), y conserva las frases exactas. Ambos son indicadores tempranos de cuán preparado está un compromiso para su implementación.</p>
+      <div class="p-example">
+        <p class="ex-head">El par de ejemplo</p>
+        <ul class="ex-rows">
+          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Metas nacionales de biodiversidad para 2030 (NBSAP, presentadas al CDB)">NBSAP</abbr> · 1 Planificación espacial</p><p class="ex-what">Una fecha: “Para 2030”</p></div></li>
+          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Contribución Determinada a Nivel Nacional (NDC 3.0)">NDC</abbr> · Recursos hídricos 2</p><p class="ex-what">Ni cifra ni fecha</p></div></li>
+        </ul>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Las metas se revisan en lotes de 12 para <code>isQuantitative</code> e <code>isTimeBound</code>, y se devuelven las frases. Se excluyen las referencias administrativas (“Artículo 2”). Funciona en cualquier idioma, sin bibliotecas adicionales de procesamiento del lenguaje.</p><div class="specs"><span>lotes de 12</span><span>por frase</span><span>multilingüe</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La instrucción</p>
         <div class="prompt">
-          <div class="prow"><span class="role usr">User</span><div class="ptext">For each target, return:<ul><li><b>¿es cuantitativo?</b> un número / % / cantidad explícitos</li><li><b>¿está limitado en el tiempo?</b> un año o período de tiempo</li><li>ignore <code>Article 2</code> / <code>Target 3</code> references; return the exact phrases</li></ul></div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>isQuantitative</span><span>isTimeBound</span><span>phrases[]</span></span></div></div>
+          <div class="prow"><span class="role usr">Usuario</span><div class="ptext">Para cada meta, devuelve:<ul><li><b>isQuantitative?</b> un número / % / monto explícito</li><li><b>isTimeBound?</b> un año o plazo</li><li>ignora referencias como <code>Article 2</code> / <code>Target 3</code>; devuelve las frases exactas</li></ul></div></div>
+          <div class="prow out"><span class="role out">Devuelve</span><div class="ptext"><span class="ret"><span>isQuantitative</span><span>isTimeBound</span><span>phrases[]</span></span></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="5">
-      <p class="p-eyebrow an"><span class="pp">Fase 2 · Análisis</span><span class="ps">Paso 06</span></p>
-      <h2 class="p-title serif">Clasifique cada objetivo por categoría</h2>
-      <p class="p-say">Cada meta se puntúa con respecto a marcos de referencia publicados: los <strong>sectores del inventario de gases de efecto invernadero del <abbr title="Intergovernmental Panel on Climate Change">IPCC</abbr></strong>, la <strong>taxonomía <abbr title="Global Biodiversity Expenditure taxonomy (BIOFIN 2024)">GLOBE</abbr></strong> y las <strong>metas de resiliencia climática del Marco de los EAU para la Resiliencia Climática Global</strong> (la <abbr title="Global Goal on Adaptation">GGA</abbr>). Cada meta conserva una categoría <strong>principal</strong> más cualquier otra con la que se relacione claramente. Los enfoques son intercambiables: en el panel, el enfoque activo puede <strong>cambiarse con un clic</strong>, y las mismas metas se reagrupan bajo una taxonomía diferente mientras que la clasificación en sí no se vuelve a ejecutar. Cada país también puede ajustar las categorías o añadir las suyas propias.</p>
-      <div class="p-viz"><div style="width:100%"><div class="chip-grid">
-        <span class="chip on">Agriculture &amp; livestock</span><span class="chip on">Forest &amp; land use</span>
-        <span class="chip">Wetlands</span><span class="chip on">Grasslands &amp; soils</span>
-        <span class="chip">Coastal &amp; marine</span><span class="chip on">Climate mitigation</span>
-        <span class="chip">Water resources</span><span class="chip">Adaptation</span>
+      <h2 class="p-title serif">Clasificar cada meta por área de política</h2>
+      <p class="p-say">Cada meta se puntúa frente a marcos de referencia publicados, uno por lente: <strong>Biodiversidad</strong> (la taxonomía <abbr title="Taxonomía Global de Gasto en Biodiversidad (BIOFIN 2024)">GLOBE</abbr>), <strong>Mitigación climática</strong> (los sectores del inventario de gases de efecto invernadero del <abbr title="Grupo Intergubernamental de Expertos sobre el Cambio Climático">IPCC</abbr>), <strong>Adaptación climática</strong> (el Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial) y <strong>Derechos humanos</strong> (orientación del PNUD, borrador en revisión por personas expertas). Cada meta conserva un área principal y cualquier otra con la que se relacione claramente, de modo que la nota puede cambiar de lente sin un nuevo análisis. Un país puede añadir lentes propias.</p>
+      <div class="p-example">
+        <p class="ex-head">El par de ejemplo, con la lente de Biodiversidad</p>
+        <ul class="ex-rows">
+          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Metas nacionales de biodiversidad para 2030 (NBSAP, presentadas al CDB)">NBSAP</abbr> · 1 Planificación espacial</p><p class="ex-what">Planificación y financiación de la biodiversidad</p></div></li>
+          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Contribución Determinada a Nivel Nacional (NDC 3.0)">NDC</abbr> · Recursos hídricos 2</p><p class="ex-what">Uso sostenible</p></div></li>
+        </ul>
       </div>
-      <div class="lens-row" style="margin-top:14px">
-        <span class="lens-chip on">GLOBE</span>
-        <span class="lens-chip">IPCC sectors</span>
-        <span class="lens-chip">Climate resilience</span>
-        <span class="lens-chip">Country</span>
-      </div>
-      <p class="lens-cap"><span class="you-tag"><svg viewbox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M4 13c0-2.3 1.8-3.8 4-3.8s4 1.5 4 3.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg> Lente seleccionada por el usuario</span> El cambio reagrupa toda la vista, sin nuevo análisis.</p>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · bajo la perspectiva de GLOBE</p>
-        <div class="ex-pair">
-          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-nbsap)"></span> NBSAP · Target 1</div><div class="ex-txt">Primary category: <b>Biodiversity planning and finance</b></div></div>
-          <div class="ex-t"><div class="ex-doc"><span class="dot" style="background:var(--doc-ndc)"></span> NDC · Water resources 2</div><div class="ex-txt">Primary category: <b>Sustainable use</b></div></div>
-        </div>
-        <p class="exb" style="margin-top:9px">Cambiar a los sectores del IPCC o al conjunto propio de un país reagrupa ambos objetivos, sin necesidad de un nuevo análisis.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Una puntuación de relevancia (0–1) para cada <code>(objetivo × categoría)</code>; la categoría con la puntuación más alta se convierte en <code>primary</code>, y cualquier categoría por encima del umbral de relevancia se etiqueta como <code>relevant</code> (modo dual). Taxonomías: soluciones basadas en la naturaleza, sectores del IPCC, la taxonomía GLOBE con subcategorías, los siete temas de resiliencia climática del GGA (Marco de los EAU para la Resiliencia Climática Global, decisión 2/CMA.5), y objetivos de adaptación opcionales, todo configurable por país; una oficina de país puede definir sus propios lentes, como hizo Sri Lanka con sus nueve sectores de adaptación de la NDC 3.0 en lugar de los temas de la GGA y un lente de pérdidas y daños. Un lente con una sola categoría no tiene nada que clasificar, por lo que una meta cuenta en él solo por encima del umbral de relevancia. El paso que requiere más llamadas (<em>n × c</em> puntuaciones), por lo que los resultados se almacenan en caché.</p><div class="specs"><span>NBS</span><span>IPCC sectors</span><span>GLOBE</span><span>GGA</span><span>primary + relevant</span><span>cached</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la instrucción</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Una puntuación de pertinencia (0&ndash;1) para cada <code>(meta × categoría)</code>; la categoría con la puntuación más alta pasa a ser <code>primary</code> y las que superan el umbral de pertinencia se marcan como <code>relevant</code>. Lentes: la taxonomía GLOBE con sus subcategorías, los sectores del inventario de gases de efecto invernadero del IPCC, las siete metas de resiliencia climática del Objetivo Mundial de Adaptación (Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial, decisión 2/CMA.5) y nueve temas de derechos humanos, además de los objetivos de adaptación propios de un país cuando los aporta. Las soluciones basadas en la naturaleza están en pausa. Una oficina de país puede definir sus propias lentes, como hizo Sri Lanka con sus nueve sectores de adaptación de la NDC 3.0 en lugar del Objetivo Mundial de Adaptación y una lente de pérdidas y daños. Una lente con una sola categoría no tiene nada que ordenar, por lo que una meta solo cuenta en ella por encima del umbral de pertinencia. Es el paso con más llamadas (<em>n × c</em> puntuaciones), por lo que los resultados se guardan en caché.</p><div class="specs"><span>GLOBE</span><span>sectores del IPCC</span><span>GGA</span><span>derechos humanos</span><span>primary + relevant</span><span>en caché</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La instrucción</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Policy specialist. Categories: <code>{NBS · IPCC sectors · GLOBE · GGA, or the country's own set}</code></div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext">Category: <code>{name}</code> – <code>{description}</code><br>Target: <code>{target text}</code><br>How relevant is the target to this category?</div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext">a relevance <b>score</b> (0–1) per category – the highest becomes <code>primary</code>, others above the threshold are tagged <code>relevant</code></div></div>
+          <div class="prow"><span class="role sys">Sistema</span><div class="ptext">Especialista en políticas. Categorías: <code>{GLOBE · sectores del IPCC · GGA · derechos humanos, o el conjunto propio del país}</code></div></div>
+          <div class="prow"><span class="role usr">Usuario</span><div class="ptext">Categoría: <code>{name}</code> &ndash; <code>{description}</code><br>Meta: <code>{target text}</code><br>¿Qué tan pertinente es la meta para esta categoría?</div></div>
+          <div class="prow out"><span class="role out">Devuelve</span><div class="ptext">una <b>puntuación</b> de pertinencia (0&ndash;1) por categoría; la más alta pasa a ser <code>primary</code> y las demás por encima del umbral se marcan como <code>relevant</code></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="6">
-      <p class="p-eyebrow an"><span class="pp">Fase 2 · Análisis</span><span class="ps">Paso 07</span></p>
-      <h2 class="p-title serif">Compare cada objetivo en todos los documentos</h2>
-      <p class="p-say">La coherencia trata de cómo se relacionan los documentos <strong>diferentes</strong>, por lo que cada meta se empareja con cada meta de un documento <strong>diferente</strong>, nunca consigo misma. Se examina cada par; no se filtra nada de antemano, por lo que nunca se pasan por alto vínculos intersectoriales genuinos.</p>
-      <div class="p-viz"><svg id="pairSvg" viewbox="0 0 360 190" width="100%" role="img" aria-label="Targets in two documents linked by cross-document pairs" style="max-width:360px">
-        <text x="64" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0d7a70" font-weight="600">NBSAP</text>
-        <text x="296" y="16" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#0468b1" font-weight="600">NDC</text>
-        <g id="pairLines" stroke-linecap="round"></g><g id="pairNodesL"></g><g id="pairNodesR"></g>
-      </svg><p class="pair-cap"><b>1,560 pares</b> en este ejemplo · resaltado = el par de ejemplo</p></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">La meta de planificación espacial del <b>NBSAP</b> y la meta hídrica del <b>NDC</b> se convierten en <b>uno de los 1,560 pares</b>. Luego, la herramienta verifica si se refuerzan mutuamente o se desalinean.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">El producto cruzado de cada emparejamiento entre documentos diferentes, sin duplicados: 20×36 + 20×15 + 36×15 = 1,560. No se aplica ningún prefiltro, por lo que un vínculo intersectorial genuino nunca se descarta antes de que la evaluación lo examine.</p><div class="specs"><span>cross-document only</span><span>no pre-filter</span><span>de-duplicated</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la lógica</p>
+      <h2 class="p-title serif">Emparejar cada meta entre documentos</h2>
+      <p class="p-say">La coherencia trata de cómo se relacionan <strong>documentos distintos</strong>, por lo que cada meta se empareja con cada meta de los demás documentos y no con las metas de su propio documento. Se califica cada par, sin filtro previo, de modo que también se leen los vínculos entre sectores alejados.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">El producto cruzado de cada combinación de documentos distintos, contando cada par una vez: para los 8 documentos y 178 metas de Mongolia, 13.404 pares de metas (solo NBSAP × NDC son 20 × 36 = 720). No se aplica ningún filtro antes de la calificación.</p><div class="specs"><span>solo documentos distintos</span><span>sin filtro previo</span><span>cada par una vez</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La lógica</p>
         <div class="prompt">
-          <div class="prow"><span class="role code">Code (no LLM)</span><div class="ptext">group targets by document → take the Cartesian product of each <em>different-document</em> pairing → de-duplicate by pair.</div></div>
+          <div class="prow"><span class="role code">Código (sin LLM)</span><div class="ptext">agrupar las metas por documento → tomar el producto cartesiano de cada combinación de <em>documentos distintos</em> → eliminar pares duplicados.</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="7">
-      <p class="p-eyebrow an"><span class="pp">Fase 2 · Análisis</span><span class="ps">Paso 08 · Agente 1</span></p>
-      <h2 class="p-title serif">Desglosa cada objetivo en sus partes</h2>
-      <p class="p-say">Antes de que se comparen dos metas, un primer agente especialista, el <strong>Analista de Metas</strong>, desglosa cada una en cinco componentes claros: su objetivo, la acción propuesta, el ecosistema, quién es responsable y el resultado esperado. Comparar partes estructuradas significa que la alineación refleja la sustancia de la política, no la coincidencia de palabras.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="src-quote" style="background:#fff;margin-bottom:9px"><span class="lab">NDC · pastureland target</span>Establish collaborative management practices for pastures and expand pasture restoration.</div>
-        <div class="field-row"><span class="fk">Goal</span><span class="fv">Sustainable, collaborative pasture management</span></div>
-        <div class="field-row"><span class="fk">Action</span><span class="fv">Collaborative practices; expand restoration</span></div>
-        <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Pastures and grassland</span></div>
-        <div class="field-row"><span class="fk">Audience</span><span class="fv">Land managers, farmers</span></div>
-        <div class="field-row"><span class="fk">Outcome</span><span class="fv">More sustainable, more restored pasture</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · la meta de la NDC, desglosada</p>
-        <div style="margin-top:4px">
-          <div class="field-row"><span class="fk">Goal</span><span class="fv">Water-sector resilience and secure water availability</span></div>
-          <div class="field-row"><span class="fk">Action</span><span class="fv">Headwater protection and monitoring, plus water infrastructure: ponds, reservoirs, managed aquifer recharge, hydropower feasibility and flow transfer</span></div>
-          <div class="field-row"><span class="fk">Ecosystem</span><span class="fv">Rivers, groundwater, glaciers, lakes, wetlands, upstream basins</span></div>
-          <div class="field-row"><span class="fk">Audience</span><span class="fv">Local governments, private sector, industry; livestock and households</span></div>
-          <div class="field-row"><span class="fk">Outcome</span><span class="fv">More secure water; restored aquatic and wetland ecosystems</span></div>
-        </div>
-        <p class="exb" style="margin-top:9px">La infraestructura en el campo Acción es lo que la comparación sopesa frente al objetivo del NBSAP.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">El Agente 1 extrae cinco campos, estrictamente fácticos, sin inferencias más allá del texto objetivo. Separar el desglose (Agente 1) del juicio (Agente 2) mantiene las evaluaciones fundamentadas y coherentes entre países y marcos.</p><div class="specs"><span>Agent 1 · Target Analyst</span><span>5 fields</span><span>factual only</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · el prompt</p>
+      <h2 class="p-title serif">Descomponer cada meta en sus partes</h2>
+      <p class="p-say">Antes de comparar dos metas, un primer agente de IA, el <strong>Analista de Metas</strong>, descompone cada una en cinco partes: su objetivo, la acción propuesta, el ecosistema o área, quién es responsable y el resultado esperado. Comparar estas partes ancla la calificación en lo que cada meta se propone hacer.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">El Agente 1 extrae cinco campos, solo hechos, sin inferir nada más allá del texto de la meta. Separar la descomposición (Agente 1) de la calificación (Agente 2) mantiene las calificaciones ancladas y coherentes entre países y marcos.</p><div class="specs"><span>Agente 1 · Analista de Metas</span><span>5 campos</span><span>solo hechos</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La instrucción</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Target Analyst. Extract, factually, no inference beyond what the target states.</div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext">From <code>{target}</code>, extract:<ul><li><b>Objetivo / Propósito</b></li><li><b>Acción / Intervención</b></li><li><b>Ecosistema / Área</b></li><li><b>Público objetivo</b></li><li><b>Impacto / Resultado esperado</b></li></ul></div></div>
+          <div class="prow"><span class="role sys">Sistema</span><div class="ptext">Analista de Metas. Extrae los hechos, sin inferir más allá de lo que dice la meta.</div></div>
+          <div class="prow"><span class="role usr">Usuario</span><div class="ptext">De <code>{target}</code>, extrae:<ul><li><b>Objetivo / Propósito</b></li><li><b>Acción / Intervención</b></li><li><b>Ecosistema / Área</b></li><li><b>Público destinatario</b></li><li><b>Impacto / Resultado esperado</b></li></ul></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="8">
-      <p class="p-eyebrow an"><span class="pp">Fase 2 · Análisis</span><span class="ps">Paso 09 · Agente 2</span></p>
-      <h2 class="p-title serif">Evaluar qué tan bien se alinea un par</h2>
-      <p class="p-say">Un segundo agente, el <strong>Asesor de Alineación</strong>, recibe solo los dos desgloses y sitúa el par en una <strong>escala de cinco niveles</strong>, o activa una única marca de <strong>"Posible desalineación"</strong>, pero solo cuando puede identificarse una fricción real. Un vínculo meramente débil sigue siendo "Parcial". Cada juicio incluye una breve justificación.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="scale">
-          <p class="scale-cap">El lado positivo: <b>cuatro niveles</b>, de No a Alto</p>
-          <div class="scale-track">
-            <div class="scale-seg" style="background:var(--undp-gray)">No</div>
-            <div class="scale-seg" style="background:#9bbf6a">Partial</div>
-            <div class="scale-seg" style="background:var(--align-medium)">Medium</div>
-            <div class="scale-seg" style="background:var(--align-high)">High</div>
-          </div>
+      <h2 class="p-title serif">Calificar cada par de metas</h2>
+      <p class="p-say">Un segundo agente de IA, el <strong>Asesor de Alineación</strong>, recibe solo las dos descomposiciones y califica el par: alineación fuerte, moderada o parcial, o sin relación clara. Califica un par como <strong>posible desalineación</strong> solo cuando puede nombrar cómo interactúan las dos metas: un recurso compartido, el mismo lugar, o que una haga más difícil alcanzar la otra. Un vínculo débil queda como parcial. Cada calificación lleva una breve explicación.</p>
+      <div class="p-example">
+        <p class="ex-head">El par de ejemplo</p>
+        <p class="ex-verdict"><span class="o" aria-hidden="true"></span>Posible desalineación<span class="sep">·</span><span class="sub">Competencia por recursos: tierra</span><span class="sep">·</span><span class="sub">Manejable</span></p>
+        <div class="ex-cmp">
+          <div class="ex-stop"><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><p class="ex-who">Metas nacionales de biodiversidad para 2030</p><p class="ex-label">1 Planificación espacial</p></div>
+          <div class="ex-stop"><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><p class="ex-who">Contribución Determinada a Nivel Nacional</p><p class="ex-label">Recursos hídricos 2</p></div>
         </div>
-        <div class="scale-divider"><span class="ln"></span><span class="or">or, when a friction is named</span><span class="ln"></span></div>
-        <div class="flagged-panel">
-          <div class="fh"><span class="o"></span> Potential misalignment</div>
-          <div class="facet-row">
-            <span class="facet" style="background:rgba(217,119,6,0.12);color:#b45309"><span class="fl">Mechanism</span> Delivery friction</span>
-            <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
-            <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
-          </div>
-        </div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · el veredicto</p>
-        <div class="ex-verdict"><span class="o"></span> Potential misalignment</div>
-        <div class="ex-facets">
-          <span class="facet" style="background:rgba(234,88,12,0.12);color:#ea580c"><span class="fl">Mechanism</span> Resource competition</span>
-          <span class="facet" style="background:var(--undp-light);color:var(--undp-black)"><span class="fl">Manageability</span> Manageable</span>
-          <span class="facet" style="background:rgba(4,104,177,0.1);color:var(--undp-blue)"><span class="fl">Confidence</span> Medium</span>
-        </div>
-        <p class="exb" style="margin-top:10px">Ambos objetivos apoyan la protección y la planificación de los ecosistemas, pero el NDC también menciona instalaciones de acumulación de agua, estanques de riego, canales y riego de pastizales, que pueden competir con los ecosistemas que protege el objetivo del NBSAP. La zonificación, las salvaguardias de caudales ambientales y una ubicación sensible a la biodiversidad mantendrían su alineación.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Se ejecuta en <code>gpt-5.4</code> (Azure privado, temperatura 0 para resultados reproducibles). Niveles ninguno / bajo ("Parcial") / medio / alto / marcado, mostrados como <strong>"Posible desalineación"</strong>. Una marca añade mecanismo, capacidad de gestión y confianza, de modo que un revisor vea <em>por qué</em> un par fue marcado en lugar de solo un número de gravedad.</p><div class="specs"><span>Agent 2 · gpt-5.4</span><span>5 levels + 3 facets</span><span>low concurrency</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la instrucción</p>
+        <p class="ex-ai">Explicación de la IA · Confianza media</p>
+        <p class="ex-line">Ambas metas apoyan la protección y la planificación de los ecosistemas, pero la NDC también menciona instalaciones de acumulación de agua, estanques de riego, canales y tuberías, riego de pastizales, suministro de agua a los hogares, y retención y transferencia condicionales de caudales en cuencas fluviales específicas, que pueden competir con el objetivo de la meta del NBSAP de mantener los ecosistemas naturales y prevenir un mayor deterioro en todo el territorio mediante la planificación del uso de la tierra.</p>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Funciona con <code>gpt-5.4</code> (Azure OpenAI, temperatura 0 para resultados repetibles). La cadena de análisis guarda <code>none</code>, <code>low</code>, <code>medium</code>, <code>high</code> o <code>flagged</code>; la nota los muestra como sin relación clara, alineación parcial, moderada y fuerte, y posible desalineación. Una posible desalineación registra además su tipo, su manejabilidad y la confianza, para que quien revisa vea por qué se asignó.</p><div class="specs"><span>Agente 2 · gpt-5.4</span><span>5 niveles + 3 facetas</span><span>temperatura 0</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La instrucción</p>
         <div class="prompt">
-          <div class="prow"><span class="role sys">System</span><div class="ptext">Compare two target decompositions. Choose a level: <code>none</code> / <code>low</code> / <code>medium</code> / <code>high</code>, or <code>flagged</code>.<ul><li>Marcar <b>solo</b> cuando se pueda nombrar una fricción específica (un recurso compartido, el mismo lugar, una que socava a otra)</li><li>un vínculo meramente débil → <b>bajo</b>, no señalado</li></ul>If flagged, also return:<ul><li><b>mecanismo</b>: conflicto de objetivos · competencia por recursos · fricción en la implementación</li><li><b>manejabilidad</b>: manejable · fundamental</li><li><b>confianza</b>: baja · media · alta</li></ul></div></div>
-          <div class="prow"><span class="role usr">User</span><div class="ptext">A: <code>{decomposition A}</code><br>B: <code>{decomposition B}</code></div></div>
-          <div class="prow out"><span class="role out">Returns</span><div class="ptext"><span class="ret"><span>alignment</span><span>mechanism</span><span>manageability</span><span>confidence</span><span>rationale</span></span><br><span class="lead" style="font-size:11px">shown to users as "Potential misalignment"</span></div></div>
+          <div class="prow"><span class="role sys">Sistema</span><div class="ptext">Compara dos descomposiciones de metas. Elige un nivel: <code>none</code> / <code>low</code> / <code>medium</code> / <code>high</code>, o <code>flagged</code>.<ul><li>Usa <code>flagged</code> <b>solo</b> cuando puedas nombrar una interacción concreta (un recurso compartido, el mismo lugar, que una meta socave a la otra)</li><li>un vínculo apenas débil → <b>low</b>, no <code>flagged</code></li></ul>Si es <code>flagged</code>, devuelve también:<ul><li><b>mechanism</b>: <code>goal_conflict</code> · <code>resource_competition</code> · <code>delivery_friction</code></li><li><b>manageability</b>: manejable · fundamental</li><li><b>confidence</b>: baja · media · alta</li></ul></div></div>
+          <div class="prow"><span class="role usr">Usuario</span><div class="ptext">A: <code>{decomposition A}</code><br>B: <code>{decomposition B}</code></div></div>
+          <div class="prow out"><span class="role out">Devuelve</span><div class="ptext"><span class="ret"><span>alignment</span><span>mechanism</span><span>manageability</span><span>confidence</span><span>rationale</span></span><br><span class="lead">en la nota se muestra como “Posible desalineación”</span></div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="9">
-      <p class="p-eyebrow sy"><span class="pp">Fase 3 · Síntesis</span><span class="ps">Paso 10</span></p>
-      <h2 class="p-title serif">Puntúelo y trace el panorama completo</h2>
-      <p class="p-say">Por último, sin más intervención de IA, los juicios individuales se agregan en <strong>puntuaciones de coherencia</strong> entre cada par de documentos, además de un recuento simple de <strong>cuántos pares están señalados</strong> para un examen más detallado. Estos alimentan el panel: la rueda de coherencia, los mapas de calor de alineación y los desgloses temáticos.</p>
-      <div class="p-viz"><div class="vstack" style="align-items:center;gap:10px">
-        <div class="gauge-row"><div class="gauge"><div class="gv">70%</div><div class="gl">NDC ↔ NBSAP coherency</div></div><div class="gauge"><div class="gv">19</div><div class="gl">pairs flagged (of 720)</div></div></div>
-        <svg id="wheelSvg" viewbox="0 0 320 320" width="210" height="210" role="img" aria-label="Coherence wheel" style="overflow:visible"></svg>
-        <div class="wheel-legend"><span><span class="ln" style="background:var(--align-high)"></span> Aligned</span><span><span class="ln" style="background:repeating-linear-gradient(90deg,var(--align-flagged) 0 4px,transparent 4px 7px)"></span> Potential misalignment</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · dónde se ubica</p><p class="exb">El par de ejemplo es <b>1 de 19 señalado</b> entre la NDC y la NBSAP. Los otros <b>701 de 720</b> pares se sitúan en la escala positiva (660 de ellos de nivel medio o alto), por lo que una señalización apenas modifica la puntuación de <b>70%</b>, pero ahora es visible en la rueda y está lista para su revisión.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx"><code>Puntuación = (3·high + 2·medium + 1·low) / (3·possible) × 100</code>. Para el NDC y el NBSAP de Mongolia, eso es 70% en 720 pares, de los cuales 19 están marcados para revisión. Todas las métricas derivadas se calculan localmente, cero llamadas al modelo.</p><div class="specs"><span>coherency score</span><span>chord wheel · heatmap</span><span>computed locally</span></div></div>
+      <h2 class="p-title serif">Reunir las calificaciones</h2>
+      <p class="p-say">Sin más IA, se cuentan las calificaciones: la proporción de pares de metas que están <strong>alineados</strong> (alineación fuerte o moderada), parcialmente alineados o que muestran una <strong>posible desalineación</strong>, para todo el conjunto, para cada par de documentos y para cada área de política. Estas proporciones son las que muestra la nota de coherencia.</p>
+      <div class="p-example">
+        <p class="ex-head">El par de ejemplo</p>
+        <p class="ex-line">Entre la NDC y el NBSAP, el 92&nbsp;% de los 720 pares de metas están alineados y el 3&nbsp;% muestra una posible desalineación. Este par es 1 de esos 19.</p>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Los recuentos se calculan localmente, sin llamadas a modelos. «Alineados» cuenta la alineación fuerte y la moderada. Para Mongolia: el 66&nbsp;% de 13.404 pares de metas están alineados, el 29&nbsp;% parcialmente alineados y el 5&nbsp;% muestra una posible desalineación.</p><div class="specs"><span>proporciones de pares de metas</span><span>por par de documentos</span><span>por área de política</span><span>cálculo local</span></div></div>
     </div>
 
     <div class="pstep" data-i="10">
-      <p class="p-eyebrow sy"><span class="pp">Fase 3 · Síntesis</span><span class="ps">Paso 11</span></p>
-      <h2 class="p-title serif">Sacar a la superficie los patrones recurrentes</h2>
-      <p class="p-say">En cada par, la herramienta muestra <strong>cuánta</strong> Posible desalineación existe y <strong>de qué tipo</strong> es. Se presenta como una indicación de dónde mirar primero: una invitación a la revisión, nunca un veredicto. Cada resultado está <strong>asistido por IA y es rastreable al texto fuente</strong>, y la interpretación final recae en los expertos nacionales.</p>
-      <div class="p-viz"><div style="width:100%">
-        <p class="mini-lab">Cuánto está marcado</p>
-        <div class="conc-bar"><span style="flex:.05;background:var(--align-flagged)"></span><span style="flex:.95;background:var(--border-200)"></span></div>
-        <p class="mini-cap">Aproximadamente <b>1 de cada 20 pares</b> está marcado para revisión (671 de 13,404). La mayoría de los pares están alineados, por lo que las marcas indican dónde centrar la atención.</p>
-        <p class="mini-lab" style="margin-top:16px">¿Qué tipo es?</p>
-        <div class="mech-bar"><span style="flex:.32;background:var(--mech-resource)"></span><span style="flex:.59;background:var(--mech-delivery)"></span><span style="flex:.09;background:var(--mech-goal)"></span></div>
-        <p class="mech-leg"><b style="color:var(--mech-resource)">●</b> Recursos en competencia 32%   <b style="color:var(--mech-delivery)">●</b> Implementación 59%   <b style="color:var(--mech-goal)">●</b> Objetivos en conflicto 9%</p>
+      <h2 class="p-title serif">Encontrar temas recurrentes</h2>
+      <p class="p-say">En el conjunto de pares, una síntesis de IA agrupa los pares alineados y los posiblemente desalineados en <strong>temas recurrentes</strong>, y cada posible desalineación se cuenta por tipo. Ambos muestran dónde mirar primero; la interpretación final corresponde a las personas expertas nacionales.</p>
+      <div class="p-viz"><div>
+        <p class="mini-lab">Pares de metas con posible desalineación</p>
+        <div class="kind-bar"><i class="apart" style="width:5%"></i><i class="rest" style="width:95%"></i></div>
+        <p class="mini-cap"><b>5&nbsp;%</b> de los pares de metas de Mongolia (671 de 13.404)</p>
+        <p class="mini-lab" style="margin-top:20px">Tipos de posible desalineación</p>
+        <ul class="kind-rows">
+          <li><span>Entrega y coordinación</span><span class="kbar"><i style="width:59%"></i></span><b>59&nbsp;%</b></li>
+          <li><span>Competencia por recursos</span><span class="kbar"><i style="width:32%"></i></span><b>32&nbsp;%</b></li>
+          <li><span>Objetivos en conflicto</span><span class="kbar"><i style="width:9%"></i></span><b>9&nbsp;%</b></li>
+        </ul>
       </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">En el emparejamiento de NDC y NBSAP, <b>19 de 720</b> pares están señalados, y la mayoría son del tipo de <b>implementación</b>. El par de ejemplo es una señal de <b>recursos</b>: coordinar la infraestructura hídrica con la planificación espacial lo facilitaría.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Una capa de síntesis lee la combinación de mecanismos y pone de relieve la Posible desalineación recurrente entre pares de documentos, además de indicaciones prudentes sobre vías, ancladas en evidencia visible, nunca prescriptivas. En el corpus de Mongolia, la proporción señalada es de aproximadamente el 5%, distribuida entre muchos objetivos en lugar de unos pocos.</p><div class="specs"><span>flagged share</span><span>mechanism mix</span><span>hedged pointers</span></div></div>
+      <div class="p-example">
+        <p class="ex-head">El par de ejemplo</p>
+        <p class="ex-line">De las 19 posibles desalineaciones entre la NDC y el NBSAP, 12 corresponden a entrega y coordinación y 7 a competencia por recursos. Este par es 1 de esas 7; el recurso implicado es la tierra.</p>
+      </div>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Un paso de síntesis lee la mezcla de tipos y los pares que la componen, y agrupa temas recurrentes entre pares de documentos; el panel de un tema puede añadir un punto de partida sugerido por la IA, anclado en la evidencia mostrada. En el conjunto de Mongolia, el 5&nbsp;% de los pares de metas muestra una posible desalineación, y el 52&nbsp;% de ellos involucra solo a 7 metas.</p><div class="specs"><span>temas recurrentes</span><span>mezcla de tipos</span><span>puntos de partida sugeridos por la IA</span></div></div>
     </div>
 
     <div class="pstep" data-i="14">
-      <p class="p-eyebrow"><span class="pp" style="background:#a87f4a">Humano en el circuito</span><span class="ps">Retroalimentación</span></p>
-      <h2 class="p-title serif">Califique las perspectivas para mejorarlas</h2>
-      <p class="p-say">Cada juicio de IA en el panel puede ser calificado. Un <strong>pulgar hacia arriba o hacia abajo</strong>, con una nota opcional, registra dónde la lectura fue útil y dónde se quedó corta. La retroalimentación es anónima y se almacena, y <strong>sirve de base para ejecuciones futuras</strong>, de modo que el análisis mejora con el tiempo.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="target-card"><div class="tc-text" style="font-size:12px">"Both targets support ecosystem protection and planning, but the NDC also names water infrastructure that can compete with the ecosystems the NBSAP target protects…"</div>
-          <div class="prov" style="justify-content:space-between">
-            <span style="font-size:11.5px;color:var(--undp-gray)">Was this assessment helpful?</span>
-            <span style="display:inline-flex;gap:9px;align-items:center">
-              <svg width="15" height="15" viewbox="0 0 16 16" aria-hidden="true"><path d="M4 7h2v7H4z" fill="#196127"></path><path d="M6.5 7l2.3-3.6c.6-.1 1.2.4 1.2 1V6.4h2.7c.7 0 1.2.6 1 1.3l-.7 3.6c-.1.5-.6.9-1.1.9H6.5z" fill="#196127"></path></svg>
-              <svg width="15" height="15" viewbox="0 0 16 16" aria-hidden="true"><path d="M4 2h2v7H4z" fill="var(--align-flagged)"></path><path d="M6.5 9l2.3 3.6c.6.1 1.2-.4 1.2-1V9.6h2.7c.7 0 1.2-.6 1-1.3l-.7-3.6c-.1-.5-.6-.9-1.1-.9H6.5z" fill="var(--align-flagged)"></path></svg>
-              <span style="font-size:11px;color:var(--undp-blue)">Add a note</span>
-            </span>
-          </div>
-        </div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico</p><p class="exb">Un revisor que no esté de acuerdo en que los objetivos de agua y ordenación territorial entren en conflicto puede <b>calificar negativamente esta justificación</b> y registrar el motivo. La respuesta se registra con respecto a este texto exacto e informa la siguiente ejecución.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">La retroalimentación se captura sobre las justificaciones de pares de objetivos y las síntesis de pares de documentos (<code>POST /api/feedback</code>) en un libro mayor de solo anexado vinculado al texto exacto de la IA, de modo que una calificación siga siendo interpretable incluso después de que la canalización se vuelva a ejecutar.</p><div class="specs"><span>thumbs + note</span><span>anonymous</span><span>append-only ledger</span></div></div>
+      <h2 class="p-title serif">Calificar las explicaciones de la IA</h2>
+      <p class="p-say">Cada explicación de la IA en la nota puede calificarse con un <strong>pulgar arriba o abajo</strong> y una nota opcional. Las calificaciones son anónimas y se guardan junto al texto exacto al que se refieren, de modo que quien revisa ve dónde una lectura ayudó y dónde se quedó corta, y el equipo puede usarlas para mejorar las ejecuciones siguientes.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Las calificaciones se registran en las explicaciones de pares de metas, los resúmenes de pares de documentos y los resúmenes de temas (<code>POST /api/feedback</code>) en un registro de solo anexado, vinculado al texto exacto de la IA, de modo que una calificación sigue siendo interpretable tras volver a ejecutar la cadena de análisis.</p><div class="specs"><span>pulgar + nota</span><span>anónimo</span><span>registro de solo anexado</span></div></div>
     </div>
 
     <div class="pstep" data-i="11">
-      <p class="p-eyebrow sy"><span class="pp">Fase 3 · Ejecución</span><span class="ps">Paso 12 · Nivel 2</span></p>
-      <h2 class="p-title serif">Siga las finanzas</h2>
-      <p class="p-say">El mismo método compara la descripción de cada programa de una <strong>revisión del gasto presupuestario</strong> con el texto de las metas, mostrando dónde el gasto revisado se alinea con la ambición y dónde la ambición no tiene ninguna línea presupuestaria alineada.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="fin-list">
-          <div class="fin-row"><span class="fin-prog">Pasture management programme</span><span class="fin-link ok">se alinea →</span><span class="fin-tgt">Pasture restoration target</span></div>
-          <div class="fin-row"><span class="fin-prog">Soil &amp; fodder programme</span><span class="fin-link ok">se alinea →</span><span class="fin-tgt">Sustainable agriculture</span></div>
-          <div class="fin-row"><span class="fin-prog" style="color:var(--undp-gray)">– no programme –</span><span class="fin-link gap">sin línea alineada →</span><span class="fin-tgt">Wetland restoration target</span></div>
-        </div>
-        <p class="fin-caveat">Un <abbr title="budget expenditure review">BER</abbr> cubre solo los programas en la revisión cargada, un subconjunto del gasto nacional. La revisión identifica el gasto; cada vínculo programa-meta lo genera la comparación de descripciones de la IA del Tracker, no la revisión.</p>
-      </div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Nivel 2, finanzas. <abbr title="budget expenditure review">BER</abbr> los programas se convierten en seudoobjetivos y pasan por el mismo flujo de trabajo de clasificar → descomponer → alinear; una perspectiva de financiamiento vincula los programas y las acciones reportadas por categoría compartida. El «gasto alineado» de una meta suma los programas cuyas descripciones se alinean con ella (volumen relativo, nunca suficiencia del financiamiento); un programa respalda cada meta con la que se alinea, por lo que las cifras por meta se superponen mientras que los totales por documento cuentan cada programa una sola vez. Implementado para Mongolia y Panamá.</p><div class="specs"><span>Level 2 · finance</span><span>same workflow</span><span>Mongolia · Panama (BER)</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la reutilización</p>
+      <h2 class="p-title serif">Comparar los programas presupuestarios con las metas</h2>
+      <p class="p-say">Los mismos pasos comparan los programas de una <strong>Revisión del Gasto en Biodiversidad (BER)</strong> con las metas y muestran qué metas tienen un programa correspondiente en el gasto revisado.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Nivel 2, finanzas. Los programas de la BER se convierten en pseudometas y pasan por los mismos pasos de clasificación, descomposición y calificación. El gasto correspondiente de una meta suma los programas cuyas descripciones se alinean con ella: un volumen relativo, no una medida de suficiencia del financiamiento. Un programa cuenta para cada meta con la que se alinea, por lo que las cifras por meta se solapan, mientras que los totales por documento cuentan cada programa una vez. Una BER solo abarca los programas que revisa, una parte del gasto nacional; identifica el gasto, y cada vínculo con una meta procede de la comparación de descripciones hecha por la IA. Disponible para Mongolia y Panamá.</p><div class="specs"><span>Nivel 2 · finanzas</span><span>mismos pasos</span><span>Mongolia · Panamá</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La reutilización</p>
         <div class="prompt">
-          <div class="prow"><span class="role code">Same workflow</span><div class="ptext">BER programme → <em>pseudo-target</em> → classify → Agent 1 decompose → Agent 2 align against each policy target.</div></div>
+          <div class="prow"><span class="role code">Mismo flujo</span><div class="ptext">programa de la BER → <em>pseudometa</em> → clasificar → el Agente 1 descompone → el Agente 2 califica frente a cada meta de política.</div></div>
         </div>
       </div>
     </div>
 
     <div class="pstep" data-i="12">
-      <p class="p-eyebrow sy"><span class="pp">Fase 3 · Ejecución</span><span class="ps">Paso 13 · Nivel 3</span></p>
-      <h2 class="p-title serif">Seguimiento de la implementación</h2>
-      <p class="p-say">También compara las <strong>acciones reportadas</strong> (de los informes de transparencia y los informes nacionales) con los compromisos: qué está <strong>en curso</strong> y dónde una acción reportada va en contra de un objetivo.</p>
-      <div class="p-viz"><div style="width:100%">
-        <div class="target-card" style="margin-bottom:10px"><div class="tc-doc"><span class="dot" style="background:var(--doc-nap)"></span><span class="tc-label">Commitment · pasture restoration</span></div></div>
-        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Rotational grazing programme <span class="impl-status way">Under way</span></div>
-        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--doc-btr);flex:none"></span> Community pasture agreements <span class="impl-status way">Under way</span></div>
-        <div class="impl-row"><span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--align-flagged);flex:none"></span> Feed-import subsidy <span class="impl-status mis">Potential misalignment</span></div>
-      </div></div>
-      <div class="p-example"><div class="ex-card"><p class="exl"><span class="dotm"></span> Ejemplo práctico · en resumen</p><p class="exb">El recorrido siguió un par, la meta de planificación espacial del NBSAP y la meta hídrica del NDC, desde la carga hasta un hallazgo de Coherencia de políticas señalado y listo para revisión. Los niveles 2 y 3 aplican los mismos pasos a los presupuestos y las acciones reportadas allí donde existan esos datos.</p></div></div>
-      <div class="p-note p-tech"><p class="nl">Técnico</p><p class="tx">Nivel 3, entrega. Las medidas reportadas (<abbr title="Biennial Transparency Report">BTR</abbr>, informes nacionales) se convierten en seudoobjetivos mediante el mismo flujo de trabajo de dos agentes; una instrucción adaptada pregunta si una medida "implementa directamente, apoya parcialmente o no tiene relación con" cada objetivo. En curso.</p><div class="specs"><span>Level 3 · delivery</span><span>BTR · <abbr title="Seventh National Report to the CBD">NR7</abbr></span><span>in progress</span></div></div>
-      <div class="p-note p-deep"><p class="nl">Análisis profundo · la pregunta</p>
+      <h2 class="p-title serif">Comparar las acciones reportadas con las metas</h2>
+      <p class="p-say">Los mismos pasos comparan las acciones reportadas en los <strong>Informes Bienales de Transparencia (BTR)</strong> y en los informes nacionales con las metas: a qué metas responden las acciones reportadas y dónde una acción está posiblemente desalineada con una meta.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Nivel 3, implementación. Las medidas reportadas (BTR y los informes nacionales, como el séptimo informe nacional al Convenio sobre la Diversidad Biológica, NR7) se convierten en pseudometas con los mismos pasos de dos agentes; una instrucción adaptada pregunta si una medida implementa directamente, apoya parcialmente o no tiene relación con cada meta. Las acciones reportadas son la propia información del país, una mirada a la implementación. Disponible para Mongolia y Panamá; el NR7, para Mongolia.</p><div class="specs"><span>Nivel 3 · implementación</span><span>BTR · NR7</span><span>Mongolia · Panamá</span></div></div>
+      <div class="p-note p-deep"><p class="nl">La pregunta</p>
         <div class="prompt">
-          <div class="prow"><span class="role usr">Adapted Agent 2</span><div class="ptext">Does this reported measure <b>directly implement</b>, <b>partially support</b>, or have <b>no relationship to</b> the target?</div></div>
+          <div class="prow"><span class="role usr">Agente 2 adaptado</span><div class="ptext">¿Esta medida reportada <b>implementa directamente</b>, <b>apoya parcialmente</b> o <b>no tiene relación con</b> la meta?</div></div>
         </div>
       </div>
     </div>
@@ -771,148 +535,46 @@
   </div>
 </div>
 
+<script src="methodology-scene.js"></script>
 <script>
 (function () {
-  var DOCC = { ndc: "#0468b1", nbsap: "#0d9488", nap: "#b45309" };
-  // map nodes, one per panel step
+  // The walkthrough's steps in order; i is the panel's data-i.
   var NODES = [
-    { i: 0,  ph: "ex", t: "Subir documentos",       b: "Entrada · documentos de políticas" },
-    { i: 1,  ph: "ex", t: "Leer cada página",        b: "Lectura con reconocimiento de página" },
-    { i: 2,  ph: "ex", t: "Extraer textualmente",       b: "Palabra por palabra" },
-    { i: 3,  ph: "ex", t: "Consolidar y verificar",   b: "Combinar · verificación de afirmaciones" },
-    { i: 13, ph: "an", kind: "human", t: "Confirmar las metas", b: "Mantener · editar · agregar" },
-    { i: 4,  ph: "an", t: "Medible y con plazos definidos",     b: "Cuantitativo · con plazos definidos" },
-    { i: 5,  ph: "an", t: "Clasificar por categoría",   b: "NBS · IPCC · GLOBE · GGA · intercambiable" },
-    { i: 6,  ph: "an", t: "Comparar entre documentos",    b: "Cada par entre documentos" },
-    { i: 7,  ph: "an", t: "Descomponer",              b: "5 campos estructurados", agent: "Agent 1" },
-    { i: 8,  ph: "an", t: "Evaluar la alineación",       b: "5 niveles, o una bandera", agent: "Agent 2" },
-    { i: 9,  ph: "sy", t: "Puntuar y mapear",            b: "Coherencia · rueda" },
-    { i: 10, ph: "sy", t: "Patrones recurrentes",     b: "Concentración y tipo" },
-    { i: 14, ph: "sy", kind: "human", t: "Calificar las perspectivas", b: "Pulgares · nota" },
-    { i: 11, ph: "sy", t: "Seguir las finanzas",     b: "Revisión presupuestaria (BER)", level: "L2" },
-    { i: 12, ph: "sy", t: "Seguimiento de la implementación",   b: "BTR · NR7", level: "L3" }
+    { i: 0,  ph: "ex", t: "Cargar los documentos" },
+    { i: 1,  ph: "ex", t: "Leer cada página" },
+    { i: 2,  ph: "ex", t: "Extraer metas textuales" },
+    { i: 3,  ph: "ex", t: "Unir y verificar cifras" },
+    { i: 13, ph: "ex", kind: "human", t: "Confirmar las metas" },
+    { i: 4,  ph: "an", t: "Anotar cifras y plazos" },
+    { i: 5,  ph: "an", t: "Clasificar por área" },
+    { i: 6,  ph: "an", t: "Emparejar entre documentos" },
+    { i: 7,  ph: "an", t: "Descomponer en 5 partes" },
+    { i: 8,  ph: "an", t: "Calificar cada par" },
+    { i: 9,  ph: "sy", t: "Reunir calificaciones" },
+    { i: 10, ph: "sy", t: "Hallar temas recurrentes" },
+    { i: 14, ph: "sy", kind: "human", t: "Calificar explicaciones" },
+    { i: 11, ph: "sy", t: "Programas presupuestarios", level: "L2" },
+    { i: 12, ph: "sy", t: "Acciones reportadas", level: "L3" }
   ];
-  // lane layout. array order = visual order = play order; n.i is the stable id used by panels + edges.
-  var COL = 200, NW = 178, NH = 66;
-  var LANE = { ex: 40, an: 226, sy: 412 };
-  var IDX = { ex: 0, an: 0, sy: 0 };
-  NODES.forEach(function (n) { n.x = 30 + IDX[n.ph] * COL; n.y = LANE[n.ph]; IDX[n.ph]++; });
-  var byI = {}, AIDX = {}; NODES.forEach(function (n, k) { byI[n.i] = n; AIDX[n.i] = k; });
-
-  var EDGES = [
-    [0,1],[1,2],[2,3],[3,13,"cross","Targets","confirmed"],
-    [13,4],[4,5],[5,6],[6,7],[7,8],[8,9,"cross","Coherence","5-level + facets"],
-    [9,10],[10,14],[8,11,"feed"],[8,12,"feed"],[14,5,"fb","Feedback","improves future analysis"]
-  ];
-
-  var board = document.getElementById("board");
-  var edgesSvg = document.getElementById("edges");
-  var mapwrap = document.getElementById("mapwrap");
   var dotsWrap = document.getElementById("dots");
   var psteps = Array.prototype.slice.call(document.querySelectorAll(".pstep"));
   var N = NODES.length;
-
-  // build node elements
-  NODES.forEach(function (n, k) {
-    var el = document.createElement("div");
-    el.className = "node " + n.ph + (n.agent ? " agent" : "") + (n.kind === "human" ? " human" : "");
-    el.style.left = n.x + "px"; el.style.top = n.y + "px";
-    var badge = n.kind === "human" ? '<span class="htag">Human</span>'
-      : (n.agent ? '<span class="atag">' + n.agent + "</span>" : (n.level ? '<span class="ltag">' + n.level + "</span>" : ""));
-    var num = n.kind === "human"
-      ? '<span class="nnum"><svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 13.5c0-2.6 2-4.2 4.5-4.2s4.5 1.6 4.5 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>'
-      : '<span class="nnum">' + ("0" + (n.i + 1)).slice(-2) + '</span>';
-    el.innerHTML = badge + num + '<span class="ntext"><span class="nt">' + n.t + '</span><span class="nb">' + n.b + "</span></span>";
-    el.addEventListener("click", function () { stop(); goTo(k, true); });
-    board.appendChild(el);
-    n.el = el;
-  });
-
-  // phase bands
-  var PH = { ex: "Extracción", an: "Análisis", sy: "Síntesis y entrega" };
-  var PHK = { ex: "Documentos → metas", an: "Metas → coherencia", sy: "Patrones, financiamiento y ejecución" };
-  var bands = {};
-  Object.keys(PH).forEach(function (ph) {
-    var ns = NODES.filter(function (n) { return n.ph === ph; });
-    var minX = Math.min.apply(null, ns.map(function (n) { return n.x; })) - 22;
-    var maxX = Math.max.apply(null, ns.map(function (n) { return n.x + NW; })) + 22;
-    var top = ns[0].y - 16, bot = ns[0].y + NH + 16;
-    var band = document.createElement("div");
-    band.className = "band " + ph;
-    band.style.left = minX + "px"; band.style.top = top + "px"; band.style.width = (maxX - minX) + "px"; band.style.height = (bot - top) + "px";
-    board.insertBefore(band, board.firstChild);
-    var label = document.createElement("div");
-    label.className = "band-label " + ph;
-    label.style.left = minX + "px"; label.style.top = (top - 64) + "px";
-    label.innerHTML = '<span class="k">' + PH[ph] + '</span><span class="n serif">' + PHK[ph] + "</span>";
-    board.appendChild(label);
-    bands[ph] = { band: band, label: label };
-  });
-
-  // edges + artifact labels
-  EDGES.forEach(function (e) {
-    var a = byI[e[0]], b = byI[e[1]], feed = e[2] === "feed", cross = e[2] === "cross", fb = e[2] === "fb";
-    var sx = a.x + NW, sy = a.y + NH / 2, tx = b.x, ty = b.y + NH / 2;
-    var mx = (sx + tx) / 2;
-    var d = "M " + sx + " " + sy + " C " + mx + " " + sy + " " + mx + " " + ty + " " + (tx - 8) + " " + ty;
-    var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    p.setAttribute("d", d); p.setAttribute("class", "edge" + (feed ? " feed" : "") + (fb ? " fb" : ""));
-    p.setAttribute("marker-end", "url(#" + (feed || fb ? "arrowF" : "arrow") + ")");
-    var len = p.getTotalLength(); p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
-    p.dataset.stage = Math.max(AIDX[e[0]], AIDX[e[1]]);
-    edgesSvg.appendChild(p); e.el = p;
-    if ((cross || fb) && e[3]) {
-      var lab = document.createElement("div");
-      lab.className = fb ? "fb-lab" : "elabel";
-      lab.style.left = mx + "px"; lab.style.top = ((sy + ty) / 2) + "px";
-      lab.innerHTML = fb ? e[3] : (e[3] + ' <span class="dt">· ' + e[4] + "</span>");
-      board.appendChild(lab); e.lab = lab; e.labStage = Math.max(AIDX[e[0]], AIDX[e[1]]);
-    }
-  });
-
-  var bw = Math.max.apply(null, NODES.map(function (n) { return n.x + NW; })) + 40;
-  var bh = LANE.sy + NH + 40;
-  board.style.width = bw + "px"; board.style.height = bh + "px";
-  edgesSvg.setAttribute("width", bw); edgesSvg.setAttribute("height", bh);
-
-  // ---- transform ----
-  var view = { s: 1, tx: 0, ty: 0 };
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function apply(animate) { board.classList.toggle("animating", !!animate && !reduce); board.style.transform = "translate(" + view.tx + "px," + view.ty + "px) scale(" + view.s + ")"; }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-  function VW() { return mapwrap.clientWidth; } function VH() { return mapwrap.clientHeight; }
-  function fitNodes(list, animate) {
-    var x0 = Math.min.apply(null, list.map(function (n) { return n.x; })) - 34;
-    var x1 = Math.max.apply(null, list.map(function (n) { return n.x + NW; })) + 34;
-    var y0 = Math.min.apply(null, list.map(function (n) { return n.y; })) - 60;
-    var y1 = Math.max.apply(null, list.map(function (n) { return n.y + NH; })) + 30;
-    var s = clamp(Math.min((VW() - 80) / (x1 - x0), (VH() - 120) / (y1 - y0)), 0.25, 1.15);
-    var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
-    view.s = s; view.tx = VW() / 2 - s * cx; view.ty = VH() / 2 - s * cy; apply(animate !== false);
-  }
 
   // ---- state ----
   var cur = 0;
   function render() {
-    NODES.forEach(function (n, k) { n.el.classList.toggle("shown", k <= cur); n.el.classList.toggle("active", k === cur); });
-    EDGES.forEach(function (e) {
-      var on = parseInt(e.el.dataset.stage, 10) <= cur; e.el.classList.toggle("drawn", on);
-      if (e.lab) e.lab.classList.toggle("shown", e.labStage <= cur);
-    });
-    var actPh = NODES[cur].ph, shown = {}; NODES.forEach(function (n, k) { if (k <= cur) shown[n.ph] = 1; });
-    Object.keys(bands).forEach(function (ph) {
-      bands[ph].band.classList.toggle("shown", !!shown[ph]); bands[ph].label.classList.toggle("shown", !!shown[ph]);
-      bands[ph].band.classList.toggle("active", ph === actPh);
-    });
     psteps.forEach(function (p) { p.classList.toggle("on", +p.dataset.i === NODES[cur].i); });
-    Array.prototype.forEach.call(dotsWrap.children, function (d, i) { d.setAttribute("aria-current", i === cur ? "true" : "false"); d.classList.toggle("seen", i <= cur); });
+    Array.prototype.forEach.call(dotsWrap.children, function (d, i) {
+      if (i === cur) d.setAttribute("aria-current", "step"); else d.removeAttribute("aria-current");
+      d.classList.toggle("seen", i < cur);
+    });
     document.getElementById("prev").disabled = cur === 0;
+    if (window.MethodScene) window.MethodScene.go(cur, '<span class="sc-step">Paso ' + (cur + 1) + ' de ' + N + '</span><span class="sc-phase-name">' + phaseOf(NODES[cur]) + "</span>");
     try { localStorage.setItem("cpc_phases2_stage", String(cur)); } catch (e) {}
   }
-  function goTo(i, animate) {
+  function goTo(i) {
     cur = clamp(i, 0, N - 1); render();
-    // keep every node up to the active one framed, so the build is visible
-    fitNodes(NODES.slice(0, cur + 1), animate);
   }
   function next() { if (cur < N - 1) goTo(cur + 1, true); else stop(); }
   function prev() { if (cur > 0) goTo(cur - 1, true); }
@@ -923,55 +585,32 @@
   function start() { if (cur >= N - 1) goTo(0, true); document.getElementById("playIco").innerHTML = '<rect x="4" y="3" width="3" height="10" rx="1" fill="currentColor"/><rect x="9" y="3" width="3" height="10" rx="1" fill="currentColor"/>'; timer = setInterval(function () { if (cur >= N - 1) stop(); else next(); }, 3600); }
   function stop() { if (timer) { clearInterval(timer); timer = null; } document.getElementById("playIco").innerHTML = '<path d="M5 3 L13 8 L5 13 Z" fill="currentColor"/>'; }
 
-  for (var k = 0; k < N; k++) { (function (j) { var b = document.createElement("button"); b.setAttribute("aria-label", "Step " + (j + 1)); b.addEventListener("click", function () { stop(); goTo(j, true); }); dotsWrap.appendChild(b); })(k); }
+  // Numbered steps, a gap where the phase changes; the reader's place is filled in.
+  function phaseOf(node) {
+    if (node.kind === "human") return "Intervención humana";
+    if (node.level === "L2") return "Nivel 2 · Finanzas";
+    if (node.level === "L3") return "Nivel 3 · Implementación";
+    return { ex: "Extracción", an: "Análisis", sy: "Síntesis" }[node.ph];
+  }
+  for (var k = 0; k < N; k++) { (function (j) {
+    var b = document.createElement("button");
+    b.textContent = String(j + 1);
+    b.setAttribute("aria-label", "Paso " + (j + 1) + ": " + NODES[j].t);
+    b.title = NODES[j].t;
+    if (NODES[j].kind === "human") b.className = "human";
+    if (j > 0 && NODES[j].ph !== NODES[j - 1].ph) b.classList.add("phase-start");
+    b.addEventListener("click", function () { stop(); goTo(j, true); });
+    dotsWrap.appendChild(b);
+  })(k); }
 
   document.getElementById("next").addEventListener("click", function () { stop(); next(); });
   document.getElementById("prev").addEventListener("click", function () { stop(); prev(); });
   document.getElementById("play").addEventListener("click", function () { playing() ? stop() : start(); });
-  document.getElementById("fit").addEventListener("click", function () { stop(); cur = N - 1; render(); fitNodes(NODES, true); });
   window.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { stop(); next(); } else if (e.key === "ArrowLeft") { stop(); prev(); } });
 
-  var dP = document.getElementById("depthPlain"), dD = document.getElementById("depthDeep");
-  function depth(m) { document.body.classList.toggle("show-deep", m === "deep"); dP.setAttribute("aria-pressed", String(m === "plain")); dD.setAttribute("aria-pressed", String(m === "deep")); }
-  dP.addEventListener("click", function () { depth("plain"); }); dD.addEventListener("click", function () { depth("deep"); });
 
   var exT = document.getElementById("exToggle");
-  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); });
-
-  // ---- diagrams ----
-  function buildPairs() {
-    var L = document.getElementById("pairNodesL"), R = document.getElementById("pairNodesR"), G = document.getElementById("pairLines");
-    var lx = 64, rx = 296, top = 34, gap = 24, nL = 6, nR = 6;
-    function nd(x, y, c) { var e = document.createElementNS("http://www.w3.org/2000/svg", "circle"); e.setAttribute("cx", x); e.setAttribute("cy", y); e.setAttribute("r", 4.5); e.setAttribute("fill", "#fff"); e.setAttribute("stroke", c); e.setAttribute("stroke-width", 2); return e; }
-    var ly = [], ry = [];
-    for (var i = 0; i < nL; i++) { ly.push(top + i * gap); L.appendChild(nd(lx, top + i * gap, DOCC.nbsap)); }
-    for (var j = 0; j < nR; j++) { ry.push(top + j * gap); R.appendChild(nd(rx, top + j * gap, DOCC.ndc)); }
-    [[0,1],[0,3],[1,1],[2,4],[3,2],[3,5],[4,0],[5,3],[2,2],[1,4]].forEach(function (lk) {
-      var p = document.createElementNS("http://www.w3.org/2000/svg", "path"); var x1 = lx + 4.5, y1 = ly[lk[0]], x2 = rx - 4.5, y2 = ry[lk[1]], mx = (x1 + x2) / 2;
-      p.setAttribute("d", "M " + x1 + " " + y1 + " C " + mx + " " + y1 + " " + mx + " " + y2 + " " + x2 + " " + y2); p.setAttribute("fill", "none");
-      var hot = lk[0] === 1 && lk[1] === 1; p.setAttribute("stroke", hot ? DOCC.ndc : "#cbd5d1"); p.setAttribute("stroke-width", hot ? 2.2 : 1.1); p.setAttribute("opacity", hot ? 0.95 : 0.5); G.appendChild(p);
-    });
-  }
-  function buildWheel() {
-    var svg = document.getElementById("wheelSvg"); var NS = "http://www.w3.org/2000/svg";
-    var cx = 160, cy = 160, R = 124, band = 9, TAU = Math.PI * 2, gap = 6 * Math.PI / 180;
-    var docs = [{ id: "ndc", s: "NDC", c: DOCC.ndc, n: 7 }, { id: "nbsap", s: "NBSAP", c: DOCC.nbsap, n: 6 }, { id: "nap", s: "NAP", c: DOCC.nap, n: 5 }];
-    var tot = docs.reduce(function (a, d) { return a + d.n; }, 0), av = TAU - gap * docs.length, cur2 = -gap / 2, ang = {};
-    function pol(r, a) { var t = a - Math.PI / 2; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; }
-    function arc(r, a0, a1) { var p0 = pol(r, a0), p1 = pol(r, a1), lg = (a1 - a0) > Math.PI ? 1 : 0; return "M " + p0[0] + " " + p0[1] + " A " + r + " " + r + " 0 " + lg + " 1 " + p1[0] + " " + p1[1]; }
-    docs.forEach(function (d) {
-      var sp = av * (d.n / tot), a0 = cur2 + gap, a1 = a0 + sp, pd = sp * 0.14, i0 = a0 + pd, i1 = a1 - pd;
-      for (var i = 0; i < d.n; i++) { var f = d.n === 1 ? 0.5 : i / (d.n - 1); ang[d.id + i] = i0 + (i1 - i0) * f; }
-      var ap = document.createElementNS(NS, "path"); ap.setAttribute("d", arc(R - band / 2, a0, a1)); ap.setAttribute("fill", "none"); ap.setAttribute("stroke", d.c); ap.setAttribute("stroke-width", band); svg.appendChild(ap);
-      var md = (a0 + a1) / 2, lp = pol(R + 15, md), tx = document.createElementNS(NS, "text"); tx.setAttribute("x", lp[0]); tx.setAttribute("y", lp[1]);
-      var cv = Math.cos(md - Math.PI / 2); tx.setAttribute("text-anchor", cv > 0.1 ? "start" : cv < -0.1 ? "end" : "middle"); tx.setAttribute("dominant-baseline", "middle");
-      tx.setAttribute("font-size", "12"); tx.setAttribute("font-weight", "600"); tx.setAttribute("font-family", "var(--font-sans)"); tx.setAttribute("fill", d.c); tx.textContent = d.s; svg.appendChild(tx);
-      cur2 = a1;
-    });
-    var prs = [["ndc0","nbsap1","a"],["ndc2","nbsap3","a"],["ndc4","nap1","a"],["nbsap0","nap2","a"],["ndc1","nap0","a"],["ndc5","nbsap4","a"],["nbsap2","nap3","a"],["ndc3","nbsap5","f"],["ndc6","nap4","f"],["nbsap0","ndc4","a"]];
-    var rE = R - band - 6; prs.sort(function (p) { return p[2] === "f" ? 1 : -1; });
-    prs.forEach(function (pr) { var aA = ang[pr[0]], aB = ang[pr[1]]; if (aA == null || aB == null) return; var A = pol(rE, aA), B = pol(rE, aB), c1 = pol(rE * 0.16, aA), c2 = pol(rE * 0.16, aB); var p = document.createElementNS(NS, "path"); p.setAttribute("d", "M " + A[0] + " " + A[1] + " C " + c1[0] + " " + c1[1] + " " + c2[0] + " " + c2[1] + " " + B[0] + " " + B[1]); p.setAttribute("fill", "none"); p.setAttribute("stroke-linecap", "round"); var f = pr[2] === "f"; p.setAttribute("stroke", f ? "#dc2626" : "#196127"); p.setAttribute("stroke-width", f ? 1.6 : 2.2); if (f) p.setAttribute("stroke-dasharray", "5 4"); p.setAttribute("opacity", f ? 0.7 : 0.5); svg.insertBefore(p, svg.firstChild); });
-  }
+  exT.addEventListener("click", function () { var on = document.body.classList.toggle("show-example"); exT.setAttribute("aria-pressed", String(on)); if (window.MethodScene) window.MethodScene.refresh(); });
 
   // ---- intro / boot ----
   var intro = document.getElementById("intro"), booted = false, autoTimer = null;
@@ -979,12 +618,13 @@
   document.getElementById("startBtn").addEventListener("click", boot);
 
   function init() {
-    depth("plain");
-    buildPairs(); buildWheel();
-    cur = 0; render(); goTo(0, false);
+    if (window.MethodScene) window.MethodScene.init();
+    // A link can open one step directly (#step=8), without the intro or autoplay.
+    var m = /step=(\d+)/.exec(window.location.hash);
+    if (m) { booted = true; intro.classList.add("gone"); goTo(parseInt(m[1], 10) - 1); return; }
+    cur = 0; render();
     autoTimer = setTimeout(boot, 2800);
   }
-  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { fitNodes(NODES.slice(0, cur + 1), false); }, 130); });
   if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
 })();
 </script>
