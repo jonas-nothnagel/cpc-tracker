@@ -107,3 +107,5 @@ python/output/*/*-pseudo-targets-preview.md
 # Agent, design-tool and local dev folders: never published
 .impeccable/
 .superpowers/
+EXPERIMENT_HANDOFF.md
+sri-lanka-feedback.md
