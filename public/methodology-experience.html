@@ -102,6 +102,8 @@
   .sl .n { font-weight: 600; color: var(--undp-black); font-variant-numeric: tabular-nums; }
   .sl.sl-doc { font-size: 13px; color: var(--undp-black); }
   .sl.sl-doc .n { margin-left: 4px; font-weight: 600; color: var(--undp-gray); }
+  .sl.sl-doc.sl-tight { font-size: 12px; }
+  .sl.sl-doc.sl-tight .nm { -webkit-line-clamp: 5; }
   .sl.sl-cluster { max-width: 190px; white-space: normal; font-size: 12.5px; color: var(--undp-black); }
   .sl.sl-cluster .n { margin-right: 3px; }
   .sl.sl-legend { font-size: 14px; color: var(--undp-black); }
@@ -146,7 +148,7 @@
   .sl.sl-legend-small { font-size: 12.5px; white-space: normal; }
   .sl .parts2 { display: flex; gap: 18px; }
   .sl .pcard { width: 320px; padding: 12px 14px; background: #fff; border: 1px solid var(--border-200); white-space: normal; }
-  .sl .pcard dl { display: grid; grid-template-columns: 64px 1fr; gap: 6px 10px; margin: 8px 0 0; }
+  .sl .pcard dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 10px; margin: 8px 0 0; }
   .sl .pcard dt { font-size: 12px; font-weight: 600; color: var(--undp-gray); }
   .sl .pcard dd { display: -webkit-box; overflow: hidden; margin: 0; font-size: 12.5px; line-height: 1.35; color: var(--undp-black);
     -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
@@ -389,8 +391,8 @@
       <div class="p-example">
         <p class="ex-head">The example pair</p>
         <ul class="ex-rows">
-          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="National Biodiversity Strategy and Action Plan">NBSAP</abbr> · 1 Spatial planning</p><p class="ex-what">A date: “By 2030”</p></div></li>
-          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Nationally Determined Contribution">NDC</abbr> · Water resources 2</p><p class="ex-what">Neither a figure nor a date</p></div></li>
+          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="National biodiversity targets for 2030 (NBSAP, as filed with the CBD)">NBSAP</abbr> · 1 Spatial planning</p><p class="ex-what">A date: “By 2030”</p></div></li>
+          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Nationally Determined Contribution (NDC 3.0)">NDC</abbr> · Water resources 2</p><p class="ex-what">Neither a figure nor a date</p></div></li>
         </ul>
       </div>
       <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">Targets are checked in batches of 12 for <code>isQuantitative</code> and <code>isTimeBound</code>, and the phrases are returned. Administrative references (“Article 2”) are excluded. Works in any language, with no extra language-processing libraries.</p><div class="specs"><span>batches of 12</span><span>phrase-level</span><span>multilingual</span></div></div>
@@ -408,8 +410,8 @@
       <div class="p-example">
         <p class="ex-head">The example pair, under the Biodiversity lens</p>
         <ul class="ex-rows">
-          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="National Biodiversity Strategy and Action Plan">NBSAP</abbr> · 1 Spatial planning</p><p class="ex-what">Biodiversity planning and finance</p></div></li>
-          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Nationally Determined Contribution">NDC</abbr> · Water resources 2</p><p class="ex-what">Sustainable use</p></div></li>
+          <li><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="National biodiversity targets for 2030 (NBSAP, as filed with the CBD)">NBSAP</abbr> · 1 Spatial planning</p><p class="ex-what">Biodiversity planning and finance</p></div></li>
+          <li><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><div><p class="ex-who"><abbr title="Nationally Determined Contribution (NDC 3.0)">NDC</abbr> · Water resources 2</p><p class="ex-what">Sustainable use</p></div></li>
         </ul>
       </div>
       <div class="p-note p-tech"><p class="nl">Technical details</p><p class="tx">A relevance score (0&ndash;1) for each <code>(target × category)</code>; the top-scoring category becomes <code>primary</code>, and any above the relevance threshold are tagged <code>relevant</code>. Lenses: the GLOBE taxonomy with its subcategories, the IPCC greenhouse gas inventory sectors, the seven climate-resilience targets of the Global Goal on Adaptation (UAE Framework for Global Climate Resilience, decision 2/CMA.5) and nine human rights themes, plus a country’s own adaptation goals where it provides them. Nature-based solutions are paused. A country office can set its own lenses, as Sri Lanka did with its nine NDC 3.0 adaptation sectors in place of the Global Goal on Adaptation and a loss and damage lens. A lens with a single category has nothing to rank, so a target counts in it only above the relevance threshold. This is the most call-intensive step (<em>n × c</em> scores), so results are cached.</p><div class="specs"><span>GLOBE</span><span>IPCC sectors</span><span>GGA</span><span>human rights</span><span>primary + relevant</span><span>cached</span></div></div>
@@ -452,7 +454,7 @@
         <p class="ex-head">The example pair</p>
         <p class="ex-verdict"><span class="o" aria-hidden="true"></span>Potential misalignment<span class="sep">·</span><span class="sub">Competing for resources: land</span><span class="sep">·</span><span class="sub">Manageable</span></p>
         <div class="ex-cmp">
-          <div class="ex-stop"><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><p class="ex-who">National Biodiversity Strategy &amp; Action Plan</p><p class="ex-label">1 Spatial planning</p></div>
+          <div class="ex-stop"><span class="sq" style="background:var(--doc-nbsap)" aria-hidden="true"></span><p class="ex-who">National biodiversity targets for 2030</p><p class="ex-label">1 Spatial planning</p></div>
           <div class="ex-stop"><span class="sq" style="background:var(--doc-ndc)" aria-hidden="true"></span><p class="ex-who">Nationally Determined Contribution</p><p class="ex-label">Water resources 2</p></div>
         </div>
         <p class="ex-ai">AI explanation · Medium confidence</p>

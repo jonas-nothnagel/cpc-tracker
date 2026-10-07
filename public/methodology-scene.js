@@ -26,18 +26,185 @@
   var BLUE = "#0468b1";
   var GREEN_MID = "#78ab86";
 
-  // The documents' names as the brief shows them (country config, full name
-  // without its trailing parenthesis); LDN is spelled out once.
-  var DOCS = [
-    ["Vision 2050", 15],
-    ["Nationally Determined Contribution", 36],
-    ["National targets for implementation of the Paris Agreement", 16],
-    ["National Biodiversity Strategy & Action Plan", 20],
-    ["National Adaptation Plan", 15],
-    ["Food Supply and Security Measures", 41],
-    ["LDN Targets (Land Degradation Neutrality)", 27],
-    ["Investing in Land Degradation Neutrality", 8],
-  ];
+  // ── Words ──────────────────────────────────────────────────────────
+  // The page's language picks the words; the data stay the same. Document,
+  // area and theme names are the ones the brief shows in that language
+  // (country config, category translations, the pipeline's theme
+  // translations); target texts are the brief's own, a machine translation
+  // where Mongolia has no original wording. Spanish renderings of
+  // Mongolia's texts are machine translations made for this page.
+  var LANG = (document.documentElement.getAttribute("lang") || "en").slice(0, 2);
+  var LOCALE = LANG === "en" ? "en-US" : LANG;
+  var WORDS = {
+    en: {
+      docs: ["Vision 2050", "Nationally Determined Contribution", "National targets for implementation of the Paris Agreement", "National biodiversity targets for 2030", "National Adaptation Plan", "Food Supply and Security Measures", "LDN Targets (Land Degradation Neutrality)", "Investing in Land Degradation Neutrality"],
+      measure: ["A number and a date", "A number", "A date", "Neither"],
+      globe: ["Sustainable use", "Biodiversity planning and finance", "Pollution management", "Green economy", "Biodiversity awareness and knowledge", "Restoration", "Protected areas and other conservation measures", "Biosafety", "Access and benefit sharing", "Not classified"],
+      tones: ["aligned", "partially aligned", "potential misalignment", "no clear relationship"],
+      themesAligned: ["Climate resilient agriculture and pasture management", "Climate and biodiversity enabling systems across sectors", "Sustainable land restoration and stewardship pathways", "Other aligned pairs"],
+      themesApart: ["Land allocation pressures from agricultural expansion", "Water allocation pressures from irrigation growth", "Hydropower and livestock delivery in sensitive landscapes", "Other pairs with potential misalignment"],
+      levels: ["strong alignment", "moderate alignment", "partial alignment", "no clear relationship", "potential misalignment"],
+      // The worked example's two targets broken into their parts: Agent 1's
+      // output for NBSAP 1 and NDC 4, word for word. Long fields are clipped;
+      // the Action rows quote the clauses the comparison turns on, with every
+      // omission marked.
+      parts: [
+        ["Goal", "Reduce biodiversity loss and maintain ecological integrity by 2030.", "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation…"],
+        ["Action", "Include all territory in spatial planning … maintain the proportion of natural ecosystems and prevent further decline …", "… create water accumulation facilities and ponds … deliver water through canals and pipelines to wildlife and livestock …"],
+        ["Ecosystem", "All territory; natural ecosystems; land-use planning and soum territorial development planning.", "Water sector; river headwaters; groundwater systems and wells; glaciers, lakes, reservoirs, rivers, wetlands…"],
+        ["Audience", "Authorities and planners responsible for spatial planning, land-use plans, soum territorial development…", "Local governments; the private sector; the mining industry; light and heavy industry; households; wildlife…"],
+        ["Outcome", "Biodiversity loss is reduced, ecological integrity is maintained, the proportion of natural ecosystems is…", "Improved resilience of the water sector; enhanced conservation, restoration, and sustainable use of water…"],
+      ],
+      nbsap: { label: "1 Spatial planning", text: "By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management.", date: ["By 2030"] },
+      ndc: { label: "Water resources 2", text: "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability." },
+      restore: { label: "2 Land restoration", text: "By 2030, restore at least 30 percent of degraded ecosystems and improve ecological integrity and connectivity.", num: ["30 percent"], date: ["By 2030"] },
+      wheat: { label: "3.11 Strategic wheat reserve: 100,000 tonnes", text: "Build strategic reserves of at least 100,000 tonnes of food and seed red wheat from each year's autumn harvest", num: ["at least 100,000 tonnes"] },
+      captions: [
+        ["Extraction · Mongolia", "Mongolia: 8 policy documents, read in full."],
+        ["Extraction · Mongolia", "Page by page; forewords and annexes set aside."],
+        ["Extraction · Mongolia", "178 targets from Mongolia's documents, word for word."],
+        ["Extraction · Mongolia", "Every figure, year and framework traced to its source."],
+        ["Human step", "A reviewer keeps, edits or adds targets."],
+        ["Analysis · Mongolia", "48 of Mongolia's 178 targets carry a number or a date."],
+        ["Analysis · Mongolia", "Each target placed in a category of the selected lens."],
+        ["Analysis · Mongolia", "13,404 target pairs: every target against every target in the other documents."],
+        ["Analysis · Agent 1", "Each target broken into 5 parts before any comparison."],
+        ["Analysis · Agent 2", "Each pair rated from the two targets' texts."],
+        ["Synthesis · Mongolia", "Across Mongolia's policies, 66% of target pairs are aligned; 5% show potential misalignment."],
+        ["Synthesis · Mongolia", "Aligned and potentially misaligned pairs grouped into recurring themes."],
+        ["Human step", "Each AI explanation can be rated with a thumb and a note."],
+        ["Level 2 · Finance · Mongolia", "157 of Mongolia's 178 targets align with at least one of 28 reviewed budget programmes."],
+        ["Level 3 · Implementation · Mongolia", "173 of Mongolia's 178 targets align with at least one of 39 reported measures."],
+      ],
+      targets: function (n) { return fmt(n) + " targets"; },
+      nOf: function (a, b) { return fmt(a) + " of " + fmt(b); },
+      found: "“2030” found in the source text",
+      sourceCbd: "Source: the national target as recorded on the Online Reporting Tool of the Convention on Biological Diversity",
+      budgetFoot: "28 reviewed budget programmes (Biodiversity Expenditure Review)",
+      measuresFoot: "39 reported measures (Biennial Transparency Report)",
+      sameDoc: "Same document: not compared",
+      block: function (a, b, c) { return fmt(a) + " × " + fmt(b) + " = " + fmt(c) + " target pairs"; },
+      eachDot: "Each dot is one target pair",
+      oneTarget: function (n, doc, lbl) { return "The " + fmt(n) + " target pairs of one target: " + doc + ", " + lbl; },
+      verdict: "Potential misalignment",
+      why: "Competing for resources: land",
+      other: "Other",
+    },
+    es: {
+      docs: ["Visión 2050", "Contribución Determinada a Nivel Nacional", "Metas nacionales para el Acuerdo de París", "Metas nacionales de biodiversidad para 2030", "Plan Nacional de Adaptación", "Medidas de seguridad alimentaria", "Metas LDN (degradación de las tierras)", "Inversión en LDN"],
+      measure: ["Una cifra y una fecha", "Una cifra", "Una fecha", "Ninguna"],
+      globe: ["Uso sostenible", "Planificación y financiación de la biodiversidad", "Gestión de la contaminación", "Economía verde", "Concienciación y conocimiento sobre la biodiversidad", "Restauración", "Áreas protegidas y otras medidas de conservación", "Bioseguridad", "Acceso y participación en los beneficios", "Sin clasificar"],
+      tones: ["alineados", "parcialmente alineados", "posible desalineación", "sin relación clara"],
+      themesAligned: ["Agricultura resiliente al clima y gestión de pastizales", "Sistemas facilitadores para el clima y la biodiversidad en todos los sectores", "Vías para la restauración sostenible de la tierra y su gestión responsable", "Otros pares alineados"],
+      themesApart: ["Presiones sobre la asignación de tierras derivadas de la expansión agrícola", "Presiones sobre la asignación de agua derivadas del crecimiento del riego", "Desarrollo de la energía hidroeléctrica y la ganadería en paisajes sensibles", "Otros pares con posible desalineación"],
+      levels: ["alineación fuerte", "alineación moderada", "alineación parcial", "sin relación clara", "posible desalineación"],
+      parts: [
+        ["Objetivo", "Reducir la pérdida de biodiversidad y mantener la integridad ecológica para 2030.", "Mejorar la resiliencia del sector hídrico con tecnologías avanzadas para la conservación…"],
+        ["Acción", "Incluir todo el territorio en la planificación espacial … mantener los ecosistemas naturales …", "… crear estanques y depósitos de agua … llevar agua por canales y tuberías al ganado …"],
+        ["Ecosistema", "Todo el territorio; ecosistemas naturales; planificación territorial de los soums.", "Sector hídrico; cabeceras de ríos; aguas subterráneas y pozos; glaciares, lagos, ríos…"],
+        ["Destinatarios", "Autoridades y planificadores de la planificación espacial y territorial…", "Gobiernos locales; sector privado; minería; industria; hogares; fauna silvestre…"],
+        ["Resultado", "Se reduce la pérdida de biodiversidad y se mantiene la integridad ecológica…", "Mayor resiliencia del sector hídrico; mejor conservación y uso sostenible del agua…"],
+      ],
+      nbsap: { label: "1 Planificación espacial", text: "Para 2030, reducir la pérdida de biodiversidad y mantener la integridad ecológica incluyendo todo el territorio en la planificación espacial y garantizando una gestión eficaz.", date: ["Para 2030"] },
+      ndc: { label: "Recursos hídricos 2", text: "Mejorar la resiliencia del sector hídrico mediante el uso de tecnologías avanzadas para la conservación, la restauración, el uso sostenible y la disponibilidad segura de agua." },
+      restore: { label: "2 Restauración de tierras", text: "Para 2030, restaurar al menos el 30 por ciento de los ecosistemas degradados y mejorar la integridad y la conectividad ecológicas.", num: ["30 por ciento"], date: ["Para 2030"] },
+      wheat: { label: "3.11 Reserva estratégica de trigo: 100.000 toneladas", text: "Constituir reservas estratégicas de al menos 100.000 toneladas de trigo rojo para alimento y semilla a partir de la cosecha de otoño de cada año", num: ["al menos 100.000 toneladas"] },
+      captions: [
+        ["Extracción · Mongolia", "Mongolia: 8 documentos de política, leídos en su totalidad."],
+        ["Extracción · Mongolia", "Página por página; prólogos y anexos se dejan de lado."],
+        ["Extracción · Mongolia", "178 metas de los documentos de Mongolia, palabra por palabra."],
+        ["Extracción · Mongolia", "Cada cifra, año y marco, rastreado hasta su fuente."],
+        ["Paso humano", "Quien revisa conserva, corrige o añade metas."],
+        ["Análisis · Mongolia", "48 de las 178 metas de Mongolia incluyen una cifra o una fecha."],
+        ["Análisis · Mongolia", "Cada meta, ubicada en una categoría de la lente elegida."],
+        ["Análisis · Mongolia", "13.404 pares de metas: cada meta frente a cada meta de los demás documentos."],
+        ["Análisis · Agente 1", "Cada meta, descompuesta en 5 partes antes de cualquier comparación."],
+        ["Análisis · Agente 2", "Cada par, calificado a partir de los textos de las dos metas."],
+        ["Síntesis · Mongolia", "En las políticas de Mongolia, el 66 % de los pares de metas están alineados; el 5 % muestra una posible desalineación."],
+        ["Síntesis · Mongolia", "Pares alineados y posiblemente desalineados, agrupados en temas recurrentes."],
+        ["Paso humano", "Cada explicación de la IA admite un pulgar y una nota."],
+        ["Nivel 2 · Finanzas · Mongolia", "157 de 178 metas de Mongolia se alinean con alguno de los 28 programas presupuestarios revisados."],
+        ["Nivel 3 · Implementación · Mongolia", "173 de 178 metas de Mongolia se alinean con alguna de las 39 medidas reportadas."],
+      ],
+      targets: function (n) { return fmt(n) + " metas"; },
+      nOf: function (a, b) { return fmt(a) + " de " + fmt(b); },
+      found: "“2030” encontrado en el texto fuente",
+      sourceCbd: "Fuente: la meta nacional tal como figura en la Herramienta de Presentación de Informes en Línea del Convenio sobre la Diversidad Biológica",
+      budgetFoot: "28 programas presupuestarios revisados (Revisión del Gasto en Biodiversidad)",
+      measuresFoot: "39 medidas reportadas (Informe Bienal de Transparencia)",
+      sameDoc: "Mismo documento: no se compara",
+      block: function (a, b, c) { return fmt(a) + " × " + fmt(b) + " = " + fmt(c) + " pares de metas"; },
+      eachDot: "Cada punto es un par de metas",
+      oneTarget: function (n, doc, lbl) { return "Los " + fmt(n) + " pares de metas de una meta: " + doc + ", " + lbl; },
+      verdict: "Posible desalineación",
+      why: "Competencia por recursos: tierra",
+      other: "Otros",
+    },
+    mn: {
+      // Shorter forms where the brief's name runs past four lines in a
+      // column (the config's plain names).
+      docs: ["Алсын хараа 2050", "Үндэсний хэмжээнд тодорхойлсон хувь нэмэр", "Парисын хэлэлцээрийн үндэсний зорилтууд", "Биологийн төрөл зүйлийн 2030 оны зорилтууд", "Дасан зохицох үндэсний төлөвлөгөө", "Хүнсний хангамжийн арга хэмжээ", "Газрын доройтлын саармагжуулалтын зорилтууд", "Газрын доройтлын хөрөнгө оруулалт"],
+      measure: ["Тоо ба огноо", "Зөвхөн тоо", "Зөвхөн огноо", "Аль нь ч биш"],
+      globe: ["Тогтвортой ашиглалт", "Биологийн төрөл зүйлийн төлөвлөлт ба санхүүжилт", "Бохирдлын менежмент", "Ногоон эдийн засаг", "Биологийн төрөл зүйлийн талаарх мэдлэг, ойлголт", "Нөхөн сэргээлт", "Тусгай хамгаалалттай газар, бусад хамгаалал", "Биоаюулгүй байдал", "Хүртээмж ба үр өгөөжийн хуваарилалт", "Ангилагдаагүй"],
+      tones: ["уялдаатай", "хэсэгчлэн уялдаатай", "болзошгүй үл нийцэл", "тодорхой холбоогүй"],
+      themesAligned: ["Уур амьсгалд тэсвэртэй хөдөө аж ахуй болон бэлчээрийн менежмент", "Салбаруудын хэмжээнд уур амьсгал, биологийн олон янз байдлыг дэмжих тогтолцоонууд", "Тогтвортой газрын нөхөн сэргээлт ба хариуцлагатай менежментийн замналууд", "Бусад уялдаатай хосууд"],
+      themesApart: ["Хөдөө аж ахуйн тэлэлтээс үүдэлтэй газрын хуваарилалтын дарамт", "Усалгааны өсөлтөөс үүдэлтэй ус хуваарилалтын дарамт", "Эмзэг ландшафт дахь усан цахилгаан эрчим хүч болон мал аж ахуйн хэрэгжилт", "Болзошгүй үл нийцэлтэй бусад хосууд"],
+      levels: ["хүчтэй уялдаа", "дунд зэргийн уялдаа", "хэсэгчилсэн уялдаа", "тодорхой холбоогүй", "болзошгүй үл нийцэл"],
+      parts: [
+        ["Зорилго", "2030 он гэхэд биологийн олон янз байдлын алдагдлыг бууруулах…", "Дэвшилтэт технологиор усны салбарын тэсвэрлэх чадварыг бэхжүүлэх…"],
+        ["Арга хэмжээ", "Бүх нутаг дэвсгэрийг орон зайн төлөвлөлтөд хамруулах … байгалийн экосистемийг хадгалах …", "… ус хуримтлуулах байгууламж, цөөрөм байгуулах … суваг, хоолойгоор ус хүргэх …"],
+        ["Экосистем", "Бүх нутаг дэвсгэр; байгалийн экосистем; сумын нутаг дэвсгэрийн төлөвлөлт.", "Усны салбар; голын эх; гүний ус, худаг; мөсөн гол, нуур, гол, намгархаг газар…"],
+        ["Хамрах бүлэг", "Орон зайн болон сумын нутаг дэвсгэрийн төлөвлөлтийг хариуцагчид…", "Орон нутгийн засаг захиргаа; хувийн хэвшил; уул уурхай; үйлдвэр; өрх…"],
+        ["Үр дүн", "Биологийн олон янз байдлын алдагдал буурч, экологийн бүрэн бүтэн байдал хадгалагдана…", "Усны салбарын тэсвэрлэх чадвар сайжирч, усны тогтвортой ашиглалт нэмэгдэнэ…"],
+      ],
+      nbsap: { label: "1 Орон зайн төлөвлөлт", text: "2030 он гэхэд бүх нутаг дэвсгэрийг орон зайн төлөвлөлтөд хамруулж, үр дүнтэй менежментийг хангах замаар биологийн олон янз байдлын алдагдлыг бууруулж, экологийн бүрэн бүтэн байдлыг хадгална.", date: ["2030 он гэхэд"] },
+      ndc: { label: "Усны нөөц 2", text: "Усны салбарын тэсвэрлэх чадварыг хамгаалах, нөхөн сэргээх, тогтвортой ашиглах болон усны найдвартай хүртээмжийг хангах зорилгоор дэвшилтэт технологийг ашиглах замаар бэхжүүлэх." },
+      restore: { label: "2 Газрын нөхөн сэргээлт", text: "2030 он гэхэд доройтсон экосистемийн дор хаяж 30 хувийг сэргээн, экологийн бүрэн бүтэн байдал болон холбоос чанарыг сайжруулна.", num: ["дор хаяж 30 хувийг"], date: ["2030 он гэхэд"] },
+      wheat: { label: "3.11", text: "Жил бүрийн намрын ургацаас стратегийн нөөц бүрдүүлэх зорилгоор 100.0 мянгаас доошгүй тонн хүнсний болон үрийн улаан буудайн нөөц бүрдүүлэх", num: ["100.0 мянгаас доошгүй тонн"] },
+      captions: [
+        ["Зорилт гаргах · Монгол Улс", "Монгол Улс: бодлогын 8 баримт бичгийг бүрэн уншина."],
+        ["Зорилт гаргах · Монгол Улс", "Хуудас бүрийг уншиж, оршил болон хавсралтыг хасна."],
+        ["Зорилт гаргах · Монгол Улс", "Монгол Улсын баримт бичгүүдээс 178 зорилтыг үг үсгээр нь гаргасан."],
+        ["Зорилт гаргах · Монгол Улс", "Тоо, он, хүрээ бүрийг эх сурвалжтай нь тулгана."],
+        ["Хүний оролцоо", "Хянагч зорилтуудыг хадгалж, засаж эсвэл нэмнэ."],
+        ["Шинжилгээ · Монгол Улс", "Монгол Улсын 178 зорилтын 48 нь тоо эсвэл огноо агуулдаг."],
+        ["Шинжилгээ · Монгол Улс", "Зорилт бүрийг сонгосон ангиллын хүрээний нэг ангилалд хуваарилна."],
+        ["Шинжилгээ · Монгол Улс", "13,404 зорилтын хос: зорилт бүрийг бусад баримт бичгийн зорилт бүртэй харьцуулна."],
+        ["Шинжилгээ · 1-р агент", "Харьцуулахаас өмнө зорилт бүрийг 5 хэсэгт задална."],
+        ["Шинжилгээ · 2-р агент", "Хос бүрийг хоёр зорилтын текстэд үндэслэн үнэлнэ."],
+        ["Нэгтгэл · Монгол Улс", "Монгол Улсын бодлогуудад зорилтын хосуудын 66% нь уялдаатай, 5% нь болзошгүй үл нийцэлтэй."],
+        ["Нэгтгэл · Монгол Улс", "Уялдаатай болон болзошгүй үл нийцэлтэй хосуудыг давтагдах сэдвээр бүлэглэнэ."],
+        ["Хүний оролцоо", "Хиймэл оюуны тайлбарыг эрхий хуруу, тэмдэглэлээр үнэлнэ."],
+        ["2-р түвшин · Санхүү · Монгол Улс", "Монгол Улсын 178 зорилтын 157 нь хянасан 28 төсвийн хөтөлбөрийн дор хаяж нэгтэй уялдсан."],
+        ["3-р түвшин · Хэрэгжилт · Монгол Улс", "Монгол Улсын 178 зорилтын 173 нь мэдээлсэн 39 арга хэмжээний дор хаяж нэгтэй уялдсан."],
+      ],
+      targets: function (n) { return fmt(n) + " зорилт"; },
+      nOf: function (a, b) { return fmt(a) + " / " + fmt(b); },
+      found: "«2030» эх текстэд олдсон",
+      sourceCbd: "Эх сурвалж: Биологийн олон янз байдлын тухай конвенцийн цахим тайлагналын хэрэгсэлд бүртгэгдсэн үндэсний зорилт",
+      budgetFoot: "Хянасан 28 төсвийн хөтөлбөр (Биологийн олон янз байдлын зарлагын тойм)",
+      measuresFoot: "Мэдээлсэн 39 арга хэмжээ (Хоёр жил тутмын ил тод байдлын тайлан)",
+      sameDoc: "Нэг баримт бичиг: харьцуулахгүй",
+      block: function (a, b, c) { return fmt(a) + " × " + fmt(b) + " = " + fmt(c) + " зорилтын хос"; },
+      eachDot: "Цэг бүр нэг зорилтын хос",
+      oneTarget: function (n, doc, lbl) { return "Нэг зорилтын " + fmt(n) + " хос: " + doc + ", " + lbl; },
+      verdict: "Болзошгүй үл нийцэл",
+      why: "Нөөцийн төлөөх өрсөлдөөн: газар",
+      other: "Бусад",
+    },
+  };
+  var TXT = WORDS[LANG] || WORDS.en;
+  function fmt(n) { return n.toLocaleString(LOCALE); }
+  /** A share as the brief prints it: whole percent, "<1%" for a sliver. */
+  function pctText(share) {
+    var f = function (v) { return v.toLocaleString(LOCALE, { style: "percent", maximumFractionDigits: 0 }); };
+    return share > 0 && share < 0.005 ? "&lt;" + f(0.01) : f(share);
+  }
+
+  // The documents, in the brief's order, with their target counts; the
+  // names come from WORDS.
+  var DOC_COUNTS = [15, 36, 16, 20, 15, 41, 27, 8];
+  var DOCS = DOC_COUNTS.map(function (n, i) { return [TXT.docs[i], n]; });
   // Per target, in document order: measurable group (0 a number and a date,
   // 1 a number, 2 a date, 3 neither), primary GLOBE category (index into
   // GLOBE, 9 not classified), and whether it aligns with at least one
@@ -51,108 +218,36 @@
   function countOnes(str) { return str.split("").filter(function (c) { return c === "1"; }).length; }
   var FINANCE = PER_TARGET.fin.map(countOnes);
   var IMPLEMENTATION = PER_TARGET.imp.map(countOnes);
-  var MEASURE = [
-    ["A number and a date", 22],
-    ["A number", 10],
-    ["A date", 16],
-    ["Neither", 130],
-  ];
-  var GLOBE = [
-    ["Sustainable use", 75],
-    ["Biodiversity planning and finance", 38],
-    ["Pollution management", 15],
-    ["Green economy", 15],
-    ["Biodiversity awareness and knowledge", 10],
-    ["Restoration", 8],
-    ["Protected areas and other conservation measures", 8],
-    ["Biosafety", 2],
-    ["Access and benefit sharing", 1],
-    ["Not classified", 6],
-  ];
+  var MEASURE = TXT.measure.map(function (name, i) { return [name, [22, 10, 16, 130][i]]; });
+  var GLOBE = TXT.globe.map(function (name, i) { return [name, [75, 38, 15, 15, 10, 8, 8, 2, 1, 6][i]]; });
   var TONES = [
-    ["aligned", 8862, GREEN],
-    ["partially aligned", 3861, GREY],
-    ["potential misalignment", 671, RED],
-    ["no clear relationship", 10, NONE],
+    [TXT.tones[0], 8862, GREEN],
+    [TXT.tones[1], 3861, GREY],
+    [TXT.tones[2], 671, RED],
+    [TXT.tones[3], 10, NONE],
   ];
-  var THEMES_ALIGNED = [
-    ["Climate resilient agriculture and pasture management", 2636],
-    ["Climate and biodiversity enabling systems across sectors", 2527],
-    ["Sustainable land restoration and stewardship pathways", 2115],
-    ["Other aligned pairs", 1584],
-  ];
-  var THEMES_APART = [
-    ["Land allocation pressures from agricultural expansion", 295],
-    ["Water allocation pressures from irrigation growth", 150],
-    ["Hydropower and livestock delivery in sensitive landscapes", 71],
-    ["Other pairs with potential misalignment", 155],
-  ];
+  var THEMES_ALIGNED = TXT.themesAligned.map(function (name, i) { return [name, [2636, 2527, 2115, 1584][i]]; });
+  var THEMES_APART = TXT.themesApart.map(function (name, i) { return [name, [295, 150, 71, 155][i]]; });
   // Every target pair's rating, in the order of the comparison triangle:
   // for each pair of documents (first before second in DOCS), the first
   // document's targets as rows and the second's as columns. h strong, m
   // moderate, l partial, n no clear relationship, f potential misalignment.
   // Read 24 September 2026 from Mongolia's gpt-5-4 run (13,404 pairs).
   var RATINGS = "mmhhhhhmmmmmmmmmmhhfhhmmlmmlmmmmhmmmmmmmmmmmhmmmmmmmmhhhhhhmmhhmmmmmmmhhmlmmmmmmmmmmmmhhmhmhhhhmmhmmhmlmmmhhmmmhmmmmmmmmmmmmlhhhhhmmmmmlmmmmmmhmmmmhmfmmmmmmmmmmmhhhhhhmmmmmmmmmmmmmmffmmffmmmmmmmmmmhhhhhmmmmmmmmmmmmmmmlmmlfffmfmlflmmmmmmmfhhhhhlmmlmlmmmffffffffffffffflffmflffmhhhlllflllmmmmmmmmmmmmmmmmmmmhhhhhhmmmhmmmmmhmmhmhhmhhhhmfhhhhhmmfmfmmmmfmmmmmmmmmmmhhhmhmhmmmhhhhmmmmmlmmmmmmmmmmlmmmhmmmhhhhhhhmhhhmhmmhmmhhhhmhhmmmmmmmmmmmmmhmmmmmmmhmmmmmmmmhhmmmmmmmmmmmmmmmmmhmhmmmhmmhmmmmmmmmmmmmmmmhmmmmhhmhhhhhhmhfhhmhmmmmmmmhmmmmmmmmmmmmhmmfllllllfllhmmmmmhmmmmmmhlmmhmmmmmllllllmllmhhmmmmllllllmllhmmmmmflllmllhmlhmmmmmhlmlmmlhllmmmmmlmllllllmlllmmlmlfllllflmlllmmllmmmmllllmlmmhmmmffmmlmfmfllmmmmmmmmmmmmmmmmmhhmmmmmmmmllflmhmmmmmmmmmmlmmmmmmmmmmmmmmmmmmmmmhmmmmmmmmmlmfmmmhmmmhhmmmmmhmlmhmmlmmmmmmmfmmmmhmmmhmmmmmmmmmmmmmmhhmmmmmmmmmmmmhhmmmmmhmlmhmmlmmmmmmfffmmmhmlmmmmlmmmmmfmfmmmmmmmmmmmlfmmmmfffflmlmflmmmlmflmmlfffflffffllflflfflllmmmmmmmhmlmhmmlmmmmmhhhhmhhfhmmhmmmhhhhmhhhmhmhmhmmhmmlmhhmmhhhmmhhhhmmhmmmmmhmmhhmmmhmhmmmhmmlmmmmmhmmmmmmmhhmhhhmhhhhmhhhhmhhhhmmhhmmhhhhmmmhhmmmmmhhmmmmmhmmmmmmmhhhhmmhhmmmmmhhhmmmmhmmmhmmmmmhhmmlmmmfmmmmmmhhmhmmmmfmmmmmmhhmmmmmmfmmfmmmlmhhllflffffffmflhfllmhmmmmmmmhhmmmmhmhhmfhmmfmfmmmhmmmmmhmmffmmmmhmhhmmhmmmmhhmmmmmhmmhmmmmmhmmhmmmmmmmlmmmmmmhmhhmmmmmmmmmmmflmmmmmhmmfmfffmmflffmmmmhfffmffflflmmlllmmmmmmhhmmmmhmmhhmmmfmmhmhhmmmhhmlmmmmmmmhlmmmmmmmmmmmmmmmmmmmmmmmhhmmmmmmlmmmmmmlmlmmmlmmmllmfmfmmmlmfmfmmhmffmmmlllmlllmlmlmmmmmhmmfmfmfmmhmmfmmmmhfffmmhmlmmmmmmmmlmmmmmmmmmmmmfmmmmmfmfmmhhhmmmmmmmmmmmmlhmmmmmhmmmmmmhhhhmmhhhmmmmmmlmmmmlmmmhmhmmlmmmmhmmmmlmmhmfmmhhmhfmflllllmmlmmmmmmlmmmmmmmhmmmmmmmmhmmmmmmmmhhmmmmhmlmmmmmmlflllllmmmlflflfmfflfflfmffffflmffllllllllmllmlllmllflflfmmfllflmhlfllfmlllllllllllmlmmmmmmmmmmfmfmhfmmfmmhmhmffmmmmlmlmlmllmllmmmmmmmfmmlfmhmmffmmhmmmffmmmmlmlmlmllmlmmmmmmmmmmmlmmmllmlmmmlmmmlmlmlllmmlmmmfmmmmmfmmmfmfmfmffmffmfmlmlffmmfflfllllmmmmmmlmmmlhhhhhhhfmmmmmmmmmmmmmmmmlmmmhmhmhhhhmhmhmmmmmmmmllmlmlmmmmmmmmmmmmmmmmmmmmmmlmlmlhhhhhhhmmmmmmmmmmmmmmllmmmlhhhhhhhmmmmmmmfmmmmmmmmmlmmmhmmmmmmmmmmmfmmmmfllllllllmflmfmlhmmmmmfmlmlfllllllllffffflfhmffmffffflmmmllmmmlhhmhmhhmmmmmmmmmmmhhhmmmmhmmmmfmmmfmmmmmhhmhmhhhhmhhhmmfmmmmmfhmmmmmhmmmhhhmmmmhmhhhmhhhmhhhhhmhmmmmhmmmmmmhhmmmmmmmhmhhmmmmmmmmmmmmmmhmmmmhmmmmmmmmmhmhhhmmmmmmmmmmmmmhmmmmmmhhhmhmhmmhhmmhmmmmmmmmmmmmmmmmmmmhmmmhmmfhmmmmmmmmmmmmlmfmmmmmffffllffmmmmmmmmmhhmhmmmmhmmmmhmhhhhhmhhhhmhhmhhmhhmmmmmhhhhhhmmhhhhhhhhhhhmhhmmmfmmmmmmlmmmmhmmhhhhhhhhhhhmhhmmhmhhmmmhmmmmhhmmmmmmmmfmmmmmhhmmffmmllflfllmmmmmmfmmllflfmlmmmmmmlmmmlfmmllmhmmmmmmmmmflmmmmhmmmflllllfllllmmmlmmlmmmlllllllmmmmmfmmmlfmlllmmmmmmlmllllllmlmmmmmmlllmmlmlmllhmmmmmmmmmmmmmmmhhhhmmmmmmmmlmmmhmmmmlmmmlmlllllmmmmmmllllllmllmmmmmmhllllllhllmmmlllmllllllmllmmmmmmmllllllhllmmmmmmmllllllfllmmmmmmmllllllmllmmmmmmmllllllmllmmmmmmmllllllmlllmmlmlmllllllmlllmmmmmmmlllllmlllmmmmmlmmmmlmlmmlhmmhmmmmmmmmmlllmhhmmmmmmmmmmmmlhhhhllllllllllllmmmmmmmmmmmmmmmlhhhmmmmmmmmmmlmmhhhmmlmmmmlmmmllhmhmhmhhhmmhmhmmhhhhmmhmmmmmmmmmhhhhmmmmmmmhmmmmmmlmmmmmhhhmmmhmmmmmmmlmmmmmmhhmmmhhmmmmmmlhmmmmhhhmmmhhmmmmmmlmmmmmhhhhhmhmhmmhmmmmmhmmhhhhhmhmhmmhmmmmhhhmhhhhhhhhhmhhmmmmhhhmmhmmmmhmhmmmmmlmmmmmmmmmmmmhhmmhmmmmmmmmffffmmfffmmfmmlffmmmhhhhhmhhmmmhmmmmmmmmhhhhhmhhhmmhmmlmhhmmmhmmmmhmmmhhmmmmmhmmhhhhhmhhhmmhhmmmhhmmmhmmmmhmmmmmmmlmmmmmmmmmmmhmmmlmmlmmmmmmmmmmmmhmmmlmlmlmmmmmhmmmmmmhmlmhmmlmmmmmmmmlmmlmmlmmmmmmmmmmffffmlmmmlmmlmlmmmmmmmmmmmmhmlmmmmlmmmmmhhmmmmmhmlmhmmlmmmmmmmmmmhmhmmmhmmmmmmmmmmmmmfmhmlmmmmmmmmmmffmfmfmmmlmmmmmmmmmmmmmmmmmhmlhmmmmmmmmmmmmmmhmhmmmhmmmhmmmmmmmmmmmmmmlhmmlmmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmmmmmmhmhmmmhhhmlmmmlmmmmmmlmllmmmmmmmmmmmmmmmhmmmmmmhhmmmmmmmmmmmhmmmmmhhhmmlmllmmmmmmmmlmmmmhmmmmmmmmmmmhmhmmhhhmmmhmhmhhhhmhmmmhhhhhmmmmmlmmmmmmmmmmmmmmmhmmlmmmmmmmmhlmhmmmmmmmmmmmhmmmmmhmmmmmhmhhmmhmmmmmmmmhmhhmfhmmfmfmmmhmhhmfhmmffmmmmhhmhhhmmmmmmmmmhmmmhmhhmhmhmmmhmffhhmmmhmhmmmmmhmmmhmmmmmmmmhmhhmmhmmmmmmmmmmmmmmhmmfmmmmmhmhmmmhmmmmmmmmhhmmmmmhhmmmmhhhhmmmmmhhmmmmmhhhmmmmmhhmmmmmhmmmhmhmmmhhmmmmmmmmmmmmmhhmmlmmmfmmhmmmhhhmlmmhmmmmmmmhhmmmmhmmhmmmmmhhmmmmmmmhmmmmmmmhhmmmmmmmmmmmmfhhmlmmffmmmmmfmhmmmmhmmmmmmmlmhhmmmmmmmmmmmmmhhmmmhmmmmlhhlmllhmhhmmmmmhhmmmmhhhhmmmmmmmmmmmhmmmmmlllmmmlllmmhhmmmmmmmmmmmmhhhmmlmmmmhhmmmhhhmlllmmmmlmmmhhhmmmmmhmmmmmmmhhhmmmhhhhmhmhhmlmmllmmmmfmlllmmffffmmmlmlffmmmllllmllllmllllllllmllflflmllllllhlmllfmlllllllllllmllmllmmmmfllmfmmflfflmhlmlfflmflllllllllmlllllmmmmlmflfmmfllflmmlhmffmmmllllmllllmlllllmmlmfmllfmmllfflfmlmllfmmmlllllllllmllmllmmlmflflfmfflfflfmfffffmmfllllllfllmllmllmmmmfmflfmfflfflfmlmfffmmllllllllmlmlllmmmmmmmlllfmmlmmfmhmmmlfflmlllllmllllmlmmmmmmmmmmmmfmmmmmfmhmmmmmmmmmmlmmmmmmlmllmmmmmmmflflfmffmffmhmmfmffmmmmllmmlmllmllllllmllflflfmmlllfllmlmlllmlllllllllllmllllllmllllflfmmfllflmmlmlllmlllllllllllmlllllmllmllllfmmfllflmhlflllmllllllmllllmlmmmlmmmmfmflfmmlllllmmlmmllmmmlllllllllmmmmmlmmlmmmllmmmlmllmmmmmmmllmmlllmmllllmlmlmmmmmmmlmllllllllmmmlmllllmllllmmllllmlllmlmlllmllllmmlmllmmmmmlllllllllmmllllmmmmmmmmmmmmfmfmmfmmfmmmmhhffmhmmlmmmmmmmmmmhmmmhmmmmmmmmmhmmlmmmmhhhhmhhmmmmmmmmmmlmmmmmmmmmmmmfmmhmmfmmmmhhmmmhmmlmmmmlmlmlmmmmhmmmmmhmmmmmlmlmmmmhhhmmhhmlmmmmmmlmlmmmmmhmmlmfmfmmfmmfmfmmhhffmmfmllmllmllmmmmmmhhmmmmmmmhhmhhmmmhmmmmmmmmmlmmmmmmmmlmmmmmmmmmmmmmhhmmhmmmmhmfmlmmmmlmmmmmmlmlmmmmhmmmmmmmmhhmhmfmhhmfmllmmmmlmmmmmmlmmmmmmhhmmmmmmmhhmmmmmmmhmmmlmmmmlmmmmmmmmmmmmhhhmmmmmmmhhmhmhmhhmmmmmmmmmlmmmmmmmlmmlmmmmmmlllllllllllllllmllllmmlmlllllmmmmlmmlmmmmmmmmmmmlmmmmmmmmmlmmmmmmmlmmlmmmmllmlmmmhlmmmmmmlmllmmmlmmllmlmmmllmmlmhlllllllllllhlllllllllllllmlllllllllllllllmmmmmmmmmmmmmllmmlmllmmmmmmllmmlmmlllllmmmllmllmmmmlmmmmmmlmlllmmlhhmmmmmmmllmlllmlllllllllmllllllmlllllmmlmlllllllllllllllmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhmmmmmmmmmmmmmmmmhmhmmmmmmmmmmmmmmmhmmmmmlmmmmmmmmmlmmmmmmmmmlhhhhmhmhmmllmllmlhlmmlmmlmlhhhmmmlhmhmmmmmmmmlmmmmmmmmmmmllmlmlhhhhmhmlmlmmlmmlmmhhhmmmmhmhmmmmmmmmmmmmhhmmlhmmmmmmmmmmmfmmmlmmmmmmhmmlhhmmlmhhmhmmmmmmfmmmmmhhmmmmmmmmmlmmmmmlmlmmmmmmmmmmmlmmmmmmlmlmmmmmhmmmmmmmmmmmlmmmmlmlmlmmmmmmmfmmmmmffmmlhhhhlhmhlmmmmlmmlmmmmmmhmmlhhhhlmmhmmlmmmlmlmmmmlmhlmmhhhhmhhhmmmmmmlmlhlmmlmmlmlhhhhlhmhlmmmmmmmlmlmmmmhmhhmmmmmmlmmmmmmmmmmmlmmlmmmmlmmmlmmlmmmmmmmmllmlmmmmmmmlmmmlmlllmllllllllmlmmlmmmmlmmlllllmlhhhhhhhmmmmmmmmmmlmmlmlllmlhhmmmhmmmlmmmmllllfllllllllmhmmmmmmmlmmlfflllmmlllllllhhhhhhhmmmmmlmllmmmmmllmlmlhhhhhhhmmmmmmmmmmmmmlllllmlmmmmmmmhhhhhhmlmmlmllllllllmfmmmmlhmfhhmmllllmmmmlmlmlmlmmmmmhhmmmmflfmlmmllllmllmllmmlmhhmhhmmllllmmlllllmlmmmmmmmhmhhhhmllmmmlmlmlllmlllllllllmlmlmllllmmmllllmmmmlmmmmmmlmmlmlmmlmmmmmmlmmmmlmmmmmmlmmlmmmmmmlllllllmmmllmlmlllllllmlllmmmmmmlmmmmmlmmmmmlmmmmmmmmmmmmmmlmmmmmmmmmmmmmmmmmmmlmmmlmmllmllllllmlmlllmllmmlmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhmmmmhmmhmmhmmmmmhhhhhmmhhmhmmmmhhmhmmmmhhhhmhhmmmmmmmmmmmmmmmmmmfmfmmmlhmmmmhmlhmmhmhmmhmmmmmmlhhmhhmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmmmmmmmmmmmmmfmfmmmmmmmmmmmmmhmmhhmhmmmmhhmhmlmmmmmmmlmfmmmmmlmlmmmmmlmmmmmmmlllmmmmlmmmmmmmmlmmmmmmmlmmllmmlmmmmmhmmmmmmmmmmlmmmmmmmmmmmmhmmmhmmhhmmfmfflmmmmmlmmmlmmmmmfffflmmmflmmmflfmmmlmmmmlmmmmllmmmlmmmmlmmmmlmmlmmlmmmlmmmmlmmmllmmlmmlmmmlmmmmlmmmmmhmmmmlmmhlmmmmlffffffflfllflllffmmlmlmllmmmmmlmmmlmmmmlffffllmmmlmmmmlmlmllmllllmmlmllmmmlmmmllmmlllhmmmmlmmhlmmmmlmmmmlmmmmllmlllmmmmlmmmmmmmmmmmhmmmmmhmmmmmmmmhmmmmmmmmmhmmmmmmmmmmmmmmmmmlmmmmhmmmmmmmmmmmhmmmmmhhmmmmmmmmmmmlmlmmmmffmmmmmfhmmllmmlllllmmllllmlmmmmllmmlllllmlmmmllllmmllllmmmmmmlllmlllllmlmlflmflllllllllmmllllmmmllllmlmmfflmfmmmhmmlmmllllllllllllllmmlllllllllllmlmmmmlmmmmmmmmllhhmmmmmhmmmmmhmhmmmmmmmmmmmmmmhhlmlmmmmllmmmhhhmmmmmhhmmmmhmmlllllmmllmllllmmlmllmmmlmmllllmmlmllmlllmlmmmmmmmmmmfmfmmflllllmmmhfflmhmlmmmmlmllllllllllmlllllllllllllllllllllllllllmlllllllllllllllllllmllllllllllllllllllmllllllmlllllllmflllllllmllllllllllllllmllllllllllllllmllllllllmllllllllmllllllmlllmmlllllllllllllmlllllllllllmllllllllllllllllllllllllllllmlllllllmllllmllllllllmllllllllmlmmlmmmmmmmmmlmmmlmlllmmhhhmmmmmlmmmmmmllllllllllllllllllllllllllllllllllllllmllllllllllmlllllllllllllllmlllllllllllmmllllllllllmlllllflflmfllfllmlmfffllllllllllllmmmmmmmmmmmlllmmmlmlmlmmlmmlllmmllmmmllmmmlllmlmmmmmmlmlmmlmmlmmmmmlmlmmmmlllmlllllmlllllllmllmlllmllllllllmmllllllmlllllllmllmmlmmlmllllmmmlmlllmmlmlllllllllllllllmmmlmllmmmllmmlllllllllllllfmlllllmlfmmmmmmmmlmlmlllllmllllllmlllllllllllllllllllmmllllllmllllllllllllllllllmlllmlllmllllllllllllllllllmmlllllmllllllllllllllmllllflllllllllllllllllllllflfllmmllmlllmlllllllllllllllllllllllllllfmmmmmmmmlmlmllllllllllllllllllllllllllllllllmlllmlnlmllllllllllllllllllmmlllllllmmmmmmmlmlmmllmlllmmmmmmlhmmmmmmmmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmlmmlmmmmmmmllmmlmmmlllmmmlmllmmmmmmlmmmllmlmmmmlmmmmlmlmmmmmmmmmmlmmmmmlffmmmmllmlmmmmmlmmlmmmlllllmmmllmlmmmmmlffllmlllmllmmlllmfmmmmmlmllmmmlllllmmmlmmmmmmmmmmmmmhmmmmmmhhmmlmmmmmmmlmmmmmmmhmhhmfhmmmmfmmmhmhhmmhmmmmmmmmhmhhmfhmmfffmmmhmhmmmhmmmmmmmmmmhmmmmmmmmmmmlhmhmmmmmlmmmhhmhhhhmmhhhmmmmmmmmmhmmhmmhhhhmmhmhhmmhmmmmmmmmhmmmmmhmmllllmmmmmlllmmlmmmmllhhhhmmhmmmmmhhmmmhmmmmmmmmmmlmmhmmmmmmmmmmmmmmmmllllllllmmllhmhmmmmmmmmmmmmhmhmmmhmmmmmmmmhhhmmmmmmmmmmmmhhhmmmmmmmmmmmmhhhmmmmmmmmmmmmmlmmmmmmmmfmfmfmmffffmfmmmmffmmmmlfmmmmllmllmmmmmllflflfmmflfflfmlmfffmmflllllllllmllmllfmmmflfffffffffffmfffffmmfflllllfllmlmmlmmmmmflflfmmflfflfmlmlffmmmllllmllllmmmmllmmmmlllllmmllllllmlmllllmllllllllmlmmmmmhmhhmfmlmfmhlmffmmmmmmmfmmmmmmmmmmmmmmlmmmmmmmflflfmmlllfmmhmmlffmmmlllllmlllmmmmmmmhmmfmfmfhhfmffmmhmhmffmmmmmmmmmmmmmmmmmmmmmmfmlmfmmlmfflmmmmmllmmmmmlmmlmmmllllllllllllllllllllllmmlllflllllllllllllmmmmmmhmmmmmmmmhmlmmmmmmmhmhmlmmmlmlmmmmlmmhmmmmhmhmmmmfhhmmmmmmhmhmmmmmmmmmmmmmmmmmmmlmmmmmmmmmlmmlmmfmlmlmmmmmmmmlmmmmmmlmmmmmmmmmmlmmmlmmlmllmmmmmmllmlmmmmmmmlmhmmmmmmmmhmmmlmlmmllllllmmlllllmmlllmlllhlmmmmmmmmmmfmflfmmfmffmmmmmmffmmmmmmmmmmmmmllmmmmmmmlmlmfmmlllllmmlmmllmmmmllmmlmlmmlmmmmmmmmmmlmlhmlmmllmmlmmmlmmmllllmlmmmmmmmmmmmmmlmllmmmmllllmmlmmmlmmmmlllmlmmmmlmmmlmmmmlmmmlmmllllllmlmlllmlmllllllllmhhhmmmmhhhhmmhmmfmmmmmhhmmmhhhhmmlhmhhhmmmmfhmmmmhhhhmhhmmmmmhmhmmfmmmfmmmmmhhmmlmmmmmmmmmmmmmmmmfmmmmmmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlmmmmmmlmmmmmmmmmmmhmmhhmmmlhhhmmmmhmmmmmmmmlhmmmmmmmmmhmmmmmmhlhhmhmhhmhhhhhmmmmmmmmmmmlmhmmmmmmmmmmmmmhmmhmmmmmhmlmhllllmlllmmmmlmmmmlmlllllhllmmlmmmmmmmlmmmmmllhmmmmmmhhhmmmhmmmmhmmhhhmmmmmmmmmlmmmmlmmmlmmmmmmmmmmmmmmlmllmmmmlllmmmmmmmmmmmmlllllllllllllllllllmlmmlllllmmmmmmlmmmmmmmmmmmmmmhmmmmmmmmmmmmmmmmmmmmmlmmmmmmhmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlmmmmmmmmmmmmmmlmmmmmhhhhhmhhhhhhhmhhmhhhhhhmmhhmmmmmmmmmmmmmmmmmmmmmmhhmhmhmmhmhhmmmmhhmhmhmlmmmmmmmlmmmmmlmhhhhhmhhmmmmmmmmmmmmmmmmllllllllmhmmmmmmmhhmhhmmmhhmhhmmmmhmmmmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmfmmmmmmmlmmmmmmmmmmmmmmmlmlmmmmmmmmmmmlmmmmmmmmmllmmmmllmmllmmfllllllmllflflfmmflfflfmlmlffmmllllllllllmllmmlmmmllmflfmmflmfmmhmhmfflmmlllllllllmlmlmmmmmmllllmmmlmmflmmmmlmlllmmllllllmlmlmllmmmmlmmmmmmmmmmfmhmmhmmfmmmmlmlmllllmlllllmlllflflfmmlmlfllhlmllfmlllllllllllmllmmlmmmlmllllmmlmllmmmmmlllllmllmmmllllmlllmmmlmmmlmlmmmlmlmmmmmmmmmlmmllmmmmlllmlmmmmmmmmlmmmmmmmlmflmmmhmmfmmmmllmlmlllmmmhmmmhmmmmmhmmmmmmfmmmmhhmmmhhmlmmmmmmmmmmmmmhmmmmmmmhhhhmhfmhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhhmmmfmmmmmlllmmmmlmmmmmmmlmmllmmlmlllllllmllllllmllllllmllmlllllmmmlllmlmmlmmlmllmmlllmllmmmmllmmllmlmmlllmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlmmlmmmmmmmmmmmmmmmmmmmmhmhmmmmmmhmmfmmmfmmmmmhhmmmmhmmmmlmlhmmmmmmmhmmhmmmmmlmmllmllmmmlllmllmmmmmmmmmmlmmlllllmlmmmmmmmmmmmmmfmmmlhhhhhhhhhmlmmmlmmhmmmlmmmmlmmmlmmlmmmmmmmlmmmlmmlmmmmlmmmlmmllmmmmlmmlmllmmlmmmllfflllllllhhhhhhhmmlmmlmfmmlmmlllllmlhhmhmhhmmmmmmmmmmlmmlmlmlmlmmmmmmmhhmhhmfffmlmmlllllmlmmmmmmmhhhhhmmllllmmmlmllmmllllllllmmlmmmlmmlmmmlmllmmmmllllmmmlmllmlmmlmhhmhhmmmmmmmmmmmhhhhmmmmhhhhmhhlmmmmmmmmmmmmmmmmhmhhhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmhmmmmmmmmmmmmllmlmmmllmmmmmmmmmlllllmlmmlmmmmmmmmmmmmlmlllnnllnlllllllllllmlmmlllllllllllllllllllmlmmmmmhlllllllllllllllmlmlmlmmmmmmmlllllllllllllmmlllmlmmllmmlllllllllllnlllllllllmmmlmhllllllllllllllmmmmlmmhmmmmmlllmlmllllmlllmmlmlmmmmhmmhmlmlllllllllllmmlmlmlmmmmmhmllllmllllllmllmlmlllmmmmmmlllllfllllllllllllfllmmlmmmffflllllllllllmmlmlmmmllllllllllfflllllflfmfmlmmmmlmmmfflllllllllnlllmlmlmlmlmmmmlllllfflllllflfffffffhmmmmmfffllmmlllmmllmmmmmmmhmmmmmmmlllmmlllllmlmmmmmmmhmmhhhmmmmlfllllllllfmmmfmlmmlmmmfflllllllllllllllllllmmmmmmllllllllllllllmllllllhmlmmmfflllfflllllflffflfllmfmffmfffflllllllllllllllllmmlmmmllllllmlllllmlfllllmlhmmmmmfllflhmmmmmmmmmmfmmmmmhmhhmmmlmmllllllllllllllllmmlmmmlllllmmlmlllmlhhhhhhhmmmmmlmmmmmlllllllllmmmmmmmmmlllllllllfflllllllfflmfffmllmllfflllfflllllflfffmfflllllllfffllmmlllllmlmllmllmmmmmmmlllmllllllllllmmmmmmmmlllmmllllllllllllllmmlmmmmmmlmmmlflmlllllllllllllllllmlllmmllllllnllllnllllllllllllllllllllllllllnlllllllllmllllllllllllllllllllllllllmlllmllllllllllllllllllllllmllllmlllllllllllnlllllllllmllllllllllllllllllllllllllmmmlmmlllllllllllllllllllllmlmllmlllllllllllllllllllllllmllmlllllmmmmmmmmllllllllllllllllllmmmmlmllmllmlllllllllllllmmmmmmlmmmlmmlllllllmlmlmlllmllflllllllmllmllllffllllllmmlllllfffflfflmmmmmmmmmmmmmmmllfllllllllllmlmflfmlmlmllfffllllllmlmlmlmfmmmmmmmmmmmmmllllmlllmmmmmmmhmlfmlllllffllmllflfflllllmmllmlllmmlmmllmlmmlmmmlllllmlllllllllllllllmllllllllllllllllllllllllllllllllllllllllllllllllllmhmmhmmhmhhmhmhhlhmmmmmmlhmmmmmmlllmmmmmlhmmmmmmlmmlllmllhmhhmmhlmlmmmmmhmhhhmhhhmmmmmmmmmmmmmhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmllfmmmmmlmmmmmmhlmmmmlmmmmmmmmmmmmmhmmhmllmmmmmmmmmmmmmhmhhmmmmmlmmmmmmmlmmmmmmmlmmmmmml";
-  // The worked example's two targets broken into their parts: Agent 1's
-  // output for NBSAP 1 and NDC 4, word for word. Long fields are clipped;
-  // the Action rows quote the clauses the comparison turns on, with every
-  // omission marked.
-  var PARTS = [
-    [
-      "Goal",
-      "Reduce biodiversity loss and maintain ecological integrity by 2030.",
-      "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation…"
-    ],
-    [
-      "Action",
-      "Include all territory in spatial planning … maintain the proportion of natural ecosystems and prevent further decline …",
-      "… create water accumulation facilities and ponds … deliver water through canals and pipelines to wildlife and livestock …"
-    ],
-    [
-      "Ecosystem",
-      "All territory; natural ecosystems; land-use planning and soum territorial development planning.",
-      "Water sector; river headwaters; groundwater systems and wells; glaciers, lakes, reservoirs, rivers, wetlands…"
-    ],
-    [
-      "Audience",
-      "Authorities and planners responsible for spatial planning, land-use plans, soum territorial development…",
-      "Local governments; the private sector; the mining industry; light and heavy industry; households; wildlife…"
-    ],
-    [
-      "Outcome",
-      "Biodiversity loss is reduced, ecological integrity is maintained, the proportion of natural ecosystems is…",
-      "Improved resilience of the water sector; enhanced conservation, restoration, and sustainable use of water…"
-    ]
-  ];
+  var PARTS = TXT.parts;
   // The worked example's two targets and one real target per measurable
-  // group, word for word; the marked phrases are the ones the analysis
-  // recorded as a number or a date.
-  var EX_NBSAP = { doc: 3, label: "1 Spatial planning", text: "By 2030, reduce biodiversity loss and maintain ecological integrity by including all territory in spatial planning and ensuring effective management." };
-  var EX_NDC = { doc: 1, label: "Water resources 2", text: "Enhance the resilience of the water sector through the utilization of advanced technologies for conservation, restoration, sustainable use and secure water availability." };
+  // group; the marked phrases are the ones the analysis recorded as a
+  // number or a date.
+  var EX_NBSAP = { doc: 3, label: TXT.nbsap.label, text: TXT.nbsap.text };
+  var EX_NDC = { doc: 1, label: TXT.ndc.label, text: TXT.ndc.text };
   var MEASURE_EX = [
-    { doc: 3, label: "2 Land restoration", text: "By 2030, restore at least 30 percent of degraded ecosystems and improve ecological integrity and connectivity.", num: ["30 percent"], date: ["By 2030"] },
-    { doc: 5, label: "3.11 Strategic wheat reserve: 100,000 tonnes", text: "Build strategic reserves of at least 100,000 tonnes of food and seed red wheat from each year's autumn harvest", num: ["at least 100,000 tonnes"], date: [] },
-    { doc: 3, label: EX_NBSAP.label, text: EX_NBSAP.text, num: [], date: ["By 2030"] },
-    { doc: 1, label: EX_NDC.label, text: EX_NDC.text, num: [], date: [] },
+    { doc: 3, label: TXT.restore.label, text: TXT.restore.text, num: TXT.restore.num, date: TXT.restore.date },
+    { doc: 5, label: TXT.wheat.label, text: TXT.wheat.text, num: TXT.wheat.num, date: [] },
+    { doc: 3, label: TXT.nbsap.label, text: TXT.nbsap.text, num: [], date: TXT.nbsap.date },
+    { doc: 1, label: TXT.ndc.label, text: TXT.ndc.text, num: [], date: [] },
   ];
 
-  var CAPTIONS = [
-    ["Extraction · Mongolia", "Mongolia: eight policy documents, read in full."],
-    ["Extraction · Mongolia", "Page by page; forewords and annexes set aside."],
-    ["Extraction · Mongolia", "178 targets from Mongolia's documents, word for word."],
-    ["Extraction · Mongolia", "Every figure, year and framework traced to its source."],
-    ["Human step", "A reviewer keeps, edits or adds targets."],
-    ["Analysis · Mongolia", "48 of Mongolia's 178 targets carry a number or a date."],
-    ["Analysis · Mongolia", "Each target placed in a category of the selected lens."],
-    ["Analysis · Mongolia", "13,404 target pairs: every target against every target in the other documents."],
-    ["Analysis · Agent 1", "Each target broken into five parts before any comparison."],
-    ["Analysis · Agent 2", "Each pair rated from the two targets' texts."],
-    ["Synthesis · Mongolia", "Across Mongolia's policies, 66% of target pairs are aligned; 5% show potential misalignment."],
-    ["Synthesis · Mongolia", "Aligned and potentially misaligned pairs grouped into recurring themes."],
-    ["Human step", "Each insight can be rated with a thumb and a note."],
-    ["Level 2 · Finance · Mongolia", "157 of Mongolia's 178 targets align with at least one of 28 reviewed budget programmes."],
-    ["Level 3 · Implementation · Mongolia", "173 of Mongolia's 178 targets align with at least one of 39 reported measures."],
-  ];
+  var CAPTIONS = TXT.captions;
 
   function seeded(seed) {
     var s = seed | 0;
@@ -398,7 +493,6 @@
     return { x: x, y: y, html: html, cls: cls || "", w: width || 0 };
   }
 
-  function fmt(n) { return n.toLocaleString("en-US"); }
 
   // ── Scenes ─────────────────────────────────────────────────────────
   function sceneFor(k) {
@@ -431,10 +525,11 @@
       });
       cols.forEach(function (col, di) {
         var count = "";
-        if (k >= 2 && k <= 4) count = DOCS[di][1] + " targets";
-        if (k === 13) count = FINANCE[di] + " of " + DOCS[di][1];
-        if (k === 14) count = IMPLEMENTATION[di] + " of " + DOCS[di][1];
-        labs.push(label(col.x, col.y - 10, '<span class="nm">' + DOCS[di][0] + "</span>" + (count ? '<span class="ct">' + count + "</span>" : ""), "sl-doc sl-up", col.w));
+        if (k >= 2 && k <= 4) count = TXT.targets(DOCS[di][1]);
+        if (k === 13) count = TXT.nOf(FINANCE[di], DOCS[di][1]);
+        if (k === 14) count = TXT.nOf(IMPLEMENTATION[di], DOCS[di][1]);
+        // Narrow columns (laptop widths) set the names a size smaller.
+        labs.push(label(col.x, col.y - 10, '<span class="nm">' + DOCS[di][0] + "</span>" + (count ? '<span class="ct">' + count + "</span>" : ""), "sl-doc sl-up" + (col.w < 90 ? " sl-tight" : ""), col.w));
       });
       // Under the documents, the targets the step is about, word for word.
       var tallest = Math.max.apply(null, DOCS.map(function (d) { return Math.ceil(d[1] / cols[0].perRow); }));
@@ -445,14 +540,14 @@
       if (k === 3) {
         var src = MEASURE_EX[2];
         labs.push(label(b.x, below, '<div class="qcard qcard-check">' + quote(src, marked(src)) +
-          '<p class="q-check"><span aria-hidden="true">✓</span> "2030" found in the source text</p>' +
-          '<p class="q-note">Source: the national target as recorded on the Online Reporting Tool of the Convention on Biological Diversity</p></div>', "sl-cards", Math.min(b.w, 420)));
+          '<p class="q-check"><span aria-hidden="true">✓</span> ' + TXT.found + '</p>' +
+          '<p class="q-note">' + TXT.sourceCbd + '</p></div>', "sl-cards", Math.min(b.w, 420)));
       }
       if (k === 13 || k === 14) {
         var n = k === 13 ? 28 : 39;
         var html = "";
         for (var q = 0; q < n; q++) html += '<i style="background:' + (k === 13 ? BLUE : GREEN) + '"></i>';
-        labs.push(label(b.x, b.y + b.h - 34, '<span class="squares">' + html + "</span> " + (k === 13 ? "28 reviewed budget programmes (Biodiversity Expenditure Review)" : "39 reported measures (Biennial Transparency Report)"), "sl-foot"));
+        labs.push(label(b.x, b.y + b.h - 34, '<span class="squares">' + html + "</span> " + (k === 13 ? TXT.budgetFoot : TXT.measuresFoot), "sl-foot"));
       }
     } else if (k === 5 || k === 6) {
       var groups = k === 5 ? MEASURE : GLOBE;
@@ -520,14 +615,14 @@
       if (k === 7) {
         // A document's own square stays empty: the note sits in the largest.
         var big = 5, sq = DOCS[big][1] * MT.pitch;
-        labs.push(label(MT.x0 + MT.off[big] + sq * 0.55, MT.y0 + MT.off[big] + sq * 0.74, "Same document: not compared", "sl-note sl-note-r", 150));
+        labs.push(label(MT.x0 + MT.off[big] + sq * 0.55, MT.y0 + MT.off[big] + sq * 0.74, TXT.sameDoc, "sl-note sl-note-r", 150));
         // One block of pairs, outlined: the targets of two documents, row by column.
         var bx = MT.x0 + MT.off[EX_NBSAP.doc], by = MT.y0 + MT.off[EX_NDC.doc];
         var bw = DOCS[EX_NBSAP.doc][1] * MT.pitch, bh = DOCS[EX_NDC.doc][1] * MT.pitch;
         outlines.push({ x: bx - 2, y: by - 2, w: bw + 4, h: bh + 4 });
-        labs.push(label(bx + bw + 8, by + bh * 0.72, DOCS[EX_NDC.doc][1] + " × " + DOCS[EX_NBSAP.doc][1] + " = " + fmt(DOCS[EX_NDC.doc][1] * DOCS[EX_NBSAP.doc][1]) + " target pairs", "sl-callout sl-callout-mid"));
-        var key = '<span class="keyline"><span class="key" style="background:' + LINE_DARK + '"></span>Each dot is one target pair</span>';
-        if (showEx) key += '<span class="keyline"><span class="key" style="background:' + BLUE + '"></span>The 158 target pairs of one target: National Biodiversity Strategy &amp; Action Plan, 1 Spatial planning</span>';
+        labs.push(label(bx + bw + 8, by + bh * 0.72, TXT.block(DOCS[EX_NDC.doc][1], DOCS[EX_NBSAP.doc][1], DOCS[EX_NDC.doc][1] * DOCS[EX_NBSAP.doc][1]), "sl-callout sl-callout-mid"));
+        var key = '<span class="keyline"><span class="key" style="background:' + LINE_DARK + '"></span>' + TXT.eachDot + '</span>';
+        if (showEx) key += '<span class="keyline"><span class="key" style="background:' + BLUE + '"></span>' + TXT.oneTarget(158, DOCS[EX_NBSAP.doc][0], EX_NBSAP.label) + '</span>';
         labs.push(label(MT.x0 - 150, under, key, "sl-legend sl-legend-small sl-keys"));
       }
       if (k === 8) {
@@ -548,7 +643,7 @@
         }).join("");
         labs.push(label(MT.x0 - 150, under, row9, "sl-legend sl-legend-small sl-keyrow", MT.side + 150));
         if (showEx) {
-          labs.push(label(exPos[0] + 14, exPos[1] - 10, '<span class="verdict"><span class="o"></span>Potential misalignment</span><span class="why">Competing for resources: land</span>', "sl-callout"));
+          labs.push(label(exPos[0] + 14, exPos[1] - 10, '<span class="verdict"><span class="o"></span>' + TXT.verdict + '</span><span class="why">' + TXT.why + '</span>', "sl-callout"));
         }
       }
     } else if (k >= 10 && k <= 12) {
@@ -562,8 +657,7 @@
         });
         var total = pairs.length;
         var row = TONES.map(function (t) {
-          var pct = (100 * t[1]) / total;
-          var txt = pct < 1 ? "&lt;1%" : Math.round(pct) + "%";
+          var txt = pctText(t[1] / total);
           return '<span class="key" style="background:' + t[2] + '"></span><span class="n">' + txt + "</span> " + t[0];
         }).join('<span class="gap"></span>');
         labs.push(label(b.x, fb.y + fb.h + 12, row, "sl-legend"));
@@ -586,10 +680,10 @@
           }
         });
         ga.forEach(function (g, gi) {
-          labs.push(label(g.x0, upper.y - 22, gi < 3 ? '<span class="n">' + (gi + 1) + "</span>" : "Other", "sl-num"));
+          labs.push(label(g.x0, upper.y - 22, gi < 3 ? '<span class="n">' + (gi + 1) + "</span>" : TXT.other, "sl-num"));
         });
         gr.forEach(function (g, gi) {
-          labs.push(label(g.x0, lower.y - 22, gi < 3 ? '<span class="n">' + (gi + 1) + "</span>" : "Other", "sl-num"));
+          labs.push(label(g.x0, lower.y - 22, gi < 3 ? '<span class="n">' + (gi + 1) + "</span>" : TXT.other, "sl-num"));
         });
         var lx = b.x + b.w * 0.64;
         var list = function (items) {
