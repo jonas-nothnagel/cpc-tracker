@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(ls -1 /Users/jonas/github/cpc-tracker/src/components/viz/*.tsx)"
-    ]
-  }
-}
