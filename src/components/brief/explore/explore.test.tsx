@@ -8,6 +8,9 @@ import { scopeOf } from "@/lib/brief/compute";
 import { briefFixture } from "@/lib/brief/test-fixture";
 import { exploreReducer, initialExploreState, type ExploreGroup, type ExploreState } from "@/lib/brief/explore/state";
 import { buildExploreLayers } from "@/lib/brief/explore/layers";
+import { buildExploreModel, groupByDocument } from "@/lib/brief/explore/model";
+import { focusMembers, groupProfile, groupSeatOrder, parseFocusKey } from "@/lib/brief/explore/focus";
+import { layoutRing } from "@/lib/brief/explore/ring";
 import { LAYER_DATA } from "@/lib/brief/explore/test-layers";
 import { Explore } from "./explore";
 
@@ -139,11 +142,12 @@ describe("Explore", () => {
       const card = () => document.querySelector(".ex-tip")?.textContent ?? "";
       // The first seat of A: compared with B6.
       fireEvent.keyDown(ring, { key: "ArrowRight" });
-      expect(card()).toContain("Select its line to open the comparison");
+      expect(card()).toContain("Select to open the comparison");
       // The first seat of B: B6's own document, never compared with it.
       fireEvent.keyDown(ring, { key: "PageDown" });
       expect(card()).not.toBe("");
-      expect(card()).not.toContain("Select its line to open the comparison");
+      expect(card()).not.toContain("Select to open the comparison");
+      expect(card()).not.toContain("Select again");
     } finally {
       if (saved.w) Object.defineProperty(HTMLElement.prototype, "clientWidth", saved.w);
       if (saved.h) Object.defineProperty(HTMLElement.prototype, "clientHeight", saved.h);
@@ -413,6 +417,92 @@ describe("Explore: a lens and its scope", () => {
     renderLens({ group: "hr", focus: "A1" });
     expect(within(side()).getByText(/Aligned with 12 of the 12 targets it was compared with\./)).toBeInTheDocument();
     expect(screen.getByRole("application", { name: /^2 targets on a ring, grouped by Human rights/ })).toBeInTheDocument();
+  });
+});
+
+describe("Explore: a dot opens what links it to the centre", () => {
+  // Lay the ring out: jsdom has no sizes.
+  let sizes: { mockRestore: () => void }[] = [];
+  beforeEach(() => {
+    sizes = [
+      vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(800),
+      vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(600),
+    ];
+  });
+  afterEach(() => sizes.forEach((s) => s.mockRestore()));
+
+  /** Where a target's dot sits with `focus` in the centre: the same arcs,
+   *  sorted against the centre, laid out at the ring's size (the fixture's
+   *  short names leave the least room for them, 56px + 16px). */
+  function dot(focus: string | null, id: string) {
+    const model = buildExploreModel(DATA.scope, null);
+    const members = focus ? focusMembers(model, parseFocusKey(focus), SOURCE.lenses) : [];
+    const profile = members.length > 0 ? groupProfile(model, members) : null;
+    const arcs = groupByDocument(model, DATA.scope.docs).map((g) => ({
+      ...g,
+      ids: profile ? groupSeatOrder(g.ids, profile) : g.ids,
+    }));
+    const layout = layoutRing(arcs, model.items.length, 800, 600, { labelHeight: 72 });
+    const i = model.index.get(id)!;
+    return { clientX: layout.x[i], clientY: layout.y[i] };
+  }
+  const card = () => document.querySelector(".ex-tip")?.textContent ?? "";
+
+  it("opens the comparison with the target in the centre, and puts the dot in the centre when selected again", async () => {
+    renderExplore({ focus: "B6" });
+    const ring = screen.getByRole("application");
+    const a6 = dot("B6", "A6");
+    fireEvent.pointerMove(ring, a6);
+    expect(card()).toContain("Select to open the comparison");
+    fireEvent.click(ring, a6);
+    expect(await screen.findByTestId("explore-pair")).toBeInTheDocument();
+    // B6 stays in the centre.
+    expect(within(side()).getByText(/Potential misalignment with 7\./)).toBeInTheDocument();
+    expect(card()).toContain("Select again to put it in the centre");
+    fireEvent.click(ring, a6);
+    // A6 is now in the centre: potential misalignment with all six B targets.
+    expect(within(side()).getByText(/Potential misalignment with 6\./)).toBeInTheDocument();
+    expect(screen.queryByTestId("explore-pair")).toBeNull();
+  });
+
+  it("keeps Enter for putting a seat in the centre at once", () => {
+    renderExplore({ focus: "B6" });
+    const ring = screen.getByRole("application");
+    ring.focus();
+    // The first seat of A, sorted against B6, is A6.
+    fireEvent.keyDown(ring, { key: "ArrowRight" });
+    fireEvent.keyDown(ring, { key: "Enter" });
+    expect(within(side()).getByText(/Potential misalignment with 6\./)).toBeInTheDocument();
+    expect(screen.queryByTestId("explore-pair")).toBeNull();
+  });
+
+  it("puts a dot of the centre's own document in the centre at once", () => {
+    renderExplore({ focus: "B6" });
+    fireEvent.click(screen.getByRole("application"), dot("B6", "B5"));
+    // B5: potential misalignment with A6 and C4-C6.
+    expect(within(side()).getByText(/Potential misalignment with 4\./)).toBeInTheDocument();
+    expect(screen.queryByTestId("explore-pair")).toBeNull();
+  });
+
+  it("puts a dot in the centre at once while nothing is there", () => {
+    renderExplore();
+    fireEvent.click(screen.getByRole("application"), dot(null, "A6"));
+    expect(within(side()).getByText(/Potential misalignment with 6\./)).toBeInTheDocument();
+  });
+
+  it("with a document in the centre, opens a dot's target pairs with it, then puts the dot in the centre", () => {
+    renderExplore({ focus: "doc:A" });
+    const ring = screen.getByRole("application");
+    const b1 = dot("doc:A", "B1");
+    fireEvent.pointerMove(ring, b1);
+    expect(card()).toContain("Select to open its target pairs");
+    fireEvent.click(ring, b1);
+    // B1 with each of A1-A6.
+    expect(within(screen.getByTestId("explore-seat-pairs")).getByText(/6 target pairs/)).toBeInTheDocument();
+    expect(card()).toContain("Select again to put it in the centre");
+    fireEvent.click(ring, b1);
+    // B1 in the centre: its one potential misalignment is with A6.
+    expect(within(side()).getByText(/Potential misalignment with 1\./)).toBeInTheDocument();
   });
 });
 

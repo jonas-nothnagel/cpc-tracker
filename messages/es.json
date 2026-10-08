@@ -523,7 +523,7 @@
         "steps": {
           "ring": {
             "title": "Todas las metas en un anillo",
-            "body": "Cada punto es una meta de los documentos seleccionados, situada en el arco de su documento. «Agrupar por» dispone los arcos por área de política, con las metas que pertenecen a alguna. Al señalar un punto se nombra la meta; al seleccionarlo, pasa al centro."
+            "body": "Cada punto es una meta de los documentos seleccionados, situada en el arco de su documento. «Agrupar por» dispone los arcos por área de política, con las metas que pertenecen a alguna. Al señalar un punto se nombra la meta; al seleccionarlo, pasa al centro. Con una meta en el centro, la primera selección abre la comparación entre ambas y la segunda pasa el punto al centro."
           },
           "centre": {
             "title": "El centro",
@@ -531,7 +531,7 @@
           },
           "lines": {
             "title": "Líneas",
-            "body": "Las líneas van del centro a sus alineaciones fuertes (continuas) y a sus posibles desalineaciones (discontinuas); los interruptores añaden la alineación moderada y la parcial. Al señalar una línea se muestran la calificación del modelo de IA y la primera frase de su explicación; al seleccionarla se abre la comparación, donde se puede valorar la explicación."
+            "body": "Las líneas van del centro a sus alineaciones fuertes (continuas) y a sus posibles desalineaciones (discontinuas); los interruptores añaden la alineación moderada y la parcial. Al señalar una línea o el punto al que lleva se muestran la calificación del modelo de IA y la primera frase de su explicación; al seleccionar cualquiera de los dos se abre la comparación, donde se puede valorar la explicación."
           },
           "layers": {
             "title": "Acciones reportadas y líneas presupuestarias",
@@ -3237,7 +3237,9 @@
       "tipActionPull": "Posible desalineación",
       "lineOpenComparison": "Abrir la comparación",
       "lineOpenPairs": "Abrir sus pares de metas",
-      "seatOpenComparison": "Seleccione su línea para abrir la comparación",
+      "seatOpenComparison": "Seleccione para abrir la comparación",
+      "seatOpenPairs": "Seleccione para abrir sus pares de metas",
+      "seatToCentre": "Seleccione de nuevo para ponerlo en el centro",
       "restTipBudget": "{count, plural, =0 {No corresponde a ninguna meta} one {Corresponde a # meta} other {Corresponde a # metas}}",
       "restTipAction": "{strong, plural, =0 {No está fuertemente alineada con ninguna meta} one {Fuertemente alineada con # meta} other {Fuertemente alineada con # metas}}{apart, plural, =0 {} other {, posiblemente desalineada con #}}",
       "arcMatching": "{count, number} de {total, number} con correspondencia",

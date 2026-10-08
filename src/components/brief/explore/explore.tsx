@@ -590,6 +590,18 @@ export function Explore({
     }
     return null;
   };
+  /** What a seat's first selection opens beside the ring: its comparison
+   *  with the seat in the centre, or its target pairs with the document or
+   *  area there. Nothing at rest, for the centre's own seats, for seats never
+   *  compared with it, or with a layer in the centre. */
+  const seatOpens = (i: number): "comparison" | "pairs" | null => {
+    if (!group || group.isMember[i]) return null;
+    if (single !== null) return levelBetween(model, single, i) === null ? null : "comparison";
+    return (activeKind === "doc" || activeKind === "area") && group.relation[i] !== "unrelated" ? "pairs" : null;
+  };
+  /** Whether what a seat opens is beside the ring now. */
+  const seatOpen = (i: number): boolean =>
+    single !== null ? pair?.b === model.items[i].id : seat === model.items[i].id;
   const tipFor = (i: number): ReactNode => {
     const c = model.items[i];
     const relation = !group
@@ -603,9 +615,14 @@ export function Explore({
         : groupText(i);
     const reading = single !== null && i !== single ? readingOf(c.id) : undefined;
     const facts = factsOf(c);
-    // A seat compared with the one in the centre: selecting it moves it to
-    // the centre, so the card says where the comparison opens.
-    const compared = single !== null && i !== single && levelBetween(model, single, i) !== null;
+    // What selecting the seat does next: open what links it to the centre,
+    // then put it in the centre.
+    const opens = seatOpens(i);
+    const cue = !opens
+      ? null
+      : seatOpen(i)
+        ? t("seatToCentre")
+        : t(opens === "comparison" ? "seatOpenComparison" : "seatOpenPairs");
     return (
       <>
         <span className="ex-tip-doc">{docName(c.doc)}</span>
@@ -618,7 +635,7 @@ export function Explore({
             <span className="ex-tip-ai-label">{t("aiLabel")}</span> {clip(reading.first, 220)}
           </span>
         )}
-        {compared && <span className="ex-tip-open">{t("seatOpenComparison")}</span>}
+        {cue && <span className="ex-tip-open">{cue}</span>}
       </>
     );
   };
@@ -661,6 +678,13 @@ export function Explore({
       setSeat((cur) => (cur === id ? null : id));
       setPair(null);
     }
+  };
+  // A seat's first selection opens what links it to the centre (its line
+  // can lie under the line to the seat beside it); the next puts it in the
+  // centre. With nothing to open, it goes there at once.
+  const selectSeat = (i: number) => {
+    if (seatOpens(i) && !seatOpen(i)) openLine(i);
+    else toCentre(i);
   };
   // Empty space steps out: an open comparison first, then the centre.
   const background = () => {
@@ -1406,7 +1430,8 @@ export function Explore({
                   : undefined
             }
             describe={describe}
-            onSeat={toCentre}
+            onSeat={selectSeat}
+            onCentre={toCentre}
             onLine={openLine}
             onBackground={background}
             onEscape={escape}

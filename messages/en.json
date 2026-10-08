@@ -523,7 +523,7 @@
         "steps": {
           "ring": {
             "title": "Every target on one ring",
-            "body": "Each dot is one target of the selected documents, set in the arc of its document. Group by sets the arcs by policy area instead, with the targets that fall in one. Pointing at a dot names the target; selecting it puts it at the centre."
+            "body": "Each dot is one target of the selected documents, set in the arc of its document. Group by sets the arcs by policy area instead, with the targets that fall in one. Pointing at a dot names the target; selecting it puts it at the centre. While a target is at the centre, a first selection opens the comparison of the two and a second puts the dot at the centre."
           },
           "centre": {
             "title": "The centre",
@@ -531,7 +531,7 @@
           },
           "lines": {
             "title": "Lines",
-            "body": "Lines run from the centre to its strong alignments (solid) and potential misalignments (dashed); the switches add moderate and partial alignment. Pointing at a line shows the AI model's rating and the first sentence of its explanation; selecting it opens the comparison, where the explanation can be rated."
+            "body": "Lines run from the centre to its strong alignments (solid) and potential misalignments (dashed); the switches add moderate and partial alignment. Pointing at a line or at the dot it leads to shows the AI model's rating and the first sentence of its explanation; selecting either opens the comparison, where the explanation can be rated."
           },
           "layers": {
             "title": "Reported actions and budget lines",
@@ -3237,7 +3237,9 @@
       "tipActionPull": "Potential misalignment",
       "lineOpenComparison": "Open the comparison",
       "lineOpenPairs": "Open its target pairs",
-      "seatOpenComparison": "Select its line to open the comparison",
+      "seatOpenComparison": "Select to open the comparison",
+      "seatOpenPairs": "Select to open its target pairs",
+      "seatToCentre": "Select again to put it in the centre",
       "restTipBudget": "{count, plural, =0 {Matches no target} one {Matches # target} other {Matches # targets}}",
       "restTipAction": "{strong, plural, =0 {Strongly aligned with no target} one {Strongly aligned with # target} other {Strongly aligned with # targets}}{apart, plural, =0 {} other {, potentially misaligned with #}}",
       "arcMatching": "{count, number} of {total, number} matching",

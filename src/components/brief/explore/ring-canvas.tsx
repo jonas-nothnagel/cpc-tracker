@@ -288,8 +288,8 @@ function paint(canvas: HTMLCanvasElement, f: Frame) {
  * in the centre in the middle with a line to each target it relates to.
  * Seats glide to their places when the centre or the grouping changes; the
  * lines draw once they have arrived. A seat under the pointer shows its own
- * lines round the centre. Selecting a seat puts it in the centre; selecting
- * a line opens that comparison.
+ * lines round the centre. Selecting a seat or a line hands it to the page;
+ * Enter puts the seat under the keyboard in the centre, Space opens its line.
  */
 export function RingCanvas({
   arcs,
@@ -308,6 +308,7 @@ export function RingCanvas({
   lineCue,
   describe,
   onSeat,
+  onCentre = onSeat,
   onLine,
   onBackground,
   onEscape,
@@ -340,7 +341,10 @@ export function RingCanvas({
    *  nothing beside the ring). */
   lineCue?: string;
   describe: (id: number) => string;
+  /** A seat was selected with the pointer. */
   onSeat: (id: number) => void;
+  /** Enter on a seat: it goes to the centre (the seat's selection when absent). */
+  onCentre?: (id: number) => void;
   onLine: (id: number) => void;
   onBackground?: () => void;
   onEscape?: () => void;
@@ -594,7 +598,7 @@ export function RingCanvas({
         moveCursor(order[order.length - 1]);
         break;
       case "Enter":
-        if (cursor !== null) onSeat(cursor);
+        if (cursor !== null) onCentre(cursor);
         break;
       case " ":
         if (cursor !== null) onLine(cursor);
