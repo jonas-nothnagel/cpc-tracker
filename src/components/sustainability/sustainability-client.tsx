@@ -383,6 +383,8 @@ function Sources({ events }: { events: LedgerEvent[] }) {
           ),
         })}
       </p>
+      <p>{t("sources.inputTokens")}</p>
+      <p>{t("sources.azure")}</p>
       <p>{t("sources.equivalents")}</p>
     </footer>
   );

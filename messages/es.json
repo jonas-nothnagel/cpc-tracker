@@ -1872,7 +1872,9 @@
     },
     "sources": {
       "method": "Estimaciones modeladas con <link>EcoLogits</link>, no lecturas de medidor. Combinación eléctrica: {regions}.",
-      "equivalents": "Comparaciones ilustrativas: factor de combustión de gasolina de la Agencia de Protección Ambiental de Estados Unidos (EPA, agosto de 2026), una batería de coche eléctrico de 75 a 100 kWh y una bañera de 155 litros."
+      "equivalents": "Comparaciones ilustrativas: factor de combustión de gasolina de la Agencia de Protección Ambiental de Estados Unidos (EPA, agosto de 2026), una batería de coche eléctrico de 75 a 100 kWh y una bañera de 155 litros.",
+      "inputTokens": "Estas cifras contabilizan el texto que genera cada respuesta, no el texto que el modelo lee antes. En agosto de 2026 el modelo leyó 34 veces más texto del que escribió (métricas de uso de Azure), por lo que las cifras son un mínimo.",
+      "azure": "Microsoft Azure informa 25,4 kg de CO2e para el servicio de IA en agosto de 2026, sobre todo por la fabricación del equipo: su método basado en el mercado computa la electricidad como cero, por lo que ambas cifras no son comparables."
     }
   },
   "finding": {

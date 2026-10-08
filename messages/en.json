@@ -1872,7 +1872,9 @@
     },
     "sources": {
       "method": "Modelled estimates with <link>EcoLogits</link>, not meter readings. Electricity mix: {regions}.",
-      "equivalents": "Illustrative comparisons: United States Environmental Protection Agency (EPA) petrol combustion factor (August 2026), a 75 to 100 kWh electric car battery, a 155-litre bathtub."
+      "equivalents": "Illustrative comparisons: United States Environmental Protection Agency (EPA) petrol combustion factor (August 2026), a 75 to 100 kWh electric car battery, a 155-litre bathtub.",
+      "inputTokens": "These figures count the text each answer generates, not the text the model reads first. In August 2026 the model read 34 times as much text as it wrote (Azure usage metrics), so the figures are a lower bound.",
+      "azure": "Microsoft Azure reports 25.4 kg CO2e for the AI service in August 2026, mostly hardware manufacturing: its market-based method counts electricity as zero, so the two figures are not comparable."
     }
   },
   "finding": {
