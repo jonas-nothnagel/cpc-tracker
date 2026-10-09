@@ -20,14 +20,31 @@ import {
   type AreaSide,
   type TargetInk,
 } from "@/lib/brief/areas";
+import {
+  AREA_FEW_TARGETS,
+  DEFAULT_AREA_SORT,
+  areaShare,
+  areaTones,
+  nextAreaSort,
+  orderRows,
+  sortAreas,
+  type AreaShareKey,
+  type AreaSort,
+  type AreaSortKey,
+} from "@/lib/brief/area-shares";
+import { emptyCounts, type ToneCounts } from "@/lib/brief/compute";
 import type { BriefData } from "@/lib/brief/data";
 import type { BriefSource, LensId } from "@/lib/brief/source";
 import { LONG_TEXT } from "../comparison";
 import { commitmentLine, useNumbers } from "../ink";
 import { lensTooltip } from "../lens-tooltip";
+import { ResultBar } from "../sections/documents";
 import { AreaField } from "./area-field";
 
 const SIDES: AreaSide[] = ["apart", "reinforce"];
+
+/** The shares a row's result bar draws, in the order its reading names them. */
+const SHARE_COLUMNS: AreaShareKey[] = ["reinforce", "partial", "apart"];
 /** Targets each area of an open pair lists. */
 const INVOLVED_MAX = 3;
 
@@ -87,9 +104,11 @@ function AreaName({
 }
 
 /**
- * Policy areas on screen: the bar chart of targets per area, each target
+ * Policy areas on screen: one row per area of the lens named top left, each
+ * with its targets and the result bar of all its target pairs, each target
  * with its point cloud, beside the pairs of areas the chosen side's target
- * pairs fall between. Pointing marks names; picking an area by its name,
+ * pairs fall between. The column names sort the rows, most first and then
+ * least first. Pointing marks names; sorting, picking an area by its name,
  * opening a pair of areas or picking a target re-shapes the picture.
  */
 export function AreasView({
@@ -114,9 +133,13 @@ export function AreasView({
   const tl = useTranslations("briefing.lens");
   const th = useTranslations("brief.hub");
   const tp = useTranslations("brief.panel");
+  const td = useTranslations("brief.documents");
   const { n, pct } = useNumbers();
   const active = lens ?? source.lenses[0]?.id ?? null;
   const [side, setSide] = useState<AreaSide>("apart");
+  // The column the rows are sorted by: most aligned first, until the reader
+  // picks another column or turns the order round.
+  const [sort, setSort] = useState<AreaSort>(DEFAULT_AREA_SORT);
   // The area picked by its name on the picture.
   const [areaPick, setAreaPick] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
@@ -191,6 +214,16 @@ export function AreasView({
     [areas, links, side, focusKey],
   );
   /* eslint-enable react-hooks/exhaustive-deps */
+  // Each area's readings over all its target pairs, and the rows in the
+  // order of the sort: a new order moves the rows, and their dots with them.
+  const tones = useMemo(
+    () => (areas ? areaTones(areas, data.scope) : new Map<string, ToneCounts>()),
+    [areas, data.scope],
+  );
+  const drawn = useMemo(
+    () => (areas ? orderRows(rows, sortAreas(areas, tones, sort)) : rows),
+    [areas, rows, tones, sort],
+  );
 
   // A picked target's card comes into view. Keyboard focus follows a pick
   // to the card or to the headline naming the picked area, and "Back" to
@@ -431,27 +464,71 @@ export function AreasView({
     const a = area(id);
     if (!a) return null;
     const count = counts.get(id);
+    const name = (
+      <AreaName
+        className="brief-av-name"
+        title={a.acronym ? `${a.name} (${a.acronym})` : a.name}
+        pressed={pickedArea === id}
+        onPoint={(on) => setPointedRows(on ? [id] : [])}
+        onOpen={(byKey) => pickArea(id, byKey)}
+      >
+        {a.name}
+      </AreaName>
+    );
+    const of = count !== undefined && (
+      <span className="brief-av-of" data-side={side}>
+        {t("rowPairs", { side, count })}
+      </span>
+    );
+    // The name on the left, the area's figures in the columns the head
+    // above the picture names: its targets, and the result bar of all its
+    // target pairs.
+    const tone = tones.get(id) ?? emptyCounts();
+    const shares = SHARE_COLUMNS.map((key) => areaShare(tone, key));
+    const shown = (share: number | null) => (share === null ? "—" : pct(share));
     return (
       <>
-        <AreaName
-          className="brief-av-name"
-          title={a.acronym ? `${a.name} (${a.acronym})` : a.name}
-          pressed={pickedArea === id}
-          onPoint={(on) => setPointedRows(on ? [id] : [])}
-          onOpen={(byKey) => pickArea(id, byKey)}
-        >
-          {a.name}
-        </AreaName>
-        <span className="brief-av-n" aria-hidden="true">
+        <span className="brief-av-label">
+          {name}
+          {a.targets.length < AREA_FEW_TARGETS && <span className="brief-av-few">{t("fewTargets")}</span>}
+          {of}
+        </span>
+        <span className="brief-av-fig" data-on={sort.key === "targets" ? "true" : undefined} aria-hidden="true">
           {n(a.targets.length)}
         </span>
         <span className="brief-sr-only">{t("targets", { count: a.targets.length })}</span>
-        {count !== undefined && (
-          <span className="brief-av-of" data-side={side}>
-            {t("rowPairs", { side, count })}
+        <span className="brief-av-bar" aria-hidden="true">
+          {shares[0] === null ? <span className="brief-av-fig">—</span> : <ResultBar counts={tone} />}
+        </span>
+        {shares[0] !== null && (
+          <span className="brief-sr-only">
+            {t("rowShares", {
+              aligned: shown(shares[0]),
+              partial: shown(shares[1]),
+              apart: shown(shares[2]),
+              total: tone.total,
+            })}
           </span>
         )}
       </>
+    );
+  };
+  const columnName = (key: AreaShareKey) =>
+    td(key === "reinforce" ? "columnAligned" : key === "partial" ? "columnPartial" : "columnApart");
+  const sortHead = (label: string, key: AreaSortKey) => {
+    const on = sort.key === key;
+    return (
+      <button
+        key={key}
+        type="button"
+        className="brief-av-sort"
+        aria-pressed={on}
+        aria-label={on ? t(sort.dir === "desc" ? "sortMost" : "sortLeast", { label }) : undefined}
+        onClick={() => setSort((s) => nextAreaSort(s, key))}
+      >
+        {label}
+        {on && <span aria-hidden="true">{sort.dir === "desc" ? " ▾" : " ▴"}</span>}
+      </button>
     );
   };
   const tipFor = (id: string) => {
@@ -487,8 +564,16 @@ export function AreasView({
   return (
     <div className="brief-av" data-testid="brief-areas" data-tour="brief-areas" ref={root}>
       <div className="brief-av-picture">
+        <div className="brief-av-head">
+          <span className="brief-av-lens">{tl(active)}</span>
+          {sortHead(t("colTargets"), "targets")}
+          <span className="brief-av-ends">
+            {sortHead(columnName("apart"), "apart")}
+            {sortHead(columnName("reinforce"), "reinforce")}
+          </span>
+        </div>
         <AreaField
-          rows={rows}
+          rows={drawn}
           restClouds={rest}
           clouds={clouds}
           inks={inks}

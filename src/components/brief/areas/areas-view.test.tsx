@@ -2,9 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
-import { layoutAreaField } from "@/lib/brief/area-layout";
-import { areaFocus, cloudSizes, lensAreas, restClouds, rowOrder, sideLinks } from "@/lib/brief/areas";
-import { scopeOf } from "@/lib/brief/compute";
+import { layoutAreaField, type AreaFieldRow } from "@/lib/brief/area-layout";
+import { DEFAULT_AREA_SORT, areaTones, orderRows, sortAreas } from "@/lib/brief/area-shares";
+import { areaFocus, cloudSizes, lensAreas, restClouds, rowOrder, sideLinks, type LensAreas } from "@/lib/brief/areas";
+import { scopeOf, type Scope } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
 import type { BriefSource, LensId } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
@@ -57,6 +58,9 @@ function renderView(props: Partial<Props> = {}) {
   return { ...handlers, rerender: (over: Partial<Props>) => utils.rerender(view(over)) };
 }
 
+/** The picture's rows as the view draws them: in the order of the default sort. */
+const drawnRows = (lens: LensAreas, scope: Scope, rows: AreaFieldRow[]) =>
+  orderRows(rows, sortAreas(lens, areaTones(lens, scope), DEFAULT_AREA_SORT));
 const pairRows = () => screen.getAllByTestId("brief-area-pair");
 const pairNames = () => pairRows().map((p) => p.querySelector(".brief-av-pair-name")?.textContent);
 const row = (id: string) => document.querySelector(`[data-row="${id}"]`) as HTMLElement;
@@ -136,7 +140,7 @@ describe("AreasView", () => {
     const lens = lensAreas(SOURCE, DATA.scope, "globe");
     const links = sideLinks(DATA.scope);
     const rest = restClouds(lens, links, "apart");
-    const at = layoutAreaField(rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart"), rest, W).at;
+    const at = layoutAreaField(drawnRows(lens, DATA.scope, rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart")), rest, W).at;
     const field = document.querySelector(".brief-av-field") as HTMLElement;
     const b6 = at.get("B6")!;
     fireEvent.click(field, { clientX: b6.x, clientY: b6.y });
@@ -295,7 +299,8 @@ describe("AreasView", () => {
     const lens = lensAreas(spread, data.scope, "globe");
     const links = sideLinks(data.scope);
     const rest = restClouds(lens, links, "apart");
-    const b6 = layoutAreaField(rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart"), rest, W).at.get("B6")!;
+    const rows = drawnRows(lens, data.scope, rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart"));
+    const b6 = layoutAreaField(rows, rest, W).at.get("B6")!;
     fireEvent.click(document.querySelector(".brief-av-field") as HTMLElement, { clientX: b6.x, clientY: b6.y });
     expect(screen.getByTestId("brief-area-card").textContent).toContain(
       "Potential misalignment with 7 targets: 1 in Area 1, 1 in Area 2, 1 in Area 3, 4 elsewhere.",
@@ -425,7 +430,7 @@ describe("AreasView", () => {
     const rest = restClouds(lens, links, "apart");
     const around = areaFocus(lens, links, "apart", "g5");
     const rows = rowOrder(lens, rest, cloudSizes(lens, links, "apart", around), around, links, "apart");
-    const b6 = layoutAreaField(rows, rest, W).at.get("B6")!;
+    const b6 = layoutAreaField(drawnRows(lens, DATA.scope, rows), rest, W).at.get("B6")!;
     fireEvent.click(document.querySelector(".brief-av-field") as HTMLElement, { clientX: b6.x, clientY: b6.y });
     const card = screen.getByTestId("brief-area-card");
     expect(within(card).getByText("6 Commitment B6")).toBeTruthy();
@@ -463,5 +468,62 @@ describe("AreasView", () => {
     expect(screen.queryByTestId("brief-area-card")).toBeNull();
     rerender({ lens: "globe" });
     expect(screen.queryByTestId("brief-area-card")).toBeNull();
+  });
+});
+
+// The lens named top left, each area's result bar on its row, every column
+// sorting the rows. Protected areas (g1) is 100% aligned, Water (g5) 67% /
+// 25% / 8%, Agriculture (g2) 33% / 33% / 33%.
+describe("AreasView figures", () => {
+  const rowIds = () => [...document.querySelectorAll("[data-row]")].map((el) => el.getAttribute("data-row"));
+  const head = () => document.querySelector(".brief-av-head") as HTMLElement;
+  const sortBy = (name: string) => fireEvent.click(within(head()).getByRole("button", { name }));
+  const ends = (id: string) => [...row(id).querySelectorAll(".brief-pair-value")].map((el) => el.textContent);
+
+  it("names the lens top left and opens with the most aligned areas", () => {
+    renderView();
+    expect(head().querySelector(".brief-av-lens")?.textContent).toBe("Biodiversity");
+    expect(rowIds()).toEqual(["g1", "g5", "g2"]);
+    expect(within(head()).getByRole("button", { name: "Aligned, most first" })).toBeTruthy();
+  });
+
+  it("gives each row its targets and the result bar of all its target pairs", () => {
+    renderView();
+    expect(row("g5").querySelector(".brief-av-fig")?.textContent).toBe("3");
+    expect(ends("g5")).toEqual(["8%", "67%"]);
+    expect(ends("g2")).toEqual(["33%", "33%"]);
+    expect(
+      within(row("g5")).getByText("67% aligned, 25% partially aligned, 8% potential misalignment, of 36 target pairs"),
+    ).toBeTruthy();
+  });
+
+  it("sorts a column most first, then least first", () => {
+    renderView();
+    sortBy("Potential misalignment");
+    expect(rowIds()).toEqual(["g2", "g5", "g1"]);
+    sortBy("Potential misalignment, most first");
+    expect(rowIds()).toEqual(["g1", "g5", "g2"]);
+    expect(within(head()).getByRole("button", { name: "Potential misalignment, least first" })).toBeTruthy();
+    sortBy("Aligned");
+    expect(rowIds()).toEqual(["g1", "g5", "g2"]);
+    sortBy("Aligned, most first");
+    expect(rowIds()).toEqual(["g2", "g5", "g1"]);
+    sortBy("Targets");
+    expect(rowIds()).toEqual(["g1", "g2", "g5"]);
+  });
+
+  it("marks an area with few targets and leaves one with too few target pairs unrated", () => {
+    renderView({ lens: "ipcc" as LensId });
+    expect(head().querySelector(".brief-av-lens")?.textContent).toBe("Climate mitigation");
+    expect(within(row("s1")).getByText("few targets")).toBeTruthy();
+    expect(row("s1").querySelector(".brief-av-bar")?.textContent).toBe("—");
+  });
+
+  it("keeps the sort while an area is picked by its name", () => {
+    renderView();
+    sortBy("Potential misalignment");
+    fireEvent.click(areaName("g5", "Water"));
+    expect(backAll()).toBeTruthy();
+    expect(rowIds()).toEqual(["g2", "g5", "g1"]);
   });
 });

@@ -2762,14 +2762,14 @@
   pointer-events: none;
 }
 
+/* A row's name runs across the field, its figures in the columns of the
+   head above the picture (.brief-av-head). */
 [data-brief] .brief-av-row {
   position: absolute;
   left: 0;
+  right: 0;
   top: 0;
-  display: flex;
   align-items: baseline;
-  gap: 0.4rem;
-  max-width: 100%;
   font-size: 0.875rem;
   line-height: 20px;
   white-space: nowrap;
@@ -2797,11 +2797,6 @@
 
 [data-brief] .brief-av-row[data-dim] .brief-av-name {
   font-weight: 400;
-}
-
-[data-brief] .brief-av-n {
-  color: var(--brief-muted);
-  font-variant-numeric: tabular-nums;
 }
 
 [data-brief] .brief-av-of {
@@ -2841,6 +2836,101 @@
   [data-brief] .brief-av-row,
   [data-brief] .brief-av-cut {
     transition: none;
+  }
+}
+
+/* The head above the picture: the lens, then the columns of every row's
+   figures. Each column name sorts the rows (AreasView), most first and then
+   least first; the underline marks the column the rows follow. */
+
+[data-brief] .brief-av-head,
+[data-brief] .brief-av-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3rem minmax(9rem, 15rem);
+  column-gap: 0.75rem;
+}
+
+[data-brief] .brief-av-head {
+  align-items: end;
+  margin: 0 0 0.6rem;
+  padding: 0 0 0.4rem;
+  border-bottom: 1px solid var(--brief-hairline);
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-av-lens {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-av-sort {
+  padding: 0 0 1px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: right;
+  cursor: pointer;
+}
+
+[data-brief] .brief-av-sort[aria-pressed="true"] {
+  border-bottom-color: var(--brief-ink);
+  color: var(--brief-ink);
+  font-weight: 600;
+}
+
+[data-brief] .brief-av-head > .brief-av-sort {
+  justify-self: end;
+}
+
+/* The result bar's two names, over its two ends. */
+[data-brief] .brief-av-ends {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+[data-brief] .brief-av-ends .brief-av-sort:first-child {
+  text-align: left;
+}
+
+[data-brief] .brief-av-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+[data-brief] .brief-av-few {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-av-fig {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .brief-av-fig[data-on] {
+  font-weight: 700;
+}
+
+[data-brief] .brief-av-bar {
+  align-self: center;
+  min-width: 0;
+}
+
+/* Phones: narrower columns leave the area's name room to read. */
+@media screen and (max-width: 480px) {
+  [data-brief] .brief-av-head,
+  [data-brief] .brief-av-row {
+    grid-template-columns: minmax(0, 1fr) 2.25rem 8.5rem;
+    column-gap: 0.5rem;
   }
 }
 

@@ -515,7 +515,7 @@
           },
           "areas": {
             "title": "Por área de política",
-            "body": "Cada fila es un área de política de la lente elegida, con un punto por cada una de sus metas. Sobre cada meta, un punto por cada par de metas en el que participa en el lado elegido: posible desalineación o alineación fuerte. La lista de al lado nombra los pares de áreas de política que reúnen más; al abrir uno se conservan solo sus pares de metas, y al seleccionar una meta se muestran sus contrapartes en cada fila. Al seleccionar el nombre de un área de política se listan sus pares de áreas y se conservan solo los pares de metas en los que participan sus metas."
+            "body": "Cada fila es un área de política de la lente elegida, con un punto por cada una de sus metas. Su barra reúne todos los pares de metas del área: la posible desalineación desde la izquierda, la alineación desde la derecha. Los nombres de las columnas sobre las filas las ordenan, primero de mayor a menor y luego de menor a mayor. Sobre cada meta, un punto por cada par de metas en el que participa en el lado elegido: posible desalineación o alineación fuerte. La lista de al lado nombra los pares de áreas de política que reúnen más; al abrir uno se conservan solo sus pares de metas, y al seleccionar una meta se muestran sus contrapartes en cada fila. Al seleccionar el nombre de un área de política se listan sus pares de áreas y se conservan solo los pares de metas en los que participan sus metas."
           }
         }
       },
@@ -3606,7 +3606,12 @@
       "panelDialog": "Pares de metas entre áreas de política",
       "targets": "{count, plural, one {# meta} other {# metas}}",
       "outsidePairs": "{side, select, apart {{count, plural, one {# posible desalineación se sitúa} other {# posibles desalineaciones se sitúan}}} other {{count, plural, one {# alineación fuerte se sitúa} other {# alineaciones fuertes se sitúan}}}} entre metas fuera de estas áreas.",
-      "partnersElsewhere": "{count, number} en otras partes"
+      "partnersElsewhere": "{count, number} en otras partes",
+      "colTargets": "Metas",
+      "sortMost": "{label}, de mayor a menor",
+      "sortLeast": "{label}, de menor a mayor",
+      "fewTargets": "pocas metas",
+      "rowShares": "{aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación, de {total, number} pares de metas"
     }
   }
 }
