@@ -86,10 +86,10 @@ beforeEach(() => window.history.replaceState(null, "", "/testland/brief"));
 afterEach(cleanup);
 
 describe("BriefApp", () => {
-  it("prints the standard brief on four pages", () => {
+  it("prints the standard brief on three pages", () => {
     renderApp();
-    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
-    expect(screen.getAllByTestId("brief-sheet")).toHaveLength(4);
+    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
+    expect(screen.getAllByTestId("brief-sheet")).toHaveLength(3);
   });
 
   it("states the scope on the title block and updates it when a document is left out", () => {
@@ -145,9 +145,19 @@ describe("BriefApp", () => {
     renderApp();
     const sections = screen.getByRole("group", { name: "In the brief" });
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Strongest alignments/ }));
-    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
-    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Areas of alignment/ }));
+    expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
     expect(window.location.search).toContain("sections=");
+  });
+
+  it("adds a page with the documents side by side, which the standard brief leaves out", () => {
+    renderApp();
+    const sections = screen.getByRole("group", { name: "In the brief" });
+    const documents = within(sections).getByRole("checkbox", { name: /Documents side by side/ }) as HTMLInputElement;
+    expect(documents.checked).toBe(false);
+    fireEvent.click(documents);
+    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
+    expect(window.location.search).toContain("documents");
   });
 });
 
@@ -234,6 +244,10 @@ describe("BriefApp screen and print", () => {
 
   it("walks the page from top to bottom: each stop of the walkthrough below the one before", () => {
     renderApp(briefFixture({ themes: true }));
+    // Every stop on the page, the documents side by side included.
+    fireEvent.click(
+      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Documents side by side/ }),
+    );
     // The builder is the menu beside the page, visited last.
     const stops = TOUR_STEPS.brief
       .filter((step) => step.target !== "brief-builder")
@@ -290,9 +304,12 @@ describe("BriefApp screen and print", () => {
     expect(closer()).toBeNull();
   });
 
-  it("leaves out the documents, and the whole overview once none of its sections is kept", () => {
+  it("shows the documents only on request, and leaves out the whole overview once none of its sections is kept", () => {
     renderApp(briefFixture({ themes: true }));
     const sections = screen.getByRole("group", { name: "In the brief" });
+    expect(document.querySelector('[data-step="documents"]')).toBeNull();
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
+    expect(document.querySelector('[data-step="documents"]')).not.toBeNull();
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
     expect(document.querySelector('[data-step="documents"]')).toBeNull();
     for (const name of [
@@ -398,7 +415,6 @@ describe("BriefApp walkthrough", () => {
       "Strongest alignments",
       "Recurring themes",
       "Targets to review first",
-      "Documents side by side",
       "By policy area",
       "Customize the brief",
     ]);
@@ -434,8 +450,11 @@ describe("BriefApp accessibility and provenance", () => {
 
   it("keeps an open drill-down off the printed page", () => {
     renderApp();
+    fireEvent.click(
+      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Documents side by side/ }),
+    );
     const flow = screen.getByTestId("brief-flow");
-    // The overview opens with its first document open.
+    // The documents step opens with its first document open.
     fireEvent.click(within(within(flow).getAllByTestId("brief-pair-row")[0]).getByRole("button"));
     expect(screen.getByRole("dialog").closest("[data-screen-only]")).not.toBeNull();
   });
@@ -488,7 +507,7 @@ describe("BriefApp public contracts", () => {
     renderWith();
     const menu = screen.getByRole("group", { name: "In the brief" });
     expect(within(menu).getByRole("checkbox", { name: /Public contracts/ }).closest("label")?.textContent).toContain("on screen only");
-    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
+    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
   });
 
   it("never offers them where the country has no contract record", () => {

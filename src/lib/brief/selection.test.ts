@@ -30,15 +30,7 @@ describe("defaultSelection", () => {
     expect(defaultSelection(SOURCE)).toEqual({
       docs: ["NP", "PEG", "PNSH"],
       lens: "globe",
-      sections: [
-        "overall",
-        "together",
-        "aligned",
-        "apart",
-        "commitments",
-        "documents",
-        "areas",
-      ],
+      sections: ["overall", "together", "aligned", "apart", "commitments", "areas"],
     });
   });
 
@@ -58,7 +50,6 @@ describe("defaultSelection", () => {
       "aligned",
       "apart",
       "commitments",
-      "documents",
       "areas",
       "contracts",
     ]);
@@ -101,7 +92,6 @@ describe("parseSelection", () => {
       "aligned",
       "apart",
       "commitments",
-      "documents",
       "areas",
     ]);
   });
