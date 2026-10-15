@@ -1,0 +1,162 @@
+{
+  "_meta": {
+    "purpose": "Display names for Panama's BER budget lines in the brief. Display only: never read by the pipeline or placed in a prompt.",
+    "es": "The review's own programme names (panama-ber.json) with their abbreviations written out by the list below, double spaces collapsed; no word added or changed. List agreed with Jonas on 2026-10-05.",
+    "en": "Translations of the written-out names (machine translation by Claude, 2026-10-05), shown on the English and Mongolian pages flagged as translations, with the review's own name on hover.",
+    "abbreviations": {
+      "Admón.": "Administración",
+      "Rehabil.": "Rehabilitación",
+      "Mantenim.": "Mantenimiento",
+      "Desarr.": "Desarrollo",
+      "Desar.": "Desarrollo",
+      "Conserv.": "Conservación",
+      "Rec.": "Recursos",
+      "Infra.": "Infraestructura",
+      "Nal.": "Nacional",
+      "Const.": "Construcción",
+      "Remodelac.": "Remodelación",
+      "Hidrog.": "Hidrográficas",
+      "Invest.": "Investigación",
+      "Fort": "Fortalecimiento",
+      "Gest.": "Gestión",
+      "Eco.": "Económica",
+      "Finan.": "Financiera",
+      "Voc. T.": "Vocación Turística",
+      "V T": "Vocación Turística"
+    }
+  },
+  "names": {
+    "BER_PA_01_01": {
+      "es": "Rehabilitación y Mantenimiento Aeroportuario",
+      "en": "Airport rehabilitation and maintenance"
+    },
+    "BER_PA_02_01": {
+      "es": "Administración de los Recursos Acuáticos",
+      "en": "Administration of aquatic resources"
+    },
+    "BER_PA_02_02": {
+      "es": "Desarrollo y Conservación Recursos Acuáticos",
+      "en": "Development and conservation of aquatic resources"
+    },
+    "BER_PA_02_03": {
+      "es": "Investigación y Desarrollo Recursos Acuáticos",
+      "en": "Research and development of aquatic resources"
+    },
+    "BER_PA_03_01": {
+      "es": "Construcción de Infraestructura Turística",
+      "en": "Construction of tourism infrastructure"
+    },
+    "BER_PA_03_02": {
+      "es": "Centros Culturales y de Exhibiciones",
+      "en": "Cultural and exhibition centres"
+    },
+    "BER_PA_03_03": {
+      "es": "Desarrollo del Ecoturismo en los Lagos de Panamá Norte",
+      "en": "Ecotourism development in the lakes of Panamá Norte"
+    },
+    "BER_PA_03_04": {
+      "es": "Integración de las Ciudades Vocación Turística",
+      "en": "Integration of tourism-oriented cities"
+    },
+    "BER_PA_03_05": {
+      "es": "Integración de las Ciudades Vocación Turística",
+      "en": "Integration of tourism-oriented cities"
+    },
+    "BER_PA_03_06": {
+      "es": "Promoción Turística",
+      "en": "Tourism promotion"
+    },
+    "BER_PA_04_01": {
+      "es": "Programa Nacional de Titulación de Tierra",
+      "en": "National land titling programme"
+    },
+    "BER_PA_05_01": {
+      "es": "Construcción y Remodelación de Instalaciones",
+      "en": "Construction and refurbishment of facilities"
+    },
+    "BER_PA_06_01": {
+      "es": "Apoyo Investigación e innovación Agropecuaria",
+      "en": "Support for agricultural research and innovation"
+    },
+    "BER_PA_06_02": {
+      "es": "Investigaciones Agropecuarias",
+      "en": "Agricultural research"
+    },
+    "BER_PA_07_01": {
+      "es": "Áreas Protegidas y Biodiversidad",
+      "en": "Protected areas and biodiversity"
+    },
+    "BER_PA_07_02": {
+      "es": "Gestión Ambiental",
+      "en": "Environmental management"
+    },
+    "BER_PA_07_03": {
+      "es": "Gestión Ambiental",
+      "en": "Environmental management"
+    },
+    "BER_PA_07_04": {
+      "es": "Gestión Integrada de Cuencas Hidrográficas",
+      "en": "Integrated watershed management"
+    },
+    "BER_PA_07_05": {
+      "es": "Gestión Integrada de Cuencas Hidrográficas",
+      "en": "Integrated watershed management"
+    },
+    "BER_PA_07_OVERHEAD": {
+      "es": "Apoyo institucional, Ministerio de Ambiente",
+      "en": "Institutional support, Ministry of Environment"
+    },
+    "BER_PA_08_01": {
+      "es": "Transferencias",
+      "en": "Transfers"
+    },
+    "BER_PA_09_01": {
+      "es": "Asistencia Técnica Agrícola",
+      "en": "Agricultural technical assistance"
+    },
+    "BER_PA_09_02": {
+      "es": "Asistencia Técnica Pecuaria",
+      "en": "Livestock technical assistance"
+    },
+    "BER_PA_09_03": {
+      "es": "Sanidad Agropecuaria",
+      "en": "Agricultural and livestock health"
+    },
+    "BER_PA_10_01": {
+      "es": "Fortalecimiento Gestión Económica y Administración Financiera",
+      "en": "Strengthening economic management and financial administration"
+    },
+    "BER_PA_10_02": {
+      "es": "Transferencias Varias",
+      "en": "Miscellaneous transfers"
+    },
+    "BER_PA_11_01": {
+      "es": "Transferencias Varias",
+      "en": "Miscellaneous transfers"
+    },
+    "BER_PA_12_01": {
+      "es": "Otros Proyectos de Inversión",
+      "en": "Other investment projects"
+    },
+    "BER_PA_12_02": {
+      "es": "Multifase de transformación del sector salud",
+      "en": "Multi-phase transformation of the health sector"
+    },
+    "BER_PA_12_03": {
+      "es": "Investigación Contaminantes Organicos y Mercurio",
+      "en": "Research on organic pollutants and mercury"
+    },
+    "BER_PA_12_04": {
+      "es": "Salud Ambiental",
+      "en": "Environmental health"
+    },
+    "BER_PA_14_01": {
+      "es": "Desarrollo Integral - Áreas Prioritarias",
+      "en": "Integrated development of priority areas"
+    },
+    "BER_PA_14_02": {
+      "es": "Desarrollo Integral Áreas Prioritarias",
+      "en": "Integrated development of priority areas"
+    }
+  }
+}

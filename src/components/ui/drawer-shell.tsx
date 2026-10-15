@@ -66,6 +66,9 @@ export interface DrawerShellProps {
    *  returning to a panel visited earlier in this trail, which is restored to
    *  where it was left. */
   panelKey?: string;
+  /** "dim" (default) darkens and blurs the page; "light" keeps it in view,
+   *  for pages whose panels explain what stays visible beside them. */
+  scrim?: "dim" | "light";
   children: ReactNode;
 }
 
@@ -77,6 +80,7 @@ export function DrawerShell({
   dialogLabel,
   closeLabel,
   panelKey,
+  scrim = "dim",
   children,
 }: DrawerShellProps) {
   const t = useTranslations("common");
@@ -130,12 +134,26 @@ export function DrawerShell({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onBack, onClose]);
 
+  // The root clips, never the body: the app sets `html { overflow-x: hidden }`,
+  // so a clipping body would become its own scroll box and throw every sticky
+  // element on the page (a pinned chart, a side menu) out of the window.
+  // A classic (Windows-style) scrollbar goes with the lock: its room becomes
+  // padding, so nothing behind the panel shifts sideways.
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const root = document.documentElement;
+    const prev = { overflow: root.style.overflow, paddingRight: root.style.paddingRight };
+    const scrollbar = () => window.innerWidth - root.clientWidth;
+    const before = scrollbar();
+    root.style.overflow = "hidden";
+    const gutter = before - scrollbar();
+    if (gutter > 0) {
+      const padding = parseFloat(getComputedStyle(root).paddingRight) || 0;
+      root.style.paddingRight = `${padding + gutter}px`;
+    }
     return () => {
-      document.body.style.overflow = prev;
+      root.style.overflow = prev.overflow;
+      root.style.paddingRight = prev.paddingRight;
     };
   }, [open]);
 
@@ -174,7 +192,12 @@ export function DrawerShell({
         type="button"
         aria-label={closeLabel ?? t("close")}
         onClick={onClose}
-        className="absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
+        data-scrim={scrim}
+        className={
+          scrim === "light"
+            ? "absolute inset-0 bg-[var(--undp-black)]/10"
+            : "absolute inset-0 bg-[var(--undp-black)]/40 backdrop-blur-sm"
+        }
       />
       <aside
         ref={panelRef}

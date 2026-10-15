@@ -192,6 +192,8 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
       // briefing.lens.*
       match: exact(
         "Biodiversity", "Biodiversidad", "Биологийн төрөл зүйл",
+        "Climate mitigation", "Mitigación climática", "Уур амьсгалын өөрчлөлтийг сааруулах",
+        // The same lens's earlier name, still in the clicks stored before it changed.
         "Mitigation sectors", "Sectores de mitigación", "Бууруулах салбарууд",
         "Country sectors", "Sectores del país", "Улсын салбарууд",
         "Climate adaptation", "Adaptación climática", "Уур амьсгалын дасан зохицол",
@@ -297,6 +299,8 @@ export const MINIATURE_REGIONS: Record<string, MiniatureRegion[]> = {
       match: exact(
         "Documents", "Documentos", "Баримт бичгүүд",
         "Biodiversity", "Biodiversidad", "Биологийн төрөл зүйл",
+        "Climate mitigation", "Mitigación climática", "Уур амьсгалын өөрчлөлтийг сааруулах",
+        // The same lens's earlier name, still in the clicks stored before it changed.
         "Mitigation sectors", "Sectores de mitigación", "Бууруулах салбарууд",
         "Climate adaptation", "Adaptación climática", "Уур амьсгалын дасан зохицол",
         "Coherence", "Coherencia", "Уялдаа",

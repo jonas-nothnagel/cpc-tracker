@@ -8,15 +8,17 @@
  * quiet "Explore a pilot country" disclosure that opens a short menu, so the
  * hero never reshapes as countries are added (flat scaling). Country entries
  * are navigation links, so this is a disclosure-of-links rather than an
- * application menu/menuitem widget.
+ * application menu/menuitem widget. Styled as the brief's hero actions
+ * (brief.css), inside the landing's HeroPaper.
  */
 
 import { useEffect, useId, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { countryLocaleSwitch, getCountry } from "@/config/countries";
 import { Link } from "@/i18n/navigation";
 
 interface HeroCtaProps {
-  /** Live pilot countries — each links to its dashboard. */
+  /** Live pilot countries — each links to its brief. */
   countries: { id: string; name: string }[];
   /** Countries announced as forthcoming — shown greyed and non-clickable.
    *  Empty today; the section renders only when populated. */
@@ -44,6 +46,7 @@ function Chevron({ open }: { open: boolean }) {
 
 export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
   const t = useTranslations("landing");
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -115,11 +118,11 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+    <div className="brief-hero-actions">
       {/* Primary action — the one path that fits every visitor. */}
       <Link
         href="/upload"
-        className="inline-flex items-center bg-[var(--undp-blue)] px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-[var(--undp-blue-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="brief-button-primary inline-flex items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--undp-blue)]"
       >
         {t("hero.analyseCta")}
       </Link>
@@ -138,7 +141,7 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
               setOpen(true);
             }
           }}
-          className="inline-flex items-center gap-2 text-base font-medium text-white underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="brief-button-quiet inline-flex items-center gap-2"
         >
           {t("hero.exploreMenu")}
           <Chevron open={open} />
@@ -150,7 +153,7 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
             id={menuId}
             aria-labelledby={labelId}
             onKeyDown={onMenuKeyDown}
-            className="absolute top-full left-0 z-20 mt-2 w-72 rounded-lg bg-white p-1.5 text-left shadow-[0_18px_40px_-12px_rgba(15,22,30,0.45)]"
+            className="absolute top-full left-0 z-20 mt-2 w-72 rounded-md border border-[var(--brief-hairline-strong)] bg-white p-1.5 text-left shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)]"
           >
             <p
               id={labelId}
@@ -162,7 +165,9 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
               {countries.map((c) => (
                 <li key={c.id}>
                   <Link
-                    href={`/dashboard?country=${c.id}`}
+                    href={`/${c.id}/brief`}
+                    // A brief opens in the reader's language where its country offers it, else in English.
+                    locale={countryLocaleSwitch(getCountry(c.id) ?? {}, locale)}
                     onClick={() => setOpen(false)}
                     className="block rounded-md px-3 py-2.5 text-body font-medium text-[var(--undp-black)] transition-colors hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)] focus:outline-none"
                   >

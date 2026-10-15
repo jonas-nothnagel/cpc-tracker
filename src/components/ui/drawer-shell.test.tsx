@@ -86,7 +86,9 @@ describe("DrawerShell chrome", () => {
   });
 
   it("locks page scroll while open and restores it on close", () => {
-    document.body.style.overflow = "visible";
+    const root = document.documentElement;
+    root.style.overflow = "visible";
+    document.body.style.overflow = "";
     const { unmount } = render(
       <NextIntlClientProvider locale="en" messages={en}>
         <DrawerShell open onClose={vi.fn()} dialogLabel="Pair detail">
@@ -96,9 +98,70 @@ describe("DrawerShell chrome", () => {
         </DrawerShell>
       </NextIntlClientProvider>,
     );
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(root.style.overflow).toBe("hidden");
+    // The page's root clips, never the body: with the app's `html {
+    // overflow-x: hidden }`, a clipping body becomes its own scroll box and
+    // every sticky element on the page leaves the window.
+    expect(document.body.style.overflow).toBe("");
     unmount();
-    expect(document.body.style.overflow).toBe("visible");
+    expect(root.style.overflow).toBe("visible");
+  });
+
+  it("keeps the page's width when the lock takes away a classic scrollbar", () => {
+    const root = document.documentElement;
+    root.style.overflow = "";
+    root.style.paddingRight = "";
+    // A 15px Windows-style scrollbar, gone once the root clips.
+    const width = Object.getOwnPropertyDescriptor(Element.prototype, "clientWidth");
+    Object.defineProperty(root, "clientWidth", {
+      configurable: true,
+      get: () => window.innerWidth - (root.style.overflow === "hidden" ? 0 : 15),
+    });
+    try {
+      const { unmount } = render(
+        <NextIntlClientProvider locale="en" messages={en}>
+          <DrawerShell open onClose={vi.fn()} dialogLabel="Pair detail">
+            <DrawerHeader>
+              <h3>Potential misalignment</h3>
+            </DrawerHeader>
+          </DrawerShell>
+        </NextIntlClientProvider>,
+      );
+      expect(root.style.paddingRight).toBe("15px");
+      unmount();
+      expect(root.style.paddingRight).toBe("");
+    } finally {
+      delete (root as unknown as Record<string, unknown>).clientWidth;
+      if (width) Object.defineProperty(Element.prototype, "clientWidth", width);
+    }
+  });
+
+  it("dims the page by default, and can keep it in view with a light scrim", () => {
+    const { unmount } = render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <DrawerShell open onClose={vi.fn()} dialogLabel="Pair detail">
+          <DrawerHeader>
+            <h3>Potential misalignment</h3>
+          </DrawerHeader>
+        </DrawerShell>
+      </NextIntlClientProvider>,
+    );
+    const scrim = () => screen.getAllByRole("button", { name: "Close" }).filter((b) => b.hasAttribute("data-scrim"));
+    expect(scrim()).toHaveLength(1);
+    expect(scrim()[0]).toHaveAttribute("data-scrim", "dim");
+    unmount();
+    render(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <DrawerShell open onClose={vi.fn()} dialogLabel="Pair detail" scrim="light">
+          <DrawerHeader>
+            <h3>Potential misalignment</h3>
+          </DrawerHeader>
+        </DrawerShell>
+      </NextIntlClientProvider>,
+    );
+    const scrims = screen.getAllByRole("button", { name: "Close" }).filter((b) => b.hasAttribute("data-scrim"));
+    expect(scrims).toHaveLength(1);
+    expect(scrims[0]).toHaveAttribute("data-scrim", "light");
   });
 });
 

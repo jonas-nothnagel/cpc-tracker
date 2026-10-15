@@ -135,3 +135,36 @@ export async function getContradictionTypeLabels(
     string
   >;
 }
+
+export async function getContradictionTypeDescriptions(
+  locale: string,
+): Promise<Record<AlignmentMechanism, string>> {
+  const t = await getTranslations({
+    locale,
+    namespace: "labels.contradictionDescription",
+  });
+  return Object.fromEntries(CONTRADICTION_KEYS.map((k) => [k, t(k)])) as Record<
+    AlignmentMechanism,
+    string
+  >;
+}
+
+export async function getManageabilityLabels(
+  locale: string,
+): Promise<Record<AlignmentManageability, string>> {
+  const t = await getTranslations({ locale, namespace: "labels.manageability" });
+  return Object.fromEntries(MANAGEABILITY_KEYS.map((k) => [k, t(k)])) as Record<
+    AlignmentManageability,
+    string
+  >;
+}
+
+export async function getConfidenceLabels(
+  locale: string,
+): Promise<Record<AlignmentConfidence, string>> {
+  const t = await getTranslations({ locale, namespace: "labels.confidence" });
+  return Object.fromEntries(CONFIDENCE_KEYS.map((k) => [k, t(k)])) as Record<
+    AlignmentConfidence,
+    string
+  >;
+}

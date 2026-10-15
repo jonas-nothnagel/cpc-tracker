@@ -43,7 +43,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.config import DATA_DIR, OUTPUT_DIR, all_targets_files, country_display_name  # noqa: E402
+from src.config import (  # noqa: E402
+    ACTIVE_TAXONOMIES,
+    DATA_DIR,
+    OUTPUT_DIR,
+    all_targets_files,
+    country_display_name,
+)
+from src.country_taxonomies import load_country_taxonomies  # noqa: E402
 from src.llm import set_language  # noqa: E402
 from src.synthesis_states import (  # noqa: E402
     canonical_hidden_key,
@@ -121,6 +128,11 @@ async def rerun_country(targets_file: str) -> None:
     }
     default_hidden = list(config.get("defaultHiddenDocTypes", []) or [])
     secondary = list(config.get("secondaryDocTypes", []) or [])
+    # Theme tags count the country's own lenses too, as in run_analysis.
+    lens_taxonomies = ACTIVE_TAXONOMIES | {
+        t["taxonomyType"]
+        for t in load_country_taxonomies(DATA_DIR / f"{stem}-taxonomies.json")
+    }
 
     logger.info(
         f"[{stem}] {len(targets)} targets, {len(alignment)} alignment records, "
@@ -168,6 +180,7 @@ async def rerun_country(targets_file: str) -> None:
             state_doc_pairs, country_name,
             targets=state_targets, alignment=state_alignment,
             classifications=classifications,
+            lens_taxonomies=lens_taxonomies,
         )
         logger.info(
             f"[{stem}] state '{key or 'full'}': "

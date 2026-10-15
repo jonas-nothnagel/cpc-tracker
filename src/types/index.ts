@@ -223,6 +223,19 @@ export interface GgaCategory {
   source?: string;
 }
 
+/** A lens a country sets for itself (`python/data/{country}-taxonomies.json`),
+ *  as the dashboard payload carries it: no descriptions, which are pipeline
+ *  prompt text. Sri Lanka's adaptation sectors (`replaces: "gga"`) and its
+ *  loss and damage lens are the first. */
+export interface CountryTaxonomy {
+  taxonomyType: string;
+  /** The global lens it stands in for on this country. */
+  replaces?: string;
+  /** Its source, in English, shown as the lens's tooltip. */
+  tooltip?: string;
+  categories: { id: string; name: string }[];
+}
+
 /**
  * A human rights theme — one of the nine themes in the UNDP guidance
  * "Human rights themes for AI Flagship Policy Coherence Tracker", which builds
@@ -980,6 +993,13 @@ export interface DocumentTypeEntry {
   fullLabel: string;
   /** Hex color for charts and chips. Must follow UNDP Data Viz guidelines. */
   color: string;
+  /** The document's plain name, e.g. "Climate" or "Food supply": a short
+   *  form of its own name (`fullLabel`), shown under its code on the brief's
+   *  map of documents, where the shared rules shorten long words. Display
+   *  only, never fed into a pipeline prompt; `labels[locale].plainName`
+   *  carries it in other languages. Without it the map takes the hint of
+   *  `mediumLabel` ("NDC (Climate)"). */
+  plainName?: string;
   // The fields below are optional, display-only reference metadata shown in the
   // doc-focus panel so users from other ministries can place a document they
   // don't know. Every value MUST trace to a primary/official source (never
@@ -1168,6 +1188,9 @@ export interface BerBudgetProgram {
   descriptionEs?: string;
   /** Optional English UI description. See `descriptionEs`. */
   descriptionEn?: string;
+  /** True where the UI descriptions carry a descriptive layer written with AI
+   *  (Panama's Tablas_adicionales); the UI labels them so. */
+  descriptionAiGenerated?: boolean;
   type: "environmental" | "non_environmental";
 }
 

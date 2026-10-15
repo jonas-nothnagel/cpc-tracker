@@ -5,9 +5,10 @@ import {
   listComingSoonCountries,
 } from "@/config/countries";
 import { LandingHeader } from "@/components/landing/landing-header";
-import { HeroVideo } from "@/components/landing/hero-video";
 import { HeroCta } from "@/components/landing/hero-cta";
+import { HeroPaper } from "@/components/landing/hero-paper";
 import { InsideAnalysis } from "@/components/landing/inside-analysis";
+import { landingDriftLines } from "@/lib/landing/drift";
 
 export default async function Home({
   params,
@@ -17,38 +18,28 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("landing");
-  const visibleCountries = listVisibleCountries();
+  const countries = listVisibleCountries().map((c) => ({ id: c.id, name: c.name }));
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <LandingHeader />
 
-      {/* Cinematic hero */}
-      <HeroVideo
-        poster="/hero/coherence-hero-poster.jpg"
-        mp4="/hero/coherence-hero.mp4"
-      >
-        <div className="max-w-3xl">
-          <p className="mb-5 text-data font-medium text-white/85">
-            {t("hero.eyebrow")}
-          </p>
-          <h1 className="font-display mb-6 text-display font-semibold tracking-[-0.02em] text-white">
-            {t("hero.title")}
-          </h1>
-          <p className="mb-9 max-w-xl text-lg leading-relaxed text-white/90 md:text-xl">
-            {t("hero.subtitle")}
-          </p>
-          <HeroCta
-            countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
-            comingSoon={listComingSoonCountries().map((c) => ({ name: c.name }))}
-          />
-        </div>
-      </HeroVideo>
+      {/* The brief's hero: every pilot country's targets drifting behind the
+          title, so the landing and each brief open on the same picture. */}
+      <HeroPaper lines={landingDriftLines(locale)}>
+        <p className="brief-hero-kicker">{t("hero.eyebrow")}</p>
+        <h1 className="brief-hero-statement text-balance">
+          <span>{t("hero.title")}</span>
+        </h1>
+        <p className="brief-hero-lead">{t("hero.subtitle")}</p>
+        <HeroCta
+          countries={countries}
+          comingSoon={listComingSoonCountries().map((c) => ({ name: c.name }))}
+        />
+      </HeroPaper>
 
-      {/* Inside the analysis — live coherence wheel */}
-      <InsideAnalysis
-        countries={visibleCountries.map((c) => ({ id: c.id, name: c.name }))}
-      />
+      {/* A country's brief, previewed: its finding, figures and dot field */}
+      <InsideAnalysis countries={countries} />
 
       {/* How it works: on Surface Light with a hairline so it reads as its
           own band after the white wheel section (One Ground rule: white page,
@@ -60,7 +51,7 @@ export default async function Home({
           </h2>
           <div className="grid gap-10 md:grid-cols-3 md:gap-12">
             <div>
-              <span className="font-display text-headline-lg font-semibold text-[var(--undp-blue)]/80">
+              <span className="font-display text-headline-lg font-semibold text-[var(--undp-black)]">
                 1
               </span>
               <h3 className="mb-2 mt-3 text-body font-semibold text-[var(--undp-black)]">
@@ -83,7 +74,7 @@ export default async function Home({
               </p>
             </div>
             <div>
-              <span className="font-display text-headline-lg font-semibold text-[var(--undp-blue)]/80">
+              <span className="font-display text-headline-lg font-semibold text-[var(--undp-black)]">
                 2
               </span>
               <h3 className="mb-2 mt-3 text-body font-semibold text-[var(--undp-black)]">
@@ -94,7 +85,7 @@ export default async function Home({
               </p>
             </div>
             <div>
-              <span className="font-display text-headline-lg font-semibold text-[var(--undp-blue)]/80">
+              <span className="font-display text-headline-lg font-semibold text-[var(--undp-black)]">
                 3
               </span>
               <h3 className="mb-2 mt-3 text-body font-semibold text-[var(--undp-black)]">
@@ -123,7 +114,7 @@ export default async function Home({
               {t("footer.undp")}
             </span>
           </div>
-          <span className="text-caption text-[var(--undp-gray)]/60">
+          <span className="text-caption text-[var(--undp-gray)]">
             {t("footer.initiative")}
           </span>
         </div>

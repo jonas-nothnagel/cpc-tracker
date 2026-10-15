@@ -70,7 +70,7 @@ const start = () => document.querySelector('[data-tour="where-to-start"]')?.text
 describe("ImplementationSection", () => {
   it("climate report: the finding, a plain body, where to start, the bars and one folded section", () => {
     renderSlide({ report: "btr" });
-    expect(headline()).toBe("6 of Testland's 6 reported climate actions may work against targets in its other plans.");
+    expect(headline()).toBe("6 of Testland's 6 reported climate actions are potentially misaligned with targets in its other plans.");
     expect(body()).toBe("2 of these 6 are already under way. Most of the targets involved are in the NDC and the NAP.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
     expect(start()).toContain("Where to start");
@@ -86,7 +86,7 @@ describe("ImplementationSection", () => {
   it("biodiversity report: the finding, a plain body, where to start, the policy-link rows and two folded sections", () => {
     renderSlide({ report: "nr7" });
     expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule.");
-    expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. None is flagged.");
+    expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI rated as potential misalignments. None shows potential misalignment.");
     expect(wordCount(body())).toBeLessThanOrEqual(35);
     expect(start()).toContain("Where to start");
     expect(start()).toContain("Start with the top row: what the report says holds it back, then whether the linked plans bear on it.");
@@ -119,7 +119,7 @@ describe("ImplementationSection", () => {
       </NextIntlClientProvider>,
     );
     expect(headline()).toBe("Testland's biodiversity report rates 1 of 4 national targets behind schedule.");
-    expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI flagged as potential misalignments. Most flagged pairs are with the NDC.");
+    expect(body()).toBe("Each row is one national target: its rating, and how many linked pairs the AI rated as potential misalignments. Most of them are with the NDC.");
     expect(start()).toContain("Start with the top row");
     expect(screen.getAllByTestId("policy-link-flagged-face")[0]).toHaveTextContent("1 to review");
     // One flagged pair on one row is that row's business: no fold for the pairs that repeat.
@@ -136,7 +136,7 @@ describe("ImplementationSection", () => {
     );
     const details = [...document.querySelectorAll('[data-tour="full-picture"] > details')] as HTMLDetailsElement[];
     expect(details.map((d) => d.id)).toEqual(["full-picture-nr7-recurring", "full-picture-nr7-cross-checks", "full-picture-nr7-indicators"]);
-    expect(screen.getByText("1 target in another plan, each flagged on two or more national targets")).toBeInTheDocument();
+    expect(screen.getByText("1 target in another plan, each potentially misaligned with two or more national targets")).toBeInTheDocument();
     // A target's name in the fold opens its row on the slide.
     details[0].open = true;
     fireEvent(details[0], new Event("toggle"));

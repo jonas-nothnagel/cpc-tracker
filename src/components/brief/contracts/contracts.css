@@ -1,0 +1,1285 @@
+/* Public contracts beside the targets. Scoped to [data-brief] like the brief;
+   the overview reuses the brief's hub grid (.brief-hub, .brief-hub-step). */
+
+[data-brief] .ct-page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.75rem) clamp(1rem, 3vw, 2.5rem) 5rem;
+}
+
+[data-brief] .ct-head {
+  margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+[data-brief] .ct-country {
+  margin: 0 0 0.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* ── The stage: the set line above the field ─────────────────────── */
+
+[data-brief] .ct-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+[data-brief] .ct-setline {
+  flex: none;
+}
+
+[data-brief] .ct-setline-bar {
+  display: flex;
+  height: 8px;
+  background: var(--brief-none);
+}
+
+[data-brief] .ct-setline-bar[data-all] {
+  background: var(--brief-ink);
+}
+
+[data-brief] .ct-setline-seg {
+  display: block;
+  height: 100%;
+  transition:
+    width 600ms ease,
+    background-color 600ms ease;
+}
+
+[data-brief] .ct-setline-text {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--brief-ink);
+}
+
+[data-brief] .ct-setline-key i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 0.4rem;
+}
+
+[data-brief] .ct-setline-of {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-unit {
+  flex: none;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+  margin-bottom: -0.4rem;
+}
+
+[data-brief] .ct-field {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+[data-brief] .ct-field[data-clickable] {
+  cursor: pointer;
+}
+
+[data-brief] .ct-field canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .ct-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+
+[data-brief] .ct-labels[data-moving] {
+  opacity: 0;
+  transition: none;
+}
+
+[data-brief] .ct-labels[data-moving] .ct-label-button {
+  pointer-events: none;
+}
+
+[data-brief] .ct-label {
+  position: absolute;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--brief-ink);
+  font-variant-numeric: tabular-nums;
+  transform: translate(0, -100%);
+}
+
+[data-brief] .ct-label[data-align="middle"] {
+  transform: translate(-50%, -100%);
+}
+
+[data-brief] .ct-label[data-align="end"] {
+  transform: translate(-100%, -50%);
+}
+
+[data-brief] .ct-label[data-kind="rowTargets"],
+[data-brief] .ct-label[data-kind="rowValue"] {
+  transform: translate(0, -50%);
+}
+
+[data-brief] .ct-label[data-kind="rowTargets"] {
+  color: var(--brief-muted);
+}
+
+/* Column heads, units and the band's names hang from their point; a place's
+   name sits centred under its point, its figure on a second line. */
+[data-brief] .ct-label[data-kind="head"],
+[data-brief] .ct-label[data-kind="unit"],
+[data-brief] .ct-label[data-kind="band"] {
+  transform: none;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-label[data-kind="unit"][data-align="end"] {
+  transform: translateX(-100%);
+}
+
+[data-brief] .ct-label[data-kind="head"] {
+  font-size: 0.75rem;
+}
+
+[data-brief] .ct-label-button[data-kind="place"] {
+  transform: translateX(-50%);
+  text-align: center;
+  line-height: 1.15;
+}
+
+[data-brief] .ct-label-button[data-kind="place"] small,
+[data-brief] .ct-label-button[data-kind="band"] small {
+  font-weight: 400;
+  font-size: 0.6875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-label-button[data-kind="place"] small {
+  display: block;
+}
+
+[data-brief] .ct-label-button[data-kind="band"] {
+  transform: none;
+  font-size: 0.75rem;
+  color: var(--brief-ink);
+}
+
+[data-brief] .ct-label[data-kind="year"],
+[data-brief] .ct-label[data-thin] {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-label-button {
+  pointer-events: auto;
+  padding: 0 0.15rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-brief] .ct-label-button:hover,
+[data-brief] .ct-label-button:focus-visible,
+[data-brief] .ct-label-button[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-label-button[data-kind="place"] {
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+[data-brief] .ct-tip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-width: 250px;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--brief-hairline);
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+[data-brief] .ct-tip-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+[data-brief] .ct-tip-meta,
+[data-brief] .ct-tip-note {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+/* ── The steps ───────────────────────────────────────────────────── */
+
+[data-brief] .ct-step {
+  min-height: 70vh;
+}
+
+[data-brief] .ct-link {
+  display: inline-block;
+  margin: 0.25rem 0 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--brief-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--brief-hairline-strong);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+[data-brief] .ct-link:hover {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .ct-source,
+[data-brief] .ct-tag {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-lens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  margin: 0 0 0.9rem;
+}
+
+[data-brief] .ct-lens-option {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
+  cursor: pointer;
+  text-underline-offset: 4px;
+}
+
+[data-brief] .ct-lens-option[aria-pressed="true"] {
+  color: var(--brief-ink);
+  text-decoration: underline;
+}
+
+[data-brief] .ct-overview .brief-hub-sub[data-lit] {
+  background: var(--brief-highlight);
+  display: inline;
+}
+
+[data-brief] .ct-list {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-list-row {
+  display: grid;
+  width: 100%;
+  gap: 0.1rem;
+  padding: 0.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--brief-hairline);
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-list-row:hover .ct-list-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-brief] .ct-list-title {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+[data-brief] .ct-list-meta {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Panels: a contract in full, a target with its contracts ─────── */
+
+[data-brief] .ct-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.35rem 1.1rem;
+  margin: 0;
+}
+
+[data-brief] .ct-fact-label {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-fact-value {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-panel-targets {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-panel-target {
+  display: grid;
+  grid-template-columns: 3px minmax(0, 1fr);
+  column-gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-panel-target-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+[data-brief] .ct-panel-target-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-panel-target-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-brief] .ct-panel-target .brief-panel-text {
+  font-size: 0.875rem;
+}
+
+/* ── The deep dives, full width under the overview ───────────────── */
+
+[data-brief] .ct-deeps {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 7vw, 6rem);
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+[data-brief] .ct-tender-why {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0 0 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+[data-brief] .ct-untranslated {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+/* The page's currency: plain text, underlined when on. */
+[data-brief] .ct-currency {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  margin-top: 0.9rem;
+  font-size: 0.9375rem;
+}
+
+[data-brief] .ct-currency-label {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-currency-rate {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+/* ── Round 2: one focus across the page ─────────────────────────── */
+
+/* The focus, in view while the page scrolls. */
+[data-brief] .ct-focusbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.1rem;
+  margin: 0 0 1.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  background: #fff;
+  font-size: 0.9375rem;
+}
+
+[data-brief] .ct-focusbar-label {
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-focusbar-none {
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-focusbar-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+[data-brief] .ct-focusbar-clear {
+  padding: 0 0.15rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 400;
+  color: var(--brief-muted);
+  cursor: pointer;
+}
+
+[data-brief] .ct-focusbar-clear:hover,
+[data-brief] .ct-focusbar-clear:focus-visible {
+  color: var(--brief-ink);
+}
+
+/* The sticky field sits below the focus line; on a phone the brief's own
+   field (44vh at the top) only moves down by the line's height. The field
+   sticks only while the steps run on below it, so the last step (whose table
+   is longer than a screen) keeps going under its end: the field stays whole
+   until that end has risen to the middle of the window. */
+@media (min-width: 821px) {
+  [data-brief] .ct-overview {
+    --ct-stage-top: max(3.75rem, calc(50vh - 31cqw + 1.25rem));
+    --ct-stage-height: min(calc(100vh - 5rem), 62cqw);
+  }
+
+  [data-brief] .ct-overview .brief-hub-stage {
+    top: var(--ct-stage-top);
+    height: var(--ct-stage-height);
+  }
+
+  [data-brief] .ct-overview .brief-hub-step:last-child {
+    padding-bottom: max(0px, calc(var(--ct-stage-top) + var(--ct-stage-height) - 50vh));
+  }
+}
+
+@media (max-width: 820px) {
+  [data-brief] .ct-overview .brief-hub-stage {
+    top: 2.75rem;
+  }
+}
+
+[data-brief] .ct-switch {
+  flex: none;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-switch .ct-lens-option {
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-focus-line {
+  font-weight: 600;
+}
+
+[data-brief] .ct-focus-choices {
+  margin: 0 0 0.75rem;
+}
+
+[data-brief] .ct-select-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  margin: 0 0 0.45rem;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-select-line select {
+  max-width: 22rem;
+  padding: 0 0.15rem;
+  border: 0;
+  border-bottom: 1px solid var(--brief-hairline-strong);
+  background: none;
+  font: inherit;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-choice-label {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-sub {
+  margin: 1rem 0 0.3rem;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-codes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-codes b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .ct-more {
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-pick {
+  margin-top: 1rem;
+}
+
+[data-brief] .ct-back {
+  display: block;
+  margin: 0.3rem 0 0.2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+  cursor: pointer;
+}
+
+[data-brief] .ct-back:hover,
+[data-brief] .ct-back:focus-visible {
+  color: var(--brief-ink);
+}
+
+[data-brief] .ct-pick-name {
+  display: table;
+  margin: 0.15rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+[data-brief] .ct-pick-name[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-pick-facts {
+  margin: 0.35rem 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--brief-muted);
+}
+
+/* Places ranked by what the map shows. */
+[data-brief] .ct-rank {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-rank li {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-rank-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 7rem) 6.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.4rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-rank-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .ct-rank-row:hover .ct-rank-name,
+[data-brief] .ct-rank-row:focus-visible .ct-rank-name,
+[data-brief] .ct-rank-row[data-lit] .ct-rank-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-rank-bar {
+  display: block;
+  height: 8px;
+  background: var(--brief-track);
+}
+
+[data-brief] .ct-rank-bar i {
+  display: block;
+  height: 100%;
+}
+
+[data-brief] .ct-bar-money i {
+  background: #0468b1;
+}
+
+[data-brief] .ct-bar-record i {
+  background: var(--brief-ink);
+}
+
+[data-brief] .ct-bar-match i {
+  background-image: radial-gradient(circle, var(--brief-green) 1.4px, transparent 1.65px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-bar-mis i {
+  background-image: radial-gradient(circle, var(--brief-red) 1.3px, transparent 1.55px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-rank-num {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* A place's money by policy area. */
+[data-brief] .ct-mini {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 7rem) 6.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.2rem 0;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-mini-bar {
+  display: block;
+  height: 7px;
+  background: var(--brief-track);
+}
+
+[data-brief] .ct-mini-bar i {
+  display: block;
+  height: 100%;
+  background: #0468b1;
+}
+
+[data-brief] .ct-mini-num {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+[data-brief] .ct-tenders {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-tender-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-tender-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Every policy area's targets: potentially misaligned (left of the line)
+   beside strongly matching (right). */
+[data-brief] .ct-bf-head,
+[data-brief] .ct-bf {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem 4.5rem 4.5rem 4.25rem;
+  align-items: center;
+  column-gap: 0.35rem;
+}
+
+[data-brief] .ct-bf-head {
+  margin: 0.2rem 0 0.2rem;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-bf-head span:nth-child(2) {
+  grid-column: 2 / span 2;
+  text-align: right;
+}
+
+[data-brief] .ct-bf-head span:nth-child(3) {
+  grid-column: 4 / span 2;
+}
+
+[data-brief] .ct-bf-list {
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-bf {
+  width: 100%;
+  padding: 0.4rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-bf-name {
+  overflow: hidden;
+  padding-right: 0.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .ct-bf:hover .ct-bf-name,
+[data-brief] .ct-bf:focus-visible .ct-bf-name,
+[data-brief] .ct-bf[data-lit] .ct-bf-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-bf-red,
+[data-brief] .ct-bf-green {
+  display: flex;
+  height: 9px;
+}
+
+[data-brief] .ct-bf-red {
+  justify-content: flex-end;
+  border-right: 1px solid var(--brief-ink);
+}
+
+[data-brief] .ct-bf-red i {
+  display: block;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--brief-red) 1.3px, transparent 1.55px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-bf-green i {
+  display: block;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--brief-green) 1.4px, transparent 1.65px);
+  background-size: 3px 3px;
+}
+
+[data-brief] .ct-bf-red-n {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--brief-red);
+}
+
+[data-brief] .ct-bf-green-n {
+  padding-left: 0.25rem;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-brief] .ct-details {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+}
+
+[data-brief] .ct-details summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+[data-brief] .ct-details ul {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-plain-link {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  padding: 0.2rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-plain-link:hover,
+[data-brief] .ct-plain-link:focus-visible {
+  background: var(--brief-highlight);
+}
+
+/* ── Where to look closer ─────────────────────────────────────────── */
+
+[data-brief] .ct-closer {
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+  border-bottom: 0;
+}
+
+[data-brief] .ct-closer-left {
+  min-width: 0;
+}
+
+[data-brief] .ct-closer-field {
+  position: relative;
+  width: 100%;
+}
+
+[data-brief] .ct-closer-field canvas {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: block;
+}
+
+[data-brief] .ct-closer-rows {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+[data-brief] .ct-closer-rows li {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+[data-brief] .ct-closer-name {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0 0.15rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--brief-ink);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+[data-brief] .ct-closer-name-text {
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-closer-name:hover,
+[data-brief] .ct-closer-name:focus-visible,
+[data-brief] .ct-closer-name[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-closer-count {
+  position: absolute;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-closer-count-mis {
+  color: var(--brief-red);
+}
+
+[data-brief] .ct-closer-gaps {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-closer-gaps-head {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* One document per group: its code, then its targets one line each. */
+[data-brief] .ct-gaps {
+  margin: 0;
+}
+
+[data-brief] .ct-gaps-doc {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  column-gap: 1rem;
+  padding: 0.35rem 0;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-gaps-doc dt {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.75;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-gaps-doc abbr {
+  text-decoration: none;
+}
+
+[data-brief] .ct-gaps-doc dd {
+  min-width: 0;
+  margin: 0;
+}
+
+[data-brief] .ct-gaps-doc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-gaps-line {
+  display: block;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  color: var(--brief-ink);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+[data-brief] .ct-gaps-line:hover,
+[data-brief] .ct-gaps-line:focus-visible {
+  text-decoration: underline;
+}
+
+[data-brief] .ct-gaps-line[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-gaps-label {
+  font-weight: 600;
+}
+
+[data-brief] .ct-plain-link[data-lit] {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-closer-side {
+  position: sticky;
+  top: 4rem;
+  min-width: 0;
+}
+
+[data-brief] .ct-closer-text {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.2rem 0 0.4rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+[data-brief] .ct-tender-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-tender-open:hover,
+[data-brief] .ct-tender-open:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-brief] .ct-closer-tender[data-lit] .ct-tender-open {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-closer-matches {
+  margin: 0.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 900px) {
+  [data-brief] .ct-closer-side {
+    position: static;
+  }
+}
+
+/* The page's focus, named in each step it shapes. */
+[data-brief] .ct-focus-note {
+  margin: -0.2rem 0 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--brief-ink);
+}
+
+[data-brief] .ct-lens-small {
+  margin: 0 0 0.4rem;
+}
+
+[data-brief] .ct-lens-small .ct-lens-option {
+  font-size: 0.875rem;
+}
+
+/* The targets behind a place, each a way to the target. */
+[data-brief] .ct-target-rows {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-target-rows li {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-target-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.35rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .ct-target-row-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .ct-target-row:hover .ct-target-row-name,
+[data-brief] .ct-target-row:focus-visible .ct-target-row-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .ct-target-row-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--brief-muted);
+  white-space: nowrap;
+}
+
+/* ── A contract in full: the record, then the pipeline's reading ───── */
+
+[data-brief] .ct-panel-kind {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-panel-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.75rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+[data-brief] .ct-panel-value-other {
+  font-family: var(--font-sans, inherit);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-reading {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-reading-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+}
+
+[data-brief] .ct-reading-tier i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #0468b1;
+}
+
+[data-brief] .ct-reading-tier i[data-tier="significant"] {
+  background: #b5d5f5;
+}
+
+[data-brief] .ct-reading-tier i[data-tier="none"] {
+  background: var(--brief-track);
+}
+
+[data-brief] .ct-reading-reason {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-reading-areas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .ct-reading-areas li + li {
+  margin-top: 0.15rem;
+}
+
+[data-brief] .ct-reading-lens {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-reading-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.9rem;
+}
+
+[data-brief] .ct-reading-mis {
+  color: var(--brief-red);
+}
+
+[data-brief] .ct-panel-strong {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .ct-panel-strong li {
+  display: grid;
+  grid-template-columns: 3px minmax(0, 1fr);
+  column-gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+/* ── In the brief: a section of its own after the policy areas ───── */
+
+/* Named as the ring is named: a serif title, the currency beneath it. */
+[data-brief] .ct-brief-head {
+  margin: 0 0 0.75rem;
+}
+
+[data-brief] .ct-brief-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+[data-brief] .ct-brief-head .ct-currency {
+  margin-top: 0.6rem;
+}
+
+/* The section's own rule closes it: no second one under the steps. */
+[data-brief] .brief-flow-section .ct-overview {
+  padding-bottom: 0;
+  border-bottom: 0;
+}

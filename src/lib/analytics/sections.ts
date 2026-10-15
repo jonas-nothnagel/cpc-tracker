@@ -63,7 +63,7 @@ export const ROUTE_NAMES: Record<string, string> = {
   "/upload": "Upload wizard",
   "/analysis/[id]": "Analysis results",
   "/methodology": "Methodology page",
-  "/sustainability": "Sustainability page",
+  "/sustainability": "Environmental Footprint Dashboard",
   "/prototypes": "Prototypes",
   "/[country]/model-comparison": "Model comparison",
   "/[country]/model-evaluation": "Model evaluation",

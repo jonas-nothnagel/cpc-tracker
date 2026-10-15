@@ -21,6 +21,8 @@ dev = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.23.0",
     "ruff>=0.1.0",
+    "pandas>=2.2",
+    "pyarrow>=15",
 ]
 
 [tool.pytest.ini_options]

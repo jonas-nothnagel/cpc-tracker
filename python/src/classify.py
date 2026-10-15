@@ -219,6 +219,11 @@ async def rank_classification(
 
     If the LLM returns no rankings (parse failure or empty list), no record is
     marked isPrimary and all are isRelevant=False.
+
+    A one-category taxonomy (Sri Lanka's loss and damage) has nothing to rank
+    against: its top entry is its only entry, so "primary" would hold every
+    target with any trace of the theme. Its primary is its relevance instead
+    (score >= RELEVANCE_THRESHOLD). Project-defined rule; the prompt is unchanged.
     """
     logger.info(
         f"Ranking {len(targets)} targets against {len(categories)} {taxonomy_type} categories "
@@ -249,10 +254,13 @@ async def rank_classification(
     classifications: list[dict[str, Any]] = []
     primary_count = 0
     relevant_count = 0
+    one_area = len(categories) == 1
     for target_id, raw in zip(target_ids, raw_results):
         ranked = parse_rank_response(raw, valid_ids)
         score_by_id = {r["id"]: r for r in ranked}
         primary_id = ranked[0]["id"] if ranked else None
+        if one_area and ranked and ranked[0]["score"] < RELEVANCE_THRESHOLD:
+            primary_id = None
         if primary_id:
             primary_count += 1
 

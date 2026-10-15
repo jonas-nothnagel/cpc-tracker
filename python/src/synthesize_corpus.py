@@ -36,7 +36,7 @@ import json
 import logging
 import re
 from collections import Counter
-from typing import Any, Callable
+from typing import Any, Callable, Collection
 
 from .config import ACTIVE_TAXONOMIES, DATA_DIR, OUTPUT_DIR, country_display_name
 from .llm import call_llm
@@ -726,6 +726,7 @@ def _augment_with_deterministic_counts(
     targets: list[dict[str, Any]] | None = None,
     alignment: list[dict[str, Any]] | None = None,
     classifications: list[dict[str, Any]] | None = None,
+    lens_taxonomies: Collection[str] | None = None,
 ) -> dict[str, Any]:
     """Compute pair_count, unique documents, and per-theme aggregates from the
     contributing_doc_pairs claim, using the deterministic doc-pair counts.
@@ -737,8 +738,12 @@ def _augment_with_deterministic_counts(
     inside the doc pairs the theme cites (doc pairs may repeat across
     reinforcement themes; the UI labels these counts as coverage, not as a
     partition).
+
+    Theme tags count primaries of `lens_taxonomies` (default: the active global
+    lenses; run_analysis adds the country's own).
     """
     resolve = _build_cite_resolver(doc_pair_records)
+    lenses = ACTIVE_TAXONOMIES if lens_taxonomies is None else lens_taxonomies
 
     # Optional per-theme aggregates need alignment records grouped by doc pair.
     records_by_doc_pair: dict[frozenset[str], list[dict[str, Any]]] = {}
@@ -762,7 +767,7 @@ def _augment_with_deterministic_counts(
             if not c.get("isPrimary"):
                 continue
             taxonomy = c.get("taxonomyType")
-            if taxonomy not in ACTIVE_TAXONOMIES:
+            if taxonomy not in lenses:
                 continue
             primary_by_target.setdefault(c.get("targetId"), []).append(
                 (taxonomy, c.get("categoryId"))
@@ -893,6 +898,7 @@ async def synthesize_corpus(
     targets: list[dict[str, Any]] | None = None,
     alignment: list[dict[str, Any]] | None = None,
     classifications: list[dict[str, Any]] | None = None,
+    lens_taxonomies: Collection[str] | None = None,
 ) -> dict[str, Any]:
     """Produce one corpus-themes record for the country.
 
@@ -961,7 +967,7 @@ async def synthesize_corpus(
     parsed["doc_pair_count"] = len(valid)
     parsed = _augment_with_deterministic_counts(
         parsed, valid, targets=targets, alignment=alignment,
-        classifications=classifications,
+        classifications=classifications, lens_taxonomies=lens_taxonomies,
     )
     parsed["schema_version"] = SCHEMA_VERSION
     parsed["validation_warnings"] = warnings

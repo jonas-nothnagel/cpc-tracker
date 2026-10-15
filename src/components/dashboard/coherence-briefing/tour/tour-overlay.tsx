@@ -19,7 +19,10 @@ interface TourOverlayProps {
    *  in the sticky aside and unmount if the active section flips beneath
    *  them. "start" pins the target to the top of the window (respecting its
    *  scroll-margin) — right for the guided read, which walks page sections
-   *  top to bottom and whose anchors never unmount on section change. */
+   *  top to bottom and whose anchors never unmount on section change.
+   *  "center" brings the target to the middle of the window (never above
+   *  its scroll-margin, the room a sticky band takes) — for pages whose
+   *  pinned picture follows the section at the middle, like the brief. */
   scrollBlock?: ScrollLogicalPosition;
 }
 
@@ -79,16 +82,38 @@ export function TourOverlay({
     // also repositioned, so every step frames its subject at the top. (A
     // target near the document's end stays as high as the page allows.)
     const startMode = scrollBlock === "start" && !sticky;
-    const needsScroll = startMode
-      ? !fullyVisible || r.top > window.innerHeight / 2
-      : !fullyVisible;
+    const centerMode = scrollBlock === "center" && !sticky;
+    const marginTop = () =>
+      parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    // Centre mode: the target's top where its middle meets the window's,
+    // but not under the band its scroll margin keeps free.
+    const centerY = () => {
+      const box = el.getBoundingClientRect();
+      const top = Math.max(marginTop(), (window.innerHeight - box.height) / 2);
+      return window.scrollY + box.top - top;
+    };
+    const needsScroll = centerMode
+      ? Math.abs(centerY() - window.scrollY) > 4
+      : startMode
+        ? !fullyVisible || r.top > window.innerHeight / 2
+        : !fullyVisible;
     if (!needsScroll) return;
     // The global reduced-motion CSS zeroes transitions but does not reach
     // JS-initiated scrolling, so honour the preference here explicitly.
-    const reduceMotion = window.matchMedia(
+    const reduceMotion = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const behavior = reduceMotion ? ("auto" as const) : ("smooth" as const);
+    if (centerMode) {
+      window.scrollTo({ top: centerY(), behavior });
+      if (reduceMotion) return;
+      const settle = setTimeout(() => {
+        if (Math.abs(centerY() - window.scrollY) > 4) {
+          window.scrollTo({ top: centerY(), behavior: "auto" });
+        }
+      }, 800);
+      return () => clearTimeout(settle);
+    }
     if (!startMode) {
       el.scrollIntoView({ block: "nearest", behavior });
       return;
@@ -100,8 +125,6 @@ export function TourOverlay({
     // the element's fresh rect and scroll-margin sidesteps that, and the
     // settle pass below re-derives it once the animation is done, correcting
     // only if the landing is actually off.
-    const marginTop = () =>
-      parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
     const targetY = () =>
       window.scrollY + el.getBoundingClientRect().top - marginTop();
     window.scrollTo({ top: targetY(), behavior });

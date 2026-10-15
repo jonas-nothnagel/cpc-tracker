@@ -10,6 +10,7 @@
    "id": "NDC",
    "shortLabel": "NDC",
    "mediumLabel": "NDC (Climate)",
+   "plainName": "Climate",
    "fullLabel": "Nationally Determined Contribution",
    "color": "#0468b1"
   },
@@ -17,6 +18,7 @@
    "id": "NAP",
    "shortLabel": "NAP",
    "mediumLabel": "NAP (Adaptation)",
+   "plainName": "Adaptation",
    "fullLabel": "National Adaptation Plan",
    "color": "#0e7490"
   },
@@ -24,6 +26,7 @@
    "id": "CCS",
    "shortLabel": "CCS",
    "mediumLabel": "CCS (Climate strategy)",
+   "plainName": "Climate strategy",
    "fullLabel": "Climate Change Strategy",
    "color": "#4f46e5"
   },
@@ -31,6 +34,7 @@
    "id": "NBSAP",
    "shortLabel": "NBSAP",
    "mediumLabel": "NBSAP (Nature)",
+   "plainName": "Nature",
    "fullLabel": "National Biodiversity Strategy and Action Plan",
    "color": "#166534"
   },
@@ -38,6 +42,7 @@
    "id": "LDN",
    "shortLabel": "LDN",
    "mediumLabel": "LDN (Land degradation)",
+   "plainName": "Land degradation",
    "fullLabel": "Land Degradation Neutrality National Strategy",
    "color": "#b45309"
   }

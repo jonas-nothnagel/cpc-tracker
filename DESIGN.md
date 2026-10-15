@@ -141,6 +141,8 @@ Semantic status only. Not decoration, not framework colour.
 
 **The One Ground Rule.** White is the only page ground, landing included; Surface Light marks grouped regions inside it, and on the landing a full-width Surface Light section with a hairline may separate one section from the next. No warm or tinted bands anywhere: a cream band reads as generated decoration, not as the product.
 
+**The Highlighter Rule.** One pale yellow (`#fff5c7`) marks the name of what the reader is pointing at: its label on a chart and its line in the list beside it, like a highlighter pen over a line of text, so the eye joins the two at once. It marks words only, never the data marks (a chart brings its marks forward by ink, never by strips or fills of yellow over them), and nothing at rest. One thing at a time. Never a page band or section ground, never a status, never a category colour.
+
 ## 3. Typography
 
 **Display Font:** Source Serif 4 (self-hosted variable woff2, SIL OFL) — falls back to `ui-serif, Georgia, Cambria, "Times New Roman", Times, serif`
@@ -226,6 +228,8 @@ The `(i)` **InfoBox** is the system's answer to the "expand every abbreviation, 
 - **Don't** use alarmist or blame framing: no whole-surface red "alert" washes, and no colour or language that reads as assigning fault to a ministry, sector, or actor. Red/green as a data encoding is fine; a red-alert *dashboard* is not.
 - **Don't** fall into generic SaaS-analytics grammar: no identical card grids repeated endlessly, no decorative charts, and **no uppercase tracked eyebrow above every section**. (The `SlideFrame` per-slide eyebrow is legacy current-state, not a pattern to replicate — give new sections a different cadence.)
 - **Don't** produce dense, jargon-heavy academic output; if a non-technical policymaker can't grasp it at a glance, it belongs behind a disclosure or needs rewriting.
+- **Don't** caption a visual with instructions for reading it ("Darker squares mean…", "The moving lines are…"), and don't open a surface with a method paragraph or a list of sources. A visual that needs a sentence of explanation gets redesigned: label marks in place, reveal detail on hover or click, and keep a legend only when colour cannot be labelled directly. Method belongs on the How it works page or in a guided walkthrough.
+- **Don't** fade or mask text to make it fit. Show it whole, or clamp it with a visible ellipsis and a way to read the rest.
 - **Don't** let it feel templated or "vibe-coded": standard affordances, yes; unconsidered defaults, no. Every screen should read as purpose-built.
 - **Don't** use a `border-left`/`border-right` colored stripe (>1px) on cards, callouts, or list items; use a full Hairline border, a Surface Light tint, or nothing.
 - **Don't** use gradient text (`background-clip: text`), and don't use glassmorphism/decorative blur as a default; both are prohibited.

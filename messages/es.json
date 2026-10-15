@@ -38,23 +38,17 @@
     "hero": {
       "eyebrow": "Iniciativa Sprint de IA del PNUD",
       "title": "Analizador de Coherencia de Políticas de Naturaleza y Clima",
-      "subtitle": "Dónde las políticas nacionales de clima, biodiversidad y uso de la tierra se alinean, y dónde pueden ir en direcciones distintas.",
+      "subtitle": "Dónde las políticas nacionales de clima, biodiversidad y uso de la tierra se alinean, y dónde hay posible desalineación.",
       "analyseCta": "Analizar documentos de política",
       "exploreMenu": "Explorar un país piloto",
       "pilotCountriesHeader": "Países piloto",
       "comingSoonTag": "Pronto"
     },
     "inside": {
-      "eyebrow": "Dentro del análisis",
-      "title": "Cada meta de política, mapeada contra todas las demás",
-      "body": "Cada cinta enlaza dos documentos nacionales de política. El verde muestra dónde sus metas están en fuerte alineación; los hilos rojos marcan una posible desalineación que merece una mirada más cercana.",
-      "disclaimer": "Análisis generado por IA. Trátese como un aviso para revisar, no como un hallazgo definitivo.",
+      "aiTag": "Análisis asistido por IA, para validación por personas expertas nacionales.",
       "preview": {
         "countrySwitcherAria": "Elija un país para previsualizar",
-        "wheelAriaWithCountry": "Vista previa en vivo de la rueda de coherencia de políticas para {name}: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
-        "wheelAria": "Vista previa en vivo de la rueda de coherencia de políticas: pares de metas alineadas y posiblemente desalineadas a través de documentos nacionales de política.",
-        "openDashboardWithCountry": "Abrir el panel de {name}",
-        "openDashboard": "Abrir el panel completo",
+        "readBrief": "Leer la nota de {name}",
         "unavailable": "La vista previa de {name} no está disponible en este momento."
       }
     },
@@ -67,11 +61,11 @@
       },
       "step2": {
         "title": "Análisis automatizado",
-        "body": "La IA clasifica cada meta por tema y sector, luego evalúa qué tan bien se alinean las metas entre distintas políticas."
+        "body": "La IA clasifica cada meta por área de política y la compara con cada meta de los demás documentos para identificar ámbitos de alineación y de posible desalineación."
       },
       "step3": {
-        "title": "Explorar resultados",
-        "body": "Panel interactivo que muestra la cobertura de la política, los patrones de alineación y las áreas donde la coordinación podría fortalecerse."
+        "title": "Leer la nota",
+        "body": "La nota de cada país muestra dónde las metas están alineadas y dónde muestran una posible desalineación, por documento y por área de política. Puede imprimirse o explorarse meta por meta."
       }
     },
     "abbr": {
@@ -82,12 +76,6 @@
     "footer": {
       "undp": "Programa de las Naciones Unidas para el Desarrollo",
       "initiative": "Iniciativa Sprint de IA"
-    },
-    "heroVideo": {
-      "pauseAria": "Pausar vídeo de fondo",
-      "playAria": "Reproducir vídeo de fondo",
-      "pause": "Pausar",
-      "play": "Reproducir"
     }
   },
   "dashboard": {
@@ -123,9 +111,9 @@
       "corpusDocs": "{count, plural, one {documento} other {documentos}}",
       "corpusCaption": "Lo que compara este informe",
       "strong": "alcanzan alineación fuerte",
-      "strongCaption": "Pares que se refuerzan mutuamente",
+      "strongCaption": "Pares fuertemente alineados",
       "flagged": "{count, plural, one {posible desalineación} other {posibles desalineaciones}}",
-      "flaggedCaption": "Pares señalados para revisión",
+      "flaggedCaption": "Pares con posible desalineación",
       "financeCaption": "Total de la Revisión del Gasto en Biodiversidad (BER)",
       "implementation": "{count, plural, one {acción reportada} other {acciones reportadas}}",
       "implementationCaption": "En el Informe Bienal de Transparencia (BTR)",
@@ -145,7 +133,7 @@
       "direction": "Alineación de políticas",
       "docFocus": "Un documento en foco",
       "docPairs": "Documentos comparados",
-      "frictionTypes": "Por qué se separan los pares",
+      "frictionTypes": "Tipos de posible desalineación",
       "sectors": "Sectores",
       "whereToFocus": "Áreas prioritarias de acción",
       "explore": "Explorar resultados",
@@ -157,7 +145,7 @@
         "label": "Lo que dicen las políticas"
       },
       "friction": {
-        "label": "Dónde se separan"
+        "label": "Dónde hay posible desalineación"
       },
       "delivery": {
         "label": "Financiamiento y ejecución"
@@ -190,9 +178,11 @@
     },
     "lens": {
       "globe": "Biodiversidad",
-      "ipcc": "Sectores de mitigación",
+      "ipcc": "Mitigación climática",
       "country": "Sectores del país",
       "gga": "Adaptación climática",
+      "adaptation": "Adaptación climática",
+      "lossDamage": "Pérdidas y daños",
       "hr": "Derechos humanos",
       "ggaTooltip": "Objetivo Mundial de Adaptación: las siete metas temáticas del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (decisión 2/CMA.5 de la CMNUCC)",
       "hrTooltip": "Nueve temas de derechos humanos de la orientación del PNUD para esta herramienta, basada en la orientación del Grupo de Gestión Ambiental de las Naciones Unidas sobre la integración de los derechos humanos en la planificación nacional de la biodiversidad. Muestra qué temas abordan los documentos revisados. Borrador en revisión por personas expertas."
@@ -218,7 +208,7 @@
           },
           "overview": {
             "title": "Las cifras principales",
-            "body": "Cada mosaico es un recuento principal: qué se comparó, dónde las políticas se refuerzan mutuamente y qué se señaló como posible desalineación. Al seleccionar uno, irá a la parte de la página que lo explica."
+            "body": "Cada mosaico es un recuento principal: qué se comparó, dónde las políticas están alineadas y qué muestra posible desalineación. Al seleccionar uno, irá a la parte de la página que lo explica."
           },
           "corpus": {
             "title": "Los datos detrás del informe",
@@ -226,15 +216,15 @@
           },
           "questions": {
             "title": "Una sola página, organizada por preguntas",
-            "body": "El informe es un solo recorrido con cuatro paradas: lo que dicen las políticas, dónde se separan, financiamiento y ejecución, y un espacio para explorar. Esta barra indica dónde está y salta a cualquier parte."
+            "body": "El informe es un solo recorrido con cuatro paradas: lo que dicen las políticas, dónde hay posible desalineación, financiamiento y ejecución, y un espacio para explorar. Esta barra indica dónde está y salta a cualquier parte."
           },
           "policies": {
             "title": "Primero, la dirección compartida",
-            "body": "Las secciones iniciales muestran los temas que se repiten en los documentos y dónde sus metas se refuerzan entre sí: una base para la planificación y el lugar para detectar sinergias entre instrumentos."
+            "body": "Las secciones iniciales muestran los temas que se repiten en los documentos y dónde sus metas están alineadas: una base para la planificación y el lugar para detectar sinergias entre instrumentos."
           },
           "friction": {
             "title": "Luego, los pares que merecen una mirada",
-            "body": "Las secciones intermedias agrupan los pares de metas que la IA señaló como posibles desalineaciones, según el tipo de fricción y dónde se concentra. Estas señales son avisos para revisar, no veredictos: una lista inicial para leer los documentos en conjunto."
+            "body": "Las secciones intermedias agrupan los pares de metas que la IA calificó como posibles desalineaciones, según su tipo y dónde se concentran. Estas calificaciones son avisos para revisar, no veredictos: una lista inicial para leer los documentos en conjunto."
           },
           "delivery": {
             "title": "Si la ejecución acompaña a la ambición",
@@ -261,7 +251,7 @@
           },
           "ribbons": {
             "title": "Las cintas conectan documentos",
-            "body": "Cada cinta une dos documentos cuyos objetivos fueron comparados. El verde muestra pares que se apoyan mutuamente; la parte roja discontinua muestra pares señalados como posibles desalineaciones. Las cintas más anchas indican más pares comparados. Estos vínculos son estimaciones de IA para orientar la revisión, no veredictos."
+            "body": "Cada cinta une dos documentos cuyos objetivos fueron comparados. El verde muestra pares alineados; la parte roja discontinua muestra pares con posible desalineación. Las cintas más anchas indican más pares comparados. Estos vínculos son estimaciones de IA para orientar la revisión, no veredictos."
           },
           "labels": {
             "title": "Las etiquetas nombran cada documento",
@@ -285,7 +275,7 @@
           },
           "colours": {
             "title": "El verde y el rojo muestran el balance",
-            "body": "Las celdas más verdes tienen una mayor proporción de pares de objetivos que se apoyan mutuamente; las más rojas tienen una mayor proporción señalada como posible desalineación. Estas comparaciones son estimaciones de IA, puntos de partida para la revisión."
+            "body": "Las celdas más verdes tienen una mayor proporción de pares de objetivos alineados; las más rojas, una mayor proporción de pares con posible desalineación. Estas comparaciones son estimaciones de IA, puntos de partida para la revisión."
           },
           "intensity": {
             "title": "Más color, más lejos de lo típico",
@@ -368,16 +358,16 @@
       "frictionTypes": {
         "steps": {
           "bar": {
-            "title": "Una barra, dividida por tipo de fricción",
-            "body": "La barra divide todos los pares de objetivos señalados según el tipo de fricción. El ancho de cada segmento es la proporción de ese tipo; haga clic en un segmento para ver dónde se manifiesta."
+            "title": "Una barra, dividida por tipo de posible desalineación",
+            "body": "La barra divide todos los pares de objetivos con posible desalineación según su tipo. El ancho de cada segmento es la proporción de ese tipo; haga clic en un segmento para ver dónde se manifiesta."
           },
           "mechanisms": {
             "title": "Los tres tipos, explicados",
-            "body": "Cada columna nombra un tipo de fricción, con su proporción, su recuento y una breve descripción de lo que significa."
+            "body": "Cada columna nombra un tipo de posible desalineación, con su proporción, su recuento y una breve descripción de lo que significa."
           },
           "total": {
             "title": "El número detrás de la barra",
-            "body": "Es el número total de pares de objetivos señalados para revisión como posibles desalineaciones — los pares que la barra divide por tipo."
+            "body": "Es el número total de pares de objetivos con posible desalineación: los pares que la barra divide por tipo."
           }
         }
       },
@@ -385,7 +375,7 @@
         "steps": {
           "columns": {
             "title": "Dos columnas de temas recurrentes",
-            "body": "La columna izquierda agrupa temas donde los documentos mayormente se apoyan entre sí; la derecha agrupa temas señalados como posibles desalineaciones. Los temas son agrupaciones de pares de objetivos relacionados, derivadas por IA."
+            "body": "La columna izquierda agrupa temas donde los documentos están mayormente alineados; la derecha agrupa temas de posible desalineación. Los temas son agrupaciones de pares de objetivos relacionados, derivadas por IA."
           },
           "card": {
             "title": "Cada tarjeta es un tema",
@@ -405,7 +395,7 @@
           },
           "pairs": {
             "title": "Los pares que conviene revisar",
-            "body": "Cada fila es un par de objetivos señalado como posible desalineación entre el documento enfocado y otro documento. Haga clic en una fila para la explicación completa. Estas señales son estimaciones de IA para orientar la revisión, no veredictos."
+            "body": "Cada fila es un par de objetivos con posible desalineación entre el documento enfocado y otro documento. Haga clic en una fila para la explicación completa. Estas calificaciones son estimaciones de IA para orientar la revisión, no veredictos."
           }
         }
       },
@@ -417,7 +407,7 @@
           },
           "balance": {
             "title": "La barra de balance verde y roja",
-            "body": "La longitud total de la barra refleja cuántos pares de objetivos se compararon para ese par de documentos; el verde es la proporción que se apoya mutuamente, el rojo la proporción señalada como posible desalineación."
+            "body": "La longitud total de la barra refleja cuántos pares de objetivos se compararon para ese par de documentos; el verde es la proporción alineada, el rojo la proporción con posible desalineación."
           },
           "sync": {
             "title": "La lista y la matriz se mueven juntas",
@@ -433,31 +423,31 @@
           },
           "columns": {
             "title": "Dos medidas por sector",
-            "body": "\"Objetivos\" cuenta cuántos objetivos caen en el sector; la proporción señalada es la parte de sus pares revisados marcada para revisión. Haga clic en cualquiera de los encabezados para ordenar por él."
+            "body": "\"Objetivos\" cuenta cuántos objetivos caen en el sector; \"Posible desalineación\" es la parte de sus pares revisados calificada como posible desalineación. Haga clic en cualquiera de los encabezados para ordenar por él."
           },
           "rows": {
             "title": "Una fila por sector",
             "body": "Cada fila es un sector con sus dos barras. Haga clic en una fila para abrir el detalle del sector; en pantallas grandes, pasar el puntero resalta el sector en la rueda de la derecha."
           },
           "flagShare": {
-            "title": "Cómo leer la barra de proporción señalada",
-            "body": "La barra roja muestra la proporción de pares de objetivos revisados señalados como posibles desalineaciones. La pequeña marca oscura indica el promedio de todos los sectores mostrados, para ver cuáles quedan por encima o por debajo."
+            "title": "Cómo leer la barra de posible desalineación",
+            "body": "La barra roja muestra la proporción de pares de objetivos revisados calificados como posibles desalineaciones. La pequeña marca oscura indica el promedio de todos los sectores mostrados, para ver cuáles quedan por encima o por debajo."
           }
         }
       },
       "whereToFocus": {
         "steps": {
           "bar": {
-            "title": "La mayor parte de la fricción proviene de pocos objetivos",
-            "body": "Cada bloque de color es un objetivo, dimensionado según los pares señalados que concentra y coloreado según su documento de origen. La cola gris es el resto de los objetivos. Haga clic en un bloque para abrir el perfil de ese objetivo."
+            "title": "La mayor parte de la posible desalineación proviene de pocos objetivos",
+            "body": "Cada bloque de color es un objetivo, dimensionado según los pares con posible desalineación que concentra y coloreado según su documento de origen. La cola gris es el resto de los objetivos. Haga clic en un bloque para abrir el perfil de ese objetivo."
           },
           "legend": {
             "title": "Qué significan los números",
-            "body": "Esta línea indica cuántos objetivos concentran qué proporción de todos los pares señalados, y qué representa el área gris."
+            "body": "Esta línea indica cuántos objetivos concentran qué proporción de todos los pares con posible desalineación, y qué representa el área gris."
           },
           "list": {
             "title": "Los objetivos más disputados",
-            "body": "Cada fila es un objetivo con el número de pares señalados en los que aparece, mostrado como una barra escalada al objetivo principal. Haga clic en una fila para el perfil completo. Estos recuentos provienen de pares señalados por IA y son avisos de revisión, no conclusiones."
+            "body": "Cada fila es un objetivo con el número de pares con posible desalineación en los que aparece, mostrado como una barra escalada al objetivo principal. Haga clic en una fila para el perfil completo. Estos recuentos provienen de calificaciones de IA y son avisos de revisión, no conclusiones."
           }
         }
       },
@@ -469,11 +459,11 @@
           },
           "visual": {
             "title": "Las conclusiones",
-            "body": "Clima: una barra por acción reportada, su largo los compromisos de política contra los que podría ir, más oscura para los pares de diseño. Biodiversidad: una fila por meta nacional, primero las que el informe califica como rezagadas, con su calificación y cuántos pares vinculados están señalados para revisar."
+            "body": "Clima: una barra por acción reportada, su largo los compromisos de política con los que muestra posible desalineación, más oscura para los pares de diseño. Biodiversidad: una fila por meta nacional, primero las que el informe califica como rezagadas, con su calificación y cuántos pares vinculados muestran posible desalineación."
           },
           "row": {
             "title": "Abrir una fila",
-            "body": "Una barra climática lista los compromisos y por qué se señaló cada uno (estimado por IA). Una fila de biodiversidad se abre a lo que el propio informe dice que frena la meta, los pares señalados (cada uno abre por qué se señaló) y la entrada completa del informe; la columna de al lado lista los planes que comparten el objetivo."
+            "body": "Una barra climática lista los compromisos y por qué cada uno muestra posible desalineación (estimado por IA). Una fila de biodiversidad se abre a lo que el propio informe dice que frena la meta, los pares con posible desalineación (cada uno abre la razón de la IA) y la entrada completa del informe; la columna de al lado lista los planes que comparten el objetivo."
           },
           "fullPicture": {
             "title": "La imagen completa",
@@ -485,11 +475,71 @@
         "steps": {
           "list": {
             "title": "Una línea por documento",
-            "body": "Para cada plan, cuántas de sus metas juzgó la IA fuertemente alineadas con la meta nacional abierta a la izquierda, y cuántos de esos pares están señalados para revisar."
+            "body": "Para cada plan, cuántas de sus metas juzgó la IA fuertemente alineadas con la meta nacional abierta a la izquierda, y cuántos pares muestran posible desalineación."
           },
           "docs": {
             "title": "Las metas alineadas",
-            "body": "Abre un plan para listar las metas una por una; un punto rojo y las palabras \"posible desalineación\" marcan un par señalado para revisión, y \"en N metas\" un par que se repite en otras metas nacionales. Haz clic en una meta para leerla."
+            "body": "Abre un plan para listar las metas una por una; un punto rojo y las palabras \"posible desalineación\" marcan un par para revisar, y \"en N metas\" un par que se repite en otras metas nacionales. Haz clic en una meta para leerla."
+          }
+        }
+      },
+      "brief": {
+        "steps": {
+          "overall": {
+            "title": "Coherencia general",
+            "body": "Cada punto es un par de metas: dos metas de documentos distintos, comparadas por un modelo de IA y agrupadas según la calificación. Más abajo en la página, los mismos puntos forman un mapa de los documentos, después muestran cada lado por separado y, por último, se reúnen en torno a un documento a la vez."
+          },
+          "themes": {
+            "title": "Temas recurrentes",
+            "body": "Un modelo de IA identifica temas recurrentes en los pares de metas calificados; cada tema cuenta los pares de metas entre los documentos que abarca, por lo que un par puede contar para más de un tema. Al señalar un tema se resaltan esos pares de documentos en el mapa; al seleccionarlo se abre el tema con un ejemplo."
+          },
+          "commitments": {
+            "title": "Metas que conviene revisar primero",
+            "body": "Las metas que intervienen en más posibles desalineaciones. En el mapa solo quedan las posibles desalineaciones y, dentro de cada documento, las metas que más intervienen pasan al frente, donde se nombran. Al señalar una meta, sus pares de metas pasan a primer plano, con su número de posibles desalineaciones en cada bloque; al seleccionarla quedan fijados y se ofrece explorar la meta en el anillo, más abajo."
+          },
+          "documents": {
+            "title": "Los documentos, uno junto a otro",
+            "body": "Cada barra es un documento con todos sus pares de metas: la posible desalineación desde la izquierda, la alineación desde la derecha. Al seleccionar un documento, en la lista o alrededor del centro, este pasa al centro de los puntos, con sus pares de metas con cada uno de los demás documentos a su lado; al seleccionar un par de documentos en la lista se abren el resumen de la IA, los pares de metas más alineados y las posibles desalineaciones."
+          },
+          "builder": {
+            "title": "Personalizar la nota",
+            "body": "Elija los documentos y las áreas de política y, después, las secciones de la nota, en pantalla y en la impresión. «Imprimir o guardar como PDF» muestra las páginas antes de imprimir; la nota también puede compartirse como enlace."
+          },
+          "aligned": {
+            "title": "Alineaciones más fuertes",
+            "body": "Las metas con más alineaciones fuertes con metas de otros documentos. En el mapa solo quedan las alineaciones fuertes y, dentro de cada documento, sus metas más fuertemente alineadas pasan al frente, donde se nombran. Al señalar una meta, sus pares de metas pasan a primer plano, con su número de alineaciones fuertes en cada bloque; al seleccionarla quedan fijados y se ofrece explorar la meta en el anillo, más abajo."
+          },
+          "map": {
+            "title": "Mapa de los documentos",
+            "body": "Los mismos puntos, un bloque por cada par de documentos: cada fila es un documento nombrado a la izquierda, cada columna un documento nombrado bajo el mapa, y cada punto se sitúa donde se cruzan sus dos metas. Al señalar un bloque se nombran sus dos documentos y se dan sus cifras; al seleccionar un bloque se abre ese par de documentos, y al seleccionar un nombre ese documento pasa al centro, más abajo."
+          },
+          "areas": {
+            "title": "Por área de política",
+            "body": "Cada fila es un área de política de la lente elegida, con un punto por cada una de sus metas. Su barra reúne todos los pares de metas del área: la posible desalineación desde la izquierda, la alineación desde la derecha. Los nombres de las columnas sobre las filas las ordenan, primero de mayor a menor y luego de menor a mayor. Sobre cada meta, un punto por cada par de metas en el que participa en el lado elegido: posible desalineación o alineación fuerte. La lista de al lado nombra los pares de áreas de política que reúnen más; al abrir uno se conservan solo sus pares de metas, y al seleccionar una meta se muestran sus contrapartes en cada fila. Al seleccionar el nombre de un área de política se listan sus pares de áreas y se conservan solo los pares de metas en los que participan sus metas."
+          }
+        }
+      },
+      "explore": {
+        "steps": {
+          "ring": {
+            "title": "Todas las metas en un anillo",
+            "body": "Cada punto es una meta de los documentos seleccionados, situada en el arco de su documento. «Agrupar por» dispone los arcos por área de política, con las metas que pertenecen a alguna. Al señalar un punto se nombra la meta; al seleccionarlo, pasa al centro. Con una meta en el centro, la primera selección abre la comparación entre ambas y la segunda pasa el punto al centro."
+          },
+          "centre": {
+            "title": "El centro",
+            "body": "En reposo, el centro muestra cada par de metas entre los puntos del anillo y cómo se lee. Con una meta en el centro, cada uno de los demás puntos toma el color de cómo se lee frente a ella: verde alineado, gris parcialmente alineado, rojo posible desalineación, ordenados dentro de cada documento. Al seleccionar el nombre de un documento o de un área de política, todas sus metas pasan al centro. Un punto se vuelve rojo donde sus posibles desalineaciones con esas metas destacan: al menos dos, y al menos el doble de frecuentes que en el conjunto del centro. El nombre de otro documento abre ambos, uno junto al otro; un espacio vacío o «Todas las metas» vuelve a todas las metas."
+          },
+          "lines": {
+            "title": "Líneas",
+            "body": "Las líneas van del centro a sus alineaciones fuertes (continuas) y a sus posibles desalineaciones (discontinuas); los interruptores añaden la alineación moderada y la parcial. Al señalar una línea o el punto al que lleva se muestran la calificación del modelo de IA y la primera frase de su explicación; al seleccionar cualquiera de los dos se abre la comparación, donde se puede valorar la explicación."
+          },
+          "layers": {
+            "title": "Acciones reportadas y líneas presupuestarias",
+            "body": "Cuando un país las tiene, las acciones reportadas en su Informe Bienal de Transparencia (BTR) y las líneas presupuestarias de su Revisión del Gasto en Biodiversidad (BER) se suman al anillo como cuadrados y cuadrados inclinados. Solo cuentan una acción fuertemente alineada, una acción con posible desalineación o una línea presupuestaria correspondiente; los vínculos son estimaciones de la IA."
+          },
+          "column": {
+            "title": "Junto al anillo",
+            "body": "La columna indica lo que muestra el anillo: el texto de la meta del centro, sus posibles desalineaciones y alineaciones fuertes y, al final, cada comparación con la primera frase de su explicación de la IA. «Meta anterior» y «Meta siguiente» recorren su documento; «Copiar el enlace» comparte la vista."
           }
         }
       }
@@ -525,7 +575,7 @@
     },
     "docMatrix": {
       "noScoredTitle": "{a} ↔ {b}: sin pares evaluados",
-      "cellTitle": "{a} ↔ {b}: {aligned, number} alineados · {flagged, number} marcados · pulse para ver las brechas",
+      "cellTitle": "{a} ↔ {b}: {aligned, number} alineados · {flagged, number} con posible desalineación · pulse para ver las brechas",
       "aligned": "Alineado",
       "flagged": "Posible desalineación",
       "legendHint": "color más intenso = más lejos del nivel medio de alineación del corpus",
@@ -618,7 +668,7 @@
         "showMore": "Mostrar {count, number} más",
         "fallback": {
           "allPairs": "Todos los pares de metas ({count, number})",
-          "flaggedOnly": "Pares de metas marcados ({count, number})",
+          "flaggedOnly": "Pares de metas con posible desalineación ({count, number})",
           "showMisalignedOnly": "Mostrar sólo desalineados",
           "showAligned": "Mostrar alineados ({count, number})",
           "empty": "No hay pares de metas para mostrar."
@@ -633,7 +683,7 @@
           "reportWords": "palabras del informe",
           "noChallenges": "El informe no da texto de desafíos clave para esta meta.",
           "repeats": "Las filas del informe de biodiversidad señalan esta meta frente a {count, plural, one {# meta nacional} other {# metas nacionales}}.",
-          "seeAll": "Todos sus pares señalados"
+          "seeAll": "Todos sus pares con posible desalineación"
         },
         "budgetLineTag": "Línea presupuestaria (BER)",
         "feedback": {
@@ -699,8 +749,8 @@
           "flagged": "Posible desalineación"
         },
         "legacy": {
-          "pullingTogether": "Lo que tira en conjunto",
-          "pullingAgainst": "Lo que tira en contra del resto",
+          "pullingTogether": "Lo que está alineado",
+          "pullingAgainst": "Lo que muestra posible desalineación con el resto",
           "strongestAlignments": "Alineaciones más fuertes",
           "topFlagged": "Pares más posiblemente desalineados"
         },
@@ -842,7 +892,7 @@
         "mixed": "{total, number} pares posiblemente desalineados se reparten entre los tres tipos. Pulse cualquier segmento para ver cómo se desglosan esos pares.",
         "dominant": "De {total, number} pares posiblemente desalineados, {label} concentra el {pct}%. Pulse cualquier segmento para ver cómo se desglosan esos pares por documento, tema y meta."
       },
-      "reading": "Las mismas <pair>parejas</pair>, ordenadas según el origen de la fricción: los objetivos, los recursos o la ejecución."
+      "reading": "Las mismas <pair>parejas</pair>, ordenadas según el origen de la posible desalineación: los objetivos, los recursos o la ejecución."
     },
     "docFocus": {
       "switcherAriaLabel": "Elija un documento para enfocar",
@@ -877,7 +927,7 @@
       "themesHeadline": "Los temas que se repiten en los documentos.",
       "strongAlignment": "alineación fuerte",
       "potentialMisalignment": "posible desalineación",
-      "flaggedDefinition": "Dos metas que la IA identificó como posiblemente en tensión entre sí: un aviso para revisión humana, no un hallazgo definitivo. Un par real evaluado:",
+      "flaggedDefinition": "Dos metas que la IA calificó como posiblemente desalineadas, donde perseguir una puede dificultar alcanzar la otra: un aviso para revisión humana, no un hallazgo definitivo. Un par real evaluado:",
       "popoverAriaLabel": "Mostrar un ejemplo de {term}",
       "clickToOpenPair": "Pulse el término para abrir este par",
       "howPipelineBuilt": "Cómo la canalización construyó esta vista",
@@ -1048,7 +1098,7 @@
       "legend": {
         "matched": "con una acción reportada alineada",
         "unmatched": "ninguna en este informe",
-        "pull": "metas contra las que una acción reportada podría ir"
+        "pull": "metas con posible desalineación respecto de una acción reportada"
       },
       "nr7": {
         "selfAssessment": "Autoevaluación del país (NR7):",
@@ -1061,7 +1111,7 @@
         "notIncluded": "Aún no incluido: series temporales de indicadores, ejecución presupuestaria, reportes de entrega a nivel de proyecto."
       },
       "misalignment": {
-        "pullHeading": "Una acción reportada podría ir en contra"
+        "pullHeading": "Posible desalineación con una acción reportada"
       },
       "status": {
         "planned": "Planificada",
@@ -1075,8 +1125,8 @@
           "designLevel": "{count, plural, one {# de diseño} other {# de diseño}}",
           "adaptation": "acción de adaptación",
           "pairsSuffix": "pares",
-          "ariaLabel": "{name}, {status}: podría ir contra {count, plural, one {# compromiso de política} other {# compromisos de política}}",
-          "rationaleHeading": "Por qué se señaló (estimado por IA)",
+          "ariaLabel": "{name}, {status}: posible desalineación con {count, plural, one {# compromiso de política} other {# compromisos de política}}",
+          "rationaleHeading": "Por qué muestra posible desalineación (estimado por IA)",
           "openPair": "Abrir el par",
           "namedOn": "Mencionados en esta acción:"
         },
@@ -1098,12 +1148,12 @@
         },
         "nr7Recurring": {
           "summary": "Pares que se repiten entre metas",
-          "count": "{count, plural, one {# meta de otro plan} other {# metas de otros planes}}, cada una señalada en dos o más metas nacionales",
-          "hitsLabel": "Metas nacionales frente a las que está señalada",
+          "count": "{count, plural, one {# meta de otro plan} other {# metas de otros planes}}, cada una con posible desalineación respecto de dos o más metas nacionales",
+          "hitsLabel": "Metas nacionales con las que muestra posible desalineación",
           "hit": "Meta nacional {n}: calificada {rating}",
           "showAll": "Mostrar las {count}",
           "showFewer": "Mostrar menos",
-          "pairCount": "Señalada frente a {count} de las {targets} metas nacionales{behind, plural, =0 {} one {, una de ellas calificada como rezagada} other {, # de ellas calificadas como rezagadas}}"
+          "pairCount": "Posible desalineación con {count} de las {targets} metas nacionales{behind, plural, =0 {} one {, una de ellas calificada como rezagada} other {, # de ellas calificadas como rezagadas}}"
         },
         "nr7CrossChecks": {
           "summary": "Calificaciones que no coinciden con su propia evidencia",
@@ -1120,8 +1170,8 @@
         "aria": "Elige un informe"
       },
       "climate": {
-        "headline": "{actions} de las {totalActions} acciones climáticas reportadas por {country} podrían ir contra metas de sus otros planes.",
-        "headlineNone": "Ninguna acción climática reportada por {country} parece ir contra metas de sus otros planes.",
+        "headline": "{actions} de las {totalActions} acciones climáticas reportadas por {country} muestran posible desalineación con metas de sus otros planes.",
+        "headlineNone": "Ninguna acción climática reportada por {country} muestra posible desalineación con metas de sus otros planes.",
         "body": "{actions, plural, one {{underWay, plural, =0 {Aún no está en marcha} other {Ya está en marcha}}} other {{underWay, plural, =0 {Ninguna de estas {actions} está en marcha aún} one {# de estas {actions} ya está en marcha} other {# de estas {actions} ya están en marcha}}}}. La mayoría de las metas afectadas pertenecen a {docs}.",
         "bodyNone": "{reached} de {total} metas de política tienen una acción reportada fuertemente alineada; {outsideReach} no tienen ninguna. Las correspondencias son estimadas por IA.",
         "docsPair": "{a} y {b}",
@@ -1130,9 +1180,9 @@
           "coordination": "de coordinación"
         },
         "bar": {
-          "aria": "{name}: {count, plural, one {# par señalado} other {# pares señalados}}, {design} de diseño"
+          "aria": "{name}: {count, plural, one {# par con posible desalineación} other {# pares con posible desalineación}}, {design} de diseño"
         },
-        "start": "Empieza por {half, plural, one {la barra superior: por sí sola concentra} other {las # barras superiores: juntas concentran}} la mitad de las alertas. Abre una para ver las metas contra las que podría ir la acción y la razón de la IA, y juzga si la alerta se sostiene.",
+        "start": "Empieza por {half, plural, one {la barra superior: por sí sola concentra} other {las # barras superiores: juntas concentran}} la mitad de las alertas. Abre una para ver las metas con las que la acción muestra posible desalineación y la razón de la IA, y juzga si la alerta se sostiene.",
         "startCaveat": "Avisos de revisión estimados por IA, no hallazgos. El largo de la barra es el número de metas afectadas."
       },
       "biodiversity": {
@@ -1153,13 +1203,13 @@
         "startCaveat": "Calculado con las propias declaraciones del informe. Nada en esta pestaña es generado por IA.",
         "policyLinks": {
           "headline": "El informe de biodiversidad de {country} califica {behind} de {targets} metas nacionales como rezagadas.",
-          "body": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados señaló la IA como posibles desalineaciones. La mayoría de los pares señalados son con {doc}.",
-          "bodyNoFlagged": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados señaló la IA como posibles desalineaciones. Ninguno está señalado.",
+          "body": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados calificó la IA como posibles desalineaciones. La mayoría son con {doc}.",
+          "bodyNoFlagged": "Cada fila es una meta nacional: su calificación y cuántos pares vinculados calificó la IA como posibles desalineaciones. Ninguno muestra posible desalineación.",
           "start": "Empieza por la primera fila: qué dice el informe que la frena y, luego, si los planes vinculados tienen que ver con ello.",
           "caveat": "Las calificaciones y las palabras del informe son del propio informe. Los vínculos con otros planes son alineación estimada por IA entre textos de metas: un aviso para revisar, no un registro de ejecución ni de financiamiento.",
           "flaggedFaceCount": "{count} por revisar",
           "noneFlagged": "ninguno por revisar",
-          "flaggedHeading": "Pares señalados ({count})",
+          "flaggedHeading": "Pares con posible desalineación ({count})",
           "reach": "Fuertemente alineada con {count, plural, one {# meta} other {# metas}} en {docs, plural, one {# otro documento} other {# otros documentos}}.",
           "noLinks": "Ninguna meta de los otros documentos se juzgó fuertemente alineada con ella.",
           "challengesHeading": "Qué dice el informe que la frena",
@@ -1702,7 +1752,7 @@
       "targets": "Metas",
       "pairs": "Pares",
       "high": "Alta",
-      "flagged": "Señalados",
+      "flagged": "Con posible desalineación",
       "energy": "Energía (Wh)",
       "co2": "CO₂e (g)",
       "water": "Agua (mL)",
@@ -1760,85 +1810,110 @@
   "sustainability": {
     "chip": {
       "label": "Huella de IA: <b>{value} CO2e</b>",
-      "title": "Huella de sostenibilidad de IA de esta herramienta"
+      "title": "Panel de huella ambiental"
     },
-    "page": {
-      "title": "Huella de sostenibilidad de IA",
-      "intro": "El coste ambiental estimado de la computación de IA detrás de esta herramienta, cubriendo análisis de documentos, la canalización de inferencia y el chatbot. Es un registro de transparencia para reportar, no asesoría de política.",
-      "methodology": "Estimado por IA usando la metodología <link>EcoLogits</link>. Las cifras son estimaciones modeladas, no lecturas de medidor, y conllevan un margen de incertidumbre."
-    },
+    "title": "Panel de huella ambiental",
     "back": "Volver",
-    "loading": "Cargando datos de huella…",
-    "empty": "Aún no se ha registrado huella. Ejecute un análisis o envíe un mensaje de chat, y esta página empezará a rastrear el cómputo de IA detrás de ello.",
+    "span": "Del {from} al {to}",
+    "download": "Descargar",
+    "downloadCsv": "CSV",
+    "downloadCsvTitle": "El registro completo, como hoja de cálculo",
+    "downloadJson": "JSON",
+    "downloadJsonTitle": "El registro completo, como datos",
+    "loading": "Cargando la huella…",
+    "empty": "Aún no se ha registrado ninguna huella. Cada análisis y cada respuesta del chat se añade aquí en cuanto se ejecuta.",
     "errors": {
       "loadFailed": "No se pudieron cargar los datos de huella",
       "withMessage": "No se pudieron cargar los datos de huella: {message}"
     },
-    "exportCsv": "Exportar CSV",
-    "exportJson": "Exportar JSON",
-    "seriesCarbon": "Carbono",
-    "units": {
-      "gCO2e": "g CO2e"
+    "figures": {
+      "carbon": "Carbono",
+      "electricity": "Electricidad",
+      "water": "Agua",
+      "minerals": "Minerales",
+      "carbonUnitTitle": "CO2e: equivalente de dióxido de carbono",
+      "energyUnitTitle": "kWh: kilovatios-hora; Wh: vatios-hora",
+      "mineralsUnitTitle": "Sb-eq: equivalente de antimonio, la medida del agotamiento de recursos abióticos (ADPe)",
+      "petrol": "{count, plural, one {Aproximadamente el carbono de quemar un litro de gasolina} other {Aproximadamente el carbono de quemar # litros de gasolina}}",
+      "ev": "{count, plural, one {Aproximadamente una carga completa de un coche eléctrico de gran autonomía} other {Aproximadamente # cargas completas de un coche eléctrico de gran autonomía}}",
+      "bathtubs": "{count, plural, one {Aproximadamente una bañera de agua} other {Aproximadamente # bañeras de agua}}",
+      "mineralsNote": "Recursos minerales agotados, en equivalente de antimonio",
+      "range": "Rango modelado: de {min} a {max}"
     },
-    "components": {
-      "dev_pipeline": "Ejecuciones de canalización (desarrollo)",
-      "user_pipeline": "Ejecuciones de canalización (usuario)",
-      "extract": "Extracción de documentos",
-      "chat": "Chatbot"
+    "select": "Mostrar por recurso",
+    "requests": "{calls} solicitudes a modelos de IA",
+    "requestsReused": "{calls} solicitudes a modelos de IA, {share} reutilizadas de ejecuciones anteriores",
+    "byUse": "{resource} por uso",
+    "perDot": "{amount} por punto",
+    "use": {
+      "extract": "Lectura de documentos cargados",
+      "chat": "Chat",
+      "other": "Otros trabajos"
+    },
+    "meta": {
+      "runs": "{count, plural, one {# ejecución} other {# ejecuciones}}",
+      "models": "{count, plural, one {# modelo} other {# modelos}}",
+      "answers": "{count, plural, one {# respuesta} other {# respuestas}}"
+    },
+    "resources": "{carbon} CO2e · {energy} · {water} de agua · {minerals} Sb-eq",
+    "entry": {
+      "requests": "{count, plural, one {# solicitud} other {# solicitudes}}",
+      "requestsReused": "{count, plural, one {# solicitud} other {# solicitudes}}, {reused, number} reutilizadas"
+    },
+    "showAll": "Mostrar las {count, number}",
+    "close": "Cerrar",
+    "overTime": "{resource} a lo largo del tiempo",
+    "events": "Hitos",
+    "timeline": {
+      "label": "Total acumulado de {resource} del {from} al {to}, hasta {total}",
+      "step": "{name} +{amount}",
+      "then": "Total en ese momento: {amount}",
+      "more": "{count, plural, one {y uno más} other {y # más}}"
     },
     "sources": {
-      "measured": "Medido",
-      "estimated": "Estimado",
-      "api": "Estimado (API)",
-      "unavailable": "No disponible"
+      "method": "Estimaciones modeladas con <link>EcoLogits</link>, no lecturas de medidor. Combinación eléctrica: {regions}.",
+      "equivalents": "Comparaciones ilustrativas: factor de combustión de gasolina de la Agencia de Protección Ambiental de Estados Unidos (EPA, agosto de 2026), una batería de coche eléctrico de 75 a 100 kWh y una bañera de 155 litros.",
+      "inputTokens": "Estas cifras contabilizan el texto que genera cada respuesta, no el texto que el modelo lee antes. En agosto de 2026 el modelo leyó 34 veces más texto del que escribió (métricas de uso de Azure), por lo que las cifras son un mínimo.",
+      "azure": "Microsoft Azure informa 25,4 kg de CO2e para el servicio de IA en agosto de 2026, sobre todo por la fabricación del equipo: su método basado en el mercado computa la electricidad como cero, por lo que ambas cifras no son comparables."
+    }
+  },
+  "finding": {
+    "headline": {
+      "docsPair": "{docA} y {docB}",
+      "docsSame": "dos compromisos de {doc}",
+      "flaggedResourceNamed": "Posible competencia por {resources} entre {docs}",
+      "flaggedResource": "Posible competencia por recursos compartidos entre {docs}",
+      "flaggedGoal": "Objetivos con posible desalineación: {docs}",
+      "flaggedDeliveryContext": "Posibles brechas de implementación y coordinación entre {docs} en {context}",
+      "flaggedDelivery": "Posibles brechas de implementación y coordinación entre {docs}",
+      "flaggedGeneric": "Posible desalineación entre {docs}",
+      "alignedHigh": "{docs} parecen fuertemente alineados",
+      "alignedMedium": "{docs} parecen ampliamente compatibles",
+      "alignedLow": "{docs} parecen parcialmente alineados",
+      "alignedNone": "No se identificó una relación directa entre {docs}"
     },
-    "tile": {
-      "carbon": "Carbono",
-      "carbonUnitTitle": "CO2e: equivalente de dióxido de carbono",
-      "energy": "Energía",
-      "energyUnitTitle": "kWh: kilovatios-hora; Wh: vatios-hora",
-      "water": "Agua",
-      "waterUnitTitle": "Huella de consumo de agua (enfriamiento de centros de datos)",
-      "waterSub": "huella de consumo",
-      "minerals": "Minerales",
-      "mineralsUnitTitle": "ADPe: potencial de agotamiento abiótico, equivalente de antimonio (Sb)",
-      "mineralsSub": "uso de recursos abióticos",
-      "callsLabel": "en {calls} llamadas al modelo",
-      "lastRecorded": "último registro {date}",
-      "notAvailable": "n/d",
-      "range": "rango modelado: {min} a {max}"
+    "card": {
+      "kicker": "Hallazgo de coherencia de políticas",
+      "assessmentLabel": "Evaluación",
+      "mechanismLabel": "Por qué estos dos compromisos podrían interactuar",
+      "targetsLabel": "Los dos compromisos, textuales",
+      "copyLink": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "backToDashboard": "Ver en el panel completo de coherencia",
+      "standsOutLabel": "Por qué destaca este par",
+      "modelAgreement": "Identificado como posible desalineación por {count, number} de {total, number} modelos de IA de forma independiente.",
+      "typeRarity": "Este patrón ({mechanism}) aparece en {count, number} de {comparisons, number} pares comparados.",
+      "concentration": "{target} por sí solo participa en {count, number} de los {flaggedTotal, number} pares con posible desalineación.",
+      "reviewed": "Revisado: una persona revisora del país calificó este par como “{rating}” el {date}.",
+      "notReviewed": "Aún sin revisión por un equipo de país."
     },
-    "equivalents": {
-      "title": "En términos cotidianos",
-      "ev": "{count, plural, one {aproximadamente una carga completa de un coche eléctrico de gran autonomía} other {aproximadamente # cargas completas de un coche eléctrico de gran autonomía}}",
-      "petrol": "{count, plural, one {el carbono de quemar aproximadamente un litro de gasolina} other {el carbono de quemar aproximadamente # litros de gasolina}}",
-      "bathtubs": "{count, plural, one {aproximadamente una bañera de agua de refrigeración} other {aproximadamente # bañeras de agua de refrigeración}}",
-      "note": "Comparaciones ilustrativas: factor de combustión de gasolina de la Agencia de Protección Ambiental de Estados Unidos (EPA, agosto de 2026), una batería de coche eléctrico de 75 a 100 kWh y una bañera de 155 litros."
-    },
-    "charts": {
-      "carbonOverTime": "Carbono a lo largo del tiempo",
-      "byComponent": "Carbono por componente",
-      "byModel": "Carbono por modelo",
-      "byRegion": "Carbono por región",
-      "byComponentMetric": "{metric} por componente",
-      "byModelMetric": "{metric} por modelo",
-      "byRegionMetric": "{metric} por región",
-      "cumulativeOverTime": "{metric} acumulado a lo largo del tiempo",
-      "cumulativeDescription": "Total acumulado de {metric} hasta la fecha, desglosado por su procedencia. Los cuatro recursos avanzan al mismo ritmo, por lo que cada uno muestra la misma forma en sus propias unidades."
-    },
-    "table": {
-      "title": "Actividad registrada",
-      "date": "Fecha",
-      "component": "Componente",
-      "model": "Modelo",
-      "region": "Región",
-      "calls": "Llamadas",
-      "energy": "Energía",
-      "carbon": "Carbono",
-      "basis": "Base"
-    },
-    "metricSelector": {
-      "label": "Desglosar por recurso:"
+    "index": {
+      "title": "Hallazgos candidatos",
+      "intro": "Posibles desalineaciones entre distintos documentos de política, ordenadas por las señales que el análisis ya contiene. La coincidencia entre modelos no equivale a certeza; cada entrada sigue siendo una sugerencia de la IA para revisión.",
+      "internalNote": "Lista interna de prueba.",
+      "count": "{count, number} hallazgos candidatos",
+      "modelsFlagging": "señalado por {count, number} de {total, number} modelos",
+      "empty": "No hay posibles desalineaciones entre documentos distintos en este conjunto de datos."
     }
   },
   "labels": {
@@ -1855,7 +1930,7 @@
       "delivery_friction": "Entrega y coordinación"
     },
     "contradictionDescription": {
-      "goal_conflict": "Los propios objetivos tiran en sentidos contrarios: lograr uno sustantivamente significa no lograr el otro.",
+      "goal_conflict": "Los propios objetivos están en conflicto: lograr uno sustantivamente significa no lograr el otro.",
       "resource_competition": "Los objetivos son compatibles pero compiten por el mismo recurso limitado: tierra, agua, presupuesto o capacidad.",
       "delivery_friction": "Los objetivos son compatibles; la brecha está en la entrega: cómo se implementa uno socava al otro (escala, calendario o coordinación entre actores desalineados)."
     },
@@ -1945,13 +2020,13 @@
     "controls": {
       "groupDocuments": "Documentos",
       "groupGlobe": "Biodiversidad",
-      "groupSectors": "Sectores de mitigación",
+      "groupSectors": "Mitigación climática",
       "groupDocumentsTitle": "Agrupar la rueda por documento de origen",
       "groupGlobeTitle": "Agrupar por categoría de biodiversidad (taxonomía GLOBE)",
       "groupSectorsTitle": "Agrupar por sector de mitigación climática (IPCC)",
       "groupOptionDocument": "Por tipo de documento",
       "groupOptionGlobe": "Por categoría de biodiversidad",
-      "groupOptionSector": "Por sector de mitigación",
+      "groupOptionSector": "Por mitigación climática",
       "filterHighContra": "Fuerte + posible desalineación",
       "filterHighMedium": "Alta + Media",
       "filterAll": "Todas las conexiones",
@@ -2043,17 +2118,17 @@
       "statMisalignments": "Posibles desalineaciones",
       "statTargetsTitle": "Examinar todas las metas visibles",
       "statAlignmentsTitle": "Examinar todos los pares de alineación fuerte",
-      "statMisalignmentsTitle": "Examinar todos los pares marcados como posible/probable conflicto",
+      "statMisalignmentsTitle": "Examinar todos los pares con posible desalineación",
       "strongestAlignments": "Alineaciones más fuertes",
       "mostConflictedTargets": "Metas más en conflicto",
       "noStrongAlignments": "Sin alineaciones fuertes para la selección actual.",
-      "noTensions": "Sin tensiones potenciales para la selección actual.",
+      "noTensions": "Sin posible desalineación para la selección actual.",
       "allTargetsTitle": "Todas las metas · {count, number}",
       "allAlignmentsTitle": "Todas las alineaciones · {count, number}",
-      "allTensionsTitle": "Todas las tensiones · {count, number}",
+      "allTensionsTitle": "Todas las posibles desalineaciones · {count, number}",
       "emptyTargets": "No hay metas en esta vista.",
       "emptyAlignments": "No hay alineaciones fuertes en esta vista.",
-      "emptyTensions": "No hay tensiones en esta vista.",
+      "emptyTensions": "No hay posible desalineación en esta vista.",
       "docTargetCount": " · {count, plural, one {1 meta} other {# metas}}"
     },
     "category": {
@@ -2078,7 +2153,7 @@
       "topConflictsCount": "Principales conflictos · {count, number}",
       "strongestAlignments": "Alineaciones más fuertes",
       "strongestAlignmentsCount": "Alineaciones más fuertes · {count, number}",
-      "noTensionsOther": "Sin tensiones con otras categorías.",
+      "noTensionsOther": "Sin posible desalineación con otras categorías.",
       "noAlignsOther": "Sin alineaciones con otras categorías.",
       "noConflicts": "Sin conflictos en esta categoría.",
       "noStrongAlignments": "Sin alineaciones fuertes en esta categoría.",
@@ -2226,7 +2301,7 @@
       "analysisTitle": "Prototipos · Análisis {id} | CPC Analyzer"
     },
     "sustainability": {
-      "title": "Huella de Sostenibilidad de IA | CPC Analyzer",
+      "title": "Panel de huella ambiental | CPC Analyzer",
       "description": "Huella ambiental estimada de la computación de IA detrás del CPC Analyzer, para reporte de transparencia."
     },
     "methodology": {
@@ -2447,7 +2522,7 @@
       "infoBerPeriod": "Período BER: {period}.",
       "lensLabel": "Lente",
       "lensGlobe": "Biodiversidad",
-      "lensSector": "Sectores de mitigación",
+      "lensSector": "Mitigación climática",
       "lensNbs": "Soluciones basadas en la naturaleza (NBS)",
       "lensBerProgramme": "Programas BER (28)",
       "envAll": "Todos",
@@ -2508,7 +2583,7 @@
       "barChartNote": "Una vista de gráfico de barras desagregada por ministerio se añadirá una vez que se conecte el mapeo de programa a ministerio del BER (flujo de trabajo independiente).",
       "viewLabels": {
         "globe_sub": "Subcategorías de biodiversidad (BIOFIN GLOBE)",
-        "sector": "Sectores de mitigación (IPCC)"
+        "sector": "Mitigación climática (IPCC)"
       },
       "globeSub": {
         "taxonomyLabel": "Categoría / subcategoría de biodiversidad",
@@ -2566,7 +2641,7 @@
     "implementationCoverage": {
       "groupMode": {
         "byNationalSector": "Por categorías sectoriales nacionales",
-        "byIpccSector": "Por sector de mitigación (estandarizado)",
+        "byIpccSector": "Por mitigación climática (estandarizado)",
         "default": "Predeterminado (Mitigación climática + Metas de adaptación)",
         "byBiodiversity": "Por taxonomía de biodiversidad",
         "byGga": "Por adaptación climática (Objetivo Mundial de Adaptación)",
@@ -2615,7 +2690,7 @@
       },
       "gaps": {
         "title": "Brechas de reporte",
-        "footnote": "Los conteos utilizan el sector del IPCC registrado para cada acción del BTR en el archivo de datos subyacente; según el país, los sectores fueron curados manualmente del BTR o extraídos por analizador. Los autoinformes gubernamentales rara vez muestran contradicciones, por lo que la ausencia de una acción reportada no equivale a la ausencia de actividad sobre el terreno.",
+        "footnote": "Los conteos utilizan el sector del IPCC registrado para cada acción del BTR en el archivo de datos subyacente; según el país, los sectores fueron curados manualmente del BTR o extraídos por analizador. Los autoinformes gubernamentales rara vez muestran posibles desalineaciones, por lo que la ausencia de una acción reportada no equivale a la ausencia de actividad sobre el terreno.",
         "nationalSectorCoverage": "El reporte de mitigación del BTR cubre {covered, number} de {total, number} categorías sectoriales nacionales. {names} no {count, plural, one {está cubierta} other {están cubiertas}} por ninguna acción de mitigación reportada.",
         "ipccSectorCoverage": "El reporte de mitigación del BTR cubre {covered, number} de {total, number} sectores del IPCC. {names} no {count, plural, one {está cubierto} other {están cubiertos}} por ninguna acción de mitigación reportada.",
         "implementationStatus": "Solo {implemented, number} de {total, number} {total, plural, one {acción reportada del BTR está marcada} other {acciones reportadas del BTR están marcadas}} como 'totalmente implementada'. Las otras {other, number} están en curso, adoptadas o planificadas.",
@@ -2670,7 +2745,7 @@
     },
     "targetAtlas": {
       "title": "Atlas de metas",
-      "infoBox": "Los elementos se conectan cuando comparten una categoría relevante en el <strong>lente</strong> seleccionado. Horizontal = n.º de metas de política de distintos documentos que comparten una categoría. Vertical = n.º de acciones BTR + n.º de programas BER que comparten una categoría.<red> Anillo rojo</red> = posibles desalineaciones con otras metas señaladas por el LLM. Consulte “Cómo leer esto” debajo del encabezado para ver la explicación completa.",
+      "infoBox": "Los elementos se conectan cuando comparten una categoría relevante en el <strong>lente</strong> seleccionado. Horizontal = n.º de metas de política de distintos documentos que comparten una categoría. Vertical = n.º de acciones BTR + n.º de programas BER que comparten una categoría.<red> Anillo rojo</red> = posibles desalineaciones con otras metas, según la calificación de la IA. Consulte “Cómo leer esto” debajo del encabezado para ver la explicación completa.",
       "provenanceMethod": "Cada punto es una meta de política. Las conexiones se infieren de las clasificaciones taxonómicas del LLM bajo el lente seleccionado; el anillo rojo proviene del mismo análisis de alineación por pares del LLM utilizado en las vistas de coherencia. Las acciones BTR y los programas BER contribuyen al eje vertical de <quoted>respaldo</quoted> solo cuando comparten una categoría del lente con una meta.",
       "provenanceCaveat": "Ambos ejes dependen del lente elegido: cambiar de lente recalcula las posiciones. El Atlas muestra coherencia semántica (categorías compartidas), no flujos materiales de dinero ni esfuerzo de implementación.",
       "provPolicyTargets": "Metas de política ({count, number})",
@@ -2679,7 +2754,7 @@
       "lensLabel": "Lente",
       "lensSelectTitle": "La taxonomía que conecta. Dos elementos se vinculan (en ambos ejes) si comparten una categoría relevante.",
       "lensGlobe": "Biodiversidad",
-      "lensSector": "Sectores de mitigación",
+      "lensSector": "Mitigación climática",
       "lensNbs": "Soluciones basadas en la naturaleza (NBS)",
       "hideLensOrphans": "Ocultar huérfanos del lente",
       "connectionLines": "Líneas de conexión del LLM",
@@ -2696,10 +2771,10 @@
       "htrQuadrantsTitle": "Qué significan los cuatro cuadrantes",
       "htrQuadWellSupported": "<strong>Bien respaldada (arriba a la derecha):</strong> vinculada a muchas otras metas de política <em>y</em> a acción reportada o presupuesto. Tanto el conjunto de políticas del país como su maquinaria de implementación/financiamiento respaldan esta meta. <eg>p. ej. una meta de energía renovable que se repite en NDC, NBSAP y NAP y que cubren medidas de mitigación del BTR y un programa del BER.</eg>",
       "htrQuadAmbitionGap": "<strong>Brecha de ambición (abajo a la derecha):</strong> reflejada en muchas políticas, pero ninguna acción reportada ni programa presupuestario toca la misma área. La clásica brecha entre <quoted>el decir y el hacer</quoted>. <eg>p. ej. una meta de restauración del hábitat de polinizadores que varios documentos mencionan pero que ninguna acción del BTR ni programa del BER cubre.</eg>",
-      "htrQuadBackedIsolated": "<strong>Respaldada pero aislada (arriba a la izquierda):</strong> hay acción reportada o presupuesto, pero pocas otras metas de política la refuerzan. El país hace o paga algo que se sostiene por sí solo. <eg>p. ej. una partida presupuestaria contra la desertificación que no tiene un eco fuerte en NBSAP, NDC o NAP.</eg>",
+      "htrQuadBackedIsolated": "<strong>Respaldada pero aislada (arriba a la izquierda):</strong> hay acción reportada o presupuesto, pero pocas otras metas de política están alineadas con ella. El país hace o paga algo que se sostiene por sí solo. <eg>p. ej. una partida presupuestaria contra la desertificación que no tiene un eco fuerte en NBSAP, NDC o NAP.</eg>",
       "htrQuadLimitedUptake": "<strong>Adopción limitada (abajo a la izquierda):</strong> pocos vínculos entre políticas, pocas acciones reportadas, pocos programas presupuestarios en esta área. Podría ser un caso aislado estratégico, una meta muy específica o un mal encaje para este lente. Conviene leerla directamente antes de juzgar.",
       "htrLinksTitle": "Qué muestra cada tipo de vínculo",
-      "htrLinkPolicy": "<strong>Vínculo a otra meta de política</strong> → dos documentos contienen objetivos que caen en la misma área temática. Se refuerzan mutuamente.",
+      "htrLinkPolicy": "<strong>Vínculo a otra meta de política</strong> → dos documentos contienen objetivos que caen en la misma área temática. Están alineados.",
       "htrLinkBtr": "<strong>Vínculo a una acción del BTR</strong> → el Informe Bienal de Transparencia del país enumera una medida de mitigación o una acción de adaptación en la misma área temática. Significa que el país <em>ya está haciendo algo</em> relacionado con esta meta.",
       "htrLinkBer": "<strong>Vínculo a un programa del BER</strong> → una partida presupuestaria nombrada en la Revisión del Gasto en Biodiversidad financia actividad en la misma área temática. El país <em>ya está pagando por</em> algo relacionado. Es un recuento de programas, no un monto monetario; los totales en dólares por categoría están en la sección <em>Coherencia del financiamiento</em> más abajo.",
       "htrLensTitle": "Cambiar el lente lo cambia todo",
@@ -2716,7 +2791,7 @@
       "axisX": "Coherencia: metas de política de distintos documentos que comparten una categoría del lente",
       "axisY": "Respaldo: ponderado por etapa de ejecución del BTR y proporción de gasto del BER",
       "quadWellSupported": "Bien respaldada",
-      "quadWellSupportedSub": "Reforzada en las políticas y respaldada por acción o presupuesto",
+      "quadWellSupportedSub": "Alineada en las políticas y respaldada por acción o presupuesto",
       "quadBackedIsolated": "Respaldada pero aislada",
       "quadBackedIsolatedSub": "Implementación o presupuesto sin amplio acuerdo de política",
       "quadAmbitionGap": "Brecha de ambición",
@@ -2731,9 +2806,9 @@
       "statCoherenceHint": "{count, plural, =0 {sin coincidencias entre documentos} one {meta de otro documento} other {metas de otros documentos}}",
       "statBudgetHint": "{count, plural, =0 {sin puentes BER} one {programa BER} other {programas BER}}",
       "statImplementationHint": "{count, plural, =0 {sin puentes BTR} one {acción BTR} other {acciones BTR}}",
-      "flaggedMisalignments": "Desalineaciones señaladas",
-      "highTensionTargets": "Metas de alta tensión",
-      "highTensionLegend": "Más de 5 desalineaciones señaladas con otras metas",
+      "flaggedMisalignments": "Posibles desalineaciones",
+      "highTensionTargets": "Metas con muchas posibles desalineaciones",
+      "highTensionLegend": "5 o más posibles desalineaciones con otras metas",
       "rankTabPolicy": "Política",
       "rankTabBudget": "Presupuesto",
       "rankTabImplementation": "Implementación",
@@ -2753,13 +2828,13 @@
       "budgetBarTitlePlain": "{count, number} {count, plural, one {programa BER} other {programas BER}}",
       "implActionTitle": "{count, number} {count, plural, one {acción BTR} other {acciones BTR}}",
       "close": "Cerrar",
-      "misalignmentBadge": "{count, number} {count, plural, one {posible desalineación} other {posibles desalineaciones}} con otras metas (señalado por el LLM)",
+      "misalignmentBadge": "{count, number} {count, plural, one {posible desalineación} other {posibles desalineaciones}} con otras metas (estimado por IA)",
       "lensOrphanFallback": "No hay categorías relevantes en el lente <strong>{lens}</strong>. Cambie de lente o active <quoted>Ocultar huérfanos del lente</quoted> para reenfocar.",
       "lensCategories": "Categorías del lente ({count, number})",
       "bridgedPolicyTargets": "Metas de política puenteadas",
       "bridgedBtrActions": "Acciones BTR puenteadas",
       "bridgedBerProgrammes": "Programas BER puenteados",
-      "contradictions": "Contradicciones",
+      "contradictions": "Posibles desalineaciones",
       "plusMore": "+ {count, number} más",
       "via": "vía {categories}",
       "llmScoreTitle": "Puntuación de alineación por pares evaluada por el LLM"
@@ -2767,7 +2842,7 @@
     "visionAnchorCoverage": {
       "heading": "Operacionalizando {anchor}",
       "infoBoxIntro": "¿Cómo se relaciona el resto del marco de políticas del país con <strong>{anchorFull}</strong>? Cada fila es una ambición de {anchor}; cada columna es un documento periférico. Los segmentos de las barras muestran la fuerza de las relaciones evaluadas por IA entre cada ambición y las metas de ese documento, coloreadas según la escala de alineación de siete niveles (solo se muestran los niveles presentes en los datos).",
-      "infoBoxNote": "Estos documentos de política no contienen <strong>ningún conflicto manifiesto señalado</strong> con {anchor}; la única señal de fricción que el modelo emite aquí es <em>posible desalineación</em>. El orden predeterminado destaca primero las ambiciones con el respaldo operativo más débil, ya que esa es la brecha accionable.",
+      "infoBoxNote": "Estos documentos de política no muestran <strong>ninguna constatación de conflicto</strong> con {anchor}; la única lectura negativa que el modelo da aquí es <em>posible desalineación</em>. El orden predeterminado destaca primero las ambiciones con el respaldo operativo más débil, ya que esa es la brecha accionable.",
       "provenanceMethod": "Cada par de (meta de Visión, meta periférica) es puntuado por un LLM en una escala de alineación de siete niveles. Los conteos mostrados en cada celda son agregaciones de esos juicios por par.",
       "provenanceCaveat": "Los juicios de un solo modelo tienden hacia una alineación 'media'. Lea la justificación por par en las ventanas emergentes antes de tratar cualquier celda como un hallazgo definitivo.",
       "viewSunburst": "Anillo de Visión",
@@ -2805,7 +2880,7 @@
       "status": {
         "tension_heavy": {
           "label": "Predominio de desalineación",
-          "description": "Los vínculos de posible desalineación dominan las relaciones con esta ambición. Vale la pena examinar de dónde viene la fricción."
+          "description": "Las posibles desalineaciones dominan las relaciones con esta ambición. Vale la pena examinar de dónde vienen."
         },
         "sparse_strong_support": {
           "label": "Escaso respaldo fuerte",
@@ -2841,7 +2916,7 @@
     },
     "potentialMisalignment": {
       "term": "posible desalineación",
-      "definition": "Las dos metas podrían tirar en sentidos distintos. Es una señal para que alguien revise la pareja, no una conclusión de que las políticas se oponen."
+      "definition": "La IA calificó las dos metas como posiblemente desalineadas: perseguir una puede dificultar alcanzar la otra. Es una señal para que alguien revise la pareja, no una conclusión de que las políticas se oponen."
     },
     "sectorLens": {
       "term": "enfoque sectorial",
@@ -2866,6 +2941,678 @@
     "nr7": {
       "term": "NR7",
       "definition": "7.º Informe Nacional: el informe que un país presenta ante la convención de biodiversidad de la ONU (CDB) describiendo el avance en sus metas nacionales de biodiversidad."
+    }
+  },
+  "brief": {
+    "metaTitle": "{country}: nota de coherencia de políticas",
+    "hero": {
+      "kicker": "{country} · Nota de coherencia de políticas",
+      "commitments": "{count, plural, one {# meta.} other {# metas.}}",
+      "documents": "{count, plural, one {# documento de política.} other {# documentos de política.}}",
+      "comparisons": "{count, plural, one {# par de metas comparado.} other {# pares de metas comparados.}}",
+      "lead": "Cada meta se compara con todas las metas de los demás documentos para identificar ámbitos de alineación y posibles desalineaciones.",
+      "read": "Leer la nota",
+      "customize": "Personalizar la nota",
+      "pause": "Pausar el texto en movimiento",
+      "play": "Reanudar el texto en movimiento",
+      "previousDashboard": "Panel anterior"
+    },
+    "builder": {
+      "title": "Personalizar la nota",
+      "documents": "Documentos",
+      "commitments": "{count, plural, one {# meta} other {# metas}}",
+      "minDocuments": "Se necesitan al menos dos documentos para comparar.",
+      "lens": "Áreas de política",
+      "sections": "Secciones",
+      "moveUp": "Subir {section}",
+      "moveDown": "Bajar {section}",
+      "size": "{units, select, 0 {solo en pantalla} 1 {un cuarto de página} 2 {media página} other {página completa}}",
+      "pages": "{count, plural, one {Se imprime en # página} other {Se imprime en # páginas}}",
+      "print": "Imprimir o guardar como PDF",
+      "copyLink": "Copiar el enlace a esta nota",
+      "copied": "Enlace copiado",
+      "reset": "Volver a la nota estándar",
+      "tour": "Cómo leer esta nota",
+      "method": "Cómo funciona el análisis"
+    },
+    "sheet": {
+      "running": "{country} · Nota de coherencia de políticas",
+      "page": "Página {page, number} de {total, number}",
+      "footer": "Preparada el {date} con el Policy Coherence Analyzer. Análisis asistido por IA, para validación por personas expertas nacionales.",
+      "title": "Nota de coherencia de políticas",
+      "lensScope": "Áreas de política: {lens}",
+      "translatedMachine": "Los textos de las metas en esta página son traducciones automáticas.",
+      "translatedSource": "Los textos de las metas en esta página son traducciones de los documentos originales.",
+      "figures": {
+        "documents": "{count, plural, one {documento de política} other {documentos de política}}",
+        "commitments": "{count, plural, one {meta} other {metas}}",
+        "comparisons": "{count, plural, one {par de metas comparado} other {pares de metas comparados}}"
+      }
+    },
+    "sections": {
+      "overall": "Coherencia general",
+      "together": "Ámbitos de alineación",
+      "apart": "Posible desalineación",
+      "commitments": "Metas que conviene revisar primero",
+      "documents": "Los documentos, uno junto a otro",
+      "areas": "Por área de política",
+      "aligned": "Alineaciones más fuertes",
+      "contracts": "Contratos públicos"
+    },
+    "tone": {
+      "reinforce": "alineados",
+      "partial": "parcialmente alineados",
+      "apart": "posible desalineación",
+      "none": "sin relación clara"
+    },
+    "overall": {
+      "headline": {
+        "aligned": "En las políticas de {country}, el {aligned} de los pares de metas están alineados y el {apart} muestran una posible desalineación.",
+        "partial": "En las políticas de {country}, el {partial} de los pares de metas están parcialmente alineados, el {aligned} están alineados y el {apart} muestran una posible desalineación.",
+        "empty": "No hay pares de metas en esta selección."
+      },
+      "group": "{count, number} pares de metas ({pct}): {tone}"
+    },
+    "together": {
+      "headline": "{docA} y {docB} son los más alineados: {pct} de sus pares de metas.",
+      "headlineFallback": "En el conjunto de los documentos, el {pct} de los pares de metas están alineados.",
+      "themesEmpty": "Ningún tema recurrente en esta selección."
+    },
+    "apart": {
+      "headline": "{docA} y {docB} tienen la mayor proporción de posible desalineación: {pct} de sus pares de metas.",
+      "headlineFallback": "En el conjunto de los documentos, el {pct} de los pares de metas muestran una posible desalineación.",
+      "themesEmpty": "Ningún tema recurrente de posible desalineación en esta selección."
+    },
+    "themes": {
+      "notExact": "Los nombres de los temas se identificaron en el conjunto de los documentos.",
+      "title": "Temas recurrentes, identificados por IA",
+      "titleAllDocuments": "Temas recurrentes, identificados por IA en todos los documentos",
+      "contested": "Recursos implicados: {list}",
+      "count": {
+        "reinforce": "{count, plural, one {# par de metas alineado} other {# pares de metas alineados}}",
+        "apart": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}"
+      },
+      "example": "Ejemplo",
+      "exampleOf": "Ejemplo: {name}",
+      "readFull": "Leer completo",
+      "more": "Más sobre este tema",
+      "moreDocs": "{count, plural, one {# más} other {# más}}",
+      "other": "Otros",
+      "otherTip": "{count, plural, one {# par de metas} other {# pares de metas}} fuera de los temas recurrentes"
+    },
+    "commitments": {
+      "headlineConcentrated": "De las {total, number} posibles desalineaciones, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
+      "headlineSpread": "La posible desalineación se reparte entre {contested, plural, one {# meta} other {# metas}}.",
+      "headlineEmpty": "Ninguna meta muestra una posible desalineación.",
+      "partner": "{count, number} con {doc}"
+    },
+    "documents": {
+      "headline": "La alineación con los demás documentos va del {low} de {docLow} al {high} de {docHigh}.",
+      "headlineFallback": "En el conjunto de los documentos, el {pct} de los pares de metas están alineados.",
+      "few": "pocos pares de metas",
+      "columnApart": "Posible desalineación",
+      "columnPartial": "Parcialmente alineados",
+      "columnAligned": "Alineados",
+      "docRow": "{doc}: {aligned} alineados, {apart} de posible desalineación, de {total, number} pares de metas"
+    },
+    "areas": {
+      "headline": "{area} muestra la mayor proporción de posible desalineación: {pct}.",
+      "headlineEmpty": "Hay muy pocos pares de metas calificados en las áreas de política para compararlas.",
+      "commitmentsCount": "{count, plural, one {# meta} other {# metas}}",
+      "tooFew": "muy pocos pares de metas",
+      "row": "{area}: {pct} de posible desalineación en {comparisons, number} pares de metas",
+      "headlineNone": "Ningún área de política calificada muestra posible desalineación."
+    },
+    "panel": {
+      "back": "Volver",
+      "loading": "Cargando la comparación…",
+      "error": "No se pudo cargar esta comparación.",
+      "pairDialog": "Dos metas comparadas",
+      "docPairDialog": "{docA} y {docB}",
+      "docPairCounts": "{total, number} pares de metas: {aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación",
+      "docPairLead": "{count, plural, =0 {Ninguna posible desalineación entre estos dos documentos.} one {# posible desalineación. Primero, las metas más frecuentes.} other {# posibles desalineaciones. Primero, las metas más frecuentes.}}",
+      "commitmentDialog": "Meta: {label}",
+      "worksAgainst": "{count, plural, =0 {Ninguna posible desalineación en esta selección} one {Posible desalineación con # meta} other {Posible desalineación con # metas}}",
+      "worksWith": "{count, plural, =0 {Alineada con ninguna meta en esta selección} one {Alineada con # meta} other {Alineada con # metas}}",
+      "showAll": "Mostrar los {count, number}",
+      "bothHeading": "Contratos que sirven a ambas metas",
+      "bothCount": "{count, plural, one {# contrato} other {# contratos}}, {value}",
+      "bothItem": "{value} · {year}",
+      "themeDialog": "Tema: {name}",
+      "themeKind": {
+        "reinforcement": "Tema recurrente de alineación, identificado por IA",
+        "friction": "Tema recurrente de posible desalineación, identificado por IA"
+      },
+      "themeSummary": "Resumen de la IA",
+      "pathwayTitle": "Punto de partida sugerido por la IA",
+      "pathwayCaveat": "Para revisión experta; no es una recomendación.",
+      "themeDocs": "Documentos implicados, según su parte de los pares de metas del tema",
+      "aiReading": "Resumen de la IA",
+      "whereAlign": "Dónde se alinean",
+      "whereDiverge": "Dónde pueden divergir",
+      "more": "Más",
+      "alignedPairs": "{count, plural, =0 {Ningún par de metas alineado} one {# par de metas alineado} other {# pares de metas alineados, los más fuertes primero}}",
+      "aiExplanation": "Explicación de la IA",
+      "fullText": "Texto completo",
+      "shortText": "Mostrar menos",
+      "rating": {
+        "high": "Alineación fuerte",
+        "medium": "Alineación moderada",
+        "low": "Alineación parcial",
+        "none": "Sin relación clara",
+        "flagged": "Posible desalineación"
+      },
+      "and": "y"
+    },
+    "and": "y",
+    "resources": {
+      "land": "tierra",
+      "water": "agua",
+      "forest": "bosque",
+      "habitat": "hábitat",
+      "pasture": "pastos",
+      "soil": "suelo",
+      "landscape": "paisaje",
+      "watershed": "cuenca",
+      "wetland": "humedal",
+      "space": "espacio",
+      "ecosystem": "ecosistema",
+      "freshwater": "agua dulce",
+      "grassland": "pastizal",
+      "rangeland": "tierras de pastoreo",
+      "pastureland": "tierras de pastoreo",
+      "groundwater": "agua subterránea",
+      "waterway": "curso de agua",
+      "capacity": "capacidad",
+      "area": "superficie",
+      "budget": "presupuesto",
+      "flora": "flora",
+      "fauna": "fauna",
+      "aquifer": "acuífero",
+      "livestock": "ganado",
+      "resource": "recursos",
+      "stock": "existencias",
+      "finance": "financiación",
+      "funding": "financiación",
+      "biomass": "biomasa",
+      "water body": "masa de agua",
+      "river system": "sistema fluvial",
+      "fodder": "forraje",
+      "species": "especies",
+      "coast": "costa",
+      "grazing": "pastoreo",
+      "peatland": "turbera",
+      "coastal resource": "recursos costeros",
+      "biodiversity": "biodiversidad",
+      "forage": "forraje",
+      "rangelands": "tierras de pastoreo"
+    },
+    "aligned": {
+      "headlineEmpty": "Ninguna meta está fuertemente alineada con otra en esta selección.",
+      "row": "{count, plural, one {# alineación fuerte} other {# alineaciones fuertes}}",
+      "headlineConcentrated": "De las {total, number} alineaciones fuertes, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
+      "headlineSpread": "Las alineaciones fuertes se reparten entre {contested, plural, one {# meta} other {# metas}}.",
+      "partner": "{count, number} con {doc}"
+    },
+    "preview": {
+      "pages": "{count, plural, one {# página} other {# páginas}}",
+      "print": "Imprimir",
+      "back": "Volver a la nota"
+    },
+    "hub": {
+      "kinds": "Tipos de posible desalineación",
+      "leadTogether": "<first>{docA}</first> y <second>{docB}</second> son los más alineados: {pct} de sus pares de metas.",
+      "leadApart": "<first>{docA}</first> y <second>{docB}</second> tienen la mayor proporción de posible desalineación: {pct} de sus pares de metas.",
+      "leadBoth": "<first>{docA}</first> y <second>{docB}</second> tienen a la vez la mayor proporción de pares de metas alineados ({aligned}) y la mayor proporción de posible desalineación ({apart}).",
+      "leadOnly": "Entre <first>{docA}</first> y <second>{docB}</second>, el {aligned} de los pares de metas están alineados y el {apart} muestran una posible desalineación.",
+      "documentsLead": "La alineación con los demás documentos va del {low} de <first>{docLow}</first> al {high} de <second>{docHigh}</second>.",
+      "focus": "<name>{doc}</name>: el {aligned} de sus {total, number} pares de metas están alineados; el {apart} muestran una posible desalineación, la mayor proporción con <other>{partner}</other> ({partnerShare}).",
+      "focusPlain": "<name>{doc}</name>: el {aligned} de sus {total, number} pares de metas están alineados; el {apart} muestran una posible desalineación.",
+      "focusNone": "<name>{doc}</name>: el {aligned} de sus {total, number} pares de metas están alineados, sin ninguna posible desalineación.",
+      "centerPairs": "{count, plural, one {# par de metas} other {# pares de metas}}",
+      "openTarget": "Ver sus metas alineadas y con posible desalineación",
+      "exploreTarget": "Explorar esta meta",
+      "countApart": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
+      "kickerReinforce": "Lo que funciona bien",
+      "kickerApart": "Dónde mirar más de cerca"
+    },
+    "explore": {
+      "title": "Explorar las metas",
+      "metaTitle": "{country}: explorar las metas",
+      "search": "Buscar metas",
+      "searchClear": "Borrar la búsqueda",
+      "searchCount": "{count, plural, =0 {Ninguna meta coincide.} one {# meta coincide.} other {# metas coinciden.}}",
+      "group": "Agrupar por",
+      "groupDocs": "Documentos",
+      "restCentre": "{targets, plural, one {# meta} other {# metas}} en {documents, plural, one {# documento} other {# documentos}}",
+      "reviewFirst": "Metas que conviene revisar primero",
+      "strongest": "Alineaciones más fuertes",
+      "finding": "Alineada con {aligned, number} de las {total, number} metas con las que se comparó.",
+      "findingApart": "Posible desalineación con {apart, number}.",
+      "findingNone": "No se comparó con ninguna meta de los demás documentos.",
+      "apartList": "Posible desalineación ({count, number})",
+      "strongList": "Alineaciones fuertes ({count, number})",
+      "back": "Volver",
+      "clear": "Todas las metas",
+      "more": "Leer más",
+      "less": "Mostrar menos",
+      "sameDocument": "Mismo documento",
+      "arcCounts": "{aligned, number} alineados, {apart, number} de posible desalineación",
+      "arcCountsAligned": "{aligned, number} alineados",
+      "restTip": "{apart, plural, =0 {Ninguna posible desalineación} one {# posible desalineación} other {# posibles desalineaciones}}, {strong, plural, =0 {ninguna alineación fuerte} one {# alineación fuerte} other {# alineaciones fuertes}}",
+      "ringLabel": "{targets, number} metas en un anillo, agrupadas por {group}. Las flechas pasan de una meta a otra, Intro coloca una en el centro y la barra espaciadora abre su comparación con la meta del centro.",
+      "centre": "Poner en el centro",
+      "close": "Cerrar",
+      "lines": "Líneas",
+      "inCentre": "En el centro",
+      "kindDoc": "Documento",
+      "kindArea": "Área de política · {lens}",
+      "groupFigures": "{targets, plural, one {# meta} other {# metas}}, {pairs, plural, one {# par de metas} other {# pares de metas}} con los demás documentos",
+      "withDocs": "Con los demás documentos",
+      "withAreas": "Con las demás áreas de política",
+      "browseDocs": "Documentos",
+      "targetsCount": "{count, plural, one {# meta} other {# metas}}",
+      "tipWith": "Con {name}:",
+      "tipApart": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
+      "tipStrong": "{count, plural, one {# alineación fuerte} other {# alineaciones fuertes}}",
+      "tipAligned": "{count, number} moderadas",
+      "tipPartial": "{count, number} parciales",
+      "seatPairs": "{target}: {count, plural, one {# par de metas} other {# pares de metas}}",
+      "previous": "Meta anterior",
+      "next": "Meta siguiente",
+      "allTargetsOf": "Todas las metas ({count, number})",
+      "showTargets": "Mostrar las metas de {name}",
+      "layer": {
+        "mitigation": "Acciones de mitigación reportadas (BTR)",
+        "adaptation": "Acciones de adaptación reportadas (BTR)",
+        "budget": "Líneas presupuestarias (BER)"
+      },
+      "kind": {
+        "mitigation": "Acción de mitigación reportada",
+        "adaptation": "Acción de adaptación reportada",
+        "budget": "Línea presupuestaria"
+      },
+      "sourceBtr": "Informe Bienal de Transparencia (BTR)",
+      "sourceBer": "Revisión del Gasto en Biodiversidad (BER)",
+      "tipBudgetMatch": "Línea presupuestaria correspondiente",
+      "tipBudgetNone": "Sin línea presupuestaria correspondiente",
+      "tipActionStrong": "Fuertemente alineada",
+      "tipActionPull": "Posible desalineación",
+      "lineOpenComparison": "Abrir la comparación",
+      "lineOpenPairs": "Abrir sus pares de metas",
+      "seatOpenComparison": "Seleccione para abrir la comparación",
+      "seatOpenPairs": "Seleccione para abrir sus pares de metas",
+      "seatToCentre": "Seleccione de nuevo para ponerlo en el centro",
+      "restTipBudget": "{count, plural, =0 {No corresponde a ninguna meta} one {Corresponde a # meta} other {Corresponde a # metas}}",
+      "restTipAction": "{strong, plural, =0 {No está fuertemente alineada con ninguna meta} one {Fuertemente alineada con # meta} other {Fuertemente alineada con # metas}}{apart, plural, =0 {} other {, posiblemente desalineada con #}}",
+      "arcMatching": "{count, number} de {total, number} con correspondencia",
+      "arcActions": "{strong, number} de {total, number} fuertemente alineadas, {apart, number} posiblemente desalineadas",
+      "arcActionsStrong": "{strong, number} de {total, number} fuertemente alineadas",
+      "aiLabel": "Explicación de la IA:",
+      "translated": "traducción automática",
+      "originalName": "En la revisión: {name}",
+      "aiWritten": "Generado por IA:",
+      "aiWrittenNote": "Redactado con IA para la tabla de descripciones de la revisión",
+      "status": "Estado según el informe: {status}",
+      "spend": "Gasto registrado: {currency} {total} {unit}, {start}–{end}",
+      "itemFindingBudget": "{strong, plural, =0 {No corresponde a ninguna meta.} one {Corresponde a # meta.} other {Corresponde a # metas.}}",
+      "itemFindingAction": "{strong, plural, =0 {No está fuertemente alineada con ninguna meta.} one {Fuertemente alineada con # meta.} other {Fuertemente alineada con # metas.}}{apart, plural, =0 {} one { Posiblemente desalineada con # meta.} other { Posiblemente desalineada con # metas.}}",
+      "coverageBudget": "{covered, number} de {total, number} metas tienen una línea presupuestaria correspondiente.",
+      "coverageActions": "{covered, number} de {total, number} metas tienen una acción reportada fuertemente alineada.",
+      "coveragePull": "{pulled, plural, one {# meta muestra} other {# metas muestran}} una posible desalineación con una acción reportada.",
+      "targetActions": "{strong, plural, =0 {Ninguna acción reportada fuertemente alineada.} one {# acción reportada fuertemente alineada.} other {# acciones reportadas fuertemente alineadas.}}",
+      "targetActionsPull": "{apart, number} con posible desalineación.",
+      "targetBudget": "{strong, plural, =0 {Ninguna línea presupuestaria correspondiente.} one {# línea presupuestaria correspondiente.} other {# líneas presupuestarias correspondientes.}}",
+      "sectionActions": "Acciones reportadas",
+      "sectionBudget": "Líneas presupuestarias",
+      "caveatBtr": "Según el Informe Bienal de Transparencia (BTR) de {country}: una lente autorreportada, no una auditoría completa. Los vínculos son estimaciones de la IA e indicativos.",
+      "caveatBer": "Una línea presupuestaria correspondiente en la Revisión del Gasto en Biodiversidad (BER) muestra que existe una para el objetivo de la meta, no que se gaste dinero en la meta. Los vínculos son estimaciones de la IA e indicativos.",
+      "listMatchingTargets": "Metas correspondientes ({count, number})",
+      "listStrongTargets": "Metas fuertemente alineadas ({count, number})",
+      "listPullTargets": "Metas con posible desalineación ({count, number})",
+      "layerFiguresBudget": "{count, plural, one {# línea presupuestaria} other {# líneas presupuestarias}}, {currency} {total} {unit} registrados en {start}–{end}",
+      "linesCount": "{count, plural, one {# línea presupuestaria} other {# líneas presupuestarias}}",
+      "actionsCount": "{count, plural, one {# acción reportada} other {# acciones reportadas}}",
+      "withDocsCoverage": "Por documento",
+      "withAreasCoverage": "Por área de política",
+      "gapBudget": "Sin línea presupuestaria correspondiente ({count, number})",
+      "gapActions": "Sin acción reportada fuertemente alineada ({count, number})",
+      "rankedBudget": "Líneas presupuestarias que corresponden a más metas",
+      "rankedActions": "Acciones reportadas alineadas con más metas",
+      "groupActions": "{strong, plural, =0 {Ninguna acción reportada está fuertemente alineada con sus metas.} one {# acción reportada está fuertemente alineada con sus metas.} other {# acciones reportadas están fuertemente alineadas con sus metas.}}",
+      "groupBudget": "{strong, plural, =0 {Ninguna línea presupuestaria corresponde a sus metas.} one {# línea presupuestaria corresponde a sus metas.} other {# líneas presupuestarias corresponden a sus metas.}}",
+      "layers": "Capas",
+      "toggleActions": "Acciones reportadas",
+      "toggleBudget": "Líneas presupuestarias",
+      "browseLayers": "Financiación e implementación",
+      "copyLink": "Copiar el enlace",
+      "copied": "Enlace copiado",
+      "seeAll": "Ver las {count, number} comparaciones",
+      "hideAll": "Mostrar menos",
+      "howTo": "Cómo leer",
+      "centreDoc": "Poner {name} en el centro",
+      "showProblems": "Mostrar las posibles desalineaciones de {name}",
+      "showAlignments": "Mostrar las alineaciones fuertes de {name}",
+      "tipApartNames": "Posible desalineación con: {names}",
+      "tipApartNamesMore": "Posible desalineación con: {names} y {more, number} más",
+      "lensScope": "{placed, number} de las {total, number} metas se encuentran en una de estas áreas.",
+      "lensHeadlineConcentrated": "De las {total, number} posibles desalineaciones entre las metas de {areas, plural, one {esta área} other {estas áreas}}, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
+      "lensHeadlineSpread": "La posible desalineación entre las metas de {areas, plural, one {esta área} other {estas áreas}} se reparte entre {contested, plural, one {# meta} other {# metas}}.",
+      "lensHeadlineEmpty": "Ninguna posible desalineación entre las metas de {areas, plural, one {esta área} other {estas áreas}}.",
+      "targetFigures": "{pairs, plural, one {# par de metas} other {# pares de metas}} con los demás documentos"
+    },
+    "contracts": {
+      "metaTitle": "Contratos públicos: {country}",
+      "title": "Contratos públicos",
+      "money": {
+        "tugrik": "{unit, select, trillion {₮{amount} billones} billion {₮{amount} mil millones} million {₮{amount} millones} other {₮{amount}}}",
+        "usd": "{unit, select, trillion {US${amount} billones} billion {US${amount} mil millones} million {US${amount} millones} other {US${amount}}}"
+      },
+      "kicker": {
+        "record": "El registro",
+        "purpose": "Para la naturaleza y el clima",
+        "places": "Adónde llega",
+        "areas": "Para qué es el dinero"
+      },
+      "record": {
+        "headline": "{value} en {count} contratos públicos desde {year}",
+        "second": "Unos {other}. Los contratos muestran dónde se compromete dinero público para trabajos concretos, antes y después de que se adoptara cada meta.",
+        "example": "Ver un contrato completo",
+        "source": "{name}, de {first} a {last} · contratado, sin verificar su ejecución · los contratos que el registro lista dos veces cuentan una vez"
+      },
+      "purpose": {
+        "headline": "{sign}{per100} de cada {sign}100 se contrató para trabajos principalmente para la naturaleza o el clima",
+        "second": "{sign}{per100} más para trabajos en los que la naturaleza o el clima son un beneficio secundario.",
+        "tag": "Lectura de la IA del título de cada contrato",
+        "focusLine": "{name}: {first} en {firstYear}, {last} en {lastYear}.",
+        "byArea": "Por área de política"
+      },
+      "set": {
+        "all": "Los {count} contratos · {value}",
+        "principal": "{count} principalmente para la naturaleza o el clima · {value}",
+        "significant": "{count} con ello como beneficio secundario · {value}",
+        "of": "de {value}"
+      },
+      "areas": {
+        "lens": "Áreas de política",
+        "headline": "{area} reúne el {tshare} de {targets} y el {mshare} del dinero contratado principalmente para la naturaleza o el clima{place}",
+        "headlineTop": "{area} recibe el {mshare} del dinero contratado principalmente para la naturaleza o el clima{place}, con el {tshare} de {targets}",
+        "headlineEmpty": "Ningún dinero contratado principalmente para la naturaleza o el clima corresponde a estas áreas de política",
+        "second": "{area} recibe el {mshare}, con el {tshare} de las metas.",
+        "targetsAll": "las metas",
+        "targetsOf": "las metas de {doc}",
+        "inPlace": " en {place}",
+        "none": "Sin área de política",
+        "headMoney": "Principalmente para la naturaleza o el clima",
+        "headTargets": "Metas",
+        "headTargetsOf": "Metas de {doc}",
+        "tableLead": "Sus metas, con",
+        "tableRed": "licitaciones con posible desalineación",
+        "tableGreen": "un contrato con correspondencia fuerte",
+        "of": "{green} de {total}",
+        "back": "Todas las áreas de política",
+        "facts": "{value} en {count, plural, one {# contrato} other {# contratos}} principalmente para la naturaleza o el clima · {targets, plural, one {# meta} other {# metas}}",
+        "synergy": "El {share} de sus contratos con correspondencia fuerte sirve a 3 o más documentos a la vez (todas las áreas: {base})",
+        "rowsHead": "{count, plural, one {# meta} other {# metas}}",
+        "rowsRed": "licitaciones con posible desalineación",
+        "rowsGreen": "licitaciones con correspondencia fuerte",
+        "more": "y {count} más con un contrato con correspondencia fuerte",
+        "without": "{count, plural, one {# meta} other {# metas}} sin contrato con correspondencia fuerte",
+        "seeContracts": "Ver {count, plural, one {su # contrato} other {sus # contratos}}",
+        "listTitle": "Contratos para {area}"
+      },
+      "places": {
+        "layers": "Qué muestra el mapa",
+        "layer": {
+          "money": "Principalmente para la naturaleza o el clima",
+          "match": "Con correspondencia fuerte",
+          "mis": "Con posible desalineación"
+        },
+        "switch": "Dinero mostrado",
+        "switchMoney": "Principalmente para la naturaleza o el clima",
+        "switchAll": "Todos los contratos",
+        "area": "Área de política",
+        "areaAll": "Todas las áreas de política",
+        "doc": "Documento",
+        "docAll": "Todos",
+        "noPlace": "Ningún lugar concreto",
+        "perHundred": "{sign}{per100} por cada {sign}100",
+        "tenders": "{count, plural, one {# licitación} other {# licitaciones}}",
+        "headlineAll": "El {pct} del dinero del registro se contrató en {capital}; el {pctNone} no nombra ningún lugar concreto",
+        "secondAll": "Los compradores que sirven a todo el país, como las empresas estatales y los organismos nacionales, no nombran ningún lugar concreto.",
+        "headlineRate": "En {place}, {sign}{per100} de cada {sign}100 contratados se destinaron a trabajos principalmente para la naturaleza o el clima; en el conjunto del registro, {sign}{overall}",
+        "secondRate": "{capital} reúne el {pct} de ese dinero: {sign}{per100} de cada {sign}100 contratados allí.",
+        "headlineOver": "{place} reúne el {share} del dinero {focus}, frente al {base} de todo el dinero principalmente para la naturaleza o el clima",
+        "headlineTop": "{place} reúne el {share} del dinero {focus}",
+        "headlineNone": "Ningún dinero contratado principalmente para la naturaleza o el clima {focus}",
+        "one": "La mayor parte es un solo contrato: {title}, {value}.",
+        "noneShare": "El {pct} no nombra ningún lugar concreto.",
+        "also": "{count, plural, one {El # contrato con correspondencia fuerte con sus metas también corresponde fuertemente a} other {Los # contratos con correspondencia fuerte con sus metas también corresponden fuertemente a}}",
+        "alone": "El {pct} de ellos no sirve a ningún otro documento.",
+        "what": {
+          "target": "una meta",
+          "doc": "metas de {doc}",
+          "area": "metas de {area}",
+          "both": "metas de {doc} en {area}",
+          "noArea": "metas sin área de política",
+          "bothNoArea": "metas de {doc} sin área de política"
+        },
+        "headlineMatch": "{count, plural, one {# licitación corresponde fuertemente a} other {# licitaciones corresponden fuertemente a}} {what}; el {pctNone} no nombra ningún lugar concreto y el {pctTop} está en {top}",
+        "headlineMatchOver": "{place} reúne el {share} de {count, plural, one {la # licitación} other {las # licitaciones}} con correspondencia fuerte con {what}, frente al {base} de todas las licitaciones con correspondencia fuerte",
+        "headlineMatchEmpty": "Ninguna licitación corresponde fuertemente a {what}",
+        "headlineMis": "{none} de {count, plural, one {la # licitación con posible desalineación} other {las # licitaciones con posible desalineación}}{with} no {none, plural, one {nombra} other {nombran}} ningún lugar concreto; {placed} {placed, plural, one {nombra} other {nombran}} un aimag o la capital",
+        "misWith": " con {what}",
+        "secondMis": "Las {none} suman {noneValue}; las {placed}, {placedValue}.",
+        "headlineMisEmpty": "Ninguna licitación muestra una posible desalineación con {what}",
+        "tagMatch": "Lectura de la IA: cada contrato comparado con las metas",
+        "tagMis": "Identificado por IA, para revisión",
+        "back": "Todos los lugares",
+        "facts": "{all} en {count, plural, one {# contrato} other {# contratos}} · {green} en {greenCount, plural, one {# contrato} other {# contratos}} principalmente para la naturaleza o el clima, {sign}{per100} de cada {sign}100",
+        "factsFocus": "{all} en {count, plural, one {# contrato} other {# contratos}} · {green} en {greenCount, plural, one {# contrato} other {# contratos}} principalmente para la naturaleza o el clima {focus}",
+        "factsTenders": "{count, plural, one {# licitación} other {# licitaciones}} {kind, select, mis {con posible desalineación con} other {con correspondencia fuerte con}} {what} · {value}",
+        "byArea": "Por área de política ({lens})",
+        "matched": "Sus contratos corresponden fuertemente a {count, plural, one {# meta} other {# metas}}",
+        "seeContracts": "Ver {count, plural, one {su # contrato} other {sus # contratos}}",
+        "listTitle": "Contratos en {place}",
+        "more": "Mostrar {count} más",
+        "fewer": "Mostrar menos",
+        "tenderLine": "{contracts, plural, one {# contrato} other {# contratos}} · {value} · {year} · {targets, plural, one {# meta} other {# metas}}",
+        "andMore": "y {count} más",
+        "tipAll": "{value} en {count, plural, one {# contrato} other {# contratos}}",
+        "tipGreen": "{value} principalmente para la naturaleza o el clima: {sign}{per100} de cada {sign}100",
+        "tipFocus": "{value} {focus}",
+        "tipTenders": "{count, plural, one {# licitación} other {# licitaciones}} {kind, select, mis {con posible desalineación con} other {con correspondencia fuerte con}} {what}",
+        "headlineUnplaced": "El {pct} del dinero {focus} no nombra ningún lugar concreto",
+        "headlineShare": "{place} reúne el {pct} del dinero contratado principalmente para la naturaleza o el clima",
+        "headlineMatchUnplaced": "{count, plural, one {# licitación corresponde fuertemente a} other {# licitaciones corresponden fuertemente a}} {what}; el {pctNone} no nombra ningún lugar concreto",
+        "targetsMis": "Las metas con las que muestran una posible desalineación",
+        "targetsMatch": "Las metas a las que corresponden fuertemente",
+        "targetsMoney": "Las metas a las que más corresponden fuertemente sus contratos",
+        "targetTenders": "{count, plural, one {# licitación} other {# licitaciones}}",
+        "targetContracts": "{count, plural, one {# contrato} other {# contratos}}"
+      },
+      "tip": {
+        "more": "y {count, plural, one {# contrato más} other {# contratos más}}",
+        "year": "{year}: {count} contratos · {value}",
+        "partial": "solo parte del año",
+        "untranslated": "aún sin traducir",
+        "open": "Seleccione para verlo completo",
+        "row": "{name}: {value} en {count, plural, one {# contrato} other {# contratos}}",
+        "targetMatched": "{count, plural, one {# contrato con correspondencia fuerte} other {# contratos con correspondencia fuerte}}",
+        "targetNone": "Ningún contrato con correspondencia fuerte",
+        "targetMis": "{count, plural, one {# licitación} other {# licitaciones}} con posible desalineación"
+      },
+      "field": {
+        "label": "El registro de contratos públicos en cuadrados de {unit} cada uno",
+        "unitMnt": "billones de ₮",
+        "unitUsd": "miles de millones de US$",
+        "unitFocusMnt": "miles de millones de ₮",
+        "unitFocusUsd": "millones de US$",
+        "unitSquare": "Un cuadrado: {value}",
+        "unitDot": "Un punto: una licitación"
+      },
+      "panel": {
+        "back": "Volver",
+        "contractDialog": "Contrato: {title}",
+        "targetDialog": "Meta: {label}",
+        "loading": "Cargando el registro del contrato…",
+        "error": "No se pudo cargar el registro del contrato.",
+        "untranslated": "Aún sin traducir",
+        "year": "Año",
+        "dates": "Fechas",
+        "datesRange": "{start} a {end}",
+        "buyer": "Comprador",
+        "type": "Tipo",
+        "stage": "Etapa",
+        "place": "Lugar",
+        "several": "Varios lugares",
+        "noPlace": "Ningún lugar indicado",
+        "tender": "Licitación",
+        "lotsLine": "{count, plural, one {El único contrato de su licitación} other {Uno de los # contratos de su licitación}}",
+        "types": {
+          "goods": "Bienes",
+          "works": "Obras",
+          "services": "Servicios",
+          "consulting": "Servicios de consultoría",
+          "non_consulting": "Servicios distintos de los de consultoría",
+          "framework": "Acuerdo marco",
+          "turnkey": "Contrato llave en mano",
+          "direct": "Contratación directa",
+          "e_shop": "Suministro por tienda electrónica",
+          "other": "Otro"
+        },
+        "stages": {
+          "new": "Nuevo",
+          "approved": "Aprobado",
+          "sent": "Enviado al contratista",
+          "in_progress": "En curso",
+          "closed": "Cerrado",
+          "other": "Otro"
+        },
+        "tier": {
+          "principal": "Principalmente para la naturaleza o el clima",
+          "significant": "La naturaleza o el clima como beneficio secundario",
+          "none": "No para la naturaleza ni el clima"
+        },
+        "areas": "Áreas de política",
+        "confidence": {
+          "high": "Confianza alta",
+          "medium": "Confianza media",
+          "low": "Confianza baja"
+        },
+        "caveat": "Identificado por IA, para revisión · contratado, sin verificar su ejecución",
+        "source": "Ver en {name}",
+        "targetCounts": "{count, plural, one {# contrato con correspondencia fuerte} other {# contratos con correspondencia fuerte}} · {value}",
+        "targetValueNote": "Un contrato puede corresponder a varias metas.",
+        "misalignedTenders": "{count, plural, one {# licitación con posible desalineación} other {# licitaciones con posible desalineación}}",
+        "contracts": "Contratos con correspondencia fuerte",
+        "tenders": "Licitaciones con posible desalineación",
+        "tenderLine": "{count, plural, one {# contrato} other {# contratos}} · {value} · {year}",
+        "showAll": "Mostrar los {count}",
+        "explore": "Explorar esta meta",
+        "noContracts": "Ningún contrato con correspondencia fuerte",
+        "list": {
+          "dialog": "Contratos: {title}",
+          "count": "{count, plural, one {# contrato} other {# contratos}} · {value}",
+          "more": "Mostrar {count} más"
+        },
+        "kind": "Contrato de compra pública",
+        "titleNote": "Traducido automáticamente del mongol",
+        "about": "unos {other}",
+        "readingHead": "La lectura del análisis",
+        "purpose": "Finalidad",
+        "targets": "Metas",
+        "strongCount": "{count} con correspondencia fuerte",
+        "misCount": "{count} con posible desalineación",
+        "allTargets": "Mostrar las {count} metas con correspondencia fuerte",
+        "fewerTargets": "Mostrar menos"
+      },
+      "currency": {
+        "label": "Importes en",
+        "mnt": "₮",
+        "usd": "US$",
+        "rate": "A ₮{rate} por US$, indicativo"
+      },
+      "focus": {
+        "label": "Enfoque",
+        "none": "todo el registro",
+        "clear": "Quitar {name}",
+        "name": "Dinero {parts}",
+        "area": "para {area}",
+        "doc": "que corresponde fuertemente a metas de {doc}",
+        "place": "en {place}",
+        "noArea": "sin área de política",
+        "note": "Enfoque: {parts}"
+      },
+      "closer": {
+        "kicker": "Dónde mirar más de cerca",
+        "headline": "{count, plural, one {# licitación muestra} other {# licitaciones muestran}} una posible desalineación con {what}{place}{top}",
+        "top": "; en el {pct} de ellas, la meta pertenece a {doc}",
+        "inPlace": ", en {place}",
+        "headlineNone": "Ninguna licitación muestra una posible desalineación con {what}{place}",
+        "outnumber": "{total, plural, one {Para esta meta, superan en número a las licitaciones con correspondencia fuerte.} other {Para {count} de estas # metas, superan en número a las licitaciones con correspondencia fuerte.}}",
+        "outnumberNone": "{total, plural, one {Para esta meta, las licitaciones con correspondencia fuerte las superan en número.} other {Para cada una de estas # metas, las licitaciones con correspondencia fuerte las superan en número.}}",
+        "gapsLine": "{count, plural, one {# meta más no tiene} other {# metas más no tienen}} ningún contrato con correspondencia fuerte.",
+        "gapsOnly": "{count, plural, one {# meta no tiene} other {# metas no tienen}} ningún contrato con correspondencia fuerte.",
+        "tag": "Identificado por IA, para revisión · una licitación puede incluir muchos contratos",
+        "gaps": "Ningún contrato con correspondencia fuerte en ninguna parte",
+        "topHead": "Las licitaciones detrás de más posibles desalineaciones",
+        "topLine": "{tenders, plural, one {# licitación} other {# licitaciones}} · {contracts, plural, one {# contrato} other {# contratos}} · {year} · {targets, plural, one {# meta} other {# metas}}",
+        "back": "Todas las metas",
+        "misHead": "{count, plural, one {# licitación} other {# licitaciones}} con posible desalineación",
+        "tenderLine": "{count, plural, one {# contrato} other {# contratos}} · {value} · {year}",
+        "more": "Mostrar {count} más",
+        "fewer": "Mostrar menos",
+        "matchHead": "{count, plural, one {# licitación} other {# licitaciones}} con correspondencia fuerte · {value}",
+        "matchNone": "Ningún contrato con correspondencia fuerte",
+        "places": "Dónde están sus contratos con correspondencia fuerte",
+        "explore": "Explorar esta meta",
+        "tenderMis": "Posible desalineación con {count, plural, one {# meta} other {# metas}}",
+        "why": "Por qué, para {target}",
+        "open": "Abrir el contrato",
+        "tipMis": "{count, plural, one {# contrato} other {# contratos}} · {value} · {year}",
+        "tipMatch": "{count, plural, one {# licitación con correspondencia fuerte} other {# licitaciones con correspondencia fuerte}}",
+        "rowsLabel": "Metas con licitaciones con posible desalineación"
+      }
+    },
+    "areaView": {
+      "kicker": "Por área de política",
+      "lensGroup": "Áreas de política",
+      "sideGroup": "Pares de metas",
+      "sideApart": "Posible desalineación",
+      "sideReinforce": "Alineación fuerte",
+      "headlineBetween": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas de <second>{areaB}</second>.",
+      "headlineWithin": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa dentro de las metas de <first>{areaA}</first>.",
+      "headlineOutside": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas fuera de estas áreas.",
+      "headlineNone": "Ningún par de metas de estas áreas de política {side, select, apart {muestra una posible desalineación} other {está fuertemente alineado}}.",
+      "headlineArea": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} involucra metas de {area}.",
+      "headlineAreaNone": "Ninguna {side, select, apart {posible desalineación} other {alineación fuerte}} involucra metas de {area}.",
+      "scope": "{placed, number} de las {total, number} metas se encuentran en una de estas áreas.",
+      "within": "Dentro de {area}",
+      "outside": "{area} · metas fuera de estas áreas",
+      "outsideShort": "Metas fuera de estas áreas",
+      "between": "{areaA} · {areaB}",
+      "share": "{pct} de {pairs, number} pares de metas",
+      "rest": "{groups, plural, one {El otro par de áreas} other {Los otros # pares de áreas}}: {count, number} de sus {pairs, number} pares de metas.",
+      "rowPairs": "{side, select, apart {{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}} other {{count, plural, one {# alineación fuerte} other {# alineaciones fuertes}}}}",
+      "involved": "Metas de {area} más involucradas",
+      "seePairs": "Ver {count, plural, one {el # par de metas} other {los # pares de metas}}",
+      "backAll": "Todos los pares de áreas",
+      "backTo": "Volver a {name}",
+      "partners": "{side, select, apart {Posible desalineación con} other {Fuertemente alineada con}} {count, plural, one {# meta} other {# metas}}",
+      "partnersIn": "{count, number} en {area}",
+      "partnersOutside": "{count, number} fuera de estas áreas",
+      "tip": "{side, select, apart {posible desalineación con} other {fuertemente alineada con}} {count, plural, one {# meta} other {# metas}}",
+      "panelSub": "{count, number} de {pairs, number} pares de metas {side, select, apart {muestran una posible desalineación} other {están fuertemente alineados}}",
+      "panelDialog": "Pares de metas entre áreas de política",
+      "targets": "{count, plural, one {# meta} other {# metas}}",
+      "outsidePairs": "{side, select, apart {{count, plural, one {# posible desalineación se sitúa} other {# posibles desalineaciones se sitúan}}} other {{count, plural, one {# alineación fuerte se sitúa} other {# alineaciones fuertes se sitúan}}}} entre metas fuera de estas áreas.",
+      "partnersElsewhere": "{count, number} en otras partes",
+      "colTargets": "Metas",
+      "sortMost": "{label}, de mayor a menor",
+      "sortLeast": "{label}, de menor a mayor",
+      "fewTargets": "pocas metas",
+      "rowShares": "{aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación, de {total, number} pares de metas"
     }
   }
 }

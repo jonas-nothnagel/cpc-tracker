@@ -30,6 +30,14 @@
       "id": "SECTORAL",
       "shortLabel": "Vision 2050",
       "mediumLabel": "Vision 2050",
+      "plainName": "Long-term development policy",
+      "labels": {
+        "mn": {
+          "plainName": "Урт хугацааны хөгжил",
+          "mediumLabel": "Алсын хараа 2050",
+          "fullLabel": "Алсын хараа 2050 (Урт хугацааны хөгжлийн бодлого)"
+        }
+      },
       "fullLabel": "Vision 2050 (Long-term Development Policy)",
       "color": "#4f7942",
       "docClass": "strategic_plan",
@@ -44,6 +52,13 @@
       "id": "NDC",
       "shortLabel": "NDC",
       "mediumLabel": "NDC",
+      "plainName": "Climate",
+      "labels": {
+        "mn": {
+          "plainName": "Уур амьсгал",
+          "fullLabel": "Үндэсний хэмжээнд тодорхойлсон хувь нэмэр (NDC 3.0)"
+        }
+      },
       "fullLabel": "Nationally Determined Contribution (NDC 3.0)",
       "color": "#0468b1",
       "docClass": "commitment",
@@ -58,6 +73,14 @@
       "id": "NITIPA",
       "shortLabel": "Res. 91",
       "mediumLabel": "National targets (Res. 91)",
+      "plainName": "Paris Agreement",
+      "labels": {
+        "mn": {
+          "plainName": "Парисын хэлэлцээр",
+          "mediumLabel": "Үндэсний зорилтууд (91-р тогтоол)",
+          "fullLabel": "Парисын хэлэлцээрийн үндэсний зорилтууд (Засгийн газрын 2025 оны 91-р тогтоол)"
+        }
+      },
       "fullLabel": "National targets for implementation of the Paris Agreement (Government Resolution No. 91, 2025)",
       "color": "#9d174d",
       "docClass": "roadmap",
@@ -71,6 +94,13 @@
       "id": "NBSAP",
       "shortLabel": "NBSAP",
       "mediumLabel": "NBSAP",
+      "plainName": "Nature",
+      "labels": {
+        "mn": {
+          "plainName": "Байгаль",
+          "fullLabel": "Биологийн төрөл зүйлийн 2030 оны үндэсний зорилтууд (NBSAP, Биологийн олон янз байдлын тухай конвенцид илгээсэн)"
+        }
+      },
       "fullLabel": "National biodiversity targets for 2030 (NBSAP, as filed with the CBD)",
       "color": "#0d9488",
       "docClass": "sector_strategy",
@@ -84,6 +114,13 @@
       "id": "NAP",
       "shortLabel": "NAP",
       "mediumLabel": "NAP",
+      "plainName": "Adaptation",
+      "labels": {
+        "mn": {
+          "plainName": "Дасан зохицох",
+          "fullLabel": "Дасан зохицох үндэсний төлөвлөгөө (уур амьсгалын өөрчлөлт, 2024–2030)"
+        }
+      },
       "fullLabel": "National Adaptation Plan to Climate Change (2024–2030)",
       "color": "#b45309",
       "docClass": "sector_plan",
@@ -106,6 +143,13 @@
       "id": "FSS",
       "shortLabel": "FSS",
       "mediumLabel": "FSS",
+      "plainName": "Food supply",
+      "labels": {
+        "mn": {
+          "plainName": "Хүнсний хангамж",
+          "fullLabel": "Хүнсний хангамж, аюулгүй байдлыг хангах арга хэмжээ (УИХ-ын 36-р тогтоол, 2022 оны 6-р сар)"
+        }
+      },
       "fullLabel": "Food Supply and Security Measures (Parliament Resolution 36, June 2022)",
       "color": "#d97706",
       "docClass": "reporting",
@@ -121,6 +165,14 @@
       "id": "NRVTS",
       "shortLabel": "NRVTS",
       "mediumLabel": "LDN Targets",
+      "plainName": "Land degradation targets",
+      "labels": {
+        "mn": {
+          "plainName": "Газрын доройтлын зорилт",
+          "mediumLabel": "Газрын доройтлын саармагжуулалтын зорилтууд",
+          "fullLabel": "Монгол Улсад газрын доройтлын саармагжуулалтад хүрэх сайн дурын зорилт тодорхойлох үндэсний тайлан"
+        }
+      },
       "fullLabel": "National Report on Voluntary Target Setting to Achieve Land Degradation Neutrality in Mongolia",
       "color": "#6f4e37",
       "docClass": "commitment",
@@ -134,6 +186,14 @@
       "id": "ILDN",
       "shortLabel": "ILDN",
       "mediumLabel": "LDN Investment",
+      "plainName": "Land degradation investment",
+      "labels": {
+        "mn": {
+          "plainName": "Газрын доройтлын хөрөнгө оруулалт",
+          "mediumLabel": "Газрын доройтлын саармагжуулалтын хөрөнгө оруулалт",
+          "fullLabel": "Газрын доройтлын саармагжуулалтад хөрөнгө оруулах нь"
+        }
+      },
       "fullLabel": "Investing in Land Degradation Neutrality",
       "color": "#a98467",
       "docKind": "UNCCD Land Degradation Neutrality country profile",

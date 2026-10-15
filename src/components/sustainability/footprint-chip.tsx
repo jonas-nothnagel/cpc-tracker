@@ -74,7 +74,7 @@ export function FootprintChip() {
     <Link
       href="/sustainability"
       title={t("chip.title")}
-      className="group fixed bottom-3 right-3 z-40 text-xs text-[var(--undp-gray)] bg-white/95 backdrop-blur border border-gray-200 rounded-full px-3.5 py-1.5 shadow-md hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors"
+      className="group fixed bottom-3 right-3 z-40 print:hidden text-xs text-[var(--undp-gray)] bg-white/95 backdrop-blur border border-gray-200 rounded-full px-3.5 py-1.5 shadow-md hover:text-[var(--undp-blue)] hover:border-[var(--undp-blue)]/40 transition-colors"
     >
       {t.rich("chip.label", {
         value: fmtCarbon(co2),

@@ -4,19 +4,7 @@ import { useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { routing, type Locale } from "@/i18n/routing";
 import { usePathname, useRouter } from "@/i18n/navigation";
-
-// Friendly display label per locale; falls back to the code itself for
-// locales that haven't had a label assigned yet.
-const LOCALE_LABELS: Record<string, string> = {
-  en: "English",
-  es: "Español",
-  mn: "Монгол",
-};
-
-// Locales whose UI strings are machine-translated and not yet human-reviewed.
-// Surfaced as a caveat beside the switcher so users read them with the right
-// confidence. Remove a code here once a native speaker has reviewed it.
-const MACHINE_TRANSLATED = new Set(["es", "mn"]);
+import { LOCALE_LABELS, MACHINE_TRANSLATED } from "@/i18n/locale-labels";
 
 export function LanguageSwitcher({ onDark = false }: { onDark?: boolean }) {
   const locale = useLocale();

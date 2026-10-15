@@ -18,6 +18,7 @@
       "id": "NP",
       "shortLabel": "NP",
       "mediumLabel": "NP (Nature Pledge)",
+      "plainName": "Nature Pledge",
       "fullLabel": "Pacto de Panamá con la Naturaleza (Nature Pledge)",
       "color": "#0468b1",
       "docKind": "National pledge / unified commitment framework",
@@ -25,6 +26,7 @@
       "docTier": 1,
       "labels": {
         "es": {
+          "plainName": "Pacto con la Naturaleza",
           "mediumLabel": "NP (Pacto con la Naturaleza)",
           "docKind": "Compromiso nacional / marco unificado de compromisos",
           "objective": "Unifica los compromisos nacionales de Panamá en materia de clima, biodiversidad y degradación de la tierra (las tres Convenciones de Río) en un solo marco orientado a 2035."
@@ -39,6 +41,7 @@
       "id": "PEG",
       "shortLabel": "PEG",
       "mediumLabel": "PEG (Gov't Strategic Plan)",
+      "plainName": "Government Strategic Plan",
       "fullLabel": "Plan Estratégico de Gobierno 2025-2029",
       "color": "#0d9488",
       "docKind": "Government strategic plan",
@@ -46,6 +49,7 @@
       "docTier": 2,
       "labels": {
         "es": {
+          "plainName": "Plan Estratégico de Gobierno",
           "mediumLabel": "PEG (Plan Estratégico de Gobierno)",
           "docKind": "Plan estratégico de gobierno"
         }
@@ -58,6 +62,7 @@
       "id": "PENCYT",
       "shortLabel": "PENCYT",
       "mediumLabel": "PENCYT (Science & Innovation Plan)",
+      "plainName": "Science & Innovation Plan",
       "fullLabel": "Plan Estratégico Nacional de Ciencia, Tecnología e Innovación 2025-2029",
       "color": "#be185d",
       "docKind": "National strategic plan (science, technology and innovation)",
@@ -65,6 +70,7 @@
       "docTier": 3,
       "labels": {
         "es": {
+          "plainName": "Ciencia e Innovación",
           "mediumLabel": "PENCYT (Ciencia e Innovación)",
           "docKind": "Plan estratégico nacional (ciencia, tecnología e innovación)"
         }
@@ -77,6 +83,7 @@
       "id": "PNSH",
       "shortLabel": "PNSH",
       "mediumLabel": "PNSH (Water Security)",
+      "plainName": "Water Security",
       "fullLabel": "Plan Nacional de Seguridad Hídrica",
       "color": "#0891b2",
       "docKind": "National plan (water security)",
@@ -84,6 +91,7 @@
       "docTier": 3,
       "labels": {
         "es": {
+          "plainName": "Seguridad Hídrica",
           "mediumLabel": "PNSH (Seguridad Hídrica)",
           "docKind": "Plan nacional (seguridad hídrica)"
         }
@@ -96,6 +104,7 @@
       "id": "ENR",
       "shortLabel": "ENR",
       "mediumLabel": "ENR (REDD+ Strategy)",
+      "plainName": "REDD+ Strategy",
       "fullLabel": "Estrategia Nacional REDD+",
       "color": "#166534",
       "docKind": "REDD+ strategy",
@@ -103,6 +112,7 @@
       "docTier": 3,
       "labels": {
         "es": {
+          "plainName": "Estrategia REDD+",
           "mediumLabel": "ENR (Estrategia REDD+)",
           "docKind": "Estrategia REDD+",
           "objective": "Define medidas para reducir la deforestación y la degradación forestal, implementadas en 33 cuencas hidrográficas prioritarias."
@@ -117,6 +127,7 @@
       "id": "HR",
       "shortLabel": "HR",
       "mediumLabel": "HR (Nature Pledge Roadmap)",
+      "plainName": "Nature Pledge Roadmap",
       "fullLabel": "Hoja de Ruta del Nature Pledge",
       "color": "#d97706",
       "docKind": "Government roadmap (operationalises the Nature Pledge)",
@@ -124,6 +135,7 @@
       "docTier": 4,
       "labels": {
         "es": {
+          "plainName": "Hoja de Ruta del Pacto",
           "mediumLabel": "HR (Hoja de Ruta del Pacto)",
           "docKind": "Hoja de ruta de gobierno (operativiza el Pacto con la Naturaleza)"
         }
@@ -135,6 +147,7 @@
       "id": "PIOTA",
       "shortLabel": "PIOTA",
       "mediumLabel": "PIOTA (Canal Watershed Plan)",
+      "plainName": "Canal Watershed Plan",
       "fullLabel": "Plan Indicativo de Ordenamiento Territorial Ambiental",
       "color": "#6d28d9",
       "docKind": "Territorial and environmental planning instrument",
@@ -142,6 +155,7 @@
       "docTier": 4,
       "labels": {
         "es": {
+          "plainName": "Cuenca del Canal",
           "mediumLabel": "PIOTA (Cuenca del Canal)",
           "docKind": "Instrumento de ordenamiento territorial y ambiental"
         }
@@ -154,6 +168,7 @@
       "id": "PNRF",
       "shortLabel": "PNRF",
       "mediumLabel": "PNRF (Forest Restoration)",
+      "plainName": "Forest Restoration",
       "fullLabel": "Programa Nacional de Restauración Forestal",
       "color": "#15803d",
       "docKind": "National programme (forest restoration)",
@@ -161,6 +176,7 @@
       "docTier": 4,
       "labels": {
         "es": {
+          "plainName": "Restauración Forestal",
           "mediumLabel": "PNRF (Restauración Forestal)",
           "docKind": "Programa nacional (restauración forestal)",
           "objective": "Reforestar en cinco años más de 50 mil hectáreas, con énfasis en la protección y conservación de cuencas prioritarias y productoras de agua."
@@ -175,6 +191,8 @@
       "id": "CNR",
       "shortLabel": "CNR",
       "mediumLabel": "CNR (REDD+ Concept Note)",
+      "plainName": "REDD+ Concept Note",
+      "labels": { "es": { "plainName": "Nota conceptual REDD+" } },
       "fullLabel": "Concept Note REDD-plus results based payments",
       "color": "#7e22ce"
     }
