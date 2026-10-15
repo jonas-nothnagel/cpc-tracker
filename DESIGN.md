@@ -167,6 +167,8 @@ The former tracked 11px Label step is retired: eyebrows and tracked micro-labels
 
 **The Serif-For-Voice-Only Rule.** The serif is for display and headlines exclusively. Buttons, labels, table cells, form controls, and data readouts are always the sans. A serif in a control is prohibited.
 
+**The Picture-Title Rule.** A picture carries a short sans title (Body size or a step above, 700, sentence case) that names what it shows ("Strong alignments by pair of documents"), and follows the picture when it re-forms. It names; it never explains how to read the picture, and it is neither a finding (serif) nor an eyebrow.
+
 ## 4. Elevation
 
 The system is **flat by default** and conveys depth through tonal layering, not shadow: White content sits on Surface Light groupings, which sit on the page. A shadow means one specific thing — "this element floats above the page" — and appears only on transient overlay layers: dropdown menus, info popovers, and drawers. Resting surfaces (cards, panels, table rows) carry a hairline border or a tonal shift, never a drop shadow.

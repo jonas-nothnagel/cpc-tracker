@@ -1554,8 +1554,27 @@
 [data-brief] .brief-hub-stage {
   position: sticky;
   top: max(1.25rem, calc(50vh - 31cqw));
+  display: flex;
+  flex-direction: column;
   height: min(calc(100vh - 2.5rem), 62cqw);
   min-height: 24rem;
+}
+
+/* The picture's title: what it shows at the step in view, in plain sans
+   (the serif stays with the findings). The field takes the rest. */
+[data-brief] .brief-hub-title {
+  flex: none;
+  margin: 0 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-hub-stage > .brief-hub-canvas {
+  flex: 1 1 0;
+  min-height: 0;
+  height: auto;
 }
 
 /* The field keeps its labels to itself: nothing reaches past its edges
@@ -2254,6 +2273,11 @@
     min-height: 16rem;
     background: #fff;
     border-bottom: 1px solid var(--brief-hairline);
+  }
+
+  [data-brief] .brief-hub-title {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 0.9375rem;
   }
 
   /* A jump to a step, or the walkthrough's stop inside one, lands below

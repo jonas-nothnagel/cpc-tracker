@@ -3173,7 +3173,14 @@
       "exploreTarget": "Explorar esta meta",
       "countApart": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
       "kickerReinforce": "Lo que funciona bien",
-      "kickerApart": "Dónde mirar más de cerca"
+      "kickerApart": "Dónde mirar más de cerca",
+      "title": {
+        "overview": "{total, plural, one {# par de metas según su valoración} other {# pares de metas según su valoración}}",
+        "map": "Pares de metas por par de documentos",
+        "reinforce": "Alineaciones fuertes por par de documentos",
+        "apart": "Posibles desalineaciones por par de documentos",
+        "doc": "{doc} con cada uno de los demás documentos"
+      }
     },
     "explore": {
       "title": "Explorar las metas",

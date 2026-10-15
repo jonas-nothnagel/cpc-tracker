@@ -580,6 +580,17 @@ export function Hub({
         )}
       </>
     ) : undefined;
+  // The picture's title: what it shows as it re-forms with the steps, in the
+  // findings' words. Never how to read it.
+  const stageTitle = !hasPairs
+    ? null
+    : stage.kind === "overview"
+      ? th("title.overview", { total: c.total })
+      : stage.kind === "doc"
+        ? th("title.doc", { doc: docName(stage.doc) })
+        : stage.side
+          ? th(stage.side === "reinforce" ? "title.reinforce" : "title.apart")
+          : th("title.map");
   // A picked row's way on: the ring when there is one, else the target's panel.
   const openTarget = onExplore ?? onOpenCommitment;
   const openLabel = () => th(onExplore ? "exploreTarget" : "openTarget");
@@ -598,6 +609,12 @@ export function Hub({
   return (
     <div className="brief-hub" data-testid="brief-hub" ref={root}>
       <div className="brief-hub-stage">
+        {stageTitle && (
+          // The picture is drawn for the eye only (aria-hidden), and so is its title.
+          <p className="brief-hub-title" aria-hidden="true">
+            {stageTitle}
+          </p>
+        )}
         <HubCanvas
           data={data}
           stage={stage}

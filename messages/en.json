@@ -3173,7 +3173,14 @@
       "exploreTarget": "Explore this target",
       "countApart": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
       "kickerReinforce": "What works well",
-      "kickerApart": "Where to look closer"
+      "kickerApart": "Where to look closer",
+      "title": {
+        "overview": "{total, plural, one {# target pair by rating} other {# target pairs by rating}}",
+        "map": "Target pairs by pair of documents",
+        "reinforce": "Strong alignments by pair of documents",
+        "apart": "Potential misalignments by pair of documents",
+        "doc": "{doc} with each other document"
+      }
     },
     "explore": {
       "title": "Explore the targets",
