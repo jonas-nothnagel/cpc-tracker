@@ -154,6 +154,32 @@
   color: var(--brief-muted);
 }
 
+/* The top bar's right side: the brief's languages, then the previous
+   dashboard. */
+[data-brief] .brief-hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
+}
+
+[data-brief] .brief-hero-previous {
+  color: var(--brief-ink);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(35, 46, 61, 0.35);
+  text-underline-offset: 4px;
+}
+
+[data-brief] .brief-hero-previous:hover {
+  text-decoration-color: currentColor;
+}
+
+[data-brief] .brief-hero-previous:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 4px;
+}
+
 [data-brief] .brief-hero-brand {
   display: inline-flex;
   align-items: center;

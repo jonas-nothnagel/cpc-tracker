@@ -2954,7 +2954,8 @@
       "read": "Read the brief",
       "customize": "Customize the brief",
       "pause": "Pause the moving text",
-      "play": "Play the moving text"
+      "play": "Play the moving text",
+      "previousDashboard": "Previous dashboard"
     },
     "builder": {
       "title": "Customize the brief",

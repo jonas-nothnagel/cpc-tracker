@@ -2954,7 +2954,8 @@
       "read": "Leer la nota",
       "customize": "Personalizar la nota",
       "pause": "Pausar el texto en movimiento",
-      "play": "Reanudar el texto en movimiento"
+      "play": "Reanudar el texto en movimiento",
+      "previousDashboard": "Panel anterior"
     },
     "builder": {
       "title": "Personalizar la nota",

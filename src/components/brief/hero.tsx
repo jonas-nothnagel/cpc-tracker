@@ -12,6 +12,12 @@ function briefPath(locale: string, countryId: string): string {
   return `/${locale}/${countryId}/brief`;
 }
 
+/** The same country's previous dashboard, the language always named as in
+ *  `briefPath`, so a saved language does not take over. */
+function dashboardPath(locale: string, countryId: string): string {
+  return `/${locale}/dashboard?country=${countryId}`;
+}
+
 /**
  * The brief in English and its country's own language, the current one
  * marked; none where the brief is in English only. The reader's choices live
@@ -81,7 +87,12 @@ export function Hero({
           <img src="/undp-logo.png" alt="UNDP" width={22} height={44} />{" "}
           <span>{brand}</span>
         </a>
-        <Languages countryId={countryId} />
+        <div className="brief-hero-links">
+          <Languages countryId={countryId} />
+          <a className="brief-hero-previous" href={dashboardPath(locale, countryId)}>
+            {t("previousDashboard")}
+          </a>
+        </div>
       </div>
       <div className="brief-hero-content">
         <p className="brief-hero-kicker">{t("kicker", { country: countryName })}</p>

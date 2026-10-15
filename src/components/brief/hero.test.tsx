@@ -79,4 +79,32 @@ describe("Hero", () => {
     expect(screen.queryByRole("button", { name: /Panama/ })).toBeNull();
     expect(screen.queryByRole("link", { name: "Mongolia" })).toBeNull();
   });
+
+  it("links to the same country's previous dashboard, in the page's language", () => {
+    hero("es");
+    expect(screen.getByRole("link", { name: "Panel anterior" })).toHaveAttribute(
+      "href",
+      "/es/dashboard?country=panama",
+    );
+    cleanup();
+    hero("mn", "mongolia", "Mongolia");
+    expect(screen.getByRole("link", { name: "Өмнөх хяналтын самбар" })).toHaveAttribute(
+      "href",
+      "/mn/dashboard?country=mongolia",
+    );
+  });
+
+  it("names English in the dashboard link too, where the brief offers no other language", () => {
+    hero("en", "sri-lanka", "Sri Lanka");
+    expect(screen.getByRole("link", { name: "Previous dashboard" })).toHaveAttribute(
+      "href",
+      "/en/dashboard?country=sri-lanka",
+    );
+  });
+
+  it("keeps the dashboard link off paper", () => {
+    hero("en");
+    const link = screen.getByRole("link", { name: "Previous dashboard" });
+    expect(link.closest("[data-screen-only]")).not.toBeNull();
+  });
 });
