@@ -269,6 +269,27 @@
   outline-offset: 2px;
 }
 
+/* Narrow screens: laid over the hero, the top bar leaves room for one row,
+   but with the languages, a translation note and the previous dashboard it
+   wraps to two or three. It joins the flow instead and pushes the brief
+   down. Only the brief's hero has a top bar; the landing's stays as it is. */
+@media screen and (max-width: 820px) {
+  [data-brief] .brief-hero:has(> .brief-hero-top) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  [data-brief] .brief-hero:has(> .brief-hero-top) .brief-hero-top {
+    position: relative;
+    margin: 0;
+  }
+
+  [data-brief] .brief-hero:has(> .brief-hero-top) .brief-hero-content {
+    margin: auto 0;
+    padding-top: 1.5rem;
+  }
+}
+
 /* ── Buttons (square primary, underlined quiet) ──────────────────── */
 
 [data-brief] .brief-button-primary {
