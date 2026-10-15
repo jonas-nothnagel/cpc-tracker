@@ -816,7 +816,7 @@ export function ItemColumn({
 }: {
   kind: string;
   source: string;
-  item: BriefCommitment & { name?: string; code?: string; original?: string; aiWritten?: true };
+  item: BriefCommitment & { name?: string; code?: string; original?: string; aiWritten?: true; layer?: string };
   /** The action's status or the budget line's spending, as its source states it. */
   facts?: string;
   finding: ReactNode;
@@ -840,6 +840,9 @@ export function ItemColumn({
   const [open, setOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const long = item.text.length > 240;
+  // The source's own name: a budget line's from the review, an action's from the report.
+  const originalName = (name: string) =>
+    t(item.layer && item.layer !== "budget" ? "originalReport" : "originalName", { name });
   return (
     <>
       <Nav
@@ -855,12 +858,12 @@ export function ItemColumn({
       </p>
       <h2
         className="ex-focus-title"
-        title={item.original && !item.translated ? t("originalName", { name: item.original }) : undefined}
+        title={item.original && !item.translated ? originalName(item.original) : undefined}
       >
         {item.code && <span className="ex-focus-code">{item.code} </span>}
         {item.name ?? item.label}
         {item.translated && (
-          <span className="ex-focus-tag" title={item.original ? t("originalName", { name: item.original }) : undefined}>
+          <span className="ex-focus-tag" title={item.original ? originalName(item.original) : undefined}>
             {t("translated")}
           </span>
         )}

@@ -3257,6 +3257,18 @@
       "aiLabel": "Explicación de la IA:",
       "translated": "traducción automática",
       "originalName": "En la revisión: {name}",
+      "statusValue": {
+        "ongoing": "En curso",
+        "adopted": "Adoptada",
+        "implemented": "Implementada",
+        "planned": "Prevista"
+      },
+      "unit": {
+        "billion": "mil millones",
+        "million": "millones"
+      },
+      "ringRole": "anillo",
+      "originalReport": "En el informe: {name}",
       "aiWritten": "Generado por IA:",
       "aiWrittenNote": "Redactado con IA para la tabla de descripciones de la revisión",
       "status": "Estado según el informe: {status}",

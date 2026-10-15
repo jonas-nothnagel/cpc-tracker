@@ -1,4 +1,5 @@
 import type { BerNames } from "../ber-names";
+import type { TargetLabels } from "../target-labels";
 import type { BriefSource } from "../source";
 import { focusKey } from "./focus";
 import { buildExploreLayers, layerIdsOf, type ExploreLayers } from "./layers";
@@ -29,9 +30,12 @@ export function exploreSetup(args: {
   locale?: string;
   /** The country's display names for its budget lines, where it has them. */
   berNames?: BerNames | null;
+  /** Its reported actions' titles and texts in languages the report does
+   *  not give, where it has them. */
+  targetLabels?: TargetLabels | null;
 }): ExploreSetup {
-  const { data, source, docs, searchParams, locale, berNames } = args;
-  const layers = buildExploreLayers(data, source, { locale, names: berNames });
+  const { data, source, docs, searchParams, locale, berNames, targetLabels } = args;
+  const layers = buildExploreLayers(data, source, { locale, names: berNames, labels: targetLabels });
   // Every lens the source holds; a lens seats only the targets in its areas
   // (the human rights lens few of them) and says so beside the choice.
   const groups: ExploreGroup[] = ["docs", ...source.lenses.map((l) => l.id)];

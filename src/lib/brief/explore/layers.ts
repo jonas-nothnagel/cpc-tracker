@@ -1,7 +1,8 @@
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
 import type { Nr7Status } from "@/lib/labels";
 import { LEVEL_CODES, MECHANISM_CODES, type BriefSource } from "../source";
-import type { BerNames } from "../ber-names";
+import type { BerName, BerNames } from "../ber-names";
+import type { TargetLabels } from "../target-labels";
 
 /**
  * The implementation and finance layers of the ring, where a country has
@@ -64,10 +65,30 @@ function describe(program: Record<string, unknown>, locale: string): string {
   return (locale === "es" ? pick("descriptionEs") : pick("descriptionEn")) ?? pick("description") ?? String(program.name ?? "");
 }
 
+/** The name a budget line shows in the page's language: Spanish with the
+ *  review's abbreviations written out; Mongolian as the review has it, else
+ *  machine-translated; any other language the English machine translation. */
+function shownName(listed: BerName | undefined, locale: string): { name: string; machine: boolean; own: boolean } | null {
+  if (!listed) return null;
+  if (locale === "es") return listed.es ? { name: listed.es, machine: false, own: false } : null;
+  if (locale === "mn" && listed.mn) return { name: listed.mn, machine: listed.mnMachine === true, own: !listed.mnMachine };
+  return listed.en ? { name: listed.en, machine: true, own: false } : null;
+}
+
 export function buildExploreLayers(
   data: Record<string, unknown>,
   source: BriefSource,
-  { locale = "en", names = null }: { locale?: string; names?: BerNames | null } = {},
+  {
+    locale = "en",
+    names = null,
+    labels = null,
+  }: {
+    locale?: string;
+    names?: BerNames | null;
+    /** Reported actions' titles and texts in the page's language, where the
+     *  report gives none (machine translations). */
+    labels?: TargetLabels | null;
+  } = {},
 ): ExploreLayers | null {
   const items: LayerItem[] = [];
   // The review's own record of each budget line: its name, and its
@@ -80,13 +101,18 @@ export function buildExploreLayers(
     for (const t of raws) {
       const kind = t.actionType === "adaptation" ? "adaptation" : "mitigation";
       if (kind !== layer) continue;
-      const label = String(t.sourceLabel ?? t.id);
+      const own = String(t.sourceLabel ?? t.id);
+      // In a language the report does not give, its machine translation,
+      // flagged, with the report's own title kept.
+      const label = labels?.labels[String(t.id)]?.[locale];
+      const text = label ? labels?.texts[String(t.id)]?.[locale] : undefined;
       items.push({
         id: String(t.id),
         layer,
-        label,
-        name: label,
-        text: String(t.text ?? label),
+        label: label ?? own,
+        name: label ?? own,
+        ...(label ? { original: own, translated: "machine" as const } : {}),
+        text: text ?? String(t.text ?? own),
         ...(t.measureStatus ? { status: String(t.measureStatus) } : {}),
       });
     }
@@ -97,20 +123,22 @@ export function buildExploreLayers(
     const coded = rest.length > 0 && /\d/.test(first);
     const program = coded ? programs.get(first) : undefined;
     const own = program?.name ? String(program.name) : coded ? rest.join(" ") : label;
-    // Spanish shows the review's abbreviations written out; other languages
-    // the English machine translation, flagged as one.
     const listed = coded ? names?.names[first] : undefined;
-    const shown = locale === "es" ? listed?.es : listed?.en;
+    const shown = shownName(listed, locale);
+    // The review's own Mongolian description where it has one, else the
+    // machine translation beside the name.
+    const described = locale === "mn" && listed?.mn ? listed.mnDescription : undefined;
     const values = Object.values(asRecord(t.expenditure) ?? {}).filter((v): v is number => typeof v === "number");
     items.push({
       id: String(t.id),
       layer: "budget",
       label,
-      name: shown ?? own,
+      name: shown?.name ?? own,
       ...(coded ? { code: first } : {}),
-      ...(shown && shown !== own ? { original: own } : {}),
-      ...(shown && locale !== "es" && listed?.en === shown ? { translated: "machine" as const } : {}),
-      text: program ? describe(program, locale) : String(t.text ?? label),
+      // The review's name, where the one shown is not the review's own.
+      ...(shown && !shown.own && shown.name !== own ? { original: own } : {}),
+      ...(shown?.machine ? { translated: "machine" as const } : {}),
+      text: described ?? (program ? describe(program, locale) : String(t.text ?? label)),
       ...(program?.descriptionAiGenerated === true ? { aiWritten: true as const } : {}),
       spend: { total: Math.round(values.reduce((s, v) => s + v, 0) * 1000) / 1000, years: values.length },
     });

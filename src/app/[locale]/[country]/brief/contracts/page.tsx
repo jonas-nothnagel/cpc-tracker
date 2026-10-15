@@ -1,12 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getCountry } from "@/config/countries";
+import { countryNameIn, getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
+import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
 import { briefInEnglish } from "@/lib/brief/language-gate";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
-import { GEO } from "@/lib/brief/contracts/geo-data";
+import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { ContractsPage } from "@/components/brief/contracts/contracts-page";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -26,7 +27,9 @@ async function load(props: Props) {
   const result = getCountryDashboardPayload(entry.id, locale, null);
   if (result.kind !== "ok") return null;
   const data = result.payload.data as unknown as Record<string, unknown>;
-  const source = buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale });
+  // Titles in the page's language where the country's documents give none.
+  const labels = labelsIn(loadTargetLabels(entry.id), locale);
+  const source = buildBriefSource({ countryId: entry.id, countryName: countryNameIn(entry, locale), data, locale, labels });
   return { locale, setup: contractsSetup({ file, source }) };
 }
 
@@ -55,7 +58,7 @@ export default async function ContractsRoute(props: Props) {
   return (
     <ContractsPage
       setup={loaded.setup}
-      geo={GEO[loaded.setup.countryId] ?? null}
+      geo={geoFor(loaded.setup.countryId, loaded.locale)}
       initialCurrency={first(cur) === "usd" ? "usd" : "mnt"}
       initialContract={opened}
     />

@@ -167,6 +167,9 @@ export function buildBriefSource(args: {
   countryName: string;
   data: Record<string, unknown>;
   locale: string;
+  /** Targets' titles in the page's language where their documents give
+   *  none (`loadTargetLabels`), by id. */
+  labels?: Record<string, string>;
 }): BriefSource {
   const { data, locale } = args;
   const config = (data.countryConfig as CountryConfig | null) ?? null;
@@ -191,8 +194,12 @@ export function buildBriefSource(args: {
   // A label that is only a number ("6") takes its document's code ("NBT 6"),
   // so it never reads as a count beside the figures in a row.
   const codeOf = new Map(configDocs.map((d) => [d.id, d.shortLabel || d.id]));
-  const labelOf = (t: Target) =>
-    BARE_NUMBER.test(t.sourceLabel) ? `${codeOf.get(t.sourceDocument) ?? t.sourceDocument} ${t.sourceLabel}` : t.sourceLabel;
+  // A title in the page's language, where the country gives one, stands in
+  // for the document's, so a line never mixes two languages.
+  const labelOf = (t: Target) => {
+    const label = args.labels?.[t.id] ?? t.sourceLabel;
+    return BARE_NUMBER.test(label) ? `${codeOf.get(t.sourceDocument) ?? t.sourceDocument} ${label}` : label;
+  };
 
   const commitments: BriefCommitment[] = targets
     .map((t, i) => ({ t, i }))

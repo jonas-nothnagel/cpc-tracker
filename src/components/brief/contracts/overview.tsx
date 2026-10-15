@@ -296,14 +296,17 @@ export function Overview({
   }, [active, focus.lens, focus.area, focus.doc, focus.place, showAll, layer, lensKey]);
   const nameSizes = useMemo(() => {
     const sizes = new Map<string, LabelSize>();
+    // A Cyrillic letter runs about 15% wider than a Latin one (Source Sans 3),
+    // so a Mongolian name counts its letters by their width.
+    const letters = (text: string) => [...text].reduce((n, ch) => n + (/\p{Script=Cyrillic}/u.test(ch) ? 1.15 : 1), 0);
     for (const code of placeCodes) {
-      const name = placeName(code);
+      const name = letters(placeName(code));
       const value = placeValueText(code);
       sizes.set(code, {
-        w: Math.max(name.length * 6.4, value.length * 5.6) + 6,
+        w: Math.max(name * 6.4, value.length * 5.6) + 6,
         h: 27,
-        line: name.length * 6.8 + value.length * 6.1 + 22,
-        name: name.length * 6.8 + 8,
+        line: name * 6.8 + value.length * 6.1 + 22,
+        name: name * 6.8 + 8,
       });
     }
     return sizes;

@@ -3,7 +3,10 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { COUNTRIES, countryLocales, getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
+import { loadBerNames } from "./ber-names";
+import { buildExploreLayers } from "./explore/layers";
 import { buildBriefSource } from "./source";
+import { labelsIn, loadTargetLabels } from "./target-labels";
 import { targetLine } from "./text";
 
 // The brief on every visible country's committed data (python/data and
@@ -72,13 +75,35 @@ describe.each(VISIBLE)("the map's names in %s", (id) => {
 });
 
 describe("Mongolia's brief in Mongolian", () => {
+  const result = getCountryDashboardPayload("mongolia", "mn", null);
+  if (result.kind !== "ok") throw new Error(result.error);
+  const data = result.payload.data as unknown as Record<string, unknown>;
+  const targetLabels = loadTargetLabels("mongolia");
+  const source = buildBriefSource({
+    countryId: "mongolia",
+    countryName: "Mongolia",
+    data,
+    locale: "mn",
+    labels: labelsIn(targetLabels, "mn"),
+  });
+  const cyrillic = (text: string) => /\p{Script=Cyrillic}/u.test(text);
+
   it("names every document in Mongolian", () => {
-    const result = getCountryDashboardPayload("mongolia", "mn", null);
-    if (result.kind !== "ok") throw new Error(result.error);
-    const data = result.payload.data as unknown as Record<string, unknown>;
-    const { documents } = buildBriefSource({ countryId: "mongolia", countryName: "Mongolia", data, locale: "mn" });
-    const latin = documents.filter((d) => !LAYERS.has(d.id) && !/\p{Script=Cyrillic}/u.test(d.name));
+    const latin = source.documents.filter((d) => !LAYERS.has(d.id) && !cyrillic(d.name));
     expect(latin.map((d) => `${d.id}: ${d.name}`)).toEqual([]);
+  });
+
+  it("names every target in Mongolian, or by its document's code and number, its text in Mongolian too", () => {
+    const latin = source.commitments.filter(
+      (c) => !(cyrillic(c.label) || /^[A-Z][A-Za-z0-9.]* \d+(?:\.\d+)*$/.test(c.label)) || !cyrillic(c.text),
+    );
+    expect(latin.map((c) => `${c.id}: ${c.label}`)).toEqual([]);
+  });
+
+  it("writes every reported action and budget line on the ring in Mongolian", () => {
+    const layers = buildExploreLayers(data, source, { locale: "mn", names: loadBerNames("mongolia"), labels: targetLabels })!;
+    const latin = layers.items.filter((i) => !cyrillic(i.name) || !cyrillic(i.text));
+    expect(latin.map((i) => `${i.id}: ${i.name}`)).toEqual([]);
   });
 });
 

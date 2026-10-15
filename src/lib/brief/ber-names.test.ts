@@ -14,6 +14,16 @@ describe("budget lines' display names", () => {
     expect(missing).toEqual([]);
   });
 
+  it("names every line of Mongolia's review in Mongolian, the machine translations marked", () => {
+    const review = JSON.parse(readFileSync(join(process.cwd(), "python", "data", "mongolia-ber.json"), "utf8"));
+    const names = loadBerNames("mongolia")!;
+    const codes = (review.programs as { code: string }[]).map((p) => p.code);
+    expect(codes.filter((code) => !names.names[code]?.mn || !names.names[code]?.mnDescription)).toEqual([]);
+    // The review's sub-codes carry its own Mongolian; its programmes only English.
+    expect(codes.filter((code) => names.names[code]?.mnMachine).every((code) => code.startsWith("714"))).toBe(true);
+    expect(codes.filter((code) => !names.names[code]?.mnMachine).every((code) => /^8(17|22)/.test(code))).toBe(true);
+  });
+
   it("has none for a country without a names file", () => {
     expect(loadBerNames("sri-lanka")).toBeNull();
   });
@@ -23,5 +33,21 @@ describe("budget lines' display names", () => {
       names: { A: { es: "Uno" } },
     });
     expect(parseBerNames({})).toBeNull();
+  });
+
+  it("reads a line's Mongolian name and description, and whether they are a machine translation", () => {
+    expect(
+      parseBerNames({
+        names: {
+          "71401": { mn: "Хог хаягдлын менежмент", mnDescription: "Тайлбар.", mnMachine: true },
+          "81708": { mn: "Ойжуулалт", mnDescription: "Тайлбар.", mnMachine: "yes" },
+        },
+      }),
+    ).toEqual({
+      names: {
+        "71401": { mn: "Хог хаягдлын менежмент", mnDescription: "Тайлбар.", mnMachine: true },
+        "81708": { mn: "Ойжуулалт", mnDescription: "Тайлбар." },
+      },
+    });
   });
 });

@@ -1,15 +1,16 @@
 import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getCountry } from "@/config/countries";
+import { countryNameIn, getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
 import { briefInEnglish } from "@/lib/brief/language-gate";
 import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
 import { loadBerNames } from "@/lib/brief/ber-names";
+import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
-import { GEO } from "@/lib/brief/contracts/geo-data";
+import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { BriefApp } from "@/components/brief/brief-app";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -29,9 +30,20 @@ async function load(props: Props) {
   const data = result.payload.data as unknown as Record<string, unknown>;
   // A country whose contract record is baked also shows its public contracts.
   const file = loadContracts(entry.id);
-  const source = { ...buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale }), contracts: file !== null };
-  const contracts = file ? { setup: contractsSetup({ file, source }), geo: GEO[entry.id] ?? null } : undefined;
-  return { locale, source, data, contracts };
+  // Titles in the page's language where the country's documents give none.
+  const targetLabels = loadTargetLabels(entry.id);
+  const source = {
+    ...buildBriefSource({
+      countryId: entry.id,
+      countryName: countryNameIn(entry, locale),
+      data,
+      locale,
+      labels: labelsIn(targetLabels, locale),
+    }),
+    contracts: file !== null,
+  };
+  const contracts = file ? { setup: contractsSetup({ file, source }), geo: geoFor(entry.id, locale) } : undefined;
+  return { locale, source, data, contracts, targetLabels };
 }
 
 export async function generateMetadata(props: Props) {
@@ -65,6 +77,7 @@ export default async function BriefPage(props: Props) {
         searchParams,
         locale: loaded.locale,
         berNames: loadBerNames(loaded.source.countryId),
+        targetLabels: loaded.targetLabels,
       })}
       contracts={loaded.contracts}
       initialCurrency={cur === "usd" ? "usd" : "mnt"}

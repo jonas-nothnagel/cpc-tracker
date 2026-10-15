@@ -3,6 +3,7 @@ import {
   COUNTRIES,
   countryLocaleFor,
   countryLocales,
+  countryNameIn,
   getCountry,
   isStandalonePath,
   listCountries,
@@ -142,6 +143,22 @@ describe("a country's languages", () => {
     expect(countryLocaleFor(getCountry("panama")!, "es")).toBe("es");
     expect(countryLocaleFor(getCountry("panama")!, "mn")).toBe("en");
     expect(countryLocaleFor(getCountry("sri-lanka")!, "es")).toBe("en");
+  });
+});
+
+describe("a country's name in the page's language", () => {
+  it("is its own name in its own language, else the English one", () => {
+    expect(countryNameIn(getCountry("mongolia")!, "mn")).toBe("Монгол Улс");
+    expect(countryNameIn(getCountry("panama")!, "es")).toBe("Panamá");
+    expect(countryNameIn(getCountry("mongolia")!, "en")).toBe("Mongolia");
+    expect(countryNameIn(getCountry("panama")!, "mn")).toBe("Panama");
+    expect(countryNameIn(getCountry("sri-lanka")!, "es")).toBe("Sri Lanka");
+  });
+
+  it("is given only in a language the country's pages offer", () => {
+    for (const c of COUNTRIES) {
+      expect(Object.keys(c.nameIn ?? {}).filter((l) => !countryLocales(c).includes(l as never))).toEqual([]);
+    }
   });
 });
 

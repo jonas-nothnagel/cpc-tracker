@@ -3257,6 +3257,18 @@
       "aiLabel": "AI explanation:",
       "translated": "machine translation",
       "originalName": "In the review: {name}",
+      "statusValue": {
+        "ongoing": "Ongoing",
+        "adopted": "Adopted",
+        "implemented": "Implemented",
+        "planned": "Planned"
+      },
+      "unit": {
+        "billion": "billion",
+        "million": "million"
+      },
+      "ringRole": "ring",
+      "originalReport": "In the report: {name}",
       "aiWritten": "AI-generated:",
       "aiWrittenNote": "Written with AI for the review's table of descriptions",
       "status": "Status as reported: {status}",

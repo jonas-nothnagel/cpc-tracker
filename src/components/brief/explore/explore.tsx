@@ -182,6 +182,16 @@ function LineGlyph({ kind }: { kind: LineKind }) {
 
 /** A layer's glyph in its colour: a square for reported actions, a tilted
  *  square for budget lines, as their seats are drawn on the ring. */
+/** Reported statuses and spending units the catalogs name, by their
+ *  source's own word. */
+const STATUS_KEYS: Record<string, "ongoing" | "adopted" | "implemented" | "planned"> = {
+  ongoing: "ongoing",
+  adopted: "adopted",
+  implemented: "implemented",
+  planned: "planned",
+};
+const UNIT_KEYS: Record<string, "billion" | "million"> = { billion: "billion", million: "million" };
+
 function Swatch({ kind }: { kind: "action" | "budget" }) {
   const color = kind === "action" ? RING_INK.action : RING_INK.budget;
   return (
@@ -577,13 +587,23 @@ export function Explore({
       ? t("tipApartNamesMore", { names: shown, more: apart.length - 3 })
       : t("tipApartNames", { names: shown });
   };
+  // A report's status and a review's unit in the page's language; one the
+  // catalog does not know is shown as its source states it.
+  const statusText = (status: string) => {
+    const key = STATUS_KEYS[status.toLowerCase()];
+    return key ? t(`statusValue.${key}`) : status;
+  };
+  const unitText = (unit: string) => {
+    const key = UNIT_KEYS[unit.toLowerCase()];
+    return key ? t(`unit.${key}`) : unit;
+  };
   const factsOf = (c: ExploreItem): string | null => {
-    if (c.kind === "action" && c.status) return t("status", { status: c.status });
+    if (c.kind === "action" && c.status) return t("status", { status: statusText(c.status) });
     if (c.kind === "budget" && c.spend && layers?.budget) {
       return t("spend", {
         total: n(c.spend.total),
         currency: layers.budget.currency,
-        unit: layers.budget.unit,
+        unit: unitText(layers.budget.unit),
         start: layers.budget.start,
         end: layers.budget.end,
       });
@@ -1445,6 +1465,7 @@ export function Explore({
             resetLabel={t("clear")}
             hotArc={hotArc ?? partnerArc}
             ariaLabel={t("ringLabel", { targets: seated, group: groupLabel(state.group) })}
+            roleLabel={t("ringRole")}
           />
         </div>
         <aside className="ex-side" data-tour="explore-column">

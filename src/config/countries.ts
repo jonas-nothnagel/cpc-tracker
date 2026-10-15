@@ -46,6 +46,9 @@ export interface CountryEntry {
    *  offered in: its own language where the app has one. A country's brief is
    *  shared with that country directly, so it offers no other country's. */
   languages?: Exclude<Locale, "en">[];
+  /** The country's own name in its own language, for its pages in that
+   *  language ("Монгол Улс"); English pages use `name`. */
+  nameIn?: Partial<Record<Exclude<Locale, "en">, string>>;
   /** Shared on its own, for demonstrations: its pages link to nothing that
    *  names or offers another country (the landing, the previous dashboard,
    *  How it works, the footprint page). */
@@ -97,6 +100,7 @@ export const COUNTRIES: CountryEntry[] = [
     status: "pilot",
     visible: true,
     languages: ["mn"],
+    nameIn: { mn: "Монгол Улс" },
     has: {
       coherence: true,
       btr: { mitigation: true, adaptation: true },
@@ -111,6 +115,7 @@ export const COUNTRIES: CountryEntry[] = [
     status: "demo",
     visible: true, // Flipped in PR2 after translation, country config, and pipeline run landed.
     languages: ["es"],
+    nameIn: { es: "Panamá" },
     has: {
       coherence: true,
       btr: { mitigation: true, adaptation: false },
@@ -231,6 +236,12 @@ export function isStandalonePath(pathname: string): boolean {
   const locales: readonly string[] = routing.locales;
   const segment = locales.includes(parts[0]) ? parts[1] : parts[0];
   return segment ? getCountry(segment)?.standalone === true : false;
+}
+
+/** A country's name on its pages in a language: its own name where it is
+ *  one of the country's languages, else the English one. */
+export function countryNameIn(entry: Pick<CountryEntry, "name" | "nameIn">, locale: string): string {
+  return entry.nameIn?.[locale as Exclude<Locale, "en">] ?? entry.name;
 }
 
 /** The languages a country's pages are offered in, English first. */

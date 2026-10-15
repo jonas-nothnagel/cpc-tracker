@@ -3,6 +3,7 @@ import { useReducer } from "react";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
+import mn from "../../../../messages/mn.json";
 import { buildBriefData } from "@/lib/brief/data";
 import { scopeOf } from "@/lib/brief/compute";
 import { briefFixture } from "@/lib/brief/test-fixture";
@@ -12,6 +13,7 @@ import { buildExploreModel, groupByDocument } from "@/lib/brief/explore/model";
 import { focusMembers, groupProfile, groupSeatOrder, parseFocusKey } from "@/lib/brief/explore/focus";
 import { layoutRing } from "@/lib/brief/explore/ring";
 import { LAYER_DATA } from "@/lib/brief/explore/test-layers";
+import { parseTargetLabels } from "@/lib/brief/target-labels";
 import { Explore } from "./explore";
 
 const SOURCE = briefFixture();
@@ -722,5 +724,43 @@ describe("a budget line named in translation", () => {
     expect(label.closest("p")).toHaveTextContent(
       `AI-generated: Programme "${OWN}" under the Ministry of Economy and Finance.`,
     );
+  });
+});
+
+describe("the ring's layers on a Mongolian page", () => {
+  const LABELS = parseTargetLabels({
+    labels: { BTR_1: { mn: "Нарны цахилгаан станц" } },
+    texts: { BTR_1: { mn: "Нарны цахилгаан станц барих." } },
+  });
+
+  function renderItem(focus: string, layer: "mitigation" | "budget") {
+    const layers = buildExploreLayers(LAYER_DATA, SOURCE, { locale: "mn", labels: LABELS })!;
+    function View() {
+      const [state, dispatch] = useReducer(exploreReducer, { ...initialExploreState(), focus, layers: [layer] });
+      return <Explore source={SOURCE} data={DATA} state={state} dispatch={dispatch} groups={["docs"]} layers={layers} />;
+    }
+    render(
+      <NextIntlClientProvider locale="mn" messages={mn} timeZone="UTC">
+        <View />
+      </NextIntlClientProvider>,
+    );
+  }
+
+  it("names a reported action in Mongolian, marked as a machine translation with the report's own title on hover", () => {
+    renderItem("BTR_1", "mitigation");
+    const title = within(side()).getByRole("heading", { level: 2 });
+    expect(title).toHaveTextContent("Нарны цахилгаан станц");
+    expect(within(title).getByText("машин орчуулга")).toHaveAttribute("title", "Тайланд: Solar parks");
+    expect(within(side()).getByText("Тайлагнасан төлөв: Хэрэгжиж буй")).toBeInTheDocument();
+  });
+
+  it("states a budget line's spending in Mongolian units", () => {
+    renderItem("BER_71401", "budget");
+    expect(within(side()).getByText(/^Бүртгэгдсэн зарлага: MNT 2 тэрбум, 2020–2024$/)).toBeInTheDocument();
+  });
+
+  it("announces the ring in the page's language", () => {
+    renderItem("BTR_1", "mitigation");
+    expect(screen.getByTestId("explore-ring")).toHaveAttribute("aria-roledescription", "цагираг");
   });
 });
