@@ -4,6 +4,7 @@ import {
   countryLocaleFor,
   countryLocales,
   getCountry,
+  isStandalonePath,
   listCountries,
   listVisibleCountries,
   isValidCountryId,
@@ -141,6 +142,23 @@ describe("a country's languages", () => {
     expect(countryLocaleFor(getCountry("panama")!, "es")).toBe("es");
     expect(countryLocaleFor(getCountry("panama")!, "mn")).toBe("en");
     expect(countryLocaleFor(getCountry("sri-lanka")!, "es")).toBe("en");
+  });
+});
+
+describe("a country shared on its own", () => {
+  it("is Country X only: a demonstration whose pages lead to no other country", () => {
+    expect(listCountries().filter((c) => c.standalone).map((c) => c.id)).toEqual(["countryx"]);
+  });
+
+  it("is recognised from a page's path, with or without the language", () => {
+    expect(isStandalonePath("/countryx/brief")).toBe(true);
+    expect(isStandalonePath("/countryx/brief/explore")).toBe(true);
+    expect(isStandalonePath("/en/countryx/brief")).toBe(true);
+    expect(isStandalonePath("/countryx")).toBe(true);
+    expect(isStandalonePath("/mongolia/brief")).toBe(false);
+    expect(isStandalonePath("/mn/mongolia/brief")).toBe(false);
+    expect(isStandalonePath("/")).toBe(false);
+    expect(isStandalonePath("/sustainability")).toBe(false);
   });
 });
 

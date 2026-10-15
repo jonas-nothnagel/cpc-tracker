@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
 import { TourOverlay } from "@/components/dashboard/coherence-briefing/tour/tour-overlay";
 import { useTour } from "@/components/dashboard/coherence-briefing/tour/use-tour";
+import { getCountry } from "@/config/countries";
 import { routing } from "@/i18n/routing";
 import { SECTION_UNITS } from "@/lib/brief/sections";
 import { allowedSections, SECTION_IDS, type BriefSelection, type SectionId } from "@/lib/brief/selection";
@@ -39,6 +40,9 @@ export function Builder({
   // A plain link keeps the builder free of router context; the locale
   // prefix follows the app's "as-needed" routing.
   const methodologyHref = locale === routing.defaultLocale ? "/methodology" : `/${locale}/methodology`;
+  // How it works is told on the pilot countries' data: a country shared on
+  // its own does not link it.
+  const standalone = getCountry(source.countryId)?.standalone === true;
 
   const selectedDocs = new Set(selection.docs);
   const atMinimum = selection.docs.length <= 2;
@@ -96,9 +100,11 @@ export function Builder({
         >
           {t("tour")}
         </button>
-        <a className="brief-button-quiet" href={methodologyHref}>
-          {t("method")}
-        </a>
+        {!standalone && (
+          <a className="brief-button-quiet" href={methodologyHref}>
+            {t("method")}
+          </a>
+        )}
       </p>
       {tour.active && (
         <TourOverlay

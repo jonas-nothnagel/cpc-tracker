@@ -196,7 +196,9 @@
   height: 44px;
 }
 
-[data-brief] .brief-hero-brand:hover span {
+/* Only a lockup that leads somewhere underlines (a country shared on its
+   own shows it as plain text). */
+[data-brief] a.brief-hero-brand:hover span {
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }

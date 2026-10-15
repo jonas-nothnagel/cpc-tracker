@@ -398,6 +398,12 @@ describe("BriefApp walkthrough", () => {
     expect(link.getAttribute("href")).toBe("/methodology");
   });
 
+  it("links no methodology page from a country shared on its own, and still walks the reader through", () => {
+    renderApp({ ...SOURCE, countryId: "countryx", countryName: "Country X" });
+    expect(screen.queryByRole("link", { name: "How the analysis works" })).toBeNull();
+    expect(screen.getByRole("button", { name: "How to read this brief" })).toBeTruthy();
+  });
+
   it("walks the reader through the brief on request", () => {
     renderApp();
     fireEvent.click(screen.getByRole("button", { name: "How to read this brief" }));

@@ -16,7 +16,7 @@
  * reveal point is an explicit commit.
  */
 
-import type { Locale } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 
 /** Canonical country id — lowercased slug matching /^[a-z][a-z0-9-]{1,30}$/. */
 export type CountryId = string;
@@ -46,6 +46,10 @@ export interface CountryEntry {
    *  offered in: its own language where the app has one. A country's brief is
    *  shared with that country directly, so it offers no other country's. */
   languages?: Exclude<Locale, "en">[];
+  /** Shared on its own, for demonstrations: its pages link to nothing that
+   *  names or offers another country (the landing, the previous dashboard,
+   *  How it works, the footprint page). */
+  standalone?: true;
   /** Feature-presence flags. When false, the corresponding dashboard section
    *  hides rather than renders empty. */
   has: {
@@ -164,6 +168,9 @@ export const COUNTRIES: CountryEntry[] = [
     iso3: "xcx",
     status: "demo",
     visible: true,
+    // The demo link is shared as it is: nothing on its pages leads to the
+    // pilot countries.
+    standalone: true,
     has: {
       coherence: true,
       btr: { mitigation: false, adaptation: false },
@@ -215,6 +222,15 @@ export function listVisibleCountries(): CountryEntry[] {
  */
 export function listComingSoonCountries(): CountryEntry[] {
   return COUNTRIES.filter((c) => c.comingSoon);
+}
+
+/** Whether a page belongs to a country shared on its own: the country is
+ *  the path's first segment, after the language where one is named. */
+export function isStandalonePath(pathname: string): boolean {
+  const parts = pathname.split("/").filter(Boolean);
+  const locales: readonly string[] = routing.locales;
+  const segment = locales.includes(parts[0]) ? parts[1] : parts[0];
+  return segment ? getCountry(segment)?.standalone === true : false;
 }
 
 /** The languages a country's pages are offered in, English first. */

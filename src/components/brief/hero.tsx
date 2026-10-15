@@ -75,23 +75,35 @@ export function Hero({
   const ts = useTranslations("brief.sheet");
   const brand = useTranslations("header")("brand");
   const locale = useLocale();
+  // A country shared on its own leads nowhere else: no landing, no previous dashboard.
+  const standalone = getCountry(countryId)?.standalone === true;
   // WCAG 2.2.2: moving content that runs on gets a pause control.
   const [paused, setPaused] = useState(false);
+  const lockup = (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element -- the app's own lockup, small and static */}
+      <img src="/undp-logo.png" alt="UNDP" width={22} height={44} /> <span>{brand}</span>
+    </>
+  );
   return (
     <section className="brief-hero" data-screen-only>
       <MovingText lines={lines} paused={paused} />
       <div className="brief-hero-veil" aria-hidden="true" />
       <div className="brief-hero-top">
-        <a className="brief-hero-brand" href={locale === "en" ? "/" : `/${locale}`}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- the app's own lockup, small and static */}
-          <img src="/undp-logo.png" alt="UNDP" width={22} height={44} />{" "}
-          <span>{brand}</span>
-        </a>
+        {standalone ? (
+          <span className="brief-hero-brand">{lockup}</span>
+        ) : (
+          <a className="brief-hero-brand" href={locale === "en" ? "/" : `/${locale}`}>
+            {lockup}
+          </a>
+        )}
         <div className="brief-hero-links">
           <Languages countryId={countryId} />
-          <a className="brief-hero-previous" href={dashboardPath(locale, countryId)}>
-            {t("previousDashboard")}
-          </a>
+          {!standalone && (
+            <a className="brief-hero-previous" href={dashboardPath(locale, countryId)}>
+              {t("previousDashboard")}
+            </a>
+          )}
         </div>
       </div>
       <div className="brief-hero-content">
