@@ -258,6 +258,10 @@ describe("BriefApp screen and print", () => {
     }
   });
 
+  it("the walkthrough's menu stop names only what the menu offers", () => {
+    expect(en.briefing.tour.brief.steps.builder.body).not.toMatch(/policy areas/i);
+  });
+
   it("the walkthrough reads the map by its edges: rows named at the left, columns under it", () => {
     const body = en.briefing.tour.brief.steps.map.body;
     expect(body).toMatch(/each row is a document named at the left/);
@@ -356,7 +360,7 @@ describe("BriefApp screen and print", () => {
     expect(within(areas).getByRole("heading", { level: 2 }).textContent).toContain("of the potential misalignments sit");
   });
 
-  it("keeps the menu's policy areas and the component's choice as one", () => {
+  it("chooses the policy areas in the component only, and prints them by the same lens", () => {
     const base = briefFixture();
     const source = {
       ...base,
@@ -366,12 +370,15 @@ describe("BriefApp screen and print", () => {
       ],
     };
     renderApp(source);
+    // The menu offers the documents and the sections, no lens.
+    const menu = screen.getByRole("complementary", { name: "Customize the brief" });
+    expect(within(menu).queryAllByRole("radio")).toHaveLength(0);
+    expect(within(menu).queryByText("Policy areas")).toBeNull();
     const areas = screen.getByTestId("brief-areas");
     fireEvent.click(within(areas).getByRole("button", { name: "Climate mitigation" }));
-    expect((screen.getByRole("radio", { name: "Climate mitigation" }) as HTMLInputElement).checked).toBe(true);
+    expect(within(areas).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
     expect(window.location.search).toContain("lens=ipcc");
-    fireEvent.click(screen.getByRole("radio", { name: "Biodiversity" }));
-    expect(within(areas).getByRole("button", { name: "Biodiversity" }).getAttribute("aria-pressed")).toBe("true");
+    expect(sheets().querySelector('[data-section="areas"]')?.textContent).toContain("Policy areas: Climate mitigation");
   });
 
   it("opens a pair of policy areas' target pairs in a panel", () => {
@@ -541,16 +548,16 @@ describe("BriefApp public contracts", () => {
     expect(params.get("docs")).toBe("A,B");
   });
 
-  it("keeps the menu's policy areas and the contracts' choice as one", () => {
+  it("keeps the contracts' policy areas and the policy-area component's choice as one", () => {
     renderWith();
     const purpose = section()!.querySelector<HTMLElement>('[data-step="purpose"]')!;
-    fireEvent.click(within(within(purpose).getByRole("group", { name: "Policy areas" })).getByRole("button", { name: "Climate mitigation" }));
-    expect((screen.getByRole("radio", { name: "Climate mitigation" }) as HTMLInputElement).checked).toBe(true);
-    fireEvent.click(screen.getByRole("radio", { name: "Biodiversity" }));
-    expect(within(within(purpose).getByRole("group", { name: "Policy areas" })).getByRole("button", { name: "Biodiversity" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
+    const contractLenses = () => within(within(purpose).getByRole("group", { name: "Policy areas" }));
+    fireEvent.click(contractLenses().getByRole("button", { name: "Climate mitigation" }));
+    expect(window.location.search).toContain("lens=ipcc");
+    const areas = screen.getByTestId("brief-areas");
+    expect(within(areas).getByRole("button", { name: "Climate mitigation" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(within(areas).getByRole("button", { name: "Biodiversity" }));
+    expect(contractLenses().getByRole("button", { name: "Biodiversity" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("hands a target from the contracts to the ring, and goes there", async () => {

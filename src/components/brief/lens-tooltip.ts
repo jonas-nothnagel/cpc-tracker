@@ -5,9 +5,9 @@ export function lensTooltipKey(id: LensId): "ggaTooltip" | "hrTooltip" | null {
   return id === "gga" ? "ggaTooltip" : id === "hr" ? "hrTooltip" : null;
 }
 
-/** A lens's explanation, the same in the menu, the policy areas' choice and the
- *  ring: a country's own lens names its source itself (from its taxonomy
- *  file), a global lens through the catalog. */
+/** A lens's explanation, the same in the policy areas' choice and the ring:
+ *  a country's own lens names its source itself (from its taxonomy file), a
+ *  global lens through the catalog. */
 export function lensTooltip(
   lens: Pick<BriefLens, "id" | "tooltip">,
   tl: (key: "ggaTooltip" | "hrTooltip") => string,

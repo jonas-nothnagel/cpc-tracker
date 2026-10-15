@@ -8,13 +8,13 @@ import { useTour } from "@/components/dashboard/coherence-briefing/tour/use-tour
 import { routing } from "@/i18n/routing";
 import { SECTION_UNITS } from "@/lib/brief/sections";
 import { allowedSections, SECTION_IDS, type BriefSelection, type SectionId } from "@/lib/brief/selection";
-import type { BriefSource, LensId } from "@/lib/brief/source";
-import { lensTooltip } from "./lens-tooltip";
+import type { BriefSource } from "@/lib/brief/source";
 
 /**
- * The brief's controls: which documents, which policy-area lens, which
- * sections in which order. Every change re-lays the sheets at once; the page
- * count is the feedback. Screen only.
+ * The brief's controls: which documents, which sections in which order. The
+ * policy-area lens is chosen where it shows, in the policy-area component.
+ * Every change re-lays the sheets at once; the page count is the feedback.
+ * Screen only.
  */
 export function Builder({
   source,
@@ -33,7 +33,6 @@ export function Builder({
 }) {
   const t = useTranslations("brief.builder");
   const ts = useTranslations("brief.sections");
-  const tl = useTranslations("briefing.lens");
   const locale = useLocale();
   const tour = useTour();
   const [copied, setCopied] = useState(false);
@@ -78,8 +77,6 @@ export function Builder({
       setCopied(false);
     }
   };
-
-  const lensLabel = (id: LensId) => tl(id);
 
   return (
     <aside
@@ -137,25 +134,6 @@ export function Builder({
         })}
         {atMinimum && <p className="brief-builder-hint">{t("minDocuments")}</p>}
       </fieldset>
-
-      {source.lenses.length > 0 && (
-        <fieldset className="brief-builder-group">
-          <legend>{t("lens")}</legend>
-          {source.lenses.map((l) => (
-            <label key={l.id} className="brief-check" title={lensTooltip(l, tl)}>
-              <input
-                type="radio"
-                name="brief-lens"
-                checked={selection.lens === l.id}
-                onChange={() => onChange({ ...selection, lens: l.id })}
-              />
-              <span className="brief-check-text">
-                <span className="brief-check-name">{lensLabel(l.id)}</span>
-              </span>
-            </label>
-          ))}
-        </fieldset>
-      )}
 
       <fieldset className="brief-builder-group">
         <legend>{t("sections")}</legend>

@@ -503,7 +503,7 @@
           },
           "builder": {
             "title": "Personalizar la nota",
-            "body": "Elija los documentos y las áreas de política y, después, las secciones de la nota, en pantalla y en la impresión. «Imprimir o guardar como PDF» muestra las páginas antes de imprimir; la nota también puede compartirse como enlace."
+            "body": "Elija los documentos y, después, las secciones de la nota, en pantalla y en la impresión. «Imprimir o guardar como PDF» muestra las páginas antes de imprimir; la nota también puede compartirse como enlace."
           },
           "aligned": {
             "title": "Alineaciones más fuertes",
@@ -2962,7 +2962,6 @@
       "documents": "Documentos",
       "commitments": "{count, plural, one {# meta} other {# metas}}",
       "minDocuments": "Se necesitan al menos dos documentos para comparar.",
-      "lens": "Áreas de política",
       "sections": "Secciones",
       "moveUp": "Subir {section}",
       "moveDown": "Bajar {section}",
