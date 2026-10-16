@@ -2996,6 +2996,7 @@
       "documents": "Documents side by side",
       "areas": "By policy area",
       "aligned": "Strongest alignments",
+      "spending": "Reviewed spending",
       "contracts": "Public contracts"
     },
     "tone": {
@@ -3591,6 +3592,36 @@
         "tipMis": "{count, plural, one {# contract} other {# contracts}} · {value} · {year}",
         "tipMatch": "{count, plural, one {# strongly matching tender} other {# strongly matching tenders}}",
         "rowsLabel": "Targets with potentially misaligned tenders"
+      }
+    },
+    "spending": {
+      "title": "Reviewed biodiversity spending",
+      "source": "Biodiversity Expenditure Review (BER), {years}",
+      "illustrative": "Illustrative figures, adapted from a real review",
+      "money": "{currency}{amount} {unit, select, million {million} billion {billion} other {}}",
+      "fieldLabel": "{currency}{every} of every {currency}100 of public spending, as a hundred squares",
+      "record": {
+        "kicker": "Out of all public spending",
+        "headline": "{currency}{every} of every {currency}100 of public spending is reviewed biodiversity spending.",
+        "reviewed": "Reviewed biodiversity spending, {years}",
+        "public": "All public spending, {years}",
+        "year": "{year}: {currency}{every} of every {currency}100"
+      },
+      "areas": {
+        "kicker": "What it is for",
+        "headline": "{area} holds {spend} of the reviewed spending and {targets} of the targets.",
+        "colArea": "Biodiversity area",
+        "colTargets": "Share of the targets",
+        "colSpend": "Share of the reviewed spending",
+        "listLabel": "Biodiversity areas, their share of the targets and of the reviewed spending",
+        "rowLabel": "{targets} of the targets, {spend} of the reviewed spending",
+        "noSpend": "None",
+        "targetsLine": "{count, plural, =0 {No target in this area.} one {# target in this area.} other {# targets in this area.}}",
+        "matched": "{matched, number} of the {total, number} have a matching budget line.",
+        "ai": "AI-estimated",
+        "linesLabel": "Budget lines in this area",
+        "noLines": "No reviewed budget line in this area.",
+        "explore": "Explore this area with its budget lines"
       }
     },
     "areaView": {

@@ -63,7 +63,7 @@ describe("getCountry", () => {
     expect(c?.has.ber).toBe(false);
   });
 
-  it("returns the Country X demo entry as visible, coherence-only", () => {
+  it("returns the Country X demo entry as visible, with illustrative actions and spending", () => {
     const x = getCountry("countryx");
     expect(x).toBeDefined();
     expect(x?.name).toBe("Country X");
@@ -71,10 +71,10 @@ describe("getCountry", () => {
     expect(x?.status).toBe("demo");
     expect(x?.visible).toBe(true);
     expect(x?.has.coherence).toBe(true);
-    expect(x?.has.btr.mitigation).toBe(false);
-    expect(x?.has.btr.adaptation).toBe(false);
+    expect(x?.has.btr.mitigation).toBe(true);
+    expect(x?.has.btr.adaptation).toBe(true);
     expect(x?.has.nr7).toBe(false);
-    expect(x?.has.ber).toBe(false);
+    expect(x?.has.ber).toBe(true);
   });
 
   it("resolves Côte d'Ivoire spelling aliases to the canonical entry", () => {

@@ -1,0 +1,82 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import en from "../../../../messages/en.json";
+import type { SpendingSetup } from "@/lib/brief/spending";
+import { briefFixture } from "@/lib/brief/test-fixture";
+import { SpendingSection } from "./spending-section";
+
+const SOURCE = briefFixture();
+
+/** Two years, US$ million: 10 reviewed of 300 public; P2 (Agriculture) holds 7. */
+const SETUP: SpendingSetup = {
+  currency: "US$",
+  unit: "million",
+  years: ["2020", "2021"],
+  publicSpending: { "2020": 100, "2021": 200 },
+  illustrative: true,
+  lines: [
+    { id: "BER_P1", code: "P1", name: "Protected area security", years: { "2020": 1, "2021": 2 }, total: 3, area: "g1", matches: ["A1"] },
+    { id: "BER_P2", code: "P2", name: "Irrigation support", years: { "2020": 3, "2021": 4 }, total: 7, area: "g2", matches: [] },
+  ],
+  areas: SOURCE.lenses[0].categories,
+};
+
+afterEach(cleanup);
+
+function renderSection(onExploreArea?: (id: string) => void, setup = SETUP, docs = ["A", "B", "C"]) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={en}>
+      <SpendingSection setup={setup} source={SOURCE} docs={docs} onExploreArea={onExploreArea} />
+    </NextIntlClientProvider>,
+  );
+}
+
+/** SETUP with one line changed. */
+function withLine(id: string, change: Partial<SpendingSetup["lines"][number]>): SpendingSetup {
+  return { ...SETUP, lines: SETUP.lines.map((l) => (l.id === id ? { ...l, ...change } : l)) };
+}
+
+describe("SpendingSection", () => {
+  it("states the record out of all public spending, in every hundred", () => {
+    renderSection();
+    expect(screen.getByRole("heading", { name: /US\$3\.3 of every US\$100 of public spending/ })).toBeTruthy();
+    expect(screen.getByText("US$10.0 million")).toBeTruthy();
+    expect(screen.getByText("US$300 million")).toBeTruthy();
+    expect(screen.getByText(/Illustrative figures/)).toBeTruthy();
+  });
+
+  it("names the area holding the most spending beside its share of the targets", () => {
+    renderSection();
+    expect(
+      screen.getByRole("heading", { name: "Agriculture holds 70% of the reviewed spending and 17% of the targets." }),
+    ).toBeTruthy();
+    const rows = within(screen.getByRole("list", { name: /Biodiversity areas/ })).getAllByRole("button");
+    expect(rows.map((r) => r.textContent?.split(/\d/)[0])).toEqual(["Agriculture", "Protected areas", "Water"]);
+    expect(rows[2].textContent).toContain("None");
+  });
+
+  it("opens an area to its budget lines and hands it to the ring", () => {
+    const onExploreArea = vi.fn();
+    renderSection(onExploreArea);
+    fireEvent.click(screen.getByRole("button", { name: /Protected areas/ }));
+    expect(screen.getByText("Protected area security")).toBeTruthy();
+    expect(screen.getByText(/3 targets in this area\. 1 of the 3 have a matching budget line\./)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Explore this area with its budget lines" }));
+    expect(onExploreArea).toHaveBeenCalledWith("g1");
+  });
+
+  it("shows a small budget line's amount rather than rounding it to nothing", () => {
+    renderSection(undefined, withLine("BER_P1", { years: { "2020": 0.01, "2021": 0.02 }, total: 0.03 }));
+    fireEvent.click(screen.getByRole("button", { name: /Protected areas/ }));
+    expect(screen.getByText("US$0.03 million")).toBeTruthy();
+  });
+
+  it("offers the ring only for an area with targets in the brief's documents", () => {
+    // Water holds a line but, without document C, none of the targets.
+    renderSection(vi.fn(), withLine("BER_P2", { area: "g5" }), ["A", "B"]);
+    fireEvent.click(screen.getByRole("button", { name: /Water/ }));
+    expect(screen.getByText("No target in this area.")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Explore this area with its budget lines" })).toBeNull();
+  });
+});

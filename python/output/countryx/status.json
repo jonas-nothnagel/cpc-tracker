@@ -8,18 +8,18 @@
   "completedAt": "2026-08-14T23:26:56.115571+00:00",
   "error": null,
   "summary": {
-    "totalTargets": 209,
+    "totalTargets": 250,
     "totalClassifications": 6688,
     "relevantClassifications": 1042,
-    "totalPairs": 14784,
+    "totalPairs": 23353,
     "alignmentLevels": {
-      "low": 4585,
-      "medium": 8837,
-      "high": 1300,
-      "flagged": 36,
-      "none": 26
+      "low": 10337,
+      "medium": 10980,
+      "high": 1542,
+      "flagged": 273,
+      "none": 221
     },
-    "totalContradictions": 36,
+    "totalContradictions": 273,
     "measureAlignmentPairs": 0,
     "measurePseudoTargets": 0,
     "budgetAlignmentPairs": 0,
@@ -54,5 +54,14 @@
         "source": "measured"
       }
     ]
+  },
+  "addedTargets": {
+    "documents": [
+      "FSP"
+    ],
+    "targets": 41,
+    "pairs": 8569,
+    "promptVersion": "2.3",
+    "completedAt": "2026-10-16T14:13:45.062731+00:00"
   }
 }

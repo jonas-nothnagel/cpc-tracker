@@ -58,6 +58,15 @@ describe("defaultSelection", () => {
   it("leaves the public contracts out where the country has no contract record", () => {
     expect(defaultSelection(SOURCE).sections).not.toContain("contracts");
   });
+
+  it("offers the reviewed spending, before the public contracts, only where the country has a spending record", () => {
+    expect(defaultSelection(SOURCE).sections).not.toContain("spending");
+    expect(defaultSelection({ ...SOURCE, spending: true, contracts: true }).sections.slice(-3)).toEqual([
+      "areas",
+      "spending",
+      "contracts",
+    ]);
+  });
 });
 
 describe("parseSelection", () => {

@@ -8,10 +8,10 @@
     "flagged_count": 0,
     "contradiction_types": {},
     "synthesis": {
-      "storyline_name": "Shared enabling architecture for resilient land management",
-      "reinforce": "The two documents often align through enabling instruments, especially climate finance and budget coding, resource mobilization, technology transfer, awareness, education, and multi-actor coordination that could support land degradation actions. They also pull in the same direction on practical resilience pathways such as climate-smart agriculture, water-source protection, flood control, risk mapping, forest restoration, and other planning measures that support ecosystem services, drought resilience, and sustainable land management.",
+      "storyline_name": "Shared use of enabling finance and planning",
+      "reinforce": "The two documents often align through enabling instruments rather than identical actions. Recurring links connect CCS budget coding, climate finance, risk mapping, education, and climate-smart agriculture with LDN resource mobilization, land-use planning, awareness, and ecosystem resilience measures, especially where funding, planning, or technology transfer could support land restoration, drought response, and sustainable land management.",
       "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Linking climate finance, land-use planning, and shared outreach or technology-support platforms could help translate these broad enabling measures into more coordinated delivery across agriculture, water basins, forests, and degraded lands.",
+      "coordination_hint": "Coordination around national financing architecture, land-use planning, and shared outreach or technology-support platforms could help translate these broad enabling links into more joined-up implementation.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -28,10 +28,10 @@
       "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Water-smart adaptation and climate information linkages",
-      "reinforce": "The two documents often pull in the same direction through adaptation mainstreaming, climate-risk assessments, meteorological networks, early warning systems, and basin-level flood or drought planning. They also align with climate-smart agriculture, irrigation access, improved varieties, watershed protection, and coastal or biodiversity management, where the CCS provides planning, finance, or risk-information instruments that can support NAP delivery.",
-      "clash": "The recurring possible misalignment is around shared water resources. Review cases mostly point to irrigation expansion, agricultural water development, or wider water access potentially competing with protected water sources, basin drought management, or aquatic habitat and fishery restoration, and one case points to land and siting pressures between forest restoration and water infrastructure for agriculture.",
-      "coordination_hint": "Basin-level water allocation, abstraction controls, irrigation-efficiency design, and land-use or watershed planning could help align agricultural water access with source protection, drought planning, and aquatic ecosystem objectives.",
+      "storyline_name": "Water and climate-smart agriculture linkages",
+      "reinforce": "The two documents often pull in the same direction through adaptation mainstreaming, climate-risk assessments, early warning systems, basin flood and drought planning, and climate-smart agriculture measures such as irrigation, improved varieties, and local risk mapping. A recurring pattern is that CCS provides planning, finance, risk-information, and ecosystem-management instruments that support NAP actions in agriculture, water resources, public health, human settlements, and coastal biodiversity.",
+      "clash": "Possible misalignment recurs mainly around shared water resources. Several reviewed pairs point to irrigation expansion, agricultural water development, or wider water access potentially competing with basin source protection, drought management, abstraction controls, or aquatic habitat and fisheries restoration, and one pair suggests land and water infrastructure siting could complicate forest restoration objectives.",
+      "coordination_hint": "Joint basin-level planning, using water allocation, abstraction controls, irrigation-efficiency measures, habitat safeguards, and land-use siting, could help align agricultural expansion with source protection, drought planning, and ecosystem restoration.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -47,10 +47,10 @@
       "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Nature-positive land and water management pathways",
-      "reinforce": "The two documents often pull in the same direction where climate action is delivered through ecosystem and land management, especially forest restoration, reduced deforestation, mangrove and coastal rehabilitation, and integrated water resources management linked to inland water restoration. Alignment also recurs through enabling tools such as spatial planning, climate finance and budget coding, business disclosure, information systems, and participatory or gender-responsive governance that can support biodiversity-inclusive implementation.",
-      "clash": "A possible misalignment appears in one infrastructure-related pair, where climate-proofing major new roads, rail, and power lines could intersect with protected areas or other area-based conservation measures if siting and routing are not coordinated. The records do not show a broader recurring possible misalignment beyond this delivery issue.",
-      "coordination_hint": "Joint spatial planning and screening of infrastructure, restoration, and water or coastal investments could help these agendas support each other while accounting for conservation areas and ecosystem priorities.",
+      "storyline_name": "Shared land and water stewardship pathways",
+      "reinforce": "The two documents often pull in the same direction through ecosystem-based delivery, especially forest restoration and sustainable forestry, mangrove and coastal-zone restoration, and integrated water resources management linked to inland water ecosystem recovery. Alignment also recurs through enabling instruments such as spatial planning, climate finance and budget coding, business risk disclosure, information systems, and participatory or gender-responsive governance that can support biodiversity-inclusive climate action.",
+      "clash": "Possible misalignment appears only once in this set, around climate-proofing major new roads, rail, and power lines where routing and siting could overlap with protected areas or other area-based conservation measures. This points to a delivery-level issue in shared landscapes, rather than a broad difference in overall direction.",
+      "coordination_hint": "Joint spatial planning, early infrastructure screening, and shared use of biodiversity and climate data could help align restoration, water management, and infrastructure decisions in the same places.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -67,10 +67,10 @@
       "delivery_friction": 1
     },
     "synthesis": {
-      "storyline_name": "Climate resilience through enabling systems and infrastructure",
-      "reinforce": "The two documents often pull in the same direction by linking enabling systems, such as climate finance, risk mapping, education, gender inclusion, and institutional frameworks, with sector delivery in water, buildings, agriculture, coasts, and social protection. A recurring pattern is that CCS planning and resilience instruments, such as basin flood control, hazard mapping, coastal management, and budget coding, align with NDC measures like resilient water supply, climate-resilient building codes, inclusive disaster preparedness, and ecosystem conservation.",
-      "clash": "Possible misalignment appears in two specific implementation areas rather than as a broad pattern. One concerns water allocation, where regulated abstraction under integrated water resources management could compete with scaled solar irrigation demand, and the other concerns land use, where new road construction could create pressure on forest protection and restoration if routing overlaps forest landscapes.",
-      "coordination_hint": "Basin-level water planning and spatial screening for infrastructure corridors could help align these measures while preserving the broader shared direction on resilience and mitigation.",
+      "storyline_name": "Shared climate resilience planning and infrastructure tools",
+      "reinforce": "The CCS and NDC largely align through common use of climate resilience instruments, especially risk and vulnerability mapping, climate-resilient building codes, flood control, resilient water supply measures, and climate-proofing of infrastructure. A second recurring pattern is enabling support across sectors, where climate finance, education, gender mainstreaming, ecosystem management, and planning frameworks tend to support delivery of sector actions in water, agriculture, health, transport, and coastal areas.",
+      "clash": "Possible misalignment appears in two specific implementation pathways rather than as a broad pattern. One concerns water allocation, where regulated abstraction under integrated water resources management could compete with expanded solar irrigation demand, and the other concerns land use, where new road construction could create pressure on forest protection and restoration depending on routing and safeguards.",
+      "coordination_hint": "Basin-level water planning and spatial planning that links road routing, forest safeguards, and shared resilience standards could help keep these largely aligned agendas pulling in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -87,9 +87,9 @@
     },
     "synthesis": {
       "storyline_name": "Shared drought resilience through land and water planning",
-      "reinforce": "The two documents largely align around drought resilience, climate adaptation, and sustainable management of land-dependent production systems. This recurs through links between LDN land restoration, adaptation mainstreaming, awareness and capacity building, and NAP instruments such as farmer training, drought and flood basin plans, climate-risk information, irrigation access, and climate-smart agriculture.",
+      "reinforce": "The two documents largely align around drought adaptation, resilient land management, and support measures that help agriculture and ecosystems cope with climate risk. This recurs through basin drought and flood planning, farmer awareness and capacity building, sustainable agriculture practices, and enabling measures such as financing, technology transfer, coordination, and capacity development.",
       "clash": "A recurring possible misalignment appears around resource competition for water. The review cases all point to agricultural irrigation expansion or water development in non-irrigated zones potentially increasing demand on finite water resources that drought-vulnerable ecosystems and land restoration efforts also depend on.",
-      "coordination_hint": "Joint basin or watershed planning, linking irrigation expansion with water allocation, efficiency measures, and land-management safeguards, could help keep adaptation and land resilience measures pulling in the same direction.",
+      "coordination_hint": "Joint watershed-scale planning on irrigation access, drought measures, and land-management safeguards could help these agendas pull in the same direction while managing possible pressure on shared water resources.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -104,9 +104,9 @@
     "contradiction_types": {},
     "synthesis": {
       "storyline_name": "Shared land-use planning and ecosystem restoration pathways",
-      "reinforce": "The documents often align through land-use planning, sustainable land management, and restoration of degraded ecosystems, especially where LDN objectives on combating desertification connect with NBSAP targets on protected areas, restoration, pollution reduction, and sustainable management of agriculture and forestry landscapes. A second recurring pattern is enabling support, including capacity development, financing, technology transfer, awareness-raising, and inclusive participation, which tends to support biodiversity actions such as climate adaptation, information systems, business disclosure, and stakeholder-based decision-making.",
+      "reinforce": "The two documents largely align around spatial planning, sustainable land management, and restoration of degraded ecosystems, especially where desertification responses overlap with biodiversity-inclusive planning, protected areas, and restoration priorities. A second recurring pattern is enabling support through finance, capacity development, awareness, participation, and inclusive governance, which often points to shared delivery channels for sustainable agriculture, pollution reduction, climate adaptation, and ecosystem management.",
       "clash": "No recurring possible misalignment in this set.",
-      "coordination_hint": "Joint planning, financing, and monitoring across restoration, spatial planning, and sustainable production landscapes could help both documents pull in the same direction.",
+      "coordination_hint": "Joint use of land-use planning, restoration prioritization, and shared capacity or financing platforms could help connect land degradation neutrality actions with biodiversity conservation delivery.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -122,10 +122,10 @@
       "resource_competition": 1
     },
     "synthesis": {
-      "storyline_name": "Shared climate-resilient land and water planning",
-      "reinforce": "The two documents often pull in the same direction on climate-resilient land management, through adaptation mainstreaming in the LDN strategy and NDC measures such as agro-ecological practices, afforestation and reforestation, climate services, early warning, and land-use monitoring. Alignment also recurs around enabling instruments, including finance mobilization, awareness and education, cross-actor cooperation, gender-inclusive participation, and planning for vulnerable communities' food security and water access.",
-      "clash": "Possible misalignment appears only once in this set, around drought resilience and scaled-up solar irrigation. The review point is that irrigation expansion could compete for scarce water in drought-affected areas unless water allocation, efficiency safeguards, and groundwater or basin management are coordinated.",
-      "coordination_hint": "Joint planning between land, agriculture, water, and climate actors could help connect adaptation, irrigation, and land-restoration measures in the same drought-prone areas.",
+      "storyline_name": "Climate-resilient land and ecosystem planning linkages",
+      "reinforce": "The documents often align through resilience-oriented land planning, adaptation mainstreaming, and enabling systems such as finance, awareness, monitoring, climate services, and early warning. This recurs most clearly where LDN objectives on drought resilience, land productivity, ecosystem services, food and water access, and cross-actor cooperation support NDC measures on agro-ecological practices, afforestation and reforestation, land-use monitoring, protected-area resilience, and climate-smart agriculture.",
+      "clash": "Possible misalignment appears only once in this set. It points to resource competition around water, where scaling up solar irrigation in drought-affected areas could increase withdrawals from the same water sources that LDN drought-resilience efforts aim to protect for ecosystems and vulnerable populations.",
+      "coordination_hint": "Joint water allocation, basin or groundwater planning, and use of climate and monitoring data could help keep irrigation expansion and drought-resilience measures pulling in the same direction.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -142,10 +142,10 @@
       "resource_competition": 3
     },
     "synthesis": {
-      "storyline_name": "Agricultural adaptation linked to biodiversity planning",
-      "reinforce": "Across many pairs, the NAP and NBSAP align through enabling measures that connect climate-resilient agriculture, fisheries, and water management with biodiversity outcomes. Recurring links include climate-risk mapping, research, learning centers, incentive reform, and spatial planning, which often point to more sustainable land, water, and aquatic habitat management, even when the delivery pathways remain indirect.",
-      "clash": "Possible misalignment recurs mainly where agricultural water development and irrigation access could overlap with biodiversity-inclusive spatial planning, ecosystem restoration, protected or conserved inland water areas, and pollution-reduction efforts. A smaller recurring pattern also appears where wider uptake of precision farming could increase input use unless it is designed around nutrient, pesticide, and water-quality safeguards.",
-      "coordination_hint": "Joint zoning, watershed planning, and farm-input standards could help align irrigation, water-resource development, and precision agriculture with conservation, restoration, and pollution-control objectives where the same landscapes or inland waters are involved.",
+      "storyline_name": "Agricultural adaptation linked with biodiversity planning",
+      "reinforce": "Across many pairs, the NAP and NBSAP align through enabling measures that connect climate-resilient agriculture, fisheries, and water management with biodiversity outcomes. Recurring links include climate-risk mapping, research, learning centers, incentive reform, and spatial planning, which often support more sustainable land, water, and aquatic habitat management even when the delivery pathways differ.",
+      "clash": "Possible misalignment recurs around agricultural water development and irrigation expansion in non-irrigated zones, especially where these activities may overlap with biodiversity-inclusive spatial planning, ecosystem restoration, protected areas, or inland water conservation. A second recurring issue is that wider irrigation access or lower-cost precision farming could increase runoff, chemical use, or pressure on shared land and water resources unless biodiversity safeguards are built into delivery.",
+      "coordination_hint": "Joint spatial planning, watershed-level coordination, and shared standards for irrigation, water allocation, and input-efficient farming could help keep adaptation delivery aligned with restoration, conservation, and pollution-reduction objectives.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -162,10 +162,10 @@
       "delivery_friction": 2
     },
     "synthesis": {
-      "storyline_name": "Shared climate resilience through water and agriculture",
-      "reinforce": "The two documents often pull in the same direction through basin planning, telemetry, early warning, hydrological data systems, and subnational disaster-risk capacity, especially around drought, floods, and water security. They also align with farm-level adaptation measures such as sustainable agriculture, climate-resilient crop varieties, improved practices, research, and information systems that support food security and climate resilience.",
-      "clash": "Possible misalignment recurs mainly around competition for finite water and land resources. The review pairs often point to irrigation expansion, agricultural water development, or shifts in farmland use potentially competing with drought and flood basin management, piped water services, aquatic habitat restoration, or forest protection and afforestation where the same basins or landscapes overlap.",
-      "coordination_hint": "Joint basin and land-use planning, with shared water-allocation rules, siting, and environmental safeguards, could help keep irrigation, forest, fisheries, and WASH actions compatible in overlapping areas.",
+      "storyline_name": "Shared water, risk, and climate information systems",
+      "reinforce": "The two documents often pull in the same direction through basin planning, early warning, telemetry, hydrological data systems, and climate-resilient WASH measures. A recurring pattern is that NDC actions on forecasting, subnational disaster-risk capacity, digital reporting, and resilient service systems align with NAP goals on water security, drought and flood planning, and climate-resilient agriculture.",
+      "clash": "Possible misalignment recurs mainly around competing claims on water and land. The review cases often point to irrigation expansion, water-resource development, or agricultural production measures potentially overlapping with drought and flood basin management, aquatic habitat restoration, piped water supply, and forest protection or afforestation in the same landscapes or catchments.",
+      "coordination_hint": "Joint basin and land-use planning, with shared water-allocation rules, environmental-flow safeguards, and siting decisions, could help keep irrigation, habitat restoration, forest measures, and resilient water services compatible.",
       "confidence": "high"
     },
     "synthesis_error": null
@@ -181,10 +181,113 @@
       "delivery_friction": 5
     },
     "synthesis": {
-      "storyline_name": "Shared enabling systems for biodiversity-resilient climate action",
-      "reinforce": "The two documents often pull in the same direction through enabling systems, especially biodiversity data and information platforms, research and knowledge management, gender-responsive planning, and community capacity for adaptation and disaster risk reduction. They also align with practical nature-climate delivery mechanisms such as nature-based solutions, restoration, sustainable food and agriculture practices, and policy or finance tools including payment for ecosystem services and biodiversity mainstreaming in public and private decisions.",
-      "clash": "Possible misalignment recurs mainly where biodiversity-inclusive spatial planning, inland water restoration, protected or conserved inland waters, and invasive-species control meet new road construction or expanded inland waterborne transport. The review cases often point to shared geographies, especially high-biodiversity areas and inland waterways, where routing, siting, navigation works, or increased vessel movement could complicate delivery unless biodiversity safeguards are built in.",
-      "coordination_hint": "Joint spatial planning, shared biodiversity data, and early design of routing, restoration, and biosecurity measures could help these documents support each other in transport and inland water areas.",
+      "storyline_name": "Shared biodiversity mainstreaming and inland water siting",
+      "reinforce": "The two documents often pull in the same direction through enabling systems, especially biodiversity data and information platforms, gender-responsive and inclusive planning, research and knowledge management, and integration of biodiversity values into policy, finance, and private-sector decisions. They also align with climate and livelihood actions that use ecosystem-based approaches, forest and heritage restoration, sustainable food systems, and payment for ecosystem services as practical delivery mechanisms.",
+      "clash": "Possible misalignment recurs around inland waterways and new transport or road infrastructure where routing, construction, or intensified use may overlap with high-biodiversity areas, inland water restoration, protected areas, or invasive-species pathway control. The review cases often point to shared spatial footprints, especially in inland waters, where transport upgrades and biodiversity management would need to be sequenced and designed carefully to be delivered together.",
+      "coordination_hint": "Joint spatial planning, shared biodiversity screening for transport corridors and waterways, and early use of invasive-species and restoration data could help these agendas move together.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "CCS",
+    "doc_b": "FSP",
+    "label_a": "CCS (Climate strategy)",
+    "label_b": "FSP (Food security)",
+    "aligned_count": 230,
+    "flagged_count": 49,
+    "contradiction_types": {
+      "resource_competition": 18,
+      "delivery_friction": 23,
+      "goal_conflict": 8
+    },
+    "synthesis": {
+      "storyline_name": "Climate-resilient agriculture and resource stewardship",
+      "reinforce": "The two documents often pull in the same direction on climate-resilient food production, especially through climate-smart agriculture, drought-resilient seeds, irrigation, crop diversification, agroforestry, post-harvest storage, and food-chain standards. Alignment also recurs through enabling instruments, such as adaptation-aware planning and budgeting, climate-proofing of infrastructure, water management, early warning, and governance capacity that could support more resilient agricultural production and supply chains.",
+      "clash": "Possible misalignment recurs most often around shared water and land claims, where water-source protection, integrated water resources management, rangeland management, coastal ecosystem rehabilitation, and forest restoration may compete with irrigation expansion, new cropland, livestock growth, fodder production, rural agricultural relocation, and cash-crop expansion. A second recurring pattern concerns mitigation, where economy-wide emissions reduction and forest-related objectives could be harder to deliver if food production support relies on emissions-intensive energy, expanded livestock systems, or agricultural sourcing that increases pressure on forest land.",
+      "coordination_hint": "Basin-level water allocation, land-use zoning, and conditions linking food-production support to climate-smart, low-emissions, and forest-safe practices could help both documents remain aligned in implementation.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSP",
+    "doc_b": "LDN",
+    "label_a": "FSP (Food security)",
+    "label_b": "LDN (Land degradation)",
+    "aligned_count": 183,
+    "flagged_count": 18,
+    "contradiction_types": {
+      "delivery_friction": 15,
+      "resource_competition": 3
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural land management and drought planning links",
+      "reinforce": "The two documents often pull in the same direction where food security measures include soil protection, fertility improvement, crop rotation, agroforestry, tree planting, and water-saving irrigation, which aligns with LDN aims on sustainable land management, desertification response, and drought resilience planning. A broader recurring pattern is that FSP production systems, seed reserves, traceability, storage, and good-practice standards can support more resilient agricultural landscapes, even when the LDN side is framed mainly as planning, awareness, or enabling action.",
+      "clash": "Possible misalignment recurs where FSP promotes expansion of cropland, irrigation, fodder, cash crops, rural agricultural settlement, and livestock production, while LDN focuses on improving ecosystem condition, reducing drought vulnerability, and combating desertification. The review cases often point to delivery pathways that could increase pressure on land and water in dry or degradation-prone areas, with a smaller but repeated pattern of resource competition around irrigation water and other scarce dryland resources.",
+      "coordination_hint": "Joint land-use, irrigation, and livestock siting processes could help align production expansion with drought-sensitive zoning, sustainable land management practices, and desertification safeguards.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSP",
+    "doc_b": "NAP",
+    "label_a": "FSP (Food security)",
+    "label_b": "NAP (Adaptation)",
+    "aligned_count": 863,
+    "flagged_count": 18,
+    "contradiction_types": {
+      "delivery_friction": 4,
+      "resource_competition": 14
+    },
+    "synthesis": {
+      "storyline_name": "Climate-resilient agricultural production and water demand",
+      "reinforce": "The two documents often pull in the same direction on climate-resilient agriculture, especially where FSP production measures align with NAP tools such as irrigation access, climate-risk mapping, climate-resilient varieties, early warning and knowledge networks, and improved farm management. This recurs across cropland, livestock, soil management, and food-system support measures, where adaptation instruments could support more resilient production and food security outcomes.",
+      "clash": "Possible misalignment recurs mainly around water use, where FSP expansion of irrigated cropland, fodder, greenhouses, livestock, and raw-material supply could increase pressure on basin water resources that the NAP links to water security and drought prevention. A smaller recurring pattern concerns delivery choices for agricultural expansion and energy support near aquatic habitats or biodiversity resources, which could affect fisheries restoration or sustainable biodiversity management depending on siting and safeguards.",
+      "coordination_hint": "Basin-level water allocation, siting, and environmental safeguard coordination could help these documents support food production goals while also maintaining drought planning, water security, and aquatic habitat objectives.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSP",
+    "doc_b": "NBSAP",
+    "label_a": "FSP (Food security)",
+    "label_b": "NBSAP (Nature)",
+    "aligned_count": 251,
+    "flagged_count": 94,
+    "contradiction_types": {
+      "delivery_friction": 79,
+      "goal_conflict": 9,
+      "resource_competition": 6
+    },
+    "synthesis": {
+      "storyline_name": "Biodiversity-sensitive management of food production systems",
+      "reinforce": "The two documents often pull in the same direction where food-system standards, traceability, training, and pasture or crop management can be used to deliver more biodiversity-sensitive agriculture. Recurring aligned pairs point to practical links through good agricultural practices and certification, herd numbers matched to pasture capacity, soil protection and crop rotation, and supply-chain registration that supports oversight of sourcing and business impacts.",
+      "clash": "Possible misalignment recurs mainly around delivery pathways for expanding production, especially new cropland, fodder and cash-crop cultivation, intensive livestock and farm support, irrigation and water infrastructure, fertiliser production, and energy or financial support for scaling food output. These measures could overlap with biodiversity-inclusive spatial planning, ecosystem restoration, pollution reduction, species protection, and reform of biodiversity-harmful incentives if siting, subsidy design, sourcing, and input use are not coordinated.",
+      "coordination_hint": "Joint land-use screening, biodiversity criteria in agricultural finance and infrastructure support, and shared standards for sourcing, pollution control, and biosecurity could help these agendas align in implementation.",
+      "confidence": "high"
+    },
+    "synthesis_error": null
+  },
+  {
+    "doc_a": "FSP",
+    "doc_b": "NDC",
+    "label_a": "FSP (Food security)",
+    "label_b": "NDC (Climate)",
+    "aligned_count": 858,
+    "flagged_count": 58,
+    "contradiction_types": {
+      "delivery_friction": 35,
+      "resource_competition": 9,
+      "goal_conflict": 14
+    },
+    "synthesis": {
+      "storyline_name": "Agricultural resilience support alongside land-use pressures",
+      "reinforce": "The documents often pull in the same direction on making agri-food systems more resilient, through climate-smart crop and livestock practices, resilient processing, storage and logistics, stronger seed systems, training, standards, and local risk-management capacity. Alignment also recurs where food-system infrastructure such as storage, traceability, laboratories, reserves, and energy supply could support climate-related preparedness, lower losses, and more reliable food provision.",
+      "clash": "Possible misalignment recurs mainly where FSP measures expand cropland, fodder, livestock, rural agricultural activity, irrigation, or factory-linked raw material supply, while NDC measures protect forests, expand forest cover, restore ecosystems, or support biodiversity resilience. A smaller pattern also appears where livestock expansion may conflict with sustainable diet shifts, and where domestic fertiliser production could face tighter air-quality compliance requirements.",
+      "coordination_hint": "Joint land-use zoning, siting, and safeguard design, especially across agriculture, forest, biodiversity, water, and industrial permitting decisions, could help keep the stronger implementation links while limiting possible misalignment.",
       "confidence": "high"
     },
     "synthesis_error": null

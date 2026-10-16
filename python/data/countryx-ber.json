@@ -1,0 +1,202 @@
+{
+  "_provenance": "Illustrative, for the fictional Country X: budget lines and spending copied from one pilot country's BIOFIN Biodiversity Expenditure Review, its two complete years (2020 and 2021), renumbered, converted to US$ at an indicative rate and rounded to US$10,000 (python/scripts/build_countryx_layers.py). Not any real country's spending.",
+  "programs": [
+    {
+      "code": "P01",
+      "name": "Waste management",
+      "description": "Implementation of the Law on Waste and national and local waste management programs.",
+      "type": "environmental"
+    },
+    {
+      "code": "P02",
+      "name": "Afforestation",
+      "description": "State institutions responsible for forestry, including the Forestry Agency and inter-district forest units.",
+      "type": "environmental"
+    },
+    {
+      "code": "P03",
+      "name": "Water resource, lake and river management",
+      "description": "Water Authority, Freshwater Resources and Nature Conservation Center, River Basin Administrations.",
+      "type": "environmental"
+    },
+    {
+      "code": "P04",
+      "name": "Security of protected areas",
+      "description": "Protection regimes for protected areas, management plans, monitoring, and information databases.",
+      "type": "environmental"
+    },
+    {
+      "code": "P05",
+      "name": "Environmental pollution and degradation",
+      "description": "Air pollution quality control, alternative products, waste collection/transport/disposal/recycling.",
+      "type": "environmental"
+    },
+    {
+      "code": "P06",
+      "name": "Air pollution abatement, climate change",
+      "description": "National Program on Air and Environmental Pollution Reduction and climate change policies.",
+      "type": "environmental"
+    },
+    {
+      "code": "P07",
+      "name": "Meteorology",
+      "description": "Hydrological and meteorological research, weather forecasts, early warnings, and climate resource use.",
+      "type": "environmental"
+    },
+    {
+      "code": "P08",
+      "name": "Reduce land degradation and prevent from desertification",
+      "description": "National Action Program to Combat Desertification.",
+      "type": "environmental"
+    },
+    {
+      "code": "P09",
+      "name": "Environment policy and administration",
+      "description": "Government institutions responsible for environmental governance: legal framework, policy implementation.",
+      "type": "environmental"
+    },
+    {
+      "code": "P10",
+      "name": "R&D Environment",
+      "description": "Research on preventing environmental pollution and degradation.",
+      "type": "environmental"
+    },
+    {
+      "code": "P11",
+      "name": "Environment protection, recovery",
+      "description": "Environmental protection and restoration: water, forest, plant, wildlife, genetic resources.",
+      "type": "environmental"
+    },
+    {
+      "code": "P12",
+      "name": "Air pollution reduction",
+      "description": "Reducing and preventing air pollution.",
+      "type": "non_environmental"
+    },
+    {
+      "code": "P13",
+      "name": "Solid waste and environmental pollution removal and cleaning services",
+      "description": "Environmental cleaning, public road cleaning, waste removal.",
+      "type": "non_environmental"
+    }
+  ],
+  "expenditure": [
+    {
+      "code": "P01",
+      "name": "Waste management",
+      "values": {
+        "2020": 0.14,
+        "2021": 0.2
+      }
+    },
+    {
+      "code": "P02",
+      "name": "Afforestation",
+      "values": {
+        "2020": 1.77,
+        "2021": 1.51
+      }
+    },
+    {
+      "code": "P03",
+      "name": "Water resource, lake and river management",
+      "values": {
+        "2020": 1.28,
+        "2021": 1.42
+      }
+    },
+    {
+      "code": "P04",
+      "name": "Security of protected areas",
+      "values": {
+        "2020": 2.96,
+        "2021": 3.04
+      }
+    },
+    {
+      "code": "P05",
+      "name": "Environmental pollution and degradation",
+      "values": {
+        "2020": 0.12,
+        "2021": 0.14
+      }
+    },
+    {
+      "code": "P06",
+      "name": "Air pollution abatement, climate change",
+      "values": {
+        "2020": 21.97,
+        "2021": 29.45
+      }
+    },
+    {
+      "code": "P07",
+      "name": "Meteorology",
+      "values": {
+        "2020": 8.81,
+        "2021": 8.72
+      }
+    },
+    {
+      "code": "P08",
+      "name": "Reduce land degradation and prevent from desertification",
+      "values": {
+        "2020": 0.14,
+        "2021": 0.26
+      }
+    },
+    {
+      "code": "P09",
+      "name": "Environment policy and administration",
+      "values": {
+        "2020": 6.7,
+        "2021": 6.29
+      }
+    },
+    {
+      "code": "P10",
+      "name": "R&D Environment",
+      "values": {
+        "2020": 0.03,
+        "2021": 0.0
+      }
+    },
+    {
+      "code": "P11",
+      "name": "Environment protection, recovery",
+      "values": {
+        "2020": 3.22,
+        "2021": 3.16
+      }
+    },
+    {
+      "code": "P12",
+      "name": "Air pollution reduction",
+      "values": {
+        "2020": 0.7,
+        "2021": null
+      }
+    },
+    {
+      "code": "P13",
+      "name": "Solid waste and environmental pollution removal and cleaning services",
+      "values": {
+        "2020": 12.96,
+        "2021": 12.29
+      }
+    }
+  ],
+  "currency": "US$",
+  "unit": "million",
+  "period": {
+    "start": 2020,
+    "end": 2021
+  },
+  "scope": {
+    "publicSpending": {
+      "2020": 4026.96,
+      "2021": 4539.71
+    },
+    "illustrative": true
+  }
+}

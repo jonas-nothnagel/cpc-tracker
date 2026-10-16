@@ -2924,5 +2924,579 @@
    }
   ],
   "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_1",
+  "text": "To draft legislation aimed at establishing a legal framework for ensuring food supply and safety, to submit the draft law to Parliament during the 2022 autumn and 2023 spring ordinary sessions; to reduce the country's reliance on imported food raw materials and products through tariff regulation, draft legislation aimed at creating a legal environment to increase the variety and volume of export-oriented food and agricultural products, and submit it to Parliament by 2022",
+  "sourceDocument": "FSP",
+  "sourceLabel": "1.1 Food/agri legislation drafts",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To draft legislation aimed at establishing a legal framework for ensuring food supply and safety, to submit the draft law to Parliament during the 2022 autumn and 2023 spring ordinary sessions; to reduce the country's reliance on imported food raw materials and products through tariff regulation, draft legislation aimed at creating a legal environment to increase the variety and volume of export-oriented food and agricultural products, and submit it to Parliament by 2022",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "FSP_2",
+  "text": "To draft and submit to Parliament a bill to amend the relevant legislation on establishing an optimal system for the provision of meals and food for children",
+  "sourceDocument": "FSP",
+  "sourceLabel": "1.2 Children's food legislation",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To draft and submit to Parliament a bill to amend the relevant legislation on establishing an optimal system for the provision of meals and food for children",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "FSP_3",
+  "text": "Develop and approve a revised methodology for calculating food safety statistical indicators, Analyse and evaluate all food-related standards, and update or newly adopt the necessary standards, technical regulations, and guidance documents on good practices for each stage of the food chain",
+  "sourceDocument": "FSP",
+  "sourceLabel": "1.3 Food safety standards methodology",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop and approve a revised methodology for calculating food safety statistical indicators, Analyse and evaluate all food-related standards, and update or newly adopt the necessary standards, technical regulations, and guidance documents on good practices for each stage of the food chain",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_4",
+  "text": "Develop and approve a registration procedure for tracing the origin of raw materials and products of animal origin, as well as plant and plant-derived food, through to the final product, and migrate it to the unified electronic registration system.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "1.4 Traceability for animal/plant origin food",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop and approve a registration procedure for tracing the origin of raw materials and products of animal origin, as well as plant and plant-derived food, through to the final product, and migrate it to the unified electronic registration system.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_5",
+  "text": "Develop and approve regulations on the establishment and utilisation of seasonal food reserves.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "1.5 Seasonal food reserves regulations",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Develop and approve regulations on the establishment and utilisation of seasonal food reserves.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_6",
+  "text": "Determining food safety indicators, monitoring pesticide residues, veterinary drug residues, high-toxicity bacteria and heavy metal residues, and approving the control plan.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "1.6 Food safety indicators and control plan",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Determining food safety indicators, monitoring pesticide residues, veterinary drug residues, high-toxicity bacteria and heavy metal residues, and approving the control plan.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_7",
+  "text": "To study and resolve the issue of establishing a Food Science and Research Institute",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.1 Food Science and Research Institute",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To study and resolve the issue of establishing a Food Science and Research Institute",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_8",
+  "text": "Enforce compliance with standard and technical regulation requirements in livestock farming, crop cultivation, food production, storage, transport, trade, food service and catering, and implement good practices in food-related activities at every stage of the food chain, Implement a control and management system, and increase the number of accredited bodies authorised to certify it.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.2 Good practices and accredited certification",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Enforce compliance with standard and technical regulation requirements in livestock farming, crop cultivation, food production, storage, transport, trade, food service and catering, and implement good practices in food-related activities at every stage of the food chain, Implement a control and management system, and increase the number of accredited bodies authorised to certify it.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_9",
+  "text": "To enhance internal controls on whether the safety requirements for raw materials, products, and their production and supply are fully met, and to refine the external monitoring system, intensify control activities",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.3 Internal and external food-safety oversight",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To enhance internal controls on whether the safety requirements for raw materials, products, and their production and supply are fully met, and to refine the external monitoring system, intensify control activities",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_10",
+  "text": "To restructure state-owned universities and professional-vocational training centres in the fields of food, agriculture and light industry, modernise their organisational structure, improve the quality of training, provide tuition fee support for students in these priority areas, and enhance the skills of qualified professionals, to create stable working conditions for professional personnel, and to include the necessary funding in national and local budgets.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.4 Sector universities and vocational training reform",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To restructure state-owned universities and professional-vocational training centres in the fields of food, agriculture and light industry, modernise their organisational structure, improve the quality of training, provide tuition fee support for students in these priority areas, and enhance the skills of qualified professionals, to create stable working conditions for professional personnel, and to include the necessary funding in national and local budgets.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_11",
+  "text": "To ensure a stable supply of the infrastructure, energy, steam, heat and fuel sources required to guarantee food supply and safety and to increase domestic production of food products that replace imports.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.5 Stable energy, heat, fuel for food production",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To ensure a stable supply of the infrastructure, energy, steam, heat and fuel sources required to guarantee food supply and safety and to increase domestic production of food products that replace imports.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_12",
+  "text": "To revive, promote and introduce traditional food preparation methods and technologies, adapted to the unique natural, geographical and climatic characteristics of the country, into everyday use, Establish and support a system for creating innovative products based on traditional food preparation knowledge.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.6 Traditional national food technologies",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To revive, promote and introduce traditional food preparation methods and technologies, adapted to the unique natural, geographical and climatic characteristics of the country, into everyday use, Establish and support a system for creating innovative products based on traditional food preparation knowledge.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "FSP_13",
+  "text": "To support citizens and businesses that have relocated from the capital to rural areas to engage in livestock farming and agriculture, in order to ensure a balance between urban and rural development and to curb centralisation.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.7 Rural relocation support for agri/livestock",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To support citizens and businesses that have relocated from the capital to rural areas to engage in livestock farming and agriculture, in order to ensure a balance between urban and rural development and to curb centralisation.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_14",
+  "text": "Create opportunities to introduce and promote domestically produced branded products at international and regional exhibitions and trade fairs, and to establish and support the legal framework for their export.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "2.8 National brand exports and trade fairs",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Create opportunities to introduce and promote domestically produced branded products at international and regional exhibitions and trade fairs, and to establish and support the legal framework for their export.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_15",
+  "text": "To convert up to 200,000 hectares of newly reclaimed land into agricultural land for the purpose of improving the use of agricultural land and increasing plot sizes, bring the area under rotation to 1.1 million hectares, increase irrigated cropland by 5,000 hectares, and align agricultural land with the national land-use planning scheme",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.1 200,000 ha new cropland; 1.1M ha rotation",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To convert up to 200,000 hectares of newly reclaimed land into agricultural land for the purpose of improving the use of agricultural land and increasing plot sizes, bring the area under rotation to 1.1 million hectares, increase irrigated cropland by 5,000 hectares, and align agricultural land with the national land-use planning scheme",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_16",
+  "text": "Utilisation and protection of plant genetic resources, establishment of a seed reserve for locally adapted varieties, and the creation of a system for the production of seeds of cereals, potatoes, vegetables, fruits, berries and other useful crops, Based on the activities of the Plant and Agricultural Environment Institute, establish at the national level four wheat, feed, 2 fodder, 5 vegetable, 4 potato, a total of 15 seed farms, and to develop variety testing activities on a scientific basis.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.2 15 seed farms; plant genetic resources",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Utilisation and protection of plant genetic resources, establishment of a seed reserve for locally adapted varieties, and the creation of a system for the production of seeds of cereals, potatoes, vegetables, fruits, berries and other useful crops, Based on the activities of the Plant and Agricultural Environment Institute, establish at the national level four wheat, feed, 2 fodder, 5 vegetable, 4 potato, a total of 15 seed farms, and to develop variety testing activities on a scientific basis.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_17",
+  "text": "‘System for Agricultural Production’ adhere to the technological documentation, introduce advanced technologies with soil degradation reduction, fertility protection and improvement, and proper crop rotation, and carry out corresponding technical and technological modernisation",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.3 National crop system technology",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "‘System for Agricultural Production’ adhere to the technological documentation, introduce advanced technologies with soil degradation reduction, fertility protection and improvement, and proper crop rotation, and carry out corresponding technical and technological modernisation",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "FSP_18",
+  "text": "Provide organisational and financial support to increase fodder cultivation and production, and to raise the domestic supply of feed required for intensive livestock farming and auxiliary farms to 1.9 million tonnes.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.4 Fodder production to 1.9M tonnes",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Provide organisational and financial support to increase fodder cultivation and production, and to raise the domestic supply of feed required for intensive livestock farming and auxiliary farms to 1.9 million tonnes.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_19",
+  "text": "To plan and implement policies and actions aimed at expanding greenhouse cultivation to 270 hectares, to ensure a stable, year-round supply of fresh produce for the population, Establish a 50-hectare winter greenhouse complex in areas with adequate heating supply and infrastructure.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.5 Greenhouses to 270 ha; 50 ha winter complex",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To plan and implement policies and actions aimed at expanding greenhouse cultivation to 270 hectares, to ensure a stable, year-round supply of fresh produce for the population, Establish a 50-hectare winter greenhouse complex in areas with adequate heating supply and infrastructure.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_20",
+  "text": "To develop domestic fertiliser production to replenish soil nutrients and increase crop quality and yield, thereby replacing imports, To develop the technical and economic feasibility of establishing nitrogen and phosphorus fertiliser plants based on mining enterprises to support exports, and to ensure their implementation.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.6 Domestic nitrogen and phosphorus fertiliser",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To develop domestic fertiliser production to replenish soil nutrients and increase crop quality and yield, thereby replacing imports, To develop the technical and economic feasibility of establishing nitrogen and phosphorus fertiliser plants based on mining enterprises to support exports, and to ensure their implementation.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_21",
+  "text": "Focus on increasing the cultivation of all types of rice, sugar beet, and other cash crops, and establish an optimal system for financing and lending, as well as provide policy support",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.7 Rice, sugar beet, cash crop expansion",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Focus on increasing the cultivation of all types of rice, sugar beet, and other cash crops, and establish an optimal system for financing and lending, as well as provide policy support",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_22",
+  "text": "Increase the capacity of grain elevators meeting standard requirements by 20,000 tonnes and the capacity of mechanised warehouses and cellars for storing potatoes and vegetables by 50,000 tonnes, respectively, on a regional basis.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.8 Grain elevator +20,000 t; potato +50,000 t",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase the capacity of grain elevators meeting standard requirements by 20,000 tonnes and the capacity of mechanised warehouses and cellars for storing potatoes and vegetables by 50,000 tonnes, respectively, on a regional basis.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_23",
+  "text": "To overcome the risks of climate change, introduce advanced, environmentally friendly irrigation technology that uses water properly, and construct new irrigation systems, restore, renovate and refurbish, and establish reservoirs, ponds and dams with basins to create the necessary financial resources and provide support for their construction.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.9 Modern irrigation and water-storage ponds",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To overcome the risks of climate change, introduce advanced, environmentally friendly irrigation technology that uses water properly, and construct new irrigation systems, restore, renovate and refurbish, and establish reservoirs, ponds and dams with basins to create the necessary financial resources and provide support for their construction.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_24",
+  "text": "Within the framework of the policy and activities to implement the national tree-planting movement, establish 30 hectares of agroforestry in the provincial centre and 10 hectares in the district centre, respectively, a fruit and berry seedling propagation centre, develop nursery enterprises, and fence off agricultural fields to establish forest belts",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.10 Tree-planting agroforestry: 30 ha province, 10 ha district",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Within the framework of the policy and activities to implement the national tree-planting movement, establish 30 hectares of agroforestry in the provincial centre and 10 hectares in the district centre, respectively, a fruit and berry seedling propagation centre, develop nursery enterprises, and fence off agricultural fields to establish forest belts",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "FSP_25",
+  "text": "Build strategic reserves of at least 100,000 tonnes of food and seed red wheat from each year's autumn harvest",
+  "sourceDocument": "FSP",
+  "sourceLabel": "3.11 Strategic wheat reserve: 100,000 tonnes",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Build strategic reserves of at least 100,000 tonnes of food and seed red wheat from each year's autumn harvest",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_26",
+  "text": "To establish a proper ratio of livestock headcount to pasture capacity, Collaborate with the administration and local authorities to protect animal health, increase the yield per animal, improve animal quality, and enhance the role and participation of herders.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "4.1 Pasture-carrying-capacity-aligned herd",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To establish a proper ratio of livestock headcount to pasture capacity, Collaborate with the administration and local authorities to protect animal health, increase the yield per animal, improve animal quality, and enhance the role and participation of herders.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_27",
+  "text": "Livestock, livestock raw materials, develop target markets for products, establish an optimal supply chain for procurement, primary processing and marketing, establish and modernise model cooperatives, and support the cooperative movement in all respects",
+  "sourceDocument": "FSP",
+  "sourceLabel": "4.2 Livestock supply chains and model cooperatives",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Livestock, livestock raw materials, develop target markets for products, establish an optimal supply chain for procurement, primary processing and marketing, establish and modernise model cooperatives, and support the cooperative movement in all respects",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_28",
+  "text": "To develop intensive livestock farming near towns and settlements and in agricultural regions, with 50.0 thousand head of beef-oriented breeds and 50.0 thousand head of dairy-oriented breeds, to establish core breeding flocks for meat and fine-wool sheep, to import high-yield animal embryos from abroad under a unified policy, and to introduce biotechnological advances into breeding and selection work, to protect livestock gene pools, intensify breeding and technological work, support the operations of units in this field, and include the necessary funding in the budget",
+  "sourceDocument": "FSP",
+  "sourceLabel": "4.3 Intensive beef/dairy 50,000 head each",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To develop intensive livestock farming near towns and settlements and in agricultural regions, with 50.0 thousand head of beef-oriented breeds and 50.0 thousand head of dairy-oriented breeds, to establish core breeding flocks for meat and fine-wool sheep, to import high-yield animal embryos from abroad under a unified policy, and to introduce biotechnological advances into breeding and selection work, to protect livestock gene pools, intensify breeding and technological work, support the operations of units in this field, and include the necessary funding in the budget",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_29",
+  "text": "Increase enterprise participation in the expansion and establishment of pig, poultry, and fattening lamb and cattle farms, providing long-term investment and financial support",
+  "sourceDocument": "FSP",
+  "sourceLabel": "4.4 Pig, poultry, fattening farm support",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Increase enterprise participation in the expansion and establishment of pig, poultry, and fattening lamb and cattle farms, providing long-term investment and financial support",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_30",
+  "text": "To develop beekeeping as a co-operative enterprise, increase its product output, and create opportunities for export.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "4.5 Cooperative beekeeping and exports",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To develop beekeeping as a co-operative enterprise, increase its product output, and create opportunities for export.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_31",
+  "text": "To swiftly implement comprehensive measures to combat highly contagious diseases in livestock and animals, introduce advanced biopreparate production, and establish a vaccine cold chain network, strengthen diagnostic laboratories, bolster the operations of veterinary service units, and include the necessary funding in national and local budgets",
+  "sourceDocument": "FSP",
+  "sourceLabel": "4.6 Veterinary disease control and cold chain",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To swiftly implement comprehensive measures to combat highly contagious diseases in livestock and animals, introduce advanced biopreparate production, and establish a vaccine cold chain network, strengthen diagnostic laboratories, bolster the operations of veterinary service units, and include the necessary funding in national and local budgets",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_32",
+  "text": "Food raw materials supplied by livestock farming and agriculture to refine the incentive system for domestically processed products that meet domestic market quality, hygiene and safety standards, and for those manufactured from food raw materials supplied by livestock farming and agriculture",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.1 Domestic processing incentives",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Food raw materials supplied by livestock farming and agriculture to refine the incentive system for domestically processed products that meet domestic market quality, hygiene and safety standards, and for those manufactured from food raw materials supplied by livestock farming and agriculture",
+    "url": ""
+   }
+  ],
+  "textCleanup": "cleaned"
+ },
+ {
+  "id": "FSP_33",
+  "text": "To provide financial support for the establishment and expansion of new factories for children's food, milk, vegetables, fruits, and fruit-based feeds, and for the domestic procurement and supply of their primary raw materials.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.2 Children's food, dairy, fruit/vegetable plants",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To provide financial support for the establishment and expansion of new factories for children's food, milk, vegetables, fruits, and fruit-based feeds, and for the domestic procurement and supply of their primary raw materials.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_34",
+  "text": "To increase the meal allowances for pupils in nurseries, state schools, vocational education and training institutions, and in boarding houses in line with nutritional requirements and the rate of inflation, Ensure the supervision and involvement of parents and guardians",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.3 Indexed meal allowances in schools",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To increase the meal allowances for pupils in nurseries, state schools, vocational education and training institutions, and in boarding houses in line with nutritional requirements and the rate of inflation, Ensure the supervision and involvement of parents and guardians",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_35",
+  "text": "Establish a system to provide financial support for the new establishment of processing plants for dry milk, table salt, edible oils, potatoes, various types of rice and sugar.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.4 New plants: dry milk, salt, oil, potato, sugar",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Establish a system to provide financial support for the new establishment of processing plants for dry milk, table salt, edible oils, potatoes, various types of rice and sugar.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_36",
+  "text": "Establish a new fleet of specialised food transport vehicles (road, rail and air) and create a system for transporting domestic and imported food raw materials and products.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.5 Specialised food-transport fleet",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Establish a new fleet of specialised food transport vehicles (road, rail and air) and create a system for transporting domestic and imported food raw materials and products.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_37",
+  "text": "Store food raw materials and products in specialised warehouses and storages that meet standard requirements, establish a unified registration system, support the supply of small and medium-sized equipment for drying, freezing and preserving, and develop domestic production of food containers and packaging",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.6 Standards-compliant food storage and packaging",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Store food raw materials and products in specialised warehouses and storages that meet standard requirements, establish a unified registration system, support the supply of small and medium-sized equipment for drying, freezing and preserving, and develop domestic production of food containers and packaging",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_38",
+  "text": "Fully utilising the capacity of food processing plants and modernising equipment to improve product flavour and quality, improve packaging and containers, increase product variety, develop export-oriented brands, and support stable factory operations with working capital",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.7 Equipment upgrade and export-brand development",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Fully utilising the capacity of food processing plants and modernising equipment to improve product flavour and quality, improve packaging and containers, increase product variety, develop export-oriented brands, and support stable factory operations with working capital",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_39",
+  "text": "Support production to increase dietary supplements, biologically active food products and functional foods",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.8 Functional foods and dietary supplements",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "Support production to increase dietary supplements, biologically active food products and functional foods",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_40",
+  "text": "To fully define food safety indicators nationwide by modernising laboratory analysis methodologies, Establish a system for pre-shipment laboratory analysis and inspection of exported and imported food raw materials and products, and take measures to strengthen border and national accredited laboratories.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.9 Lab methodology and accredited border labs",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To fully define food safety indicators nationwide by modernising laboratory analysis methodologies, Establish a system for pre-shipment laboratory analysis and inspection of exported and imported food raw materials and products, and take measures to strengthen border and national accredited laboratories.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
+ },
+ {
+  "id": "FSP_41",
+  "text": "To organise training, publicity and educational activities on the proper, appropriate and civilised consumption of food and drink.",
+  "sourceDocument": "FSP",
+  "sourceLabel": "5.10 Healthy-consumption awareness campaigns",
+  "country": "Country X",
+  "sources": [
+   {
+    "sourceText": "To organise training, publicity and educational activities on the proper, appropriate and civilised consumption of food and drink.",
+    "url": ""
+   }
+  ],
+  "textCleanup": "verbatim"
  }
 ]

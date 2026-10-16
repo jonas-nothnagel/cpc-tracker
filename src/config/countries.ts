@@ -169,7 +169,9 @@ export const COUNTRIES: CountryEntry[] = [
     // published policy-target text pooled from several countries' documents
     // and de-identified by hand (dev_data_scripts/ingest_countryx_14aug26.py).
     // iso3 "xcx" is in the ISO 3166-1 user-assigned range, so it can never
-    // collide with a real country. Coherence-only (Level 1).
+    // collide with a real country. Its reported actions (BTR) and reviewed
+    // spending (BER) are illustrative: one pilot country's records with every
+    // name replaced (python/scripts/build_countryx_layers.py). No NR7.
     iso3: "xcx",
     status: "demo",
     visible: true,
@@ -178,9 +180,9 @@ export const COUNTRIES: CountryEntry[] = [
     standalone: true,
     has: {
       coherence: true,
-      btr: { mitigation: false, adaptation: false },
+      btr: { mitigation: true, adaptation: true },
       nr7: false,
-      ber: false,
+      ber: true,
     },
   },
 ];

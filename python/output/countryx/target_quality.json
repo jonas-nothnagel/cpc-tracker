@@ -2924,5 +2924,579 @@
       "outcome": ""
     },
     "confidence": "high"
+  },
+  {
+    "targetId": "FSP_1",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "draft legislation aimed at establishing a legal framework for ensuring food supply and safety, to submit the draft law to Parliament during the 2022 autumn and 2023 spring ordinary sessions; to reduce the country's reliance on imported food raw materials and products through tariff regulation, draft legislation aimed at creating a legal environment to increase the variety and volume of export-oriented food and agricultural products, and submit it to Parliament by 2022",
+      "scope": "the country's reliance on imported food raw materials and products",
+      "outcome": "establishing a legal framework for ensuring food supply and safety"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_2",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "draft and submit to Parliament a bill to amend the relevant legislation",
+      "scope": "for children",
+      "outcome": "establishing an optimal system for the provision of meals and food for children"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_3",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and approve a revised methodology for calculating food safety statistical indicators, Analyse and evaluate all food-related standards, and update or newly adopt the necessary standards, technical regulations, and guidance documents on good practices",
+      "scope": "for each stage of the food chain",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_4",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and approve a registration procedure for tracing the origin of raw materials and products of animal origin, as well as plant and plant-derived food, through to the final product, and migrate it to the unified electronic registration system.",
+      "scope": "raw materials and products of animal origin, as well as plant and plant-derived food",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_5",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Develop and approve regulations on the establishment and utilisation of seasonal food reserves.",
+      "scope": "seasonal food reserves",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_6",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Determining food safety indicators, monitoring pesticide residues, veterinary drug residues, high-toxicity bacteria and heavy metal residues, and approving the control plan.",
+      "scope": "pesticide residues, veterinary drug residues, high-toxicity bacteria and heavy metal residues",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_7",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "",
+      "scope": "a Food Science and Research Institute",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_8",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Implement a control and management system, and increase the number of accredited bodies authorised to certify it.",
+      "scope": "in livestock farming, crop cultivation, food production, storage, transport, trade, food service and catering",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_9",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "enhance internal controls on whether the safety requirements for raw materials, products, and their production and supply are fully met, and to refine the external monitoring system, intensify control activities",
+      "scope": "for raw materials, products, and their production and supply",
+      "outcome": "whether the safety requirements for raw materials, products, and their production and supply are fully met"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_10",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "restructure state-owned universities and professional-vocational training centres in the fields of food, agriculture and light industry, modernise their organisational structure, improve the quality of training, provide tuition fee support for students in these priority areas, and enhance the skills of qualified professionals, to create stable working conditions for professional personnel, and to include the necessary funding in national and local budgets",
+      "scope": "state-owned universities and professional-vocational training centres in the fields of food, agriculture and light industry",
+      "outcome": "create stable working conditions for professional personnel"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_11",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "ensure a stable supply of the infrastructure, energy, steam, heat and fuel sources required",
+      "scope": "required to guarantee food supply and safety",
+      "outcome": "increase domestic production of food products that replace imports"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_12",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "introduce traditional food preparation methods and technologies, adapted to the unique natural, geographical and climatic characteristics of the country, into everyday use, Establish and support a system for creating innovative products based on traditional food preparation knowledge",
+      "scope": "adapted to the unique natural, geographical and climatic characteristics of the country",
+      "outcome": "into everyday use"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_13",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "citizens and businesses that have relocated from the capital to rural areas",
+      "outcome": "ensure a balance between urban and rural development and to curb centralisation"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_14",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Create opportunities to introduce and promote domestically produced branded products at international and regional exhibitions and trade fairs, and to establish and support the legal framework for their export",
+      "scope": "at international and regional exhibitions and trade fairs",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_15",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "convert up to 200,000 hectares of newly reclaimed land into agricultural land",
+      "scope": "newly reclaimed land",
+      "outcome": "improving the use of agricultural land and increasing plot sizes"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_16",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establish at the national level four wheat, feed, 2 fodder, 5 vegetable, 4 potato, a total of 15 seed farms, and to develop variety testing activities on a scientific basis",
+      "scope": "Based on the activities of the Plant and Agricultural Environment Institute",
+      "outcome": "Utilisation and protection of plant genetic resources, establishment of a seed reserve for locally adapted varieties, and the creation of a system for the production of seeds of cereals, potatoes, vegetables, fruits, berries and other useful crops"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_17",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "introduce advanced technologies with soil degradation reduction, fertility protection and improvement, and proper crop rotation, and carry out corresponding technical and technological modernisation",
+      "scope": "\u2018System for Agricultural Production\u2019",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_18",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Provide organisational and financial support",
+      "scope": "for intensive livestock farming and auxiliary farms",
+      "outcome": "raise the domestic supply of feed required for intensive livestock farming and auxiliary farms to 1.9 million tonnes"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_19",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Establish a 50-hectare winter greenhouse complex in areas with adequate heating supply and infrastructure",
+      "scope": "in areas with adequate heating supply and infrastructure",
+      "outcome": "ensure a stable, year-round supply of fresh produce for the population"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_20",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "develop the technical and economic feasibility of establishing nitrogen and phosphorus fertiliser plants based on mining enterprises",
+      "scope": "based on mining enterprises",
+      "outcome": "replenish soil nutrients and increase crop quality and yield, thereby replacing imports"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_21",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "establish an optimal system for financing and lending",
+      "scope": "the cultivation of all types of rice, sugar beet, and other cash crops",
+      "outcome": "increasing the cultivation of all types of rice, sugar beet, and other cash crops"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_22",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Increase the capacity of grain elevators meeting standard requirements by 20,000 tonnes and the capacity of mechanised warehouses and cellars for storing potatoes and vegetables by 50,000 tonnes",
+      "scope": "on a regional basis",
+      "outcome": "by 20,000 tonnes and the capacity of mechanised warehouses and cellars for storing potatoes and vegetables by 50,000 tonnes"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_23",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "construct new irrigation systems, restore, renovate and refurbish, and establish reservoirs, ponds and dams with basins",
+      "scope": "irrigation systems",
+      "outcome": "To overcome the risks of climate change"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_24",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "establish 30 hectares of agroforestry in the provincial centre and 10 hectares in the district centre, respectively, a fruit and berry seedling propagation centre, develop nursery enterprises, and fence off agricultural fields to establish forest belts",
+      "scope": "in the provincial centre and 10 hectares in the district centre",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_25",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Build strategic reserves of at least 100,000 tonnes of food and seed red wheat from each year's autumn harvest",
+      "scope": "from each year's autumn harvest",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_26",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "Collaborate with the administration and local authorities",
+      "scope": "with the administration and local authorities",
+      "outcome": "protect animal health, increase the yield per animal, improve animal quality, and enhance the role and participation of herders"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_27",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "establish an optimal supply chain for procurement, primary processing and marketing",
+      "scope": "Livestock, livestock raw materials",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_28",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "to import high-yield animal embryos from abroad under a unified policy, and to introduce biotechnological advances into breeding and selection work",
+      "scope": "near towns and settlements and in agricultural regions",
+      "outcome": "to protect livestock gene pools, intensify breeding and technological work"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_29",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "providing long-term investment and financial support",
+      "scope": "pig, poultry, and fattening lamb and cattle farms",
+      "outcome": "Increase enterprise participation in the expansion and establishment of pig, poultry, and fattening lamb and cattle farms"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_30",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "beekeeping",
+      "outcome": "increase its product output, and create opportunities for export"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_31",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "introduce advanced biopreparate production, and establish a vaccine cold chain network",
+      "scope": "in livestock and animals",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_32",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "refine the incentive system",
+      "scope": "for domestically processed products that meet domestic market quality, hygiene and safety standards, and for those manufactured from food raw materials supplied by livestock farming and agriculture",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_33",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "provide financial support for the establishment and expansion of new factories for children's food, milk, vegetables, fruits, and fruit-based feeds, and for the domestic procurement and supply of their primary raw materials",
+      "scope": "new factories for children's food, milk, vegetables, fruits, and fruit-based feeds",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_34",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "increase the meal allowances for pupils in nurseries, state schools, vocational education and training institutions, and in boarding houses in line with nutritional requirements and the rate of inflation, Ensure the supervision and involvement of parents and guardians",
+      "scope": "pupils in nurseries, state schools, vocational education and training institutions, and in boarding houses",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_35",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a system to provide financial support for the new establishment of processing plants for dry milk, table salt, edible oils, potatoes, various types of rice and sugar",
+      "scope": "processing plants for dry milk, table salt, edible oils, potatoes, various types of rice and sugar",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_36",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Establish a new fleet of specialised food transport vehicles (road, rail and air) and create a system for transporting domestic and imported food raw materials and products",
+      "scope": "domestic and imported food raw materials and products",
+      "outcome": ""
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_37",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "Store food raw materials and products in specialised warehouses and storages that meet standard requirements, establish a unified registration system, support the supply of small and medium-sized equipment for drying, freezing and preserving, and develop domestic production of food containers and packaging",
+      "scope": "food raw materials and products",
+      "outcome": ""
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_38",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "modernising equipment",
+      "scope": "food processing plants",
+      "outcome": "improve product flavour and quality, improve packaging and containers, increase product variety, develop export-oriented brands, and support stable factory operations with working capital"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_39",
+    "elements": {
+      "action": false,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "",
+      "scope": "dietary supplements, biologically active food products and functional foods",
+      "outcome": "increase dietary supplements, biologically active food products and functional foods"
+    },
+    "confidence": "medium"
+  },
+  {
+    "targetId": "FSP_40",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": true
+    },
+    "evidence": {
+      "action": "modernising laboratory analysis methodologies, Establish a system for pre-shipment laboratory analysis and inspection of exported and imported food raw materials and products, and take measures to strengthen border and national accredited laboratories",
+      "scope": "nationwide",
+      "outcome": "fully define food safety indicators nationwide"
+    },
+    "confidence": "high"
+  },
+  {
+    "targetId": "FSP_41",
+    "elements": {
+      "action": true,
+      "scope": true,
+      "outcome": false
+    },
+    "evidence": {
+      "action": "organise training, publicity and educational activities",
+      "scope": "on the proper, appropriate and civilised consumption of food and drink",
+      "outcome": ""
+    },
+    "confidence": "high"
   }
 ]

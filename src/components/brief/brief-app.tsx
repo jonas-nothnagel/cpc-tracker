@@ -13,6 +13,8 @@ import {
 } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
 import type { ExploreSetup } from "@/lib/brief/explore/setup";
+import { focusKey } from "@/lib/brief/explore/focus";
+import type { SpendingSetup } from "@/lib/brief/spending";
 import { EXPLORE_PARAMS, exploreQuery, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
 import { AreasView } from "./areas/areas-view";
 import { ContractsSection, type BriefContracts } from "./contracts/contracts-section";
@@ -26,6 +28,7 @@ import { BriefPanels, type PanelState } from "./panels";
 import { clip } from "./ink";
 import { SectionView, type SectionHandlers } from "./section-view";
 import { Sheets, TitleBlock } from "./sheets";
+import { SpendingSection } from "./spending/spending-section";
 import "./brief.css";
 import "./print-page.css";
 
@@ -56,6 +59,7 @@ export function BriefApp({
   preparedOn,
   explore,
   contracts,
+  spending,
   initialCurrency = "mnt",
 }: {
   source: BriefSource;
@@ -65,6 +69,9 @@ export function BriefApp({
   explore?: ExploreSetup;
   /** The country's public contract record, where one is baked. */
   contracts?: BriefContracts;
+  /** The country's reviewed spending, where its review states the public
+   *  spending it is part of. */
+  spending?: SpendingSetup;
   /** From the link (?cur=usd): the currency the contracts open in. */
   initialCurrency?: Currency;
 }) {
@@ -172,6 +179,13 @@ export function BriefApp({
     document.getElementById("brief-explore-title")?.focus({ preventScroll: true });
   };
 
+  // A biodiversity area from the spending goes to the ring's centre with the
+  // budget lines shown.
+  const exploreArea = (areaId: string) => {
+    dispatchExplore({ type: "layer", layer: "budget", on: true });
+    exploreTarget(focusKey({ kind: "area", lens: "globe", id: areaId }));
+  };
+
   const readBrief = () =>
     document.getElementById("brief-main")?.scrollIntoView({ behavior: "smooth", block: "start" });
   const customize = () => {
@@ -230,10 +244,20 @@ export function BriefApp({
               ) : undefined
             }
             sections={selection.sections.filter(
-              (id) => !OVERVIEW_SECTIONS.includes(id) && (id !== "contracts" || contracts !== undefined),
+              (id) =>
+                !OVERVIEW_SECTIONS.includes(id) &&
+                (id !== "contracts" || contracts !== undefined) &&
+                (id !== "spending" || spending !== undefined),
             )}
             renderSection={(id) =>
-              id === "contracts" && contracts ? (
+              id === "spending" && spending ? (
+                <SpendingSection
+                  setup={spending}
+                  source={source}
+                  docs={selection.docs}
+                  onExploreArea={explore?.layers?.items.some((it) => it.layer === "budget") ? exploreArea : undefined}
+                />
+              ) : id === "contracts" && contracts ? (
                 <ContractsSection
                   contracts={contracts}
                   docs={selection.docs}

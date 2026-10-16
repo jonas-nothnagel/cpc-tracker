@@ -2996,6 +2996,7 @@
       "documents": "Los documentos, uno junto a otro",
       "areas": "Por área de política",
       "aligned": "Alineaciones más fuertes",
+      "spending": "Gasto revisado",
       "contracts": "Contratos públicos"
     },
     "tone": {
@@ -3591,6 +3592,36 @@
         "tipMis": "{count, plural, one {# contrato} other {# contratos}} · {value} · {year}",
         "tipMatch": "{count, plural, one {# licitación con correspondencia fuerte} other {# licitaciones con correspondencia fuerte}}",
         "rowsLabel": "Metas con licitaciones con posible desalineación"
+      }
+    },
+    "spending": {
+      "title": "Gasto revisado en biodiversidad",
+      "source": "Revisión del Gasto en Biodiversidad (BER), {years}",
+      "illustrative": "Cifras ilustrativas, adaptadas de una revisión real",
+      "money": "{currency} {amount} {unit, select, million {millones} billion {mil millones} other {}}",
+      "fieldLabel": "{currency} {every} de cada {currency} 100 de gasto público, en cien cuadrados",
+      "record": {
+        "kicker": "Del total del gasto público",
+        "headline": "{currency} {every} de cada {currency} 100 de gasto público es gasto revisado en biodiversidad.",
+        "reviewed": "Gasto revisado en biodiversidad, {years}",
+        "public": "Todo el gasto público, {years}",
+        "year": "{year}: {currency} {every} de cada {currency} 100"
+      },
+      "areas": {
+        "kicker": "A qué se destina",
+        "headline": "{area} concentra {spend} del gasto revisado y {targets} de las metas.",
+        "colArea": "Área de biodiversidad",
+        "colTargets": "Parte de las metas",
+        "colSpend": "Parte del gasto revisado",
+        "listLabel": "Áreas de biodiversidad, su parte de las metas y del gasto revisado",
+        "rowLabel": "{targets} de las metas, {spend} del gasto revisado",
+        "noSpend": "Ninguno",
+        "targetsLine": "{count, plural, =0 {Ninguna meta en esta área.} one {# meta en esta área.} other {# metas en esta área.}}",
+        "matched": "{matched, number} de las {total, number} tienen una línea presupuestaria coincidente.",
+        "ai": "Estimado por IA",
+        "linesLabel": "Líneas presupuestarias de esta área",
+        "noLines": "Ninguna línea presupuestaria revisada en esta área.",
+        "explore": "Explorar esta área con sus líneas presupuestarias"
       }
     },
     "areaView": {
