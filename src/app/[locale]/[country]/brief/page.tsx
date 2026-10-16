@@ -11,6 +11,7 @@ import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { geoFor } from "@/lib/brief/contracts/geo-data";
+import { spendingSetup } from "@/lib/brief/spending";
 import { BriefApp } from "@/components/brief/brief-app";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -32,18 +33,19 @@ async function load(props: Props) {
   const file = loadContracts(entry.id);
   // Titles in the page's language where the country's documents give none.
   const targetLabels = loadTargetLabels(entry.id);
-  const source = {
-    ...buildBriefSource({
-      countryId: entry.id,
-      countryName: countryNameIn(entry, locale),
-      data,
-      locale,
-      labels: labelsIn(targetLabels, locale),
-    }),
-    contracts: file !== null,
-  };
+  const base = buildBriefSource({
+    countryId: entry.id,
+    countryName: countryNameIn(entry, locale),
+    data,
+    locale,
+    labels: labelsIn(targetLabels, locale),
+  });
+  // A country whose expenditure review states the public spending it is part
+  // of also shows its reviewed spending.
+  const spending = spendingSetup(data, base) ?? undefined;
+  const source = { ...base, contracts: file !== null, spending: spending !== undefined };
   const contracts = file ? { setup: contractsSetup({ file, source }), geo: geoFor(entry.id, locale) } : undefined;
-  return { locale, source, data, contracts, targetLabels };
+  return { locale, source, data, contracts, spending, targetLabels };
 }
 
 export async function generateMetadata(props: Props) {
@@ -80,6 +82,7 @@ export default async function BriefPage(props: Props) {
         targetLabels: loaded.targetLabels,
       })}
       contracts={loaded.contracts}
+      spending={loaded.spending}
       initialCurrency={cur === "usd" ? "usd" : "mnt"}
     />
   );

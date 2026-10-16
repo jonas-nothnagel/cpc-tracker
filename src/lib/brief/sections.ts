@@ -10,6 +10,7 @@ export const SECTION_UNITS: Record<SectionId, 0 | 1 | 2> = {
   commitments: 2,
   documents: 2,
   areas: 2,
+  spending: 0,
   contracts: 0,
 };
 

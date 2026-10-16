@@ -100,6 +100,10 @@ export interface BriefSource {
   /** Set where a public contract record is baked for the country: the brief
    *  then offers its public contracts (on screen only). */
   contracts?: boolean;
+  /** Set where the country's expenditure review states the public spending
+   *  it is part of: the brief then offers its reviewed spending (on screen
+   *  only). */
+  spending?: boolean;
 }
 
 /** A document's name for running text: its full name without a trailing
