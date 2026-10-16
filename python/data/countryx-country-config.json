@@ -1,10 +1,10 @@
 {
- "_comment": "Display config for Country X, a FICTIONAL demonstration country (project-defined, not a primary source). Purpose: demo the full analysis without exposing pilot-country data. The corpus is real published policy-target text pooled from several countries' documents (dev_data_scripts/mock_targets_14aug26.xlsx, built by dev_data_scripts/ingest_countryx_14aug26.py) and de-identified by hand-curated edits listed in that script; no LLM-drafted text anywhere in this config or the corpus. Since October 2026 it also carries illustrative reported actions (BTR) and reviewed spending (BER), copied from one pilot country's records and de-identified by the replacements listed in python/scripts/build_countryx_layers.py. No NR7 data, no countrySectors or mitigationTaxonomy.",
+ "_comment": "Display config for Country X, a FICTIONAL demonstration country (project-defined, not a primary source). Purpose: demo the full analysis without exposing pilot-country data. The corpus is real published policy-target text pooled from several countries' documents (dev_data_scripts/mock_targets_14aug26.xlsx, built by dev_data_scripts/ingest_countryx_14aug26.py) and de-identified by hand-curated edits listed in that script; no LLM-drafted text anywhere in this config or the corpus. Since October 2026 it also carries a sixth, development document (the Food Security Programme, FSP) and illustrative reported actions (BTR) and reviewed spending (BER), copied from one pilot country's records and de-identified by the replacements listed in python/scripts/build_countryx_layers.py; development plans are where policies pull against each other, and the five plans had none. No NR7 data, no countrySectors or mitigationTaxonomy.",
  "name": "Country X",
- "_anchorDocTypeComment": "Intentionally omitted. The five documents are parallel convention/strategy commitments (climate, adaptation, nature, land), not a vision-and-derivatives hierarchy, so the Vision Anchor Coverage view stays off (same reasoning as Sri Lanka).",
+ "_anchorDocTypeComment": "Intentionally omitted. The five convention/strategy documents (climate, adaptation, nature, land) and the food security programme are parallel commitments, not a vision-and-derivatives hierarchy, so the Vision Anchor Coverage view stays off (the same reasoning as for other corpora of parallel plans).",
  "defaultHiddenDocTypes": [],
  "excludedDocTypes": [],
- "_documentTypesComment": "Generic document-type names, not real national documents: Country X is fictional, so fullLabel is the plain convention/strategy document kind and no docKind/published/author/url metadata is set (omitted rather than fabricated). Colors reuse the established cross-country palette (NDC blue and NBSAP green match Sri Lanka / Côte d'Ivoire; LDN amber matches Sri Lanka; BTR violet and BER blue match the pilot countries' reported-action and budget-line layers); avoids reserved red (#dc2626 political sensitivity) and OTHER grey (#78716c); mutually distinguishable. BTR and BER are the pipeline's pseudo-documents: they never enter the brief's documents.",
+ "_documentTypesComment": "Generic document-type names, not real national documents: Country X is fictional, so fullLabel is the plain convention/strategy document kind and no docKind/published/author/url metadata is set (omitted rather than fabricated). Colors reuse the established cross-country palette (NDC blue, NBSAP green and LDN amber match the other countries; BTR violet and BER blue match the pilot countries' reported-action and budget-line layers); avoids reserved red (#dc2626 political sensitivity) and OTHER grey (#78716c); mutually distinguishable. BTR and BER are the pipeline's pseudo-documents: they never enter the brief's documents.",
  "documentTypes": [
   {
    "id": "NDC",
@@ -47,6 +47,14 @@
    "color": "#b45309"
   },
   {
+   "id": "FSP",
+   "shortLabel": "FSP",
+   "mediumLabel": "FSP (Food security)",
+   "plainName": "Food security",
+   "fullLabel": "Food Security Programme",
+   "color": "#9d174d"
+  },
+  {
    "id": "BTR",
    "shortLabel": "BTR Action",
    "mediumLabel": "BTR",
@@ -69,6 +77,7 @@
   "NBSAP": "Demonstration document for the fictional Country X: real published NBSAP target text from one country, de-identified. Not any real country's NBSAP.",
   "LDN": "Demonstration document for the fictional Country X: real published Land Degradation Neutrality strategy target text from one country, de-identified. Not any real country's strategy.",
   "BTR": "Demonstration data for the fictional Country X: the mitigation measures and adaptation actions of one pilot country's first Biennial Transparency Report, with places, agencies, programmes and companies replaced by generic terms. Not any real country's report.",
-  "BER": "Demonstration data for the fictional Country X: the budget lines of one pilot country's BIOFIN Biodiversity Expenditure Review in its two complete years, renumbered and converted to US$ at an indicative rate. Not any real country's spending."
+  "BER": "Demonstration data for the fictional Country X: the budget lines of one pilot country's BIOFIN Biodiversity Expenditure Review in its two complete years, renumbered and converted to US$ at an indicative rate. Not any real country's spending.",
+  "FSP": "Demonstration document for the fictional Country X: the measures of one country's published food supply and security programme (a parliament resolution), in the source's own English, de-identified. Not any real country's programme."
  }
 }

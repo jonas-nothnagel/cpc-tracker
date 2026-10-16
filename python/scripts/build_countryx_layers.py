@@ -11,6 +11,12 @@ names Mongolia:
   (December 2025). The wording stays the report's own, except for the
   replacements listed in REPLACEMENTS (places, agencies, programmes and
   companies become generic terms) and ORGS (responsible institutions).
+- A development document: the 41 measures of Mongolia's Food Supply and
+  Security programme (Parliament Resolution 36, June 2022, in the source's own
+  English), joined to Country X's five environment and climate plans as its
+  "Food Security Programme" (FSP). Development plans are where policies pull
+  against each other; Country X had none. Vision 2050's targets stay out: the
+  corpus flags them as AI paraphrases, not the document's words.
 - Reviewed spending: the budget lines of Mongolia's BIOFIN Biodiversity
   Expenditure Review with spending in its two complete years, 2020 and 2021
   (python/data/mongolia-ber.json; the review's later years each cover only one
@@ -34,6 +40,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from place_names import place_names  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 OUTPUT = ROOT / "output"
@@ -41,10 +50,16 @@ OUTPUT = ROOT / "output"
 SOURCE_BTR = OUTPUT / "mongolia" / "gpt-5-4" / "btr_data.json"
 SOURCE_ADAPTATION = DATA / "mongolia-btr-adaptation.json"
 SOURCE_BER = DATA / "mongolia-ber.json"
+SOURCE_TARGETS = DATA / "mongolia-targets.json"
 
 OUT_BTR = OUTPUT / "countryx" / "btr_data.json"
 OUT_ADAPTATION = DATA / "countryx-btr-adaptation.json"
 OUT_BER = DATA / "countryx-ber.json"
+OUT_TARGETS = DATA / "countryx-targets.json"
+
+# The source document joined to Country X, and the id it takes there.
+FOOD_SOURCE_DOC = "FSS"
+FOOD_DOC = "FSP"
 
 # The review's two complete years (each later year covers one budget level only).
 BER_YEARS = ("2020", "2021")
@@ -69,6 +84,13 @@ REPLACEMENTS: list[tuple[str, str]] = [
     (r"in 5 aimag centers \([^)]*\)", "in 5 provincial centers"),
     (r"Implement MNS ISO-50001", "Implement ISO-50001"),
     (r"private housing in ger areas", "private housing in peri-urban settlement areas"),
+    # The food security measures: parliament, national brands and campaigns.
+    (r"(?:the )?State Great Khural", "Parliament"),
+    (r"Mongolia Crop System technology", "National crop system technology"),
+    (r"Mongolian brand exports", "National brand exports"),
+    (r"['‘’]System for Agricultural Production in Mongolia['‘’]", "‘System for Agricultural Production’"),
+    (r"the ['‘’]Billion Trees['‘’] national movement", "the national tree-planting movement"),
+    (r"Billion Trees agroforestry", "Tree-planting agroforestry"),
     # Agencies, programmes and partners named in the actions' progress notes.
     (r"IRIMHE, Institute of Geo-ecology are", "The national meteorology and hydrology research institute and an institute of geo-ecology are"),
     (r"integrated with ['‘’]Billion Tree['‘’] initiatives", "integrated with national tree-planting initiatives"),
@@ -83,7 +105,7 @@ REPLACEMENTS: list[tuple[str, str]] = [
     (r"Mongolian Red Cross Society", "the national Red Cross Society"),
     (r"Oyu Tolgoi LLC", "a mining company"),
     (r"Mongolian Sustainable Development Bridge", "a national sustainable development NGO"),
-    (r"Caritas Czech Republic in Mongolia", "Caritas Czech Republic"),
+    (r"Caritas Czech Republic in Mongolia", "an international NGO"),
     (r"the President of Mongolia", "the President"),
     (r"the Scout Association of Mongolia", "the national Scout Association"),
     (r"the Youth for Climate and Clean Air Network \(YOUCCAN\)", "a youth network for climate and clean air"),
@@ -150,7 +172,7 @@ LEAK_NAMES = [
     "Dornod", "Dornogovi", "Dundgovi", "Govisumber", "Khentii", "Khovd", r"Kh[uö]vsg[uö]l", "Orkhon",
     "Selenge", "Sukhbaatar", "Umnugovi", "Uvs", "Uvurkhangai", "Zavkhan", "Tuul", "Kherlen", "Khangai",
     "Bogd", "Chinggis", "Genghis", "Sainshand", "Choir", "Baganuur", "Nalaikh", "Billion Tree",
-    "Agriculture and Light Industry", "Mining and Heavy Industry", "YOUCCAN",
+    "Food Agriculture and Light Industry", "Ministry of Mining and Heavy Industry", "YOUCCAN",
 ]
 LEAK_ACRONYMS = ["UB", "MNT", "MET", "MOFALI", "MOES", "MON", "MECC", "NAMEM", "IRIMHE", "STREAM", "₮"]
 _EDGE = (r"(?<![\w-])(?:", r")(?![\w-])")
@@ -250,6 +272,33 @@ def build_adaptation(source: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def build_food_security(source: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """The food security measures as Country X targets: their English text and
+    label with names replaced, the Mongolian original and its links dropped."""
+    targets = []
+    for t in source:
+        if t.get("sourceDocument") != FOOD_SOURCE_DOC:
+            continue
+        number = t["id"].split("_", 1)[1]
+        text = mask(t["text"])
+        targets.append({
+            "id": f"{FOOD_DOC}_{number}",
+            "text": text,
+            "sourceDocument": FOOD_DOC,
+            "sourceLabel": mask(t.get("sourceLabel", "")),
+            "country": "Country X",
+            "sources": [{"sourceText": text, "url": ""}],
+            "textCleanup": t.get("textCleanup", "verbatim"),
+        })
+    return targets
+
+
+def with_food_security(corpus: list[dict[str, Any]], food: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Country X's corpus with the food security targets in place of any
+    earlier copy of them, after the five plans."""
+    return [t for t in corpus if t.get("sourceDocument") != FOOD_DOC] + food
+
+
 def to_usd_million(bn_mnt: float | None) -> float | None:
     return None if bn_mnt is None else round(bn_mnt * 1000 / MNT_PER_USD, 2)
 
@@ -286,13 +335,14 @@ def build_ber(source: dict[str, Any]) -> dict[str, Any]:
 
 
 def leaks(payload: Any) -> list[str]:
-    """Every name from the source country found in a payload or text."""
+    """Every name from the source country, and any real country, capital,
+    people, currency or narrow region, found in a payload or text."""
     text = payload if isinstance(payload, str) else json.dumps(payload, ensure_ascii=False)
-    return sorted({m.group(0) for pattern in LEAK for m in pattern.finditer(text)})
+    return sorted({m.group(0) for pattern in LEAK for m in pattern.finditer(text)} | set(place_names(text)))
 
 
-def write(path: Path, payload: Any) -> None:
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+def write(path: Path, payload: Any, indent: int = 2) -> None:
+    path.write_text(json.dumps(payload, indent=indent, ensure_ascii=False) + "\n")
     print(f"wrote {path.relative_to(ROOT)}")
 
 
@@ -300,16 +350,24 @@ def main() -> None:
     btr = build_btr(json.loads(SOURCE_BTR.read_text()))
     adaptation = build_adaptation(json.loads(SOURCE_ADAPTATION.read_text()))
     ber = build_ber(json.loads(SOURCE_BER.read_text()))
-    found = {name: leaks(p) for name, p in (("btr", btr), ("adaptation", adaptation), ("ber", ber))}
+    food = build_food_security(json.loads(SOURCE_TARGETS.read_text()))
+    corpus = with_food_security(json.loads(OUT_TARGETS.read_text()), food)
+    found = {
+        name: leaks(p)
+        for name, p in (("btr", btr), ("adaptation", adaptation), ("ber", ber), ("targets", corpus))
+    }
     if any(found.values()):
         sys.exit(f"Names from the source country survive: {found}")
     OUT_BTR.parent.mkdir(parents=True, exist_ok=True)
     write(OUT_BTR, btr)
     write(OUT_ADAPTATION, adaptation)
     write(OUT_BER, ber)
+    # The corpus keeps its own layout (one space per level), so its diff shows the new targets only.
+    write(OUT_TARGETS, corpus, indent=1)
     print(
         f"{len(btr['mitigationMeasures'])} mitigation measures, {len(adaptation['actions'])} adaptation actions, "
-        f"{len(ber['programs'])} budget lines ({', '.join(BER_YEARS)})"
+        f"{len(ber['programs'])} budget lines ({', '.join(BER_YEARS)}), {len(food)} food security targets "
+        f"({len(corpus)} targets in all)"
     )
 
 
