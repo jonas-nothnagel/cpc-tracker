@@ -18,7 +18,9 @@ describe("dealInTurn", () => {
 
 // On the committed data, not fixtures: the landing shows the briefs' own targets.
 describe("landingDriftLines", () => {
-  it("fills the hero with verbatim targets, each clipped to one drifting line", () => {
+  // The first call reads every country's payload from disk (about 4 s alone,
+  // past vitest's 5 s default while the rest of the suite runs beside it).
+  it("fills the hero with verbatim targets, each clipped to one drifting line", { timeout: 20_000 }, () => {
     const lines = landingDriftLines("en");
     expect(lines).toHaveLength(198);
     expect(lines.every((line) => line.length > 0 && line.length <= 151)).toBe(true);

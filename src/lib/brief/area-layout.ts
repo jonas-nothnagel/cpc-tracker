@@ -1,28 +1,23 @@
 /**
- * The policy-area picture's geometry: one row per area, its targets on a
- * line (wrapping onto further lines when the row is long), each target's
- * point cloud above it in lines of two or three dots. Row heights come from
- * the clouds at rest, so opening a pair of areas or picking a target never
- * moves a row.
+ * The policy-area picture's geometry: one row per area, its name and under
+ * it a dot per target on one line, inside the name's column so the figures
+ * beside it stay clear. The largest area fills that column; only a column
+ * too narrow for the smallest spacing wraps. A row's height depends only on
+ * its number of targets, so opening a pair of areas or picking a target
+ * never moves a row.
  */
 
-/** A cloud stops here; a taller one is cut, with its exact count on top. */
-export const CLOUD_MAX_LINES = 40;
 /** A row's name line, the room under it, and the room after the row. */
 export const ROW_LABEL = 20;
-const ROW_GAP = 8;
-const ROW_AFTER = 16;
-/** Room kept at the field's two sides. */
-const FIELD_PAD = 12;
-/** Past this height at two dots a line, clouds take three. */
-const FIELD_BUDGET = 720;
-/** Spacing of the targets on a row. */
-const PITCH_MIN = 6.5;
-const PITCH_MAX = 12;
-/** Room a row keeps above its clouds for a cut cloud's count, and that
- *  count's line height. */
-const CUT_ROOM = 16;
-const CUT_LINE = 14;
+const ROW_GAP = 2;
+const ROW_AFTER = 14;
+/** Spacing of the targets on a row, and the height a line of them takes. */
+const PITCH_MIN = 3;
+const PITCH_MAX = 10;
+const LINE_MIN = 8;
+/** A dot's radius: about a third of the spacing, as in the brief's dot field. */
+const R_SHARE = 0.36;
+const R_MAX = 3.2;
 
 export interface AreaFieldRow {
   id: string;
@@ -35,109 +30,55 @@ export interface AreaFieldLayout {
   height: number;
   /** Between two targets on a line. */
   pitch: number;
-  /** Cloud dots a line. */
-  per: number;
-  /** Between two cloud dots. */
-  sp: number;
-  /** Between a target's dot and the first line of its cloud. */
-  lift: number;
+  /** Between two lines, where a row wraps. */
+  line: number;
   targetR: number;
-  cloudR: number;
   /** Each row's top, where its name sits. */
   rows: { id: string; y: number }[];
   /** Each target's dot. */
   at: Map<string, { x: number; y: number }>;
 }
 
-export function cloudLines(count: number, per: number): number {
-  return Math.min(CLOUD_MAX_LINES, Math.ceil(count / per));
-}
-
-/** How many dots a cloud draws, and whether it is cut. */
-export function cloudDots(count: number, per: number): { dots: number; cut: boolean } {
-  const max = CLOUD_MAX_LINES * per;
-  return count > max ? { dots: max, cut: true } : { dots: count, cut: false };
-}
-
-/** Where the break over a cut cloud runs, for a target whose dot is at `y`. */
-export function cutBreak(layout: Pick<AreaFieldLayout, "lift" | "sp">, y: number): number {
-  return y - layout.lift - CLOUD_MAX_LINES * layout.sp - layout.sp;
-}
-
-export function layoutAreaField(rows: AreaFieldRow[], restClouds: Map<string, number>, width: number): AreaFieldLayout {
-  const usable = Math.max(1, width - FIELD_PAD);
+/** `strip`: the width the dots keep to, the name's column (the whole field by default). */
+export function layoutAreaField(rows: AreaFieldRow[], width: number, strip = width): AreaFieldLayout {
+  const usable = Math.max(1, Math.min(width, strip));
   const widest = Math.max(1, ...rows.map((r) => r.targets.length));
   const pitch = Math.min(PITCH_MAX, Math.max(PITCH_MIN, usable / widest));
-  const perLine = Math.max(1, Math.floor(usable / pitch + 1e-6));
-  const lift = Math.max(2, pitch * 0.4);
-  const tallest = rows.map((r) => Math.max(0, ...r.targets.map((id) => restClouds.get(id) ?? 0)));
-  const lines = (r: AreaFieldRow) => Math.max(1, Math.ceil(r.targets.length / perLine));
-  // The room each line of targets keeps above it for their clouds, and for a
-  // cut cloud's count when the row's tallest cloud at rest is cut.
-  const bandOf = (i: number, per: number, sp: number) =>
-    (cloudDots(tallest[i], per).cut ? CUT_ROOM : 0) + cloudLines(tallest[i], per) * sp + lift;
-  const heightWith = (per: number, sp: number) =>
-    rows.reduce((h, r, i) => h + ROW_LABEL + ROW_GAP + lines(r) * (bandOf(i, per, sp) + pitch) + ROW_AFTER, 0);
-  let per = 2;
-  let sp = Math.min(4.6, pitch / 2);
-  if (heightWith(per, sp) > FIELD_BUDGET) {
-    per = 3;
-    sp = Math.min(3.6, pitch / 3);
-  }
+  const r = Math.min(R_MAX, pitch * R_SHARE);
+  const line = Math.max(pitch, LINE_MIN);
+  const perLine = Math.max(1, Math.floor((usable - 2 * r) / pitch + 1e-6) + 1);
+  const lines = (row: AreaFieldRow) => Math.max(1, Math.ceil(row.targets.length / perLine));
   const at = new Map<string, { x: number; y: number }>();
   const tops: { id: string; y: number }[] = [];
   let y = 0;
-  rows.forEach((r, i) => {
-    tops.push({ id: r.id, y });
-    const band = bandOf(i, per, sp);
-    r.targets.forEach((id, j) => {
-      const line = Math.floor(j / perLine);
+  for (const row of rows) {
+    tops.push({ id: row.id, y });
+    row.targets.forEach((id, j) => {
       at.set(id, {
-        x: FIELD_PAD / 2 + (j % perLine) * pitch + pitch / 2,
-        y: y + ROW_LABEL + ROW_GAP + band + line * (band + pitch),
+        // The first dot's left edge where the name starts.
+        x: r + (j % perLine) * pitch,
+        y: y + ROW_LABEL + ROW_GAP + Math.floor(j / perLine) * line + line / 2,
       });
     });
-    y += ROW_LABEL + ROW_GAP + lines(r) * (band + pitch) + ROW_AFTER;
-  });
-  return {
-    width,
-    height: y,
-    pitch,
-    per,
-    sp,
-    lift,
-    targetR: Math.max(2, pitch * 0.26),
-    cloudR: Math.max(0.8, sp * 0.36),
-    rows: tops,
-    at,
-  };
+    y += ROW_LABEL + ROW_GAP + lines(row) * line + ROW_AFTER;
+  }
+  return { width, height: y, pitch, line, targetR: r, rows: tops, at };
 }
 
-/** The target whose column is under a point: from the top of its cloud to
- *  just below its dot. */
-export function targetAt(layout: AreaFieldLayout, clouds: Map<string, number>, x: number, y: number): string | null {
+/** The target whose dot is under a point. */
+export function targetAt(layout: AreaFieldLayout, x: number, y: number): string | null {
+  const halfX = layout.pitch / 2;
+  const halfY = layout.line / 2;
   let best: string | null = null;
   let bestD = Infinity;
   for (const [id, p] of layout.at) {
-    const d = Math.abs(x - p.x);
-    if (d > layout.pitch / 2) continue;
-    const top = p.y - layout.lift - cloudLines(clouds.get(id) ?? 0, layout.per) * layout.sp - 4;
-    if (y < top || y > p.y + layout.pitch / 2) continue;
-    if (d < bestD) {
-      bestD = d;
+    const dx = Math.abs(x - p.x);
+    const dy = Math.abs(y - p.y);
+    if (dx > halfX || dy > halfY) continue;
+    if (dx + dy < bestD) {
+      bestD = dx + dy;
       best = id;
     }
   }
   return best;
-}
-
-/** The counts over the clouds cut in the current state: centred on the
- *  target, their top edge in the room the row keeps above its clouds. */
-export function cutMarks(layout: AreaFieldLayout, clouds: Map<string, number>): { id: string; x: number; top: number }[] {
-  const marks: { id: string; x: number; top: number }[] = [];
-  for (const [id, at] of layout.at) {
-    if (!cloudDots(clouds.get(id) ?? 0, layout.per).cut) continue;
-    marks.push({ id, x: at.x, top: cutBreak(layout, at.y) - 2 - CUT_LINE });
-  }
-  return marks;
 }

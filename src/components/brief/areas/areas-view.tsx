@@ -5,19 +5,20 @@ import { useTranslations } from "next-intl";
 import {
   areaFocus,
   areaHeadline,
+  areaInks,
   areaPairs,
-  cloudSizes,
   lensAreas,
   OTHER_AREA,
   partnersByArea,
-  restClouds,
   rowCounts,
   rowOrder,
+  sideCounts,
   sideLinks,
   targetInks,
   type AreaFocus,
   type AreaPair,
   type AreaSide,
+  type LensArea,
   type TargetInk,
 } from "@/lib/brief/areas";
 import {
@@ -42,6 +43,11 @@ import { ResultBar } from "../sections/documents";
 import { AreaField } from "./area-field";
 
 const SIDES: AreaSide[] = ["apart", "reinforce"];
+/** What the list beside the picture shows: each area's targets, or one side's target pairs. */
+type AreaView = "targets" | AreaSide;
+const VIEWS: AreaView[] = ["targets", ...SIDES];
+/** Targets an area's list shows before "Show all". */
+const TARGETS_SHOWN = 12;
 
 /** The shares a row's result bar draws, in the order its reading names them. */
 const SHARE_COLUMNS: AreaShareKey[] = ["reinforce", "partial", "apart"];
@@ -105,11 +111,12 @@ function AreaName({
 
 /**
  * Policy areas on screen: one row per area of the lens named top left, each
- * with its targets and the result bar of all its target pairs, each target
- * with its point cloud, beside the pairs of areas the chosen side's target
- * pairs fall between. The column names sort the rows, most first and then
- * least first. Pointing marks names; sorting, picking an area by its name,
- * opening a pair of areas or picking a target re-shapes the picture.
+ * with a dot per target and the result bar of all its target pairs. Beside
+ * it, by default, each area with the targets classified in it; on request,
+ * the pairs of areas one side's target pairs fall between. The column names
+ * sort the rows, most first and then least first. Pointing marks names;
+ * sorting, picking an area by its name, opening a pair of areas or picking a
+ * target re-shapes the picture.
  */
 export function AreasView({
   source,
@@ -136,7 +143,13 @@ export function AreasView({
   const td = useTranslations("brief.documents");
   const { n, pct } = useNumbers();
   const active = lens ?? source.lenses[0]?.id ?? null;
-  const [side, setSide] = useState<AreaSide>("apart");
+  // What the list shows: each area's targets by default, or one side's target pairs.
+  const [view, setView] = useState<AreaView>("targets");
+  const byTargets = view === "targets";
+  // The side the pair views read (the targets view reads none).
+  const side: AreaSide = view === "targets" ? "apart" : view;
+  // Every target of an open area, not only its first ones.
+  const [allTargets, setAllTargets] = useState(false);
   // The column the rows are sorted by: most aligned first, until the reader
   // picks another column or turns the order round.
   const [sort, setSort] = useState<AreaSort>(DEFAULT_AREA_SORT);
@@ -164,6 +177,7 @@ export function AreasView({
     setPicked(null);
     setPointedTarget(null);
     setPointedRows([]);
+    setAllTargets(false);
   }
 
   const areas = useMemo(() => (active ? lensAreas(source, data.scope, active) : null), [source, data.scope, active]);
@@ -189,29 +203,38 @@ export function AreasView({
   const behindKey = openPair ? `p:${openPair.key}` : pickedArea ? `a:${pickedArea}` : "rest";
   const focusKey = focusId ? `t:${focusId}` : behindKey;
   const focus: AreaFocus = focusId ? { kind: "target", id: focusId } : behind;
+  // What orders the pair views' rows (the targets view keeps each area's own order).
   const rest = useMemo(
-    () => (areas ? restClouds(areas, links, side) : new Map<string, number>()),
-    [areas, links, side],
+    () => (areas && !byTargets ? sideCounts(areas, links, side) : new Map<string, number>()),
+    [areas, links, side, byTargets],
   );
-  // One picture per lens, side and choice: the field re-forms only when they change.
+  // One picture per lens, view and choice: the field re-forms only when they change.
   /* eslint-disable react-hooks/exhaustive-deps */
-  const clouds = useMemo(
-    () => (areas ? cloudSizes(areas, links, side, focus) : new Map<string, number>()),
-    [areas, links, side, focusKey],
-  );
   // A picked target's row keeps the order it had: at rest, around its area, or with its pair open.
+  // The targets view keeps each area's own order, as its list does.
   const basisKey = focusId ? behindKey : "";
   const rows = useMemo(
-    () => (areas ? rowOrder(areas, rest, clouds, focus, links, side, focusId ? behind : { kind: "rest" }) : []),
-    [areas, rest, clouds, focusKey, basisKey],
+    () =>
+      !areas
+        ? []
+        : byTargets
+          ? areas.areas.map((a) => ({ id: a.id, targets: [...a.targets] }))
+          : rowOrder(areas, rest, focus, links, side, focusId ? behind : { kind: "rest" }),
+    // The targets view's rows never change with a pick: they re-form only with the lens.
+    [areas, rest, byTargets ? "" : focusKey, byTargets ? "" : basisKey, byTargets],
   );
   const inks = useMemo(
-    () => (areas ? targetInks(areas, focus, links, side) : new Map<string, TargetInk>()),
-    [areas, links, side, focusKey],
+    () =>
+      !areas
+        ? new Map<string, TargetInk>()
+        : byTargets
+          ? areaInks(areas, pickedArea, focusId)
+          : targetInks(areas, focus, links, side),
+    [areas, links, side, focusKey, byTargets, pickedArea],
   );
   const counts = useMemo(
-    () => (areas ? rowCounts(areas, focus, links, side) : new Map<string, number>()),
-    [areas, links, side, focusKey],
+    () => (areas && !byTargets ? rowCounts(areas, focus, links, side) : new Map<string, number>()),
+    [areas, links, side, focusKey, byTargets],
   );
   /* eslint-enable react-hooks/exhaustive-deps */
   // Each area's readings over all its target pairs, and the rows in the
@@ -254,7 +277,7 @@ export function AreasView({
     if (!revealPair.current) return;
     revealPair.current = false;
     root.current?.querySelector<HTMLElement>('[data-open="true"]')?.scrollIntoView?.({ block: "nearest" });
-  }, [open]);
+  }, [open, pickedArea]);
 
   if (!active || !areas || !pairs || !listed) return null;
 
@@ -272,11 +295,12 @@ export function AreasView({
 
   // Every choice forgets the target pointed at in the list: its button may be gone.
   // A picked area holds on the other side.
-  const choose = (next: AreaSide) => {
-    setSide(next);
+  const choose = (next: AreaView) => {
+    setView(next);
     setOpen(null);
     setPicked(null);
     setPointedTarget(null);
+    setAllTargets(false);
   };
   // The picked area's name returns to the area from its open pair or a
   // picked target; picked again, it lets the area go. Focus moves only for
@@ -288,7 +312,18 @@ export function AreasView({
     setPicked(null);
     setPointedTarget(null);
     setFullText(false);
+    setAllTargets(false);
     if (!letGo && byKey) moveFocus.current = "headline";
+  };
+  // The targets view's list: an area's row opens its targets, and closes them.
+  const toggleArea = (id: string) => {
+    const opening = pickedArea !== id;
+    setAreaPick(opening ? id : null);
+    revealPair.current = opening;
+    setPicked(null);
+    setPointedTarget(null);
+    setFullText(false);
+    setAllTargets(false);
   };
   const allAreas = (byKey: boolean) => {
     setAreaPick(null);
@@ -313,6 +348,14 @@ export function AreasView({
     setPointedTarget(null);
     setFullText(false);
     if (letGo) return;
+    // In the targets view a target opens its own area's list, where its card stands.
+    if (byTargets) {
+      const home = areas.areas.find((a) => a.targets.includes(id))?.id;
+      if (home && home !== pickedArea) {
+        setAreaPick(home);
+        setAllTargets(false);
+      }
+    }
     revealCard.current = true;
     if (byKey) moveFocus.current = "card";
   };
@@ -362,7 +405,39 @@ export function AreasView({
       ? t("headlineAreaNone", { side, area: nameOf(id) })
       : t("headlineArea", { pct: pct(count / pairs.total), side, area: nameOf(id) });
   };
-  const headline = pickedArea ? pickedHeadline(pickedArea) : lensHeadline();
+  // The targets view's headline: the largest area's share of the targets placed,
+  // or the picked area's count.
+  const targetsHeadline = () => {
+    const picked = pickedArea ? area(pickedArea) : undefined;
+    if (picked) {
+      return t("headlineTargetsArea", { count: picked.targets.length, placed: areas.placed, area: picked.name });
+    }
+    // The lens's areas come most targets first (`lensAreas`).
+    const top = areas.areas[0];
+    if (!top || areas.placed === 0) return t("headlineTargetsNone");
+    return t.rich("headlineTargets", {
+      pct: pct(top.targets.length / areas.placed),
+      placed: areas.placed,
+      area: top.name,
+      // The largest area's name opens its targets.
+      first: (chunks) => (
+        <AreaName
+          onPoint={(on) => setPointedRows(on ? [top.id] : [])}
+          onOpen={(byKey) => {
+            setAreaPick(top.id);
+            setPicked(null);
+            setPointedTarget(null);
+            setAllTargets(false);
+            revealPair.current = true;
+            if (byKey) moveFocus.current = "headline";
+          }}
+        >
+          {chunks}
+        </AreaName>
+      ),
+    });
+  };
+  const headline = byTargets ? targetsHeadline() : pickedArea ? pickedHeadline(pickedArea) : lensHeadline();
 
   const card = (backLabel: string) => {
     if (!focusId) return null;
@@ -404,8 +479,15 @@ export function AreasView({
           </button>
         )}
         <p className="brief-av-card-partners">
-          {t("partners", { side, count: by.total })}
-          {parts.length > 0 ? `: ${parts.join(", ")}` : ""}.
+          {byTargets ? (
+            // Both sides' counts: the way into the two views of target pairs.
+            SIDES.map((s) => `${t("partners", { side: s, count: links[s].get(focusId)?.length ?? 0 })}.`).join(" ")
+          ) : (
+            <>
+              {t("partners", { side, count: by.total })}
+              {parts.length > 0 ? `: ${parts.join(", ")}` : ""}.
+            </>
+          )}
         </p>
         {openTarget && (
           <button type="button" className="brief-av-link" onClick={() => openTarget(focusId)}>
@@ -538,8 +620,14 @@ export function AreasView({
         <strong>{c ? commitmentLine(c, 90) : id}</strong>
         <br />
         <span className="brief-hub-tip-meta">
-          {c ? `${docName(c.doc)} · ` : ""}
-          {t("tip", { side, count: links[side].get(id)?.length ?? 0 })}
+          {byTargets ? (
+            (c && docName(c.doc)) || ""
+          ) : (
+            <>
+              {c ? `${docName(c.doc)} · ` : ""}
+              {t("tip", { side, count: links[side].get(id)?.length ?? 0 })}
+            </>
+          )}
         </span>
       </>
     );
@@ -547,15 +635,59 @@ export function AreasView({
   const marked = new Set(
     pointedRows.length > 0 ? pointedRows : focusId ? [] : openPair ? rowsOf(openPair) : pickedArea ? [pickedArea] : [],
   );
-  // Set back: the rows outside an open pair, or without a target taking part with a picked area.
+  // Set back: in the targets view, the rows other than a picked area; else the
+  // rows outside an open pair, or without a target taking part with a picked area.
   const dimmed = new Set(
-    focus.kind === "pair"
-      ? areas.areas.filter((a) => !rowsOf(focus.pair).includes(a.id)).map((a) => a.id)
-      : focus.kind === "area"
-        ? areas.areas.filter((a) => !counts.has(a.id)).map((a) => a.id)
-        : [],
+    byTargets
+      ? pickedArea
+        ? areas.areas.filter((a) => a.id !== pickedArea).map((a) => a.id)
+        : []
+      : focus.kind === "pair"
+        ? areas.areas.filter((a) => !rowsOf(focus.pair).includes(a.id)).map((a) => a.id)
+        : focus.kind === "area"
+          ? areas.areas.filter((a) => !counts.has(a.id)).map((a) => a.id)
+          : [],
   );
   const max = listed.top[0]?.count ?? 1;
+  // The targets view lists the areas as `lensAreas` orders them: by their
+  // number of targets, most first (ties in the lens's order), so its first
+  // row is the area its headline names.
+  const maxTargets = Math.max(1, areas.areas[0]?.targets.length ?? 0);
+  // An open area's targets, in its own order; the first ones until all are asked for.
+  const targetList = (a: LensArea) => {
+    const shown = allTargets ? a.targets : a.targets.slice(0, TARGETS_SHOWN);
+    return (
+      <div className="brief-av-open">
+        <ul className="brief-av-targets">
+          {shown.map((id) => {
+            const c = commitment(id);
+            return (
+              <li key={id}>
+                <button
+                  type="button"
+                  className="brief-av-target"
+                  data-testid="brief-area-target"
+                  onClick={(e) => pick(id, e.detail === 0)}
+                  onPointerEnter={() => setPointedTarget(id)}
+                  onPointerLeave={() => setPointedTarget(null)}
+                  onFocus={() => setPointedTarget(id)}
+                  onBlur={() => setPointedTarget(null)}
+                >
+                  <span className="brief-av-target-name">{c ? commitmentLine(c, 70) : id}</span>
+                  <span className="brief-av-target-doc">{c ? docName(c.doc) : ""}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        {a.targets.length > TARGETS_SHOWN && (
+          <button type="button" className="brief-av-link" aria-expanded={allTargets} onClick={() => setAllTargets((v) => !v)}>
+            {allTargets ? t("showFewerTargets") : t("showAllTargets", { count: a.targets.length })}
+          </button>
+        )}
+      </div>
+    );
+  };
   // The rest of the pairs of areas, summed, once the list names some.
   const restShown = listed.top.length > 0 && listed.rest.groups > 0;
   // Between two targets outside the lens: no picked area's pairs.
@@ -574,8 +706,6 @@ export function AreasView({
         </div>
         <AreaField
           rows={drawn}
-          restClouds={rest}
-          clouds={clouds}
           inks={inks}
           side={side}
           rowLabel={rowLabel}
@@ -583,7 +713,6 @@ export function AreasView({
           dimmed={dimmed}
           pointed={pointedTarget}
           tipFor={tipFor}
-          formatCount={n}
           listLabel={t("lensGroup")}
           onPick={(id) => pick(id)}
         />
@@ -607,18 +736,18 @@ export function AreasView({
           ))}
         </p>
         <p className="brief-av-choice" role="group" aria-label={t("sideGroup")}>
-          {SIDES.map((s) => (
-            <button key={s} type="button" aria-pressed={s === side} onClick={() => choose(s)}>
-              <span className="brief-av-glyph" data-side={s} aria-hidden="true" />
-              {t(s === "apart" ? "sideApart" : "sideReinforce")}
+          {VIEWS.map((v) => (
+            <button key={v} type="button" aria-pressed={v === view} onClick={() => choose(v)}>
+              <span className="brief-av-glyph" data-side={v} aria-hidden="true" />
+              {t(v === "targets" ? "viewTargets" : v === "apart" ? "sideApart" : "sideReinforce")}
             </button>
           ))}
         </p>
         {areas.placed < areas.total && (
           <p className="brief-av-scope">{t("scope", { placed: areas.placed, total: areas.total })}</p>
         )}
-        {focusId && !openPair && card(pickedArea ? nameOf(pickedArea) : t("backAll"))}
-        {pickedArea && (!focusId || openPair) && (
+        {!byTargets && focusId && !openPair && card(pickedArea ? nameOf(pickedArea) : t("backAll"))}
+        {!byTargets && pickedArea && (!focusId || openPair) && (
           <button
             type="button"
             className="brief-av-back"
@@ -629,7 +758,38 @@ export function AreasView({
             {t("backAll")}
           </button>
         )}
-        {listed.top.length > 0 && (
+        {byTargets && (
+          <ol className="brief-av-pairs" aria-label={t("areaList")}>
+            {areas.areas.map((a) => {
+              const isOpen = pickedArea === a.id;
+              return (
+                <li key={a.id} className="brief-av-pair" data-testid="brief-area-row" data-open={isOpen ? "true" : undefined}>
+                  <button
+                    type="button"
+                    className="brief-av-pair-head"
+                    aria-expanded={isOpen}
+                    onClick={() => toggleArea(a.id)}
+                    onPointerEnter={() => setPointedRows([a.id])}
+                    onPointerLeave={() => setPointedRows([])}
+                    onFocus={() => setPointedRows([a.id])}
+                    onBlur={() => setPointedRows([])}
+                  >
+                    <span className="brief-av-pair-name">{a.name}</span>
+                    <span className="brief-av-pair-bar" data-side="targets" aria-hidden="true">
+                      <span style={{ width: `${((a.targets.length / maxTargets) * 100).toFixed(1)}%` }} />
+                    </span>
+                    <span className="brief-av-pair-count">{n(a.targets.length)}</span>
+                    <span className="brief-av-pair-share">
+                      {t("areaShareTargets", { pct: pct(a.targets.length / Math.max(1, areas.placed)) })}
+                    </span>
+                  </button>
+                  {isOpen && (focusId ? card(a.name) : targetList(a))}
+                </li>
+              );
+            })}
+          </ol>
+        )}
+        {!byTargets && listed.top.length > 0 && (
           <ol className="brief-av-pairs">
             {listed.top.map((p) => {
               const isOpen = openPair?.key === p.key;
@@ -658,7 +818,7 @@ export function AreasView({
             })}
           </ol>
         )}
-        {(restShown || outsideShown) && (
+        {!byTargets && (restShown || outsideShown) && (
           <p className="brief-av-rest">
             {restShown && (
               <span>{t("rest", { groups: listed.rest.groups, count: listed.rest.count, pairs: listed.rest.pairs })}</span>

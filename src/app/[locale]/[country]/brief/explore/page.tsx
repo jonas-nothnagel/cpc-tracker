@@ -1,12 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getCountry } from "@/config/countries";
+import { countryNameIn, getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
 import { briefInEnglish } from "@/lib/brief/language-gate";
 import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
 import { loadBerNames } from "@/lib/brief/ber-names";
+import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
 import { ExplorePage } from "@/components/brief/explore/explore-page";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -24,8 +25,16 @@ async function load(props: Props) {
   const result = getCountryDashboardPayload(entry.id, locale, null);
   if (result.kind !== "ok") return null;
   const data = result.payload.data as unknown as Record<string, unknown>;
-  const source = buildBriefSource({ countryId: entry.id, countryName: entry.name, data, locale });
-  return { locale, source, data };
+  // Titles in the page's language where the country's documents give none.
+  const targetLabels = loadTargetLabels(entry.id);
+  const source = buildBriefSource({
+    countryId: entry.id,
+    countryName: countryNameIn(entry, locale),
+    data,
+    locale,
+    labels: labelsIn(targetLabels, locale),
+  });
+  return { locale, source, data, targetLabels };
 }
 
 export async function generateMetadata(props: Props) {
@@ -60,6 +69,7 @@ export default async function ExploreStandalonePage(props: Props) {
         searchParams,
         locale: loaded.locale,
         berNames: loadBerNames(loaded.source.countryId),
+        targetLabels: loaded.targetLabels,
       })}
     />
   );

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { isStandalonePath } from "@/config/countries";
 import { Link, usePathname } from "@/i18n/navigation";
 
 import type { FootprintRollup } from "@/lib/footprint/types";
@@ -15,8 +16,9 @@ function fmtCarbon(g: number): string {
 /**
  * Small always-on chip linking to /sustainability, showing the cumulative AI
  * carbon footprint. Shown on every page (including the landing) and suppressed
- * only on the sustainability page itself, where it would be a redundant
- * self-link. Hidden until something is recorded.
+ * on the sustainability page itself, where it would be a redundant self-link,
+ * and on the pages of a country shared on its own, whose readers it would lead
+ * to the other countries. Hidden until something is recorded.
  */
 export function FootprintChip() {
   const pathname = usePathname();
@@ -28,7 +30,7 @@ export function FootprintChip() {
   // so the link is never unreachable.
   const [pastFold, setPastFold] = useState(false);
 
-  const suppressed = pathname === "/sustainability";
+  const suppressed = pathname === "/sustainability" || isStandalonePath(pathname);
 
   useEffect(() => {
     const update = () =>

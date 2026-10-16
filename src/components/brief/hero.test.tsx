@@ -102,6 +102,14 @@ describe("Hero", () => {
     );
   });
 
+  it("leads nowhere else from a country shared on its own: no landing, no previous dashboard", () => {
+    hero("en", "countryx", "Country X");
+    expect(screen.queryAllByRole("link")).toHaveLength(0);
+    // The lockup stays, as plain text.
+    expect(screen.getByRole("img", { name: "UNDP" })).toBeInTheDocument();
+    expect(screen.getByText("Country X · Policy coherence brief")).toBeInTheDocument();
+  });
+
   it("keeps the dashboard link off paper", () => {
     hero("en");
     const link = screen.getByRole("link", { name: "Previous dashboard" });

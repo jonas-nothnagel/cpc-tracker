@@ -245,33 +245,17 @@ export function areaFocus(
 /** A target's dot: in ink, set back, a partner of the picked target, or the picked target. */
 export type TargetInk = "base" | "pale" | "lit" | "focus";
 
-/** Each placed target's point cloud at rest: its number of the side's target pairs. */
-export function restClouds(lens: LensAreas, links: SideLinks, side: AreaSide): Map<string, number> {
+/** Each placed target's number of the side's target pairs: what orders its row. */
+export function sideCounts(lens: LensAreas, links: SideLinks, side: AreaSide): Map<string, number> {
   const out = new Map<string, number>();
   for (const area of lens.areas) for (const id of area.targets) out.set(id, links[side].get(id)?.length ?? 0);
   return out;
 }
 
-/** Each placed target's point cloud now: as at rest; around a picked area,
- *  its target pairs that involve the area; with a pair of areas open, only
- *  its target pairs there (none in the other rows); none around a picked
- *  target. */
-export function cloudSizes(lens: LensAreas, links: SideLinks, side: AreaSide, focus: AreaFocus): Map<string, number> {
-  if (focus.kind === "rest") return restClouds(lens, links, side);
-  if (focus.kind === "area") return new Map(focus.involvement);
-  const pair = focus.kind === "pair" ? focus.pair : null;
-  const out = new Map<string, number>();
-  for (const area of lens.areas) {
-    const inPair = pair !== null && (area.id === pair.a || area.id === pair.b);
-    for (const id of area.targets) out.set(id, inPair && pair ? (pair.involvement.get(id) ?? 0) : 0);
-  }
-  return out;
-}
-
-/** Each area's row with its targets in drawing order: the tallest clouds at
- *  rest first (then document order); around a picked area, in every row,
- *  the tallest clouds of its target pairs first; in the open pair of
- *  areas' two rows, the tallest clouds of that pair first; around a picked
+/** Each area's row with its targets in drawing order: the most target pairs
+ *  on the side first (then document order); around a picked area, in every
+ *  row, the most of its target pairs first; in the open pair of areas' two
+ *  rows, the most of that pair's first; around a picked
  *  target, its partners first in their rows, while its own row keeps the
  *  order it had (`basis`: at rest, around a picked area, or with a pair of
  *  areas open), so the target stays under the pointer and a second pick at
@@ -279,7 +263,6 @@ export function cloudSizes(lens: LensAreas, links: SideLinks, side: AreaSide, fo
 export function rowOrder(
   lens: LensAreas,
   rest: Map<string, number>,
-  clouds: Map<string, number>,
   focus: AreaFocus,
   links: SideLinks,
   side: AreaSide,
@@ -358,10 +341,21 @@ export function targetInks(lens: LensAreas, focus: AreaFocus, links: SideLinks, 
     const inPair = pair !== null && (area.id === pair.a || area.id === pair.b);
     for (const id of area.targets) {
       if (picked) out.set(id, id === picked ? "focus" : partners?.has(id) ? "lit" : "pale");
-      else if (pair) out.set(id, inPair ? "base" : "pale");
+      // An open pair keeps the targets taking part in its target pairs.
+      else if (pair) out.set(id, inPair && (pair.involvement.get(id) ?? 0) > 0 ? "base" : "pale");
       else if (around) out.set(id, area.id === around.area || (around.involvement.get(id) ?? 0) > 0 ? "base" : "pale");
       else out.set(id, "base");
     }
+  }
+  return out;
+}
+
+/** The targets view's inks: a picked area's targets in ink and the rest set
+ *  back, the picked target ringed; every target in ink at rest. */
+export function areaInks(lens: LensAreas, area: string | null, picked: string | null): Map<string, TargetInk> {
+  const out = new Map<string, TargetInk>();
+  for (const a of lens.areas) {
+    for (const id of a.targets) out.set(id, id === picked ? "focus" : area === null || a.id === area ? "base" : "pale");
   }
   return out;
 }

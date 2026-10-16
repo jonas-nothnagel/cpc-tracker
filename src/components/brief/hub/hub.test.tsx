@@ -133,6 +133,29 @@ describe("Hub", () => {
     expect(document.querySelectorAll("[data-step]")).toHaveLength(5);
   });
 
+  it("titles the picture with what it shows at each step, never how to read it", () => {
+    renderHub();
+    const title = () => document.querySelector(".brief-hub-stage > .brief-hub-title")?.textContent;
+    const docA = DATA.docs.find((d) => d.doc.id === "A")!.doc.name;
+    expect(title()).toBe(`${DATA.counts.total} target pairs by rating`);
+    enter("map");
+    expect(title()).toBe("Target pairs by pair of documents");
+    enter("reinforce");
+    expect(title()).toBe("Strong alignments by pair of documents");
+    enter("apart");
+    expect(title()).toBe("Potential misalignments by pair of documents");
+    enter("documents");
+    expect(title()).toBe(`${docA} with each other document`);
+  });
+
+  it("keeps the picture's title beside the steps, not among their headings", () => {
+    renderHub();
+    const title = document.querySelector(".brief-hub-title") as HTMLElement;
+    expect(title.closest("[data-step]")).toBeNull();
+    expect(title.tagName).toBe("P");
+    expect(title.nextElementSibling?.classList.contains("brief-hub-canvas")).toBe(true);
+  });
+
   it("a step the brief no longer keeps gives the lead back to one it keeps", () => {
     const { rerender } = renderHub();
     enter("documents");

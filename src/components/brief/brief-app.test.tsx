@@ -86,10 +86,10 @@ beforeEach(() => window.history.replaceState(null, "", "/testland/brief"));
 afterEach(cleanup);
 
 describe("BriefApp", () => {
-  it("prints the standard brief on four pages", () => {
+  it("prints the standard brief on three pages", () => {
     renderApp();
-    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
-    expect(screen.getAllByTestId("brief-sheet")).toHaveLength(4);
+    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
+    expect(screen.getAllByTestId("brief-sheet")).toHaveLength(3);
   });
 
   it("states the scope on the title block and updates it when a document is left out", () => {
@@ -145,9 +145,19 @@ describe("BriefApp", () => {
     renderApp();
     const sections = screen.getByRole("group", { name: "In the brief" });
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Strongest alignments/ }));
-    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
-    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Areas of alignment/ }));
+    expect(screen.getByText("Prints on 2 pages")).toBeTruthy();
     expect(window.location.search).toContain("sections=");
+  });
+
+  it("adds a page with the documents side by side, which the standard brief leaves out", () => {
+    renderApp();
+    const sections = screen.getByRole("group", { name: "In the brief" });
+    const documents = within(sections).getByRole("checkbox", { name: /Documents side by side/ }) as HTMLInputElement;
+    expect(documents.checked).toBe(false);
+    fireEvent.click(documents);
+    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
+    expect(window.location.search).toContain("documents");
   });
 });
 
@@ -234,6 +244,10 @@ describe("BriefApp screen and print", () => {
 
   it("walks the page from top to bottom: each stop of the walkthrough below the one before", () => {
     renderApp(briefFixture({ themes: true }));
+    // Every stop on the page, the documents side by side included.
+    fireEvent.click(
+      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Documents side by side/ }),
+    );
     // The builder is the menu beside the page, visited last.
     const stops = TOUR_STEPS.brief
       .filter((step) => step.target !== "brief-builder")
@@ -242,6 +256,10 @@ describe("BriefApp screen and print", () => {
     for (let k = 1; k < stops.length; k++) {
       expect(stops[k - 1]!.compareDocumentPosition(stops[k]!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     }
+  });
+
+  it("the walkthrough's menu stop names only what the menu offers", () => {
+    expect(en.briefing.tour.brief.steps.builder.body).not.toMatch(/policy areas/i);
   });
 
   it("the walkthrough reads the map by its edges: rows named at the left, columns under it", () => {
@@ -290,9 +308,12 @@ describe("BriefApp screen and print", () => {
     expect(closer()).toBeNull();
   });
 
-  it("leaves out the documents, and the whole overview once none of its sections is kept", () => {
+  it("shows the documents only on request, and leaves out the whole overview once none of its sections is kept", () => {
     renderApp(briefFixture({ themes: true }));
     const sections = screen.getByRole("group", { name: "In the brief" });
+    expect(document.querySelector('[data-step="documents"]')).toBeNull();
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
+    expect(document.querySelector('[data-step="documents"]')).not.toBeNull();
     fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
     expect(document.querySelector('[data-step="documents"]')).toBeNull();
     for (const name of [
@@ -336,10 +357,10 @@ describe("BriefApp screen and print", () => {
     const hub = screen.getByTestId("brief-hub");
     const areas = screen.getByTestId("brief-areas");
     expect(hub.compareDocumentPosition(areas) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toContain("of the potential misalignments sit");
+    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toContain("targets in these policy areas are");
   });
 
-  it("keeps the menu's policy areas and the component's choice as one", () => {
+  it("chooses the policy areas in the component only, and prints them by the same lens", () => {
     const base = briefFixture();
     const source = {
       ...base,
@@ -349,17 +370,25 @@ describe("BriefApp screen and print", () => {
       ],
     };
     renderApp(source);
+    // The menu offers the documents and the sections, no lens.
+    const menu = screen.getByRole("complementary", { name: "Customize the brief" });
+    expect(within(menu).queryAllByRole("radio")).toHaveLength(0);
+    expect(within(menu).queryByText("Policy areas")).toBeNull();
     const areas = screen.getByTestId("brief-areas");
     fireEvent.click(within(areas).getByRole("button", { name: "Climate mitigation" }));
-    expect((screen.getByRole("radio", { name: "Climate mitigation" }) as HTMLInputElement).checked).toBe(true);
+    expect(within(areas).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
     expect(window.location.search).toContain("lens=ipcc");
-    fireEvent.click(screen.getByRole("radio", { name: "Biodiversity" }));
-    expect(within(areas).getByRole("button", { name: "Biodiversity" }).getAttribute("aria-pressed")).toBe("true");
+    expect(sheets().querySelector('[data-section="areas"]')?.textContent).toContain("Policy areas: Climate mitigation");
   });
 
   it("opens a pair of policy areas' target pairs in a panel", () => {
     renderApp(briefFixture({ themes: true }));
     const areas = screen.getByTestId("brief-areas");
+    fireEvent.click(
+      within(within(areas).getByRole("group", { name: "Targets or target pairs" })).getByRole("button", {
+        name: "Potential misalignment",
+      }),
+    );
     const second = within(areas).getAllByTestId("brief-area-pair")[1];
     fireEvent.click(within(second).getByRole("button", { expanded: false }));
     fireEvent.click(within(areas).getByRole("button", { name: "See the 3 target pairs" }));
@@ -372,6 +401,12 @@ describe("BriefApp walkthrough", () => {
     renderApp();
     const link = screen.getByRole("link", { name: "How the analysis works" });
     expect(link.getAttribute("href")).toBe("/methodology");
+  });
+
+  it("links no methodology page from a country shared on its own, and still walks the reader through", () => {
+    renderApp({ ...SOURCE, countryId: "countryx", countryName: "Country X" });
+    expect(screen.queryByRole("link", { name: "How the analysis works" })).toBeNull();
+    expect(screen.getByRole("button", { name: "How to read this brief" })).toBeTruthy();
   });
 
   it("walks the reader through the brief on request", () => {
@@ -398,7 +433,6 @@ describe("BriefApp walkthrough", () => {
       "Strongest alignments",
       "Recurring themes",
       "Targets to review first",
-      "Documents side by side",
       "By policy area",
       "Customize the brief",
     ]);
@@ -434,8 +468,11 @@ describe("BriefApp accessibility and provenance", () => {
 
   it("keeps an open drill-down off the printed page", () => {
     renderApp();
+    fireEvent.click(
+      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Documents side by side/ }),
+    );
     const flow = screen.getByTestId("brief-flow");
-    // The overview opens with its first document open.
+    // The documents step opens with its first document open.
     fireEvent.click(within(within(flow).getAllByTestId("brief-pair-row")[0]).getByRole("button"));
     expect(screen.getByRole("dialog").closest("[data-screen-only]")).not.toBeNull();
   });
@@ -488,7 +525,7 @@ describe("BriefApp public contracts", () => {
     renderWith();
     const menu = screen.getByRole("group", { name: "In the brief" });
     expect(within(menu).getByRole("checkbox", { name: /Public contracts/ }).closest("label")?.textContent).toContain("on screen only");
-    expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
+    expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
   });
 
   it("never offers them where the country has no contract record", () => {
@@ -522,16 +559,16 @@ describe("BriefApp public contracts", () => {
     expect(params.get("docs")).toBe("A,B");
   });
 
-  it("keeps the menu's policy areas and the contracts' choice as one", () => {
+  it("keeps the contracts' policy areas and the policy-area component's choice as one", () => {
     renderWith();
     const purpose = section()!.querySelector<HTMLElement>('[data-step="purpose"]')!;
-    fireEvent.click(within(within(purpose).getByRole("group", { name: "Policy areas" })).getByRole("button", { name: "Climate mitigation" }));
-    expect((screen.getByRole("radio", { name: "Climate mitigation" }) as HTMLInputElement).checked).toBe(true);
-    fireEvent.click(screen.getByRole("radio", { name: "Biodiversity" }));
-    expect(within(within(purpose).getByRole("group", { name: "Policy areas" })).getByRole("button", { name: "Biodiversity" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
+    const contractLenses = () => within(within(purpose).getByRole("group", { name: "Policy areas" }));
+    fireEvent.click(contractLenses().getByRole("button", { name: "Climate mitigation" }));
+    expect(window.location.search).toContain("lens=ipcc");
+    const areas = screen.getByTestId("brief-areas");
+    expect(within(areas).getByRole("button", { name: "Climate mitigation" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(within(areas).getByRole("button", { name: "Biodiversity" }));
+    expect(contractLenses().getByRole("button", { name: "Biodiversity" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("hands a target from the contracts to the ring, and goes there", async () => {

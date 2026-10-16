@@ -503,7 +503,7 @@
           },
           "builder": {
             "title": "Personalizar la nota",
-            "body": "Elija los documentos y las áreas de política y, después, las secciones de la nota, en pantalla y en la impresión. «Imprimir o guardar como PDF» muestra las páginas antes de imprimir; la nota también puede compartirse como enlace."
+            "body": "Elija los documentos y, después, las secciones de la nota, en pantalla y en la impresión. «Imprimir o guardar como PDF» muestra las páginas antes de imprimir; la nota también puede compartirse como enlace."
           },
           "aligned": {
             "title": "Alineaciones más fuertes",
@@ -515,7 +515,7 @@
           },
           "areas": {
             "title": "Por área de política",
-            "body": "Cada fila es un área de política de la lente elegida, con un punto por cada una de sus metas. Su barra reúne todos los pares de metas del área: la posible desalineación desde la izquierda, la alineación desde la derecha. Los nombres de las columnas sobre las filas las ordenan, primero de mayor a menor y luego de menor a mayor. Sobre cada meta, un punto por cada par de metas en el que participa en el lado elegido: posible desalineación o alineación fuerte. La lista de al lado nombra los pares de áreas de política que reúnen más; al abrir uno se conservan solo sus pares de metas, y al seleccionar una meta se muestran sus contrapartes en cada fila. Al seleccionar el nombre de un área de política se listan sus pares de áreas y se conservan solo los pares de metas en los que participan sus metas."
+            "body": "Cada fila es un área de política de la lente elegida, con un punto por cada una de sus metas. Su barra reúne todos los pares de metas del área: la posible desalineación desde la izquierda, la alineación desde la derecha. Los nombres de las columnas sobre las filas las ordenan, primero de mayor a menor y luego de menor a mayor. Al lado, cada área de política con su número de metas; al abrir una, o al seleccionar su nombre a la izquierda, se listan sus metas. Las otras dos opciones listan los pares de áreas de política que reúnen más posibles desalineaciones o alineaciones fuertes; al abrir uno se conservan solo las metas que participan, y al seleccionar una meta se muestran sus contrapartes en cada fila."
           }
         }
       },
@@ -2962,7 +2962,6 @@
       "documents": "Documentos",
       "commitments": "{count, plural, one {# meta} other {# metas}}",
       "minDocuments": "Se necesitan al menos dos documentos para comparar.",
-      "lens": "Áreas de política",
       "sections": "Secciones",
       "moveUp": "Subir {section}",
       "moveDown": "Bajar {section}",
@@ -3174,7 +3173,14 @@
       "exploreTarget": "Explorar esta meta",
       "countApart": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
       "kickerReinforce": "Lo que funciona bien",
-      "kickerApart": "Dónde mirar más de cerca"
+      "kickerApart": "Dónde mirar más de cerca",
+      "title": {
+        "overview": "{total, plural, one {# par de metas según su valoración} other {# pares de metas según su valoración}}",
+        "map": "Pares de metas por par de documentos",
+        "reinforce": "Alineaciones fuertes por par de documentos",
+        "apart": "Posibles desalineaciones por par de documentos",
+        "doc": "{doc} con cada uno de los demás documentos"
+      }
     },
     "explore": {
       "title": "Explorar las metas",
@@ -3251,6 +3257,18 @@
       "aiLabel": "Explicación de la IA:",
       "translated": "traducción automática",
       "originalName": "En la revisión: {name}",
+      "statusValue": {
+        "ongoing": "En curso",
+        "adopted": "Adoptada",
+        "implemented": "Implementada",
+        "planned": "Prevista"
+      },
+      "unit": {
+        "billion": "mil millones",
+        "million": "millones"
+      },
+      "ringRole": "anillo",
+      "originalReport": "En el informe: {name}",
       "aiWritten": "Generado por IA:",
       "aiWrittenNote": "Redactado con IA para la tabla de descripciones de la revisión",
       "status": "Estado según el informe: {status}",
@@ -3578,7 +3596,15 @@
     "areaView": {
       "kicker": "Por área de política",
       "lensGroup": "Áreas de política",
-      "sideGroup": "Pares de metas",
+      "sideGroup": "Metas o pares de metas",
+      "viewTargets": "Metas",
+      "headlineTargets": "El {pct} de las {placed, number} metas de estas áreas de política son metas de <first>{area}</first>.",
+      "headlineTargetsArea": "{count, number} de las {placed, number} metas de estas áreas de política son metas de {area}.",
+      "headlineTargetsNone": "Ninguna meta se encuentra en estas áreas de política.",
+      "areaShareTargets": "el {pct} de las metas",
+      "areaList": "Áreas de política y sus metas",
+      "showAllTargets": "Mostrar las {count, number} metas",
+      "showFewerTargets": "Mostrar menos",
       "sideApart": "Posible desalineación",
       "sideReinforce": "Alineación fuerte",
       "headlineBetween": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas de <second>{areaB}</second>.",

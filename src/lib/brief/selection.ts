@@ -21,15 +21,15 @@ export const SECTION_IDS: SectionId[] = [
   "contracts",
 ];
 
-/** The standard brief: four A4 pages, the policy areas last; then, on screen
- *  where the country has a contract record, the public contracts. */
+/** The standard brief: three A4 pages, the policy areas last; then, on screen
+ *  where the country has a contract record, the public contracts. The
+ *  documents side by side are offered in the menu, not shown by default. */
 export const DEFAULT_SECTIONS: SectionId[] = [
   "overall",
   "together",
   "aligned",
   "apart",
   "commitments",
-  "documents",
   "areas",
   "contracts",
 ];

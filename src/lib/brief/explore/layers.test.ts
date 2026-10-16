@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { scopeOf } from "../compute";
 import { briefFixture } from "../test-fixture";
+import { parseTargetLabels } from "../target-labels";
 import { buildExploreLayers } from "./layers";
 import { LAYER_DATA } from "./test-layers";
 import { buildExploreModel, levelBetween, relationBetween } from "./model";
@@ -124,6 +125,71 @@ describe("a budget line's names and description", () => {
     expect(plain.name).toBe(SOURCE_NAME);
     expect(plain.original).toBeUndefined();
     expect(plain.translated).toBeUndefined();
+  });
+});
+
+describe("Mongolia's ring in Mongolian", () => {
+  const MONGOLIA: Record<string, unknown> = {
+    targets: [
+      { id: "BTR_1", sourceDocument: "BTR", sourceLabel: "Solar parks", text: "Build solar parks.", actionType: "mitigation", measureStatus: "Ongoing" },
+    ],
+    budgetPseudoTargets: [
+      { id: "BER_71401", sourceLabel: "71401 Waste management", text: "Waste management.", expenditure: { "2020": 1 } },
+      { id: "BER_81708", sourceLabel: "81708 Afforestation", text: "Afforestation.", expenditure: { "2020": 1 } },
+    ],
+    berData: {
+      currency: "MNT",
+      unit: "billion",
+      period: { start: 2020, end: 2024 },
+      programs: [
+        { code: "71401", name: "Waste management", description: "Implementation of the Law on Waste." },
+        { code: "81708", name: "Afforestation", description: "Under the Law on Afforestation." },
+      ],
+    },
+  };
+  const NAMES = {
+    names: {
+      "71401": { mn: "Хог хаягдлын менежмент", mnDescription: "Хог хаягдлын тухай хуулийг хэрэгжүүлэх.", mnMachine: true as const },
+      "81708": { mn: "Ойжуулалт", mnDescription: "Ойжуулалтын тухай хуульд заасны дагуу." },
+    },
+  };
+  const LABELS = parseTargetLabels({
+    labels: { BTR_1: { mn: "Нарны цахилгаан станц" } },
+    texts: { BTR_1: { mn: "Нарны цахилгаан станц барих." } },
+  });
+  const items = (locale: string) => buildExploreLayers(MONGOLIA, SOURCE, { locale, names: NAMES, labels: LABELS })!.items;
+
+  it("names a reported action by its machine translation, flagged as one, the report's own title kept", () => {
+    const [action] = items("mn");
+    expect(action.label).toBe("Нарны цахилгаан станц");
+    expect(action.name).toBe("Нарны цахилгаан станц");
+    expect(action.text).toBe("Нарны цахилгаан станц барих.");
+    expect(action.translated).toBe("machine");
+    expect(action.original).toBe("Solar parks");
+    expect(action.status).toBe("Ongoing");
+  });
+
+  it("names a budget line by the review's own Mongolian where it has one, unflagged", () => {
+    const line = items("mn").find((i) => i.code === "81708")!;
+    expect(line.name).toBe("Ойжуулалт");
+    expect(line.text).toBe("Ойжуулалтын тухай хуульд заасны дагуу.");
+    expect(line.translated).toBeUndefined();
+    expect(line.original).toBeUndefined();
+  });
+
+  it("names any other budget line by its machine translation, flagged as one, the review's name kept", () => {
+    const line = items("mn").find((i) => i.code === "71401")!;
+    expect(line.name).toBe("Хог хаягдлын менежмент");
+    expect(line.text).toBe("Хог хаягдлын тухай хуулийг хэрэгжүүлэх.");
+    expect(line.translated).toBe("machine");
+    expect(line.original).toBe("Waste management");
+  });
+
+  it("stays as the sources have it on the English page", () => {
+    const en = items("en");
+    expect(en.map((i) => i.name)).toEqual(["Solar parks", "Waste management", "Afforestation"]);
+    expect(en.map((i) => i.text)).toEqual(["Build solar parks.", "Implementation of the Law on Waste.", "Under the Law on Afforestation."]);
+    expect(en.filter((i) => i.translated || i.original)).toEqual([]);
   });
 });
 

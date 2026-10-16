@@ -176,6 +176,29 @@ describe("buildBriefSource", () => {
     ]);
   });
 
+  it("takes a target's title in the page's language where the country gives one, the code before a bare number", () => {
+    const titled = buildBriefSource({
+      countryId: "mongolia",
+      countryName: "Mongolia",
+      data: {
+        ...DATA,
+        targets: [
+          { ...target("NBSAP_6", "NBSAP"), sourceLabel: "6 Pollution" },
+          { ...target("NDC_7", "NDC"), sourceLabel: "Unconditional target" },
+          { ...target("LDNR_2", "LDNR"), sourceLabel: "2.1" },
+        ],
+      },
+      locale: "mn",
+      labels: { NBSAP_6: "6 Бохирдол", LDNR_2: "2.1" },
+    });
+    expect(titled.commitments.map((c) => [c.id, c.label])).toEqual([
+      // No title in the page's language: the document's own.
+      ["NDC_7", "Unconditional target"],
+      ["NBSAP_6", "6 Бохирдол"],
+      ["LDNR_2", "NRVTS 2.1"],
+    ]);
+  });
+
   it("encodes cross-document comparisons as [a, b, level, mechanism]", () => {
     // high = 0, low = 2, flagged = 4; resource_competition = 2
     expect(source.comparisons).toEqual([0, 2, 0, 0, 2, 3, 4, 2, 1, 3, 2, 0]);

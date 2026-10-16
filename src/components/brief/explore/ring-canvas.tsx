@@ -317,6 +317,7 @@ export function RingCanvas({
   resetLabel,
   hotArc = null,
   ariaLabel,
+  roleLabel,
 }: {
   arcs: ArcSpec[];
   n: number;
@@ -356,6 +357,8 @@ export function RingCanvas({
   /** An arc to bring forward (its lines stay, the others step back). */
   hotArc?: string | null;
   ariaLabel: string;
+  /** What the ring is called, read out with its label (the page's language). */
+  roleLabel?: string;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -621,7 +624,7 @@ export function RingCanvas({
       ref={wrapRef}
       className="ex-ring"
       role="application"
-      aria-roledescription="ring"
+      aria-roledescription={roleLabel ?? "ring"}
       aria-label={ariaLabel}
       tabIndex={0}
       data-pointer={hover !== null || hoverLine !== null ? "seat" : undefined}

@@ -3,23 +3,26 @@ import { paginate } from "./sections";
 import { DEFAULT_SECTIONS, SECTION_IDS } from "./selection";
 
 describe("paginate", () => {
-  it("lays the standard brief out on four pages, the policy areas last", () => {
+  it("lays the standard brief out on three pages, the policy areas last", () => {
     expect(DEFAULT_SECTIONS).toEqual([
       "overall",
       "together",
       "aligned",
       "apart",
       "commitments",
-      "documents",
       "areas",
       "contracts",
     ]);
     expect(paginate(DEFAULT_SECTIONS)).toEqual([
       { title: true, sections: ["overall", "together"] },
       { title: false, sections: ["aligned", "apart"] },
-      { title: false, sections: ["commitments", "documents"] },
-      { title: false, sections: ["areas"] },
+      { title: false, sections: ["commitments", "areas"] },
     ]);
+  });
+
+  it("leaves the documents side by side out of the standard brief, on offer in the menu", () => {
+    expect(DEFAULT_SECTIONS).not.toContain("documents");
+    expect(SECTION_IDS).toContain("documents");
   });
 
   it("moves a section that does not fit to the next page, keeping the order", () => {

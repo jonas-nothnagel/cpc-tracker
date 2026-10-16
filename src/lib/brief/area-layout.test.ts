@@ -1,103 +1,68 @@
 import { describe, expect, it } from "vitest";
-import { cloudDots, cloudLines, cutMarks, layoutAreaField, ROW_LABEL, targetAt } from "./area-layout";
+import { layoutAreaField, ROW_LABEL, targetAt } from "./area-layout";
 
 const ROWS = [
   { id: "r1", targets: ["a", "b"] },
   { id: "r2", targets: ["c"] },
 ];
-const REST = new Map([
-  ["a", 4],
-  ["b", 0],
-  ["c", 0],
-]);
+const row = (n: number) => [{ id: "r", targets: Array.from({ length: n }, (_, i) => `t${i}`) }];
 
 describe("layoutAreaField", () => {
-  it("sets each row's targets on its line, with room for their clouds above", () => {
-    const layout = layoutAreaField(ROWS, REST, 212);
-    expect(layout.pitch).toBe(12);
-    expect([layout.per, layout.sp]).toEqual([2, 4.6]);
+  it("sets each row's targets on one line under its name, the first dot at the name's left edge", () => {
+    const layout = layoutAreaField(ROWS, 212);
+    expect(layout.pitch).toBe(10);
+    expect(layout.targetR).toBeCloseTo(3.2);
     expect(layout.rows.map((r) => r.id)).toEqual(["r1", "r2"]);
     expect(layout.rows[0].y).toBe(0);
-    expect(layout.at.get("a")!.x).toBeCloseTo(12);
-    expect(layout.at.get("b")!.x).toBeCloseTo(24);
-    // Name line 20, gap 8, a cloud of two lines of 4.6, the lift of 4.8.
-    expect(layout.at.get("a")!.y).toBeCloseTo(42);
-    expect(layout.rows[1].y).toBeCloseTo(70);
-    expect(layout.at.get("c")!.y).toBeCloseTo(102.8);
-    expect(layout.height).toBeCloseTo(130.8);
+    expect(layout.at.get("a")!.x - layout.targetR).toBeCloseTo(0);
+    expect(layout.at.get("b")!.x).toBeCloseTo(13.2);
+    // Name line 20, gap 2, half a line of 10 to the dot's centre.
+    expect(layout.at.get("a")!.y).toBeCloseTo(27);
+    // A line of dots and 14 after the row.
+    expect(layout.rows[1].y).toBeCloseTo(46);
+    expect(layout.at.get("c")!.y).toBeCloseTo(73);
+    expect(layout.height).toBeCloseTo(92);
   });
 
-  it("takes its row heights from the clouds at rest", () => {
-    const flat = layoutAreaField(ROWS, new Map([["a", 0], ["b", 0], ["c", 0]]), 212);
-    const tall = layoutAreaField(ROWS, REST, 212);
-    expect(tall.rows[1].y - flat.rows[1].y).toBeCloseTo(2 * 4.6);
+  it("fills the name's column with the largest area on one line", () => {
+    const layout = layoutAreaField(row(75), 800, 600);
+    expect(layout.pitch).toBeCloseTo(8);
+    const at = [...layout.at.values()];
+    expect(new Set(at.map((p) => p.y)).size).toBe(1);
+    expect(Math.max(...at.map((p) => p.x)) + layout.targetR).toBeLessThanOrEqual(600);
   });
 
-  it("wraps a long row onto further lines, each with room for its clouds", () => {
-    const targets = Array.from({ length: 30 }, (_, i) => `t${i}`);
-    const layout = layoutAreaField([{ id: "r", targets }], new Map(targets.map((id) => [id, 0])), 100);
-    expect(layout.pitch).toBe(6.5);
-    const first = layout.at.get("t0")!;
-    const next = layout.at.get("t13")!;
-    expect(next.x).toBeCloseTo(first.x);
-    expect(next.y - first.y).toBeCloseTo(layout.lift + layout.pitch);
+  it("keeps the dots inside the name's column, clear of the figures beside it", () => {
+    const layout = layoutAreaField([...ROWS, ...row(40)], 800, 300);
+    const right = Math.max(...[...layout.at.values()].map((p) => p.x)) + layout.targetR;
+    expect(right).toBeLessThanOrEqual(300);
   });
 
-  it("keeps a wrapped line's clouds clear of the line of targets above it", () => {
-    const targets = Array.from({ length: 30 }, (_, i) => `t${i}`);
-    // t13 opens the second line with the row's tallest cloud.
-    const rest = new Map(targets.map((id) => [id, id === "t13" ? 10 : 0]));
-    const layout = layoutAreaField([{ id: "r", targets }], rest, 100);
-    const above = layout.at.get("t0")!;
-    const below = layout.at.get("t13")!;
-    const cloudTop = below.y - layout.lift - cloudLines(10, layout.per) * layout.sp;
-    expect(cloudTop).toBeGreaterThanOrEqual(above.y + layout.targetR);
+  it("wraps only where the column is too narrow for the smallest spacing", () => {
+    const layout = layoutAreaField(row(110), 240, 200);
+    expect(layout.pitch).toBe(3);
+    const lines = new Set([...layout.at.values()].map((p) => p.y));
+    expect(lines.size).toBe(2);
+    expect(layout.height).toBeCloseTo(ROW_LABEL + 2 + 2 * 8 + 14);
   });
 
-  it("takes three dots a line when two would make the field too tall", () => {
-    const rows = Array.from({ length: 10 }, (_, i) => ({ id: `r${i}`, targets: [`t${i}`] }));
-    const layout = layoutAreaField(rows, new Map(rows.map((r) => [r.targets[0], 80])), 212);
-    expect(layout.per).toBe(3);
-    expect(layout.sp).toBeCloseTo(3.6);
-  });
-});
-
-describe("cloudDots", () => {
-  it("stops a cloud at forty lines and says it is cut", () => {
-    expect(cloudDots(80, 2)).toEqual({ dots: 80, cut: false });
-    expect(cloudDots(81, 2)).toEqual({ dots: 80, cut: true });
-    expect(cloudDots(211, 3)).toEqual({ dots: 120, cut: true });
+  it("keeps every row's height whatever the targets' order", () => {
+    const shuffled = [
+      { id: "r1", targets: ["b", "a"] },
+      { id: "r2", targets: ["c"] },
+    ];
+    expect(layoutAreaField(shuffled, 212).height).toBe(layoutAreaField(ROWS, 212).height);
   });
 });
 
 describe("targetAt", () => {
-  it("finds the target whose column is under the pointer, its cloud included", () => {
-    const layout = layoutAreaField(ROWS, REST, 212);
-    expect(targetAt(layout, REST, 12, 40)).toBe("a");
-    expect(targetAt(layout, REST, 12, 26)).toBe("a");
-    expect(targetAt(layout, REST, 25, 42)).toBe("b");
-    expect(targetAt(layout, REST, 12, 10)).toBeNull();
-    expect(targetAt(layout, REST, 150, 42)).toBeNull();
-  });
-});
-
-describe("cutMarks", () => {
-  it("keeps a cut cloud's count clear of its row's name", () => {
-    // Clouds come tallest first, so a cut cloud always leads its row, under the name.
-    const rest = new Map([
-      ["a", 211],
-      ["b", 3],
-    ]);
-    const layout = layoutAreaField([{ id: "r", targets: ["a", "b"] }], rest, 212);
-    const marks = cutMarks(layout, rest);
-    expect(marks.map((m) => m.id)).toEqual(["a"]);
-    expect(marks[0].top).toBeGreaterThanOrEqual(layout.rows[0].y + ROW_LABEL);
-    expect(marks[0].x).toBeCloseTo(layout.at.get("a")!.x);
-  });
-
-  it("marks only the clouds cut in the current state", () => {
-    const rest = new Map([["a", 211]]);
-    const layout = layoutAreaField([{ id: "r", targets: ["a"] }], rest, 212);
-    expect(cutMarks(layout, new Map([["a", 12]]))).toEqual([]);
+  it("finds the target whose dot is under the pointer", () => {
+    const layout = layoutAreaField(ROWS, 212);
+    expect(targetAt(layout, 3.2, 27)).toBe("a");
+    expect(targetAt(layout, 7, 30)).toBe("a");
+    expect(targetAt(layout, 13.2, 27)).toBe("b");
+    expect(targetAt(layout, 3.2, 73)).toBe("c");
+    expect(targetAt(layout, 3.2, 10)).toBeNull();
+    expect(targetAt(layout, 150, 27)).toBeNull();
   });
 });

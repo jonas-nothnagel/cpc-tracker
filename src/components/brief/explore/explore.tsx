@@ -180,6 +180,17 @@ function LineGlyph({ kind }: { kind: LineKind }) {
   );
 }
 
+/** Reported statuses and spending units the catalogs name, by their
+ *  source's own word. */
+const STATUS_KEYS = ["ongoing", "adopted", "implemented", "planned"] as const;
+const UNIT_KEYS = ["billion", "million"] as const;
+/** The catalog's key for a word, or null for one it does not name (a plain
+ *  array lookup, so a word like "constructor" never reads Object.prototype). */
+function catalogKey<K extends string>(keys: readonly K[], word: string): K | null {
+  const lower = word.toLowerCase();
+  return (keys as readonly string[]).includes(lower) ? (lower as K) : null;
+}
+
 /** A layer's glyph in its colour: a square for reported actions, a tilted
  *  square for budget lines, as their seats are drawn on the ring. */
 function Swatch({ kind }: { kind: "action" | "budget" }) {
@@ -577,13 +588,23 @@ export function Explore({
       ? t("tipApartNamesMore", { names: shown, more: apart.length - 3 })
       : t("tipApartNames", { names: shown });
   };
+  // A report's status and a review's unit in the page's language; one the
+  // catalog does not know is shown as its source states it.
+  const statusText = (status: string) => {
+    const key = catalogKey(STATUS_KEYS, status);
+    return key ? t(`statusValue.${key}`) : status;
+  };
+  const unitText = (unit: string) => {
+    const key = catalogKey(UNIT_KEYS, unit);
+    return key ? t(`unit.${key}`) : unit;
+  };
   const factsOf = (c: ExploreItem): string | null => {
-    if (c.kind === "action" && c.status) return t("status", { status: c.status });
+    if (c.kind === "action" && c.status) return t("status", { status: statusText(c.status) });
     if (c.kind === "budget" && c.spend && layers?.budget) {
       return t("spend", {
         total: n(c.spend.total),
         currency: layers.budget.currency,
-        unit: layers.budget.unit,
+        unit: unitText(layers.budget.unit),
         start: layers.budget.start,
         end: layers.budget.end,
       });
@@ -1445,6 +1466,7 @@ export function Explore({
             resetLabel={t("clear")}
             hotArc={hotArc ?? partnerArc}
             ariaLabel={t("ringLabel", { targets: seated, group: groupLabel(state.group) })}
+            roleLabel={t("ringRole")}
           />
         </div>
         <aside className="ex-side" data-tour="explore-column">
