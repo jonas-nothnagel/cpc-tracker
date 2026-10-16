@@ -1,18 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from "react";
-import {
-  cloudDots,
-  cutBreak,
-  cutMarks,
-  layoutAreaField,
-  targetAt,
-  type AreaFieldLayout,
-  type AreaFieldRow,
-} from "@/lib/brief/area-layout";
+import { layoutAreaField, targetAt, type AreaFieldLayout, type AreaFieldRow } from "@/lib/brief/area-layout";
 import type { AreaSide, TargetInk } from "@/lib/brief/areas";
 
-/** The picture's inks: targets in ink or set back, clouds in the side's ink. */
+/** The picture's inks: targets in ink or set back, a picked target's partners in the side's ink. */
 const FIELD_INK = {
   base: "#55606e",
   pale: "#dcdfdb",
@@ -27,16 +19,14 @@ const MOVE_MS = 850;
 interface Pose {
   x: number;
   y: number;
-  s: number;
 }
 
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
 /**
- * The policy-area picture: one row per area, a dot per target on the row's
- * line and its point cloud above it. The rows come in drawing order; the
- * clouds and inks say what the reader has chosen, and every change of shape
- * moves the same dots. Pointing at a target gives its tip; selecting it
+ * The policy-area picture: one row per area, a square per target under its
+ * name. The rows come in drawing order; the inks say what the reader has
+ * chosen, and a new order moves the same dots. Pointing at a target gives its tip; selecting it
  * hands it to `onPick`. The canvas is hidden from assistive technology; the
  * rows' names and counts are read as a list, each name (from `rowLabel`) a
  * way to its area, and the list beside the picture carries every other way
@@ -44,8 +34,6 @@ const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
  */
 export function AreaField({
   rows,
-  restClouds,
-  clouds,
   inks,
   side,
   rowLabel,
@@ -54,14 +42,9 @@ export function AreaField({
   dimmed,
   pointed,
   tipFor,
-  formatCount,
   onPick,
 }: {
   rows: AreaFieldRow[];
-  /** Each target's cloud at rest: the rows' heights. */
-  restClouds: Map<string, number>;
-  /** Each target's cloud now. */
-  clouds: Map<string, number>;
   inks: Map<string, TargetInk>;
   side: AreaSide;
   rowLabel: (id: string) => ReactNode;
@@ -74,7 +57,6 @@ export function AreaField({
   /** A target pointed at beside the picture: ringed. */
   pointed: string | null;
   tipFor: (id: string) => ReactNode;
-  formatCount: (n: number) => string;
   onPick: (id: string) => void;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -115,7 +97,7 @@ export function AreaField({
     return () => query?.removeEventListener("change", follow);
   }, []);
 
-  const layout = useMemo(() => layoutAreaField(rows, restClouds, width), [rows, restClouds, width]);
+  const layout = useMemo(() => layoutAreaField(rows, width), [rows, width]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -126,8 +108,11 @@ export function AreaField({
     const ctx = canvas.getContext("2d");
     const from = new Map(poses.current);
     const to = new Map<string, Pose>();
-    for (const [id, at] of layout.at) to.set(id, { x: at.x, y: at.y, s: clouds.get(id) ?? 0 });
-    const cloudInk = side === "apart" ? FIELD_INK.apart : FIELD_INK.reinforce;
+    for (const [id, at] of layout.at) to.set(id, { x: at.x, y: at.y });
+    const sideInk = side === "apart" ? FIELD_INK.apart : FIELD_INK.reinforce;
+    // Squares on the pixel grid: a pale one as sharp as a full one.
+    const snap = (v: number) => Math.round(v * dpr) / dpr;
+    const size = Math.max(1, snap(layout.targetR * 2));
     // Tips and cut counts wait while the dots travel.
     const setMoving = (on: boolean) => {
       moving.current = on;
@@ -142,40 +127,19 @@ export function AreaField({
         ctx.clearRect(0, 0, layout.width, layout.height);
       }
       for (const [id, end] of to) {
-        const start = from.get(id) ?? { x: end.x, y: end.y, s: 0 };
-        const pose = {
-          x: start.x + (end.x - start.x) * k,
-          y: start.y + (end.y - start.y) * k,
-          s: start.s + (end.s - start.s) * k,
-        };
+        const start = from.get(id) ?? end;
+        const pose = { x: start.x + (end.x - start.x) * k, y: start.y + (end.y - start.y) * k };
         now.set(id, pose);
         if (!ctx) continue;
-        const { dots, cut } = cloudDots(Math.round(pose.s), layout.per);
-        ctx.fillStyle = cloudInk;
-        for (let d = 0; d < dots; d++) {
-          const col = d % layout.per;
-          const line = Math.floor(d / layout.per);
-          // Every other dot small: potential misalignment reads without its colour.
-          const r = side === "apart" && (col + line) % 2 === 1 ? layout.cloudR * 0.6 : layout.cloudR;
-          ctx.beginPath();
-          ctx.arc(pose.x + (col - (layout.per - 1) / 2) * layout.sp, pose.y - layout.lift - line * layout.sp, r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        if (cut) {
-          // The break over a cloud stopped at its limit.
-          ctx.fillRect(pose.x - (layout.per * layout.sp) / 2, cutBreak(layout, pose.y), layout.per * layout.sp, 1.5);
-        }
         const ink = inks.get(id) ?? "base";
-        ctx.fillStyle = ink === "pale" ? FIELD_INK.pale : ink === "lit" ? cloudInk : FIELD_INK.base;
-        ctx.beginPath();
-        ctx.arc(pose.x, pose.y, layout.targetR, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = ink === "pale" ? FIELD_INK.pale : ink === "lit" ? sideInk : FIELD_INK.base;
+        const x0 = snap(pose.x - size / 2);
+        const y0 = snap(pose.y - size / 2);
+        ctx.fillRect(x0, y0, size, size);
         if (ink === "focus" || id === pointedRef.current) {
           ctx.strokeStyle = FIELD_INK.ring;
           ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.arc(pose.x, pose.y, layout.targetR + 2.5, 0, Math.PI * 2);
-          ctx.stroke();
+          ctx.strokeRect(x0 - 2.5, y0 - 2.5, size + 5, size + 5);
         }
       }
       poses.current = now;
@@ -184,7 +148,7 @@ export function AreaField({
 
     const moves = [...to].some(([id, end]) => {
       const start = from.get(id);
-      return !start || Math.abs(start.x - end.x) > 0.5 || Math.abs(start.y - end.y) > 0.5 || Math.abs(start.s - end.s) > 0.01;
+      return !start || Math.abs(start.x - end.x) > 0.5 || Math.abs(start.y - end.y) > 0.5;
     });
     const still =
       from.size === 0 ||
@@ -211,7 +175,7 @@ export function AreaField({
       cancelAnimationFrame(frame);
       setMoving(false);
     };
-  }, [layout, clouds, inks, side, width, dpr]);
+  }, [layout, inks, side, width, dpr]);
 
   useEffect(() => {
     pointedRef.current = pointed;
@@ -219,22 +183,17 @@ export function AreaField({
   }, [pointed]);
 
   // Where the dots are now: mid-move, a selection goes to the dot under the pointer.
-  const live = (): { place: AreaFieldLayout; clouds: Map<string, number> } => {
-    if (!moving.current) return { place: layout, clouds };
+  const live = (): AreaFieldLayout => {
+    if (!moving.current) return layout;
     const at = new Map<string, { x: number; y: number }>();
-    const now = new Map<string, number>();
-    for (const [id, p] of poses.current) {
-      at.set(id, { x: p.x, y: p.y });
-      now.set(id, Math.round(p.s));
-    }
-    return { place: { ...layout, at }, clouds: now };
+    for (const [id, p] of poses.current) at.set(id, { x: p.x, y: p.y });
+    return { ...layout, at };
   };
   const hit = (e: { clientX: number; clientY: number; currentTarget: HTMLDivElement }) => {
     const box = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - box.left;
     const y = e.clientY - box.top;
-    const { place, clouds: now } = live();
-    return { id: targetAt(place, now, x, y), x, y };
+    return { id: targetAt(live(), x, y), x, y };
   };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
     if (moving.current) {
@@ -250,7 +209,6 @@ export function AreaField({
     if (id) onPick(id);
   };
 
-  const cuts = cutMarks(layout, clouds);
   const measured = width > 0;
 
   return (
@@ -282,13 +240,6 @@ export function AreaField({
                 style={{ transform: `translateY(${row.y}px)` }}
               >
                 {rowLabel(row.id)}
-              </div>
-            ))}
-          </div>
-          <div className="brief-av-labels" aria-hidden="true">
-            {cuts.map((cut) => (
-              <div key={cut.id} className="brief-av-cut" data-cut={cut.id} style={{ left: cut.x, top: cut.top }}>
-                {formatCount(clouds.get(cut.id) ?? 0)}
               </div>
             ))}
           </div>

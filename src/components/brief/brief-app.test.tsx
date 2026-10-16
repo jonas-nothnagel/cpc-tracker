@@ -357,7 +357,7 @@ describe("BriefApp screen and print", () => {
     const hub = screen.getByTestId("brief-hub");
     const areas = screen.getByTestId("brief-areas");
     expect(hub.compareDocumentPosition(areas) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toContain("of the potential misalignments sit");
+    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toContain("targets in these policy areas are");
   });
 
   it("chooses the policy areas in the component only, and prints them by the same lens", () => {
@@ -384,6 +384,11 @@ describe("BriefApp screen and print", () => {
   it("opens a pair of policy areas' target pairs in a panel", () => {
     renderApp(briefFixture({ themes: true }));
     const areas = screen.getByTestId("brief-areas");
+    fireEvent.click(
+      within(within(areas).getByRole("group", { name: "Targets or target pairs" })).getByRole("button", {
+        name: "Potential misalignment",
+      }),
+    );
     const second = within(areas).getAllByTestId("brief-area-pair")[1];
     fireEvent.click(within(second).getByRole("button", { expanded: false }));
     fireEvent.click(within(areas).getByRole("button", { name: "See the 3 target pairs" }));

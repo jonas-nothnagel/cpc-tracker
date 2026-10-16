@@ -2885,29 +2885,13 @@
   color: var(--brief-green);
 }
 
-[data-brief] .brief-av-cut {
-  position: absolute;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  line-height: 14px;
-  transition: opacity 0.3s;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-/* A cut cloud's count waits while the dots travel. */
-[data-brief] .brief-av-field[data-moving] .brief-av-cut {
-  opacity: 0;
-}
-
 [data-brief] .brief-av-tip {
   white-space: normal;
   max-width: 17rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-brief] .brief-av-row,
-  [data-brief] .brief-av-cut {
+  [data-brief] .brief-av-row {
     transition: none;
   }
 }
@@ -3065,6 +3049,11 @@
   background: var(--brief-green);
 }
 
+/* The targets view: the picture's own squares. */
+[data-brief] .brief-av-glyph[data-side="targets"] {
+  background: var(--brief-muted);
+}
+
 [data-brief] .brief-av-scope {
   margin: 0 0 0.5rem;
   font-size: 0.875rem;
@@ -3123,6 +3112,10 @@
 
 [data-brief] .brief-av-pair-bar[data-side="reinforce"] > span {
   background: var(--brief-green);
+}
+
+[data-brief] .brief-av-pair-bar[data-side="targets"] > span {
+  background: var(--brief-muted);
 }
 
 [data-brief] .brief-av-pair-count {

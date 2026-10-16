@@ -5,15 +5,15 @@ import type { BriefSource } from "./source";
 import {
   areaFocus,
   areaHeadline,
+  areaInks,
   areaPairDetail,
   areaPairs,
-  cloudSizes,
   lensAreas,
   OTHER_AREA,
   partnersByArea,
-  restClouds,
   rowCounts,
   rowOrder,
+  sideCounts,
   sideLinks,
   splitAcronym,
   targetInks,
@@ -221,31 +221,44 @@ describe("areaHeadline", () => {
 describe("the picture's states", () => {
   const lens = lensAreas(SOURCE, ALL, "globe");
   const links = sideLinks(ALL);
-  const rest = restClouds(lens, links, "apart");
+  const rest = sideCounts(lens, links, "apart");
   const pair = areaPairs(lens, ALL, "apart").top[1]; // Agriculture · Water
 
-  it("gives each placed target its cloud at rest", () => {
+  it("counts each placed target's target pairs on the side", () => {
     expect(Object.fromEntries(rest)).toEqual({ A1: 0, A2: 0, A3: 0, B4: 1, B5: 4, B6: 7, C1: 1, C2: 1, C3: 1 });
   });
 
-  it("keeps an open pair of areas' target pairs in its two rows, none elsewhere", () => {
-    const clouds = cloudSizes(lens, links, "apart", { kind: "pair", pair });
-    expect(Object.fromEntries(clouds)).toEqual({ A1: 0, A2: 0, A3: 0, B4: 0, B5: 0, B6: 3, C1: 1, C2: 1, C3: 1 });
+  it("keeps in ink, with a pair of areas open, only the targets taking part in its target pairs", () => {
+    const open = targetInks(lens, { kind: "pair", pair }, links, "apart");
+    expect(Object.fromEntries(open)).toEqual({
+      A1: "pale",
+      A2: "pale",
+      A3: "pale",
+      B4: "pale",
+      B5: "pale",
+      B6: "base",
+      C1: "base",
+      C2: "base",
+      C3: "base",
+    });
   });
 
-  it("lets every cloud fall around a picked target", () => {
-    const clouds = cloudSizes(lens, links, "apart", { kind: "target", id: "B6" });
-    expect([...clouds.values()].every((v) => v === 0)).toBe(true);
+  it("keeps, in the targets view, a picked area's targets in ink and the picked target ringed", () => {
+    expect([...areaInks(lens, null, null).values()].every((ink) => ink === "base")).toBe(true);
+    const water = areaInks(lens, "g5", null);
+    expect([water.get("C1"), water.get("C3"), water.get("A1"), water.get("B6")]).toEqual(["base", "base", "pale", "pale"]);
+    expect(areaInks(lens, "g5", "C2").get("C2")).toBe("focus");
+    expect(areaInks(lens, null, "B6").get("A1")).toBe("base");
   });
 
-  it("lines up each row: the tallest clouds first; in an open pair, that pair's; other rows as at rest", () => {
-    expect(rowOrder(lens, rest, rest, { kind: "rest" }, links, "apart")).toEqual([
+  it("lines up each row: the most target pairs first; in an open pair, that pair's; other rows as at rest", () => {
+    expect(rowOrder(lens, rest, { kind: "rest" }, links, "apart")).toEqual([
       { id: "g1", targets: ["A1", "A2", "A3"] },
       { id: "g2", targets: ["B6", "B5", "B4"] },
       { id: "g5", targets: ["C1", "C2", "C3"] },
     ]);
     const focus = { kind: "pair" as const, pair };
-    const open = rowOrder(lens, rest, cloudSizes(lens, links, "apart", focus), focus, links, "apart");
+    const open = rowOrder(lens, rest, focus, links, "apart");
     expect(open.map((r) => r.targets)).toEqual([
       ["A1", "A2", "A3"],
       ["B6", "B5", "B4"],
@@ -256,14 +269,13 @@ describe("the picture's states", () => {
   it("keeps a picked target where it stood in its row, as at rest or in the open pair", () => {
     // B5 stands second in its row; picking it must not move it under the pointer.
     const focus = { kind: "target" as const, id: "B5" };
-    const clouds = cloudSizes(lens, links, "apart", focus);
-    expect(rowOrder(lens, rest, clouds, focus, links, "apart")[1].targets).toEqual(["B6", "B5", "B4"]);
+    expect(rowOrder(lens, rest, focus, links, "apart")[1].targets).toEqual(["B6", "B5", "B4"]);
     const basis = { kind: "pair" as const, pair };
-    expect(rowOrder(lens, rest, clouds, focus, links, "apart", basis)[1].targets).toEqual(["B6", "B5", "B4"]);
+    expect(rowOrder(lens, rest, focus, links, "apart", basis)[1].targets).toEqual(["B6", "B5", "B4"]);
   });
 
   it("keeps a picked target in place and puts its partners first in their rows", () => {
-    // x3 is y1's only partner and the smallest cloud of its row.
+    // x3 is y1's only partner and the fewest target pairs of its row.
     const small: LensAreas = {
       areas: [
         { id: "X", name: "X", acronym: null, order: 0, targets: ["x1", "x2", "x3"] },
@@ -286,7 +298,7 @@ describe("the picture's states", () => {
       ["y1", 1],
     ]);
     const focus = { kind: "target" as const, id: "y1" };
-    const rows = rowOrder(small, handRest, cloudSizes(small, handLinks, "apart", focus), focus, handLinks, "apart");
+    const rows = rowOrder(small, handRest, focus, handLinks, "apart");
     expect(rows).toEqual([
       { id: "X", targets: ["x3", "x1", "x2"] },
       { id: "Y", targets: ["y1"] },
@@ -301,7 +313,7 @@ describe("the picture's states", () => {
 
   it("inks the targets: the open pair's rows in ink; a picked target and its partners set apart", () => {
     const open = targetInks(lens, { kind: "pair", pair }, links, "apart");
-    expect([open.get("A1"), open.get("B4"), open.get("C1")]).toEqual(["pale", "base", "base"]);
+    expect([open.get("A1"), open.get("B4"), open.get("B6"), open.get("C1")]).toEqual(["pale", "pale", "base", "base"]);
     const around = targetInks(lens, { kind: "target", id: "B6" }, links, "apart");
     expect([around.get("B6"), around.get("C1"), around.get("B5"), around.get("A1")]).toEqual([
       "focus",
@@ -327,7 +339,7 @@ describe("the picture's states", () => {
     // Around Water, B6 keeps only its 3 with Water's targets.
     const water = areaFocus(lens, links, "apart", "g5");
     expect(water.area).toBe("g5");
-    expect(Object.fromEntries(cloudSizes(lens, links, "apart", water))).toEqual({
+    expect(Object.fromEntries(water.involvement)).toEqual({
       A1: 0,
       A2: 0,
       A3: 0,
@@ -398,14 +410,13 @@ describe("the picture's states", () => {
       ["y1", 1],
     ]);
     const around = areaFocus(small, handLinks, "apart", "Y");
-    const rows = rowOrder(small, handRest, cloudSizes(small, handLinks, "apart", around), around, handLinks, "apart");
+    const rows = rowOrder(small, handRest, around, handLinks, "apart");
     expect(rows).toEqual([
       { id: "X", targets: ["x3", "x1", "x2"] },
       { id: "Y", targets: ["y1"] },
     ]);
     const focus = { kind: "target" as const, id: "x1" };
-    const clouds = cloudSizes(small, handLinks, "apart", focus);
-    expect(rowOrder(small, handRest, clouds, focus, handLinks, "apart", around)[0].targets).toEqual(["x3", "x1", "x2"]);
+    expect(rowOrder(small, handRest, focus, handLinks, "apart", around)[0].targets).toEqual(["x3", "x1", "x2"]);
   });
 
   it("says where a picked target's partners sit", () => {

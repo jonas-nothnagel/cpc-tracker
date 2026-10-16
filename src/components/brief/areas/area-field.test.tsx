@@ -25,11 +25,8 @@ const ROWS = [
   { id: "r1", targets: ["a", "b"] },
   { id: "r2", targets: ["c"] },
 ];
-const REST = new Map([
-  ["a", 4],
-  ["b", 0],
-  ["c", 0],
-]);
+/** a and b trade places: a moves right, b left. */
+const SWAPPED = [{ id: "r1", targets: ["b", "a"] }, ROWS[1]];
 
 type Props = Parameters<typeof AreaField>[0];
 
@@ -38,8 +35,6 @@ function renderField(overrides: Partial<Props> = {}) {
   const field = (over: Partial<Props>) => (
     <AreaField
       rows={ROWS}
-      restClouds={REST}
-      clouds={REST}
       inks={new Map()}
       side="apart"
       rowLabel={(id) => `row ${id}`}
@@ -48,7 +43,6 @@ function renderField(overrides: Partial<Props> = {}) {
       dimmed={new Set()}
       pointed={null}
       tipFor={(id) => `target ${id}`}
-      formatCount={(n) => String(n)}
       onPick={onPick}
       {...overrides}
       {...over}
@@ -93,7 +87,7 @@ describe("AreaField", () => {
 
   it("names the target under the pointer and hands it on when selected", () => {
     const { field, onPick } = renderField();
-    const a = layoutAreaField(ROWS, REST, W).at.get("a")!;
+    const a = layoutAreaField(ROWS, W).at.get("a")!;
     fireEvent.pointerMove(field, { clientX: a.x, clientY: a.y - 2 });
     expect(screen.getByRole("presentation").textContent).toBe("target a");
     fireEvent.click(field, { clientX: a.x, clientY: a.y - 2 });
@@ -102,15 +96,31 @@ describe("AreaField", () => {
     expect(screen.queryByRole("presentation")).toBeNull();
   });
 
-  it("says the exact count above a cloud cut at its limit", () => {
-    const clouds = new Map([
-      ["a", 211],
-      ["b", 0],
-      ["c", 0],
-    ]);
-    renderField({ restClouds: clouds, clouds });
-    expect(document.querySelector('[data-cut="a"]')?.textContent).toBe("211");
-    expect(document.querySelector('[data-cut="b"]')).toBeNull();
+  it("draws each target as one square, in the ink the view gives it", () => {
+    const rects: { w: number; h: number; ink: string }[] = [];
+    let ink = "";
+    const ctx = new Proxy(
+      {},
+      {
+        get: (_, key) =>
+          key === "fillRect"
+            ? (_x: number, _y: number, w: number, h: number) => rects.push({ w, h, ink })
+            : key === "arc"
+              ? () => {
+                  throw new Error("no round dots");
+                }
+              : () => {},
+        set: (_, key, value) => {
+          if (key === "fillStyle") ink = String(value);
+          return true;
+        },
+      },
+    );
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ctx) as never;
+    renderField({ inks: new Map([["c", "pale"]]) });
+    expect(rects).toHaveLength(3);
+    expect(rects.every((r) => r.w === r.h && r.w >= 6)).toBe(true);
+    expect(rects[2].ink).not.toBe(rects[0].ink);
   });
 
   it("gives screen readers the rows as a list", () => {
@@ -122,18 +132,13 @@ describe("AreaField", () => {
   it("keeps a move going when a target is pointed at meanwhile, naming no target until the dots arrive", () => {
     const step = manualFrames();
     const { field, rerender } = renderField();
-    const moved = new Map([
-      ["a", 1],
-      ["b", 0],
-      ["c", 0],
-    ]);
-    rerender({ clouds: moved });
+    rerender({ rows: SWAPPED });
     expect(field.getAttribute("data-moving")).toBe("true");
-    const a = layoutAreaField(ROWS, REST, W).at.get("a")!;
+    const a = layoutAreaField(SWAPPED, W).at.get("a")!;
     fireEvent.pointerMove(field, { clientX: a.x, clientY: a.y - 2 });
     expect(screen.queryByRole("presentation")).toBeNull();
     step(425);
-    rerender({ clouds: moved, pointed: "a" });
+    rerender({ rows: SWAPPED, pointed: "a" });
     step(850);
     expect(field.getAttribute("data-moving")).toBeNull();
     fireEvent.pointerMove(field, { clientX: a.x, clientY: a.y - 2 });
@@ -142,32 +147,25 @@ describe("AreaField", () => {
     vi.restoreAllMocks();
   });
 
-  it("never draws a dot behind where its move began", () => {
+  it("never draws a square behind where its move began", () => {
     const step = manualFrames();
-    const arcs: { x: number; r: number }[] = [];
+    const rects: number[] = [];
     const ctx = new Proxy(
       {},
       {
-        get: (_, key) => (key === "arc" ? (x: number, _y: number, r: number) => arcs.push({ x, r }) : () => {}),
+        get: (_, key) => (key === "fillRect" ? (x: number) => rects.push(x) : () => {}),
         set: () => true,
       },
     );
     HTMLCanvasElement.prototype.getContext = vi.fn(() => ctx) as never;
-    const flat = new Map([
-      ["a", 0],
-      ["b", 0],
-      ["c", 0],
-    ]);
-    const { rerender } = renderField({ restClouds: flat, clouds: flat });
-    const layout = layoutAreaField(ROWS, flat, W);
-    const left = layout.at.get("a")!.x;
-    // a and b trade places: a moves right, b left.
-    rerender({ rows: [{ id: "r1", targets: ["b", "a"] }, ROWS[1]], restClouds: flat, clouds: flat });
-    arcs.length = 0;
+    const { rerender } = renderField();
+    const layout = layoutAreaField(ROWS, W);
+    const left = Math.round(layout.at.get("a")!.x - layout.targetR);
+    rerender({ rows: SWAPPED });
+    rects.length = 0;
     // A first frame stamped before the move began.
     step(-100);
-    const dots = arcs.filter((a) => a.r === layout.targetR).map((a) => a.x);
-    expect(Math.min(...dots)).toBeGreaterThanOrEqual(left - 1e-9);
+    expect(Math.min(...rects)).toBeGreaterThanOrEqual(left - 1e-9);
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });

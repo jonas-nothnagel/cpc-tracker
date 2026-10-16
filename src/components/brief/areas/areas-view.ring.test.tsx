@@ -33,6 +33,9 @@ describe("AreasView and the picture's ring", () => {
         <AreasView source={SOURCE} data={DATA} lens="globe" onLens={vi.fn()} onExplore={vi.fn()} />
       </NextIntlClientProvider>,
     );
+    fireEvent.click(
+      within(screen.getByRole("group", { name: "Targets or target pairs" })).getByRole("button", { name: "Potential misalignment" }),
+    );
     fireEvent.click(within(screen.getAllByTestId("brief-area-pair")[1]).getByRole("button", { expanded: false }));
     const c1 = screen.getAllByTestId("brief-area-target").find((t) => t.textContent?.includes("Commitment C1"))!;
     fireEvent.pointerEnter(c1);

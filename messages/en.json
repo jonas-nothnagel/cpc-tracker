@@ -515,7 +515,7 @@
           },
           "areas": {
             "title": "By policy area",
-            "body": "Each row is one policy area of the chosen lens, with a dot for each of its targets. Its bar holds all of the area's target pairs: potential misalignment from the left, alignment from the right. The column names above the rows sort them, most first, then least first. Above each target, one dot for each target pair it takes part in on the chosen side: potential misalignment or strong alignment. The list beside it names the pairs of policy areas that hold the most of them; opening one keeps only its target pairs, and selecting a target shows its partners in every row. Selecting the name of a policy area lists its pairs of areas and keeps only the target pairs its targets take part in."
+            "body": "Each row is one policy area of the chosen lens, with a square for each of its targets. Its bar holds all of the area's target pairs: potential misalignment from the left, alignment from the right. The column names above the rows sort them, most first, then least first. Beside it, each policy area with its number of targets; opening one, or selecting its name on the left, lists its targets. The two other choices list the pairs of policy areas that hold the most potential misalignments or strong alignments; opening one keeps only the targets taking part, and selecting a target shows its partners in every row."
           }
         }
       },
@@ -3596,7 +3596,15 @@
     "areaView": {
       "kicker": "By policy area",
       "lensGroup": "Policy areas",
-      "sideGroup": "Target pairs",
+      "sideGroup": "Targets or target pairs",
+      "viewTargets": "Targets",
+      "headlineTargets": "{pct} of the {placed, number} targets in these policy areas are <first>{area}</first> targets.",
+      "headlineTargetsArea": "{count, number} of the {placed, number} targets in these policy areas are {area} targets.",
+      "headlineTargetsNone": "No targets fall in these policy areas.",
+      "areaShareTargets": "{pct} of the targets",
+      "areaList": "Policy areas and their targets",
+      "showAllTargets": "Show all {count, number} targets",
+      "showFewerTargets": "Show fewer",
       "sideApart": "Potential misalignment",
       "sideReinforce": "Strong alignment",
       "headlineBetween": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and <second>{areaB}</second> targets.",
