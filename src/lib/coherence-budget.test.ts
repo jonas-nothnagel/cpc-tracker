@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { computeBudgetByGlobeCategory } from "./coherence-budget";
+import { computeBudgetByGlobeCategory, formatBudgetValue } from "./coherence-budget";
 import type {
   BerData,
   GlobeCategory,
@@ -95,5 +95,17 @@ describe("computeBudgetByGlobeCategory", () => {
       alignment: [],
     });
     expect(r).toBeNull();
+  });
+});
+
+describe("formatBudgetValue", () => {
+  it("reads the amount in the review's own unit", () => {
+    // A review in billions (Mongolia): the default.
+    expect(formatBudgetValue(209.6, "MNT")).toBe("209.6B MNT");
+    expect(formatBudgetValue(1395, "MNT", "billion")).toBe("1.4T MNT");
+    // A review in millions (Panama, Country X): never a thousand times larger.
+    expect(formatBudgetValue(127.28, "US$", "million")).toBe("127M US$");
+    expect(formatBudgetValue(8566.7, "US$", "million")).toBe("8.6B US$");
+    expect(formatBudgetValue(0.34, "US$", "million")).toBe("< 1M US$");
   });
 });

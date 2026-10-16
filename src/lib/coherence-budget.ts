@@ -277,23 +277,29 @@ export function alphaForBudgetShare(share: number, maxShare: number): number {
   return floor + (1 - floor) * Math.pow(ratio, 1.5);
 }
 
+/** How many billions one of `berData.unit` is (a review states millions or billions). */
+const BILLIONS_PER_UNIT: Record<string, number> = { thousand: 1e-6, million: 1e-3, billion: 1, trillion: 1e3 };
+
 /**
- * Format a budget value (in berData.unit, typically billions) for compact
- * display. Mirrors financing-coherence's formatter so the two views speak the
- * same money language. Currency is appended once; callers don't supply a
- * unit-word because the scale suffix already carries it (avoids strings like
- * "100M billion MNT").
+ * Format a budget value (in berData.unit) for compact display. Mirrors
+ * financing-coherence's formatter so the two views speak the same money
+ * language. Currency is appended once; callers don't supply a unit-word
+ * because the scale suffix already carries it (avoids strings like
+ * "100M billion MNT"). `unit` is the review's own (Mongolia billions, Panama
+ * and Country X millions); the scale is chosen from the value in billions.
  */
 export function formatBudgetValue(
   valueInUnit: number,
   currency: string,
+  unit = "billion",
 ): string {
   const cur = currency.trim();
   const suffix = cur ? ` ${cur}` : "";
-  if (valueInUnit >= 1000) return `${(valueInUnit / 1000).toFixed(1)}T${suffix}`;
-  if (valueInUnit >= 1) return `${valueInUnit.toFixed(1)}B${suffix}`;
-  if (valueInUnit >= 0.001) return `${(valueInUnit * 1000).toFixed(0)}M${suffix}`;
-  if (valueInUnit > 0) return `< 1M${suffix}`;
+  const billions = valueInUnit * (BILLIONS_PER_UNIT[unit.trim().toLowerCase()] ?? 1);
+  if (billions >= 1000) return `${(billions / 1000).toFixed(1)}T${suffix}`;
+  if (billions >= 1) return `${billions.toFixed(1)}B${suffix}`;
+  if (billions >= 0.001) return `${(billions * 1000).toFixed(0)}M${suffix}`;
+  if (billions > 0) return `< 1M${suffix}`;
   return `0${suffix}`;
 }
 

@@ -77,7 +77,7 @@ CAPITALS_AND_CITIES = [
     "London", "Washington", "New York", "Montevideo", "Tashkent", "Port Vila", "Caracas", "Hanoi",
     "Ho Chi Minh City", "Saigon", "Sanaa", "Lusaka", "Harare", "Pristina", "Taipei", "Kunming", "Montreal",
     "Glasgow", "Sharm el-Sheikh", "Marrakech", "Marrakesh", "Bonn", "Cancún", "Cancun", "Nagoya", "Kyoto",
-    "Aichi", "Cartagena", "Rotterdam", "Basel", "Minamata", "Sendai", "Ramsar",
+    "Aichi", "Cartagena", "Rotterdam", "Basel", "Minamata", "Sendai", "Ramsar", "Victoria",
 ]
 
 PEOPLES = [
@@ -113,9 +113,11 @@ CURRENCIES = [
     "afghani", "taka", "ngultrum", "kwacha", "kwanza", "pula", "loti", "lilangeni", "ariary", "ouguiya", "dalasi",
     "CFA", "yen", "yuan", "renminbi", "RMB", "tugrik", "tögrög", "togrog", "ruble", "rouble", "hryvnia", "zloty",
     "forint", "koruna", "krona", "krone", "leu", "lev", "MNT", "PAB", "LKR", "XOF", "KHR", "VND", "THB", "IDR",
-    "PHP", "INR", "PKR", "BDT", "KES", "NGN", "GHS", "ZAR", "BRL", "MXN", "COP", "PEN", "CLP", "ARS", "EUR",
+    "PHP", "INR", "PKR", "BDT", "KES", "NGN", "ZAR", "BRL", "MXN", "PEN", "CLP", "ARS", "EUR",
     "GBP", "JPY", "CNY",
 ]
+# Not listed: "COP" (also the Conference of the Parties) and "GHS" (also the
+# chemicals labelling system), which policy text uses far more often.
 
 # Regions narrow enough to point at one country or a handful of them.
 REGIONS = [
@@ -142,7 +144,9 @@ INSTRUMENTS = [
     r"Bonn Challenge", r"Rio Conventions?", r"Rio Markers?", r"Glasgow (?:Climate Pact|Leaders)",
     r"Lima [Ww]ork [Pp]rogramme", r"Marrakech Partnership", r"Doha Amendment", r"Stockholm Convention",
     r"Basel Convention", r"Rotterdam Convention", r"Minamata Convention", r"Vienna Convention",
-    r"Addis Ababa Action Agenda", r"Sharm el-Sheikh", r"UAE Framework for Global Climate Resilience",
+    r"Addis Ababa Action Agenda", r"Sharm el-Sheikh (?:Implementation Plan|adaptation agenda)",
+    r"UAE Framework for Global Climate Resilience",
+    r"(?:Paris|Ramsar|Aichi|Sendai)[-‐–](?:aligned|compatible|consistent|listed|designated|type)",
     r"US\$", r"USD", r"Euro[- ]?[0-6]\b",
     r"United Nations", r"UN Decade",
 ]
@@ -153,20 +157,22 @@ _CASED = {"Chad", "Georgia", "Jordan", "Turkey", "Guinea", "Niger", "China", "Vi
           "Kiwi", "Arab", "Indian", "Tamil", "Korea", "Java", "Nile", "Steppe", "America", "American", "Mali",
           "Tonga", "Togo", "Peru", "Cuba", "Oman", "Iran", "Iraq", "Chile", "Benin", "Gabon", "Wales", "Lima",
           "Nauru", "Palau", "Samoa", "Fiji", "Malta", "Monaco", "Dominica", "Grenada", "Bonn", "Basel",
-          "Paris", "Sendai", "Ramsar", "Kingston", "Georgetown", "Santiago", "Victoria", "Asia", "Africa",
-          "African", "Asian", "Europe", "European", "Oceania"}
+          "Paris", "Sendai", "Ramsar", "Kingston", "Georgetown", "Santiago", "Asia", "Africa",
+          "African", "Asian", "Europe", "European", "Oceania", "Cardamom", "Polish"}
 _UNCASED_LISTS = (COUNTRIES, CAPITALS_AND_CITIES, PEOPLES, REGIONS)
 
 
 def _pattern(words: list[str], flags: int) -> re.Pattern[str]:
+    # A hyphen does not end a name: "China-Mongolia" and "UB-based" still match.
     alternation = "|".join(re.escape(w) for w in sorted(set(words), key=len, reverse=True))
-    return re.compile(r"(?<![\w-])(?:" + alternation + r")(?![\w-])", flags)
+    return re.compile(r"(?<!\w)(?:" + alternation + r")(?!\w)", flags)
 
 
 _ANY_CASE = _pattern([w for lst in _UNCASED_LISTS for w in lst if w not in _CASED], re.IGNORECASE)
 _AS_WRITTEN = _pattern([w for lst in _UNCASED_LISTS for w in lst if w in _CASED], 0)
 _CURRENCY = _pattern(CURRENCIES, 0)
-_INSTRUMENT = re.compile("|".join(f"(?:{p})" for p in INSTRUMENTS))
+# Treaty names in any case: "the Paris agreement", "the Aichi targets".
+_INSTRUMENT = re.compile("|".join(f"(?:{p})" for p in INSTRUMENTS), re.IGNORECASE)
 
 
 def place_names(text: str) -> list[str]:

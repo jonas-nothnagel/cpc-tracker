@@ -12,8 +12,9 @@ names Mongolia:
   replacements listed in REPLACEMENTS (places, agencies, programmes and
   companies become generic terms) and ORGS (responsible institutions).
 - A development document: the 41 measures of Mongolia's Food Supply and
-  Security programme (Parliament Resolution 36, June 2022, in the source's own
-  English), joined to Country X's five environment and climate plans as its
+  Security programme (Parliament Resolution 36, June 2022, issued in Mongolian
+  only; the English translation the Mongolian corpus carries beside it),
+  joined to Country X's five environment and climate plans as its
   "Food Security Programme" (FSP). Development plans are where policies pull
   against each other; Country X had none. Vision 2050's targets stay out: the
   corpus flags them as AI paraphrases, not the document's words.
@@ -37,6 +38,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -174,11 +176,15 @@ LEAK_NAMES = [
     "Bogd", "Chinggis", "Genghis", "Sainshand", "Choir", "Baganuur", "Nalaikh", "Billion Tree",
     "Food Agriculture and Light Industry", "Ministry of Mining and Heavy Industry", "YOUCCAN",
 ]
-LEAK_ACRONYMS = ["UB", "MNT", "MET", "MOFALI", "MOES", "MON", "MECC", "NAMEM", "IRIMHE", "STREAM", "₮"]
-_EDGE = (r"(?<![\w-])(?:", r")(?![\w-])")
+LEAK_ACRONYMS = ["UB", "MNT", "MET", "MOFALI", "MOES", "MON", "MECC", "NAMEM", "IRIMHE", "STREAM"]
+# Word edges that let a hyphen through, so a name inside a compound
+# ("the China-Mongolia-Russia corridor", "UB-based") is still found.
+_EDGE = (r"(?<!\w)(?:", r")(?!\w)")
 LEAK = [
     re.compile(_EDGE[0] + "|".join(LEAK_NAMES) + _EDGE[1], re.IGNORECASE),
     re.compile(_EDGE[0] + "|".join(re.escape(a) for a in LEAK_ACRONYMS) + _EDGE[1]),
+    # The source currency's sign sits against the figure ("5,000₮"): no edges.
+    re.compile("₮"),
 ]
 
 CAPITALISE = re.compile(r"(^|[.!?]\s+)the (country|capital|national)\b")
@@ -242,7 +248,21 @@ def build_btr(source: dict[str, Any]) -> dict[str, Any]:
         row["implementingEntity"] = ", ".join(org_list([m["implementingEntity"]])) if m.get("implementingEntity") else ""
         row["reductionEstimates"] = m.get("reductionEstimates") or {}
         measures.append(row)
-    return {"_provenance": PROVENANCE_BTR, "sourceFile": "illustrative", "mitigationMeasures": measures}
+    return {
+        "_provenance": PROVENANCE_BTR,
+        "sourceFile": "illustrative",
+        "mitigationMeasures": measures,
+        # The report's other tables are not carried over. The dashboard's
+        # BtrData shape requires them and reads them unguarded
+        # (dashboard-client.tsx, implementation-coverage.tsx,
+        # emissions-trend.tsx), so they are written empty.
+        "progressIndicators": [],
+        "sectorEmissions": {"bySector": []},
+        "projections": [],
+        "technologySupport": [],
+        "capacityBuilding": [],
+        "supportProjects": [],
+    }
 
 
 def build_adaptation(source: dict[str, Any]) -> dict[str, Any]:
@@ -274,7 +294,10 @@ def build_adaptation(source: dict[str, Any]) -> dict[str, Any]:
 
 def build_food_security(source: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """The food security measures as Country X targets: their English text and
-    label with names replaced, the Mongolian original and its links dropped."""
+    label with names replaced, the Mongolian original and its links dropped.
+    The resolution exists in Mongolian only, so the English is the corpus's
+    translation, not the source's own words; a text the replacements changed
+    is marked cleaned, not verbatim."""
     targets = []
     for t in source:
         if t.get("sourceDocument") != FOOD_SOURCE_DOC:
@@ -288,7 +311,7 @@ def build_food_security(source: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "sourceLabel": mask(t.get("sourceLabel", "")),
             "country": "Country X",
             "sources": [{"sourceText": text, "url": ""}],
-            "textCleanup": t.get("textCleanup", "verbatim"),
+            "textCleanup": "cleaned" if text != t["text"] else t.get("textCleanup", "verbatim"),
         })
     return targets
 
@@ -334,11 +357,29 @@ def build_ber(source: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _strings(payload: Any) -> Iterator[str]:
+    """Every string in a parsed payload, keys included."""
+    if isinstance(payload, str):
+        yield payload
+    elif isinstance(payload, dict):
+        for key, value in payload.items():
+            yield str(key)
+            yield from _strings(value)
+    elif isinstance(payload, (list, tuple)):
+        for value in payload:
+            yield from _strings(value)
+
+
 def leaks(payload: Any) -> list[str]:
     """Every name from the source country, and any real country, capital,
-    people, currency or narrow region, found in a payload or text."""
-    text = payload if isinstance(payload, str) else json.dumps(payload, ensure_ascii=False)
-    return sorted({m.group(0) for pattern in LEAK for m in pattern.finditer(text)} | set(place_names(text)))
+    people, currency or narrow region, found in a payload or text. Each
+    string is scanned as written: serialised JSON escapes newlines (and, as
+    the pipeline writes it, non-ASCII), which would hide the name after one."""
+    found: set[str] = set()
+    for text in set(_strings(payload)):
+        found.update(m.group(0) for pattern in LEAK for m in pattern.finditer(text))
+        found.update(place_names(text))
+    return sorted(found)
 
 
 def write(path: Path, payload: Any, indent: int = 2) -> None:

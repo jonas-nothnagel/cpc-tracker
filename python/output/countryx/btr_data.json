@@ -182,5 +182,13 @@
       "implementingEntity": "Water Supply and Sewerage Authority of the capital city",
       "reductionEstimates": {}
     }
-  ]
+  ],
+  "progressIndicators": [],
+  "sectorEmissions": {
+    "bySector": []
+  },
+  "projections": [],
+  "technologySupport": [],
+  "capacityBuilding": [],
+  "supportProjects": []
 }

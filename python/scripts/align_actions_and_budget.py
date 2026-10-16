@@ -8,18 +8,22 @@ analysis (classifications of the targets, alignment.json, syntheses) is left
 untouched, so a country's coherence results do not move.
 
 Mirrors run_analysis.py STEP 6 and STEP 7 call for call (same helpers, same
-cache namespaces, same files written):
+cache namespaces, same files written), plus the one target step the
+adaptation file brings (run_analysis STEP 2: the policy targets classified
+against its adaptation goals):
   - <output>/<country>/measure_pseudo_targets.json, measure_alignment.json
     (from <output>/<country>/btr_data.json and <data>/<country>-btr-adaptation.json)
   - <output>/<country>/budget_pseudo_targets.json, budget_alignment.json
     (from <data>/<country>-ber.json)
   - the actions' and budget lines' classifications, replacing any earlier rows
-    for the same ids in <output>/<country>/classifications.json
+    for the same ids in <output>/<country>/classifications.json, and the
+    targets' adaptation-goal classifications, replacing the earlier ones
   - the AI explanations in the agreed vocabulary (scripts/contract_wording.py)
   - one footprint ledger row for the live calls.
+<output>/<country> is the model's own directory with --model, as in run_analysis.
 
 A smoke run (--limit-targets / --limit-items) writes into --out-dir only and
-never touches the country's files.
+never touches the country's files; so does a full run given --out-dir.
 
 Run from python/:
     CPC_CACHE_DIR=<main checkout>/python/output/.cache \\
@@ -32,6 +36,7 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -41,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src import config  # noqa: E402
 from src.config import CACHE_DIR, DATA_DIR, OUTPUT_DIR  # noqa: E402
 from src.align import decompose_targets  # noqa: E402
+from src.classify import rank_classification  # noqa: E402
 from src.budget_align import (  # noqa: E402
     assess_budget_alignment,
     decompose_programs,
@@ -63,6 +69,7 @@ from src.run_analysis import (  # noqa: E402
     classify_active_taxonomies,
     derive_country_file,
     derive_country_slug,
+    derive_output_dir,
     load_input_data,
 )
 
@@ -84,11 +91,46 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--limit-items", type=int, help="Smoke run: the first N actions and N budget lines")
     parser.add_argument("--out-dir", type=Path, help="Write here instead (required for a smoke run)")
     parser.add_argument("--run-id", help="Footprint ledger run id (default: actions-and-budget:<country>)")
+    parser.add_argument("--model", help="As run_analysis --model: the model and its output dir")
     return parser.parse_args()
+
+
+def use_model(model: str | None) -> None:
+    """run_analysis's --model: the live config and the env both carry it."""
+    if model:
+        config.LLM_MODEL = model
+        os.environ["LLM_MODEL"] = model
 
 
 def flat(classes: dict[str, list[dict]]) -> list[dict]:
     return [row for key in CLASSIFICATION_KEYS for row in classes.get(key, [])]
+
+
+async def classify_adaptation_goals(targets: list[dict], adaptation_path: Path) -> list[dict]:
+    """run_analysis STEP 2's classification of the policy targets against the
+    adaptation goals of `<country>-btr-adaptation.json` (taxonomyType
+    adaptation_goal), with the same deterministic `name` it builds from each
+    goal's verbatim description. [] without the file or its goals."""
+    if not adaptation_path.exists():
+        return []
+    goals = json.loads(adaptation_path.read_text()).get("adaptationGoals", [])
+    if not goals:
+        return []
+    goals_for_classification = [
+        {
+            "id": str(g["id"]),
+            "name": (
+                g["description"][:80].rstrip(",.") + "…"
+                if len(g["description"]) > 80
+                else g["description"]
+            ),
+            "description": g["description"],
+        }
+        for g in goals
+    ]
+    rows = await rank_classification(targets, goals_for_classification, "adaptation_goal")
+    logger.info(f"Classified {len(targets)} policy targets against {len(goals)} adaptation goals")
+    return rows
 
 
 def write_json(path: Path, payload: Any) -> None:
@@ -147,9 +189,16 @@ async def main() -> None:
     if smoke and not args.out_dir:
         raise SystemExit("A smoke run needs --out-dir, so the country's files stay as they are.")
     set_language(args.language)
+    use_model(args.model)
 
     country = derive_country_slug(args.targets_file)
-    country_dir = OUTPUT_DIR / country if country else OUTPUT_DIR
+    country_dir = derive_output_dir(args.targets_file, OUTPUT_DIR, args.model)
+    if not smoke and not (country_dir / "classifications.json").exists():
+        # Before any call: a country whose outputs sit in model directories
+        # (python/output/<country>/<model>/) needs --model.
+        raise SystemExit(
+            f"No classifications.json in {country_dir}: run run_analysis first, or pass --model."
+        )
     out_dir = args.out_dir or country_dir
     out_dir.mkdir(parents=True, exist_ok=True)
     logger.info(f"Model {config.LLM_MODEL}; cache {CACHE_DIR}; writing to {out_dir}")
@@ -179,14 +228,22 @@ async def main() -> None:
 
     decompositions = await decompose_targets(targets)
     new_classifications: list[dict] = []
+    goal_classifications: list[dict] = []
 
     # STEP 6: reported actions (mitigation and adaptation) against the targets.
+    adp_path = DATA_DIR / derive_country_file(args.targets_file, "btr-adaptation")
+    if args.only != "budget":
+        # run_analysis STEP 2 classifies the targets against the adaptation
+        # goals whenever the adaptation file exists.
+        goal_classifications = await classify_adaptation_goals(targets, adp_path)
     btr_path = country_dir / "btr_data.json"
+    if not btr_path.exists() and args.model:
+        # A model directory reads the country's shared copy, as run_analysis seeds it.
+        btr_path = country_dir.parent / "btr_data.json"
     if args.only != "budget" and btr_path.exists():
         btr = json.loads(btr_path.read_text())
         raw_measures = btr.get("mitigationMeasures", [])
         mit = measures_to_pseudo_targets(raw_measures, action_type="mitigation")
-        adp_path = DATA_DIR / derive_country_file(args.targets_file, "btr-adaptation")
         adp = (
             measures_to_pseudo_targets(json.loads(adp_path.read_text()).get("actions", []), action_type="adaptation")
             if adp_path.exists()
@@ -213,7 +270,8 @@ async def main() -> None:
                 label = name if len(name) <= 60 else name[:57] + "..."
                 if label in label_to_sector:
                     m["sector"] = label_to_sector[label]
-            btr_path.write_text(json.dumps(btr, indent=2, ensure_ascii=False) + "\n")
+            btr_out = out_dir / "btr_data.json"
+            btr_out.write_text(json.dumps(btr, indent=2, ensure_ascii=False) + "\n")
 
         pairs = generate_measure_pairs(targets, pseudo)
         if mit and adp:
@@ -246,15 +304,25 @@ async def main() -> None:
         write_json(out_dir / "budget_alignment.json", in_agreed_wording(results))
         write_json(out_dir / "budget_pseudo_targets.json", pseudo)
 
-    # The new rows replace any earlier ones for the same actions and lines.
+    # The new rows replace any earlier ones for the same actions and lines,
+    # and new adaptation-goal rows replace the targets' earlier ones.
     ids = {row["targetId"] for row in new_classifications}
+    fresh = new_classifications + goal_classifications
     if smoke:
-        write_json(out_dir / "classifications.layers.json", new_classifications)
-    elif ids:
-        path = country_dir / "classifications.json"
-        kept = [row for row in json.loads(path.read_text()) if row["targetId"] not in ids]
-        write_json(path, kept + new_classifications)
-        logger.info(f"classifications.json: {len(kept)} kept, {len(new_classifications)} for {len(ids)} actions and lines")
+        write_json(out_dir / "classifications.layers.json", fresh)
+    elif fresh:
+        replaced_goals = bool(goal_classifications)
+        kept = [
+            row
+            for row in json.loads((country_dir / "classifications.json").read_text())
+            if row["targetId"] not in ids
+            and not (replaced_goals and row.get("taxonomyType") == "adaptation_goal")
+        ]
+        write_json(out_dir / "classifications.json", kept + fresh)
+        logger.info(
+            f"classifications.json: {len(kept)} kept, {len(new_classifications)} for {len(ids)} "
+            f"actions and lines, {len(goal_classifications)} adaptation-goal rows"
+        )
 
     record_footprint(country, args.run_id or f"actions-and-budget:{country}{':smoke' if smoke else ''}")
 

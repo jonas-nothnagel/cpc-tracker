@@ -24,12 +24,17 @@ const SETUP: SpendingSetup = {
 
 afterEach(cleanup);
 
-function renderSection(onExploreArea?: (id: string) => void) {
+function renderSection(onExploreArea?: (id: string) => void, setup = SETUP, docs = ["A", "B", "C"]) {
   return render(
     <NextIntlClientProvider locale="en" messages={en}>
-      <SpendingSection setup={SETUP} source={SOURCE} docs={["A", "B", "C"]} onExploreArea={onExploreArea} />
+      <SpendingSection setup={setup} source={SOURCE} docs={docs} onExploreArea={onExploreArea} />
     </NextIntlClientProvider>,
   );
+}
+
+/** SETUP with one line changed. */
+function withLine(id: string, change: Partial<SpendingSetup["lines"][number]>): SpendingSetup {
+  return { ...SETUP, lines: SETUP.lines.map((l) => (l.id === id ? { ...l, ...change } : l)) };
 }
 
 describe("SpendingSection", () => {
@@ -59,5 +64,19 @@ describe("SpendingSection", () => {
     expect(screen.getByText(/3 targets in this area\. 1 of the 3 have a matching budget line\./)).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Explore this area with its budget lines" }));
     expect(onExploreArea).toHaveBeenCalledWith("g1");
+  });
+
+  it("shows a small budget line's amount rather than rounding it to nothing", () => {
+    renderSection(undefined, withLine("BER_P1", { years: { "2020": 0.01, "2021": 0.02 }, total: 0.03 }));
+    fireEvent.click(screen.getByRole("button", { name: /Protected areas/ }));
+    expect(screen.getByText("US$0.03 million")).toBeTruthy();
+  });
+
+  it("offers the ring only for an area with targets in the brief's documents", () => {
+    // Water holds a line but, without document C, none of the targets.
+    renderSection(vi.fn(), withLine("BER_P2", { area: "g5" }), ["A", "B"]);
+    fireEvent.click(screen.getByRole("button", { name: /Water/ }));
+    expect(screen.getByText("No target in this area.")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Explore this area with its budget lines" })).toBeNull();
   });
 });

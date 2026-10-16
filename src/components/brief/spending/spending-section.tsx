@@ -44,11 +44,13 @@ export function SpendingSection({
   const areas = useMemo(() => spendingAreas(setup, source, docs), [setup, source, docs]);
   const [open, setOpen] = useState<string | null>(null);
 
-  // Amounts in the record's unit (millions): billions from a thousand up.
+  // Amounts in the record's unit (millions): billions from a thousand up, the
+  // unit and digits chosen for the rounded figure, and two decimals below one
+  // so a small line never reads as none.
   const money = (value: number) => {
-    const billions = setup.unit === "million" && value >= 1000;
+    const billions = setup.unit === "million" && value >= 999.95;
     const amount = billions ? value / 1000 : value;
-    const digits = amount >= 100 ? 0 : 1;
+    const digits = amount >= 99.95 ? 0 : amount >= 0.995 ? 1 : 2;
     return t("money", {
       currency: setup.currency,
       amount: format.number(amount, { maximumFractionDigits: digits, minimumFractionDigits: digits }),
@@ -101,7 +103,10 @@ export function SpendingSection({
 
       <section className="sp-step sp-step-areas" aria-labelledby="sp-areas-headline">
         <div className="sp-areas-intro">
-          <p className="brief-hub-kicker">{t("areas.kicker")}</p>
+          {/* Each line's and target's area is the AI's classification, not the review's. */}
+          <p className="brief-hub-kicker">
+            {t("areas.kicker")} <span className="sp-ai">{t("areas.ai")}</span>
+          </p>
           {lead && (
             <h3 id="sp-areas-headline" className="brief-hub-headline">
               {t("areas.headline", {
@@ -126,7 +131,8 @@ export function SpendingSection({
               open={open === a.id}
               onToggle={() => setOpen((cur) => (cur === a.id ? null : a.id))}
               money={money}
-              onExplore={onExploreArea ? () => onExploreArea(a.id) : undefined}
+              // The ring centres an area on its targets: none here, nothing to centre.
+              onExplore={onExploreArea && a.targets.length > 0 ? () => onExploreArea(a.id) : undefined}
             />
           ))}
         </ol>

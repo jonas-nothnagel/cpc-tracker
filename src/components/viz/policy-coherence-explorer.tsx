@@ -2464,6 +2464,8 @@ interface CategoryPanelProps {
   budget?: CategoryBudgetEntry | null;
   /** Currency string from berData, used to format the absolute amount. */
   budgetCurrency?: string;
+  /** berData.unit (million, billion), the scale the amounts are in. */
+  budgetUnit?: string;
   /** Reporting period from berData (e.g. {start: 2020, end: 2024}). */
   budgetPeriod?: { start: number; end: number };
   /** Programmes contributing positive spend to this primary GLOBE category,
@@ -2481,6 +2483,7 @@ function CategoryPanel({
   onClose,
   budget,
   budgetCurrency,
+  budgetUnit,
   budgetPeriod,
   programmes,
   onSelectTarget,
@@ -2634,6 +2637,7 @@ function CategoryPanel({
                   {formatBudgetValue(
                     budget.totalBudget,
                     budgetCurrency ?? "",
+                    budgetUnit,
                   )}
                 </span>
                 <span className="text-[var(--undp-gray)]">
@@ -2706,6 +2710,7 @@ function CategoryPanel({
                                 {formatBudgetValue(
                                   p.totalBudget,
                                   budgetCurrency ?? "",
+                                  budgetUnit,
                                 )}
                               </span>
                             </div>
@@ -4413,6 +4418,7 @@ export function PolicyCoherenceExplorer({
                     ? formatBudgetValue(
                         entry.totalBudget,
                         budgetSummary.currency ?? "",
+                        budgetSummary.unit,
                       )
                     : "";
                   const labelFill =
@@ -4523,7 +4529,11 @@ export function PolicyCoherenceExplorer({
                         {budgetShadingActive && budgetEntry
                           ? t("budget.wedgeTooltip", {
                               label: arc.label,
-                              amount: formatBudgetValue(budgetEntry.totalBudget, budgetSummary?.currency ?? ""),
+                              amount: formatBudgetValue(
+                                budgetEntry.totalBudget,
+                                budgetSummary?.currency ?? "",
+                                budgetSummary?.unit,
+                              ),
                               pct: (budgetEntry.shareOfTotalBudget * 100).toFixed(1),
                               hasAmount: 1,
                             })
@@ -4916,6 +4926,7 @@ export function PolicyCoherenceExplorer({
                     const amount = formatBudgetValue(
                       totalBudget,
                       budgetSummary?.currency ?? "",
+                      budgetSummary?.unit,
                     );
                     if (!insideLabelHidden) return amount;
                     const sharePct = (shareOfTotal * 100).toFixed(
@@ -5136,6 +5147,7 @@ export function PolicyCoherenceExplorer({
                     : null
                 }
                 budgetCurrency={budgetSummary?.currency}
+                budgetUnit={budgetSummary?.unit}
                 budgetPeriod={budgetSummary?.period}
                 programmes={
                   groupMode === "globe"
@@ -5191,6 +5203,7 @@ export function PolicyCoherenceExplorer({
             ? formatBudgetValue(
                 budgetSummary.totalBudget,
                 budgetSummary.currency,
+                budgetSummary.unit,
               )
             : "",
           funded: fundedCount,
