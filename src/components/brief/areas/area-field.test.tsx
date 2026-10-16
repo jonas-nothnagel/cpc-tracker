@@ -96,18 +96,18 @@ describe("AreaField", () => {
     expect(screen.queryByRole("presentation")).toBeNull();
   });
 
-  it("draws each target as one square, in the ink the view gives it", () => {
-    const rects: { w: number; h: number; ink: string }[] = [];
+  it("draws each target as one round dot, in the ink the view gives it", () => {
+    const dots: { r: number; ink: string }[] = [];
     let ink = "";
     const ctx = new Proxy(
       {},
       {
         get: (_, key) =>
-          key === "fillRect"
-            ? (_x: number, _y: number, w: number, h: number) => rects.push({ w, h, ink })
-            : key === "arc"
+          key === "arc"
+            ? (_x: number, _y: number, r: number) => dots.push({ r, ink })
+            : key === "fillRect"
               ? () => {
-                  throw new Error("no round dots");
+                  throw new Error("no squares");
                 }
               : () => {},
         set: (_, key, value) => {
@@ -118,9 +118,9 @@ describe("AreaField", () => {
     );
     HTMLCanvasElement.prototype.getContext = vi.fn(() => ctx) as never;
     renderField({ inks: new Map([["c", "pale"]]) });
-    expect(rects).toHaveLength(3);
-    expect(rects.every((r) => r.w === r.h && r.w >= 6)).toBe(true);
-    expect(rects[2].ink).not.toBe(rects[0].ink);
+    expect(dots).toHaveLength(3);
+    expect(dots.every((d) => d.r === dots[0].r && d.r >= 3)).toBe(true);
+    expect(dots[2].ink).not.toBe(dots[0].ink);
   });
 
   it("gives screen readers the rows as a list", () => {
@@ -147,25 +147,24 @@ describe("AreaField", () => {
     vi.restoreAllMocks();
   });
 
-  it("never draws a square behind where its move began", () => {
+  it("never draws a dot behind where its move began", () => {
     const step = manualFrames();
-    const rects: number[] = [];
+    const xs: number[] = [];
     const ctx = new Proxy(
       {},
       {
-        get: (_, key) => (key === "fillRect" ? (x: number) => rects.push(x) : () => {}),
+        get: (_, key) => (key === "arc" ? (x: number) => xs.push(x) : () => {}),
         set: () => true,
       },
     );
     HTMLCanvasElement.prototype.getContext = vi.fn(() => ctx) as never;
     const { rerender } = renderField();
-    const layout = layoutAreaField(ROWS, W);
-    const left = Math.round(layout.at.get("a")!.x - layout.targetR);
+    const left = layoutAreaField(ROWS, W).at.get("a")!.x;
     rerender({ rows: SWAPPED });
-    rects.length = 0;
+    xs.length = 0;
     // A first frame stamped before the move began.
     step(-100);
-    expect(Math.min(...rects)).toBeGreaterThanOrEqual(left - 1e-9);
+    expect(Math.min(...xs)).toBeGreaterThanOrEqual(left - 1e-9);
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });

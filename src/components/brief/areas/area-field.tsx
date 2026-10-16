@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from "react";
 import { layoutAreaField, targetAt, type AreaFieldLayout, type AreaFieldRow } from "@/lib/brief/area-layout";
 import type { AreaSide, TargetInk } from "@/lib/brief/areas";
 
@@ -24,9 +24,10 @@ interface Pose {
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
 /**
- * The policy-area picture: one row per area, a square per target under its
- * name. The rows come in drawing order; the inks say what the reader has
- * chosen, and a new order moves the same dots. Pointing at a target gives its tip; selecting it
+ * The policy-area picture: one row per area, a dot per target under its name,
+ * on one line inside the name's column so the figures beside it stay clear.
+ * The rows come in drawing order; the inks say what the reader has chosen,
+ * and a new order moves the same dots. Pointing at a target gives its tip; selecting it
  * hands it to `onPick`. The canvas is hidden from assistive technology; the
  * rows' names and counts are read as a list, each name (from `rowLabel`) a
  * way to its area, and the list beside the picture carries every other way
@@ -68,6 +69,8 @@ export function AreaField({
   const moving = useRef(false);
   const settle = useRef<(() => void) | null>(null);
   const [width, setWidth] = useState(0);
+  // The name's column, which the dots keep to: measured once the rows are drawn.
+  const [strip, setStrip] = useState(0);
   const [dpr, setDpr] = useState(() => (typeof window === "undefined" ? 1 : window.devicePixelRatio || 1));
   const [tip, setTip] = useState<{ id: string; x: number; y: number } | null>(null);
 
@@ -97,12 +100,22 @@ export function AreaField({
     return () => query?.removeEventListener("change", follow);
   }, []);
 
-  const layout = useMemo(() => layoutAreaField(rows, width), [rows, width]);
+  // Each row's name sits in the first column of its grid: its width is the strip's.
+  useLayoutEffect(() => {
+    const el = wrapRef.current;
+    if (!el || width === 0) return;
+    const w = el.querySelector<HTMLElement>(".brief-av-label")?.clientWidth ?? el.clientWidth;
+    setStrip((prev) => (prev === w ? prev : w));
+    // The columns follow the field's width: measured anew whenever it changes.
+  }, [width]);
+
+  const layout = useMemo(() => layoutAreaField(rows, width, strip || width), [rows, width, strip]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const wrap = wrapRef.current;
-    if (!canvas || !wrap || width === 0) return;
+    // Nothing is drawn before the name's column is known, so no dot slides in from elsewhere.
+    if (!canvas || !wrap || width === 0 || strip === 0) return;
     canvas.width = Math.round(layout.width * dpr);
     canvas.height = Math.round(layout.height * dpr);
     const ctx = canvas.getContext("2d");
@@ -110,10 +123,7 @@ export function AreaField({
     const to = new Map<string, Pose>();
     for (const [id, at] of layout.at) to.set(id, { x: at.x, y: at.y });
     const sideInk = side === "apart" ? FIELD_INK.apart : FIELD_INK.reinforce;
-    // Squares on the pixel grid: a pale one as sharp as a full one.
-    const snap = (v: number) => Math.round(v * dpr) / dpr;
-    const size = Math.max(1, snap(layout.targetR * 2));
-    // Tips and cut counts wait while the dots travel.
+    // Tips wait while the dots travel.
     const setMoving = (on: boolean) => {
       moving.current = on;
       if (on) wrap.dataset.moving = "true";
@@ -133,13 +143,15 @@ export function AreaField({
         if (!ctx) continue;
         const ink = inks.get(id) ?? "base";
         ctx.fillStyle = ink === "pale" ? FIELD_INK.pale : ink === "lit" ? sideInk : FIELD_INK.base;
-        const x0 = snap(pose.x - size / 2);
-        const y0 = snap(pose.y - size / 2);
-        ctx.fillRect(x0, y0, size, size);
+        ctx.beginPath();
+        ctx.arc(pose.x, pose.y, layout.targetR, 0, Math.PI * 2);
+        ctx.fill();
         if (ink === "focus" || id === pointedRef.current) {
           ctx.strokeStyle = FIELD_INK.ring;
           ctx.lineWidth = 1.5;
-          ctx.strokeRect(x0 - 2.5, y0 - 2.5, size + 5, size + 5);
+          ctx.beginPath();
+          ctx.arc(pose.x, pose.y, layout.targetR + 2.5, 0, Math.PI * 2);
+          ctx.stroke();
         }
       }
       poses.current = now;
@@ -175,7 +187,7 @@ export function AreaField({
       cancelAnimationFrame(frame);
       setMoving(false);
     };
-  }, [layout, inks, side, width, dpr]);
+  }, [layout, inks, side, width, strip, dpr]);
 
   useEffect(() => {
     pointedRef.current = pointed;
