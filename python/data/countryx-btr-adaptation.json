@@ -1,0 +1,690 @@
+{
+  "_provenance": "Illustrative, for the fictional Country X: reported actions (mitigation measures and adaptation actions) copied from one pilot country's Biennial Transparency Report, with places, agencies, programmes and companies replaced by generic terms (python/scripts/build_countryx_layers.py). Not any real country's report.",
+  "sourceRef": {
+    "document": "Biennial Transparency Report (illustrative)",
+    "section": "Action Plan of the Nationally Determined Contribution"
+  },
+  "groupingLabel": "Adaptation goal of the NDC action plan",
+  "adaptationGoals": [
+    {
+      "id": "1",
+      "description": "Reduce impact and risk of climate change in the livestock sector, ensure sustainable development in the sectoral development and increase production"
+    },
+    {
+      "id": "2",
+      "description": "Establish a sustainable supply chain mechanism of healthy food products, livestock fodder and raw materials for light industry through leveraging positive impacts and mitigation of negative impacts of climate change in agricultural sector"
+    },
+    {
+      "id": "3",
+      "description": "Introducing optimal water consumption and build capacity to increase water reserves"
+    },
+    {
+      "id": "4",
+      "description": "Create forest ecosystems well adapted to climate change and enhance carbon sequestration by implementing sustainable forest management"
+    },
+    {
+      "id": "5",
+      "description": "Enable adaptation opportunities and adaptive capacities for vulnerable biodiversity to climate change"
+    },
+    {
+      "id": "6",
+      "description": "Build resilience to natural disasters by reducing the risks and adapting to impacts of climate and weather-related hazards and disasters"
+    },
+    {
+      "id": "7",
+      "description": "Strengthening healthcare services and capacities for early warning of potential health risks, and provision of proactive and response measures through the comprehensive study of climate impacts on public health"
+    },
+    {
+      "id": "8",
+      "description": "Establish a system providing social safeguard, insurance and prevention measures to reduce the vulnerability of social groups and build their resilience to climate change impacts by identifying groups vulnerable to climate change"
+    }
+  ],
+  "actions": [
+    {
+      "id": "ADP_3_1_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 1,
+      "sector": "sector_agriculture",
+      "name": "Improvement of water resources and fodder production by building irrigation systems and boreholes/groundwater wells",
+      "description": "Improved water sources and access",
+      "outcome": "Improved water sources and access",
+      "indicator": "Number of new irrigation systems installed and bore wells",
+      "implementationStatus": "Rehabilitation and construction of new irrigation systems are ongoing.",
+      "status": "Ongoing",
+      "objectives": "Number of new irrigation systems installed and bore wells",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Food and Agriculture, Provincial Governors' Office",
+      "responsibleOrgs": [
+        "Ministry of Food and Agriculture",
+        "Provincial Governors' Office"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Improvement of water resources and fodder production by building irrigation systems and boreholes/groundwater wells. Improved water sources and access. Rehabilitation and construction of new irrigation systems are ongoing.",
+        "section": "3.1.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_1_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 1,
+      "sector": "sector_agriculture",
+      "name": "Conduct water resource assessment and survey to increase pastureland and its resources",
+      "description": "Increased pastureland (ha)",
+      "outcome": "Increased pastureland (ha)",
+      "indicator": "Number of water resource assessment reports",
+      "implementationStatus": "This is ongoing work, final result will be completed by end of 2024. The national meteorology and hydrology research institute and an institute of geo-ecology are the key institutions to conduct the assessment.",
+      "status": "Ongoing",
+      "objectives": "Number of water resource assessment reports",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Food and Agriculture, Provincial Governors' Office",
+      "responsibleOrgs": [
+        "Ministry of Food and Agriculture",
+        "Provincial Governors' Office"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Conduct water resource assessment and survey to increase pastureland and its resources. Increased pastureland (ha). This is ongoing work, final result will be completed by end of 2024. The national meteorology and hydrology research institute and an institute of geo-ecology are the key institutions to conduct the assessment.",
+        "section": "3.1.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_1_3",
+      "actionType": "adaptation",
+      "adaptationGoal": 1,
+      "sector": "sector_agriculture",
+      "name": "Introduction of new technology and equipment for fodder preparation for production to ensure sustainable pastureland use",
+      "description": "Equipment for producing hay and fodder",
+      "outcome": "Equipment for producing hay and fodder",
+      "indicator": "Number of provinces with upgraded equipment for producing fodder",
+      "implementationStatus": "Ongoing. South-South exchanges are a key means to support and develop these efforts.",
+      "status": "Ongoing",
+      "objectives": "Number of provinces with upgraded equipment for producing fodder",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Food and Agriculture",
+      "responsibleOrgs": [
+        "Ministry of Food and Agriculture"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Introduction of new technology and equipment for fodder preparation for production to ensure sustainable pastureland use. Equipment for producing hay and fodder. Ongoing. South-South exchanges are a key means to support and develop these efforts.",
+        "section": "3.1.3",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_2_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 2,
+      "sector": "sector_agriculture",
+      "name": "Introduction of drip and permeable irrigation technology to conserve water and plastic film mulching application to improve yields of potatoes, vegetables, fruits and berries",
+      "description": "Increased agriculture products",
+      "outcome": "Increased agriculture products",
+      "indicator": "Increased cropland where new technologies are introduced",
+      "implementationStatus": "Crop farmers as well as family farmers are already familiar with using drip irrigation technology and increasing its use, but it will take still quite time to be applied in a wide range of farms. Plastic film mulching application started and ongoing.",
+      "status": "Ongoing",
+      "objectives": "Increased cropland where new technologies are introduced",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Food and Agriculture",
+      "responsibleOrgs": [
+        "Ministry of Food and Agriculture"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Introduction of drip and permeable irrigation technology to conserve water and plastic film mulching application to improve yields of potatoes, vegetables, fruits and berries. Increased agriculture products. Crop farmers as well as family farmers are already familiar with using drip irrigation technology and increasing its use, but it will take still quite time to be applied in a wide range of farms. Plastic film mulching application started and ongoing.",
+        "section": "3.2.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_2_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 2,
+      "sector": "sector_lulucf",
+      "name": "Establishment of forest wind break on cropland to reduce soil erosion due to the impacts of climate change and drought",
+      "description": "Improved cropland and soil fertility",
+      "outcome": "Improved cropland and soil fertility",
+      "indicator": "Length of forest wind break (thousand km)",
+      "implementationStatus": "This is just at the starting stage. This measure is integrated with national tree-planting initiatives.",
+      "status": "Ongoing",
+      "objectives": "Length of forest wind break (thousand km)",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Food and Agriculture",
+      "responsibleOrgs": [
+        "Ministry of Food and Agriculture"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Establishment of forest wind break on cropland to reduce soil erosion due to the impacts of climate change and drought. Improved cropland and soil fertility. This is just at the starting stage. This measure is integrated with national tree-planting initiatives.",
+        "section": "3.2.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_3_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 3,
+      "sector": "sector_other",
+      "name": "Protection of headwaters of rivers, streams, springs, and mineral springs to ensure sustainable water resources and use",
+      "description": "Improved water resources and access",
+      "outcome": "Improved water resources and access",
+      "indicator": "Number of protected water sources",
+      "implementationStatus": "The headwaters of 203 springs in 2021 and 325 springs in 2022 have been protected.",
+      "status": "Ongoing",
+      "objectives": "Number of protected water sources",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Water Agency",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Water Agency"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Protection of headwaters of rivers, streams, springs, and mineral springs to ensure sustainable water resources and use. Improved water resources and access. The headwaters of 203 springs in 2021 and 325 springs in 2022 have been protected.",
+        "section": "3.3.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_3_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 3,
+      "sector": "sector_other",
+      "name": "Expansion of mid-scale hydrological mapping and determine the distribution of water resources",
+      "description": "Improved planning on surface water resources",
+      "outcome": "Improved planning on surface water resources",
+      "indicator": "Percentage of total mapped area",
+      "implementationStatus": "Mapping is not yet completed. By 2022 water resources study covered 107 sites and established 12,321.38 l/c water resources availability. The study was approved by the National Water Committee.",
+      "status": "Ongoing",
+      "objectives": "Percentage of total mapped area",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Water Agency",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Water Agency"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Expansion of mid-scale hydrological mapping and determine the distribution of water resources. Improved planning on surface water resources. Mapping is not yet completed. By 2022 water resources study covered 107 sites and established 12,321.38 l/c water resources availability. The study was approved by the National Water Committee.",
+        "section": "3.3.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_3_3",
+      "actionType": "adaptation",
+      "adaptationGoal": 3,
+      "sector": "sector_other",
+      "name": "Increase groundwater monitoring and analysis using existing and new borehole sites",
+      "description": "Increased knowledge of groundwater resources and impacts of climate change",
+      "outcome": "Increased knowledge of groundwater resources and impacts of climate change",
+      "indicator": "Number of groundwater monitoring and analysis borehole sites",
+      "implementationStatus": "This is ongoing work but not yet assessed quantitatively.",
+      "status": "Ongoing",
+      "objectives": "Number of groundwater monitoring and analysis borehole sites",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Water Agency",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Water Agency"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Increase groundwater monitoring and analysis using existing and new borehole sites. Increased knowledge of groundwater resources and impacts of climate change. This is ongoing work but not yet assessed quantitatively.",
+        "section": "3.3.3",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_3_4",
+      "actionType": "adaptation",
+      "adaptationGoal": 3,
+      "sector": "sector_other",
+      "name": "Establishment of rain water harvesting ponds leveraging the natural landscapes in order to retain rainwater, snow and ice melt considering seasonal changes and intensity of precipitation",
+      "description": "Increased water resources and resilience to climate change",
+      "outcome": "Increased water resources and resilience to climate change",
+      "indicator": "Number of rain water harvesting ponds",
+      "implementationStatus": "Identification of sites where to build the rainwater harvesting pond is ongoing. The plan is to build at least one in each district.",
+      "status": "Ongoing",
+      "objectives": "Number of rain water harvesting ponds",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Water Agency",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Water Agency"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Establishment of rain water harvesting ponds leveraging the natural landscapes in order to retain rainwater, snow and ice melt considering seasonal changes and intensity of precipitation. Increased water resources and resilience to climate change. Identification of sites where to build the rainwater harvesting pond is ongoing. The plan is to build at least one in each district.",
+        "section": "3.3.4",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_4_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 4,
+      "sector": "sector_lulucf",
+      "name": "Organize training on climate change resilience and adaptation of forest ecosystem, accreditation of professional forestry organizations, adopt forest maintenance and cleaning technologies and processes, determining and assessing degrading forest",
+      "description": "Improved maintenance and protection of forest and forest ecosystems",
+      "outcome": "Improved maintenance and protection of forest and forest ecosystems",
+      "indicator": "Number of accredited professional forestry organizations",
+      "implementationStatus": "To implement the identified adaptation measures, the country is implementing a sustainable and resilient ecosystem and agriculture management project.",
+      "status": "Ongoing",
+      "objectives": "Number of accredited professional forestry organizations",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Ministry of Food and Agriculture",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Ministry of Food and Agriculture"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Organize training on climate change resilience and adaptation of forest ecosystem, accreditation of professional forestry organizations, adopt forest maintenance and cleaning technologies and processes, determining and assessing degrading forest. Improved maintenance and protection of forest and forest ecosystems. To implement the identified adaptation measures, the country is implementing a sustainable and resilient ecosystem and agriculture management project.",
+        "section": "3.4.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_4_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 4,
+      "sector": "sector_lulucf",
+      "name": "Rehabilitation of forest area through improvement of the incentive system to support a protection and sustainable use of forest",
+      "description": "Improved forest and forest ecosystems",
+      "outcome": "Improved forest and forest ecosystems",
+      "indicator": "Amount of rehabilitated forest area (ha)",
+      "implementationStatus": "The project forms part of an international forest partnership. It provides support with the transition towards a green economy by promoting climate-responsive and future-proof use of agriculture, forestry and the environment, using both political and practical means.",
+      "status": "Ongoing",
+      "objectives": "Amount of rehabilitated forest area (ha)",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment",
+      "responsibleOrgs": [
+        "Ministry of Environment"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Rehabilitation of forest area through improvement of the incentive system to support a protection and sustainable use of forest. Improved forest and forest ecosystems. The project forms part of an international forest partnership. It provides support with the transition towards a green economy by promoting climate-responsive and future-proof use of agriculture, forestry and the environment, using both political and practical means.",
+        "section": "3.4.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_4_3",
+      "actionType": "adaptation",
+      "adaptationGoal": 4,
+      "sector": "sector_lulucf",
+      "name": "Maintenance and improvement of the dryland forest ecosystem through development of agro-forest industry",
+      "description": "Improved dryland forest",
+      "outcome": "Improved dryland forest",
+      "indicator": "Improved and reforested area of depleted dryland forest",
+      "implementationStatus": "It promotes biodiversity, environmentally friendly forestry and the resilience of the population.",
+      "status": "Ongoing",
+      "objectives": "Improved and reforested area of depleted dryland forest",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Ministry of Food and Agriculture",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Ministry of Food and Agriculture"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Maintenance and improvement of the dryland forest ecosystem through development of agro-forest industry. Improved dryland forest. It promotes biodiversity, environmentally friendly forestry and the resilience of the population.",
+        "section": "3.4.3",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_5_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 5,
+      "sector": "sector_lulucf",
+      "name": "Determination and protection of climate change sensitive ecosystems, biodiversity through planting of endangered and vulnerable flora and fauna",
+      "description": "Improved protection of sensitive ecosystems, biodiversity",
+      "outcome": "Improved protection of sensitive ecosystems, biodiversity",
+      "indicator": "Planted list of endangered and vulnerable flora and fauna",
+      "implementationStatus": "As per the environment ministry's Environmental Outlook, there are 9 Critically Endangered, 13 Endangered, 83 Vulnerable, and 97 Near Threatened species of plants accounted in 2022. There are 20 nurseries nursing more than 10 endangered and vulnerable species at 2315 ha area in 7 provinces of the country.",
+      "status": "Ongoing",
+      "objectives": "Planted list of endangered and vulnerable flora and fauna",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment",
+      "responsibleOrgs": [
+        "Ministry of Environment"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Determination and protection of climate change sensitive ecosystems, biodiversity through planting of endangered and vulnerable flora and fauna. Improved protection of sensitive ecosystems, biodiversity. As per the environment ministry's Environmental Outlook, there are 9 Critically Endangered, 13 Endangered, 83 Vulnerable, and 97 Near Threatened species of plants accounted in 2022. There are 20 nurseries nursing more than 10 endangered and vulnerable species at 2315 ha area in 7 provinces of the country.",
+        "section": "3.5.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_5_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 5,
+      "sector": "sector_lulucf",
+      "name": "Conduct a resource assessment on plant distribution by the plant geographical range",
+      "description": "Improved planning and protection of biodiversity",
+      "outcome": "Improved planning and protection of biodiversity",
+      "indicator": "Number of study reports with improved information on plants",
+      "implementationStatus": "The Institute of Botany is conducting various studies in different places.",
+      "status": "Ongoing",
+      "objectives": "Number of study reports with improved information on plants",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Research institutions, universities, colleges",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Research institutions",
+        "universities",
+        "colleges"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Conduct a resource assessment on plant distribution by the plant geographical range. Improved planning and protection of biodiversity. The Institute of Botany is conducting various studies in different places.",
+        "section": "3.5.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_5_3",
+      "actionType": "adaptation",
+      "adaptationGoal": 5,
+      "sector": "sector_lulucf",
+      "name": "Conduct a resource assessment on fauna distribution by monitoring in stages",
+      "description": "Improved planning and protection of sensitive fauna",
+      "outcome": "Improved planning and protection of sensitive fauna",
+      "indicator": "Animal species, their distribution and resource research-monitoring work",
+      "implementationStatus": "The provincial Departments of Environment are conducting inventory of wildlife.",
+      "status": "Ongoing",
+      "objectives": "Animal species, their distribution and resource research-monitoring work",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Research institutions, universities, colleges",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Research institutions",
+        "universities",
+        "colleges"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Conduct a resource assessment on fauna distribution by monitoring in stages. Improved planning and protection of sensitive fauna. The provincial Departments of Environment are conducting inventory of wildlife.",
+        "section": "3.5.3",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_5_4",
+      "actionType": "adaptation",
+      "adaptationGoal": 5,
+      "sector": "sector_lulucf",
+      "name": "Re-develop and approve ecological-economic assessment methodology on flora",
+      "description": "Improved ecological-economic assessment on flora",
+      "outcome": "Improved ecological-economic assessment on flora",
+      "indicator": "Approved ecological-economic assessment methodology on flora",
+      "implementationStatus": "Methodology developed and approved on 22 December 2022 by order No. A/603 of the Minister of Environment.",
+      "status": "Implemented",
+      "objectives": "Approved ecological-economic assessment methodology on flora",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment",
+      "responsibleOrgs": [
+        "Ministry of Environment"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Re-develop and approve ecological-economic assessment methodology on flora. Improved ecological-economic assessment on flora. Methodology developed and approved on 22 December 2022 by order No. A/603 of the Minister of Environment.",
+        "section": "3.5.4",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_6_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 6,
+      "sector": "sector_other",
+      "name": "Conduct disaster prevention training for local herders, community groups, and environment protection cooperatives",
+      "description": "Improved knowledge of local people on disaster prevention",
+      "outcome": "Improved knowledge of local people on disaster prevention",
+      "indicator": "Number of community groups and cooperatives trained",
+      "implementationStatus": "The national emergency management agency conducts regular training at national as well as at local level. Disaster preparedness campaigns have reached over 771,600 participants, including herders and vulnerable rural populations, equipping them with practical knowledge and resources to mitigate disaster impacts.",
+      "status": "Ongoing",
+      "objectives": "Number of community groups and cooperatives trained",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "National Emergency Management Agency, Ministry of Environment, Ministry of Food and Agriculture, Emergency management departments of capital city and local administration",
+      "responsibleOrgs": [
+        "National Emergency Management Agency",
+        "Ministry of Environment",
+        "Ministry of Food and Agriculture",
+        "Emergency management departments of capital city and local administration"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Conduct disaster prevention training for local herders, community groups, and environment protection cooperatives. Improved knowledge of local people on disaster prevention. The national emergency management agency conducts regular training at national as well as at local level. Disaster preparedness campaigns have reached over 771,600 participants, including herders and vulnerable rural populations, equipping them with practical knowledge and resources to mitigate disaster impacts.",
+        "section": "3.6.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_6_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 6,
+      "sector": "sector_other",
+      "name": "Develop and adopt early warning system for various climatic, meteorological disasters and catastrophic events",
+      "description": "Improved protection plan",
+      "outcome": "Improved protection plan",
+      "indicator": "Number of established early warning systems",
+      "implementationStatus": "The national meteorological agency in collaboration with the national emergency management agency established a centralized disaster risk information system which strengthened decision-making processes, allowing real-time data dissemination to communities and authorities.",
+      "status": "Ongoing",
+      "objectives": "Number of established early warning systems",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "National meteorological agency",
+      "responsibleOrgs": [
+        "National meteorological agency"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Develop and adopt early warning system for various climatic, meteorological disasters and catastrophic events. Improved protection plan. The national meteorological agency in collaboration with the national emergency management agency established a centralized disaster risk information system which strengthened decision-making processes, allowing real-time data dissemination to communities and authorities.",
+        "section": "3.6.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_7_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 7,
+      "sector": "sector_other",
+      "name": "Conduct training on reduction of climate-related risks and their impact on response actions",
+      "description": "Improved knowledge of local people on climate impacts",
+      "outcome": "Improved knowledge of local people on climate impacts",
+      "indicator": "Number of persons trained",
+      "implementationStatus": "Health risk assessments have prioritized critical areas such as zoonotic disease prevalence, water quality, and heat stress impacts. Public awareness campaigns, supported by institutional training programs, have enhanced resilience among health professionals and local communities.",
+      "status": "Ongoing",
+      "objectives": "Number of persons trained",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Provincial public health departments, Governor's secretariat of capital city and provinces",
+      "responsibleOrgs": [
+        "Provincial public health departments",
+        "Governor's secretariat of capital city and provinces"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Conduct training on reduction of climate-related risks and their impact on response actions. Improved knowledge of local people on climate impacts. Health risk assessments have prioritized critical areas such as zoonotic disease prevalence, water quality, and heat stress impacts. Public awareness campaigns, supported by institutional training programs, have enhanced resilience among health professionals and local communities.",
+        "section": "3.7.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_7_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 7,
+      "sector": "sector_other",
+      "name": "Increase number of medical researchers, academia and healthcare workers trained on methodology of climate change related research",
+      "description": "Improved capacity of climate assessment on health care",
+      "outcome": "Improved capacity of climate assessment on health care",
+      "indicator": "Number of personnel trained",
+      "implementationStatus": "Conducted tailored training for healthcare workers in rural areas has improved early detection and response to climate-induced health risks, including outbreaks of vector-borne diseases.",
+      "status": "Ongoing",
+      "objectives": "Number of personnel trained",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Universities, research institutions",
+      "responsibleOrgs": [
+        "Universities",
+        "research institutions"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Increase number of medical researchers, academia and healthcare workers trained on methodology of climate change related research. Improved capacity of climate assessment on health care. Conducted tailored training for healthcare workers in rural areas has improved early detection and response to climate-induced health risks, including outbreaks of vector-borne diseases.",
+        "section": "3.7.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_7_3",
+      "actionType": "adaptation",
+      "adaptationGoal": 7,
+      "sector": "sector_other",
+      "name": "Conduct research and assessment on impact of climate change on human health and wellbeing",
+      "description": "Improved information and research on climate change impacts on health",
+      "outcome": "Improved information and research on climate change impacts on health",
+      "indicator": "Research and evaluation",
+      "implementationStatus": "These measures are vital for reducing the health burden of climate change and safeguarding vulnerable populations.",
+      "status": "Ongoing",
+      "objectives": "Research and evaluation",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Universities, research institutions",
+      "responsibleOrgs": [
+        "Universities",
+        "research institutions"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Conduct research and assessment on impact of climate change on human health and wellbeing. Improved information and research on climate change impacts on health. These measures are vital for reducing the health burden of climate change and safeguarding vulnerable populations.",
+        "section": "3.7.3",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_7_4",
+      "actionType": "adaptation",
+      "adaptationGoal": 7,
+      "sector": "sector_other",
+      "name": "Conduct impact assessment of climate change on food nutrition and food safety",
+      "description": "Improved information and research on climate change impacts on food nutrition and food safety",
+      "outcome": "Improved information and research on climate change impacts on food nutrition and food safety",
+      "indicator": "Number of research studies conducted",
+      "implementationStatus": "Just started.",
+      "status": "Adopted",
+      "objectives": "Number of research studies conducted",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Food and Agriculture, Ministry of Environment",
+      "responsibleOrgs": [
+        "Ministry of Food and Agriculture",
+        "Ministry of Environment"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Conduct impact assessment of climate change on food nutrition and food safety. Improved information and research on climate change impacts on food nutrition and food safety. Just started.",
+        "section": "3.7.4",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_8_1",
+      "actionType": "adaptation",
+      "adaptationGoal": 8,
+      "sector": "sector_other",
+      "name": "Develop public awareness campaign plan for reducing climate change and environment pollution",
+      "description": "Improved knowledge of public",
+      "outcome": "Improved knowledge of public",
+      "indicator": "Approved public awareness campaign plan",
+      "implementationStatus": "Plan is under preparation.",
+      "status": "Adopted",
+      "objectives": "Approved public awareness campaign plan",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "",
+      "responsibleOrgs": [],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Develop public awareness campaign plan for reducing climate change and environment pollution. Improved knowledge of public. Plan is under preparation.",
+        "section": "3.8.1",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    },
+    {
+      "id": "ADP_3_8_2",
+      "actionType": "adaptation",
+      "adaptationGoal": 8,
+      "sector": "sector_other",
+      "name": "Establish Youth network on 'Climate change and air'",
+      "description": "Improved information exchange and involvement of youth in climate change",
+      "outcome": "Improved information exchange and involvement of youth in climate change",
+      "indicator": "Number of functional youth networks on climate change and air pollution",
+      "implementationStatus": "The Ministry of Environment is working actively to engage youth in climate change and has conducted the 'Climate Change and Youth' international forum in the capital on August 23-24 in collaboration with specialized agencies of the United Nations, the national children's council, the national Red Cross Society, a mining company, a national sustainable development NGO, Caritas Czech Republic, World Vision, and People in Need NGO at the initiative of the President. UNICEF and the national Scout Association launched a youth network for climate and clean air.",
+      "status": "Ongoing",
+      "objectives": "Number of functional youth networks on climate change and air pollution",
+      "instrumentType": "",
+      "gasesAffected": "",
+      "startYear": "",
+      "implementingEntity": "Ministry of Environment, Department of family, children and youth, National Committee for children, National Scout association",
+      "responsibleOrgs": [
+        "Ministry of Environment",
+        "Department of family, children and youth",
+        "National Committee for children",
+        "National Scout association"
+      ],
+      "reductionEstimates": {},
+      "source": {
+        "sourceText": "Establish Youth network on 'Climate change and air'. Improved information exchange and involvement of youth in climate change. The Ministry of Environment is working actively to engage youth in climate change and has conducted the 'Climate Change and Youth' international forum in the capital on August 23-24 in collaboration with specialized agencies of the United Nations, the national children's council, the national Red Cross Society, a mining company, a national sustainable development NGO, Caritas Czech Republic, World Vision, and People in Need NGO at the initiative of the President. UNICEF and the national Scout Association launched a youth network for climate and clean air.",
+        "section": "3.8.2",
+        "document": "Biennial Transparency Report (illustrative), Action Plan of the Nationally Determined Contribution"
+      }
+    }
+  ]
+}

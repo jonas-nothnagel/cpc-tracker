@@ -193,4 +193,22 @@ export const FOOTPRINT_EVENTS: FootprintEvent[] = [
     },
     source: "commit bd2f472 (python/scripts/translate_contracts.py records its runs); python/scripts/backfill_unrecorded_runs.py (the titles of 28 and 29 September)",
   },
+  {
+    id: "country-x-actions-spending",
+    from: "2026-10-16T00:00:00Z",
+    to: "2026-10-16T23:59:59Z",
+    countries: ["countryx"],
+    runIds: ["actions-and-budget:countryx"],
+    title: {
+      en: "Country X: reported actions and spending",
+      es: "País X: acciones reportadas y gasto",
+      mn: "X улс: тайлагнасан арга хэмжээ ба зарцуулалт",
+    },
+    detail: {
+      en: "The demonstration country's illustrative reported actions and budget lines compared with each of its targets.",
+      es: "Las acciones reportadas y las líneas presupuestarias ilustrativas del país de demostración se compararon con cada una de sus metas.",
+      mn: "Жишээ улсын тайлагнасан арга хэмжээ, төсвийн мөрүүдийг зорилт бүртэй нь харьцуулсан.",
+    },
+    source: "python/scripts/align_actions_and_budget.py (records its runs); python/scripts/build_countryx_layers.py",
+  },
 ];

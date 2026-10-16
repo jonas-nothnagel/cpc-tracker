@@ -1,0 +1,184 @@
+[
+  {
+    "id": "BER_P01",
+    "sourceDocument": "BER",
+    "sourceLabel": "P01 Waste management",
+    "text": "Waste management. Implementation of the Law on Waste and national and local waste management programs.. Expenditure: 2020: 0.14 million US$, 2021: 0.2 million US$. Total: 0.3 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 0.14,
+      "2021": 0.2
+    }
+  },
+  {
+    "id": "BER_P02",
+    "sourceDocument": "BER",
+    "sourceLabel": "P02 Afforestation",
+    "text": "Afforestation. State institutions responsible for forestry, including the Forestry Agency and inter-district forest units.. Expenditure: 2020: 1.77 million US$, 2021: 1.51 million US$. Total: 3.3 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 1.77,
+      "2021": 1.51
+    }
+  },
+  {
+    "id": "BER_P03",
+    "sourceDocument": "BER",
+    "sourceLabel": "P03 Water resource, lake and river management",
+    "text": "Water resource, lake and river management. Water Authority, Freshwater Resources and Nature Conservation Center, River Basin Administrations.. Expenditure: 2020: 1.28 million US$, 2021: 1.42 million US$. Total: 2.7 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 1.28,
+      "2021": 1.42
+    }
+  },
+  {
+    "id": "BER_P04",
+    "sourceDocument": "BER",
+    "sourceLabel": "P04 Security of protected areas",
+    "text": "Security of protected areas. Protection regimes for protected areas, management plans, monitoring, and information databases.. Expenditure: 2020: 2.96 million US$, 2021: 3.04 million US$. Total: 6.0 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 2.96,
+      "2021": 3.04
+    }
+  },
+  {
+    "id": "BER_P05",
+    "sourceDocument": "BER",
+    "sourceLabel": "P05 Environmental pollution and degradation",
+    "text": "Environmental pollution and degradation. Air pollution quality control, alternative products, waste collection/transport/disposal/recycling.. Expenditure: 2020: 0.12 million US$, 2021: 0.14 million US$. Total: 0.3 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 0.12,
+      "2021": 0.14
+    }
+  },
+  {
+    "id": "BER_P06",
+    "sourceDocument": "BER",
+    "sourceLabel": "P06 Air pollution abatement, climate change",
+    "text": "Air pollution abatement, climate change. National Program on Air and Environmental Pollution Reduction and climate change policies.. Expenditure: 2020: 21.97 million US$, 2021: 29.45 million US$. Total: 51.4 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 21.97,
+      "2021": 29.45
+    }
+  },
+  {
+    "id": "BER_P07",
+    "sourceDocument": "BER",
+    "sourceLabel": "P07 Meteorology",
+    "text": "Meteorology. Hydrological and meteorological research, weather forecasts, early warnings, and climate resource use.. Expenditure: 2020: 8.81 million US$, 2021: 8.72 million US$. Total: 17.5 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 8.81,
+      "2021": 8.72
+    }
+  },
+  {
+    "id": "BER_P08",
+    "sourceDocument": "BER",
+    "sourceLabel": "P08 Reduce land degradation and prevent from desert...",
+    "text": "Reduce land degradation and prevent from desertification. National Action Program to Combat Desertification.. Expenditure: 2020: 0.14 million US$, 2021: 0.26 million US$. Total: 0.4 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 0.14,
+      "2021": 0.26
+    }
+  },
+  {
+    "id": "BER_P09",
+    "sourceDocument": "BER",
+    "sourceLabel": "P09 Environment policy and administration",
+    "text": "Environment policy and administration. Government institutions responsible for environmental governance: legal framework, policy implementation.. Expenditure: 2020: 6.7 million US$, 2021: 6.29 million US$. Total: 13.0 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 6.7,
+      "2021": 6.29
+    }
+  },
+  {
+    "id": "BER_P10",
+    "sourceDocument": "BER",
+    "sourceLabel": "P10 R&D Environment",
+    "text": "R&D Environment. Research on preventing environmental pollution and degradation.. Expenditure: 2020: 0.03 million US$, 2021: 0.0 million US$. Total: 0.0 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 0.03,
+      "2021": 0.0
+    }
+  },
+  {
+    "id": "BER_P11",
+    "sourceDocument": "BER",
+    "sourceLabel": "P11 Environment protection, recovery",
+    "text": "Environment protection, recovery. Environmental protection and restoration: water, forest, plant, wildlife, genetic resources.. Expenditure: 2020: 3.22 million US$, 2021: 3.16 million US$. Total: 6.4 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "environmental",
+    "expenditure": {
+      "2020": 3.22,
+      "2021": 3.16
+    }
+  },
+  {
+    "id": "BER_P12",
+    "sourceDocument": "BER",
+    "sourceLabel": "P12 Air pollution reduction",
+    "text": "Air pollution reduction. Reducing and preventing air pollution.. Expenditure: 2020: 0.7 million US$, 2021: no data. Total: 0.7 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": 0.7,
+      "2021": null
+    }
+  },
+  {
+    "id": "BER_P13",
+    "sourceDocument": "BER",
+    "sourceLabel": "P13 Solid waste and environmental pollution removal...",
+    "text": "Solid waste and environmental pollution removal and cleaning services. Environmental cleaning, public road cleaning, waste removal.. Expenditure: 2020: 12.96 million US$, 2021: 12.29 million US$. Total: 25.2 million US$.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "programType": "non_environmental",
+    "expenditure": {
+      "2020": 12.96,
+      "2021": 12.29
+    }
+  }
+]
