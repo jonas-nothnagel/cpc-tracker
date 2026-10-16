@@ -515,7 +515,7 @@
           },
           "areas": {
             "title": "By policy area",
-            "body": "Each row is one policy area of the chosen lens, with a square for each of its targets. Its bar holds all of the area's target pairs: potential misalignment from the left, alignment from the right. The column names above the rows sort them, most first, then least first. Beside it, each policy area with its number of targets; opening one, or selecting its name on the left, lists its targets. The two other choices list the pairs of policy areas that hold the most potential misalignments or strong alignments; opening one keeps only the targets taking part, and selecting a target shows its partners in every row."
+            "body": "Each row is one policy area of the chosen lens, with a dot for each of its targets. Its bar holds all of the area's target pairs: potential misalignment from the left, alignment from the right. The column names above the rows sort them, most first, then least first. Beside it, each policy area with its number of targets; opening one, or selecting its name on the left, lists its targets. The two other choices list the pairs of policy areas that hold the most potential misalignments or strong alignments; opening one keeps only the targets taking part, and selecting a target shows its partners in every row."
           }
         }
       },

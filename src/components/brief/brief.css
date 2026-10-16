@@ -2812,7 +2812,7 @@
   }
 }
 
-/* ── Policy areas: one row per area, a point cloud above each target ─ */
+/* ── Policy areas: one row per area, a dot per target under its name ─ */
 
 [data-brief] .brief-av-field {
   position: relative;
@@ -2846,6 +2846,12 @@
   font-size: 0.875rem;
   line-height: 20px;
   white-space: nowrap;
+  transition: color 0.3s;
+}
+
+/* A name glides to its new row only while the dots move with it (a re-sort,
+   a pick); placed for the measured name column on opening, it stands at once. */
+[data-brief] .brief-av-field[data-moving] .brief-av-row {
   transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1), color 0.3s;
 }
 
@@ -2891,7 +2897,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-brief] .brief-av-row {
+  [data-brief] .brief-av-row,
+  [data-brief] .brief-av-field[data-moving] .brief-av-row {
     transition: none;
   }
 }
@@ -3049,8 +3056,9 @@
   background: var(--brief-green);
 }
 
-/* The targets view: the picture's own squares. */
+/* The targets view: the picture's own dots. */
 [data-brief] .brief-av-glyph[data-side="targets"] {
+  border-radius: 50%;
   background: var(--brief-muted);
 }
 

@@ -111,7 +111,7 @@ function AreaName({
 
 /**
  * Policy areas on screen: one row per area of the lens named top left, each
- * with a square per target and the result bar of all its target pairs. Beside
+ * with a dot per target and the result bar of all its target pairs. Beside
  * it, by default, each area with the targets classified in it; on request,
  * the pairs of areas one side's target pairs fall between. The column names
  * sort the rows, most first and then least first. Pointing marks names;
@@ -203,9 +203,10 @@ export function AreasView({
   const behindKey = openPair ? `p:${openPair.key}` : pickedArea ? `a:${pickedArea}` : "rest";
   const focusKey = focusId ? `t:${focusId}` : behindKey;
   const focus: AreaFocus = focusId ? { kind: "target", id: focusId } : behind;
+  // What orders the pair views' rows (the targets view keeps each area's own order).
   const rest = useMemo(
-    () => (areas ? sideCounts(areas, links, side) : new Map<string, number>()),
-    [areas, links, side],
+    () => (areas && !byTargets ? sideCounts(areas, links, side) : new Map<string, number>()),
+    [areas, links, side, byTargets],
   );
   // One picture per lens, view and choice: the field re-forms only when they change.
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -219,7 +220,8 @@ export function AreasView({
         : byTargets
           ? areas.areas.map((a) => ({ id: a.id, targets: [...a.targets] }))
           : rowOrder(areas, rest, focus, links, side, focusId ? behind : { kind: "rest" }),
-    [areas, rest, focusKey, basisKey, byTargets],
+    // The targets view's rows never change with a pick: they re-form only with the lens.
+    [areas, rest, byTargets ? "" : focusKey, byTargets ? "" : basisKey, byTargets],
   );
   const inks = useMemo(
     () =>
@@ -410,10 +412,8 @@ export function AreasView({
     if (picked) {
       return t("headlineTargetsArea", { count: picked.targets.length, placed: areas.placed, area: picked.name });
     }
-    const top = areas.areas.reduce<LensArea | null>(
-      (best, a) => (!best || a.targets.length > best.targets.length ? a : best),
-      null,
-    );
+    // The lens's areas come most targets first (`lensAreas`).
+    const top = areas.areas[0];
     if (!top || areas.placed === 0) return t("headlineTargetsNone");
     return t.rich("headlineTargets", {
       pct: pct(top.targets.length / areas.placed),
@@ -649,10 +649,10 @@ export function AreasView({
           : [],
   );
   const max = listed.top[0]?.count ?? 1;
-  const maxTargets = Math.max(1, ...areas.areas.map((a) => a.targets.length));
-  // The targets view lists the areas by their number of targets, most first,
-  // so its first row is the area its headline names (ties in the lens's order).
-  const bySize = [...areas.areas].sort((x, y) => y.targets.length - x.targets.length);
+  // The targets view lists the areas as `lensAreas` orders them: by their
+  // number of targets, most first (ties in the lens's order), so its first
+  // row is the area its headline names.
+  const maxTargets = Math.max(1, areas.areas[0]?.targets.length ?? 0);
   // An open area's targets, in its own order; the first ones until all are asked for.
   const targetList = (a: LensArea) => {
     const shown = allTargets ? a.targets : a.targets.slice(0, TARGETS_SHOWN);
@@ -760,7 +760,7 @@ export function AreasView({
         )}
         {byTargets && (
           <ol className="brief-av-pairs" aria-label={t("areaList")}>
-            {bySize.map((a) => {
+            {areas.areas.map((a) => {
               const isOpen = pickedArea === a.id;
               return (
                 <li key={a.id} className="brief-av-pair" data-testid="brief-area-row" data-open={isOpen ? "true" : undefined}>

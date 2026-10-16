@@ -180,18 +180,19 @@ function LineGlyph({ kind }: { kind: LineKind }) {
   );
 }
 
-/** A layer's glyph in its colour: a square for reported actions, a tilted
- *  square for budget lines, as their seats are drawn on the ring. */
 /** Reported statuses and spending units the catalogs name, by their
  *  source's own word. */
-const STATUS_KEYS: Record<string, "ongoing" | "adopted" | "implemented" | "planned"> = {
-  ongoing: "ongoing",
-  adopted: "adopted",
-  implemented: "implemented",
-  planned: "planned",
-};
-const UNIT_KEYS: Record<string, "billion" | "million"> = { billion: "billion", million: "million" };
+const STATUS_KEYS = ["ongoing", "adopted", "implemented", "planned"] as const;
+const UNIT_KEYS = ["billion", "million"] as const;
+/** The catalog's key for a word, or null for one it does not name (a plain
+ *  array lookup, so a word like "constructor" never reads Object.prototype). */
+function catalogKey<K extends string>(keys: readonly K[], word: string): K | null {
+  const lower = word.toLowerCase();
+  return (keys as readonly string[]).includes(lower) ? (lower as K) : null;
+}
 
+/** A layer's glyph in its colour: a square for reported actions, a tilted
+ *  square for budget lines, as their seats are drawn on the ring. */
 function Swatch({ kind }: { kind: "action" | "budget" }) {
   const color = kind === "action" ? RING_INK.action : RING_INK.budget;
   return (
@@ -590,11 +591,11 @@ export function Explore({
   // A report's status and a review's unit in the page's language; one the
   // catalog does not know is shown as its source states it.
   const statusText = (status: string) => {
-    const key = STATUS_KEYS[status.toLowerCase()];
+    const key = catalogKey(STATUS_KEYS, status);
     return key ? t(`statusValue.${key}`) : status;
   };
   const unitText = (unit: string) => {
-    const key = UNIT_KEYS[unit.toLowerCase()];
+    const key = catalogKey(UNIT_KEYS, unit);
     return key ? t(`unit.${key}`) : unit;
   };
   const factsOf = (c: ExploreItem): string | null => {

@@ -2,7 +2,7 @@
 
 import { useState, type MouseEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { countryLocales, getCountry } from "@/config/countries";
+import { countryLocales, getCountry, isStandaloneCountry } from "@/config/countries";
 import { LOCALE_LABELS, MACHINE_TRANSLATED } from "@/i18n/locale-labels";
 import { MovingText } from "./moving-text";
 
@@ -76,7 +76,7 @@ export function Hero({
   const brand = useTranslations("header")("brand");
   const locale = useLocale();
   // A country shared on its own leads nowhere else: no landing, no previous dashboard.
-  const standalone = getCountry(countryId)?.standalone === true;
+  const standalone = isStandaloneCountry(countryId);
   // WCAG 2.2.2: moving content that runs on gets a pause control.
   const [paused, setPaused] = useState(false);
   const lockup = (

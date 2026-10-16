@@ -229,13 +229,18 @@ export function listComingSoonCountries(): CountryEntry[] {
   return COUNTRIES.filter((c) => c.comingSoon);
 }
 
+/** Whether a country is shared on its own (`standalone`). */
+export function isStandaloneCountry(id: string): boolean {
+  return getCountry(id)?.standalone === true;
+}
+
 /** Whether a page belongs to a country shared on its own: the country is
  *  the path's first segment, after the language where one is named. */
 export function isStandalonePath(pathname: string): boolean {
   const parts = pathname.split("/").filter(Boolean);
   const locales: readonly string[] = routing.locales;
   const segment = locales.includes(parts[0]) ? parts[1] : parts[0];
-  return segment ? getCountry(segment)?.standalone === true : false;
+  return segment ? isStandaloneCountry(segment) : false;
 }
 
 /** A country's name on its pages in a language: its own name where it is
