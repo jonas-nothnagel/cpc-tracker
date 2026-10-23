@@ -522,6 +522,7 @@
         "kind": "programme",
         "name": "Meteorology",
         "nameMn": "Ус цаг уур, орчны шинжилгээ",
+        "descriptionMn": "Ус, цаг уурын судалгаа шинжилгээ хийж цаг агаарын урьдчилсан мэдээ болон болзошгүй нөхцөл байдал байгалийн гамшгийн талаарх мэдээллийг олон нийтэд шуурхай түгээх, цаг агаарын болзошгүй аюул, орчны ноцтой бохирдлоос урьдчилан сэргийлэх,цаг агаарын төлөв байдал, цаг уурын үзэгдэлд нөлөөлөх ажиллагаа явуулах цаг агаар, уур амьсгалын нөөцийг бүрэн дүүрэн ашиглах тай холбогдсон үйл ажиллагааны урсгал болон, хөрөнгийн зардал хамаарна.",
         "description": "Includes recurrent and capital expenditures related to hydrological and meteorological research and monitoring; dissemination of weather forecasts, early warnings, and information on potential hazards and natural disasters to the public; prevention of weather-related risks and severe environmental pollution; activities influencing weather and climate conditions; and the effective utilization of weather and climate resources.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -798,6 +799,7 @@
         "kind": "programme",
         "name": "Security of protected areas",
         "nameMn": "Тусгай хамгаалалттай газар нутгийн хамгаалалт",
+        "descriptionMn": "Тусгай хамгаалалттай газар нутгийн талаар баримтлах бодлого , хамгааллын горимыг хангуулах, тусгай хамгаалалттай газар нутгийн менежментийн төлөвлөгөө хэрэгжүүлэх, хэрэгжилтэнд хяналт тавих, хамгаалалттай газар нутгийн суртачилах, мэдээллийн сан бүрдүүлэхтэй холбогдсон үйл ажиллагааны урсгал болон, хөрөнгийн зардал хамаарна.",
         "description": "Includes recurrent and capital expenditures related to the implementation of policies and protection regimes for protected areas, implementation and monitoring of protected area management plans, promotion and awareness-raising activities related to protected areas, and the establishment and maintenance of protected area information databases.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -1150,6 +1152,7 @@
         "kind": "programme",
         "name": "Water resource, lake and river management",
         "nameMn": "Усны нөөц, нуур, гол мөрний менежмент",
+        "descriptionMn": "Усны нөөц, нуур, гол мөрний менежмент, усны талаар гарсан хууль тогтоомжийг боловсронгуй болгох, хэрэгжилтийг зохион байгуулах, зохицуулах, мэргэжил, арга зүйн удирдлагаар хангах чиг үүрэг бүхий усны асуудал хариуцсан Усны газар, Цэнгэг усны нөөц байгаль хамгаалах төв, Усны сав газрын захиргаа зэрэг төрийн байгууллагын үндсэн үйл ажиллагаатай холбогдох зардал хамаарна.",
         "description": "Includes expenditures related to the core functions of state institutions responsible for water resources, including the Water Authority, Freshwater Resources and Nature Conservation Center, and River Basin Administrations, covering water resource management, improvement and enforcement of water-related legislation, coordination, regulation, and provision of professional and methodological guidance.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -1492,6 +1495,7 @@
         "kind": "programme",
         "name": "Afforestation",
         "nameMn": "Ойжуулалт",
+        "descriptionMn": "ойн тогтвортой менежментийг бий болгох, ойн хууль тогтоомжийг боловсронгуй болгох, хэрэгжилтийг зохион байгуулах, зохицуулах, мэргэжил, арга зүйн удирдлагаар хангах чиг үүрэг бүхий Ойн газар , сум дундын ойн анги зэрэг төрийн байгууллагын үндсэн үйл ажиллагаатай холбогдох зардал хамаарна.",
         "description": "Includes expenditures related to the core functions of state institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units, covering the establishment of sustainable forest management systems, improvement and implementation of forest legislation, coordination, regulation, and provision of professional and methodological guidance.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -2026,6 +2030,7 @@
         "kind": "programme",
         "name": "Environment policy and administration",
         "nameMn": "Хүрээлэн буй орчны бодлого, удирдлага",
+        "descriptionMn": "Байгаль орчны бодлогын эрх зүйн орчинг боловсронгуй болгох ,хууль тогтоомж, хөгжлийн бодлого боловсруулах хэрэгжилтийг хангах , төсвийн удирдлагыг хэрэгжүүлэх хяналт тавих, нэгдсэн удирлага зохицуулалтаар хангахтай холбогдсон төрийн байгууллагын үндсэн үйл ажиллагааны урсгал болон хөрөнгийн зардал хамаарна.",
         "description": "Includes recurrent and capital expenditures related to the core functions of government institutions responsible for environmental governance, including improvement of the legal and regulatory framework, development and implementation of legislation and development policies, budget management and oversight, and ensuring integrated coordination and administration.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -2873,6 +2878,7 @@
         "kind": "programme",
         "name": "R&D Environment",
         "nameMn": "Хүрээлэн буй орчны судалгаа шинжилгээ",
+        "descriptionMn": "Байгаль орчны бохирдол доройтлоос урьдчилан сэргийлэх, бохирдлыг бууруулах, саармагжуулах, чиглэлээр судалгаа шинжилгээ хийхтэй зэрэг үйл ажиллагааны урсгал болон, хөрөнгийн зардал хамаарна .",
         "description": "Includes recurrent and capital expenditures related to research activities aimed at preventing environmental pollution and degradation, reducing pollution, and mitigating environmental impacts.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -2982,6 +2988,7 @@
         "kind": "programme",
         "name": "Environmental pollution and degradation",
         "nameMn": "Хүрээлэн буй орчны бохирдол, доройтол",
+        "descriptionMn": "Агаарын бохирдлыг бууруулах , чанарын хяналт тавих бохирдуулагч эх үүсвэрийг орлох бүтээгдэхүүн бий болгох,нийтийн эзэмшлийн зам талбай, байгууламжийн хог хаягдал цэвэрлэх, цуглуулах , зайлуулах, устгах , дахин боловсруулах цэгт хүргэх,хог хаягдлыг дахин боловсруулахтай холбогдсон үйлдвэрлэл үйлчилгээг бий болгох, засвар үйлчилгээ хийх зэрэг , орчны бохирдлыг бууруулахад чиглэсэн дэмжлэг , үйл ажиллагааны урсгал болон, хөрөнгийн зардал хамаарна.",
         "description": "Includes recurrent and capital expenditures related to reducing air pollution and conducting quality control; developing alternative products to replace pollution sources; cleaning, collection, transport, disposal, and recycling of waste from public roads, spaces, and facilities; establishment and maintenance of waste recycling services and facilities; and other support measures aimed at reducing environmental pollution.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -3483,6 +3490,7 @@
         "kind": "programme",
         "name": "Environment protection, recovery",
         "nameMn": "Байгаль орчныг хамгаалах нөхөн сэргээх",
+        "descriptionMn": "Усны нөөцийг, бохирдохоос урьдчилан сэргийлэх , зохистой ашиглах ,ус хангамжийн түвшнийг дээшлүүлэх, усны нөөцийг хомсдолоос хамгаалах, усны эх үүсвэрийг нэмэгдүүлэх ,хөв цөөрөм байгуулах усны нөөцийн хамгаалал,ашиглалт, нөхөн сэргээх, - ойжуулах ,ойг нөхөн сэргээх ,тарьц суулгац бэлтгэх ,үржүүлэх , ойн хортонтой тэмцэх , устгах , ойн түймрээс урьдчилан сэргийлэх,ойн түймрийн хохирлыг барагдуулах ,ойг цэвэрлэгээ хийх зэрэг ойг хамгаалах нөхөн сэргээх, -ургамлыг өвчин, хөнөөлт мэрэгч амьтан, хөнөөлт шавьж, хими, биологийн бодисын хортой нөлөөллөөс хамгаалах, хорио цээр тогтоох,ургамлын тархац, нөөцийн судалгаа явуулах, экологи-эдийн засгийн үнэлгээ хийх ,ургамлыг нөхөн сэргээх ховор ургамлыг тарьмалжуулах , нөхөн сэргэх нөхцөлийг бүрдүүлэх, - амьтан хамгаалах, өсгөн үржүүлэх, тогтвортой ашиглах, устаж болзошгүй амьтдыг сэргээн нутагшуулах, зориудаар өсгөн үржүүлэх, ашиглалтын нөөц бий болгох , судалгаа шинжилгээ сургалт, сурталчилгаа хийх, биотехнилогын арга хэмжээ авах,ахуйн болон тусгай зориулалтын агнуурын үйл ажиллагаанд хяналт тавих, хууль бус агнуураас урьдчилан сэргийлэх, - ургамал, амьтны генетик нөөцтэй холбоотой уламжлалт мэдлэгийг судлах, бүртгэлжүүлэх , хамгаалах, уламжлалт мэдлэгийг ашиглахтай холбоотой үйл ажиллагаанд хяналт тавих,биохайгуул , генетик нөөц, генетик нөөцтэй холбоотой уламжлалт мэдлэгийн инновацын судалгаа, бүтээгдэхүүн хөгжүүлэлтийг дэмжих, олон нийтэд генетик нөөц, генетик нөөцтэй холбоотой уламжлалт мэдлэгийн талаар болон мэдлэг олгох , хууль тогтоомжийг суртачилах зэрэг байгаль орчныг хамгаалах нөхөн сэргээхтэй холбогдсон үйл ажиллагааны урсгал болон, хөрөнгийн зардал хамаарна.",
         "description": "Includes recurrent and capital expenditures related to environmental protection and restoration activities, including: prevention of water pollution, sustainable use of water resources, improvement of water supply levels, protection against water scarcity, expansion of water sources, construction of reservoirs; forest protection and restoration activities such as afforestation, reforestation, seedling preparation and propagation, pest control, forest fire prevention and damage compensation, and forest cleaning; protection of plants from diseases, harmful rodents, pests, and chemical or biological impacts, establishment of quarantine measures, studies on plant distribution and resources, ecological and economic valuation, restoration and cultivation of rare plants; wildlife protection, breeding, sustainable use, reintroduction of endangered species, captive breeding, creation of sustainable use reserves, research, training and awareness-raising, biotechnology measures, monitoring of hunting activities, and prevention of illegal hunting; research, documentation, protection, and regulation of traditional knowledge associated with plant and animal genetic resources, promotion of bioprospecting, innovation research and product development related to genetic resources and associated traditional knowledge, and public awareness and legal outreach related to genetic resources.",
         "source": "BER [ENG] v1.2.docx, Table 1",
         "amounts": {
@@ -4171,6 +4179,7 @@
         "kind": "purpose",
         "name": "Air pollution reduction",
         "nameMn": "Агаарын бохирдлыг бууруулах",
+        "descriptionMn": "Агаарын бохирдлыг бууруулах , урьдчилан сэргийлэхтэй холбогдсон зардлуудыг энэ ангилалд хамааруулна.",
         "description": "Includes expenditures related to reducing and preventing air pollution.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -4280,6 +4289,7 @@
         "kind": "purpose",
         "name": "Solid waste and environmental pollution removal and cleaning services",
         "nameMn": "Хур хог хаягдал, орчны бохирдлыг устгах, цэвэрлэх үйлчилгээ",
+        "descriptionMn": "Орчны бохрдлыг устгах цэвэрлэх,Нийтийн эзэмшлийн зам, талбайг цэвэрлэгээ үйлчилгээ ,хог хаяглыг зайлуулахтай холбогдсон зардлыг энэ ангилалд хамааруулна.",
         "description": "Includes expenditures related to environmental cleaning services, cleaning of public roads and areas, and waste removal.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -4742,6 +4752,7 @@
         "kind": "purpose",
         "name": "Afforestation",
         "nameMn": "Ойжуулалт",
+        "descriptionMn": "Ойжуулалтын тухай хуульд заасны дагуу таримал ой, ойн сан байгуулж өмчлүүлэх, ой нөхөн сэргээх, үржүүлэх, ойн тооллого зохион байгуулахтай холботоотой зардлыг энЭ ангилалд бүртгэнэ. Хамаарахгүй зүйлс: Хот суурин газрын гудамж, цэцэрлэгт хүрээлэн, ногоон байгууламжид мод тарихтай холбоотой зардлыг энд бүртгэхгүй ба 82207 кодтой арга хэмжээнд бүртгэнэ.",
         "description": "Includes expenditures related to establishing plantation forests and forest funds, forest restoration and propagation, and conducting forest inventories in accordance with the Law on Afforestation. Exclusions: expenditures related to tree planting in urban streets, parks, and green spaces are not recorded under this category and are instead recorded under code 82207.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -4824,6 +4835,7 @@
         "kind": "purpose",
         "name": "Control of forest pests and harmful insects",
         "nameMn": "Ойн хөнөөлт шавьж, хортонтой тэмцэх",
+        "descriptionMn": "Ойн хөнөөлт шавьж хортонтой тэмцэхтэй олбогдсон зардал энэ ангилалд бүртгэнэ.",
         "description": "Includes expenditures related to controlling forest pests and harmful insects.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -4885,6 +4897,7 @@
         "kind": "purpose",
         "name": "Forest fire prevention and damage mitigation",
         "nameMn": "Ойн түймрээс урьдчилан сэргийлэх, түймрийн хохирлыг арилгах",
+        "descriptionMn": "ойн түймрээс урьдчилан сэргийлэх, түймрийг ундраах, түймрийн хохирлыг арилгахтай тэмцэхтэй олбогдсон зардал энэ ангилалд бүртгэнэ.",
         "description": "Includes expenditures related to forest fire prevention, fire suppression, and mitigation of damage caused by forest fires.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -4946,6 +4959,7 @@
         "kind": "purpose",
         "name": "Forest inventory",
         "nameMn": "Ойн тооллого",
+        "descriptionMn": "ойн хуульд заасны дагуу ойн тооллого хийхтэй холбогдсон зардлыг энэ ангилалд бүртгэнэ.",
         "description": "Includes expenditures related to conducting forest inventories in accordance with forest legislation.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5007,6 +5021,7 @@
         "kind": "purpose",
         "name": "Plant protection and restoration",
         "nameMn": "Ургамлын хамгаалал нөхөн сэргээлт",
+        "descriptionMn": "Байгалын ургамлыг хамгаалах нөхөн сэргээхтэй холбогдсон зардлыг энэ ангилалд бүртгэнэ.",
         "description": "Includes expenditures related to the protection and restoration of natural vegetation.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5095,6 +5110,7 @@
         "kind": "purpose",
         "name": "Hydrological and meteorological research",
         "nameMn": "Ус цаг уурын судалгаа, шинжилгээ",
+        "descriptionMn": "Ус цаг уурын судалгаа шинжилгээ Ус, цаг, уурын судалгаа шинэжилгээ хийхтэй холбоотой зардлуудыг энэ арга 81710 хэмжээнд хамруулна.",
         "description": "Includes expenditures related to hydrological and meteorological research and analysis activities.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5156,6 +5172,7 @@
         "kind": "purpose",
         "name": "Waste processing",
         "nameMn": "Хог хаягдлыг боловсруулах",
+        "descriptionMn": "Хог хаягдлыг ангилан ялгах, боловсруулахтай холбогдсон зардлыг энэ ангилалд хамааруулна.",
         "description": "Includes expenditures related to waste separation and processing.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5217,6 +5234,7 @@
         "kind": "purpose",
         "name": "Support for substitute pollution sources and green product producers",
         "nameMn": "Бохирдуулагч эх үүсвэрийг орлох болон, ногоон бүтээгдэхүүн үйлдвэрлэгчдэд олгох дэмжлэг",
+        "descriptionMn": "Агаар орчны бохирдлыг буруулаадахад чиглэсэн бүтээгдэхүүн үйлдвэрлэгчдэд төсвөөс олгох дэмжлэг, урамшуулал энэ ангилалд хамаарна",
         "description": "Includes budgetary support and incentives provided to producers of products aimed at reducing air and environmental pollution.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5278,6 +5296,7 @@
         "kind": "purpose",
         "name": "Protection, use, and restoration of water and mineral water resources",
         "nameMn": "Ус, рашааны  нөөцийн хамгаалал, ашиглалт, нөхөн сэргээлт",
+        "descriptionMn": "Ус рашааны нөөцийг хамгаалах, нөхөн сэргээх, хөв цөөрөм байгуулах болон усны нөөцийг зүй зохистой ашиглах, хаягдал ус дахин боловсруулах, цэвэршүүлэхтэй холбогдсон зардал энэ ангилалд хамаарна.",
         "description": "Includes expenditures related to protection and restoration of water and mineral water resources, construction of reservoirs, sustainable use of water resources, and wastewater recycling and treatment.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5339,6 +5358,7 @@
         "kind": "purpose",
         "name": "Reduction of land degradation and desertification prevention",
         "nameMn": "Газрын доройтлыг бууруулах цөлжилтөөс сэргийлэх",
+        "descriptionMn": "Эвдэрсэн газрыг нөхөн сэргээх, цөлжилтийг сааруулах, элсний нүүдлээс хамгаалах, бэлчээрийн талбайг хашиж хамгаалах, ургамлын нөмрөгийг нөхөн сэргээх зэрэг газрын доройтлыг бууруулахтай холбогдсон зардал энэ ангилалд хамаарна.",
         "description": "Includes expenditures related to restoration of degraded land, mitigation of desertification, protection against sand movement, fencing and protection of pastureland, and restoration of vegetation cover.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5400,6 +5420,7 @@
         "kind": "purpose",
         "name": "Protection and restoration of wildlife resources",
         "nameMn": "Амьтны нөөцийн хамгаалал, нөхөн сэргээлт",
+        "descriptionMn": "Амьтны хамгаалал, нэн ховор, ховор амьтныг өсгөн үржүүлэх, сэргээн нутагшуулах, био технологийн арга хэмжээ хэрэгжүүлэхтэй холбогдсон зардал энэ ангилалд хамаарна.",
         "description": "Includes expenditures related to wildlife protection, captive breeding and reintroduction of endangered and rare species, and implementation of biotechnological measures.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5461,6 +5482,7 @@
         "kind": "purpose",
         "name": "Genetic resources of wild plants and animals",
         "nameMn": "Байгалын ургамал амьтны генетик нөөц",
+        "descriptionMn": "Байгалын ургамал амьтны генетик нөөцийг судлах шинжлэх, ургамал амьтны генетик нөөцийг бүртгэх, хадгалахтай холбогдсон зардлуудыг энэ ангилалд хамааруулна",
         "description": "Includes expenditures related to research, assessment, registration, and conservation of genetic resources of wild plants and animals.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {
@@ -5522,6 +5544,7 @@
         "kind": "purpose",
         "name": "Forest restoration",
         "nameMn": "Ойг  нөхөн сэргээх",
+        "descriptionMn": "Ойжуулалтын тухай хуульд заасны дагуу таримал ой, тарьц суулгац бэлтгэх, үржүүлэх, ой нөхөн сэргээх, зэрэг ойн нөөцийг нэмэгдүүлэх нөхөн сэргээхэд чиглэсэн үйл ажиллагаанд хамаарах зардлыг энэ ангилалд бүртгэнэ.",
         "description": "Includes expenditures related to forest restoration activities aimed at increasing forest resources, including preparation and propagation of seedlings and plantation forest establishment, in accordance with the Law on Afforestation.",
         "source": "BER [ENG] v1.2.docx, Table 2",
         "amounts": {

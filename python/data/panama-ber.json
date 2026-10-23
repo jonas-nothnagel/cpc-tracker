@@ -6884,11 +6884,11 @@
         "funding": [
           {
             "source": "Grants",
-            "share": 0.9687
+            "share": 0.87
           },
           {
             "source": "Current revenue",
-            "share": 0.1423
+            "share": 0.1183
           },
           {
             "source": "Canal tolls and dividends",
@@ -6897,28 +6897,28 @@
         ],
         "payments": [
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.6258
           },
           {
-            "name": "Construcciones Por Contrato",
-            "share": 0.4566
+            "name": "Construcciones por contrato",
+            "share": 0.3578
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0185
+            "name": "Servicios no personales",
+            "share": 0.0114
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.0148
+            "name": "Materiales y suministros",
+            "share": 0.0031
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0036
+            "name": "Maquinaria y equipo",
+            "share": 0.0011
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.0035
+            "name": "Servicios personales",
+            "share": 0.0007
           }
         ]
       },
@@ -7031,23 +7031,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9791
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0169
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0034
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0005
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0001
           }
         ]
@@ -7156,25 +7156,25 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0596
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0561
+            "name": "Servicios personales",
+            "share": 0.9971
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0025
+            "name": "Materiales y suministros",
+            "share": 0.0021
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0009
+            "name": "Servicios no personales",
+            "share": 0.0008
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.0001
+            "name": "Maquinaria y equipo",
+            "share": 0.0
           }
         ]
       },
@@ -7278,19 +7278,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9888
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0076
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0033
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0002
           }
         ]
@@ -7381,27 +7381,27 @@
         ],
         "payments": [
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.88
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.11
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0074
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0018
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0007
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0001
           }
         ]
@@ -7506,19 +7506,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9842
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.011
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0029
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0018
           }
         ]
@@ -7625,27 +7625,27 @@
         ],
         "payments": [
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.7383
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1368
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.09
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0265
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0075
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0008
           }
         ]
@@ -7705,27 +7705,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.8344
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.1023
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0293
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0193
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0081
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0067
           }
         ]
@@ -7830,23 +7830,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9725
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0185
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0084
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0006
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0
           }
         ]
@@ -7955,28 +7955,28 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0876
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.5021
+            "name": "Servicios personales",
+            "share": 0.4566
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.3328
+            "name": "Servicios no personales",
+            "share": 0.3004
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1305
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1014
+            "name": "Materiales y suministros",
+            "share": 0.0916
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0208
           },
           {
@@ -8031,7 +8031,7 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 1.0
           }
         ]
@@ -8136,23 +8136,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.7549
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1519
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0796
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0076
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0061
           }
         ]
@@ -8261,32 +8261,32 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0755
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.9088
+            "name": "Servicios personales",
+            "share": 0.8474
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0896
+            "name": "Transferencias corrientes",
+            "share": 0.0841
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0631
+            "name": "Servicios no personales",
+            "share": 0.0562
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0101
+            "name": "Materiales y suministros",
+            "share": 0.0084
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0036
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0003
           }
         ]
@@ -8398,27 +8398,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2517
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2291
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2141
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.185
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0599
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0341
           }
         ]
@@ -8523,19 +8523,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9902
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0051
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0046
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0002
           }
         ]
@@ -8644,7 +8644,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 0.645
+            "share": 0.6119
           },
           {
             "source": "Capital transfers",
@@ -8657,27 +8657,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 0.7986
+            "name": "Servicios no personales",
+            "share": 0.7675
           },
           {
-            "name": "Construcciones Por Contrato",
-            "share": 0.15
+            "name": "Construcciones por contrato",
+            "share": 0.1497
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0304
+            "name": "Transferencias corrientes",
+            "share": 0.0302
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0238
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0193
+            "name": "Materiales y suministros",
+            "share": 0.0179
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.011
           }
         ]
@@ -8782,19 +8782,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9897
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0071
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0031
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0001
           }
         ]
@@ -8899,23 +8899,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.931
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0408
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.025
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0022
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.001
           }
         ]
@@ -9006,27 +9006,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5898
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.221
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0995
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0447
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0285
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0091
           }
         ]
@@ -9131,19 +9131,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9854
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.01
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0045
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0
           }
         ]
@@ -9252,36 +9252,36 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0592
+            "share": 0.8363
           },
           {
             "source": "Canal tolls and dividends",
-            "share": 0.2187
+            "share": 0.1637
           }
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 1.0648
+            "name": "Maquinaria y equipo",
+            "share": 0.8256
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1365
+            "name": "Materiales y suministros",
+            "share": 0.1036
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0269
+            "name": "Servicios no personales",
+            "share": 0.0231
           },
           {
-            "name": "Asignaciones Globales",
+            "name": "Asignaciones globales",
             "share": 0.0196
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0171
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.011
           }
         ]
@@ -9386,19 +9386,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.988
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.007
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0046
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0004
           }
         ]
@@ -9503,11 +9503,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.8745
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0723
           },
           {
@@ -9515,11 +9515,11 @@
             "share": 0.0233
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0215
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0084
           }
         ]
@@ -9628,25 +9628,21 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1057
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0965
+            "name": "Servicios personales",
+            "share": 0.9921
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0066
+            "name": "Materiales y suministros",
+            "share": 0.0058
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0026
-          },
-          {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.0
+            "name": "Servicios no personales",
+            "share": 0.0021
           }
         ]
       },
@@ -9705,7 +9701,7 @@
         ],
         "payments": [
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 1.0
           }
         ]
@@ -9823,23 +9819,23 @@
         ],
         "payments": [
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.5403
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2613
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1031
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0687
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0266
           }
         ]
@@ -9956,19 +9952,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.6253
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.3431
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0189
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0128
           }
         ]
@@ -10085,19 +10081,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9925
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0048
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0024
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0002
           }
         ]
@@ -10206,27 +10202,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.6655
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1088
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0886
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0537
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.042
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0414
           }
         ]
@@ -10308,23 +10304,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.9836
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0127
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0018
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0014
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0004
           }
         ]
@@ -10441,23 +10437,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.668
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2625
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0558
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.008
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0057
           }
         ]
@@ -10566,28 +10562,28 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1229
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.7857
+            "name": "Servicios personales",
+            "share": 0.7216
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.3082
+            "name": "Transferencias corrientes",
+            "share": 0.2507
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0213
+            "name": "Servicios no personales",
+            "share": 0.0204
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0066
+            "name": "Materiales y suministros",
+            "share": 0.006
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.001
           },
           {
@@ -10700,24 +10696,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1098
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0544
+            "name": "Servicios personales",
+            "share": 0.9497
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0509
+            "name": "Servicios no personales",
+            "share": 0.0462
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0033
+            "name": "Materiales y suministros",
+            "share": 0.0029
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0012
           }
         ]
@@ -10826,29 +10822,29 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1035
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0764
+            "name": "Servicios personales",
+            "share": 0.9765
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0135
+            "name": "Materiales y suministros",
+            "share": 0.0117
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0101
+            "name": "Servicios no personales",
+            "share": 0.0088
           },
           {
-            "name": "Asignaciones Globales",
-            "share": 0.0021
+            "name": "Asignaciones globales",
+            "share": 0.0017
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.0015
+            "name": "Maquinaria y equipo",
+            "share": 0.0014
           }
         ]
       },
@@ -10936,27 +10932,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4302
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.3816
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0644
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.059
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0403
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0246
           }
         ]
@@ -11065,23 +11061,23 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3669
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3273
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1578
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0717
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0549
           },
           {
@@ -11202,23 +11198,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.8969
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0853
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0158
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0017
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0003
           }
         ]
@@ -11327,13 +11323,13 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.076
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.076
+            "name": "Servicios personales",
+            "share": 1.0
           }
         ]
       },
@@ -11441,7 +11437,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 0.8131
+            "share": 0.7827
           },
           {
             "source": "Capital transfers",
@@ -11450,8 +11446,8 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 1.0304
+            "name": "Servicios no personales",
+            "share": 1.0
           }
         ]
       },
@@ -11559,27 +11555,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.4434
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3449
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1271
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0448
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0258
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0133
           }
         ]
@@ -11688,24 +11684,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1134
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0996
+            "name": "Servicios personales",
+            "share": 0.988
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.008
+            "name": "Servicios no personales",
+            "share": 0.0067
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0051
+            "name": "Materiales y suministros",
+            "share": 0.0046
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0007
           }
         ]
@@ -11822,19 +11818,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.858
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1001
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0213
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0206
           }
         ]
@@ -11943,33 +11939,33 @@
         "funding": [
           {
             "source": "Capital transfers",
-            "share": 1.0367
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.4991
+            "name": "Servicios personales",
+            "share": 0.4877
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.2173
+            "name": "Maquinaria y equipo",
+            "share": 0.2153
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1185
-          },
-          {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.1063
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0945
+            "name": "Materiales y suministros",
+            "share": 0.1038
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.001
+            "name": "Servicios no personales",
+            "share": 0.086
+          },
+          {
+            "name": "Transferencias corrientes",
+            "share": 0.0008
           }
         ]
       },
@@ -12005,36 +12001,36 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0092
+            "share": 0.6471
           },
           {
             "source": "External loans",
-            "share": 0.4618
+            "share": 0.3529
           }
         ],
         "payments": [
           {
-            "name": "Construcciones Por Contrato",
-            "share": 0.7062
+            "name": "Construcciones por contrato",
+            "share": 0.4592
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.3627
-          },
-          {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3304
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.0696
+            "name": "Servicios no personales",
+            "share": 0.1732
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0021
+            "name": "Servicios personales",
+            "share": 0.0351
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Materiales y suministros",
+            "share": 0.002
+          },
+          {
+            "name": "Transferencias corrientes",
             "share": 0.0001
           }
         ]
@@ -12143,29 +12139,29 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0846
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.972
+            "name": "Servicios personales",
+            "share": 0.9078
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0606
+            "name": "Servicios no personales",
+            "share": 0.0525
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0439
+            "name": "Materiales y suministros",
+            "share": 0.0326
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0047
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0034
+            "name": "Transferencias corrientes",
+            "share": 0.0024
           }
         ]
       },
@@ -12264,23 +12260,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.7017
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1358
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0993
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0473
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0159
           }
         ]
@@ -12388,23 +12384,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9626
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0143
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0115
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0095
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.002
           }
         ]
@@ -12513,21 +12509,21 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.004
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0035
+            "name": "Servicios personales",
+            "share": 0.9998
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0002
+            "name": "Materiales y suministros",
+            "share": 0.0001
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0002
+            "name": "Servicios no personales",
+            "share": 0.0001
           }
         ]
       },
@@ -12626,27 +12622,27 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3824
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3306
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.173
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0561
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0524
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0054
           }
         ]
@@ -12724,23 +12720,23 @@
         ],
         "payments": [
           {
-            "name": "Asignaciones Globales",
+            "name": "Asignaciones globales",
             "share": 0.8679
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0723
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0423
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0136
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.004
           }
         ]
@@ -12849,7 +12845,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.4365
+            "share": 0.9875
           },
           {
             "source": "Canal tolls and dividends",
@@ -12858,23 +12854,23 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.7542
+            "name": "Maquinaria y equipo",
+            "share": 0.4821
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.2947
+            "name": "Materiales y suministros",
+            "share": 0.2291
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.2812
+            "name": "Servicios no personales",
+            "share": 0.2175
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.1173
+            "name": "Servicios personales",
+            "share": 0.0698
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0015
           }
         ]
@@ -12983,27 +12979,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.343
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.301
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1338
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1081
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0935
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0205
           }
         ]
@@ -13108,15 +13104,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9903
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0049
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0048
           }
         ]
@@ -13224,37 +13220,37 @@
         },
         "funding": [
           {
-            "source": "Canal tolls and dividends",
-            "share": 0.7544
-          },
-          {
             "source": "Current revenue",
             "share": 0.579
+          },
+          {
+            "source": "Canal tolls and dividends",
+            "share": 0.421
           }
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.7964
+            "name": "Materiales y suministros",
+            "share": 0.5876
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.2933
+            "name": "Maquinaria y equipo",
+            "share": 0.2228
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.0999
+            "name": "Servicios no personales",
+            "share": 0.0613
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0752
+            "name": "Servicios personales",
+            "share": 0.0597
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0451
           },
           {
-            "name": "Asignaciones Globales",
+            "name": "Asignaciones globales",
             "share": 0.0234
           }
         ]
@@ -13300,23 +13296,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3916
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2832
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2228
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0977
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0046
           }
         ]
@@ -13371,19 +13367,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.6684
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.285
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0287
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0113
           },
           {
@@ -13391,7 +13387,7 @@
             "share": 0.0061
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0006
           }
         ]
@@ -13500,24 +13496,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0997
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0201
+            "name": "Servicios personales",
+            "share": 0.9273
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0671
+            "name": "Servicios no personales",
+            "share": 0.0607
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0125
+            "name": "Materiales y suministros",
+            "share": 0.012
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0
           }
         ]
@@ -13622,19 +13618,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9775
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0138
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0078
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.001
           }
         ]
@@ -13743,27 +13739,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.6121
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1271
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1267
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0865
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0298
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0177
           }
         ]
@@ -13872,23 +13868,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.5559
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1755
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.1455
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0845
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0385
           }
         ]
@@ -13997,24 +13993,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1023
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.9922
+            "name": "Servicios personales",
+            "share": 0.9027
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0947
+            "name": "Servicios no personales",
+            "share": 0.0828
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.015
+            "name": "Materiales y suministros",
+            "share": 0.0141
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0004
           }
         ]
@@ -14060,27 +14056,27 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3142
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3086
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.1576
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.13
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0845
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0032
           }
         ]
@@ -14189,24 +14185,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1019
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0655
+            "name": "Servicios personales",
+            "share": 0.9711
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0273
+            "name": "Servicios no personales",
+            "share": 0.0212
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0087
+            "name": "Materiales y suministros",
+            "share": 0.0074
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0003
           }
         ]
@@ -14252,27 +14248,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.6786
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.136
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.1308
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0334
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0196
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0015
           }
         ]
@@ -14381,28 +14377,28 @@
         "funding": [
           {
             "source": "Capital transfers",
-            "share": 1.0238
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.3097
+            "name": "Maquinaria y equipo",
+            "share": 0.3071
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.2989
+            "name": "Servicios personales",
+            "share": 0.2967
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.2964
+            "name": "Servicios no personales",
+            "share": 0.2916
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1178
+            "name": "Materiales y suministros",
+            "share": 0.1037
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.001
           }
         ]
@@ -14511,29 +14507,29 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0982
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0416
+            "name": "Servicios personales",
+            "share": 0.9512
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.026
+            "name": "Servicios no personales",
+            "share": 0.0241
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0187
+            "name": "Materiales y suministros",
+            "share": 0.0139
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.01
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0021
+            "name": "Transferencias corrientes",
+            "share": 0.0008
           }
         ]
       },
@@ -14640,15 +14636,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9833
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0138
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0029
           }
         ]
@@ -14690,15 +14686,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9838
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0127
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0035
           }
         ]
@@ -14807,7 +14803,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.4846
+            "share": 0.944
           },
           {
             "source": "Canal tolls and dividends",
@@ -14816,23 +14812,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.6324
+            "name": "Construcciones por contrato",
+            "share": 0.4014
           },
           {
-            "name": "Construcciones Por Contrato",
-            "share": 0.5879
+            "name": "Servicios personales",
+            "share": 0.3435
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.2614
+            "name": "Materiales y suministros",
+            "share": 0.2099
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0421
+            "name": "Servicios no personales",
+            "share": 0.0284
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0168
           }
         ]
@@ -14883,15 +14879,15 @@
         ],
         "payments": [
           {
-            "name": "Asignaciones Globales",
+            "name": "Asignaciones globales",
             "share": 0.9728
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0267
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0004
           }
         ]
@@ -15009,23 +15005,23 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.4533
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2125
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1664
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1653
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0025
           }
         ]
@@ -15134,24 +15130,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0849
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0292
+            "name": "Servicios personales",
+            "share": 0.9485
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0378
+            "name": "Servicios no personales",
+            "share": 0.0348
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0179
+            "name": "Materiales y suministros",
+            "share": 0.0166
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0001
           }
         ]
@@ -15233,23 +15229,23 @@
         ],
         "payments": [
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.3331
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2652
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.174
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1737
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.054
           }
         ]
@@ -15358,24 +15354,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1141
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0746
+            "name": "Servicios personales",
+            "share": 0.9655
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0233
+            "name": "Servicios no personales",
+            "share": 0.0191
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0153
+            "name": "Materiales y suministros",
+            "share": 0.0145
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0005
           },
           {
@@ -15421,19 +15417,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9493
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0322
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0156
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0028
           }
         ]
@@ -15511,15 +15507,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.9333
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0401
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0266
           }
         ]
@@ -15619,7 +15615,7 @@
         "funding": [
           {
             "source": "Capital transfers",
-            "share": 0.7323
+            "share": 0.6177
           },
           {
             "source": "Current revenue",
@@ -15628,19 +15624,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.4618
+            "name": "Maquinaria y equipo",
+            "share": 0.3999
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.353
+            "name": "Materiales y suministros",
+            "share": 0.3176
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1714
+            "name": "Servicios no personales",
+            "share": 0.1542
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1283
           }
         ]
@@ -15749,24 +15745,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1176
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0633
+            "name": "Servicios personales",
+            "share": 0.9555
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.044
+            "name": "Servicios no personales",
+            "share": 0.0353
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0099
+            "name": "Materiales y suministros",
+            "share": 0.0088
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0004
           }
         ]
@@ -15875,24 +15871,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.098
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.029
+            "name": "Servicios personales",
+            "share": 0.9451
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0548
+            "name": "Servicios no personales",
+            "share": 0.0421
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0142
+            "name": "Materiales y suministros",
+            "share": 0.0128
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0
           }
         ]
@@ -16004,23 +16000,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.7765
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1291
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0484
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0437
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0024
           }
         ]
@@ -16129,24 +16125,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1251
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.046
+            "name": "Servicios personales",
+            "share": 0.9259
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0669
+            "name": "Servicios no personales",
+            "share": 0.0643
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0114
+            "name": "Materiales y suministros",
+            "share": 0.009
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0008
           }
         ]
@@ -16255,19 +16251,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.627
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1572
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1086
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1072
           }
         ]
@@ -16309,19 +16305,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.8616
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1174
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0186
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0024
           }
         ]
@@ -16363,15 +16359,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9781
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0155
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0064
           }
         ]
@@ -16480,32 +16476,32 @@
         "funding": [
           {
             "source": "Capital transfers",
-            "share": 0.6201
+            "share": 0.599
           },
           {
             "source": "Grants",
-            "share": 0.4015
+            "share": 0.401
           }
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.3452
+            "name": "Materiales y suministros",
+            "share": 0.3315
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.2973
+            "name": "Maquinaria y equipo",
+            "share": 0.295
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.233
+            "name": "Servicios no personales",
+            "share": 0.2275
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.1318
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0142
           }
         ]
@@ -16596,7 +16592,7 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 0.7341
+            "share": 0.681
           },
           {
             "source": "Capital transfers",
@@ -16605,20 +16601,20 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.6927
+            "name": "Maquinaria y equipo",
+            "share": 0.6906
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1358
+            "name": "Servicios no personales",
+            "share": 0.1242
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1267
+            "name": "Materiales y suministros",
+            "share": 0.1082
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.0979
+            "name": "Servicios personales",
+            "share": 0.077
           }
         ]
       },
@@ -16686,23 +16682,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.6102
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3473
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0416
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0007
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0002
           }
         ]
@@ -16744,15 +16740,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9727
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.022
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0053
           }
         ]
@@ -16861,27 +16857,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3131
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.29
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2161
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1008
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.067
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.013
           }
         ]
@@ -16927,27 +16923,27 @@
         ],
         "payments": [
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.3809
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2901
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1312
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0955
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0771
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0252
           }
         ]
@@ -17059,23 +17055,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.5707
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1223
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1081
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1023
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0967
           }
         ]
@@ -17184,23 +17180,23 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3677
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3471
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2684
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0102
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0067
           }
         ]
@@ -17242,19 +17238,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9388
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0441
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0164
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0007
           }
         ]
@@ -17363,24 +17359,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1266
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0836
+            "name": "Servicios personales",
+            "share": 0.9622
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0283
+            "name": "Servicios no personales",
+            "share": 0.0257
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.013
+            "name": "Materiales y suministros",
+            "share": 0.0104
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0016
           }
         ]
@@ -17440,27 +17436,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.434
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3025
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0893
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0762
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0658
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0323
           }
         ]
@@ -17533,7 +17529,7 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 0.8346
+            "share": 0.5525
           },
           {
             "source": "Capital transfers",
@@ -17542,24 +17538,24 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.4089
+            "name": "Servicios personales",
+            "share": 0.3433
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.3772
+            "name": "Materiales y suministros",
+            "share": 0.3155
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.3197
+            "name": "Maquinaria y equipo",
+            "share": 0.2427
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1409
+            "name": "Servicios no personales",
+            "share": 0.0915
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0354
+            "name": "Transferencias corrientes",
+            "share": 0.0069
           }
         ]
       },
@@ -17667,11 +17663,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.2921
-          },
-          {
-            "source": "External loans",
-            "share": 0.1325
+            "share": 0.9002
           },
           {
             "source": "Canal tolls and dividends",
@@ -17680,27 +17672,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.5694
+            "name": "Materiales y suministros",
+            "share": 0.3035
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.4017
+            "name": "Servicios personales",
+            "share": 0.2984
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.3207
+            "name": "Maquinaria y equipo",
+            "share": 0.2141
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1905
+            "name": "Servicios no personales",
+            "share": 0.1419
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0345
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0076
           }
         ]
@@ -17805,19 +17797,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.958
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0247
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0109
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0064
           }
         ]
@@ -17926,32 +17918,32 @@
         "funding": [
           {
             "source": "Capital transfers",
-            "share": 1.0237
+            "share": 0.9675
           },
           {
             "source": "Grants",
-            "share": 0.0597
+            "share": 0.0325
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.4146
+            "name": "Servicios personales",
+            "share": 0.3631
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.3502
+            "name": "Materiales y suministros",
+            "share": 0.3434
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1856
+            "name": "Servicios no personales",
+            "share": 0.1731
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.1277
+            "name": "Maquinaria y equipo",
+            "share": 0.1152
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0053
           }
         ]
@@ -18024,7 +18016,7 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 0.919
+            "share": 0.6369
           },
           {
             "source": "Capital transfers",
@@ -18033,27 +18025,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.5057
+            "name": "Servicios personales",
+            "share": 0.4472
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.3048
+            "name": "Servicios no personales",
+            "share": 0.2442
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.2727
+            "name": "Materiales y suministros",
+            "share": 0.1811
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.1263
+            "name": "Transferencias corrientes",
+            "share": 0.0643
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0697
+            "name": "Maquinaria y equipo",
+            "share": 0.0603
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0029
           }
         ]
@@ -18135,23 +18127,23 @@
         ],
         "payments": [
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.3193
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.2539
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1942
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1312
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1014
           }
         ]
@@ -18256,15 +18248,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9723
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0197
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.008
           }
         ]
@@ -18355,19 +18347,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.4345
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3635
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.179
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.023
           }
         ]
@@ -18463,19 +18455,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.5553
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2854
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0987
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0605
           }
         ]
@@ -18544,19 +18536,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.314
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2957
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2442
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.146
           }
         ]
@@ -18664,19 +18656,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.8271
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0922
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0601
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0206
           }
         ]
@@ -18785,7 +18777,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.05
+            "share": 0.92
           },
           {
             "source": "Canal tolls and dividends",
@@ -18794,16 +18786,16 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.5605
+            "name": "Materiales y suministros",
+            "share": 0.4781
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.4825
+            "name": "Maquinaria y equipo",
+            "share": 0.4418
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.087
+            "name": "Servicios no personales",
+            "share": 0.0801
           }
         ]
       },
@@ -18902,7 +18894,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 0.979
+            "share": 0.9266
           },
           {
             "source": "Canal tolls and dividends",
@@ -18911,19 +18903,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.6832
+            "name": "Maquinaria y equipo",
+            "share": 0.6633
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.3287
+            "name": "Materiales y suministros",
+            "share": 0.2976
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0217
+            "name": "Servicios no personales",
+            "share": 0.0202
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0188
           }
         ]
@@ -18965,19 +18957,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9445
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0281
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0252
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0022
           }
         ]
@@ -19019,23 +19011,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9114
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0514
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0287
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0073
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0011
           }
         ]
@@ -19131,19 +19123,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.4648
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3647
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1466
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0239
           }
         ]
@@ -19232,19 +19224,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.7545
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1132
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0784
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0539
           }
         ]
@@ -19326,19 +19318,19 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.7534
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1375
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0616
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0476
           }
         ]
@@ -19384,25 +19376,25 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.3799
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.8359
+            "name": "Servicios personales",
+            "share": 0.5725
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.3048
+            "name": "Servicios no personales",
+            "share": 0.2499
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1439
+            "name": "Materiales y suministros",
+            "share": 0.1198
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.0953
+            "name": "Maquinaria y equipo",
+            "share": 0.0579
           }
         ]
       },
@@ -19506,7 +19498,7 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 1.0
           }
         ]
@@ -19624,23 +19616,23 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.4028
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2381
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1758
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1211
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0621
           }
         ]
@@ -19686,19 +19678,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3481
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3074
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.3033
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0412
           }
         ]
@@ -19767,7 +19759,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -19813,19 +19805,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5991
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2514
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1096
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0399
           }
         ]
@@ -19876,15 +19868,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.7883
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1107
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1009
           }
         ]
@@ -19969,19 +19961,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.8586
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0911
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0308
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0195
           }
         ]
@@ -20072,23 +20064,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3924
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.2574
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2559
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0679
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0266
           }
         ]
@@ -20184,23 +20176,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.6591
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2229
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.0709
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0465
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0006
           }
         ]
@@ -20287,19 +20279,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.4342
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.354
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1607
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0511
           }
         ]
@@ -20417,27 +20409,27 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2954
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.2765
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2186
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.151
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0516
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0069
           }
         ]
@@ -20532,25 +20524,25 @@
           },
           {
             "source": "Canal tolls and dividends",
-            "share": 0.4486
+            "share": 0.3024
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.5398
+            "name": "Servicios personales",
+            "share": 0.4851
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.3691
+            "name": "Servicios no personales",
+            "share": 0.2834
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1452
+            "name": "Materiales y suministros",
+            "share": 0.1424
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.0921
+            "name": "Maquinaria y equipo",
+            "share": 0.0891
           }
         ]
       },
@@ -20657,15 +20649,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9353
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0363
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0284
           }
         ]
@@ -20774,13 +20766,13 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1111
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
-            "share": 1.1111
+            "name": "Transferencias corrientes",
+            "share": 1.0
           }
         ]
       },
@@ -20897,23 +20889,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4787
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3198
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1358
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0422
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0235
           }
         ]
@@ -20955,19 +20947,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9173
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.049
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0333
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0003
           }
         ]
@@ -21049,23 +21041,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5135
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.277
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0955
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0779
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0361
           }
         ]
@@ -21102,36 +21094,36 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 1.1336
-          },
-          {
-            "source": "External loans",
-            "share": 0.9352
+            "share": 0.5818
           },
           {
             "source": "Current revenue",
-            "share": 0.3356
+            "share": 0.2608
+          },
+          {
+            "source": "External loans",
+            "share": 0.1574
           }
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 1.2112
+            "name": "Servicios personales",
+            "share": 0.5753
           },
           {
-            "name": "Servicios Personales",
-            "share": 1.1272
+            "name": "Servicios no personales",
+            "share": 0.3598
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0397
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0254
+            "name": "Materiales y suministros",
+            "share": 0.0242
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.001
           }
         ]
@@ -21173,15 +21165,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9508
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.025
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0242
           }
         ]
@@ -21250,11 +21242,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9983
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0017
           }
         ]
@@ -21363,7 +21355,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 0.9477
+            "share": 0.8577
           },
           {
             "source": "Canal tolls and dividends",
@@ -21372,20 +21364,20 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.6557
+            "name": "Materiales y suministros",
+            "share": 0.6385
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.1558
+            "name": "Servicios no personales",
+            "share": 0.1463
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1511
+            "name": "Maquinaria y equipo",
+            "share": 0.1269
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.1274
+            "name": "Servicios personales",
+            "share": 0.0883
           }
         ]
       },
@@ -21453,11 +21445,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.545
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1906
           },
           {
@@ -21465,11 +21457,11 @@
             "share": 0.1471
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0729
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0445
           }
         ]
@@ -21569,7 +21561,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1976
+            "share": 0.9474
           },
           {
             "source": "Canal tolls and dividends",
@@ -21578,19 +21570,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.563
+            "name": "Maquinaria y equipo",
+            "share": 0.5182
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.4397
+            "name": "Servicios personales",
+            "share": 0.2401
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1664
+            "name": "Servicios no personales",
+            "share": 0.1606
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0811
           }
         ]
@@ -21681,23 +21673,23 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.2194
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2184
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2078
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.2024
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.152
           }
         ]
@@ -21739,15 +21731,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4207
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3293
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2499
           }
         ]
@@ -21820,23 +21812,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5678
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1716
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1199
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1024
           },
           {
-            "name": "Transferencias De Capital",
+            "name": "Transferencias de capital",
             "share": 0.0383
           }
         ]
@@ -21878,23 +21870,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3924
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.2523
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2426
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.1056
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0072
           }
         ]
@@ -21931,24 +21923,20 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 1.465
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.7663
+            "name": "Servicios no personales",
+            "share": 0.6138
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.6209
+            "name": "Servicios personales",
+            "share": 0.3788
           },
           {
-            "name": "Construcciones Por Contrato",
-            "share": 0.0704
-          },
-          {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0074
           }
         ]
@@ -22057,20 +22045,20 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1022
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0324
+            "name": "Servicios personales",
+            "share": 0.9511
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0659
+            "name": "Servicios no personales",
+            "share": 0.045
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0039
           }
         ]
@@ -22112,19 +22100,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.4123
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2423
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2109
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1346
           }
         ]
@@ -22206,19 +22194,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3555
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3207
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1878
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.136
           }
         ]
@@ -22287,19 +22275,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.9196
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.061
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0172
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0023
           }
         ]
@@ -22363,25 +22351,25 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.364
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.9817
+            "name": "Materiales y suministros",
+            "share": 0.8648
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.1983
+            "name": "Servicios no personales",
+            "share": 0.0593
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.1149
+            "name": "Maquinaria y equipo",
+            "share": 0.0392
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0691
+            "name": "Servicios personales",
+            "share": 0.0366
           }
         ]
       },
@@ -22489,19 +22477,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.4475
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2853
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1384
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1288
           }
         ]
@@ -22556,7 +22544,7 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 1.2623
+            "share": 0.6366
           },
           {
             "source": "Capital transfers",
@@ -22565,20 +22553,20 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.677
+            "name": "Servicios personales",
+            "share": 0.527
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.6075
+            "name": "Materiales y suministros",
+            "share": 0.2401
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.2491
+            "name": "Maquinaria y equipo",
+            "share": 0.1451
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0921
+            "name": "Servicios no personales",
+            "share": 0.0877
           }
         ]
       },
@@ -22623,21 +22611,21 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.4277
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.3806
+            "name": "Servicios personales",
+            "share": 0.9539
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0287
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0185
+            "name": "Materiales y suministros",
+            "share": 0.0175
           }
         ]
       },
@@ -22678,11 +22666,11 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.6693
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3307
           }
         ]
@@ -22764,23 +22752,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4948
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2711
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1931
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.027
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.014
           }
         ]
@@ -22816,33 +22804,33 @@
         },
         "funding": [
           {
-            "source": "External loans",
-            "share": 1.6551
+            "source": "Current revenue",
+            "share": 0.6262
           },
           {
-            "source": "Current revenue",
-            "share": 1.1021
+            "source": "External loans",
+            "share": 0.3738
           }
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 1.2644
+            "name": "Servicios personales",
+            "share": 0.3615
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.757
+            "name": "Construcciones por contrato",
+            "share": 0.3484
           },
           {
-            "name": "Construcciones Por Contrato",
-            "share": 0.6712
+            "name": "Servicios no personales",
+            "share": 0.2254
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0595
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0052
           }
         ]
@@ -22884,15 +22872,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9568
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0374
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0058
           }
         ]
@@ -22938,15 +22926,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.6879
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2548
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0573
           }
         ]
@@ -22992,25 +22980,25 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 1.4252
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.6813
+            "name": "Maquinaria y equipo",
+            "share": 0.4666
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.4947
+            "name": "Servicios personales",
+            "share": 0.3839
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1304
+            "name": "Materiales y suministros",
+            "share": 0.0804
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1188
+            "name": "Servicios no personales",
+            "share": 0.0691
           }
         ]
       },
@@ -23118,7 +23106,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 0.9003
+            "share": 0.7939
           },
           {
             "source": "Canal tolls and dividends",
@@ -23127,23 +23115,23 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.6219
+            "name": "Materiales y suministros",
+            "share": 0.5841
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.2172
+            "name": "Servicios personales",
+            "share": 0.157
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.1431
+            "name": "Servicios no personales",
+            "share": 0.1353
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.1111
+            "name": "Maquinaria y equipo",
+            "share": 0.1107
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.013
           }
         ]
@@ -23243,25 +23231,25 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.0268
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.6207
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1672
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.1272
+            "name": "Maquinaria y equipo",
+            "share": 0.1118
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.1118
+            "name": "Servicios personales",
+            "share": 0.1003
           }
         ]
       },
@@ -23297,24 +23285,24 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.5371
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 1.0784
+            "name": "Servicios personales",
+            "share": 0.5824
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.2563
+            "name": "Servicios no personales",
+            "share": 0.2168
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1508
+            "name": "Materiales y suministros",
+            "share": 0.1492
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0515
           }
         ]
@@ -23396,15 +23384,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.6142
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.357
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0288
           }
         ]
@@ -23522,19 +23510,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.5805
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2552
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1638
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0005
           }
         ]
@@ -23643,7 +23631,7 @@
         "funding": [
           {
             "source": "Capital transfers",
-            "share": 0.7265
+            "share": 0.6483
           },
           {
             "source": "Grants",
@@ -23652,20 +23640,20 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 0.3557
+            "name": "Maquinaria y equipo",
+            "share": 0.3427
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.3462
+            "name": "Servicios no personales",
+            "share": 0.3262
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.3281
+            "name": "Materiales y suministros",
+            "share": 0.3195
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0482
+            "name": "Transferencias corrientes",
+            "share": 0.0116
           }
         ]
       },
@@ -23710,23 +23698,23 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.3289
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2513
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2392
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1558
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0247
           }
         ]
@@ -23786,15 +23774,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.7731
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1476
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0792
           }
         ]
@@ -23836,15 +23824,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9672
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0253
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0076
           }
         ]
@@ -23934,15 +23922,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.8923
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0815
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0262
           }
         ]
@@ -24051,21 +24039,21 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1681
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 0.4208
-          },
-          {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3765
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.3708
+            "name": "Servicios no personales",
+            "share": 0.3689
+          },
+          {
+            "name": "Maquinaria y equipo",
+            "share": 0.2546
           }
         ]
       },
@@ -24142,19 +24130,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.6116
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2847
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0906
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0131
           }
         ]
@@ -24196,15 +24184,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4026
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3152
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2822
           }
         ]
@@ -24246,7 +24234,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -24309,30 +24297,30 @@
         },
         "funding": [
           {
-            "source": "Current revenue",
-            "share": 2.1427
+            "source": "Canal tolls and dividends",
+            "share": 0.7392
           },
           {
-            "source": "Canal tolls and dividends",
-            "share": 1.3477
+            "source": "Current revenue",
+            "share": 0.2608
           }
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 2.5043
+            "name": "Servicios personales",
+            "share": 0.5406
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.9277
+            "name": "Maquinaria y equipo",
+            "share": 0.4253
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.0465
+            "name": "Servicios no personales",
+            "share": 0.0229
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0118
+            "name": "Materiales y suministros",
+            "share": 0.0112
           }
         ]
       },
@@ -24373,7 +24361,7 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 1.0
           }
         ]
@@ -24415,7 +24403,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -24466,11 +24454,11 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.9823
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0177
           }
         ]
@@ -24506,29 +24494,21 @@
         },
         "funding": [
           {
-            "source": "External loans",
-            "share": 12.5863
-          },
-          {
             "source": "Current revenue",
-            "share": 1.6472
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Construcciones Por Contrato",
-            "share": 10.4124
+            "name": "Servicios personales",
+            "share": 0.649
           },
           {
-            "name": "Servicios No Personales",
-            "share": 2.4911
+            "name": "Servicios no personales",
+            "share": 0.2545
           },
           {
-            "name": "Servicios Personales",
-            "share": 1.2335
-          },
-          {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0965
           }
         ]
@@ -24574,19 +24554,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.7845
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1947
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0178
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.003
           }
         ]
@@ -24646,15 +24626,15 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.4326
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4237
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1437
           }
         ]
@@ -24718,15 +24698,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.5629
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.266
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1711
           }
         ]
@@ -24768,19 +24748,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.8767
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0599
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0461
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0172
           }
         ]
@@ -24826,29 +24806,29 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 2.4826
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 1.4201
+            "name": "Maquinaria y equipo",
+            "share": 0.5779
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.695
+            "name": "Servicios no personales",
+            "share": 0.199
           },
           {
-            "name": "Servicios Personales",
-            "share": 0.2615
+            "name": "Servicios personales",
+            "share": 0.1742
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0781
-          },
-          {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0279
+          },
+          {
+            "name": "Materiales y suministros",
+            "share": 0.021
           }
         ]
       },
@@ -24932,19 +24912,19 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.4287
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3348
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1425
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.094
           }
         ]
@@ -24986,19 +24966,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.6905
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.14
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1122
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0573
           }
         ]
@@ -25034,29 +25014,21 @@
         },
         "funding": [
           {
-            "source": "External loans",
-            "share": 2.2299
-          },
-          {
             "source": "Current revenue",
-            "share": 1.6581
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 1.6654
+            "name": "Servicios personales",
+            "share": 0.6069
           },
           {
-            "name": "Servicios Personales",
-            "share": 1.1877
+            "name": "Servicios no personales",
+            "share": 0.2927
           },
           {
-            "name": "Construcciones Por Contrato",
-            "share": 0.9345
-          },
-          {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1004
           }
         ]
@@ -25111,7 +25083,7 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 1.7037
+            "share": 0.8934
           },
           {
             "source": "Capital transfers",
@@ -25120,23 +25092,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.8936
+            "name": "Servicios personales",
+            "share": 0.5211
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.5669
+            "name": "Servicios no personales",
+            "share": 0.2739
           },
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.189
+            "name": "Materiales y suministros",
+            "share": 0.1285
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.1539
+            "name": "Maquinaria y equipo",
+            "share": 0.0697
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0069
           }
         ]
@@ -25196,19 +25168,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.4364
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4006
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1561
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0069
           }
         ]
@@ -25281,15 +25253,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.6447
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2825
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0728
           }
         ]
@@ -25349,19 +25321,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.582
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2435
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1179
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0566
           }
         ]
@@ -25421,15 +25393,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.4673
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3173
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2155
           }
         ]
@@ -25498,15 +25470,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.714
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2166
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0695
           }
         ]
@@ -25566,23 +25538,23 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.574
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1747
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1334
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.1136
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0043
           }
         ]
@@ -25682,13 +25654,13 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1176
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
-            "share": 1.1176
+            "name": "Transferencias corrientes",
+            "share": 1.0
           }
         ]
       },
@@ -25729,19 +25701,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3863
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3078
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2862
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0197
           }
         ]
@@ -25805,11 +25777,11 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.9924
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0076
           }
         ]
@@ -25869,19 +25841,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.5685
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2192
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1928
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0195
           }
         ]
@@ -25945,19 +25917,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.8415
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1355
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0199
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0032
           }
         ]
@@ -25999,15 +25971,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3484
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3403
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3113
           }
         ]
@@ -26049,19 +26021,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9189
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0368
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0294
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0149
           }
         ]
@@ -26103,19 +26075,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.4687
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3338
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1596
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0379
           }
         ]
@@ -26166,15 +26138,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.6929
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2103
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0969
           }
         ]
@@ -26238,19 +26210,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.5747
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3495
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.043
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0327
           }
         ]
@@ -26314,23 +26286,23 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.5246
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.2211
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1243
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0796
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0504
           }
         ]
@@ -26372,15 +26344,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5984
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3417
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0599
           }
         ]
@@ -26431,7 +26403,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -26486,23 +26458,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.7782
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1373
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0515
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0194
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0136
           }
         ]
@@ -26548,29 +26520,29 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 1.7442
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
-            "share": 0.9346
+            "name": "Servicios personales",
+            "share": 0.471
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.6248
+            "name": "Servicios no personales",
+            "share": 0.3546
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1361
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.0262
+            "name": "Transferencias corrientes",
+            "share": 0.0225
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.0225
+            "name": "Materiales y suministros",
+            "share": 0.0158
           }
         ]
       },
@@ -26611,19 +26583,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5265
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3577
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0631
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0527
           }
         ]
@@ -26686,15 +26658,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9899
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0057
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0044
           }
         ]
@@ -26803,13 +26775,13 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 1.1037
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
-            "share": 1.1037
+            "name": "Transferencias corrientes",
+            "share": 1.0
           }
         ]
       },
@@ -26868,15 +26840,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.6718
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2613
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0669
           }
         ]
@@ -26949,23 +26921,23 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.4369
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3944
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.137
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0276
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0041
           }
         ]
@@ -27016,19 +26988,19 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3396
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3218
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.2569
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0818
           }
         ]
@@ -27079,11 +27051,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9999
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0001
           }
         ]
@@ -27125,19 +27097,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.5666
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.2762
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.141
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0162
           }
         ]
@@ -27179,19 +27151,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.6532
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2442
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0574
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0453
           }
         ]
@@ -27255,19 +27227,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.6961
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.222
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0573
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0245
           }
         ]
@@ -27340,7 +27312,7 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 2.7124
+            "share": 0.8959
           },
           {
             "source": "Canal tolls and dividends",
@@ -27349,16 +27321,16 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 1.769
+            "name": "Materiales y suministros",
+            "share": 0.3791
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.6016
+            "name": "Servicios no personales",
+            "share": 0.3517
           },
           {
-            "name": "Servicios No Personales",
-            "share": 0.4458
+            "name": "Maquinaria y equipo",
+            "share": 0.2692
           }
         ]
       },
@@ -27399,19 +27371,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.4129
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3275
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1634
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.0962
           }
         ]
@@ -27453,15 +27425,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.7574
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1388
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1038
           }
         ]
@@ -27503,15 +27475,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.7086
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1737
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1177
           }
         ]
@@ -27553,19 +27525,19 @@
         ],
         "payments": [
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.5546
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1986
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.178
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0688
           }
         ]
@@ -27625,15 +27597,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.6054
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3791
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0156
           }
         ]
@@ -27675,15 +27647,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.465
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3031
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2319
           }
         ]
@@ -27738,19 +27710,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5273
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3069
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.125
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0409
           }
         ]
@@ -27792,19 +27764,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.7593
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.1621
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0533
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0254
           }
         ]
@@ -27855,19 +27827,19 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.8603
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1203
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0122
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0073
           }
         ]
@@ -27909,15 +27881,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.7142
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1828
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.103
           }
         ]
@@ -27954,21 +27926,21 @@
         "funding": [
           {
             "source": "Canal tolls and dividends",
-            "share": 1.8594
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
-            "share": 0.9443
+            "name": "Maquinaria y equipo",
+            "share": 0.6017
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.5688
-          },
-          {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3463
+          },
+          {
+            "name": "Materiales y suministros",
+            "share": 0.0521
           }
         ]
       },
@@ -28036,7 +28008,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 1.0
           }
         ]
@@ -28141,15 +28113,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.6065
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3015
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.092
           }
         ]
@@ -28227,15 +28199,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.6689
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1742
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1569
           }
         ]
@@ -28277,19 +28249,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4067
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2758
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1764
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.1411
           }
         ]
@@ -28331,11 +28303,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.7914
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2086
           }
         ]
@@ -28404,19 +28376,19 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4196
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.2993
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2737
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.0074
           }
         ]
@@ -28458,11 +28430,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9501
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0499
           }
         ]
@@ -28504,15 +28476,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5414
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.3176
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.141
           }
         ]
@@ -28554,15 +28526,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.6886
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2582
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0532
           }
         ]
@@ -28604,15 +28576,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.5857
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.4134
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0009
           }
         ]
@@ -28654,11 +28626,11 @@
         ],
         "payments": [
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.7825
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2175
           }
         ]
@@ -28718,11 +28690,11 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.9442
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0558
           }
         ]
@@ -28764,11 +28736,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.9019
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0981
           }
         ]
@@ -28823,15 +28795,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.6979
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2039
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0981
           }
         ]
@@ -28873,15 +28845,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3704
           },
           {
-            "name": "Servicios Personales",
+            "name": "Servicios personales",
             "share": 0.3664
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2631
           }
         ]
@@ -28923,15 +28895,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.619
           },
           {
-            "name": "Transferencias Corrientes",
+            "name": "Transferencias corrientes",
             "share": 0.3027
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0783
           }
         ]
@@ -28991,11 +28963,11 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.8042
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.1958
           }
         ]
@@ -29050,15 +29022,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.9194
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0533
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.0273
           }
         ]
@@ -29109,7 +29081,7 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 1.0
           }
         ]
@@ -29151,15 +29123,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.462
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3781
           },
           {
-            "name": "Construcciones Por Contrato",
+            "name": "Construcciones por contrato",
             "share": 0.1599
           }
         ]
@@ -29205,25 +29177,25 @@
         "funding": [
           {
             "source": "Current revenue",
-            "share": 18.9161
+            "share": 1.0
           }
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
-            "share": 18.1431
+            "name": "Transferencias corrientes",
+            "share": 0.5716
           },
           {
-            "name": "Transferencias Corrientes",
-            "share": 0.6613
+            "name": "Servicios no personales",
+            "share": 0.3547
           },
           {
-            "name": "Materiales Y Suministros",
-            "share": 0.074
-          },
-          {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0377
+          },
+          {
+            "name": "Materiales y suministros",
+            "share": 0.0361
           }
         ]
       },
@@ -29282,15 +29254,15 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.8473
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1259
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.0268
           }
         ]
@@ -29332,15 +29304,15 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.5059
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.2691
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.225
           }
         ]
@@ -29382,11 +29354,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.853
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.147
           }
         ]
@@ -29428,11 +29400,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.6402
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3598
           }
         ]
@@ -29474,11 +29446,11 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.9024
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0976
           }
         ]
@@ -29520,11 +29492,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.5
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.5
           }
         ]
@@ -29584,11 +29556,11 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.6527
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.3473
           }
         ]
@@ -29630,11 +29602,11 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.8246
           },
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.1754
           }
         ]
@@ -29676,7 +29648,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -29727,11 +29699,11 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.7451
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.2549
           }
         ]
@@ -29791,15 +29763,15 @@
         ],
         "payments": [
           {
-            "name": "Maquinaria Y Equipo",
+            "name": "Maquinaria y equipo",
             "share": 0.8115
           },
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.1347
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.0537
           }
         ]
@@ -29841,7 +29813,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -29901,7 +29873,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -29943,7 +29915,7 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 1.0
           }
         ]
@@ -30012,7 +29984,7 @@
         ],
         "payments": [
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 1.0
           }
         ]
@@ -30063,11 +30035,11 @@
         ],
         "payments": [
           {
-            "name": "Materiales Y Suministros",
+            "name": "Materiales y suministros",
             "share": 0.6563
           },
           {
-            "name": "Servicios No Personales",
+            "name": "Servicios no personales",
             "share": 0.3437
           }
         ]

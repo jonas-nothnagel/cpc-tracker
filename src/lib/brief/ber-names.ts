@@ -18,6 +18,9 @@ export interface BerName {
   mnDescription?: string;
   /** The Mongolian name and description are machine translations. */
   mnMachine?: true;
+  /** The Mongolian name is the review's own, its description a machine
+   *  translation (the review gives none in Mongolian). */
+  mnDescriptionMachine?: true;
 }
 
 export interface BerNames {
@@ -34,9 +37,20 @@ export function parseBerNames(raw: unknown): BerNames | null {
       typeof v?.[key] === "string" && v[key] ? { [key]: v[key] as string } : {};
     const name: BerName = { ...text("es"), ...text("en"), ...text("mn"), ...text("mnDescription") };
     if (name.mn && v?.mnMachine === true) name.mnMachine = true;
+    if (name.mnDescription && v?.mnDescriptionMachine === true) name.mnDescriptionMachine = true;
     if (name.es || name.en || name.mn) out[code] = name;
   }
   return { names: out };
+}
+
+/** The name a budget line shows in the page's language: Spanish with the
+ *  review's abbreviations written out; Mongolian as the review has it, else
+ *  machine-translated; any other language the English machine translation. */
+export function shownName(listed: BerName | undefined, locale: string): { name: string; machine: boolean; own: boolean } | null {
+  if (!listed) return null;
+  if (locale === "es") return listed.es ? { name: listed.es, machine: false, own: false } : null;
+  if (locale === "mn" && listed.mn) return { name: listed.mn, machine: listed.mnMachine === true, own: !listed.mnMachine };
+  return listed.en ? { name: listed.en, machine: true, own: false } : null;
 }
 
 const cache = new Map<string, { mtime: number; value: BerNames | null }>();

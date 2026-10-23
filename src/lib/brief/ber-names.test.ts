@@ -14,14 +14,21 @@ describe("budget lines' display names", () => {
     expect(missing).toEqual([]);
   });
 
-  it("names every line of Mongolia's review in Mongolian, the machine translations marked", () => {
+  it("names every line of Mongolia's review in its own Mongolian, the machine translations marked", () => {
     const review = JSON.parse(readFileSync(join(process.cwd(), "python", "data", "mongolia-ber.json"), "utf8"));
     const names = loadBerNames("mongolia")!;
     const codes = (review.programs as { code: string }[]).map((p) => p.code);
     expect(codes.filter((code) => !names.names[code]?.mn || !names.names[code]?.mnDescription)).toEqual([]);
-    // The review's sub-codes carry its own Mongolian; its programmes only English.
-    expect(codes.filter((code) => names.names[code]?.mnMachine).every((code) => code.startsWith("714"))).toBe(true);
-    expect(codes.filter((code) => !names.names[code]?.mnMachine).every((code) => /^8(17|22)/.test(code))).toBe(true);
+    // The review's workbook names every line in Mongolian.
+    expect(codes.filter((code) => names.names[code]?.mnMachine)).toEqual([]);
+    // It describes all but five programmes in Mongolian; their translations are marked.
+    expect(codes.filter((code) => names.names[code]?.mnDescriptionMachine).sort()).toEqual([
+      "71401",
+      "71402",
+      "71407",
+      "71409",
+      "71410",
+    ]);
   });
 
   it("has none for a country without a names file", () => {

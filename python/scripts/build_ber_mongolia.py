@@ -46,8 +46,8 @@ from src.ber_record import (  # noqa: E402
     RECORD_VERSION,
     Check,
     amount,
-    checks_json,
     berdata_view,
+    checks_json,
     reconciliation_markdown,
     require_reproduced,
     usd_rates,
@@ -134,6 +134,9 @@ class Rule:
     purposes: list[str] = field(default_factory=list)  # the codes outside programmes, first occurrence
     rates: dict[str, float] = field(default_factory=dict)  # purpose -> BAR, first match like XLOOKUP
     purpose_names_mn: dict[str, str] = field(default_factory=dict)
+    # The workbook's own Mongolian descriptions: 8 of the 13 programmes (sheet
+    # Хөтөлбөр, column M) and the purpose codes' definitions (Зориулалт, column O).
+    descriptions_mn: dict[str, str] = field(default_factory=dict)
     published: dict[tuple[str, str], float] = field(default_factory=dict)  # (line, year) -> bn
     published_total: dict[str, float] = field(default_factory=dict)  # year -> bn (row 29)
     gdp: dict[str, float] = field(default_factory=dict)  # year -> bn
@@ -174,6 +177,8 @@ def read_rule(wb: Workbook) -> Rule:
             # Rows above the year header describe the programmes in Mongolian.
             if values.get("C") == 2016:
                 year_col = {col: str(values[col]) for col in "CDEFGHIJK" if isinstance(values.get(col), int)}
+            elif re.fullmatch(r"714\d\d", excel_text(values.get("A"))) and excel_text(values.get("M")):
+                rule.descriptions_mn[excel_text(values.get("A"))] = " ".join(excel_text(values.get("M")).split())
             continue
         label = excel_text(values.get("B"))
         code = excel_text(values.get("A"))
@@ -209,6 +214,10 @@ def read_rule(wb: Workbook) -> Rule:
         name = re.sub(r"^\d{5,6}\s+", "", name)
         if name and code not in rule.purpose_names_mn:
             rule.purpose_names_mn[code] = name
+        definition = " ".join(excel_text(values.get("O")).split())
+        # Column O holds a definition in the upper block; the lower block repeats the rate there.
+        if definition and not re.fullmatch(r"[\d.]+", definition) and code not in rule.descriptions_mn:
+            rule.descriptions_mn[code] = definition
 
     for row, values in wb.rows(GDP_SHEET):
         if excel_text(values.get("C")) == "Нэрлэсэн ДНБ":
@@ -701,6 +710,7 @@ def build(workbook: Path, report: Path) -> dict[str, Any]:
                 "kind": kind[line],
                 "name": name,
                 "nameMn": name_mn,
+                **({"descriptionMn": rule.descriptions_mn[line]} if line in rule.descriptions_mn else {}),
                 "description": description,
                 "source": source,
                 "amounts": amounts,

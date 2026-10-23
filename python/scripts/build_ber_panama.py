@@ -31,7 +31,6 @@ import argparse
 import glob
 import os
 import pickle
-import re
 import sys
 import unicodedata
 from collections import defaultdict
@@ -47,8 +46,8 @@ from src.ber_record import (  # noqa: E402
     RECORD_VERSION,
     Check,
     amount,
-    checks_json,
     berdata_view,
+    checks_json,
     reconciliation_markdown,
     require_reproduced,
     write_record,
@@ -129,8 +128,8 @@ class Activity:
     years: dict[str, dict[str, float]] = field(default_factory=_nested)
     tags: dict[str, str] = field(default_factory=dict)  # year -> Directo | Indirecto
     sector: dict[tuple[str, str, str], float] = field(default_factory=_floats)
-    funding: dict[str, float] = field(default_factory=_floats)
-    objects: dict[str, float] = field(default_factory=_floats)
+    funding: dict[tuple[str, str], float] = field(default_factory=_floats)  # (year, source group)
+    objects: dict[tuple[str, str], float] = field(default_factory=_floats)  # (year, object of expenditure)
 
 
 @dataclass
@@ -198,8 +197,8 @@ def read_database(wb: Workbook) -> Extract:
         act.sector[(text(v.get("AG")), text(v.get("AI")), text(v.get("AK")))] += committed
         source = v.get("N")
         group = FUNDING_GROUPS.get(int(source) // 100, "Other") if isinstance(source, (int, float)) else "Other"
-        act.funding[group] += committed
-        act.objects[text(v.get("Q"))] += committed
+        act.funding[(year, group)] += committed
+        act.objects[(year, text(v.get("Q")))] += committed
     if header is None:
         raise SystemExit("Sheet BD has no header row")
     return out
@@ -251,6 +250,20 @@ def read_tables(path: Path) -> tuple[dict[str, dict[str, float]], dict[str, dict
             break
         institutions[str(r[0]).strip()] = {year: (float(r[i] or 0), float(r[i + 1] or 0)) for i, year in pairs}
     return headline, institutions
+
+
+def shares(by_year: dict[tuple[str, str], float], total: float) -> list[dict[str, Any]]:
+    """Each source's or object's share of the line's committed amount in the
+    years shown, largest first; a negative correction is left out."""
+    summed: dict[str, float] = defaultdict(float)
+    for (year, name), value in by_year.items():
+        if year in SHOWN_YEARS:
+            summed[name] += value
+    return [
+        {"source": name, "share": round(value / total, 4)}
+        for name, value in sorted(summed.items(), key=lambda kv: -kv[1])
+        if total > 0 and value > 0
+    ]
 
 
 def latest(names: dict[str, dict[str, str]], level: str) -> tuple[str, list[str]]:
@@ -354,15 +367,9 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
                     }
                     for y, c in sorted(shown.items())
                 },
-                "funding": [
-                    {"source": s, "share": round(v / total, 4)}
-                    for s, v in sorted(act.funding.items(), key=lambda kv: -kv[1])
-                    if total > 0 and v > 0
-                ],
+                "funding": shares(act.funding, total),
                 "payments": [
-                    {"name": s.title(), "share": round(v / total, 4)}
-                    for s, v in sorted(act.objects.items(), key=lambda kv: -kv[1])[:6]
-                    if total > 0 and v > 0
+                    {"name": p["source"].capitalize(), "share": p["share"]} for p in shares(act.objects, total)[:6]
                 ],
             }
         )

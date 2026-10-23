@@ -17,7 +17,13 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from src.ber_record import Check, ReconciliationError, berdata_view, checks_json, require_reproduced  # noqa: E402
+from src.ber_record import (  # noqa: E402
+    Check,
+    ReconciliationError,
+    berdata_view,
+    checks_json,
+    require_reproduced,
+)
 from src.config import DATA_DIR  # noqa: E402
 
 # Mongolia: BER_1112.xlsx, sheet Хөтөлбөр, row 29 (billion MNT); the report's

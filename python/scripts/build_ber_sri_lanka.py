@@ -42,8 +42,8 @@ from src.ber_record import (  # noqa: E402
     RECORD_VERSION,
     Check,
     amount,
-    checks_json,
     berdata_view,
+    checks_json,
     reconciliation_markdown,
     require_reproduced,
     write_record,
@@ -192,7 +192,10 @@ def build(path: Path) -> dict[str, Any]:
 
     # --- Project lines
     ws = wb["Govt Project wise Tagging"]
-    header = [ws.cell(2, c).value for c in range(1, 34)]
+    header = [ws.cell(2, c).value for c in range(1, 33)]
+    expected = ["Institution", "Project", *map(int, PROJECT_YEARS), "2025 Allo", "2025 Act", "2015-2024", "Tag 1", "Tag 2", "Tag 3", "Weightage", "Expenditure Tag", *map(int, PROJECT_YEARS)]
+    if header != expected:
+        raise SystemExit(f"Govt Project wise Tagging: the header row has changed:\n  found    {header}\n  expected {expected}")
     projects = []
     for r in range(3, 109):
         title = ws.cell(r, 2).value
