@@ -139,10 +139,12 @@ python scripts/fetch_nr7_ort.py --country Mongolia --iso3 MNG --iso2 MN --target
 
 ## Step 7: Budget Alignment — Level 2 (conditional)
 
-- **Script:** `budget_align.py` · **Writes:** `budget_alignment.json`, `budget_pseudo_targets.json`
-- **Runs when:** a Biodiversity Expenditure Review (`{country}-ber.json`) is present (Mongolia)
+- **Script:** `budget_align.py` (also `scripts/align_actions_and_budget.py --only budget`) · **Writes:** `budget_alignment.json`, `budget_pseudo_targets.json`, `budget_alignment.meta.json`
+- **Runs when:** a Biodiversity Expenditure Review (`{country}-ber.json`) is present (Mongolia, Panama, Sri Lanka; Country X)
 
-Budget programmes (name, description, multi-year expenditure) become pseudo-targets and are aligned against each policy target on the same five-state scale, surfacing where reviewed biodiversity spending matches policy ambition.
+For a review rebuilt from its own workbook (`record`, built by `scripts/build_ber_{country}.py` with every published total reproduced), every line the review decided on that holds reviewed spending becomes a pseudo-target, described in the review's and the budget's own words without amounts (`ber_areas.describe_line`), and is aligned against each policy target on the same five-state scale with the budget framing (v4: no "fund" or "finance", running costs read with what they keep running). The target side reuses `decompositions.json`. The meta file records the framing and `"basis": "ber-record"`; the brief shows the comparisons only on that basis. Country X's earlier file keeps its programmes, read without amounts.
+
+Two more steps place each line, outside `run_analysis`: its GLOBE area (`scripts/place_ber_lines.py`, two models, then a person's check in `scripts/ber_review_sheet.py`) and its BIOFIN expenditure type (`scripts/type_ber_lines.py`), whose GBF targets join the line to the national targets of the 7th National Report (`scripts/build_ber_chain.py` → `ber_chain.json`).
 
 ---
 
