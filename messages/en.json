@@ -1526,6 +1526,7 @@
       "pairwiseCount": "Pairwise alignment: ~{count, number} pairs",
       "btrIntegration": "BTR/CTF data integration",
       "addSecondDoc": "Add targets from a second document type (e.g. NDC + NBSAP) to enable alignment analysis.",
+      "needCountry": "A country name is needed for the brief; it is set in the first step.",
       "totalCost": "~{calls, number} LLM calls · estimated cost <strong>${cost}</strong>",
       "starting": "Starting…",
       "runAnalysis": "Run analysis →"
@@ -1647,7 +1648,7 @@
     },
     "step3": {
       "title": "Review targets and configure categories",
-      "subtitle": "Verify the extracted targets, then configure which classification categories to use. Each document group can be expanded to inspect or remove individual targets.",
+      "subtitle": "Each document group can be expanded to inspect or remove individual targets.",
       "categoriesHeading": "Classification Categories",
       "targetsHeading": "Policy Targets",
       "hideManual": "Hide manual entry",

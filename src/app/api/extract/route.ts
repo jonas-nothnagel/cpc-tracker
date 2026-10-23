@@ -55,9 +55,10 @@ export async function POST(request: NextRequest) {
     (formData.get("sourceDocument") as string) || "",
     "SECTORAL",
   );
-  const localeRaw = (formData.get("locale") as string) || "en";
-  const SUPPORTED_OUTPUT_LANGS = new Set(["en", "es", "mn", "fr"]);
-  const outputLanguage = SUPPORTED_OUTPUT_LANGS.has(localeRaw) ? localeRaw : "en";
+  // The working text is English whatever the page's language, as for every
+  // pilot country; originals travel beside it (textOriginal). The page's
+  // language used to set this, so activities came back in Spanish or Mongolian.
+  const outputLanguage = "en";
 
   if (!file) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });

@@ -1526,6 +1526,7 @@
       "pairwiseCount": "Alineación por pares: ~{count, number} pares",
       "btrIntegration": "Integración de datos BTR/CTF",
       "addSecondDoc": "Añada metas de un segundo tipo de documento (p. ej. NDC + NBSAP) para habilitar el análisis de alineación.",
+      "needCountry": "Se necesita el nombre del país para la nota; se indica en el primer paso.",
       "totalCost": "~{calls, number} llamadas LLM · coste estimado <strong>${cost}</strong>",
       "starting": "Iniciando…",
       "runAnalysis": "Ejecutar análisis →"
@@ -1647,7 +1648,7 @@
     },
     "step3": {
       "title": "Revisar metas y configurar categorías",
-      "subtitle": "Verifique las metas extraídas y configure qué categorías de clasificación usar. Cada grupo de documentos puede expandirse para inspeccionar o eliminar metas individuales.",
+      "subtitle": "Cada grupo de documentos puede expandirse para inspeccionar o eliminar metas individuales.",
       "categoriesHeading": "Categorías de clasificación",
       "targetsHeading": "Metas de política",
       "hideManual": "Ocultar entrada manual",

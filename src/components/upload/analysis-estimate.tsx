@@ -16,6 +16,8 @@ interface AnalysisEstimateProps {
   } | null;
   hasBtrData: boolean;
   submitting: boolean;
+  /** No country named yet: the brief and its summaries need one. */
+  countryMissing: boolean;
   onRunAnalysis: () => void;
 }
 
@@ -26,6 +28,7 @@ export function AnalysisEstimate({
   estimate,
   hasBtrData,
   submitting,
+  countryMissing,
   onRunAnalysis,
 }: AnalysisEstimateProps) {
   const t = useTranslations("upload.estimate");
@@ -59,6 +62,7 @@ export function AnalysisEstimate({
           {(estimate?.docTypes ?? 0) < 2 && (
             <p className="text-amber-600 text-caption">{t("addSecondDoc")}</p>
           )}
+          {countryMissing && <p className="text-amber-600 text-caption">{t("needCountry")}</p>}
           {estimate && (
             <p className="text-caption text-[var(--undp-gray)]">
               {t.rich("totalCost", {
@@ -72,7 +76,8 @@ export function AnalysisEstimate({
         <div className="shrink-0">
           <button
             onClick={onRunAnalysis}
-            disabled={submitting}
+            // The run is checked again on the server; nothing starts that would fail there.
+            disabled={submitting || countryMissing || (estimate?.docTypes ?? 0) < 2}
             className="px-6 py-2.5 bg-[var(--undp-blue)] text-white text-body font-medium rounded-md hover:bg-[var(--undp-blue-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
           >
             {submitting ? t("starting") : t("runAnalysis")}
