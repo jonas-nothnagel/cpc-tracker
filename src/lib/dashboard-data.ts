@@ -5,7 +5,8 @@
  * migrates/merges/scrubs it, and returns the exact object the dashboard
  * frontend consumes. Extracted from the `/api/dashboard` route so it can be
  * called server-side from the dashboard page (no client round trip) and from
- * the API route, and so country payloads can be cached + pre-gzipped.
+ * the API route, and so country payloads can be cached (gzipped once, on the
+ * route's first request).
  *
  * Addressing modes:
  *   - analysis (?analysisId=xxx) → python/analyses/{id}/   — never cached (may be mid-run)
@@ -1009,7 +1010,9 @@ export interface SerializedPayload {
   gzip: Uint8Array;
 }
 
-/** A cached country payload: the assembled data plus its serialized forms. */
+/** A cached country payload: the assembled data plus its serialized forms,
+ *  built on first read. Pages render from `data` alone; only the API route
+ *  sends the JSON or its gzip, so a page render never pays for them. */
 export interface CountryPayload extends SerializedPayload {
   data: DashboardResponse;
 }
@@ -1017,6 +1020,20 @@ export interface CountryPayload extends SerializedPayload {
 function serializePayload(value: unknown): SerializedPayload {
   const json = JSON.stringify(value);
   return { json, gzip: gzipSync(json) };
+}
+
+function lazyPayload(data: DashboardResponse): CountryPayload {
+  let serialized: SerializedPayload | undefined;
+  const serialize = () => (serialized ??= serializePayload(data));
+  return {
+    data,
+    get json() {
+      return serialize().json;
+    },
+    get gzip() {
+      return serialize().gzip;
+    },
+  };
 }
 
 /**
@@ -1075,9 +1092,9 @@ export type CountryPayloadResult =
   | { kind: "error"; status: 400 | 404; error: string; missing?: string[] };
 
 /**
- * Resolve, assemble, serialize, and gzip a country's dashboard payload, caching
- * the result for the container's lifetime. Used by both the API route (serves
- * the gzip buffer) and the dashboard page (server-renders from `.data`).
+ * Resolve and assemble a country's dashboard payload, caching it for the
+ * container's lifetime. Used by both the API route (serves the gzip buffer,
+ * built on its first request) and the pages (server-render from `.data`).
  */
 export function getCountryDashboardPayload(
   country: string,
@@ -1094,7 +1111,7 @@ export function getCountryDashboardPayload(
     return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
   }
 
-  const payload: CountryPayload = { data: assembled.data, ...serializePayload(assembled.data) };
+  const payload = lazyPayload(assembled.data);
   countryPayloadCache.set(resolved.key, payload);
   return { kind: "ok", payload };
 }

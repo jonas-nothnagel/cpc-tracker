@@ -103,9 +103,9 @@ export async function GET(request: NextRequest) {
     return buildJsonResponse(wheel.payload.json, acceptsGzip ? wheel.payload.gzip : null, COUNTRY_CACHE_CONTROL);
   }
 
-  // Pilot flow: assembled once per container, then served from the cached
-  // (and pre-gzipped) payload. Each (country, locale, model) combination
-  // gets its own cache entry.
+  // Pilot flow: assembled once per container and gzipped on the first request
+  // here, then served from the cached payload. Each (country, locale, model)
+  // combination gets its own cache entry.
   const payloadResult = getCountryDashboardPayload(country ?? "", locale, model);
   if (payloadResult.kind === "error") return countryErrorResponse(payloadResult);
   const { json, gzip } = payloadResult.payload;

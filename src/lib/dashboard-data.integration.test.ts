@@ -1,5 +1,6 @@
+import { gunzipSync } from "zlib";
 import { describe, it, expect } from "vitest";
-import { assembleDashboardData, derivePaths } from "./dashboard-data";
+import { assembleDashboardData, derivePaths, getCountryDashboardPayload } from "./dashboard-data";
 import { computeBudgetByGlobeCategory } from "./coherence-budget";
 import type {
   AlignmentResult,
@@ -16,6 +17,19 @@ import type {
 // single-level primary `globe` tags, exercised via the fallback in
 // computeBudgetByGlobeCategory). Guards the production data shape the
 // July 2026 Panama feedback changes depend on.
+
+describe("Cached country payload (real files)", () => {
+  it("gives the API route the JSON and gzip of the very data the pages render", () => {
+    const first = getCountryDashboardPayload("mongolia");
+    const again = getCountryDashboardPayload("mongolia");
+    if (first.kind !== "ok" || again.kind !== "ok") throw new Error("mongolia payload");
+    expect(again.payload).toBe(first.payload);
+    // Built on this first read, not when a page assembled the payload.
+    const { json, gzip } = first.payload;
+    expect(gunzipSync(gzip).toString("utf8")).toBe(json);
+    expect(JSON.parse(json).targets).toHaveLength(first.payload.data.targets.length);
+  });
+});
 
 describe("Panama dashboard payload (real files)", () => {
   const derived = derivePaths(null, "panama", null);
