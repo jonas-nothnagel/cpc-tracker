@@ -1684,7 +1684,9 @@
     "complete": {
       "title": "Analysis Complete",
       "summary": "Processed {targets, number} targets with {pairs, number} alignment pairs in {sec}s",
-      "viewDashboard": "View Dashboard →"
+      "viewDashboard": "View Dashboard →",
+      "openBrief": "Open the brief",
+      "unreadable": "The brief could not be built from these results."
     },
     "failed": {
       "title": "Analysis Failed",

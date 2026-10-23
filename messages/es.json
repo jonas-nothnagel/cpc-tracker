@@ -1684,7 +1684,9 @@
     "complete": {
       "title": "Análisis completo",
       "summary": "Procesadas {targets, number} metas con {pairs, number} pares de alineación en {sec}s",
-      "viewDashboard": "Ver panel →"
+      "viewDashboard": "Ver panel →",
+      "openBrief": "Abrir la nota",
+      "unreadable": "No se pudo preparar la nota con estos resultados."
     },
     "failed": {
       "title": "Análisis fallido",
