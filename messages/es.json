@@ -3597,31 +3597,111 @@
     "spending": {
       "title": "Gasto revisado en biodiversidad",
       "source": "Revisión del Gasto en Biodiversidad (BER), {years}",
+      "atPar": "montos en balboas, a la par con el dólar",
       "illustrative": "Cifras ilustrativas, adaptadas de una revisión real",
-      "money": "{currency} {amount} {unit, select, million {millones} billion {mil millones} other {}}",
-      "fieldLabel": "{currency} {every} de cada {currency} 100 de gasto público, en cien cuadrados",
+      "translated": "traducción automática",
+      "money": "{sign}{amount}{unit, select, trillion { billones} billion { mil millones} million { millones} other {}}",
+      "scope": {
+        "stateLocal": "gasto de los presupuestos estatal y locales",
+        "publicSector": "gasto del sector público",
+        "government": "gasto del gobierno",
+        "public": "gasto público"
+      },
+      "fieldLabel": "{sign}{every} de cada {sign}100 de {scope}, en cien cuadrados",
       "record": {
         "kicker": "Del total del gasto público",
-        "headline": "{currency} {every} de cada {currency} 100 de gasto público es gasto revisado en biodiversidad.",
+        "headline": "{sign}{every} de cada {sign}100 de {scope} en {years} fue gasto revisado en biodiversidad.",
         "reviewed": "Gasto revisado en biodiversidad, {years}",
-        "public": "Todo el gasto público, {years}",
-        "year": "{year}: {currency} {every} de cada {currency} 100"
+        "public": "Todo el {scope}, {years}"
+      },
+      "chart": {
+        "title": "Gasto revisado por año",
+        "titleParts": "Gasto revisado por año y {parts}",
+        "parts": {
+          "levels": "presupuesto",
+          "groups": "tipo de institución"
+        },
+        "unit": "{sign} {unit, select, billion {mil millones} other {millones}}",
+        "switch": "Mostrar montos o proporciones",
+        "amounts": "Monto",
+        "shares": "Parte del {scope}",
+        "sharesLevels": "Parte del gasto de cada presupuesto",
+        "series": {
+          "central": "Presupuesto del Estado",
+          "local": "Presupuestos locales",
+          "core": "Instituciones principales, contadas por completo",
+          "other": "Otras instituciones, contadas en parte",
+          "all": "Gasto revisado"
+        },
+        "notInData": "no está en los datos",
+        "notInDataLong": "{year}: los datos de la revisión solo contienen {held}",
+        "held": {
+          "central": "el presupuesto del Estado",
+          "local": "los presupuestos locales",
+          "core": "las instituciones principales",
+          "other": "las otras instituciones",
+          "all": "una parte"
+        },
+        "bar": "{series}, {year}",
+        "barShare": "{share} del {scope}",
+        "scopeOf": {
+          "central": "gasto del presupuesto del Estado",
+          "local": "gasto de los presupuestos locales",
+          "core": "gasto del gobierno",
+          "other": "gasto del gobierno",
+          "all": "gasto público"
+        },
+        "inAll": "{amount} en total",
+        "tableCaption": "Gasto revisado por año, {unit}",
+        "year": "Año",
+        "panama2015": "2015 no se muestra: el Ministerio de Ambiente, creado ese año, no tiene líneas presupuestarias en la revisión para ese año."
+      },
+      "items": {
+        "kicker": "Lo que cuenta la revisión",
+        "headline": "{name} concentra {share} del gasto revisado en {years}.",
+        "listLabel": "Las líneas presupuestarias de la revisión, de mayor a menor",
+        "kind": {
+          "programme": "Programa {code}",
+          "purpose": "Código de propósito {code}, en otros programas",
+          "core": "Contada por completo",
+          "other": "Contada en parte"
+        },
+        "inUsd": "{usd} al tipo de cambio de cada año.",
+        "counted": "Contado: {counted} de {spent} gastados, según las tasas de la revisión",
+        "rate": "{name}, contado al {rate}",
+        "institutionRate": "Contada al {rate} de su gasto, la tasa de la revisión.",
+        "rationale": "Motivo de la revisión: {text}",
+        "bodies": "Gastado por {count, plural, one {# unidad} other {# unidades}} en {year}; las mayores:",
+        "pays": "Paga {list}.",
+        "parts": "{count, plural, one {# actividad} other {# actividades}}; las mayores:",
+        "partsMore": "{count, plural, one {y # actividad más} other {y # actividades más}}",
+        "showAll": "Mostrar las {count} líneas",
+        "showFewer": "Mostrar solo las mayores"
       },
       "areas": {
         "kicker": "A qué se destina",
+        "ai": "Sugerido por IA",
         "headline": "{area} concentra {spend} del gasto revisado y {targets} de las metas.",
+        "projects": "Las áreas se leen en las {count} líneas de proyecto de la revisión, {amount} en {years}, otra vista del mismo dinero.",
         "colArea": "Área de biodiversidad",
         "colTargets": "Parte de las metas",
         "colSpend": "Parte del gasto revisado",
         "listLabel": "Áreas de biodiversidad, su parte de las metas y del gasto revisado",
         "rowLabel": "{targets} de las metas, {spend} del gasto revisado",
         "noSpend": "Ninguno",
+        "apartRow": "Aún sin área",
+        "apartLabel": "{spend} del gasto revisado aún no tiene área",
         "targetsLine": "{count, plural, =0 {Ninguna meta en esta área.} one {# meta en esta área.} other {# metas en esta área.}}",
         "matched": "{matched, number} de las {total, number} tienen una línea presupuestaria coincidente.",
-        "ai": "Estimado por IA",
+        "aiEstimated": "Estimado por IA",
         "linesLabel": "Líneas presupuestarias de esta área",
         "noLines": "Ninguna línea presupuestaria revisada en esta área.",
-        "explore": "Explorar esta área con sus líneas presupuestarias"
+        "explore": "Explorar esta área con sus líneas presupuestarias",
+        "checked": "Área revisada por una persona",
+        "aiSuggested": "Sugerido por IA, sin revisar",
+        "apartWhy": "Apartada hasta que una persona decida",
+        "linesMore": "{count, plural, one {y # línea más} other {y # líneas más}}",
+        "checkedCount": "{checked, number} de {total, number} líneas tienen un área revisada por una persona; las demás son sugerencias de la IA o están apartadas."
       }
     },
     "areaView": {

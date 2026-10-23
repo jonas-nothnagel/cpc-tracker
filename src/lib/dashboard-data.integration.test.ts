@@ -24,33 +24,43 @@ describe("Panama dashboard payload (real files)", () => {
     expect(derived.kind).toBe("country");
   });
 
-  it("ships berData, budgetAlignment, and a non-null GLOBE spend rollup", () => {
+  it("ships the rebuilt record, budgetAlignment, and a GLOBE spend rollup once its lines are classified", () => {
     if (derived.kind !== "country") throw new Error("unreachable");
     const result = assembleDashboardData(derived.paths, "country");
     expect(result.kind).toBe("ok");
     if (result.kind !== "ok") throw new Error("unreachable");
 
-    const berData = result.data.berData as BerData | null;
+    const berData = result.data.berData as (BerData & { record?: unknown }) | null;
     expect(berData).not.toBeNull();
     expect(berData!.programs.length).toBeGreaterThan(0);
     expect(berData!.period).toBeTruthy();
+    // The review rebuilt from BIOFIN's own database (BER plan, step 1).
+    expect(berData!.record).toBeTruthy();
 
     const budgetAlignment = result.data.budgetAlignment as AlignmentResult[] | null;
     expect(budgetAlignment).not.toBeNull();
     expect(budgetAlignment!.length).toBeGreaterThan(0);
 
+    const classifications = result.data.classifications as ThematicClassification[];
     const summary = computeBudgetByGlobeCategory({
       berData: berData!,
       globeCategories: result.data.globeCategories as GlobeCategory[],
       globeSubcategories: result.data.globeSubcategories as GlobeSubcategory[],
-      classifications: result.data.classifications as ThematicClassification[],
+      classifications,
       targets: result.data.targets as Target[],
       alignment: result.data.alignment as AlignmentResult[],
     });
-    // Before the single-level fallback this was null for Panama (BER
-    // programmes have primary `globe` tags, no `globe_sub`).
-    expect(summary).not.toBeNull();
-    expect(summary!.totalBudget).toBeGreaterThan(0);
-    expect(summary!.entries.some((e) => e.totalBudget > 0)).toBe(true);
+    // The previous dashboard's rollup reads the pipeline's own GLOBE tags of
+    // the review's lines (single-level for Panama, via the fallback); the
+    // rebuilt lines get theirs when the budget step runs on them (step 3).
+    const lines = new Set(berData!.programs.map((p) => `BER_${p.code}`));
+    const tagged = classifications.some((c) => c.taxonomyType === "globe" && lines.has(c.targetId));
+    if (tagged) {
+      expect(summary).not.toBeNull();
+      expect(summary!.totalBudget).toBeGreaterThan(0);
+      expect(summary!.entries.some((e) => e.totalBudget > 0)).toBe(true);
+    } else {
+      expect(summary === null || summary.totalBudget === 0).toBe(true);
+    }
   });
 });

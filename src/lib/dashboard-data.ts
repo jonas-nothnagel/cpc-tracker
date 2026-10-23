@@ -439,6 +439,10 @@ export interface DashboardResponse {
   berData: unknown;
   budgetAlignment: unknown[] | null;
   budgetPseudoTargets: Record<string, unknown>[] | null;
+  /** "ber-record" where budget_alignment.json was built for the lines of the
+   *  review's rebuilt record (step 3 of the BER plan, budget_alignment.meta.json);
+   *  null for the earlier comparisons, which views of a rebuilt record hide. */
+  budgetAlignmentBasis: string | null;
   /** NR7 reported actions + their alignment (Level-3 biodiversity
    *  implementation). Separate keys like budget, NOT merged into `targets`:
    *  the frontend's reported-action test is `sourceDocument === "BTR"`, so a
@@ -794,6 +798,8 @@ export function assembleDashboardData(
   const berData = readJson<unknown>(
     join(dataDir, deriveCountryFile(targetsFile, "ber"))
   );
+  const budgetAlignmentMeta = readJson<{ basis?: unknown }>(join(outputDir, "budget_alignment.meta.json"));
+  const budgetAlignmentBasis = typeof budgetAlignmentMeta?.basis === "string" ? budgetAlignmentMeta.basis : null;
 
   // Load environmental footprint snapshot if available
   const footprint = readJson<Record<string, unknown>>(
@@ -940,6 +946,7 @@ export function assembleDashboardData(
       berData: berData ?? null,
       budgetAlignment: budgetAlignment ?? null,
       budgetPseudoTargets: budgetPseudoTargets ?? null,
+      budgetAlignmentBasis,
       nr7Alignment: nr7Alignment ?? null,
       nr7PseudoTargets: nr7PseudoTargets ?? null,
       footprint: footprint ?? null,

@@ -3597,31 +3597,111 @@
     "spending": {
       "title": "Reviewed biodiversity spending",
       "source": "Biodiversity Expenditure Review (BER), {years}",
+      "atPar": "amounts in balboas, at par with the US$",
       "illustrative": "Illustrative figures, adapted from a real review",
-      "money": "{currency}{amount} {unit, select, million {million} billion {billion} other {}}",
-      "fieldLabel": "{currency}{every} of every {currency}100 of public spending, as a hundred squares",
+      "translated": "machine translation",
+      "money": "{sign}{amount}{unit, select, trillion { trillion} billion { billion} million { million} other {}}",
+      "scope": {
+        "stateLocal": "State and local budget spending",
+        "publicSector": "public-sector spending",
+        "government": "government spending",
+        "public": "public spending"
+      },
+      "fieldLabel": "{sign}{every} of every {sign}100 of {scope}, as a hundred squares",
       "record": {
         "kicker": "Out of all public spending",
-        "headline": "{currency}{every} of every {currency}100 of public spending is reviewed biodiversity spending.",
+        "headline": "{sign}{every} of every {sign}100 of {scope} in {years} was reviewed biodiversity spending.",
         "reviewed": "Reviewed biodiversity spending, {years}",
-        "public": "All public spending, {years}",
-        "year": "{year}: {currency}{every} of every {currency}100"
+        "public": "All {scope}, {years}"
+      },
+      "chart": {
+        "title": "Reviewed spending by year",
+        "titleParts": "Reviewed spending by year and {parts}",
+        "parts": {
+          "levels": "budget",
+          "groups": "kind of agency"
+        },
+        "unit": "{sign} {unit, select, billion {billion} other {million}}",
+        "switch": "Show amounts or shares",
+        "amounts": "Amount",
+        "shares": "Share of {scope}",
+        "sharesLevels": "Share of each budget's spending",
+        "series": {
+          "central": "State budget",
+          "local": "Local budgets",
+          "core": "Core agencies, counted in full",
+          "other": "Other agencies, counted in part",
+          "all": "Reviewed spending"
+        },
+        "notInData": "not in the data",
+        "notInDataLong": "{year}: the review's data hold {held} only",
+        "held": {
+          "central": "the State budget",
+          "local": "the local budgets",
+          "core": "the core agencies",
+          "other": "the other agencies",
+          "all": "one part"
+        },
+        "bar": "{series}, {year}",
+        "barShare": "{share} of {scope}",
+        "scopeOf": {
+          "central": "the State budget's spending",
+          "local": "the local budgets' spending",
+          "core": "government spending",
+          "other": "government spending",
+          "all": "public spending"
+        },
+        "inAll": "{amount} in all",
+        "tableCaption": "Reviewed spending by year, {unit}",
+        "year": "Year",
+        "panama2015": "2015 is not shown: the Ministry of Environment, created that year, has no budget lines in the review for it."
+      },
+      "items": {
+        "kicker": "What the review counts",
+        "headline": "{name} holds {share} of the reviewed spending in {years}.",
+        "listLabel": "The review's budget lines, largest first",
+        "kind": {
+          "programme": "Programme {code}",
+          "purpose": "Purpose code {code}, in other programmes",
+          "core": "Counted in full",
+          "other": "Counted in part"
+        },
+        "inUsd": "{usd} at each year's exchange rate.",
+        "counted": "Counted {counted} of {spent} spent, at the review's rates",
+        "rate": "{name}, counted at {rate}",
+        "institutionRate": "Counted at {rate} of its spending, the review's rate.",
+        "rationale": "The review's reason: {text}",
+        "bodies": "Spent by {count, plural, one {# unit} other {# units}} in {year}, the largest:",
+        "pays": "Pays for {list}.",
+        "parts": "{count, plural, one {# activity} other {# activities}}, the largest:",
+        "partsMore": "{count, plural, one {and # more activity} other {and # more activities}}",
+        "showAll": "Show all {count} lines",
+        "showFewer": "Show the largest only"
       },
       "areas": {
         "kicker": "What it is for",
+        "ai": "AI-suggested",
         "headline": "{area} holds {spend} of the reviewed spending and {targets} of the targets.",
+        "projects": "The areas are read from the review's {count} project lines, {amount} in {years}, a second view of the same money.",
         "colArea": "Biodiversity area",
         "colTargets": "Share of the targets",
         "colSpend": "Share of the reviewed spending",
         "listLabel": "Biodiversity areas, their share of the targets and of the reviewed spending",
         "rowLabel": "{targets} of the targets, {spend} of the reviewed spending",
         "noSpend": "None",
+        "apartRow": "Not placed in an area yet",
+        "apartLabel": "{spend} of the reviewed spending is not yet placed in an area",
         "targetsLine": "{count, plural, =0 {No target in this area.} one {# target in this area.} other {# targets in this area.}}",
         "matched": "{matched, number} of the {total, number} have a matching budget line.",
-        "ai": "AI-estimated",
+        "aiEstimated": "AI-estimated",
         "linesLabel": "Budget lines in this area",
         "noLines": "No reviewed budget line in this area.",
-        "explore": "Explore this area with its budget lines"
+        "explore": "Explore this area with its budget lines",
+        "checked": "Area checked by a person",
+        "aiSuggested": "AI-suggested, not reviewed",
+        "apartWhy": "Kept apart until a person decides",
+        "linesMore": "{count, plural, one {and # more line} other {and # more lines}}",
+        "checkedCount": "{checked, number} of {total, number} lines have an area checked by a person; the others are AI-suggested or kept apart."
       }
     },
     "areaView": {

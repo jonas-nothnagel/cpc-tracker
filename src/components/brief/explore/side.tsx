@@ -816,7 +816,14 @@ export function ItemColumn({
 }: {
   kind: string;
   source: string;
-  item: BriefCommitment & { name?: string; code?: string; original?: string; aiWritten?: true; layer?: string };
+  item: BriefCommitment & {
+    name?: string;
+    code?: string;
+    original?: string;
+    aiWritten?: true;
+    textTranslated?: "machine";
+    layer?: string;
+  };
   /** The action's status or the budget line's spending, as its source states it. */
   facts?: string;
   finding: ReactNode;
@@ -875,6 +882,11 @@ export function ItemColumn({
             <span className="ex-focus-ai" title={t("aiWrittenNote")}>
               {t("aiWritten")}
             </span>{" "}
+          </>
+        )}
+        {item.textTranslated && (
+          <>
+            <span className="ex-focus-ai">{t("translated")}</span>{" "}
           </>
         )}
         {item.text}

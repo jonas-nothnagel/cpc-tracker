@@ -1,7 +1,15 @@
 /* Reviewed biodiversity spending in the brief: the record as a hundred
-   squares beside its figures, then the policy areas with their share of the
-   targets beside their share of the spending. Money is UNDP blue; green and
-   red stay with alignment (DESIGN.md). Scoped to [data-brief]. */
+   squares beside its figures, the record by year in the parts the review
+   keeps apart, the review's own lines, then the policy areas with their
+   share of the targets beside their share of the spending. Money is UNDP
+   blue; green and red stay with alignment (DESIGN.md). Scoped to [data-brief]. */
+
+[data-brief] .sp-brief {
+  /* The second part of a record (Mongolia's local budgets, Sri Lanka's
+     agencies counted in part): a lighter blue that keeps its separation
+     from UNDP blue for colour-blind readers (dataviz validator: ΔE 15). */
+  --sp-blue-2: #4a97e0;
+}
 
 [data-brief] .sp-head {
   margin: 0 0 1.75rem;
@@ -21,7 +29,7 @@
   color: var(--brief-muted);
 }
 
-[data-brief] .sp-illustrative::before {
+[data-brief] .sp-note-inline::before {
   content: " · ";
 }
 
@@ -34,8 +42,12 @@
   padding: 0 0 2.5rem;
 }
 
-[data-brief] .sp-step-areas {
+[data-brief] .sp-step-areas,
+[data-brief] .sp-step-list {
   display: block;
+}
+
+[data-brief] .sp-step-areas {
   padding-bottom: 0;
 }
 
@@ -90,14 +102,312 @@
   color: var(--brief-blue);
 }
 
-[data-brief] .sp-years {
+[data-brief] .sp-figure-usd {
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── The record by year ────────────────────────────────────────────── */
+
+[data-brief] .sp-chart {
+  position: relative;
+  padding: 0 0 2.75rem;
+}
+
+[data-brief] .sp-chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 2rem;
+  margin: 0 0 0.5rem;
+}
+
+[data-brief] .sp-chart-title {
   margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+[data-brief] .sp-chart-unit {
+  margin-left: 0.5rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .sp-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+}
+
+[data-brief] .sp-option {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+  cursor: pointer;
+  text-underline-offset: 4px;
+}
+
+[data-brief] .sp-option[aria-pressed="true"] {
+  color: var(--brief-ink);
+  text-decoration: underline;
+}
+
+[data-brief] .sp-option:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .sp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.25rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
   font-size: 0.8125rem;
   color: var(--brief-muted);
 }
 
+[data-brief] .sp-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+[data-brief] .sp-key {
+  width: 12px;
+  height: 12px;
+  border-radius: 0;
+  background: var(--brief-blue);
+}
+
+[data-brief] .sp-key[data-series="local"],
+[data-brief] .sp-key[data-series="other"],
+[data-brief] .sp-bar[data-series="local"],
+[data-brief] .sp-bar[data-series="other"] {
+  background: var(--sp-blue-2);
+}
+
+/* One column per year; its bars stand on a shared baseline. */
+[data-brief] .sp-plot {
+  display: grid;
+  grid-template-columns: repeat(var(--sp-years), minmax(2.75rem, 1fr));
+  gap: 0 clamp(0.5rem, 1.6vw, 1.25rem);
+  overflow-x: auto;
+  padding-top: 1.4rem;
+}
+
+[data-brief] .sp-year {
+  display: grid;
+  grid-template-rows: 9.5rem auto auto;
+  min-width: 0;
+}
+
+[data-brief] .sp-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 100%;
+  border-bottom: 1px solid var(--brief-hairline-strong);
+}
+
+[data-brief] .sp-bar-slot {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  min-width: 0;
+}
+
+[data-brief] .sp-bar {
+  display: block;
+  width: 100%;
+  border-radius: 0;
+  background: var(--brief-blue);
+  transition: opacity 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-brief] .sp-bars:hover .sp-bar:not([data-lit]) {
+  opacity: 0.55;
+}
+
+[data-brief] .sp-bar-value {
+  margin-bottom: 0.2rem;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--brief-ink);
+  white-space: nowrap;
+}
+
+/* A part the year's data do not hold: said in place, never drawn as zero. */
+[data-brief] .sp-missing {
+  display: flex;
+  flex: 1 1 0;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+  padding-bottom: 0.3rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--brief-muted);
+  text-align: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+[data-brief] .sp-year-label {
+  padding-top: 0.35rem;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+[data-brief] .sp-year-total {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The hover card sits above its bar. */
+[data-brief] .sp-card {
+  position: absolute;
+  bottom: calc(100% + 0.4rem);
+  left: 50%;
+  z-index: 30;
+  display: grid;
+  gap: 0.1rem;
+  width: max-content;
+  max-width: 15rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--brief-hairline);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  font-size: 0.8125rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+[data-brief] .sp-card-muted {
+  color: var(--brief-muted);
+}
+
+[data-brief] .sp-footnote {
+  max-width: 44rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+/* ── The review's own lines ────────────────────────────────────────── */
+
+[data-brief] .sp-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .sp-item {
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .sp-item-row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1.4fr) minmax(0, 1fr) 8.5rem;
+  gap: 0.2rem 1.25rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.55rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .sp-item-name {
+  min-width: 0;
+  font-weight: 600;
+}
+
+[data-brief] .sp-item-sub {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .sp-item-row:hover .sp-item-name,
+[data-brief] .sp-item-row:focus-visible .sp-item-name,
+[data-brief] .sp-item[data-open] .sp-item-name {
+  background: var(--brief-highlight);
+}
+
+[data-brief] .sp-item-amount {
+  color: var(--brief-blue);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+[data-brief] .sp-detail {
+  margin: 0.4rem 0 0.6rem;
+}
+
+[data-brief] .sp-detail-title {
+  margin: 0 0 0.2rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+[data-brief] .sp-detail-list {
+  max-width: 40rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .sp-detail-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.15rem 0;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .sp-detail-amount {
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-brief] .sp-quote {
+  max-width: 44rem;
+  color: var(--brief-muted);
+}
+
+/* ── What it is for ────────────────────────────────────────────────── */
+
 [data-brief] .sp-areas-intro .brief-hub-headline {
   margin-bottom: 1rem;
+}
+
+[data-brief] .sp-lede {
+  max-width: 44rem;
+  margin: -0.4rem 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
 }
 
 /* One row per area: its name, then two bars on one scale. */
@@ -140,6 +450,11 @@
   font-weight: 600;
 }
 
+[data-brief] .sp-area-apart .sp-area-name {
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
 [data-brief] .sp-row:hover .sp-area-name,
 [data-brief] .sp-row:focus-visible .sp-area-name,
 [data-brief] .sp-area[data-open] .sp-area-name {
@@ -153,23 +468,32 @@
   align-items: center;
 }
 
-[data-brief] .sp-bar {
+[data-brief] .sp-step-list .sp-cell {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-brief] .sp-bar-line {
   position: relative;
   height: 10px;
   background: var(--brief-track);
 }
 
-[data-brief] .sp-bar > span {
+[data-brief] .sp-bar-line > span {
   position: absolute;
   inset: 0 auto 0 0;
 }
 
-[data-brief] .sp-bar[data-ink="targets"] > span {
+[data-brief] .sp-bar-line[data-ink="targets"] > span {
   background: var(--brief-muted);
 }
 
-[data-brief] .sp-bar[data-ink="spend"] > span {
+[data-brief] .sp-bar-line[data-ink="spend"] > span {
   background: var(--brief-blue);
+}
+
+/* Money not yet placed in an area: drawn, never in blue's full voice. */
+[data-brief] .sp-bar-line[data-ink="apart"] > span {
+  background: repeating-linear-gradient(135deg, var(--brief-blue) 0 2px, transparent 2px 5px);
 }
 
 [data-brief] .sp-pct {
@@ -180,6 +504,10 @@
 [data-brief] .sp-pct[data-ink="spend"] {
   color: var(--brief-blue);
   font-weight: 600;
+}
+
+[data-brief] .sp-pct[data-ink="apart"] {
+  color: var(--brief-muted);
 }
 
 [data-brief] .sp-open {
@@ -199,7 +527,7 @@
 }
 
 [data-brief] .sp-lines {
-  max-width: 40rem;
+  max-width: 44rem;
   margin: 0.3rem 0 0.5rem;
   padding: 0;
   list-style: none;
@@ -209,8 +537,14 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.2rem 0;
+  padding: 0.25rem 0;
   font-size: 0.9375rem;
+}
+
+[data-brief] .sp-line-status {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
 }
 
 [data-brief] .sp-line-amount {
@@ -231,5 +565,19 @@
   [data-brief] .sp-area-name,
   [data-brief] .sp-row-head > span:first-child {
     grid-column: 1 / -1;
+  }
+
+  [data-brief] .sp-item-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  [data-brief] .sp-item-row .sp-cell {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brief] .sp-bar {
+    transition: none;
   }
 }

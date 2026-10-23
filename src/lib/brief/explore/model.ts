@@ -21,6 +21,7 @@ export interface ExploreItem extends BriefCommitment {
   code?: string;
   original?: string;
   aiWritten?: true;
+  textTranslated?: "machine";
   status?: string;
   spend?: LayerItem["spend"];
 }
@@ -79,6 +80,7 @@ export function buildExploreModel(scope: Scope, layers?: ExploreLayers | null): 
       ...(it.original ? { original: it.original } : {}),
       ...(it.translated ? { translated: it.translated } : {}),
       ...(it.aiWritten ? { aiWritten: true as const } : {}),
+      ...(it.textTranslated ? { textTranslated: it.textTranslated } : {}),
       ...(it.status ? { status: it.status } : {}),
       ...(it.spend ? { spend: it.spend } : {}),
     })),
