@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
 import { formatFootprintValue, type FootprintSnapshot } from "@/lib/footprint";
+
+/** Failed polls in a row (two seconds apart) before the page gives up. */
+const MAX_FAILED_POLLS = 30;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -308,18 +311,25 @@ export function AnalysisProgress({ id, unreadable = false }: { id: string; unrea
   const [error, setError] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
 
-  const poll = useCallback(async () => {
+  // Polls that failed in a row: a status caught mid-write or a dropped
+  // connection is tried again; only a minute of failures counts as one.
+  const failures = useRef(0);
+  const poll = useCallback(async (): Promise<AnalysisStatus | "retry" | null> => {
     try {
       const res = await fetch(`/api/analyze/${id}/status`);
-      if (!res.ok) {
-        const body = await res.json();
+      if (res.status === 400 || res.status === 404) {
+        const body = await res.json().catch(() => ({}));
         setError(body.error ?? t("errors.notFound"));
         return null;
       }
+      if (!res.ok) throw new Error(`status ${res.status}`);
       const data: AnalysisStatus = await res.json();
+      failures.current = 0;
       setStatus(data);
       return data;
     } catch {
+      failures.current += 1;
+      if (failures.current < MAX_FAILED_POLLS) return "retry";
       setError(t("errors.statusCheck"));
       return null;
     }
@@ -331,7 +341,7 @@ export function AnalysisProgress({ id, unreadable = false }: { id: string; unrea
     async function loop() {
       const data = await poll();
       if (!active) return;
-      if (data && (data.status === "starting" || data.status === "running")) {
+      if (data === "retry" || (data && (data.status === "starting" || data.status === "running"))) {
         setTimeout(() => {
           if (active) loop();
         }, 2000);

@@ -85,25 +85,29 @@ const UPLOAD_LANGUAGES = new Set(["es", "mn"]);
 
 const SOURCE_NOTE = "Provided by the user with the upload; never drafted by the tool.";
 
-/** User text on one line: control characters out, whitespace collapsed. */
+/** User text on one line, composed (NFC): control characters out, whitespace
+ *  collapsed. */
 function clean(raw: unknown): string {
   return typeof raw === "string"
     ? raw
+        .normalize("NFC")
         .replace(/[\u0000-\u001f\u007f-\u009f]+/g, " ")
         .replace(/\s+/g, " ")
         .trim()
     : "";
 }
 
-/** A document's name as the comparison prompt reads it: letters and digits
- *  in any script, spaces and a few marks, at most 60 characters. Line breaks
- *  and stray symbols cannot carry instructions into the prompt. */
+/** A document's name as the comparison prompt reads it, at most 60
+ *  characters: letters with their combining marks and joiners (Tamil,
+ *  Sinhala), digits, dashes, apostrophes and a few other marks. Anything
+ *  else becomes a space, so words never fuse, and line breaks or stray
+ *  symbols cannot carry instructions into the prompt. */
 function promptLabel(raw: string): string {
-  return clean(raw)
-    .replace(/[^\p{L}\p{N} \-./&()]/gu, "")
+  const kept = clean(raw)
+    .replace(/[^\p{L}\p{M}\p{N}\p{Pd}\u200C\u200D '\u2019.,:;/&()+]/gu, " ")
     .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, 60);
+    .trim();
+  return Array.from(kept).slice(0, 60).join("").trim();
 }
 
 /** Each document code, first seen first, to the id its targets are filed
@@ -130,6 +134,10 @@ export function documentIds(codes: string[]): Map<string, string> {
     ordered.set(code, id);
   }
   return ordered;
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function measureCount(btrData: AnalyzeBody["btrData"]): number {
@@ -279,6 +287,8 @@ export function writeAnalysisInputs(
   copyFileSync(files.categories, join(dirs.input, "categories.json"));
   json(join(dirs.input, "country-config.json"), inputs.countryConfig);
   if (inputs.taxonomies) json(join(dirs.input, "taxonomies.json"), inputs.taxonomies);
-  if (files.btrData !== undefined) json(join(dirs.output, "btr_data.json"), files.btrData);
+  // Only an object of tables: anything else would fail the run at its BTR
+  // step, after every earlier step was paid for.
+  if (isObject(files.btrData)) json(join(dirs.output, "btr_data.json"), files.btrData);
   if (files.initialFootprint !== undefined) json(join(dirs.input, "initial_footprint.json"), files.initialFootprint);
 }

@@ -1492,7 +1492,7 @@
     "wizard": {
       "headerSubtitle": "Nuevo análisis",
       "title": "Nuevo análisis",
-      "subtitle": "Cargue documentos de política, revise metas, configure categorías y ejecute la canalización de análisis de coherencia.",
+      "subtitle": "Cargue documentos de política, revise las metas y ejecute el análisis de coherencia.",
       "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
       "autoLabel": "Meta {n, number}",
       "unknownCountry": "Desconocido",
@@ -1510,7 +1510,7 @@
         "steps": {
           "countryDocs": "País y documentos",
           "referenceData": "Datos de referencia",
-          "reviewConfigure": "Revisar y configurar",
+          "reviewConfigure": "Revisar metas",
           "summaryRun": "Resumen y ejecución"
         },
         "stepCount": "Paso {n}",
@@ -1647,7 +1647,7 @@
       }
     },
     "step3": {
-      "title": "Revisar metas y configurar categorías",
+      "title": "Revisar las metas",
       "subtitle": "Cada grupo de documentos puede expandirse para inspeccionar o eliminar metas individuales.",
       "categoriesHeading": "Categorías de clasificación",
       "targetsHeading": "Metas de política",

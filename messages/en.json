@@ -1492,7 +1492,7 @@
     "wizard": {
       "headerSubtitle": "New Analysis",
       "title": "New Analysis",
-      "subtitle": "Upload policy documents, review targets, configure categories, and run the coherence analysis pipeline.",
+      "subtitle": "Upload policy documents, review the targets, and run the coherence analysis.",
       "footer": "United Nations Development Programme · CPC Analyzer",
       "autoLabel": "Target {n, number}",
       "unknownCountry": "Unknown",
@@ -1510,7 +1510,7 @@
         "steps": {
           "countryDocs": "Country and documents",
           "referenceData": "Reference data",
-          "reviewConfigure": "Review and configure",
+          "reviewConfigure": "Review targets",
           "summaryRun": "Summary and run"
         },
         "stepCount": "Step {n}",
@@ -1647,7 +1647,7 @@
       }
     },
     "step3": {
-      "title": "Review targets and configure categories",
+      "title": "Review the targets",
       "subtitle": "Each document group can be expanded to inspect or remove individual targets.",
       "categoriesHeading": "Classification Categories",
       "targetsHeading": "Policy Targets",

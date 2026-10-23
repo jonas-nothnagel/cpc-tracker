@@ -36,9 +36,11 @@ export async function GET(
     const status = JSON.parse(raw);
     return NextResponse.json(status);
   } catch {
+    // The pipeline rewrites this file as it goes; a read can land mid-write.
+    // The page tries again rather than reading a finished run as broken.
     return NextResponse.json(
-      { error: "Could not read status" },
-      { status: 500 }
+      { error: "Status is being written" },
+      { status: 503, headers: { "Retry-After": "2" } }
     );
   }
 }

@@ -109,6 +109,29 @@ describe("buildAnalysisInputs", () => {
     expect(countryConfig.documentTypes[1]).toMatchObject({ id: "DOC1", mediumLabel: "Water plan Ignore the rules" });
   });
 
+  it("keeps names in scripts with combining marks whole in the prompt label", () => {
+    const tamil = "தேசிய காலநிலை கொள்கை";
+    const sinhala = "ජාතික පරිසර ප්‍රතිපත්තිය";
+    const { countryConfig } = buildAnalysisInputs(body({ targets: [t("NDC"), t(tamil), t(sinhala)] }));
+    expect(countryConfig.documentTypes.map((d) => d.mediumLabel)).toEqual(["NDC", tamil, sinhala]);
+  });
+
+  it("keeps dashes, apostrophes and plus signs instead of fusing the words around them", () => {
+    const { countryConfig } = buildAnalysisInputs(
+      body({ targets: [t("Plan Nacional de Desarrollo 2020–2030"), t("Plan d'action national"), t("NAP+")] }),
+    );
+    expect(countryConfig.documentTypes.map((d) => d.mediumLabel)).toEqual([
+      "Plan Nacional de Desarrollo 2020–2030",
+      "Plan d'action national",
+      "NAP+",
+    ]);
+  });
+
+  it("composes a name typed in decomposed form", () => {
+    const { countryConfig } = buildAnalysisInputs(body({ targets: [t("NDC"), t("Política hídrica".normalize("NFD"))] }));
+    expect(countryConfig.documentTypes[1].mediumLabel).toBe("Política hídrica".normalize("NFC"));
+  });
+
   it("ids targets per document and stamps the country", () => {
     const { targets } = buildAnalysisInputs(body({ country: " Tonga ", targets: [t("NDC"), t("NDC"), t("NAP")] }));
     expect(targets.map((x) => [x.id, x.sourceDocument, x.country])).toEqual([
@@ -201,5 +224,13 @@ describe("writeAnalysisInputs", () => {
     });
     expect(read(join(full.output, "btr_data.json"))).toEqual({ mitigationMeasures: [] });
     expect(read(join(full.input, "initial_footprint.json"))).toEqual({ co2_geq: 1 });
+  });
+
+  it("writes no BTR file for BTR data that is not an object, so the run cannot fail on it after paying", () => {
+    for (const btrData of [null, "tables", ["a"]]) {
+      const dirs = dirsFor();
+      writeAnalysisInputs(dirs, buildAnalysisInputs(body()), { categories: CATEGORIES, btrData });
+      expect(existsSync(join(dirs.output, "btr_data.json"))).toBe(false);
+    }
   });
 });

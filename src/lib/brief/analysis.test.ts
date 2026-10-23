@@ -36,6 +36,12 @@ describe("analysisBriefFrom", () => {
       ["NAP", "#94a3b8"],
       ["NDC", "#94a3b8"],
     ]);
+    // Those runs ranked no primary area, so the brief offers no lens.
+    expect(brief.source.lenses).toEqual([]);
+    // Their old verdict words still read as a potential misalignment
+    // (comparisons are [a, b, level, mechanism]; level 4 is "flagged").
+    const levels = brief.source.comparisons.filter((_, i) => i % 4 === 2);
+    expect(levels).toContain(4);
   });
 
   it("is unreadable when a completed run's results are missing, so nothing waits for it forever", () => {
