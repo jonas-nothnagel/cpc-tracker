@@ -37,7 +37,7 @@ describe("getCountry", () => {
     expect(p?.has.nr7).toBe(false);
   });
 
-  it("returns the Sri Lanka entry as visible, coherence-only", () => {
+  it("returns the Sri Lanka entry as visible, with coherence and its expenditure review", () => {
     const s = getCountry("sri-lanka");
     expect(s).toBeDefined();
     expect(s?.name).toBe("Sri Lanka");
@@ -47,7 +47,7 @@ describe("getCountry", () => {
     expect(s?.has.btr.mitigation).toBe(false);
     expect(s?.has.btr.adaptation).toBe(false);
     expect(s?.has.nr7).toBe(false);
-    expect(s?.has.ber).toBe(false);
+    expect(s?.has.ber).toBe(true);
   });
 
   it("returns the Côte d'Ivoire entry as visible, coherence-only", () => {
