@@ -1,6 +1,7 @@
 import { normalizeTarget } from "@/lib/normalize-target";
 import { shortName } from "./abbreviate";
 import { loadDocPairSyntheses, type CorpusThemesPayload } from "@/lib/coherence-briefing";
+import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type {
   AlignmentLevel,
   AlignmentMechanism,
@@ -20,7 +21,7 @@ const MAX_NAME_LENGTH = 60;
 /** A target label that is only a clause number: "6", "2.1". */
 const BARE_NUMBER = /^\d+(?:\.\d+)*$/;
 
-export type LensId = "globe" | "ipcc" | "gga" | "adaptation" | "lossDamage" | "hr";
+export type LensId = "own" | "globe" | "ipcc" | "gga" | "adaptation" | "lossDamage" | "hr";
 
 /** Index = code in `BriefSource.comparisons`. */
 export const LEVEL_CODES = ["high", "medium", "low", "none", "flagged"] as const;
@@ -67,6 +68,9 @@ export interface BriefLens {
   /** A country's own lens names its source here (from its taxonomy file,
    *  English); the global lenses' attributions live in the catalog. */
   tooltip?: string;
+  /** The policy areas an upload brings carry their own name; the catalog
+   *  names every other lens. */
+  name?: string;
 }
 
 /** The pipeline's AI synthesis for one pair of documents (the dashboard's
@@ -152,6 +156,8 @@ function translationOf(
  *  appears only for a country that sets it. Sri Lanka's adaptation sectors
  *  stand in for the GGA areas, whose records the pipeline then never writes. */
 const LENS_SPECS: { id: LensId; key?: string; taxonomyType: string; own?: true }[] = [
+  // The policy areas an upload brings come first: the brief opens on them.
+  { id: "own", taxonomyType: OWN_LENS_TYPE, own: true },
   { id: "globe", key: "globeCategories", taxonomyType: "globe" },
   { id: "ipcc", key: "sectors", taxonomyType: "sector" },
   { id: "gga", key: "ggaCategories", taxonomyType: "gga" },
@@ -282,6 +288,7 @@ export function buildBriefSource(args: {
       categories,
       primary,
       ...(own?.tooltip ? { tooltip: own.tooltip } : {}),
+      ...(own?.name ? { name: own.name } : {}),
     });
   }
 

@@ -523,6 +523,7 @@ export function assembleDashboardData(
     )?.taxonomies ?? []
   ).map((t) => ({
     taxonomyType: t.taxonomyType,
+    ...(t.name ? { name: t.name } : {}),
     ...(t.replaces ? { replaces: t.replaces } : {}),
     ...(t.tooltip ? { tooltip: t.tooltip } : {}),
     categories: t.categories.map((c) => ({ id: c.id, name: c.name })),

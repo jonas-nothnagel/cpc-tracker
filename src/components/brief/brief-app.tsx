@@ -23,6 +23,7 @@ import { Explore } from "./explore/explore";
 import { Builder } from "./builder";
 import { Flow } from "./flow";
 import { Hero } from "./hero";
+import { lensNameOf } from "./lens-tooltip";
 import { Hub } from "./hub/hub";
 import { BriefPanels, type PanelState } from "./panels";
 import { clip } from "./ink";
@@ -129,7 +130,7 @@ export function BriefApp({
     () => buildBriefData(source, scope, selection.lens),
     [source, scope, selection.lens],
   );
-  const lensName = selection.lens ? tl(selection.lens) : null;
+  const lensName = selection.lens ? lensNameOf(source.lenses, selection.lens, tl) : null;
   const [exploreState, dispatchExplore] = useReducer(
     exploreReducer,
     explore?.initialState ?? initialExploreState(),

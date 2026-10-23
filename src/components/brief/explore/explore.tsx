@@ -67,7 +67,7 @@ import {
   type RankedRow,
   type SeatPairs,
 } from "./side";
-import { lensTooltip } from "../lens-tooltip";
+import { lensName, lensNameOf, lensTooltip } from "../lens-tooltip";
 import "./explore.css";
 
 /** Labels shorter than this are clause numbers ("7 b)"), not titles. */
@@ -547,7 +547,7 @@ export function Explore({
     activeKind === "doc"
       ? t("kindDoc")
       : active?.kind === "area"
-        ? t("kindArea", { lens: tl(active.lens) })
+        ? t("kindArea", { lens: lensNameOf(source.lenses, active.lens, tl) })
         : focusLayer
           ? t(focusLayer === "budget" ? "sourceBer" : "sourceBtr")
           : "";
@@ -893,7 +893,7 @@ export function Explore({
     [available, model, layerName, t],
   );
 
-  const groupLabel = (g: ExploreGroup) => (g === "docs" ? t("groupDocs") : tl(g));
+  const groupLabel = (g: ExploreGroup) => (g === "docs" ? t("groupDocs") : lensNameOf(source.lenses, g, tl));
   // How many lines of each kind the ring draws: one per seat with such a
   // reading of the centre.
   const lineCount = (kind: LineKind) =>
@@ -1002,7 +1002,7 @@ export function Explore({
         headline={restHeadline}
         review={ranked(ringCounts.apart)}
         strongest={ranked(ringCounts.strong)}
-        browseTitle={lens ? tl(lens.id) : t("browseDocs")}
+        browseTitle={lens ? lensName(lens, tl) : t("browseDocs")}
         browse={browse}
         layerBrowse={layerBrowse.filter((row) => {
           const layer = parseFocusKey(row.key).id.slice(6);
