@@ -276,11 +276,17 @@ def generate_budget_pairs(
     targets: list[dict[str, Any]],
     pseudo_targets: list[dict[str, Any]],
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
-    """Pair every budget program with every policy target."""
+    """Pair every budget program with every policy target that has text: a
+    target without text (Panama's ENR_46 has only its Spanish original) has
+    nothing to compare and is left out, by name in the log."""
     pairs: list[tuple[dict[str, Any], dict[str, Any]]] = []
+    blank = [t["id"] for t in targets if not str(t.get("text") or "").strip()]
+    if blank:
+        logger.warning(f"Targets without text, not compared: {', '.join(blank)}")
     for pt in pseudo_targets:
         for t in targets:
-            pairs.append((t, pt))
+            if str(t.get("text") or "").strip():
+                pairs.append((t, pt))
 
     logger.info(
         f"Generated {len(pairs)} target-budget pairs "

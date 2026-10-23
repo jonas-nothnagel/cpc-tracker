@@ -336,6 +336,9 @@ async def main() -> None:
         write_json(out_dir / "budget_pseudo_targets.json", pseudo)
         meta = budget_meta(basis, config.LLM_MODEL, len(pseudo), len(targets), len(pairs))
         meta["targetDecompositions"] = f"{from_file} of {len(targets)} from decompositions.json"
+        blank = [t["id"] for t in targets if not str(t.get("text") or "").strip()]
+        if blank:
+            meta["targetsWithoutText"] = blank
         write_json(out_dir / "budget_alignment.meta.json", meta)
         if not smoke:
             drop_stale_translations(out_dir / "budget_alignment.json")

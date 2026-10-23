@@ -9,6 +9,7 @@ from src.budget_align import (
     BUDGET_INTRO_FRAMING,
     budget_items,
     budget_meta,
+    generate_budget_pairs,
     programs_to_pseudo_targets,
     record_lines_to_pseudo_targets,
 )
@@ -124,6 +125,13 @@ def test_budget_items_basis():
     assert legacy[0]["text"].endswith("Total: 4.0.")
     # The earlier file's programmes are read without amounts too.
     assert legacy[0]["analysisText"] == "Forests. Forest care"
+
+
+def test_targets_without_text_are_not_compared():
+    lines = record_lines_to_pseudo_targets("mongolia", MONGOLIA)
+    pairs = generate_budget_pairs([{"id": "T1", "text": "Protect wetlands."}, {"id": "T2", "text": "  "}], lines)
+    assert {t["id"] for t, _ in pairs} == {"T1"}
+    assert len(pairs) == len(lines)
 
 
 def test_meta_marks_the_basis():
