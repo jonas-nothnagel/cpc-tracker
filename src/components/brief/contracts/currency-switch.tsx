@@ -3,6 +3,19 @@
 import { useFormatter, useTranslations } from "next-intl";
 import type { Currency } from "./money";
 
+/** The reader's currency in the link (`?cur=usd` or `?cur=mnt`), named either
+ *  way: the page opens in US$, or in tugrik on the Mongolian page. */
+export function keepCurrencyInLink(next: Currency) {
+  const params = new URLSearchParams(window.location.search);
+  params.set("cur", next);
+  const query = params.toString();
+  window.history.replaceState(
+    window.history.state,
+    "",
+    `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`,
+  );
+}
+
 /**
  * Amounts in tugrik or US$, as plain text choices, with the indicative rate
  * beside US$. The choice travels with the link (`?cur=usd`), so a shared page
@@ -22,15 +35,7 @@ export function CurrencySwitch({
   if (rate <= 0) return null;
   const choose = (next: Currency) => {
     onChange(next);
-    const params = new URLSearchParams(window.location.search);
-    if (next === "usd") params.set("cur", "usd");
-    else params.delete("cur");
-    const query = params.toString();
-    window.history.replaceState(
-      window.history.state,
-      "",
-      `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`,
-    );
+    keepCurrencyInLink(next);
   };
   return (
     <div className="ct-currency" role="group" aria-label={tc("label")}>

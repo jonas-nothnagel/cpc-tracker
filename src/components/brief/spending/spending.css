@@ -1,30 +1,58 @@
-/* Reviewed biodiversity spending in the brief: the record as a hundred
-   squares beside its figures, the record by year in the parts the review
-   keeps apart, the review's own lines, then the policy areas with their
-   share of the targets beside their share of the spending. Money is UNDP
-   blue; green and red stay with alignment (DESIGN.md). Scoped to [data-brief]. */
+/* Reviewed biodiversity spending in the brief: how much of all public
+   spending it is (a hundred squares beside each year's total), what it is
+   for (each area's share of the targets beside its share of the spending),
+   then the review's own lines. Money is UNDP blue; green and red stay with
+   alignment (DESIGN.md). Scoped to [data-brief].
+
+   One rhythm, one grid: steps sit 48px apart, a step's words 16px above its
+   picture; the record, the areas and the lines share three columns (a name,
+   then two for quantities), so every bar starts at one edge and every amount
+   ends at one edge. Spacing comes from the tokens below only. */
 
 [data-brief] .sp-brief {
   /* The second part of a record (Mongolia's local budgets, Sri Lanka's
      agencies counted in part): a lighter blue that keeps its separation
      from UNDP blue for colour-blind readers (dataviz validator: ΔE 15). */
   --sp-blue-2: #4a97e0;
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  /* The three columns, and the width an amount's label takes. */
+  --sp-cols: minmax(12rem, 1.1fr) minmax(0, 1fr) minmax(0, 1fr);
+  --sp-label: 8rem;
 }
 
+[data-brief] .sp-brief > * + * {
+  margin-top: var(--sp-12);
+}
+
+[data-brief] .sp-brief > .sp-head + * {
+  margin-top: var(--sp-6);
+}
+
+/* ── The section's head: title, source, currency ──────────────────── */
+
 [data-brief] .sp-head {
-  margin: 0 0 1.75rem;
+  display: grid;
+  gap: var(--sp-1);
+  justify-items: start;
 }
 
 [data-brief] .sp-title {
   margin: 0;
   font-family: var(--font-display);
+  /* The brief's own section-title step (.brief-sec-headline). */
   font-size: clamp(1.5rem, 2.1vw, 1.875rem);
   font-weight: 500;
   line-height: 1.2;
 }
 
 [data-brief] .sp-source {
-  margin: 0.4rem 0 0;
+  margin: 0;
   font-size: 0.8125rem;
   color: var(--brief-muted);
 }
@@ -33,113 +61,21 @@
   content: " · ";
 }
 
-/* Each reading: its picture beside its words. */
-[data-brief] .sp-step {
-  display: grid;
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
-  gap: clamp(1.5rem, 3.2vw, 3.5rem);
-  align-items: start;
-  padding: 0 0 2.5rem;
+[data-brief] .sp-head > .sp-switch {
+  margin-top: var(--sp-2);
 }
 
-[data-brief] .sp-step-areas,
-[data-brief] .sp-step-list {
-  display: block;
-}
-
-[data-brief] .sp-step-areas {
-  padding-bottom: 0;
-}
-
-/* A hundred squares, ten by ten: every square one of every hundred. */
-[data-brief] .sp-field {
-  display: grid;
-  grid-template-columns: repeat(10, 18px);
-  gap: 4px;
-}
-
-[data-brief] .sp-square {
-  position: relative;
-  width: 18px;
-  height: 18px;
-  background: var(--brief-track);
-  overflow: hidden;
-}
-
-[data-brief] .sp-square-fill {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: var(--brief-blue);
-}
-
-[data-brief] .sp-side {
-  min-width: 0;
-}
-
-[data-brief] .sp-figures {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2.5rem;
-  margin: 0 0 0.75rem;
-}
-
-[data-brief] .sp-figures dt {
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
-
-[data-brief] .sp-figures dd {
-  margin: 0.15rem 0 0;
-}
-
-[data-brief] .sp-figure {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-variant-numeric: tabular-nums;
-}
-
-[data-brief] .sp-figure[data-ink="blue"] {
-  color: var(--brief-blue);
-}
-
-[data-brief] .sp-figure-usd {
-  font-size: 0.9375rem;
-  color: var(--brief-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-/* ── The record by year ────────────────────────────────────────────── */
-
-[data-brief] .sp-chart {
-  position: relative;
-  padding: 0 0 2.75rem;
-}
-
-[data-brief] .sp-chart-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.4rem 2rem;
-  margin: 0 0 0.5rem;
-}
-
-[data-brief] .sp-chart-title {
-  margin: 0;
-  font-size: 0.9375rem;
-  font-weight: 700;
-}
-
-[data-brief] .sp-chart-unit {
-  margin-left: 0.5rem;
-  font-weight: 400;
-  color: var(--brief-muted);
-}
-
+/* Plain text choices, the chosen one underlined: currency, amount or share. */
 [data-brief] .sp-switch {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.9rem;
+  align-items: baseline;
+  gap: var(--sp-1) var(--sp-4);
+}
+
+[data-brief] .sp-switch-label {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
 }
 
 [data-brief] .sp-option {
@@ -153,6 +89,10 @@
   text-underline-offset: 4px;
 }
 
+[data-brief] .sp-option:hover {
+  color: var(--brief-ink);
+}
+
 [data-brief] .sp-option[aria-pressed="true"] {
   color: var(--brief-ink);
   text-decoration: underline;
@@ -163,11 +103,130 @@
   outline-offset: 2px;
 }
 
+/* ── A step: its finding, then its picture ───────────────────────────── */
+
+[data-brief] .sp-step {
+  display: grid;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+
+[data-brief] .sp-step-head .brief-hub-kicker {
+  margin: 0 0 var(--sp-2);
+}
+
+[data-brief] .sp-step-head .brief-hub-headline {
+  margin: 0;
+}
+
+[data-brief] .sp-step-head > .sp-switch {
+  margin-top: var(--sp-3);
+}
+
+[data-brief] .sp-ai {
+  margin-left: var(--sp-1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--brief-muted);
+}
+
+/* ── How much: the squares and figures, then the years ──────────────── */
+
+[data-brief] .sp-record {
+  display: grid;
+  grid-template-columns: var(--sp-cols);
+  gap: var(--sp-8) var(--sp-6);
+  align-items: start;
+}
+
+[data-brief] .sp-record-side {
+  display: grid;
+  gap: var(--sp-6);
+  align-content: start;
+}
+
+[data-brief] .sp-record > .sp-chart {
+  grid-column: 2 / -1;
+}
+
+/* A hundred squares, ten by ten: every square one of every hundred. */
+[data-brief] .sp-field {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  gap: var(--sp-1);
+}
+
+[data-brief] .sp-square {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  background: var(--brief-hairline-strong);
+  overflow: hidden;
+}
+
+[data-brief] .sp-square-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--brief-blue);
+}
+
+[data-brief] .sp-figures {
+  display: grid;
+  gap: var(--sp-4);
+  margin: 0;
+}
+
+[data-brief] .sp-figures dt {
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .sp-figures dd {
+  margin: var(--sp-1) 0 0;
+}
+
+/* A readout, in the working sans at body size: the serif finding above leads. */
+[data-brief] .sp-figure {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .sp-figure[data-ink="blue"] {
+  color: var(--brief-blue);
+}
+
+/* ── The record by year ────────────────────────────────────────────── */
+
+[data-brief] .sp-chart {
+  position: relative;
+  min-width: 0;
+}
+
+[data-brief] .sp-chart-head {
+  display: grid;
+  gap: var(--sp-2);
+  justify-items: start;
+}
+
+[data-brief] .sp-chart-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+[data-brief] .sp-chart-unit {
+  margin-left: var(--sp-2);
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
 [data-brief] .sp-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.2rem 1.25rem;
-  margin: 0 0 0.75rem;
+  gap: var(--sp-1) var(--sp-6);
+  margin: 0;
   padding: 0;
   list-style: none;
   font-size: 0.8125rem;
@@ -177,7 +236,7 @@
 [data-brief] .sp-legend li {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: var(--sp-2);
 }
 
 [data-brief] .sp-key {
@@ -189,26 +248,78 @@
 
 [data-brief] .sp-key[data-series="local"],
 [data-brief] .sp-key[data-series="other"],
+[data-brief] .sp-seg[data-series="local"],
+[data-brief] .sp-seg[data-series="other"],
 [data-brief] .sp-bar[data-series="local"],
 [data-brief] .sp-bar[data-series="other"] {
   background: var(--sp-blue-2);
 }
 
-/* One column per year; its bars stand on a shared baseline. */
+/* One column per year, no wider than a bar needs; bars on one baseline.
+   No scrolling box: it would clip the hover card above a bar. */
 [data-brief] .sp-plot {
   display: grid;
-  grid-template-columns: repeat(var(--sp-years), minmax(2.75rem, 1fr));
-  gap: 0 clamp(0.5rem, 1.6vw, 1.25rem);
-  overflow-x: auto;
-  padding-top: 1.4rem;
+  grid-template-columns: repeat(var(--sp-years), minmax(2.75rem, 7rem));
+  justify-content: start;
+  column-gap: var(--sp-4);
+  padding-top: var(--sp-8);
 }
 
 [data-brief] .sp-year {
   display: grid;
-  grid-template-rows: 9.5rem auto auto;
+  grid-template-rows: 11rem auto auto;
   min-width: 0;
 }
 
+/* As amounts: the parts stacked into the year's total, the total said on top. */
+[data-brief] .sp-stack-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  border-bottom: 1px solid var(--brief-hairline-strong);
+}
+
+[data-brief] .sp-stack-value {
+  flex: none;
+  margin-bottom: var(--sp-1);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--brief-muted);
+  white-space: nowrap;
+}
+
+[data-brief] .sp-stack-value[data-total] {
+  font-weight: 600;
+  color: var(--brief-ink);
+}
+
+/* Its height is the year's share of the tallest: it never gives way to the
+   figure above it, which may rise into the plot's top margin instead. */
+[data-brief] .sp-stack {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  max-width: 4.5rem;
+}
+
+[data-brief] .sp-seg {
+  position: relative;
+  display: block;
+  flex: 1 1 0;
+  min-height: 2px;
+  background: var(--brief-blue);
+  transition: opacity 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-brief] .sp-stack:hover .sp-seg:not([data-lit]) {
+  opacity: 0.55;
+}
+
+/* As shares: each part beside the other, a share of its own budget. */
 [data-brief] .sp-bars {
   display: flex;
   align-items: flex-end;
@@ -222,6 +333,7 @@
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
+  align-items: stretch;
   justify-content: flex-end;
   height: 100%;
   min-width: 0;
@@ -229,6 +341,7 @@
 
 [data-brief] .sp-bar {
   display: block;
+  flex: none;
   width: 100%;
   border-radius: 0;
   background: var(--brief-blue);
@@ -240,7 +353,8 @@
 }
 
 [data-brief] .sp-bar-value {
-  margin-bottom: 0.2rem;
+  flex: none;
+  margin-bottom: var(--sp-1);
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   text-align: center;
@@ -248,50 +362,37 @@
   white-space: nowrap;
 }
 
-/* A part the year's data do not hold: said in place, never drawn as zero. */
-[data-brief] .sp-missing {
-  display: flex;
-  flex: 1 1 0;
-  align-items: flex-end;
-  justify-content: center;
-  min-width: 0;
-  padding-bottom: 0.3rem;
-  font-size: 0.75rem;
-  line-height: 1.2;
-  color: var(--brief-muted);
-  text-align: center;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-
 [data-brief] .sp-year-label {
-  padding-top: 0.35rem;
+  padding-top: var(--sp-2);
   font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
 
-[data-brief] .sp-year-total {
+/* A part the year's data do not hold: named under the year, never drawn. */
+[data-brief] .sp-year-missing {
+  margin-top: var(--sp-1);
   font-size: 0.75rem;
+  line-height: 1.3;
   color: var(--brief-muted);
   text-align: center;
-  font-variant-numeric: tabular-nums;
 }
 
-/* The hover card sits above its bar. */
+/* The hover card sits above its mark. */
 [data-brief] .sp-card {
   position: absolute;
-  bottom: calc(100% + 0.4rem);
+  bottom: calc(100% + var(--sp-2));
   left: 50%;
   z-index: 30;
   display: grid;
-  gap: 0.1rem;
+  gap: 2px;
   width: max-content;
   max-width: 15rem;
-  padding: 0.5rem 0.7rem;
+  padding: var(--sp-2) var(--sp-3);
   border: 1px solid var(--brief-hairline);
   border-radius: 6px;
   background: #fff;
+  /* DESIGN.md's Popover shadow. */
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   font-size: 0.8125rem;
   transform: translateX(-50%);
@@ -302,122 +403,22 @@
   color: var(--brief-muted);
 }
 
-[data-brief] .sp-footnote {
-  max-width: 44rem;
-  margin: 0.75rem 0 0;
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
+/* ── Rows: the areas and the review's lines share one grid ──────────────── */
 
-/* ── The review's own lines ────────────────────────────────────────── */
-
-[data-brief] .sp-items {
+[data-brief] .sp-items,
+[data-brief] .sp-areas {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-[data-brief] .sp-item {
-  border-top: 1px solid var(--brief-hairline);
-}
-
-[data-brief] .sp-item-row {
-  display: grid;
-  grid-template-columns: minmax(12rem, 1.4fr) minmax(0, 1fr) 8.5rem;
-  gap: 0.2rem 1.25rem;
-  align-items: center;
-  width: 100%;
-  padding: 0.55rem 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-[data-brief] .sp-item-name {
-  min-width: 0;
-  font-weight: 600;
-}
-
-[data-brief] .sp-item-sub {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 400;
-  color: var(--brief-muted);
-}
-
-[data-brief] .sp-item-row:hover .sp-item-name,
-[data-brief] .sp-item-row:focus-visible .sp-item-name,
-[data-brief] .sp-item[data-open] .sp-item-name {
-  background: var(--brief-highlight);
-}
-
-[data-brief] .sp-item-amount {
-  color: var(--brief-blue);
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-  white-space: nowrap;
-}
-
-[data-brief] .sp-detail {
-  margin: 0.4rem 0 0.6rem;
-}
-
-[data-brief] .sp-detail-title {
-  margin: 0 0 0.2rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-[data-brief] .sp-detail-list {
-  max-width: 40rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-[data-brief] .sp-detail-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.15rem 0;
-  font-size: 0.8125rem;
-}
-
-[data-brief] .sp-detail-amount {
-  color: var(--brief-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-[data-brief] .sp-quote {
-  max-width: 44rem;
-  color: var(--brief-muted);
-}
-
-/* ── What it is for ────────────────────────────────────────────────── */
-
-[data-brief] .sp-areas-intro .brief-hub-headline {
-  margin-bottom: 1rem;
-}
-
-[data-brief] .sp-lede {
-  max-width: 44rem;
-  margin: -0.4rem 0 1rem;
-  font-size: 0.9375rem;
-  color: var(--brief-muted);
-}
-
-/* One row per area: its name, then two bars on one scale. */
 [data-brief] .sp-row {
   display: grid;
-  grid-template-columns: minmax(10rem, 1.1fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: 0.2rem 1.25rem;
+  grid-template-columns: var(--sp-cols);
+  gap: var(--sp-1) var(--sp-6);
   align-items: center;
   width: 100%;
-  padding: 0.55rem 0;
+  padding: var(--sp-2) 0;
   border: 0;
   background: none;
   color: inherit;
@@ -429,25 +430,34 @@
   cursor: pointer;
 }
 
+/* A line's one bar spans both quantity columns. */
+[data-brief] .sp-item-row > .sp-cell {
+  grid-column: 2 / -1;
+}
+
 [data-brief] .sp-row-head {
-  padding: 0 0 0.35rem;
+  padding: 0 0 var(--sp-2);
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--brief-muted);
 }
 
-[data-brief] .sp-areas {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
+[data-brief] .sp-item,
 [data-brief] .sp-area {
   border-top: 1px solid var(--brief-hairline);
 }
 
+[data-brief] .sp-item-name,
 [data-brief] .sp-area-name {
+  min-width: 0;
   font-weight: 600;
+}
+
+[data-brief] .sp-item-sub {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--brief-muted);
 }
 
 [data-brief] .sp-area-apart .sp-area-name {
@@ -455,21 +465,23 @@
   color: var(--brief-muted);
 }
 
+[data-brief] .sp-row:hover .sp-item-name,
+[data-brief] .sp-row:focus-visible .sp-item-name,
+[data-brief] .sp-item[data-open] .sp-item-name,
 [data-brief] .sp-row:hover .sp-area-name,
 [data-brief] .sp-row:focus-visible .sp-area-name,
 [data-brief] .sp-area[data-open] .sp-area-name {
   background: var(--brief-highlight);
 }
 
+/* A bar and its figure. The figure's column is wide enough for an amount,
+   so a bar keeps its length when shares switch to amounts; figures end at
+   the row's right edge, with the amounts of an opened row. */
 [data-brief] .sp-cell {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 4.5rem;
-  gap: 0.6rem;
+  grid-template-columns: minmax(0, 1fr) var(--sp-label);
+  gap: var(--sp-3);
   align-items: center;
-}
-
-[data-brief] .sp-step-list .sp-cell {
-  grid-template-columns: minmax(0, 1fr);
 }
 
 [data-brief] .sp-bar-line {
@@ -498,6 +510,7 @@
 
 [data-brief] .sp-pct {
   font-variant-numeric: tabular-nums;
+  text-align: right;
   white-space: nowrap;
 }
 
@@ -510,34 +523,64 @@
   color: var(--brief-muted);
 }
 
+[data-brief] .sp-more {
+  justify-self: start;
+}
+
+/* ── An opened row ─────────────────────────────────────────────────── */
+
 [data-brief] .sp-open {
-  padding: 0 0 0.9rem;
+  display: grid;
+  gap: var(--sp-2);
+  padding: 0 0 var(--sp-4);
+}
+
+[data-brief] .sp-open > .brief-av-link {
+  justify-self: start;
 }
 
 [data-brief] .sp-open-line {
-  margin: 0.2rem 0 0.4rem;
+  max-width: 44rem;
+  margin: 0;
   font-size: 0.9375rem;
 }
 
-[data-brief] .sp-ai {
-  margin-left: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+[data-brief] .sp-quote {
   color: var(--brief-muted);
 }
 
+[data-brief] .sp-detail-title {
+  margin: 0 0 var(--sp-1);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+[data-brief] .sp-detail-list,
 [data-brief] .sp-lines {
-  max-width: 44rem;
-  margin: 0.3rem 0 0.5rem;
+  margin: 0;
   padding: 0;
   list-style: none;
+}
+
+[data-brief] .sp-detail-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-1) 0;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .sp-detail-amount {
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 [data-brief] .sp-line {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.25rem 0;
+  gap: var(--sp-4);
+  padding: var(--sp-1) 0;
   font-size: 0.9375rem;
 }
 
@@ -553,70 +596,46 @@
   white-space: nowrap;
 }
 
-/* ── Reported progress beside the money ─────────────────────────────── */
-
-/* A national target, its reported progress, then the money on one scale. */
-[data-brief] .sp-row-progress {
-  grid-template-columns: minmax(12rem, 1.5fr) minmax(7rem, 0.45fr) minmax(0, 1fr);
-}
-
-[data-brief] .sp-progress-name {
-  font-weight: 400;
-}
-
-[data-brief] .sp-progress-label {
-  margin-right: 0.4rem;
-  font-weight: 600;
-}
-
-/* Limited or no progress reads in full ink; the rest steps back. */
-[data-brief] .sp-progress-status {
-  font-size: 0.9375rem;
-  color: var(--brief-muted);
-}
-
-[data-brief] .sp-progress-status[data-status="limited"],
-[data-brief] .sp-progress-status[data-status="no_progress"] {
-  color: var(--brief-ink);
-  font-weight: 600;
-}
-
-[data-brief] .sp-cell-money {
-  grid-template-columns: minmax(0, 1fr) 8.5rem;
-}
-
-[data-brief] .sp-route + .sp-route {
-  margin-top: 0.6rem;
-}
-
-[data-brief] .sp-route-head {
-  font-weight: 600;
-}
+/* ── Narrow screens ────────────────────────────────────────────────── */
 
 @media (max-width: 820px) {
-  [data-brief] .sp-step {
-    grid-template-columns: minmax(0, 1fr);
+  [data-brief] .sp-brief {
+    --sp-cols: minmax(0, 1fr) minmax(0, 1fr);
+    --sp-label: 6.5rem;
   }
 
-  [data-brief] .sp-row {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
+  [data-brief] .sp-record > .sp-chart,
+  [data-brief] .sp-item-name,
   [data-brief] .sp-area-name,
-  [data-brief] .sp-row-head > span:first-child {
+  [data-brief] .sp-row-head > span:first-child,
+  [data-brief] .sp-item-row > .sp-cell {
     grid-column: 1 / -1;
   }
 
-  [data-brief] .sp-item-row {
-    grid-template-columns: minmax(0, 1fr) auto;
+  [data-brief] .sp-record-side {
+    grid-column: 1 / -1;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
   }
 
-  [data-brief] .sp-item-row .sp-cell {
-    display: none;
+  /* Ten years fit a phone: narrow columns, the first and last figure kept. */
+  [data-brief] .sp-plot {
+    grid-template-columns: repeat(var(--sp-years), minmax(1.5rem, 1fr));
+    column-gap: var(--sp-1);
+  }
+
+  [data-brief] .sp-stack-value:not([data-edge]),
+  [data-brief] .sp-bar-value:not([data-edge]) {
+    visibility: hidden;
+  }
+
+  [data-brief] .sp-year-label {
+    font-size: 0.75rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  [data-brief] .sp-seg,
   [data-brief] .sp-bar {
     transition: none;
   }

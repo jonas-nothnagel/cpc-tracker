@@ -3597,7 +3597,6 @@
     "spending": {
       "title": "Reviewed biodiversity spending",
       "source": "Biodiversity Expenditure Review (BER), {years}",
-      "atPar": "amounts in balboas, at par with the US$",
       "illustrative": "Illustrative figures, adapted from a real review",
       "translated": "machine translation",
       "money": "{sign}{amount}{unit, select, trillion { trillion} billion { billion} million { million} other {}}",
@@ -3609,7 +3608,6 @@
       },
       "fieldLabel": "{sign}{every} of every {sign}100 of {scope}, as a hundred squares",
       "record": {
-        "kicker": "Out of all public spending",
         "headline": "{sign}{every} of every {sign}100 of {scope} in {years} was reviewed biodiversity spending.",
         "reviewed": "Reviewed biodiversity spending, {years}",
         "public": "All {scope}, {years}"
@@ -3654,7 +3652,7 @@
         "inAll": "{amount} in all",
         "tableCaption": "Reviewed spending by year, {unit}",
         "year": "Year",
-        "panama2015": "2015 is not shown: the Ministry of Environment, created that year, has no budget lines in the review for it."
+        "partNotInData": "{part} not in the data"
       },
       "items": {
         "kicker": "What the review counts",
@@ -3666,7 +3664,6 @@
           "core": "Counted in full",
           "other": "Counted in part"
         },
-        "inUsd": "{usd} at each year's exchange rate.",
         "counted": "Counted {counted} of {spent} spent, at the review's rates",
         "rate": "{name}, counted at {rate}",
         "institutionRate": "Counted at {rate} of its spending, the review's rate.",
@@ -3682,12 +3679,13 @@
         "kicker": "What it is for",
         "ai": "AI-suggested",
         "headline": "{area} holds {spend} of the reviewed spending and {targets} of the targets.",
-        "projects": "The areas are read from the review's {count} project lines, {amount} in {years}, a second view of the same money.",
         "colArea": "Biodiversity area",
         "colTargets": "Share of the targets",
         "colSpend": "Share of the reviewed spending",
+        "colTargetsCount": "Targets",
+        "colSpendAmount": "Reviewed spending",
         "listLabel": "Biodiversity areas, their share of the targets and of the reviewed spending",
-        "rowLabel": "{targets} of the targets, {spend} of the reviewed spending",
+        "rowLabel": "Targets: {targets}; reviewed spending: {spend}",
         "noSpend": "None",
         "apartRow": "Not placed in an area yet",
         "apartLabel": "{spend} of the reviewed spending is not yet placed in an area",
@@ -3703,29 +3701,12 @@
         "aiSuggested": "AI-suggested, not reviewed",
         "apartWhy": "Kept apart until a person decides",
         "linesMore": "{count, plural, one {and # more line} other {and # more lines}}",
-        "checkedCount": "{checked, number} of {total, number} lines have an area checked by a person; the others are AI-suggested or kept apart."
+        "switch": "Show shares or amounts",
+        "shares": "Share",
+        "amounts": "Amount",
+        "targetsCount": "{count, plural, =0 {No target} one {# target} other {# targets}}"
       },
-      "progress": {
-        "kicker": "Reported progress beside reviewed spending",
-        "ai": "AI-suggested",
-        "headline": "The 7th National Report rates {lagging, number} of the {total, number} national targets at limited or no progress; {unmatched, number} of these share no Global Biodiversity Framework (GBF) target with a reviewed budget line.",
-        "headlineAllMet": "The 7th National Report rates {lagging, number} of the {total, number} national targets at limited or no progress; each of these shares a Global Biodiversity Framework (GBF) target with at least one reviewed budget line.",
-        "headlineNoneLagging": "The 7th National Report rates none of the {total, number} national targets at limited or no progress.",
-        "colTarget": "National target",
-        "colStatus": "Reported progress",
-        "colSpend": "Reviewed spending on lines of the same GBF targets, {years}",
-        "listLabel": "National targets, their reported progress and the reviewed spending on budget lines that share a GBF target with them",
-        "rowLabel": "{status}; {spend}",
-        "noLine": "No line",
-        "gbfTarget": "{n} ({title})",
-        "filed": "Filed under GBF {count, plural, one {target} other {targets}} {targets}.",
-        "route": "Through GBF target {n} ({title}): {count, plural, one {# line} other {# lines}}, {amount}",
-        "linesLabel": "Budget lines through GBF target {n}",
-        "typeChecked": "expenditure type checked by a person",
-        "typeAi": "expenditure type AI-suggested, not reviewed",
-        "linesNone": "No reviewed budget line shares a GBF target with this national target.",
-        "footnote": "A budget line counts under every national target it shares a GBF target with, so amounts are not added across targets. {linked, number} of {total, number} lines have a GBF target on which both AI readings of their expenditure type agree; the others are kept apart."
-      }
+      "currency": "Amounts in"
     },
     "areaView": {
       "kicker": "By policy area",

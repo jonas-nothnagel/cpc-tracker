@@ -3597,7 +3597,6 @@
     "spending": {
       "title": "Gasto revisado en biodiversidad",
       "source": "Revisión del Gasto en Biodiversidad (BER), {years}",
-      "atPar": "montos en balboas, a la par con el dólar",
       "illustrative": "Cifras ilustrativas, adaptadas de una revisión real",
       "translated": "traducción automática",
       "money": "{sign}{amount}{unit, select, trillion { billones} billion { mil millones} million { millones} other {}}",
@@ -3609,7 +3608,6 @@
       },
       "fieldLabel": "{sign}{every} de cada {sign}100 de {scope}, en cien cuadrados",
       "record": {
-        "kicker": "Del total del gasto público",
         "headline": "{sign}{every} de cada {sign}100 de {scope} en {years} fue gasto revisado en biodiversidad.",
         "reviewed": "Gasto revisado en biodiversidad, {years}",
         "public": "Todo el {scope}, {years}"
@@ -3654,7 +3652,7 @@
         "inAll": "{amount} en total",
         "tableCaption": "Gasto revisado por año, {unit}",
         "year": "Año",
-        "panama2015": "2015 no se muestra: el Ministerio de Ambiente, creado ese año, no tiene líneas presupuestarias en la revisión para ese año."
+        "partNotInData": "{part}: no está en los datos"
       },
       "items": {
         "kicker": "Lo que cuenta la revisión",
@@ -3666,7 +3664,6 @@
           "core": "Contada por completo",
           "other": "Contada en parte"
         },
-        "inUsd": "{usd} al tipo de cambio de cada año.",
         "counted": "Contado: {counted} de {spent} gastados, según las tasas de la revisión",
         "rate": "{name}, contado al {rate}",
         "institutionRate": "Contada al {rate} de su gasto, la tasa de la revisión.",
@@ -3682,12 +3679,13 @@
         "kicker": "A qué se destina",
         "ai": "Sugerido por IA",
         "headline": "{area} concentra {spend} del gasto revisado y {targets} de las metas.",
-        "projects": "Las áreas se leen en las {count} líneas de proyecto de la revisión, {amount} en {years}, otra vista del mismo dinero.",
         "colArea": "Área de biodiversidad",
         "colTargets": "Parte de las metas",
         "colSpend": "Parte del gasto revisado",
+        "colTargetsCount": "Metas",
+        "colSpendAmount": "Gasto revisado",
         "listLabel": "Áreas de biodiversidad, su parte de las metas y del gasto revisado",
-        "rowLabel": "{targets} de las metas, {spend} del gasto revisado",
+        "rowLabel": "Metas: {targets}; gasto revisado: {spend}",
         "noSpend": "Ninguno",
         "apartRow": "Aún sin área",
         "apartLabel": "{spend} del gasto revisado aún no tiene área",
@@ -3703,29 +3701,12 @@
         "aiSuggested": "Sugerido por IA, sin revisar",
         "apartWhy": "Apartada hasta que una persona decida",
         "linesMore": "{count, plural, one {y # línea más} other {y # líneas más}}",
-        "checkedCount": "{checked, number} de {total, number} líneas tienen un área revisada por una persona; las demás son sugerencias de la IA o están apartadas."
+        "switch": "Mostrar proporciones o montos",
+        "shares": "Proporción",
+        "amounts": "Monto",
+        "targetsCount": "{count, plural, =0 {Ninguna meta} one {# meta} other {# metas}}"
       },
-      "progress": {
-        "kicker": "Avance informado junto al gasto revisado",
-        "ai": "Sugerido por IA",
-        "headline": "El Séptimo Informe Nacional califica {lagging, number} de las {total, number} metas nacionales con un avance limitado o nulo; {unmatched, number} de ellas no comparten ninguna meta del Marco Mundial de Biodiversidad (GBF) con una línea presupuestaria revisada.",
-        "headlineAllMet": "El Séptimo Informe Nacional califica {lagging, number} de las {total, number} metas nacionales con un avance limitado o nulo; cada una comparte una meta del Marco Mundial de Biodiversidad (GBF) con al menos una línea presupuestaria revisada.",
-        "headlineNoneLagging": "El Séptimo Informe Nacional no califica ninguna de las {total, number} metas nacionales con un avance limitado o nulo.",
-        "colTarget": "Meta nacional",
-        "colStatus": "Avance informado",
-        "colSpend": "Gasto revisado en líneas de las mismas metas del GBF, {years}",
-        "listLabel": "Metas nacionales, su avance informado y el gasto revisado en las líneas presupuestarias que comparten con ellas una meta del GBF",
-        "rowLabel": "{status}; {spend}",
-        "noLine": "Ninguna línea",
-        "gbfTarget": "{n} ({title})",
-        "filed": "Asociada a {count, plural, one {la meta} other {las metas}} del GBF {targets}.",
-        "route": "Por la meta {n} del GBF ({title}): {count, plural, one {# línea} other {# líneas}}, {amount}",
-        "linesLabel": "Líneas presupuestarias por la meta {n} del GBF",
-        "typeChecked": "tipo de gasto revisado por una persona",
-        "typeAi": "tipo de gasto sugerido por IA, sin revisar",
-        "linesNone": "Ninguna línea presupuestaria revisada comparte una meta del GBF con esta meta nacional.",
-        "footnote": "Una línea presupuestaria cuenta en cada meta nacional con la que comparte una meta del GBF, por lo que los montos no se suman entre metas. {linked, number} de {total, number} líneas tienen una meta del GBF en la que coinciden las dos lecturas de la IA de su tipo de gasto; las demás quedan aparte."
-      }
+      "currency": "Importes en"
     },
     "areaView": {
       "kicker": "Por área de política",

@@ -13,7 +13,6 @@ import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { spendingSetup } from "@/lib/brief/spending";
 import { loadBerAreas } from "@/lib/brief/ber-areas";
-import { loadBerChain } from "@/lib/brief/ber-chain";
 import { BriefApp } from "@/components/brief/brief-app";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -44,15 +43,9 @@ async function load(props: Props) {
   });
   // A country whose expenditure review is rebuilt from its own workbook (or,
   // for Country X, states the public spending it is part of) also shows its
-  // reviewed spending, with each line's area as AI-suggested or checked, and
-  // its national targets' reported progress beside the lines they meet.
+  // reviewed spending, with each line's area as AI-suggested or checked.
   const spending =
-    spendingSetup(data, base, {
-      areas: loadBerAreas(entry.id),
-      names: loadBerNames(entry.id),
-      chain: loadBerChain(entry.id),
-      locale,
-    }) ?? undefined;
+    spendingSetup(data, base, { areas: loadBerAreas(entry.id), names: loadBerNames(entry.id), locale }) ?? undefined;
   const source = { ...base, contracts: file !== null, spending: spending !== undefined };
   const contracts = file ? { setup: contractsSetup({ file, source }), geo: geoFor(entry.id, locale) } : undefined;
   return { locale, source, data, contracts, spending, targetLabels };
@@ -93,7 +86,9 @@ export default async function BriefPage(props: Props) {
       })}
       contracts={loaded.contracts}
       spending={loaded.spending}
-      initialCurrency={cur === "usd" ? "usd" : "mnt"}
+      // Money in US$, but in tugrik on the Mongolian page; a shared link
+      // keeps the reader's choice (?cur=usd or ?cur=mnt).
+      initialCurrency={cur === "usd" || cur === "mnt" ? cur : loaded.locale === "mn" ? "mnt" : "usd"}
     />
   );
 }

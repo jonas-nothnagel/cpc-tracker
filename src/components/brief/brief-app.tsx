@@ -72,7 +72,8 @@ export function BriefApp({
   /** The country's reviewed spending, where its review states the public
    *  spending it is part of. */
   spending?: SpendingSetup;
-  /** From the link (?cur=usd): the currency the contracts open in. */
+  /** The currency every amount on the page opens in: from the link (?cur=),
+   *  else US$, or tugrik on the Mongolian page (set by the route). */
   initialCurrency?: Currency;
 }) {
   const tl = useTranslations("briefing.lens");
@@ -255,6 +256,8 @@ export function BriefApp({
                   setup={spending}
                   source={source}
                   docs={selection.docs}
+                  currency={currency}
+                  onCurrency={setCurrency}
                   onExploreArea={explore?.layers?.items.some((it) => it.layer === "budget") ? exploreArea : undefined}
                 />
               ) : id === "contracts" && contracts ? (

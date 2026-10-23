@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { briefFixture } from "./test-fixture";
 import { parseBerAreas } from "./ber-areas";
-import { parseBerChain } from "./ber-chain-shared";
 import { legacyPayload as legacy, levelsPayload as mongoliaLike } from "./spending-fixture";
 import { percentLabel, spendingAreas, spendingRecord, spendingSetup } from "./spending";
 
@@ -46,9 +45,28 @@ describe("spendingSetup from a rebuilt record", () => {
       [0.05, 20, 1],
       [1, 6, 6],
     ]);
-    expect(first.bodies).toEqual({ year: "2021", count: 31, names: [{ name: "Khan Khentii administration", amount: 0.8 }] });
+    // A body's amount is one year's: its US$ twin at that year's rate.
+    expect(first.bodies).toEqual({
+      year: "2021",
+      count: 31,
+      names: [{ name: "Khan Khentii administration", amount: 0.8, amountUsd: 0.8e9 / 2500 }],
+    });
     // US$ in whole dollars, each year at its own rate: 3 bn / 2000 + 4 bn / 2500.
     expect(first.totalUsd).toBeCloseTo(3e9 / 2000 + 4e9 / 2500);
+    // The rates hold totals over the complete years: converted as the line is.
+    const factor = first.totalUsd! / first.total;
+    expect(first.rates?.[0].spentUsd).toBeCloseTo(20 * factor);
+    expect(first.rates?.[0].countedUsd).toBeCloseTo(1 * factor);
+  });
+
+  it("gives every line its US$ twin, each year at its own rate", () => {
+    const setup = spendingSetup(mongoliaLike(), briefFixture())!;
+    expect(setup.lines.map((l) => [l.code, l.total])).toEqual([
+      ["71405", 7],
+      ["82212", 3],
+    ]);
+    expect(setup.lines[0].totalUsd).toBeCloseTo(3e9 / 2000 + 4e9 / 2500);
+    expect(setup.lines[1].totalUsd).toBeCloseTo(1e9 / 2000 + 2e9 / 2500);
   });
 
   it("hides the earlier comparisons until they are rebuilt for these lines", () => {
@@ -141,6 +159,14 @@ describe("spendingRecord", () => {
     ]);
     expect(record.byYear[0].parts[0].share).toBeCloseTo(0.03);
     expect(record.reviewedUsd).toBeCloseTo(4e9 / 2000 + 6e9 / 2500);
+    // All public spending, ₮150 bn in each complete year, at each year's rate.
+    expect(record.publicUsd).toBeCloseTo(150e9 / 2000 + 150e9 / 2500);
+    expect(record.byYear.map((y) => y.totalUsd)).toEqual([4e9 / 2000, 6e9 / 2500, null]);
+  });
+
+  it("has no US$ twins for a review in US$", () => {
+    const record = spendingRecord(spendingSetup(legacy(), briefFixture())!);
+    expect([record.reviewedUsd, record.publicUsd]).toEqual([null, null]);
   });
 });
 
@@ -186,68 +212,9 @@ describe("spendingAreas", () => {
     const reading = spendingAreas(spendingSetup(mongoliaLike(), source)!, source, ["A", "B", "C"]);
     expect(reading.apart.lines.map((l) => l.code)).toEqual(["82212"]);
     expect(reading.apart.spendShare).toBeCloseTo(3 / 10);
-    expect(reading.checked).toBe(0);
-  });
-});
-
-describe("progress beside the money (the official chain)", () => {
-  const chain = parseBerChain({
-    nationalTargets: [
-      {
-        id: "NT03",
-        label: "NT03",
-        text: "By 2030, 30% of the land is protected. More words.",
-        status: "on_track",
-        levelOfProgress: "On track to achieve target",
-        gbf: [3],
-        gbfTitles: { "3": "30% of areas are effectively conserved" },
-        nbsapTargetId: "NBSAP_3",
-        lines: [{ code: "71405", via: [3] }],
-      },
-      {
-        id: "NT07",
-        label: "NT07",
-        text: "Reduce pollution.",
-        status: "limited",
-        gbf: [7],
-        gbfTitles: { "7": "Reduce pollution risk and impact" },
-        // A line the brief does not show (no reviewed spending) drops out.
-        lines: [{ code: "82212", via: [7] }, { code: "99999", via: [7] }],
-      },
-      { id: "NT12", label: "NT12", text: "Green cities.", status: "no_progress", gbf: [12], lines: [] },
-      { id: "", text: "No id: left out" },
-      { id: "NT20", text: "An odd status reads as unknown.", status: "achieved", lines: [] },
-    ],
-    lines: {
-      "71405": { type: "7.01.12", gbf: [1, 3], status: "linked" },
-      "82212": { type: "6.03.05", gbf: [7], status: "linked" },
-    },
-  });
-
-  it("reads the chain file, keeping only well-formed national targets", () => {
-    expect(chain!.targets.map((t) => [t.id, t.status])).toEqual([
-      ["NT03", "on_track"],
-      ["NT07", "limited"],
-      ["NT12", "no_progress"],
-      ["NT20", "unknown"],
-    ]);
-  });
-
-  it("puts the least advanced national targets first, each with the spending on its lines", () => {
-    const setup = spendingSetup(mongoliaLike(), briefFixture(), { chain })!;
-    const progress = setup.progress!;
-    expect(progress.targets.map((t) => [t.id, t.spend, t.lines.map((l) => [l.code, l.via])])).toEqual([
-      ["NT12", 0, []],
-      ["NT07", 3, [["82212", [7]]]],
-      ["NT03", 7, [["71405", [3]]]],
-      ["NT20", 0, []],
-    ]);
-    expect([progress.linesLinked, progress.linesTotal]).toEqual([2, 2]);
-  });
-
-  it("is absent without a chain, and for Country X's file", () => {
-    expect(spendingSetup(mongoliaLike(), briefFixture())!.progress).toBeNull();
-    expect(spendingSetup(legacy(), briefFixture(), { chain })!.progress).toBeNull();
+    expect(reading.apart.spendUsd).toBeCloseTo(1e9 / 2000 + 2e9 / 2500);
+    // The area of 71405 (g5 from the pipeline's classification) in US$ too.
+    expect(reading.areas.find((a) => a.id === "g5")?.spendUsd).toBeCloseTo(3e9 / 2000 + 4e9 / 2500);
   });
 });
 

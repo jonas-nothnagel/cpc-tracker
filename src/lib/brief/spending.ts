@@ -1,12 +1,10 @@
 import { areaTones } from "./area-shares";
 import { lensAreas } from "./areas";
 import type { BerAreas, AreaStatus } from "./ber-areas";
-import type { BerChain } from "./ber-chain-shared";
 import { shownName, type BerNames } from "./ber-names-shared";
 import { areaLines, countedIn, shownCurrency } from "./ber-record";
 import { MIN_AREA_COMPARISONS, scopeOf, type ToneCounts } from "./compute";
 import type { BriefSource } from "./source";
-import type { Nr7Status } from "@/lib/labels";
 
 /** A name as the page shows it: in the page's language where the names file
  *  gives one, a machine translation flagged, the review's own kept beside. */
@@ -31,9 +29,11 @@ interface Shown {
  *     checked it, and a line the AI could not place is kept apart.
  *
  * Every amount is the review's own (python/data/{country}-ber.json, built by
- * the adapters of step 1); areas come from step 2 (python/output/{country}/
- * ber_areas_globe.json, with a person's calls in python/data). Country X's
- * illustrative file predates the record and is read the earlier way.
+ * the adapters of step 1), in the review's currency, with its US$ twin at each
+ * year's exchange rate where the review is not in US$; the page shows one of
+ * the two. Areas come from step 2 (python/output/{country}/ber_areas_globe.json,
+ * with a person's calls in python/data). Country X's illustrative file predates
+ * the record and is read the earlier way.
  */
 
 /** A part of the reviewed spending the review keeps apart. */
@@ -62,16 +62,17 @@ export interface SpendingItem extends Shown {
   sub?: string;
   /** Counted over the complete years. */
   total: number;
-  /** The same in US$, each year at its own rate; null where amounts are in US$. */
+  /** The same in whole US$, each year at its own rate; null where amounts are in US$. */
   totalUsd: number | null;
-  /** What the review spent and counted, by attribution rate (Mongolia). */
-  rates?: { name: string; rate: number; spent: number; counted: number }[];
+  /** What the review spent and counted, by attribution rate (Mongolia). The
+   *  US$ twins are converted as the line's own spending is, year by year. */
+  rates?: { name: string; rate: number; spent: number; counted: number; spentUsd: number | null; countedUsd: number | null }[];
   /** The one rate an institution is counted at (Sri Lanka). */
   rate?: number;
   /** The review's reason for that rate. */
   rationale?: string;
   /** Who spends it, in the latest complete year. */
-  bodies?: { year: string; count: number; names: { name: string; amount: number }[] };
+  bodies?: { year: string; count: number; names: { name: string; amount: number; amountUsd: number | null }[] };
   /** What it pays for, as shares of the counted amount. */
   pays?: { name: string; share: number }[];
   /** The activities inside a programme (Panama), largest first. */
@@ -87,6 +88,8 @@ export interface SpendingLine extends Shown {
   years: Record<string, number | null>;
   /** Counted over the complete years. */
   total: number;
+  /** The same in whole US$, each year at its own rate; null where amounts are in US$. */
+  totalUsd: number | null;
   /** The line's biodiversity area (a GLOBE category id), or null while kept apart. */
   area: string | null;
   areaStatus: AreaStatus;
@@ -115,38 +118,11 @@ export interface SpendingSetup {
   /** Strong matches between lines and targets are shown (Country X's file);
    *  for a rebuilt record they wait for the rebuilt comparison. */
   showMatches: boolean;
-  /** Plain-language notes the view states, by key. */
-  notes: ("levels" | "panama2015" | "atPar" | "projects" | "partOfMoney")[];
+  /** The notes that apply to this review, by key. Not stated on the face:
+   *  their wording is kept in src/components/brief/spending/DISCLAIMERS.md. */
+  notes: ("levels" | "panama2015" | "atPar" | "projects")[];
   /** The biodiversity areas, in the taxonomy's order. */
   areas: { id: string; name: string }[];
-  /** The national targets of the 7th National Report beside the lines they
-   *  meet through a GBF target (step 3's official chain), where built. */
-  progress: SpendingProgress | null;
-}
-
-export interface ProgressTarget {
-  id: string;
-  label: string | null;
-  text: string;
-  status: Nr7Status;
-  /** GBF target number -> the CBD's heading, as the report gives it. */
-  gbfTitles: Record<string, string>;
-  nbsapTargetId: string | null;
-  /** The lines with reviewed spending it meets, largest first, each with the
-   *  GBF targets it meets them through and whether a person checked the
-   *  line's expenditure type. */
-  lines: (SpendingLine & { via: number[]; typeChecked: boolean })[];
-  /** Their spending over the complete years. A line counts under every
-   *  national target it meets, so these are never added across targets. */
-  spend: number;
-}
-
-export interface SpendingProgress {
-  /** Least advanced first, then the most spending. */
-  targets: ProgressTarget[];
-  /** Lines whose two readings share a GBF target, of the lines read. */
-  linesLinked: number;
-  linesTotal: number;
 }
 
 type Json = Record<string, unknown>;
@@ -167,8 +143,6 @@ export interface SpendingOptions {
   areas?: BerAreas | null;
   /** Display names in the page's language. */
   names?: BerNames | null;
-  /** The official chain to the 7th National Report (step 3). */
-  chain?: BerChain | null;
   locale?: string;
 }
 
@@ -188,7 +162,7 @@ export function spendingSetup(data: Json, source: BriefSource, options: Spending
     return { name: shown.name, ...(shown.machine ? { translated: true as const } : {}), ...(!shown.own ? { original: own } : {}) };
   };
   return record
-    ? fromRecord(record, globe.categories, options.areas ?? null, options.chain ?? null, data, source, show)
+    ? fromRecord(record, globe.categories, options.areas ?? null, data, source, show)
     : fromLegacy(ber, data, source, globe.categories);
 }
 
@@ -216,7 +190,6 @@ function fromRecord(
   record: Json,
   categories: { id: string; name: string }[],
   areas: BerAreas | null,
-  chain: BerChain | null,
   data: Json,
   source: BriefSource,
   show: (code: string, own: string) => Shown,
@@ -265,14 +238,17 @@ function fromRecord(
   const counted = countedIn;
   // US$ in whole dollars, each year at its own rate.
   const base = unit === "billion" ? 1e9 : 1e6;
+  const inUsd = (value: number, year: string): number | null => {
+    const r = rate.get(year);
+    return atPar || !r ? null : (value * base) / r;
+  };
   const totals = (line: Json) => {
     let total = 0;
     let usd = 0;
     for (const year of complete) {
       const value = counted(line, year);
       total += value;
-      const r = rate.get(year);
-      if (r) usd += (value * base) / r;
+      usd += inUsd(value, year) ?? 0;
     }
     return { total, usd: atPar ? null : usd };
   };
@@ -301,7 +277,7 @@ function fromRecord(
         };
       });
   } else {
-    items = lines.map((l) => ({ ...mongoliaItem(l, totals, complete), ...show(String(l.code), String(l.name)) }));
+    items = lines.map((l) => ({ ...mongoliaItem(l, totals, complete, inUsd), ...show(String(l.code), String(l.name)) }));
   }
   items = items.filter((i) => i.total > 0).sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
 
@@ -310,7 +286,7 @@ function fromRecord(
   const spendingLines: SpendingLine[] = [];
   for (const l of areaLines(record)) {
     const code = String(l.code);
-    const { total } = totals(l);
+    const { total, usd } = totals(l);
     if (!(total > 0)) continue;
     const byYear: Record<string, number | null> = {};
     for (const y of years) byYear[y.year] = asRecord(asRecord(l.amounts)?.[y.year]) ? counted(l, y.year) : null;
@@ -322,6 +298,7 @@ function fromRecord(
       ...show(code, String(l.name)),
       years: byYear,
       total,
+      totalUsd: usd,
       area: reading ? reading.area : fallback,
       areaStatus: reading ? reading.status : fallback ? "ai" : "apart",
       ...(reading?.reason ? { reason: reading.reason } : {}),
@@ -347,46 +324,6 @@ function fromRecord(
     showMatches,
     notes,
     areas: categories,
-    progress: chain ? chainProgress(chain, spendingLines) : null,
-  };
-}
-
-/** Least advanced first, as the Explore ring ranks a target's NR7 status. */
-const PROGRESS_ORDER: Nr7Status[] = ["no_progress", "limited", "on_track", "unknown"];
-
-function chainProgress(chain: BerChain, lines: SpendingLine[]): SpendingProgress | null {
-  if (chain.targets.length === 0) return null;
-  const byCode = new Map(lines.map((l) => [l.code, l]));
-  const targets = chain.targets
-    .map((t) => {
-      const met = t.lines
-        .map((l) => {
-          const line = byCode.get(l.code);
-          return line ? { ...line, via: l.via, typeChecked: chain.lines[l.code]?.checked ?? false } : null;
-        })
-        .filter((l): l is SpendingLine & { via: number[]; typeChecked: boolean } => l !== null)
-        .sort((a, b) => b.total - a.total || a.code.localeCompare(b.code));
-      return {
-        id: t.id,
-        label: t.label,
-        text: t.text,
-        status: t.status,
-        gbfTitles: t.gbfTitles,
-        nbsapTargetId: t.nbsapTargetId,
-        lines: met,
-        spend: met.reduce((s, l) => s + l.total, 0),
-      };
-    })
-    .sort(
-      (a, b) =>
-        PROGRESS_ORDER.indexOf(a.status) - PROGRESS_ORDER.indexOf(b.status) ||
-        b.spend - a.spend ||
-        a.id.localeCompare(b.id, undefined, { numeric: true }),
-    );
-  return {
-    targets,
-    linesLinked: lines.filter((l) => chain.lines[l.code]?.linked).length,
-    linesTotal: lines.length,
   };
 }
 
@@ -394,8 +331,13 @@ function mongoliaItem(
   l: Json,
   totals: (line: Json) => { total: number; usd: number | null },
   complete: string[],
+  inUsd: (value: number, year: string) => number | null,
 ): SpendingItem {
   const { total, usd } = totals(l);
+  // The review's rates hold totals over the complete years, so their US$
+  // twins take the line's own conversion: each year's rate, weighted as the
+  // line's spending is.
+  const factor = usd !== null && total > 0 ? usd / total : null;
   const relevance = (l.relevance as Json[] | undefined) ?? [];
   // The review's rates, the money spent and counted at each.
   const byRate = new Map<number, { spent: number; counted: number; names: string[] }>();
@@ -409,7 +351,14 @@ function mongoliaItem(
   }
   const rates = [...byRate.entries()]
     .sort((a, b) => b[1].spent - a[1].spent)
-    .map(([rate, e]) => ({ rate, spent: e.spent, counted: e.counted, name: e.names[0] ?? "" }));
+    .map(([rate, e]) => ({
+      rate,
+      spent: e.spent,
+      counted: e.counted,
+      spentUsd: factor === null ? null : e.spent * factor,
+      countedUsd: factor === null ? null : e.counted * factor,
+      name: e.names[0] ?? "",
+    }));
   const latest = [...complete].reverse().find((y) => asRecord(asRecord(l.bodies)?.[y]));
   const bodies = latest ? asRecord(asRecord(l.bodies)?.[latest]) : null;
   return {
@@ -425,10 +374,10 @@ function mongoliaItem(
           bodies: {
             year: latest,
             count: num(bodies.count) ?? 0,
-            names: ((bodies.top as Json[] | undefined) ?? []).slice(0, 6).map((b) => ({
-              name: String(b.name || b.nameMn || ""),
-              amount: num(b.counted) ?? 0,
-            })),
+            names: ((bodies.top as Json[] | undefined) ?? []).slice(0, 6).map((b) => {
+              const amount = num(b.counted) ?? 0;
+              return { name: String(b.name || b.nameMn || ""), amount, amountUsd: inUsd(amount, latest) };
+            }),
           },
         }
       : {}),
@@ -514,6 +463,7 @@ function fromLegacy(ber: Json, data: Json, source: BriefSource, categories: { id
       name: String(p.name ?? code),
       years: byYear,
       total,
+      totalUsd: null,
       area: a,
       areaStatus: a ? "ai" : "apart",
       matches: [...(matches.get(id) ?? [])],
@@ -545,7 +495,6 @@ function fromLegacy(ber: Json, data: Json, source: BriefSource, categories: { id
     showMatches: true,
     notes: [],
     areas: categories,
-    progress: null,
   };
 }
 
@@ -558,14 +507,17 @@ export interface SpendingRecord {
   reviewed: number;
   public: number;
   share: number;
-  /** The reviewed spending in whole US$, each year at its own rate; null
-   *  where amounts are in US$. */
+  /** The same two in whole US$, each year at its own rate; null where
+   *  amounts are in US$. */
   reviewedUsd: number | null;
+  publicUsd: number | null;
   /** Each year, each part: reviewed, its own public spending, the share. */
   byYear: {
     year: string;
     complete: boolean;
+    /** All parts together, in a year that holds every part. */
     total: number | null;
+    totalUsd: number | null;
     parts: { series: SeriesId; reviewed: number | null; public: number | null; share: number | null; usd: number | null }[];
   }[];
 }
@@ -573,9 +525,11 @@ export interface SpendingRecord {
 /** The reviewed spending out of all public spending, over the complete years and by year and part. */
 export function spendingRecord(setup: SpendingSetup): SpendingRecord {
   const base = setup.unit === "billion" ? 1e9 : 1e6;
+  const inUsd = (value: number, rate: number | null) => (rate ? (value * base) / rate : null);
   let reviewed = 0;
   let pub = 0;
   let usd = 0;
+  let pubUsd = 0;
   const byYear = setup.years.map((y) => {
     const parts = setup.series.map((s) => {
       const value = y.reviewed[s] ?? null;
@@ -585,22 +539,26 @@ export function spendingRecord(setup: SpendingSetup): SpendingRecord {
         reviewed: value,
         public: denominator,
         share: value !== null && denominator ? value / denominator : null,
-        usd: value !== null && y.usdRate ? (value * base) / y.usdRate : null,
+        usd: value !== null ? inUsd(value, y.usdRate) : null,
       };
     });
     const total = y.complete ? parts.reduce((s, p) => s + (p.reviewed ?? 0), 0) : null;
     if (y.complete && total !== null) {
+      const yearPublic = y.public.all ?? setup.series.reduce((s, id) => s + (y.public[id] ?? 0), 0);
       reviewed += total;
-      pub += y.public.all ?? setup.series.reduce((s, id) => s + (y.public[id] ?? 0), 0);
-      if (y.usdRate) usd += (total * base) / y.usdRate;
+      pub += yearPublic;
+      usd += inUsd(total, y.usdRate) ?? 0;
+      pubUsd += inUsd(yearPublic, y.usdRate) ?? 0;
     }
-    return { year: y.year, complete: y.complete, total, parts };
+    return { year: y.year, complete: y.complete, total, totalUsd: total !== null ? inUsd(total, y.usdRate) : null, parts };
   });
+  const local = setup.currency !== "US$";
   return {
     reviewed,
     public: pub,
     share: pub > 0 ? reviewed / pub : 0,
-    reviewedUsd: setup.currency === "US$" ? null : usd,
+    reviewedUsd: local ? usd : null,
+    publicUsd: local ? pubUsd : null,
     byYear,
   };
 }
@@ -614,6 +572,8 @@ export interface SpendingArea {
   targetShare: number;
   /** Spending on lines whose area this is, over the complete years. */
   spend: number;
+  /** The same in whole US$; null where amounts are in US$. */
+  spendUsd: number | null;
   /** Its share of the spending on all the lines read for areas, 0..1. */
   spendShare: number;
   /** The area's lines, largest first. */
@@ -629,9 +589,12 @@ export interface SpendingArea {
 export interface SpendingAreas {
   areas: SpendingArea[];
   /** The lines kept apart: not yet placed in any area. */
-  apart: { spend: number; spendShare: number; lines: SpendingLine[] };
-  /** Lines whose area a person has checked, of all lines read. */
-  checked: number;
+  apart: { spend: number; spendUsd: number | null; spendShare: number; lines: SpendingLine[] };
+}
+
+/** The US$ twin of a set of lines' spending; null where amounts are in US$. */
+function usdOf(lines: SpendingLine[]): number | null {
+  return lines.some((l) => l.totalUsd === null) ? null : lines.reduce((s, l) => s + (l.totalUsd ?? 0), 0);
 }
 
 /**
@@ -662,6 +625,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
         targets,
         targetShare: total > 0 ? targets.length / total : 0,
         spend,
+        spendUsd: lines.length ? usdOf(lines) : setup.currency === "US$" ? null : 0,
         spendShare: reviewed > 0 ? spend / reviewed : 0,
         lines,
         matched: targets.filter((id) => matchedAll.has(id)),
@@ -674,8 +638,12 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
   const apartSpend = apartLines.reduce((s, l) => s + l.total, 0);
   return {
     areas,
-    apart: { spend: apartSpend, spendShare: reviewed > 0 ? apartSpend / reviewed : 0, lines: apartLines },
-    checked: setup.lines.filter((l) => l.areaStatus === "checked").length,
+    apart: {
+      spend: apartSpend,
+      spendUsd: apartLines.length ? usdOf(apartLines) : setup.currency === "US$" ? null : 0,
+      spendShare: reviewed > 0 ? apartSpend / reviewed : 0,
+      lines: apartLines,
+    },
   };
 }
 
