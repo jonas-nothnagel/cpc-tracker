@@ -88,7 +88,13 @@ export interface BriefPairNote {
 }
 
 export interface BriefSource {
+  /** The registered country's slug; empty for an uploaded analysis. */
   countryId: string;
+  /** Set for an uploaded analysis: the brief's routes and links use it. */
+  analysisId?: string;
+  /** An uploaded analysis's languages beside English (the one the upload
+   *  was started in); a country's come from the registry. */
+  languages?: string[];
   countryName: string;
   commitments: BriefCommitment[];
   documents: BriefDocument[];
