@@ -8,12 +8,15 @@ import {
   percentLabel,
   spendingAreas,
   spendingRecord,
+  type ProgressTarget,
   type SeriesId,
   type SpendingArea,
   type SpendingItem,
   type SpendingLine,
+  type SpendingProgress,
   type SpendingSetup,
 } from "@/lib/brief/spending";
+import { firstSentence } from "@/lib/brief/text";
 import "./spending.css";
 
 /** Squares in the record's field: one per unit of every hundred. */
@@ -21,6 +24,8 @@ const FIELD = 100;
 /** Budget lines listed under an opened area, and review lines before "show all". */
 const LINES_MAX = 8;
 const ITEMS_MAX = 8;
+/** Budget lines listed under each GBF target an opened national target meets them through. */
+const ROUTE_LINES = 5;
 /** Above this many bars, only the last year's carry their figure in place. */
 const LABELLED_BARS = 12;
 
@@ -96,6 +101,8 @@ export function SpendingSection({
       <ItemsStep setup={setup} money={money} years={complete} />
 
       <AreasStep setup={setup} reading={reading} money={money} years={complete} onExploreArea={onExploreArea} />
+
+      {setup.progress && <ProgressStep progress={setup.progress} money={money} years={complete} />}
     </div>
   );
 }
@@ -572,6 +579,17 @@ function AreaRow({
               </>
             )}
           </p>
+          {area.coherence.total > 0 && (
+            <p className="sp-open-line">
+              {area.coherence.rated
+                ? t("coherence", {
+                    aligned: percentLabel(area.coherence.reinforce / area.coherence.total),
+                    apart: percentLabel(area.coherence.apart / area.coherence.total),
+                    total: area.coherence.total,
+                  })
+                : t("coherenceFew", { total: area.coherence.total })}
+            </p>
+          )}
           {area.lines.length > 0 ? (
             <LineList lines={area.lines} money={money} label={t("linesLabel")} />
           ) : (
@@ -581,6 +599,145 @@ function AreaRow({
             <button type="button" className="brief-av-link" onClick={onExplore}>
               {t("explore")}
             </button>
+          )}
+        </div>
+      )}
+    </li>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Reported progress beside the money (the official chain)
+// ---------------------------------------------------------------------------
+
+function ProgressStep({ progress, money, years }: { progress: SpendingProgress; money: Money; years: string }) {
+  const t = useTranslations("brief.spending.progress");
+  const [open, setOpen] = useState<string | null>(null);
+  const total = progress.targets.length;
+  const lagging = progress.targets.filter((x) => x.status === "limited" || x.status === "no_progress");
+  const unmatched = lagging.filter((x) => x.lines.length === 0).length;
+  const max = Math.max(...progress.targets.map((x) => x.spend), 0);
+  return (
+    <section className="sp-step sp-step-areas" aria-labelledby="sp-progress-headline">
+      <div className="sp-areas-intro">
+        <p className="brief-hub-kicker">
+          {t("kicker")} <span className="sp-ai">{t("ai")}</span>
+        </p>
+        <h3 id="sp-progress-headline" className="brief-hub-headline">
+          {lagging.length === 0
+            ? t("headlineNoneLagging", { total })
+            : unmatched > 0
+              ? t("headline", { lagging: lagging.length, total, unmatched })
+              : t("headlineAllMet", { lagging: lagging.length, total })}
+        </h3>
+      </div>
+      <div className="sp-row sp-row-head sp-row-progress" aria-hidden="true">
+        <span>{t("colTarget")}</span>
+        <span>{t("colStatus")}</span>
+        <span>{t("colSpend", { years })}</span>
+      </div>
+      <ol className="sp-areas" aria-label={t("listLabel")}>
+        {progress.targets.map((x) => (
+          <ProgressRow
+            key={x.id}
+            target={x}
+            max={max}
+            money={money}
+            open={open === x.id}
+            onToggle={() => setOpen((cur) => (cur === x.id ? null : x.id))}
+          />
+        ))}
+      </ol>
+      <p className="sp-footnote">{t("footnote", { linked: progress.linesLinked, total: progress.linesTotal })}</p>
+    </section>
+  );
+}
+
+function ProgressRow({
+  target,
+  max,
+  money,
+  open,
+  onToggle,
+}: {
+  target: ProgressTarget;
+  max: number;
+  money: Money;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  const t = useTranslations("brief.spending.progress");
+  const ta = useTranslations("brief.spending.areas");
+  const tn = useTranslations("labels.nr7");
+  const status = tn(target.status === "on_track" ? "onTrack" : target.status === "no_progress" ? "noProgress" : target.status);
+  const gbf = (numbers: number[]) =>
+    numbers.map((n) => t("gbfTarget", { n, title: target.gbfTitles[String(n)] ?? "" })).join("; ");
+  const filed = Object.keys(target.gbfTitles).map(Number).sort((a, b) => a - b);
+  // Every GBF target the lines come through, with its lines: a country may
+  // file a national target under several, and the reader sees which carry
+  // the money (a line through two of them shows under both).
+  const routes = filed
+    .map((n) => {
+      const lines = target.lines.filter((l) => l.via.includes(n));
+      return { n, lines, spend: lines.reduce((s, l) => s + l.total, 0) };
+    })
+    .filter((r) => r.lines.length > 0);
+  const panel = `sp-progress-${target.id}`;
+  const spend = target.lines.length > 0 ? money.amount(target.spend) : t("noLine");
+  return (
+    <li className="sp-area" data-open={open ? "true" : undefined}>
+      <button type="button" className="sp-row sp-row-progress" aria-expanded={open} aria-controls={panel} onClick={onToggle}>
+        <span className="sp-area-name sp-progress-name">
+          {target.label && <span className="sp-progress-label">{target.label}</span>}
+          {firstSentence(target.text).first}
+        </span>
+        <span className="sp-progress-status" data-status={target.status}>
+          {status}
+        </span>
+        <span className="sp-cell sp-cell-money" aria-hidden="true">
+          <span className="sp-bar-line" data-ink="spend">
+            <span style={{ width: `${max > 0 ? Math.min(100, (target.spend / max) * 100) : 0}%` }} />
+          </span>
+          <span className="sp-pct" data-ink={target.lines.length > 0 ? "spend" : "apart"}>
+            {spend}
+          </span>
+        </span>
+        <span className="brief-sr-only">{t("rowLabel", { status, spend })}</span>
+      </button>
+      {open && (
+        <div className="sp-open" id={panel}>
+          <p className="sp-open-line">{target.text}</p>
+          {filed.length > 0 && <p className="sp-open-line">{t("filed", { count: filed.length, targets: gbf(filed) })}</p>}
+          {routes.length > 0 ? (
+            routes.map((r) => (
+              <div key={r.n} className="sp-route">
+                <p className="sp-open-line sp-route-head">
+                  {t("route", {
+                    n: r.n,
+                    title: target.gbfTitles[String(r.n)] ?? "",
+                    count: r.lines.length,
+                    amount: money.amount(r.spend),
+                  })}
+                </p>
+                <ul className="sp-lines" aria-label={t("linesLabel", { n: r.n })}>
+                  {r.lines.slice(0, ROUTE_LINES).map((l) => (
+                    <li key={l.id} className="sp-line">
+                      <span className="sp-line-name">
+                        {l.name}
+                        <Translated shown={l} />
+                        <span className="sp-line-status">{l.typeChecked ? t("typeChecked") : t("typeAi")}</span>
+                      </span>
+                      <span className="sp-line-amount">{money.amount(l.total)}</span>
+                    </li>
+                  ))}
+                </ul>
+                {r.lines.length > ROUTE_LINES && (
+                  <p className="sp-open-line">{ta("linesMore", { count: r.lines.length - ROUTE_LINES })}</p>
+                )}
+              </div>
+            ))
+          ) : (
+            <p className="sp-open-line">{t("linesNone")}</p>
           )}
         </div>
       )}

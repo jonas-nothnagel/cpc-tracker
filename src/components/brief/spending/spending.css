@@ -553,6 +553,46 @@
   white-space: nowrap;
 }
 
+/* ── Reported progress beside the money ─────────────────────────────── */
+
+/* A national target, its reported progress, then the money on one scale. */
+[data-brief] .sp-row-progress {
+  grid-template-columns: minmax(12rem, 1.5fr) minmax(7rem, 0.45fr) minmax(0, 1fr);
+}
+
+[data-brief] .sp-progress-name {
+  font-weight: 400;
+}
+
+[data-brief] .sp-progress-label {
+  margin-right: 0.4rem;
+  font-weight: 600;
+}
+
+/* Limited or no progress reads in full ink; the rest steps back. */
+[data-brief] .sp-progress-status {
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .sp-progress-status[data-status="limited"],
+[data-brief] .sp-progress-status[data-status="no_progress"] {
+  color: var(--brief-ink);
+  font-weight: 600;
+}
+
+[data-brief] .sp-cell-money {
+  grid-template-columns: minmax(0, 1fr) 8.5rem;
+}
+
+[data-brief] .sp-route + .sp-route {
+  margin-top: 0.6rem;
+}
+
+[data-brief] .sp-route-head {
+  font-weight: 600;
+}
+
 @media (max-width: 820px) {
   [data-brief] .sp-step {
     grid-template-columns: minmax(0, 1fr);

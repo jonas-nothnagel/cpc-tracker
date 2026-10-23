@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
 import { parseBerAreas } from "@/lib/brief/ber-areas";
+import { parseBerChain } from "@/lib/brief/ber-chain-shared";
 import { spendingSetup, type SpendingSetup } from "@/lib/brief/spending";
 import { legacyPayload, levelsPayload } from "@/lib/brief/spending-fixture";
 import { briefFixture } from "@/lib/brief/test-fixture";
@@ -130,5 +131,49 @@ describe("SpendingSection, a rebuilt record", () => {
     fireEvent.click(share);
     expect(share.getAttribute("aria-pressed")).toBe("true");
     expect(screen.queryAllByText(/in all$/).length).toBe(0);
+  });
+});
+
+describe("SpendingSection, reported progress beside the money", () => {
+  const chain = parseBerChain({
+    nationalTargets: [
+      {
+        id: "NT03",
+        label: "NT03",
+        text: "By 2030, 30% of the land is protected. With more words.",
+        status: "on_track",
+        gbf: [3],
+        gbfTitles: { "3": "30% of areas are effectively conserved" },
+        lines: [{ code: "71405", via: [3] }],
+      },
+      { id: "NT12", label: "NT12", text: "Green cities.", status: "no_progress", gbf: [12], gbfTitles: {}, lines: [] },
+    ],
+    lines: { "71405": { type: "7.01.12", gbf: [1, 3], status: "linked" }, "82212": { type: null, gbf: [], status: "apart" } },
+  });
+  const WITH_CHAIN = spendingSetup(levelsPayload(), SOURCE, { chain })!;
+
+  it("leads with the national targets that lag and meet no reviewed budget line", () => {
+    renderSection(WITH_CHAIN);
+    expect(
+      screen.getByRole("heading", {
+        name: "The 7th National Report rates 1 of the 2 national targets at limited or no progress; 1 of these share no Global Biodiversity Framework (GBF) target with a reviewed budget line.",
+      }),
+    ).toBeTruthy();
+    const rows = within(screen.getByRole("list", { name: /National targets, their reported progress/ })).getAllByRole("button");
+    expect(rows.map((r) => r.textContent?.slice(0, 4))).toEqual(["NT12", "NT03"]);
+    expect(rows[0].textContent).toContain("No progress");
+    expect(rows[0].textContent).toContain("No line");
+    expect(screen.getByText(/1 of 2 lines have a GBF target on which both AI readings/)).toBeTruthy();
+  });
+
+  it("opens a national target to its lines and the GBF targets they meet it through", () => {
+    renderSection(WITH_CHAIN);
+    fireEvent.click(screen.getByRole("button", { name: /^NT03/ }));
+    expect(screen.getByText("By 2030, 30% of the land is protected. With more words.")).toBeTruthy();
+    expect(screen.getByText("Filed under GBF target 3 (30% of areas are effectively conserved).")).toBeTruthy();
+    expect(screen.getByText("Through GBF target 3 (30% of areas are effectively conserved): 1 line, ₮7 billion")).toBeTruthy();
+    const lines = within(screen.getByRole("list", { name: "Budget lines through GBF target 3" }));
+    expect(lines.getByText("Security of protected areas")).toBeTruthy();
+    expect(lines.getByText("expenditure type AI-suggested, not reviewed")).toBeTruthy();
   });
 });

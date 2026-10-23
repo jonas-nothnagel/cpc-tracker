@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { briefFixture } from "./test-fixture";
 import { parseBerAreas } from "./ber-areas";
+import { parseBerChain } from "./ber-chain-shared";
 import { legacyPayload as legacy, levelsPayload as mongoliaLike } from "./spending-fixture";
 import { percentLabel, spendingAreas, spendingRecord, spendingSetup } from "./spending";
 
@@ -166,12 +167,87 @@ describe("spendingAreas", () => {
     expect(reading.areas[0].targetShare).toBeCloseTo(3 / 12);
   });
 
+  it("sets each area's coherence beside its money, rated from the brief's floor", () => {
+    const source = briefFixture();
+    // B4-B6 against the six targets of A and of C: 36 target pairs.
+    const all = spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B", "C"]).areas[0];
+    expect(all.id).toBe("g2");
+    expect(all.coherence.total).toBe(36);
+    expect(all.coherence.reinforce + all.coherence.partial + all.coherence.apart + all.coherence.none).toBe(36);
+    expect(all.coherence.rated).toBe(true);
+    // Against A's targets only: 18 target pairs, below the floor of 30.
+    const two = spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B"]).areas[0];
+    expect(two.coherence.total).toBe(18);
+    expect(two.coherence.rated).toBe(false);
+  });
+
   it("counts the lines not yet placed apart, with their share", () => {
     const source = briefFixture();
     const reading = spendingAreas(spendingSetup(mongoliaLike(), source)!, source, ["A", "B", "C"]);
     expect(reading.apart.lines.map((l) => l.code)).toEqual(["82212"]);
     expect(reading.apart.spendShare).toBeCloseTo(3 / 10);
     expect(reading.checked).toBe(0);
+  });
+});
+
+describe("progress beside the money (the official chain)", () => {
+  const chain = parseBerChain({
+    nationalTargets: [
+      {
+        id: "NT03",
+        label: "NT03",
+        text: "By 2030, 30% of the land is protected. More words.",
+        status: "on_track",
+        levelOfProgress: "On track to achieve target",
+        gbf: [3],
+        gbfTitles: { "3": "30% of areas are effectively conserved" },
+        nbsapTargetId: "NBSAP_3",
+        lines: [{ code: "71405", via: [3] }],
+      },
+      {
+        id: "NT07",
+        label: "NT07",
+        text: "Reduce pollution.",
+        status: "limited",
+        gbf: [7],
+        gbfTitles: { "7": "Reduce pollution risk and impact" },
+        // A line the brief does not show (no reviewed spending) drops out.
+        lines: [{ code: "82212", via: [7] }, { code: "99999", via: [7] }],
+      },
+      { id: "NT12", label: "NT12", text: "Green cities.", status: "no_progress", gbf: [12], lines: [] },
+      { id: "", text: "No id: left out" },
+      { id: "NT20", text: "An odd status reads as unknown.", status: "achieved", lines: [] },
+    ],
+    lines: {
+      "71405": { type: "7.01.12", gbf: [1, 3], status: "linked" },
+      "82212": { type: "6.03.05", gbf: [7], status: "linked" },
+    },
+  });
+
+  it("reads the chain file, keeping only well-formed national targets", () => {
+    expect(chain!.targets.map((t) => [t.id, t.status])).toEqual([
+      ["NT03", "on_track"],
+      ["NT07", "limited"],
+      ["NT12", "no_progress"],
+      ["NT20", "unknown"],
+    ]);
+  });
+
+  it("puts the least advanced national targets first, each with the spending on its lines", () => {
+    const setup = spendingSetup(mongoliaLike(), briefFixture(), { chain })!;
+    const progress = setup.progress!;
+    expect(progress.targets.map((t) => [t.id, t.spend, t.lines.map((l) => [l.code, l.via])])).toEqual([
+      ["NT12", 0, []],
+      ["NT07", 3, [["82212", [7]]]],
+      ["NT03", 7, [["71405", [3]]]],
+      ["NT20", 0, []],
+    ]);
+    expect([progress.linesLinked, progress.linesTotal]).toEqual([2, 2]);
+  });
+
+  it("is absent without a chain, and for Country X's file", () => {
+    expect(spendingSetup(mongoliaLike(), briefFixture())!.progress).toBeNull();
+    expect(spendingSetup(legacy(), briefFixture(), { chain })!.progress).toBeNull();
   });
 });
 

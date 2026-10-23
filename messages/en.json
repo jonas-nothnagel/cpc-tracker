@@ -3694,6 +3694,8 @@
         "targetsLine": "{count, plural, =0 {No target in this area.} one {# target in this area.} other {# targets in this area.}}",
         "matched": "{matched, number} of the {total, number} have a matching budget line.",
         "aiEstimated": "AI-estimated",
+        "coherence": "Policy coherence of its targets: {aligned} aligned, {apart} potential misalignment, from {total, number} target pairs.",
+        "coherenceFew": "Policy coherence of its targets: {total, plural, one {# target pair} other {# target pairs}}, too few to rate.",
         "linesLabel": "Budget lines in this area",
         "noLines": "No reviewed budget line in this area.",
         "explore": "Explore this area with its budget lines",
@@ -3702,6 +3704,27 @@
         "apartWhy": "Kept apart until a person decides",
         "linesMore": "{count, plural, one {and # more line} other {and # more lines}}",
         "checkedCount": "{checked, number} of {total, number} lines have an area checked by a person; the others are AI-suggested or kept apart."
+      },
+      "progress": {
+        "kicker": "Reported progress beside reviewed spending",
+        "ai": "AI-suggested",
+        "headline": "The 7th National Report rates {lagging, number} of the {total, number} national targets at limited or no progress; {unmatched, number} of these share no Global Biodiversity Framework (GBF) target with a reviewed budget line.",
+        "headlineAllMet": "The 7th National Report rates {lagging, number} of the {total, number} national targets at limited or no progress; each of these shares a Global Biodiversity Framework (GBF) target with at least one reviewed budget line.",
+        "headlineNoneLagging": "The 7th National Report rates none of the {total, number} national targets at limited or no progress.",
+        "colTarget": "National target",
+        "colStatus": "Reported progress",
+        "colSpend": "Reviewed spending on lines of the same GBF targets, {years}",
+        "listLabel": "National targets, their reported progress and the reviewed spending on budget lines that share a GBF target with them",
+        "rowLabel": "{status}; {spend}",
+        "noLine": "No line",
+        "gbfTarget": "{n} ({title})",
+        "filed": "Filed under GBF {count, plural, one {target} other {targets}} {targets}.",
+        "route": "Through GBF target {n} ({title}): {count, plural, one {# line} other {# lines}}, {amount}",
+        "linesLabel": "Budget lines through GBF target {n}",
+        "typeChecked": "expenditure type checked by a person",
+        "typeAi": "expenditure type AI-suggested, not reviewed",
+        "linesNone": "No reviewed budget line shares a GBF target with this national target.",
+        "footnote": "A budget line counts under every national target it shares a GBF target with, so amounts are not added across targets. {linked, number} of {total, number} lines have a GBF target on which both AI readings of their expenditure type agree; the others are kept apart."
       }
     },
     "areaView": {

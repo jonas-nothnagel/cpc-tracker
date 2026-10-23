@@ -1,7 +1,12 @@
+import { areaTones } from "./area-shares";
+import { lensAreas } from "./areas";
 import type { BerAreas, AreaStatus } from "./ber-areas";
+import type { BerChain } from "./ber-chain-shared";
 import { shownName, type BerNames } from "./ber-names-shared";
 import { areaLines, countedIn, shownCurrency } from "./ber-record";
+import { MIN_AREA_COMPARISONS, scopeOf, type ToneCounts } from "./compute";
 import type { BriefSource } from "./source";
+import type { Nr7Status } from "@/lib/labels";
 
 /** A name as the page shows it: in the page's language where the names file
  *  gives one, a machine translation flagged, the review's own kept beside. */
@@ -114,6 +119,34 @@ export interface SpendingSetup {
   notes: ("levels" | "panama2015" | "atPar" | "projects" | "partOfMoney")[];
   /** The biodiversity areas, in the taxonomy's order. */
   areas: { id: string; name: string }[];
+  /** The national targets of the 7th National Report beside the lines they
+   *  meet through a GBF target (step 3's official chain), where built. */
+  progress: SpendingProgress | null;
+}
+
+export interface ProgressTarget {
+  id: string;
+  label: string | null;
+  text: string;
+  status: Nr7Status;
+  /** GBF target number -> the CBD's heading, as the report gives it. */
+  gbfTitles: Record<string, string>;
+  nbsapTargetId: string | null;
+  /** The lines with reviewed spending it meets, largest first, each with the
+   *  GBF targets it meets them through and whether a person checked the
+   *  line's expenditure type. */
+  lines: (SpendingLine & { via: number[]; typeChecked: boolean })[];
+  /** Their spending over the complete years. A line counts under every
+   *  national target it meets, so these are never added across targets. */
+  spend: number;
+}
+
+export interface SpendingProgress {
+  /** Least advanced first, then the most spending. */
+  targets: ProgressTarget[];
+  /** Lines whose two readings share a GBF target, of the lines read. */
+  linesLinked: number;
+  linesTotal: number;
 }
 
 type Json = Record<string, unknown>;
@@ -134,6 +167,8 @@ export interface SpendingOptions {
   areas?: BerAreas | null;
   /** Display names in the page's language. */
   names?: BerNames | null;
+  /** The official chain to the 7th National Report (step 3). */
+  chain?: BerChain | null;
   locale?: string;
 }
 
@@ -153,7 +188,7 @@ export function spendingSetup(data: Json, source: BriefSource, options: Spending
     return { name: shown.name, ...(shown.machine ? { translated: true as const } : {}), ...(!shown.own ? { original: own } : {}) };
   };
   return record
-    ? fromRecord(record, globe.categories, options.areas ?? null, data, source, show)
+    ? fromRecord(record, globe.categories, options.areas ?? null, options.chain ?? null, data, source, show)
     : fromLegacy(ber, data, source, globe.categories);
 }
 
@@ -181,6 +216,7 @@ function fromRecord(
   record: Json,
   categories: { id: string; name: string }[],
   areas: BerAreas | null,
+  chain: BerChain | null,
   data: Json,
   source: BriefSource,
   show: (code: string, own: string) => Shown,
@@ -311,6 +347,46 @@ function fromRecord(
     showMatches,
     notes,
     areas: categories,
+    progress: chain ? chainProgress(chain, spendingLines) : null,
+  };
+}
+
+/** Least advanced first, as the Explore ring ranks a target's NR7 status. */
+const PROGRESS_ORDER: Nr7Status[] = ["no_progress", "limited", "on_track", "unknown"];
+
+function chainProgress(chain: BerChain, lines: SpendingLine[]): SpendingProgress | null {
+  if (chain.targets.length === 0) return null;
+  const byCode = new Map(lines.map((l) => [l.code, l]));
+  const targets = chain.targets
+    .map((t) => {
+      const met = t.lines
+        .map((l) => {
+          const line = byCode.get(l.code);
+          return line ? { ...line, via: l.via, typeChecked: chain.lines[l.code]?.checked ?? false } : null;
+        })
+        .filter((l): l is SpendingLine & { via: number[]; typeChecked: boolean } => l !== null)
+        .sort((a, b) => b.total - a.total || a.code.localeCompare(b.code));
+      return {
+        id: t.id,
+        label: t.label,
+        text: t.text,
+        status: t.status,
+        gbfTitles: t.gbfTitles,
+        nbsapTargetId: t.nbsapTargetId,
+        lines: met,
+        spend: met.reduce((s, l) => s + l.total, 0),
+      };
+    })
+    .sort(
+      (a, b) =>
+        PROGRESS_ORDER.indexOf(a.status) - PROGRESS_ORDER.indexOf(b.status) ||
+        b.spend - a.spend ||
+        a.id.localeCompare(b.id, undefined, { numeric: true }),
+    );
+  return {
+    targets,
+    linesLinked: lines.filter((l) => chain.lines[l.code]?.linked).length,
+    linesTotal: lines.length,
   };
 }
 
@@ -469,6 +545,7 @@ function fromLegacy(ber: Json, data: Json, source: BriefSource, categories: { id
     showMatches: true,
     notes: [],
     areas: categories,
+    progress: null,
   };
 }
 
@@ -543,6 +620,10 @@ export interface SpendingArea {
   lines: SpendingLine[];
   /** Its targets with at least one matching budget line (any area's). */
   matched: string[];
+  /** The coherence of its targets: every target pair touching them, read
+   *  as in the brief's policy areas (a pair between two areas counts for
+   *  both); `rated` from the brief's floor of target pairs. */
+  coherence: ToneCounts & { rated: boolean };
 }
 
 export interface SpendingAreas {
@@ -555,15 +636,17 @@ export interface SpendingAreas {
 
 /**
  * Every biodiversity area with its share of the targets beside its share of
- * the reviewed spending, the targets read from the brief's documents. Areas
- * with neither stay out; the rest come with the most targets first, then the
- * most spending. Lines not placed in an area are counted apart.
+ * the reviewed spending, and the coherence of its targets, the targets read
+ * from the brief's documents. Areas with neither targets nor spending stay
+ * out; the rest come with the most targets first, then the most spending.
+ * Lines not placed in an area are counted apart.
  */
 export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: readonly string[]): SpendingAreas {
   const globe = source.lenses.find((l) => l.id === "globe");
-  const inScope = new Set(docs);
-  const ids = source.commitments.filter((c) => inScope.has(c.doc)).map((c) => c.id);
+  const scope = scopeOf(source, [...docs]);
+  const ids = scope.commitments.map((c) => c.id);
   const total = ids.length;
+  const tones = areaTones(lensAreas(source, scope, "globe"), scope);
   const reviewed = setup.lines.reduce((s, l) => s + l.total, 0);
   const matchedAll = new Set(setup.lines.flatMap((l) => l.matches));
   const byTotal = (x: SpendingLine, y: SpendingLine) => y.total - x.total || x.code.localeCompare(y.code);
@@ -572,6 +655,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
       const targets = ids.filter((id) => globe?.primary[id] === a.id);
       const lines = setup.lines.filter((l) => l.area === a.id).sort(byTotal);
       const spend = lines.reduce((s, l) => s + l.total, 0);
+      const counts = tones.get(a.id) ?? { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 };
       return {
         id: a.id,
         name: a.name,
@@ -581,6 +665,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
         spendShare: reviewed > 0 ? spend / reviewed : 0,
         lines,
         matched: targets.filter((id) => matchedAll.has(id)),
+        coherence: { ...counts, rated: counts.total >= MIN_AREA_COMPARISONS },
       };
     })
     .filter((a) => a.targets.length > 0 || a.spend > 0)

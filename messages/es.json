@@ -3694,6 +3694,8 @@
         "targetsLine": "{count, plural, =0 {Ninguna meta en esta área.} one {# meta en esta área.} other {# metas en esta área.}}",
         "matched": "{matched, number} de las {total, number} tienen una línea presupuestaria coincidente.",
         "aiEstimated": "Estimado por IA",
+        "coherence": "Coherencia de sus metas: {aligned} alineados, {apart} de posible desalineación, de {total, number} pares de metas.",
+        "coherenceFew": "Coherencia de sus metas: {total, plural, one {# par de metas} other {# pares de metas}}, muy pocos para calificar.",
         "linesLabel": "Líneas presupuestarias de esta área",
         "noLines": "Ninguna línea presupuestaria revisada en esta área.",
         "explore": "Explorar esta área con sus líneas presupuestarias",
@@ -3702,6 +3704,27 @@
         "apartWhy": "Apartada hasta que una persona decida",
         "linesMore": "{count, plural, one {y # línea más} other {y # líneas más}}",
         "checkedCount": "{checked, number} de {total, number} líneas tienen un área revisada por una persona; las demás son sugerencias de la IA o están apartadas."
+      },
+      "progress": {
+        "kicker": "Avance informado junto al gasto revisado",
+        "ai": "Sugerido por IA",
+        "headline": "El Séptimo Informe Nacional califica {lagging, number} de las {total, number} metas nacionales con un avance limitado o nulo; {unmatched, number} de ellas no comparten ninguna meta del Marco Mundial de Biodiversidad (GBF) con una línea presupuestaria revisada.",
+        "headlineAllMet": "El Séptimo Informe Nacional califica {lagging, number} de las {total, number} metas nacionales con un avance limitado o nulo; cada una comparte una meta del Marco Mundial de Biodiversidad (GBF) con al menos una línea presupuestaria revisada.",
+        "headlineNoneLagging": "El Séptimo Informe Nacional no califica ninguna de las {total, number} metas nacionales con un avance limitado o nulo.",
+        "colTarget": "Meta nacional",
+        "colStatus": "Avance informado",
+        "colSpend": "Gasto revisado en líneas de las mismas metas del GBF, {years}",
+        "listLabel": "Metas nacionales, su avance informado y el gasto revisado en las líneas presupuestarias que comparten con ellas una meta del GBF",
+        "rowLabel": "{status}; {spend}",
+        "noLine": "Ninguna línea",
+        "gbfTarget": "{n} ({title})",
+        "filed": "Asociada a {count, plural, one {la meta} other {las metas}} del GBF {targets}.",
+        "route": "Por la meta {n} del GBF ({title}): {count, plural, one {# línea} other {# líneas}}, {amount}",
+        "linesLabel": "Líneas presupuestarias por la meta {n} del GBF",
+        "typeChecked": "tipo de gasto revisado por una persona",
+        "typeAi": "tipo de gasto sugerido por IA, sin revisar",
+        "linesNone": "Ninguna línea presupuestaria revisada comparte una meta del GBF con esta meta nacional.",
+        "footnote": "Una línea presupuestaria cuenta en cada meta nacional con la que comparte una meta del GBF, por lo que los montos no se suman entre metas. {linked, number} de {total, number} líneas tienen una meta del GBF en la que coinciden las dos lecturas de la IA de su tipo de gasto; las demás quedan aparte."
       }
     },
     "areaView": {
