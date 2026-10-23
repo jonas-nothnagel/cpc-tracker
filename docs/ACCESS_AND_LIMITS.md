@@ -51,7 +51,7 @@ The upload wizard now refuses files over these sizes and tells you the size it s
 | Policy document (PDF, DOCX, TXT) | Upload documents | 50 MB per file |
 | Excel targets spreadsheet | Upload a spreadsheet of targets | 15 MB |
 | BTR spreadsheet (Biennial Transparency Report tables) | Upload a BTR file | 15 MB |
-| Targets in one analysis | Review before running | 150 targets |
+| Targets in one analysis | Review before running | 150 targets and BTR reported actions together (each action is compared with every target) |
 
 An oversized file shows a message such as **"File too large (22.4 MB). Maximum allowed is 15 MB."** Save the spreadsheet without embedded images, or split it into two files and upload them one after the other.
 
@@ -60,6 +60,10 @@ Scanned PDFs without a text layer are refused as before. The document needs mach
 ### Limits when running an analysis
 
 The server runs at most three analyses at the same time, and starts at most five in any one minute. This stops a burst of uploads from running up the AI bill.
+
+**Run analysis** starts only once the country is named and the targets come from at least two documents: a comparison needs two documents, and the brief names the country. The server makes the same checks before anything is spent and answers `400` with a `code` (`noCountry`, `noTargets`, `oneDocument`, `tooMany`, `ownLens`) otherwise.
+
+A finished analysis opens as a coherence brief at its own address, `/analysis/{id}`, in English and in the language the upload was started in. While the run goes, the same address shows its progress. The previous dashboard keeps a view of it (`/dashboard?analysisId={id}`).
 
 If you press **Run analysis** and see **"The analysis service is busy. Please try again shortly."** or **"Too many analyses started recently. Please wait a moment."**, nothing was lost. Your documents and targets are still in the wizard. Wait a minute and press the button again.
 
