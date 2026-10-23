@@ -1,14 +1,17 @@
-"""The review sheet for step 2 of the BER plan: a person checks each line's area.
+"""The review sheet for steps 2 and 3 of the BER plan: a person checks each
+line's area, and each line's expenditure type of the official chain.
 
   build   python/output/<country>/ber_areas_<lens>.json (both models' readings)
           -> one workbook, a sheet per country: every line with its money, each
           model's area and reason, and empty columns for the call. Lines the
           models place differently come first, then the rest, largest money
           first. Earlier calls (python/data/<country>-ber-areas.json) are
-          filled in.
-  import  the filled workbook -> python/data/<country>-ber-areas.json: each call
-          with who made it and when. Only these count as checked; until then
-          the brief marks a line's area "AI-suggested, not reviewed".
+          filled in. Where python/output/<country>/ber_types_globe.json
+          exists, a "<Country> types" sheet does the same for the types.
+  import  the filled workbook -> python/data/<country>-ber-areas.json (and
+          <country>-ber-types.json): each call with who made it and when. Only
+          these count as checked; until then the brief marks a line's area or
+          type "AI-suggested, not reviewed".
 
 Run from python/:
     .venv/bin/python scripts/ber_review_sheet.py build [--out PATH]
@@ -163,9 +166,165 @@ def build(lens: str, out: Path) -> None:
         ws.add_data_validation(areas)
         calls.add(f"N2:N{last}")
         areas.add(f"O2:O{last}")
+    build_type_sheets(wb)
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(out)
     print(f"Wrote {out}")
+
+
+# ---------------------------------------------------------------------------
+# The expenditure types of the official chain (step 3)
+# ---------------------------------------------------------------------------
+
+TYPE_COLUMNS = [
+    ("Line", 16),
+    ("Name", 44),
+    ("Reviewed spending", 16),
+    ("US$ million", 12),
+    ("Years", 10),
+    ("Model 1: type", 40),
+    ("Model 1: score", 9),
+    ("Model 1: reason", 50),
+    ("Model 2: type", 40),
+    ("Model 2: reason", 50),
+    ("GBF targets both readings lead to", 18),
+    ("The two models", 18),
+    ("Your call", 12),
+    ("Type code, if you change it", 14),
+    ("Note", 30),
+]
+TYPE_STATUS_WORDS = {
+    "models-differ": "pick different types",
+    "no-clear-type": "find no clear type",
+    "models-agree": "agree",
+    "one-model": "one model only",
+}
+
+
+def type_sheet_title(title: str) -> str:
+    return f"{title} types"
+
+
+def build_type_sheets(wb: Workbook) -> None:
+    """A sheet per country for the lines' expenditure types: rows whose two
+    readings lead to no shared GBF target first, then those the models type
+    differently, then the rest, largest money first."""
+    guide = wb["How to use"]
+    guide.append([])
+    guide.append(["The 'types' sheets: the same lines, each placed by the two models in a BIOFIN expenditure type (GLOBE level 3)."])
+    guide.append(["A type leads to the GBF targets BIOFIN files it under; a line meets a national target of the 7th National Report through a GBF target both readings lead to."])
+    guide.append(["Your call: Accept (model 1's type), Change (write the type code, e.g. 7.01.12) or None fits."])
+    for country, title in COUNTRIES.items():
+        path = OUTPUT_DIR / country / "ber_types_globe.json"
+        if not path.exists():
+            continue
+        readings = json.loads(path.read_text())
+        record = json.loads((DATA_DIR / f"{country}-ber.json").read_text())["record"]
+        by_code = {l["code"]: l for l in record["lines"]}
+        earlier = load_type_calls(country)
+        rows = []
+        for r in readings["lines"]:
+            local, usd, span = money(record, by_code[r["code"]])
+            rows.append((r, by_code[r["code"]], local, usd, span))
+        rows.sort(key=lambda x: (x[0]["status"] != "apart", x[0]["typeStatus"] == "models-agree", -x[2], x[0]["code"]))
+
+        ws = wb.create_sheet(type_sheet_title(title))
+        ws.append([c for c, _ in TYPE_COLUMNS])
+        for i, (_, width) in enumerate(TYPE_COLUMNS, start=1):
+            ws.column_dimensions[get_column_letter(i)].width = width
+        for cell in ws[1]:
+            cell.font = Font(bold=True)
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+        ws.freeze_panes = "C2"
+        ws.cell(1, 3).value = f"Reviewed spending ({record['currency']} {record['unit']})"
+
+        def named(reading: dict[str, Any] | None) -> str:
+            if not reading or not reading.get("ranked"):
+                return ""
+            top = reading["ranked"][0]
+            return f"{top['id']} {top['name']} (GBF {', '.join(str(g) for g in top['gbf'])})"
+
+        for r, line, local, usd, span in rows:
+            first, second = r["first"], r["second"]
+            call = earlier.get(r["code"], {})
+            ws.append(
+                [
+                    r["code"],
+                    line["name"],
+                    round(local, 3),
+                    round(usd, 2),
+                    span,
+                    named(first),
+                    first["score"],
+                    first["ranked"][0]["reasoning"] if first["ranked"] else "",
+                    named(second),
+                    second["ranked"][0]["reasoning"] if second and second.get("ranked") else "",
+                    ", ".join(str(g) for g in r["gbf"]) or "none",
+                    TYPE_STATUS_WORDS[r["typeStatus"]],
+                    next((k for k, v in CALLS.items() if v == call.get("call")), ""),
+                    call.get("type", "") if call.get("call") == "change" else "",
+                    call.get("note", ""),
+                ]
+            )
+        shade = PatternFill("solid", fgColor="FFF5C7")
+        for row in ws.iter_rows(min_row=2):
+            for cell in row:
+                cell.alignment = Alignment(wrap_text=True, vertical="top")
+            if row[10].value == "none" or row[11].value != TYPE_STATUS_WORDS["models-agree"]:
+                row[11].fill = shade
+        calls = DataValidation(type="list", formula1='"' + ",".join(CALLS) + '"', allow_blank=True)
+        ws.add_data_validation(calls)
+        calls.add(f"M2:M{ws.max_row}")
+
+
+def type_calls_path(country: str) -> Path:
+    return DATA_DIR / f"{country}-ber-types.json"
+
+
+def load_type_calls(country: str) -> dict[str, dict[str, Any]]:
+    path = type_calls_path(country)
+    return json.loads(path.read_text()).get("types", {}) if path.exists() else {}
+
+
+def import_type_calls(wb: Any, by: str) -> None:
+    types = {t["id"] for t in json.loads((DATA_DIR / "globe-expenditure-types.json").read_text())["types"]}
+    for country, title in COUNTRIES.items():
+        sheet = type_sheet_title(title)
+        if sheet not in wb.sheetnames:
+            continue
+        readings = json.loads((OUTPUT_DIR / country / "ber_types_globe.json").read_text())
+        first_type = {r["code"]: r["first"]["type"] for r in readings["lines"]}
+        target = type_calls_path(country)
+        stored = json.loads(target.read_text()) if target.exists() else {}
+        calls = stored.get("types", {})
+        changed = 0
+        for row in wb[sheet].iter_rows(min_row=2, values_only=True):
+            code, call, code_given, note = row[0], row[12], row[13], row[14]
+            if not code or not call:
+                continue
+            kind = CALLS.get(str(call).strip())
+            if kind is None:
+                raise SystemExit(f"{sheet}, line {code}: unknown call {call!r}")
+            chosen = str(code_given).strip() if code_given else ""
+            if kind == "change" and chosen not in types:
+                raise SystemExit(f"{sheet}, line {code}: Change needs a type code from the GLOBE workbook, found {chosen!r}")
+            entry = {
+                "call": kind,
+                "type": chosen if kind == "change" else first_type.get(code) if kind == "accept" else None,
+                "by": by,
+                "at": date.today().isoformat(),
+                **({"note": str(note).strip()} if note else {}),
+            }
+            if calls.get(code, {}) | {"at": entry["at"]} != entry:
+                changed += 1
+            calls[code] = entry
+        stored["_provenance"] = (
+            "A person's calls on the expenditure types the AI suggested for the review's lines (step 3 of the BER "
+            "plan, the official chain); written by python/scripts/ber_review_sheet.py import. Only these count as checked."
+        )
+        stored["types"] = dict(sorted(calls.items()))
+        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
+        print(f"{sheet}: {changed} calls new or changed, {len(calls)} in all -> {target}")
 
 
 def calls_path(country: str) -> Path:
@@ -219,6 +378,7 @@ def import_calls(path: Path, lens: str, by: str) -> None:
         stored[lens] = dict(sorted(calls.items()))
         target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
         print(f"{title}: {changed} calls new or changed, {len(calls)} in all -> {target}")
+    import_type_calls(wb, by)
 
 
 def main() -> None:
