@@ -1,478 +1,272 @@
 [
   {
-    "id": "BER_71401",
+    "id": "BER_71408",
     "sourceDocument": "BER",
-    "sourceLabel": "71401 Waste management",
-    "text": "Waste management. Implementation of the Law on Waste and national and local waste management programs.. Expenditure: 2020: 0.5 billion MNT, 2021: 0.7 billion MNT, 2022: 1.9 billion MNT, 2023: no data, 2024: 5.9 billion MNT. Total: 9.0 billion MNT.",
+    "sourceLabel": "71408 Meteorology",
+    "text": "Includes recurrent and capital expenditures related to hydrological and meteorological research and monitoring; dissemination of weather forecasts, early warnings, and information on potential hazards and natural disasters to the public; prevention of weather-related risks and severe environmental pollution; activities influencing weather and climate conditions; and the effective utilization of weather and climate resources.",
+    "analysisText": "Name: Meteorology\nKind: a programme of Mongolia's national budget (code 71408), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to hydrological and meteorological research and monitoring; dissemination of weather forecasts, early warnings, and information on potential hazards and natural disasters to the public; prevention of weather-related risks and severe environmental pollution; activities influencing weather and climate conditions; and the effective utilization of weather and climate resources.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 74%; Social insurance contributions paid by employers 10%; Furniture, current repair expenses 10%; Fixed expenses related to office building 3%; Work, service payment, fee performed by others 1%\nWho spends it (2021): 7 spending units, among them Center for Water, Meteorology and Environmental Research; Center for Meteorology and Environmental Research; Information And Research Institute Of Meteorology, Hydrology And Environment; Flight meteorological center; Central Laboratory of Environmental Analysis; Investment in the Nature, Environment and Tourism",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": 0.5,
-      "2021": 0.7,
-      "2022": 1.9,
-      "2023": null,
-      "2024": 5.9
-    }
-  },
-  {
-    "id": "BER_71402",
-    "sourceDocument": "BER",
-    "sourceLabel": "71402 Biodiversity conservation",
-    "text": "Biodiversity conservation. Implementation of the National Biodiversity Program \u2014 ecosystem, species, and genetic level conservation.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_71403",
-    "sourceDocument": "BER",
-    "sourceLabel": "71403 Afforestation",
-    "text": "Afforestation. State institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units.. Expenditure: 2020: 6.1 billion MNT, 2021: 5.2 billion MNT, 2022: 3.4 billion MNT, 2023: 15 billion MNT, 2024: 9.2 billion MNT. Total: 38.9 billion MNT.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "environmental",
-    "expenditure": {
-      "2020": 6.1,
-      "2021": 5.2,
-      "2022": 3.4,
-      "2023": 15,
-      "2024": 9.2
-    }
-  },
-  {
-    "id": "BER_71404",
-    "sourceDocument": "BER",
-    "sourceLabel": "71404 Water resource, lake and river management",
-    "text": "Water resource, lake and river management. Water Authority, Freshwater Resources and Nature Conservation Center, River Basin Administrations.. Expenditure: 2020: 4.4 billion MNT, 2021: 4.9 billion MNT, 2022: no data, 2023: 9 billion MNT, 2024: no data. Total: 18.3 billion MNT.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "environmental",
-    "expenditure": {
-      "2020": 4.4,
-      "2021": 4.9,
-      "2022": null,
-      "2023": 9,
-      "2024": null
+      "2020": 30.349649289000002,
+      "2021": 30.120690149,
+      "2022": 0.03,
+      "2023": 47.128347023,
+      "2024": 0.03
     }
   },
   {
     "id": "BER_71405",
     "sourceDocument": "BER",
     "sourceLabel": "71405 Security of protected areas",
-    "text": "Security of protected areas. Protection regimes for protected areas, management plans, monitoring, and information databases.. Expenditure: 2020: 10.2 billion MNT, 2021: 10.5 billion MNT, 2022: no data, 2023: 19 billion MNT, 2024: 0.9 billion MNT. Total: 40.6 billion MNT.",
+    "text": "Includes recurrent and capital expenditures related to the implementation of policies and protection regimes for protected areas, implementation and monitoring of protected area management plans, promotion and awareness-raising activities related to protected areas, and the establishment and maintenance of protected area information databases.",
+    "analysisText": "Name: Security of protected areas\nKind: a programme of Mongolia's national budget (code 71405), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the implementation of policies and protection regimes for protected areas, implementation and monitoring of protected area management plans, promotion and awareness-raising activities related to protected areas, and the establishment and maintenance of protected area information databases.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 61%; Work, service payment, fee performed by others 22%; Social insurance contributions paid by employers 8%; Office supplies and inventory 6%; Fixed expenses related to office building 3%\nWho spends it (2021): 31 spending units, among them Administration of Khan Khentii SSPA's security department; Administration of BogdKhan Mountain SPA; Administration of Khuvsgul SSPA's security department; Ulaan Taiga Strictly Protected Area Administration; Gobi Gurvan Saikhan National park\u2019s administration; Administration of Onon Balj NP's security depatment",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": 10.2,
-      "2021": 10.5,
-      "2022": null,
-      "2023": 19,
-      "2024": 0.9
+      "2020": 10.205471251,
+      "2021": 10.454725964,
+      "2022": 0,
+      "2023": 19.183633243,
+      "2024": 0.91
     }
   },
   {
-    "id": "BER_71406",
+    "id": "BER_71404",
     "sourceDocument": "BER",
-    "sourceLabel": "71406 Environmental pollution and degradation",
-    "text": "Environmental pollution and degradation. Air pollution quality control, alternative products, waste collection/transport/disposal/recycling.. Expenditure: 2020: 0.4 billion MNT, 2021: 0.5 billion MNT, 2022: 0.3 billion MNT, 2023: no data, 2024: 1.5 billion MNT. Total: 2.7 billion MNT.",
+    "sourceLabel": "71404 Water resource, lake and river management",
+    "text": "Includes expenditures related to the core functions of state institutions responsible for water resources, including the Water Authority, Freshwater Resources and Nature Conservation Center, and River Basin Administrations, covering water resource management, improvement and enforcement of water-related legislation, coordination, regulation, and provision of professional and methodological guidance.",
+    "analysisText": "Name: Water resource, lake and river management\nKind: a programme of Mongolia's national budget (code 71404), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for water resources, including the Water Authority, Freshwater Resources and Nature Conservation Center, and River Basin Administrations, covering water resource management, improvement and enforcement of water-related legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 62%; Work, service payment, fee performed by others 15%; Social insurance contributions paid by employers 8%; Fixed expenses related to office building 5%; Office supplies and inventory 4%\nWho spends it (2021): 23 spending units, among them Water department; Freshwater Resources Conservation Center; Tuul River Basin Administration; Orkhon-Chuluut river basin administration; Onon-Ulz River Basin Administration; Buir Lake-Menen steppe basin administration",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": 0.4,
-      "2021": 0.5,
-      "2022": 0.3,
-      "2023": null,
-      "2024": 1.5
+      "2020": 4.356818635,
+      "2021": 4.841143221,
+      "2022": 0,
+      "2023": 8.564212863,
+      "2024": 0
     }
   },
   {
-    "id": "BER_71407",
+    "id": "BER_71403",
     "sourceDocument": "BER",
-    "sourceLabel": "71407 Air pollution abatement, climate change",
-    "text": "Air pollution abatement, climate change. National Program on Air and Environmental Pollution Reduction and climate change policies.. Expenditure: 2020: 75.8 billion MNT, 2021: 101.6 billion MNT, 2022: 30.1 billion MNT, 2023: 15 billion MNT, 2024: 39.4 billion MNT. Total: 261.9 billion MNT.",
+    "sourceLabel": "71403 Afforestation",
+    "text": "Includes expenditures related to the core functions of state institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units, covering the establishment of sustainable forest management systems, improvement and implementation of forest legislation, coordination, regulation, and provision of professional and methodological guidance.",
+    "analysisText": "Name: Afforestation\nKind: a programme of Mongolia's national budget (code 71403), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units, covering the establishment of sustainable forest management systems, improvement and implementation of forest legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 39%; Wages and salaries, bonuses 35%; Other investments 13%; Social insurance contributions paid by employers 4%; Office supplies and inventory 3%\nWho spends it (2021): 41 spending units, among them Forest Research and Development Center; Um.Forest Department; Ga.Game class; Se.Mandal Forest Department; Za.Game class; Or. Inter-soum forest department",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": 75.8,
-      "2021": 101.6,
-      "2022": 30.1,
-      "2023": 15,
-      "2024": 39.4
-    }
-  },
-  {
-    "id": "BER_71408",
-    "sourceDocument": "BER",
-    "sourceLabel": "71408 Meteorology",
-    "text": "Meteorology. Hydrological and meteorological research, weather forecasts, early warnings, and climate resource use.. Expenditure: 2020: 30.4 billion MNT, 2021: 30.1 billion MNT, 2022: no data, 2023: 47 billion MNT, 2024: no data. Total: 107.5 billion MNT.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "environmental",
-    "expenditure": {
-      "2020": 30.4,
-      "2021": 30.1,
-      "2022": null,
-      "2023": 47,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_71409",
-    "sourceDocument": "BER",
-    "sourceLabel": "71409 Protection of endangered animals, plants and sp...",
-    "text": "Protection of endangered animals, plants and species. National Program for the Protection of Endangered and Rare Species.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_71410",
-    "sourceDocument": "BER",
-    "sourceLabel": "71410 Reduce land degradation and prevent from desert...",
-    "text": "Reduce land degradation and prevent from desertification. National Action Program to Combat Desertification.. Expenditure: 2020: 0.5 billion MNT, 2021: 0.9 billion MNT, 2022: no data, 2023: 1 billion MNT, 2024: no data. Total: 2.4 billion MNT.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "environmental",
-    "expenditure": {
-      "2020": 0.5,
-      "2021": 0.9,
-      "2022": null,
-      "2023": 1,
-      "2024": null
+      "2020": 6.101328517000001,
+      "2021": 5.242115135000001,
+      "2022": 3.374821123,
+      "2023": 14.669942155,
+      "2024": 9.233367735
     }
   },
   {
     "id": "BER_71411",
     "sourceDocument": "BER",
     "sourceLabel": "71411 Environment policy and administration",
-    "text": "Environment policy and administration. Government institutions responsible for environmental governance \u2014 legal framework, policy implementation.. Expenditure: 2020: 23.1 billion MNT, 2021: 21.7 billion MNT, 2022: 17.4 billion MNT, 2023: 7 billion MNT, 2024: 27 billion MNT. Total: 96.2 billion MNT.",
+    "text": "Includes recurrent and capital expenditures related to the core functions of government institutions responsible for environmental governance, including improvement of the legal and regulatory framework, development and implementation of legislation and development policies, budget management and oversight, and ensuring integrated coordination and administration.",
+    "analysisText": "Name: Environment policy and administration\nKind: a programme of Mongolia's national budget (code 71411), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the core functions of government institutions responsible for environmental governance, including improvement of the legal and regulatory framework, development and implementation of legislation and development policies, budget management and oversight, and ensuring integrated coordination and administration.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 44%; Purchase of other goods and services 27%; Work, service payment, fee performed by others 14%; Social insurance contributions paid by employers 6%; Building and facilities 3%\nWho spends it (2021): 48 spending units, among them Ministry of Nature, Environment and Tourism; Bu.Zasag darga; National Park; Capital City Department of Environment; Za.Nature and tourism department; Khu.Nature and tourism department",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": 23.1,
-      "2021": 21.7,
-      "2022": 17.4,
-      "2023": 7,
-      "2024": 27
+      "2020": 23.041730926,
+      "2021": 21.640323534,
+      "2022": 17.397456155,
+      "2023": 7.036030894,
+      "2024": 27.015715859
+    }
+  },
+  {
+    "id": "BER_71407",
+    "sourceDocument": "BER",
+    "sourceLabel": "71407 Air pollution abatement, climate change",
+    "text": "Includes financing for activities related to the implementation of the National Program on Air and Environmental Pollution Reduction and climate change policies and plans, aimed at ensuring a healthy and safe living environment for citizens.",
+    "analysisText": "Name: Air pollution abatement, climate change\nKind: a programme of Mongolia's national budget (code 71407), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Program on Air and Environmental Pollution Reduction and climate change policies and plans, aimed at ensuring a healthy and safe living environment for citizens.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 46%; Purchase of other goods and services 20%; Subsidy to private sector 18%; Office supplies and inventory 16%\nWho spends it (2021): 4 spending units, among them Ministry of Nature, Environment and Tourism; Ub. Air Pollution Control Authority; Hovd.\u00a0The governor; Ub. Department of housing and infrastructure",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "lineKind": "programme",
+    "expenditure": {
+      "2020": 75.75605686099999,
+      "2021": 101.578384503,
+      "2022": 30.086048975,
+      "2023": 14.681545229,
+      "2024": 39.368340183
     }
   },
   {
     "id": "BER_71412",
     "sourceDocument": "BER",
     "sourceLabel": "71412 R&D Environment",
-    "text": "R&D Environment. Research on preventing environmental pollution and degradation.. Expenditure: 2020: 0.1 billion MNT, 2021: 0 billion MNT, 2022: no data, 2023: no data, 2024: no data. Total: 0.1 billion MNT.",
+    "text": "Includes recurrent and capital expenditures related to research activities aimed at preventing environmental pollution and degradation, reducing pollution, and mitigating environmental impacts.",
+    "analysisText": "Name: R&D Environment\nKind: a programme of Mongolia's national budget (code 71412), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to research activities aimed at preventing environmental pollution and degradation, reducing pollution, and mitigating environmental impacts.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Ministry of Nature, Environment and Tourism",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": 0.1,
-      "2021": 0,
-      "2022": null,
-      "2023": null,
-      "2024": null
+      "2020": 0.141231161,
+      "2021": 0.00128,
+      "2022": 0,
+      "2023": 0.012255002,
+      "2024": 0
+    }
+  },
+  {
+    "id": "BER_71406",
+    "sourceDocument": "BER",
+    "sourceLabel": "71406 Environmental pollution and degradation",
+    "text": "Includes recurrent and capital expenditures related to reducing air pollution and conducting quality control; developing alternative products to replace pollution sources; cleaning, collection, transport, disposal, and recycling of waste from public roads, spaces, and facilities; establishment and maintenance of waste recycling services and facilities; and other support measures aimed at reducing environmental pollution.",
+    "analysisText": "Name: Environmental pollution and degradation\nKind: a programme of Mongolia's national budget (code 71406), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to reducing air pollution and conducting quality control; developing alternative products to replace pollution sources; cleaning, collection, transport, disposal, and recycling of waste from public roads, spaces, and facilities; establishment and maintenance of waste recycling services and facilities; and other support measures aimed at reducing environmental pollution.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 85%; Purchase of other goods and services 15%\nWho spends it (2021): 6 spending units, among them Governor's office; Dd.\u00a0The governor; BU. Nature and tourism department; Bayan-Ulgii Deluun Collateral; BU. Buyant Collateral; BU. Sagsai Collateral",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "lineKind": "programme",
+    "expenditure": {
+      "2020": 0.435367097,
+      "2021": 0.503256145,
+      "2022": 0.30782612,
+      "2023": 0,
+      "2024": 1.547048641
+    }
+  },
+  {
+    "id": "BER_71401",
+    "sourceDocument": "BER",
+    "sourceLabel": "71401 Waste management",
+    "text": "Includes financing for activities related to the implementation of the Law on Waste and national and local waste management programs, aimed at reducing the negative impacts of waste on human health and the environment.",
+    "analysisText": "Name: Waste management\nKind: a programme of Mongolia's national budget (code 71401), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the Law on Waste and national and local waste management programs, aimed at reducing the negative impacts of waste on human health and the environment.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Su.Bar-Urt Landscaping Service",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "lineKind": "programme",
+    "expenditure": {
+      "2020": 0.5168315,
+      "2021": 0.711661473,
+      "2022": 1.910367532,
+      "2023": 0,
+      "2024": 5.864301376
     }
   },
   {
     "id": "BER_71413",
     "sourceDocument": "BER",
     "sourceLabel": "71413 Environment protection, recovery",
-    "text": "Environment protection, recovery. Environmental protection and restoration \u2014 water, forest, plant, wildlife, genetic resources.. Expenditure: 2020: 11.1 billion MNT, 2021: 10.9 billion MNT, 2022: 13.3 billion MNT, 2023: no data, 2024: 30.2 billion MNT. Total: 65.5 billion MNT.",
+    "text": "Includes recurrent and capital expenditures related to environmental protection and restoration activities, including: prevention of water pollution, sustainable use of water resources, improvement of water supply levels, protection against water scarcity, expansion of water sources, construction of reservoirs; forest protection and restoration activities such as afforestation, reforestation, seedling preparation and propagation, pest control, forest fire prevention and damage compensation, and forest cleaning; protection of plants from diseases, harmful rodents, pests, and chemical or biological impacts, establishment of quarantine measures, studies on plant distribution and resources, ecological and economic valuation, restoration and cultivation of rare plants; wildlife protection, breeding, sustainable use, reintroduction of endangered species, captive breeding, creation of sustainable use reserves, research, training and awareness-raising, biotechnology measures, monitoring of hunting activities, and prevention of illegal hunting; research, documentation, protection, and regulation of traditional knowledge associated with plant and animal genetic resources, promotion of bioprospecting, innovation research and product development related to genetic resources and associated traditional knowledge, and public awareness and legal outreach related to genetic resources.",
+    "analysisText": "Name: Environment protection, recovery\nKind: a programme of Mongolia's national budget (code 71413), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to environmental protection and restoration activities, including: prevention of water pollution, sustainable use of water resources, improvement of water supply levels, protection against water scarcity, expansion of water sources, construction of reservoirs; forest protection and restoration activities such as afforestation, reforestation, seedling preparation and propagation, pest control, forest fire prevention and damage compensation, and forest cleaning; protection of plants from diseases, harmful rodents, pests, and chemical or biological impacts, establishment of quarantine measures, studies on plant distribution and resources, ecological and economic valuation, restoration and cultivation of rare plants; wildlife protection, breeding, sustainable use, reintroduction of endangered species, captive breeding, creation of sustainable use reserves, research, training and awareness-raising, biotechnology measures, monitoring of hunting activities, and prevention of illegal hunting; research, documentation, protection, and regulation of traditional knowledge associated with plant and animal genetic resources, promotion of bioprospecting, innovation research and product development related to genetic resources and associated traditional knowledge, and public awareness and legal outreach related to genetic resources.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 48%; Wages and salaries, bonuses 27%; Purchase of other goods and services 17%; Social insurance contributions paid by employers 4%; Office supplies and inventory 1%\nWho spends it (2021): 83 spending units, among them Capital City Department of Environment; Se.Nature and tourism department; Dd.Nature and tourism department; National Park; Khe.Nature and tourism department; Bkh.Nature and tourism department",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": 11.1,
-      "2021": 10.9,
-      "2022": 13.3,
-      "2023": null,
-      "2024": 30.2
+      "2020": 11.126802782,
+      "2021": 10.862100303,
+      "2022": 13.261495239,
+      "2023": 0,
+      "2024": 30.208730586
     }
   },
   {
-    "id": "BER_81702",
+    "id": "BER_71410",
     "sourceDocument": "BER",
-    "sourceLabel": "81702 Forest fire prevention and damage mitigation",
-    "text": "Forest fire prevention and damage mitigation. Forest fire prevention, suppression, and damage mitigation.. No expenditure recorded 2020-2024.",
+    "sourceLabel": "71410 Reduce land degradation and prevent from desert...",
+    "text": "Includes financing for projects and measures related to the implementation of the National Action Program to Combat Desertification and related policy documents, aimed at protecting soil and land resources from degradation, reducing the spread of desertification, and restoring degraded land.",
+    "analysisText": "Name: Reduce land degradation and prevent from desertification\nKind: a programme of Mongolia's national budget (code 71410), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for projects and measures related to the implementation of the National Action Program to Combat Desertification and related policy documents, aimed at protecting soil and land resources from degradation, reducing the spread of desertification, and restoring degraded land.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 70%; Wages and salaries, bonuses 19%; Social insurance contributions paid by employers 3%; Furniture, current repair expenses 2%; Purchase of other goods and services 2%\nWho spends it (2021): 2 spending units, among them Environmental research and analysis center; Ministry of Nature, Environment and Tourism",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "non_environmental",
+    "lineKind": "programme",
     "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81703",
-    "sourceDocument": "BER",
-    "sourceLabel": "81703 Plant protection and restoration",
-    "text": "Plant protection and restoration. Protection and restoration of natural vegetation.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81705",
-    "sourceDocument": "BER",
-    "sourceLabel": "81705 Forest inventory",
-    "text": "Forest inventory. Forest inventories per forest legislation.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
+      "2020": 0.476152446,
+      "2021": 0.849423296,
+      "2022": 0,
+      "2023": 0.767841232,
+      "2024": 0
     }
   },
   {
     "id": "BER_81707",
     "sourceDocument": "BER",
     "sourceLabel": "81707 Air pollution reduction",
-    "text": "Air pollution reduction. Reducing and preventing air pollution.. Expenditure: 2020: 2.4 billion MNT, 2021: no data, 2022: no data, 2023: 0.1 billion MNT, 2024: no data. Total: 2.5 billion MNT.",
+    "text": "Includes expenditures related to reducing and preventing air pollution.",
+    "analysisText": "Name: Air pollution reduction\nKind: a purpose code of Mongolia's national budget (81707), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to reducing and preventing air pollution.\nWhat it pays for (2020-2021): Standard cost 100%\nWho spends it (2020): 2 spending units, among them Ministry of Health; Khu.\u00a0The governor",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "non_environmental",
+    "lineKind": "purpose",
     "expenditure": {
-      "2020": 2.4,
-      "2021": null,
-      "2022": null,
-      "2023": 0.1,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81708",
-    "sourceDocument": "BER",
-    "sourceLabel": "81708 Afforestation",
-    "text": "Afforestation. Plantation forests, forest restoration, seedling preparation.. Expenditure: 2020: no data, 2021: no data, 2022: 0.1 billion MNT, 2023: no data, 2024: 0.1 billion MNT. Total: 0.2 billion MNT.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": 0.1,
-      "2023": null,
-      "2024": 0.1
-    }
-  },
-  {
-    "id": "BER_81709",
-    "sourceDocument": "BER",
-    "sourceLabel": "81709 Control of forest pests and harmful insects",
-    "text": "Control of forest pests and harmful insects. Controlling forest pests and harmful insects.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81710",
-    "sourceDocument": "BER",
-    "sourceLabel": "81710 Hydrological and meteorological research",
-    "text": "Hydrological and meteorological research. Hydrological and meteorological research and analysis.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81713",
-    "sourceDocument": "BER",
-    "sourceLabel": "81713 Waste processing",
-    "text": "Waste processing. Waste separation and processing.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81714",
-    "sourceDocument": "BER",
-    "sourceLabel": "81714 Support for substitute pollution sources and gr...",
-    "text": "Support for substitute pollution sources and green product producers. Budgetary support and incentives for green product producers.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81715",
-    "sourceDocument": "BER",
-    "sourceLabel": "81715 Protection, use, and restoration of water and m...",
-    "text": "Protection, use, and restoration of water and mineral water resources. Water resource protection, reservoir construction, wastewater treatment.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81716",
-    "sourceDocument": "BER",
-    "sourceLabel": "81716 Reduction of land degradation and desertificati...",
-    "text": "Reduction of land degradation and desertification prevention. Degraded land restoration, desertification mitigation, pastureland protection.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81717",
-    "sourceDocument": "BER",
-    "sourceLabel": "81717 Protection and restoration of wildlife resources",
-    "text": "Protection and restoration of wildlife resources. Wildlife protection, captive breeding, reintroduction of endangered species.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81718",
-    "sourceDocument": "BER",
-    "sourceLabel": "81718 Genetic resources of wild plants and animals",
-    "text": "Genetic resources of wild plants and animals. Research, assessment, and conservation of genetic resources.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
-    }
-  },
-  {
-    "id": "BER_81719",
-    "sourceDocument": "BER",
-    "sourceLabel": "81719 Forest restoration",
-    "text": "Forest restoration. Forest restoration, seedling propagation, plantation establishment.. No expenditure recorded 2020-2024.",
-    "country": "",
-    "isQuantitative": false,
-    "isTimeBound": false,
-    "programType": "non_environmental",
-    "expenditure": {
-      "2020": null,
-      "2021": null,
-      "2022": null,
-      "2023": null,
-      "2024": null
+      "2020": 2.3947225,
+      "2021": 0,
+      "2022": 0,
+      "2023": 0.08477988,
+      "2024": 0
     }
   },
   {
     "id": "BER_82212",
     "sourceDocument": "BER",
     "sourceLabel": "82212 Solid waste and environmental pollution removal...",
-    "text": "Solid waste and environmental pollution removal and cleaning services. Environmental cleaning, public road cleaning, waste removal.. Expenditure: 2020: 44.7 billion MNT, 2021: 42.4 billion MNT, 2022: 54.8 billion MNT, 2023: no data, 2024: 101.9 billion MNT. Total: 243.8 billion MNT.",
+    "text": "Includes expenditures related to environmental cleaning services, cleaning of public roads and areas, and waste removal.",
+    "analysisText": "Name: Solid waste and environmental pollution removal and cleaning services\nKind: a purpose code of Mongolia's national budget (82212), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to environmental cleaning services, cleaning of public roads and areas, and waste removal.\nWhat it pays for (2020-2021): Office supplies and inventory 72%; Work, service payment, fee performed by others 25%; Subsidy to State owned enterprises (SOE) 1%\nWho spends it (2021): 173 spending units, among them CHD.AAT Organization; BZD.AAT Organization; KHUD.Non budgetary organisations; Songinokhairkhan district; SBD.AAT Organization; Bright. Convenient service department",
     "country": "",
     "isQuantitative": false,
     "isTimeBound": false,
-    "programType": "non_environmental",
+    "lineKind": "purpose",
     "expenditure": {
-      "2020": 44.7,
-      "2021": 42.4,
-      "2022": 54.8,
-      "2023": null,
-      "2024": 101.9
+      "2020": 44.731392317,
+      "2021": 42.385032658,
+      "2022": 54.789753585,
+      "2023": 0.0006861,
+      "2024": 101.88972458
+    }
+  },
+  {
+    "id": "BER_81708",
+    "sourceDocument": "BER",
+    "sourceLabel": "81708 Afforestation",
+    "text": "Includes expenditures related to establishing plantation forests and forest funds, forest restoration and propagation, and conducting forest inventories in accordance with the Law on Afforestation. Exclusions: expenditures related to tree planting in urban streets, parks, and green spaces are not recorded under this category and are instead recorded under code 82207.",
+    "analysisText": "Name: Afforestation\nKind: a purpose code of Mongolia's national budget (81708), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to establishing plantation forests and forest funds, forest restoration and propagation, and conducting forest inventories in accordance with the Law on Afforestation. Exclusions: expenditures related to tree planting in urban streets, parks, and green spaces are not recorded under this category and are instead recorded under code 82207.",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "lineKind": "purpose",
+    "expenditure": {
+      "2020": 0,
+      "2021": 0,
+      "2022": 0.0720519,
+      "2023": 0,
+      "2024": 0.0772691
+    }
+  },
+  {
+    "id": "BER_81703",
+    "sourceDocument": "BER",
+    "sourceLabel": "81703 Plant protection and restoration",
+    "text": "Includes expenditures related to the protection and restoration of natural vegetation.",
+    "analysisText": "Name: Plant protection and restoration\nKind: a purpose code of Mongolia's national budget (81703), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to the protection and restoration of natural vegetation.\nWhat it pays for (2020-2021): Purchase of other goods and services 100%\nWho spends it (2020): 1 spending units, among them Dd. Bayantumen Soum Development Fund",
+    "country": "",
+    "isQuantitative": false,
+    "isTimeBound": false,
+    "lineKind": "purpose",
+    "expenditure": {
+      "2020": 0.005,
+      "2021": 0,
+      "2022": 0,
+      "2023": 0,
+      "2024": 0
     }
   }
 ]

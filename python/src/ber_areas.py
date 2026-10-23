@@ -90,6 +90,16 @@ def user_message(description: str) -> str:
 # ---------------------------------------------------------------------------
 
 
+def area_lines(record: dict[str, Any]) -> list[dict[str, Any]]:
+    """The lines the review decided on, which take an area: Mongolia's
+    programmes and purpose codes, Panama's activities, Sri Lanka's project
+    lines (its institutions carry the total but no area). The rule of
+    areaLines in src/lib/brief/ber-record.ts."""
+    kinds = {line["kind"] for line in record["lines"]}
+    wanted = ("activity",) if "activity" in kinds else ("project",) if "project" in kinds else ("programme", "purpose")
+    return [line for line in record["lines"] if line["kind"] in wanted]
+
+
 def _shares(items: Sequence[dict[str, Any]], key: str = "name", limit: int = 5) -> str:
     parts = [f"{i[key]} {round(i['share'] * 100)}%" for i in items[:limit] if i.get(key) and i.get("share", 0) >= 0.01]
     return "; ".join(parts)
@@ -155,18 +165,25 @@ def describe_line(country: str, record: dict[str, Any], line: dict[str, Any]) ->
 
 
 async def place_with_pipeline_model(
-    descriptions: dict[str, str], categories: Sequence[dict[str, Any]], lens_name: str
+    descriptions: dict[str, str],
+    categories: Sequence[dict[str, Any]],
+    lens_name: str,
+    namespace: str = PIPELINE_NAMESPACE,
+    max_tokens: int = 900,
 ) -> dict[str, list[dict[str, Any]]]:
     """code -> ranked areas from the pipeline's model, cached like every call."""
     system = system_prompt(lens_name, categories)
     codes = list(descriptions)
-    calls = [{"system": system, "user": user_message(descriptions[c]), "temperature": 0.0, "max_tokens": 900} for c in codes]
-    raw = await call_llm_batch(calls, cache_namespace=PIPELINE_NAMESPACE, desc=f"Budget lines ({lens_name})")
+    calls = [{"system": system, "user": user_message(descriptions[c]), "temperature": 0.0, "max_tokens": max_tokens} for c in codes]
+    raw = await call_llm_batch(calls, cache_namespace=namespace, desc=f"Budget lines ({lens_name})")
     valid = {c["id"] for c in categories}
     return {code: parse_rank_response(text, valid) for code, text in zip(codes, raw)}
 
 
-def _claude_schema(categories: Sequence[dict[str, Any]]) -> dict[str, Any]:
+def _claude_schema(categories: Sequence[dict[str, Any]], enum: bool = True) -> dict[str, Any]:
+    # A long catalogue (the 453 expenditure types) is checked after parsing
+    # instead of as an enum.
+    id_schema: dict[str, Any] = {"type": "string", "enum": [c["id"] for c in categories]} if enum else {"type": "string"}
     return {
         "type": "object",
         "properties": {
@@ -175,7 +192,7 @@ def _claude_schema(categories: Sequence[dict[str, Any]]) -> dict[str, Any]:
                 "items": {
                     "type": "object",
                     "properties": {
-                        "id": {"type": "string", "enum": [c["id"] for c in categories]},
+                        "id": id_schema,
                         "score": {"type": "number"},
                         "reasoning": {"type": "string"},
                     },
@@ -189,13 +206,17 @@ def _claude_schema(categories: Sequence[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _claude_cache_path(system: str, user: str) -> Path:
+def _claude_cache_path(system: str, user: str, namespace: str = CLAUDE_NAMESPACE) -> Path:
     key = hashlib.sha256(f"{system}\x00{user}\x00{CLAUDE_MODEL}\x00{CLAUDE_EFFORT}".encode()).hexdigest()[:16]
-    return CACHE_DIR / CLAUDE_NAMESPACE / f"{key}.json"
+    return CACHE_DIR / namespace / f"{key}.json"
 
 
 async def place_with_claude(
-    descriptions: dict[str, str], categories: Sequence[dict[str, Any]], lens_name: str
+    descriptions: dict[str, str],
+    categories: Sequence[dict[str, Any]],
+    lens_name: str,
+    namespace: str = CLAUDE_NAMESPACE,
+    enum: bool = True,
 ) -> tuple[dict[str, dict[str, Any]], dict[str, int]]:
     """code -> {ranked, model} from the second model, and the run's usage.
 
@@ -207,15 +228,15 @@ async def place_with_claude(
     import anthropic  # a dev dependency: only this check needs it
 
     system = system_prompt(lens_name, categories)
-    schema = _claude_schema(categories)
+    schema = _claude_schema(categories, enum=enum)
     valid = {c["id"] for c in categories}
     client = anthropic.AsyncAnthropic(max_retries=6)
     gate = asyncio.Semaphore(CLAUDE_CONCURRENCY)
-    usage = {"calls": 0, "cached": 0, "input_tokens": 0, "output_tokens": 0, "cache_read_tokens": 0}
+    usage = {"calls": 0, "cached": 0, "input_tokens": 0, "output_tokens": 0, "cache_read_tokens": 0, "cache_write_tokens": 0}
 
     async def one(code: str) -> tuple[str, dict[str, Any]]:
         user = user_message(descriptions[code])
-        path = _claude_cache_path(system, user)
+        path = _claude_cache_path(system, user, namespace)
         if path.exists():
             usage["cached"] += 1
             stored = json.loads(path.read_text())
@@ -235,6 +256,7 @@ async def place_with_claude(
             usage["input_tokens"] += response.usage.input_tokens or 0
             usage["output_tokens"] += response.usage.output_tokens or 0
             usage["cache_read_tokens"] += getattr(response.usage, "cache_read_input_tokens", 0) or 0
+            usage["cache_write_tokens"] += getattr(response.usage, "cache_creation_input_tokens", 0) or 0
             text = next((b.text for b in response.content if b.type == "text"), "")
             stored = {
                 "model": response.model,
