@@ -1,0 +1,242 @@
+"""The review sheet for step 2 of the BER plan: a person checks each line's area.
+
+  build   python/output/<country>/ber_areas_<lens>.json (both models' readings)
+          -> one workbook, a sheet per country: every line with its money, each
+          model's area and reason, and empty columns for the call. Lines the
+          models place differently come first, then the rest, largest money
+          first. Earlier calls (python/data/<country>-ber-areas.json) are
+          filled in.
+  import  the filled workbook -> python/data/<country>-ber-areas.json: each call
+          with who made it and when. Only these count as checked; until then
+          the brief marks a line's area "AI-suggested, not reviewed".
+
+Run from python/:
+    .venv/bin/python scripts/ber_review_sheet.py build [--out PATH]
+    .venv/bin/python scripts/ber_review_sheet.py import PATH --by "Name"
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from datetime import date
+from pathlib import Path
+from typing import Any
+
+from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.datavalidation import DataValidation
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from src.config import DATA_DIR, OUTPUT_DIR  # noqa: E402
+
+COUNTRIES = {"mongolia": "Mongolia", "panama": "Panama", "sri-lanka": "Sri Lanka"}
+LENS_KEYS = {"globe": "globe_categories"}
+DEFAULT_OUT = Path(__file__).resolve().parent.parent / "tmp" / "ber" / "BER review sheet - GLOBE.xlsx"
+CALLS = {"Accept": "accept", "Change": "change", "None fits": "none"}
+
+COLUMNS = [
+    ("Line", 16),
+    ("Name", 44),
+    ("Institution or ministry", 28),
+    ("The review's own tags", 22),
+    ("Reviewed spending", 16),
+    ("US$ million", 12),
+    ("Years", 10),
+    ("Model 1: area", 26),
+    ("Model 1: score", 9),
+    ("Model 1: reason", 50),
+    ("Model 2: area", 26),
+    ("Model 2: reason", 50),
+    ("The two models", 18),
+    ("Your call", 12),
+    ("Area, if you change it", 26),
+    ("Note", 30),
+]
+STATUS_WORDS = {
+    "models-differ": "place it differently",
+    "no-clear-area": "find no clear area",
+    "models-agree": "agree",
+    "one-model": "one model only",
+}
+
+
+def area_names(lens: str) -> dict[str, str]:
+    categories = json.loads((DATA_DIR / "categories.json").read_text())[LENS_KEYS[lens]]
+    return {c["id"]: c["name"] for c in categories}
+
+
+def money(record: dict[str, Any], line: dict[str, Any]) -> tuple[float, float, str]:
+    """The line's counted amount over the record's complete years, in its own
+    currency and in US$ (each year at its own rate)."""
+    years = [y for y in record["years"] if y["complete"]]
+    local = usd = 0.0
+    for y in years:
+        cells = (line["amounts"].get(y["year"]) or {}).values()
+        value = sum((c or {}).get("counted", 0.0) for c in cells)
+        local += value
+        scale = 1000.0 if record["unit"] == "billion" else 1.0
+        usd += value * scale / y["usdRate"]
+    span = f"{years[0]['year']}-{years[-1]['year']}" if years else ""
+    return local, usd, span
+
+
+def build(lens: str, out: Path) -> None:
+    names = area_names(lens)
+    wb = Workbook()
+    guide = wb.active
+    guide.title = "How to use"
+    for row in [
+        ["One row per budget line of the expenditure review, a sheet per country."],
+        ["Two AI models placed each line in a GLOBE area from the review's own description of it, without its amounts."],
+        ["Rows where the two models place the line differently, or find no clear area, come first; then the rest, largest money first."],
+        ["Your call: Accept (model 1's area), Change (pick the area in the next column) or None fits (the line stays apart)."],
+        ["Two models agreeing is not a check: only your call counts as checked. Leave a row empty to decide later."],
+        ["Send the sheet back as it is; scripts/ber_review_sheet.py import reads the calls."],
+    ]:
+        guide.append(row)
+    guide.column_dimensions["A"].width = 120
+
+    area_list = list(names.values())
+    for country, title in COUNTRIES.items():
+        path = OUTPUT_DIR / country / f"ber_areas_{lens}.json"
+        if not path.exists():
+            continue
+        readings = json.loads(path.read_text())
+        record = json.loads((DATA_DIR / f"{country}-ber.json").read_text())["record"]
+        by_code = {l["code"]: l for l in record["lines"]}
+        earlier = load_calls(country, lens)
+        rows = []
+        for r in readings["lines"]:
+            line = by_code[r["code"]]
+            local, usd, span = money(record, line)
+            rows.append((r, line, local, usd, span))
+        priority = {"models-differ": 0, "no-clear-area": 1, "one-model": 2, "models-agree": 3}
+        rows.sort(key=lambda x: (priority[x[0]["status"]], -x[2], x[0]["code"]))
+
+        ws = wb.create_sheet(title)
+        ws.append([c for c, _ in COLUMNS])
+        for i, (_, width) in enumerate(COLUMNS, start=1):
+            ws.column_dimensions[get_column_letter(i)].width = width
+        for cell in ws[1]:
+            cell.font = Font(bold=True)
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+        ws.freeze_panes = "C2"
+        unit = f"{record['currency']} {record['unit']}"
+        ws.cell(1, 5).value = f"Reviewed spending ({unit})"
+        for r, line, local, usd, span in rows:
+            first, second = r["first"], r["second"] or {}
+            call = earlier.get(r["code"], {})
+            ws.append(
+                [
+                    r["code"],
+                    line["name"],
+                    line.get("institution") or line.get("ministry") or "",
+                    "; ".join(line.get("tags", [])) if isinstance(line.get("tags"), list) else "",
+                    round(local, 3),
+                    round(usd, 2),
+                    span,
+                    names.get(first["area"], "") if first["area"] else "",
+                    first["score"],
+                    (first["ranked"][0]["reasoning"] if first["ranked"] else ""),
+                    names.get(second.get("area"), "") if second.get("area") else "",
+                    (second["ranked"][0]["reasoning"] if second.get("ranked") else ""),
+                    STATUS_WORDS[r["status"]],
+                    next((k for k, v in CALLS.items() if v == call.get("call")), ""),
+                    names.get(call.get("area"), "") if call.get("call") == "change" else "",
+                    call.get("note", ""),
+                ]
+            )
+        shade = PatternFill("solid", fgColor="FFF5C7")
+        for row in ws.iter_rows(min_row=2):
+            for cell in row:
+                cell.alignment = Alignment(wrap_text=True, vertical="top")
+            if row[12].value in (STATUS_WORDS["models-differ"], STATUS_WORDS["no-clear-area"]):
+                row[12].fill = shade
+        last = ws.max_row
+        calls = DataValidation(type="list", formula1='"' + ",".join(CALLS) + '"', allow_blank=True)
+        areas = DataValidation(type="list", formula1='"' + ",".join(area_list) + '"', allow_blank=True)
+        ws.add_data_validation(calls)
+        ws.add_data_validation(areas)
+        calls.add(f"N2:N{last}")
+        areas.add(f"O2:O{last}")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    wb.save(out)
+    print(f"Wrote {out}")
+
+
+def calls_path(country: str) -> Path:
+    return DATA_DIR / f"{country}-ber-areas.json"
+
+
+def load_calls(country: str, lens: str) -> dict[str, dict[str, Any]]:
+    path = calls_path(country)
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text()).get(lens, {})
+
+
+def import_calls(path: Path, lens: str, by: str) -> None:
+    names = area_names(lens)
+    by_name = {v: k for k, v in names.items()}
+    wb = load_workbook(path, data_only=True)
+    for country, title in COUNTRIES.items():
+        if title not in wb.sheetnames:
+            continue
+        ws = wb[title]
+        readings = json.loads((OUTPUT_DIR / country / f"ber_areas_{lens}.json").read_text())
+        first_area = {r["code"]: r["first"]["area"] for r in readings["lines"]}
+        target = calls_path(country)
+        stored = json.loads(target.read_text()) if target.exists() else {}
+        calls = stored.get(lens, {})
+        changed = 0
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            code, call, area, note = row[0], row[13], row[14], row[15]
+            if not code or not call:
+                continue
+            kind = CALLS.get(str(call).strip())
+            if kind is None:
+                raise SystemExit(f"{title}, line {code}: unknown call {call!r}")
+            if kind == "change" and area not in by_name:
+                raise SystemExit(f"{title}, line {code}: Change needs an area from the list, found {area!r}")
+            entry = {
+                "call": kind,
+                "area": by_name[area] if kind == "change" else first_area.get(code) if kind == "accept" else None,
+                "by": by,
+                "at": date.today().isoformat(),
+                **({"note": str(note).strip()} if note else {}),
+            }
+            if calls.get(code, {}) | {"at": entry["at"]} != entry:
+                changed += 1
+            calls[code] = entry
+        stored["_provenance"] = (
+            "A person's calls on the areas the AI suggested for the review's lines (step 2 of the BER plan); "
+            "written by python/scripts/ber_review_sheet.py import. Only these count as checked."
+        )
+        stored[lens] = dict(sorted(calls.items()))
+        target.write_text(json.dumps(stored, indent=2, ensure_ascii=False) + "\n")
+        print(f"{title}: {changed} calls new or changed, {len(calls)} in all -> {target}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = parser.add_subparsers(dest="command", required=True)
+    b = sub.add_parser("build")
+    b.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
+    b.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    i = sub.add_parser("import")
+    i.add_argument("sheet", type=Path)
+    i.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
+    i.add_argument("--by", required=True, help="Who made the calls, as the brief should name them")
+    args = parser.parse_args()
+    if args.command == "build":
+        build(args.lens, args.out)
+    else:
+        import_calls(args.sheet, args.lens, args.by)
+
+
+if __name__ == "__main__":
+    main()
