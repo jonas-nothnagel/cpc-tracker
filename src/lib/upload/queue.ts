@@ -237,3 +237,21 @@ export function bootQueue(): void {
     console.warn("Upload queue could not start:", err instanceof Error ? err.message : err);
   }
 }
+
+const WATCH_MS = 30_000;
+
+/** Look at the line every 30 seconds: after a deploy, the run the old server
+ *  was doing goes quiet only once the old server has stopped, and nobody may
+ *  be looking at a waiting page by then. Returns a stop function. */
+export function watchQueue(): () => void {
+  const timer = setInterval(() => {
+    try {
+      recover();
+      pump();
+    } catch (err) {
+      console.warn("Queue look failed:", err instanceof Error ? err.message : err);
+    }
+  }, WATCH_MS);
+  timer.unref?.();
+  return () => clearInterval(timer);
+}

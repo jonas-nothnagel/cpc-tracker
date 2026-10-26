@@ -185,3 +185,21 @@ describe("bootQueue", () => {
     expect(existsSync(join(root, "python", "analyses", ".running.json"))).toBe(false);
   });
 });
+
+describe("watchQueue", () => {
+  it("looks at the line every 30 seconds, so a run cut short by a deploy resumes with nobody watching", async () => {
+    vi.useFakeTimers();
+    try {
+      const { enqueue, watchQueue } = await import("./queue");
+      analysis(A);
+      const stop = watchQueue();
+      enqueue(A);
+      expect(spawnMock).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(30_000);
+      expect(spawnMock).toHaveBeenCalledTimes(1);
+      stop();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
