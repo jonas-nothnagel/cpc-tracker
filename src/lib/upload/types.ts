@@ -51,8 +51,9 @@ export interface DraftDocument {
   /** Parts read so far while reading, of `parts`. */
   part?: number;
   parts?: number;
-  /** Times reading was started. */
+  /** Times reading was started, and when it last was. */
   attempts?: number;
+  readingAt?: string;
   /** Pages without machine-readable text, of `pages`. */
   emptyPages?: number;
   pages?: number;

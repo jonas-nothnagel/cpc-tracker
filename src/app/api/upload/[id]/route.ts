@@ -1,6 +1,7 @@
 import { rmSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { applyChanges, documentDir, readDraft, updateDraft } from "@/lib/upload/draft";
+import { refreshReading } from "@/lib/upload/reading";
 import type { DraftChange } from "@/lib/upload/types";
 
 /**
@@ -17,8 +18,11 @@ type Params = { params: Promise<{ id: string }> };
 
 export async function GET(_request: NextRequest, { params }: Params) {
   const { id } = await params;
-  const draft = readDraft(id);
-  if (!draft) return NextResponse.json({ error: "Draft not found" }, { status: 404 });
+  const current = readDraft(id);
+  if (!current) return NextResponse.json({ error: "Draft not found" }, { status: 404 });
+  // While documents are read, every look takes in what the jobs have done.
+  const reading = current.documents.some((d) => d.state === "queued" || d.state === "reading");
+  const draft = reading ? refreshReading(id) : current;
   return NextResponse.json({ draft, ahead: 0 });
 }
 

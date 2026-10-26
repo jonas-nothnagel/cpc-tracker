@@ -1,16 +1,16 @@
+import { EventEmitter } from "events";
 import { existsSync, mkdtempSync, readFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 import { NextRequest } from "next/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-// Spreadsheets are parsed by Python; nothing here needs it, so a spawn is a failure.
+// Python is faked: a reading job is an emitter that never finishes, and
+// nothing else here may start one.
+const { spawnMock } = vi.hoisted(() => ({ spawnMock: vi.fn() }));
 vi.mock("child_process", async (importOriginal) => {
   const actual = await importOriginal<typeof import("child_process")>();
-  const spawn = () => {
-    throw new Error("no Python in these tests");
-  };
-  return { ...actual, default: { ...actual, spawn }, spawn };
+  return { ...actual, default: { ...actual, spawn: spawnMock }, spawn: spawnMock };
 });
 
 let root = "";
@@ -19,7 +19,10 @@ beforeEach(() => {
   root = mkdtempSync(join(tmpdir(), "cpc-upload-"));
   vi.spyOn(process, "cwd").mockReturnValue(root);
 });
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+  spawnMock.mockReset();
+});
 
 const json = (body: unknown, method = "POST") =>
   new NextRequest("http://localhost/api/upload", { method, body: JSON.stringify(body) });
@@ -130,5 +133,30 @@ describe("GET and PATCH /api/upload/{id}", () => {
     const { PATCH } = await import("./[id]/route");
     const res = await PATCH(json({ changes: [{ op: "country", value: "Fiji" }] }, "PATCH"), params(draft.id));
     expect(res.status).toBe(409);
+  });
+});
+
+describe("POST /api/upload/{id}/read", () => {
+  it("starts reading the documents that were added, and only then", async () => {
+    spawnMock.mockImplementation(() => Object.assign(new EventEmitter(), { unref: () => undefined, pid: 4242 }));
+    const { draft } = await newDraft();
+    const docs = await import("./[id]/documents/route");
+    await docs.POST(withFile(new File(["%PDF-1.4"], "NDC.pdf")), params(draft.id));
+    expect(spawnMock).not.toHaveBeenCalled();
+    const { POST } = await import("./[id]/read/route");
+    const res = await POST(json({}), params(draft.id));
+    expect(res.status).toBe(200);
+    expect((await res.json()).draft.documents[0]).toMatchObject({ state: "reading", attempts: 1 });
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("refuses once the analysis has started", async () => {
+    const { draft } = await newDraft();
+    const { updateDraft } = await import("@/lib/upload/draft");
+    updateDraft(draft.id, (x) => {
+      x.started = true;
+    });
+    const { POST } = await import("./[id]/read/route");
+    expect((await POST(json({}), params(draft.id))).status).toBe(409);
   });
 });

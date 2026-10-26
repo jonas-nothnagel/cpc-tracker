@@ -39,7 +39,6 @@ describe("isGatedPath", () => {
 
   it("covers the upload API routes", () => {
     for (const p of [
-      "/api/extract",
       "/api/upload",
       "/api/upload/",
       "/api/upload/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13",
@@ -89,7 +88,6 @@ describe("proxy auth gate", () => {
   });
 
   it("returns 401 for an unauthenticated upload API call", async () => {
-    expect((await proxy(req("/api/extract", { method: "POST" }))).status).toBe(401);
     expect((await proxy(req("/api/analyze", { method: "POST" }))).status).toBe(401);
     expect((await proxy(req("/api/upload", { method: "POST" }))).status).toBe(401);
   });
@@ -190,8 +188,7 @@ describe("proxy auth gate", () => {
     delete process.env.APP_ACCESS_TOKEN;
     vi.stubEnv("NODE_ENV", "production");
     try {
-      expect((await proxy(req("/api/extract", { method: "POST" }))).status).toBe(401);
-      expect((await proxy(req("/api/dashboard"))).status).toBe(200);
+        expect((await proxy(req("/api/dashboard"))).status).toBe(200);
     } finally {
       vi.unstubAllEnvs();
     }

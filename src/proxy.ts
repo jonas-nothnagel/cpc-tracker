@@ -38,7 +38,7 @@ export function isPublicFile(pathname: string): boolean {
 // (polling a run that already started) stays open, like viewing the result.
 // Everything under `/api/upload` (a draft, its documents, reading, the start)
 // is gated, and so is continuing a run that stopped.
-const GATED_API_PATHS = new Set(["/api/extract", "/api/analyze", "/api/extraction-review"]);
+const GATED_API_PATHS = new Set(["/api/analyze", "/api/extraction-review"]);
 const GATED_API_PREFIX = "/api/upload";
 const CONTINUE_RE = /^\/api\/analyze\/[^/]+\/continue$/;
 

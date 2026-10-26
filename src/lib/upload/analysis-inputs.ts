@@ -2,7 +2,7 @@ import { copyFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type { DocumentTypeEntry, TargetSource, TextCleanup } from "@/types";
-import { KNOWN, cleanText as clean, documentColors, documentIds } from "./documents";
+import { KNOWN, cleanText as clean, documentColors, documentIds, promptLabel } from "./documents";
 import { OWN_AREA_LIMITS, ownLensProblem as areasProblem, type OwnLensInput } from "./own-areas";
 
 export { documentIds };
@@ -65,19 +65,6 @@ const COUNTRY_MAX = 80;
 const UPLOAD_LANGUAGES = new Set(["es", "mn"]);
 
 const SOURCE_NOTE = "Provided by the user with the upload; never drafted by the tool.";
-
-/** A document's name as the comparison prompt reads it, at most 60
- *  characters: letters with their combining marks and joiners (Tamil,
- *  Sinhala), digits, dashes, apostrophes and a few other marks. Anything
- *  else becomes a space, so words never fuse, and line breaks or stray
- *  symbols cannot carry instructions into the prompt. */
-function promptLabel(raw: string): string {
-  const kept = clean(raw)
-    .replace(/[^\p{L}\p{M}\p{N}\p{Pd}\u200C\u200D '\u2019.,:;/&()+]/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  return Array.from(kept).slice(0, 60).join("").trim();
-}
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);

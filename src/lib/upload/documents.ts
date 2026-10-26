@@ -59,6 +59,19 @@ export function cleanText(raw: unknown): string {
     : "";
 }
 
+/** A document's name as the comparison prompt reads it, at most 60
+ *  characters: letters with their combining marks and joiners (Tamil,
+ *  Sinhala), digits, dashes, apostrophes and a few other marks. Anything
+ *  else becomes a space, so words never fuse, and line breaks or stray
+ *  symbols cannot carry instructions into the prompt. */
+export function promptLabel(raw: string): string {
+  const kept = cleanText(raw)
+    .replace(/[^\p{L}\p{M}\p{N}\p{Pd}\u200C\u200D '\u2019.,:;/&()+]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return Array.from(kept).slice(0, 60).join("").trim();
+}
+
 /** Each document code, first seen first, to the id its targets are filed
  *  under: short safe codes keep themselves, any other gets DOC1, DOC2, … */
 export function documentIds(codes: string[]): Map<string, string> {
