@@ -2,9 +2,11 @@ import { copyFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type { DocumentTypeEntry, TargetSource, TextCleanup } from "@/types";
-import { KNOWN, documentColors, documentIds } from "./documents";
+import { KNOWN, cleanText as clean, documentColors, documentIds } from "./documents";
+import { OWN_AREA_LIMITS, ownLensProblem as areasProblem, type OwnLensInput } from "./own-areas";
 
 export { documentIds };
+export type { OwnLensInput };
 
 /**
  * An upload's inputs for the pipeline, built and checked before anything is
@@ -37,14 +39,6 @@ export interface TargetInput {
   _provenanceFlag?: string;
 }
 
-/** Policy areas the upload brings, in the user's own words. */
-export interface OwnLensInput {
-  name: string;
-  /** Where the areas come from, shown as the lens's tooltip. */
-  source?: string;
-  areas: { name: string; description: string }[];
-}
-
 export interface AnalyzeBody {
   country?: string;
   /** The language the wizard ran in. */
@@ -66,23 +60,11 @@ export interface AnalysisInputs {
   taxonomies: { _source: string; taxonomies: Record<string, unknown>[] } | null;
 }
 
-const LIMITS = { country: 80, lensName: 80, source: 300, areas: 30, areaName: 80, description: 1200 };
+const COUNTRY_MAX = 80;
 
 const UPLOAD_LANGUAGES = new Set(["es", "mn"]);
 
 const SOURCE_NOTE = "Provided by the user with the upload; never drafted by the tool.";
-
-/** User text on one line, composed (NFC): control characters out, whitespace
- *  collapsed. */
-function clean(raw: unknown): string {
-  return typeof raw === "string"
-    ? raw
-        .normalize("NFC")
-        .replace(/[\u0000-\u001f\u007f-\u009f]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-    : "";
-}
 
 /** A document's name as the comparison prompt reads it, at most 60
  *  characters: letters with their combining marks and joiners (Tamil,
@@ -106,33 +88,26 @@ function measureCount(btrData: AnalyzeBody["btrData"]): number {
   return Array.isArray(measures) ? measures.length : 0;
 }
 
+/** The API's English sentence for the first problem with the own areas. */
 function ownLensProblem(lens: OwnLensInput): string | null {
-  const name = clean(lens.name);
-  if (!name || name.length > LIMITS.lensName) {
-    return `The policy areas need a name of at most ${LIMITS.lensName} characters.`;
+  const problem = areasProblem(lens);
+  const L = OWN_AREA_LIMITS;
+  switch (problem?.code) {
+    case undefined:
+      return null;
+    case "name":
+      return `The policy areas need a name of at most ${L.name} characters.`;
+    case "source":
+      return `The source line holds at most ${L.source} characters.`;
+    case "count":
+      return `Between 1 and ${L.areas} policy areas are needed.`;
+    case "areaName":
+      return `Each policy area needs a name of at most ${L.areaName} characters.`;
+    case "description":
+      return `"${problem.area}" needs a description of at most ${L.description} characters.`;
+    case "duplicate":
+      return `"${problem.area}" appears twice.`;
   }
-  if (clean(lens.source).length > LIMITS.source) {
-    return `The source line holds at most ${LIMITS.source} characters.`;
-  }
-  const areas = Array.isArray(lens.areas) ? lens.areas : [];
-  if (areas.length < 1 || areas.length > LIMITS.areas) {
-    return `Between 1 and ${LIMITS.areas} policy areas are needed.`;
-  }
-  const seen = new Set<string>();
-  for (const area of areas) {
-    const areaName = clean(area?.name);
-    const description = clean(area?.description);
-    if (!areaName || areaName.length > LIMITS.areaName) {
-      return `Each policy area needs a name of at most ${LIMITS.areaName} characters.`;
-    }
-    if (!description || description.length > LIMITS.description) {
-      return `"${areaName}" needs a description of at most ${LIMITS.description} characters.`;
-    }
-    const key = areaName.toLocaleLowerCase();
-    if (seen.has(key)) return `"${areaName}" appears twice.`;
-    seen.add(key);
-  }
-  return null;
 }
 
 /** What stops a run before anything is spent. */
@@ -141,8 +116,8 @@ export function checkAnalyzeBody(
 ): { ok: true } | { ok: false; code: CheckCode; error: string } {
   const fail = (code: CheckCode, error: string) => ({ ok: false as const, code, error });
   const country = clean(body.country);
-  if (!country || country.length > LIMITS.country) {
-    return fail("noCountry", `A country name of at most ${LIMITS.country} characters is needed.`);
+  if (!country || country.length > COUNTRY_MAX) {
+    return fail("noCountry", `A country name of at most ${COUNTRY_MAX} characters is needed.`);
   }
   const targets = Array.isArray(body.targets) ? body.targets : [];
   if (targets.length === 0) return fail("noTargets", "No targets were provided.");

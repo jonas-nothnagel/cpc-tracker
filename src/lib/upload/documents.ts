@@ -47,6 +47,18 @@ const FRAMEWORK_NAMES: [code: (typeof FRAMEWORK_CODES)[number], pattern: RegExp]
 const NAME_MAX = 120;
 const EXTENSION = /\.(?:pdf|docx?|txt|csv|tsv|xlsx?)$/i;
 
+/** User text on one line, composed (NFC): control characters out, whitespace
+ *  collapsed. Anything that is not a string reads as empty. */
+export function cleanText(raw: unknown): string {
+  return typeof raw === "string"
+    ? raw
+        .normalize("NFC")
+        .replace(/[\u0000-\u001f\u007f-\u009f]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+    : "";
+}
+
 /** Each document code, first seen first, to the id its targets are filed
  *  under: short safe codes keep themselves, any other gets DOC1, DOC2, … */
 export function documentIds(codes: string[]): Map<string, string> {
