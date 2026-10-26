@@ -18,7 +18,7 @@ import os
 import random
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import httpx
 from openai import AsyncAzureOpenAI, AsyncOpenAI
@@ -542,6 +542,30 @@ async def call_llm_detailed(
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# Progress: every batch tells one listener how far it is (the run's status
+# file, so the upload page can show target pairs compared or parts read)
+# ---------------------------------------------------------------------------
+
+ProgressListener = Callable[[str, int, int], None]
+_progress_listener: ProgressListener | None = None
+
+
+def set_progress_listener(fn: ProgressListener | None) -> None:
+    """Report every batch's progress to `fn(desc, completed, total)`."""
+    global _progress_listener
+    _progress_listener = fn
+
+
+def _report_progress(desc: str, completed: int, total: int) -> None:
+    if _progress_listener is None:
+        return
+    try:
+        _progress_listener(desc, completed, total)
+    except Exception as e:  # a status file must never stop the calls
+        logger.warning(f"Progress listener failed: {e}")
+
+
 async def call_llm_batch(
     calls: list[dict[str, Any]],
     *,
@@ -570,6 +594,7 @@ async def call_llm_batch_detailed(
     total = len(calls)
     completed = 0
     start = time.time()
+    _report_progress(desc, 0, total)
 
     async def _run(call: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         nonlocal completed
@@ -583,6 +608,7 @@ async def call_llm_batch_detailed(
             cache_namespace=cache_namespace,
         )
         completed += 1
+        _report_progress(desc, completed, total)
         if completed % 50 == 0 or completed == total:
             elapsed = time.time() - start
             rate = completed / elapsed if elapsed > 0 else 0
