@@ -1490,6 +1490,20 @@
         "unavailable": "Este servicio no puede leer documentos.",
         "generic": "No se pudo añadir {file}."
       }
+    },
+    "targets": {
+      "title": "Metas",
+      "label": "Etiqueta",
+      "text": "Meta",
+      "textOf": "Meta {label}",
+      "page": "página {page, number}",
+      "passage": "Tal como figura en {document}",
+      "remove": "Quitar",
+      "restore": "Restablecer",
+      "add": "Añadir una meta",
+      "addButton": "Añadir",
+      "over": "{count, plural, one {Quite # meta para comenzar.} other {Quite # metas para comenzar.}}",
+      "continue": "Continuar con las áreas de política"
     }
   },
   "analysis": {

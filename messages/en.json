@@ -1490,6 +1490,20 @@
         "unavailable": "Documents cannot be read on this service.",
         "generic": "{file} could not be added."
       }
+    },
+    "targets": {
+      "title": "Targets",
+      "label": "Label",
+      "text": "Target",
+      "textOf": "Target {label}",
+      "page": "page {page, number}",
+      "passage": "As written in {document}",
+      "remove": "Remove",
+      "restore": "Restore",
+      "add": "Add a target",
+      "addButton": "Add",
+      "over": "{count, plural, one {Remove # target to start.} other {Remove # targets to start.}}",
+      "continue": "Continue to the policy areas"
     }
   },
   "analysis": {

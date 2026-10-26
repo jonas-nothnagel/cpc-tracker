@@ -293,3 +293,137 @@
   color: var(--brief-muted);
   cursor: default;
 }
+
+/* ── Targets ─────────────────────────────────────────────────────── */
+
+[data-brief] .up-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin: 0 0 1rem;
+}
+
+[data-brief] .up-switch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font: inherit;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .up-switch button[aria-pressed="true"] {
+  border-bottom-color: var(--brief-ink);
+  font-weight: 600;
+}
+
+[data-brief] .up-switch .up-swatch {
+  width: 9px;
+  height: 9px;
+}
+
+[data-brief] .up-n {
+  font-weight: 400;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-targets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-target {
+  display: grid;
+  grid-template-columns: 4.75rem minmax(0, 1fr) auto;
+  gap: 0.15rem 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-target-label {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-target-body {
+  min-width: 0;
+}
+
+[data-brief] .up-target-text {
+  display: block;
+  width: 100%;
+  max-width: 70ch;
+  resize: none;
+  field-sizing: content;
+}
+
+[data-brief] .up-target-original {
+  max-width: 70ch;
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-target-tools {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+[data-brief] .up-target[data-removed] .up-target-text,
+[data-brief] .up-target[data-removed] .up-target-label {
+  color: var(--brief-muted);
+  text-decoration: line-through;
+  text-decoration-color: rgba(85, 96, 110, 0.55);
+}
+
+[data-brief] .up-passage {
+  max-width: 74ch;
+  margin: 0.5rem 0 0;
+  padding: 0.75rem 1rem;
+  background: var(--brief-desk);
+  font-size: 0.8125rem;
+}
+
+[data-brief] .up-passage p {
+  margin: 0;
+}
+
+[data-brief] .up-passage p + p {
+  margin-top: 0.4rem;
+}
+
+[data-brief] .up-passage-head {
+  display: block;
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-more {
+  margin-top: 0.75rem;
+}
+
+[data-brief] .up-line {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-over {
+  margin-top: 1.25rem;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 640px) {
+  [data-brief] .up-target {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

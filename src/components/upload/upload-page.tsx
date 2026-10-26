@@ -10,7 +10,9 @@ import { draftCounts } from "@/lib/upload/counts";
 import { documentColors } from "@/lib/upload/documents";
 import type { ServiceFacts } from "@/lib/upload/service";
 import type { Draft } from "@/lib/upload/types";
+import { MAX_ITEMS } from "@/lib/upload/limits";
 import { DocumentsStep } from "./documents-step";
+import { TargetsStep } from "./targets-step";
 import { STEPS, type StepId } from "@/lib/upload/steps";
 import { UploadBuilder } from "./upload-builder";
 import { uploadPath, useDraft } from "./use-draft";
@@ -118,7 +120,16 @@ export function UploadPage({
               onContinue={next("documents")}
             />
           )}
-          {step !== "documents" && <h2 className="up-title">{ts(step)}</h2>}
+          {step === "targets" && draft && (
+            <TargetsStep
+              draft={draft}
+              colors={colors}
+              over={Math.max(0, counts.items - MAX_ITEMS)}
+              onChange={change}
+              onContinue={next("targets")}
+            />
+          )}
+          {(step === "areas" || step === "start") && <h2 className="up-title">{ts(step)}</h2>}
         </main>
       </div>
     </div>
