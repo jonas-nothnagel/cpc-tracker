@@ -587,3 +587,7 @@
 [data-brief] .up-login .up-field input {
   width: 100%;
 }
+
+[data-brief] .up-error-top {
+  margin: 0 0 1rem;
+}

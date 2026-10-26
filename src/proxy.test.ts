@@ -102,7 +102,7 @@ describe("proxy auth gate", () => {
 
   it("allows an authenticated upload API request through the gate", async () => {
     const res = await proxy(
-      req("/api/extract", {
+      req("/api/upload", {
         method: "POST",
         headers: { authorization: `Bearer ${TOKEN}` },
       }),

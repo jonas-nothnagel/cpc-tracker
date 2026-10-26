@@ -69,4 +69,10 @@ describe("StartStep", () => {
     expect(screen.getByText("Targets from at least 2 documents are needed.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start the analysis" })).toBeDisabled();
   });
+
+  it("does not start while a document is not read yet", () => {
+    step(draft([doc("a", 5), doc("b", 5), { ...doc("c", 0), state: "added" }]));
+    expect(screen.getByText("Some documents are not read yet.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start the analysis" })).toBeDisabled();
+  });
 });

@@ -61,9 +61,13 @@ function applyChange(draft: Draft, c: DraftChange): void {
       const doc = draft.documents.find((d) => d.id === c.docId);
       const text = cut(c.text, LIMITS.text);
       if (doc?.state !== "read" || !text) return;
-      const n = doc.targets.filter((t) => t.added).length + 1;
+      // The page names a new target itself, so that two tabs adding one each
+      // never share a key; anything else gets the first free number.
+      const used = new Set(doc.targets.map((t) => t.key));
+      let key = typeof c.key === "string" && new RegExp(`^${doc.id}-a[0-9a-z]{1,16}$`).test(c.key) ? c.key : "";
+      for (let n = doc.targets.filter((t) => t.added).length + 1; !key || used.has(key); n++) key = `${doc.id}-a${n}`;
       doc.targets.push({
-        key: `${doc.id}-a${n}`,
+        key,
         label: cut(c.label, LIMITS.label) || `${doc.code} ${doc.targets.length + 1}`,
         text,
         added: true,

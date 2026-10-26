@@ -45,11 +45,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (file.size > MAX_FILE) return fail(413, "tooLarge", "The file is larger than 50 MB.");
 
   if (READ.has(ext)) {
-    const docId = `d${draft.nextDoc}`;
-    const dir = documentDir(id, docId);
-    mkdirSync(dir, { recursive: true });
-    writeFileSync(join(dir, `source${ext}`), Buffer.from(await file.arrayBuffer()));
+    const bytes = Buffer.from(await file.arrayBuffer());
+    // The id is taken only now, after every await, in one synchronous
+    // stretch with the file's write: two files added at once never share it.
+    let docId = "";
     const updated = updateDraft(id, (d) => {
+      if (d.started) return;
+      docId = `d${d.nextDoc}`;
+      d.nextDoc += 1;
       const name = documentName(file.name);
       d.documents.push({
         id: docId,
@@ -60,8 +63,11 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         state: "added",
         targets: [],
       });
-      d.nextDoc += 1;
     });
+    if (!docId) return fail(409, "started", "The analysis has started");
+    const dir = documentDir(id, docId);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, `source${ext}`), bytes);
     return NextResponse.json({ draft: updated });
   }
 

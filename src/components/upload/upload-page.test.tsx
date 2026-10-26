@@ -125,4 +125,45 @@ describe("UploadPage", () => {
     expect(within(scanned).getByText("No machine-readable text. A text version is needed.")).toBeInTheDocument();
     expect(within(scanned).getAllByRole("button").map((b) => b.textContent)).toEqual(["Remove"]);
   });
+
+  it("says when a change was not saved, on whatever step, and shows what the server has", async () => {
+    const d = draft([doc("d1", "NDC", "Updated NDC 2021", {}, 2), doc("d2", "NAP", "NAP", {}, 1)]);
+    fetchMock.mockImplementation(async (url: string, init?: RequestInit) =>
+      init?.method === "PATCH"
+        ? new Response(JSON.stringify({ error: "boom" }), { status: 500 })
+        : new Response(JSON.stringify({ draft: d, ahead: 0 }), { status: 200 }),
+    );
+    page(d);
+    const name = screen.getByLabelText("Name of NDC.pdf");
+    fireEvent.change(name, { target: { value: "Second NDC 2025" } });
+    fireEvent.blur(name);
+    expect(await screen.findByText("The last change was not saved.")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByLabelText("Name of NDC.pdf")).toHaveValue("Updated NDC 2021"));
+  });
+
+  it("says when the documents could not be read, without an empty file name", async () => {
+    fetchMock.mockImplementation(async () => new Response(JSON.stringify({ error: "boom" }), { status: 500 }));
+    page(draft([doc("d1", "NDC", "Updated NDC 2021", { state: "added" })]));
+    fireEvent.click(screen.getByRole("button", { name: "Read the documents" }));
+    expect(await screen.findByText("The documents could not be read.")).toBeInTheDocument();
+  });
+
+  it("makes one draft when two drops arrive before it exists", async () => {
+    let created = 0;
+    fetchMock.mockImplementation(async (url: string) => {
+      if (url === "/api/upload") {
+        created += 1;
+        await new Promise((r) => setTimeout(r, 20));
+        return new Response(JSON.stringify({ draft: draft([]) }), { status: 201 });
+      }
+      return new Response(JSON.stringify({ draft: draft([doc("d1", "NDC", "NDC", { state: "added" })]) }), { status: 200 });
+    });
+    page(null);
+    const drop = screen.getByText("PDF, Word, text or spreadsheet files, up to 50 MB each.").parentElement!;
+    const files = (name: string) => ({ dataTransfer: { files: [new File(["%PDF"], name)] } });
+    fireEvent.drop(drop, files("a.pdf"));
+    fireEvent.drop(drop, files("b.pdf"));
+    await waitFor(() => expect(fetchMock.mock.calls.filter(([u]) => String(u).endsWith("/documents"))).toHaveLength(2));
+    expect(created).toBe(1);
+  });
 });

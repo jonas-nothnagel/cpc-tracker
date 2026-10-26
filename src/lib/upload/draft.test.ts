@@ -98,6 +98,35 @@ describe("changes", () => {
     expect(d.documents[0].targets[1]).toEqual({ key: "d1-a1", label: "4.2", text: "Restore 30% of wetlands", added: true });
   });
 
+  it("let two tabs each add a target and edit only their own", () => {
+    const server = createDraft({ locale: "en" });
+    server.documents.push(readDoc("d1", "NDC", ["Cut emissions"]));
+    const tabB = structuredClone(server);
+    applyChanges(server, [{ op: "addTarget", docId: "d1", key: "d1-a1b2c3d4", label: "A1", text: "Tab A's target" }]);
+    const addB = { op: "addTarget" as const, docId: "d1", key: "d1-a9f8e7d6", label: "B1", text: "Tab B's target" };
+    applyChanges(tabB, [addB]);
+    applyChanges(server, [addB]);
+    applyChanges(server, [{ op: "target", docId: "d1", key: "d1-a9f8e7d6", removed: true }]);
+    expect(server.documents[0].targets.map((t) => [t.text, !!t.removed])).toEqual([
+      ["Cut emissions", false],
+      ["Tab A's target", false],
+      ["Tab B's target", true],
+    ]);
+  });
+
+  it("never reuses a target key, whatever key arrives", () => {
+    const d = createDraft({ locale: "en" });
+    d.documents.push(readDoc("d1", "NDC", ["One"]));
+    applyChanges(d, [
+      { op: "addTarget", docId: "d1", key: "d1-1", label: "", text: "Taken key" },
+      { op: "addTarget", docId: "d1", key: "../x", label: "", text: "Bad key" },
+      { op: "addTarget", docId: "d1", label: "", text: "No key" },
+    ]);
+    const keys = d.documents[0].targets.map((t) => t.key);
+    expect(new Set(keys).size).toBe(keys.length);
+    expect(keys.slice(1).every((k) => /^d1-a[0-9a-z]+$/.test(k))).toBe(true);
+  });
+
   it("stop once the analysis has started", () => {
     const d = createDraft({ country: "Tonga", locale: "en" });
     d.started = true;

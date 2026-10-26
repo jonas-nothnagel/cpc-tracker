@@ -102,6 +102,6 @@ export type DraftChange =
   | { op: "document"; id: string; name?: string; code?: string }
   | { op: "removeDocument"; id: string }
   | { op: "target"; docId: string; key: string; text?: string; removed?: boolean }
-  | { op: "addTarget"; docId: string; label: string; text: string }
+  | { op: "addTarget"; docId: string; label: string; text: string; key?: string }
   | { op: "ownLens"; value: OwnLensInput | null }
   | { op: "removeBtr" };

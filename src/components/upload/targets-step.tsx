@@ -18,7 +18,13 @@ function TargetRow({
 }) {
   const t = useTranslations("upload.targets");
   const [text, setText] = useState(target.text);
+  const [saved, setSaved] = useState(target.text);
   const [open, setOpen] = useState(false);
+  // The wording changed elsewhere (saved, or another tab): show it.
+  if (target.text !== saved) {
+    setSaved(target.text);
+    setText(target.text);
+  }
   const page = target.pageNumbers?.[0];
   const passages = (target.sources ?? []).map((s) => s.sourceText).filter(Boolean);
   const original = target.textOriginal && target.language && target.language !== "en";
@@ -160,7 +166,7 @@ export function TargetsStep({
       )}
       <ol className="up-targets" aria-label={current.name}>
         {current.targets.map((target) => (
-          <TargetRow key={`${target.key}:${target.text}`} doc={current} target={target} onChange={onChange} />
+          <TargetRow key={target.key} doc={current} target={target} onChange={onChange} />
         ))}
       </ol>
       <div className="up-more">

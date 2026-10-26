@@ -74,6 +74,22 @@ describe("POST /api/upload/{id}/documents", () => {
     ]);
   });
 
+  it("gives two files added at once their own ids and folders", async () => {
+    const { draft } = await newDraft();
+    const { POST } = await import("./[id]/documents/route");
+    await Promise.all([
+      POST(withFile(new File(["%PDF-1.4 first"], "Updated NDC 2021.pdf")), params(draft.id)),
+      POST(withFile(new File(["%PDF-1.4 second"], "National Adaptation Plan.pdf")), params(draft.id)),
+    ]);
+    const { readDraft } = await import("@/lib/upload/draft");
+    const docs = readDraft(draft.id)!.documents;
+    expect(docs.map((d) => d.id).sort()).toEqual(["d1", "d2"]);
+    for (const d of docs) {
+      const body = readFileSync(join(root, "python", "analyses", draft.id, "documents", d.id, "source.pdf"), "utf8");
+      expect(body).toBe(d.name.startsWith("Updated NDC") ? "%PDF-1.4 first" : "%PDF-1.4 second");
+    }
+  });
+
   it("refuses other kinds of files and files over 50 MB", async () => {
     const { draft } = await newDraft();
     const { POST } = await import("./[id]/documents/route");

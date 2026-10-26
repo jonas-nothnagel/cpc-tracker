@@ -14,7 +14,7 @@ export interface ExtractedActivity {
 }
 
 /**
- * One target as returned by `/api/extract`, normalised to the canonical
+ * One target as a document's reading returns it (`src.extract`), normalised to the canonical
  * corpus shape: `text` is the ENGLISH working text (machine-translated when
  * the source document is not English), `textOriginal` carries the verbatim
  * original-language wording. Provenance fields (`sources`, `textCleanup`,

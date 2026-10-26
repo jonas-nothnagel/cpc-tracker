@@ -30,7 +30,7 @@ The sign-in page follows the app's language: English, Spanish or Mongolian.
 
 A sign-in lasts seven days on that browser. After that the upload page asks for the token again. Closing the browser does not sign you out.
 
-If the sign-in runs out part-way through an upload, the page says **"The sign-in has expired. Sign in again to continue."** Open `/login` in a new tab, enter the token, and carry on in the original tab. Nothing is lost: an upload is kept on the server at its own address, `/upload/{id}`, from its first document on, so a reload or a closed tab loses nothing either.
+If the sign-in runs out part-way through an upload, the page says **"The sign-in has expired. Sign in again to continue."** Open `/login` in a new tab, enter the token, and carry on in the original tab. Nothing is lost: an upload is kept on the server at its own address, `/upload/{id}`, from its first document on, so a reload or a closed tab loses nothing either. Each change is saved as it is made, and the page says when one was not.
 
 There is no sign-out button yet. If you used a shared or public computer, clear the site's cookies in that browser before you leave. A sign-out button is on the list of follow-ups.
 

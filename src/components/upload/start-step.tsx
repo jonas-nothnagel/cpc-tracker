@@ -44,6 +44,7 @@ export function StartStep({
   if (counts.withTargets < 2) problems.push(t("problems.documents"));
   if (counts.items > MAX_ITEMS) problems.push(tt("over", { count: counts.items - MAX_ITEMS }));
   if (draft.documents.some((d) => d.state === "queued" || d.state === "reading")) problems.push(t("problems.reading"));
+  if (draft.documents.some((d) => d.state === "added")) problems.push(t("problems.unread"));
   if (draft.ownLens && ownLensProblem(draft.ownLens)) problems.push(t("problems.ownLens"));
 
   return (

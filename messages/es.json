@@ -1488,7 +1488,9 @@
         "noTargets": "No se encontraron metas en {file}.",
         "signIn": "La sesión ha caducado. Inicie sesión de nuevo para continuar.",
         "unavailable": "Este servicio no puede leer documentos.",
-        "generic": "No se pudo añadir {file}."
+        "generic": "No se pudo añadir {file}.",
+        "notSaved": "El último cambio no se guardó.",
+        "readFailed": "No se pudieron leer los documentos."
       }
     },
     "targets": {
@@ -1543,7 +1545,8 @@
         "country": "Se necesita el nombre de un país.",
         "documents": "Se necesitan metas de al menos 2 documentos.",
         "reading": "Algunos documentos se están leyendo todavía.",
-        "ownLens": "Las áreas de política propias necesitan atención."
+        "ownLens": "Las áreas de política propias necesitan atención.",
+        "unread": "Algunos documentos aún no se han leído."
       },
       "start": "Iniciar el análisis",
       "errors": {

@@ -77,6 +77,7 @@ export function UploadPage({
 }) {
   const locale = useLocale();
   const router = useRouter();
+  const te = useTranslations("upload.documents.errors");
   const [pendingCountry, setPendingCountry] = useState(lockedCountry ?? "");
   const { draft, ahead, error, startError, adding, addFiles, change, read, start } = useDraft(initialDraft, {
     locale,
@@ -115,6 +116,11 @@ export function UploadPage({
           onStep={go}
         />
         <main className="brief-main" id="up-main">
+          {error && (
+            <p className="up-error up-error-top" role="alert">
+              {te(error.code, { file: error.file ?? "" })}
+            </p>
+          )}
           {step === "documents" && (
             <DocumentsStep
               draft={draft}
@@ -123,7 +129,6 @@ export function UploadPage({
               colors={colors}
               facts={facts}
               adding={adding}
-              error={error}
               onCountry={(value) => (draft ? change({ op: "country", value }) : setPendingCountry(value))}
               onFiles={addFiles}
               onChange={change}

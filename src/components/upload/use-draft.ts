@@ -11,7 +11,16 @@ import type { Draft, DraftChange } from "@/lib/upload/types";
  * documents are read, the page looks every 2.5 seconds.
  */
 
-export type UploadErrorCode = "tooLarge" | "tableTooLarge" | "type" | "noTargets" | "signIn" | "unavailable" | "generic";
+export type UploadErrorCode =
+  | "tooLarge"
+  | "tableTooLarge"
+  | "type"
+  | "noTargets"
+  | "signIn"
+  | "unavailable"
+  | "generic"
+  | "notSaved"
+  | "readFailed";
 
 export interface UploadError {
   code: UploadErrorCode;
@@ -20,6 +29,13 @@ export interface UploadError {
 }
 
 const POLL_MS = 2500;
+// Browsers refuse keepalive bodies over 64 KiB in flight.
+const KEEPALIVE_MAX = 60_000;
+
+/** A new target's key, chosen by the page so two tabs never share one. */
+function targetKey(docId: string): string {
+  return `${docId}-a${crypto.randomUUID().replace(/-/g, "").slice(0, 10)}`;
+}
 const KNOWN: ReadonlySet<string> = new Set(["tooLarge", "tableTooLarge", "type", "noTargets", "unavailable"]);
 
 function errorOf(status: number, code: unknown, file?: string): UploadError {
@@ -39,6 +55,10 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
   const [error, setError] = useState<UploadError | null>(null);
   const [adding, setAdding] = useState(false);
   const latest = useRef<Draft | null>(initial);
+  // Edits sent and not yet answered: while any is, the server's copy may
+  // not have them, so it is not shown over the page's own.
+  const unsaved = useRef(0);
+  const creating = useRef<Promise<Draft | null> | null>(null);
 
   const adopt = useCallback((next: Draft | null | undefined) => {
     if (!next) return;
@@ -46,22 +66,41 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
     setDraft(next);
   }, []);
 
+  /** The server's copy, shown when no edit of this page is still on its way. */
+  const refetch = useCallback(async (id: string) => {
+    try {
+      const res = await fetch(`/api/upload/${id}`);
+      if (!res.ok) return;
+      const body = await res.json();
+      if (unsaved.current === 0) adopt(body.draft);
+      if (typeof body.ahead === "number") setAhead(body.ahead);
+    } catch {
+      // The next look tries again.
+    }
+  }, [adopt]);
+
   const ensure = useCallback(async (): Promise<Draft | null> => {
     if (latest.current) return latest.current;
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ country: opts.country, locale: opts.locale }),
-    });
-    const body = await res.json().catch(() => ({}));
-    if (!res.ok || !body.draft) {
-      setError(errorOf(res.status, body.code));
-      return null;
-    }
-    adopt(body.draft);
-    // The draft's own address, without a navigation that would reset the page.
-    window.history.replaceState(null, "", `${uploadPath(opts.locale, body.draft.id)}${window.location.search}`);
-    return body.draft as Draft;
+    // Two drops before the draft exists make one draft.
+    creating.current ??= (async () => {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country: opts.country, locale: opts.locale }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.draft) {
+        setError(errorOf(res.status, body.code));
+        return null;
+      }
+      adopt(body.draft);
+      // The draft's own address, without a navigation that would reset the page.
+      window.history.replaceState(null, "", `${uploadPath(opts.locale, body.draft.id)}${window.location.search}`);
+      return body.draft as Draft;
+    })();
+    const created = await creating.current;
+    if (!created) creating.current = null;
+    return created;
   }, [adopt, opts.country, opts.locale]);
 
   const addFiles = useCallback(
@@ -89,21 +128,39 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
     [adopt, ensure],
   );
 
-  const change = useCallback((c: DraftChange) => {
+  const change = useCallback((given: DraftChange) => {
     const current = latest.current;
     if (!current) return;
+    const c = given.op === "addTarget" && !given.key ? { ...given, key: targetKey(given.docId) } : given;
     const next = structuredClone(current);
     applyChanges(next, [c]);
     latest.current = next;
     setDraft(next);
+    const body = JSON.stringify({ changes: [c] });
+    unsaved.current += 1;
     fetch(`/api/upload/${current.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ changes: [c] }),
-      // A field left by closing the tab still arrives.
-      keepalive: true,
-    }).catch(() => undefined);
-  }, []);
+      body,
+      // A field left by closing the tab still arrives, when small enough.
+      keepalive: body.length < KEEPALIVE_MAX,
+    })
+      .then(async (res) => {
+        unsaved.current -= 1;
+        if (res.ok) {
+          const saved = await res.json().catch(() => ({}));
+          if (unsaved.current === 0) adopt(saved.draft);
+          return;
+        }
+        setError({ code: res.status === 401 ? "signIn" : "notSaved" });
+        refetch(current.id);
+      })
+      .catch(() => {
+        unsaved.current -= 1;
+        setError({ code: "notSaved" });
+        refetch(current.id);
+      });
+  }, [adopt, refetch]);
 
   const read = useCallback(async () => {
     const current = latest.current;
@@ -112,10 +169,11 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
     try {
       const res = await fetch(`/api/upload/${current.id}/read`, { method: "POST" });
       const body = await res.json().catch(() => ({}));
-      if (!res.ok) setError(errorOf(res.status, body.code));
+      if (res.status === 401) setError({ code: "signIn" });
+      else if (!res.ok) setError({ code: body.code === "unavailable" ? "unavailable" : "readFailed" });
       else adopt(body.draft);
     } catch {
-      setError({ code: "generic" });
+      setError({ code: "readFailed" });
     }
   }, [adopt]);
 
@@ -134,7 +192,7 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
       // Started now, or already (a second press, another tab).
       if (res.ok || (res.status === 409 && body.analysisId)) return body.analysisId ?? current.id;
       if (res.status === 401) setError({ code: "signIn" });
-      setStartError(body.code === "busy" ? "busy" : "generic");
+      else setStartError(body.code === "busy" ? "busy" : "generic");
     } catch {
       setStartError("generic");
     }
@@ -145,19 +203,9 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
   const reading = draft?.documents.some((d) => d.state === "queued" || d.state === "reading") ?? false;
   useEffect(() => {
     if (!draftId || !reading) return;
-    const timer = window.setInterval(async () => {
-      try {
-        const res = await fetch(`/api/upload/${draftId}`);
-        if (!res.ok) return;
-        const body = await res.json();
-        adopt(body.draft);
-        if (typeof body.ahead === "number") setAhead(body.ahead);
-      } catch {
-        // The next look tries again.
-      }
-    }, POLL_MS);
+    const timer = window.setInterval(() => refetch(draftId), POLL_MS);
     return () => window.clearInterval(timer);
-  }, [adopt, draftId, reading]);
+  }, [refetch, draftId, reading]);
 
   return { draft, ahead, error, startError, adding, addFiles, change, read, start };
 }

@@ -6,7 +6,6 @@ import { isValidCode } from "@/lib/upload/documents";
 import type { ServiceFacts } from "@/lib/upload/service";
 import type { Draft, DraftChange, DraftDocument } from "@/lib/upload/types";
 import { useDocumentState } from "./document-state";
-import type { UploadError } from "./use-draft";
 
 const ACCEPT = ".pdf,.docx,.txt,.csv,.tsv,.xlsx,.xls";
 
@@ -23,7 +22,6 @@ export function DocumentsStep({
   colors,
   facts,
   adding,
-  error,
   onCountry,
   onFiles,
   onChange,
@@ -36,7 +34,6 @@ export function DocumentsStep({
   colors: string[];
   facts: ServiceFacts;
   adding: boolean;
-  error: UploadError | null;
   onCountry: (value: string) => void;
   onFiles: (files: File[]) => void;
   onChange: (change: DraftChange) => void;
@@ -124,12 +121,6 @@ export function DocumentsStep({
           }}
         />
       </div>
-
-      {error && (
-        <p className="up-error" role="alert">
-          {t(`errors.${error.code}`, { file: error.file ?? "" })}
-        </p>
-      )}
 
       {(documents.length > 0 || draft?.btr) && (
         <ul className="up-docs">

@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { useState } from "react";
+import { applyChanges } from "@/lib/upload/changes";
+import type { DraftChange } from "@/lib/upload/types";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import type { Draft, DraftDocument, DraftTarget } from "@/lib/upload/types";
@@ -123,5 +126,39 @@ describe("TargetsStep", () => {
       </NextIntlClientProvider>,
     );
     expect(screen.getByText("Remove 1 target to start.")).toBeInTheDocument();
+  });
+
+  it("removes a target in one click right after its wording was edited", () => {
+    const seen: DraftChange[] = [];
+    function Page() {
+      const [d, setD] = useState(draft([water]));
+      return (
+        <TargetsStep
+          draft={d}
+          colors={["#4f46e5"]}
+          over={0}
+          onChange={(c) => {
+            seen.push(c);
+            setD((prev) => {
+              const next = structuredClone(prev);
+              applyChanges(next, [c]);
+              return next;
+            });
+          }}
+          onContinue={vi.fn()}
+        />
+      );
+    }
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Page />
+      </NextIntlClientProvider>,
+    );
+    const text = screen.getByDisplayValue("Protect wetlands of national importance");
+    const remove = within(text.closest("li")!).getByRole("button", { name: "Remove" });
+    fireEvent.change(text, { target: { value: "Protect every wetland" } });
+    fireEvent.blur(text);
+    fireEvent.click(remove);
+    expect(seen.map((c) => c.op === "target" && (c.text ?? (c.removed ? "removed" : "")))).toEqual(["Protect every wetland", "removed"]);
   });
 });

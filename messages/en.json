@@ -1488,7 +1488,9 @@
         "noTargets": "No targets were found in {file}.",
         "signIn": "The sign-in has expired. Sign in again to continue.",
         "unavailable": "Documents cannot be read on this service.",
-        "generic": "{file} could not be added."
+        "generic": "{file} could not be added.",
+        "notSaved": "The last change was not saved.",
+        "readFailed": "The documents could not be read."
       }
     },
     "targets": {
@@ -1543,7 +1545,8 @@
         "country": "A country name is needed.",
         "documents": "Targets from at least 2 documents are needed.",
         "reading": "Some documents are still being read.",
-        "ownLens": "The own policy areas need attention."
+        "ownLens": "The own policy areas need attention.",
+        "unread": "Some documents are not read yet."
       },
       "start": "Start the analysis",
       "errors": {
