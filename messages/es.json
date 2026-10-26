@@ -1504,6 +1504,32 @@
       "addButton": "Añadir",
       "over": "{count, plural, one {Quite # meta para comenzar.} other {Quite # metas para comenzar.}}",
       "continue": "Continuar con las áreas de política"
+    },
+    "areas": {
+      "title": "Áreas de política",
+      "add": "Añadir áreas de política propias",
+      "name": "Nombre",
+      "namePlaceholder": "Prioridades nacionales",
+      "source": "Fuente",
+      "area": "Área",
+      "description": "Descripción",
+      "areaN": "Área {n, number}",
+      "descriptionN": "Descripción del área {n, number}",
+      "addArea": "Añadir un área",
+      "paste": "Pegar desde una hoja de cálculo",
+      "pasteLabel": "Dos columnas: nombre y descripción",
+      "pasteAdd": "Añadir estas áreas",
+      "removeArea": "Quitar",
+      "remove": "Quitar las áreas de política propias",
+      "problems": {
+        "name": "Las áreas de política necesitan un nombre.",
+        "source": "La fuente admite como máximo 300 caracteres.",
+        "count": "Se necesitan entre 1 y 30 áreas.",
+        "areaName": "Cada área necesita un nombre.",
+        "description": "{area} necesita una descripción.",
+        "duplicate": "{area} aparece dos veces."
+      },
+      "continue": "Continuar con el inicio"
     }
   },
   "analysis": {

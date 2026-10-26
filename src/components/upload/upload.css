@@ -427,3 +427,69 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── Policy areas ────────────────────────────────────────────────── */
+
+[data-brief] .up-lenses {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-lens {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  font-weight: 600;
+}
+
+[data-brief] .up-own {
+  margin-top: 1.75rem;
+}
+
+[data-brief] .up-own-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5rem;
+}
+
+[data-brief] .up-areas {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) minmax(0, 1fr) auto;
+  gap: 0.35rem 1rem;
+  align-items: baseline;
+}
+
+[data-brief] .up-area {
+  display: contents;
+}
+
+[data-brief] .up-areas-head {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-areas textarea {
+  width: 100%;
+  resize: none;
+  field-sizing: content;
+}
+
+[data-brief] .up-own-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 0.9rem;
+}
+
+[data-brief] .up-paste {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+[data-brief] .up-paste .up-box {
+  width: min(100%, 40rem);
+  resize: vertical;
+}

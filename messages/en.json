@@ -1504,6 +1504,32 @@
       "addButton": "Add",
       "over": "{count, plural, one {Remove # target to start.} other {Remove # targets to start.}}",
       "continue": "Continue to the policy areas"
+    },
+    "areas": {
+      "title": "Policy areas",
+      "add": "Add own policy areas",
+      "name": "Name",
+      "namePlaceholder": "National priorities",
+      "source": "Source",
+      "area": "Area",
+      "description": "Description",
+      "areaN": "Area {n, number}",
+      "descriptionN": "Description of area {n, number}",
+      "addArea": "Add an area",
+      "paste": "Paste from a spreadsheet",
+      "pasteLabel": "Two columns: name and description",
+      "pasteAdd": "Add these areas",
+      "removeArea": "Remove",
+      "remove": "Remove own policy areas",
+      "problems": {
+        "name": "The policy areas need a name.",
+        "source": "The source holds at most 300 characters.",
+        "count": "Between 1 and 30 areas are needed.",
+        "areaName": "Each area needs a name.",
+        "description": "{area} needs a description.",
+        "duplicate": "{area} appears twice."
+      },
+      "continue": "Continue to the start"
     }
   },
   "analysis": {

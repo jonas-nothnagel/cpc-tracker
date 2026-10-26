@@ -11,6 +11,7 @@ import { documentColors } from "@/lib/upload/documents";
 import type { ServiceFacts } from "@/lib/upload/service";
 import type { Draft } from "@/lib/upload/types";
 import { MAX_ITEMS } from "@/lib/upload/limits";
+import { AreasStep } from "./areas-step";
 import { DocumentsStep } from "./documents-step";
 import { TargetsStep } from "./targets-step";
 import { STEPS, type StepId } from "@/lib/upload/steps";
@@ -129,7 +130,8 @@ export function UploadPage({
               onContinue={next("targets")}
             />
           )}
-          {(step === "areas" || step === "start") && <h2 className="up-title">{ts(step)}</h2>}
+          {step === "areas" && draft && <AreasStep draft={draft} onChange={change} onContinue={next("areas")} />}
+          {step === "start" && <h2 className="up-title">{ts(step)}</h2>}
         </main>
       </div>
     </div>
