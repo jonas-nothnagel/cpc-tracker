@@ -6,7 +6,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { DotField } from "@/components/brief/dot-field";
-import { uploadPath } from "@/components/upload/use-draft";
 import type { AnalysisFacts } from "@/lib/brief/analysis";
 import { emptyCounts, toneOf, type ToneCounts } from "@/lib/brief/compute";
 import type { AlignmentLevel } from "@/types";
@@ -134,9 +133,10 @@ export function AnalysisProgress({
       window.location.href = `/login?from=${encodeURIComponent(window.location.pathname)}`;
       return;
     }
-    if (res.ok) {
+    // 409: it had gone back in line already. Either way, look again.
+    if (res.ok || res.status === 409) {
       failures.current = 0;
-      setStatus((s) => ({ ...s, status: "queued", state: "queued" }));
+      if (res.ok) setStatus((s) => ({ ...s, status: "queued", state: "queued" }));
       setRound((r) => r + 1);
     }
   };
@@ -245,11 +245,6 @@ export function AnalysisProgress({
                 <button type="button" className="brief-button-primary" onClick={continueRun}>
                   {t("stopped.continue")}
                 </button>
-                {facts?.hasDraft && (
-                  <a className="brief-button-quiet" href={uploadPath(locale, id)}>
-                    {t("stopped.back")}
-                  </a>
-                )}
               </div>
             )}
           </>

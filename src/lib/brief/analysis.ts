@@ -1,5 +1,4 @@
-import { existsSync } from "fs";
-import { dirname, join } from "path";
+import { join } from "path";
 import { routing, type Locale } from "@/i18n/routing";
 import { derivePaths, type DerivedPaths } from "@/lib/dashboard-data";
 import { pairCount } from "@/lib/upload/documents";
@@ -50,8 +49,6 @@ export interface AnalysisFacts {
   targets: number;
   /** Target pairs from two different documents: one dot each. */
   pairs: number;
-  /** Started from the upload page, so its documents can be gone back to. */
-  hasDraft: boolean;
 }
 
 export function analysisFactsFrom(paths: DerivedPaths): AnalysisFacts | null {
@@ -65,7 +62,6 @@ export function analysisFactsFrom(paths: DerivedPaths): AnalysisFacts | null {
     documents: perDocument.size,
     targets: targets.length,
     pairs: pairCount([...perDocument.values()]),
-    hasDraft: existsSync(join(dirname(paths.dataDir), "draft.json")),
   };
 }
 

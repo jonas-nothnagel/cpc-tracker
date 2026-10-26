@@ -90,16 +90,39 @@ describe("recover", () => {
     pump();
     const gone = { status: "running", heartbeatAt: ago(180_000), bootId: "another-server", pid: 1, footprint: { call_count: 9 } };
     writeFileSync(join(root, "python", "analyses", A, "output", "status.json"), JSON.stringify(gone));
-    recover();
+    // Four minutes on, nothing more was heard from it.
+    recover(new Date(Date.now() + 240_000));
     // Back in line with --resume, its footprint kept for the resume to book.
     expect(statusOf(A)).toMatchObject({ status: "queued", footprint: { call_count: 9 } });
     expect(pump()).toBe(A);
     expect(spawnMock.mock.calls[1][1]).toContain("--resume");
-    writeFileSync(join(root, "python", "analyses", A, "output", "status.json"), JSON.stringify(gone));
-    recover();
+    // The resumed run goes quiet too: four minutes on, it is interrupted for good.
+    recover(new Date(Date.now() + 240_000));
     expect(statusOf(A).status).toBe("interrupted");
     expect(runState(A).state).toBe("interrupted");
     expect(pump()).toBeNull();
+  });
+
+  it("keeps a resumed run while its Python is still starting, and the next analysis waits", async () => {
+    // A deploy: the old container's run went quiet three minutes ago.
+    analysis(A, { status: "running", step: 5, heartbeatAt: ago(180_000), bootId: "old-container", pid: 4242, footprint: { call_count: 900 } });
+    writeFileSync(
+      join(root, "python", "analyses", ".running.json"),
+      JSON.stringify({ id: A, bootId: "old-container", pid: 4242, claimedAt: ago(1_200_000) }),
+    );
+    analysis(B);
+    const { enqueue, pump, recover, runState } = await import("./queue");
+    recover();
+    expect(pump()).toBe(A);
+    enqueue(B);
+    // The waiting page's next look, before the resumed Python has written anything.
+    recover();
+    pump();
+    expect(runState(A).state).toBe("running");
+    expect(runState(B)).toEqual({ state: "queued", ahead: 1 });
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    // The footprint of the attempt that stopped stays for the resume to book.
+    expect(statusOf(A)).toMatchObject({ footprint: { call_count: 900 } });
   });
 
   it("leaves a run alone while its heartbeat is fresh", async () => {

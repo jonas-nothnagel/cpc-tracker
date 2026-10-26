@@ -13,7 +13,7 @@ vi.mock("@/i18n/navigation", () => ({
 }));
 
 const ID = "3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13";
-const FACTS = { country: "Sri Lanka", documents: 3, targets: 93, pairs: 2142, hasDraft: true };
+const FACTS = { country: "Sri Lanka", documents: 3, targets: 93, pairs: 2142 };
 const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status });
 const run = (status: string, more: Record<string, unknown> = {}) => ({
   status,
@@ -109,7 +109,7 @@ describe("AnalysisProgress", () => {
     expect(router.refresh).toHaveBeenCalledTimes(1);
   });
 
-  it("offers to continue a run that stopped, or to go back to its documents", async () => {
+  it("offers to continue a run that stopped, and nothing that leads nowhere", async () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(json(200, run("interrupted", { state: "interrupted" })))
@@ -118,9 +118,24 @@ describe("AnalysisProgress", () => {
     progress();
     await act(() => vi.advanceTimersByTimeAsync(10));
     expect(screen.getByText("The analysis stopped before it finished.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Back to the documents" })).toHaveAttribute("href", `/upload/${ID}`);
+    expect(screen.queryByText("Back to the documents")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
     await act(() => vi.advanceTimersByTimeAsync(10));
     expect(fetchMock).toHaveBeenCalledWith(`/api/analyze/${ID}/continue`, expect.objectContaining({ method: "POST" }));
+  });
+
+  it("looks again when the run had already gone back in line", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(json(200, run("interrupted", { state: "interrupted" })))
+      .mockResolvedValueOnce(json(409, { state: "running", ahead: 0 }))
+      .mockResolvedValue(json(200, run("running", { state: "running", step: 2 })));
+    vi.stubGlobal("fetch", fetchMock);
+    progress();
+    await act(() => vi.advanceTimersByTimeAsync(10));
+    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    await act(() => vi.advanceTimersByTimeAsync(10));
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(screen.getByText("Reading each target.")).toBeInTheDocument();
   });
 });

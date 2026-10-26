@@ -43,6 +43,15 @@ const runDir = (id: string) => join(analysesDir(), id);
 const statusFile = (id: string) => join(runDir(id), "output", "status.json");
 
 const statusOf = (id: string) => readJson<RunStatus>(statusFile(id));
+
+/** A status for a new attempt: what the last attempt said, without the
+ *  heartbeat, process and boot it ran under (they would make the new attempt
+ *  look gone before its Python has written anything). Its footprint stays,
+ *  for the resume to book. */
+function forNextAttempt(status: RunStatus | null): RunStatus {
+  const { heartbeatAt: _heartbeat, pid: _pid, bootId: _boot, ...rest } = status ?? {};
+  return rest;
+}
 const setStatus = (id: string, status: RunStatus) => writeJsonAtomic(statusFile(id), status);
 const claim = () => readJson<Claim>(claimFile());
 
@@ -72,14 +81,13 @@ function release(id: string): void {
 /** A run that ended or went quiet before it finished: back in line once,
  *  to resume from its cache, then interrupted until someone continues it. */
 function interrupt(id: string): void {
-  const status = statusOf(id) ?? {};
+  const status = forNextAttempt(statusOf(id));
   const marker = join(runDir(id), "resumed");
   if (existsSync(marker)) {
     setStatus(id, { ...status, status: "interrupted" });
     return;
   }
   writeFileSync(marker, new Date().toISOString());
-  // The status keeps the attempt's footprint, which the resume books.
   setStatus(id, { ...status, status: "queued" });
   enqueue(id, { resume: true });
 }
@@ -136,7 +144,14 @@ export function recover(now = new Date()): void {
     release(held.id);
     return;
   }
-  const job = { heartbeatAt: status?.heartbeatAt, bootId: status?.bootId ?? held.bootId, pid: status?.pid ?? held.pid };
+  // Heard from last: the run's own heartbeat, or the claim when it is newer
+  // (a run just started has written nothing yet).
+  const beat = Date.parse(status?.heartbeatAt ?? "");
+  const claimed = Date.parse(held.claimedAt);
+  const job =
+    Number.isFinite(beat) && !(beat < claimed)
+      ? { heartbeatAt: status?.heartbeatAt, bootId: status?.bootId, pid: status?.pid }
+      : { heartbeatAt: held.claimedAt, bootId: held.bootId, pid: held.pid };
   if (!jobGone(job, held.claimedAt, now)) return;
   // Taken over by renaming first: of two servers, only one gets it.
   const taken = `${claimFile()}.${BOOT_ID}.${Date.now()}`;
@@ -194,7 +209,7 @@ export function queueLength(): number {
 export function continueRun(id: string): boolean {
   const status = statusOf(id);
   if (status?.status !== "interrupted" && status?.status !== "failed") return false;
-  setStatus(id, { ...status, status: "queued" });
+  setStatus(id, { ...forNextAttempt(status), status: "queued" });
   enqueue(id, { resume: true });
   pump();
   return true;

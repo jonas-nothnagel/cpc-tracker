@@ -1580,8 +1580,7 @@
     "stopped": {
       "title": "The analysis stopped before it finished.",
       "failed": "The analysis could not be completed.",
-      "continue": "Continue",
-      "back": "Back to the documents"
+      "continue": "Continue"
     },
     "missing": "No analysis was found at this address.",
     "statusCheck": "The state of this analysis could not be read.",

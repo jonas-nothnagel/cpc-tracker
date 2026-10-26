@@ -1580,8 +1580,7 @@
     "stopped": {
       "title": "El análisis se detuvo antes de terminar.",
       "failed": "No se pudo completar el análisis.",
-      "continue": "Continuar",
-      "back": "Volver a los documentos"
+      "continue": "Continuar"
     },
     "missing": "No se encontró ningún análisis en esta dirección.",
     "statusCheck": "No se pudo leer el estado de este análisis.",

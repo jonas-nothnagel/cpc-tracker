@@ -74,6 +74,6 @@ describe("analysisInEnglish", () => {
 describe("analysisFactsFrom", () => {
   it("reads the country, the documents, the targets and their target pairs from the inputs", () => {
     const paths = writeFixtureAnalysis({ status: JSON.stringify({ status: "running" }) });
-    expect(analysisFactsFrom(paths)).toEqual({ country: "Tonga", documents: 2, targets: 3, pairs: 2, hasDraft: false });
+    expect(analysisFactsFrom(paths)).toEqual({ country: "Tonga", documents: 2, targets: 3, pairs: 2 });
   });
 });
