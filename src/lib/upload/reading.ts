@@ -4,7 +4,7 @@ import { join } from "path";
 import { isGenericLabel } from "@/lib/upload-helpers";
 import { BOOT_ID, jobGone } from "./boot";
 import { promptLabel } from "./documents";
-import { documentDir, updateDraft } from "./draft";
+import { documentDir, readDraft, updateDraft } from "./draft";
 import type { Draft, DraftDocument, DraftTarget, ExtractionFootprint } from "./types";
 
 /**
@@ -231,4 +231,12 @@ export function refreshReading(id: string, now = new Date()): Draft | null {
     }
     pump(id, draft);
   });
+}
+
+/** The draft as it stands now: while documents are read, with what the
+ *  reading jobs have done since the last look. */
+export function freshDraft(id: string): Draft | null {
+  const draft = readDraft(id);
+  const reading = draft?.documents.some((d) => d.state === "queued" || d.state === "reading");
+  return reading ? refreshReading(id) : draft;
 }

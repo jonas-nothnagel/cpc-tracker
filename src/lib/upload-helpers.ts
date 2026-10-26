@@ -1,38 +1,10 @@
-import type { PolicyDocumentType, TargetSource, TextCleanup } from "@/types";
-import type { TargetRow } from "@/lib/csv-parser";
+import type { TargetSource, TextCleanup } from "@/types";
 import type {
   ExtractionReviewItemOutcome,
   ExtractionReviewPostBody,
 } from "@/lib/feedback/types";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-
-export interface CategoryItem {
-  id: string;
-  name: string;
-  description: string;
-  enabled: boolean;
-  isCustom: boolean;
-}
-
-interface BtrSummary {
-  mitigationMeasures: number;
-  sectorEmissions: number;
-  projections: number;
-  technologySupport: number;
-  capacityBuilding: number;
-}
-
-export interface UploadedDoc {
-  id: string;
-  fileName: string;
-  fileType: "targets" | "btr";
-  status: "parsing" | "ready" | "error";
-  error?: string;
-  targetCount?: number;
-  docTypeCounts?: Record<string, number>;
-  btrSummary?: BtrSummary;
-}
 
 export interface ExtractedActivity {
   text: string;
@@ -80,53 +52,7 @@ export function isGenericLabel(label: string | undefined): boolean {
   return !label || /^target\s+\d+$/i.test(label.trim());
 }
 
-/**
- * Map an accepted extraction item to the target-table row shape, carrying
- * the full provenance contract. Document-provided labels are preserved
- * verbatim; the fallback label is used only when the extractor produced a
- * generic placeholder.
- */
-export function extractedItemToTargetRow(
-  item: ExtractedItem,
-  fallbackLabel: string
-): TargetRow {
-  const label = isGenericLabel(item.label) ? fallbackLabel : item.label.trim();
-  return {
-    text: item.text,
-    sourceDocument: item.sourceDocument as PolicyDocumentType,
-    sourceLabel: label,
-    source: "extraction",
-    ...(item.activities ? { activities: item.activities } : {}),
-    ...(item.textOriginal ? { textOriginal: item.textOriginal } : {}),
-    ...(item.labelOriginal ? { sourceLabelOriginal: item.labelOriginal } : {}),
-    ...(item.language ? { language: item.language } : {}),
-    ...(item.textOriginalSource
-      ? { textOriginalSource: item.textOriginalSource }
-      : {}),
-    ...(item.sources?.length ? { sources: item.sources } : {}),
-    ...(item.textCleanup ? { textCleanup: item.textCleanup } : {}),
-    ...(item.pageNumbers?.length ? { pageNumbers: item.pageNumbers } : {}),
-    ...(item._provenanceFlag ? { _provenanceFlag: item._provenanceFlag } : {}),
-  };
-}
-
 export type BtrData = Record<string, unknown>;
-
-// ─── Constants ───────────────────────────────────────────────────────────────
-
-export const MAX_TARGETS = 150;
-export const TARGETS_PREVIEW = 5;
-export const COST_PER_CALL = 0.00015;
-export const GLOBE_CATEGORIES_COUNT = 9;
-
-export const DOCUMENT_TYPES: { value: PolicyDocumentType; label: string; hint?: string }[] = [
-  { value: "NDC", label: "NDC (Nationally Determined Contributions)" },
-  { value: "NBSAP", label: "NBSAP / National Biodiversity Targets" },
-  { value: "NAP", label: "NAP (National Adaptation Plan)" },
-  { value: "LDN", label: "LDN (Land Degradation Neutrality)" },
-  { value: "SECTORAL", label: "Sectoral Policy", hint: "e.g. Agriculture, Transport, Energy" },
-  { value: "OTHER", label: "Other Document" },
-];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -193,15 +119,6 @@ export function buildExtractionReviewEvent(
     clientId: meta.clientId,
     locale: meta.locale,
   };
-}
-
-/** POST the review event; failures only log (never block the review flow). */
-export function submitExtractionReview(body: ExtractionReviewPostBody): void {
-  fetch("/api/extraction-review", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  }).catch((err) => console.warn("extraction-review submit failed:", err));
 }
 
 /** Check if an Excel file looks like a BTR/CTF file based on its name. */

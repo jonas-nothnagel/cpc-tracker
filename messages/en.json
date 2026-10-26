@@ -1438,233 +1438,58 @@
     }
   },
   "upload": {
-    "step2": {
-      "title": "Available reference data",
-      "hasRefBody": "Select which pre-loaded data sets for {country} to include. Toggle items on or off as needed.",
-      "noRefBody": "Review any reference data available for the analysis. BTR data can be uploaded in Step 1.",
-      "progressSummary": "{targets, plural, one {1 target} other {# targets}} selected across {docTypes, plural, one {1 document type} other {# document types}}",
-      "policyTargetsHeading": "Policy Targets for {country}",
-      "loadingRef": "Loading reference data",
-      "targetCount": "{count, plural, one {1 target} other {# targets}}",
-      "moreCount": "+ {count, number} more",
-      "hide": "Hide",
-      "preview": "Preview",
-      "add": "Add",
-      "added": "Added",
-      "additionalSources": "Additional data sources",
-      "btr": {
-        "title": "BTR Implementation Data",
-        "description": "Mitigation measures, emissions, and projections"
-      },
-      "nr7": {
-        "title": "NR7 Biodiversity Progress",
-        "description": "7th National Report to the CBD (shown on dashboard)"
-      },
-      "noRefData": {
-        "title": "No pre-loaded reference data for this country.",
-        "hint": "Continue to the next step, or go back to upload further documents."
-      }
+    "metaTitle": "New analysis",
+    "builder": {
+      "title": "{country} · new analysis",
+      "titleEmpty": "New analysis",
+      "steps": "Steps",
+      "documents": "Policy documents",
+      "analysis": "The analysis",
+      "targets": "Targets",
+      "targetsAndActions": "Targets and reported actions",
+      "of": "{count, number} of {max, number}",
+      "pairs": "Target pairs"
     },
-    "step1": {
-      "intro": "Select the country and upload its policy documents. Common formats are accepted; the system detects how to process each file.",
-      "countryLabel": "Country",
-      "countryPlaceholder": "Country name",
-      "referenceBadge": "Reference data",
-      "referenceNext": "Reference data in next step",
-      "docTypeLabel": "Document type",
-      "labelPrefixLabel": "Label prefix",
-      "labelPrefixPlaceholder": "e.g. Transport Policy",
-      "extractingFrom": "Extracting targets from {name}…",
-      "extractEmpty": "No policy targets were identified in {name}. The document may not contain explicit policy commitments; targets can also be added manually below.",
-      "partialTextLayer": "{empty, number} of {total, number} pages in this document have no machine-readable text, likely scanned pages. Targets on those pages could not be extracted.",
-      "queueRemaining": "{count, plural, one {1 more file queued} other {# more files queued}}",
-      "dropPrompt": "Drag and drop files here, or",
-      "browse": "browse",
-      "supportedFormats": "PDF, DOCX, CSV, TSV, XLSX (auto-detected)",
-      "hideManual": "Hide manual entry",
-      "showManual": "+ Add targets manually",
-      "targetsAddedHint": "{count, plural, one {1 target added} other {# targets added}}. Click <strong>Next</strong> to continue.",
-      "reviewModal": {
-        "title": "Review extracted targets",
-        "subtitle": "{selected, number} of {total, number} targets selected from {file}"
-      }
+    "steps": {
+      "documents": "Policy documents",
+      "targets": "Targets",
+      "areas": "Policy areas",
+      "start": "Start"
     },
-    "wizard": {
-      "headerSubtitle": "New Analysis",
-      "title": "New Analysis",
-      "subtitle": "Upload policy documents, review the targets, and run the coherence analysis.",
-      "footer": "United Nations Development Programme · CPC Analyzer",
-      "autoLabel": "Target {n, number}",
-      "unknownCountry": "Unknown",
+    "documents": {
+      "title": "Policy documents",
+      "country": "Country",
+      "drop": "PDF, Word, text or spreadsheet files, up to 50 MB each.",
+      "choose": "Choose files",
+      "nameLabel": "Name of {file}",
+      "codeLabel": "Short name of {name}",
+      "remove": "Remove",
+      "readAgain": "Read again",
+      "btr": "Biennial Transparency Report tables",
+      "btrActions": "{count, plural, one {# reported action} other {# reported actions}}",
+      "notice": "Documents are read by {model} on {provider}.",
+      "publicOnly": "Only public documents can be added.",
+      "read": "Read the documents",
+      "continue": "Continue to the targets",
+      "state": {
+        "added": "Not read yet",
+        "queued": "Waiting to be read",
+        "reading": "Reading",
+        "readingPart": "Reading, part {part, number} of {parts, number}",
+        "read": "{count, plural, =0 {No targets found} one {# target} other {# targets}}",
+        "partial": "{count, plural, one {# target} other {# targets}}, {empty, number} of {pages, number} pages without text",
+        "noText": "No machine-readable text. A text version is needed.",
+        "failed": "Could not be read"
+      },
       "errors": {
-        "parseBtr": "Failed to parse BTR file",
-        "signInExpired": "Your sign-in has expired. Open /login in a new tab, enter the access token again, then retry here. Nothing in this wizard is lost.",
-        "parseExcel": "Failed to parse Excel file",
-        "noTargets": "No targets found in file",
-        "noTargetsExcel": "No targets found in Excel file",
-        "noTextLayer": "No machine-readable text was found in {name}. The file appears to be a scanned or image-based PDF; optical character recognition is not supported yet. A text-based version of the document is needed.",
-        "startAnalysis": "Failed to start analysis",
-        "unexpected": "Unexpected error"
-      },
-      "nav": {
-        "steps": {
-          "countryDocs": "Country and documents",
-          "referenceData": "Reference data",
-          "reviewConfigure": "Review targets",
-          "summaryRun": "Summary and run"
-        },
-        "stepCount": "Step {n}",
-        "back": "Back",
-        "next": "Next"
+        "tooLarge": "{file} is larger than 50 MB.",
+        "tableTooLarge": "{file} is larger than 15 MB.",
+        "type": "{file} is not a PDF, Word, text or spreadsheet file.",
+        "noTargets": "No targets were found in {file}.",
+        "signIn": "The sign-in has expired. Sign in again to continue.",
+        "unavailable": "Documents cannot be read on this service.",
+        "generic": "{file} could not be added."
       }
-    },
-    "estimate": {
-      "quantitative": "Quantitative phrase detection: {count, number} calls",
-      "classification": "Classification against NBS, IPCC, GLOBE: {count, number} calls",
-      "decomposition": "Target decomposition: {count, number} calls",
-      "needsTwoDocs": "Pairwise alignment: requires 2+ document types",
-      "pairwiseCount": "Pairwise alignment: ~{count, number} pairs",
-      "btrIntegration": "BTR/CTF data integration",
-      "addSecondDoc": "Add targets from a second document type (e.g. NDC + NBSAP) to enable alignment analysis.",
-      "needCountry": "A country name is needed for the brief; it is set in the first step.",
-      "totalCost": "~{calls, number} LLM calls · estimated cost <strong>${cost}</strong>",
-      "starting": "Starting…",
-      "runAnalysis": "Run analysis →"
-    },
-    "categories": {
-      "hide": "Hide category details",
-      "edit": "Edit categories",
-      "addGroup": "+ Add new classification group",
-      "newGroup": {
-        "title": "New classification group",
-        "namePlaceholder": "Group name (e.g. SDG Targets, Custom Themes)",
-        "descPlaceholder": "Brief description of what this group classifies",
-        "create": "Create group",
-        "cancel": "Cancel",
-        "hint": "After creating the group, use \"Edit\" to add individual categories within it."
-      },
-      "group": {
-        "enabledRatio": "{active, number} of {total, number} enabled",
-        "empty": "No categories yet. Click Edit to add.",
-        "disableAll": "Disable all",
-        "enableAll": "Enable all",
-        "collapse": "Collapse",
-        "editBtn": "Edit",
-        "removeTitle": "Remove group"
-      },
-      "item": {
-        "remove": "Remove"
-      },
-      "newItem": {
-        "namePlaceholder": "Name",
-        "descPlaceholder": "Description (optional)",
-        "add": "Add",
-        "cancel": "Cancel",
-        "addBtn": "+ Add category"
-      }
-    },
-    "pipeline": {
-      "heading": "Document pipeline",
-      "status": {
-        "parsing": "Parsing…",
-        "ready": "Ready",
-        "error": "Error"
-      },
-      "policyTargetsCount": "{count, number} policy targets",
-      "btr": {
-        "actions": "{count, number} reported actions",
-        "emissions": "{count, number} emission series",
-        "projections": "{count, number} projections",
-        "techSupport": "{count, number} tech support projects",
-        "capacityBuilding": "{count, number} capacity building"
-      },
-      "remove": "Remove"
-    },
-    "review": {
-      "title": "Review extracted targets",
-      "subtitle": "{kept, number} of {total, number} kept · {file}",
-      "keepAll": "Keep all",
-      "removeAll": "Remove all",
-      "pagePrefix": "p.",
-      "originalText": "{lang}: {text}",
-      "machineTranslationNote": "The English working text is machine-translated; the original wording appears beneath each target.",
-      "needsReview": "Review needed: part of this text could not be verified against the document.",
-      "aiSummarised": "AI-summarised",
-      "keep": "Keep",
-      "removeTitle": "Remove",
-      "removed": "Removed",
-      "restoreTitle": "Restore",
-      "addMissingPrompt": "Add a target that wasn't extracted",
-      "manualPlaceholder": "Target text…",
-      "manualLabelPlaceholder": "Label (optional)",
-      "addBtn": "+ Add",
-      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {target} other {targets}} will be added to this analysis",
-      "discard": "Discard",
-      "acceptBtn": "Add {count, plural, one {1 target} other {# targets}} →"
-    },
-    "manualForm": {
-      "sourceDocument": "Source Document",
-      "documentName": "Document Name",
-      "placeholderSectoral": "e.g. Transport Policy",
-      "placeholderOther": "e.g. National Development Plan",
-      "labelOptional": "Label (optional)",
-      "labelPlaceholder": "e.g. Biodiversity 1",
-      "targetText": "Target Text",
-      "targetTextPlaceholder": "Paste or type the full target text…",
-      "addTarget": "+ Add Target",
-      "maxReached": "Maximum {max, number} targets reached"
-    },
-    "editor": {
-      "title": "Edit manual targets: {docType}",
-      "done": "Done",
-      "labelPlaceholder": "Label",
-      "targetPlaceholder": "Target text…",
-      "toggleDetails": "Add activities & actions",
-      "activities": "Activities",
-      "activitiesPlaceholder": "Implementation activities (optional)…",
-      "actions": "Actions / Measures",
-      "actionsPlaceholder": "Actions or measures (optional)…"
-    },
-    "step4": {
-      "title": "Summary and run",
-      "subtitle": "Review the complete analysis configuration below. The pipeline will classify each target, decompose its structure, and assess pairwise alignment across all document types.",
-      "countryLabel": "Country",
-      "notSpecified": "Not specified",
-      "targetsLabel": "Targets",
-      "acrossDocs": "across {count, plural, one {1 document type} other {# document types}}",
-      "targetBreakdown": "Target Breakdown",
-      "btr": {
-        "title": "BTR implementation data included",
-        "description": "Mitigation measures compared against policy targets."
-      },
-      "footprint": {
-        "heading": "Document extraction footprint so far",
-        "energy": "Wh energy",
-        "water": "mL water",
-        "co2": "gCO<sub>2</sub>eq",
-        "minerals": "µgSbeq minerals",
-        "summary": "Accumulated from {count, number} LLM calls during extraction. This will be added to the analysis footprint on the final dashboard. Estimated via EcoLogits."
-      }
-    },
-    "step3": {
-      "title": "Review the targets",
-      "subtitle": "Each document group can be expanded to inspect or remove individual targets.",
-      "categoriesHeading": "Classification Categories",
-      "targetsHeading": "Policy Targets",
-      "hideManual": "Hide manual entry",
-      "addTarget": "+ Add target",
-      "targetCount": "{count, plural, one {# target} other {# targets}}",
-      "removeTarget": "Remove target",
-      "noTargets": "No targets yet",
-      "noTargetsHint": "Go back to add reference data or upload documents."
-    },
-    "docTypes": {
-      "NDC": "NDC (Nationally Determined Contributions)",
-      "NBSAP": "NBSAP / National Biodiversity Targets",
-      "NAP": "NAP (National Adaptation Plan)",
-      "LDN": "LDN (Land Degradation Neutrality)",
-      "SECTORAL": "Sectoral Policy",
-      "OTHER": "Other Document"
     }
   },
   "analysis": {

@@ -1438,233 +1438,58 @@
     }
   },
   "upload": {
-    "step2": {
-      "title": "Datos de referencia disponibles",
-      "hasRefBody": "Seleccione qué conjuntos de datos precargados de {country} incluir. Active o desactive elementos según sea necesario.",
-      "noRefBody": "Revise los datos de referencia disponibles para el análisis. Los datos BTR pueden cargarse en el Paso 1.",
-      "progressSummary": "{targets, plural, one {1 meta} other {# metas}} seleccionadas en {docTypes, plural, one {1 tipo de documento} other {# tipos de documento}}",
-      "policyTargetsHeading": "Metas de política para {country}",
-      "loadingRef": "Cargando datos de referencia",
-      "targetCount": "{count, plural, one {1 meta} other {# metas}}",
-      "moreCount": "+ {count, number} más",
-      "hide": "Ocultar",
-      "preview": "Previsualizar",
-      "add": "Añadir",
-      "added": "Añadido",
-      "additionalSources": "Fuentes de datos adicionales",
-      "btr": {
-        "title": "Datos de implementación BTR",
-        "description": "Medidas de mitigación, emisiones y proyecciones"
-      },
-      "nr7": {
-        "title": "Progreso de biodiversidad NR7",
-        "description": "7º Informe Nacional al CDB (mostrado en el panel)"
-      },
-      "noRefData": {
-        "title": "No hay datos de referencia precargados para este país.",
-        "hint": "Continúe al siguiente paso o vuelva atrás para cargar más documentos."
-      }
+    "metaTitle": "Nuevo análisis",
+    "builder": {
+      "title": "{country} · nuevo análisis",
+      "titleEmpty": "Nuevo análisis",
+      "steps": "Pasos",
+      "documents": "Documentos de política",
+      "analysis": "El análisis",
+      "targets": "Metas",
+      "targetsAndActions": "Metas y acciones notificadas",
+      "of": "{count, number} de {max, number}",
+      "pairs": "Pares de metas"
     },
-    "step1": {
-      "intro": "Seleccione el país y cargue los documentos de política correspondientes. Se aceptan los formatos comunes; el sistema detecta cómo procesar cada archivo.",
-      "countryLabel": "País",
-      "countryPlaceholder": "Nombre del país",
-      "referenceBadge": "Datos de referencia",
-      "referenceNext": "Datos de referencia en el siguiente paso",
-      "docTypeLabel": "Tipo de documento",
-      "labelPrefixLabel": "Prefijo de etiqueta",
-      "labelPrefixPlaceholder": "p. ej. Política de Transporte",
-      "extractingFrom": "Extrayendo metas de {name}…",
-      "extractEmpty": "No se identificaron metas de política en {name}. Es posible que el documento no contenga compromisos de política explícitos; también se pueden añadir metas manualmente más abajo.",
-      "partialTextLayer": "{empty, number} de {total, number} páginas de este documento no tienen texto legible por máquina, probablemente páginas escaneadas. No fue posible extraer metas de esas páginas.",
-      "queueRemaining": "{count, plural, one {1 archivo más en cola} other {# archivos más en cola}}",
-      "dropPrompt": "Arrastre y suelte archivos aquí, o",
-      "browse": "examinar",
-      "supportedFormats": "PDF, DOCX, CSV, TSV, XLSX (autodetectado)",
-      "hideManual": "Ocultar entrada manual",
-      "showManual": "+ Añadir metas manualmente",
-      "targetsAddedHint": "{count, plural, one {1 meta añadida} other {# metas añadidas}}. Pulse <strong>Siguiente</strong> para continuar.",
-      "reviewModal": {
-        "title": "Revisar metas extraídas",
-        "subtitle": "{selected, number} de {total, number} metas seleccionadas de {file}"
-      }
+    "steps": {
+      "documents": "Documentos de política",
+      "targets": "Metas",
+      "areas": "Áreas de política",
+      "start": "Inicio"
     },
-    "wizard": {
-      "headerSubtitle": "Nuevo análisis",
-      "title": "Nuevo análisis",
-      "subtitle": "Cargue documentos de política, revise las metas y ejecute el análisis de coherencia.",
-      "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
-      "autoLabel": "Meta {n, number}",
-      "unknownCountry": "Desconocido",
+    "documents": {
+      "title": "Documentos de política",
+      "country": "País",
+      "drop": "Archivos PDF, Word, de texto u hojas de cálculo, de hasta 50 MB cada uno.",
+      "choose": "Elegir archivos",
+      "nameLabel": "Nombre de {file}",
+      "codeLabel": "Nombre corto de {name}",
+      "remove": "Quitar",
+      "readAgain": "Leer de nuevo",
+      "btr": "Tablas del Informe Bienal de Transparencia",
+      "btrActions": "{count, plural, one {# acción notificada} other {# acciones notificadas}}",
+      "notice": "Los documentos los lee {model} en {provider}.",
+      "publicOnly": "Solo se pueden añadir documentos públicos.",
+      "read": "Leer los documentos",
+      "continue": "Continuar con las metas",
+      "state": {
+        "added": "Aún sin leer",
+        "queued": "En espera de lectura",
+        "reading": "Leyendo",
+        "readingPart": "Leyendo, parte {part, number} de {parts, number}",
+        "read": "{count, plural, =0 {No se encontraron metas} one {# meta} other {# metas}}",
+        "partial": "{count, plural, one {# meta} other {# metas}}, {empty, number} de {pages, number} páginas sin texto",
+        "noText": "No hay texto legible por máquina. Se necesita una versión en texto.",
+        "failed": "No se pudo leer"
+      },
       "errors": {
-        "parseBtr": "Fallo al analizar el archivo BTR",
-        "signInExpired": "Su sesión ha caducado. Abra /login en una pestaña nueva, vuelva a introducir el token de acceso y reintente aquí. No se pierde nada de este asistente.",
-        "parseExcel": "Fallo al analizar el archivo Excel",
-        "noTargets": "No se encontraron metas en el archivo",
-        "noTargetsExcel": "No se encontraron metas en el archivo Excel",
-        "noTextLayer": "No se encontró texto legible por máquina en {name}. El archivo parece ser un PDF escaneado o basado en imágenes; el reconocimiento óptico de caracteres aún no es compatible. Se necesita una versión del documento con texto.",
-        "startAnalysis": "Fallo al iniciar el análisis",
-        "unexpected": "Error inesperado"
-      },
-      "nav": {
-        "steps": {
-          "countryDocs": "País y documentos",
-          "referenceData": "Datos de referencia",
-          "reviewConfigure": "Revisar metas",
-          "summaryRun": "Resumen y ejecución"
-        },
-        "stepCount": "Paso {n}",
-        "back": "Atrás",
-        "next": "Siguiente"
+        "tooLarge": "{file} supera los 50 MB.",
+        "tableTooLarge": "{file} supera los 15 MB.",
+        "type": "{file} no es un archivo PDF, Word, de texto ni una hoja de cálculo.",
+        "noTargets": "No se encontraron metas en {file}.",
+        "signIn": "La sesión ha caducado. Inicie sesión de nuevo para continuar.",
+        "unavailable": "Este servicio no puede leer documentos.",
+        "generic": "No se pudo añadir {file}."
       }
-    },
-    "estimate": {
-      "quantitative": "Detección de frases cuantitativas: {count, number} llamadas",
-      "classification": "Clasificación contra NBS, IPCC, GLOBE: {count, number} llamadas",
-      "decomposition": "Descomposición de metas: {count, number} llamadas",
-      "needsTwoDocs": "Alineación por pares: requiere 2+ tipos de documento",
-      "pairwiseCount": "Alineación por pares: ~{count, number} pares",
-      "btrIntegration": "Integración de datos BTR/CTF",
-      "addSecondDoc": "Añada metas de un segundo tipo de documento (p. ej. NDC + NBSAP) para habilitar el análisis de alineación.",
-      "needCountry": "Se necesita el nombre del país para la nota; se indica en el primer paso.",
-      "totalCost": "~{calls, number} llamadas LLM · coste estimado <strong>${cost}</strong>",
-      "starting": "Iniciando…",
-      "runAnalysis": "Ejecutar análisis →"
-    },
-    "categories": {
-      "hide": "Ocultar detalles de categorías",
-      "edit": "Editar categorías",
-      "addGroup": "+ Añadir nuevo grupo de clasificación",
-      "newGroup": {
-        "title": "Nuevo grupo de clasificación",
-        "namePlaceholder": "Nombre del grupo (p. ej. Metas ODS, Temas personalizados)",
-        "descPlaceholder": "Breve descripción de lo que clasifica este grupo",
-        "create": "Crear grupo",
-        "cancel": "Cancelar",
-        "hint": "Después de crear el grupo, use «Editar» para añadir categorías individuales dentro de él."
-      },
-      "group": {
-        "enabledRatio": "{active, number} de {total, number} habilitadas",
-        "empty": "Aún no hay categorías. Pulse Editar para añadir.",
-        "disableAll": "Deshabilitar todas",
-        "enableAll": "Habilitar todas",
-        "collapse": "Contraer",
-        "editBtn": "Editar",
-        "removeTitle": "Eliminar grupo"
-      },
-      "item": {
-        "remove": "Eliminar"
-      },
-      "newItem": {
-        "namePlaceholder": "Nombre",
-        "descPlaceholder": "Descripción (opcional)",
-        "add": "Añadir",
-        "cancel": "Cancelar",
-        "addBtn": "+ Añadir categoría"
-      }
-    },
-    "pipeline": {
-      "heading": "Canalización de documentos",
-      "status": {
-        "parsing": "Analizando…",
-        "ready": "Listo",
-        "error": "Error"
-      },
-      "policyTargetsCount": "{count, number} metas de política",
-      "btr": {
-        "actions": "{count, number} acciones reportadas",
-        "emissions": "{count, number} series de emisiones",
-        "projections": "{count, number} proyecciones",
-        "techSupport": "{count, number} proyectos de apoyo técnico",
-        "capacityBuilding": "{count, number} de fortalecimiento de capacidades"
-      },
-      "remove": "Eliminar"
-    },
-    "review": {
-      "title": "Revisar metas extraídas",
-      "subtitle": "{kept, number} de {total, number} conservadas · {file}",
-      "keepAll": "Conservar todas",
-      "removeAll": "Eliminar todas",
-      "pagePrefix": "p.",
-      "originalText": "{lang}: {text}",
-      "machineTranslationNote": "El texto de trabajo en inglés es una traducción automática; la redacción original aparece debajo de cada meta.",
-      "needsReview": "Requiere revisión: una parte de este texto no pudo verificarse contra el documento.",
-      "aiSummarised": "Resumido por IA",
-      "keep": "Conservar",
-      "removeTitle": "Eliminar",
-      "removed": "Eliminada",
-      "restoreTitle": "Restaurar",
-      "addMissingPrompt": "Añadir una meta que no fue extraída",
-      "manualPlaceholder": "Texto de la meta…",
-      "manualLabelPlaceholder": "Etiqueta (opcional)",
-      "addBtn": "+ Añadir",
-      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {meta} other {metas}} se añadirán a este análisis",
-      "discard": "Descartar",
-      "acceptBtn": "Añadir {count, plural, one {1 meta} other {# metas}} →"
-    },
-    "manualForm": {
-      "sourceDocument": "Documento de origen",
-      "documentName": "Nombre del documento",
-      "placeholderSectoral": "p. ej. Política de Transporte",
-      "placeholderOther": "p. ej. Plan Nacional de Desarrollo",
-      "labelOptional": "Etiqueta (opcional)",
-      "labelPlaceholder": "p. ej. Biodiversidad 1",
-      "targetText": "Texto de la meta",
-      "targetTextPlaceholder": "Pegue o escriba el texto completo de la meta…",
-      "addTarget": "+ Añadir meta",
-      "maxReached": "Máximo de {max, number} metas alcanzado"
-    },
-    "editor": {
-      "title": "Editar metas manuales: {docType}",
-      "done": "Hecho",
-      "labelPlaceholder": "Etiqueta",
-      "targetPlaceholder": "Texto de la meta…",
-      "toggleDetails": "Añadir actividades y acciones",
-      "activities": "Actividades",
-      "activitiesPlaceholder": "Actividades de implementación (opcional)…",
-      "actions": "Acciones / Medidas",
-      "actionsPlaceholder": "Acciones o medidas (opcional)…"
-    },
-    "step4": {
-      "title": "Resumen y ejecución",
-      "subtitle": "Revise la configuración completa del análisis a continuación. La canalización clasificará cada meta, descompondrá su estructura y evaluará la alineación por pares entre todos los tipos de documento.",
-      "countryLabel": "País",
-      "notSpecified": "No especificado",
-      "targetsLabel": "Metas",
-      "acrossDocs": "a través de {count, plural, one {1 tipo de documento} other {# tipos de documento}}",
-      "targetBreakdown": "Desglose de metas",
-      "btr": {
-        "title": "Datos de implementación BTR incluidos",
-        "description": "Medidas de mitigación comparadas con metas de política."
-      },
-      "footprint": {
-        "heading": "Huella de la extracción de documentos hasta ahora",
-        "energy": "Wh de energía",
-        "water": "mL de agua",
-        "co2": "gCO<sub>2</sub>eq",
-        "minerals": "µgSbeq de minerales",
-        "summary": "Acumulado a partir de {count, number} llamadas LLM durante la extracción. Esto se añadirá a la huella del análisis en el panel final. Estimado mediante EcoLogits."
-      }
-    },
-    "step3": {
-      "title": "Revisar las metas",
-      "subtitle": "Cada grupo de documentos puede expandirse para inspeccionar o eliminar metas individuales.",
-      "categoriesHeading": "Categorías de clasificación",
-      "targetsHeading": "Metas de política",
-      "hideManual": "Ocultar entrada manual",
-      "addTarget": "+ Añadir meta",
-      "targetCount": "{count, plural, one {# meta} other {# metas}}",
-      "removeTarget": "Eliminar meta",
-      "noTargets": "Aún no hay metas",
-      "noTargetsHint": "Vuelva atrás para añadir datos de referencia o cargar documentos."
-    },
-    "docTypes": {
-      "NDC": "NDC (Contribuciones Determinadas a Nivel Nacional)",
-      "NBSAP": "NBSAP / Metas Nacionales de Biodiversidad",
-      "NAP": "NAP (Plan Nacional de Adaptación)",
-      "LDN": "LDN (Neutralidad en la Degradación de las Tierras)",
-      "SECTORAL": "Política sectorial",
-      "OTHER": "Otro documento"
     }
   },
   "analysis": {

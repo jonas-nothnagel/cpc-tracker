@@ -3,9 +3,10 @@ import { join } from "path";
 import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type { DocumentTypeEntry, TargetSource, TextCleanup } from "@/types";
 import { KNOWN, cleanText as clean, documentColors, documentIds, promptLabel } from "./documents";
+import { MAX_ITEMS } from "./limits";
 import { OWN_AREA_LIMITS, ownLensProblem as areasProblem, type OwnLensInput } from "./own-areas";
 
-export { documentIds };
+export { documentIds, MAX_ITEMS };
 export type { OwnLensInput };
 
 /**
@@ -16,9 +17,6 @@ export type { OwnLensInput };
  * Python.
  */
 
-/** Targets and BTR mitigation measures together: every measure is compared
- *  with every target, so it costs what a target costs. */
-export const MAX_ITEMS = 150;
 
 /** One target as the wizard sends it, with the extraction's provenance. */
 export interface TargetInput {
