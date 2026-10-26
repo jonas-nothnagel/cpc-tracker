@@ -26,6 +26,7 @@ import json
 import logging
 import os
 import re
+import shutil
 import time
 from collections.abc import Sequence
 from datetime import datetime, timezone
@@ -47,15 +48,25 @@ from .classify_globe import (
     derive_globe_top_level_classifications,
     load_few_shot_examples,
 )
-from .align import PROMPT_VERSION, build_analyst_call, decompose_targets, generate_pairs, assess_alignment
+from .align import (
+    ALIGNMENT_CACHE_NAMESPACE,
+    PROMPT_VERSION,
+    assess_alignment,
+    build_analyst_call,
+    decompose_targets,
+    generate_pairs,
+)
 from .extract_friction_dimensions import enrich_with_friction_dimensions
 from .llm import (
     _augment_system_with_language,
     estimate_footprint_from_counts,
     get_footprint_tracker,
+    prune_manifest,
     read_cache,
     set_language,
+    set_progress_listener,
 )
+from .run_status import StatusFile
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
 from .target_quality import assess_target_quality
@@ -100,6 +111,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 TOTAL_STEPS = 8
+
+# The run's status file (src/run_status.py): written whole, with a heartbeat,
+# so the server can tell a run that is working from one whose process is gone
+# (a restart, a deploy) and start it again with --resume.
+_STATUS: StatusFile | None = None
+# Target pairs compared so far, for the waiting page's dots.
+_PROGRESS: dict = {}
+# What a resumed run keeps of its first attempt: the calls already made, the
+# BTR input, its status and the list of cache entries it wrote.
+KEEP_ON_RESUME = {".cache", "btr_data.json", "status.json", "cache-manifest.txt"}
 
 
 async def classify_active_taxonomies(
@@ -198,7 +219,122 @@ def write_status(
         "promptVersion": PROMPT_VERSION,
         "footprint": get_footprint_tracker().snapshot(),
     }
-    (OUTPUT_DIR / "status.json").write_text(json.dumps(payload, indent=2))
+    if _PROGRESS:
+        payload["progress"] = dict(_PROGRESS)
+    _status_file().write(payload)
+
+
+def _status_file() -> StatusFile:
+    global _STATUS
+    if _STATUS is None or _STATUS.path != OUTPUT_DIR / "status.json":
+        _STATUS = StatusFile(OUTPUT_DIR / "status.json")
+    return _STATUS
+
+
+def _on_progress(desc: str, done: int, total: int) -> None:
+    """Target pairs compared so far, from the alignment batch."""
+    if desc != "Alignment":
+        return
+    if done == 0 or "startedAt" not in _PROGRESS:
+        _PROGRESS["startedAt"] = datetime.now(timezone.utc).isoformat()
+    _PROGRESS.update(pairsDone=done, pairsTotal=total)
+    _status_file().update(progress=dict(_PROGRESS))
+
+
+def _book_footprint(footprint: dict, targets_file: str) -> None:
+    """Book a run's footprint snapshot to the shared ledger, one row per model."""
+    # Append one row per model to the shared append-only footprint ledger
+    # (stable path via CPC_LEDGER_DIR, not the per-country OUTPUT_DIR) so the
+    # /sustainability dashboard accumulates this run alongside chat and
+    # extraction. Dev runs (CLI) tag as dev_pipeline; the analyze API sets
+    # CPC_RUN_SOURCE=user_pipeline. Best-effort: never fail the run on a
+    # ledger write error.
+    try:
+        run_source = os.getenv("CPC_RUN_SOURCE", "dev")
+        component = "user_pipeline" if run_source == "user_pipeline" else "dev_pipeline"
+        run_id = os.getenv("CPC_RUN_ID")
+        # Country identity comes from the targets filename (the same
+        # derivation as the output dir), never from output-path
+        # components: the pre-2026-08 code used the leaf directory name
+        # (`OUTPUT_DIR.name`), which recorded the model slug as the
+        # country for model-comparison runs under <country>/<model-slug>/
+        # (4 historical ledger rows, ~28 kWh, repaired 2026-08-10). The
+        # filename derivation also holds when CPC_OUTPUT_DIR repoints the
+        # output root, so no env gate is needed: the upload flow's generic
+        # "targets.json" yields None on its own (its records carry a
+        # wizard-stamped display country, but the ledger keeps slugs, so
+        # upload rows stay country=None for now).
+        country = derive_country_slug(targets_file)
+        zone = electricity_zone()
+        # Per-model rows when measured; otherwise one row from the flat total
+        # (an estimated, fully-cached run has no by_model breakdown).
+        rows = footprint.get("by_model") or [footprint]
+        for row in rows:
+            if not int(row.get("call_count", 0) or 0):
+                continue
+            append_event(
+                component=component,
+                provider="openai",
+                model=row.get("model") or config.LLM_MODEL,
+                region=zone,
+                run_id=run_id,
+                country=country,
+                call_count=int(row.get("call_count", 0) or 0),
+                cached_call_count=int(row.get("cached_call_count", 0) or 0),
+                energy_wh=float(row.get("energy_wh", 0) or 0),
+                water_ml=float(row.get("water_ml", 0) or 0),
+                co2_geq=float(row.get("co2_geq", 0) or 0),
+                minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
+                # The bucket's own source, not the run-level one: a mixed
+                # run classifies flat as "mixed", which is outside the
+                # ledger's source vocabulary, while each per-model bucket
+                # carries its true measured/estimated label.
+                source=row.get("source") or footprint.get("source", "unavailable"),
+                energy_wh_min=row.get("energy_wh_min"),
+                energy_wh_max=row.get("energy_wh_max"),
+                water_ml_min=row.get("water_ml_min"),
+                water_ml_max=row.get("water_ml_max"),
+                co2_geq_min=row.get("co2_geq_min"),
+                co2_geq_max=row.get("co2_geq_max"),
+                minerals_ugsbeq_min=row.get("minerals_ugsbeq_min"),
+                minerals_ugsbeq_max=row.get("minerals_ugsbeq_max"),
+            )
+    except Exception as e:
+        logger.warning(f"Could not append footprint ledger rows: {e}")
+
+
+def documents_problem(targets: list[dict]) -> str | None:
+    """Why a run cannot compare anything, found before any call is paid for."""
+    if len({t.get("sourceDocument") for t in targets}) < 2:
+        return "A comparison needs targets from at least two documents."
+    return None
+
+
+def clear_for_resume(output_dir: Path) -> None:
+    """Remove a first attempt's outputs before a resume (KEEP_ON_RESUME stays)."""
+    for entry in output_dir.iterdir():
+        if entry.name in KEEP_ON_RESUME:
+            continue
+        if entry.is_dir():
+            shutil.rmtree(entry)
+        else:
+            entry.unlink()
+
+
+def resume_previous_attempt(output_dir: Path, targets_file: str) -> str | None:
+    """Before a resume: book the interrupted attempt's footprint from its last
+    status snapshot, clear its outputs, and return when the analysis first
+    started."""
+    try:
+        previous = json.loads((output_dir / "status.json").read_text())
+    except (OSError, json.JSONDecodeError):
+        previous = {}
+    footprint = previous.get("footprint")
+    if isinstance(footprint, dict):
+        _book_footprint(footprint, targets_file)
+    clear_for_resume(output_dir)
+    started = previous.get("startedAt")
+    return started if isinstance(started, str) else None
 
 
 def load_input_data(
@@ -333,6 +469,14 @@ def parse_args() -> argparse.Namespace:
              "the NR7 framing is pending expert calibration (see nr7_align.py).",
     )
     parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Resume an interrupted run (the upload flow, after a restart): "
+             "book the first attempt's footprint, clear its outputs except the "
+             "cache and the BTR input, and run again; calls already made are "
+             "served from the cache.",
+    )
+    parser.add_argument(
         "--limit-targets",
         type=int,
         default=None,
@@ -374,6 +518,9 @@ async def main() -> None:
     set_language(args.language)
     start = time.time()
     started_at = datetime.now(timezone.utc).isoformat()
+    if args.resume:
+        started_at = resume_previous_attempt(OUTPUT_DIR, args.targets_file) or started_at
+        logger.info("Resuming an interrupted run: calls already made come from the cache")
     logger.info(f"Starting analysis pipeline (model: {config.LLM_MODEL}, language: {args.language})")
     logger.info(f"Output dir: {OUTPUT_DIR}")
     # Cache visibility: a cold cache means a full recompute at full cost.
@@ -392,8 +539,9 @@ async def main() -> None:
     # Seed tracker with any pre-analysis footprint (e.g. from document
     # extraction runs in the upload wizard) so the final dashboard total
     # reflects the full upload → analysis journey.
+    # A resumed run's first attempt carried the seed and was booked already.
     initial_fp_path = DATA_DIR / "initial_footprint.json"
-    if initial_fp_path.exists():
+    if initial_fp_path.exists() and not args.resume:
         try:
             initial_fp = json.loads(initial_fp_path.read_text())
             get_footprint_tracker().seed(initial_fp)
@@ -406,6 +554,11 @@ async def main() -> None:
         except Exception as e:
             logger.warning(f"Could not seed initial footprint: {e}")
 
+    # From here the status file speaks, with a heartbeat while the run works.
+    set_progress_listener(_on_progress)
+    write_status(0, "Starting", "Loading the targets", started_at=started_at)
+    _status_file().start_heartbeat()
+
     try:
         # 1. Load data
         targets, nbs_categories, sectors, globe_categories, globe_subcategories, gga_categories, hr_categories = load_input_data(args.targets_file)
@@ -416,6 +569,11 @@ async def main() -> None:
                 f"--limit-targets {args.limit_targets}: truncated targets "
                 f"from {original_count} to {len(targets)} (smoke test mode)"
             )
+        problem = documents_problem(targets)
+        if problem:
+            logger.error(problem)
+            write_status(0, "Error", problem, status="failed", started_at=started_at, error=problem)
+            return
 
         # Cache canary: expected hit rate on a decomposition sample. The
         # decompose prompts are upstream of everything, so 0 hits here means
@@ -1212,64 +1370,7 @@ async def main() -> None:
 
         (OUTPUT_DIR / "footprint.json").write_text(json.dumps(footprint, indent=2))
 
-        # Append one row per model to the shared append-only footprint ledger
-        # (stable path via CPC_LEDGER_DIR, not the per-country OUTPUT_DIR) so the
-        # /sustainability dashboard accumulates this run alongside chat and
-        # extraction. Dev runs (CLI) tag as dev_pipeline; the analyze API sets
-        # CPC_RUN_SOURCE=user_pipeline. Best-effort: never fail the run on a
-        # ledger write error.
-        try:
-            run_source = os.getenv("CPC_RUN_SOURCE", "dev")
-            component = "user_pipeline" if run_source == "user_pipeline" else "dev_pipeline"
-            run_id = os.getenv("CPC_RUN_ID")
-            # Country identity comes from the targets filename (the same
-            # derivation as the output dir), never from output-path
-            # components: the pre-2026-08 code used the leaf directory name
-            # (`OUTPUT_DIR.name`), which recorded the model slug as the
-            # country for model-comparison runs under <country>/<model-slug>/
-            # (4 historical ledger rows, ~28 kWh, repaired 2026-08-10). The
-            # filename derivation also holds when CPC_OUTPUT_DIR repoints the
-            # output root, so no env gate is needed: the upload flow's generic
-            # "targets.json" yields None on its own (its records carry a
-            # wizard-stamped display country, but the ledger keeps slugs, so
-            # upload rows stay country=None for now).
-            country = derive_country_slug(args.targets_file)
-            zone = electricity_zone()
-            # Per-model rows when measured; otherwise one row from the flat total
-            # (an estimated, fully-cached run has no by_model breakdown).
-            rows = footprint.get("by_model") or [footprint]
-            for row in rows:
-                if not int(row.get("call_count", 0) or 0):
-                    continue
-                append_event(
-                    component=component,
-                    provider="openai",
-                    model=row.get("model") or config.LLM_MODEL,
-                    region=zone,
-                    run_id=run_id,
-                    country=country,
-                    call_count=int(row.get("call_count", 0) or 0),
-                    cached_call_count=int(row.get("cached_call_count", 0) or 0),
-                    energy_wh=float(row.get("energy_wh", 0) or 0),
-                    water_ml=float(row.get("water_ml", 0) or 0),
-                    co2_geq=float(row.get("co2_geq", 0) or 0),
-                    minerals_ugsbeq=float(row.get("minerals_ugsbeq", 0) or 0),
-                    # The bucket's own source, not the run-level one: a mixed
-                    # run classifies flat as "mixed", which is outside the
-                    # ledger's source vocabulary, while each per-model bucket
-                    # carries its true measured/estimated label.
-                    source=row.get("source") or footprint.get("source", "unavailable"),
-                    energy_wh_min=row.get("energy_wh_min"),
-                    energy_wh_max=row.get("energy_wh_max"),
-                    water_ml_min=row.get("water_ml_min"),
-                    water_ml_max=row.get("water_ml_max"),
-                    co2_geq_min=row.get("co2_geq_min"),
-                    co2_geq_max=row.get("co2_geq_max"),
-                    minerals_ugsbeq_min=row.get("minerals_ugsbeq_min"),
-                    minerals_ugsbeq_max=row.get("minerals_ugsbeq_max"),
-                )
-        except Exception as e:
-            logger.warning(f"Could not append footprint ledger rows: {e}")
+        _book_footprint(footprint, args.targets_file)
 
         if footprint.get("available"):
             source = footprint.get("source", "measured")
@@ -1298,12 +1399,23 @@ async def main() -> None:
             "budgetAlignmentPairs": len(budget_alignment_results),
             "budgetPseudoTargets": len(budget_pseudo_targets),
             "elapsedSeconds": round(elapsed, 1),
+            # A resumed run's time covers its second attempt only.
+            **({"resumed": True} if args.resume else {}),
         }
+        # An upload's comparisons are in alignment.json now; the cache entries
+        # it wrote for them (about 20 KB a pair) leave the shared disk.
+        manifest = os.getenv("CPC_CACHE_MANIFEST")
+        if manifest and os.getenv("CPC_RUN_SOURCE") == "user_pipeline":
+            pruned = prune_manifest(Path(manifest), {ALIGNMENT_CACHE_NAMESPACE})
+            logger.info(f"Pruned {pruned} comparison cache entries written by this upload")
         write_status(TOTAL_STEPS, "Complete", f"Pipeline finished in {elapsed:.1f}s", status="completed", started_at=started_at, summary=summary)
 
     except Exception as e:
         logger.exception("Pipeline failed")
         write_status(0, "Error", str(e), status="failed", started_at=started_at, error=str(e))
+    finally:
+        set_progress_listener(None)
+        _status_file().stop()
 
 
 if __name__ == "__main__":

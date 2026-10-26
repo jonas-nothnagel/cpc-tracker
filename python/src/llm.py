@@ -38,6 +38,7 @@ from .config import (
 # `.llm`. `get_footprint_tracker` is used below; `estimate_footprint_from_counts`
 # is re-exported only.
 from .footprint.tracker import estimate_footprint_from_counts, get_footprint_tracker  # noqa: F401
+from .run_status import write_json_atomic
 
 logger = logging.getLogger(__name__)
 
@@ -242,7 +243,13 @@ def read_cache_entry(
     key = _cache_key(system, user, model)
     path = _cache_path(namespace, key)
     if path.exists():
-        data = json.loads(path.read_text())
+        try:
+            data = json.loads(path.read_text())
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as e:
+            # A run killed mid-write before writes were atomic; the call is
+            # made again and the entry rewritten whole.
+            logger.warning(f"Unreadable cache entry {namespace}/{path.name} ({e}); treating it as a miss")
+            return None
         content = data.get("content")
         if content is None:
             return None
@@ -320,7 +327,34 @@ def write_cache(
     }
     if meta:
         record["meta"] = meta
-    path.write_text(json.dumps(record, indent=2))
+    # Whole or not at all: a run stopped mid-write leaves no half entry.
+    write_json_atomic(path, record)
+    manifest = os.getenv("CPC_CACHE_MANIFEST")
+    if manifest:
+        # The entries this run wrote, so they can be pruned once it is done.
+        try:
+            with open(manifest, "a", encoding="utf-8") as f:
+                f.write(f"{namespace}/{key}.json\n")
+        except OSError as e:
+            logger.warning(f"Could not note cache entry in {manifest}: {e}")
+
+
+def prune_manifest(manifest: Path, namespaces: set[str]) -> int:
+    """Delete the cache entries a run wrote in `namespaces`, as listed in its
+    manifest (CPC_CACHE_MANIFEST). Entries other runs wrote stay."""
+    if not manifest.exists():
+        return 0
+    removed = 0
+    for line in manifest.read_text(encoding="utf-8").splitlines():
+        namespace, _, name = line.strip().rpartition("/")
+        if namespace not in namespaces or not name.endswith(".json"):
+            continue
+        try:
+            (CACHE_DIR / namespace / name).unlink()
+            removed += 1
+        except FileNotFoundError:
+            pass
+    return removed
 
 
 # ---------------------------------------------------------------------------
