@@ -2,6 +2,9 @@ import { copyFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type { DocumentTypeEntry, TargetSource, TextCleanup } from "@/types";
+import { KNOWN, documentColors, documentIds } from "./documents";
+
+export { documentIds };
 
 /**
  * An upload's inputs for the pipeline, built and checked before anything is
@@ -46,6 +49,9 @@ export interface AnalyzeBody {
   country?: string;
   /** The language the wizard ran in. */
   locale?: string;
+  /** Each document's name as the page shows it, by its code. Without it a
+   *  name comes from the code (a framework's full name, or the code). */
+  documents?: { code: string; name: string }[];
   targets: TargetInput[];
   btrData?: Record<string, unknown>;
   ownLens?: OwnLensInput;
@@ -61,25 +67,6 @@ export interface AnalysisInputs {
 }
 
 const LIMITS = { country: 80, lensName: 80, source: 300, areas: 30, areaName: 80, description: 1200 };
-
-/** Framework codes the wizard offers. `prompt` is the label the comparison
- *  prompt has always shown for the code (`DOC_TYPE_LABELS` in
- *  python/src/align.py), so a country config changes nothing the AI reads. */
-const KNOWN: Record<string, { full: string; prompt: string; color?: string }> = {
-  NDC: { full: "Nationally Determined Contribution", prompt: "NDC", color: "#0468b1" },
-  NBSAP: { full: "National Biodiversity Strategy and Action Plan", prompt: "NBT", color: "#166534" },
-  NAP: { full: "National Adaptation Plan", prompt: "NAP", color: "#0e7490" },
-  LDN: { full: "Land Degradation Neutrality targets", prompt: "LDN", color: "#b45309" },
-  SECTORAL: { full: "Sectoral policy", prompt: "SECTORAL" },
-  OTHER: { full: "Other document", prompt: "OTHER" },
-};
-
-/** Colours for the documents no framework colours, in order. */
-const PALETTE = ["#4f46e5", "#9d174d", "#ca8a04", "#475569", "#db2777", "#65a30d", "#6d28d9", "#0891b2"];
-
-/** Ids the pipeline and the dashboard give a meaning of their own. */
-const RESERVED = new Set(["BTR", "BTR_ADP", "BER", "NR7", "OTHER"]);
-const SAFE_ID = /^[A-Za-z][A-Za-z0-9]{0,11}$/;
 
 const UPLOAD_LANGUAGES = new Set(["es", "mn"]);
 
@@ -108,32 +95,6 @@ function promptLabel(raw: string): string {
     .replace(/\s+/g, " ")
     .trim();
   return Array.from(kept).slice(0, 60).join("").trim();
-}
-
-/** Each document code, first seen first, to the id its targets are filed
- *  under: short safe codes keep themselves, any other gets DOC1, DOC2, … */
-export function documentIds(codes: string[]): Map<string, string> {
-  const ids = new Map<string, string>();
-  const taken = new Set<string>();
-  for (const code of codes) {
-    if (!ids.has(code) && SAFE_ID.test(code) && !RESERVED.has(code.toUpperCase())) {
-      ids.set(code, code);
-      taken.add(code);
-    }
-  }
-  let next = 0;
-  const ordered = new Map<string, string>();
-  for (const code of codes) {
-    if (ordered.has(code)) continue;
-    let id = ids.get(code);
-    if (id === undefined) {
-      do id = `DOC${++next}`;
-      while (taken.has(id));
-      taken.add(id);
-    }
-    ordered.set(code, id);
-  }
-  return ordered;
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -207,16 +168,18 @@ export function buildAnalysisInputs(body: AnalyzeBody): AnalysisInputs {
   const country = clean(body.country);
   const codes = body.targets.map((t) => String(t.sourceDocument ?? ""));
   const ids = documentIds(codes);
+  const names = new Map((body.documents ?? []).map((d) => [String(d.code ?? ""), clean(d.name)]));
 
-  let paint = 0;
-  const documentTypes: DocumentTypeEntry[] = [...ids].map(([code, id]) => {
+  const colors = documentColors([...ids.keys()]);
+  const documentTypes: DocumentTypeEntry[] = [...ids].map(([code, id], i) => {
     const known = KNOWN[code];
+    const name = names.get(code);
     return {
       id,
       shortLabel: known ? code : code.length <= 12 && clean(code) === code ? code : id,
-      mediumLabel: known ? known.prompt : promptLabel(code) || id,
-      fullLabel: known ? known.full : clean(code) || id,
-      color: known?.color ?? PALETTE[paint++ % PALETTE.length],
+      mediumLabel: known ? known.prompt : promptLabel(name || code) || id,
+      fullLabel: name || (known ? known.full : clean(code) || id),
+      color: colors[i],
     };
   });
   const shortOf = new Map(documentTypes.map((d) => [d.id, d.shortLabel]));
