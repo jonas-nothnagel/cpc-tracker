@@ -1553,79 +1553,29 @@
     }
   },
   "analysis": {
-    "headerSubtitle": "Análisis",
-    "errorHeading": "Error",
-    "backToUpload": "Volver a la carga",
-    "loadingStatus": "Cargando estado del análisis…",
-    "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
-    "errors": {
-      "notFound": "Análisis no encontrado",
-      "statusCheck": "Fallo al comprobar el estado del análisis"
+    "progress": {
+      "compared": "{done, number} de {total, number} pares de metas comparados",
+      "byRating": "{total, number} pares de metas según su valoración",
+      "ahead": "{count, plural, one {En espera de # análisis anterior.} other {En espera de # análisis anteriores.}}",
+      "reading": "Leyendo cada meta.",
+      "comparing": "Comparando pares de metas.",
+      "comparingLeft": "Comparando pares de metas. Quedan unos {minutes, plural, one {# minuto} other {# minutos}}.",
+      "themes": "Identificando los temas.",
+      "opening": "Se abre el informe.",
+      "closable": "Esta página se puede cerrar. Esta dirección abre el informe cuando esté listo.",
+      "copy": "Copiar la dirección",
+      "copied": "Dirección copiada"
     },
-    "running": {
-      "title": "Ejecutando análisis",
-      "stepOf": "Paso {step} de {total}",
-      "elapsed": "{sec}s"
+    "stopped": {
+      "title": "El análisis se detuvo antes de terminar.",
+      "failed": "No se pudo completar el análisis.",
+      "continue": "Continuar",
+      "back": "Volver a los documentos"
     },
-    "complete": {
-      "title": "Análisis completo",
-      "summary": "Procesadas {targets, number} metas con {pairs, number} pares de alineación en {sec}s",
-      "viewDashboard": "Ver panel →",
-      "openBrief": "Abrir la nota",
-      "unreadable": "No se pudo preparar la nota con estos resultados."
-    },
-    "failed": {
-      "title": "Análisis fallido",
-      "body": "La canalización encontró un error. Verifique las metas e inténtelo de nuevo."
-    },
-    "footprint": {
-      "title": "Huella ambiental",
-      "energyLabel": "Energía",
-      "energyUnit": "Wh",
-      "waterLabel": "Agua",
-      "waterUnit": "mL",
-      "co2Label": "CO₂eq",
-      "co2Unit": "g",
-      "mineralsLabel": "Minerales",
-      "mineralsUnit": "µgSbeq",
-      "cachedCalls": "{count, number} llamadas en caché",
-      "callsTracked": "{count, number} llamadas registradas",
-      "callsWithCache": "{tracked, number} llamadas registradas · {cached, number} en caché",
-      "estimatedNote": "Estimado a partir del conteo de llamadas (ejecución en caché) mediante EcoLogits.",
-      "measuredNote": "Medido mediante EcoLogits.",
-      "indicativeNote": "Los valores son indicativos y pueden diferir del consumo real."
-    },
-    "pipeline": {
-      "input": {
-        "policyTargets": "Metas de política",
-        "taxonomy": "Sectores IPCC y taxonomías GLOBE y GGA"
-      },
-      "step1": {
-        "title": "Detección cuantitativa",
-        "detail": "Escaneando cada meta en busca de métricas numéricas y compromisos con plazo",
-        "output": "Métricas y plazos identificados"
-      },
-      "step2": {
-        "title": "Clasificación temática",
-        "detail": "Mapeando cada meta a categorías NBS y sectores IPCC relevantes",
-        "output": "{relevant, number} coincidencias relevantes encontradas en {total, number} comparaciones"
-      },
-      "step3": {
-        "title": "Emparejamiento entre documentos",
-        "detail": "Identificando metas de documentos distintos que comparten sectores IPCC comunes",
-        "output": "{count, number} pares de metas identificados para comparar"
-      },
-      "step4": {
-        "title": "Descomposición de metas",
-        "detail": "Descomponiendo cada meta en objetivos, acciones, ecosistemas, audiencias e impactos esperados",
-        "output": "Todas las metas emparejadas descompuestas"
-      },
-      "step5": {
-        "title": "Evaluación de alineación",
-        "detail": "Comparando pares de metas para determinar niveles de coherencia de política",
-        "output": "{count, number} pares evaluados: {high, number} alta, {medium, number} media, {low, number} parcial alineación"
-      }
-    }
+    "missing": "No se encontró ningún análisis en esta dirección.",
+    "statusCheck": "No se pudo leer el estado de este análisis.",
+    "unreadable": "No se pudo elaborar el informe con estos resultados.",
+    "openPrevious": "Abrir el panel anterior"
   },
   "country": {},
   "modelComparison": {

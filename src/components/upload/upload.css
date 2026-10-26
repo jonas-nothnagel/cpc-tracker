@@ -512,3 +512,59 @@
   text-decoration: underline dotted;
   text-underline-offset: 3px;
 }
+
+/* ── Waiting: the analysis's address before its brief ────────────── */
+
+[data-brief] .up-wait {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem clamp(1rem, 4vw, 4.5rem) 4rem;
+}
+
+[data-brief] .up-kicker {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-wait-figures {
+  margin: 0 0 2rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+[data-brief] .up-wait-figures span {
+  display: block;
+}
+
+[data-brief] .up-picture-title {
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-dots {
+  position: relative;
+  height: clamp(150px, 20vw, 240px);
+}
+
+[data-brief] .up-dots canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .up-sorted .brief-dots-field {
+  flex: none;
+  height: clamp(150px, 20vw, 240px);
+}
+
+[data-brief] .up-wait-lines {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 62ch;
+  margin: 1.25rem 0 0;
+}

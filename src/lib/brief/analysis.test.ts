@@ -1,7 +1,7 @@
 import { rmSync } from "fs";
 import { join } from "path";
 import { describe, expect, it } from "vitest";
-import { analysisBrief, analysisBriefFrom, analysisInEnglish } from "./analysis";
+import { analysisBrief, analysisBriefFrom, analysisFactsFrom, analysisInEnglish } from "./analysis";
 import { FIXTURE_ID, writeFixtureAnalysis } from "./test-analysis";
 
 describe("analysisBriefFrom", () => {
@@ -68,5 +68,12 @@ describe("analysisInEnglish", () => {
   it("leaves English and the upload's own language alone", () => {
     expect(analysisInEnglish(FIXTURE_ID, ["es"], "es", {})).toBeNull();
     expect(analysisInEnglish(FIXTURE_ID, [], "en", {})).toBeNull();
+  });
+});
+
+describe("analysisFactsFrom", () => {
+  it("reads the country, the documents, the targets and their target pairs from the inputs", () => {
+    const paths = writeFixtureAnalysis({ status: JSON.stringify({ status: "running" }) });
+    expect(analysisFactsFrom(paths)).toEqual({ country: "Tonga", documents: 2, targets: 3, pairs: 2, hasDraft: false });
   });
 });

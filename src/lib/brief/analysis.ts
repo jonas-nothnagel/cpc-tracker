@@ -1,5 +1,9 @@
+import { existsSync } from "fs";
+import { dirname, join } from "path";
 import { routing, type Locale } from "@/i18n/routing";
 import { derivePaths, type DerivedPaths } from "@/lib/dashboard-data";
+import { pairCount } from "@/lib/upload/documents";
+import { readJson } from "@/lib/upload/files";
 import { briefInEnglish } from "./language-gate";
 import { analysisPayload } from "./payload";
 import { buildBriefSource, type BriefSource } from "./source";
@@ -37,6 +41,37 @@ export function analysisBrief(id: string, locale: string): AnalysisBrief {
   const derived = derivePaths(id, null);
   if (derived.kind !== "analysis") return { kind: "missing" };
   return analysisBriefFrom(derived.paths, id, locale);
+}
+
+/** What the waiting page says about an analysis before its brief exists. */
+export interface AnalysisFacts {
+  country: string;
+  documents: number;
+  targets: number;
+  /** Target pairs from two different documents: one dot each. */
+  pairs: number;
+  /** Started from the upload page, so its documents can be gone back to. */
+  hasDraft: boolean;
+}
+
+export function analysisFactsFrom(paths: DerivedPaths): AnalysisFacts | null {
+  const targets = readJson<{ sourceDocument?: string; country?: string }[]>(join(paths.dataDir, "targets.json"));
+  if (!Array.isArray(targets)) return null;
+  const config = readJson<{ name?: string }>(join(paths.dataDir, "country-config.json"));
+  const perDocument = new Map<string, number>();
+  for (const t of targets) perDocument.set(String(t.sourceDocument), (perDocument.get(String(t.sourceDocument)) ?? 0) + 1);
+  return {
+    country: config?.name || targets[0]?.country || "",
+    documents: perDocument.size,
+    targets: targets.length,
+    pairs: pairCount([...perDocument.values()]),
+    hasDraft: existsSync(join(dirname(paths.dataDir), "draft.json")),
+  };
+}
+
+export function analysisFacts(id: string): AnalysisFacts | null {
+  const derived = derivePaths(id, null);
+  return derived.kind === "analysis" ? analysisFactsFrom(derived.paths) : null;
 }
 
 /** Where an upload's brief opened in a language the upload was not started
