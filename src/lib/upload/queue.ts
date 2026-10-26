@@ -49,8 +49,11 @@ const statusOf = (id: string) => readJson<RunStatus>(statusFile(id));
  *  look gone before its Python has written anything). Its footprint stays,
  *  for the resume to book. */
 function forNextAttempt(status: RunStatus | null): RunStatus {
-  const { heartbeatAt: _heartbeat, pid: _pid, bootId: _boot, ...rest } = status ?? {};
-  return rest;
+  const next: RunStatus = { ...status };
+  delete next.heartbeatAt;
+  delete next.pid;
+  delete next.bootId;
+  return next;
 }
 const setStatus = (id: string, status: RunStatus) => writeJsonAtomic(statusFile(id), status);
 const claim = () => readJson<Claim>(claimFile());
