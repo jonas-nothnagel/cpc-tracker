@@ -1530,6 +1530,26 @@
         "duplicate": "{area} appears twice."
       },
       "continue": "Continue to the start"
+    },
+    "start": {
+      "title": "The analysis",
+      "documents": "{count, plural, one {# policy document.} other {# policy documents.}}",
+      "targets": "{count, plural, one {# target.} other {# targets.}}",
+      "pairs": "{count, plural, one {# target pair to compare.} other {# target pairs to compare.}}",
+      "estimate": "About {minutes, plural, one {# minute} other {# minutes}} and {kg} kg <abbr>CO2e</abbr>.",
+      "co2e": "carbon dioxide equivalent",
+      "ahead": "{count, plural, one {# analysis is ahead in line.} other {# analyses are ahead in line.}}",
+      "problems": {
+        "country": "A country name is needed.",
+        "documents": "Targets from at least 2 documents are needed.",
+        "reading": "Some documents are still being read.",
+        "ownLens": "The own policy areas need attention."
+      },
+      "start": "Start the analysis",
+      "errors": {
+        "busy": "Several analyses were started a moment ago. Try again in a minute.",
+        "generic": "The analysis could not be started."
+      }
     }
   },
   "analysis": {

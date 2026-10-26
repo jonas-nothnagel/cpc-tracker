@@ -46,7 +46,7 @@ function draft(documents: DraftDocument[]): Draft {
 function page(initial: Draft | null, facts = FACTS) {
   return render(
     <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-      <UploadPage initialDraft={initial} facts={facts} />
+      <UploadPage initialDraft={initial} facts={facts} speed={{ pairsPerMinute: 450, gramsPerCall: 0.083 }} />
     </NextIntlClientProvider>,
   );
 }

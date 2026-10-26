@@ -493,3 +493,22 @@
   width: min(100%, 40rem);
   resize: vertical;
 }
+
+/* ── Start ───────────────────────────────────────────────────────── */
+
+[data-brief] .up-statement {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.12;
+}
+
+[data-brief] .up-statement span {
+  display: block;
+}
+
+[data-brief] .up-line abbr {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}

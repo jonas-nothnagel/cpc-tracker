@@ -3,7 +3,8 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { UploadPage } from "@/components/upload/upload-page";
 import { freshDraft } from "@/lib/upload/reading";
-import { serviceFacts } from "@/lib/upload/service";
+import { queueLength } from "@/lib/upload/queue";
+import { serviceFacts, serviceSpeed } from "@/lib/upload/service";
 import { STEPS, type StepId } from "@/lib/upload/steps";
 
 // A draft changes while its documents are read.
@@ -29,5 +30,5 @@ export default async function DraftPage({ params, searchParams }: Props) {
   if (draft.started) redirect(`${locale === routing.defaultLocale ? "" : `/${locale}`}/analysis/${id}`);
   const asked = (await searchParams).step;
   const step = STEPS.find((s) => s === asked) as StepId | undefined;
-  return <UploadPage initialDraft={draft} initialStep={step} facts={serviceFacts()} />;
+  return <UploadPage initialDraft={draft} initialStep={step} facts={serviceFacts()} speed={serviceSpeed()} ahead={queueLength()} />;
 }

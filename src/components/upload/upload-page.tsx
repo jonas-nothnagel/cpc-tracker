@@ -4,15 +4,19 @@ import "@/components/brief/brief.css";
 import "./upload.css";
 import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { LOCALE_LABELS } from "@/i18n/locale-labels";
 import { routing } from "@/i18n/routing";
 import { draftCounts } from "@/lib/upload/counts";
 import { documentColors } from "@/lib/upload/documents";
+import { getFeedbackClientId } from "@/lib/feedback/client-id";
+import type { Speed } from "@/lib/upload/estimate";
 import type { ServiceFacts } from "@/lib/upload/service";
 import type { Draft } from "@/lib/upload/types";
 import { MAX_ITEMS } from "@/lib/upload/limits";
 import { AreasStep } from "./areas-step";
 import { DocumentsStep } from "./documents-step";
+import { StartStep } from "./start-step";
 import { TargetsStep } from "./targets-step";
 import { STEPS, type StepId } from "@/lib/upload/steps";
 import { UploadBuilder } from "./upload-builder";
@@ -60,18 +64,24 @@ export function UploadPage({
   initialStep = "documents",
   lockedCountry,
   facts,
+  speed,
+  ahead: initialAhead = 0,
 }: {
   initialDraft: Draft | null;
   initialStep?: StepId;
   lockedCountry?: string;
   facts: ServiceFacts;
+  speed: Speed;
+  /** Analyses running or waiting when the page was served. */
+  ahead?: number;
 }) {
   const locale = useLocale();
-  const ts = useTranslations("upload.steps");
+  const router = useRouter();
   const [pendingCountry, setPendingCountry] = useState(lockedCountry ?? "");
-  const { draft, error, adding, addFiles, change, read } = useDraft(initialDraft, {
+  const { draft, ahead, error, startError, adding, addFiles, change, read, start } = useDraft(initialDraft, {
     locale,
     country: lockedCountry ?? pendingCountry,
+    ahead: initialAhead,
   });
   const counts = useMemo(() => draftCounts(draft), [draft]);
   const colors = useMemo(() => documentColors((draft?.documents ?? []).map((d) => d.code)), [draft]);
@@ -131,7 +141,18 @@ export function UploadPage({
             />
           )}
           {step === "areas" && draft && <AreasStep draft={draft} onChange={change} onContinue={next("areas")} />}
-          {step === "start" && <h2 className="up-title">{ts(step)}</h2>}
+          {step === "start" && draft && (
+            <StartStep
+              draft={draft}
+              ahead={ahead}
+              speed={speed}
+              error={startError}
+              onStart={async () => {
+                const id = await start(getFeedbackClientId());
+                if (id) router.push(`/analysis/${id}`);
+              }}
+            />
+          )}
         </main>
       </div>
     </div>

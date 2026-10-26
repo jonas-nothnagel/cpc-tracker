@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { getCountry, isStandaloneCountry, isValidCountryId } from "@/config/countries";
 import { UploadPage } from "@/components/upload/upload-page";
-import { serviceFacts } from "@/lib/upload/service";
+import { queueLength } from "@/lib/upload/queue";
+import { serviceFacts, serviceSpeed } from "@/lib/upload/service";
 
 export const dynamic = "force-dynamic";
 
@@ -24,5 +25,5 @@ export default async function CountryUploadPage({ params }: Props) {
   if (!isValidCountryId(id) || isStandaloneCountry(id)) notFound();
   const entry = getCountry(id);
   if (!entry?.visible) notFound();
-  return <UploadPage initialDraft={null} lockedCountry={entry.name} facts={serviceFacts()} />;
+  return <UploadPage initialDraft={null} lockedCountry={entry.name} facts={serviceFacts()} speed={serviceSpeed()} ahead={queueLength()} />;
 }

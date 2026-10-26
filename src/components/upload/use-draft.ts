@@ -32,9 +32,10 @@ export function uploadPath(locale: string, id?: string): string {
   return `${locale === "en" ? "" : `/${locale}`}/upload${id ? `/${id}` : ""}`;
 }
 
-export function useDraft(initial: Draft | null, opts: { locale: string; country: string }) {
+export function useDraft(initial: Draft | null, opts: { locale: string; country: string; ahead?: number }) {
   const [draft, setDraft] = useState<Draft | null>(initial);
-  const [ahead, setAhead] = useState(0);
+  const [ahead, setAhead] = useState(opts.ahead ?? 0);
+  const [startError, setStartError] = useState<"busy" | "generic" | null>(null);
   const [error, setError] = useState<UploadError | null>(null);
   const [adding, setAdding] = useState(false);
   const latest = useRef<Draft | null>(initial);
@@ -118,6 +119,28 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
     }
   }, [adopt]);
 
+  /** Start the analysis; its id, or null when it could not start. */
+  const start = useCallback(async (clientId: string): Promise<string | null> => {
+    const current = latest.current;
+    if (!current) return null;
+    setStartError(null);
+    try {
+      const res = await fetch(`/api/upload/${current.id}/start`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientId }),
+      });
+      const body = await res.json().catch(() => ({}));
+      // Started now, or already (a second press, another tab).
+      if (res.ok || (res.status === 409 && body.analysisId)) return body.analysisId ?? current.id;
+      if (res.status === 401) setError({ code: "signIn" });
+      setStartError(body.code === "busy" ? "busy" : "generic");
+    } catch {
+      setStartError("generic");
+    }
+    return null;
+  }, []);
+
   const draftId = draft?.id;
   const reading = draft?.documents.some((d) => d.state === "queued" || d.state === "reading") ?? false;
   useEffect(() => {
@@ -136,5 +159,5 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
     return () => window.clearInterval(timer);
   }, [adopt, draftId, reading]);
 
-  return { draft, ahead, error, adding, addFiles, change, read, setError };
+  return { draft, ahead, error, startError, adding, addFiles, change, read, start };
 }
