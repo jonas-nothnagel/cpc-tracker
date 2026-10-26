@@ -36,18 +36,17 @@ export function isPublicFile(pathname: string): boolean {
 // API routes that ingest uploaded documents or spend LLM budget on them.
 // `/api/analyze` is the exact POST that starts a run; `/api/analyze/<id>/status`
 // (polling a run that already started) stays open, like viewing the result.
-const GATED_API_PATHS = new Set([
-  "/api/extract",
-  "/api/parse-btr",
-  "/api/parse-excel-targets",
-  "/api/analyze",
-  "/api/extraction-review",
-]);
+// Everything under `/api/upload` (a draft, its documents, reading, the start)
+// is gated, and so is continuing a run that stopped.
+const GATED_API_PATHS = new Set(["/api/extract", "/api/analyze", "/api/extraction-review"]);
+const GATED_API_PREFIX = "/api/upload";
+const CONTINUE_RE = /^\/api\/analyze\/[^/]+\/continue$/;
 
-// Upload wizard pages: /upload, /es/upload, /mn/upload, /panama/upload,
-// /es/panama/upload. Matching on the trailing segment keeps every locale and
-// country variant covered without enumerating them.
-const UPLOAD_PAGE_RE = /^(?:\/[^/]+){0,2}\/upload\/?$/;
+// Upload pages: /upload, /es/upload, /panama/upload, /es/panama/upload, and
+// a draft's own address behind any of them (/upload/<id>). Matching on the
+// trailing segments keeps every locale and country variant covered without
+// enumerating them.
+const UPLOAD_PAGE_RE = /^(?:\/[^/]+){0,2}\/upload(?:\/[^/]+)?\/?$/;
 
 function isApiPath(pathname: string): boolean {
   return pathname === "/api" || pathname.startsWith("/api/");
@@ -57,10 +56,11 @@ function isAnalyticsPath(pathname: string): boolean {
   return pathname === "/analytics" || pathname.startsWith("/analytics/");
 }
 
-/** True for the upload wizard and the API routes it calls. */
+/** True for the upload pages and the API routes they call. */
 export function isGatedPath(pathname: string): boolean {
   const normalised = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
-  if (GATED_API_PATHS.has(normalised)) return true;
+  if (GATED_API_PATHS.has(normalised) || CONTINUE_RE.test(normalised)) return true;
+  if (normalised === GATED_API_PREFIX || normalised.startsWith(`${GATED_API_PREFIX}/`)) return true;
   return UPLOAD_PAGE_RE.test(pathname);
 }
 

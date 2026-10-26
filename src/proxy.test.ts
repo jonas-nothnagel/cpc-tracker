@@ -29,6 +29,9 @@ describe("isGatedPath", () => {
       "/mn/upload",
       "/panama/upload",
       "/es/panama/upload",
+      "/upload/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13",
+      "/es/upload/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13",
+      "/es/panama/upload/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13",
     ]) {
       expect(isGatedPath(p), p).toBe(true);
     }
@@ -37,8 +40,11 @@ describe("isGatedPath", () => {
   it("covers the upload API routes", () => {
     for (const p of [
       "/api/extract",
-      "/api/parse-btr",
-      "/api/parse-excel-targets",
+      "/api/upload",
+      "/api/upload/",
+      "/api/upload/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13",
+      "/api/upload/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13/documents",
+      "/api/analyze/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13/continue",
       "/api/analyze",
       "/api/analyze/",
       "/api/extraction-review",
@@ -65,6 +71,8 @@ describe("isGatedPath", () => {
       "/api/analyze/test.id/status",
       "/api/reference-data",
       "/api/uploads",
+      "/uploads",
+      "/api/analyze/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13/status",
     ]) {
       expect(isGatedPath(p), p).toBe(false);
     }
@@ -83,6 +91,7 @@ describe("proxy auth gate", () => {
   it("returns 401 for an unauthenticated upload API call", async () => {
     expect((await proxy(req("/api/extract", { method: "POST" }))).status).toBe(401);
     expect((await proxy(req("/api/analyze", { method: "POST" }))).status).toBe(401);
+    expect((await proxy(req("/api/upload", { method: "POST" }))).status).toBe(401);
   });
 
   it("redirects an unauthenticated upload page to /login with a return path", async () => {
