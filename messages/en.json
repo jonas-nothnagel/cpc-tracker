@@ -1438,7 +1438,7 @@
     }
   },
   "upload": {
-    "metaTitle": "New analysis",
+    "metaTitle": "New analysis · Policy Coherence Analyzer",
     "builder": {
       "title": "{country} · new analysis",
       "titleEmpty": "New analysis",
@@ -1549,6 +1549,17 @@
       "errors": {
         "busy": "Several analyses were started a moment ago. Try again in a minute.",
         "generic": "The analysis could not be started."
+      }
+    },
+    "login": {
+      "lead": "Adding documents and starting an analysis need an access token.",
+      "token": "Access token",
+      "signIn": "Sign in",
+      "signingIn": "Signing in",
+      "errors": {
+        "wrong": "That access token was not recognised.",
+        "failed": "The sign-in did not work. Try again.",
+        "offline": "The server could not be reached. Try again."
       }
     }
   },

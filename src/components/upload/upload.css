@@ -568,3 +568,22 @@
   max-width: 62ch;
   margin: 1.25rem 0 0;
 }
+
+/* ── Sign-in to the upload pages ─────────────────────────────────── */
+
+[data-brief] .up-login {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  max-width: 26rem;
+  margin: 4rem auto 0;
+}
+
+[data-brief] .up-login .up-field {
+  width: 100%;
+  margin: 0.5rem 0 0;
+}
+
+[data-brief] .up-login .up-field input {
+  width: 100%;
+}

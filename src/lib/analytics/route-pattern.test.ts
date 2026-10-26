@@ -23,6 +23,7 @@ describe("toRoutePattern", () => {
     // The country segment is registry-validated for sub-pages too.
     expect(toRoutePattern("/notacountry/model-comparison")).toBe("/other");
     expect(toRoutePattern("/analysis/run-2026-07-01")).toBe("/analysis/[id]");
+    expect(toRoutePattern("/upload/3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13")).toBe("/upload/[id]");
   });
 
   it("collapses unknown paths to /other, never storing them raw", () => {

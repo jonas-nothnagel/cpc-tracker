@@ -46,6 +46,13 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "50mb",
     },
+    // Every request passes the proxy (src/proxy.ts), whose body limit is
+    // 10 MB by default: documents of up to 50 MB need room above that.
+    proxyClientMaxBodySize: "55mb",
+  },
+  // Pages show upload links only where Python can run (not on Vercel).
+  env: {
+    NEXT_PUBLIC_UPLOADS: process.env.VERCEL ? "0" : "1",
   },
   async headers() {
     return [

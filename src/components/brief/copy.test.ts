@@ -11,6 +11,19 @@ function strings(obj: unknown, path = ""): [string, string][] {
   );
 }
 
+describe("upload and waiting copy", () => {
+  it("speaks in the third person, without dashes or the banned alignment words", () => {
+    const banned = /\byou\b|\byour\b|\u2014|reinforc|flagged|tension|contradict/i;
+    for (const catalog of [en, es, mn]) {
+      expect(strings({ upload: catalog.upload, analysis: catalog.analysis }).filter(([, v]) => banned.test(v))).toEqual([]);
+    }
+  });
+
+  it("names the product one way", () => {
+    expect(strings({ upload: en.upload, analysis: en.analysis }).filter(([, v]) => /tracker|cpc/i.test(v))).toEqual([]);
+  });
+});
+
 describe("brief copy", () => {
   it("speaks the project's alignment vocabulary in English", () => {
     // "Aligned" / "potential misalignment", never "reinforce", "flagged",

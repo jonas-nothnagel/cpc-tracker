@@ -1438,7 +1438,7 @@
     }
   },
   "upload": {
-    "metaTitle": "Nuevo análisis",
+    "metaTitle": "Nuevo análisis · Analizador de Coherencia de Políticas",
     "builder": {
       "title": "{country} · nuevo análisis",
       "titleEmpty": "Nuevo análisis",
@@ -1549,6 +1549,17 @@
       "errors": {
         "busy": "Se iniciaron varios análisis hace un momento. Inténtelo de nuevo en un minuto.",
         "generic": "No se pudo iniciar el análisis."
+      }
+    },
+    "login": {
+      "lead": "Para añadir documentos e iniciar un análisis se necesita un token de acceso.",
+      "token": "Token de acceso",
+      "signIn": "Iniciar sesión",
+      "signingIn": "Iniciando sesión",
+      "errors": {
+        "wrong": "No se reconoció ese token de acceso.",
+        "failed": "No se pudo iniciar sesión. Inténtelo de nuevo.",
+        "offline": "No se pudo conectar con el servidor. Inténtelo de nuevo."
       }
     }
   },

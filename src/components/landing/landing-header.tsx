@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { uploadsAvailable } from "@/lib/upload/available";
 
 export function LandingHeader() {
   const t = useTranslations("header");
@@ -55,12 +56,14 @@ export function LandingHeader() {
           >
             {t("nav.howItWorks")}
           </Link>
-          <Link
-            href="/upload"
-            className="text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-blue)]"
-          >
-            {t("nav.uploadData")}
-          </Link>
+          {uploadsAvailable() && (
+            <Link
+              href="/upload"
+              className="text-[var(--undp-gray)] transition-colors hover:text-[var(--undp-blue)]"
+            >
+              {t("nav.uploadData")}
+            </Link>
+          )}
           <LanguageSwitcher />
         </nav>
       </div>

@@ -16,6 +16,7 @@ export const ROUTE_PATTERNS = new Set([
   "/[country]/model-evaluation",
   "/[country]/explore",
   "/upload",
+  "/upload/[id]",
   "/analysis/[id]",
   "/methodology",
   "/sustainability",
@@ -42,6 +43,9 @@ export function toRoutePattern(pathname: string): string {
   const segments = path.split("/").filter(Boolean);
   if (segments[0] === "analysis" && segments.length === 2) {
     return "/analysis/[id]";
+  }
+  if (segments[0] === "upload" && segments.length === 2) {
+    return "/upload/[id]";
   }
   // Registry lookup, not the shape regex: single-segment paths that merely
   // LOOK like a country slug (e.g. a typo'd URL) must fall to /other.
