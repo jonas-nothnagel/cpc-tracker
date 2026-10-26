@@ -10,12 +10,15 @@ gone (a restart, a deploy), so it can start it again.
 from __future__ import annotations
 
 import json
+import logging
 import os
 import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 def _now() -> str:
@@ -78,8 +81,14 @@ class StatusFile:
         def beat() -> None:
             while not self._stop.wait(self.heartbeat_s):
                 with self._lock:
-                    if self._payload:
+                    if not self._payload:
+                        continue
+                    try:
                         self._write_locked()
+                    except OSError as e:
+                        # A network share can fail one write; the next beat
+                        # tries again rather than letting the run look gone.
+                        logger.warning(f"Status heartbeat write failed: {e}")
 
         self._thread = threading.Thread(target=beat, name="status-heartbeat", daemon=True)
         self._thread.start()

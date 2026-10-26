@@ -232,13 +232,15 @@ def _status_file() -> StatusFile:
 
 
 def _on_progress(desc: str, done: int, total: int) -> None:
-    """Target pairs compared so far, from the alignment batch."""
-    if desc != "Alignment":
-        return
-    if done == 0 or "startedAt" not in _PROGRESS:
-        _PROGRESS["startedAt"] = datetime.now(timezone.utc).isoformat()
-    _PROGRESS.update(pairsDone=done, pairsTotal=total)
-    _status_file().update(progress=dict(_PROGRESS))
+    """Every batch keeps the status's footprint current (a resume books it);
+    the alignment batch also counts the target pairs compared so far."""
+    fields: dict = {"footprint": get_footprint_tracker().snapshot()}
+    if desc == "Alignment":
+        if done == 0 or "startedAt" not in _PROGRESS:
+            _PROGRESS["startedAt"] = datetime.now(timezone.utc).isoformat()
+        _PROGRESS.update(pairsDone=done, pairsTotal=total)
+        fields["progress"] = dict(_PROGRESS)
+    _status_file().update(**fields)
 
 
 def _book_footprint(footprint: dict, targets_file: str) -> None:
@@ -331,7 +333,11 @@ def resume_previous_attempt(output_dir: Path, targets_file: str) -> str | None:
         previous = {}
     footprint = previous.get("footprint")
     if isinstance(footprint, dict):
-        _book_footprint(footprint, targets_file)
+        # The per-model rows only: the flat totals carry the readings'
+        # footprint (the seed), which the extract rows booked already.
+        by_model = footprint.get("by_model")
+        if isinstance(by_model, list) and by_model:
+            _book_footprint({"by_model": by_model, "source": footprint.get("source")}, targets_file)
     clear_for_resume(output_dir)
     started = previous.get("startedAt")
     return started if isinstance(started, str) else None
@@ -492,6 +498,9 @@ def parse_args() -> argparse.Namespace:
 async def main() -> None:
     global OUTPUT_DIR
     args = parse_args()
+    if args.resume and not os.getenv("CPC_OUTPUT_DIR"):
+        # A resume clears the output folder: only an upload's own folder.
+        raise SystemExit("--resume is for upload runs (CPC_OUTPUT_DIR set): it clears the run's outputs.")
     # --model overrides config.LLM_MODEL for this run. We update the live
     # attribute on the config module so every call site that reads it
     # (`llm.py`, the canary below, the ledger row) picks up the new value.

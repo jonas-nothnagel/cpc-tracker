@@ -79,8 +79,9 @@ def test_resume_books_the_previous_attempt_and_keeps_its_start(tmp_path, monkeyp
     monkeypatch.setenv("CPC_RUN_ID", "3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13")
     out = tmp_path / "output"
     out.mkdir()
+    snapshot = {**SNAPSHOT, "by_model": [{**SNAPSHOT, "model": "gpt-5.4"}]}
     (out / "status.json").write_text(
-        json.dumps({"status": "running", "startedAt": "2026-10-26T09:00:00+00:00", "footprint": SNAPSHOT})
+        json.dumps({"status": "running", "startedAt": "2026-10-26T09:00:00+00:00", "footprint": snapshot})
     )
     (out / "alignment.json").write_text("[]")
     started = run_analysis.resume_previous_attempt(out, "targets.json")
@@ -138,3 +139,107 @@ def test_one_document_fails_before_any_call(tmp_path, monkeypatch):
     status = json.loads((tmp_path / "status.json").read_text())
     assert status["status"] == "failed"
     assert "at least two documents" in status["error"]
+
+
+def test_status_footprint_follows_every_batch(tmp_path, monkeypatch):
+    from src.run_status import StatusFile
+
+    calls = {"n": 0}
+
+    class Tracker:
+        def snapshot(self):
+            calls["n"] += 1
+            return {"call_count": calls["n"], "by_model": []}
+
+    monkeypatch.setattr(run_analysis, "OUTPUT_DIR", tmp_path)
+    monkeypatch.setattr(run_analysis, "_STATUS", StatusFile(tmp_path / "status.json", min_interval_s=0))
+    monkeypatch.setattr(run_analysis, "_PROGRESS", {})
+    monkeypatch.setattr(run_analysis, "get_footprint_tracker", lambda: Tracker())
+    run_analysis._on_progress("Ranked classification (globe)", 7, 14)
+    first = json.loads((tmp_path / "status.json").read_text())["footprint"]["call_count"]
+    run_analysis._on_progress("Alignment", 3, 48)
+    status = json.loads((tmp_path / "status.json").read_text())
+    assert status["footprint"]["call_count"] > first
+    assert status["progress"]["pairsDone"] == 3
+
+
+def test_resume_books_only_the_attempts_own_calls(tmp_path, monkeypatch):
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    monkeypatch.setenv("CPC_RUN_SOURCE", "user_pipeline")
+    out = tmp_path / "output"
+    out.mkdir()
+    # The flat totals carry the readings' footprint (the seed); by_model does not.
+    seeded = {**SNAPSHOT, "call_count": 60, "co2_geq": 9.0, "by_model": [{**SNAPSHOT, "model": "gpt-5.4"}]}
+    (out / "status.json").write_text(json.dumps({"status": "running", "footprint": seeded}))
+    run_analysis.resume_previous_attempt(out, "targets.json")
+    rows = [json.loads(line) for line in (tmp_path / "ledger" / "footprint-ledger.jsonl").read_text().splitlines()]
+    assert [r["call_count"] for r in rows] == [12]
+
+
+def test_resume_books_nothing_for_an_attempt_that_made_no_calls(tmp_path, monkeypatch):
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    out = tmp_path / "output"
+    out.mkdir()
+    (out / "status.json").write_text(json.dumps({"status": "running", "footprint": {**SNAPSHOT, "call_count": 48, "by_model": []}}))
+    run_analysis.resume_previous_attempt(out, "targets.json")
+    ledger = tmp_path / "ledger" / "footprint-ledger.jsonl"
+    assert not ledger.exists() or ledger.read_text().strip() == ""
+
+
+def test_heartbeat_survives_a_failed_write(tmp_path, monkeypatch):
+    import time as _time
+
+    from src import run_status
+
+    status = run_status.StatusFile(tmp_path / "status.json", heartbeat_s=0.05)
+    status.write({"state": "reading"})
+    real = run_status.write_json_atomic
+    failures = {"left": 1}
+
+    def flaky(path, data):
+        if failures["left"]:
+            failures["left"] -= 1
+            raise OSError("the share went away for a moment")
+        real(path, data)
+
+    monkeypatch.setattr(run_status, "write_json_atomic", flaky)
+    first = json.loads((tmp_path / "status.json").read_text())["heartbeatAt"]
+    status.start_heartbeat()
+    try:
+        _time.sleep(0.4)
+    finally:
+        status.stop()
+    assert failures["left"] == 0
+    assert json.loads((tmp_path / "status.json").read_text())["heartbeatAt"] != first
+
+
+def test_resume_refuses_outside_the_upload_flow(tmp_path, monkeypatch):
+    async def no_calls(**kwargs):
+        raise AssertionError("no LLM call may be made")
+
+    # Whatever the code does, this test can reach neither the model, the real
+    # targets nor the tracked ledger.
+    monkeypatch.setattr(llm, "call_llm_detailed", no_calls)
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    monkeypatch.setattr(run_analysis, "load_input_data", lambda name: ([], [], [], [], [], [], []))
+    monkeypatch.delenv("CPC_OUTPUT_DIR", raising=False)
+    (tmp_path / "alignment.json").write_text("[]")
+    monkeypatch.setattr(run_analysis, "OUTPUT_DIR", tmp_path)
+    monkeypatch.setattr(run_analysis, "_STATUS", None)
+    monkeypatch.setattr(run_analysis, "derive_output_dir", lambda *args: tmp_path)
+    monkeypatch.setattr(
+        run_analysis,
+        "parse_args",
+        lambda: argparse.Namespace(
+            targets_file="mongolia-targets.json",
+            language="en",
+            model=None,
+            skip_target_quality=False,
+            nr7_file=None,
+            limit_targets=None,
+            resume=True,
+        ),
+    )
+    with pytest.raises(SystemExit):
+        asyncio.run(run_analysis.main())
+    assert (tmp_path / "alignment.json").exists()
