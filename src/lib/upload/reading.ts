@@ -1,10 +1,11 @@
 import { spawn } from "child_process";
-import { existsSync, readFileSync, readdirSync, rmSync } from "fs";
+import { existsSync, readdirSync, rmSync } from "fs";
 import { join } from "path";
 import { isGenericLabel } from "@/lib/upload-helpers";
 import { BOOT_ID, jobGone } from "./boot";
 import { promptLabel } from "./documents";
 import { documentDir, readDraft, updateDraft } from "./draft";
+import { readJson } from "./files";
 import type { Draft, DraftDocument, DraftTarget, ExtractionFootprint } from "./types";
 
 /**
@@ -27,14 +28,6 @@ interface ReadingStatus {
   pid?: number;
   bootId?: string;
   heartbeatAt?: string;
-}
-
-function readJson<T>(path: string): T | null {
-  try {
-    return JSON.parse(readFileSync(path, "utf8")) as T;
-  } catch {
-    return null;
-  }
 }
 
 function sourceFile(dir: string): string | null {

@@ -1,8 +1,9 @@
 import { randomUUID } from "crypto";
-import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readdirSync, rmSync } from "fs";
 import { join } from "path";
 import type { AnalyzeBody, TargetInput } from "./analysis-inputs";
 import { LIMITS, cut } from "./changes";
+import { readJson, writeJsonAtomic } from "./files";
 import type { Draft, DraftTarget } from "./types";
 
 export { applyChanges } from "./changes";
@@ -36,10 +37,7 @@ function draftFile(id: string): string {
 }
 
 function writeDraft(draft: Draft): void {
-  const path = draftFile(draft.id);
-  const tmp = `${path}.${process.pid}.tmp`;
-  writeFileSync(tmp, JSON.stringify(draft, null, 2));
-  renameSync(tmp, path);
+  writeJsonAtomic(draftFile(draft.id), draft);
 }
 
 export function createDraft(input: { country?: string; locale: string }): Draft {
@@ -65,12 +63,8 @@ export function createDraft(input: { country?: string; locale: string }): Draft 
 
 export function readDraft(id: string): Draft | null {
   if (!isDraftId(id)) return null;
-  try {
-    const draft = JSON.parse(readFileSync(draftFile(id), "utf8"));
-    return draft && typeof draft === "object" && draft.id === id && Array.isArray(draft.documents) ? draft : null;
-  } catch {
-    return null;
-  }
+  const draft = readJson<Draft>(draftFile(id));
+  return draft && typeof draft === "object" && draft.id === id && Array.isArray(draft.documents) ? draft : null;
 }
 
 /** Read, change and write back in one synchronous stretch: within one server

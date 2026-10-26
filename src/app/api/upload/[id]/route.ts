@@ -1,6 +1,7 @@
 import { rmSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { applyChanges, documentDir, readDraft, updateDraft } from "@/lib/upload/draft";
+import { queueLength } from "@/lib/upload/queue";
 import { freshDraft } from "@/lib/upload/reading";
 import type { DraftChange } from "@/lib/upload/types";
 
@@ -21,7 +22,7 @@ export async function GET(_request: NextRequest, { params }: Params) {
   // While documents are read, every look takes in what the jobs have done.
   const draft = freshDraft(id);
   if (!draft) return NextResponse.json({ error: "Draft not found" }, { status: 404 });
-  return NextResponse.json({ draft, ahead: 0 });
+  return NextResponse.json({ draft, ahead: queueLength() });
 }
 
 export async function PATCH(request: NextRequest, { params }: Params) {
