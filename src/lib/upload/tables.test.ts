@@ -78,4 +78,9 @@ describe("tableDocuments", () => {
     ]);
     expect(docs[0].targets[1]).toEqual({ key: "d3-2", label: "2", text: "C" });
   });
+
+  it("names a document the rows do not name after the file, as an added document is named", () => {
+    const docs = tableDocuments([{ text: "A", sourceDocument: "", sourceLabel: "1" }], "Water_targets_2024.xlsx", [], 1);
+    expect(docs.map((d) => d.name)).toEqual(["Water targets 2024"]);
+  });
 });

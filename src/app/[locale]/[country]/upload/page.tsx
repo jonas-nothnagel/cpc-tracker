@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { getCountry, isStandaloneCountry, isValidCountryId } from "@/config/countries";
 import { UploadPage } from "@/components/upload/upload-page";
 import { queueLength } from "@/lib/upload/queue";
+import { publishedLenses } from "@/lib/upload/published-areas";
 import { serviceFacts, serviceSpeed } from "@/lib/upload/service";
 
 export const dynamic = "force-dynamic";
@@ -20,10 +21,19 @@ export async function generateMetadata({ params }: Props) {
 /** A new upload from a country's pages: the country is filled in. A country
  *  shared on its own (Country X) takes no uploads. */
 export default async function CountryUploadPage({ params }: Props) {
-  const { country } = await params;
+  const { locale, country } = await params;
   const id = country.toLowerCase();
   if (!isValidCountryId(id) || isStandaloneCountry(id)) notFound();
   const entry = getCountry(id);
   if (!entry?.visible) notFound();
-  return <UploadPage initialDraft={null} lockedCountry={entry.name} facts={serviceFacts()} speed={serviceSpeed()} ahead={queueLength()} />;
+  return (
+    <UploadPage
+      initialDraft={null}
+      lockedCountry={entry.name}
+      facts={serviceFacts()}
+      lenses={publishedLenses(locale)}
+      speed={serviceSpeed()}
+      ahead={queueLength()}
+    />
+  );
 }

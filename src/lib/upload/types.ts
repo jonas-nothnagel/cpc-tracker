@@ -47,6 +47,8 @@ export interface DraftDocument {
   name: string;
   /** Editable until the start; the short name targets are filed under. */
   code: string;
+  /** The short name was set by hand; until then it follows the name. */
+  codeEdited?: true;
   state: ReadingState;
   /** Parts read so far while reading, of `parts`. */
   part?: number;

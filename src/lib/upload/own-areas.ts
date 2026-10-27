@@ -22,6 +22,17 @@ export interface OwnLensProblem {
   area?: string;
 }
 
+/** A set opened and left without a word in it: no own policy areas at all,
+ *  rather than ones that need attention. */
+export function isBlankOwnLens(lens: OwnLensInput): boolean {
+  const areas = Array.isArray(lens.areas) ? lens.areas : [];
+  return (
+    !cleanText(lens.name) &&
+    !cleanText(lens.source) &&
+    areas.every((a) => !cleanText(a?.name) && !cleanText(a?.description))
+  );
+}
+
 /** The first thing that stops the areas from being used, or null. */
 export function ownLensProblem(lens: OwnLensInput): OwnLensProblem | null {
   const name = cleanText(lens.name);

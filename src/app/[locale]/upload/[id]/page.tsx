@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 import { UploadPage } from "@/components/upload/upload-page";
 import { freshDraft } from "@/lib/upload/reading";
 import { queueLength } from "@/lib/upload/queue";
+import { publishedLenses } from "@/lib/upload/published-areas";
 import { serviceFacts, serviceSpeed } from "@/lib/upload/service";
 import { STEPS, type StepId } from "@/lib/upload/steps";
 
@@ -30,5 +31,14 @@ export default async function DraftPage({ params, searchParams }: Props) {
   if (draft.started) redirect(`${locale === routing.defaultLocale ? "" : `/${locale}`}/analysis/${id}`);
   const asked = (await searchParams).step;
   const step = STEPS.find((s) => s === asked) as StepId | undefined;
-  return <UploadPage initialDraft={draft} initialStep={step} facts={serviceFacts()} speed={serviceSpeed()} ahead={queueLength()} />;
+  return (
+    <UploadPage
+      initialDraft={draft}
+      initialStep={step}
+      facts={serviceFacts()}
+      lenses={publishedLenses(locale)}
+      speed={serviceSpeed()}
+      ahead={queueLength()}
+    />
+  );
 }

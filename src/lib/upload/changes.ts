@@ -1,5 +1,5 @@
-import { cleanText, isValidCode } from "./documents";
-import { OWN_AREA_LIMITS, type OwnLensInput } from "./own-areas";
+import { cleanText, documentName, isValidCode, suggestCode } from "./documents";
+import { isBlankOwnLens, OWN_AREA_LIMITS, type OwnLensInput } from "./own-areas";
 import type { Draft, DraftChange } from "./types";
 
 /**
@@ -35,13 +35,19 @@ function applyChange(draft: Draft, c: DraftChange): void {
     case "document": {
       const doc = draft.documents.find((d) => d.id === c.id);
       if (!doc) return;
-      const name = cut(c.name, LIMITS.name);
-      if (name) doc.name = name;
+      const others = draft.documents.filter((d) => d.id !== doc.id).map((d) => d.code);
+      // A cleared name falls back to the file's own name.
+      const name = typeof c.name === "string" ? cut(c.name, LIMITS.name) || documentName(doc.fileName) : "";
+      const renamed = !!name && name !== doc.name;
+      if (renamed) doc.name = name;
       if (typeof c.code === "string") {
         const code = c.code.trim();
-        const taken = draft.documents.some((d) => d.id !== doc.id && d.code.toUpperCase() === code.toUpperCase());
-        if (isValidCode(code) && !taken) doc.code = code;
+        if (isValidCode(code) && !others.some((o) => o.toUpperCase() === code.toUpperCase())) {
+          doc.code = code;
+          doc.codeEdited = true;
+        }
       }
+      if (renamed && !doc.codeEdited) doc.code = suggestCode(doc.name, others);
       return;
     }
     case "removeDocument":
@@ -75,7 +81,8 @@ function applyChange(draft: Draft, c: DraftChange): void {
       return;
     }
     case "ownLens":
-      draft.ownLens = c.value ? cleanLens(c.value) : null;
+      // A set left without a word in it is none.
+      draft.ownLens = c.value && !isBlankOwnLens(c.value) ? cleanLens(c.value) : null;
       return;
     case "removeBtr":
       draft.btr = null;

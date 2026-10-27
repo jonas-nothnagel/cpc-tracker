@@ -2,10 +2,11 @@
 
 import { useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
 import { useTranslations } from "next-intl";
-import { isValidCode } from "@/lib/upload/documents";
+import { documentName, isValidCode } from "@/lib/upload/documents";
 import type { ServiceFacts } from "@/lib/upload/service";
 import type { Draft, DraftChange, DraftDocument } from "@/lib/upload/types";
 import { useDocumentState } from "./document-state";
+import { ReadingMarks } from "./reading-marks";
 
 const ACCEPT = ".pdf,.docx,.txt,.csv,.tsv,.xlsx,.xls";
 
@@ -49,7 +50,8 @@ export function DocumentsStep({
   const anyTargets = documents.some((d) => d.state === "read" && d.targets.some((x) => !x.removed));
 
   const commitName = (doc: DraftDocument) => (e: FocusEvent<HTMLInputElement>) => {
-    const name = e.currentTarget.value.trim();
+    // A cleared name falls back to the file's own name.
+    const name = e.currentTarget.value.trim() || documentName(doc.fileName);
     if (name && name !== doc.name) onChange({ op: "document", id: doc.id, name });
     else e.currentTarget.value = doc.name;
   };
@@ -93,6 +95,7 @@ export function DocumentsStep({
 
       <div
         className="up-drop"
+        data-empty={documents.length === 0 || undefined}
         data-active={dragging || undefined}
         onDragOver={(e) => {
           e.preventDefault();
@@ -106,7 +109,13 @@ export function DocumentsStep({
         }}
       >
         <span>{t("drop")}</span>
-        <button type="button" className="brief-button-quiet" disabled={adding} onClick={() => input.current?.click()}>
+        {/* The page's one action until a document is in. */}
+        <button
+          type="button"
+          className={documents.length === 0 ? "brief-button-primary" : "brief-button-quiet"}
+          disabled={adding}
+          onClick={() => input.current?.click()}
+        >
           {t("choose")}
         </button>
         <input
@@ -122,8 +131,15 @@ export function DocumentsStep({
         />
       </div>
 
+      {documents.length > 0 && (
+        <div className="up-doc up-docs-head" aria-hidden="true">
+          <span />
+          <span>{t("nameHead")}</span>
+          <span>{t("codeHead")}</span>
+        </div>
+      )}
       {(documents.length > 0 || draft?.btr) && (
-        <ul className="up-docs">
+        <ul className="up-docs" data-headed={documents.length > 0 || undefined}>
           {documents.map((doc, i) => (
             <li key={doc.id} className="up-doc">
               <span className="up-swatch" style={{ background: colors[i] }} aria-hidden="true" />
@@ -131,6 +147,7 @@ export function DocumentsStep({
                 key={`name:${doc.name}`}
                 className="up-inline up-doc-name"
                 aria-label={t("nameLabel", { file: doc.fileName })}
+                title={doc.fileName}
                 defaultValue={doc.name}
                 maxLength={120}
                 onBlur={commitName(doc)}
@@ -147,8 +164,9 @@ export function DocumentsStep({
                 onBlur={commitCode(doc)}
                 onKeyDown={enterLeaves}
               />
-              <span className="up-doc-state" aria-live="polite">
-                {stateOf(doc)}
+              <span className="up-doc-state">
+                {doc.state === "reading" && <ReadingMarks part={doc.part} parts={doc.parts} color={colors[i]} />}
+                <span aria-live="polite">{stateOf(doc)}</span>
               </span>
               <span className="up-doc-tools">
                 {doc.state === "failed" && (

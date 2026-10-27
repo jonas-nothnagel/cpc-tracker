@@ -1439,16 +1439,19 @@
   },
   "upload": {
     "metaTitle": "Nuevo análisis · Analizador de Coherencia de Políticas",
+    "hero": {
+      "title": "Nuevo análisis"
+    },
     "builder": {
-      "title": "{country} · nuevo análisis",
-      "titleEmpty": "Nuevo análisis",
       "steps": "Pasos",
       "documents": "Documentos de política",
       "analysis": "El análisis",
       "targets": "Metas",
       "targetsAndActions": "Metas y acciones notificadas",
       "of": "{count, number} de {max, number}",
-      "pairs": "Pares de metas"
+      "pairs": "Pares de metas",
+      "pictureDocument": "{name}: {count, plural, one {# meta} other {# metas}}",
+      "pictureFree": "Espacio para {count, plural, one {# meta más} other {# metas más}}"
     },
     "steps": {
       "documents": "Documentos de política",
@@ -1463,6 +1466,8 @@
       "choose": "Elegir archivos",
       "nameLabel": "Nombre de {file}",
       "codeLabel": "Nombre corto de {name}",
+      "nameHead": "Nombre",
+      "codeHead": "Nombre corto",
       "remove": "Quitar",
       "readAgain": "Leer de nuevo",
       "btr": "Tablas del Informe Bienal de Transparencia",
@@ -1495,10 +1500,12 @@
     },
     "targets": {
       "title": "Metas",
+      "kept": "{count, plural, one {# meta} other {# metas}}",
       "label": "Etiqueta",
       "text": "Meta",
       "textOf": "Meta {label}",
       "page": "página {page, number}",
+      "edit": "Editar",
       "passage": "Tal como figura en {document}",
       "remove": "Quitar",
       "restore": "Restablecer",
@@ -1509,10 +1516,13 @@
     },
     "areas": {
       "title": "Áreas de política",
+      "included": "Incluidas en todo análisis",
+      "count": "{count, plural, one {# área} other {# áreas}}",
       "add": "Añadir áreas de política propias",
       "name": "Nombre",
       "namePlaceholder": "Prioridades nacionales",
       "source": "Fuente",
+      "sourcePlaceholder": "Opcional",
       "area": "Área",
       "description": "Descripción",
       "areaN": "Área {n, number}",

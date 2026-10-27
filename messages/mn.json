@@ -1439,16 +1439,19 @@
   },
   "upload": {
     "metaTitle": "Шинэ дүн шинжилгээ · Бодлогын уялдаа шинжлэгч",
+    "hero": {
+      "title": "Шинэ дүн шинжилгээ"
+    },
     "builder": {
-      "title": "{country} · шинэ дүн шинжилгээ",
-      "titleEmpty": "Шинэ дүн шинжилгээ",
       "steps": "Алхмууд",
       "documents": "Бодлогын баримт бичиг",
       "analysis": "Дүн шинжилгээ",
       "targets": "Зорилтууд",
       "targetsAndActions": "Зорилт ба мэдээлсэн арга хэмжээ",
       "of": "{count, number} / {max, number}",
-      "pairs": "Зорилтын хосууд"
+      "pairs": "Зорилтын хосууд",
+      "pictureDocument": "{name}: {count, plural, one {# зорилт} other {# зорилт}}",
+      "pictureFree": "{count, plural, one {Дахин # зорилт нэмэх боломжтой} other {Дахин # зорилт нэмэх боломжтой}}"
     },
     "steps": {
       "documents": "Бодлогын баримт бичиг",
@@ -1463,6 +1466,8 @@
       "choose": "Файл сонгох",
       "nameLabel": "{file}-ийн нэр",
       "codeLabel": "{name}-ийн товч нэр",
+      "nameHead": "Нэр",
+      "codeHead": "Товч нэр",
       "remove": "Хасах",
       "readAgain": "Дахин унших",
       "btr": "Хоёр жил тутмын ил тод байдлын тайлангийн хүснэгтүүд",
@@ -1495,10 +1500,12 @@
     },
     "targets": {
       "title": "Зорилтууд",
+      "kept": "{count, plural, one {# зорилт} other {# зорилт}}",
       "label": "Шошго",
       "text": "Зорилт",
       "textOf": "Зорилт {label}",
       "page": "{page, number}-р хуудас",
+      "edit": "Засах",
       "passage": "{document}-д бичигдсэнээр",
       "remove": "Хасах",
       "restore": "Сэргээх",
@@ -1509,10 +1516,13 @@
     },
     "areas": {
       "title": "Бодлогын чиглэлүүд",
+      "included": "Бүх дүн шинжилгээнд багтана",
+      "count": "{count, plural, one {# чиглэл} other {# чиглэл}}",
       "add": "Өөрийн бодлогын чиглэл нэмэх",
       "name": "Нэр",
       "namePlaceholder": "Үндэсний тэргүүлэх чиглэл",
       "source": "Эх сурвалж",
+      "sourcePlaceholder": "Заавал биш",
       "area": "Чиглэл",
       "description": "Тайлбар",
       "areaN": "{n, number}-р чиглэл",

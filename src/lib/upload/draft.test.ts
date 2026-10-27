@@ -38,6 +38,15 @@ describe("the draft file", () => {
     expect(readDraft(d.id)).toEqual(d);
   });
 
+  it("reads own policy areas kept without a word in them as none, so they never block the start", () => {
+    const d = createDraft({ country: "Panama", locale: "en" });
+    writeFileSync(
+      join(analysesDir(), d.id, "draft.json"),
+      JSON.stringify({ ...d, ownLens: { name: "", areas: [{ name: "", description: "" }] } }),
+    );
+    expect(readDraft(d.id)?.ownLens).toBeNull();
+  });
+
   it("is not read for a malformed id or a missing file", () => {
     expect(readDraft("../../python")).toBeNull();
     expect(readDraft("3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13")).toBeNull();
@@ -91,6 +100,24 @@ describe("changes", () => {
     expect(d.documents[1].code).toBe("NAP2030");
   });
 
+  it("name a document after its file again when its name is cleared", () => {
+    const d = createDraft({ locale: "en" });
+    d.documents.push({ ...readDoc("d1", "NWRP", ["One"]), fileName: "National_Water_Resource_Policy.pdf" });
+    applyChanges(d, [{ op: "document", id: "d1", name: "Water" }]);
+    applyChanges(d, [{ op: "document", id: "d1", name: "   " }]);
+    expect(d.documents[0].name).toBe("National Water Resource Policy");
+  });
+
+  it("let the short name follow the name until it is set by hand", () => {
+    const d = createDraft({ locale: "en" });
+    d.documents.push(readDoc("d1", "DOC1", ["One"]), readDoc("d2", "NAP", ["Two"]));
+    applyChanges(d, [{ op: "document", id: "d1", name: "National Livestock Programme" }]);
+    expect(d.documents[0].code).toBe("NLP");
+    applyChanges(d, [{ op: "document", id: "d1", code: "LIV" }]);
+    applyChanges(d, [{ op: "document", id: "d1", name: "Nationally Determined Contribution 3.0" }]);
+    expect(d.documents[0]).toMatchObject({ name: "Nationally Determined Contribution 3.0", code: "LIV" });
+  });
+
   it("add a target the reviewer types in, marked as added", () => {
     const d = createDraft({ locale: "en" });
     d.documents.push(readDoc("d1", "NDC", ["One"]));
@@ -125,6 +152,14 @@ describe("changes", () => {
     const keys = d.documents[0].targets.map((t) => t.key);
     expect(new Set(keys).size).toBe(keys.length);
     expect(keys.slice(1).every((k) => /^d1-a[0-9a-z]+$/.test(k))).toBe(true);
+  });
+
+  it("keep no own policy areas when the set is left without a word in it", () => {
+    const d = createDraft({ country: "Tonga", locale: "en" });
+    applyChanges(d, [{ op: "ownLens", value: { name: " ", source: "", areas: [{ name: "", description: "" }] } }]);
+    expect(d.ownLens).toBeNull();
+    applyChanges(d, [{ op: "ownLens", value: { name: "National priorities", areas: [{ name: "", description: "" }] } }]);
+    expect(d.ownLens).toEqual({ name: "National priorities", areas: [{ name: "", description: "" }] });
   });
 
   it("stop once the analysis has started", () => {

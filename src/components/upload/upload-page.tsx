@@ -5,12 +5,11 @@ import "./upload.css";
 import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import { LOCALE_LABELS } from "@/i18n/locale-labels";
-import { routing } from "@/i18n/routing";
 import { draftCounts } from "@/lib/upload/counts";
 import { documentColors } from "@/lib/upload/documents";
 import { getFeedbackClientId } from "@/lib/feedback/client-id";
 import type { Speed } from "@/lib/upload/estimate";
+import type { PublishedLens } from "@/lib/upload/published-areas";
 import type { ServiceFacts } from "@/lib/upload/service";
 import type { Draft } from "@/lib/upload/types";
 import { MAX_ITEMS } from "@/lib/upload/limits";
@@ -20,43 +19,12 @@ import { StartStep } from "./start-step";
 import { TargetsStep } from "./targets-step";
 import { STEPS, type StepId } from "@/lib/upload/steps";
 import { UploadBuilder } from "./upload-builder";
-import { uploadPath, useDraft } from "./use-draft";
-
-/** The lockup and the page in each language. */
-function UploadTop({ draftId }: { draftId?: string }) {
-  const locale = useLocale();
-  const brand = useTranslations("header")("brand");
-  const tl = useTranslations("common.languageSwitcher");
-  return (
-    <header className="up-top">
-      <a className="up-brand" href={locale === routing.defaultLocale ? "/" : `/${locale}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element -- the app's own lockup, small and static */}
-        <img src="/undp-logo.png" alt="UNDP" width={22} height={44} /> <span>{brand}</span>
-      </a>
-      <nav className="up-languages" aria-label={tl("aria")}>
-        {routing.locales.map((l) =>
-          l === locale ? (
-            <span key={l} aria-current="true">
-              {LOCALE_LABELS[l] ?? l}
-            </span>
-          ) : (
-            <a
-              key={l}
-              lang={l}
-              href={uploadPath(l, draftId)}
-              onClick={(e) => e.currentTarget.setAttribute("href", `${uploadPath(l, draftId)}${window.location.search}`)}
-            >
-              {LOCALE_LABELS[l] ?? l}
-            </a>
-          ),
-        )}
-      </nav>
-    </header>
-  );
-}
+import { UploadHero } from "./upload-hero";
+import { useDraft } from "./use-draft";
 
 /**
- * The upload page: the brief's builder column beside one step at a time.
+ * The upload page: the brief's opening with the country as its title, then
+ * the brief's builder column beside one step at a time.
  * The draft lives on the server; the step lives in the address.
  */
 export function UploadPage({
@@ -64,6 +32,7 @@ export function UploadPage({
   initialStep = "documents",
   lockedCountry,
   facts,
+  lenses,
   speed,
   ahead: initialAhead = 0,
 }: {
@@ -71,6 +40,8 @@ export function UploadPage({
   initialStep?: StepId;
   lockedCountry?: string;
   facts: ServiceFacts;
+  /** The four sets of policy areas every analysis reads, with their areas. */
+  lenses: PublishedLens[];
   speed: Speed;
   /** Analyses running or waiting when the page was served. */
   ahead?: number;
@@ -88,8 +59,8 @@ export function UploadPage({
   const colors = useMemo(() => documentColors((draft?.documents ?? []).map((d) => d.code)), [draft]);
   const country = draft?.country ?? pendingCountry;
 
-  const reachable = (id: StepId) =>
-    id === "documents" || (id === "start" ? counts.withTargets >= 2 : counts.targets > 0);
+  // Once there are targets every step can be seen; the start says what it still needs.
+  const reachable = (id: StepId) => id === "documents" || counts.targets > 0;
   const [chosen, setChosen] = useState<StepId>(initialStep);
   const step: StepId = reachable(chosen) ? chosen : "documents";
   const go = (id: StepId) => {
@@ -104,11 +75,10 @@ export function UploadPage({
 
   return (
     <div data-brief className="up-root">
-      <UploadTop draftId={draft?.id} />
+      <UploadHero draft={draft} country={country} />
       <div className="brief-desk up-desk">
         <UploadBuilder
           draft={draft}
-          country={country}
           colors={colors}
           counts={counts}
           step={step}
@@ -145,7 +115,9 @@ export function UploadPage({
               onContinue={next("targets")}
             />
           )}
-          {step === "areas" && draft && <AreasStep draft={draft} onChange={change} onContinue={next("areas")} />}
+          {step === "areas" && draft && (
+            <AreasStep draft={draft} lenses={lenses} onChange={change} onContinue={next("areas")} />
+          )}
           {step === "start" && draft && (
             <StartStep
               draft={draft}

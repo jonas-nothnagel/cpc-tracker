@@ -1439,16 +1439,19 @@
   },
   "upload": {
     "metaTitle": "New analysis · Policy Coherence Analyzer",
+    "hero": {
+      "title": "New analysis"
+    },
     "builder": {
-      "title": "{country} · new analysis",
-      "titleEmpty": "New analysis",
       "steps": "Steps",
       "documents": "Policy documents",
       "analysis": "The analysis",
       "targets": "Targets",
       "targetsAndActions": "Targets and reported actions",
       "of": "{count, number} of {max, number}",
-      "pairs": "Target pairs"
+      "pairs": "Target pairs",
+      "pictureDocument": "{name}: {count, plural, one {# target} other {# targets}}",
+      "pictureFree": "Room for {count, plural, one {# more target} other {# more targets}}"
     },
     "steps": {
       "documents": "Policy documents",
@@ -1463,6 +1466,8 @@
       "choose": "Choose files",
       "nameLabel": "Name of {file}",
       "codeLabel": "Short name of {name}",
+      "nameHead": "Name",
+      "codeHead": "Short name",
       "remove": "Remove",
       "readAgain": "Read again",
       "btr": "Biennial Transparency Report tables",
@@ -1495,10 +1500,12 @@
     },
     "targets": {
       "title": "Targets",
+      "kept": "{count, plural, one {# target} other {# targets}}",
       "label": "Label",
       "text": "Target",
       "textOf": "Target {label}",
       "page": "page {page, number}",
+      "edit": "Edit",
       "passage": "As written in {document}",
       "remove": "Remove",
       "restore": "Restore",
@@ -1509,10 +1516,13 @@
     },
     "areas": {
       "title": "Policy areas",
+      "included": "Included in every analysis",
+      "count": "{count, plural, one {# area} other {# areas}}",
       "add": "Add own policy areas",
       "name": "Name",
       "namePlaceholder": "National priorities",
       "source": "Source",
+      "sourcePlaceholder": "Optional",
       "area": "Area",
       "description": "Description",
       "areaN": "Area {n, number}",

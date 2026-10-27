@@ -52,6 +52,11 @@ describe("StartStep", () => {
     expect(screen.getByTitle("carbon dioxide equivalent")).toHaveTextContent("CO2e");
   });
 
+  it("draws the target pairs it will compare, as the waiting page fills them", () => {
+    step(draft([doc("a", 56), doc("b", 11), doc("c", 22)]));
+    expect(screen.getByRole("img", { name: "2,090 target pairs to compare." })).toBeInTheDocument();
+  });
+
   it("says how many analyses are ahead in line", () => {
     step(draft([doc("a", 5), doc("b", 5)]), 1);
     expect(screen.getByText("1 analysis is ahead in line.")).toBeInTheDocument();

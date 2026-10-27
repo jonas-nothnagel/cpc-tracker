@@ -8,6 +8,7 @@ import { IS_SERVERLESS } from "@/lib/upload/boot";
 import { analysesDir, toAnalyzeBody, updateDraft } from "@/lib/upload/draft";
 import { writeJsonAtomic } from "@/lib/upload/files";
 import { allowStart, enqueue, pump } from "@/lib/upload/queue";
+import { PUBLISHED_CATEGORIES } from "@/lib/upload/published-areas";
 import { freshDraft } from "@/lib/upload/reading";
 import type { Draft } from "@/lib/upload/types";
 
@@ -84,7 +85,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     mkdirSync(input, { recursive: true });
     mkdirSync(output, { recursive: true });
     writeAnalysisInputs({ input, output }, buildAnalysisInputs(analysis), {
-      categories: join(process.cwd(), "python", "data", "categories.json"),
+      categories: PUBLISHED_CATEGORIES,
       btrData: analysis.btrData,
       initialFootprint: analysis.initialFootprint,
     });

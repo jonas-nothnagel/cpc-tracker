@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { lensTooltip } from "@/components/brief/lens-tooltip";
-import type { LensId } from "@/lib/brief/source";
-import { OWN_AREA_LIMITS, ownLensProblem, parseAreas, type OwnLensInput } from "@/lib/upload/own-areas";
+import { OWN_AREA_LIMITS, isBlankOwnLens, ownLensProblem, parseAreas, type OwnLensInput } from "@/lib/upload/own-areas";
+import type { PublishedLens } from "@/lib/upload/published-areas";
 import type { Draft, DraftChange } from "@/lib/upload/types";
-
-/** The published policy areas every analysis reads, by their brief names. */
-const PUBLISHED: LensId[] = ["globe", "ipcc", "gga", "hr"];
+import { Plus } from "./plus";
 
 type Lens = { name: string; source: string; areas: { name: string; description: string }[] };
 
@@ -18,26 +16,43 @@ function asLens(lens: OwnLensInput | null): Lens | null {
   return lens ? { name: lens.name, source: lens.source ?? "", areas: lens.areas.map((a) => ({ ...a })) } : null;
 }
 
-/** The third step: the policy areas every analysis reads, and the upload's
- *  own, typed or pasted from a spreadsheet. */
+/** The third step: the four sets of policy areas every analysis reads, each
+ *  with its areas, and the upload's own set, typed or pasted from a
+ *  spreadsheet. */
 export function AreasStep({
   draft,
+  lenses,
   onChange,
   onContinue,
 }: {
   draft: Draft;
+  lenses: PublishedLens[];
   onChange: (change: DraftChange) => void;
   onContinue: () => void;
 }) {
   const t = useTranslations("upload.areas");
   const tl = useTranslations("briefing.lens");
   const [lens, setLens] = useState<Lens | null>(() => asLens(draft.ownLens));
+  // What a set still needs is said once something was typed and left.
   const [touched, setTouched] = useState(!!draft.ownLens);
   const [pasting, setPasting] = useState(false);
   const [pasted, setPasted] = useState("");
+  // Each set's areas stay folded until asked for.
+  const [openSets, setOpenSets] = useState<Set<string>>(() => new Set());
   const L = OWN_AREA_LIMITS;
+  const toggleSet = (id: string) =>
+    setOpenSets((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
 
   const send = (next: Lens | null) => {
+    // Left without a word in it, the set is none, and nothing is missing yet.
+    if (next && isBlankOwnLens(next)) {
+      onChange({ op: "ownLens", value: null });
+      return;
+    }
     setTouched(true);
     onChange({ op: "ownLens", value: next });
   };
@@ -45,7 +60,7 @@ export function AreasStep({
   const setArea = (i: number, field: "name" | "description", value: string) =>
     lens && edit({ ...lens, areas: lens.areas.map((a, j) => (j === i ? { ...a, [field]: value } : a)) });
 
-  const problem = lens && touched ? ownLensProblem(lens) : null;
+  const problem = lens && touched && !isBlankOwnLens(lens) ? ownLensProblem(lens) : null;
   const problemText = problem
     ? problem.code === "description" || problem.code === "duplicate"
       ? t(`problems.${problem.code}`, { area: problem.area ?? "" })
@@ -57,22 +72,62 @@ export function AreasStep({
       <h2 id="up-step-title" className="up-title">
         {t("title")}
       </h2>
-      <ul className="up-lenses">
-        {PUBLISHED.map((id) => (
-          <li key={id} className="up-lens" title={lensTooltip({ id }, (key) => tl(key))}>
-            {tl(id)}
-          </li>
-        ))}
-      </ul>
+
+      <h3 className="up-sub">{t("included")}</h3>
+      <div className="up-sets">
+        {lenses.map(({ id, areas }) => {
+          const open = openSets.has(id);
+          return (
+            <section key={id} className="up-set" aria-labelledby={`up-set-${id}`}>
+              <h4 id={`up-set-${id}`} className="up-set-name" title={lensTooltip({ id }, (key) => tl(key))}>
+                <button
+                  type="button"
+                  className="up-set-toggle"
+                  aria-expanded={open}
+                  aria-controls={`up-set-areas-${id}`}
+                  onClick={() => toggleSet(id)}
+                >
+                  <span className="up-set-chevron" aria-hidden="true" />
+                  <span>{tl(id)}</span>{" "}
+                  <span className="up-set-count">{t("count", { count: areas.length })}</span>
+                </button>
+              </h4>
+              {open && (
+                <ul id={`up-set-areas-${id}`} className="up-set-areas" aria-label={tl(id)}>
+                  {areas.map((name) => (
+                    <li key={name}>{name}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })}
+      </div>
 
       {!lens ? (
-        <div className="up-more">
+        <div className="up-own-add">
           <button type="button" className="brief-button-quiet" onClick={() => edit({ name: "", source: "", areas: [EMPTY_AREA] })}>
+            <Plus />
             {t("add")}
           </button>
         </div>
       ) : (
-        <div className="up-own" role="group" aria-label={t("add")}>
+        <section className="up-own" aria-labelledby="up-own-title">
+          <div className="up-own-head">
+            <h3 id="up-own-title" className="up-sub">
+              {tl("own")}
+            </h3>
+            <button
+              type="button"
+              className="brief-button-quiet"
+              onClick={() => {
+                setLens(null);
+                send(null);
+              }}
+            >
+              {t("remove")}
+            </button>
+          </div>
           <div className="up-own-fields">
             <div className="up-field">
               <label htmlFor="up-own-name">{t("name")}</label>
@@ -90,6 +145,7 @@ export function AreasStep({
               <input
                 id="up-own-source"
                 value={lens.source}
+                placeholder={t("sourcePlaceholder")}
                 maxLength={L.source}
                 onChange={(e) => edit({ ...lens, source: e.currentTarget.value })}
                 onBlur={() => send(lens)}
@@ -97,26 +153,25 @@ export function AreasStep({
             </div>
           </div>
           <div className="up-areas">
-            <span className="up-areas-head" aria-hidden="true">
-              {t("area")}
-            </span>
-            <span className="up-areas-head" aria-hidden="true">
-              {t("description")}
-            </span>
-            <span aria-hidden="true" />
+            <div className="up-area up-areas-head" aria-hidden="true">
+              <span>{t("area")}</span>
+              <span>{t("description")}</span>
+            </div>
             {lens.areas.map((a, i) => (
               <div key={i} className="up-area">
                 <input
-                  className="up-inline"
+                  className="up-box"
                   aria-label={t("areaN", { n: i + 1 })}
+                  placeholder={t("area")}
                   value={a.name}
                   maxLength={L.areaName}
                   onChange={(e) => setArea(i, "name", e.currentTarget.value)}
                   onBlur={() => send(lens)}
                 />
                 <textarea
-                  className="up-inline"
+                  className="up-box"
                   aria-label={t("descriptionN", { n: i + 1 })}
+                  placeholder={t("description")}
                   value={a.description}
                   rows={1}
                   maxLength={L.description}
@@ -137,25 +192,15 @@ export function AreasStep({
               </div>
             ))}
           </div>
-          {problemText && <p className="up-line up-over">{problemText}</p>}
           <div className="up-own-tools">
             {lens.areas.length < L.areas && (
               <button type="button" className="brief-button-quiet" onClick={() => edit({ ...lens, areas: [...lens.areas, EMPTY_AREA] })}>
+                <Plus />
                 {t("addArea")}
               </button>
             )}
             <button type="button" className="brief-button-quiet" aria-expanded={pasting} onClick={() => setPasting((p) => !p)}>
               {t("paste")}
-            </button>
-            <button
-              type="button"
-              className="brief-button-quiet"
-              onClick={() => {
-                setLens(null);
-                send(null);
-              }}
-            >
-              {t("remove")}
             </button>
           </div>
           {pasting && (
@@ -185,8 +230,9 @@ export function AreasStep({
               </button>
             </div>
           )}
-        </div>
+        </section>
       )}
+      {problemText && <p className="up-problem">{problemText}</p>}
 
       <div className="up-actions">
         <button type="button" className="brief-button-primary" onClick={onContinue}>

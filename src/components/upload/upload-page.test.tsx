@@ -11,6 +11,9 @@ vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, children }: { href: string; children: ReactNode }) => <a href={href}>{children}</a>,
 }));
 
+// jsdom does not implement scrollIntoView (a step change scrolls to the step).
+Element.prototype.scrollIntoView = vi.fn();
+
 const ID = "3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13";
 const FACTS = { model: "gpt-5.4", provider: "Azure OpenAI", publicOnly: true };
 
@@ -43,10 +46,17 @@ function draft(documents: DraftDocument[]): Draft {
   };
 }
 
+const LENSES = [
+  { id: "globe" as const, areas: ["Restoration"] },
+  { id: "ipcc" as const, areas: ["Energy"] },
+  { id: "gga" as const, areas: ["Water"] },
+  { id: "hr" as const, areas: ["Gender equality"] },
+];
+
 function page(initial: Draft | null, facts = FACTS) {
   return render(
     <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-      <UploadPage initialDraft={initial} facts={facts} speed={{ pairsPerMinute: 450, gramsPerCall: 0.083 }} />
+      <UploadPage initialDraft={initial} facts={facts} lenses={LENSES} speed={{ pairsPerMinute: 450, gramsPerCall: 0.083 }} />
     </NextIntlClientProvider>,
   );
 }
@@ -63,8 +73,9 @@ afterEach(() => {
 
 describe("UploadPage", () => {
   it("opens on the documents, with only that step to go to", () => {
-    page(null);
-    expect(screen.getByRole("heading", { name: "New analysis" })).toBeInTheDocument();
+    const { container } = page(null);
+    expect(screen.getByRole("heading", { level: 1, name: "New analysis" })).toBeInTheDocument();
+    expect(container.querySelector(".brief-drift")).toBeNull();
     const steps = within(screen.getByRole("group", { name: "Steps" })).getAllByRole("button");
     expect(steps.map((b) => [b.textContent, (b as HTMLButtonElement).disabled])).toEqual([
       ["1Policy documents", false],
@@ -73,19 +84,67 @@ describe("UploadPage", () => {
       ["4Start", true],
     ]);
     expect(screen.getByText("PDF, Word, text or spreadsheet files, up to 50 MB each.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Choose files" })).toHaveClass("brief-button-primary");
+    expect(within(screen.getByRole("group", { name: "The analysis" })).getByText("0 of 150")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Read the documents" })).toBeNull();
   });
 
   it("lists the documents with their names, short names and targets, and sums them up beside", () => {
     page(draft([doc("d1", "NAP", "National Agriculture Policy", {}, 60), doc("d2", "NWRP", "National Water Resource Policy", {}, 33)]));
-    expect(screen.getByRole("heading", { name: "Sri Lanka · new analysis" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Sri Lanka" })).toBeInTheDocument();
+    expect(screen.getByText("New analysis")).toHaveClass("brief-hero-kicker");
     expect(screen.getByLabelText("Name of NAP.pdf")).toHaveValue("National Agriculture Policy");
     expect(screen.getByLabelText("Short name of National Agriculture Policy")).toHaveValue("NAP");
+    expect(screen.getByText("Name")).toBeInTheDocument();
+    expect(screen.getByText("Short name")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Choose files" })).toHaveClass("brief-button-quiet");
     expect(screen.getAllByText("60 targets").length).toBeGreaterThan(0);
     const figures = within(screen.getByRole("group", { name: "The analysis" }));
     expect(figures.getByText("93 of 150")).toBeInTheDocument();
     expect(figures.getByText("1,980")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Continue to the targets" })).toBeEnabled();
+  });
+
+  it("lets the targets read so far drift behind the title, with a way to pause them", () => {
+    const { container } = page(
+      draft([doc("d1", "NAP", "National Agriculture Policy", {}, 2), doc("d2", "NDC", "Updated NDC 2021", { state: "reading" })]),
+    );
+    const drift = container.querySelector(".brief-drift");
+    expect(drift).not.toBeNull();
+    expect(drift).toHaveAttribute("aria-hidden", "true");
+    expect(within(drift as HTMLElement).getAllByText("Target 1").length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: "Pause the moving text" }));
+    expect(drift).toHaveAttribute("data-paused", "true");
+  });
+
+  it("draws a reading's parts as squares in its document's colour, the part being read pulsing", () => {
+    page(
+      draft([
+        doc("d1", "NDC", "Updated NDC 2021", { state: "reading", part: 3, parts: 9 }),
+        doc("d2", "NAP", "National Adaptation Plan", { state: "reading" }),
+        doc("d3", "NWRP", "National Water Resource Policy", {}, 4),
+      ]),
+    );
+    const marks = (code: string) => screen.getByLabelText(`Name of ${code}.pdf`).closest("li")!.querySelectorAll(".up-reading-part");
+    const parts = marks("NDC");
+    expect(parts).toHaveLength(9);
+    expect(Array.from(parts).map((p) => (p.hasAttribute("data-current") ? "now" : p.hasAttribute("data-done") ? "done" : "to come"))).toEqual([
+      "done", "done", "done", "now", "to come", "to come", "to come", "to come", "to come",
+    ]);
+    // Before its parts are known, one square pulses.
+    expect(marks("NAP")).toHaveLength(1);
+    expect(marks("NAP")[0]).toHaveAttribute("data-current");
+    expect(marks("NWRP")).toHaveLength(0);
+  });
+
+  it("goes on to the start with one document's targets, and says there what is still needed", () => {
+    page(draft([doc("d1", "NDC", "Updated NDC 2021", {}, 3)]));
+    const start = within(screen.getByRole("group", { name: "Steps" })).getByRole("button", { name: "4Start" });
+    expect(start).toBeEnabled();
+    fireEvent.click(start);
+    expect(screen.getByRole("heading", { level: 2, name: "The analysis" })).toBeInTheDocument();
+    expect(screen.getByText("Targets from at least 2 documents are needed.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start the analysis" })).toBeDisabled();
   });
 
   it("says who reads the documents before anything is read", () => {
@@ -111,6 +170,18 @@ describe("UploadPage", () => {
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe(`/api/upload/${ID}`);
     expect(JSON.parse(init.body)).toEqual({ changes: [{ op: "document", id: "d1", name: "Second NDC 2025" }] });
+  });
+
+  it("names a document after its file again when its name is cleared", async () => {
+    page(draft([doc("d1", "NDC", "Second NDC", { fileName: "Updated_NDC_2021.pdf" }, 2), doc("d2", "NAP", "NAP", {}, 1)]));
+    const name = screen.getByLabelText("Name of Updated_NDC_2021.pdf");
+    fireEvent.change(name, { target: { value: "" } });
+    fireEvent.blur(name);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({
+      changes: [{ op: "document", id: "d1", name: "Updated NDC 2021" }],
+    });
+    expect(screen.getByLabelText("Name of Updated_NDC_2021.pdf")).toHaveValue("Updated NDC 2021");
   });
 
   it("shows a reading's parts and a scanned document's way out", () => {

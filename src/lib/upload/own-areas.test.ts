@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ownLensProblem, parseAreas } from "./own-areas";
+import { isBlankOwnLens, ownLensProblem, parseAreas } from "./own-areas";
 
 const area = (name: string, description = `Policies on ${name.toLowerCase()}.`) => ({ name, description });
 
@@ -36,5 +36,18 @@ describe("parseAreas", () => {
 
   it("keeps an area without a description, so the page can say what is missing", () => {
     expect(parseAreas("Energy\n")).toEqual([{ name: "Energy", description: "" }]);
+  });
+});
+
+describe("isBlankOwnLens", () => {
+  it("is a set opened and left without a word in it", () => {
+    expect(isBlankOwnLens({ name: " ", source: "", areas: [{ name: "", description: " " }] })).toBe(true);
+    expect(isBlankOwnLens({ name: "", areas: [] })).toBe(true);
+  });
+
+  it("is not a set with anything typed into it", () => {
+    expect(isBlankOwnLens({ name: "National priorities", areas: [{ name: "", description: "" }] })).toBe(false);
+    expect(isBlankOwnLens({ name: "", source: "NDP 2025", areas: [] })).toBe(false);
+    expect(isBlankOwnLens({ name: "", areas: [{ name: "Water", description: "" }] })).toBe(false);
   });
 });

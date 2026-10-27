@@ -59,19 +59,24 @@ function step(d: Draft, onChange = vi.fn(), colors = ["#4f46e5", "#9d174d"]) {
 afterEach(cleanup);
 
 describe("TargetsStep", () => {
-  it("lists the chosen document's targets and switches to another document", () => {
+  it("lists every document's targets under its name, the wording as written", () => {
     step(draft([water, energy]));
+    expect(screen.getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual([
+      "National Water Resource Policy",
+      "Energy Policy",
+    ]);
     const list = screen.getByRole("list", { name: "National Water Resource Policy" });
     expect(within(list).getAllByRole("listitem")).toHaveLength(2);
     expect(within(list).getByText("1.1")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Energy Policy/ }));
-    expect(screen.getByRole("list", { name: "Energy Policy" })).toBeInTheDocument();
-    expect(screen.getByDisplayValue("Reach 70% renewable electricity")).toBeInTheDocument();
+    expect(within(screen.getByRole("list", { name: "Energy Policy" })).getByText("Reach 70% renewable electricity")).toBeInTheDocument();
+    expect(screen.getByText("2 targets")).toBeInTheDocument();
+    // Nothing reads as a form until a wording is edited.
+    expect(screen.queryByRole("textbox")).toBeNull();
   });
 
   it("removes a target and offers it back", () => {
     const onChange = step(draft([water]));
-    fireEvent.click(within(screen.getByDisplayValue("Restore degraded watersheds").closest("li")!).getByRole("button", { name: "Remove" }));
+    fireEvent.click(within(screen.getByText("Restore degraded watersheds").closest("li")!).getByRole("button", { name: "Remove" }));
     expect(onChange).toHaveBeenCalledWith({ op: "target", docId: "d1", key: "d1-2", removed: true });
   });
 
@@ -82,9 +87,13 @@ describe("TargetsStep", () => {
     expect(onChange).toHaveBeenCalledWith({ op: "target", docId: "d1", key: "d1-1", removed: false });
   });
 
-  it("sends an edited wording once the field is left, not on every key", () => {
+  it("edits a wording in place on request, and sends it once the field is left, not on every key", () => {
     const onChange = step(draft([water]));
-    const text = screen.getByDisplayValue("Protect wetlands of national importance");
+    const row = screen.getByText("Protect wetlands of national importance").closest("li")!;
+    fireEvent.click(within(row).getByRole("button", { name: "Edit" }));
+    const text = within(row).getByRole("textbox", { name: "Target 1.1" });
+    expect(text).toHaveValue("Protect wetlands of national importance");
+    expect(text).toHaveFocus();
     fireEvent.change(text, { target: { value: "Protect all wetlands of national importance" } });
     expect(onChange).not.toHaveBeenCalled();
     fireEvent.blur(text);
@@ -154,8 +163,10 @@ describe("TargetsStep", () => {
         <Page />
       </NextIntlClientProvider>,
     );
-    const text = screen.getByDisplayValue("Protect wetlands of national importance");
-    const remove = within(text.closest("li")!).getByRole("button", { name: "Remove" });
+    const row = screen.getByText("Protect wetlands of national importance").closest("li")!;
+    fireEvent.click(within(row).getByRole("button", { name: "Edit" }));
+    const text = within(row).getByRole("textbox");
+    const remove = within(row).getByRole("button", { name: "Remove" });
     fireEvent.change(text, { target: { value: "Protect every wetland" } });
     fireEvent.blur(text);
     fireEvent.click(remove);

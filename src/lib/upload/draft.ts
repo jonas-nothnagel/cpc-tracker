@@ -4,6 +4,7 @@ import { join } from "path";
 import type { AnalyzeBody, TargetInput } from "./analysis-inputs";
 import { LIMITS, cut } from "./changes";
 import { readJson, writeJsonAtomic } from "./files";
+import { isBlankOwnLens } from "./own-areas";
 import type { Draft, DraftTarget } from "./types";
 
 export { applyChanges } from "./changes";
@@ -64,7 +65,10 @@ export function createDraft(input: { country?: string; locale: string }): Draft 
 export function readDraft(id: string): Draft | null {
   if (!isDraftId(id)) return null;
   const draft = readJson<Draft>(draftFile(id));
-  return draft && typeof draft === "object" && draft.id === id && Array.isArray(draft.documents) ? draft : null;
+  if (!draft || typeof draft !== "object" || draft.id !== id || !Array.isArray(draft.documents)) return null;
+  // Kept before a blank set counted as none: it would block the start.
+  if (draft.ownLens && isBlankOwnLens(draft.ownLens)) draft.ownLens = null;
+  return draft;
 }
 
 /** Read, change and write back in one synchronous stretch: within one server

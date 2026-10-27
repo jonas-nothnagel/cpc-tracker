@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useNumbers } from "@/components/brief/ink";
 import type { Draft, DraftChange, DraftDocument, DraftTarget } from "@/lib/upload/types";
+import { Plus } from "./plus";
 
-/** One target: its label, its wording to edit in place, the original beside
- *  it, the passage it was read from on request, and Remove or Restore. */
+/** One target as the brief quotes it: its label, its wording, the original
+ *  beside it, the passage it was read from on request, and Edit, Remove or
+ *  Restore. The wording turns into a field only while it is edited. */
 function TargetRow({
   doc,
   target,
@@ -17,14 +18,9 @@ function TargetRow({
   onChange: (change: DraftChange) => void;
 }) {
   const t = useTranslations("upload.targets");
+  const [editing, setEditing] = useState(false);
   const [text, setText] = useState(target.text);
-  const [saved, setSaved] = useState(target.text);
   const [open, setOpen] = useState(false);
-  // The wording changed elsewhere (saved, or another tab): show it.
-  if (target.text !== saved) {
-    setSaved(target.text);
-    setText(target.text);
-  }
   const page = target.pageNumbers?.[0];
   const passages = (target.sources ?? []).map((s) => s.sourceText).filter(Boolean);
   const original = target.textOriginal && target.language && target.language !== "en";
@@ -32,45 +28,67 @@ function TargetRow({
     onChange({ op: "target", docId: doc.id, key: target.key, ...more });
   return (
     <li className="up-target" data-removed={target.removed || undefined}>
-      <span className="up-target-label">{target.label}</span>
-      <div className="up-target-body">
+      <div className="up-target-head">
+        <span className="up-target-label">{target.label}</span>
+        <span className="up-target-tools">
+          {page !== undefined && passages.length > 0 && (
+            <button type="button" className="brief-button-quiet" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+              {t("page", { page })}
+            </button>
+          )}
+          {!target.removed && !editing && (
+            <button
+              type="button"
+              className="brief-button-quiet"
+              onClick={() => {
+                setText(target.text);
+                setEditing(true);
+              }}
+            >
+              {t("edit")}
+            </button>
+          )}
+          <button type="button" className="brief-button-quiet" onClick={() => change({ removed: !target.removed })}>
+            {target.removed ? t("restore") : t("remove")}
+          </button>
+        </span>
+      </div>
+      {editing ? (
         <textarea
-          className="up-inline up-target-text"
+          className="up-box up-target-edit"
           aria-label={target.label ? t("textOf", { label: target.label }) : t("text")}
           value={text}
-          rows={Math.max(1, Math.ceil(text.length / 90))}
-          readOnly={target.removed}
+          // The field opens where the reviewer asked for it.
+          autoFocus
           onChange={(e) => setText(e.currentTarget.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setText(target.text);
+              setEditing(false);
+            }
+          }}
           onBlur={() => {
             const next = text.trim();
             if (next && next !== target.text) change({ text: next });
-            else setText(target.text);
+            setEditing(false);
           }}
         />
-        {original && (
-          <p className="up-target-original" lang={target.language}>
-            {target.textOriginal}
-          </p>
-        )}
-        {open && passages.length > 0 && (
-          <div className="up-passage">
-            <span className="up-passage-head">{t("passage", { document: doc.name })}</span>
-            {passages.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </div>
-        )}
-      </div>
-      <span className="up-target-tools">
-        {page !== undefined && passages.length > 0 && (
-          <button type="button" className="brief-button-quiet" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-            {t("page", { page })}
-          </button>
-        )}
-        <button type="button" className="brief-button-quiet" onClick={() => change({ removed: !target.removed })}>
-          {target.removed ? t("restore") : t("remove")}
-        </button>
-      </span>
+      ) : (
+        <p className="up-target-text">{target.text}</p>
+      )}
+      {original && (
+        <p className="up-target-original" lang={target.language}>
+          {target.textOriginal}
+        </p>
+      )}
+      {open && passages.length > 0 && (
+        <div className="up-passage">
+          <span className="up-passage-head">{t("passage", { document: doc.name })}</span>
+          {passages.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      )}
     </li>
   );
 }
@@ -84,14 +102,15 @@ function AddTarget({ doc, onChange }: { doc: DraftDocument; onChange: (change: D
   if (!open) {
     return (
       <button type="button" className="brief-button-quiet" onClick={() => setOpen(true)}>
+        <Plus />
         {t("add")}
       </button>
     );
   }
   return (
-    <div className="up-target up-target-new">
+    <div className="up-target-new">
       <input
-        className="up-inline up-target-label"
+        className="up-box up-target-new-label"
         aria-label={t("label")}
         placeholder={t("label")}
         value={label}
@@ -99,33 +118,32 @@ function AddTarget({ doc, onChange }: { doc: DraftDocument; onChange: (change: D
         onChange={(e) => setLabel(e.currentTarget.value)}
       />
       <textarea
-        className="up-inline up-target-text"
+        className="up-box up-target-edit"
         aria-label={t("text")}
         placeholder={t("text")}
         value={text}
         rows={2}
         onChange={(e) => setText(e.currentTarget.value)}
       />
-      <span className="up-target-tools">
-        <button
-          type="button"
-          className="brief-button-quiet"
-          disabled={!text.trim()}
-          onClick={() => {
-            onChange({ op: "addTarget", docId: doc.id, label: label.trim(), text: text.trim() });
-            setLabel("");
-            setText("");
-            setOpen(false);
-          }}
-        >
-          {t("addButton")}
-        </button>
-      </span>
+      <button
+        type="button"
+        className="brief-button-quiet"
+        disabled={!text.trim()}
+        onClick={() => {
+          onChange({ op: "addTarget", docId: doc.id, label: label.trim(), text: text.trim() });
+          setLabel("");
+          setText("");
+          setOpen(false);
+        }}
+      >
+        {t("addButton")}
+      </button>
     </div>
   );
 }
 
-/** The second step: each document's targets, to check before the start. */
+/** The second step: every document's targets under its name, to check
+ *  before the start. */
 export function TargetsStep({
   draft,
   colors,
@@ -141,37 +159,32 @@ export function TargetsStep({
   onContinue: () => void;
 }) {
   const t = useTranslations("upload.targets");
-  const { n } = useNumbers();
   const documents = draft.documents
     .map((doc, i) => ({ doc, color: colors[i] }))
     .filter(({ doc }) => doc.state === "read" && doc.targets.length > 0);
-  const [chosen, setChosen] = useState(documents[0]?.doc.id);
-  const current = documents.find(({ doc }) => doc.id === chosen)?.doc ?? documents[0]?.doc;
-  if (!current) return null;
+  if (documents.length === 0) return null;
   return (
     <section aria-labelledby="up-step-title">
       <h2 id="up-step-title" className="up-title">
         {t("title")}
       </h2>
-      {documents.length > 1 && (
-        <div className="up-switch" role="group" aria-label={t("title")}>
-          {documents.map(({ doc, color }) => (
-            <button key={doc.id} type="button" aria-pressed={doc.id === current.id} onClick={() => setChosen(doc.id)}>
-              <span className="up-swatch" style={{ background: color }} aria-hidden="true" />
-              {doc.name}
-              <span className="up-n">{n(doc.targets.filter((x) => !x.removed).length)}</span>
-            </button>
-          ))}
-        </div>
-      )}
-      <ol className="up-targets" aria-label={current.name}>
-        {current.targets.map((target) => (
-          <TargetRow key={target.key} doc={current} target={target} onChange={onChange} />
-        ))}
-      </ol>
-      <div className="up-more">
-        <AddTarget key={current.id} doc={current} onChange={onChange} />
-      </div>
+      {documents.map(({ doc, color }) => (
+        <section key={doc.id} className="up-target-doc" aria-labelledby={`up-doc-${doc.id}`}>
+          <h3 id={`up-doc-${doc.id}`} className="up-doc-title">
+            <span className="up-swatch" style={{ background: color }} aria-hidden="true" />
+            <span>{doc.name}</span>
+          </h3>
+          <p className="up-doc-count">{t("kept", { count: doc.targets.filter((x) => !x.removed).length })}</p>
+          <ol className="up-targets" aria-label={doc.name}>
+            {doc.targets.map((target) => (
+              <TargetRow key={target.key} doc={doc} target={target} onChange={onChange} />
+            ))}
+          </ol>
+          <div className="up-more">
+            <AddTarget doc={doc} onChange={onChange} />
+          </div>
+        </section>
+      ))}
       {over > 0 && <p className="up-line up-over">{t("over", { count: over })}</p>}
       <div className="up-actions">
         <button type="button" className="brief-button-primary" onClick={onContinue}>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { ProgressDots } from "@/components/analysis/progress-dots";
 import { useNumbers } from "@/components/brief/ink";
 import { draftCounts } from "@/lib/upload/counts";
 import { estimateRun, type Speed } from "@/lib/upload/estimate";
@@ -12,8 +13,8 @@ import type { Draft } from "@/lib/upload/types";
 /** The published policy areas every analysis reads. */
 const PUBLISHED_LENSES = 4;
 
-/** The last step: the analysis's scale in the brief's own words, its time
- *  and footprint in one line, and the start. */
+/** The last step: the analysis's scale in the brief's own words, its target
+ *  pairs as dots, its time and footprint in one line, and the start. */
 export function StartStep({
   draft,
   ahead,
@@ -57,6 +58,12 @@ export function StartStep({
         <span>{t("targets", { count: counts.targets })}</span>
         <span>{t("pairs", { count: counts.pairs })}</span>
       </p>
+      {counts.pairs > 0 && (
+        // The picture the waiting page fills as the pairs are compared.
+        <div className="up-start-picture">
+          <ProgressDots done={0} total={counts.pairs} label={t("pairs", { count: counts.pairs })} />
+        </div>
+      )}
       <p className="up-line">
         {t.rich("estimate", {
           minutes,
