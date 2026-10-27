@@ -23,7 +23,8 @@ interface Shown {
  *     Sri Lanka's core agencies and the agencies counted in part). A year whose
  *     data hold only one part has no total;
  *   - the review's own lines, largest first, each with what the review counted
- *     and why;
+ *     and why; Panama's and Mongolia's also by institution, where the
+ *     review's data say who runs or holds each line;
  *   - what it is for: each area's share of the reviewed spending beside its
  *     share of the targets. A line's area is AI-suggested until a person has
  *     checked it, and a line the AI could not place is kept apart.
@@ -57,7 +58,7 @@ export interface SpendingYear {
 export interface SpendingItem extends Shown {
   code: string;
   /** The review's kind of line. */
-  kind: "programme" | "purpose" | "programmeGroup" | "institution" | "line";
+  kind: "programme" | "purpose" | "programmeGroup" | "institutionGroup" | "institution" | "line";
   /** The institution, part or code that places the line. */
   sub?: string;
   /** Counted over the complete years. */
@@ -75,8 +76,9 @@ export interface SpendingItem extends Shown {
   bodies?: { year: string; count: number; names: { name: string; amount: number; amountUsd: number | null }[] };
   /** What it pays for, as shares of the counted amount. */
   pays?: { name: string; share: number }[];
-  /** The activities inside a programme (Panama), largest first. */
-  parts?: (Shown & { amount: number })[];
+  /** The activities inside a programme, or the lines inside an institution,
+   *  largest first; with a US$ twin where the review is not in US$. */
+  parts?: (Shown & { amount: number; amountUsd?: number | null })[];
   partsCount?: number;
 }
 
@@ -111,6 +113,10 @@ export interface SpendingSetup {
   /** The figures are a demonstration country's, adapted from a real review. */
   illustrative: boolean;
   items: SpendingItem[];
+  /** The same spending by institution, where the review's data record who
+   *  runs or holds each line (Panama's institutions, Mongolia's budget
+   *  holders); absent where they do not. */
+  institutions?: SpendingItem[];
   /** The lines the areas are read from: the review's own, or (Sri Lanka) its
    *  project lines, a second view of the same money. */
   lines: SpendingLine[];
@@ -280,6 +286,11 @@ function fromRecord(
     items = lines.map((l) => ({ ...mongoliaItem(l, totals, complete, inUsd), ...show(String(l.code), String(l.name)) }));
   }
   items = items.filter((i) => i.total > 0).sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
+  const institutions = kinds.has("activity")
+    ? institutionItems(record, items, show)
+    : kinds.has("programme")
+      ? holderItems(lines, complete, inUsd, show)
+      : [];
 
   // The lines the areas are read from.
   const primary = primaryGlobe(data);
@@ -319,6 +330,7 @@ function fromRecord(
     scope: groups ? "government" : series.includes("central") ? "stateLocal" : atPar ? "publicSector" : "public",
     illustrative: false,
     items,
+    ...(institutions.length ? { institutions } : {}),
     lines: spendingLines,
     linesKind: kinds.has("activity") ? "activities" : kinds.has("project") ? "projects" : "lines",
     showMatches,
@@ -406,17 +418,104 @@ function programmeItems(
   return [...groups.entries()].map(([code, g]) => {
     const p = programmes.get(code) ?? {};
     const parts = g.parts.sort((a, b) => b.amount - a.amount);
+    const institution = String(p.institution ?? "");
     return {
       code,
       ...show(code, String(p.name ?? code)),
       kind: "programmeGroup" as const,
-      sub: String(p.institution ?? ""),
+      sub: p.institutionCode ? show(String(p.institutionCode), institution).name : institution,
       total: g.total,
       totalUsd: null,
       parts: parts.slice(0, 8),
       partsCount: parts.length,
     };
   });
+}
+
+/** Panama's programmes gathered by the institution that runs them, by the
+ *  database's own institution code, each holding its programmes largest
+ *  first. None where a programme carries no code: the list then has the one
+ *  view. */
+function institutionItems(record: Json, programmes: SpendingItem[], show: (code: string, own: string) => Shown): SpendingItem[] {
+  const names = new Map(((record.institutions as Json[] | undefined) ?? []).map((i) => [String(i.code), String(i.name)]));
+  const codeOf = new Map(((record.programmes as Json[] | undefined) ?? []).map((p) => [String(p.code), p.institutionCode]));
+  const groups = new Map<string, SpendingItem[]>();
+  for (const programme of programmes) {
+    const code = codeOf.get(programme.code);
+    if (typeof code !== "string" || !names.has(code)) return [];
+    groups.set(code, [...(groups.get(code) ?? []), programme]);
+  }
+  return [...groups.entries()]
+    .map(([code, inside]) => ({
+      code,
+      ...show(code, names.get(code)!),
+      kind: "institutionGroup" as const,
+      total: inside.reduce((s, p) => s + p.total, 0),
+      totalUsd: inside.some((p) => p.totalUsd === null) ? null : inside.reduce((s, p) => s + (p.totalUsd ?? 0), 0),
+      parts: inside.map(({ name, translated, original, total }) => ({
+        name,
+        ...(translated ? { translated } : {}),
+        ...(original ? { original } : {}),
+        amount: total,
+      })),
+      partsCount: inside.length,
+    }))
+    .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
+}
+
+/** Mongolia's lines gathered by who holds their budget (the workbook's own
+ *  budget holders: ministers, the capital city, the provinces) over the
+ *  complete years, each holding its lines largest first, every amount with its
+ *  US$ twin at its own year's rate. None where a line carries no holders: the
+ *  list then has the one view. */
+function holderItems(
+  lines: Json[],
+  complete: string[],
+  inUsd: (value: number, year: string) => number | null,
+  show: (code: string, own: string) => Shown,
+): SpendingItem[] {
+  type Sum = { amount: number; usd: number | null };
+  const add = (sum: Sum, amount: number, usd: number | null) => {
+    sum.amount += amount;
+    sum.usd = sum.usd === null || usd === null ? null : sum.usd + usd;
+  };
+  const groups = new Map<string, { name: string; sum: Sum; parts: Map<string, Sum> }>();
+  for (const l of lines) {
+    const byYear = asRecord(l.holders);
+    if (!byYear) return [];
+    for (const year of complete) {
+      for (const h of (byYear[year] as Json[] | undefined) ?? []) {
+        const amount = num(h.counted) ?? 0;
+        const usd = inUsd(amount, year);
+        const code = String(h.code);
+        const group = groups.get(code) ?? { name: String(h.name || h.nameMn || code), sum: { amount: 0, usd: 0 }, parts: new Map<string, Sum>() };
+        add(group.sum, amount, usd);
+        const part = group.parts.get(String(l.code)) ?? { amount: 0, usd: 0 };
+        add(part, amount, usd);
+        group.parts.set(String(l.code), part);
+        groups.set(code, group);
+      }
+    }
+  }
+  const named = new Map(lines.map((l) => [String(l.code), show(String(l.code), String(l.name))]));
+  return [...groups.entries()]
+    .map(([code, group]) => {
+      const parts = [...group.parts.entries()]
+        .filter(([, p]) => p.amount > 0)
+        .sort((a, b) => b[1].amount - a[1].amount)
+        .map(([line, p]) => ({ ...named.get(line)!, amount: p.amount, amountUsd: p.usd }));
+      return {
+        code,
+        ...show(code, group.name),
+        kind: "institutionGroup" as const,
+        total: group.sum.amount,
+        totalUsd: group.sum.usd,
+        parts,
+        partsCount: parts.length,
+      };
+    })
+    .filter((i) => i.total > 0)
+    .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
 }
 
 /** BER_<code> -> its primary GLOBE category, from the pipeline's classifications. */

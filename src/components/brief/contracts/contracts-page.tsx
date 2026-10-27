@@ -29,13 +29,17 @@ export type PanelState =
 export function ContractsPage({
   setup,
   geo,
-  initialCurrency = "mnt",
+  initialCurrency = "usd",
+  localCurrency = false,
   initialContract,
 }: {
   setup: ContractsSetup;
   geo: GeoFile | null;
-  /** From the link (?cur=usd): the currency the page opens in. */
+  /** The currency the page opens in: US$, or tugrik on the Mongolian page. */
   initialCurrency?: Currency;
+  /** The page is in the country's own language: tugrik by default, with a
+   *  switch to US$. Elsewhere amounts are in US$ alone. */
+  localCurrency?: boolean;
   /** From the link (?contract=id, e.g. from the brief's comparison): the
    *  contract whose panel the page opens with. */
   initialContract?: string;
@@ -55,13 +59,13 @@ export function ContractsPage({
   const placeNames = useMemo(() => Object.fromEntries((geo?.features ?? []).map((f) => [f.code, f.name])), [geo]);
 
   return (
-    <CurrencyProvider currency={currency} rate={rate}>
+    <CurrencyProvider currency={currency} rate={rate} local={localCurrency}>
       <div data-brief className="brief-root">
         <div className="ct-page">
           <header className="ct-head">
             <p className="ct-country">{setup.countryName}</p>
             <h1 className="ct-title">{t("title")}</h1>
-            <CurrencySwitch currency={currency} rate={rate} onChange={setCurrency} />
+            {localCurrency && <CurrencySwitch currency={currency} rate={rate} onChange={setCurrency} />}
           </header>
           <FocusBar setup={setup} focus={focus} placeNames={placeNames} onFocus={onFocus} />
           <Overview

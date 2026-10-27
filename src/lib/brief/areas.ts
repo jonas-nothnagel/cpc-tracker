@@ -201,19 +201,6 @@ export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide, area: s
   };
 }
 
-export type AreaHeadline =
-  | { kind: "none" }
-  | { kind: "between" | "within" | "outside"; share: number; a: string; b: string };
-
-/** What the headline says: the pair of areas holding the most of the side's
- *  target pairs, as a share of all of them. */
-export function areaHeadline(pairs: AreaPairs): AreaHeadline {
-  const lead = pairs.top[0];
-  if (!lead || pairs.total === 0) return { kind: "none" };
-  const kind = lead.a === lead.b ? "within" : lead.b === OTHER_AREA ? "outside" : "between";
-  return { kind, share: lead.count / pairs.total, a: lead.a, b: lead.b };
-}
-
 /** What the picture shows: every target at rest, one area picked by its
  *  name, one pair of areas, or one target. */
 export type AreaFocus =

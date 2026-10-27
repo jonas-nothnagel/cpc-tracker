@@ -1,5 +1,5 @@
 /**
- * The rows of "Where to look closer": one row per target, one dot per tender,
+ * The rows of "Areas of potential misalignment": one row per target, one dot per tender,
  * potentially misaligned to the left of a line and strongly matching to the
  * right, in three lines. A cloud longer than its side stops with a gap of one
  * column, then its last column, so the cut reads as a cut.

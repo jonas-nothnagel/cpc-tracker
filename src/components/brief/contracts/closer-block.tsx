@@ -24,7 +24,7 @@ const PLACES_SHOWN = 4;
 const FALLBACK_WIDTH = 640;
 
 /**
- * Where to look closer: the targets with potentially misaligned tenders, one
+ * Areas of potential misalignment: the targets with potentially misaligned tenders, one
  * row each, a dot per tender (potentially misaligned to the left, strongly
  * matching to the right), then the targets no contract strongly matches,
  * by document. It answers the page's focus. At rest the right side names the

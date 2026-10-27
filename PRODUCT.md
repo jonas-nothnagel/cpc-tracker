@@ -22,7 +22,7 @@ A decision-support system, not a decision-maker. It shows how a country's nature
 
 ## Brand Personality
 
-Calm institutional authority is the base register: restrained, credible, safe to put in front of a government audience. On top of that it is deliberately accessible and guiding. Where a static tool would leave the user to dig, this one leads with the insight, tells a short dynamic story to get there, and hands over something actionable right away. Considered motion, clear visualization, and genuine UX craft are used so the analysis lands and, at moments, impresses, without ever tipping into decoration. Voice is third-person and institutional, never playful, no developer jargon, no em dashes; abbreviations are expanded or explained on first use.
+Calm institutional authority is the base register: restrained, credible, safe to put in front of a government audience. On top of that it is deliberately accessible and guiding. Where a static tool would leave the user to dig, this one leads with the insight, tells a short dynamic story to get there, and hands over something actionable right away. Considered motion, clear visualization, and genuine UX craft are used so the analysis lands and, at moments, impresses, without ever tipping into decoration. Voice is third-person and institutional, never playful, no developer jargon, no em dashes; abbreviations are expanded or explained on first use. Names, titles and labels use the team's analytical vocabulary (alignment, potential misalignment, reviewed spending, programme, institution), never conversational or generic-assistant phrasing ("Where to look closer", "What it is for", "Kept apart until a person decides").
 
 ## Anti-references
 

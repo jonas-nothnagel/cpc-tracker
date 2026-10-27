@@ -23,13 +23,25 @@ afterEach(() => {
 });
 
 describe("ContractsPage", () => {
-  it("switches every amount between tugrik and US$ from one plain control, and keeps the choice in the link", () => {
+  it("states every amount in US$ alone, with no tugrik anywhere, on a page not in the country's language", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
         <ContractsPage setup={setupFixture()} geo={null} />
       </NextIntlClientProvider>,
     );
+    expect(screen.getByRole("heading", { name: "US$71.4 million in 40 public contracts since 2024" })).toBeInTheDocument();
+    expect(screen.queryByRole("group", { name: "Amounts in" })).toBeNull();
+    expect(document.body.textContent).not.toContain("₮");
+  });
+
+  it("opens the country's own-language page in tugrik, switching to US$ from one plain control and keeping the choice in the link", () => {
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <ContractsPage setup={setupFixture()} geo={null} initialCurrency="mnt" localCurrency />
+      </NextIntlClientProvider>,
+    );
     expect(screen.getByRole("heading", { name: "₮250 billion in 40 public contracts since 2024" })).toBeInTheDocument();
+    expect(screen.getByText(/^About US\$71\.4 million\./)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "US$" }));
     expect(screen.getByRole("heading", { name: "US$71.4 million in 40 public contracts since 2024" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "US$" })).toHaveAttribute("aria-pressed", "true");

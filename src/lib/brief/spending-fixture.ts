@@ -1,7 +1,8 @@
 /**
  * Dashboard payloads for the spending tests: Country X's illustrative file
- * (the earlier shape) and a record the way the Mongolia adapter writes it.
- * Areas g1, g2 and g5 are the brief fixture's GLOBE categories.
+ * (the earlier shape), a record the way the Mongolia adapter writes it, and
+ * one the way the Panama adapter writes it. Areas g1, g2 and g5 are the brief
+ * fixture's GLOBE categories.
  */
 
 /** Country X's illustrative file: P1 in area g1, P2 in g2, P3 with no spending. */
@@ -102,4 +103,77 @@ export function levelsPayload(extra: Record<string, unknown> = {}) {
     budgetAlignment: [{ targetAId: "A1", targetBId: "BER_71405", alignment: "high" }],
     ...extra,
   };
+}
+
+const activity = (code: string, programme: string, name: string, a: number, b: number) => ({
+  code,
+  kind: "activity",
+  name,
+  programme,
+  amounts: { "2016": { all: cell(a) }, "2017": { all: cell(b) } },
+});
+
+/** Activities in their programmes and institutions, millions of balboas (at
+ *  par with the US$). The agriculture ministry runs the largest programme
+ *  (6); the environment ministry spends the most (7) over two programmes. */
+export function activitiesPayload(withInstitutions = true) {
+  const programme = (code: string, name: string, institution: string, institutionCode: string) => ({
+    code,
+    name,
+    institution,
+    ...(withInstitutions ? { institutionCode } : {}),
+  });
+  return {
+    berData: {
+      programs: [],
+      expenditure: [],
+      currency: "PAB",
+      unit: "million",
+      period: { start: 2016, end: 2017 },
+      record: {
+        version: 1,
+        currency: "PAB",
+        unit: "million",
+        levels: [{ id: "all", name: "Screened institutions" }],
+        years: [
+          { year: "2016", levels: ["all"], complete: true, reviewed: { all: 6 }, public: { all: 600 }, usdRate: 1 },
+          { year: "2017", levels: ["all"], complete: true, reviewed: { all: 7 }, public: { all: 700 }, usdRate: 1 },
+        ],
+        ...(withInstitutions
+          ? {
+              institutions: [
+                { code: "0-10", name: "Ministerio de Desarrollo Agropecuario" },
+                { code: "0-27", name: "Ministerio de Ambiente" },
+              ],
+            }
+          : {}),
+        programmes: [
+          programme("0-10-1-3", "Sanidad Agropecuaria", "Ministerio de Desarrollo Agropecuario", "0-10"),
+          programme("0-27-0-2", "Dirección General y Administración", "Ministerio de Ambiente", "0-27"),
+          programme("0-27-1-1", "Áreas Protegidas y Vida Silvestre", "Ministerio de Ambiente", "0-27"),
+        ],
+        lines: [
+          activity("0-10-1-3-1-1", "0-10-1-3", "Planta de Moscas Estériles", 3, 3),
+          activity("0-27-0-2-1-1", "0-27-0-2", "Gestión Administrativa", 2, 2),
+          activity("0-27-1-1-1-1", "0-27-1-1", "Guardaparques", 2, 1),
+        ],
+      },
+    },
+  };
+}
+
+/** The two-level record with who holds each line's budget in the complete
+ *  years, the way the Mongolia adapter writes them: the environment minister
+ *  holds the programme, the capital city and a province the purpose code. */
+export function holdersPayload() {
+  const payload = levelsPayload();
+  const [programme, purpose] = payload.berData.record.lines as unknown as Record<string, unknown>[];
+  const minister = (counted: number) => ({ code: "013", name: "Minister for Nature and Tourism", nameMn: "Байгаль орчин, аялал жуулчлалын сайд", counted });
+  const capital = (counted: number) => ({ code: "059", name: "Capital city", nameMn: "Нийслэл", counted });
+  programme.holders = { "2020": [minister(3)], "2021": [minister(4)] };
+  purpose.holders = {
+    "2020": [capital(1)],
+    "2021": [capital(1.5), { code: "043", name: "Bulgan province", nameMn: "Булган аймаг", counted: 0.5 }],
+  };
+  return payload;
 }

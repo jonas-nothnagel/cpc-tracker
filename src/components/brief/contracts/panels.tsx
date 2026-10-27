@@ -108,6 +108,7 @@ function ContractPanel({
         .filter((x): x is { lens: LensKey; name: string } => x !== null)
     : [];
   const value = contract?.value ?? 0;
+  const twin = m.other(value);
   // The targets the page holds: in the brief, those in its documents.
   const misaligned = record.misaligned.filter((x) => targets.has(x.target));
   const strong = record.strong.map((x) => x.target).filter((x) => targets.has(x));
@@ -126,12 +127,12 @@ function ContractPanel({
       <DrawerHeader>
         <p className="ct-panel-kind">{t("kind")}</p>
         <h2 className="brief-panel-title">{record.english ?? record.original}</h2>
-        <p className="brief-panel-sub">{record.english ? t("titleNote") : t("untranslated")}</p>
+        {!record.english && <p className="brief-panel-sub">{t("untranslated")}</p>}
       </DrawerHeader>
       <div className="brief-panel-body">
         <p className="ct-panel-value">
           <span>{m.amount(value)}</span>
-          {m.other(value) !== m.amount(value) && <span className="ct-panel-value-other">{t("about", { other: m.other(value) })}</span>}
+          {twin && <span className="ct-panel-value-other">{t("about", { other: twin })}</span>}
         </p>
         <dl className="ct-facts">
           {contract && <Fact label={t("year")}>{contract.year}</Fact>}

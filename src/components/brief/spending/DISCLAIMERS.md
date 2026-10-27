@@ -33,6 +33,40 @@ currency, so "of every US$100" and "of every ₮100" give the same figure.
 - es: {usd} al tipo de cambio de cada año.
 - mn: Жил бүрийн ханшаар {usd}.
 
+**The review's own currency appears only on the country's own-language page**
+(Jonas, 23 October 2026: "use US$ as default always. Forever. Local currency
+only in local language setting"). Every other page states amounts in US$ alone,
+with no switch; the Mongolian page opens in tugrik with a switch to US$
+(`localCurrency` from the route, src/app/[locale]/[country]/brief/page.tsx).
+The language links never carry the currency (`cur`) across.
+
+## Names of the review's lines
+
+**Machine-translated names** (`translated: true` on a line, programme,
+activity or, for Panama, institution, src/lib/brief/spending.ts; Panama's 14
+institution names were translated on 27 October 2026, the rest on 23 October,
+as `_meta.runs` in python/data/panama-ber-names.json records). A name shows in
+the page's language
+from python/data/<country>-ber-names.json (`shownName` in
+src/lib/brief/ber-names-shared.ts): in Spanish with the review's
+abbreviations written out; in Mongolian as the review has it, else machine
+translated (`mnMachine`); in English always the machine translation
+(Panama's from the review's Spanish, `build_ber_names.TRANSLATE_SYSTEM`).
+The review's own name stays in `original` and shows on hover over the name.
+The tag beside every translated name came off the face on 23 October 2026
+(Jonas: "we dont have to show it every single time"). Its wording:
+
+- en: machine translation
+- es: traducción automática
+- mn: машин орчуулга
+
+**Mongolia's budget holders** (the institution view of its list) are named as
+the review's workbook names them (sheet 2016-2021, column Admin1, its leading
+code kept apart): its own English on the English page, its own Mongolian on
+the Mongolian page. No name is translated. They cover 2020 and 2021, the years
+with every budget in the data; in each year their amounts add up to each
+line's counted amount (python/scripts/build_ber_mongolia.py checks it).
+
 ## Spending by year
 
 **Mongolia's years hold different parts of the budget** (note `levels`): 2020
@@ -55,7 +89,12 @@ the review for 2015; from 2016 it is 42-64% of each year's reviewed spending.
 **Review status of the areas.** Each line's area is AI-suggested (two models,
 step 2) until a person accepts, changes or rejects it in the review sheet
 (python/scripts/ber_review_sheet.py); lines the models place differently, or
-that no area fits at 0.5, are kept apart. The row tags say this line by line.
+that no area fits at 0.5, are kept apart. The row tags say this line by line
+("Area reviewed", "AI-suggested, not yet reviewed", "Not assigned, pending
+review"). A reviewer may change or reject an area, so the tags say "reviewed",
+never "confirmed" (copy.test.ts). The step-wide tag beside the title
+("AI-suggested" / "Sugerido por IA" / "Хиймэл оюуны санал") came off on
+23 October 2026 (Jonas: "remove AI suggested"); the row tags carry it.
 
 - en: {checked, number} of {total, number} lines have an area checked by a person; the others are AI-suggested or kept apart.
 - es: {checked, number} de {total, number} líneas tienen un área revisada por una persona; las demás son sugerencias de la IA o están apartadas.

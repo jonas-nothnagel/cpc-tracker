@@ -8,10 +8,27 @@ import { moneyParts, per100, toUsd } from "@/lib/brief/contracts/money";
  *  US$ at the record's indicative rate. */
 export type Currency = "mnt" | "usd";
 
-const CurrencyContext = createContext<{ currency: Currency; rate: number }>({ currency: "mnt", rate: 0 });
+const CurrencyContext = createContext<{ currency: Currency; rate: number; local: boolean }>({
+  currency: "usd",
+  rate: 0,
+  local: false,
+});
 
-export function CurrencyProvider({ currency, rate, children }: { currency: Currency; rate: number; children: ReactNode }) {
-  return <CurrencyContext.Provider value={{ currency, rate }}>{children}</CurrencyContext.Provider>;
+/** `local`: the page is in the country's own language, the only page where
+ *  its own currency appears (by default, with US$ on request). Every other
+ *  page states amounts in US$ alone. */
+export function CurrencyProvider({
+  currency,
+  rate,
+  local = false,
+  children,
+}: {
+  currency: Currency;
+  rate: number;
+  local?: boolean;
+  children: ReactNode;
+}) {
+  return <CurrencyContext.Provider value={{ currency, rate, local }}>{children}</CurrencyContext.Provider>;
 }
 
 /** Money and numbers as the contracts page states them, in the reader's
@@ -19,7 +36,7 @@ export function CurrencyProvider({ currency, rate, children }: { currency: Curre
 export function useMoney() {
   const format = useFormatter();
   const t = useTranslations("brief.contracts.money");
-  const { currency, rate } = useContext(CurrencyContext);
+  const { currency, rate, local } = useContext(CurrencyContext);
   const usd = currency === "usd" && rate > 0;
   const number = (v: number) => format.number(v, { maximumFractionDigits: 1 });
   const tugrik = (value: number) => {
@@ -34,8 +51,9 @@ export function useMoney() {
     currency: usd ? ("usd" as const) : ("mnt" as const),
     /** An amount in the chosen currency. */
     amount: (value: number) => (usd ? dollars(value) : tugrik(value)),
-    /** The same amount in the other currency, for a secondary mention. */
-    other: (value: number) => (usd ? tugrik(value) : rate > 0 ? dollars(value) : tugrik(value)),
+    /** The same amount in the other currency, for a secondary mention: only
+     *  on the page in the country's own language, never tugrik elsewhere. */
+    other: (value: number): string | null => (!local ? null : usd ? tugrik(value) : rate > 0 ? dollars(value) : null),
     /** The chosen currency's sign: "₮" or "US$". */
     sign: usd ? "US$" : "₮",
     /** A record-scale amount for column labels: US$ billion or ₮ trillion. */

@@ -710,11 +710,11 @@ describe("a budget line named in translation", () => {
     );
   }
 
-  it("is marked as a machine translation, with the review's own name on hover", () => {
+  it("keeps its machine translation unmarked, with the review's own name on hover", () => {
     renderLine();
     const title = within(side()).getByRole("heading", { level: 2 });
-    expect(title).toHaveTextContent("Strengthening economic management and financial administration");
-    expect(within(title).getByText("machine translation")).toHaveAttribute("title", `In the review: ${OWN}`);
+    expect(title).toHaveTextContent(/Strengthening economic management and financial administration$/);
+    expect(title).toHaveAttribute("title", `In the review: ${OWN}`);
   });
 
   it("labels the review's description as written with AI", () => {
@@ -746,11 +746,11 @@ describe("the ring's layers on a Mongolian page", () => {
     );
   }
 
-  it("names a reported action in Mongolian, marked as a machine translation with the report's own title on hover", () => {
+  it("names a reported action in Mongolian, unmarked, with the report's own title on hover", () => {
     renderItem("BTR_1", "mitigation");
     const title = within(side()).getByRole("heading", { level: 2 });
-    expect(title).toHaveTextContent("Нарны цахилгаан станц");
-    expect(within(title).getByText("машин орчуулга")).toHaveAttribute("title", "Тайланд: Solar parks");
+    expect(title).toHaveTextContent(/^Нарны цахилгаан станц$/);
+    expect(title).toHaveAttribute("title", "Тайланд: Solar parks");
     expect(within(side()).getByText("Тайлагнасан төлөв: Хэрэгжиж буй")).toBeInTheDocument();
   });
 

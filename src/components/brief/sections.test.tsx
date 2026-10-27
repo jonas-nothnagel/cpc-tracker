@@ -184,7 +184,7 @@ describe("brief sections", () => {
     wrap(<CommitmentsSection data={DATA} />);
     expect(
       screen.getByRole("heading", {
-        name: "Of the 15 potential misalignments, 80% involve just 2 targets.",
+        name: "Of the 15 potential misalignments, 80% involve 2 targets.",
       }),
     ).toBeTruthy();
     const rows = screen.getAllByTestId("brief-commitment-row");

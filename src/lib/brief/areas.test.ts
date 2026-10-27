@@ -4,7 +4,6 @@ import { briefFixture } from "./test-fixture";
 import type { BriefSource } from "./source";
 import {
   areaFocus,
-  areaHeadline,
   areaInks,
   areaPairDetail,
   areaPairs,
@@ -168,53 +167,6 @@ describe("areaPairs", () => {
     const pairs = areaPairs(lensAreas(source, scope, "globe"), scope, "apart", "b6");
     expect(pairs.top.map((p) => p.key)).toEqual(["a1|b6", "b6|c1", "b6|c2", "b6|c3", "b6|c4", "b6|c5", "b6|c6"]);
     expect(pairs.rest).toEqual({ groups: 1, pairs: 5, count: 0 });
-  });
-});
-
-describe("areaHeadline", () => {
-  it("names the pair of areas holding the most of the side's target pairs, as a share of all of them", () => {
-    const lens = lensAreas(SOURCE, ALL, "globe");
-    expect(areaHeadline(areaPairs(lens, ALL, "apart"))).toEqual({
-      kind: "outside",
-      share: 0.6,
-      a: "g2",
-      b: OTHER_AREA,
-    });
-    const strong = areaHeadline(areaPairs(lens, ALL, "reinforce"));
-    expect(strong).toMatchObject({ kind: "outside", a: "g5" });
-    expect(strong.kind !== "none" && strong.share).toBeCloseTo(10 / 36);
-  });
-
-  it("says between two areas", () => {
-    const primary: Record<string, string> = {};
-    for (const i of [1, 2, 3, 4, 5, 6]) {
-      primary[`B${i}`] = "g2";
-      primary[`C${i}`] = "g5";
-    }
-    const source = withPrimary(primary);
-    const scope = scopeOf(source, ["A", "B", "C"]);
-    expect(areaHeadline(areaPairs(lensAreas(source, scope, "globe"), scope, "apart"))).toEqual({
-      kind: "between",
-      share: 0.6,
-      a: "g2",
-      b: "g5",
-    });
-  });
-
-  it("says within one area", () => {
-    const source = withPrimary(Object.fromEntries(SOURCE.commitments.map((c) => [c.id, "g2"])));
-    const scope = scopeOf(source, ["A", "B", "C"]);
-    expect(areaHeadline(areaPairs(lensAreas(source, scope, "globe"), scope, "apart"))).toEqual({
-      kind: "within",
-      share: 1,
-      a: "g2",
-      b: "g2",
-    });
-  });
-
-  it("says nothing without any of the side's target pairs", () => {
-    const scope = scopeOf(SOURCE, ["A", "C"]);
-    expect(areaHeadline(areaPairs(lensAreas(SOURCE, scope, "globe"), scope, "apart"))).toEqual({ kind: "none" });
   });
 });
 

@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { briefFixture } from "./test-fixture";
 import { parseBerAreas } from "./ber-areas";
-import { legacyPayload as legacy, levelsPayload as mongoliaLike } from "./spending-fixture";
+import { parseBerNames } from "./ber-names-shared";
+import {
+  activitiesPayload as activities,
+  holdersPayload as holders,
+  legacyPayload as legacy,
+  levelsPayload as mongoliaLike,
+} from "./spending-fixture";
 import { percentLabel, spendingAreas, spendingRecord, spendingSetup } from "./spending";
 
 describe("spendingSetup from Country X's file", () => {
@@ -133,6 +139,63 @@ describe("spendingSetup from a rebuilt record", () => {
     expect(setup.lines.map((l) => l.code)).toEqual(["P082"]);
     expect(setup.linesKind).toBe("projects");
     expect(setup.notes).toContain("projects");
+  });
+
+  it("lists Panama's programmes, and the same money by the institution that runs each", () => {
+    const names = parseBerNames({
+      names: {
+        "0-10": { es: "Ministerio de Desarrollo Agropecuario", en: "Ministry of Agricultural Development" },
+        "0-27": { es: "Ministerio de Ambiente", en: "Ministry of Environment" },
+        "0-10-1-3": { es: "Sanidad Agropecuaria", en: "Agricultural Health" },
+      },
+    });
+    const setup = spendingSetup(activities(), briefFixture(), { names, locale: "en" })!;
+    // By programme: the agriculture ministry's programme is the largest, its
+    // institution named in the page's language.
+    expect(setup.items.map((i) => [i.code, i.total, i.sub])).toEqual([
+      ["0-10-1-3", 6, "Ministry of Agricultural Development"],
+      ["0-27-0-2", 4, "Ministry of Environment"],
+      ["0-27-1-1", 3, "Ministry of Environment"],
+    ]);
+    // By institution: the environment ministry spends the most, over two programmes.
+    expect(setup.institutions?.map((i) => [i.code, i.name, i.original, i.kind, i.total, i.partsCount])).toEqual([
+      ["0-27", "Ministry of Environment", "Ministerio de Ambiente", "institutionGroup", 7, 2],
+      ["0-10", "Ministry of Agricultural Development", "Ministerio de Desarrollo Agropecuario", "institutionGroup", 6, 1],
+    ]);
+    expect(setup.institutions?.[0].parts?.map((p) => [p.name, p.amount])).toEqual([
+      ["Dirección General y Administración", 4],
+      ["Áreas Protegidas y Vida Silvestre", 3],
+    ]);
+    // Balboas at par: no US$ twin to add up.
+    expect(setup.institutions?.[0].totalUsd).toBeNull();
+  });
+
+  it("keeps the one view where the record carries no institution codes", () => {
+    const setup = spendingSetup(activities(false), briefFixture())!;
+    expect(setup.items.map((i) => i.sub)).toEqual(["Ministerio de Desarrollo Agropecuario", "Ministerio de Ambiente", "Ministerio de Ambiente"]);
+    expect(setup.institutions).toBeUndefined();
+    expect(spendingSetup(mongoliaLike(), briefFixture())!.institutions).toBeUndefined();
+  });
+
+  it("gathers Mongolia's lines by who holds their budget, each year at its own rate", () => {
+    const setup = spendingSetup(holders(), briefFixture())!;
+    // The holders' amounts add up to the lines' counted amounts: 7 + 3.
+    expect(setup.institutions?.map((i) => [i.code, i.name, i.total, i.partsCount])).toEqual([
+      ["013", "Minister for Nature and Tourism", 7, 1],
+      ["059", "Capital city", 2.5, 1],
+      ["043", "Bulgan province", 0.5, 1],
+    ]);
+    // US$ in whole dollars: ₮3 bn at 2,000 and ₮4 bn at 2,500.
+    expect(setup.institutions?.[0].totalUsd).toBeCloseTo(3e9 / 2000 + 4e9 / 2500);
+    expect(setup.institutions?.[1].parts).toEqual([
+      { name: "Solid waste removal", amount: 2.5, amountUsd: 1e9 / 2000 + 1.5e9 / 2500 },
+    ]);
+    // On the Mongolian page, the workbook's own Mongolian names.
+    const mn = spendingSetup(holders(), briefFixture(), {
+      names: parseBerNames({ names: { "013": { mn: "Байгаль орчин, аялал жуулчлалын сайд" } } }),
+      locale: "mn",
+    })!;
+    expect(mn.institutions?.[0].name).toBe("Байгаль орчин, аялал жуулчлалын сайд");
   });
 });
 

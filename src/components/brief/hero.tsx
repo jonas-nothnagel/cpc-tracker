@@ -28,8 +28,14 @@ function Languages({ countryId }: { countryId: string }) {
   const locale = useLocale();
   const t = useTranslations("common.languageSwitcher");
   const locales = countryLocales(getCountry(countryId) ?? {});
-  const keepChoices = (target: string) => (e: MouseEvent<HTMLAnchorElement>) =>
-    e.currentTarget.setAttribute("href", `${briefPath(target, countryId)}${window.location.search}`);
+  // The brief's choices go along; the currency does not, since each language
+  // opens in its own (US$, or the country's own on its own-language page).
+  const keepChoices = (target: string) => (e: MouseEvent<HTMLAnchorElement>) => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("cur");
+    const query = params.toString();
+    e.currentTarget.setAttribute("href", `${briefPath(target, countryId)}${query ? `?${query}` : ""}`);
+  };
   if (locales.length < 2) return null;
   return (
     <nav className="brief-hero-languages" aria-label={t("aria")}>

@@ -59,8 +59,10 @@ export default async function ContractsRoute(props: Props) {
     <ContractsPage
       setup={loaded.setup}
       geo={geoFor(loaded.setup.countryId, loaded.locale)}
-      // Money in US$, but in tugrik on the Mongolian page; a shared link keeps the reader's choice.
-      initialCurrency={first(cur) === "usd" || first(cur) === "mnt" ? (first(cur) as "usd" | "mnt") : loaded.locale === "mn" ? "mnt" : "usd"}
+      // Money in US$ on every page but the Mongolian one, which opens in
+      // tugrik and may switch to US$ (a shared link keeps that choice, ?cur=usd).
+      initialCurrency={loaded.locale === "mn" ? (first(cur) === "usd" ? "usd" : "mnt") : "usd"}
+      localCurrency={loaded.locale === "mn"}
       initialContract={opened}
     />
   );

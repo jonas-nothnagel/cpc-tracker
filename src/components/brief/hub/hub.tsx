@@ -6,7 +6,6 @@ import {
   findDocPair,
   MIN_PAIR_COMPARISONS,
   shareOf,
-  type Concentration,
   type DocPairStat,
   type Tone,
   type ToneCounts,
@@ -108,7 +107,7 @@ function previewOf(key: string | null): { side: HubTone; focus: MapFocus } | nul
  * The coherence overview on screen: the dot field of every target pair on
  * one side, the steps of the overview beside it, each a level deeper. The
  * overall picture by rating; the same dots as a map of the documents; each
- * side of it as its own landscape (what works well, where to look closer),
+ * side of it as its own landscape (what works well together, areas of potential misalignment),
  * its targets named on the map and listed, its themes and types brought
  * forward on request; and one document in the centre with its pairs with
  * every other. A single target is explored further on the ring. Only the
@@ -183,8 +182,8 @@ export function Hub({
   const reviewLimit = concentration.concentrated
     ? Math.min(REVIEW_MAX, Math.max(HUB_TOP, concentration.top.length))
     : HUB_TOP;
-  // The strongest alignments list every target the map names from its
-  // headline (up to eight), so each name on the map has its row.
+  // The strongest alignments list every target the map names (up to eight),
+  // so each name on the map has its row.
   const strong = data.strongConcentration;
   const strongLimit =
     strong.concentrated && strong.top.length <= NAMED_MAX ? Math.max(HUB_TOP, strong.top.length) : HUB_TOP;
@@ -391,29 +390,6 @@ export function Hub({
   const previewTheme = preview?.focus.kind === "theme" ? themeRows(preview.side)[preview.focus.index] : undefined;
   const themeBlocks = previewTheme ? [...getStorylineDocPairKeys(previewTheme.storyline)] : null;
   const outlined = themeBlocks ?? (lead === "map" && !preview ? leadBlocks : []);
-
-  // A side's finding: how few targets carry it (a union of pairs, never a sum).
-  const concentrationHeadline = (k: Concentration, section: "aligned" | "commitments") =>
-    k.total === 0
-      ? tb(`${section}.headlineEmpty`)
-      : k.concentrated
-        ? tb(`${section}.headlineConcentrated`, { total: k.total, pct: pct(k.share), top: k.top.length })
-        : tb(`${section}.headlineSpread`, { contested: k.contested });
-
-  const rated = data.docs.filter((d) => d.counts.total >= MIN_PAIR_COMPARISONS);
-  const high = rated[0];
-  const low = rated[rated.length - 1];
-  const documentsHeadline =
-    rated.length >= 2 && aligned(high.counts) !== aligned(low.counts)
-      ? th.rich("documentsLead", {
-          low: pct(aligned(low.counts)),
-          docLow: low.doc.name,
-          high: pct(aligned(high.counts)),
-          docHigh: high.doc.name,
-          first: (chunks) => <DocName onSelect={() => focusDoc(low.doc.id)}>{chunks}</DocName>,
-          second: (chunks) => <DocName onSelect={() => focusDoc(high.doc.id)}>{chunks}</DocName>,
-        })
-      : tb("documents.headlineFallback", { pct: pct(aligned(data.counts)) });
 
   // The document at the centre, in one line: its shares, and the other
   // document with the highest share of potential misalignment (among those
@@ -682,10 +658,10 @@ export function Hub({
 
             {steps.includes("reinforce") && (
               <section className="brief-hub-step brief-hub-side" data-step="reinforce">
-                <p className="brief-hub-kicker">{th("kickerReinforce")}</p>
-                <h2 className="brief-hub-headline" tabIndex={-1}>
-                  {concentrationHeadline(data.strongConcentration, "aligned")}
+                <h2 className="brief-hub-kicker" tabIndex={-1}>
+                  {th("kickerReinforce")}
                 </h2>
+                {data.strongConcentration.total === 0 && <p className="brief-hub-none">{tb("aligned.headlineEmpty")}</p>}
                 {keeps("aligned") && hasStrong && (
                   <>
                     <h3 className="brief-hub-sub">{ts("aligned")}</h3>
@@ -718,10 +694,10 @@ export function Hub({
 
             {steps.includes("apart") && (
               <section className="brief-hub-step brief-hub-side" data-step="apart">
-                <p className="brief-hub-kicker">{th("kickerApart")}</p>
-                <h2 className="brief-hub-headline" tabIndex={-1}>
-                  {concentrationHeadline(concentration, "commitments")}
+                <h2 className="brief-hub-kicker" tabIndex={-1}>
+                  {th("kickerApart")}
                 </h2>
+                {concentration.total === 0 && <p className="brief-hub-none">{tb("commitments.headlineEmpty")}</p>}
                 {keeps("commitments") && hasApart && (
                   <>
                     <h3 className="brief-hub-sub">{ts("commitments")}</h3>
@@ -781,8 +757,8 @@ export function Hub({
 
             {steps.includes("documents") && (
               <section className="brief-hub-step" data-step="documents">
-                <h2 className="brief-hub-headline" tabIndex={-1}>
-                  {documentsHeadline}
+                <h2 className="brief-hub-kicker" tabIndex={-1}>
+                  {ts("documents")}
                 </h2>
                 {takeaway && (
                   <p className="brief-hub-focus" data-testid="hub-focus">

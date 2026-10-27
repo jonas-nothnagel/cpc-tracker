@@ -86,9 +86,10 @@ export default async function BriefPage(props: Props) {
       })}
       contracts={loaded.contracts}
       spending={loaded.spending}
-      // Money in US$, but in tugrik on the Mongolian page; a shared link
-      // keeps the reader's choice (?cur=usd or ?cur=mnt).
-      initialCurrency={cur === "usd" || cur === "mnt" ? cur : loaded.locale === "mn" ? "mnt" : "usd"}
+      // Money in US$ on every page but the Mongolian one, which opens in
+      // tugrik and may switch to US$ (a shared link keeps that choice, ?cur=usd).
+      initialCurrency={loaded.locale === "mn" ? (cur === "usd" ? "usd" : "mnt") : "usd"}
+      localCurrency={loaded.locale === "mn"}
     />
   );
 }

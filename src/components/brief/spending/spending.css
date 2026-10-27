@@ -103,16 +103,12 @@
   outline-offset: 2px;
 }
 
-/* ── A step: its finding, then its picture ───────────────────────────── */
+/* ── A step: its heading, then its picture ───────────────────────────── */
 
 [data-brief] .sp-step {
   display: grid;
   gap: var(--sp-4);
   min-width: 0;
-}
-
-[data-brief] .sp-step-head .brief-hub-kicker {
-  margin: 0 0 var(--sp-2);
 }
 
 [data-brief] .sp-step-head .brief-hub-headline {

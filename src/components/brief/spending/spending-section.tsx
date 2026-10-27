@@ -364,29 +364,57 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
   const t = useTranslations("brief.spending.items");
   const [open, setOpen] = useState<string | null>(null);
   const [all, setAll] = useState(false);
-  const total = setup.items.reduce((s, i) => s + i.total, 0);
-  const lead = setup.items[0];
+  // Where the review's data say who runs or holds each line (Panama,
+  // Mongolia): by institution first, by programme on request. The title
+  // names both and stays put.
+  const institutions = setup.institutions?.length ? setup.institutions : null;
+  const [by, setBy] = useState<"institution" | "programme">("institution");
+  const list = institutions && by === "institution" ? institutions : setup.items;
+  const total = list.reduce((s, i) => s + i.total, 0);
+  const lead = list[0];
   if (!lead || total <= 0) return null;
-  const shown = all ? setup.items : setup.items.slice(0, ITEMS_MAX);
+  const shown = all ? list : list.slice(0, ITEMS_MAX);
   const max = lead.total;
+  // What a row is, in the review's own terms: an institution (Sri Lanka), a
+  // budget line (Country X), else a programme (Mongolia's programmes and
+  // purpose codes, Panama's programmes).
+  const unit = institutions
+    ? by
+    : setup.items.every((i) => i.kind === "institution")
+      ? "institution"
+      : setup.items.every((i) => i.kind === "line")
+        ? "line"
+        : "programme";
+  const choose = (next: "institution" | "programme") => {
+    setBy(next);
+    setOpen(null);
+    setAll(false);
+  };
   return (
-    <section className="sp-step" aria-labelledby="sp-items-headline">
+    <section className="sp-step" aria-labelledby="sp-items-title">
       <div className="sp-step-head">
-        <p className="brief-hub-kicker">{t("kicker")}</p>
-        <h3 id="sp-items-headline" className="brief-hub-headline">
-          {t("headline", { name: lead.name, share: percentLabel(lead.total / total), years })}
+        <h3 id="sp-items-title" className="brief-hub-headline">
+          {t("title", { unit: institutions ? "both" : unit, years })}
         </h3>
+        {institutions && (
+          <div className="sp-switch" role="group" aria-label={t("switch")}>
+            {(["institution", "programme"] as const).map((u) => (
+              <button key={u} type="button" className="sp-option" aria-pressed={by === u} onClick={() => choose(u)}>
+                {t(u === "institution" ? "byInstitution" : "byProgramme")}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-      <ol className="sp-items" aria-label={t("listLabel")}>
+      <ol className="sp-items" aria-label={t("listLabel", { unit })}>
         {shown.map((item) => {
           const isOpen = open === item.code;
           const panel = `sp-item-${item.code}`;
           return (
             <li key={item.code} className="sp-item" data-open={isOpen ? "true" : undefined}>
               <button type="button" className="sp-row sp-item-row" aria-expanded={isOpen} aria-controls={panel} onClick={() => setOpen(isOpen ? null : item.code)}>
-                <span className="sp-item-name">
+                <span className="sp-item-name" title={item.original}>
                   {item.name}
-                  <Translated shown={item} />
                   {itemSub(item, t) && <span className="sp-item-sub">{itemSub(item, t)}</span>}
                 </span>
                 <span className="sp-cell" aria-hidden="true">
@@ -407,9 +435,9 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
           );
         })}
       </ol>
-      {setup.items.length > ITEMS_MAX && (
+      {list.length > ITEMS_MAX && (
         <button type="button" className="brief-av-link sp-more" onClick={() => setAll((a) => !a)}>
-          {all ? t("showFewer") : t("showAll", { count: setup.items.length })}
+          {all ? t("showFewer") : t("showAll", { count: list.length, unit })}
         </button>
       )}
     </section>
@@ -424,6 +452,8 @@ function itemSub(item: SpendingItem, t: ReturnType<typeof useTranslations>): str
       return t("kind.purpose", { code: item.code });
     case "programmeGroup":
       return item.sub ?? "";
+    case "institutionGroup":
+      return t("kind.programmes", { count: item.partsCount ?? 0 });
     case "institution":
       return item.sub === "core" ? t("kind.core") : t("kind.other");
     default:
@@ -481,15 +511,14 @@ function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
       )}
       {item.parts && item.parts.length > 0 && (
         <div className="sp-detail">
-          <p className="sp-detail-title">{t("parts", { count: item.partsCount ?? item.parts.length })}</p>
+          <p className="sp-detail-title">
+            {item.kind === "institutionGroup" ? t("programmes") : t("parts", { count: item.partsCount ?? item.parts.length })}
+          </p>
           <ul className="sp-detail-list">
             {item.parts.map((p) => (
               <li key={p.name}>
-                <span>
-                  {p.name}
-                  <Translated shown={p} />
-                </span>
-                <span className="sp-detail-amount">{money.amount(p.amount, null)}</span>
+                <span title={p.original}>{p.name}</span>
+                <span className="sp-detail-amount">{money.amount(p.amount, p.amountUsd ?? null)}</span>
               </li>
             ))}
           </ul>
@@ -523,19 +552,13 @@ function AreasStep({
   // both columns stay on one scale.
   const [mode, setMode] = useState<"share" | "amount">("share");
   const { areas, apart } = reading;
-  const lead = [...areas].sort((a, b) => b.spendShare - a.spendShare)[0];
   const maxShare = Math.max(...areas.flatMap((a) => [a.targetShare, a.spendShare]), apart.spendShare, 0.01);
   return (
-    <section className="sp-step sp-step-areas" aria-labelledby="sp-areas-headline">
+    <section className="sp-step sp-step-areas" aria-labelledby="sp-areas-title">
       <div className="sp-step-head">
-        <p className="brief-hub-kicker">
-          {t("kicker")} <span className="sp-ai">{t("ai")}</span>
-        </p>
-        {lead && lead.spend > 0 && (
-          <h3 id="sp-areas-headline" className="brief-hub-headline">
-            {t("headline", { area: lead.name, spend: percentLabel(lead.spendShare), targets: percentLabel(lead.targetShare) })}
-          </h3>
-        )}
+        <h3 id="sp-areas-title" className="brief-hub-headline">
+          {t("title")}
+        </h3>
         <div className="sp-switch" role="group" aria-label={t("switch")}>
           <button type="button" className="sp-option" aria-pressed={mode === "share"} onClick={() => setMode("share")}>
             {t("shares")}
@@ -674,8 +697,7 @@ function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money
         {lines.slice(0, LINES_MAX).map((l) => (
           <li key={l.id} className="sp-line">
             <span className="sp-line-name">
-              {l.name}
-              <Translated shown={l} />
+              <span title={l.original}>{l.name}</span>
               <span className="sp-line-status" data-status={l.areaStatus}>
                 {l.areaStatus === "checked" ? t("checked") : l.areaStatus === "ai" ? t("aiSuggested") : t("apartWhy")}
               </span>
@@ -686,17 +708,6 @@ function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money
       </ul>
       {lines.length > LINES_MAX && <p className="sp-open-line">{t("linesMore", { count: lines.length - LINES_MAX })}</p>}
     </>
-  );
-}
-
-/** A machine-translated name says so, with the review's own name on hover. */
-function Translated({ shown }: { shown: { translated?: true; original?: string } }) {
-  const t = useTranslations("brief.spending");
-  if (!shown.translated) return null;
-  return (
-    <span className="sp-ai" title={shown.original}>
-      {t("translated")}
-    </span>
   );
 }
 

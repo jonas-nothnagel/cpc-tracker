@@ -4,8 +4,9 @@ import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
 import type { Currency } from "@/components/brief/contracts/money";
 import { parseBerAreas } from "@/lib/brief/ber-areas";
+import { parseBerNames } from "@/lib/brief/ber-names-shared";
 import { spendingSetup, type SpendingSetup } from "@/lib/brief/spending";
-import { legacyPayload, levelsPayload } from "@/lib/brief/spending-fixture";
+import { activitiesPayload, holdersPayload, legacyPayload, levelsPayload } from "@/lib/brief/spending-fixture";
 import { briefFixture } from "@/lib/brief/test-fixture";
 import { SpendingSection } from "./spending-section";
 
@@ -58,13 +59,13 @@ describe("SpendingSection, Country X's illustrative file", () => {
     expect(screen.queryByRole("group", { name: "Amounts in" })).toBeNull();
   });
 
-  it("names the area holding the most spending beside its share of the targets", () => {
+  it("titles the areas by what they show, with no tag on the title, each area's two shares on its row", () => {
     renderSection(LEGACY);
-    expect(
-      screen.getByRole("heading", { name: "Agriculture holds 70% of the reviewed spending and 17% of the targets." }),
-    ).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 3, name: "Targets and reviewed spending by biodiversity area" })).toBeTruthy();
     const rows = within(screen.getByRole("list", { name: /Biodiversity areas/ })).getAllByRole("button");
     expect(rows.map((r) => r.textContent?.split(/\d/)[0])).toEqual(["Agriculture", "Protected areas", "Water"]);
+    expect(rows[0].textContent).toContain("17%");
+    expect(rows[0].textContent).toContain("70%");
     expect(rows[2].textContent).toContain("None");
   });
 
@@ -141,29 +142,86 @@ describe("SpendingSection, a rebuilt record", () => {
     expect(container.querySelectorAll(".sp-bar").length).toBe(5);
   });
 
-  it("lists the review's own lines, each opening to what it counted and who spends it", () => {
+  it("lists the review's own lines under a title, each opening to what it counted and who spends it", () => {
     renderSection(LEVELS);
-    expect(
-      screen.getByRole("heading", { name: "Security of protected areas holds 70% of the reviewed spending in 2020–2021." }),
-    ).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 3, name: "Reviewed spending by programme, 2020–2021" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: /Security of protected areas.*Programme 71405/ }));
     // ₮7 bn counted of ₮26 bn spent, converted as the line's own spending is.
     expect(screen.getByText("Counted US$3.1 million of US$11.5 million spent, at the review's rates")).toBeTruthy();
     expect(screen.getByText("Other, counted at 5%")).toBeTruthy();
     expect(screen.getByText("Spent by 31 units in 2021, the largest:")).toBeTruthy();
     expect(screen.getByText("Khan Khentii administration")).toBeTruthy();
+    // One level in the review's data: nothing to switch.
+    expect(screen.queryByRole("group", { name: "Show by institution or by programme" })).toBeNull();
+  });
+
+  it("lists Panama's spending by institution first and by programme on request, under one title", () => {
+    const panama = spendingSetup(activitiesPayload(), SOURCE, {
+      names: parseBerNames({
+        names: {
+          "0-10": { en: "Ministry of Agricultural Development" },
+          "0-27": { en: "Ministry of Environment" },
+          "0-10-1-3": { en: "Agricultural Health" },
+        },
+      }),
+      locale: "en",
+    })!;
+    renderSection(panama);
+    const title = { level: 3, name: "Reviewed spending by institution and programme, 2016–2017" };
+    const group = screen.getByRole("group", { name: "Show by institution or by programme" });
+    const rows = () => within(screen.getByRole("list", { name: /in the review, largest first$/ })).getAllByRole("button");
+    expect(screen.getByRole("heading", title)).toBeTruthy();
+    expect(within(group).getByRole("button", { name: "Institution" })).toHaveAttribute("aria-pressed", "true");
+    // The environment ministry first: the most money, over two programmes.
+    expect(rows()[0].textContent).toMatch(/^Ministry of Environment2 programmes/);
+    expect(rows()[0].querySelector(".sp-item-name")).toHaveAttribute("title", "Ministerio de Ambiente");
+    fireEvent.click(rows()[0]);
+    expect(screen.getByText("Its programmes, largest first:")).toBeTruthy();
+    expect(screen.getByText("Dirección General y Administración")).toBeTruthy();
+    // By programme: the agriculture ministry's programme leads; the title stays.
+    fireEvent.click(within(group).getByRole("button", { name: "Programme" }));
+    expect(rows()[0].textContent).toMatch(/^Agricultural HealthMinistry of Agricultural Development/);
+    expect(screen.queryByText("Its programmes, largest first:")).toBeNull();
+    expect(screen.getByRole("heading", title)).toBeTruthy();
+  });
+
+  it("lists Mongolia's spending by who holds the budget, in US$ at each year's rate", () => {
+    renderSection(spendingSetup(holdersPayload(), SOURCE)!);
+    expect(screen.getByRole("heading", { level: 3, name: "Reviewed spending by institution and programme, 2020–2021" })).toBeTruthy();
+    const rows = within(screen.getByRole("list", { name: "Institutions in the review, largest first" })).getAllByRole("button");
+    expect(rows.map((r) => r.querySelector(".sp-item-name")?.textContent)).toEqual([
+      "Minister for Nature and Tourism1 programme",
+      "Capital city1 programme",
+      "Bulgan province1 programme",
+    ]);
+    fireEvent.click(rows[1]);
+    // ₮1 bn at 2,000 and ₮1.5 bn at 2,500: US$1.1 million, on the row and its line.
+    const item = within(rows[1].closest("li")!);
+    expect(item.getByText("Solid waste removal")).toBeTruthy();
+    expect(item.getAllByText("US$1.1 million")).toHaveLength(2);
+    expect(item.queryByText(/₮/)).toBeNull();
+  });
+
+  it("names a line by its machine translation, untagged, with the review's own name on hover", () => {
+    const named = spendingSetup(levelsPayload(), SOURCE, {
+      names: parseBerNames({ names: { "71405": { en: "Protection of protected areas" } } }),
+      locale: "en",
+    })!;
+    renderSection(named);
+    expect(screen.getByText("Protection of protected areas")).toHaveAttribute("title", "Security of protected areas");
+    expect(screen.queryByText(/machine translation/i)).toBeNull();
   });
 
   it("tags each line's area as AI-suggested and keeps an unplaced line apart, with no fine print", () => {
     renderSection(LEVELS);
     fireEvent.click(screen.getByRole("button", { name: /^Protected areas/ }));
-    expect(screen.getByText("AI-suggested, not reviewed")).toBeTruthy();
+    expect(screen.getByText("AI-suggested, not yet reviewed")).toBeTruthy();
     // No matches until the comparisons are rebuilt for these lines.
     expect(screen.queryByText(/have a matching budget line/)).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: /^Not placed in an area yet/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^Not yet assigned to an area/ }));
     expect(within(screen.getByRole("list", { name: "Budget lines in this area" })).getByText("Solid waste removal")).toBeTruthy();
-    expect(screen.getByText("Kept apart until a person decides")).toBeTruthy();
-    expect(screen.queryByText(/checked by a person;/)).toBeNull();
+    expect(screen.getByText("Not assigned, pending review")).toBeTruthy();
+    expect(screen.queryByText(/lines have an area/)).toBeNull();
   });
 
   it("shows the areas' targets and spending as amounts on request, the bars still drawn by share", () => {

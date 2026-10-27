@@ -821,7 +821,6 @@ export function ItemColumn({
     code?: string;
     original?: string;
     aiWritten?: true;
-    textTranslated?: "machine";
     layer?: string;
   };
   /** The action's status or the budget line's spending, as its source states it. */
@@ -863,17 +862,9 @@ export function ItemColumn({
       <p className="ex-focus-doc">
         {kind} · {source}
       </p>
-      <h2
-        className="ex-focus-title"
-        title={item.original && !item.translated ? originalName(item.original) : undefined}
-      >
+      <h2 className="ex-focus-title" title={item.original ? originalName(item.original) : undefined}>
         {item.code && <span className="ex-focus-code">{item.code} </span>}
         {item.name ?? item.label}
-        {item.translated && (
-          <span className="ex-focus-tag" title={item.original ? originalName(item.original) : undefined}>
-            {t("translated")}
-          </span>
-        )}
       </h2>
       {facts && <p className="ex-focus-facts">{facts}</p>}
       <p className="ex-focus-text" data-clamped={long && !open ? "true" : undefined}>
@@ -882,11 +873,6 @@ export function ItemColumn({
             <span className="ex-focus-ai" title={t("aiWrittenNote")}>
               {t("aiWritten")}
             </span>{" "}
-          </>
-        )}
-        {item.textTranslated && (
-          <>
-            <span className="ex-focus-ai">{t("translated")}</span>{" "}
           </>
         )}
         {item.text}

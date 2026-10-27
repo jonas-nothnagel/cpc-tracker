@@ -57,7 +57,9 @@ export function ContractsSection({
   lens: LensId | null;
   onLens: (lens: LensKey) => void;
   currency: Currency;
-  onCurrency: (next: Currency) => void;
+  /** Only on the page in the country's own language: the switch between its
+   *  currency and US$. Elsewhere amounts are in US$ alone. */
+  onCurrency?: (next: Currency) => void;
   /** Puts a target in the centre of the ring further down. */
   onExplore?: (id: string) => void;
 }) {
@@ -121,7 +123,7 @@ export function ContractsSection({
         <h2 id="brief-contracts-title" className="ct-brief-title" tabIndex={-1}>
           {t("title")}
         </h2>
-        <CurrencySwitch currency={currency} rate={setup.file.source.usdRate} onChange={onCurrency} />
+        {onCurrency && <CurrencySwitch currency={currency} rate={setup.file.source.usdRate} onChange={onCurrency} />}
       </header>
       <FocusBar setup={setup} focus={focus} placeNames={placeNames} onFocus={onFocus} />
       <Overview

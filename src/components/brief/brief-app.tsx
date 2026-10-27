@@ -60,7 +60,8 @@ export function BriefApp({
   explore,
   contracts,
   spending,
-  initialCurrency = "mnt",
+  initialCurrency = "usd",
+  localCurrency = false,
 }: {
   source: BriefSource;
   initialSelection: BriefSelection;
@@ -72,9 +73,12 @@ export function BriefApp({
   /** The country's reviewed spending, where its review states the public
    *  spending it is part of. */
   spending?: SpendingSetup;
-  /** The currency every amount on the page opens in: from the link (?cur=),
-   *  else US$, or tugrik on the Mongolian page (set by the route). */
+  /** The currency every amount on the page opens in: US$, or tugrik on the
+   *  Mongolian page (set by the route). */
   initialCurrency?: Currency;
+  /** The page is in the country's own language, the only page where its own
+   *  currency appears (by default, with a switch to US$). */
+  localCurrency?: boolean;
 }) {
   const tl = useTranslations("briefing.lens");
   const tp = useTranslations("brief.preview");
@@ -257,7 +261,7 @@ export function BriefApp({
                   source={source}
                   docs={selection.docs}
                   currency={currency}
-                  onCurrency={setCurrency}
+                  onCurrency={localCurrency ? setCurrency : undefined}
                   onExploreArea={explore?.layers?.items.some((it) => it.layer === "budget") ? exploreArea : undefined}
                 />
               ) : id === "contracts" && contracts ? (
@@ -267,7 +271,7 @@ export function BriefApp({
                   lens={selection.lens}
                   onLens={(next) => update({ ...selection, lens: next })}
                   currency={currency}
-                  onCurrency={setCurrency}
+                  onCurrency={localCurrency ? setCurrency : undefined}
                   onExplore={explore ? exploreTarget : undefined}
                 />
               ) : id === "areas" ? (
@@ -341,7 +345,7 @@ export function BriefApp({
   );
   // One currency for every amount on the page, the contracts under a comparison too.
   return (
-    <CurrencyProvider currency={currency} rate={contracts?.setup.file.source.usdRate ?? 0}>
+    <CurrencyProvider currency={currency} rate={contracts?.setup.file.source.usdRate ?? 0} local={localCurrency}>
       {page}
     </CurrencyProvider>
   );

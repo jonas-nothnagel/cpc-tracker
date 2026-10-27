@@ -57,12 +57,13 @@ describe("Hero", () => {
     expect(screen.queryByRole("navigation", { name: "Language" })).toBeNull();
   });
 
-  it("keeps the reader's choices when the language changes", () => {
-    window.history.replaceState(null, "", "/es/panama/brief?docs=NP%2CPEG&cur=usd");
-    hero("es");
+  it("keeps the reader's choices when the language changes, but not the currency", () => {
+    // Each language opens in its own currency: US$, or the country's own on its own-language page.
+    window.history.replaceState(null, "", "/mn/mongolia/brief?docs=NP%2CPEG&cur=mnt");
+    hero("mn", "mongolia", "Mongolia");
     const english = screen.getByRole("link", { name: "English" });
     fireEvent.click(english);
-    expect(english).toHaveAttribute("href", "/en/panama/brief?docs=NP%2CPEG&cur=usd");
+    expect(english).toHaveAttribute("href", "/en/mongolia/brief?docs=NP%2CPEG");
   });
 
   it("says the interface is machine-translated only where it is", () => {
