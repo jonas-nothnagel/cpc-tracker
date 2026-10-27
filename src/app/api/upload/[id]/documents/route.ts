@@ -79,7 +79,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     if (EXCEL.has(ext) && isBtrExcel(file.name)) {
       writeFileSync(tmp, Buffer.from(await file.arrayBuffer()));
       const tables = await parseBtrTables(tmp, detectBtrType(file.name));
+      // Parsing takes a while: an analysis started meanwhile keeps its draft.
+      let late = false;
       const updated = updateDraft(id, (d) => {
+        if (d.started) {
+          late = true;
+          return;
+        }
         const data = mergeBtrData(d.btr?.data ?? null, tables);
         const measures = data.mitigationMeasures;
         d.btr = {
@@ -88,6 +94,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           actions: Array.isArray(measures) ? measures.length : 0,
         };
       });
+      if (late) return fail(409, "started", "The analysis has started");
       return NextResponse.json({ draft: updated });
     }
 
@@ -99,11 +106,17 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       rows = delimitedRows(await file.text());
     }
     if (rows.length === 0) return fail(422, "noTargets", "No targets were found in the file.");
+    let late = false;
     const updated = updateDraft(id, (d) => {
+      if (d.started) {
+        late = true;
+        return;
+      }
       const docs = tableDocuments(rows, file.name, d.documents.map((x) => x.code), d.nextDoc);
       d.documents.push(...docs);
       d.nextDoc += docs.length;
     });
+    if (late) return fail(409, "started", "The analysis has started");
     return NextResponse.json({ draft: updated });
   } catch (err) {
     console.error("Spreadsheet parse error:", err instanceof Error ? err.message : err);

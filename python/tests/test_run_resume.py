@@ -243,3 +243,96 @@ def test_resume_refuses_outside_the_upload_flow(tmp_path, monkeypatch):
     with pytest.raises(SystemExit):
         asyncio.run(run_analysis.main())
     assert (tmp_path / "alignment.json").exists()
+
+
+def _ledger_rows(tmp_path):
+    ledger = tmp_path / "ledger" / "footprint-ledger.jsonl"
+    return [json.loads(line) for line in ledger.read_text().splitlines()] if ledger.exists() else []
+
+
+def test_resume_says_the_attempt_is_booked_before_it_clears_so_a_kill_cannot_book_it_twice(tmp_path, monkeypatch):
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    monkeypatch.setenv("CPC_RUN_SOURCE", "user_pipeline")
+    out = tmp_path / "output"
+    out.mkdir()
+    snapshot = {**SNAPSHOT, "by_model": [{**SNAPSHOT, "model": "gpt-5.4"}]}
+    (out / "status.json").write_text(json.dumps({"status": "running", "footprint": snapshot}))
+
+    def killed(output_dir):
+        raise KeyboardInterrupt("the server restarts while the outputs are cleared")
+
+    real_clear = run_analysis.clear_for_resume
+    monkeypatch.setattr(run_analysis, "clear_for_resume", killed)
+    with pytest.raises(KeyboardInterrupt):
+        run_analysis.resume_previous_attempt(out, "targets.json")
+    assert json.loads((out / "status.json").read_text())["footprintBooked"] is True
+    monkeypatch.setattr(run_analysis, "clear_for_resume", real_clear)
+    run_analysis.resume_previous_attempt(out, "targets.json")
+    assert [r["call_count"] for r in _ledger_rows(tmp_path)] == [12]
+
+
+def test_resume_books_nothing_for_an_attempt_already_booked(tmp_path, monkeypatch):
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    out = tmp_path / "output"
+    out.mkdir()
+    snapshot = {**SNAPSHOT, "by_model": [{**SNAPSHOT, "model": "gpt-5.4"}]}
+    (out / "status.json").write_text(json.dumps({"status": "failed", "footprint": snapshot, "footprintBooked": True}))
+    run_analysis.resume_previous_attempt(out, "targets.json")
+    assert _ledger_rows(tmp_path) == []
+
+
+def test_booking_happens_once_and_the_status_says_so_at_once(tmp_path, monkeypatch):
+    from src.run_status import StatusFile
+
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    monkeypatch.setattr(run_analysis, "OUTPUT_DIR", tmp_path)
+    monkeypatch.setattr(run_analysis, "_STATUS", StatusFile(tmp_path / "status.json", min_interval_s=60))
+    monkeypatch.setattr(run_analysis, "_FOOTPRINT_BOOKED", False)
+    footprint = {**SNAPSHOT, "by_model": [{**SNAPSHOT, "model": "gpt-5.4"}]}
+    run_analysis._book_once(footprint, "targets.json")
+    run_analysis._book_once(footprint, "targets.json")
+    assert [r["call_count"] for r in _ledger_rows(tmp_path)] == [12]
+    assert json.loads((tmp_path / "status.json").read_text())["footprintBooked"] is True
+
+
+def test_a_failed_run_books_the_calls_it_made(tmp_path, monkeypatch):
+    async def no_calls(**kwargs):
+        raise AssertionError("no LLM call may be made")
+
+    class Tracker:
+        """Seven calls made before the failure; the flat totals also carry the readings' seed."""
+
+        def snapshot(self):
+            return {**SNAPSHOT, "call_count": 40, "by_model": [{**SNAPSHOT, "call_count": 7, "model": "gpt-5.4"}]}
+
+    def failing_load(name):
+        raise RuntimeError("the targets could not be loaded")
+
+    monkeypatch.setattr(llm, "call_llm_detailed", no_calls)
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    monkeypatch.setenv("CPC_RUN_SOURCE", "user_pipeline")
+    monkeypatch.setattr(run_analysis, "OUTPUT_DIR", tmp_path)
+    monkeypatch.setattr(run_analysis, "_STATUS", None)
+    monkeypatch.setattr(run_analysis, "_FOOTPRINT_BOOKED", False)
+    monkeypatch.setattr(run_analysis, "get_footprint_tracker", lambda: Tracker())
+    monkeypatch.setattr(run_analysis, "derive_output_dir", lambda *args: tmp_path)
+    monkeypatch.setattr(run_analysis, "load_input_data", failing_load)
+    monkeypatch.setattr(
+        run_analysis,
+        "parse_args",
+        lambda: argparse.Namespace(
+            targets_file="targets.json",
+            language="en",
+            model=None,
+            skip_target_quality=False,
+            nr7_file=None,
+            limit_targets=None,
+            resume=False,
+        ),
+    )
+    asyncio.run(run_analysis.main())
+    status = json.loads((tmp_path / "status.json").read_text())
+    assert status["status"] == "failed"
+    assert status["footprintBooked"] is True
+    # The per-model rows only: the seed is in the extract rows already.
+    assert [r["call_count"] for r in _ledger_rows(tmp_path)] == [7]

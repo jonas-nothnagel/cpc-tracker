@@ -2,10 +2,10 @@ import { spawn } from "child_process";
 import { existsSync, readdirSync, rmSync } from "fs";
 import { join } from "path";
 import { isGenericLabel } from "@/lib/upload-helpers";
-import { BOOT_ID, jobGone } from "./boot";
+import { BOOT_ID, jobGone, processAlive } from "./boot";
 import { promptLabel } from "./documents";
 import { documentDir, readDraft, updateDraft } from "./draft";
-import { readJson } from "./files";
+import { readJson, writeJsonAtomic } from "./files";
 import type { Draft, DraftDocument, DraftTarget, ExtractionFootprint } from "./types";
 
 /**
@@ -112,12 +112,35 @@ export function toDraftTargets(docId: string, items: unknown[]): DraftTarget[] {
   return targets;
 }
 
+/** The job reading a document: its process group (uv and the Python under
+ *  it) and the server that started it. */
+interface ReadingJob {
+  pid?: number;
+  bootId?: string;
+}
+
+const jobOf = (dir: string) => readJson<ReadingJob>(join(dir, "job.json"));
+
+/** Stop a document's reading (the document was removed): the whole job, when
+ *  this server started it and it still runs. A job started by a server that
+ *  is gone is left alone, since its process id may now belong to another. */
+export function stopReading(id: string, docId: string): void {
+  const job = jobOf(documentDir(id, docId));
+  if (!job || job.bootId !== BOOT_ID || typeof job.pid !== "number" || !processAlive(job.pid)) return;
+  try {
+    process.kill(-job.pid, "SIGTERM");
+  } catch {
+    // Ended in between.
+  }
+}
+
 /** Start reading one document; false when its file is gone. */
 function spawnReading(id: string, doc: DraftDocument): boolean {
   const dir = documentDir(id, doc.id);
   const source = sourceFile(dir);
   if (!source) return false;
   rmSync(join(dir, "status.json"), { force: true });
+  rmSync(join(dir, "job.json"), { force: true });
   const child = spawn(
     "uv",
     [
@@ -136,9 +159,12 @@ function spawnReading(id: string, doc: DraftDocument): boolean {
       detached: true,
     },
   );
+  // Detached, the job leads its own process group: stopping it stops the reading.
+  if (child.pid) writeJsonAtomic(join(dir, "job.json"), { pid: child.pid, bootId: BOOT_ID });
+  // It ended, or could not start: whatever it left is taken in now.
   const next = () => {
     try {
-      refreshReading(id);
+      refreshReading(id, new Date(), { docId: doc.id, pid: child.pid });
     } catch (err) {
       console.error("Reading refresh failed:", err instanceof Error ? err.message : err);
     }
@@ -200,14 +226,17 @@ export function startReading(id: string): Draft | null {
   });
 }
 
-/** Take in what the reading jobs have done since the last look. */
-export function refreshReading(id: string, now = new Date()): Draft | null {
+/** Take in what the reading jobs have done since the last look. `ended` is a
+ *  job that has just ended: when it is still its document's job and left no
+ *  last word, it is gone now, not after a quiet two minutes. */
+export function refreshReading(id: string, now = new Date(), ended?: { docId: string; pid?: number }): Draft | null {
   return updateDraft(id, (draft) => {
     if (draft.started) return;
     for (const doc of draft.documents) {
       if (doc.state !== "reading") continue;
       const dir = documentDir(id, doc.id);
       const status = readJson<ReadingStatus>(join(dir, "status.json"));
+      const endedHere = ended?.docId === doc.id && jobOf(dir)?.pid === ended.pid;
       if (status?.state === "done") {
         takeIn(draft, doc, dir);
       } else if (status?.state === "failed") {
@@ -215,7 +244,7 @@ export function refreshReading(id: string, now = new Date()): Draft | null {
         delete doc.part;
         delete doc.parts;
         if (doc.state === "noText") removeSource(dir);
-      } else if (jobGone(status, doc.readingAt, now)) {
+      } else if (endedHere || jobGone(status, doc.readingAt, now)) {
         doc.state = (doc.attempts ?? 0) < MAX_ATTEMPTS ? "queued" : "failed";
       } else if (status?.state === "reading") {
         if (typeof status.part === "number") doc.part = status.part;

@@ -58,6 +58,9 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
   // Edits sent and not yet answered: while any is, the server's copy may
   // not have them, so it is not shown over the page's own.
   const unsaved = useRef(0);
+  // The same edits as answers to wait for: the start waits until each is
+  // saved (true) or refused (false).
+  const saving = useRef(new Set<Promise<boolean>>());
   const creating = useRef<Promise<Draft | null> | null>(null);
 
   const adopt = useCallback((next: Draft | null | undefined) => {
@@ -138,7 +141,7 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
     setDraft(next);
     const body = JSON.stringify({ changes: [c] });
     unsaved.current += 1;
-    fetch(`/api/upload/${current.id}`, {
+    const sent: Promise<boolean> = fetch(`/api/upload/${current.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body,
@@ -150,16 +153,20 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
         if (res.ok) {
           const saved = await res.json().catch(() => ({}));
           if (unsaved.current === 0) adopt(saved.draft);
-          return;
+          return true;
         }
         setError({ code: res.status === 401 ? "signIn" : "notSaved" });
         refetch(current.id);
+        return false;
       })
       .catch(() => {
         unsaved.current -= 1;
         setError({ code: "notSaved" });
         refetch(current.id);
+        return false;
       });
+    saving.current.add(sent);
+    void sent.then(() => saving.current.delete(sent));
   }, [adopt, refetch]);
 
   const read = useCallback(async () => {
@@ -182,6 +189,11 @@ export function useDraft(initial: Draft | null, opts: { locale: string; country:
     const current = latest.current;
     if (!current) return null;
     setStartError(null);
+    // Edits still on their way are saved first, so the analysis starts on
+    // what the page shows; one that was refused stops the start, and the
+    // page says so and shows what the server has.
+    const saved = await Promise.all(saving.current);
+    if (saved.includes(false)) return null;
     try {
       const res = await fetch(`/api/upload/${current.id}/start`, {
         method: "POST",

@@ -26,6 +26,12 @@ export const PALETTE = ["#4f46e5", "#9d174d", "#ca8a04", "#475569", "#db2777", "
 export const RESERVED = new Set(["BTR", "BTR_ADP", "BER", "NR7", "OTHER"]);
 export const SAFE_ID = /^[A-Za-z][A-Za-z0-9]{0,11}$/;
 
+/** A framework by its code: own entries only, so a short name such as
+ *  "constructor" is a name, not something every object has. */
+export function knownFramework(code: string): (typeof KNOWN)[string] | undefined {
+  return Object.hasOwn(KNOWN, code) ? KNOWN[code] : undefined;
+}
+
 /** A framework's names in the project's languages: its code as a word, or
  *  its full name in English, Spanish or French. NBSAP comes before NAP. */
 const FRAMEWORK_NAMES: [code: (typeof FRAMEWORK_CODES)[number], pattern: RegExp][] = [
@@ -46,6 +52,12 @@ const FRAMEWORK_NAMES: [code: (typeof FRAMEWORK_CODES)[number], pattern: RegExp]
 
 const NAME_MAX = 120;
 const EXTENSION = /\.(?:pdf|docx?|txt|csv|tsv|xlsx?)$/i;
+
+/** Text's length in characters, as `cut` keeps it: a character outside the
+ *  basic plane (some CJK, symbols) is one, not two UTF-16 units. */
+export function charCount(text: string): number {
+  return Array.from(text).length;
+}
 
 /** User text on one line, composed (NFC): control characters out, whitespace
  *  collapsed. Anything that is not a string reads as empty. */
@@ -142,7 +154,7 @@ export function suggestCode(name: string, taken: readonly string[]): string {
 /** Each code's colour, in order: its framework's, else the palette's next. */
 export function documentColors(codes: readonly string[]): string[] {
   let paint = 0;
-  return codes.map((code) => KNOWN[code]?.color ?? PALETTE[paint++ % PALETTE.length]);
+  return codes.map((code) => knownFramework(code)?.color ?? PALETTE[paint++ % PALETTE.length]);
 }
 
 /** Target pairs from two different documents, plus every reported action

@@ -1,4 +1,4 @@
-import { cleanText } from "./documents";
+import { charCount, cleanText } from "./documents";
 
 /**
  * Policy areas an upload brings, in the user's own words: what they must
@@ -36,16 +36,16 @@ export function isBlankOwnLens(lens: OwnLensInput): boolean {
 /** The first thing that stops the areas from being used, or null. */
 export function ownLensProblem(lens: OwnLensInput): OwnLensProblem | null {
   const name = cleanText(lens.name);
-  if (!name || name.length > OWN_AREA_LIMITS.name) return { code: "name" };
-  if (cleanText(lens.source).length > OWN_AREA_LIMITS.source) return { code: "source" };
+  if (!name || charCount(name) > OWN_AREA_LIMITS.name) return { code: "name" };
+  if (charCount(cleanText(lens.source)) > OWN_AREA_LIMITS.source) return { code: "source" };
   const areas = Array.isArray(lens.areas) ? lens.areas : [];
   if (areas.length < 1 || areas.length > OWN_AREA_LIMITS.areas) return { code: "count" };
   const seen = new Set<string>();
   for (const area of areas) {
     const areaName = cleanText(area?.name);
-    if (!areaName || areaName.length > OWN_AREA_LIMITS.areaName) return { code: "areaName" };
+    if (!areaName || charCount(areaName) > OWN_AREA_LIMITS.areaName) return { code: "areaName" };
     const description = cleanText(area?.description);
-    if (!description || description.length > OWN_AREA_LIMITS.description) {
+    if (!description || charCount(description) > OWN_AREA_LIMITS.description) {
       return { code: "description", area: areaName };
     }
     const key = areaName.toLocaleLowerCase();

@@ -102,13 +102,19 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     });
     recordReviews(draft, clientId);
     enqueue(id);
-    pump();
   } catch (err) {
     console.error("Start failed:", err instanceof Error ? err.message : err);
     updateDraft(id, (d) => {
       d.started = false;
     });
     return fail(500, "generic");
+  }
+  // In line now, so started whatever happens next: a line that cannot move
+  // this moment moves on the next look (every 30 seconds).
+  try {
+    pump();
+  } catch (err) {
+    console.error("The line could not move now:", err instanceof Error ? err.message : err);
   }
   return NextResponse.json({ analysisId: id });
 }

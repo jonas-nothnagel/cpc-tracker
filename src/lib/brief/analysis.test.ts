@@ -1,4 +1,4 @@
-import { rmSync } from "fs";
+import { readFileSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
 import { describe, expect, it } from "vitest";
 import { analysisBrief, analysisBriefFrom, analysisFactsFrom, analysisInEnglish } from "./analysis";
@@ -47,6 +47,17 @@ describe("analysisBriefFrom", () => {
   it("is unreadable when a completed run's results are missing, so nothing waits for it forever", () => {
     const paths = writeFixtureAnalysis();
     rmSync(join(paths.outputDir, "alignment.json"));
+    expect(analysisBriefFrom(paths, FIXTURE_ID, "en").kind).toBe("unreadable");
+  });
+});
+
+describe("analysisBriefFrom, results that cannot be read", () => {
+  it("is unreadable, not an error page, when a completed run's results are malformed", () => {
+    const paths = writeFixtureAnalysis({ ownLens: true });
+    const file = join(paths.dataDir, "taxonomies.json");
+    const taxonomies = JSON.parse(readFileSync(file, "utf8"));
+    for (const entry of taxonomies.taxonomies ?? taxonomies) delete entry.categories;
+    writeFileSync(file, JSON.stringify(taxonomies));
     expect(analysisBriefFrom(paths, FIXTURE_ID, "en").kind).toBe("unreadable");
   });
 });

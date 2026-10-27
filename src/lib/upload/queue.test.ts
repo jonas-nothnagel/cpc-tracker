@@ -60,6 +60,23 @@ describe("the queue", () => {
     expect(env.CPC_CACHE_MANIFEST).toBe(join(root, "python", "analyses", A, "output", "cache-manifest.txt"));
   });
 
+  it("puts an analysis whose run could not start back at the head of the line, the claim free for the next look", async () => {
+    analysis(A);
+    analysis(B);
+    const { enqueue, pump, queueLength } = await import("./queue");
+    enqueue(A);
+    enqueue(B);
+    spawnMock.mockImplementationOnce(() => {
+      throw new Error("spawn EAGAIN");
+    });
+    expect(pump()).toBeNull();
+    expect(existsSync(join(root, "python", "analyses", ".running.json"))).toBe(false);
+    expect(queueLength()).toBe(2);
+    // The next look starts it, as a first attempt, ahead of the other.
+    expect(pump()).toBe(A);
+    expect(spawnMock.mock.calls[1][1]).not.toContain("--resume");
+  });
+
   it("starts the next analysis when one finishes", async () => {
     const { enqueue, pump, runState } = await import("./queue");
     analysis(A);
@@ -101,6 +118,34 @@ describe("recover", () => {
     expect(statusOf(A).status).toBe("interrupted");
     expect(runState(A).state).toBe("interrupted");
     expect(pump()).toBeNull();
+  });
+
+  it("books the calls of a run that stopped for good at once, since a Continue may never come, and only once", async () => {
+    vi.stubEnv("CPC_LEDGER_DIR", join(root, "ledger"));
+    const { enqueue, pump, recover } = await import("./queue");
+    analysis(A);
+    enqueue(A);
+    pump();
+    const row = { model: "gpt-5.4", source: "measured", call_count: 30, cached_call_count: 4, energy_wh: 12.5, water_ml: 40, co2_geq: 5.25, minerals_ugsbeq: 1.5 };
+    const quiet = (pid: number) => ({
+      status: "running",
+      heartbeatAt: ago(180_000),
+      bootId: "another-server",
+      pid,
+      footprint: { call_count: 30, by_model: [row] },
+    });
+    writeFileSync(join(root, "python", "analyses", A, "output", "status.json"), JSON.stringify(quiet(1)));
+    recover(new Date(Date.now() + 240_000));
+    pump();
+    // The resume would book the first attempt; here the resumed attempt goes quiet too.
+    writeFileSync(join(root, "python", "analyses", A, "output", "status.json"), JSON.stringify(quiet(2)));
+    recover(new Date(Date.now() + 240_000));
+    expect(statusOf(A)).toMatchObject({ status: "interrupted", footprintBooked: true });
+    recover(new Date(Date.now() + 480_000));
+    const rows = readFileSync(join(root, "ledger", "footprint-ledger.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l));
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ component: "user_pipeline", run_id: A, model: "gpt-5.4", call_count: 30, cached_call_count: 4, co2_geq: 5.25, region: "USA", country: null });
+    vi.unstubAllEnvs();
   });
 
   it("keeps a resumed run while its Python is still starting, and the next analysis waits", async () => {

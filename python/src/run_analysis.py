@@ -66,7 +66,7 @@ from .llm import (
     set_language,
     set_progress_listener,
 )
-from .run_status import StatusFile
+from .run_status import StatusFile, write_json_atomic
 from .footprint import append_event, electricity_zone
 from .quantitative import assess_quantitative_flags
 from .target_quality import assess_target_quality
@@ -219,6 +219,8 @@ def write_status(
         "promptVersion": PROMPT_VERSION,
         "footprint": get_footprint_tracker().snapshot(),
     }
+    if _FOOTPRINT_BOOKED:
+        payload["footprintBooked"] = True
     if _PROGRESS:
         payload["progress"] = dict(_PROGRESS)
     _status_file().write(payload)
@@ -241,6 +243,23 @@ def _on_progress(desc: str, done: int, total: int) -> None:
         _PROGRESS.update(pairsDone=done, pairsTotal=total)
         fields["progress"] = dict(_PROGRESS)
     _status_file().update(**fields)
+
+
+# Whether this attempt's footprint is in the ledger. Once it is, every status
+# written after says so, and nothing books it again: not a resume, not the
+# failure path after a late error.
+_FOOTPRINT_BOOKED = False
+
+
+def _book_once(footprint: dict, targets_file: str) -> None:
+    """Book this attempt's footprint once, and say so in the status at once:
+    a run cut short after this point is never booked twice."""
+    global _FOOTPRINT_BOOKED
+    if _FOOTPRINT_BOOKED:
+        return
+    _book_footprint(footprint, targets_file)
+    _FOOTPRINT_BOOKED = True
+    _status_file().update(force=True, footprintBooked=True)
 
 
 def _book_footprint(footprint: dict, targets_file: str) -> None:
@@ -332,12 +351,14 @@ def resume_previous_attempt(output_dir: Path, targets_file: str) -> str | None:
     except (OSError, json.JSONDecodeError):
         previous = {}
     footprint = previous.get("footprint")
-    if isinstance(footprint, dict):
+    if isinstance(footprint, dict) and not previous.get("footprintBooked"):
         # The per-model rows only: the flat totals carry the readings'
         # footprint (the seed), which the extract rows booked already.
         by_model = footprint.get("by_model")
         if isinstance(by_model, list) and by_model:
             _book_footprint({"by_model": by_model, "source": footprint.get("source")}, targets_file)
+            # Said at once: a resume cut short from here on books nothing twice.
+            write_json_atomic(output_dir / "status.json", {**previous, "footprintBooked": True})
     clear_for_resume(output_dir)
     started = previous.get("startedAt")
     return started if isinstance(started, str) else None
@@ -1379,7 +1400,7 @@ async def main() -> None:
 
         (OUTPUT_DIR / "footprint.json").write_text(json.dumps(footprint, indent=2))
 
-        _book_footprint(footprint, args.targets_file)
+        _book_once(footprint, args.targets_file)
 
         if footprint.get("available"):
             source = footprint.get("source", "measured")
@@ -1421,6 +1442,11 @@ async def main() -> None:
 
     except Exception as e:
         logger.exception("Pipeline failed")
+        # A failed run's calls are booked too: the per-model rows, as a
+        # resume books them (the readings' seed is in the extract rows).
+        snapshot = get_footprint_tracker().snapshot()
+        if snapshot.get("by_model"):
+            _book_once({"by_model": snapshot["by_model"], "source": snapshot.get("source")}, args.targets_file)
         write_status(0, "Error", str(e), status="failed", started_at=started_at, error=str(e))
     finally:
         set_progress_listener(None)

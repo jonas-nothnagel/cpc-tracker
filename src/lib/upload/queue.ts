@@ -1,6 +1,8 @@
 import { spawn } from "child_process";
 import { closeSync, existsSync, mkdirSync, openSync, readdirSync, renameSync, rmSync, writeFileSync, writeSync } from "fs";
 import { join } from "path";
+import { appendEvent } from "@/lib/footprint/ledger";
+import type { FootprintSource } from "@/lib/footprint/types";
 import { BOOT_ID, jobGone } from "./boot";
 import { analysesDir, pruneDrafts } from "./draft";
 import { readJson, writeJsonAtomic } from "./files";
@@ -81,13 +83,60 @@ function release(id: string): void {
   if (claim()?.id === id) rmSync(claimFile(), { force: true });
 }
 
+/** One model's share of an attempt's footprint, as the status snapshot keeps it. */
+type ModelFootprint = Partial<Record<"call_count" | "cached_call_count" | "energy_wh" | "water_ml" | "co2_geq" | "minerals_ugsbeq", number>> &
+  Partial<Record<`${"energy_wh" | "water_ml" | "co2_geq" | "minerals_ugsbeq"}_${"min" | "max"}`, number>> & {
+    model?: string;
+    source?: string;
+  };
+
+const round6 = (v: unknown) => Math.round((Number(v) || 0) * 1e6) / 1e6;
+
+/** Book an attempt that stopped for good: its per-model rows, as the
+ *  pipeline books a run (its readings' seed is in the extract rows). False
+ *  when there is nothing to book, or it is booked already. */
+function bookStopped(id: string, status: RunStatus): boolean {
+  const footprint = status.footprint as { by_model?: ModelFootprint[]; source?: string } | undefined;
+  if (status.footprintBooked || !Array.isArray(footprint?.by_model)) return false;
+  let booked = false;
+  for (const row of footprint.by_model) {
+    const calls = Number(row.call_count) || 0;
+    if (!calls) continue;
+    const metrics = ["energy_wh", "water_ml", "co2_geq", "minerals_ugsbeq"] as const;
+    const bounds = metrics.flatMap((m) => [`${m}_min`, `${m}_max`] as const);
+    appendEvent({
+      component: "user_pipeline",
+      provider: "openai",
+      model: row.model || process.env.LLM_MODEL || "unknown",
+      region: process.env.CPC_ELECTRICITY_ZONE || "USA",
+      run_id: id,
+      country: null,
+      input_tokens: null,
+      output_tokens: null,
+      call_count: calls,
+      cached_call_count: Number(row.cached_call_count) || 0,
+      energy_wh: round6(row.energy_wh),
+      water_ml: round6(row.water_ml),
+      co2_geq: round6(row.co2_geq),
+      minerals_ugsbeq: round6(row.minerals_ugsbeq),
+      source: (row.source || footprint.source || "unavailable") as FootprintSource,
+      ...(bounds.every((b) => typeof row[b] === "number") ? Object.fromEntries(bounds.map((b) => [b, round6(row[b])])) : {}),
+    });
+    booked = true;
+  }
+  return booked;
+}
+
 /** A run that ended or went quiet before it finished: back in line once,
  *  to resume from its cache, then interrupted until someone continues it. */
 function interrupt(id: string): void {
   const status = forNextAttempt(statusOf(id));
   const marker = join(runDir(id), "resumed");
   if (existsSync(marker)) {
-    setStatus(id, { ...status, status: "interrupted" });
+    // It waits for "Continue", which may never come: its calls are booked now,
+    // and a Continue's resume books nothing twice.
+    const booked = bookStopped(id, status);
+    setStatus(id, { ...status, ...(booked ? { footprintBooked: true } : {}), status: "interrupted" });
     return;
   }
   writeFileSync(marker, new Date().toISOString());
@@ -186,7 +235,17 @@ export function pump(): string | null {
     closeSync(fd);
   }
   rmSync(next.file, { force: true });
-  const pid = spawnRun(next.id, next.resume);
+  let pid: number | undefined;
+  try {
+    pid = spawnRun(next.id, next.resume);
+  } catch (err) {
+    // Not started: back at the head of the line as it was, and the claim
+    // free, so the next look starts it as if this one had not happened.
+    console.error("An analysis could not start:", err instanceof Error ? err.message : err);
+    writeJsonAtomic(next.file, { id: next.id, resume: next.resume });
+    release(next.id);
+    return null;
+  }
   if (claim()?.id === next.id) writeJsonAtomic(claimFile(), { id: next.id, bootId: BOOT_ID, pid, claimedAt });
   return next.id;
 }

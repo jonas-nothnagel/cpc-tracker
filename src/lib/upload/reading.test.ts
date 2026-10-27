@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -51,6 +51,69 @@ describe("startReading", () => {
     const args = spawnMock.mock.calls[0][1] as string[];
     expect(args.slice(0, 4)).toEqual(["run", "python", "-m", "src.extract"]);
     expect(args).toEqual(expect.arrayContaining(["--doc-type", "Document 1", "--output-language", "en", "--status-file"]));
+  });
+});
+
+describe("the reading job", () => {
+  it("is recorded beside the document, so a removal can stop it", async () => {
+    const { id, dir } = await draftWith(1);
+    const { BOOT_ID } = await import("./boot");
+    const { startReading } = await import("./reading");
+    startReading(id);
+    const child = spawnMock.mock.results[0].value as { pid: number };
+    expect(JSON.parse(readFileSync(join(dir("d1"), "job.json"), "utf8"))).toEqual({ pid: child.pid, bootId: BOOT_ID });
+  });
+
+  it("is stopped whole when its document is removed: the launcher and the reading under it", async () => {
+    const { id, dir } = await draftWith(1);
+    const { spawn } = await vi.importActual<typeof import("child_process")>("child_process");
+    const { BOOT_ID, processAlive } = await import("./boot");
+    const { stopReading } = await import("./reading");
+    // A launcher with a child of its own, in its own process group, as uv runs Python.
+    const job = spawn("sh", ["-c", "sleep 30 & wait"], { detached: true, stdio: "ignore" });
+    writeFileSync(join(dir("d1"), "job.json"), JSON.stringify({ pid: job.pid, bootId: BOOT_ID }));
+    const exited = new Promise((resolve) => job.on("exit", resolve));
+    stopReading(id, "d1");
+    await exited;
+    expect(processAlive(job.pid!)).toBe(false);
+  });
+
+  it("is left alone when another server started it: its process id says nothing here", async () => {
+    const { id, dir } = await draftWith(1);
+    const { spawn } = await vi.importActual<typeof import("child_process")>("child_process");
+    const { processAlive } = await import("./boot");
+    const { stopReading } = await import("./reading");
+    const job = spawn("sleep", ["30"], { detached: true, stdio: "ignore" });
+    writeFileSync(join(dir("d1"), "job.json"), JSON.stringify({ pid: job.pid, bootId: "another-server" }));
+    stopReading(id, "d1");
+    expect(processAlive(job.pid!)).toBe(true);
+    process.kill(-job.pid!, "SIGTERM");
+  });
+
+  it("that ends without a last word is gone at once: read again once, then failed", async () => {
+    const { id, dir } = await draftWith(1);
+    const { readDraft } = await import("./draft");
+    const { startReading } = await import("./reading");
+    startReading(id);
+    status(dir("d1"), { state: "reading", heartbeatAt: new Date().toISOString(), bootId: "x", pid: 1 });
+    (spawnMock.mock.results[0].value as EventEmitter).emit("exit", 1);
+    expect(readDraft(id)!.documents[0]).toMatchObject({ state: "reading", attempts: 2 });
+    expect(spawnMock).toHaveBeenCalledTimes(2);
+    (spawnMock.mock.results[1].value as EventEmitter).emit("exit", 1);
+    expect(readDraft(id)!.documents[0].state).toBe("failed");
+  });
+
+  it("that ends after a newer job took over leaves the newer one reading", async () => {
+    const { id, dir } = await draftWith(1);
+    const { readDraft } = await import("./draft");
+    const { refreshReading, startReading } = await import("./reading");
+    startReading(id);
+    // The first job went quiet and was started again; then it finally ends.
+    status(dir("d1"), { state: "reading", heartbeatAt: ago(180_000), bootId: "other", pid: 1 });
+    refreshReading(id);
+    expect(spawnMock).toHaveBeenCalledTimes(2);
+    (spawnMock.mock.results[0].value as EventEmitter).emit("exit", 1);
+    expect(readDraft(id)!.documents[0]).toMatchObject({ state: "reading", attempts: 2 });
   });
 });
 

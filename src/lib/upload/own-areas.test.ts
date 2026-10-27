@@ -51,3 +51,11 @@ describe("isBlankOwnLens", () => {
     expect(isBlankOwnLens({ name: "", areas: [{ name: "Water", description: "" }] })).toBe(false);
   });
 });
+
+describe("ownLensProblem, in characters", () => {
+  it("counts names and descriptions in characters, as the page keeps them", () => {
+    const wide = (n: number) => "\u{20000}".repeat(n);
+    expect(ownLensProblem({ name: wide(80), areas: [{ name: wide(80), description: wide(1200) }] })).toBeNull();
+    expect(ownLensProblem({ name: wide(81), areas: [area("Water")] })).toEqual({ code: "name" });
+  });
+});

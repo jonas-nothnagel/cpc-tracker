@@ -2,7 +2,7 @@ import { rmSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { applyChanges, documentDir, readDraft, updateDraft } from "@/lib/upload/draft";
 import { queueLength } from "@/lib/upload/queue";
-import { freshDraft } from "@/lib/upload/reading";
+import { freshDraft, stopReading } from "@/lib/upload/reading";
 import type { DraftChange } from "@/lib/upload/types";
 
 /**
@@ -43,10 +43,13 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
   const draft = updateDraft(id, (d) => applyChanges(d, changes.filter((c) => c && typeof c === "object")));
   if (!draft) return NextResponse.json({ error: "Draft not found" }, { status: 404 });
-  // A removed document takes its file and its reading with it.
+  // A removed document takes its file and its reading with it: a reading
+  // still under way is stopped, so no more of its text goes to the model.
   const kept = new Set(draft.documents.map((d) => d.id));
   for (const doc of before.documents) {
-    if (!kept.has(doc.id)) rmSync(documentDir(id, doc.id), { recursive: true, force: true });
+    if (kept.has(doc.id)) continue;
+    if (doc.state === "reading") stopReading(id, doc.id);
+    rmSync(documentDir(id, doc.id), { recursive: true, force: true });
   }
   return NextResponse.json({ draft });
 }

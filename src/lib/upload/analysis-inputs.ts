@@ -2,7 +2,7 @@ import { copyFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type { DocumentTypeEntry, TargetSource, TextCleanup } from "@/types";
-import { KNOWN, cleanText as clean, documentColors, documentIds, promptLabel } from "./documents";
+import { charCount, cleanText as clean, documentColors, documentIds, knownFramework, promptLabel } from "./documents";
 import { MAX_ITEMS } from "./limits";
 import { OWN_AREA_LIMITS, ownLensProblem as areasProblem, type OwnLensInput } from "./own-areas";
 
@@ -100,12 +100,17 @@ export function checkAnalyzeBody(
   body: AnalyzeBody,
 ): { ok: true } | { ok: false; code: CheckCode; error: string } {
   const fail = (code: CheckCode, error: string) => ({ ok: false as const, code, error });
+  if (!body || typeof body !== "object") return fail("noTargets", "No targets were provided.");
   const country = clean(body.country);
-  if (!country || country.length > COUNTRY_MAX) {
+  if (!country || charCount(country) > COUNTRY_MAX) {
     return fail("noCountry", `A country name of at most ${COUNTRY_MAX} characters is needed.`);
   }
   const targets = Array.isArray(body.targets) ? body.targets : [];
   if (targets.length === 0) return fail("noTargets", "No targets were provided.");
+  // A blank target would be classified and compared, and paid for, as one.
+  if (targets.some((t) => !t || typeof t !== "object" || !clean(t.text))) {
+    return fail("noTargets", "Every target needs its wording.");
+  }
   if (new Set(targets.map((t) => String(t.sourceDocument ?? ""))).size < 2) {
     return fail("oneDocument", "A comparison needs targets from at least two documents.");
   }
@@ -132,7 +137,7 @@ export function buildAnalysisInputs(body: AnalyzeBody): AnalysisInputs {
 
   const colors = documentColors([...ids.keys()]);
   const documentTypes: DocumentTypeEntry[] = [...ids].map(([code, id], i) => {
-    const known = KNOWN[code];
+    const known = knownFramework(code);
     const name = names.get(code);
     return {
       id,

@@ -81,6 +81,21 @@ describe("POST /api/upload/{id}/start", () => {
     expect(readDraft(id)!.started).toBe(true);
   });
 
+  it("keeps an analysis that is in line started when the line cannot move this moment", async () => {
+    const id = await draftWith([doc("d1", "NDC", "NDC", ["A"]), doc("d2", "NAP", "NAP", ["B"])]);
+    spawnMock.mockImplementation(() => {
+      throw new Error("spawn EAGAIN");
+    });
+    const res = await start(id);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ analysisId: id });
+    const { readDraft } = await import("@/lib/upload/draft");
+    expect(readDraft(id)!.started).toBe(true);
+    // Still in line: the next look (every 30 seconds) starts it.
+    const { queueLength } = await import("@/lib/upload/queue");
+    expect(queueLength()).toBeGreaterThan(0);
+  });
+
   it("records the reviewer's corrections for each document the AI read", async () => {
     const id = await draftWith([doc("d1", "NDC", "NDC", ["A"]), doc("d2", "NAP", "NAP", ["B"])]);
     await start(id);

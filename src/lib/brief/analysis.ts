@@ -22,18 +22,24 @@ export type AnalysisBrief =
   | { kind: "ready"; source: BriefSource; data: Record<string, unknown> };
 
 export function analysisBriefFrom(paths: DerivedPaths, id: string, locale: string): AnalysisBrief {
-  const payload = analysisPayload(paths, locale);
-  if (payload.kind !== "ok") return { kind: payload.status === 409 ? "pending" : "unreadable" };
-  const { data } = payload;
-  const config = data.countryConfig as { name?: string; languages?: string[] } | null;
-  const first = (data.targets as { country?: string }[] | undefined)?.[0];
-  const countryName = config?.name || first?.country || "";
-  const source: BriefSource = {
-    ...buildBriefSource({ countryId: "", countryName, data, locale }),
-    analysisId: id,
-    languages: config?.languages ?? [],
-  };
-  return { kind: "ready", source, data };
+  try {
+    const payload = analysisPayload(paths, locale);
+    if (payload.kind !== "ok") return { kind: payload.status === 409 ? "pending" : "unreadable" };
+    const { data } = payload;
+    const config = data.countryConfig as { name?: string; languages?: string[] } | null;
+    const first = (data.targets as { country?: string }[] | undefined)?.[0];
+    const countryName = config?.name || first?.country || "";
+    const source: BriefSource = {
+      ...buildBriefSource({ countryId: "", countryName, data, locale }),
+      analysisId: id,
+      languages: config?.languages ?? [],
+    };
+    return { kind: "ready", source, data };
+  } catch (err) {
+    // Results there but malformed: the plain notice, never an error page.
+    console.error("An analysis's results could not be read:", err instanceof Error ? err.message : err);
+    return { kind: "unreadable" };
+  }
 }
 
 export function analysisBrief(id: string, locale: string): AnalysisBrief {

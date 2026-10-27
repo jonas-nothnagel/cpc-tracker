@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import { join } from "path";
 import { smartParse } from "@/lib/csv-parser";
-import { KNOWN, cleanText, documentName, suggestCode } from "./documents";
+import { cleanText, documentName, knownFramework, suggestCode } from "./documents";
 import type { DraftDocument } from "./types";
 
 /**
@@ -98,13 +98,14 @@ export function tableDocuments(
   const codes = [...taken];
   return [...groups].map(([value, group], i) => {
     const id = `d${nextDoc + i}`;
+    const framework = knownFramework(value);
     const name =
-      KNOWN[value]?.full && value !== "OTHER" && value !== "SECTORAL"
-        ? KNOWN[value].full
+      framework?.full && value !== "OTHER" && value !== "SECTORAL"
+        ? framework.full
         : value === fileName
           ? documentName(fileName)
           : value;
-    const code = suggestCode(value in KNOWN ? value : name, codes);
+    const code = suggestCode(framework ? value : name, codes);
     codes.push(code);
     return {
       id,
