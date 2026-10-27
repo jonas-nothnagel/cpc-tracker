@@ -45,7 +45,7 @@ describe("PairView", () => {
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
         <div data-brief>
           <PairView
-            countryId="mongolia"
+            origin={{ countryId: "mongolia" }}
             countryName="Mongolia"
             a="FSS_1"
             b="NBSAP_3"
@@ -77,7 +77,7 @@ describe("PairView", () => {
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
         <div data-brief>
           <PairView
-            countryId="mongolia"
+            origin={{ countryId: "mongolia" }}
             countryName="Mongolia"
             a="FSS_1"
             b="NBSAP_3"

@@ -183,6 +183,8 @@
       "gga": "Adaptación climática",
       "adaptation": "Adaptación climática",
       "lossDamage": "Pérdidas y daños",
+      "own": "Áreas de política propias",
+      "ownTooltip": "Áreas de política aportadas con estos documentos.",
       "hr": "Derechos humanos",
       "ggaTooltip": "Objetivo Mundial de Adaptación: las siete metas temáticas del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (decisión 2/CMA.5 de la CMNUCC)",
       "hrTooltip": "Nueve temas de derechos humanos de la orientación del PNUD para esta herramienta, basada en la orientación del Grupo de Gestión Ambiental de las Naciones Unidas sobre la integración de los derechos humanos en la planificación nacional de la biodiversidad. Muestra qué temas abordan los documentos revisados. Borrador en revisión por personas expertas."
@@ -1436,306 +1438,167 @@
     }
   },
   "upload": {
-    "step2": {
-      "title": "Datos de referencia disponibles",
-      "hasRefBody": "Seleccione qué conjuntos de datos precargados de {country} incluir. Active o desactive elementos según sea necesario.",
-      "noRefBody": "Revise los datos de referencia disponibles para el análisis. Los datos BTR pueden cargarse en el Paso 1.",
-      "progressSummary": "{targets, plural, one {1 meta} other {# metas}} seleccionadas en {docTypes, plural, one {1 tipo de documento} other {# tipos de documento}}",
-      "policyTargetsHeading": "Metas de política para {country}",
-      "loadingRef": "Cargando datos de referencia",
-      "targetCount": "{count, plural, one {1 meta} other {# metas}}",
-      "moreCount": "+ {count, number} más",
-      "hide": "Ocultar",
-      "preview": "Previsualizar",
-      "add": "Añadir",
-      "added": "Añadido",
-      "additionalSources": "Fuentes de datos adicionales",
-      "btr": {
-        "title": "Datos de implementación BTR",
-        "description": "Medidas de mitigación, emisiones y proyecciones"
-      },
-      "nr7": {
-        "title": "Progreso de biodiversidad NR7",
-        "description": "7º Informe Nacional al CDB (mostrado en el panel)"
-      },
-      "noRefData": {
-        "title": "No hay datos de referencia precargados para este país.",
-        "hint": "Continúe al siguiente paso o vuelva atrás para cargar más documentos."
-      }
+    "metaTitle": "Nuevo análisis · Analizador de Coherencia de Políticas",
+    "hero": {
+      "title": "Nuevo análisis"
     },
-    "step1": {
-      "intro": "Seleccione el país y cargue los documentos de política correspondientes. Se aceptan los formatos comunes; el sistema detecta cómo procesar cada archivo.",
-      "countryLabel": "País",
-      "countryPlaceholder": "Nombre del país",
-      "referenceBadge": "Datos de referencia",
-      "referenceNext": "Datos de referencia en el siguiente paso",
-      "docTypeLabel": "Tipo de documento",
-      "labelPrefixLabel": "Prefijo de etiqueta",
-      "labelPrefixPlaceholder": "p. ej. Política de Transporte",
-      "extractingFrom": "Extrayendo metas de {name}…",
-      "extractEmpty": "No se identificaron metas de política en {name}. Es posible que el documento no contenga compromisos de política explícitos; también se pueden añadir metas manualmente más abajo.",
-      "partialTextLayer": "{empty, number} de {total, number} páginas de este documento no tienen texto legible por máquina, probablemente páginas escaneadas. No fue posible extraer metas de esas páginas.",
-      "queueRemaining": "{count, plural, one {1 archivo más en cola} other {# archivos más en cola}}",
-      "dropPrompt": "Arrastre y suelte archivos aquí, o",
-      "browse": "examinar",
-      "supportedFormats": "PDF, DOCX, CSV, TSV, XLSX (autodetectado)",
-      "hideManual": "Ocultar entrada manual",
-      "showManual": "+ Añadir metas manualmente",
-      "targetsAddedHint": "{count, plural, one {1 meta añadida} other {# metas añadidas}}. Pulse <strong>Siguiente</strong> para continuar.",
-      "reviewModal": {
-        "title": "Revisar metas extraídas",
-        "subtitle": "{selected, number} de {total, number} metas seleccionadas de {file}"
-      }
+    "builder": {
+      "steps": "Pasos",
+      "documents": "Documentos de política",
+      "analysis": "El análisis",
+      "targets": "Metas",
+      "targetsAndActions": "Metas y acciones notificadas",
+      "of": "{count, number} de {max, number}",
+      "pairs": "Pares de metas",
+      "pictureDocument": "{name}: {count, plural, one {# meta} other {# metas}}",
+      "pictureFree": "Espacio para {count, plural, one {# meta más} other {# metas más}}"
     },
-    "wizard": {
-      "headerSubtitle": "Nuevo análisis",
-      "title": "Nuevo análisis",
-      "subtitle": "Cargue documentos de política, revise metas, configure categorías y ejecute la canalización de análisis de coherencia.",
-      "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
-      "autoLabel": "Meta {n, number}",
-      "unknownCountry": "Desconocido",
+    "steps": {
+      "documents": "Documentos de política",
+      "targets": "Metas",
+      "areas": "Áreas de política",
+      "start": "Inicio"
+    },
+    "documents": {
+      "title": "Documentos de política",
+      "country": "País",
+      "drop": "Archivos PDF, Word, de texto u hojas de cálculo, de hasta 50 MB cada uno.",
+      "choose": "Elegir archivos",
+      "nameLabel": "Nombre de {file}",
+      "codeLabel": "Nombre corto de {name}",
+      "nameHead": "Nombre",
+      "codeHead": "Nombre corto",
+      "remove": "Quitar",
+      "readAgain": "Leer de nuevo",
+      "btr": "Tablas del Informe Bienal de Transparencia",
+      "btrActions": "{count, plural, one {# acción notificada} other {# acciones notificadas}}",
+      "notice": "Los documentos los lee {model} en {provider}.",
+      "publicOnly": "Solo se pueden añadir documentos públicos.",
+      "read": "Leer los documentos",
+      "continue": "Continuar con las metas",
+      "state": {
+        "added": "Aún sin leer",
+        "queued": "En espera de lectura",
+        "reading": "Leyendo",
+        "readingPart": "Leyendo, parte {part, number} de {parts, number}",
+        "read": "{count, plural, =0 {No se encontraron metas} one {# meta} other {# metas}}",
+        "partial": "{count, plural, one {# meta} other {# metas}}, {empty, number} de {pages, number} páginas sin texto",
+        "noText": "No hay texto legible por máquina. Se necesita una versión en texto.",
+        "failed": "No se pudo leer"
+      },
       "errors": {
-        "parseBtr": "Fallo al analizar el archivo BTR",
-        "signInExpired": "Su sesión ha caducado. Abra /login en una pestaña nueva, vuelva a introducir el token de acceso y reintente aquí. No se pierde nada de este asistente.",
-        "parseExcel": "Fallo al analizar el archivo Excel",
-        "noTargets": "No se encontraron metas en el archivo",
-        "noTargetsExcel": "No se encontraron metas en el archivo Excel",
-        "noTextLayer": "No se encontró texto legible por máquina en {name}. El archivo parece ser un PDF escaneado o basado en imágenes; el reconocimiento óptico de caracteres aún no es compatible. Se necesita una versión del documento con texto.",
-        "startAnalysis": "Fallo al iniciar el análisis",
-        "unexpected": "Error inesperado"
-      },
-      "nav": {
-        "steps": {
-          "countryDocs": "País y documentos",
-          "referenceData": "Datos de referencia",
-          "reviewConfigure": "Revisar y configurar",
-          "summaryRun": "Resumen y ejecución"
-        },
-        "stepCount": "Paso {n}",
-        "back": "Atrás",
-        "next": "Siguiente"
+        "tooLarge": "{file} supera los 50 MB.",
+        "tableTooLarge": "{file} supera los 15 MB.",
+        "type": "{file} no es un archivo PDF, Word, de texto ni una hoja de cálculo.",
+        "noTargets": "No se encontraron metas en {file}.",
+        "signIn": "La sesión ha caducado. Inicie sesión de nuevo para continuar.",
+        "unavailable": "Este servicio no puede leer documentos.",
+        "generic": "No se pudo añadir {file}.",
+        "notSaved": "El último cambio no se guardó.",
+        "readFailed": "No se pudieron leer los documentos."
       }
     },
-    "estimate": {
-      "quantitative": "Detección de frases cuantitativas: {count, number} llamadas",
-      "classification": "Clasificación contra NBS, IPCC, GLOBE: {count, number} llamadas",
-      "decomposition": "Descomposición de metas: {count, number} llamadas",
-      "needsTwoDocs": "Alineación por pares: requiere 2+ tipos de documento",
-      "pairwiseCount": "Alineación por pares: ~{count, number} pares",
-      "btrIntegration": "Integración de datos BTR/CTF",
-      "addSecondDoc": "Añada metas de un segundo tipo de documento (p. ej. NDC + NBSAP) para habilitar el análisis de alineación.",
-      "totalCost": "~{calls, number} llamadas LLM · coste estimado <strong>${cost}</strong>",
-      "starting": "Iniciando…",
-      "runAnalysis": "Ejecutar análisis →"
+    "targets": {
+      "title": "Metas",
+      "kept": "{count, plural, one {# meta} other {# metas}}",
+      "label": "Etiqueta",
+      "text": "Meta",
+      "textOf": "Meta {label}",
+      "page": "página {page, number}",
+      "edit": "Editar",
+      "passage": "Tal como figura en {document}",
+      "remove": "Quitar",
+      "restore": "Restablecer",
+      "add": "Añadir una meta",
+      "addButton": "Añadir",
+      "over": "{count, plural, one {Quite # meta para comenzar.} other {Quite # metas para comenzar.}}",
+      "continue": "Continuar con las áreas de política"
     },
-    "categories": {
-      "hide": "Ocultar detalles de categorías",
-      "edit": "Editar categorías",
-      "addGroup": "+ Añadir nuevo grupo de clasificación",
-      "newGroup": {
-        "title": "Nuevo grupo de clasificación",
-        "namePlaceholder": "Nombre del grupo (p. ej. Metas ODS, Temas personalizados)",
-        "descPlaceholder": "Breve descripción de lo que clasifica este grupo",
-        "create": "Crear grupo",
-        "cancel": "Cancelar",
-        "hint": "Después de crear el grupo, use «Editar» para añadir categorías individuales dentro de él."
+    "areas": {
+      "title": "Áreas de política",
+      "included": "Incluidas en todo análisis",
+      "count": "{count, plural, one {# área} other {# áreas}}",
+      "add": "Añadir áreas de política propias",
+      "name": "Nombre",
+      "namePlaceholder": "Prioridades nacionales",
+      "source": "Fuente",
+      "sourcePlaceholder": "Opcional",
+      "area": "Área",
+      "description": "Descripción",
+      "areaN": "Área {n, number}",
+      "descriptionN": "Descripción del área {n, number}",
+      "addArea": "Añadir un área",
+      "paste": "Pegar desde una hoja de cálculo",
+      "pasteLabel": "Dos columnas: nombre y descripción",
+      "pasteAdd": "Añadir estas áreas",
+      "removeArea": "Quitar",
+      "remove": "Quitar las áreas de política propias",
+      "problems": {
+        "name": "Las áreas de política necesitan un nombre.",
+        "source": "La fuente admite como máximo 300 caracteres.",
+        "count": "Se necesitan entre 1 y 30 áreas.",
+        "areaName": "Cada área necesita un nombre.",
+        "description": "{area} necesita una descripción.",
+        "duplicate": "{area} aparece dos veces."
       },
-      "group": {
-        "enabledRatio": "{active, number} de {total, number} habilitadas",
-        "empty": "Aún no hay categorías. Pulse Editar para añadir.",
-        "disableAll": "Deshabilitar todas",
-        "enableAll": "Habilitar todas",
-        "collapse": "Contraer",
-        "editBtn": "Editar",
-        "removeTitle": "Eliminar grupo"
+      "continue": "Continuar con el inicio"
+    },
+    "start": {
+      "title": "El análisis",
+      "documents": "{count, plural, one {# documento de política.} other {# documentos de política.}}",
+      "targets": "{count, plural, one {# meta.} other {# metas.}}",
+      "pairs": "{count, plural, one {# par de metas por comparar.} other {# pares de metas por comparar.}}",
+      "estimate": "Unos {minutes, plural, one {# minuto} other {# minutos}} y {kg} kg de <abbr>CO2e</abbr>.",
+      "co2e": "dióxido de carbono equivalente",
+      "ahead": "{count, plural, one {Hay # análisis por delante.} other {Hay # análisis por delante.}}",
+      "problems": {
+        "country": "Se necesita el nombre de un país.",
+        "documents": "Se necesitan metas de al menos 2 documentos.",
+        "reading": "Algunos documentos se están leyendo todavía.",
+        "ownLens": "Las áreas de política propias necesitan atención.",
+        "unread": "Algunos documentos aún no se han leído."
       },
-      "item": {
-        "remove": "Eliminar"
-      },
-      "newItem": {
-        "namePlaceholder": "Nombre",
-        "descPlaceholder": "Descripción (opcional)",
-        "add": "Añadir",
-        "cancel": "Cancelar",
-        "addBtn": "+ Añadir categoría"
+      "start": "Iniciar el análisis",
+      "errors": {
+        "busy": "Se iniciaron varios análisis hace un momento. Inténtelo de nuevo en un minuto.",
+        "generic": "No se pudo iniciar el análisis."
       }
     },
-    "pipeline": {
-      "heading": "Canalización de documentos",
-      "status": {
-        "parsing": "Analizando…",
-        "ready": "Listo",
-        "error": "Error"
-      },
-      "policyTargetsCount": "{count, number} metas de política",
-      "btr": {
-        "actions": "{count, number} acciones reportadas",
-        "emissions": "{count, number} series de emisiones",
-        "projections": "{count, number} proyecciones",
-        "techSupport": "{count, number} proyectos de apoyo técnico",
-        "capacityBuilding": "{count, number} de fortalecimiento de capacidades"
-      },
-      "remove": "Eliminar"
-    },
-    "review": {
-      "title": "Revisar metas extraídas",
-      "subtitle": "{kept, number} de {total, number} conservadas · {file}",
-      "keepAll": "Conservar todas",
-      "removeAll": "Eliminar todas",
-      "pagePrefix": "p.",
-      "originalText": "{lang}: {text}",
-      "machineTranslationNote": "El texto de trabajo en inglés es una traducción automática; la redacción original aparece debajo de cada meta.",
-      "needsReview": "Requiere revisión: una parte de este texto no pudo verificarse contra el documento.",
-      "aiSummarised": "Resumido por IA",
-      "keep": "Conservar",
-      "removeTitle": "Eliminar",
-      "removed": "Eliminada",
-      "restoreTitle": "Restaurar",
-      "addMissingPrompt": "Añadir una meta que no fue extraída",
-      "manualPlaceholder": "Texto de la meta…",
-      "manualLabelPlaceholder": "Etiqueta (opcional)",
-      "addBtn": "+ Añadir",
-      "footerStatus": "<strong>{count, number}</strong> {count, plural, one {meta} other {metas}} se añadirán a este análisis",
-      "discard": "Descartar",
-      "acceptBtn": "Añadir {count, plural, one {1 meta} other {# metas}} →"
-    },
-    "manualForm": {
-      "sourceDocument": "Documento de origen",
-      "documentName": "Nombre del documento",
-      "placeholderSectoral": "p. ej. Política de Transporte",
-      "placeholderOther": "p. ej. Plan Nacional de Desarrollo",
-      "labelOptional": "Etiqueta (opcional)",
-      "labelPlaceholder": "p. ej. Biodiversidad 1",
-      "targetText": "Texto de la meta",
-      "targetTextPlaceholder": "Pegue o escriba el texto completo de la meta…",
-      "addTarget": "+ Añadir meta",
-      "maxReached": "Máximo de {max, number} metas alcanzado"
-    },
-    "editor": {
-      "title": "Editar metas manuales: {docType}",
-      "done": "Hecho",
-      "labelPlaceholder": "Etiqueta",
-      "targetPlaceholder": "Texto de la meta…",
-      "toggleDetails": "Añadir actividades y acciones",
-      "activities": "Actividades",
-      "activitiesPlaceholder": "Actividades de implementación (opcional)…",
-      "actions": "Acciones / Medidas",
-      "actionsPlaceholder": "Acciones o medidas (opcional)…"
-    },
-    "step4": {
-      "title": "Resumen y ejecución",
-      "subtitle": "Revise la configuración completa del análisis a continuación. La canalización clasificará cada meta, descompondrá su estructura y evaluará la alineación por pares entre todos los tipos de documento.",
-      "countryLabel": "País",
-      "notSpecified": "No especificado",
-      "targetsLabel": "Metas",
-      "acrossDocs": "a través de {count, plural, one {1 tipo de documento} other {# tipos de documento}}",
-      "targetBreakdown": "Desglose de metas",
-      "btr": {
-        "title": "Datos de implementación BTR incluidos",
-        "description": "Medidas de mitigación comparadas con metas de política."
-      },
-      "footprint": {
-        "heading": "Huella de la extracción de documentos hasta ahora",
-        "energy": "Wh de energía",
-        "water": "mL de agua",
-        "co2": "gCO<sub>2</sub>eq",
-        "minerals": "µgSbeq de minerales",
-        "summary": "Acumulado a partir de {count, number} llamadas LLM durante la extracción. Esto se añadirá a la huella del análisis en el panel final. Estimado mediante EcoLogits."
+    "login": {
+      "lead": "Para añadir documentos e iniciar un análisis se necesita un token de acceso.",
+      "token": "Token de acceso",
+      "signIn": "Iniciar sesión",
+      "signingIn": "Iniciando sesión",
+      "errors": {
+        "wrong": "No se reconoció ese token de acceso.",
+        "failed": "No se pudo iniciar sesión. Inténtelo de nuevo.",
+        "offline": "No se pudo conectar con el servidor. Inténtelo de nuevo."
       }
-    },
-    "step3": {
-      "title": "Revisar metas y configurar categorías",
-      "subtitle": "Verifique las metas extraídas y configure qué categorías de clasificación usar. Cada grupo de documentos puede expandirse para inspeccionar o eliminar metas individuales.",
-      "categoriesHeading": "Categorías de clasificación",
-      "targetsHeading": "Metas de política",
-      "hideManual": "Ocultar entrada manual",
-      "addTarget": "+ Añadir meta",
-      "targetCount": "{count, plural, one {# meta} other {# metas}}",
-      "removeTarget": "Eliminar meta",
-      "noTargets": "Aún no hay metas",
-      "noTargetsHint": "Vuelva atrás para añadir datos de referencia o cargar documentos."
-    },
-    "docTypes": {
-      "NDC": "NDC (Contribuciones Determinadas a Nivel Nacional)",
-      "NBSAP": "NBSAP / Metas Nacionales de Biodiversidad",
-      "NAP": "NAP (Plan Nacional de Adaptación)",
-      "LDN": "LDN (Neutralidad en la Degradación de las Tierras)",
-      "SECTORAL": "Política sectorial",
-      "OTHER": "Otro documento"
     }
   },
   "analysis": {
-    "headerSubtitle": "Análisis",
-    "errorHeading": "Error",
-    "backToUpload": "Volver a la carga",
-    "loadingStatus": "Cargando estado del análisis…",
-    "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
-    "errors": {
-      "notFound": "Análisis no encontrado",
-      "statusCheck": "Fallo al comprobar el estado del análisis"
+    "progress": {
+      "compared": "{done, number} de {total, number} pares de metas comparados",
+      "byRating": "{total, number} pares de metas según su valoración",
+      "ahead": "{count, plural, one {En espera de # análisis anterior.} other {En espera de # análisis anteriores.}}",
+      "reading": "Leyendo cada meta.",
+      "comparing": "Comparando pares de metas.",
+      "comparingLeft": "Comparando pares de metas. Quedan unos {minutes, plural, one {# minuto} other {# minutos}}.",
+      "themes": "Identificando los temas.",
+      "opening": "Se abre el informe.",
+      "closable": "Esta página se puede cerrar. Esta dirección abre el informe cuando esté listo.",
+      "copy": "Copiar la dirección",
+      "copied": "Dirección copiada"
     },
-    "running": {
-      "title": "Ejecutando análisis",
-      "stepOf": "Paso {step} de {total}",
-      "elapsed": "{sec}s"
+    "stopped": {
+      "title": "El análisis se detuvo antes de terminar.",
+      "failed": "No se pudo completar el análisis.",
+      "continue": "Continuar"
     },
-    "complete": {
-      "title": "Análisis completo",
-      "summary": "Procesadas {targets, number} metas con {pairs, number} pares de alineación en {sec}s",
-      "viewDashboard": "Ver panel →"
-    },
-    "failed": {
-      "title": "Análisis fallido",
-      "body": "La canalización encontró un error. Verifique las metas e inténtelo de nuevo."
-    },
-    "footprint": {
-      "title": "Huella ambiental",
-      "energyLabel": "Energía",
-      "energyUnit": "Wh",
-      "waterLabel": "Agua",
-      "waterUnit": "mL",
-      "co2Label": "CO₂eq",
-      "co2Unit": "g",
-      "mineralsLabel": "Minerales",
-      "mineralsUnit": "µgSbeq",
-      "cachedCalls": "{count, number} llamadas en caché",
-      "callsTracked": "{count, number} llamadas registradas",
-      "callsWithCache": "{tracked, number} llamadas registradas · {cached, number} en caché",
-      "estimatedNote": "Estimado a partir del conteo de llamadas (ejecución en caché) mediante EcoLogits.",
-      "measuredNote": "Medido mediante EcoLogits.",
-      "indicativeNote": "Los valores son indicativos y pueden diferir del consumo real."
-    },
-    "pipeline": {
-      "input": {
-        "policyTargets": "Metas de política",
-        "taxonomy": "Sectores IPCC y taxonomías GLOBE y GGA"
-      },
-      "step1": {
-        "title": "Detección cuantitativa",
-        "detail": "Escaneando cada meta en busca de métricas numéricas y compromisos con plazo",
-        "output": "Métricas y plazos identificados"
-      },
-      "step2": {
-        "title": "Clasificación temática",
-        "detail": "Mapeando cada meta a categorías NBS y sectores IPCC relevantes",
-        "output": "{relevant, number} coincidencias relevantes encontradas en {total, number} comparaciones"
-      },
-      "step3": {
-        "title": "Emparejamiento entre documentos",
-        "detail": "Identificando metas de documentos distintos que comparten sectores IPCC comunes",
-        "output": "{count, number} pares de metas identificados para comparar"
-      },
-      "step4": {
-        "title": "Descomposición de metas",
-        "detail": "Descomponiendo cada meta en objetivos, acciones, ecosistemas, audiencias e impactos esperados",
-        "output": "Todas las metas emparejadas descompuestas"
-      },
-      "step5": {
-        "title": "Evaluación de alineación",
-        "detail": "Comparando pares de metas para determinar niveles de coherencia de política",
-        "output": "{count, number} pares evaluados: {high, number} alta, {medium, number} media, {low, number} parcial alineación"
-      }
-    }
+    "missing": "No se encontró ningún análisis en esta dirección.",
+    "statusCheck": "No se pudo leer el estado de este análisis.",
+    "unreadable": "No se pudo elaborar el informe con estos resultados.",
+    "openPrevious": "Abrir el panel anterior"
   },
   "country": {},
   "modelComparison": {

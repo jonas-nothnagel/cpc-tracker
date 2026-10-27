@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { uploadsAvailable } from "@/lib/upload/available";
 
 interface HeaderProps {
   subtitle?: string;
@@ -46,18 +47,22 @@ export function Header({
   const exploreHref =
     explorePath && model ? `${explorePath}?model=${encodeURIComponent(model)}` : explorePath;
   const exploreItem = exploreHref ? [{ href: exploreHref, label: t("nav.explore") }] : [];
+  // Uploads only where Python runs, and never from a country shared on its own.
+  const uploadItem = uploadsAvailable(currentCountryId ?? basePath?.replace(/^\//, ""))
+    ? [{ href: `${basePath ?? ""}/upload`, label: t("nav.uploadData") }]
+    : [];
   const navItems = basePath
     ? [
         { href: basePath, label: t("nav.home") },
         ...exploreItem,
         { href: "/methodology", label: t("nav.howItWorks") },
-        { href: `${basePath}/upload`, label: t("nav.uploadData") },
+        ...uploadItem,
       ]
     : [
         { href: "/", label: t("nav.home") },
         ...exploreItem,
         { href: "/methodology", label: t("nav.howItWorks") },
-        { href: "/upload", label: t("nav.uploadData") },
+        ...uploadItem,
       ];
 
   // Prototypes link preserves the active country when the caller gives us

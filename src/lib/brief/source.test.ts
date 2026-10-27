@@ -293,6 +293,33 @@ describe("buildBriefSource", () => {
     expect(lossDamage.primary).toEqual({ NDC_1: "lk_loss_damage" });
   });
 
+  it("puts the policy areas an upload brings first, under their own name", () => {
+    const upload = buildBriefSource({
+      countryId: "",
+      countryName: "Tonga",
+      locale: "en",
+      data: {
+        ...DATA,
+        countryTaxonomies: [
+          {
+            taxonomyType: "policy_area",
+            name: "National priorities",
+            categories: [{ id: "policy_area_1", name: "Water" }],
+          },
+        ],
+        classifications: [
+          ...DATA.classifications,
+          { targetId: "NDC_1", categoryId: "policy_area_1", taxonomyType: "policy_area", isPrimary: true },
+        ],
+      },
+    });
+    expect(upload.lenses.map((l) => [l.id, l.name])).toEqual([
+      ["own", "National priorities"],
+      ["globe", undefined],
+    ]);
+    expect(upload.lenses[0].primary).toEqual({ NDC_1: "policy_area_1" });
+  });
+
   it("carries the country and the model", () => {
     expect(source.countryId).toBe("mongolia");
     expect(source.countryName).toBe("Mongolia");

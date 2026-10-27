@@ -229,6 +229,9 @@ export interface GgaCategory {
  *  loss and damage lens are the first. */
 export interface CountryTaxonomy {
   taxonomyType: string;
+  /** The lens's own name, for policy areas an upload brings (the brief's
+   *  catalog names every other lens). */
+  name?: string;
   /** The global lens it stands in for on this country. */
   replaces?: string;
   /** Its source, in English, shown as the lens's tooltip. */

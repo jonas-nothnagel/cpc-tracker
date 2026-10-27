@@ -1,21 +1,39 @@
-"use client";
+import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+import { getCountry, isStandaloneCountry, isValidCountryId } from "@/config/countries";
+import { UploadPage } from "@/components/upload/upload-page";
+import { queueLength } from "@/lib/upload/queue";
+import { publishedLenses } from "@/lib/upload/published-areas";
+import { serviceFacts, serviceSpeed } from "@/lib/upload/service";
 
-import { useParams, notFound } from "next/navigation";
-import { getCountry, isValidCountryId } from "@/config/countries";
-import { UploadWizard } from "@/components/upload/upload-wizard";
+export const dynamic = "force-dynamic";
 
-export default function StandaloneUploadPage() {
-  const params = useParams<{ country: string }>();
-  const lower = params.country?.toLowerCase() ?? "";
+interface Props {
+  params: Promise<{ locale: string; country: string }>;
+}
 
-  if (!isValidCountryId(lower)) notFound();
-  const entry = getCountry(lower);
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "upload" });
+  return { title: t("metaTitle") };
+}
+
+/** A new upload from a country's pages: the country is filled in. A country
+ *  shared on its own (Country X) takes no uploads. */
+export default async function CountryUploadPage({ params }: Props) {
+  const { locale, country } = await params;
+  const id = country.toLowerCase();
+  if (!isValidCountryId(id) || isStandaloneCountry(id)) notFound();
+  const entry = getCountry(id);
   if (!entry?.visible) notFound();
-
   return (
-    <UploadWizard
+    <UploadPage
+      initialDraft={null}
       lockedCountry={entry.name}
-      basePath={`/${entry.id}`}
+      facts={serviceFacts()}
+      lenses={publishedLenses(locale)}
+      speed={serviceSpeed()}
+      ahead={queueLength()}
     />
   );
 }

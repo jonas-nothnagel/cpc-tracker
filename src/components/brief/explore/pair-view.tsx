@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { FeedbackControl } from "@/components/dashboard/coherence-briefing/feedback-control";
 import { toneOf } from "@/lib/brief/compute";
 import type { FoundPair } from "@/lib/brief/pair";
+import { briefQuery, type BriefOrigin } from "@/lib/brief/origin";
 import type { ExploreItem } from "@/lib/brief/explore/model";
 import { Explanation, type DocNames } from "../ai-text";
 import { BothContracts } from "../both-contracts";
@@ -20,7 +21,7 @@ import { RING_INK } from "./ring-canvas";
  * the other target in the centre.
  */
 export function PairView({
-  countryId,
+  origin,
   a,
   b,
   partner,
@@ -32,7 +33,7 @@ export function PairView({
   onCentre,
   onClose,
 }: {
-  countryId: string;
+  origin: BriefOrigin;
   /** The two seats, as asked for (the centre first). */
   a: string;
   b: string;
@@ -56,10 +57,11 @@ export function PairView({
   const resourceLine = useResourceLine();
   const [state, setState] = useState<{ key: string; status: "ok" | "error"; found?: FoundPair } | null>(null);
   const key = `${a}~${b}`;
+  const countryId = origin.countryId;
+  const query = briefQuery(origin, { a, b, locale }).toString();
 
   useEffect(() => {
     let alive = true;
-    const query = new URLSearchParams({ country: countryId, a, b, locale });
     fetch(`/api/brief/pair?${query}`)
       .then((res) => (res.ok ? (res.json() as Promise<FoundPair>) : Promise.reject(new Error())))
       .then((found) => alive && setState({ key, status: "ok", found }))
@@ -67,7 +69,7 @@ export function PairView({
     return () => {
       alive = false;
     };
-  }, [a, b, countryId, locale, key]);
+  }, [query, key]);
 
   const current = state?.key === key ? state : null;
   const found = current?.status === "ok" ? current.found : undefined;

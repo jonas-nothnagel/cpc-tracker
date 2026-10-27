@@ -1,0 +1,928 @@
+/* Upload page and waiting page, in the brief's vocabulary (brief.css):
+   hairlines, typographic controls, one square primary per view, colour only
+   on document squares and the alignment axis. Everything is scoped to
+   [data-brief] .up-*, so nothing leaks into the rest of the app. */
+
+[data-brief].up-root {
+  min-height: 100vh;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+/* ── Hero: the brief's opening, shorter, the country as the title ── */
+
+[data-brief] .up-hero {
+  min-height: clamp(16rem, 32vh, 21rem);
+  align-items: flex-end;
+}
+
+/* The hero's edges line up with the desk's below it. */
+[data-brief] .up-hero .brief-hero-top,
+[data-brief] .up-hero .brief-hero-content {
+  max-width: none;
+  padding-right: clamp(1.5rem, 4vw, 4.5rem);
+  padding-left: clamp(1.5rem, 4vw, 4.5rem);
+}
+
+[data-brief] .up-hero .brief-hero-content {
+  padding-top: 6rem;
+  padding-bottom: 2.25rem;
+}
+
+[data-brief] .up-hero .brief-hero-kicker {
+  margin-bottom: 0.6rem;
+}
+
+[data-brief] .up-hero-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Five rows of the targets read so far, fading in as the first arrive. */
+[data-brief] .up-hero .brief-drift {
+  gap: 0.85rem;
+  padding: 1.5rem 0;
+  font-size: 1.0625rem;
+  animation: up-arrive 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes up-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brief] .up-hero .brief-drift {
+    animation: none;
+  }
+}
+
+/* The waiting page's top bar: the hero's lockup, on its own. */
+[data-brief] .up-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 1.25rem clamp(1.5rem, 4vw, 4.5rem) 0;
+}
+
+[data-brief] .up-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--brief-ink);
+  text-decoration: none;
+}
+
+[data-brief] .up-brand img {
+  display: block;
+  width: auto;
+  height: 44px;
+}
+
+/* ── Desk: the builder column beside the current step ────────────── */
+
+[data-brief] .up-desk {
+  padding-top: 1.75rem;
+  padding-bottom: 5rem;
+}
+
+[data-brief] .up-desk > .brief-main {
+  max-width: 60rem;
+}
+
+[data-brief] .up-desk .brief-builder {
+  position: sticky;
+}
+
+/* The brief stacks its desk at 1180px for its A4 sheets; a step is narrower. */
+@media screen and (max-width: 1180px) {
+  [data-brief] .brief-desk.up-desk {
+    grid-template-columns: 15rem minmax(0, 1fr);
+  }
+}
+
+@media screen and (max-width: 860px) {
+  [data-brief] .brief-desk.up-desk {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  [data-brief] .up-desk .brief-builder {
+    position: static;
+    max-height: none;
+  }
+}
+
+[data-brief] .up-title {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+/* Steps in the builder column: plain text, the current one underlined. */
+[data-brief] .up-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .up-step-link {
+  display: flex;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.3rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: var(--brief-ink);
+  cursor: pointer;
+}
+
+[data-brief] .up-step-link:disabled {
+  color: var(--brief-muted);
+  cursor: default;
+}
+
+[data-brief] .up-step-link[aria-current="step"] {
+  font-weight: 600;
+}
+
+[data-brief] .up-step-link[aria-current="step"] .up-step-name {
+  text-decoration: underline 2px;
+  text-underline-offset: 5px;
+}
+
+[data-brief] .up-num {
+  min-width: 1ch;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The analysis as a picture: one dot per target, in its document's colour,
+   among the 150 the analysis holds. */
+[data-brief] .up-picture {
+  margin: 0.2rem 0 0.75rem;
+}
+
+[data-brief] .up-picture .brief-dots-field {
+  flex: none;
+  height: 5.5rem;
+}
+
+/* The column is narrow: the tip keeps to its left edge and wraps. */
+[data-brief] .up-picture .brief-tip {
+  left: 0 !important;
+  max-width: 100%;
+  transform: none;
+  white-space: normal;
+}
+
+[data-brief] .up-figures {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+[data-brief] .up-figures dt {
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-figures dd {
+  margin: 0 0 0.45rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Fields: DESIGN.md's inputs, a small label above ────────────── */
+
+[data-brief] .up-field {
+  margin: 0 0 1.5rem;
+}
+
+[data-brief] .up-field label,
+[data-brief] .up-field-name {
+  display: block;
+  margin: 0 0 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+[data-brief] .up-field p {
+  margin: 0;
+}
+
+[data-brief] .up-field input,
+[data-brief] .up-box {
+  width: min(100%, 22rem);
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  line-height: 1.45;
+  color: var(--brief-ink);
+  transition: border-color 150ms ease;
+}
+
+[data-brief] .up-field input:hover,
+[data-brief] .up-box:hover {
+  border-color: rgba(35, 46, 61, 0.35);
+}
+
+[data-brief] .up-field input::placeholder,
+[data-brief] .up-box::placeholder {
+  color: var(--brief-muted);
+  opacity: 1;
+}
+
+/* "Add …": the plus before it, outside the underline. */
+[data-brief] .up-plus {
+  display: inline-block;
+  margin-right: 0.4rem;
+  font-weight: 600;
+}
+
+/* What still stands between the draft and the next step. */
+[data-brief] .up-problem {
+  margin: 1rem 0 0;
+  font-weight: 600;
+}
+
+[data-brief] .up-inline {
+  min-width: 0;
+  padding: 0.1rem 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+[data-brief] .up-inline:hover,
+[data-brief] .up-inline:focus {
+  border-bottom-color: var(--brief-hairline-strong);
+}
+
+[data-brief] .up-error {
+  margin: 1rem 0 0;
+  font-weight: 600;
+}
+
+/* ── Policy documents ────────────────────────────────────────────── */
+
+[data-brief] .up-drop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px dashed var(--brief-hairline-strong);
+  border-radius: 8px;
+  color: var(--brief-muted);
+}
+
+/* Before the first document the drop area is the page's one field, with the
+   choice in the middle of it. */
+[data-brief] .up-drop[data-empty] {
+  flex-direction: column-reverse;
+  justify-content: center;
+  gap: 0.9rem;
+  min-height: 13rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+[data-brief] .up-drop[data-active] {
+  border-style: solid;
+  border-color: var(--brief-ink);
+}
+
+/* A document's name and short name are its labels: fields with a hairline
+   under them, so they read as editable. */
+[data-brief] .up-docs-head {
+  margin-top: 1.25rem;
+  padding: 0 0 0.35rem;
+  border-bottom: 0;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-docs[data-headed] {
+  margin-top: 0;
+}
+
+[data-brief] .up-doc .up-inline {
+  border-bottom-color: var(--brief-hairline-strong);
+}
+
+[data-brief] .up-doc .up-inline:hover,
+[data-brief] .up-doc .up-inline:focus {
+  border-bottom-color: var(--brief-ink);
+}
+
+[data-brief] .up-docs {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-doc {
+  display: grid;
+  grid-template-columns: 0.7rem minmax(0, 1fr) 6.5rem minmax(0, 15rem) auto;
+  align-items: center;
+  gap: 0.25rem 0.9rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+[data-brief] .up-doc-name {
+  font-weight: 600;
+}
+
+[data-brief] .up-doc-plain {
+  grid-column: 2 / span 2;
+  font-weight: 600;
+}
+
+[data-brief] .up-doc-state {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A document while it is read: a square per part, the part being read
+   pulsing (still under reduced motion). */
+[data-brief] .up-reading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+[data-brief] .up-reading-part {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--brief-hairline-strong);
+}
+
+[data-brief] .up-reading-part[data-current] {
+  animation: up-reading 1.2s ease-in-out infinite;
+}
+
+@keyframes up-reading {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brief] .up-reading-part[data-current] {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+[data-brief] .up-doc-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 640px) {
+  [data-brief] .up-doc {
+    grid-template-columns: 0.7rem minmax(0, 1fr) auto;
+  }
+
+  [data-brief] .up-doc-state {
+    grid-column: 2 / span 2;
+  }
+
+  [data-brief] .up-doc-tools {
+    grid-column: 2 / span 2;
+    justify-content: flex-start;
+  }
+}
+
+[data-brief] .up-notice {
+  max-width: 62ch;
+  margin: 1.5rem 0 0;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: 1.75rem;
+}
+
+[data-brief] .brief-button-primary:disabled {
+  background: var(--brief-hairline-strong);
+  color: var(--brief-muted);
+  cursor: default;
+}
+
+/* ── Targets: each document's, quoted as the brief quotes them ───── */
+
+[data-brief] .up-target-doc {
+  padding: 0 0 2.25rem;
+}
+
+[data-brief] .up-target-doc + .up-target-doc {
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-doc-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.1875rem, 1.5vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+[data-brief] .up-doc-title .up-swatch {
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+[data-brief] .up-doc-count {
+  margin: 0.3rem 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-targets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-target {
+  padding: 0.95rem 0 1.05rem;
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+/* The label on its own line, the tools at its end: a long label never
+   squeezes the wording. */
+[data-brief] .up-target-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 1.25rem;
+  margin: 0 0 0.3rem;
+}
+
+[data-brief] .up-target-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-target-tools {
+  display: flex;
+  gap: 1.1rem;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+[data-brief] .up-target-tools .brief-button-quiet {
+  font-size: 0.8125rem;
+}
+
+/* The wording in the brief's quote voice; a field only while edited. */
+[data-brief] .up-target-text {
+  max-width: 66ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+[data-brief] .up-target-edit {
+  display: block;
+  width: 100%;
+  max-width: 66ch;
+  min-height: 4.5rem;
+  line-height: 1.5;
+  resize: vertical;
+  field-sizing: content;
+}
+
+[data-brief] .up-target-original {
+  max-width: 66ch;
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-target[data-removed] .up-target-text,
+[data-brief] .up-target[data-removed] .up-target-label {
+  color: var(--brief-muted);
+  text-decoration: line-through;
+  text-decoration-color: rgba(85, 96, 110, 0.55);
+}
+
+[data-brief] .up-passage {
+  max-width: 66ch;
+  margin: 0.6rem 0 0;
+  padding: 0.75rem 1rem;
+  background: var(--brief-desk);
+  font-size: 0.8125rem;
+}
+
+[data-brief] .up-passage p {
+  margin: 0;
+}
+
+[data-brief] .up-passage p + p {
+  margin-top: 0.4rem;
+}
+
+[data-brief] .up-passage-head {
+  display: block;
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-more {
+  margin-top: 0.9rem;
+}
+
+[data-brief] .up-target-new {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  max-width: 66ch;
+}
+
+[data-brief] .up-target-new .up-target-new-label {
+  width: min(100%, 14rem);
+}
+
+[data-brief] .up-line {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-over {
+  margin-top: 1.25rem;
+  font-weight: 600;
+}
+
+/* ── Policy areas: the four sets with their areas, then the own ──── */
+
+[data-brief] .up-sub {
+  margin: 0 0 0.9rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* One row per set, its areas folded away until asked for; the brief's
+   chevron marks a row that opens and turns down when it is open. */
+[data-brief] .up-sets {
+  border-top: 1px solid var(--brief-hairline-strong);
+}
+
+[data-brief] .up-set {
+  border-bottom: 1px solid var(--brief-hairline);
+}
+
+[data-brief] .up-set-name {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-brief] .up-set-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.7rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--brief-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-brief] .up-set-chevron {
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid var(--brief-ink);
+  border-bottom: 1.5px solid var(--brief-ink);
+  transform: rotate(-45deg);
+  transition: transform 160ms ease;
+}
+
+[data-brief] .up-set-toggle[aria-expanded="true"] .up-set-chevron {
+  transform: translateY(-0.15rem) rotate(45deg);
+}
+
+[data-brief] .up-set-toggle:hover .up-set-chevron {
+  border-color: var(--brief-blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brief] .up-set-chevron {
+    transition: none;
+  }
+}
+
+[data-brief] .up-set-count {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* An open set's areas, in two columns where there is room, under its name. */
+[data-brief] .up-set-areas {
+  margin: 0;
+  padding: 0 0 0.9rem 1.05rem;
+  list-style: none;
+  columns: 2 15rem;
+  column-gap: 2rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+[data-brief] .up-set-areas li {
+  padding: 0.2rem 0;
+  break-inside: avoid;
+}
+
+/* Room for an own set: the same dashed edge as the drop area. */
+[data-brief] .up-own-add {
+  margin-top: 2.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--brief-hairline-strong);
+  border-radius: 8px;
+}
+
+/* The own set while it is written: a grouped region (Surface Light), its
+   fields on white. */
+[data-brief] .up-own {
+  margin-top: 2.25rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border-radius: 8px;
+  background: var(--brief-desk);
+}
+
+[data-brief] .up-own-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 1rem;
+}
+
+[data-brief] .up-own-head .up-sub {
+  margin: 0;
+}
+
+[data-brief] .up-own-head .brief-button-quiet,
+[data-brief] .up-area .brief-button-quiet {
+  font-size: 0.8125rem;
+}
+
+[data-brief] .up-own-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 0 1.25rem;
+}
+
+[data-brief] .up-own-fields .up-field input {
+  width: 100%;
+}
+
+[data-brief] .up-areas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+[data-brief] .up-area {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) minmax(0, 1fr) 4.5rem;
+  align-items: start;
+  gap: 0 0.9rem;
+}
+
+[data-brief] .up-areas-head {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+[data-brief] .up-area .up-box {
+  width: 100%;
+}
+
+[data-brief] .up-area textarea {
+  resize: none;
+  field-sizing: content;
+}
+
+[data-brief] .up-area .brief-button-quiet {
+  justify-self: end;
+  margin-top: 0.6rem;
+}
+
+[data-brief] .up-own-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  margin-top: 1.1rem;
+}
+
+[data-brief] .up-paste {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+[data-brief] .up-paste .up-box {
+  width: 100%;
+  resize: vertical;
+}
+
+@media screen and (max-width: 640px) {
+  [data-brief] .up-own-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-brief] .up-area {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem 0.9rem;
+  }
+
+  /* Stacked, the fields say what they hold themselves. */
+  [data-brief] .up-areas-head {
+    display: none;
+  }
+
+  [data-brief] .up-area textarea {
+    grid-column: 1;
+  }
+
+  [data-brief] .up-area .brief-button-quiet {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+
+/* ── Start ───────────────────────────────────────────────────────── */
+
+[data-brief] .up-statement {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.12;
+}
+
+[data-brief] .up-statement span {
+  display: block;
+}
+
+[data-brief] .up-start-picture {
+  margin: 0 0 1.25rem;
+}
+
+[data-brief] .up-start-picture .up-dots {
+  height: clamp(120px, 14vw, 190px);
+}
+
+[data-brief] .up-line abbr {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+/* ── Waiting: the analysis's address before its brief ────────────── */
+
+[data-brief] .up-wait {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem clamp(1rem, 4vw, 4.5rem) 4rem;
+}
+
+[data-brief] .up-kicker {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .up-wait-figures {
+  margin: 0 0 2rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+[data-brief] .up-wait-figures span {
+  display: block;
+}
+
+[data-brief] .up-picture-title {
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .up-dots {
+  position: relative;
+  height: clamp(150px, 20vw, 240px);
+}
+
+[data-brief] .up-dots canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-brief] .up-sorted .brief-dots-field {
+  flex: none;
+  height: clamp(150px, 20vw, 240px);
+}
+
+[data-brief] .up-wait-lines {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 62ch;
+  margin: 1.25rem 0 0;
+}
+
+/* ── Sign-in to the upload pages ─────────────────────────────────── */
+
+[data-brief] .up-login {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  max-width: 26rem;
+  margin: 4rem auto 0;
+}
+
+[data-brief] .up-login .up-field {
+  width: 100%;
+  margin: 0.5rem 0 0;
+}
+
+[data-brief] .up-login .up-field input {
+  width: 100%;
+}
+
+[data-brief] .up-error-top {
+  margin: 0 0 1rem;
+}

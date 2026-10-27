@@ -14,6 +14,7 @@ import { strandsByPathway } from "@/lib/pulse/strands";
 import { AiHeading, AiText, confidenceLabel, Explanation, FirstSentence, type DocNames } from "./ai-text";
 import { Comparison, type ComparisonSide } from "./comparison";
 import { BothContracts } from "./both-contracts";
+import { briefQuery, type BriefOrigin } from "@/lib/brief/origin";
 import { ExamplePairView } from "./example-pair";
 import { commitmentLine, useNumbers } from "./ink";
 import { ResultBar } from "./sections/documents";
@@ -84,14 +85,15 @@ function PairPanel({
   docs,
   a,
   b,
-  countryId,
+  origin,
 }: {
   data: BriefData;
   docs: DocNames;
   a: string;
   b: string;
-  countryId: string;
+  origin: BriefOrigin;
 }) {
+  const countryId = origin.countryId;
   const t = useTranslations("brief.panel");
   const tp = useTranslations("briefing.drawer.pair");
   const tm = useTranslations("labels.contradictionType");
@@ -100,10 +102,10 @@ function PairPanel({
   const [state, setState] = useState<{ status: "loading" | "error" | "ok"; found?: FoundPair }>({
     status: "loading",
   });
+  const query = briefQuery(origin, { a, b, locale }).toString();
   // Mounted once per comparison (keyed by the caller), so it starts loading.
   useEffect(() => {
     let alive = true;
-    const query = new URLSearchParams({ country: countryId, a, b, locale });
     fetch(`/api/brief/pair?${query}`)
       .then((res) => (res.ok ? (res.json() as Promise<FoundPair>) : Promise.reject(new Error())))
       .then((found) => alive && setState({ status: "ok", found }))
@@ -111,7 +113,7 @@ function PairPanel({
     return () => {
       alive = false;
     };
-  }, [a, b, countryId, locale]);
+  }, [query]);
 
   if (state.status !== "ok" || !state.found) {
     return (
@@ -740,7 +742,7 @@ export function BriefPanels({
           docs={source.documents}
           a={top.a}
           b={top.b}
-          countryId={source.countryId}
+          origin={source}
         />
       )}
       {top.kind === "docPair" && (

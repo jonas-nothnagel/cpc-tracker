@@ -16,6 +16,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { countryLocaleSwitch, getCountry } from "@/config/countries";
 import { Link } from "@/i18n/navigation";
+import { uploadsAvailable } from "@/lib/upload/available";
 
 interface HeroCtaProps {
   /** Live pilot countries — each links to its brief. */
@@ -119,13 +120,15 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
 
   return (
     <div className="brief-hero-actions">
-      {/* Primary action — the one path that fits every visitor. */}
-      <Link
-        href="/upload"
-        className="brief-button-primary inline-flex items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--undp-blue)]"
-      >
-        {t("hero.analyseCta")}
-      </Link>
+      {/* Primary action — the one path that fits every visitor, where uploads run. */}
+      {uploadsAvailable() && (
+        <Link
+          href="/upload"
+          className="brief-button-primary inline-flex items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--undp-blue)]"
+        >
+          {t("hero.analyseCta")}
+        </Link>
+      )}
 
       {/* Country disclosure — quiet, holds steady whether there are 3 or 30. */}
       <div className="relative">
