@@ -21,6 +21,7 @@ Follows the same pattern as measure_align.py.
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Any
 
 from .align import (
@@ -250,6 +251,20 @@ def budget_items(country: str, ber: dict[str, Any]) -> tuple[list[dict[str, Any]
         ),
         None,
     )
+
+
+def drop_stale_translations(path: Path) -> None:
+    """Remove the per-language overlays of an alignment file just rewritten
+    (`<name>.<locale>.json`): they translate the earlier explanations, keyed
+    by pair, and would show them beside the new verdicts. A pair without a
+    translation shows the English text marked as pending. Both writers of
+    budget_alignment.json call it (run_analysis STEP 7 and
+    scripts/align_actions_and_budget.py)."""
+    for overlay in sorted(path.parent.glob(f"{path.stem}.*.json")):
+        if overlay.name == f"{path.stem}.meta.json":
+            continue
+        overlay.unlink()
+        logger.info(f"Removed {overlay.name}: it translates the earlier explanations")
 
 
 def budget_meta(basis: str | None, model: str, lines: int, targets: int, pairs: int) -> dict[str, Any]:

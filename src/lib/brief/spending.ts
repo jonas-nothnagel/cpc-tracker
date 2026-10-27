@@ -65,9 +65,18 @@ export interface SpendingItem extends Shown {
   total: number;
   /** The same in whole US$, each year at its own rate; null where amounts are in US$. */
   totalUsd: number | null;
-  /** What the review spent and counted, by attribution rate (Mongolia). The
-   *  US$ twins are converted as the line's own spending is, year by year. */
-  rates?: { name: string; rate: number; spent: number; counted: number; spentUsd: number | null; countedUsd: number | null }[];
+  /** What the review spent and counted in each of its categories, at that
+   *  category's attribution rate (Mongolia), largest spending first. The US$
+   *  twins are converted as the line's own spending is, year by year. */
+  rates?: {
+    code: string;
+    name: string;
+    rate: number;
+    spent: number;
+    counted: number;
+    spentUsd: number | null;
+    countedUsd: number | null;
+  }[];
   /** The one rate an institution is counted at (Sri Lanka). */
   rate?: number;
   /** The review's reason for that rate. */
@@ -168,7 +177,7 @@ export function spendingSetup(data: Json, source: BriefSource, options: Spending
     return { name: shown.name, ...(shown.machine ? { translated: true as const } : {}), ...(!shown.own ? { original: own } : {}) };
   };
   return record
-    ? fromRecord(record, globe.categories, options.areas ?? null, data, source, show)
+    ? fromRecord(record, globe.categories, options.areas ?? null, data, source, show, options.locale ?? "en")
     : fromLegacy(ber, data, source, globe.categories);
 }
 
@@ -199,6 +208,7 @@ function fromRecord(
   data: Json,
   source: BriefSource,
   show: (code: string, own: string) => Shown,
+  locale: string,
 ): SpendingSetup | null {
   const rawYears = (record.years as Json[] | undefined) ?? [];
   const lines = (record.lines as Json[] | undefined) ?? [];
@@ -271,11 +281,15 @@ function fromRecord(
         const { total, usd } = totals(l);
         const cells = Object.values(asRecord(l.amounts) ?? {}).map((c) => asRecord(asRecord(c)?.all));
         const rates = [...new Set(cells.map((c) => num(c?.rate)).filter((r): r is number => r !== null))];
+        // "Counted in full" or "in part" by the rates the review applies, not
+        // by its group: an agency of the other groups may be counted in full
+        // (Sri Lanka Customs' biodiversity division, at 100%).
+        const inFull = rates.length ? rates.every((r) => r >= 1) : GROUP_SERIES[String(l.group)] === "core";
         return {
           code: String(l.code),
           ...show(String(l.code), String(l.name)),
           kind: "institution" as const,
-          sub: GROUP_SERIES[String(l.group)] ?? undefined,
+          sub: inFull ? "core" : "other",
           total,
           totalUsd: usd,
           ...(rates.length === 1 && rates[0] < 1 ? { rate: rates[0] } : {}),
@@ -283,7 +297,7 @@ function fromRecord(
         };
       });
   } else {
-    items = lines.map((l) => ({ ...mongoliaItem(l, totals, complete, inUsd), ...show(String(l.code), String(l.name)) }));
+    items = lines.map((l) => ({ ...mongoliaItem(l, totals, complete, inUsd, locale), ...show(String(l.code), String(l.name)) }));
   }
   items = items.filter((i) => i.total > 0).sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
   const institutions = kinds.has("activity")
@@ -344,33 +358,38 @@ function mongoliaItem(
   totals: (line: Json) => { total: number; usd: number | null },
   complete: string[],
   inUsd: (value: number, year: string) => number | null,
+  locale: string,
 ): SpendingItem {
   const { total, usd } = totals(l);
   // The review's rates hold totals over the complete years, so their US$
   // twins take the line's own conversion: each year's rate, weighted as the
   // line's spending is.
   const factor = usd !== null && total > 0 ? usd / total : null;
+  // A category, payment or spending unit as the review names it in the
+  // page's language: its own Mongolian on the Mongolian page.
+  const named = (x: Json) => {
+    const mn = locale === "mn" && typeof x.nameMn === "string" ? x.nameMn : "";
+    return String(mn || x.name || x.nameMn || "");
+  };
   const relevance = (l.relevance as Json[] | undefined) ?? [];
-  // The review's rates, the money spent and counted at each.
-  const byRate = new Map<number, { spent: number; counted: number; names: string[] }>();
-  for (const r of relevance) {
-    const rate = num(r.rate) ?? 0;
-    const entry = byRate.get(rate) ?? { spent: 0, counted: 0, names: [] };
-    entry.spent += num(r.actual) ?? 0;
-    entry.counted += num(r.counted) ?? 0;
-    if (typeof r.name === "string" && r.name) entry.names.push(r.name);
-    byRate.set(rate, entry);
-  }
-  const rates = [...byRate.entries()]
-    .sort((a, b) => b[1].spent - a[1].spent)
-    .map(([rate, e]) => ({
-      rate,
-      spent: e.spent,
-      counted: e.counted,
-      spentUsd: factor === null ? null : e.spent * factor,
-      countedUsd: factor === null ? null : e.counted * factor,
-      name: e.names[0] ?? "",
-    }));
+  // Each of the review's categories with its own rate, the money spent and
+  // counted in it: several categories may share a rate, and each keeps its
+  // own name and amounts.
+  const rates = relevance
+    .map((r) => {
+      const spent = num(r.actual) ?? 0;
+      const counted = num(r.counted) ?? 0;
+      return {
+        code: String(r.code ?? ""),
+        name: named(r),
+        rate: num(r.rate) ?? 0,
+        spent,
+        counted,
+        spentUsd: factor === null ? null : spent * factor,
+        countedUsd: factor === null ? null : counted * factor,
+      };
+    })
+    .sort((a, b) => b.spent - a.spent || b.rate - a.rate || a.name.localeCompare(b.name));
   const latest = [...complete].reverse().find((y) => asRecord(asRecord(l.bodies)?.[y]));
   const bodies = latest ? asRecord(asRecord(l.bodies)?.[latest]) : null;
   return {
@@ -388,12 +407,12 @@ function mongoliaItem(
             count: num(bodies.count) ?? 0,
             names: ((bodies.top as Json[] | undefined) ?? []).slice(0, 6).map((b) => {
               const amount = num(b.counted) ?? 0;
-              return { name: String(b.name || b.nameMn || ""), amount, amountUsd: inUsd(amount, latest) };
+              return { name: named(b), amount, amountUsd: inUsd(amount, latest) };
             }),
           },
         }
       : {}),
-    pays: ((l.payments as Json[] | undefined) ?? []).slice(0, 4).map((p) => ({ name: String(p.name), share: num(p.share) ?? 0 })),
+    pays: ((l.payments as Json[] | undefined) ?? []).slice(0, 4).map((p) => ({ name: named(p), share: num(p.share) ?? 0 })),
   };
 }
 

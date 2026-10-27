@@ -14,6 +14,8 @@ import { focusMembers, groupProfile, groupSeatOrder, parseFocusKey } from "@/lib
 import { layoutRing } from "@/lib/brief/explore/ring";
 import { LAYER_DATA } from "@/lib/brief/explore/test-layers";
 import { parseTargetLabels } from "@/lib/brief/target-labels";
+import { levelsPayload } from "@/lib/brief/spending-fixture";
+import { CurrencyProvider } from "../contracts/money";
 import { Explore } from "./explore";
 
 const SOURCE = briefFixture();
@@ -762,5 +764,32 @@ describe("the ring's layers on a Mongolian page", () => {
   it("announces the ring in the page's language", () => {
     renderItem("BTR_1", "mitigation");
     expect(screen.getByTestId("explore-ring")).toHaveAttribute("aria-roledescription", "цагираг");
+  });
+});
+
+describe("a rebuilt record's budget line on the ring", () => {
+  function renderLine(locale: "en" | "mn", local: boolean) {
+    const layers = buildExploreLayers(levelsPayload(), SOURCE, { locale })!;
+    function View() {
+      const [state, dispatch] = useReducer(exploreReducer, { ...initialExploreState(), focus: "BER_71405", layers: ["budget"] });
+      return <Explore source={SOURCE} data={DATA} state={state} dispatch={dispatch} groups={["docs"]} layers={layers} />;
+    }
+    render(
+      <NextIntlClientProvider locale={locale} messages={locale === "mn" ? mn : en} timeZone="UTC">
+        <CurrencyProvider currency={local ? "mnt" : "usd"} rate={3500} local={local}>
+          <View />
+        </CurrencyProvider>
+      </NextIntlClientProvider>,
+    );
+  }
+
+  it("states its spending in US$ on the English page", () => {
+    renderLine("en", false);
+    expect(within(side()).getByText("Recorded spending: US$ 3.1 million, 2020–2021")).toBeInTheDocument();
+  });
+
+  it("states it in the review's own currency on the country's own-language page", () => {
+    renderLine("mn", true);
+    expect(within(side()).getByText(/^Бүртгэгдсэн зарлага: MNT 7 тэрбум, 2020–2021$/)).toBeInTheDocument();
   });
 });

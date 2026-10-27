@@ -31,6 +31,14 @@ export function CurrencyProvider({
   return <CurrencyContext.Provider value={{ currency, rate, local }}>{children}</CurrencyContext.Provider>;
 }
 
+/** The page's currency for amounts that carry their own US$ twin (the
+ *  Explore ring's budget lines): US$ on every page but the country's own
+ *  language one, where the reader's choice holds. Outside a provider, US$. */
+export function usePageCurrency(): Currency {
+  const { currency, local } = useContext(CurrencyContext);
+  return local ? currency : "usd";
+}
+
 /** Money and numbers as the contracts page states them, in the reader's
  *  locale and chosen currency. Amounts are always given in tugrik. */
 export function useMoney() {

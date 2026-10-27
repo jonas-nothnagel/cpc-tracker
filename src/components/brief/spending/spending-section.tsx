@@ -369,12 +369,14 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
   // names both and stays put.
   const institutions = setup.institutions?.length ? setup.institutions : null;
   const [by, setBy] = useState<"institution" | "programme">("institution");
-  const list = institutions && by === "institution" ? institutions : setup.items;
+  // Largest first in the currency the page states: a review's own order can
+  // differ from its US$ order where the exchange rate moved over the years.
+  const list = byShownAmount(institutions && by === "institution" ? institutions : setup.items, money);
   const total = list.reduce((s, i) => s + i.total, 0);
   const lead = list[0];
   if (!lead || total <= 0) return null;
   const shown = all ? list : list.slice(0, ITEMS_MAX);
-  const max = lead.total;
+  const max = money.whole(lead.total, lead.totalUsd);
   // What a row is, in the review's own terms: an institution (Sri Lanka), a
   // budget line (Country X), else a programme (Mongolia's programmes and
   // purpose codes, Panama's programmes).
@@ -419,7 +421,7 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
                 </span>
                 <span className="sp-cell" aria-hidden="true">
                   <span className="sp-bar-line" data-ink="spend">
-                    <span style={{ width: `${Math.min(100, (item.total / max) * 100)}%` }} />
+                    <span style={{ width: `${max > 0 ? Math.min(100, (money.whole(item.total, item.totalUsd) / max) * 100) : 0}%` }} />
                   </span>
                   <span className="sp-pct" data-ink="spend">
                     {money.amount(item.total, item.totalUsd)}
@@ -442,6 +444,18 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
       )}
     </section>
   );
+}
+
+/** Rows largest first in the currency the page states, by name on a tie. */
+function byShownAmount<T extends { total: number; totalUsd: number | null; name: string }>(rows: readonly T[], money: Money): T[] {
+  return [...rows].sort((a, b) => money.whole(b.total, b.totalUsd) - money.whole(a.total, a.totalUsd) || a.name.localeCompare(b.name));
+}
+
+/** A name inside a sentence: its first letter in lower case, unless the name
+ *  opens with an abbreviation ("VAT ...") that keeps its capitals. Names
+ *  hold commas of their own, so a list of them is set apart by semicolons. */
+function inSentence(name: string): string {
+  return /^\p{Lu}\p{Ll}/u.test(name) ? name.charAt(0).toLocaleLowerCase() + name.slice(1) : name;
 }
 
 function itemSub(item: SpendingItem, t: ReturnType<typeof useTranslations>): string {
@@ -481,7 +495,7 @@ function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
           </p>
           <ul className="sp-detail-list">
             {item.rates.map((r) => (
-              <li key={r.rate}>
+              <li key={r.code || `${r.rate}:${r.name}`}>
                 <span>{t("rate", { rate: money.pct(r.rate), name: r.name })}</span>
                 <span className="sp-detail-amount">{money.amount(r.spent, r.spentUsd)}</span>
               </li>
@@ -506,7 +520,7 @@ function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
       )}
       {item.pays && item.pays.length > 0 && (
         <p className="sp-open-line">
-          {t("pays", { list: item.pays.map((p) => `${p.name.toLowerCase()} ${percentLabel(p.share)}`).join(", ") })}
+          {t("pays", { list: item.pays.map((p) => `${inSentence(p.name)} ${percentLabel(p.share)}`).join("; ") })}
         </p>
       )}
       {item.parts && item.parts.length > 0 && (
@@ -694,7 +708,7 @@ function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money
   return (
     <>
       <ul className="sp-lines" aria-label={label}>
-        {lines.slice(0, LINES_MAX).map((l) => (
+        {byShownAmount(lines, money).slice(0, LINES_MAX).map((l) => (
           <li key={l.id} className="sp-line">
             <span className="sp-line-name">
               <span title={l.original}>{l.name}</span>

@@ -93,8 +93,16 @@ export function loadBerAreas(countryId: string, lens = "globe"): BerAreas | null
   const stamp = stampOf([readingsPath, callsPath]);
   const hit = cache.get(key);
   if (hit && hit.stamp === stamp) return hit.value;
-  const readings = JSON.parse(readFileSync(readingsPath, "utf8"));
-  const calls = existsSync(callsPath) ? JSON.parse(readFileSync(callsPath, "utf8")) : null;
+  let readings: unknown;
+  let calls: unknown = null;
+  try {
+    readings = JSON.parse(readFileSync(readingsPath, "utf8"));
+    calls = existsSync(callsPath) ? JSON.parse(readFileSync(callsPath, "utf8")) : null;
+  } catch {
+    // A file being written (the review sheet's import) or edited by hand
+    // leaves the brief without the areas for now, not without the page.
+    return null;
+  }
   const value = parseBerAreas(readings, calls, lens);
   cache.set(key, { stamp, value });
   return value;

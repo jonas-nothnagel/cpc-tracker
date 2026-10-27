@@ -155,6 +155,48 @@ describe("SpendingSection, a rebuilt record", () => {
     expect(screen.queryByRole("group", { name: "Show by institution or by programme" })).toBeNull();
   });
 
+  it("says what a line pays for in a sentence, abbreviations kept, the names set apart", () => {
+    const data = levelsPayload();
+    const line = data.berData.record.lines[0] as Record<string, unknown>;
+    line.payments = [
+      { name: "Wages and salaries, bonuses", share: 0.61 },
+      { name: "VAT and fees", share: 0.2 },
+    ];
+    renderSection(spendingSetup(data, SOURCE)!);
+    fireEvent.click(screen.getByRole("button", { name: /Security of protected areas.*Programme 71405/ }));
+    expect(screen.getByText("Pays for wages and salaries, bonuses 61%; VAT and fees 20%.")).toBeTruthy();
+  });
+
+  it("lists the review's lines largest first in the currency the page states", () => {
+    // More rupees, spent once the rupee had fallen: fewer US$ than the other.
+    const record = {
+      currency: "LKR",
+      unit: "million",
+      levels: [{ id: "all", name: "Central government" }],
+      groups: [{ id: "CBA" }, { id: "DBU" }, { id: "OASBE" }, { id: "OAMBE" }],
+      years: [
+        { year: "2015", levels: ["all"], complete: true, reviewed: { all: 100 }, byGroup: { CBA: 100 }, public: { all: 10000 }, usdRate: 100 },
+        { year: "2016", levels: ["all"], complete: true, reviewed: { all: 150 }, byGroup: { CBA: 150 }, public: { all: 10000 }, usdRate: 300 },
+      ],
+      lines: [
+        { code: "LATE", kind: "institution", group: "CBA", name: "Late agency", amounts: { "2016": { all: { gross: 150, rate: 1, counted: 150 } } } },
+        { code: "EARLY", kind: "institution", group: "CBA", name: "Early agency", amounts: { "2015": { all: { gross: 100, rate: 1, counted: 100 } } } },
+        { code: "P001", kind: "project", name: "A project", amounts: { "2015": { all: { gross: 1, rate: 1, counted: 1 } } } },
+      ],
+    };
+    const setup = spendingSetup({ berData: { record } }, SOURCE)!;
+    const rows = () =>
+      within(screen.getByRole("list", { name: "Institutions in the review, largest first" }))
+        .getAllByRole("button")
+        .map((b) => b.textContent ?? "");
+    renderSection(setup);
+    // US$1 million (LKR 100 million at 100) above US$0.5 million (150 at 300).
+    expect(rows().map((r) => r.split("Counted")[0])).toEqual(["Early agency", "Late agency"]);
+    cleanup();
+    renderSection(setup, { currency: "mnt" });
+    expect(rows().map((r) => r.split("Counted")[0])).toEqual(["Late agency", "Early agency"]);
+  });
+
   it("lists Panama's spending by institution first and by programme on request, under one title", () => {
     const panama = spendingSetup(activitiesPayload(), SOURCE, {
       names: parseBerNames({

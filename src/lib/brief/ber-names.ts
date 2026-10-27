@@ -24,7 +24,14 @@ export function loadBerNames(countryId: string): BerNames | null {
   const mtime = statSync(path).mtimeMs;
   const hit = cache.get(path);
   if (hit && hit.mtime === mtime) return hit.value;
-  const value = parseBerNames(JSON.parse(readFileSync(path, "utf8")));
+  let raw: unknown;
+  try {
+    raw = JSON.parse(readFileSync(path, "utf8"));
+  } catch {
+    // A half-written or hand-edited file leaves the review's own names.
+    return null;
+  }
+  const value = parseBerNames(raw);
   cache.set(path, { mtime, value });
   return value;
 }

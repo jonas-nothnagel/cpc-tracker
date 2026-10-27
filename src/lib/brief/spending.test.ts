@@ -65,6 +65,43 @@ describe("spendingSetup from a rebuilt record", () => {
     expect(first.rates?.[0].countedUsd).toBeCloseTo(1 * factor);
   });
 
+  it("keeps each of the review's categories with its own name and amounts, two at one rate too", () => {
+    const data = mongoliaLike();
+    const line = data.berData.record.lines[0] as Record<string, unknown>;
+    line.relevance = [
+      { code: "80101", name: "Core operational expenditures", rate: 1, actual: 6, counted: 6 },
+      { code: "80918", name: "Other", rate: 0.05, actual: 20, counted: 1 },
+      { code: "80303", name: "Research and scientific studies", rate: 1, actual: 2, counted: 2 },
+    ];
+    const [first] = spendingSetup(data, briefFixture())!.items;
+    expect(first.rates?.map((r) => [r.code, r.name, r.rate, r.spent, r.counted])).toEqual([
+      ["80918", "Other", 0.05, 20, 1],
+      ["80101", "Core operational expenditures", 1, 6, 6],
+      ["80303", "Research and scientific studies", 1, 2, 2],
+    ]);
+  });
+
+  it("names a line's categories, payments and spending units in the review's Mongolian on the Mongolian page", () => {
+    const data = mongoliaLike();
+    const line = data.berData.record.lines[0] as Record<string, unknown>;
+    line.relevance = [
+      { code: "80101", name: "Core operational expenditures", nameMn: "Үндсэн үйл ажиллагааны зардал", rate: 1, actual: 6, counted: 6 },
+    ];
+    line.payments = [{ name: "Wages and salaries, bonuses", nameMn: "Цалин, хөлс болон нэмэгдэл урамшил", share: 0.61 }];
+    const mn = spendingSetup(data, briefFixture(), { locale: "mn" })!.items[0];
+    expect([mn.rates?.[0].name, mn.pays?.[0].name, mn.bodies?.names[0].name]).toEqual([
+      "Үндсэн үйл ажиллагааны зардал",
+      "Цалин, хөлс болон нэмэгдэл урамшил",
+      "Хан Хэнтий",
+    ]);
+    const en = spendingSetup(data, briefFixture(), { locale: "en" })!.items[0];
+    expect([en.rates?.[0].name, en.pays?.[0].name, en.bodies?.names[0].name]).toEqual([
+      "Core operational expenditures",
+      "Wages and salaries, bonuses",
+      "Khan Khentii administration",
+    ]);
+  });
+
   it("gives every line its US$ twin, each year at its own rate", () => {
     const setup = spendingSetup(mongoliaLike(), briefFixture())!;
     expect(setup.lines.map((l) => [l.code, l.total])).toEqual([
@@ -122,6 +159,8 @@ describe("spendingSetup from a rebuilt record", () => {
           lines: [
             { code: "FD", kind: "institution", group: "CBA", name: "Forest Department", amounts: { "2015": { all: { gross: 6, rate: 1, counted: 6 } } } },
             { code: "CEA", kind: "institution", group: "OASBE", name: "Central Environment Authority", rationale: "Main agency for EIAs.", amounts: { "2015": { all: { gross: 4, rate: 0.5, counted: 2 } } } },
+            // An agency of the other groups that the review counts in full.
+            { code: "SLC", kind: "institution", group: "OASBE", name: "Sri Lanka Customs", amounts: { "2015": { all: { gross: 1, rate: 1, counted: 1 } } } },
             { code: "P082", kind: "project", name: "Construction of Electric Fences", ministry: "Ministry of Environment", tags: ["Wildlife protection"], amounts: { "2015": { all: { gross: 3, rate: 1, counted: 3 } } } },
           ],
         },
@@ -131,9 +170,11 @@ describe("spendingSetup from a rebuilt record", () => {
     expect(setup.series).toEqual(["core", "other"]);
     expect(setup.years[0].reviewed).toEqual({ core: 7, other: 3 });
     expect(setup.scope).toBe("government");
+    // "Counted in full" or "in part" by the rate applied, not by the group.
     expect(setup.items.map((i) => [i.code, i.sub, i.rate, i.rationale])).toEqual([
       ["FD", "core", undefined, undefined],
       ["CEA", "other", 0.5, "Main agency for EIAs."],
+      ["SLC", "core", undefined, undefined],
     ]);
     // The areas are read from the project lines, a second view of the same money.
     expect(setup.lines.map((l) => l.code)).toEqual(["P082"]);

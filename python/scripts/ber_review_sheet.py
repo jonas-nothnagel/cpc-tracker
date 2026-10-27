@@ -133,6 +133,12 @@ def build(lens: str, out: Path) -> None:
         for r, line, local, usd, span in rows:
             first, second = r["first"], r["second"] or {}
             call = earlier.get(r["code"], {})
+            # An earlier Accept whose area model 1 no longer reads is filled
+            # in as a Change to that area, so the row still says what was
+            # decided and a re-import keeps it as it was.
+            prefill = call.get("call")
+            if prefill == "accept" and call.get("area") != first["area"]:
+                prefill = "change" if call.get("area") else "none"
             ws.append(
                 [
                     r["code"],
@@ -148,8 +154,8 @@ def build(lens: str, out: Path) -> None:
                     names.get(second.get("area"), "") if second.get("area") else "",
                     (second["ranked"][0]["reasoning"] if second.get("ranked") else ""),
                     STATUS_WORDS[r["status"]],
-                    next((k for k, v in CALLS.items() if v == call.get("call")), ""),
-                    names.get(call.get("area"), "") if call.get("call") == "change" else "",
+                    next((k for k, v in CALLS.items() if v == prefill), ""),
+                    names.get(call.get("area"), "") if prefill == "change" else "",
                     call.get("note", ""),
                 ]
             )
@@ -247,6 +253,12 @@ def build_type_sheets(wb: Workbook) -> None:
         for r, line, local, usd, span in rows:
             first, second = r["first"], r["second"]
             call = earlier.get(r["code"], {})
+            # As for the areas: an earlier Accept of a type model 1 no longer
+            # puts first is filled in as a Change to that type.
+            shown_type = first["ranked"][0]["id"] if first["ranked"] else None
+            prefill = call.get("call")
+            if prefill == "accept" and call.get("type") != shown_type:
+                prefill = "change" if call.get("type") else "none"
             ws.append(
                 [
                     r["code"],
@@ -261,8 +273,8 @@ def build_type_sheets(wb: Workbook) -> None:
                     second["ranked"][0]["reasoning"] if second and second.get("ranked") else "",
                     ", ".join(str(g) for g in r["gbf"]) or "none",
                     TYPE_STATUS_WORDS[r["typeStatus"]],
-                    next((k for k, v in CALLS.items() if v == call.get("call")), ""),
-                    call.get("type", "") if call.get("call") == "change" else "",
+                    next((k for k, v in CALLS.items() if v == prefill), ""),
+                    (call.get("type") or "") if prefill == "change" else "",
                     call.get("note", ""),
                 ]
             )
@@ -286,38 +298,66 @@ def load_type_calls(country: str) -> dict[str, dict[str, Any]]:
     return json.loads(path.read_text()).get("types", {}) if path.exists() else {}
 
 
+def line_code(value: Any) -> str:
+    """A line's code as the record keys it, whatever the spreadsheet made of
+    the cell: a code typed or converted into a number comes back as one."""
+    if isinstance(value, float) and value.is_integer():
+        return str(int(value))
+    return str(value).strip()
+
+
+def kept(earlier: dict[str, Any] | None, entry: dict[str, Any]) -> dict[str, Any]:
+    """The call to store: the earlier one, with who made it and when, where
+    the sheet repeats its decision (build fills earlier calls in, an Accept
+    whose area or type model 1 no longer reads as a Change to it); else the
+    new one, by whoever imports it today."""
+
+    def decision(call: dict[str, Any]) -> tuple[Any, Any]:
+        value = None if call.get("call") == "none" else call.get("area", call.get("type"))
+        return value, call.get("note")
+
+    return earlier if earlier and decision(earlier) == decision(entry) else entry
+
+
 def import_type_calls(wb: Any, by: str) -> None:
     types = {t["id"] for t in json.loads((DATA_DIR / "globe-expenditure-types.json").read_text())["types"]}
     for country, title in COUNTRIES.items():
         sheet = type_sheet_title(title)
         if sheet not in wb.sheetnames:
             continue
-        readings = json.loads((OUTPUT_DIR / country / "ber_types_globe.json").read_text())
-        first_type = {r["code"]: r["first"]["type"] for r in readings["lines"]}
         target = type_calls_path(country)
         stored = json.loads(target.read_text()) if target.exists() else {}
         calls = stored.get("types", {})
         changed = 0
         for row in wb[sheet].iter_rows(min_row=2, values_only=True):
-            code, call, code_given, note = row[0], row[12], row[13], row[14]
-            if not code or not call:
+            raw, call, code_given, note = row[0], row[12], row[13], row[14]
+            if not raw or not call:
                 continue
+            code = line_code(raw)
             kind = CALLS.get(str(call).strip())
             if kind is None:
                 raise SystemExit(f"{sheet}, line {code}: unknown call {call!r}")
             chosen = str(code_given).strip() if code_given else ""
             if kind == "change" and chosen not in types:
                 raise SystemExit(f"{sheet}, line {code}: Change needs a type code from the GLOBE workbook, found {chosen!r}")
+            # Accept takes the type the sheet showed the reviewer ("Model 1:
+            # type", its code first), not whatever a later run reads.
+            shown = str(row[5]).split(" ", 1)[0] if row[5] else ""
+            decided = None
+            if kind == "change":
+                decided = chosen
+            elif kind == "accept" and shown in types:
+                decided = shown
             entry = {
                 "call": kind,
-                "type": chosen if kind == "change" else first_type.get(code) if kind == "accept" else None,
+                "type": decided,
                 "by": by,
                 "at": date.today().isoformat(),
                 **({"note": str(note).strip()} if note else {}),
             }
-            if calls.get(code, {}) | {"at": entry["at"]} != entry:
+            calls[code] = kept(calls.get(code), entry)
+            if calls[code] is entry:
                 changed += 1
-            calls[code] = entry
         stored["_provenance"] = (
             "A person's calls on the expenditure types the AI suggested for the review's lines (step 3 of the BER "
             "plan, the official chain); written by python/scripts/ber_review_sheet.py import. Only these count as checked."
@@ -346,31 +386,37 @@ def import_calls(path: Path, lens: str, by: str) -> None:
         if title not in wb.sheetnames:
             continue
         ws = wb[title]
-        readings = json.loads((OUTPUT_DIR / country / f"ber_areas_{lens}.json").read_text())
-        first_area = {r["code"]: r["first"]["area"] for r in readings["lines"]}
         target = calls_path(country)
         stored = json.loads(target.read_text()) if target.exists() else {}
         calls = stored.get(lens, {})
         changed = 0
         for row in ws.iter_rows(min_row=2, values_only=True):
-            code, call, area, note = row[0], row[13], row[14], row[15]
-            if not code or not call:
+            raw, call, area, note = row[0], row[13], row[14], row[15]
+            if not raw or not call:
                 continue
+            code = line_code(raw)
             kind = CALLS.get(str(call).strip())
             if kind is None:
                 raise SystemExit(f"{title}, line {code}: unknown call {call!r}")
             if kind == "change" and area not in by_name:
                 raise SystemExit(f"{title}, line {code}: Change needs an area from the list, found {area!r}")
+            # Accept takes the area the sheet showed the reviewer ("Model 1:
+            # area"), not whatever a later run of the models reads.
+            decided = None
+            if kind == "change":
+                decided = by_name[area]
+            elif kind == "accept":
+                decided = by_name.get(row[7])
             entry = {
                 "call": kind,
-                "area": by_name[area] if kind == "change" else first_area.get(code) if kind == "accept" else None,
+                "area": decided,
                 "by": by,
                 "at": date.today().isoformat(),
                 **({"note": str(note).strip()} if note else {}),
             }
-            if calls.get(code, {}) | {"at": entry["at"]} != entry:
+            calls[code] = kept(calls.get(code), entry)
+            if calls[code] is entry:
                 changed += 1
-            calls[code] = entry
         stored["_provenance"] = (
             "A person's calls on the areas the AI suggested for the review's lines (step 2 of the BER plan); "
             "written by python/scripts/ber_review_sheet.py import. Only these count as checked."

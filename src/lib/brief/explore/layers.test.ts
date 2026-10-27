@@ -4,6 +4,7 @@ import { briefFixture } from "../test-fixture";
 import { parseTargetLabels } from "../target-labels";
 import { buildExploreLayers } from "./layers";
 import { LAYER_DATA } from "./test-layers";
+import { activitiesPayload, levelsPayload } from "../spending-fixture";
 import { buildExploreModel, levelBetween, relationBetween } from "./model";
 import { focusMembers, groupProfile, pairsBetween, parseFocusKey, rankMembers } from "./focus";
 
@@ -51,6 +52,22 @@ describe("buildExploreLayers", () => {
 
   it("is absent for a country without reported actions or budget lines", () => {
     expect(buildExploreLayers({ targets: [], alignment: [] }, SOURCE)).toBeNull();
+  });
+});
+
+describe("a rebuilt record's budget lines", () => {
+  it("carry their US$ figure, each year at its own rate, beside the review's own amount", () => {
+    const layers = buildExploreLayers(levelsPayload(), SOURCE, { locale: "en" })!;
+    expect(layers.budget).toEqual({ currency: "MNT", unit: "billion", start: 2020, end: 2021, usd: true });
+    // ₮3 billion at 2,000 and ₮4 billion at 2,500 per US$: US$1.5 + 1.6 million.
+    expect(layers.items.find((i) => i.id === "BER_71405")?.spend).toEqual({ total: 7, years: 2, usd: 3.1 });
+  });
+
+  it("carry none for a review in US$ (Panama's balboa, at par)", () => {
+    const layers = buildExploreLayers(activitiesPayload(), SOURCE, { locale: "en" })!;
+    expect(layers.budget?.currency).toBe("US$");
+    expect(layers.budget?.usd).toBeUndefined();
+    expect(layers.items.filter((i) => i.layer === "budget").every((i) => i.spend?.usd === undefined)).toBe(true);
   });
 });
 

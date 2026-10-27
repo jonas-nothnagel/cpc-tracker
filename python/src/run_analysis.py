@@ -75,6 +75,7 @@ from .nr7_align import (
 from .budget_align import (
     budget_items,
     budget_meta,
+    drop_stale_translations,
     generate_budget_pairs,
     decompose_programs,
     assess_budget_alignment,
@@ -910,6 +911,8 @@ async def main() -> None:
                 out_path = OUTPUT_DIR / "budget_alignment.json"
                 out_path.write_text(json.dumps(budget_alignment_results, indent=2))
                 logger.info(f"Saved {len(budget_alignment_results)} budget alignment results")
+                # Its per-language overlays translate the earlier explanations.
+                drop_stale_translations(out_path)
 
                 out_path = OUTPUT_DIR / "budget_pseudo_targets.json"
                 out_path.write_text(json.dumps(budget_pseudo_targets, indent=2))

@@ -47,6 +47,7 @@ import {
   type LineKind,
 } from "@/lib/brief/explore/state";
 import type { BriefSource } from "@/lib/brief/source";
+import { usePageCurrency } from "../contracts/money";
 import { clip, commitmentLine, useNumbers } from "../ink";
 import { ResultBar } from "../sections/documents";
 import { PairView } from "./pair-view";
@@ -252,6 +253,7 @@ export function Explore({
   const locale = useLocale();
   const tour = useTour();
   const { n, pct } = useNumbers();
+  const pageCurrency = usePageCurrency();
 
   const model = useMemo(() => buildExploreModel(data.scope, layers), [data.scope, layers]);
   const available = useMemo(
@@ -598,17 +600,22 @@ export function Explore({
     const key = catalogKey(UNIT_KEYS, unit);
     return key ? t(`unit.${key}`) : unit;
   };
+  // Budget lines in US$ on every page but the country's own-language one,
+  // where the reader's currency holds (the money rule): each line carries
+  // its US$ twin where the review is not in US$.
+  const budgetInUsd = layers?.budget?.usd === true && pageCurrency === "usd";
+  const spendOf = (c: { spend?: { total: number; usd?: number } }): number =>
+    budgetInUsd && c.spend?.usd !== undefined ? c.spend.usd : (c.spend?.total ?? 0);
+  const budgetMoney = (budget: NonNullable<ExploreLayers["budget"]>, total: number) => ({
+    total: n(total),
+    currency: budgetInUsd ? "US$" : budget.currency,
+    unit: unitText(budgetInUsd ? "million" : budget.unit),
+    start: budget.start,
+    end: budget.end,
+  });
   const factsOf = (c: ExploreItem): string | null => {
     if (c.kind === "action" && c.status) return t("status", { status: statusText(c.status) });
-    if (c.kind === "budget" && c.spend && layers?.budget) {
-      return t("spend", {
-        total: n(c.spend.total),
-        currency: layers.budget.currency,
-        unit: unitText(layers.budget.unit),
-        start: layers.budget.start,
-        end: layers.budget.end,
-      });
-    }
+    if (c.kind === "budget" && c.spend && layers?.budget) return t("spend", budgetMoney(layers.budget, spendOf(c)));
     return null;
   };
   /** What a seat's first selection opens beside the ring: its comparison
@@ -1172,11 +1179,7 @@ export function Explore({
           budget && layers?.budget
             ? t("layerFiguresBudget", {
                 count: itemsOfLayer.length,
-                total: n(itemsOfLayer.reduce((s, c) => s + (c.spend?.total ?? 0), 0)),
-                currency: layers.budget.currency,
-                unit: layers.budget.unit,
-                start: layers.budget.start,
-                end: layers.budget.end,
+                ...budgetMoney(layers.budget, itemsOfLayer.reduce((s, c) => s + spendOf(c), 0)),
               })
             : t(budget ? "linesCount" : "actionsCount", { count: itemsOfLayer.length })
         }

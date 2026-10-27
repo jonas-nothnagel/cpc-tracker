@@ -56,6 +56,7 @@ from src.budget_align import (  # noqa: E402
     budget_items,
     budget_meta,
     decompose_programs,
+    drop_stale_translations,
     generate_budget_pairs,
 )
 from src.classify import rank_classification  # noqa: E402
@@ -159,18 +160,6 @@ async def target_decompositions(targets: list[dict], country_dir: Path) -> tuple
     kept = {t["id"]: stored[t["id"]] for t in targets if t["id"] in stored}
     logger.info(f"Target decompositions: {len(kept)} from {path}, {len(fresh)} decomposed")
     return {**kept, **fresh}, len(kept)
-
-
-def drop_stale_translations(path: Path) -> None:
-    """Remove the per-language overlays of an alignment file just rewritten
-    (`<name>.<locale>.json`): they translate the earlier explanations, keyed
-    by pair, and would show them beside the new verdicts. A pair without a
-    translation shows the English text marked as pending."""
-    for overlay in sorted(path.parent.glob(f"{path.stem}.*.json")):
-        if overlay.name == f"{path.stem}.meta.json":
-            continue
-        overlay.unlink()
-        logger.info(f"Removed {overlay.name}: it translates the earlier explanations")
 
 
 def in_agreed_wording(results: list[dict]) -> list[dict]:

@@ -41,8 +41,10 @@ export interface LayerItem {
   textTranslated?: "machine";
   /** A reported action's status as the BTR states it ("Ongoing"). */
   status?: string;
-  /** A budget line's spending over the years the review reports. */
-  spend?: { total: number; years: number };
+  /** A budget line's spending over the years the review reports, in the
+   *  review's currency and unit; `usd` is the same in US$ million, each year
+   *  at its own rate, where the review is not in US$. */
+  spend?: { total: number; years: number; usd?: number };
 }
 
 export interface ExploreLayers {
@@ -50,7 +52,10 @@ export interface ExploreLayers {
   /** One reading per link: [target id, item index, level code, mechanism
    *  code], codes as in `BriefSource.comparisons`. */
   links: [string, number, number, number][];
-  budget?: { currency: string; unit: string; start: number; end: number };
+  /** The budget lines' currency and unit as the review states them. `usd`:
+   *  every line also carries its US$ figure, which every page but the
+   *  country's own-language one states instead (the money rule). */
+  budget?: { currency: string; unit: string; start: number; end: number; usd?: true };
   /** NBSAP target id -> its least advanced NR7 status. */
   nr7?: Record<string, Nr7Status>;
 }
@@ -116,9 +121,30 @@ export function buildExploreLayers(
   // targets wait until they are rebuilt for those lines (step 3).
   const record = berRecord(data.berData);
   const complete = record ? completeYears(record) : [];
+  // The same spending in US$ million, each year at its own rate, as the
+  // spending section converts it; none for a review in US$ (Panama's balboa,
+  // at par) or where a year has no rate.
+  const atPar = record?.currency === "PAB";
+  const base = record?.unit === "billion" ? 1e9 : 1e6;
+  const usdRate = new Map(
+    ((record?.years as Record<string, unknown>[] | undefined) ?? []).map((y) => [String(y.year), Number(y.usdRate)]),
+  );
+  const usdMillion = (line: Record<string, unknown>): number | undefined => {
+    if (atPar) return undefined;
+    let usd = 0;
+    for (const year of complete) {
+      const rate = usdRate.get(year);
+      if (!rate || !Number.isFinite(rate) || rate <= 0) return undefined;
+      usd += (countedIn(line, year) * base) / rate / 1e6;
+    }
+    return Math.round(usd * 1000) / 1000;
+  };
+  let everyUsd = !atPar;
   for (const line of record ? areaLines(record) : []) {
     const total = complete.reduce((s, y) => s + countedIn(line, y), 0);
     if (!(total > 0)) continue;
+    const usd = usdMillion(line);
+    if (usd === undefined) everyUsd = false;
     const code = String(line.code);
     const own = String(line.name ?? code);
     const listed = names?.names[code];
@@ -136,7 +162,7 @@ export function buildExploreLayers(
       ...(shown?.machine ? { translated: "machine" as const } : {}),
       text: described ?? lineText(line),
       ...(described && listed?.mnDescriptionMachine && !shown?.machine ? { textTranslated: "machine" as const } : {}),
-      spend: { total: Math.round(total * 1000) / 1000, years: complete.length },
+      spend: { total: Math.round(total * 1000) / 1000, years: complete.length, ...(usd !== undefined ? { usd } : {}) },
     });
   }
   for (const t of record ? [] : ((data.budgetPseudoTargets as Record<string, unknown>[]) ?? [])) {
@@ -195,6 +221,7 @@ export function buildExploreLayers(
           unit: String(record.unit ?? ""),
           start: Number(complete[0]),
           end: Number(complete[complete.length - 1]),
+          ...(everyUsd ? { usd: true as const } : {}),
         }
       : undefined
     : ber && period

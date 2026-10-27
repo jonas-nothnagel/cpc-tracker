@@ -9,6 +9,7 @@ from src.budget_align import (
     BUDGET_INTRO_FRAMING,
     budget_items,
     budget_meta,
+    drop_stale_translations,
     generate_budget_pairs,
     programs_to_pseudo_targets,
     record_lines_to_pseudo_targets,
@@ -159,3 +160,18 @@ def test_programs_to_pseudo_targets_unchanged_text():
         unit="billion",
     )
     assert p["text"] == "Waste management. Waste. Expenditure: 2020: 1.5 billion MNT, 2021: no data. Total: 1.5 billion MNT."
+
+
+def test_a_rewritten_comparison_drops_its_translations_and_keeps_its_meta(tmp_path):
+    # Both writers of budget_alignment.json (run_analysis STEP 7 and the align
+    # script) call this: an overlay keyed by pair would show the earlier
+    # explanation beside the new verdict.
+    for name in ("budget_alignment.json", "budget_alignment.es.json", "budget_alignment.mn.json",
+                 "budget_alignment.meta.json", "alignment.es.json"):
+        (tmp_path / name).write_text("{}")
+    drop_stale_translations(tmp_path / "budget_alignment.json")
+    assert sorted(p.name for p in tmp_path.iterdir()) == [
+        "alignment.es.json",
+        "budget_alignment.json",
+        "budget_alignment.meta.json",
+    ]
