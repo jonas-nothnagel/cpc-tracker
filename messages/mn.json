@@ -3657,6 +3657,7 @@
         "switch": "Байгууллага эсвэл хөтөлбөрөөр харуулах",
         "byInstitution": "Байгууллага",
         "byProgramme": "Хөтөлбөр",
+        "budgetNamed": "{name} ({type, select, investment {хөрөнгө оруулалт} other {урсгал зардал}})",
         "kind": {
           "programme": "Хөтөлбөр {code}",
           "purpose": "Зориулалтын код {code}, бусад хөтөлбөрт",

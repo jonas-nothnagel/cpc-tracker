@@ -3657,6 +3657,7 @@
         "switch": "Show by institution or by programme",
         "byInstitution": "Institution",
         "byProgramme": "Programme",
+        "budgetNamed": "{name} ({type, select, investment {investment budget} other {operating budget}})",
         "kind": {
           "programme": "Programme {code}",
           "purpose": "Purpose code {code}, in other programmes",

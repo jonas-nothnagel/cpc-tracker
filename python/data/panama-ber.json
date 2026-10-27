@@ -6693,10 +6693,13 @@
       },
       {
         "code": "0-27-0-2",
-        "name": "Áreas Protegidas y Vida Silvestre",
+        "name": "Áreas Protegidas y Biodiversidad",
         "type": "FUNCIONAMIENTO",
         "institution": "Ministerio de Ambiente",
-        "institutionCode": "0-27"
+        "institutionCode": "0-27",
+        "formerNames": [
+          "Áreas Protegidas y Vida Silvestre"
+        ]
       },
       {
         "code": "0-27-0-3",
@@ -6714,24 +6717,33 @@
       },
       {
         "code": "0-27-1-1",
-        "name": "Investigación y Manejo de Rec. Naturales",
+        "name": "Áreas Protegidas y Biodiversidad",
         "type": "INVERSION",
         "institution": "Ministerio de Ambiente",
-        "institutionCode": "0-27"
+        "institutionCode": "0-27",
+        "formerNames": [
+          "Investigación y Manejo de Rec. Naturales"
+        ]
       },
       {
         "code": "0-27-1-2",
-        "name": "Conservación y Desarrollo Sostenible",
+        "name": "Gestión Ambiental",
         "type": "INVERSION",
         "institution": "Ministerio de Ambiente",
-        "institutionCode": "0-27"
+        "institutionCode": "0-27",
+        "formerNames": [
+          "Conservación y Desarrollo Sostenible"
+        ]
       },
       {
         "code": "0-27-1-3",
-        "name": "Fortalecimiento Institucional",
+        "name": "Gestión Integrada de Cuencas Hidrog.",
         "type": "INVERSION",
         "institution": "Ministerio de Ambiente",
-        "institutionCode": "0-27"
+        "institutionCode": "0-27",
+        "formerNames": [
+          "Fortalecimiento Institucional"
+        ]
       },
       {
         "code": "0-27-1-5",
@@ -6815,7 +6827,10 @@
         "name": "Apoyo Invest. e Innovación Agropecuaria",
         "type": "INVERSION",
         "institution": "Instituto de Investigación Agropecuaria",
-        "institutionCode": "1-25"
+        "institutionCode": "1-25",
+        "formerNames": [
+          "Apoyo Invest. e innovación Agropecuaria"
+        ]
       },
       {
         "code": "1-25-1-6",
@@ -6857,7 +6872,10 @@
         "name": "Integración de las Ciudades Voc. T.",
         "type": "INVERSION",
         "institution": "Autoridad de Turismo de Panamá",
-        "institutionCode": "1-45"
+        "institutionCode": "1-45",
+        "formerNames": [
+          "Integracion de las Ciudades V T"
+        ]
       },
       {
         "code": "1-7-1-1",

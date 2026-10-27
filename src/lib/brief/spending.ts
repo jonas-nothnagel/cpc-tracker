@@ -43,6 +43,9 @@ export type SeriesId = "central" | "local" | "core" | "other" | "all";
 /** What "all public spending" is, in the review's terms. */
 export type PublicScope = "stateLocal" | "publicSector" | "government" | "public";
 
+/** The budget a programme is in (Panama's investment or operating budget). */
+export type BudgetType = "investment" | "operating";
+
 export interface SpendingYear {
   year: string;
   /** Reviewed spending per part; null where that part is not in the review's data. */
@@ -61,6 +64,9 @@ export interface SpendingItem extends Shown {
   kind: "programme" | "purpose" | "programmeGroup" | "institutionGroup" | "institution" | "line";
   /** The institution, part or code that places the line. */
   sub?: string;
+  /** The budget a programme is in, where its institution runs another
+   *  programme under the same name. */
+  budget?: BudgetType;
   /** Counted over the complete years. */
   total: number;
   /** The same in whole US$, each year at its own rate; null where amounts are in US$. */
@@ -87,7 +93,7 @@ export interface SpendingItem extends Shown {
   pays?: { name: string; share: number }[];
   /** The activities inside a programme, or the lines inside an institution,
    *  largest first; with a US$ twin where the review is not in US$. */
-  parts?: (Shown & { amount: number; amountUsd?: number | null })[];
+  parts?: (Shown & { amount: number; amountUsd?: number | null; budget?: BudgetType })[];
   partsCount?: number;
 }
 
@@ -152,6 +158,8 @@ function num(value: unknown): number | null {
 
 const GROUP_SERIES: Record<string, SeriesId> = { CBA: "core", DBU: "core", OASBE: "other", OAMBE: "other" };
 const LEVEL_SERIES: Record<string, SeriesId> = { central: "central", local: "local", all: "all" };
+/** Panama's budget types, as its database writes them. */
+const BUDGET_TYPES: Record<string, BudgetType> = { INVERSION: "investment", FUNCIONAMIENTO: "operating" };
 
 export interface SpendingOptions {
   /** Each line's area from step 2, with a person's calls. */
@@ -434,13 +442,23 @@ function programmeItems(
     if (total > 0) g.parts.push({ ...show(String(l.code), String(l.name)), amount: total });
     groups.set(key, g);
   }
+  // An institution may run a programme under one name in each budget (Panama's
+  // environment ministry): the two are told apart by the budget they are in.
+  const placed = (code: string) => {
+    const p = programmes.get(code) ?? {};
+    return `${String(p.institutionCode ?? p.institution ?? "")}|${String(p.name ?? code)}`;
+  };
+  const named = new Map<string, number>();
+  for (const [code, g] of groups) if (g.total > 0) named.set(placed(code), (named.get(placed(code)) ?? 0) + 1);
   return [...groups.entries()].map(([code, g]) => {
     const p = programmes.get(code) ?? {};
     const parts = g.parts.sort((a, b) => b.amount - a.amount);
     const institution = String(p.institution ?? "");
+    const budget = (named.get(placed(code)) ?? 0) > 1 ? BUDGET_TYPES[String(p.type)] : undefined;
     return {
       code,
       ...show(code, String(p.name ?? code)),
+      ...(budget ? { budget } : {}),
       kind: "programmeGroup" as const,
       sub: p.institutionCode ? show(String(p.institutionCode), institution).name : institution,
       total: g.total,
@@ -471,10 +489,11 @@ function institutionItems(record: Json, programmes: SpendingItem[], show: (code:
       kind: "institutionGroup" as const,
       total: inside.reduce((s, p) => s + p.total, 0),
       totalUsd: inside.some((p) => p.totalUsd === null) ? null : inside.reduce((s, p) => s + (p.totalUsd ?? 0), 0),
-      parts: inside.map(({ name, translated, original, total }) => ({
+      parts: inside.map(({ name, translated, original, budget, total }) => ({
         name,
         ...(translated ? { translated } : {}),
         ...(original ? { original } : {}),
+        ...(budget ? { budget } : {}),
         amount: total,
       })),
       partsCount: inside.length,

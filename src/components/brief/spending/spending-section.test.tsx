@@ -6,7 +6,7 @@ import type { Currency } from "@/components/brief/contracts/money";
 import { parseBerAreas } from "@/lib/brief/ber-areas";
 import { parseBerNames } from "@/lib/brief/ber-names-shared";
 import { spendingSetup, type SpendingSetup } from "@/lib/brief/spending";
-import { activitiesPayload, holdersPayload, legacyPayload, levelsPayload } from "@/lib/brief/spending-fixture";
+import { activitiesPayload, holdersPayload, legacyPayload, levelsPayload, sameNamePayload } from "@/lib/brief/spending-fixture";
 import { briefFixture } from "@/lib/brief/test-fixture";
 import { SpendingSection } from "./spending-section";
 
@@ -225,6 +225,20 @@ describe("SpendingSection, a rebuilt record", () => {
     expect(rows()[0].textContent).toMatch(/^Agricultural HealthMinistry of Agricultural Development/);
     expect(screen.queryByText("Its programmes, largest first:")).toBeNull();
     expect(screen.getByRole("heading", title)).toBeTruthy();
+  });
+
+  it("names the budget of a programme whose institution runs another under its name", () => {
+    renderSection(spendingSetup(sameNamePayload(), SOURCE)!);
+    const rows = () => within(screen.getByRole("list", { name: /in the review, largest first$/ })).getAllByRole("button");
+    fireEvent.click(rows()[0]);
+    expect(screen.getByText("Áreas Protegidas y Biodiversidad (operating budget)")).toBeTruthy();
+    expect(screen.getByText("Áreas Protegidas y Biodiversidad (investment budget)")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Programme" }));
+    expect(rows().map((r) => r.querySelector(".sp-item-name")?.firstChild?.textContent)).toEqual([
+      "Sanidad Agropecuaria",
+      "Áreas Protegidas y Biodiversidad (operating budget)",
+      "Áreas Protegidas y Biodiversidad (investment budget)",
+    ]);
   });
 
   it("lists Mongolia's spending by who holds the budget, in US$ at each year's rate", () => {

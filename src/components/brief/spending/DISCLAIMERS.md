@@ -44,8 +44,9 @@ The language links never carry the currency (`cur`) across.
 
 **Machine-translated names** (`translated: true` on a line, programme,
 activity or, for Panama, institution, src/lib/brief/spending.ts; Panama's 14
-institution names were translated on 27 October 2026, the rest on 23 October,
-as `_meta.runs` in python/data/panama-ber-names.json records). A name shows in
+institution names and one programme name were translated on 27 October 2026,
+the rest on 23 October, as `_meta.runs` in python/data/panama-ber-names.json
+records). A name shows in
 the page's language
 from python/data/<country>-ber-names.json (`shownName` in
 src/lib/brief/ber-names-shared.ts): in Spanish with the review's
@@ -59,6 +60,14 @@ The tag beside every translated name came off the face on 23 October 2026
 - en: machine translation
 - es: traducción automática
 - mn: машин орчуулга
+
+**Panama's programmes are named as the database names them in the latest
+year** with money in the review (python/scripts/build_ber_panama.py); the
+earlier names stay in the record (`formerNames`). Four of the Ministry of
+Environment's programmes were renamed after 2016, and three of its programme
+names now come twice, once in each budget. Where an institution runs two
+programmes of one name, the list adds the budget to the name ("investment
+budget", "operating budget"; the database's INVERSION and FUNCIONAMIENTO).
 
 **Mongolia's budget holders** (the institution view of its list) are named as
 the review's workbook names them (sheet 2016-2021, column Admin1, its leading

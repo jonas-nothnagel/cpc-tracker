@@ -162,6 +162,16 @@ export function activitiesPayload(withInstitutions = true) {
   };
 }
 
+/** The environment ministry's two programmes under one name, one in each
+ *  budget, as Panama's database names three of its programme pairs. */
+export function sameNamePayload() {
+  const payload = activitiesPayload();
+  const [, operating, investment] = payload.berData.record.programmes;
+  Object.assign(operating, { name: "Áreas Protegidas y Biodiversidad", type: "FUNCIONAMIENTO" });
+  Object.assign(investment, { name: "Áreas Protegidas y Biodiversidad", type: "INVERSION" });
+  return payload;
+}
+
 /** The two-level record with who holds each line's budget in the complete
  *  years, the way the Mongolia adapter writes them: the environment minister
  *  holds the programme, the capital city and a province the purpose code. */

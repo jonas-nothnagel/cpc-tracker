@@ -321,6 +321,10 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
 
     # Lines: the activities with money in the years shown.
     programmes: dict[tuple, dict[str, Any]] = {}
+    # A programme takes its name in the latest year any of its activities
+    # shown carries, never the first activity's: an activity that ended in
+    # 2016 still carries the name its programme had then.
+    programme_names: dict[tuple, dict[str, dict[str, str]]] = defaultdict(dict)
     lines = []
     for act in ex.activities.values():
         shown = {y: c for y, c in act.years.items() if y in SHOWN_YEARS}
@@ -337,11 +341,17 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
         code = f"{programme_code}-{sub}-{actv}"
         sector = max(act.sector.items(), key=lambda kv: kv[1])[0] if act.sector else ("", "", "")
         total = sum(c["committed"] for c in shown.values())
+        by_year = programme_names[(area, entity_code, type_code, prog)]
+        for year, n in names_years.items():
+            seen = by_year.setdefault(year, {"programme": n["programme"]})["programme"]
+            if seen != n["programme"]:
+                both = f"{seen} and {n['programme']}"
+                raise SystemExit(f"Programme {programme_code} has two names in {year}: {both}")
         programmes.setdefault(
             (area, entity_code, type_code, prog),
             {
                 "code": programme_code,
-                "name": programme_name,
+                "name": programme_name,  # replaced below by the latest across its activities
                 "type": budget_type,
                 "institution": display[entity],
                 # The database's own institution code (area and entity).
@@ -381,6 +391,10 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
             }
         )
     lines.sort(key=lambda l: (-sum(c["all"]["counted"] for c in l["amounts"].values()), l["code"]))
+    for key, programme in programmes.items():
+        programme["name"], aliases = latest(programme_names[key], "programme")
+        if aliases:
+            programme["formerNames"] = aliases
 
     years_out = []
     for year in SHOWN_YEARS:

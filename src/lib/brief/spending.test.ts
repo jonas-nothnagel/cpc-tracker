@@ -7,6 +7,7 @@ import {
   holdersPayload as holders,
   legacyPayload as legacy,
   levelsPayload as mongoliaLike,
+  sameNamePayload as sameName,
 } from "./spending-fixture";
 import { percentLabel, spendingAreas, spendingRecord, spendingSetup } from "./spending";
 
@@ -209,6 +210,21 @@ describe("spendingSetup from a rebuilt record", () => {
     ]);
     // Balboas at par: no US$ twin to add up.
     expect(setup.institutions?.[0].totalUsd).toBeNull();
+  });
+
+  it("tells an institution's programmes of one name apart by the budget they are in", () => {
+    const setup = spendingSetup(sameName(), briefFixture())!;
+    expect(setup.items.map((i) => [i.code, i.name, i.budget])).toEqual([
+      ["0-10-1-3", "Sanidad Agropecuaria", undefined],
+      ["0-27-0-2", "Áreas Protegidas y Biodiversidad", "operating"],
+      ["0-27-1-1", "Áreas Protegidas y Biodiversidad", "investment"],
+    ]);
+    expect(setup.institutions?.[0].parts?.map((p) => [p.name, p.budget])).toEqual([
+      ["Áreas Protegidas y Biodiversidad", "operating"],
+      ["Áreas Protegidas y Biodiversidad", "investment"],
+    ]);
+    // A name used once carries no budget.
+    expect(spendingSetup(activities(), briefFixture())!.items.some((i) => i.budget)).toBe(false);
   });
 
   it("keeps the one view where the record carries no institution codes", () => {

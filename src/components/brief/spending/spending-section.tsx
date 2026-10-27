@@ -10,6 +10,7 @@ import {
   percentLabel,
   spendingAreas,
   spendingRecord,
+  type BudgetType,
   type SeriesId,
   type SpendingArea,
   type SpendingItem,
@@ -416,7 +417,7 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
             <li key={item.code} className="sp-item" data-open={isOpen ? "true" : undefined}>
               <button type="button" className="sp-row sp-item-row" aria-expanded={isOpen} aria-controls={panel} onClick={() => setOpen(isOpen ? null : item.code)}>
                 <span className="sp-item-name" title={item.original}>
-                  {item.name}
+                  {withBudget(item, t)}
                   {itemSub(item, t) && <span className="sp-item-sub">{itemSub(item, t)}</span>}
                 </span>
                 <span className="sp-cell" aria-hidden="true">
@@ -456,6 +457,12 @@ function byShownAmount<T extends { total: number; totalUsd: number | null; name:
  *  hold commas of their own, so a list of them is set apart by semicolons. */
 function inSentence(name: string): string {
   return /^\p{Lu}\p{Ll}/u.test(name) ? name.charAt(0).toLocaleLowerCase() + name.slice(1) : name;
+}
+
+/** A programme's name, with the budget it is in where its institution runs
+ *  another programme under the same name. */
+function withBudget(named: { name: string; budget?: BudgetType }, t: ReturnType<typeof useTranslations>): string {
+  return named.budget ? t("budgetNamed", { name: named.name, type: named.budget }) : named.name;
 }
 
 function itemSub(item: SpendingItem, t: ReturnType<typeof useTranslations>): string {
@@ -529,9 +536,9 @@ function ItemDetail({ item, money }: { item: SpendingItem; money: Money }) {
             {item.kind === "institutionGroup" ? t("programmes") : t("parts", { count: item.partsCount ?? item.parts.length })}
           </p>
           <ul className="sp-detail-list">
-            {item.parts.map((p) => (
-              <li key={p.name}>
-                <span title={p.original}>{p.name}</span>
+            {item.parts.map((p, i) => (
+              <li key={i}>
+                <span title={p.original}>{withBudget(p, t)}</span>
                 <span className="sp-detail-amount">{money.amount(p.amount, p.amountUsd ?? null)}</span>
               </li>
             ))}
