@@ -1,0 +1,97 @@
+import { cleanText, documentName, isValidCode, suggestCode } from "./documents";
+import { isBlankOwnLens, OWN_AREA_LIMITS, type OwnLensInput } from "./own-areas";
+import type { Draft, DraftChange } from "./types";
+
+/**
+ * The page's edits to a draft, one field each. Client-safe: the page applies
+ * an edit at once and the server applies the same rules when it arrives.
+ */
+
+export const LIMITS = { country: 80, name: 120, label: 80, text: 4000 } as const;
+
+/** Clean user text, at most `max` characters. */
+export function cut(raw: unknown, max: number): string {
+  return Array.from(cleanText(raw)).slice(0, max).join("").trim();
+}
+
+function cleanLens(lens: OwnLensInput): OwnLensInput {
+  const L = OWN_AREA_LIMITS;
+  const source = cut(lens.source, L.source);
+  return {
+    name: cut(lens.name, L.name),
+    ...(source ? { source } : {}),
+    areas: (Array.isArray(lens.areas) ? lens.areas : []).slice(0, L.areas).map((a) => ({
+      name: cut(a?.name, L.areaName),
+      description: cut(a?.description, L.description),
+    })),
+  };
+}
+
+function applyChange(draft: Draft, c: DraftChange): void {
+  switch (c.op) {
+    case "country":
+      draft.country = cut(c.value, LIMITS.country);
+      return;
+    case "document": {
+      const doc = draft.documents.find((d) => d.id === c.id);
+      if (!doc) return;
+      const others = draft.documents.filter((d) => d.id !== doc.id).map((d) => d.code);
+      // A cleared name falls back to the file's own name.
+      const name = typeof c.name === "string" ? cut(c.name, LIMITS.name) || documentName(doc.fileName) : "";
+      const renamed = !!name && name !== doc.name;
+      if (renamed) doc.name = name;
+      if (typeof c.code === "string") {
+        const code = c.code.trim();
+        if (isValidCode(code) && !others.some((o) => o.toUpperCase() === code.toUpperCase())) {
+          doc.code = code;
+          doc.codeEdited = true;
+        }
+      }
+      if (renamed && !doc.codeEdited) doc.code = suggestCode(doc.name, others);
+      return;
+    }
+    case "removeDocument":
+      draft.documents = draft.documents.filter((d) => d.id !== c.id);
+      return;
+    case "target": {
+      const doc = draft.documents.find((d) => d.id === c.docId);
+      const target = doc?.state === "read" ? doc.targets.find((t) => t.key === c.key) : undefined;
+      if (!target) return;
+      const text = cut(c.text, LIMITS.text);
+      if (text) target.text = text;
+      if (c.removed === true) target.removed = true;
+      if (c.removed === false) delete target.removed;
+      return;
+    }
+    case "addTarget": {
+      const doc = draft.documents.find((d) => d.id === c.docId);
+      const text = cut(c.text, LIMITS.text);
+      if (doc?.state !== "read" || !text) return;
+      // The page names a new target itself, so that two tabs adding one each
+      // never share a key; anything else gets the first free number.
+      const used = new Set(doc.targets.map((t) => t.key));
+      let key = typeof c.key === "string" && new RegExp(`^${doc.id}-a[0-9a-z]{1,16}$`).test(c.key) ? c.key : "";
+      for (let n = doc.targets.filter((t) => t.added).length + 1; !key || used.has(key); n++) key = `${doc.id}-a${n}`;
+      doc.targets.push({
+        key,
+        label: cut(c.label, LIMITS.label) || `${doc.code} ${doc.targets.length + 1}`,
+        text,
+        added: true,
+      });
+      return;
+    }
+    case "ownLens":
+      // A set left without a word in it is none.
+      draft.ownLens = c.value && !isBlankOwnLens(c.value) ? cleanLens(c.value) : null;
+      return;
+    case "removeBtr":
+      draft.btr = null;
+      return;
+  }
+}
+
+/** Apply the page's edits; a started draft takes none. */
+export function applyChanges(draft: Draft, changes: DraftChange[]): void {
+  if (draft.started) return;
+  for (const change of changes) applyChange(draft, change);
+}

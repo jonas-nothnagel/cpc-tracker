@@ -267,3 +267,87 @@ class TestParseJsonArrayCleanupDefault:
         )
         items = _parse_json_array(raw)
         assert items[0]["textCleanup"] == "cleaned"
+
+
+# ---------------------------------------------------------------------------
+# --status-file: what the upload page reads while a document is read
+# ---------------------------------------------------------------------------
+
+
+def _status_args(tmp_path, file_name: str):
+    import argparse
+
+    from src import extract
+
+    return argparse.Namespace(
+        file=str(tmp_path / file_name),
+        doc_type="National Water Resource Policy",
+        source_document="NWRP",
+        output=str(tmp_path / "extracted.json"),
+        min_length=extract.MIN_TARGET_LENGTH,
+        max_chunk_chars=extract.MAX_CHUNK_CHARS,
+        overlap_chars=extract.OVERLAP_CHARS,
+        skip_relevance_filter=False,
+        language=None,
+        output_language="en",
+        country=None,
+        status_file=str(tmp_path / "status.json"),
+    )
+
+
+def test_status_file_says_done_with_the_item_count(tmp_path, monkeypatch):
+    import asyncio
+    import json
+
+    from src import extract
+
+    (tmp_path / "doc.txt").write_text("Restore 30% of wetlands by 2030.")
+
+    async def fake_extract_from_file(*args, **kwargs):
+        return [{"text": "Restore 30% of wetlands by 2030"}, {"text": "B"}, {"text": "C"}]
+
+    monkeypatch.setattr(extract, "extract_from_file", fake_extract_from_file)
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    assert asyncio.run(extract.main_async(_status_args(tmp_path, "doc.txt"))) == 0
+    status = json.loads((tmp_path / "status.json").read_text())
+    assert status["state"] == "done"
+    assert status["items"] == 3
+
+
+def test_status_file_says_no_text_for_a_scanned_pdf(tmp_path, monkeypatch):
+    import asyncio
+    import json
+
+    from src import extract
+
+    (tmp_path / "scan.pdf").write_bytes(b"%PDF-1.4")
+    monkeypatch.setattr(
+        extract,
+        "pdf_text_layer_stats",
+        lambda path: {"pages": 3, "emptyPages": 3, "totalChars": 0, "emptyRatio": 1.0},
+    )
+    assert asyncio.run(extract.main_async(_status_args(tmp_path, "scan.pdf"))) == 3
+    status = json.loads((tmp_path / "status.json").read_text())
+    assert status["state"] == "failed"
+    assert status["code"] == "NO_TEXT_LAYER"
+
+
+def test_status_file_counts_parts_while_the_targets_are_read(tmp_path, monkeypatch):
+    import asyncio
+    import json
+
+    from src import extract, llm
+
+    (tmp_path / "doc.txt").write_text("Text")
+    seen: list[dict] = []
+
+    async def fake_extract_from_file(*args, **kwargs):
+        llm._report_progress("Target extraction", 3, 9)
+        seen.append(json.loads((tmp_path / "status.json").read_text()))
+        return []
+
+    monkeypatch.setattr(extract, "extract_from_file", fake_extract_from_file)
+    monkeypatch.setenv("CPC_LEDGER_DIR", str(tmp_path / "ledger"))
+    assert asyncio.run(extract.main_async(_status_args(tmp_path, "doc.txt"))) == 0
+    assert seen[0]["state"] == "reading"
+    assert (seen[0].get("part"), seen[0].get("parts")) == (3, 9)

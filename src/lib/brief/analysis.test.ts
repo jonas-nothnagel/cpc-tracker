@@ -1,7 +1,7 @@
-import { rmSync } from "fs";
+import { readFileSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
 import { describe, expect, it } from "vitest";
-import { analysisBrief, analysisBriefFrom, analysisInEnglish } from "./analysis";
+import { analysisBrief, analysisBriefFrom, analysisFactsFrom, analysisInEnglish } from "./analysis";
 import { FIXTURE_ID, writeFixtureAnalysis } from "./test-analysis";
 
 describe("analysisBriefFrom", () => {
@@ -51,6 +51,17 @@ describe("analysisBriefFrom", () => {
   });
 });
 
+describe("analysisBriefFrom, results that cannot be read", () => {
+  it("is unreadable, not an error page, when a completed run's results are malformed", () => {
+    const paths = writeFixtureAnalysis({ ownLens: true });
+    const file = join(paths.dataDir, "taxonomies.json");
+    const taxonomies = JSON.parse(readFileSync(file, "utf8"));
+    for (const entry of taxonomies.taxonomies ?? taxonomies) delete entry.categories;
+    writeFileSync(file, JSON.stringify(taxonomies));
+    expect(analysisBriefFrom(paths, FIXTURE_ID, "en").kind).toBe("unreadable");
+  });
+});
+
 describe("analysisBrief", () => {
   it("is missing for an id with no analysis, or a malformed one", () => {
     expect(analysisBrief("00000000-0000-4000-8000-000000000000", "en").kind).toBe("missing");
@@ -68,5 +79,12 @@ describe("analysisInEnglish", () => {
   it("leaves English and the upload's own language alone", () => {
     expect(analysisInEnglish(FIXTURE_ID, ["es"], "es", {})).toBeNull();
     expect(analysisInEnglish(FIXTURE_ID, [], "en", {})).toBeNull();
+  });
+});
+
+describe("analysisFactsFrom", () => {
+  it("reads the country, the documents, the targets and their target pairs from the inputs", () => {
+    const paths = writeFixtureAnalysis({ status: JSON.stringify({ status: "running" }) });
+    expect(analysisFactsFrom(paths)).toEqual({ country: "Tonga", documents: 2, targets: 3, pairs: 2 });
   });
 });

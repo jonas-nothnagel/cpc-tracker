@@ -40,7 +40,9 @@ from .llm import (
     call_llm_batch_detailed,
     get_footprint_tracker,
     set_language,
+    set_progress_listener,
 )
+from .run_status import StatusFile
 
 logger = logging.getLogger(__name__)
 
@@ -2648,16 +2650,53 @@ async def extract_from_file(
     )
 
 
+# What the last run ended with, for the status file: the number of targets
+# written, or the code of a known failure.
+_RUN_OUTCOME: dict[str, Any] = {}
+
+
 def _emit_structured_error(code: str, detail: dict[str, Any]) -> None:
     """Print a single machine-readable error line to stdout.
 
-    The /api/extract route parses this on a non-zero exit to surface a
-    human-readable message in the upload wizard.
+    Callers read this on a non-zero exit to show a human-readable message;
+    with --status-file the code also lands in the status file.
     """
+    _RUN_OUTCOME["error"] = code
     print(json.dumps({"error": {"code": code, **detail}}))
 
 
 async def main_async(args: argparse.Namespace) -> int:
+    """Extract, telling --status-file (when given) how the reading goes: the
+    upload page reads it while the document is read in the background."""
+    path = getattr(args, "status_file", None)
+    if not path:
+        return await _main(args)
+    status = StatusFile(Path(path))
+    status.write({"state": "reading"})
+    status.start_heartbeat()
+
+    def on_progress(desc: str, done: int, total: int) -> None:
+        if desc == "Target extraction":
+            status.update(force=True, part=done, parts=total)
+
+    set_progress_listener(on_progress)
+    _RUN_OUTCOME.clear()
+    try:
+        code = await _main(args)
+    except Exception:
+        status.write({"state": "failed", "code": "ERROR"})
+        raise
+    finally:
+        set_progress_listener(None)
+        status.stop()
+    if code == 0:
+        status.write({"state": "done", "items": _RUN_OUTCOME.get("items", 0)})
+    else:
+        status.write({"state": "failed", "code": _RUN_OUTCOME.get("error", "ERROR")})
+    return code
+
+
+async def _main(args: argparse.Namespace) -> int:
     file_path = Path(args.file)
     if not file_path.exists():
         logger.error(f"File not found: {file_path}")
@@ -2710,6 +2749,7 @@ async def main_async(args: argparse.Namespace) -> int:
         out = file_path.with_suffix(".extracted.json")
 
     out.write_text(json.dumps(items, indent=2, ensure_ascii=False))
+    _RUN_OUTCOME["items"] = len(items)
     logger.info(f"Saved {len(items)} targets to {out}")
 
     # Run metadata sidecar: document warnings (partial text layer, mixed
@@ -2836,6 +2876,12 @@ def main() -> None:
         "(activities, summaries) should be returned in. Defaults to English; "
         "set to match the user's UI locale when extracting through the upload "
         "wizard.",
+    )
+    parser.add_argument(
+        "--status-file",
+        default=None,
+        help="JSON file the run keeps current while it reads (state, parts read, "
+        "heartbeat), for the upload page; written whole on every change.",
     )
     parser.add_argument(
         "--country",

@@ -76,4 +76,14 @@ describe("POST /api/analyze", () => {
     expect([command, ...args]).toEqual(["uv", "run", "python", "-m", "src.run_analysis", "--targets-file", "targets.json"]);
     expect(options.env).toMatchObject({ CPC_DATA_DIR: input, CPC_RUN_SOURCE: "user_pipeline", CPC_RUN_ID: analysisId });
   });
+
+  it("lets five analyses start a minute", async () => {
+    const { POST } = await routeInScratchRoot();
+    const ok = () => POST(post({ country: "Tonga", targets: [target("NDC"), target("NAP")] }));
+    const codes = [];
+    for (let i = 0; i < 6; i++) codes.push((await ok()).status);
+    expect(codes).toEqual([200, 200, 200, 200, 200, 429]);
+    // One analysis at a time: the others wait in line.
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+  });
 });

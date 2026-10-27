@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { analysisBrief, analysisInEnglish } from "@/lib/brief/analysis";
+import { analysisBrief, analysisFacts, analysisInEnglish } from "@/lib/brief/analysis";
 import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
 import { spendingSetup } from "@/lib/brief/spending";
@@ -18,9 +18,10 @@ interface Props {
 export async function generateMetadata(props: Props) {
   const { locale, id } = await props.params;
   const brief = analysisBrief(id, locale);
-  if (brief.kind !== "ready") return {};
+  const country = brief.kind === "ready" ? brief.source.countryName : analysisFacts(id)?.country;
+  if (!country) return {};
   const t = await getTranslations({ locale, namespace: "brief" });
-  const title = t("metaTitle", { country: brief.source.countryName });
+  const title = t("metaTitle", { country });
   return { title, openGraph: { title } };
 }
 
@@ -30,7 +31,9 @@ export default async function AnalysisPage(props: Props) {
   const { locale, id } = await props.params;
   const brief = analysisBrief(id, locale);
   if (brief.kind === "missing") notFound();
-  if (brief.kind !== "ready") return <AnalysisProgress id={id} unreadable={brief.kind === "unreadable"} />;
+  if (brief.kind !== "ready") {
+    return <AnalysisProgress id={id} facts={analysisFacts(id)} unreadable={brief.kind === "unreadable"} />;
+  }
 
   // A brief is in English and the language the upload was started in.
   const searchParams = await props.searchParams;

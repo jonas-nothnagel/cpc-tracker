@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/ui/header";
+import { uploadsAvailable } from "@/lib/upload/available";
 import { InfoBox } from "@/components/ui/info-box";
 import { DataProvenance, type ProvenanceSource } from "@/components/ui/data-provenance";
 import { chartDocKey, countByCategory, getDocFullLabel, getDocTypeOrder } from "@/lib/utils";
@@ -380,12 +381,14 @@ export function DashboardClient({
           <p className="text-sm text-[var(--undp-gray)] mb-6">
             It looks like no analysis has been run yet. Upload your policy targets to get started.
           </p>
-          <Link
-            href="/upload"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-[var(--undp-blue)] hover:bg-[var(--undp-blue-dark)] transition-colors"
-          >
-            Upload Targets
-          </Link>
+          {uploadsAvailable() && (
+            <Link
+              href="/upload"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-[var(--undp-blue)] hover:bg-[var(--undp-blue-dark)] transition-colors"
+            >
+              Upload Targets
+            </Link>
+          )}
         </div>
       </div>
     );

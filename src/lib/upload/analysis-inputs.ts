@@ -2,6 +2,12 @@ import { copyFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { OWN_LENS_TYPE } from "@/lib/own-lens";
 import type { DocumentTypeEntry, TargetSource, TextCleanup } from "@/types";
+import { charCount, cleanText as clean, documentColors, documentIds, knownFramework, promptLabel } from "./documents";
+import { MAX_ITEMS } from "./limits";
+import { OWN_AREA_LIMITS, ownLensProblem as areasProblem, type OwnLensInput } from "./own-areas";
+
+export { documentIds, MAX_ITEMS };
+export type { OwnLensInput };
 
 /**
  * An upload's inputs for the pipeline, built and checked before anything is
@@ -11,9 +17,6 @@ import type { DocumentTypeEntry, TargetSource, TextCleanup } from "@/types";
  * Python.
  */
 
-/** Targets and BTR mitigation measures together: every measure is compared
- *  with every target, so it costs what a target costs. */
-export const MAX_ITEMS = 150;
 
 /** One target as the wizard sends it, with the extraction's provenance. */
 export interface TargetInput {
@@ -34,18 +37,13 @@ export interface TargetInput {
   _provenanceFlag?: string;
 }
 
-/** Policy areas the upload brings, in the user's own words. */
-export interface OwnLensInput {
-  name: string;
-  /** Where the areas come from, shown as the lens's tooltip. */
-  source?: string;
-  areas: { name: string; description: string }[];
-}
-
 export interface AnalyzeBody {
   country?: string;
   /** The language the wizard ran in. */
   locale?: string;
+  /** Each document's name as the page shows it, by its code. Without it a
+   *  name comes from the code (a framework's full name, or the code). */
+  documents?: { code: string; name: string }[];
   targets: TargetInput[];
   btrData?: Record<string, unknown>;
   ownLens?: OwnLensInput;
@@ -60,81 +58,11 @@ export interface AnalysisInputs {
   taxonomies: { _source: string; taxonomies: Record<string, unknown>[] } | null;
 }
 
-const LIMITS = { country: 80, lensName: 80, source: 300, areas: 30, areaName: 80, description: 1200 };
-
-/** Framework codes the wizard offers. `prompt` is the label the comparison
- *  prompt has always shown for the code (`DOC_TYPE_LABELS` in
- *  python/src/align.py), so a country config changes nothing the AI reads. */
-const KNOWN: Record<string, { full: string; prompt: string; color?: string }> = {
-  NDC: { full: "Nationally Determined Contribution", prompt: "NDC", color: "#0468b1" },
-  NBSAP: { full: "National Biodiversity Strategy and Action Plan", prompt: "NBT", color: "#166534" },
-  NAP: { full: "National Adaptation Plan", prompt: "NAP", color: "#0e7490" },
-  LDN: { full: "Land Degradation Neutrality targets", prompt: "LDN", color: "#b45309" },
-  SECTORAL: { full: "Sectoral policy", prompt: "SECTORAL" },
-  OTHER: { full: "Other document", prompt: "OTHER" },
-};
-
-/** Colours for the documents no framework colours, in order. */
-const PALETTE = ["#4f46e5", "#9d174d", "#ca8a04", "#475569", "#db2777", "#65a30d", "#6d28d9", "#0891b2"];
-
-/** Ids the pipeline and the dashboard give a meaning of their own. */
-const RESERVED = new Set(["BTR", "BTR_ADP", "BER", "NR7", "OTHER"]);
-const SAFE_ID = /^[A-Za-z][A-Za-z0-9]{0,11}$/;
+const COUNTRY_MAX = 80;
 
 const UPLOAD_LANGUAGES = new Set(["es", "mn"]);
 
 const SOURCE_NOTE = "Provided by the user with the upload; never drafted by the tool.";
-
-/** User text on one line, composed (NFC): control characters out, whitespace
- *  collapsed. */
-function clean(raw: unknown): string {
-  return typeof raw === "string"
-    ? raw
-        .normalize("NFC")
-        .replace(/[\u0000-\u001f\u007f-\u009f]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-    : "";
-}
-
-/** A document's name as the comparison prompt reads it, at most 60
- *  characters: letters with their combining marks and joiners (Tamil,
- *  Sinhala), digits, dashes, apostrophes and a few other marks. Anything
- *  else becomes a space, so words never fuse, and line breaks or stray
- *  symbols cannot carry instructions into the prompt. */
-function promptLabel(raw: string): string {
-  const kept = clean(raw)
-    .replace(/[^\p{L}\p{M}\p{N}\p{Pd}\u200C\u200D '\u2019.,:;/&()+]/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  return Array.from(kept).slice(0, 60).join("").trim();
-}
-
-/** Each document code, first seen first, to the id its targets are filed
- *  under: short safe codes keep themselves, any other gets DOC1, DOC2, … */
-export function documentIds(codes: string[]): Map<string, string> {
-  const ids = new Map<string, string>();
-  const taken = new Set<string>();
-  for (const code of codes) {
-    if (!ids.has(code) && SAFE_ID.test(code) && !RESERVED.has(code.toUpperCase())) {
-      ids.set(code, code);
-      taken.add(code);
-    }
-  }
-  let next = 0;
-  const ordered = new Map<string, string>();
-  for (const code of codes) {
-    if (ordered.has(code)) continue;
-    let id = ids.get(code);
-    if (id === undefined) {
-      do id = `DOC${++next}`;
-      while (taken.has(id));
-      taken.add(id);
-    }
-    ordered.set(code, id);
-  }
-  return ordered;
-}
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -145,33 +73,26 @@ function measureCount(btrData: AnalyzeBody["btrData"]): number {
   return Array.isArray(measures) ? measures.length : 0;
 }
 
+/** The API's English sentence for the first problem with the own areas. */
 function ownLensProblem(lens: OwnLensInput): string | null {
-  const name = clean(lens.name);
-  if (!name || name.length > LIMITS.lensName) {
-    return `The policy areas need a name of at most ${LIMITS.lensName} characters.`;
+  const problem = areasProblem(lens);
+  const L = OWN_AREA_LIMITS;
+  switch (problem?.code) {
+    case undefined:
+      return null;
+    case "name":
+      return `The policy areas need a name of at most ${L.name} characters.`;
+    case "source":
+      return `The source line holds at most ${L.source} characters.`;
+    case "count":
+      return `Between 1 and ${L.areas} policy areas are needed.`;
+    case "areaName":
+      return `Each policy area needs a name of at most ${L.areaName} characters.`;
+    case "description":
+      return `"${problem.area}" needs a description of at most ${L.description} characters.`;
+    case "duplicate":
+      return `"${problem.area}" appears twice.`;
   }
-  if (clean(lens.source).length > LIMITS.source) {
-    return `The source line holds at most ${LIMITS.source} characters.`;
-  }
-  const areas = Array.isArray(lens.areas) ? lens.areas : [];
-  if (areas.length < 1 || areas.length > LIMITS.areas) {
-    return `Between 1 and ${LIMITS.areas} policy areas are needed.`;
-  }
-  const seen = new Set<string>();
-  for (const area of areas) {
-    const areaName = clean(area?.name);
-    const description = clean(area?.description);
-    if (!areaName || areaName.length > LIMITS.areaName) {
-      return `Each policy area needs a name of at most ${LIMITS.areaName} characters.`;
-    }
-    if (!description || description.length > LIMITS.description) {
-      return `"${areaName}" needs a description of at most ${LIMITS.description} characters.`;
-    }
-    const key = areaName.toLocaleLowerCase();
-    if (seen.has(key)) return `"${areaName}" appears twice.`;
-    seen.add(key);
-  }
-  return null;
 }
 
 /** What stops a run before anything is spent. */
@@ -179,12 +100,17 @@ export function checkAnalyzeBody(
   body: AnalyzeBody,
 ): { ok: true } | { ok: false; code: CheckCode; error: string } {
   const fail = (code: CheckCode, error: string) => ({ ok: false as const, code, error });
+  if (!body || typeof body !== "object") return fail("noTargets", "No targets were provided.");
   const country = clean(body.country);
-  if (!country || country.length > LIMITS.country) {
-    return fail("noCountry", `A country name of at most ${LIMITS.country} characters is needed.`);
+  if (!country || charCount(country) > COUNTRY_MAX) {
+    return fail("noCountry", `A country name of at most ${COUNTRY_MAX} characters is needed.`);
   }
   const targets = Array.isArray(body.targets) ? body.targets : [];
   if (targets.length === 0) return fail("noTargets", "No targets were provided.");
+  // A blank target would be classified and compared, and paid for, as one.
+  if (targets.some((t) => !t || typeof t !== "object" || !clean(t.text))) {
+    return fail("noTargets", "Every target needs its wording.");
+  }
   if (new Set(targets.map((t) => String(t.sourceDocument ?? ""))).size < 2) {
     return fail("oneDocument", "A comparison needs targets from at least two documents.");
   }
@@ -207,16 +133,18 @@ export function buildAnalysisInputs(body: AnalyzeBody): AnalysisInputs {
   const country = clean(body.country);
   const codes = body.targets.map((t) => String(t.sourceDocument ?? ""));
   const ids = documentIds(codes);
+  const names = new Map((body.documents ?? []).map((d) => [String(d.code ?? ""), clean(d.name)]));
 
-  let paint = 0;
-  const documentTypes: DocumentTypeEntry[] = [...ids].map(([code, id]) => {
-    const known = KNOWN[code];
+  const colors = documentColors([...ids.keys()]);
+  const documentTypes: DocumentTypeEntry[] = [...ids].map(([code, id], i) => {
+    const known = knownFramework(code);
+    const name = names.get(code);
     return {
       id,
       shortLabel: known ? code : code.length <= 12 && clean(code) === code ? code : id,
-      mediumLabel: known ? known.prompt : promptLabel(code) || id,
-      fullLabel: known ? known.full : clean(code) || id,
-      color: known?.color ?? PALETTE[paint++ % PALETTE.length],
+      mediumLabel: known ? known.prompt : promptLabel(name || code) || id,
+      fullLabel: name || (known ? known.full : clean(code) || id),
+      color: colors[i],
     };
   });
   const shortOf = new Map(documentTypes.map((d) => [d.id, d.shortLabel]));

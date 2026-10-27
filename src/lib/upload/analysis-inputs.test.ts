@@ -25,10 +25,34 @@ const body = (over: Partial<AnalyzeBody> = {}): AnalyzeBody => ({
   ...over,
 });
 
+describe("buildAnalysisInputs, short names", () => {
+  it("takes a short name that is also a built-in object's name as a name, not as a framework", () => {
+    const { countryConfig } = buildAnalysisInputs(body({ targets: [t("constructor"), t("NDC")] }));
+    const entry = countryConfig.documentTypes.find((d) => d.shortLabel === "constructor")!;
+    expect(typeof entry.mediumLabel).toBe("string");
+    expect(typeof entry.fullLabel).toBe("string");
+  });
+});
+
 describe("checkAnalyzeBody", () => {
   it("needs a country name", () => {
     expect(checkAnalyzeBody(body({ country: "  " }))).toMatchObject({ ok: false, code: "noCountry" });
     expect(checkAnalyzeBody(body({ country: undefined }))).toMatchObject({ ok: false, code: "noCountry" });
+  });
+
+  it("counts a country's name in characters, as the page keeps it", () => {
+    // 80 characters outside the basic plane: 160 UTF-16 units, as the draft keeps 80 characters.
+    expect(checkAnalyzeBody(body({ country: "\u{1D4AF}".repeat(80) })).ok).toBe(true);
+    expect(checkAnalyzeBody(body({ country: "\u{1D4AF}".repeat(81) }))).toMatchObject({ ok: false, code: "noCountry" });
+  });
+
+  it("refuses a body that is not one, and targets without their wording, before anything is written", () => {
+    expect(checkAnalyzeBody(null as unknown as AnalyzeBody)).toMatchObject({ ok: false, code: "noTargets" });
+    expect(checkAnalyzeBody(body({ targets: [t("NDC"), null as unknown as TargetInput] }))).toMatchObject({
+      ok: false,
+      code: "noTargets",
+    });
+    expect(checkAnalyzeBody(body({ targets: [t("NDC"), t("NAP", "  ")] }))).toMatchObject({ ok: false, code: "noTargets" });
   });
 
   it("needs targets", () => {
@@ -102,6 +126,30 @@ describe("buildAnalysisInputs", () => {
         color: "#4f46e5",
       },
     ]);
+  });
+
+  it("takes the names the page gives, keeping a framework's prompt label", () => {
+    const { countryConfig } = buildAnalysisInputs(
+      body({
+        documents: [
+          { code: "NDC", name: "Updated NDC 2021" },
+          { code: "NWRP", name: "National Water Resource Policy" },
+        ],
+        targets: [t("NDC"), t("NWRP")],
+      }),
+    );
+    expect(countryConfig.documentTypes[0]).toMatchObject({
+      id: "NDC",
+      fullLabel: "Updated NDC 2021",
+      mediumLabel: "NDC",
+      color: "#0468b1",
+    });
+    expect(countryConfig.documentTypes[1]).toMatchObject({
+      id: "NWRP",
+      shortLabel: "NWRP",
+      fullLabel: "National Water Resource Policy",
+      mediumLabel: "National Water Resource Policy",
+    });
   });
 
   it("strips line breaks and stray symbols from a document's prompt label", () => {

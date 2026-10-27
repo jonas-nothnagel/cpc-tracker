@@ -1,5 +1,8 @@
+import { join } from "path";
 import { routing, type Locale } from "@/i18n/routing";
 import { derivePaths, type DerivedPaths } from "@/lib/dashboard-data";
+import { pairCount } from "@/lib/upload/documents";
+import { readJson } from "@/lib/upload/files";
 import { briefInEnglish } from "./language-gate";
 import { analysisPayload } from "./payload";
 import { buildBriefSource, type BriefSource } from "./source";
@@ -19,24 +22,58 @@ export type AnalysisBrief =
   | { kind: "ready"; source: BriefSource; data: Record<string, unknown> };
 
 export function analysisBriefFrom(paths: DerivedPaths, id: string, locale: string): AnalysisBrief {
-  const payload = analysisPayload(paths, locale);
-  if (payload.kind !== "ok") return { kind: payload.status === 409 ? "pending" : "unreadable" };
-  const { data } = payload;
-  const config = data.countryConfig as { name?: string; languages?: string[] } | null;
-  const first = (data.targets as { country?: string }[] | undefined)?.[0];
-  const countryName = config?.name || first?.country || "";
-  const source: BriefSource = {
-    ...buildBriefSource({ countryId: "", countryName, data, locale }),
-    analysisId: id,
-    languages: config?.languages ?? [],
-  };
-  return { kind: "ready", source, data };
+  try {
+    const payload = analysisPayload(paths, locale);
+    if (payload.kind !== "ok") return { kind: payload.status === 409 ? "pending" : "unreadable" };
+    const { data } = payload;
+    const config = data.countryConfig as { name?: string; languages?: string[] } | null;
+    const first = (data.targets as { country?: string }[] | undefined)?.[0];
+    const countryName = config?.name || first?.country || "";
+    const source: BriefSource = {
+      ...buildBriefSource({ countryId: "", countryName, data, locale }),
+      analysisId: id,
+      languages: config?.languages ?? [],
+    };
+    return { kind: "ready", source, data };
+  } catch (err) {
+    // Results there but malformed: the plain notice, never an error page.
+    console.error("An analysis's results could not be read:", err instanceof Error ? err.message : err);
+    return { kind: "unreadable" };
+  }
 }
 
 export function analysisBrief(id: string, locale: string): AnalysisBrief {
   const derived = derivePaths(id, null);
   if (derived.kind !== "analysis") return { kind: "missing" };
   return analysisBriefFrom(derived.paths, id, locale);
+}
+
+/** What the waiting page says about an analysis before its brief exists. */
+export interface AnalysisFacts {
+  country: string;
+  documents: number;
+  targets: number;
+  /** Target pairs from two different documents: one dot each. */
+  pairs: number;
+}
+
+export function analysisFactsFrom(paths: DerivedPaths): AnalysisFacts | null {
+  const targets = readJson<{ sourceDocument?: string; country?: string }[]>(join(paths.dataDir, "targets.json"));
+  if (!Array.isArray(targets)) return null;
+  const config = readJson<{ name?: string }>(join(paths.dataDir, "country-config.json"));
+  const perDocument = new Map<string, number>();
+  for (const t of targets) perDocument.set(String(t.sourceDocument), (perDocument.get(String(t.sourceDocument)) ?? 0) + 1);
+  return {
+    country: config?.name || targets[0]?.country || "",
+    documents: perDocument.size,
+    targets: targets.length,
+    pairs: pairCount([...perDocument.values()]),
+  };
+}
+
+export function analysisFacts(id: string): AnalysisFacts | null {
+  const derived = derivePaths(id, null);
+  return derived.kind === "analysis" ? analysisFactsFrom(derived.paths) : null;
 }
 
 /** Where an upload's brief opened in a language the upload was not started

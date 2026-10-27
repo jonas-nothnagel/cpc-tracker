@@ -22,9 +22,12 @@ The audit principle, in one line:
 > sentences, the provenance trail and a claim-grounding check accompany it.
 
 The implementation lives in `python/src/extract.py` (shared text-matching
-helpers in `python/src/extract_validation.py`). The HTTP entry point is
-`POST /api/extract` (see `src/app/api/extract/route.ts`); the CLI entry point
-is `python -m src.extract --file <doc> --source-document NDC --country <name>`.
+helpers in `python/src/extract_validation.py`). The upload page reads
+documents in the background: `POST /api/upload/{id}/read` starts one detached
+`src.extract` job per document, two at a time, each with `--status-file`
+(state, parts read, heartbeat), and the server takes in `extracted.json` when
+the status says done (see `src/lib/upload/reading.ts`). The CLI entry point is
+`python -m src.extract --file <doc> --source-document NDC --country <name>`.
 
 ---
 

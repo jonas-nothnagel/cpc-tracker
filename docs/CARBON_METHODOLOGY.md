@@ -13,7 +13,7 @@ estimates, not meter readings, and carry a margin of uncertainty.
 In scope: the inference cost of the large language model (LLM) calls the tool
 makes, across four components:
 
-- `extract` - document extraction (upload wizard).
+- `extract` - document extraction (the upload page, read in the background).
 - `user_pipeline` - a coherence analysis run triggered by a user upload.
 - `dev_pipeline` - a pipeline run started by a developer from the command line.
 - `chat` - the in-app coherence chatbot.

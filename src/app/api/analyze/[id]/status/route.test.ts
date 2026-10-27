@@ -33,6 +33,11 @@ describe("GET /api/analyze/[id]/status", () => {
     expect(await res.json()).toMatchObject({ status: "running", step: 5 });
   });
 
+  it("says where an analysis stands in line", async () => {
+    const res = await statusFor(JSON.stringify({ status: "completed" }));
+    expect(await res.json()).toMatchObject({ status: "completed", state: "completed", ahead: 0 });
+  });
+
   it("answers 404 where there is no analysis", async () => {
     expect((await statusFor(null)).status).toBe(404);
   });

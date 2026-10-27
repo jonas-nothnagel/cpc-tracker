@@ -1,6 +1,6 @@
 # Signing in to upload, upload limits, and safe handling of documents
 
-*Written for the security fixes merged from `chore/dep-vuln-remediation` (August 2026); the sign-in gate was narrowed to the upload flow on 2026-09-14. Last verified against `src/proxy.ts`, `src/lib/auth/token.ts`, and the API routes on the `fix/gate-upload-only` branch. Re-verify when the sign-in flow or any limit changes.*
+*Written for the security fixes merged from `chore/dep-vuln-remediation` (August 2026); the sign-in gate was narrowed to the upload flow on 2026-09-14. Last verified against `src/proxy.ts`, `src/lib/auth/token.ts`, and the API routes on the `fix/gate-upload-only` branch. Re-verify when the sign-in flow or any limit changes. Updated on 2026-10-26 for the redrawn upload page: uploads kept on the server, documents read in the background, one analysis at a time.*
 
 A security review in August 2026 found that the app had no sign-in, no size limits on uploads, and no protection against instructions hidden inside uploaded documents. This guide explains what changed for the people who use the tool, the person who runs the deployment, and anyone calling the API from a script.
 
@@ -24,13 +24,13 @@ Uploading your own documents or spreadsheets and running a new analysis is behin
 
 If the page says **"That access token was not recognised"**, the token was mistyped or has been changed since you received it. Ask the person who gave it to you for the current one.
 
-The sign-in page is currently in English only, whatever language the rest of the app is set to.
+The sign-in page follows the app's language: English, Spanish or Mongolian.
 
 ### How long you stay signed in
 
 A sign-in lasts seven days on that browser. After that the upload page asks for the token again. Closing the browser does not sign you out.
 
-If the sign-in runs out while you are part-way through the upload wizard, the next upload or **Run analysis** shows **"Your sign-in has expired."** Open `/login` in a new tab, enter the token, and retry in the original tab. The documents and targets already in the wizard are kept.
+If the sign-in runs out part-way through an upload, the page says **"The sign-in has expired. Sign in again to continue."** Open `/login` in a new tab, enter the token, and carry on in the original tab. Nothing is lost: an upload is kept on the server at its own address, `/upload/{id}`, from its first document on, so a reload or a closed tab loses nothing either. Each change is saved as it is made, and the page says when one was not.
 
 There is no sign-out button yet. If you used a shared or public computer, clear the site's cookies in that browser before you leave. A sign-out button is on the list of follow-ups.
 
@@ -44,28 +44,30 @@ The app can no longer be shown inside another website or a Teams or SharePoint t
 
 ### Size limits when uploading
 
-The upload wizard now refuses files over these sizes and tells you the size it saw:
+The upload page refuses files over these sizes:
 
-| What you upload | Where | Limit |
+| What you upload | Step | Limit |
 | --- | --- | --- |
-| Policy document (PDF, DOCX, TXT) | Upload documents | 50 MB per file |
-| Excel targets spreadsheet | Upload a spreadsheet of targets | 15 MB |
-| BTR spreadsheet (Biennial Transparency Report tables) | Upload a BTR file | 15 MB |
-| Targets in one analysis | Review before running | 150 targets and BTR reported actions together (each action is compared with every target) |
+| Policy document (PDF, DOCX, TXT) | Policy documents | 50 MB per file |
+| Spreadsheet of targets (XLSX, or CSV and TSV) | Policy documents | 15 MB for XLSX |
+| BTR spreadsheet (Biennial Transparency Report tables) | Policy documents | 15 MB |
+| Targets in one analysis | Targets | 150 targets and BTR reported actions together (each action is compared with every target) |
 
-An oversized file shows a message such as **"File too large (22.4 MB). Maximum allowed is 15 MB."** Save the spreadsheet without embedded images, or split it into two files and upload them one after the other.
+An oversized file shows a message such as **"targets.xlsx is larger than 15 MB."** Save the spreadsheet without embedded images, or split it into two files and add them one after the other.
 
 Scanned PDFs without a text layer are refused as before. The document needs machine-readable text.
 
 ### Limits when running an analysis
 
-The server runs at most three analyses at the same time, and starts at most five in any one minute. This stops a burst of uploads from running up the AI bill.
+One analysis runs at a time; the others wait in line, and the start step says how many are ahead. Analyses share one AI quota, so running several at once would only make each one slower. At most five analyses start in any one minute.
 
-**Run analysis** starts only once the country is named and the targets come from at least two documents: a comparison needs two documents, and the brief names the country. The server makes the same checks before anything is spent and answers `400` with a `code` (`noCountry`, `noTargets`, `oneDocument`, `tooMany`, `ownLens`) otherwise.
+**Start the analysis** is offered only once the country is named and the targets come from at least two documents: a comparison needs two documents, and the brief names the country. The server makes the same checks before anything is spent and answers `400` with a `code` (`noCountry`, `noTargets`, `oneDocument`, `tooMany`, `ownLens`) otherwise. Pressed twice, or in two tabs, it starts one analysis.
 
-A finished analysis opens as a coherence brief at its own address, `/analysis/{id}`, in English and in the language the upload was started in. While the run goes, the same address shows its progress. The previous dashboard keeps a view of it (`/dashboard?analysisId={id}`).
+A finished analysis opens as a coherence brief at its own address, `/analysis/{id}`, in English and in the language the upload was started in. While the run goes, the same address shows one dot per target pair, filled as the pairs are compared. The page can be closed: the address opens the brief when it is ready. The previous dashboard keeps a view of it (`/dashboard?analysisId={id}`).
 
-If you press **Run analysis** and see **"The analysis service is busy. Please try again shortly."** or **"Too many analyses started recently. Please wait a moment."**, nothing was lost. Your documents and targets are still in the wizard. Wait a minute and press the button again.
+If the server restarts while an analysis runs (a deploy, for example), the analysis goes back in line once and resumes where it stopped: the comparisons already made come from the cache and cost nothing again. If it stops a second time, or fails, its page says so and offers **Continue**.
+
+If **Start the analysis** says **"Several analyses were started a moment ago. Try again in a minute."**, nothing was lost. Wait a minute and press the button again.
 
 ### Limits in the chat
 
@@ -89,9 +91,9 @@ The gate is controlled by one environment variable, `APP_ACCESS_TOKEN`. It prote
 
 | Behind the token | Open to everyone |
 | --- | --- |
-| The upload wizard (`/upload`, `/<country>/upload`, and their language variants) | The landing page, country dashboards, briefings, and chat |
-| `/api/extract`, `/api/parse-btr`, `/api/parse-excel-targets` (file uploads) | Viewing a finished analysis and polling its status |
-| `/api/analyze` (start a run), `/api/extraction-review` (record the review of extracted targets) | `/api/dashboard`, `/api/sustainability`, ratings, feedback, `/analytics` |
+| The upload pages (`/upload`, `/upload/{id}`, `/<country>/upload`, and their language variants) | The landing page, country dashboards, briefings, and chat |
+| Everything under `/api/upload` (an upload's draft, its documents, reading them, the start) | Viewing an analysis and polling its status (`/analysis/{id}`, `/api/analyze/{id}/status`) |
+| `/api/analyze` (start a run from a script), `/api/analyze/{id}/continue`, `/api/extraction-review` | `/api/dashboard`, `/api/sustainability`, ratings, feedback, `/analytics` |
 
 - In **production** the app refuses uploads and new analysis runs until the token is set. A missing token does not open uploads; it disables them. The rest of the app keeps serving.
 - In **local development** with no token set, the gate is off and nothing asks you to sign in. Set a token locally when you want to test the sign-in page.
@@ -103,6 +105,15 @@ openssl rand -hex 32
 ```
 
 Then hand the value to users over a channel you trust. Treat it as a password.
+
+### Where documents go, and what is kept
+
+- Before anything is read, the upload page names the model and the provider that read the documents, from `LLM_MODEL` and `AZURE_OPENAI_ENDPOINT` or `LLM_BASE_URL`. On a production service it also says **"Only public documents can be added."** Set `CPC_PUBLIC_DOCUMENTS_ONLY=0` to drop that sentence on a copy that may take other documents; `1` shows it anywhere.
+- Nothing is sent to the model before **Read the documents**. Documents are read two at a time, in the background: each reading writes its progress to a status file, so no request stays open past the proxy's time limit (about 230 seconds on Azure).
+- The 50 MB limit holds through the proxy: `experimental.proxyClientMaxBodySize` is 55 MB in `next.config.ts` (the default is 10 MB).
+- An upload lives under `python/analyses/{id}/` on the persistent disk: `draft.json` with its documents and edits, then the analysis's inputs and results. A document's file is deleted once it has been read. A draft nobody started is removed after 30 days untouched. The comparison cache entries an analysis wrote (about 20 KB a target pair) are removed when it completes; its results stay under its address.
+- The start step's time comes from this service's median pace over its 10 most recent completed analyses of at least 500 target pairs (450 pairs a minute until it has any), and its footprint from the grams of CO2e per call in this service's footprint ledger (83 g per 1,000 calls until it has any). No cost in money is shown.
+- A government's own copy (TAG Option 2) needs no change for any of this: the notice names its own model and provider, and the estimate uses its own runs and its own ledger.
 
 ### Changing the token
 
@@ -141,10 +152,16 @@ curl https://<host>/api/health
 # Poll a run (no token needed)
 curl https://<host>/api/analyze/<analysis-id>/status
 
-# Upload a document for extraction (token needed)
-curl -H "Authorization: Bearer $APP_ACCESS_TOKEN" \
-     -F "file=@policy.pdf" -F "docType=policy" -F "sourceDocument=NDC 3.0" \
-     https://<host>/api/extract
+# An upload from a script (token needed): a draft, a document, its reading,
+# then the start once the reading is done (GET the draft to follow it)
+AUTH="Authorization: Bearer $APP_ACCESS_TOKEN"
+id=$(curl -s -H "$AUTH" -H "Content-Type: application/json" \
+     -d '{"country":"Tonga","locale":"en"}' https://<host>/api/upload | jq -r .draft.id)
+curl -H "$AUTH" -F "file=@policy.pdf" https://<host>/api/upload/$id/documents
+curl -X POST -H "$AUTH" https://<host>/api/upload/$id/read
+curl -H "$AUTH" https://<host>/api/upload/$id
+curl -X POST -H "$AUTH" -H "Content-Type: application/json" \
+     -d '{"clientId":"script"}' https://<host>/api/upload/$id/start
 ```
 
 A browser can also end its own session with a `DELETE` to `/api/auth`, which clears the cookie. That call only affects the browser that sends it, so it is not a way to sign out other people; change the token for that (section 2).
@@ -155,8 +172,9 @@ What the status codes mean:
 | --- | --- | --- |
 | 401 | No token, or the wrong token, on an upload route | Check the header and the current token value |
 | 403 "Cross-site request blocked" | A POST, PUT, PATCH, or DELETE arrived with an `Origin` header from another site | Drop the `Origin` header in scripts; browsers should only call the API from the app's own pages |
+| 409 | The upload has started already, or a document is still being read | Follow the analysis at `/analysis/{id}`, or wait for the reading |
 | 413 | The body or file is over its limit (see the tables above) | Send a smaller file or shorter text |
-| 429 | Three analyses are already running, or five started in the last minute | Wait and retry |
+| 429 | Five analyses started in the last minute | Wait and retry |
 
 Local development without a token behaves as before: no header is needed.
 
