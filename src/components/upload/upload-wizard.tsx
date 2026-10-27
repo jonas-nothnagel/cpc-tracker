@@ -353,14 +353,10 @@ export function UploadWizard({ lockedCountry, basePath }: UploadWizardProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          country: country || t("unknownCountry"),
+          country,
+          // The brief of this analysis opens in English and in this language.
+          locale,
           targets,
-          nbsCategories: categories.activeNbs.map(({ id, name, description }) => ({
-            id, name, description,
-          })),
-          sectors: categories.activeSectors.map(({ id, name, description }) => ({
-            id, name, description,
-          })),
           ...(btrParsedData && includeBtr ? { btrData: btrParsedData } : {}),
           ...(extraction.extractionFootprint.call_count > 0
             ? { initialFootprint: extraction.extractionFootprint }

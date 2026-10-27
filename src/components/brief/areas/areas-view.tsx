@@ -38,7 +38,7 @@ import type { BriefData } from "@/lib/brief/data";
 import type { BriefSource, LensId } from "@/lib/brief/source";
 import { LONG_TEXT } from "../comparison";
 import { commitmentLine, useNumbers } from "../ink";
-import { lensTooltip } from "../lens-tooltip";
+import { lensName, lensNameOf, lensTooltip } from "../lens-tooltip";
 import { ResultBar } from "../sections/documents";
 import { AreaField } from "./area-field";
 
@@ -697,7 +697,7 @@ export function AreasView({
     <div className="brief-av" data-testid="brief-areas" data-tour="brief-areas" ref={root}>
       <div className="brief-av-picture">
         <div className="brief-av-head">
-          <span className="brief-av-lens">{tl(active)}</span>
+          <span className="brief-av-lens">{lensNameOf(source.lenses, active, tl)}</span>
           {sortHead(t("colTargets"), "targets")}
           <span className="brief-av-ends">
             {sortHead(columnName("apart"), "apart")}
@@ -731,7 +731,7 @@ export function AreasView({
               title={lensTooltip(l, tl)}
               onClick={() => onLens(l.id)}
             >
-              {tl(l.id)}
+              {lensName(l, tl)}
             </button>
           ))}
         </p>

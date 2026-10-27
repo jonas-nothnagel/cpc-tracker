@@ -2,34 +2,24 @@
 
 import { useState, type MouseEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { countryLocales, getCountry, isStandaloneCountry } from "@/config/countries";
+import { isStandaloneCountry } from "@/config/countries";
 import { LOCALE_LABELS, MACHINE_TRANSLATED } from "@/i18n/locale-labels";
+import { briefHref, briefLocales, dashboardHref, type BriefOrigin } from "@/lib/brief/origin";
 import { MovingText } from "./moving-text";
 
-/** A country's brief in a language, the language always named: an address
- *  without one would reopen the reader's saved language. */
-function briefPath(locale: string, countryId: string): string {
-  return `/${locale}/${countryId}/brief`;
-}
-
-/** The same country's previous dashboard, the language always named as in
- *  `briefPath`, so a saved language does not take over. */
-function dashboardPath(locale: string, countryId: string): string {
-  return `/${locale}/dashboard?country=${countryId}`;
-}
-
 /**
- * The brief in English and its country's own language, the current one
- * marked; none where the brief is in English only. The reader's choices live
- * in the address, so a link takes them along at the moment of the click
- * (without script it opens the standard brief).
+ * The brief in English and its country's own language (an upload's: the one
+ * it was started in), the current one marked; none where the brief is in
+ * English only. The reader's choices live in the address, so a link takes
+ * them along at the moment of the click (without script it opens the
+ * standard brief).
  */
-function Languages({ countryId }: { countryId: string }) {
+function Languages({ origin }: { origin: BriefOrigin }) {
   const locale = useLocale();
   const t = useTranslations("common.languageSwitcher");
-  const locales = countryLocales(getCountry(countryId) ?? {});
+  const locales = briefLocales(origin);
   const keepChoices = (target: string) => (e: MouseEvent<HTMLAnchorElement>) =>
-    e.currentTarget.setAttribute("href", `${briefPath(target, countryId)}${window.location.search}`);
+    e.currentTarget.setAttribute("href", `${briefHref(origin, target)}${window.location.search}`);
   if (locales.length < 2) return null;
   return (
     <nav className="brief-hero-languages" aria-label={t("aria")}>
@@ -39,7 +29,7 @@ function Languages({ countryId }: { countryId: string }) {
             {LOCALE_LABELS[l] ?? l}
           </span>
         ) : (
-          <a key={l} href={briefPath(l, countryId)} lang={l} onClick={keepChoices(l)}>
+          <a key={l} href={briefHref(origin, l)} lang={l} onClick={keepChoices(l)}>
             {LOCALE_LABELS[l] ?? l}
           </a>
         ),
@@ -50,7 +40,7 @@ function Languages({ countryId }: { countryId: string }) {
 }
 
 export function Hero({
-  countryId,
+  origin,
   countryName,
   commitments,
   documents,
@@ -60,7 +50,7 @@ export function Hero({
   onRead,
   onCustomize,
 }: {
-  countryId: string;
+  origin: BriefOrigin;
   countryName: string;
   commitments: number;
   documents: number;
@@ -76,7 +66,7 @@ export function Hero({
   const brand = useTranslations("header")("brand");
   const locale = useLocale();
   // A country shared on its own leads nowhere else: no landing, no previous dashboard.
-  const standalone = isStandaloneCountry(countryId);
+  const standalone = isStandaloneCountry(origin.countryId);
   // WCAG 2.2.2: moving content that runs on gets a pause control.
   const [paused, setPaused] = useState(false);
   const lockup = (
@@ -98,9 +88,9 @@ export function Hero({
           </a>
         )}
         <div className="brief-hero-links">
-          <Languages countryId={countryId} />
+          <Languages origin={origin} />
           {!standalone && (
-            <a className="brief-hero-previous" href={dashboardPath(locale, countryId)}>
+            <a className="brief-hero-previous" href={dashboardHref(origin, locale)}>
               {t("previousDashboard")}
             </a>
           )}

@@ -183,6 +183,8 @@
       "gga": "Adaptación climática",
       "adaptation": "Adaptación climática",
       "lossDamage": "Pérdidas y daños",
+      "own": "Áreas de política propias",
+      "ownTooltip": "Áreas de política aportadas con estos documentos.",
       "hr": "Derechos humanos",
       "ggaTooltip": "Objetivo Mundial de Adaptación: las siete metas temáticas del Marco de los Emiratos Árabes Unidos para la Resiliencia Climática Mundial (decisión 2/CMA.5 de la CMNUCC)",
       "hrTooltip": "Nueve temas de derechos humanos de la orientación del PNUD para esta herramienta, basada en la orientación del Grupo de Gestión Ambiental de las Naciones Unidas sobre la integración de los derechos humanos en la planificación nacional de la biodiversidad. Muestra qué temas abordan los documentos revisados. Borrador en revisión por personas expertas."
@@ -1490,7 +1492,7 @@
     "wizard": {
       "headerSubtitle": "Nuevo análisis",
       "title": "Nuevo análisis",
-      "subtitle": "Cargue documentos de política, revise metas, configure categorías y ejecute la canalización de análisis de coherencia.",
+      "subtitle": "Cargue documentos de política, revise las metas y ejecute el análisis de coherencia.",
       "footer": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer",
       "autoLabel": "Meta {n, number}",
       "unknownCountry": "Desconocido",
@@ -1508,7 +1510,7 @@
         "steps": {
           "countryDocs": "País y documentos",
           "referenceData": "Datos de referencia",
-          "reviewConfigure": "Revisar y configurar",
+          "reviewConfigure": "Revisar metas",
           "summaryRun": "Resumen y ejecución"
         },
         "stepCount": "Paso {n}",
@@ -1524,6 +1526,7 @@
       "pairwiseCount": "Alineación por pares: ~{count, number} pares",
       "btrIntegration": "Integración de datos BTR/CTF",
       "addSecondDoc": "Añada metas de un segundo tipo de documento (p. ej. NDC + NBSAP) para habilitar el análisis de alineación.",
+      "needCountry": "Se necesita el nombre del país para la nota; se indica en el primer paso.",
       "totalCost": "~{calls, number} llamadas LLM · coste estimado <strong>${cost}</strong>",
       "starting": "Iniciando…",
       "runAnalysis": "Ejecutar análisis →"
@@ -1644,8 +1647,8 @@
       }
     },
     "step3": {
-      "title": "Revisar metas y configurar categorías",
-      "subtitle": "Verifique las metas extraídas y configure qué categorías de clasificación usar. Cada grupo de documentos puede expandirse para inspeccionar o eliminar metas individuales.",
+      "title": "Revisar las metas",
+      "subtitle": "Cada grupo de documentos puede expandirse para inspeccionar o eliminar metas individuales.",
       "categoriesHeading": "Categorías de clasificación",
       "targetsHeading": "Metas de política",
       "hideManual": "Ocultar entrada manual",
@@ -1682,7 +1685,9 @@
     "complete": {
       "title": "Análisis completo",
       "summary": "Procesadas {targets, number} metas con {pairs, number} pares de alineación en {sec}s",
-      "viewDashboard": "Ver panel →"
+      "viewDashboard": "Ver panel →",
+      "openBrief": "Abrir la nota",
+      "unreadable": "No se pudo preparar la nota con estos resultados."
     },
     "failed": {
       "title": "Análisis fallido",

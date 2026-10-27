@@ -183,6 +183,8 @@
       "gga": "Climate adaptation",
       "adaptation": "Climate adaptation",
       "lossDamage": "Loss and damage",
+      "own": "Own policy areas",
+      "ownTooltip": "Policy areas provided with these documents.",
       "hr": "Human rights",
       "ggaTooltip": "Global Goal on Adaptation: the seven thematic targets of the UAE Framework for Global Climate Resilience (UNFCCC decision 2/CMA.5)",
       "hrTooltip": "Nine human rights themes from UNDP guidance for this tool, building on UN Environment Management Group guidance on integrating human rights in national biodiversity planning. Shows which themes the reviewed documents engage. Draft under expert review."
@@ -1490,7 +1492,7 @@
     "wizard": {
       "headerSubtitle": "New Analysis",
       "title": "New Analysis",
-      "subtitle": "Upload policy documents, review targets, configure categories, and run the coherence analysis pipeline.",
+      "subtitle": "Upload policy documents, review the targets, and run the coherence analysis.",
       "footer": "United Nations Development Programme · CPC Analyzer",
       "autoLabel": "Target {n, number}",
       "unknownCountry": "Unknown",
@@ -1508,7 +1510,7 @@
         "steps": {
           "countryDocs": "Country and documents",
           "referenceData": "Reference data",
-          "reviewConfigure": "Review and configure",
+          "reviewConfigure": "Review targets",
           "summaryRun": "Summary and run"
         },
         "stepCount": "Step {n}",
@@ -1524,6 +1526,7 @@
       "pairwiseCount": "Pairwise alignment: ~{count, number} pairs",
       "btrIntegration": "BTR/CTF data integration",
       "addSecondDoc": "Add targets from a second document type (e.g. NDC + NBSAP) to enable alignment analysis.",
+      "needCountry": "A country name is needed for the brief; it is set in the first step.",
       "totalCost": "~{calls, number} LLM calls · estimated cost <strong>${cost}</strong>",
       "starting": "Starting…",
       "runAnalysis": "Run analysis →"
@@ -1644,8 +1647,8 @@
       }
     },
     "step3": {
-      "title": "Review targets and configure categories",
-      "subtitle": "Verify the extracted targets, then configure which classification categories to use. Each document group can be expanded to inspect or remove individual targets.",
+      "title": "Review the targets",
+      "subtitle": "Each document group can be expanded to inspect or remove individual targets.",
       "categoriesHeading": "Classification Categories",
       "targetsHeading": "Policy Targets",
       "hideManual": "Hide manual entry",
@@ -1682,7 +1685,9 @@
     "complete": {
       "title": "Analysis Complete",
       "summary": "Processed {targets, number} targets with {pairs, number} alignment pairs in {sec}s",
-      "viewDashboard": "View Dashboard →"
+      "viewDashboard": "View Dashboard →",
+      "openBrief": "Open the brief",
+      "unreadable": "The brief could not be built from these results."
     },
     "failed": {
       "title": "Analysis Failed",

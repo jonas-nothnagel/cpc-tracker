@@ -198,6 +198,7 @@ export function StepSummaryRun({
         estimate={estimate}
         hasBtrData={hasBtrData}
         submitting={submitting}
+        countryMissing={!country.trim()}
         onRunAnalysis={onRunAnalysis}
       />
     </div>

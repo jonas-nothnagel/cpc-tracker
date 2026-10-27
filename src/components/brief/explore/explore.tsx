@@ -67,7 +67,8 @@ import {
   type RankedRow,
   type SeatPairs,
 } from "./side";
-import { lensTooltip } from "../lens-tooltip";
+import { lensName, lensNameOf, lensTooltip } from "../lens-tooltip";
+import { briefQuery } from "@/lib/brief/origin";
 import "./explore.css";
 
 /** Labels shorter than this are clause numbers ("7 b)"), not titles. */
@@ -362,7 +363,7 @@ export function Explore({
   useEffect(() => {
     if (!singleId || typeof fetch === "undefined") return;
     let alive = true;
-    const query = new URLSearchParams({ country: source.countryId, id: singleId, locale });
+    const query = briefQuery(source, { id: singleId, locale });
     fetch(`/api/brief/readings?${query}`)
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error())))
       .then((body: { readings?: Record<string, Reading> }) =>
@@ -372,7 +373,7 @@ export function Explore({
     return () => {
       alive = false;
     };
-  }, [singleId, source.countryId, locale]);
+  }, [singleId, source, locale]);
   const readingOf = (partner: string): Reading | undefined =>
     readings && readings.id === singleId ? readings.map[partner] : undefined;
 
@@ -547,7 +548,7 @@ export function Explore({
     activeKind === "doc"
       ? t("kindDoc")
       : active?.kind === "area"
-        ? t("kindArea", { lens: tl(active.lens) })
+        ? t("kindArea", { lens: lensNameOf(source.lenses, active.lens, tl) })
         : focusLayer
           ? t(focusLayer === "budget" ? "sourceBer" : "sourceBtr")
           : "";
@@ -893,7 +894,7 @@ export function Explore({
     [available, model, layerName, t],
   );
 
-  const groupLabel = (g: ExploreGroup) => (g === "docs" ? t("groupDocs") : tl(g));
+  const groupLabel = (g: ExploreGroup) => (g === "docs" ? t("groupDocs") : lensNameOf(source.lenses, g, tl));
   // How many lines of each kind the ring draws: one per seat with such a
   // reading of the centre.
   const lineCount = (kind: LineKind) =>
@@ -905,7 +906,7 @@ export function Explore({
     <div ref={pairRef}>
       <PairView
         key={`${pair.a}~${pair.b}`}
-        countryId={source.countryId}
+        origin={source}
         countryName={source.countryName}
         a={pair.a}
         b={pair.b}
@@ -1002,7 +1003,7 @@ export function Explore({
         headline={restHeadline}
         review={ranked(ringCounts.apart)}
         strongest={ranked(ringCounts.strong)}
-        browseTitle={lens ? tl(lens.id) : t("browseDocs")}
+        browseTitle={lens ? lensName(lens, tl) : t("browseDocs")}
         browse={browse}
         layerBrowse={layerBrowse.filter((row) => {
           const layer = parseFocusKey(row.key).id.slice(6);

@@ -9,7 +9,6 @@ import type { TaxonomyGroup } from "@/hooks/useCategories";
 import { getDocColor } from "@/lib/utils";
 import { ManualTargetEditor } from "./manual-target-editor";
 import { ManualEntryForm } from "./manual-entry-form";
-import { CategoryConfig } from "./category-config";
 
 interface StepReviewConfigureProps {
   targets: TargetRow[];
@@ -67,14 +66,6 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
   const [showManualAdd, setShowManualAdd] = useState(false);
   const [expandedDoc, setExpandedDoc] = useState<PolicyDocumentType | null>(null);
 
-  // Summary from groups
-  const categorySummary = props.groups
-    .map((g) => {
-      const active = g.items.filter((c) => c.enabled).length;
-      return `${active} ${g.name.split(" ")[0]}`;
-    })
-    .join("  ·  ");
-
   return (
     <div>
       {/* Step header */}
@@ -85,34 +76,6 @@ export function StepReviewConfigure(props: StepReviewConfigureProps) {
         <p className="text-body text-[var(--undp-gray)] leading-relaxed max-w-2xl">
           {t("subtitle")}
         </p>
-      </div>
-
-      {/* ── CATEGORIES (shown first) ── */}
-      <div className="mb-8">
-        <h3 className="text-caption font-medium text-[var(--undp-gray)] mb-1">
-          {t("categoriesHeading")}
-        </h3>
-        <p className="text-caption text-[var(--undp-gray)] mb-3">
-          {categorySummary}
-        </p>
-
-        <CategoryConfig
-          groups={props.groups}
-          showCategories={props.showCategories}
-          onToggleShow={props.onToggleShowCategories}
-          toggleCategory={props.toggleCategory}
-          removeCategory={props.removeCategory}
-          toggleAllInGroup={props.toggleAllInGroup}
-          addingTo={props.addingTo}
-          onSetAddingTo={props.onSetAddingTo}
-          newCatName={props.newCatName}
-          onNewCatNameChange={props.onNewCatNameChange}
-          newCatDesc={props.newCatDesc}
-          onNewCatDescChange={props.onNewCatDescChange}
-          onAddCustomCategory={props.onAddCustomCategory}
-          onAddGroup={props.onAddGroup}
-          onRemoveGroup={props.onRemoveGroup}
-        />
       </div>
 
       {/* ── TARGETS ── */}

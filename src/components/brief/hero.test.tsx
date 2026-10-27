@@ -4,15 +4,16 @@ import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
 import mn from "../../../messages/mn.json";
+import type { BriefOrigin } from "@/lib/brief/origin";
 import { Hero } from "./hero";
 
 const MESSAGES = { en, es, mn } as const;
 
-function hero(locale: "en" | "es" | "mn", countryId = "panama", countryName = "Panama") {
+function hero(locale: "en" | "es" | "mn", countryId = "panama", countryName = "Panama", origin?: BriefOrigin) {
   return render(
     <NextIntlClientProvider locale={locale} messages={MESSAGES[locale]} timeZone="UTC">
       <Hero
-        countryId={countryId}
+        origin={origin ?? { countryId }}
         countryName={countryName}
         commitments={100}
         documents={4}
@@ -50,6 +51,17 @@ describe("Hero", () => {
     expect(within(nav).getByText("Монгол")).toHaveAttribute("aria-current", "true");
     expect(within(nav).getByRole("link", { name: "English" })).toHaveAttribute("href", "/en/mongolia/brief");
     expect(within(nav).queryByText("Español")).toBeNull();
+  });
+
+  it("links an uploaded analysis to its own languages and its view in the previous dashboard", () => {
+    const id = "3f9a1c2e-7b4d-4e8a-9c1f-2a6b5d8e0f13";
+    hero("en", "", "Tonga", { countryId: "", analysisId: id, languages: ["es"] });
+    const nav = screen.getByRole("navigation", { name: "Language" });
+    expect(within(nav).getByRole("link", { name: "Español" })).toHaveAttribute("href", `/es/analysis/${id}`);
+    expect(screen.getByRole("link", { name: "Previous dashboard" })).toHaveAttribute(
+      "href",
+      `/en/dashboard?analysisId=${id}`,
+    );
   });
 
   it("offers no choice of language where the brief is in English only", () => {
