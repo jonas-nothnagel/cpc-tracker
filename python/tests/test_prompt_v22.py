@@ -123,6 +123,8 @@ def test_cache_namespaces_bumped_for_v22():
         "alignment_v2",
         "measure_alignment_v3",
         "budget_alignment_v2",
+        # The budget framing with "fund", replaced by v4 (BER plan step 3).
+        "budget_alignment_v3",
     }
     current = {
         ALIGNMENT_CACHE_NAMESPACE,

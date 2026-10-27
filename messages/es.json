@@ -500,7 +500,7 @@
             "body": "Las metas que intervienen en más posibles desalineaciones. En el mapa solo quedan las posibles desalineaciones y, dentro de cada documento, las metas que más intervienen pasan al frente, donde se nombran. Al señalar una meta, sus pares de metas pasan a primer plano, con su número de posibles desalineaciones en cada bloque; al seleccionarla quedan fijados y se ofrece explorar la meta en el anillo, más abajo."
           },
           "documents": {
-            "title": "Los documentos, uno junto a otro",
+            "title": "Alineación por documento",
             "body": "Cada barra es un documento con todos sus pares de metas: la posible desalineación desde la izquierda, la alineación desde la derecha. Al seleccionar un documento, en la lista o alrededor del centro, este pasa al centro de los puntos, con sus pares de metas con cada uno de los demás documentos a su lado; al seleccionar un par de documentos en la lista se abren el resumen de la IA, los pares de metas más alineados y las posibles desalineaciones."
           },
           "builder": {
@@ -2856,7 +2856,7 @@
       "together": "Ámbitos de alineación",
       "apart": "Posible desalineación",
       "commitments": "Metas que conviene revisar primero",
-      "documents": "Los documentos, uno junto a otro",
+      "documents": "Alineación por documento",
       "areas": "Por área de política",
       "aligned": "Alineaciones más fuertes",
       "spending": "Gasto revisado",
@@ -2904,7 +2904,7 @@
       "otherTip": "{count, plural, one {# par de metas} other {# pares de metas}} fuera de los temas recurrentes"
     },
     "commitments": {
-      "headlineConcentrated": "De las {total, number} posibles desalineaciones, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
+      "headlineConcentrated": "De las {total, number} posibles desalineaciones, el {pct} involucra {top, plural, one {una meta} other {# metas}}.",
       "headlineSpread": "La posible desalineación se reparte entre {contested, plural, one {# meta} other {# metas}}.",
       "headlineEmpty": "Ninguna meta muestra una posible desalineación.",
       "partner": "{count, number} con {doc}"
@@ -3013,7 +3013,7 @@
     "aligned": {
       "headlineEmpty": "Ninguna meta está fuertemente alineada con otra en esta selección.",
       "row": "{count, plural, one {# alineación fuerte} other {# alineaciones fuertes}}",
-      "headlineConcentrated": "De las {total, number} alineaciones fuertes, el {pct} involucra solo {top, plural, one {una meta} other {# metas}}.",
+      "headlineConcentrated": "De las {total, number} alineaciones fuertes, el {pct} involucra {top, plural, one {una meta} other {# metas}}.",
       "headlineSpread": "Las alineaciones fuertes se reparten entre {contested, plural, one {# meta} other {# metas}}.",
       "partner": "{count, number} con {doc}"
     },
@@ -3028,7 +3028,6 @@
       "leadApart": "<first>{docA}</first> y <second>{docB}</second> tienen la mayor proporción de posible desalineación: {pct} de sus pares de metas.",
       "leadBoth": "<first>{docA}</first> y <second>{docB}</second> tienen a la vez la mayor proporción de pares de metas alineados ({aligned}) y la mayor proporción de posible desalineación ({apart}).",
       "leadOnly": "Entre <first>{docA}</first> y <second>{docB}</second>, el {aligned} de los pares de metas están alineados y el {apart} muestran una posible desalineación.",
-      "documentsLead": "La alineación con los demás documentos va del {low} de <first>{docLow}</first> al {high} de <second>{docHigh}</second>.",
       "focus": "<name>{doc}</name>: el {aligned} de sus {total, number} pares de metas están alineados; el {apart} muestran una posible desalineación, la mayor proporción con <other>{partner}</other> ({partnerShare}).",
       "focusPlain": "<name>{doc}</name>: el {aligned} de sus {total, number} pares de metas están alineados; el {apart} muestran una posible desalineación.",
       "focusNone": "<name>{doc}</name>: el {aligned} de sus {total, number} pares de metas están alineados, sin ninguna posible desalineación.",
@@ -3036,8 +3035,8 @@
       "openTarget": "Ver sus metas alineadas y con posible desalineación",
       "exploreTarget": "Explorar esta meta",
       "countApart": "{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}",
-      "kickerReinforce": "Lo que funciona bien",
-      "kickerApart": "Dónde mirar más de cerca",
+      "kickerReinforce": "Lo que funciona bien en conjunto",
+      "kickerApart": "Ámbitos de posible desalineación",
       "title": {
         "overview": "{total, plural, one {# par de metas según su valoración} other {# pares de metas según su valoración}}",
         "map": "Pares de metas por par de documentos",
@@ -3119,7 +3118,6 @@
       "arcActions": "{strong, number} de {total, number} fuertemente alineadas, {apart, number} posiblemente desalineadas",
       "arcActionsStrong": "{strong, number} de {total, number} fuertemente alineadas",
       "aiLabel": "Explicación de la IA:",
-      "translated": "traducción automática",
       "originalName": "En la revisión: {name}",
       "statusValue": {
         "ongoing": "En curso",
@@ -3191,14 +3189,15 @@
         "usd": "{unit, select, trillion {US${amount} billones} billion {US${amount} mil millones} million {US${amount} millones} other {US${amount}}}"
       },
       "kicker": {
-        "record": "El registro",
-        "purpose": "Para la naturaleza y el clima",
-        "places": "Adónde llega",
-        "areas": "Para qué es el dinero"
+        "record": "Todos los contratos públicos",
+        "purpose": "Contratos para la naturaleza y el clima",
+        "places": "Contratos por ubicación",
+        "areas": "Contratos por área de política"
       },
       "record": {
         "headline": "{value} en {count} contratos públicos desde {year}",
-        "second": "Unos {other}. Los contratos muestran dónde se compromete dinero público para trabajos concretos, antes y después de que se adoptara cada meta.",
+        "about": "Unos {other}.",
+        "second": "Los contratos muestran dónde se compromete dinero público para trabajos concretos, antes y después de que se adoptara cada meta.",
         "example": "Ver un contrato completo",
         "source": "{name}, de {first} a {last} · contratado, sin verificar su ejecución · los contratos que el registro lista dos veces cuentan una vez"
       },
@@ -3399,7 +3398,6 @@
           "more": "Mostrar {count} más"
         },
         "kind": "Contrato de compra pública",
-        "titleNote": "Traducido automáticamente del mongol",
         "about": "unos {other}",
         "readingHead": "La lectura del análisis",
         "purpose": "Finalidad",
@@ -3427,7 +3425,7 @@
         "note": "Enfoque: {parts}"
       },
       "closer": {
-        "kicker": "Dónde mirar más de cerca",
+        "kicker": "Ámbitos de posible desalineación",
         "headline": "{count, plural, one {# licitación muestra} other {# licitaciones muestran}} una posible desalineación con {what}{place}{top}",
         "top": "; en el {pct} de ellas, la meta pertenece a {doc}",
         "inPlace": ", en {place}",
@@ -3461,52 +3459,132 @@
       "title": "Gasto revisado en biodiversidad",
       "source": "Revisión del Gasto en Biodiversidad (BER), {years}",
       "illustrative": "Cifras ilustrativas, adaptadas de una revisión real",
-      "money": "{currency} {amount} {unit, select, million {millones} billion {mil millones} other {}}",
-      "fieldLabel": "{currency} {every} de cada {currency} 100 de gasto público, en cien cuadrados",
+      "money": "{sign}{amount}{unit, select, trillion { billones} billion { mil millones} million { millones} other {}}",
+      "scope": {
+        "stateLocal": "gasto de los presupuestos estatal y locales",
+        "publicSector": "gasto del sector público",
+        "government": "gasto del gobierno",
+        "public": "gasto público"
+      },
+      "fieldLabel": "{sign}{every} de cada {sign}100 de {scope}, en cien cuadrados",
       "record": {
-        "kicker": "Del total del gasto público",
-        "headline": "{currency} {every} de cada {currency} 100 de gasto público es gasto revisado en biodiversidad.",
+        "headline": "{sign}{every} de cada {sign}100 de {scope} en {years} fue gasto revisado en biodiversidad.",
         "reviewed": "Gasto revisado en biodiversidad, {years}",
-        "public": "Todo el gasto público, {years}",
-        "year": "{year}: {currency} {every} de cada {currency} 100"
+        "public": "Todo el {scope}, {years}"
+      },
+      "chart": {
+        "title": "Gasto revisado por año",
+        "titleParts": "Gasto revisado por año y {parts}",
+        "parts": {
+          "levels": "presupuesto",
+          "groups": "tipo de institución"
+        },
+        "unit": "{sign} {unit, select, billion {mil millones} other {millones}}",
+        "switch": "Mostrar montos o proporciones",
+        "amounts": "Monto",
+        "shares": "Parte del {scope}",
+        "sharesLevels": "Parte del gasto de cada presupuesto",
+        "series": {
+          "central": "Presupuesto del Estado",
+          "local": "Presupuestos locales",
+          "core": "Instituciones principales, contadas por completo",
+          "other": "Otras instituciones, contadas en parte",
+          "all": "Gasto revisado"
+        },
+        "notInData": "no está en los datos",
+        "notInDataLong": "{year}: los datos de la revisión solo contienen {held}",
+        "held": {
+          "central": "el presupuesto del Estado",
+          "local": "los presupuestos locales",
+          "core": "las instituciones principales",
+          "other": "las otras instituciones",
+          "all": "una parte"
+        },
+        "bar": "{series}, {year}",
+        "barShare": "{share} del {scope}",
+        "scopeOf": {
+          "central": "gasto del presupuesto del Estado",
+          "local": "gasto de los presupuestos locales",
+          "core": "gasto del gobierno",
+          "other": "gasto del gobierno",
+          "all": "gasto público"
+        },
+        "inAll": "{amount} en total",
+        "tableCaption": "Gasto revisado por año, {unit}",
+        "year": "Año",
+        "partNotInData": "{part}: no está en los datos"
+      },
+      "items": {
+        "title": "Gasto revisado por {unit, select, institution {institución} line {línea presupuestaria} both {institución y programa} other {programa}}, {years}",
+        "listLabel": "{unit, select, institution {Instituciones} line {Líneas presupuestarias} other {Programas}} de la revisión, de mayor a menor",
+        "switch": "Mostrar por institución o por programa",
+        "byInstitution": "Institución",
+        "byProgramme": "Programa",
+        "budgetNamed": "{name} ({type, select, investment {inversión} other {funcionamiento}})",
+        "kind": {
+          "programme": "Programa {code}",
+          "purpose": "Código de propósito {code}, en otros programas",
+          "programmes": "{count, plural, one {# programa} other {# programas}}",
+          "core": "Contada por completo",
+          "other": "Contada en parte"
+        },
+        "counted": "Contado: {counted} de {spent} gastados, según las tasas de la revisión",
+        "rate": "{name}, contado al {rate}",
+        "institutionRate": "Contada al {rate} de su gasto, la tasa de la revisión.",
+        "rationale": "Motivo de la revisión: {text}",
+        "bodies": "Gastado por {count, plural, one {# unidad} other {# unidades}} en {year}; las mayores:",
+        "pays": "Paga {list}.",
+        "parts": "{count, plural, one {# actividad} other {# actividades}}; las mayores:",
+        "programmes": "Sus programas, de mayor a menor:",
+        "partsMore": "{count, plural, one {y # actividad más} other {y # actividades más}}",
+        "showAll": "Mostrar {unit, select, institution {las {count} instituciones} line {las {count} líneas presupuestarias} other {los {count} programas}}",
+        "showFewer": "Mostrar solo las mayores"
       },
       "areas": {
-        "kicker": "A qué se destina",
-        "headline": "{area} concentra {spend} del gasto revisado y {targets} de las metas.",
+        "title": "Metas y gasto revisado por área de biodiversidad",
         "colArea": "Área de biodiversidad",
         "colTargets": "Parte de las metas",
         "colSpend": "Parte del gasto revisado",
+        "colTargetsCount": "Metas",
+        "colSpendAmount": "Gasto revisado",
         "listLabel": "Áreas de biodiversidad, su parte de las metas y del gasto revisado",
-        "rowLabel": "{targets} de las metas, {spend} del gasto revisado",
+        "rowLabel": "Metas: {targets}; gasto revisado: {spend}",
         "noSpend": "Ninguno",
+        "apartRow": "Aún sin asignar a un área",
+        "apartLabel": "{spend} del gasto revisado aún no está asignado a un área",
         "targetsLine": "{count, plural, =0 {Ninguna meta en esta área.} one {# meta en esta área.} other {# metas en esta área.}}",
         "matched": "{matched, number} de las {total, number} tienen una línea presupuestaria coincidente.",
-        "ai": "Estimado por IA",
+        "aiEstimated": "Estimado por IA",
+        "coherence": "Coherencia de sus metas: {aligned} alineados, {apart} de posible desalineación, de {total, number} pares de metas.",
+        "coherenceFew": "Coherencia de sus metas: {total, plural, one {# par de metas} other {# pares de metas}}, muy pocos para calificar.",
         "linesLabel": "Líneas presupuestarias de esta área",
         "noLines": "Ninguna línea presupuestaria revisada en esta área.",
-        "explore": "Explorar esta área con sus líneas presupuestarias"
-      }
+        "explore": "Explorar esta área con sus líneas presupuestarias",
+        "checked": "Área revisada",
+        "aiSuggested": "Sugerido por IA, aún sin revisar",
+        "apartWhy": "Sin asignar, pendiente de revisión",
+        "linesMore": "{count, plural, one {y # línea más} other {y # líneas más}}",
+        "switch": "Mostrar proporciones o montos",
+        "shares": "Proporción",
+        "amounts": "Monto",
+        "targetsCount": "{count, plural, =0 {Ninguna meta} one {# meta} other {# metas}}"
+      },
+      "currency": "Importes en"
     },
     "areaView": {
-      "kicker": "Por área de política",
+      "title": "Metas y alineación por área de política",
+      "noneTargets": "Ninguna meta se encuentra en estas áreas de política.",
+      "noneSide": "Ningún par de metas de estas áreas de política {side, select, apart {muestra una posible desalineación} other {está fuertemente alineado}}.",
+      "noneArea": "Ninguna {side, select, apart {posible desalineación} other {alineación fuerte}} involucra metas de {area}.",
       "lensGroup": "Áreas de política",
       "sideGroup": "Metas o pares de metas",
       "viewTargets": "Metas",
-      "headlineTargets": "El {pct} de las {placed, number} metas de estas áreas de política son metas de <first>{area}</first>.",
-      "headlineTargetsArea": "{count, number} de las {placed, number} metas de estas áreas de política son metas de {area}.",
-      "headlineTargetsNone": "Ninguna meta se encuentra en estas áreas de política.",
       "areaShareTargets": "el {pct} de las metas",
       "areaList": "Áreas de política y sus metas",
       "showAllTargets": "Mostrar las {count, number} metas",
       "showFewerTargets": "Mostrar menos",
       "sideApart": "Posible desalineación",
       "sideReinforce": "Alineación fuerte",
-      "headlineBetween": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas de <second>{areaB}</second>.",
-      "headlineWithin": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa dentro de las metas de <first>{areaA}</first>.",
-      "headlineOutside": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas fuera de estas áreas.",
-      "headlineNone": "Ningún par de metas de estas áreas de política {side, select, apart {muestra una posible desalineación} other {está fuertemente alineado}}.",
-      "headlineArea": "El {pct} de las {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} involucra metas de {area}.",
-      "headlineAreaNone": "Ninguna {side, select, apart {posible desalineación} other {alineación fuerte}} involucra metas de {area}.",
       "scope": "{placed, number} de las {total, number} metas se encuentran en una de estas áreas.",
       "within": "Dentro de {area}",
       "outside": "{area} · metas fuera de estas áreas",
@@ -3515,7 +3593,7 @@
       "share": "{pct} de {pairs, number} pares de metas",
       "rest": "{groups, plural, one {El otro par de áreas} other {Los otros # pares de áreas}}: {count, number} de sus {pairs, number} pares de metas.",
       "rowPairs": "{side, select, apart {{count, plural, one {# posible desalineación} other {# posibles desalineaciones}}} other {{count, plural, one {# alineación fuerte} other {# alineaciones fuertes}}}}",
-      "involved": "Metas de {area} más involucradas",
+      "involved": "Metas de {area} con más pares de metas",
       "seePairs": "Ver {count, plural, one {el # par de metas} other {los # pares de metas}}",
       "backAll": "Todos los pares de áreas",
       "backTo": "Volver a {name}",

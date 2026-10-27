@@ -34,21 +34,21 @@ const NO_STORE_HEADERS = { "Cache-Control": "no-store" } as const;
 // keeps it fresh after a redeploy while still avoiding re-fetches within a visit.
 const COUNTRY_CACHE_CONTROL = "public, max-age=300, stale-while-revalidate=86400";
 
-/** Build a JSON response, sending the pre-gzipped buffer when the client
- *  accepts gzip and falling back to the raw string otherwise. */
-function buildJsonResponse(json: string, gzip: Uint8Array | null, cacheControl: string): NextResponse {
+/** Build a JSON response from the pre-gzipped buffer, for a client that
+ *  accepts gzip, or from the raw string. */
+function buildJsonResponse(body: { gzip: Uint8Array } | { json: string }, cacheControl: string): NextResponse {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     "Vary": "Accept-Encoding",
     "Cache-Control": cacheControl,
   };
-  if (gzip) {
+  if ("gzip" in body) {
     headers["Content-Encoding"] = "gzip";
     // A Uint8Array is a valid response body at runtime; the cast works around the
     // DOM BodyInit typings not accepting Node's Uint8Array<ArrayBufferLike> cleanly.
-    return new NextResponse(gzip as unknown as BodyInit, { status: 200, headers });
+    return new NextResponse(body.gzip as unknown as BodyInit, { status: 200, headers });
   }
-  return new NextResponse(json, { status: 200, headers });
+  return new NextResponse(body.json, { status: 200, headers });
 }
 
 /** Error body for a failed country lookup: `missing` only when assembly named files. */
@@ -94,20 +94,22 @@ export async function GET(request: NextRequest) {
       );
     }
     const json = JSON.stringify(assembled.data);
-    return buildJsonResponse(json, acceptsGzip ? gzipSync(json) : null, "no-store");
+    return buildJsonResponse(acceptsGzip ? { gzip: gzipSync(json) } : { json }, "no-store");
   }
 
   if (slice === "wheel") {
     const wheel = getCountryWheelPayload(country ?? "", locale, model);
     if (wheel.kind === "error") return countryErrorResponse(wheel);
-    return buildJsonResponse(wheel.payload.json, acceptsGzip ? wheel.payload.gzip : null, COUNTRY_CACHE_CONTROL);
+    const { payload } = wheel;
+    return buildJsonResponse(acceptsGzip ? { gzip: payload.gzip } : { json: payload.json }, COUNTRY_CACHE_CONTROL);
   }
 
-  // Pilot flow: assembled once per container, then served from the cached
-  // (and pre-gzipped) payload. Each (country, locale, model) combination
-  // gets its own cache entry.
+  // Pilot flow: assembled once per container and gzipped on the first request
+  // here, then served from the cached payload. Each (country, locale, model)
+  // combination gets its own cache entry.
   const payloadResult = getCountryDashboardPayload(country ?? "", locale, model);
   if (payloadResult.kind === "error") return countryErrorResponse(payloadResult);
-  const { json, gzip } = payloadResult.payload;
-  return buildJsonResponse(json, acceptsGzip ? gzip : null, COUNTRY_CACHE_CONTROL);
+  // Only the form sent is built: the JSON is not kept (see lazyPayload).
+  const { payload } = payloadResult;
+  return buildJsonResponse(acceptsGzip ? { gzip: payload.gzip } : { json: payload.json }, COUNTRY_CACHE_CONTROL);
 }

@@ -1,8 +1,25 @@
 {
   "_meta": {
-    "purpose": "Display names for Panama's BER budget lines in the brief. Display only: never read by the pipeline or placed in a prompt.",
-    "es": "The review's own programme names (panama-ber.json) with their abbreviations written out by the list below, double spaces collapsed; no word added or changed. List agreed with Jonas on 2026-10-05.",
-    "en": "Translations of the written-out names (machine translation by Claude, 2026-10-05), shown on the English and Mongolian pages flagged as translations, with the review's own name on hover.",
+    "purpose": "Display names for Panama's BER budget lines (activities, their programmes and institutions) in the brief. Display only: never read by the pipeline or placed in a prompt.",
+    "es": "The review's own names (panama-ber.json, from BIOFIN's budget database) with their abbreviations written out by the list below, double spaces collapsed; no word added or changed. List agreed with Jonas on 2026-10-05.",
+    "en": "Translations of the written-out names (machine translation, by the runs listed below), shown flagged as translations, with the review's own name kept beside them.",
+    "runs": [
+      {
+        "date": "2026-10-23",
+        "model": "gpt-5.4",
+        "names": 295
+      },
+      {
+        "date": "2026-10-27",
+        "model": "gpt-5.4",
+        "names": 14
+      },
+      {
+        "date": "2026-10-27",
+        "model": "gpt-5.4",
+        "names": 1
+      }
+    ],
     "abbreviations": {
       "Admón.": "Administración",
       "Rehabil.": "Rehabilitación",
@@ -23,140 +40,1331 @@
       "Finan.": "Financiera",
       "Voc. T.": "Vocación Turística",
       "V T": "Vocación Turística"
-    }
+    },
+    "unlisted": [
+      "Admortig.",
+      "Amb.",
+      "Bio.",
+      "Biodiver.",
+      "Capac.",
+      "Cartagena.",
+      "Certif.",
+      "Competi.",
+      "Contrib.",
+      "Empr.",
+      "Enfer.",
+      "Equip.",
+      "Estrat.",
+      "Fdo.",
+      "Fort.",
+      "Gen.",
+      "Generacional.",
+      "Gob.",
+      "Hum.",
+      "Imp.",
+      "Implem.",
+      "Implement.",
+      "Inv.",
+      "Lab.",
+      "Man.",
+      "Mejoram.",
+      "Moder.",
+      "Partic.",
+      "Pers.",
+      "Plan.",
+      "Pma.",
+      "Pmá.",
+      "Prevención.",
+      "Proc.",
+      "Prod.",
+      "Protec.",
+      "Rep.",
+      "Resfores.",
+      "Resid.",
+      "Resist.",
+      "Restaur.",
+      "Restaurac.",
+      "Serv.",
+      "Sist.",
+      "Sistema.",
+      "Sosten.",
+      "Tecn.",
+      "Tiro.",
+      "Transf.",
+      "Trop.",
+      "Vegetales.",
+      "Voc.",
+      "agroquímicos.",
+      "artif.",
+      "embarc.",
+      "ind.",
+      "langosta.",
+      "negra.",
+      "priot.",
+      "ref.",
+      "sist."
+    ]
   },
   "names": {
-    "BER_PA_01_01": {
-      "es": "Rehabilitación y Mantenimiento Aeroportuario",
-      "en": "Airport rehabilitation and maintenance"
+    "0-10": {
+      "es": "Ministerio de Desarrollo Agropecuario",
+      "en": "Ministry of Agricultural Development"
     },
-    "BER_PA_02_01": {
-      "es": "Administración de los Recursos Acuáticos",
-      "en": "Administration of aquatic resources"
+    "0-10-0-2": {
+      "es": "Asistencia Técnica Agrícola",
+      "en": "Agricultural Technical Assistance"
     },
-    "BER_PA_02_02": {
-      "es": "Desarrollo y Conservación Recursos Acuáticos",
-      "en": "Development and conservation of aquatic resources"
+    "0-10-0-2-3-1": {
+      "es": "Sanidad Vegetal",
+      "en": "Plant Health"
     },
-    "BER_PA_02_03": {
-      "es": "Investigación y Desarrollo Recursos Acuáticos",
-      "en": "Research and development of aquatic resources"
+    "0-10-0-2-3-2": {
+      "es": "Registro y Certif. de Semillas",
+      "en": "Registration and Certification of Seeds"
     },
-    "BER_PA_03_01": {
-      "es": "Construcción de Infraestructura Turística",
-      "en": "Construction of tourism infrastructure"
+    "0-10-0-3": {
+      "es": "Asistencia Técnica Pecuaria",
+      "en": "Livestock Technical Assistance"
     },
-    "BER_PA_03_02": {
-      "es": "Centros Culturales y de Exhibiciones",
-      "en": "Cultural and exhibition centres"
+    "0-10-0-3-3-1": {
+      "es": "Sanidad Animal",
+      "en": "Animal Health"
     },
-    "BER_PA_03_03": {
-      "es": "Desarrollo del Ecoturismo en los Lagos de Panamá Norte",
-      "en": "Ecotourism development in the lakes of Panamá Norte"
+    "0-10-0-3-3-3": {
+      "es": "Registros Genealógicos",
+      "en": "Genealogical Records"
     },
-    "BER_PA_03_04": {
-      "es": "Integración de las Ciudades Vocación Turística",
-      "en": "Integration of tourism-oriented cities"
+    "0-10-1-2": {
+      "es": "Programa de Desarrollo Tecnológico",
+      "en": "Technological Development Program"
     },
-    "BER_PA_03_05": {
-      "es": "Integración de las Ciudades Vocación Turística",
-      "en": "Integration of tourism-oriented cities"
+    "0-10-1-2-1-26": {
+      "es": "Desarrollo del Programa de Zonificación Agroecológica",
+      "en": "Development of the Agroecological Zoning Program"
     },
-    "BER_PA_03_06": {
-      "es": "Promoción Turística",
-      "en": "Tourism promotion"
+    "0-10-1-2-2-1": {
+      "es": "Mejoramiento de la Apicultura en Panamá",
+      "en": "Improvement of Beekeeping in Panama"
     },
-    "BER_PA_04_01": {
-      "es": "Programa Nacional de Titulación de Tierra",
-      "en": "National land titling programme"
+    "0-10-1-2-2-12": {
+      "es": "Mejoramiento Genético de Cabras en Panamá",
+      "en": "Genetic Improvement of Goats in Panama"
     },
-    "BER_PA_05_01": {
-      "es": "Construcción y Remodelación de Instalaciones",
-      "en": "Construction and refurbishment of facilities"
+    "0-10-1-2-2-4": {
+      "es": "Mejoramiento Ganadero y del Laboratorio de Reproducción Bovina",
+      "en": "Improvement of Livestock and the Bovine Reproduction Laboratory"
     },
-    "BER_PA_06_01": {
-      "es": "Apoyo Investigación e innovación Agropecuaria",
-      "en": "Support for agricultural research and innovation"
+    "0-10-1-3": {
+      "es": "Sanidad Agropecuaria",
+      "en": "Agricultural Health"
     },
-    "BER_PA_06_02": {
-      "es": "Investigaciones Agropecuarias",
-      "en": "Agricultural research"
+    "0-10-1-3-1-11": {
+      "es": "Prevención Enfermedades en la Producción Apicola",
+      "en": "Disease Prevention in Apicultural Production"
     },
-    "BER_PA_07_01": {
+    "0-10-1-3-1-13": {
+      "es": "Erradicación de la Tuberculosis Bovina Bocas Toro",
+      "en": "Eradication of Bovine Tuberculosis Bocas Toro"
+    },
+    "0-10-1-3-1-18": {
+      "es": "Fortalecimiento Lab. de Residuos Tóxicos y Plan. de Man. Resid.",
+      "en": "Strengthening of the Toxic Waste Laboratory and Planning of Waste Management"
+    },
+    "0-10-1-3-1-20": {
+      "es": "Prevención del Tórsalo en Hatos en Bovinos en la Rep. de Pmá",
+      "en": "Prevention of Tórsalo in Cattle Herds in the Rep. of Pmá"
+    },
+    "0-10-1-3-1-28": {
+      "es": "Ampliación de la Capacidad Fitodiagnóstica Huellas del ADN",
+      "en": "Expansion of the Phytodiagnostic Capacity DNA Fingerprints"
+    },
+    "0-10-1-3-1-30": {
+      "es": "Fortalecimiento del Sistema de Vigilancia Fitosanitaria de Panamá",
+      "en": "Strengthening of Panama's Phytosanitary Surveillance System"
+    },
+    "0-10-1-3-1-34": {
+      "es": "Prevención Influencia Aviar y Newcastle en Aves Domésticas",
+      "en": "Prevention of Avian Influenza and Newcastle in Domestic Birds"
+    },
+    "0-10-1-3-1-38": {
+      "es": "Fortalecimiento del Proceso de Certificación Fitosanitaria",
+      "en": "Strengthening of the Phytosanitary Certification Process"
+    },
+    "0-10-1-3-1-40": {
+      "es": "Manejo Epidemiológico de Encefalopatía Espongiforme y Rab",
+      "en": "Epidemiological Management of Spongiform Encephalopathy and Rabies"
+    },
+    "0-10-1-3-1-42": {
+      "es": "Fortalecimiento Declaración de Panamá Libre de Mosca del Mediterra",
+      "en": "Strengthening Declaration of Panama Free of Mediterranean Fruit Fly"
+    },
+    "0-10-1-3-1-6": {
+      "es": "Equipamiento Planta Productora de Moscas Estériles",
+      "en": "Equipment for the Sterile Fly Production Plant"
+    },
+    "0-10-1-4": {
+      "es": "Desarrollo Rural Agropecuario",
+      "en": "Agricultural Rural Development"
+    },
+    "0-10-1-4-3-18": {
+      "es": "Mejoramiento Huertas Agroecologícas Familias Unidas",
+      "en": "Improvement of Agroecological Gardens Familias Unidas"
+    },
+    "0-10-1-4-3-23": {
+      "es": "Desarrollo integral y producción sostenible",
+      "en": "Comprehensive development and sustainable production"
+    },
+    "0-10-1-5": {
+      "es": "Otros Proyectos de Inversión",
+      "en": "Other Investment Projects"
+    },
+    "0-10-1-5-5-2": {
+      "es": "Fortalecimiento Gestion Amb. Pers. Tecn. y Serv. Especfico-Mida",
+      "en": "Strengthening Environmental Management of Technical Personnel and Specific Services - MIDA"
+    },
+    "0-12": {
+      "es": "Ministerio de Salud",
+      "en": "Ministry of Health"
+    },
+    "0-12-0-3": {
+      "es": "Transferencias Varias",
+      "en": "Various Transfers"
+    },
+    "0-12-0-3-3-13": {
+      "es": "Fdo. Agua y Saneamiento (FOCARD-APS)",
+      "en": "Water and Sanitation Fund (FOCARD-APS)"
+    },
+    "0-12-1-2": {
+      "es": "Salud Ambiental",
+      "en": "Environmental Health"
+    },
+    "0-12-1-2-9-1": {
+      "es": "Fortalecimiento Vigilancia Salud Ambiental",
+      "en": "Strengthening Environmental Health Surveillance"
+    },
+    "0-16": {
+      "es": "Ministerio de Economía y Finanzas",
+      "en": "Ministry of Economy and Finance"
+    },
+    "0-16-0-4": {
+      "es": "Transferencias Varias",
+      "en": "Various Transfers"
+    },
+    "0-16-0-4-3-24": {
+      "es": "FUNDACION AMADOR (Museo Biodeversidad)",
+      "en": "AMADOR FOUNDATION (Biodiversity Museum)"
+    },
+    "0-16-1-2": {
+      "es": "Fortalecimiento Gestión Económica y Administración Financiera",
+      "en": "Strengthening Economic Management and Financial Administration"
+    },
+    "0-16-1-2-30-42": {
+      "es": "Saneamiento Verificación y Limpieza Davis Colón",
+      "en": "Sanitation Verification and Cleaning Davis Colón"
+    },
+    "0-27": {
+      "es": "Ministerio de Ambiente",
+      "en": "Ministry of Environment"
+    },
+    "0-27-0-1": {
+      "es": "Dirección y Administración General",
+      "en": "General Directorate and Administration"
+    },
+    "0-27-0-1-1-1": {
+      "es": "Dirección y Coordinación Superior",
+      "en": "Senior Management and Coordination"
+    },
+    "0-27-0-1-1-2": {
+      "es": "Secretaria General",
+      "en": "General Secretariat"
+    },
+    "0-27-0-1-1-3": {
+      "es": "Administraciones Regionales",
+      "en": "Regional Administrations"
+    },
+    "0-27-0-1-2-1": {
+      "es": "Asesoria Legal",
+      "en": "Legal Advisory"
+    },
+    "0-27-0-1-2-2": {
+      "es": "Cooperación Técnica",
+      "en": "Technical Cooperation"
+    },
+    "0-27-0-1-2-3": {
+      "es": "Relaciones Públicas",
+      "en": "Public Relations"
+    },
+    "0-27-0-1-2-4": {
+      "es": "Pueblos Indìgenas",
+      "en": "Indigenous Peoples"
+    },
+    "0-27-0-1-2-5": {
+      "es": "Planificación",
+      "en": "Planning"
+    },
+    "0-27-0-1-2-6": {
+      "es": "Desarrollo Institucional",
+      "en": "Institutional Development"
+    },
+    "0-27-0-1-3-0": {
+      "es": "Planificación y Política Ambiental",
+      "en": "Environmental Planning and Policy"
+    },
+    "0-27-0-1-3-1": {
+      "es": "Servicios Administrativos",
+      "en": "Administrative Services"
+    },
+    "0-27-0-1-3-2": {
+      "es": "Servicios Financieros",
+      "en": "Financial Services"
+    },
+    "0-27-0-1-3-3": {
+      "es": "Administración de Personal",
+      "en": "Personnel Administration"
+    },
+    "0-27-0-1-3-4": {
+      "es": "Informática",
+      "en": "Information Technology"
+    },
+    "0-27-0-1-3-5": {
+      "es": "Auditoria Interna",
+      "en": "Internal Audit"
+    },
+    "0-27-0-1-3-6": {
+      "es": "Juzgado Ejecutor",
+      "en": "Enforcement Court"
+    },
+    "0-27-0-2": {
       "es": "Áreas Protegidas y Biodiversidad",
-      "en": "Protected areas and biodiversity"
+      "en": "Protected Areas and Biodiversity"
     },
-    "BER_PA_07_02": {
+    "0-27-0-2-1-0": {
+      "es": "Conservación de la Bio. y Uso Sost de los Recursos",
+      "en": "Conservation of Biodiversity and Sustainable Use of Resources"
+    },
+    "0-27-0-2-1-1": {
+      "es": "Administración del SINAP y Admortig.",
+      "en": "Administration of SINAP and Admortig"
+    },
+    "0-27-0-2-2-0": {
+      "es": "Manejo de Áreas Protegidas",
+      "en": "Management of Protected Areas"
+    },
+    "0-27-0-2-2-1": {
+      "es": "Conservación de la Biodiversidad",
+      "en": "Biodiversity Conservation"
+    },
+    "0-27-0-2-3-0": {
+      "es": "Corredores Biológicos",
+      "en": "Biological Corridors"
+    },
+    "0-27-0-2-3-1": {
+      "es": "Regulación de Espacios Costeros Maríinos",
+      "en": "Regulation of Marine Coastal Areas"
+    },
+    "0-27-0-2-4-0": {
+      "es": "Póligonos de Tiro.",
+      "en": "Shooting Ranges"
+    },
+    "0-27-0-2-4-1": {
+      "es": "Ecoturismo en áreas protegidas",
+      "en": "Ecotourism in protected areas"
+    },
+    "0-27-0-2-5-1": {
+      "es": "Dirección y Adminstración",
+      "en": "Management and Administration"
+    },
+    "0-27-0-3": {
       "es": "Gestión Ambiental",
-      "en": "Environmental management"
+      "en": "Environmental Management"
     },
-    "BER_PA_07_03": {
+    "0-27-0-3-1-0": {
+      "es": "Evaluación y Ordenamiento Ambiental",
+      "en": "Environmental Assessment and Planning"
+    },
+    "0-27-0-3-1-1": {
+      "es": "Evaluac., registro y control e estudios de Imp.",
+      "en": "Evaluation, registration and control of impact studies"
+    },
+    "0-27-0-3-2-0": {
+      "es": "Calidad Ambiental",
+      "en": "Environmental Quality"
+    },
+    "0-27-0-3-2-1": {
+      "es": "Verificación y control ambiental",
+      "en": "Environmental Verification and Control"
+    },
+    "0-27-0-3-2-2": {
+      "es": "Riesgos Ambientales",
+      "en": "Environmental Risks"
+    },
+    "0-27-0-3-3-0": {
+      "es": "Sistema de Información Ambiental",
+      "en": "Environmental Information System"
+    },
+    "0-27-0-3-3-1": {
+      "es": "Geomética",
+      "en": "Geomatics"
+    },
+    "0-27-0-3-3-2": {
+      "es": "Sistematización de procesos ambientales",
+      "en": "Systematization of environmental processes"
+    },
+    "0-27-0-3-4-0": {
+      "es": "Economía Ambiental",
+      "en": "Environmental Economics"
+    },
+    "0-27-0-3-4-1": {
+      "es": "Adaptación",
+      "en": "Adaptation"
+    },
+    "0-27-0-3-4-2": {
+      "es": "Mitigación",
+      "en": "Mitigation"
+    },
+    "0-27-0-3-5-0": {
+      "es": "Fomento de la Cultura Ambiental",
+      "en": "Promotion of Environmental Culture"
+    },
+    "0-27-0-3-5-1": {
+      "es": "Educación y promoción ambiental",
+      "en": "Environmental education and promotion"
+    },
+    "0-27-0-3-6-0": {
+      "es": "Cambio Climático y Desertificación",
+      "en": "Climate Change and Desertification"
+    },
+    "0-27-0-3-6-1": {
+      "es": "Politica y Estrategia Ambiental",
+      "en": "Environmental Policy and Strategy"
+    },
+    "0-27-0-3-6-2": {
+      "es": "Economia y Estadistica Ambiental",
+      "en": "Environmental Economics and Statistics"
+    },
+    "0-27-0-4": {
+      "es": "Gestión Integrada de Cuencas Hidrográficas",
+      "en": "Integrated Management of River Basins"
+    },
+    "0-27-0-4-1-0": {
+      "es": "Gestión Integrada de Recursos Hídircos",
+      "en": "Integrated Management of Water Resources"
+    },
+    "0-27-0-4-1-1": {
+      "es": "Recursos Hídricos",
+      "en": "Water Resources"
+    },
+    "0-27-0-4-2-0": {
+      "es": "Desarrollo y Manejo Forestal",
+      "en": "Forest Development and Management"
+    },
+    "0-27-0-4-2-1": {
+      "es": "Conservación y Restauración Forestal",
+      "en": "Forest Conservation and Restoration"
+    },
+    "0-27-0-4-3-0": {
+      "es": "Manejo y Conservación de Suelos",
+      "en": "Soil Management and Conservation"
+    },
+    "0-27-1-1": {
+      "es": "Áreas Protegidas y Biodiversidad",
+      "en": "Protected Areas and Biodiversity"
+    },
+    "0-27-1-1-0-1": {
+      "es": "Fortalecimiento Voluntarios EEUU/Japón",
+      "en": "Strengthening US/Japan Volunteers"
+    },
+    "0-27-1-1-0-14": {
+      "es": "Investigación Cambios Climaticos y Cuencas Hidrógraficas",
+      "en": "Research on Climate Change and Hydrographic Basins"
+    },
+    "0-27-1-1-0-16": {
+      "es": "Conservación Manejo de la Cuenca- Río Chiriquí",
+      "en": "Conservation and Management of the Chiriquí River Basin"
+    },
+    "0-27-1-1-0-17": {
+      "es": "Conservación Manejo de la Sub-Cuenca -Río Zaratí",
+      "en": "Conservation and Management of the Zaratí River Sub-basin"
+    },
+    "0-27-1-1-0-19": {
+      "es": "Conservación Desarrollo Ecoturístico",
+      "en": "Conservation Ecotourism Development"
+    },
+    "0-27-1-1-0-2": {
+      "es": "Fortalecimiento CEDESAN",
+      "en": "Strengthening CEDESAN"
+    },
+    "0-27-1-1-0-20": {
+      "es": "Manejo de la Cuenca del Río La Villa",
+      "en": "Management of the La Villa River Basin"
+    },
+    "0-27-1-1-0-21": {
+      "es": "Restauración C:H priot. Prod. de R. H. y Biomasa F. Gen. E Reno",
+      "en": "Restoration C:H priority Prod. of R. H. and Biomass F. Gen. E Reno"
+    },
+    "0-27-1-1-0-22": {
+      "es": "Conservación Reducción de la Vulnerabilidad del Río Sixaola",
+      "en": "Conservation Reduction of the Vulnerability of the Sixaola River"
+    },
+    "0-27-1-1-0-40": {
+      "es": "Conservación de Sist. Nacional de Areas Protegidas",
+      "en": "Conservation of the National System of Protected Areas"
+    },
+    "0-27-1-1-0-42": {
+      "es": "Construcción Instalación de Sistema de Cosecha de Agua en la C",
+      "en": "Construction and Installation of a Water Harvesting System in the C"
+    },
+    "0-27-1-1-0-48": {
+      "es": "Investigación Parque Marino Golfo de Chiriquí",
+      "en": "Research of the Gulf of Chiriquí Marine Park"
+    },
+    "0-27-1-1-0-7": {
+      "es": "Conservación Parque Nacional Isla Coiba",
+      "en": "Coiba Island National Park Conservation"
+    },
+    "0-27-1-1-0-8": {
+      "es": "Conservación de Areas Silvestres Protegidas",
+      "en": "Conservation of Protected Wild Areas"
+    },
+    "0-27-1-1-1-1": {
+      "es": "Fortalecimiento del Sist. Nacional de Áreas Protegidas",
+      "en": "Strengthening of the National System of Protected Areas"
+    },
+    "0-27-1-1-1-2": {
+      "es": "Fortalecimiento de Áreas Silvestres Protegidas - FIDE",
+      "en": "Strengthening of Protected Wild Areas - FIDE"
+    },
+    "0-27-1-1-1-3": {
+      "es": "Conservación Parque Nacional Isla Coiba",
+      "en": "Coiba Island National Park Conservation"
+    },
+    "0-27-1-1-1-4": {
+      "es": "Forestación Proyecto Orquidario Interpretativo en Chilibre",
+      "en": "Afforestation Interpretive Orchid Garden Project in Chilibre"
+    },
+    "0-27-1-1-2-1": {
+      "es": "Fortalecimiento Protocólo de Cartagena",
+      "en": "Strengthening of the Cartagena Protocol"
+    },
+    "0-27-1-1-2-2": {
+      "es": "Fortalecimiento Sistema Prod. Sosten.",
+      "en": "Strengthening of the Sustainable Prod. System"
+    },
+    "0-27-1-1-2-6": {
+      "es": "Conservación Biodiver. Desarrollo y Competi. del Sector Rural",
+      "en": "Biodiversity Conservation, Development and Competitiveness of the Rural Sector"
+    },
+    "0-27-1-1-3-1": {
+      "es": "Fortalecimiento Mejoram. y Capac. del Plan Integral de Humedales",
+      "en": "Strengthening, Improvement and Training of the Comprehensive Wetlands Plan"
+    },
+    "0-27-1-1-3-2": {
+      "es": "Fortalecimiento Restaur. de Reserva y Sumideros de Carbono en M",
+      "en": "Strengthening Restoration of Carbon Reserves and Sinks in M"
+    },
+    "0-27-1-1-3-3": {
+      "es": "Fortalecimiento a la Moder. de la Gestión Ambiental en Panamá",
+      "en": "Strengthening the Modernization of Environmental Management in Panama"
+    },
+    "0-27-1-1-3-4": {
+      "es": "Fortalecimiento Protección y manejo sostenible de tortugas marinas",
+      "en": "Strengthening Protection and Sustainable Management of Sea Turtles"
+    },
+    "0-27-1-1-3-5": {
+      "es": "Implantación Monitoreo de Comunidades Arrecifales en Panamá",
+      "en": "Implementation of Monitoring of Reef Communities in Panama"
+    },
+    "0-27-1-1-3-6": {
+      "es": "Fortalecimiento Evento Internacional OUR OCEANS 2021",
+      "en": "Strengthening International Event OUR OCEANS 2021"
+    },
+    "0-27-1-1-4-1": {
+      "es": "Fortalecimiento Conservación Desarrollo del Ecoturismo",
+      "en": "Strengthening Conservation Development of Ecotourism"
+    },
+    "0-27-1-1-4-2": {
+      "es": "Conservación Biodiversidad a Través del Ecoturismo de Bajo Imp",
+      "en": "Biodiversity Conservation Through Low-Impact Ecotourism"
+    },
+    "0-27-1-1-4-3": {
+      "es": "Conservación Patrimonio Natural",
+      "en": "Natural Heritage Conservation"
+    },
+    "0-27-1-2": {
       "es": "Gestión Ambiental",
-      "en": "Environmental management"
+      "en": "Environmental Management"
     },
-    "BER_PA_07_04": {
+    "0-27-1-2-0-10": {
+      "es": "Fortalecimiento Producción Más Limpia",
+      "en": "Strengthening Cleaner Production"
+    },
+    "0-27-1-2-0-12": {
+      "es": "Fortalecimiento de Areas Amenazadas en Bosques de Manglares",
+      "en": "Strengthening of Threatened Areas in Mangrove Forests"
+    },
+    "0-27-1-2-0-3": {
+      "es": "Forestación de la Reserva Forestal la Yeguada",
+      "en": "Reforestation of the La Yeguada Forest Reserve"
+    },
+    "0-27-1-2-0-31": {
+      "es": "Conservación de las Cuencas Hidrográficas",
+      "en": "Conservation of Watersheds"
+    },
+    "0-27-1-2-0-36": {
+      "es": "Implementación del Protocolo de Cartagena.",
+      "en": "Implementation of the Cartagena Protocol"
+    },
+    "0-27-1-2-0-38": {
+      "es": "Conservación Reserva Forestal Chepigana",
+      "en": "Chepigana Forest Reserve Conservation"
+    },
+    "0-27-1-2-0-39": {
+      "es": "Forestación Comarca Emberá Wounaan",
+      "en": "Forestation Emberá Wounaan Comarca"
+    },
+    "0-27-1-2-0-41": {
+      "es": "Mejoramiento Capacidad por Plan Integral Humedales en Pmá.",
+      "en": "Capacity Improvement through the Comprehensive Wetlands Plan in Pmá."
+    },
+    "0-27-1-2-0-42": {
+      "es": "Conservación Biodiversidad Sistemas Prod. Sostenibles CBM-Pmá.",
+      "en": "Biodiversity Conservation Sustainable Production Systems CBM-Pmá."
+    },
+    "0-27-1-2-0-43": {
+      "es": "Implementación Gorbernanza Forestal de los Bosques Tropicales",
+      "en": "Implementation of Forest Governance of Tropical Forests"
+    },
+    "0-27-1-2-0-5": {
+      "es": "Fortalecimiento Corredor Biológico Mesoamericano (CBMAP)",
+      "en": "Strengthening Mesoamerican Biological Corridor (CBMAP)"
+    },
+    "0-27-1-2-0-9": {
+      "es": "Fortalecimiento de Bosques Siglo XXI",
+      "en": "Strengthening of Bosques Siglo XXI"
+    },
+    "0-27-1-2-1-1": {
+      "es": "Fortalecimiento Sistema. de Proc. de Evaluac de Impacto Ambiental",
+      "en": "Strengthening of the Environmental Impact Assessment Process System"
+    },
+    "0-27-1-2-2-1": {
+      "es": "Fortalecimiento Técnicas de Monitoreo de la calidad del Agua,Aire",
+      "en": "Strengthening Monitoring Techniques for Water and Air Quality"
+    },
+    "0-27-1-2-2-2": {
+      "es": "Fortalecimiento Partic. Empr. Prod. más impia",
+      "en": "Strengthening Participation of Productive Entrepreneurship cleaner"
+    },
+    "0-27-1-2-2-3": {
+      "es": "Fortalecimiento Manejo Integrado del Fuego en Bosques Trop.",
+      "en": "Strengthening Integrated Fire Management in Tropical Forests"
+    },
+    "0-27-1-2-2-4": {
+      "es": "Fortalecimiento Sistema de Monitoreo de la Calidad del Agua en la",
+      "en": "Strengthening of the Water Quality Monitoring System in the"
+    },
+    "0-27-1-2-3-1": {
+      "es": "Habilitación Nacional de Datos, Voz y Video",
+      "en": "National Enablement of Data, Voice and Video"
+    },
+    "0-27-1-2-3-2": {
+      "es": "Fortalecimiento Apoyo Logístico",
+      "en": "Strengthening Logistic Support"
+    },
+    "0-27-1-2-3-3": {
+      "es": "Rehabilitacion Remodelación de Edificios",
+      "en": "Rehabilitation and Remodeling of Buildings"
+    },
+    "0-27-1-2-3-8": {
+      "es": "Fortalecimiento Modernización de la Estructura Institucional",
+      "en": "Strengthening and Modernization of the Institutional Structure"
+    },
+    "0-27-1-2-4-1": {
+      "es": "Fortalecimiento Prepar, de la Implem. de la Estrategia Nacional REDD",
+      "en": "Strengthening Prepar. of the Implem. of the National REDD Strategy"
+    },
+    "0-27-1-2-4-10": {
+      "es": "Desarrollo Incremento de Cobertura Forestal para captura de",
+      "en": "Development of Increased Forest Cover for capture of"
+    },
+    "0-27-1-2-4-15": {
+      "es": "Desarrollo Reduce tu huella",
+      "en": "Reduce your footprint Development"
+    },
+    "0-27-1-2-4-17": {
+      "es": "Desarrollo Plan de Acciòn Paìs Panamà con Euroclima",
+      "en": "Development of the Panama Country Action Plan with Euroclima"
+    },
+    "0-27-1-2-4-2": {
+      "es": "Fortalecimiento Tercera Comunicación al Cambio Climático",
+      "en": "Strengthening Third Communication on Climate Change"
+    },
+    "0-27-1-2-4-3": {
+      "es": "Fortalecimiento Capacidades a Municipios Vulnerables para increme",
+      "en": "Strengthening Capacities of Vulnerable Municipalities to increme"
+    },
+    "0-27-1-2-4-5": {
+      "es": "Desarrollo Cuarta Comunicación Nacional de Cambio Climático",
+      "en": "Development of the Fourth National Communication on Climate Change"
+    },
+    "0-27-1-2-4-9": {
+      "es": "Desarrollo Plataforma Nac para la Transf. Climática en Panmá",
+      "en": "Development of the National Platform for Climate Transfer in Panama"
+    },
+    "0-27-1-2-5-1": {
+      "es": "Fortalecimiento CEDESAM",
+      "en": "Strengthening CEDESAM"
+    },
+    "0-27-1-2-5-2": {
+      "es": "Fortalecimiento Voluntario Gob. de E.E,U.U.",
+      "en": "Voluntary Strengthening U.S. Government"
+    },
+    "0-27-1-3": {
       "es": "Gestión Integrada de Cuencas Hidrográficas",
-      "en": "Integrated watershed management"
+      "en": "Integrated Management of River Basins"
     },
-    "BER_PA_07_05": {
-      "es": "Gestión Integrada de Cuencas Hidrográficas",
-      "en": "Integrated watershed management"
+    "0-27-1-3-0-1": {
+      "es": "Manejo de las Cuencas Críticas",
+      "en": "Management of Critical Watersheds"
     },
-    "BER_PA_07_OVERHEAD": {
-      "es": "Apoyo institucional, Ministerio de Ambiente",
-      "en": "Institutional support, Ministry of Environment"
+    "0-27-1-3-0-13": {
+      "es": "Fortalecimiento Manejo Integrado del Fuego en los Bosques Trop.",
+      "en": "Strengthening Integrated Fire Management in Tropical Forests"
     },
-    "BER_PA_08_01": {
+    "0-27-1-3-0-14": {
+      "es": "Fortalecimiento Cambio Climatico en Panamá",
+      "en": "Strengthening Climate Change in Panama"
+    },
+    "0-27-1-3-0-15": {
+      "es": "Fortalecimiento Preparación de Implement. de la Estrat. Nacional REDD",
+      "en": "Strengthening Preparation for the Implementation of the National REDD Strategy"
+    },
+    "0-27-1-3-0-16": {
+      "es": "Desarrollo Sostenible y Mitigación del Cambio Climático",
+      "en": "Sustainable Development and Climate Change Mitigation"
+    },
+    "0-27-1-3-0-18": {
+      "es": "Implementación de la Evaluación Degradación Tierra (LADA/WOCAT)",
+      "en": "Implementation of the Land Degradation Assessment (LADA/WOCAT)"
+    },
+    "0-27-1-3-0-20": {
+      "es": "Habilitación Nacional de Datos, Voz y Video",
+      "en": "National Enablement of Data, Voice and Video"
+    },
+    "0-27-1-3-0-21": {
+      "es": "Fortalecimiento Apoyo Logístico",
+      "en": "Strengthening Logistic Support"
+    },
+    "0-27-1-3-0-22": {
+      "es": "Fortalecimiento Modernización de la Gestión Ambiental de Panamá",
+      "en": "Strengthening and Modernization of Environmental Management of Panama"
+    },
+    "0-27-1-3-0-5": {
+      "es": "Rehabilitacion y Remodelación del Edificio",
+      "en": "Rehabilitation and Remodeling of the Building"
+    },
+    "0-27-1-3-0-8": {
+      "es": "Conservación Supervisión de Monitoreo de la Calidad del Agua",
+      "en": "Conservation Supervision of Water Quality Monitoring"
+    },
+    "0-27-1-3-1-1": {
+      "es": "Implementación Plan Nacional de Seguridad Hídrica 2015-2050",
+      "en": "Implementation of the National Water Security Plan 2015-2050"
+    },
+    "0-27-1-3-1-2": {
+      "es": "Fortalecimiento Conservación de Cuencas Hidrográficas",
+      "en": "Strengthening Conservation of Watersheds"
+    },
+    "0-27-1-3-1-3": {
+      "es": "Reparación Restaurac. de Cuencas Hidrográficas Prioritarias",
+      "en": "Repair and Restoration of Priority Watersheds"
+    },
+    "0-27-1-3-1-4": {
+      "es": "Implementación Evaluación y Degradación de Tierra",
+      "en": "Implementation, Evaluation and Land Degradation"
+    },
+    "0-27-1-3-1-5": {
+      "es": "Fortalecimiento Resiliencia de los Recursos Hídricos Arco Seco",
+      "en": "Strengthening Resilience of Water Resources in the Arco Seco"
+    },
+    "0-27-1-3-1-9": {
+      "es": "Implementación Emergencia Ambientales",
+      "en": "Environmental Emergencies Implementation"
+    },
+    "0-27-1-3-2-1": {
+      "es": "Implantación Gobernanza Forestal de los Bosques Tropicales",
+      "en": "Implementation of Forest Governance of Tropical Forests"
+    },
+    "0-27-1-3-2-2": {
+      "es": "Fortalecimiento Gestión para Reducir la Tala y el Comercio Foresta",
+      "en": "Strengthening Management to Reduce Logging and Forest Trade"
+    },
+    "0-27-1-3-2-3": {
+      "es": "Fortalecimiento Resfores. Alianza por el Millón de Hectareas",
+      "en": "Strengthening Resfores. Alliance for the Million Hectares"
+    },
+    "0-27-1-5": {
+      "es": "CONADES",
+      "en": "CONADES"
+    },
+    "0-27-1-5-10-1": {
+      "es": "Capacitación Gestiòn de Residuos Sòlidos en 30 Comunidades",
+      "en": "Training in Solid Waste Management in 30 Communities"
+    },
+    "0-3": {
+      "es": "Presidencia de la República",
+      "en": "Office of the President of the Republic"
+    },
+    "0-3-0-7": {
+      "es": "Desarrollo Integral - Áreas Prioritarias",
+      "en": "Comprehensive Development - Priority Areas"
+    },
+    "0-3-0-7-0-0": {
+      "es": "Dirección de Desarrollo Integral",
+      "en": "Directorate of Integral Development"
+    },
+    "0-3-0-7-2-0": {
+      "es": "Programa de Desarrollo del Darién",
+      "en": "Darién Development Program"
+    },
+    "0-3-1-2": {
+      "es": "Fortalecimiento. y Modernización Institucional",
+      "en": "Institutional Strengthening and Modernization"
+    },
+    "0-3-1-2-3-1": {
+      "es": "Ampliación Consejo Nacional de Agua",
+      "en": "Expansion of the National Water Council"
+    },
+    "0-3-1-5": {
+      "es": "Desarrollo Integral Áreas Prioritarias",
+      "en": "Comprehensive Development of Priority Areas"
+    },
+    "0-3-1-5-11-1": {
+      "es": "Desarrollo Sostenible de Herrera",
+      "en": "Sustainable Development of Herrera"
+    },
+    "0-3-1-5-12-1": {
+      "es": "Desarrollo Sostenible de Los Santos",
+      "en": "Sustainable Development of Los Santos"
+    },
+    "0-3-1-5-13-1": {
+      "es": "Desarrollo Sostenible de Veraguas",
+      "en": "Sustainable Development of Veraguas"
+    },
+    "0-3-1-5-3-2": {
+      "es": "Desarrollo Sostenible del Darién",
+      "en": "Sustainable Development of Darién"
+    },
+    "0-3-1-5-4-2": {
+      "es": "Desarrollo Sostenible de Bocas del Toro",
+      "en": "Sustainable Development of Bocas del Toro"
+    },
+    "0-3-1-5-5-1": {
+      "es": "Desarrollo Sostenible de Chiriquí I",
+      "en": "Sustainable Development of Chiriquí I"
+    },
+    "0-3-1-5-9-1": {
+      "es": "Desarrollo Sostenible de Colón",
+      "en": "Sustainable Development of Colón"
+    },
+    "0-49": {
+      "es": "Defensoría del Pueblo",
+      "en": "Ombudsman's Office"
+    },
+    "0-49-0-2": {
+      "es": "Protec. y Defensa de los Derechos Hum.",
+      "en": "Protection and Defense of Human Rights"
+    },
+    "0-49-0-2-2-3": {
+      "es": "Asuntos Ambientales",
+      "en": "Environmental Affairs"
+    },
+    "0-5": {
+      "es": "Ministerio de Relaciones Exteriores",
+      "en": "Ministry of Foreign Affairs"
+    },
+    "0-5-0-3": {
+      "es": "Transferencias Varias",
+      "en": "Various Transfers"
+    },
+    "0-5-0-3-3-19": {
+      "es": "Programa Naciones Unidas Medio Ambiente - PNUMA",
+      "en": "United Nations Environment Programme - PNUMA"
+    },
+    "0-5-0-3-4-34": {
+      "es": "CIDES Centro de Desarrollo Sostenible",
+      "en": "CIDES Sustainable Development Center"
+    },
+    "0-8": {
+      "es": "Ministerio de Comercio e Industrias",
+      "en": "Ministry of Commerce and Industries"
+    },
+    "0-8-0-7": {
       "es": "Transferencias",
       "en": "Transfers"
     },
-    "BER_PA_09_01": {
-      "es": "Asistencia Técnica Agrícola",
-      "en": "Agricultural technical assistance"
+    "0-8-0-7-2-19": {
+      "es": "Contrib. Protección y Obtención de Vegetales.",
+      "en": "Contribution for the Protection and Obtaining of Plants"
     },
-    "BER_PA_09_02": {
-      "es": "Asistencia Técnica Pecuaria",
-      "en": "Livestock technical assistance"
+    "1-11": {
+      "es": "Instituto Conmemorativo Gorgas de Estudios de la Salud",
+      "en": "Gorgas Memorial Institute for Health Studies"
     },
-    "BER_PA_09_03": {
-      "es": "Sanidad Agropecuaria",
-      "en": "Agricultural and livestock health"
+    "1-11-1-1": {
+      "es": "Construcción y Remodelación de Instalaciones",
+      "en": "Construction and Remodeling of Facilities"
     },
-    "BER_PA_10_01": {
-      "es": "Fortalecimiento Gestión Económica y Administración Financiera",
-      "en": "Strengthening economic management and financial administration"
+    "1-11-1-1-1-19": {
+      "es": "Mejoramiento del Sistema a de Distribución de Vapor del ICGES",
+      "en": "Improvement of the ICGES Steam Distribution System"
     },
-    "BER_PA_10_02": {
-      "es": "Transferencias Varias",
-      "en": "Miscellaneous transfers"
+    "1-11-1-1-1-20": {
+      "es": "Habilitación de Laboratorio de Virología Clínica del Laboratori",
+      "en": "Equipping of the Clinical Virology Laboratory of the Laboratory"
     },
-    "BER_PA_11_01": {
-      "es": "Transferencias Varias",
-      "en": "Miscellaneous transfers"
+    "1-11-1-1-1-22": {
+      "es": "Habilitación de la CoZEM del Instituto Conmemorativo Gorgas de",
+      "en": "Commissioning of the CoZEM of the Gorgas Memorial Institute"
     },
-    "BER_PA_12_01": {
-      "es": "Otros Proyectos de Inversión",
-      "en": "Other investment projects"
+    "1-11-1-1-1-26": {
+      "es": "Mejoramiento sist. informatico y tecnologico para investicion",
+      "en": "Improvement of the computer and technological system for investment"
     },
-    "BER_PA_12_02": {
-      "es": "Multifase de transformación del sector salud",
-      "en": "Multi-phase transformation of the health sector"
+    "1-11-1-1-1-27": {
+      "es": "Habilitación Habilitacion de la Unidad de Biobanco del ICGES",
+      "en": "Commissioning of the ICGES Biobank Unit"
     },
-    "BER_PA_12_03": {
-      "es": "Investigación Contaminantes Organicos y Mercurio",
-      "en": "Research on organic pollutants and mercury"
+    "1-11-1-1-1-28": {
+      "es": "Mejoramiento de las capacidades del laboratorio de bioseguridad",
+      "en": "Improvement of the capacities of the biosafety laboratory"
     },
-    "BER_PA_12_04": {
-      "es": "Salud Ambiental",
-      "en": "Environmental health"
+    "1-11-1-1-1-29": {
+      "es": "Construcción de la primera etapa del Campus Gorgas",
+      "en": "Construction of the first stage of the Gorgas Campus"
     },
-    "BER_PA_14_01": {
-      "es": "Desarrollo Integral - Áreas Prioritarias",
-      "en": "Integrated development of priority areas"
+    "1-11-1-1-1-3": {
+      "es": "Mejoramiento Edificio de Investigación ICGES",
+      "en": "Improvement of the ICGES Research Building"
     },
-    "BER_PA_14_02": {
-      "es": "Desarrollo Integral Áreas Prioritarias",
-      "en": "Integrated development of priority areas"
+    "1-11-1-1-1-31": {
+      "es": "Construcción de un nuevo centro de enfermedades emergentes",
+      "en": "Construction of a new emerging diseases center"
+    },
+    "1-11-1-1-1-32": {
+      "es": "Habilitación del Museo de Medicina Tropical en el ICGES",
+      "en": "Upgrading of the Museum of Tropical Medicine at ICGES"
+    },
+    "1-11-1-1-1-33": {
+      "es": "Implementación de procesos de servicios mediante nuevas tecnologí",
+      "en": "Implementation of service processes through new technologies"
+    },
+    "1-11-1-1-1-35": {
+      "es": "Conservación Coleccion ref. nac.muestras biologicas",
+      "en": "Conservation of the national reference collection of biological samples"
+    },
+    "1-11-1-1-1-36": {
+      "es": "Mejoramiento Capacidad analitica de laboratorios MINSA",
+      "en": "Improvement of the analytical capacity of MINSA laboratories"
+    },
+    "1-11-1-1-1-37": {
+      "es": "Equipamiento del instituto Conmemorativo Gorgas de la Salud",
+      "en": "Equipment of the Gorgas Memorial Institute of Health"
+    },
+    "1-11-1-1-1-38": {
+      "es": "Implementación de la Face II Centro de Inv. de Enfer. Em",
+      "en": "Implementation of Face II of the Em Enfer Research Center"
+    },
+    "1-11-1-1-1-41": {
+      "es": "Fortalecimiento Lab. de bioseguridad y biocontención de Nivel 2",
+      "en": "Strengthening of the Level 2 biosafety and biocontainment lab."
+    },
+    "1-11-1-1-1-42": {
+      "es": "Habilitación de laboratorios de investigación del ICGES en C. S",
+      "en": "Upgrading of ICGES research laboratories in C. S."
+    },
+    "1-11-1-3": {
+      "es": "Investigación",
+      "en": "Research"
+    },
+    "1-11-1-3-1-18": {
+      "es": "Estudio del Cambio Climático",
+      "en": "Climate Change Study"
+    },
+    "1-11-1-3-1-40": {
+      "es": "Diagnostico de la Contaminación de los Afluentes Superficiales",
+      "en": "Diagnosis of Pollution of Surface Tributaries"
+    },
+    "1-11-1-3-1-50": {
+      "es": "Estudio de las Enfermedades Emergentes y Zoonóticas",
+      "en": "Study of Emerging and Zoonotic Diseases"
+    },
+    "1-11-1-3-1-53": {
+      "es": "Diagnostico fenotipo y genotipo del Micobatherium tuberculosis",
+      "en": "Phenotype and genotype diagnosis of Micobatherium tuberculosis"
+    },
+    "1-11-1-3-1-55": {
+      "es": "Estudio enfermadades leishmaniasis, encefalitis equina,",
+      "en": "Study of diseases leishmaniasis, equine encephalitis"
+    },
+    "1-11-1-3-1-64": {
+      "es": "Estudio de las enfermedades parasitarias mas frecuentes",
+      "en": "Study of the most frequent parasitic diseases"
+    },
+    "1-11-1-3-1-66": {
+      "es": "Estudio de las enfermedades emergentes por vectores",
+      "en": "Study of emerging vector-borne diseases"
+    },
+    "1-11-1-3-1-68": {
+      "es": "Estudio de los efectos del género Wolbachia",
+      "en": "Study of the effects of the Wolbachia genus"
+    },
+    "1-11-1-3-1-78": {
+      "es": "Investigación sobre la distribución espacial Especies Anopheles",
+      "en": "Research on the spatial distribution of Anopheles species"
+    },
+    "1-11-1-3-1-79": {
+      "es": "Investigación Diversidad de Ácaros Domésticos en Pmá y Pmá.Oeste",
+      "en": "Research on the Diversity of Domestic Mites in Pmá and Pmá.Oeste"
+    },
+    "1-11-1-3-1-80": {
+      "es": "Estudio de las variaciones en los venenos de escorpiones",
+      "en": "Study of variations in scorpion venoms"
+    },
+    "1-11-1-3-1-81": {
+      "es": "Implementación en nuevas metodologías para Investigaciónen biomedicina",
+      "en": "Implementation of new methodologies for research in biomedicine"
+    },
+    "1-11-1-3-4-11": {
+      "es": "Estudio de enfermedad del Dengue y otros arbovirus urbanos",
+      "en": "Study of Dengue disease and other urban arboviruses"
+    },
+    "1-11-1-3-4-12": {
+      "es": "Estudio de la patogénesis molecular de Alfavirus y Phlebov",
+      "en": "Study of the molecular pathogenesis of Alphavirus and Phlebovirus"
+    },
+    "1-11-1-3-4-14": {
+      "es": "Estudio para Implem. de Marcadores Moleculares (Malaria)",
+      "en": "Study for the Implementation of Molecular Markers (Malaria)"
+    },
+    "1-11-1-3-4-15": {
+      "es": "Estudio de la Eco-Epidemiología del Parásito Respiratorio",
+      "en": "Study of the Eco-Epidemiology of the Respiratory Parasite"
+    },
+    "1-11-1-3-4-16": {
+      "es": "Investigación de la Resist. Antibiotica por Carbap",
+      "en": "Research on Carbapenem Antibiotic Resistance"
+    },
+    "1-11-1-3-4-2": {
+      "es": "Fortalecimiento Vigilancia epidemiologica influenza y otros virus",
+      "en": "Strengthening epidemiological surveillance of influenza and other viruses"
+    },
+    "1-11-1-3-4-6": {
+      "es": "Investigación Diversidad Genetica y resist.a los antimicrobianos",
+      "en": "Research on Genetic Diversity and antimicrobial resistance"
+    },
+    "1-11-1-3-4-8": {
+      "es": "Estudio de la carga parasitaria de importancia médica",
+      "en": "Study of the parasitic load of medical importance"
+    },
+    "1-25": {
+      "es": "Instituto de Investigación Agropecuaria",
+      "en": "Agricultural Research Institute"
+    },
+    "1-25-0-2": {
+      "es": "Investigaciones Agropecuarias",
+      "en": "Agricultural Research"
+    },
+    "1-25-0-2-4-0": {
+      "es": "Programas de Semillas",
+      "en": "Seed Programmes"
+    },
+    "1-25-1-1": {
+      "es": "Investigación e Innovación Agropecuaria",
+      "en": "Agricultural Research and Innovation"
+    },
+    "1-25-1-1-2-1": {
+      "es": "Desarrollo Valoracion y Conservación de Recursos Genéticos",
+      "en": "Development, Valuation and Conservation of Genetic Resources"
+    },
+    "1-25-1-1-2-2": {
+      "es": "Desarrollo Genético de Cultivos y Animales",
+      "en": "Genetic Development of Crops and Animals"
+    },
+    "1-25-1-1-2-3": {
+      "es": "Desarrollo Protección y Uso de la Biodiversidad",
+      "en": "Development, Protection and Use of Biodiversity"
+    },
+    "1-25-1-2": {
+      "es": "Apoyo Investigación e Innovación Agropecuaria",
+      "en": "Support for Agricultural Research and Innovation"
+    },
+    "1-25-1-2-1-1": {
+      "es": "Desarrollo Multiplicación de Semillas",
+      "en": "Seed Multiplication Development"
+    },
+    "1-25-1-2-2-10": {
+      "es": "Administración del Programa PIASI",
+      "en": "Administration of the PIASI Program"
+    },
+    "1-25-1-2-2-9": {
+      "es": "Mejoramiento Innovación de Productividad Sostenible",
+      "en": "Improvement of Sustainable Productivity Innovation"
+    },
+    "1-25-1-6": {
+      "es": "Crédito de Contingencia",
+      "en": "Contingency Credit"
+    },
+    "1-25-1-6-1-1": {
+      "es": "Desarrollo Prevención. y Manejo de Plagas y Enfermedades",
+      "en": "Development of Prevention and Management of Pests and Diseases"
+    },
+    "1-26": {
+      "es": "Autoridad de los Recursos Acuáticos de Panamá",
+      "en": "Panama Aquatic Resources Authority"
+    },
+    "1-26-0-1": {
+      "es": "Administración de los Recursos Acuáticos",
+      "en": "Administration of Aquatic Resources"
+    },
+    "1-26-0-1-1-1": {
+      "es": "Dirección Superior",
+      "en": "Senior Management"
+    },
+    "1-26-0-1-2-1": {
+      "es": "Servicios Administrativos",
+      "en": "Administrative Services"
+    },
+    "1-26-0-1-2-2": {
+      "es": "Planeación",
+      "en": "Planning"
+    },
+    "1-26-0-2": {
+      "es": "Desarrollo y Conservación Recursos Acuáticos",
+      "en": "Development and Conservation of Aquatic Resources"
+    },
+    "1-26-0-2-1-1": {
+      "es": "Investigación y Desarrollo",
+      "en": "Research and Development"
+    },
+    "1-26-0-2-1-2": {
+      "es": "Ordenamiento, Regulación y Control",
+      "en": "Planning, Regulation and Control"
+    },
+    "1-26-0-2-1-3": {
+      "es": "Fiscalización, Vigilancia y Control",
+      "en": "Oversight, Surveillance and Control"
+    },
+    "1-26-0-2-2-1": {
+      "es": "Bocas del Toro",
+      "en": "Bocas del Toro"
+    },
+    "1-26-0-2-2-10": {
+      "es": "Veraguas",
+      "en": "Veraguas"
+    },
+    "1-26-0-2-2-2": {
+      "es": "Coclé",
+      "en": "Coclé"
+    },
+    "1-26-0-2-2-3": {
+      "es": "Colón",
+      "en": "Colón"
+    },
+    "1-26-0-2-2-4": {
+      "es": "Chiriquí",
+      "en": "Chiriquí"
+    },
+    "1-26-0-2-2-5": {
+      "es": "Darien",
+      "en": "Darien"
+    },
+    "1-26-0-2-2-6": {
+      "es": "Herrera",
+      "en": "Herrera"
+    },
+    "1-26-0-2-2-7": {
+      "es": "Los Santos",
+      "en": "Los Santos"
+    },
+    "1-26-0-2-2-8": {
+      "es": "Panamá Este",
+      "en": "East Panama"
+    },
+    "1-26-0-2-2-9": {
+      "es": "Panamá Oeste",
+      "en": "Panamá Oeste"
+    },
+    "1-26-1-1": {
+      "es": "Investigación y Desarrollo Recursos Acuáticos",
+      "en": "Research and Development of Aquatic Resources"
+    },
+    "1-26-1-1-1-1": {
+      "es": "Mejoramiento de las estaciones experimentales",
+      "en": "Improvement of the experimental stations"
+    },
+    "1-26-1-1-1-29": {
+      "es": "Rehabilitacion y Equip. del Centro Acuícola Gatún",
+      "en": "Rehabilitation and Equipment of the Gatún Aquaculture Center"
+    },
+    "1-26-1-1-1-3": {
+      "es": "Desarrollo y masificación de la acuicultura rural",
+      "en": "Development and expansion of rural aquaculture"
+    },
+    "1-26-1-1-1-30": {
+      "es": "Desarrollo de Recursos Pesquero de Isla Esmeralda",
+      "en": "Development of Fishery Resources of Isla Esmeralda"
+    },
+    "1-26-1-1-1-31": {
+      "es": "Implementación de Plan de Acción Economía Circular",
+      "en": "Implementation of Circular Economy Action Plan"
+    },
+    "1-26-1-1-1-32": {
+      "es": "Desarrollo de una Aplicación Móvil para Productos",
+      "en": "Development of a Mobile Application for Products"
+    },
+    "1-26-1-1-1-33": {
+      "es": "Levantamienro de un Sistema de Acuaponia",
+      "en": "Establishment of an Aquaponics System"
+    },
+    "1-26-1-1-1-34": {
+      "es": "Fortalecimiento de la Maricultura en Panamá y mejoras en la Prod.",
+      "en": "Strengthening Mariculture in Panama and improvements in Production"
+    },
+    "1-26-1-1-1-35": {
+      "es": "Mejoramiento de la infraestructura para el cultivo de peces eur",
+      "en": "Improvement of infrastructure for fish farming"
+    },
+    "1-26-1-1-1-36": {
+      "es": "Implementación de la Rizipiscicultura",
+      "en": "Implementation of Rizipisciculture"
+    },
+    "1-26-1-1-1-37": {
+      "es": "Fortalecimiento organiz a comunidades extract de concha negra.",
+      "en": "Strengthening organization in black shell extraction communities"
+    },
+    "1-26-1-1-1-38": {
+      "es": "Explotación Economía azul para la sostenibilidad",
+      "en": "Blue economy exploitation for sustainability"
+    },
+    "1-26-1-1-1-39": {
+      "es": "Explotación de refugios artif. para la pesca de langosta.",
+      "en": "Operation of artificial shelters for lobster fishing"
+    },
+    "1-26-1-1-1-4": {
+      "es": "Equipamiento en general",
+      "en": "General equipment"
+    },
+    "1-26-1-1-1-5": {
+      "es": "Construcción de desembarco y centros de acopio artesanal",
+      "en": "Construction of artisanal landing sites and collection centers"
+    },
+    "1-26-1-1-1-8": {
+      "es": "Habilitación de metodologías para la extracción de redes",
+      "en": "Enabling methodologies for network extraction"
+    },
+    "1-26-1-1-3-1": {
+      "es": "Capacitación Sector Acuícola",
+      "en": "Aquaculture Sector Training"
+    },
+    "1-26-1-1-3-2": {
+      "es": "Delimitación Redes de enmalles de especie de pargo en Pacifico",
+      "en": "Demarcation of gillnet networks for snapper species in the Pacific"
+    },
+    "1-26-1-1-3-26": {
+      "es": "Fortalecimiento e Inspección de la Pesca Ilegal",
+      "en": "Strengthening and Inspection of Illegal Fishing"
+    },
+    "1-26-1-1-3-27": {
+      "es": "Implementación de Proyecto Piloto - Red Suripera",
+      "en": "Implementation of Pilot Project - Red Suripera"
+    },
+    "1-26-1-1-3-28": {
+      "es": "Investigación INVESTIGACIÓN Y EVALUACIÓN - DIETAS ALIMENTICIAS",
+      "en": "Research, RESEARCH AND EVALUATION - FOOD DIETS"
+    },
+    "1-26-1-1-3-3": {
+      "es": "Implementación De bacterias para mejorar la calidad de agua",
+      "en": "Implementation of bacteria to improve water quality"
+    },
+    "1-26-1-1-3-30": {
+      "es": "Análisis y evaluación de contaminantes emergentes",
+      "en": "Analysis and evaluation of emerging contaminants"
+    },
+    "1-26-1-1-3-31": {
+      "es": "Conservación de Licencia Doncella y Pajarita Pacífico de Pma.",
+      "en": "Conservation of Doncella and Pajarita Pacifico de Pma. License"
+    },
+    "1-26-1-1-3-32": {
+      "es": "Desarrollo de bitácoras electrónicas de pesca en embarc. ind.",
+      "en": "Development of electronic fishing logbooks on industrial vessels"
+    },
+    "1-26-1-1-3-33": {
+      "es": "Levantamienro del Laboratorio de Biologia Molecular",
+      "en": "Establishment of the Molecular Biology Laboratory"
+    },
+    "1-26-1-1-3-36": {
+      "es": "Estudio de la contaminación por agroquímicos.",
+      "en": "Study of contamination by agrochemicals"
+    },
+    "1-26-1-1-3-37": {
+      "es": "Capacitación del Relevo Generacional.",
+      "en": "Training of the Generational Replacement"
+    },
+    "1-26-1-1-3-4": {
+      "es": "Conservación Del estado de la Población de pepino de mar",
+      "en": "Conservation of the State of the Sea Cucumber Population"
+    },
+    "1-26-1-1-3-5": {
+      "es": "Habilitación Del centro de Investigaciones Marinas",
+      "en": "Upgrading of the Marine Research Center"
+    },
+    "1-26-1-1-3-6": {
+      "es": "Desarrollo Toxonomía molecular de Macroalgas en Azuero",
+      "en": "Development of Molecular Taxonomy of Macroalgae in Azuero"
+    },
+    "1-45": {
+      "es": "Autoridad de Turismo de Panamá",
+      "en": "Panama Tourism Authority"
+    },
+    "1-45-1-1": {
+      "es": "Promoción Turística",
+      "en": "Tourism Promotion"
+    },
+    "1-45-1-1-5-13": {
+      "es": "Implementación Implementacion PLAN SOSTENIBLE 2021-2025",
+      "en": "Implementation of the SUSTAINABLE PLAN 2021-2025"
+    },
+    "1-45-1-3": {
+      "es": "Integración de las Ciudades Vocación Turística",
+      "en": "Integration of Tourist-Oriented Cities"
+    },
+    "1-45-1-3-2-1": {
+      "es": "Construcción Movilidad Turistica Sustentable Boquete",
+      "en": "Construction of Sustainable Tourist Mobility Boquete"
+    },
+    "1-7": {
+      "es": "Autoridad Nacional de Administración de Tierras",
+      "en": "National Land Administration Authority"
+    },
+    "1-7-1-1": {
+      "es": "Programa Nacional de Titulación de Tierra",
+      "en": "National Land Titling Program"
+    },
+    "1-7-1-1-3-2": {
+      "es": "Desarrollo y Actualización del Atlas Nacional",
+      "en": "Development and Updating of the National Atlas"
+    },
+    "2-38": {
+      "es": "Autoridad Aeronáutica Civil",
+      "en": "Civil Aviation Authority"
+    },
+    "2-38-1-2": {
+      "es": "Rehabilitación y Mantenimiento Aeroportuario",
+      "en": "Airport Rehabilitation and Maintenance"
+    },
+    "2-38-1-2-3-1": {
+      "es": "Conservación de las Areas Verdes de los Aeropuertos",
+      "en": "Conservation of the Green Areas of the Airports"
     }
   }
 }

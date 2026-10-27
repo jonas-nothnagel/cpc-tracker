@@ -331,7 +331,8 @@ def build_ber(source: dict[str, Any]) -> dict[str, Any]:
     programs, expenditure = [], []
     for p in source["programs"]:
         values = {y: spend.get(p["code"], {}).get(y) for y in BER_YEARS}
-        if not any(v for v in values.values()):
+        # A line whose spending rounds to nothing in US$ shows none.
+        if not any(to_usd_million(v) for v in values.values()):
             continue
         code = f"P{len(programs) + 1:02d}"
         programs.append({

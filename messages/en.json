@@ -500,7 +500,7 @@
             "body": "The targets involved in the most potential misalignments. On the map only the potential misalignments remain, and within each document the targets involved in the most move to the front, where they are named. Pointing at a target brings its target pairs forward, with its number of potential misalignments in each block; selecting it keeps them there and offers to explore the target on the ring further down."
           },
           "documents": {
-            "title": "Documents side by side",
+            "title": "Alignment by document",
             "body": "Each bar is one document with all its target pairs: potential misalignment from the left, alignment from the right. Selecting a document, in the list or around the centre, places it at the centre of the dots, with its target pairs with each other document beside it; selecting a pair of documents in the list opens the AI summary, the strongest aligned target pairs and the potential misalignments."
           },
           "builder": {
@@ -2856,7 +2856,7 @@
       "together": "Areas of alignment",
       "apart": "Potential misalignment",
       "commitments": "Targets to review first",
-      "documents": "Documents side by side",
+      "documents": "Alignment by document",
       "areas": "By policy area",
       "aligned": "Strongest alignments",
       "spending": "Reviewed spending",
@@ -2904,7 +2904,7 @@
       "otherTip": "{count, plural, one {# target pair} other {# target pairs}} outside the recurring themes"
     },
     "commitments": {
-      "headlineConcentrated": "Of the {total, number} potential misalignments, {pct} involve just {top, plural, one {one target} other {# targets}}.",
+      "headlineConcentrated": "Of the {total, number} potential misalignments, {pct} involve {top, plural, one {one target} other {# targets}}.",
       "headlineSpread": "Potential misalignment is spread across {contested, plural, one {# target} other {# targets}}.",
       "headlineEmpty": "No target shows potential misalignment.",
       "partner": "{count, number} with {doc}"
@@ -3013,7 +3013,7 @@
     "aligned": {
       "headlineEmpty": "No target is strongly aligned with another in this selection.",
       "row": "{count, plural, one {# strong alignment} other {# strong alignments}}",
-      "headlineConcentrated": "Of the {total, number} strong alignments, {pct} involve just {top, plural, one {one target} other {# targets}}.",
+      "headlineConcentrated": "Of the {total, number} strong alignments, {pct} involve {top, plural, one {one target} other {# targets}}.",
       "headlineSpread": "Strong alignments are spread across {contested, plural, one {# target} other {# targets}}.",
       "partner": "{count, number} with {doc}"
     },
@@ -3028,7 +3028,6 @@
       "leadApart": "<first>{docA}</first> and <second>{docB}</second> have the highest share of potential misalignment: {pct} of their target pairs.",
       "leadBoth": "<first>{docA}</first> and <second>{docB}</second> have both the highest share of aligned target pairs ({aligned}) and the highest share of potential misalignment ({apart}).",
       "leadOnly": "Between <first>{docA}</first> and <second>{docB}</second>, {aligned} of target pairs are aligned and {apart} show potential misalignment.",
-      "documentsLead": "Alignment with the other documents ranges from {low} for <first>{docLow}</first> to {high} for <second>{docHigh}</second>.",
       "focus": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment, the highest share with <other>{partner}</other> ({partnerShare}).",
       "focusPlain": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned; {apart} show potential misalignment.",
       "focusNone": "<name>{doc}</name>: {aligned} of its {total, number} target pairs are aligned, with no potential misalignment.",
@@ -3036,8 +3035,8 @@
       "openTarget": "See its aligned and potentially misaligned targets",
       "exploreTarget": "Explore this target",
       "countApart": "{count, plural, one {# potential misalignment} other {# potential misalignments}}",
-      "kickerReinforce": "What works well",
-      "kickerApart": "Where to look closer",
+      "kickerReinforce": "What works well together",
+      "kickerApart": "Areas of potential misalignment",
       "title": {
         "overview": "{total, plural, one {# target pair by rating} other {# target pairs by rating}}",
         "map": "Target pairs by pair of documents",
@@ -3119,7 +3118,6 @@
       "arcActions": "{strong, number} of {total, number} strongly aligned, {apart, number} potentially misaligned",
       "arcActionsStrong": "{strong, number} of {total, number} strongly aligned",
       "aiLabel": "AI explanation:",
-      "translated": "machine translation",
       "originalName": "In the review: {name}",
       "statusValue": {
         "ongoing": "Ongoing",
@@ -3191,14 +3189,15 @@
         "usd": "{unit, select, trillion {US${amount} trillion} billion {US${amount} billion} million {US${amount} million} other {US${amount}}}"
       },
       "kicker": {
-        "record": "The record",
-        "purpose": "For nature and climate",
-        "places": "Where it lands",
-        "areas": "What the money is for"
+        "record": "All public contracts",
+        "purpose": "Contracts for nature and climate",
+        "places": "Contracts by location",
+        "areas": "Contracts by policy area"
       },
       "record": {
         "headline": "{value} in {count} public contracts since {year}",
-        "second": "About {other}. Contracts show where public money is committed to specific work, before and after each target was adopted.",
+        "about": "About {other}.",
+        "second": "Contracts show where public money is committed to specific work, before and after each target was adopted.",
         "example": "See one contract in full",
         "source": "{name}, {first} to {last} · contracted, not verified delivered · contracts the record lists twice count once"
       },
@@ -3399,7 +3398,6 @@
           "more": "Show {count} more"
         },
         "kind": "Public procurement contract",
-        "titleNote": "Machine-translated from Mongolian",
         "about": "about {other}",
         "readingHead": "The pipeline's reading",
         "purpose": "Purpose",
@@ -3427,7 +3425,7 @@
         "note": "Focus: {parts}"
       },
       "closer": {
-        "kicker": "Where to look closer",
+        "kicker": "Areas of potential misalignment",
         "headline": "{count, plural, one {# tender is} other {# tenders are}} potentially misaligned with {what}{place}{top}",
         "top": "; for {pct} of them, the target is in {doc}",
         "inPlace": ", in {place}",
@@ -3461,52 +3459,132 @@
       "title": "Reviewed biodiversity spending",
       "source": "Biodiversity Expenditure Review (BER), {years}",
       "illustrative": "Illustrative figures, adapted from a real review",
-      "money": "{currency}{amount} {unit, select, million {million} billion {billion} other {}}",
-      "fieldLabel": "{currency}{every} of every {currency}100 of public spending, as a hundred squares",
+      "money": "{sign}{amount}{unit, select, trillion { trillion} billion { billion} million { million} other {}}",
+      "scope": {
+        "stateLocal": "State and local budget spending",
+        "publicSector": "public-sector spending",
+        "government": "government spending",
+        "public": "public spending"
+      },
+      "fieldLabel": "{sign}{every} of every {sign}100 of {scope}, as a hundred squares",
       "record": {
-        "kicker": "Out of all public spending",
-        "headline": "{currency}{every} of every {currency}100 of public spending is reviewed biodiversity spending.",
+        "headline": "{sign}{every} of every {sign}100 of {scope} in {years} was reviewed biodiversity spending.",
         "reviewed": "Reviewed biodiversity spending, {years}",
-        "public": "All public spending, {years}",
-        "year": "{year}: {currency}{every} of every {currency}100"
+        "public": "All {scope}, {years}"
+      },
+      "chart": {
+        "title": "Reviewed spending by year",
+        "titleParts": "Reviewed spending by year and {parts}",
+        "parts": {
+          "levels": "budget",
+          "groups": "kind of agency"
+        },
+        "unit": "{sign} {unit, select, billion {billion} other {million}}",
+        "switch": "Show amounts or shares",
+        "amounts": "Amount",
+        "shares": "Share of {scope}",
+        "sharesLevels": "Share of each budget's spending",
+        "series": {
+          "central": "State budget",
+          "local": "Local budgets",
+          "core": "Core agencies, counted in full",
+          "other": "Other agencies, counted in part",
+          "all": "Reviewed spending"
+        },
+        "notInData": "not in the data",
+        "notInDataLong": "{year}: the review's data hold {held} only",
+        "held": {
+          "central": "the State budget",
+          "local": "the local budgets",
+          "core": "the core agencies",
+          "other": "the other agencies",
+          "all": "one part"
+        },
+        "bar": "{series}, {year}",
+        "barShare": "{share} of {scope}",
+        "scopeOf": {
+          "central": "the State budget's spending",
+          "local": "the local budgets' spending",
+          "core": "government spending",
+          "other": "government spending",
+          "all": "public spending"
+        },
+        "inAll": "{amount} in all",
+        "tableCaption": "Reviewed spending by year, {unit}",
+        "year": "Year",
+        "partNotInData": "{part} not in the data"
+      },
+      "items": {
+        "title": "Reviewed spending by {unit, select, institution {institution} line {budget line} both {institution and programme} other {programme}}, {years}",
+        "listLabel": "{unit, select, institution {Institutions} line {Budget lines} other {Programmes}} in the review, largest first",
+        "switch": "Show by institution or by programme",
+        "byInstitution": "Institution",
+        "byProgramme": "Programme",
+        "budgetNamed": "{name} ({type, select, investment {investment budget} other {operating budget}})",
+        "kind": {
+          "programme": "Programme {code}",
+          "purpose": "Purpose code {code}, in other programmes",
+          "programmes": "{count, plural, one {# programme} other {# programmes}}",
+          "core": "Counted in full",
+          "other": "Counted in part"
+        },
+        "counted": "Counted {counted} of {spent} spent, at the review's rates",
+        "rate": "{name}, counted at {rate}",
+        "institutionRate": "Counted at {rate} of its spending, the review's rate.",
+        "rationale": "The review's reason: {text}",
+        "bodies": "Spent by {count, plural, one {# unit} other {# units}} in {year}, the largest:",
+        "pays": "Pays for {list}.",
+        "parts": "{count, plural, one {# activity} other {# activities}}, the largest:",
+        "programmes": "Its programmes, largest first:",
+        "partsMore": "{count, plural, one {and # more activity} other {and # more activities}}",
+        "showAll": "Show all {count} {unit, select, institution {institutions} line {budget lines} other {programmes}}",
+        "showFewer": "Show the largest only"
       },
       "areas": {
-        "kicker": "What it is for",
-        "headline": "{area} holds {spend} of the reviewed spending and {targets} of the targets.",
+        "title": "Targets and reviewed spending by biodiversity area",
         "colArea": "Biodiversity area",
         "colTargets": "Share of the targets",
         "colSpend": "Share of the reviewed spending",
+        "colTargetsCount": "Targets",
+        "colSpendAmount": "Reviewed spending",
         "listLabel": "Biodiversity areas, their share of the targets and of the reviewed spending",
-        "rowLabel": "{targets} of the targets, {spend} of the reviewed spending",
+        "rowLabel": "Targets: {targets}; reviewed spending: {spend}",
         "noSpend": "None",
+        "apartRow": "Not yet assigned to an area",
+        "apartLabel": "{spend} of the reviewed spending is not yet assigned to an area",
         "targetsLine": "{count, plural, =0 {No target in this area.} one {# target in this area.} other {# targets in this area.}}",
         "matched": "{matched, number} of the {total, number} have a matching budget line.",
-        "ai": "AI-estimated",
+        "aiEstimated": "AI-estimated",
+        "coherence": "Policy coherence of its targets: {aligned} aligned, {apart} potential misalignment, from {total, number} target pairs.",
+        "coherenceFew": "Policy coherence of its targets: {total, plural, one {# target pair} other {# target pairs}}, too few to rate.",
         "linesLabel": "Budget lines in this area",
         "noLines": "No reviewed budget line in this area.",
-        "explore": "Explore this area with its budget lines"
-      }
+        "explore": "Explore this area with its budget lines",
+        "checked": "Area reviewed",
+        "aiSuggested": "AI-suggested, not yet reviewed",
+        "apartWhy": "Not assigned, pending review",
+        "linesMore": "{count, plural, one {and # more line} other {and # more lines}}",
+        "switch": "Show shares or amounts",
+        "shares": "Share",
+        "amounts": "Amount",
+        "targetsCount": "{count, plural, =0 {No target} one {# target} other {# targets}}"
+      },
+      "currency": "Amounts in"
     },
     "areaView": {
-      "kicker": "By policy area",
+      "title": "Targets and alignment by policy area",
+      "noneTargets": "No targets fall in these policy areas.",
+      "noneSide": "No target pairs in these policy areas {side, select, apart {show potential misalignment} other {are strongly aligned}}.",
+      "noneArea": "No {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",
       "lensGroup": "Policy areas",
       "sideGroup": "Targets or target pairs",
       "viewTargets": "Targets",
-      "headlineTargets": "{pct} of the {placed, number} targets in these policy areas are <first>{area}</first> targets.",
-      "headlineTargetsArea": "{count, number} of the {placed, number} targets in these policy areas are {area} targets.",
-      "headlineTargetsNone": "No targets fall in these policy areas.",
       "areaShareTargets": "{pct} of the targets",
       "areaList": "Policy areas and their targets",
       "showAllTargets": "Show all {count, number} targets",
       "showFewerTargets": "Show fewer",
       "sideApart": "Potential misalignment",
       "sideReinforce": "Strong alignment",
-      "headlineBetween": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and <second>{areaB}</second> targets.",
-      "headlineWithin": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit within <first>{areaA}</first> targets.",
-      "headlineOutside": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and targets outside these areas.",
-      "headlineNone": "No target pairs in these policy areas {side, select, apart {show potential misalignment} other {are strongly aligned}}.",
-      "headlineArea": "{pct} of the {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",
-      "headlineAreaNone": "No {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",
       "scope": "{placed, number} of the {total, number} targets fall in one of these areas.",
       "within": "Within {area}",
       "outside": "{area} · targets outside these areas",
@@ -3515,7 +3593,7 @@
       "share": "{pct} of {pairs, number} target pairs",
       "rest": "The other {groups, plural, one {pair of areas} other {# pairs of areas}}: {count, number} of their {pairs, number} target pairs.",
       "rowPairs": "{side, select, apart {{count, plural, one {# potential misalignment} other {# potential misalignments}}} other {{count, plural, one {# strong alignment} other {# strong alignments}}}}",
-      "involved": "{area} targets most involved",
+      "involved": "{area} targets with the most target pairs",
       "seePairs": "See the {count, plural, one {# target pair} other {# target pairs}}",
       "backAll": "All pairs of areas",
       "backTo": "Back to {name}",

@@ -8,6 +8,8 @@ import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
 import { loadBerNames } from "@/lib/brief/ber-names";
 import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
+import { loadContracts } from "@/lib/brief/contracts/load";
+import { CurrencyProvider } from "@/components/brief/contracts/money";
 import { ExplorePage } from "@/components/brief/explore/explore-page";
 
 // Pipeline output lives on the persistent volume and changes at runtime.
@@ -57,20 +59,31 @@ export default async function ExploreStandalonePage(props: Props) {
   if (!loaded) notFound();
   const searchParams = await props.searchParams;
   const selection = parseSelection(searchParams, loaded.source);
+  const cur = Array.isArray(searchParams.cur) ? searchParams.cur[0] : searchParams.cur;
+  // Money as in the brief: US$ on every page but the Mongolian one, which
+  // opens in tugrik and keeps a shared link's US$ (?cur=usd). The contracts
+  // under a comparison convert at their record's indicative rate.
+  const local = loaded.locale === "mn";
   return (
-    <ExplorePage
-      source={loaded.source}
-      docs={selection.docs}
-      lens={selection.lens}
-      setup={exploreSetup({
-        data: loaded.data,
-        source: loaded.source,
-        docs: selection.docs,
-        searchParams,
-        locale: loaded.locale,
-        berNames: loadBerNames(loaded.source.countryId),
-        targetLabels: loaded.targetLabels,
-      })}
-    />
+    <CurrencyProvider
+      currency={local && cur !== "usd" ? "mnt" : "usd"}
+      rate={loadContracts(loaded.source.countryId)?.source.usdRate ?? 0}
+      local={local}
+    >
+      <ExplorePage
+        source={loaded.source}
+        docs={selection.docs}
+        lens={selection.lens}
+        setup={exploreSetup({
+          data: loaded.data,
+          source: loaded.source,
+          docs: selection.docs,
+          searchParams,
+          locale: loaded.locale,
+          berNames: loadBerNames(loaded.source.countryId),
+          targetLabels: loaded.targetLabels,
+        })}
+      />
+    </CurrencyProvider>
   );
 }

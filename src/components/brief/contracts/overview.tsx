@@ -441,6 +441,8 @@ export function Overview({
   const onPoint = (p: FieldPoint | null) => setPointed(p === null ? null : p.kind === "place" ? p.code : p.kind === "row" ? p.id : p.kind === "mark" ? p.cell : null);
 
   const census = file.census;
+  // Its twin in the other currency, said only on the country's own-language page.
+  const censusTwin = m.other(census.value);
   const principalTotal = useMemo(() => file.years.reduce((s, y) => s + y.principal.value, 0), [file]);
   const significantTotal = useMemo(() => file.years.reduce((s, y) => s + y.significant.value, 0), [file]);
 
@@ -481,7 +483,10 @@ export function Overview({
             <h2 className="brief-hub-headline" tabIndex={-1}>
               {t("record.headline", { value: m.amount(census.value), count: m.n(census.contracts), year: file.source.firstYear })}
             </h2>
-            <p className="brief-hub-second">{t("record.second", { other: m.other(census.value) })}</p>
+            <p className="brief-hub-second">
+              {censusTwin && `${t("record.about", { other: censusTwin })} `}
+              {t("record.second")}
+            </p>
             {file.example && (
               <button type="button" className="ct-link" onClick={() => onContract(file.example!)}>
                 {t("record.example")}

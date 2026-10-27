@@ -17,8 +17,8 @@ export interface AreaSort {
   dir: "desc" | "asc";
 }
 
-/** The picture opens with the most aligned areas first. */
-export const DEFAULT_AREA_SORT: AreaSort = { key: "reinforce", dir: "desc" };
+/** The picture opens with the largest areas first, as the list beside it does. */
+export const DEFAULT_AREA_SORT: AreaSort = { key: "targets", dir: "desc" };
 
 /** Areas with fewer targets are marked: a share drawn from one or two
  *  targets says more about those targets than about the area. */

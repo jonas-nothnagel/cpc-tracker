@@ -75,7 +75,8 @@ const row = (id: string) => document.querySelector(`[data-row="${id}"]`) as HTML
 const openSecond = () => fireEvent.click(within(pairRows()[1]).getByRole("button", { expanded: false }));
 /** An area's name on the picture, which picks the area. */
 const areaName = (id: string, name: string) => within(row(id)).getByRole("button", { name });
-const headline = () => screen.getByRole("heading", { level: 2 }).textContent;
+const TITLE = "Targets and alignment by policy area";
+const title = () => screen.getByRole("heading", { level: 2 }).textContent;
 /** The way back from a picked area to all pairs of areas. */
 const backAll = () => screen.queryByRole("button", { name: "Back to All pairs of areas" });
 /** Picks what the list beside the picture shows: the targets, or one side's target pairs. */
@@ -89,11 +90,15 @@ function renderPairs(props: Partial<Props> = {}) {
 }
 
 describe("AreasView", () => {
-  it("leads with where the side's target pairs sit, as a number", () => {
-    renderPairs();
-    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
-      "60% of the potential misalignments sit between Agriculture targets and targets outside these areas.",
-    );
+  it("is titled by what it shows, the same in every view, with no finding in the title", () => {
+    renderView();
+    const heading = screen.getByRole("heading", { level: 2 });
+    expect(heading.textContent).toBe(TITLE);
+    expect(within(heading).queryAllByRole("button")).toHaveLength(0);
+    for (const view of ["Potential misalignment", "Strong alignment", "Targets"]) {
+      show(view);
+      expect(title()).toBe(TITLE);
+    }
     expect(screen.getByText("9 of the 18 targets fall in one of these areas.")).toBeTruthy();
   });
 
@@ -120,15 +125,15 @@ describe("AreasView", () => {
     expect(row("g2").getAttribute("data-marked")).toBeNull();
   });
 
-  it("opens a pair of areas: its two rows marked, its count left to the list, its most involved targets listed", () => {
+  it("opens a pair of areas: its two rows marked, its count left to the list, the targets with the most target pairs listed", () => {
     const { onOpenAreaPair } = renderPairs();
     openSecond();
     expect(row("g2").getAttribute("data-marked")).toBe("true");
     expect(row("g5").getAttribute("data-marked")).toBe("true");
     expect(document.querySelectorAll(".brief-av-of")).toHaveLength(0);
     expect(row("g1").getAttribute("data-dim")).toBe("true");
-    expect(screen.getByText("Agriculture targets most involved")).toBeTruthy();
-    expect(screen.getByText("Water targets most involved")).toBeTruthy();
+    expect(screen.getByText("Agriculture targets with the most target pairs")).toBeTruthy();
+    expect(screen.getByText("Water targets with the most target pairs")).toBeTruthy();
     const counts = screen.getAllByTestId("brief-area-target").map((t) => t.querySelector(".brief-av-target-count")?.textContent);
     expect(counts).toEqual(["3", "1", "1", "1"]);
     fireEvent.click(screen.getByRole("button", { name: "See the 3 target pairs" }));
@@ -204,23 +209,12 @@ describe("AreasView", () => {
     delete (Element.prototype as { scrollIntoView?: unknown }).scrollIntoView;
   });
 
-  it("points from the headline's area names to their rows, and opens their pair", () => {
-    renderPairs();
-    const name = within(screen.getByRole("heading", { level: 2 })).getByRole("button", { name: "Agriculture" });
-    fireEvent.pointerEnter(name);
-    expect(row("g2").getAttribute("data-marked")).toBe("true");
-    fireEvent.click(name);
-    expect(within(pairRows()[0]).getByRole("button", { expanded: true })).toBeTruthy();
-  });
-
   it("reads strong alignments on request, letting the open pair go", () => {
     renderPairs();
     openSecond();
     fireEvent.click(screen.getByRole("button", { name: "Strong alignment" }));
     expect(screen.getByRole("button", { name: "Strong alignment" }).getAttribute("aria-pressed")).toBe("true");
-    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
-      "28% of the strong alignments sit between Water targets and targets outside these areas.",
-    );
+    expect(within(pairRows()[0]).getByText("Water · targets outside these areas")).toBeTruthy();
     expect(within(pairRows()[0]).getByText("56% of 18 target pairs")).toBeTruthy();
     expect(screen.queryByTestId("brief-area-target")).toBeNull();
   });
@@ -241,11 +235,10 @@ describe("AreasView", () => {
     expect(screen.queryByTestId("brief-area-target")).toBeNull();
   });
 
-  it("says so when no target pair in these areas is on the side, with nothing else listed", () => {
+  it("says so where the list would stand when no target pair in these areas is on the side", () => {
     renderPairs({ data: buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "C"]), "globe") });
-    expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
-      "No target pairs in these policy areas show potential misalignment.",
-    );
+    expect(title()).toBe(TITLE);
+    expect(screen.getByText("No target pairs in these policy areas show potential misalignment.")).toBeTruthy();
     expect(screen.queryAllByTestId("brief-area-pair")).toHaveLength(0);
     expect(document.querySelector(".brief-av-rest")).toBeNull();
   });
@@ -277,10 +270,10 @@ describe("AreasView", () => {
     expect(within(list).getAllByRole("listitem")[0].textContent).toContain("3 targets");
   });
 
-  it("heads the most involved targets one level under the headline", () => {
+  it("heads the targets with the most target pairs one level under the title", () => {
     renderPairs();
     openSecond();
-    expect(screen.getByRole("heading", { level: 3, name: "Agriculture targets most involved" })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 3, name: "Agriculture targets with the most target pairs" })).toBeTruthy();
   });
 
   it("brings an opened pair of areas and a picked target into view", () => {
@@ -324,12 +317,12 @@ describe("AreasView", () => {
     );
   });
 
-  it("picks an area by its name: named in the headline, its pairs of areas listed, its name marked", () => {
+  it("picks an area by its name: its pairs of areas listed, its name marked, the title kept", () => {
     renderPairs();
     fireEvent.click(areaName("g5", "Water"));
     expect(areaName("g5", "Water").getAttribute("aria-pressed")).toBe("true");
     expect(row("g5").getAttribute("data-marked")).toBe("true");
-    expect(headline()).toBe("20% of the potential misalignments involve Water targets.");
+    expect(title()).toBe(TITLE);
     expect(pairNames()).toEqual(["Agriculture · Water"]);
     expect(screen.getByText("The other 2 pairs of areas: 0 of their 27 target pairs.")).toBeTruthy();
     expect(screen.queryByText("3 potential misalignments fall between targets outside these areas.")).toBeNull();
@@ -340,7 +333,6 @@ describe("AreasView", () => {
   it("counts beside each row a picked area's target pairs there, as the list does, and all of them in its own row", () => {
     renderPairs();
     fireEvent.click(areaName("g2", "Agriculture"));
-    expect(headline()).toBe("80% of the potential misalignments involve Agriculture targets.");
     const listed = pairRows().map((p) => [
       p.querySelector(".brief-av-pair-name")?.textContent,
       p.querySelector(".brief-av-pair-count")?.textContent,
@@ -357,7 +349,7 @@ describe("AreasView", () => {
   it("says so when none of the side's target pairs involves a picked area", () => {
     renderPairs();
     fireEvent.click(areaName("g1", "Protected areas"));
-    expect(headline()).toBe("No potential misalignments involve Protected areas targets.");
+    expect(screen.getByText("No potential misalignments involve Protected areas targets.")).toBeTruthy();
     expect(screen.queryAllByTestId("brief-area-pair")).toHaveLength(0);
     expect(row("g1").querySelector(".brief-av-of")?.textContent).toBe("0 potential misalignments");
   });
@@ -367,9 +359,6 @@ describe("AreasView", () => {
     fireEvent.click(areaName("g5", "Water"));
     fireEvent.click(backAll()!);
     expect(backAll()).toBeNull();
-    expect(headline()).toBe(
-      "60% of the potential misalignments sit between Agriculture targets and targets outside these areas.",
-    );
     expect(pairNames()).toEqual(["Agriculture · targets outside these areas", "Agriculture · Water"]);
     expect(row("g5").getAttribute("data-marked")).toBeNull();
     fireEvent.click(areaName("g5", "Water"));
@@ -378,29 +367,30 @@ describe("AreasView", () => {
     expect(areaName("g5", "Water").getAttribute("aria-pressed")).toBe("false");
   });
 
-  it("picks an area from the keyboard, focus following to the headline that names it, and back to the list", () => {
+  it("picks an area from the keyboard, focus following to the list it re-draws, and back to all pairs", () => {
     renderPairs();
     fireEvent.keyDown(areaName("g5", "Water"), { key: "Enter" });
-    expect(document.activeElement).toBe(screen.getByRole("heading", { level: 2 }));
-    expect(headline()).toBe("20% of the potential misalignments involve Water targets.");
+    expect(pairNames()).toEqual(["Agriculture · Water"]);
+    expect(document.activeElement).toBe(pairRows()[0].querySelector(".brief-av-pair-head"));
     fireEvent.click(backAll()!);
+    expect(pairNames()).toEqual(["Agriculture · targets outside these areas", "Agriculture · Water"]);
     expect(document.activeElement).toBe(pairRows()[0].querySelector(".brief-av-pair-head"));
   });
 
-  it("takes keyboard focus to the headline when a picked area's name closes its open pair", () => {
+  it("takes keyboard focus to the list when a picked area's name closes its open pair", () => {
     renderPairs();
     fireEvent.click(areaName("g5", "Water"), { detail: 1 });
     fireEvent.click(within(pairRows()[0]).getByRole("button", { expanded: false }));
     fireEvent.keyDown(areaName("g5", "Water"), { key: "Enter" });
-    expect(screen.queryByText("Water targets most involved")).toBeNull();
-    expect(document.activeElement).toBe(screen.getByRole("heading", { level: 2 }));
+    expect(screen.queryByText("Water targets with the most target pairs")).toBeNull();
+    expect(document.activeElement).toBe(pairRows()[0].querySelector(".brief-av-pair-head"));
   });
 
   it("leaves focus where the pointer picked an area", () => {
     renderPairs();
     fireEvent.click(areaName("g5", "Water"), { detail: 1 });
-    expect(headline()).toBe("20% of the potential misalignments involve Water targets.");
-    expect(document.activeElement).not.toBe(screen.getByRole("heading", { level: 2 }));
+    expect(pairNames()).toEqual(["Agriculture · Water"]);
+    expect(document.activeElement).not.toBe(pairRows()[0].querySelector(".brief-av-pair-head"));
     fireEvent.click(backAll()!, { detail: 1 });
     expect(document.activeElement).not.toBe(pairRows()[0].querySelector(".brief-av-pair-head"));
   });
@@ -411,31 +401,31 @@ describe("AreasView", () => {
     fireEvent.pointerEnter(name);
     expect(row("g1").getAttribute("data-marked")).toBe("true");
     expect(backAll()).toBeNull();
-    expect(headline()).toContain("sit between Agriculture targets");
+    expect(pairNames()).toEqual(["Agriculture · targets outside these areas", "Agriculture · Water"]);
     fireEvent.pointerLeave(name);
     expect(row("g1").getAttribute("data-marked")).toBeNull();
   });
 
-  it("opens a pair of areas from a picked area's list: its two rows marked, the headline kept", () => {
+  it("opens a pair of areas from a picked area's list: its two rows marked, the area still picked", () => {
     renderPairs();
     fireEvent.click(areaName("g5", "Water"));
     fireEvent.click(within(pairRows()[0]).getByRole("button", { expanded: false }));
     expect(row("g2").getAttribute("data-marked")).toBe("true");
     expect(row("g5").getAttribute("data-marked")).toBe("true");
-    expect(screen.getByText("Water targets most involved")).toBeTruthy();
-    expect(headline()).toBe("20% of the potential misalignments involve Water targets.");
+    expect(screen.getByText("Water targets with the most target pairs")).toBeTruthy();
+    expect(backAll()).toBeTruthy();
     expect(document.querySelectorAll(".brief-av-of")).toHaveLength(0);
   });
 
   it("returns to a picked area from its open pair on a pick of its name, and only then lets it go", () => {
     renderPairs();
-    fireEvent.click(areaName("g5", "Water"));
-    fireEvent.click(within(pairRows()[0]).getByRole("button", { expanded: false }));
-    fireEvent.click(areaName("g5", "Water"));
+    fireEvent.click(areaName("g5", "Water"), { detail: 1 });
+    fireEvent.click(within(pairRows()[0]).getByRole("button", { expanded: false }), { detail: 1 });
+    fireEvent.click(areaName("g5", "Water"), { detail: 1 });
     expect(backAll()).toBeTruthy();
-    expect(screen.queryByText("Water targets most involved")).toBeNull();
+    expect(screen.queryByText("Water targets with the most target pairs")).toBeNull();
     expect(row("g2").getAttribute("data-marked")).toBeNull();
-    fireEvent.click(areaName("g5", "Water"));
+    fireEvent.click(areaName("g5", "Water"), { detail: 1 });
     expect(backAll()).toBeNull();
   });
 
@@ -462,7 +452,7 @@ describe("AreasView", () => {
     renderPairs();
     fireEvent.click(areaName("g5", "Water"));
     fireEvent.click(screen.getByRole("button", { name: "Strong alignment" }));
-    expect(headline()).toBe("44% of the strong alignments involve Water targets.");
+    expect(backAll()).toBeTruthy();
     expect(pairNames()).toEqual(["Water · targets outside these areas", "Protected areas · Water"]);
   });
 
@@ -473,7 +463,7 @@ describe("AreasView", () => {
     expect(backAll()).toBeNull();
     rerender({ lens: "globe" });
     expect(backAll()).toBeNull();
-    expect(headline()).toContain("sit between Agriculture targets");
+    expect(pairNames()).toEqual(["Agriculture · targets outside these areas", "Agriculture · Water"]);
   });
 
   it("lets a picked target go when the lens changes, for good", () => {
@@ -497,11 +487,11 @@ describe("AreasView figures", () => {
   const sortBy = (name: string) => fireEvent.click(within(head()).getByRole("button", { name }));
   const ends = (id: string) => [...row(id).querySelectorAll(".brief-pair-value")].map((el) => el.textContent);
 
-  it("names the lens top left and opens with the most aligned areas", () => {
+  it("names the lens top left and opens with the most targets first, as the list beside it", () => {
     renderView();
     expect(head().querySelector(".brief-av-lens")?.textContent).toBe("Biodiversity");
-    expect(rowIds()).toEqual(["g1", "g5", "g2"]);
-    expect(within(head()).getByRole("button", { name: "Aligned, most first" })).toBeTruthy();
+    expect(rowIds()).toEqual(["g1", "g2", "g5"]);
+    expect(within(head()).getByRole("button", { name: "Targets, most first" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("gives each row its targets and the result bar of all its target pairs", () => {
@@ -556,12 +546,13 @@ describe("AreasView targets", () => {
       .getAllByTestId("brief-area-target")
       .map((t) => /Commitment (\w+)/.exec(t.querySelector(".brief-av-target-name")?.textContent ?? "")?.[1]);
 
-  it("opens on the targets of each policy area, most first, the largest share named as a number", () => {
+  it("opens on the targets of each policy area, most first, each with its share as a number", () => {
     renderView();
     expect(
       within(screen.getByRole("group", { name: "Targets or target pairs" })).getByRole("button", { name: "Targets" }),
     ).toHaveAttribute("aria-pressed", "true");
-    expect(headline()).toBe("33% of the 9 targets in these policy areas are Protected areas targets.");
+    expect(title()).toBe(TITLE);
+    expect(within(areaRows()[0]).getByText("33% of the targets")).toBeTruthy();
     expect(areaRows().map((r) => r.querySelector(".brief-av-pair-name")?.textContent)).toEqual([
       "Protected areas",
       "Agriculture",
@@ -573,12 +564,11 @@ describe("AreasView targets", () => {
     expect(document.querySelectorAll(".brief-av-of")).toHaveLength(0);
   });
 
-  it("opens a policy area to list its targets, the headline following, and closes it again", () => {
+  it("opens a policy area to list its targets, and closes it again", () => {
     renderView();
     fireEvent.click(within(areaRows()[2]).getByRole("button", { expanded: false }));
     expect(listedTargets()).toEqual(["C1", "C2", "C3"]);
     expect(within(screen.getAllByTestId("brief-area-target")[0]).getByText("Document C")).toBeTruthy();
-    expect(headline()).toBe("3 of the 9 targets in these policy areas are Water targets.");
     expect(row("g5").getAttribute("data-marked")).toBe("true");
     expect(row("g1").getAttribute("data-dim")).toBe("true");
     fireEvent.click(within(areaRows()[2]).getByRole("button", { expanded: true }));
@@ -642,9 +632,10 @@ describe("AreasView targets", () => {
     renderView();
     fireEvent.click(areaName("g5", "Water"));
     show("Potential misalignment");
-    expect(headline()).toBe("20% of the potential misalignments involve Water targets.");
+    expect(backAll()).toBeTruthy();
+    expect(pairNames()).toEqual(["Agriculture · Water"]);
     show("Targets");
-    expect(headline()).toBe("3 of the 9 targets in these policy areas are Water targets.");
+    expect(within(areaRows()[2]).getByRole("button", { expanded: true })).toBeTruthy();
   });
 });
 

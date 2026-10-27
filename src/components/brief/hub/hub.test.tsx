@@ -245,12 +245,10 @@ describe("Hub", () => {
     expect(within(map).queryByTestId("hub-map-apart")).toBeNull();
   });
 
-  it("what works well: one section, its targets first, then its themes, each brought forward on the map", () => {
+  it("what works well together: one section, its targets first, then its themes, each brought forward on the map", () => {
     renderHub();
     const aligned = step("reinforce");
-    expect(within(aligned).getByRole("heading", { level: 2 }).textContent).toBe(
-      "Strong alignments are spread across 12 targets.",
-    );
+    expect(within(aligned).getByRole("heading", { level: 2 }).textContent).toBe("What works well together");
     const firstRow = within(aligned).getAllByTestId("hub-strong-row")[0];
     const theme = within(aligned).getAllByTestId("brief-theme-row")[0];
     expect(firstRow.compareDocumentPosition(theme) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -325,12 +323,10 @@ describe("Hub", () => {
     expect(onOpenCommitment).toHaveBeenCalledWith("B6");
   });
 
-  it("where to look closer: how concentrated it is, its targets first, then its themes and types", () => {
+  it("areas of potential misalignment: its targets first, then its themes and types", () => {
     renderHub();
     const apart = step("apart");
-    expect(within(apart).getByRole("heading", { level: 2 }).textContent).toBe(
-      "Of the 15 potential misalignments, 80% involve just 2 targets.",
-    );
+    expect(within(apart).getByRole("heading", { level: 2 }).textContent).toBe("Areas of potential misalignment");
     const rows = within(apart).getAllByTestId("hub-apart-row");
     expect(rows).toHaveLength(6);
     expect(rows[0].textContent).toContain("Commitment B6");
@@ -392,18 +388,18 @@ describe("Hub", () => {
     });
   });
 
-  it("names each side in plain words above its finding", () => {
+  it("heads each side and the documents with a grey title alone, no finding in a headline", () => {
     renderHub();
-    const aligned = step("reinforce");
-    expect(aligned.firstElementChild?.textContent).toBe("What works well");
-    expect(within(aligned).getByRole("heading", { level: 2 }).textContent).toBe(
-      "Strong alignments are spread across 12 targets.",
-    );
-    const apart = step("apart");
-    expect(apart.firstElementChild?.textContent).toBe("Where to look closer");
-    expect(within(apart).getByRole("heading", { level: 2 }).textContent).toBe(
-      "Of the 15 potential misalignments, 80% involve just 2 targets.",
-    );
+    for (const [name, title] of [
+      ["reinforce", "What works well together"],
+      ["apart", "Areas of potential misalignment"],
+      ["documents", "Alignment by document"],
+    ] as const) {
+      const headings = within(step(name)).getAllByRole("heading", { level: 2 });
+      expect(headings.map((h) => h.textContent)).toEqual([title]);
+      expect(headings[0]).toHaveClass("brief-hub-kicker");
+      expect(step(name).firstElementChild).toBe(headings[0]);
+    }
   });
 
   it("marks in the list the one target the map highlights: the one pointed at, else the one kept", () => {
@@ -534,7 +530,7 @@ describe("Hub", () => {
     expect(within(step("apart")).getAllByTestId("hub-apart-row")).toHaveLength(7);
   });
 
-  it("sums up the document at the centre, and moves the hub from the finding's names", () => {
+  it("sums up the document at the centre, its partner's name opening the pair", () => {
     const onOpenDocPair = vi.fn();
     renderHub({ onOpenDocPair });
     enter("documents");
@@ -543,9 +539,6 @@ describe("Hub", () => {
     );
     fireEvent.click(within(screen.getByTestId("hub-focus")).getByRole("button", { name: "Document B" }));
     expect(onOpenDocPair).toHaveBeenLastCalledWith("A", "B");
-    const headline = step("documents").querySelector("h2") as HTMLElement;
-    fireEvent.click(within(headline).getByRole("button", { name: "Document B" }));
-    expect(stage()).toBe("doc:B");
   });
 
   it("around the document in focus, another document's name puts it in the centre", () => {
@@ -582,9 +575,8 @@ describe("Hub", () => {
         <Hub data={calm} />
       </NextIntlClientProvider>,
     );
-    expect(within(step("apart")).getByRole("heading", { level: 2 }).textContent).toBe(
-      "No target shows potential misalignment.",
-    );
+    expect(within(step("apart")).getByRole("heading", { level: 2 }).textContent).toBe("Areas of potential misalignment");
+    expect(within(step("apart")).getByText("No target shows potential misalignment.")).toBeTruthy();
     expect(within(step("apart")).queryAllByTestId("hub-apart-row")).toHaveLength(0);
     rerender(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
@@ -594,6 +586,7 @@ describe("Hub", () => {
     enter("apart");
     expect(stage()).toBe("map:apart:top");
     expect(within(step("apart")).getAllByTestId("hub-apart-row")).toHaveLength(6);
+    expect(within(step("apart")).queryByText("No target shows potential misalignment.")).toBeNull();
   });
 
   it("lets go of a picked target the selection no longer holds", () => {

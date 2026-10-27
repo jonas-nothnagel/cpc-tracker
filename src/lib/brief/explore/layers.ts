@@ -1,7 +1,8 @@
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
 import type { Nr7Status } from "@/lib/labels";
 import { LEVEL_CODES, MECHANISM_CODES, type BriefSource } from "../source";
-import type { BerName, BerNames } from "../ber-names";
+import { shownName, type BerNames } from "../ber-names-shared";
+import { areaLines, berRecord, completeYears, countedIn, lineText, shownCurrency } from "../ber-record";
 import type { TargetLabels } from "../target-labels";
 
 /**
@@ -35,10 +36,15 @@ export interface LayerItem {
   /** The description shown was written with AI for its source, as the
    *  review says of its own (`descriptionAiGenerated`): labelled so. */
   aiWritten?: true;
+  /** The description shown is a machine translation, the name the
+   *  source's own. */
+  textTranslated?: "machine";
   /** A reported action's status as the BTR states it ("Ongoing"). */
   status?: string;
-  /** A budget line's spending over the years the review reports. */
-  spend?: { total: number; years: number };
+  /** A budget line's spending over the years the review reports, in the
+   *  review's currency and unit; `usd` is the same in US$ million, each year
+   *  at its own rate, where the review is not in US$. */
+  spend?: { total: number; years: number; usd?: number };
 }
 
 export interface ExploreLayers {
@@ -46,7 +52,10 @@ export interface ExploreLayers {
   /** One reading per link: [target id, item index, level code, mechanism
    *  code], codes as in `BriefSource.comparisons`. */
   links: [string, number, number, number][];
-  budget?: { currency: string; unit: string; start: number; end: number };
+  /** The budget lines' currency and unit as the review states them. `usd`:
+   *  every line also carries its US$ figure, which every page but the
+   *  country's own-language one states instead (the money rule). */
+  budget?: { currency: string; unit: string; start: number; end: number; usd?: true };
   /** NBSAP target id -> its least advanced NR7 status. */
   nr7?: Record<string, Nr7Status>;
 }
@@ -63,16 +72,6 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 function describe(program: Record<string, unknown>, locale: string): string {
   const pick = (key: string) => (typeof program[key] === "string" && program[key] ? String(program[key]) : null);
   return (locale === "es" ? pick("descriptionEs") : pick("descriptionEn")) ?? pick("description") ?? String(program.name ?? "");
-}
-
-/** The name a budget line shows in the page's language: Spanish with the
- *  review's abbreviations written out; Mongolian as the review has it, else
- *  machine-translated; any other language the English machine translation. */
-function shownName(listed: BerName | undefined, locale: string): { name: string; machine: boolean; own: boolean } | null {
-  if (!listed) return null;
-  if (locale === "es") return listed.es ? { name: listed.es, machine: false, own: false } : null;
-  if (locale === "mn" && listed.mn) return { name: listed.mn, machine: listed.mnMachine === true, own: !listed.mnMachine };
-  return listed.en ? { name: listed.en, machine: true, own: false } : null;
 }
 
 export function buildExploreLayers(
@@ -117,7 +116,56 @@ export function buildExploreLayers(
       });
     }
   }
-  for (const t of (data.budgetPseudoTargets as Record<string, unknown>[]) ?? []) {
+  // A review rebuilt from its own workbook (step 1 of the BER plan) gives its
+  // lines and amounts from the record; its earlier comparisons with the
+  // targets wait until they are rebuilt for those lines (step 3).
+  const record = berRecord(data.berData);
+  const complete = record ? completeYears(record) : [];
+  // The same spending in US$ million, each year at its own rate, as the
+  // spending section converts it; none for a review in US$ (Panama's balboa,
+  // at par) or where a year has no rate.
+  const atPar = record?.currency === "PAB";
+  const base = record?.unit === "billion" ? 1e9 : 1e6;
+  const usdRate = new Map(
+    ((record?.years as Record<string, unknown>[] | undefined) ?? []).map((y) => [String(y.year), Number(y.usdRate)]),
+  );
+  const usdMillion = (line: Record<string, unknown>): number | undefined => {
+    if (atPar) return undefined;
+    let usd = 0;
+    for (const year of complete) {
+      const rate = usdRate.get(year);
+      if (!rate || !Number.isFinite(rate) || rate <= 0) return undefined;
+      usd += (countedIn(line, year) * base) / rate / 1e6;
+    }
+    return Math.round(usd * 1000) / 1000;
+  };
+  let everyUsd = !atPar;
+  for (const line of record ? areaLines(record) : []) {
+    const total = complete.reduce((s, y) => s + countedIn(line, y), 0);
+    if (!(total > 0)) continue;
+    const usd = usdMillion(line);
+    if (usd === undefined) everyUsd = false;
+    const code = String(line.code);
+    const own = String(line.name ?? code);
+    const listed = names?.names[code];
+    const shown = shownName(listed, locale);
+    // On the Mongolian page, the review's own Mongolian description where
+    // the workbook has one, else its machine translation, marked.
+    const described = locale === "mn" && listed?.mn ? listed.mnDescription : undefined;
+    items.push({
+      id: `BER_${code}`,
+      layer: "budget",
+      label: `${code} ${own}`,
+      name: shown?.name ?? own,
+      code,
+      ...(shown && !shown.own && shown.name !== own ? { original: own } : {}),
+      ...(shown?.machine ? { translated: "machine" as const } : {}),
+      text: described ?? lineText(line),
+      ...(described && listed?.mnDescriptionMachine && !shown?.machine ? { textTranslated: "machine" as const } : {}),
+      spend: { total: Math.round(total * 1000) / 1000, years: complete.length, ...(usd !== undefined ? { usd } : {}) },
+    });
+  }
+  for (const t of record ? [] : ((data.budgetPseudoTargets as Record<string, unknown>[]) ?? [])) {
     const label = String(t.sourceLabel ?? t.id);
     const [first, ...rest] = label.split(" ");
     const coded = rest.length > 0 && /\d/.test(first);
@@ -162,12 +210,21 @@ export function buildExploreLayers(
     }
   };
   addRows(data.alignment as Record<string, unknown>[]);
-  addRows(data.budgetAlignment as Record<string, unknown>[]);
+  if (!record || data.budgetAlignmentBasis === "ber-record") addRows(data.budgetAlignment as Record<string, unknown>[]);
 
   const ber = asRecord(data.berData);
   const period = asRecord(ber?.period);
-  const budget =
-    ber && period
+  const budget = record
+    ? complete.length
+      ? {
+          currency: shownCurrency(record),
+          unit: String(record.unit ?? ""),
+          start: Number(complete[0]),
+          end: Number(complete[complete.length - 1]),
+          ...(everyUsd ? { usd: true as const } : {}),
+        }
+      : undefined
+    : ber && period
       ? {
           currency: String(ber.currency ?? ""),
           unit: String(ber.unit ?? ""),

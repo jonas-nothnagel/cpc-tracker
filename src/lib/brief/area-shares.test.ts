@@ -93,10 +93,17 @@ describe("sortAreas", () => {
 });
 
 describe("orderRows", () => {
-  it("lays the picture's rows out in the order of the sort, opening with the most aligned areas", () => {
-    expect(DEFAULT_AREA_SORT).toEqual({ key: "reinforce", dir: "desc" });
+  it("opens with the largest areas first, in the order of the list beside the picture", () => {
+    expect(DEFAULT_AREA_SORT).toEqual({ key: "targets", dir: "desc" });
     const rows = lens.areas.map((area) => ({ id: area.id, targets: area.targets }));
-    const order = sortAreas(lens, tones, DEFAULT_AREA_SORT);
+    expect(orderRows(rows, sortAreas(lens, tones, DEFAULT_AREA_SORT)).map((r) => r.id)).toEqual(
+      lens.areas.map((area) => area.id),
+    );
+  });
+
+  it("lays the picture's rows out in the order of the sort", () => {
+    const rows = lens.areas.map((area) => ({ id: area.id, targets: area.targets }));
+    const order = sortAreas(lens, tones, { key: "reinforce", dir: "desc" });
     expect(orderRows(rows, order).map((r) => r.id)).toEqual(["g1", "g5", "g2"]);
     expect(orderRows(rows, order)[1]).toBe(rows[2]);
   });

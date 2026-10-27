@@ -1,0 +1,1783 @@
+{
+  "_provenance": "Built by python/scripts/type_ber_lines.py on 2026-10-23 from python/data/mongolia-ber.json and python/data/globe-expenditure-types.json. AI-estimated: each type is a model's reading of the review's description of the line, to be checked by a person.",
+  "promptVersion": 1,
+  "prompt": "src/ber_areas.py SYSTEM_TEMPLATE, with the catalogue of python/data/globe-expenditure-types.json",
+  "systemSha256": "048c98c10acdbe8835c6adcda7c9d4417a4a66701cad8ad564ed0ac0603443ec",
+  "models": {
+    "first": "gpt-5.4",
+    "second": "claude-opus-5-5 (effort high)"
+  },
+  "threshold": 0.5,
+  "rule": "A line links to a GBF target where both models place it, at the threshold, in an expenditure type BIOFIN files under that target; otherwise it is kept apart.",
+  "counts": {
+    "apart": 1,
+    "type:models-differ": 4,
+    "linked": 14,
+    "type:models-agree": 11
+  },
+  "lines": [
+    {
+      "code": "71408",
+      "description": "Name: Meteorology\nKind: a programme of Mongolia's national budget (code 71408), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to hydrological and meteorological research and monitoring; dissemination of weather forecasts, early warnings, and information on potential hazards and natural disasters to the public; prevention of weather-related risks and severe environmental pollution; activities influencing weather and climate conditions; and the effective utilization of weather and climate resources.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 74%; Social insurance contributions paid by employers 10%; Furniture, current repair expenses 10%; Fixed expenses related to office building 3%; Work, service payment, fee performed by others 1%\nWho spends it (2021): 7 spending units, among them Center for Water, Meteorology and Environmental Research; Center for Meteorology and Environmental Research; Information And Research Institute Of Meteorology, Hydrology And Environment; Flight meteorological center; Central Laboratory of Environmental Analysis; Investment in the Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "6.06.01",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "6.06.01",
+            "score": 0.7,
+            "reasoning": "The programme includes hydrological and meteorological research and monitoring and information on potential hazards and natural disasters, which fits pollution and environmental risk assessment.",
+            "name": "Risk assessments*, including the assessment of ecological limits",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.02.12",
+            "score": 0.6,
+            "reasoning": "It funds recurrent and capital costs for meteorological and environmental monitoring, which directly supports monitoring of ambient air and climate conditions.",
+            "name": "Monitoring* of pollution levels and air quality",
+            "gbf": [
+              7,
+              14
+            ]
+          },
+          {
+            "id": "6.01.01",
+            "score": 0.5,
+            "reasoning": "Hydrological monitoring and environmental analysis create a partial link to identifying pollution sources affecting water and related environmental conditions.",
+            "name": "Identification and verification of pollution sources for soil, groundwater and surface water",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.05.08",
+            "score": 0.5,
+            "reasoning": "The programme mentions severe environmental pollution and monitoring/research functions, indicating some role in assessments and monitoring of other pollution types.",
+            "name": "Assessments*, Monitoring* and Evaluations, as e.g. Impact and Strategic assessments (ex-ante or post), rapid ecological assessments, period and long-term reviews",
+            "gbf": [
+              7,
+              20
+            ]
+          },
+          {
+            "id": "4.07.04",
+            "score": 0.4,
+            "reasoning": "Dissemination of early warnings and information on natural disasters partly serves disaster risk reduction.",
+            "name": "Disaster risk reduction",
+            "gbf": [
+              2,
+              8,
+              11,
+              12,
+              20
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "2.04.05",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "2.04.05",
+            "score": 0.5,
+            "reasoning": "The programme pays for hydrological and meteorological monitoring and research centres, which mainly collect and process environmental data.",
+            "name": "Collection, processing, hosting and storing of data related to biodiversity",
+            "gbf": [
+              1,
+              21
+            ]
+          },
+          {
+            "id": "2.04.07a",
+            "score": 0.4,
+            "reasoning": "Its stated purpose includes hydrological and meteorological research carried out by research institutes and centres.",
+            "name": "a) Basic research and experimental development on natural sciences, engineering, social sciences",
+            "gbf": [
+              20
+            ]
+          },
+          {
+            "id": "6.02.12",
+            "score": 0.3,
+            "reasoning": "Partial link through prevention of severe environmental pollution and the Central Laboratory of Environmental Analysis.",
+            "name": "Monitoring* of pollution levels and air quality",
+            "gbf": [
+              7,
+              14
+            ]
+          },
+          {
+            "id": "4.07.04",
+            "score": 0.3,
+            "reasoning": "Partial link through early warnings and prevention of weather-related risks and natural disasters.",
+            "name": "Disaster risk reduction",
+            "gbf": [
+              2,
+              8,
+              11,
+              12,
+              20
+            ]
+          },
+          {
+            "id": "2.04.06",
+            "score": 0.3,
+            "reasoning": "Weak link through assessment of weather-related hazards and prevention measures.",
+            "name": "Risk frameworks and mitigation strategies",
+            "gbf": [
+              20
+            ]
+          }
+        ]
+      },
+      "type": "6.06.01",
+      "typeStatus": "models-differ",
+      "gbf": [],
+      "status": "apart"
+    },
+    {
+      "code": "71405",
+      "description": "Name: Security of protected areas\nKind: a programme of Mongolia's national budget (code 71405), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the implementation of policies and protection regimes for protected areas, implementation and monitoring of protected area management plans, promotion and awareness-raising activities related to protected areas, and the establishment and maintenance of protected area information databases.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 61%; Work, service payment, fee performed by others 22%; Social insurance contributions paid by employers 8%; Office supplies and inventory 6%; Fixed expenses related to office building 3%\nWho spends it (2021): 31 spending units, among them Administration of Khan Khentii SSPA's security department; Administration of BogdKhan Mountain SPA; Administration of Khuvsgul SSPA's security department; Ulaan Taiga Strictly Protected Area Administration; Gobi Gurvan Saikhan National park’s administration; Administration of Onon Balj NP's security depatment",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "7.01.12",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "7.01.12",
+            "score": 0.9,
+            "reasoning": "The line explicitly covers implementation of protection regimes for protected areas and is spent by protected area security departments and administrations.",
+            "name": "Border patrol and area control, security and legal enforcement of relevant PA regulation",
+            "gbf": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "7.01.16",
+            "score": 0.8,
+            "reasoning": "Most spending is on wages, office costs and other recurrent expenses of protected area administrations, which support PA operations and management.",
+            "name": "Administrative activities, including budgeting, operational and financial planning and accounting and Personnel organization and management of PAs and their governing bodies",
+            "gbf": [
+              15,
+              19
+            ]
+          },
+          {
+            "id": "7.01.03",
+            "score": 0.7,
+            "reasoning": "The description explicitly includes implementation and monitoring of protected area management plans.",
+            "name": "Conservation management plan",
+            "gbf": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "7.01.18",
+            "score": 0.5,
+            "reasoning": "The line explicitly includes promotion and awareness-raising activities related to protected areas.",
+            "name": "Communication, education and public awareness (CEPA)*, including an environmental education plan",
+            "gbf": [
+              21
+            ]
+          },
+          {
+            "id": "7.01.17",
+            "score": 0.4,
+            "reasoning": "The line includes establishment and maintenance of protected area information databases, which supports documentation of conservation activity.",
+            "name": "Documentation of intervention and conservation activity",
+            "gbf": [
+              21
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "7.01.12",
+        "score": 0.75,
+        "ranked": [
+          {
+            "id": "7.01.12",
+            "score": 0.75,
+            "reasoning": "The programme is named 'Security of protected areas', is mostly wages, and is spent by PA administrations and their security departments, which points to ranger patrol and enforcement of PA protection",
+            "name": "Border patrol and area control, security and legal enforcement of relevant PA regulation",
+            "gbf": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "7.01.06",
+            "score": 0.5,
+            "reasoning": "The description covers implementing policies and protection regimes for protected areas, which includes enforcing PA law.",
+            "name": "Legal designation or regulation of protected areas or including an area in relevant existing law",
+            "gbf": [
+              9,
+              22
+            ]
+          },
+          {
+            "id": "7.01.16",
+            "score": 0.4,
+            "reasoning": "Spending is mostly wages, office supplies and office building costs of protected area administrations.",
+            "name": "Administrative activities, including budgeting, operational and financial planning and accounting and Personnel organization and management of PAs and their governing bodies",
+            "gbf": [
+              15,
+              19
+            ]
+          },
+          {
+            "id": "7.01.03",
+            "score": 0.35,
+            "reasoning": "Implementing and monitoring protected area management plans is listed as a purpose.",
+            "name": "Conservation management plan",
+            "gbf": [
+              1,
+              3
+            ]
+          },
+          {
+            "id": "7.01.18",
+            "score": 0.25,
+            "reasoning": "Promotion and awareness-raising about protected areas is one listed purpose.",
+            "name": "Communication, education and public awareness (CEPA)*, including an environmental education plan",
+            "gbf": [
+              21
+            ]
+          }
+        ]
+      },
+      "type": "7.01.12",
+      "typeStatus": "models-agree",
+      "gbf": [
+        1,
+        3
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71404",
+      "description": "Name: Water resource, lake and river management\nKind: a programme of Mongolia's national budget (code 71404), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for water resources, including the Water Authority, Freshwater Resources and Nature Conservation Center, and River Basin Administrations, covering water resource management, improvement and enforcement of water-related legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 62%; Work, service payment, fee performed by others 15%; Social insurance contributions paid by employers 8%; Fixed expenses related to office building 5%; Office supplies and inventory 4%\nWho spends it (2021): 23 spending units, among them Water department; Freshwater Resources Conservation Center; Tuul River Basin Administration; Orkhon-Chuluut river basin administration; Onon-Ulz River Basin Administration; Buir Lake-Menen steppe basin administration",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "9.06.02",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "9.06.02",
+            "score": 0.9,
+            "reasoning": "The programme funds the core functions of water institutions and river basin administrations for water resource management, coordination, regulation and guidance.",
+            "name": "Freshwater Management Plan",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "9.06.05",
+            "score": 0.8,
+            "reasoning": "It explicitly includes improvement and enforcement of water-related legislation by the institutions responsible for freshwater resources.",
+            "name": "Incentives and regulations aiming to prevent the degradation of freshwater ecosystems",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "5.03.03",
+            "score": 0.6,
+            "reasoning": "Much of the spending is wages, office costs and services for state bodies carrying out coordination and administration of water resource functions.",
+            "name": "Administration, coordination and consultation among one or several state agencies or between state agencies and stakeholders*",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "9.06.06",
+            "score": 0.5,
+            "reasoning": "The programme supports regulation and professional guidance for water resources, which partly fits regulation of water users.",
+            "name": "Incentives and regulation for water users (private, commercial, public)",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "9.06.03",
+            "score": 0.2,
+            "reasoning": "River basin administrations may involve collaborative basin management, but community-based approaches are not stated explicitly.",
+            "name": "Enable and support community-based approaches for conservation*",
+            "gbf": [
+              10,
+              14
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "9.06.02",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "9.06.02",
+            "score": 0.7,
+            "reasoning": "The line funds River Basin Administrations and the Water Authority, whose core function is water resource management and coordination of basin-level management.",
+            "name": "Freshwater Management Plan",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "9.06.05",
+            "score": 0.6,
+            "reasoning": "Its stated purpose includes improving and enforcing water-related legislation and regulation for rivers and lakes, which protects freshwater ecosystems from degradation.",
+            "name": "Incentives and regulations aiming to prevent the degradation of freshwater ecosystems",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "9.06.06",
+            "score": 0.4,
+            "reasoning": "",
+            "name": "Incentives and regulation for water users (private, commercial, public)",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "5.03.03",
+            "score": 0.35,
+            "reasoning": "",
+            "name": "Administration, coordination and consultation among one or several state agencies or between state agencies and stakeholders*",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "9.06.04",
+            "score": 0.25,
+            "reasoning": "",
+            "name": "Increase water use efficiency* and reduce overconsumption of freshwater resources",
+            "gbf": [
+              10
+            ]
+          }
+        ]
+      },
+      "type": "9.06.02",
+      "typeStatus": "models-agree",
+      "gbf": [
+        10,
+        14
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71403",
+      "description": "Name: Afforestation\nKind: a programme of Mongolia's national budget (code 71403), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes expenditures related to the core functions of state institutions responsible for forestry, including the Forestry Agency and inter-Soum forest units, covering the establishment of sustainable forest management systems, improvement and implementation of forest legislation, coordination, regulation, and provision of professional and methodological guidance.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 39%; Wages and salaries, bonuses 35%; Other investments 13%; Social insurance contributions paid by employers 4%; Office supplies and inventory 3%\nWho spends it (2021): 41 spending units, among them Forest Research and Development Center; Um.Forest Department; Ga.Game class; Se.Mandal Forest Department; Za.Game class; Or. Inter-soum forest department",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "9.05.05",
+        "score": 0.85,
+        "ranked": [
+          {
+            "id": "9.05.05",
+            "score": 0.85,
+            "reasoning": "The programme covers core functions of forestry institutions to establish sustainable forest management systems and improve and implement forest legislation.",
+            "name": "Incentives and regulation aiming to prevent the degradation of forest ecosystems",
+            "gbf": [
+              10,
+              14
+            ]
+          },
+          {
+            "id": "5.03.03",
+            "score": 0.65,
+            "reasoning": "It explicitly includes coordination, regulation, and professional and methodological guidance by forestry agencies and inter-soum forest units.",
+            "name": "Administration, coordination and consultation among one or several state agencies or between state agencies and stakeholders*",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "5.01.01",
+            "score": 0.55,
+            "reasoning": "The description explicitly mentions improvement and implementation of forest legislation as part of the programme.",
+            "name": "Change of existing or Creation of new laws to protect or restore biodiversity, ensure its sustainable use, guarantee access and benefit sharing and address all drivers of biodiversity loss",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "9.05.10",
+            "score": 0.2,
+            "reasoning": "Provision of professional and methodological guidance by forestry institutions suggests a minor capacity-building element.",
+            "name": "Lifelong learning, technical training & capacity-building*, especially training for forest owners and managers, sectors working with wood and other forest products",
+            "gbf": [
+              21
+            ]
+          },
+          {
+            "id": "2.04.01",
+            "score": 0.15,
+            "reasoning": "One of the spending units is the Forest Research and Development Center, indicating a limited research-related component.",
+            "name": "Support scientific research and research agenda of all sectoral agencies with biodiversity functions",
+            "gbf": [
+              20
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "9.05.05",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "9.05.05",
+            "score": 0.7,
+            "reasoning": "The line funds the core functions of the forestry agency and inter-soum forest units: establishing sustainable forest management systems and implementing and regulating forest legislation.",
+            "name": "Incentives and regulation aiming to prevent the degradation of forest ecosystems",
+            "gbf": [
+              10,
+              14
+            ]
+          },
+          {
+            "id": "9.05.01",
+            "score": 0.6,
+            "reasoning": "The programme is named Afforestation, and 39% of spending is work and services performed by others, consistent with planting and reforestation work.",
+            "name": "Restoration, Af- and reforestation*",
+            "gbf": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "5.03.03",
+            "score": 0.3,
+            "reasoning": "",
+            "name": "Administration, coordination and consultation among one or several state agencies or between state agencies and stakeholders*",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "5.01.01",
+            "score": 0.25,
+            "reasoning": "",
+            "name": "Change of existing or Creation of new laws to protect or restore biodiversity, ensure its sustainable use, guarantee access and benefit sharing and address all drivers of biodiversity loss",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "9.05.10",
+            "score": 0.2,
+            "reasoning": "",
+            "name": "Lifelong learning, technical training & capacity-building*, especially training for forest owners and managers, sectors working with wood and other forest products",
+            "gbf": [
+              21
+            ]
+          }
+        ]
+      },
+      "type": "9.05.05",
+      "typeStatus": "models-agree",
+      "gbf": [
+        10,
+        14
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71411",
+      "description": "Name: Environment policy and administration\nKind: a programme of Mongolia's national budget (code 71411), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to the core functions of government institutions responsible for environmental governance, including improvement of the legal and regulatory framework, development and implementation of legislation and development policies, budget management and oversight, and ensuring integrated coordination and administration.\nWhat it pays for (2020-2021): Wages and salaries, bonuses 44%; Purchase of other goods and services 27%; Work, service payment, fee performed by others 14%; Social insurance contributions paid by employers 6%; Building and facilities 3%\nWho spends it (2021): 48 spending units, among them Ministry of Nature, Environment and Tourism; Bu.Zasag darga; National Park; Capital City Department of Environment; Za.Nature and tourism department; Khu.Nature and tourism department",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "5.03.03",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "5.03.03",
+            "score": 0.9,
+            "reasoning": "The line funds core environmental governance functions including budget management, oversight, integrated coordination and administration across environment institutions.",
+            "name": "Administration, coordination and consultation among one or several state agencies or between state agencies and stakeholders*",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "5.01.01",
+            "score": 0.7,
+            "reasoning": "The description explicitly includes improvement of the legal and regulatory framework and development and implementation of environmental legislation and policies.",
+            "name": "Change of existing or Creation of new laws to protect or restore biodiversity, ensure its sustainable use, guarantee access and benefit sharing and address all drivers of biodiversity loss",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "7.01.16",
+            "score": 0.4,
+            "reasoning": "Some spending units are national parks, so part of the recurrent administrative spending supports protected-area governing bodies and personnel management.",
+            "name": "Administrative activities, including budgeting, operational and financial planning and accounting and Personnel organization and management of PAs and their governing bodies",
+            "gbf": [
+              15,
+              19
+            ]
+          },
+          {
+            "id": "5.02.01",
+            "score": 0.3,
+            "reasoning": "Integrated coordination and administration for environmental governance suggests some mainstreaming of biodiversity-relevant aspects across government processes.",
+            "name": "Policy coherence and mainstreaming to include biodiversity relevant aspects in all other sector's plans, policies, regulations and decision-making processes",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "7.01.12",
+            "score": 0.2,
+            "reasoning": "Because national parks are among the spending units, a small share of wages and operating costs may support park control and enforcement functions.",
+            "name": "Border patrol and area control, security and legal enforcement of relevant PA regulation",
+            "gbf": [
+              1,
+              3
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "5.03.03",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "5.03.03",
+            "score": 0.8,
+            "reasoning": "The programme pays mainly wages and running costs of environmental governance institutions for budget management, oversight, integrated coordination and administration.",
+            "name": "Administration, coordination and consultation among one or several state agencies or between state agencies and stakeholders*",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "5.01.01",
+            "score": 0.5,
+            "reasoning": "Its stated purpose includes improving the legal and regulatory framework and developing and implementing environmental legislation.",
+            "name": "Change of existing or Creation of new laws to protect or restore biodiversity, ensure its sustainable use, guarantee access and benefit sharing and address all drivers of biodiversity loss",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "5.02.01",
+            "score": 0.3,
+            "reasoning": "Development policies and integrated coordination may include mainstreaming biodiversity into other sectors.",
+            "name": "Policy coherence and mainstreaming to include biodiversity relevant aspects in all other sector's plans, policies, regulations and decision-making processes",
+            "gbf": [
+              14
+            ]
+          },
+          {
+            "id": "7.01.16",
+            "score": 0.2,
+            "reasoning": "A National Park is among the spending units, so some administrative costs serve protected areas.",
+            "name": "Administrative activities, including budgeting, operational and financial planning and accounting and Personnel organization and management of PAs and their governing bodies",
+            "gbf": [
+              15,
+              19
+            ]
+          },
+          {
+            "id": "5.03.01",
+            "score": 0.15,
+            "reasoning": "Development and implementation of development policies may include biodiversity strategy planning.",
+            "name": "National Biodiversity Strategies and Action Plans (NBSAP)*",
+            "gbf": [
+              14
+            ]
+          }
+        ]
+      },
+      "type": "5.03.03",
+      "typeStatus": "models-agree",
+      "gbf": [
+        14
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71407",
+      "description": "Name: Air pollution abatement, climate change\nKind: a programme of Mongolia's national budget (code 71407), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the National Program on Air and Environmental Pollution Reduction and climate change policies and plans, aimed at ensuring a healthy and safe living environment for citizens.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 46%; Purchase of other goods and services 20%; Subsidy to private sector 18%; Office supplies and inventory 16%\nWho spends it (2021): 4 spending units, among them Ministry of Nature, Environment and Tourism; Ub. Air Pollution Control Authority; Hovd. The governor; Ub. Department of housing and infrastructure",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "6.02.02",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "6.02.02",
+            "score": 0.9,
+            "reasoning": "The programme finances implementation of the National Program on Air and Environmental Pollution Reduction and climate change policies and plans.",
+            "name": "Air Pollution Management Plan, and Nationally Determined Contributions (NDCs)",
+            "gbf": [
+              7,
+              8,
+              14
+            ]
+          },
+          {
+            "id": "6.02.05",
+            "score": 0.8,
+            "reasoning": "It explicitly includes climate change policies and plans, which relate to reducing CO2 and similar climate-damaging gases.",
+            "name": "Incentives and regulation, to reduce emission of CO2 and similar climate-damaging gases",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.03",
+            "score": 0.5,
+            "reasoning": "The programme includes subsidies to the private sector, which may support cleaner technologies or cleaner products to reduce air pollution.",
+            "name": "Incentives to prevent pollution through in-process modifications (cleaner technologies and/or use of cleaner products) for those modifications",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.04",
+            "score": 0.4,
+            "reasoning": "Air pollution abatement can partly involve treatment of exhaust gases and similar emission-control measures, though this is not stated specifically.",
+            "name": "Incentives and regulation for the treatment of exhaust gases and ventilation air",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.06.03",
+            "score": 0.2,
+            "reasoning": "Some spending on work and services by others could weakly support capacity-building for pollution reduction, but training is not mentioned.",
+            "name": "Lifelong learning, technical training & capacity-building* to reduce pollution harmful for biodiversity and about biodiversity friendly alternatives",
+            "gbf": [
+              21
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "6.02.02",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "6.02.02",
+            "score": 0.6,
+            "reasoning": "The programme finances implementation of the National Program on Air and Environmental Pollution Reduction and climate change policies and plans.",
+            "name": "Air Pollution Management Plan, and Nationally Determined Contributions (NDCs)",
+            "gbf": [
+              7,
+              8,
+              14
+            ]
+          },
+          {
+            "id": "6.02.03",
+            "score": 0.45,
+            "reasoning": "An 18% subsidy to the private sector, with Ulaanbaatar's air pollution authority and housing department as spenders, suggests incentives for cleaner technologies or fuels.",
+            "name": "Incentives to prevent pollution through in-process modifications (cleaner technologies and/or use of cleaner products) for those modifications",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.05",
+            "score": 0.4,
+            "reasoning": "Climate change policies and plans are explicitly included.",
+            "name": "Incentives and regulation, to reduce emission of CO2 and similar climate-damaging gases",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.12",
+            "score": 0.35,
+            "reasoning": "The Ulaanbaatar Air Pollution Control Authority likely carries out air quality monitoring and control.",
+            "name": "Monitoring* of pollution levels and air quality",
+            "gbf": [
+              7,
+              14
+            ]
+          },
+          {
+            "id": "6.02.11",
+            "score": 0.2,
+            "reasoning": "Air pollution abatement may include direct air cleaning measures.",
+            "name": "Clean air to reduce pollution",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          }
+        ]
+      },
+      "type": "6.02.02",
+      "typeStatus": "models-agree",
+      "gbf": [
+        7,
+        8,
+        14
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71412",
+      "description": "Name: R&D Environment\nKind: a programme of Mongolia's national budget (code 71412), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to research activities aimed at preventing environmental pollution and degradation, reducing pollution, and mitigating environmental impacts.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Ministry of Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "2.04.07",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "2.04.07",
+            "score": 0.8,
+            "reasoning": "The programme is for research activities aimed at preventing environmental pollution and degradation and mitigating environmental impacts, which fits general biodiversity-benefiting scientific researc",
+            "name": "Scientific research aiming to benefit biodiversity",
+            "gbf": [
+              20
+            ]
+          },
+          {
+            "id": "6.06.04",
+            "score": 0.7,
+            "reasoning": "Its stated purpose includes research aimed at preventing and reducing pollution, matching research on alternative practices and materials that lessen biodiversity pressure.",
+            "name": "Research on alternative practices and materials that put less pressure on biodiversity or increase biodiversity",
+            "gbf": [
+              7,
+              21
+            ]
+          },
+          {
+            "id": "2.04.06",
+            "score": 0.6,
+            "reasoning": "Research to mitigate environmental impacts and prevent degradation partly fits risk frameworks and mitigation strategies.",
+            "name": "Risk frameworks and mitigation strategies",
+            "gbf": [
+              20
+            ]
+          },
+          {
+            "id": "6.01.03",
+            "score": 0.4,
+            "reasoning": "Research supporting prevention of environmental pollution and degradation has a partial link to developing pollution-prevention incentives and regulation for soil and water.",
+            "name": "Incentives and regulation to prevent soil and water pollution",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "6.02.03",
+            "score": 0.4,
+            "reasoning": "Research to reduce pollution and environmental impacts partly supports cleaner technologies and process modifications for air pollution prevention.",
+            "name": "Incentives to prevent pollution through in-process modifications (cleaner technologies and/or use of cleaner products) for those modifications",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "2.04.07",
+        "score": 0.6,
+        "ranked": [
+          {
+            "id": "2.04.07",
+            "score": 0.6,
+            "reasoning": "The line funds environmental research, contracted out to others, aimed at preventing pollution and degradation, which matches general biodiversity-relevant scientific research.",
+            "name": "Scientific research aiming to benefit biodiversity",
+            "gbf": [
+              20
+            ]
+          },
+          {
+            "id": "6.06.04",
+            "score": 0.5,
+            "reasoning": "Its stated purpose is research to prevent and reduce environmental pollution and mitigate impacts, which aligns with pollution-focused research on alternative practices.",
+            "name": "Research on alternative practices and materials that put less pressure on biodiversity or increase biodiversity",
+            "gbf": [
+              7,
+              21
+            ]
+          },
+          {
+            "id": "2.04.07e",
+            "score": 0.4,
+            "reasoning": "Research on reducing pollution and environmental impacts fits research on practices that put less pressure on biodiversity.",
+            "name": "e) Research on alternative practices and materials that put less pressure on biodiversity or increase biodiversity",
+            "gbf": [
+              20
+            ]
+          },
+          {
+            "id": "5.05.03",
+            "score": 0.3,
+            "reasoning": "Research on mitigating environmental impacts partly overlaps with research and monitoring of environmental conditions and impacts.",
+            "name": "Research and monitoring of the environmental conditions, potential impacts by the intervention and long-term consequences",
+            "gbf": [
+              21
+            ]
+          },
+          {
+            "id": "2.04.07c",
+            "score": 0.25,
+            "reasoning": "Research on environmental degradation may include assessments of current conditions and trends.",
+            "name": "c) Screening and assessments* of current situations and likely trends, as well as assessment of ecological limits, ecosystem impact monitoring",
+            "gbf": [
+              20
+            ]
+          }
+        ]
+      },
+      "type": "2.04.07",
+      "typeStatus": "models-agree",
+      "gbf": [
+        7,
+        20,
+        21
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71406",
+      "description": "Name: Environmental pollution and degradation\nKind: a programme of Mongolia's national budget (code 71406), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to reducing air pollution and conducting quality control; developing alternative products to replace pollution sources; cleaning, collection, transport, disposal, and recycling of waste from public roads, spaces, and facilities; establishment and maintenance of waste recycling services and facilities; and other support measures aimed at reducing environmental pollution.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 85%; Purchase of other goods and services 15%\nWho spends it (2021): 6 spending units, among them Governor's office; Dd. The governor; BU. Nature and tourism department; Bayan-Ulgii Deluun Collateral; BU. Buyant Collateral; BU. Sagsai Collateral",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "6.03.05",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "6.03.05",
+            "score": 0.9,
+            "reasoning": "The programme explicitly pays for cleaning, collection, transport and disposal of waste from public roads, spaces and facilities.",
+            "name": "Collection, treatment and disposal of household, commercial and industrial waste",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.03.04",
+            "score": 0.85,
+            "reasoning": "It includes establishment and maintenance of waste recycling services and facilities.",
+            "name": "Infrastructure and sites for reusing or recycling waste",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "6.02.12",
+            "score": 0.55,
+            "reasoning": "The description includes reducing air pollution and conducting quality control, which indicates monitoring of air pollution levels.",
+            "name": "Monitoring* of pollution levels and air quality",
+            "gbf": [
+              7,
+              14
+            ]
+          },
+          {
+            "id": "6.03.02",
+            "score": 0.45,
+            "reasoning": "Developing alternative products to replace pollution sources partly serves waste and pollution prevention.",
+            "name": "Incentives and regulation to prevent of solid, industrial, medical, hazardous, toxic, etc waste and wastewater",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "6.02.03",
+            "score": 0.4,
+            "reasoning": "Developing alternative products to replace pollution sources partly fits cleaner technologies or cleaner products to prevent air pollution.",
+            "name": "Incentives to prevent pollution through in-process modifications (cleaner technologies and/or use of cleaner products) for those modifications",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "6.03.05",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "6.03.05",
+            "score": 0.7,
+            "reasoning": "The description centres on cleaning, collection, transport and disposal of waste from public roads, spaces and facilities, and 85% of spending is services performed by others.",
+            "name": "Collection, treatment and disposal of household, commercial and industrial waste",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.03.04",
+            "score": 0.5,
+            "reasoning": "The line explicitly includes establishment and maintenance of waste recycling services and facilities.",
+            "name": "Infrastructure and sites for reusing or recycling waste",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "6.02.12",
+            "score": 0.3,
+            "reasoning": "Reducing air pollution with quality control is listed as one purpose.",
+            "name": "Monitoring* of pollution levels and air quality",
+            "gbf": [
+              7,
+              14
+            ]
+          },
+          {
+            "id": "6.02.03",
+            "score": 0.3,
+            "reasoning": "Developing alternative products to replace pollution sources is one stated purpose.",
+            "name": "Incentives to prevent pollution through in-process modifications (cleaner technologies and/or use of cleaner products) for those modifications",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.11",
+            "score": 0.2,
+            "reasoning": "Air pollution reduction is a stated purpose.",
+            "name": "Clean air to reduce pollution",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          }
+        ]
+      },
+      "type": "6.03.05",
+      "typeStatus": "models-agree",
+      "gbf": [
+        7,
+        18
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71401",
+      "description": "Name: Waste management\nKind: a programme of Mongolia's national budget (code 71401), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for activities related to the implementation of the Law on Waste and national and local waste management programs, aimed at reducing the negative impacts of waste on human health and the environment.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 100%\nWho spends it (2021): 1 spending units, among them Su.Bar-Urt Landscaping Service",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "6.03.05",
+        "score": 0.85,
+        "ranked": [
+          {
+            "id": "6.03.05",
+            "score": 0.85,
+            "reasoning": "It finances implementation of the Law on Waste and waste management programs to reduce the negative impacts of waste, which fits waste collection, treatment and disposal services performed by others.",
+            "name": "Collection, treatment and disposal of household, commercial and industrial waste",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.03.09",
+            "score": 0.75,
+            "reasoning": "The budget line explicitly supports implementation of the Law on Waste and national and local waste management programs, indicating regulatory and program implementation on waste management.",
+            "name": "Incentives and regulation, or legislation for (obligatory) impact assessments*, reporting, trade policies, guaranteeing specific standards, including positive and negative incentives",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "6.03.01",
+            "score": 0.35,
+            "reasoning": "It supports national and local waste management programs, giving a partial link to waste strategy and program development/implementation.",
+            "name": "Development and implementation of a waste strategy",
+            "gbf": [
+              7,
+              8,
+              14
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "6.03.05",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "6.03.05",
+            "score": 0.8,
+            "reasoning": "The line funds national and local waste management programmes, with all spending going to contracted work and services through a local landscaping service, which points to waste collection and disposa",
+            "name": "Collection, treatment and disposal of household, commercial and industrial waste",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.03.01",
+            "score": 0.4,
+            "reasoning": "The stated purpose includes implementing the Law on Waste and national and local waste management programmes, which partly matches waste strategy implementation.",
+            "name": "Development and implementation of a waste strategy",
+            "gbf": [
+              7,
+              8,
+              14
+            ]
+          },
+          {
+            "id": "6.03.02",
+            "score": 0.2,
+            "reasoning": "Implementing the Law on Waste may include regulatory measures to prevent waste, but the information gives no detail on this.",
+            "name": "Incentives and regulation to prevent of solid, industrial, medical, hazardous, toxic, etc waste and wastewater",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "6.03.04",
+            "score": 0.15,
+            "reasoning": "Waste management programmes may include recycling sites, but the information does not mention them.",
+            "name": "Infrastructure and sites for reusing or recycling waste",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "8.03.03",
+            "score": 0.1,
+            "reasoning": "The spending unit is a landscaping service, which gives only a weak link to landscape care.",
+            "name": "Landscape care and maintenance service activities",
+            "gbf": [
+              2
+            ]
+          }
+        ]
+      },
+      "type": "6.03.05",
+      "typeStatus": "models-agree",
+      "gbf": [
+        7
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71413",
+      "description": "Name: Environment protection, recovery\nKind: a programme of Mongolia's national budget (code 71413), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes recurrent and capital expenditures related to environmental protection and restoration activities, including: prevention of water pollution, sustainable use of water resources, improvement of water supply levels, protection against water scarcity, expansion of water sources, construction of reservoirs; forest protection and restoration activities such as afforestation, reforestation, seedling preparation and propagation, pest control, forest fire prevention and damage compensation, and forest cleaning; protection of plants from diseases, harmful rodents, pests, and chemical or biological impacts, establishment of quarantine measures, studies on plant distribution and resources, ecological and economic valuation, restoration and cultivation of rare plants; wildlife protection, breeding, sustainable use, reintroduction of endangered species, captive breeding, creation of sustainable use reserves, research, training and awareness-raising, biotechnology measures, monitoring of hunting activities, and prevention of illegal hunting; research, documentation, protection, and regulation of traditional knowledge associated with plant and animal genetic resources, promotion of bioprospecting, innovation research and product development related to genetic resources and associated traditional knowledge, and public awareness and legal outreach related to genetic resources.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 48%; Wages and salaries, bonuses 27%; Purchase of other goods and services 17%; Social insurance contributions paid by employers 4%; Office supplies and inventory 1%\nWho spends it (2021): 83 spending units, among them Capital City Department of Environment; Se.Nature and tourism department; Dd.Nature and tourism department; National Park; Khe.Nature and tourism department; Bkh.Nature and tourism department",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "9.06.05",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "9.06.05",
+            "score": 0.8,
+            "reasoning": "The programme explicitly includes prevention of water pollution, sustainable use of water resources, protection against water scarcity and expansion of water sources.",
+            "name": "Incentives and regulations aiming to prevent the degradation of freshwater ecosystems",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "9.05.01",
+            "score": 0.8,
+            "reasoning": "It explicitly covers forest protection and restoration activities such as afforestation, reforestation, seedling preparation and propagation.",
+            "name": "Restoration, Af- and reforestation*",
+            "gbf": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "7.04.02",
+            "score": 0.8,
+            "reasoning": "It includes wildlife protection, breeding, sustainable use, reintroduction of endangered species and captive breeding.",
+            "name": "Implementation of measures that ensure the species conservation",
+            "gbf": [
+              4
+            ]
+          },
+          {
+            "id": "1.01.01",
+            "score": 0.7,
+            "reasoning": "It includes promotion of bioprospecting, innovation research and product development related to genetic resources and associated traditional knowledge.",
+            "name": "Screening and assessments* of potential uses of genetic resources",
+            "gbf": [
+              13
+            ]
+          },
+          {
+            "id": "9.05.05",
+            "score": 0.7,
+            "reasoning": "Forest protection activities include pest control, forest fire prevention and forest cleaning, which aim to prevent forest degradation.",
+            "name": "Incentives and regulation aiming to prevent the degradation of forest ecosystems",
+            "gbf": [
+              10,
+              14
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "9.05.01",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "9.05.01",
+            "score": 0.5,
+            "reasoning": "The description lists forest protection and restoration, including afforestation, reforestation and seedling preparation and propagation, as a major component.",
+            "name": "Restoration, Af- and reforestation*",
+            "gbf": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "9.06.04",
+            "score": 0.4,
+            "reasoning": "Sustainable use of water resources, protection against water scarcity and expansion of water sources are listed purposes.",
+            "name": "Increase water use efficiency* and reduce overconsumption of freshwater resources",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "9.05.08",
+            "score": 0.4,
+            "reasoning": "",
+            "name": "Plant protection measures, including chemicalization and quarantine of plants",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "7.04.10",
+            "score": 0.35,
+            "reasoning": "",
+            "name": "Prevention and reduction of poaching and illegal wildlife trade",
+            "gbf": [
+              4
+            ]
+          },
+          {
+            "id": "9.09.04",
+            "score": 0.35,
+            "reasoning": "",
+            "name": "Incentives and regulation to retain gathering and harvesting within the ecological limits",
+            "gbf": [
+              5,
+              14
+            ]
+          }
+        ]
+      },
+      "type": "9.06.05",
+      "typeStatus": "models-differ",
+      "gbf": [
+        2,
+        3
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "71410",
+      "description": "Name: Reduce land degradation and prevent from desertification\nKind: a programme of Mongolia's national budget (code 71410), part of the environment function\nWhat it is for (Table 1 of the review's report): Includes financing for projects and measures related to the implementation of the National Action Program to Combat Desertification and related policy documents, aimed at protecting soil and land resources from degradation, reducing the spread of desertification, and restoring degraded land.\nWhat it pays for (2020-2021): Work, service payment, fee performed by others 70%; Wages and salaries, bonuses 19%; Social insurance contributions paid by employers 3%; Furniture, current repair expenses 2%; Purchase of other goods and services 2%\nWho spends it (2021): 2 spending units, among them Environmental research and analysis center; Ministry of Nature, Environment and Tourism",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "8.02.09",
+        "score": 0.95,
+        "ranked": [
+          {
+            "id": "8.02.09",
+            "score": 0.95,
+            "reasoning": "The programme finances implementation of the National Action Program to Combat Desertification, which is explicitly listed under this convention-related restoration category.",
+            "name": "Implementation of relevant conventions, initiatives and alliances",
+            "gbf": [
+              2,
+              14
+            ]
+          },
+          {
+            "id": "8.02.03",
+            "score": 0.85,
+            "reasoning": "It funds measures to restore degraded land and related policy implementation, matching area-based restoration planning and execution.",
+            "name": "Restoration Plan for areas",
+            "gbf": [
+              2
+            ]
+          },
+          {
+            "id": "9.02.13",
+            "score": 0.7,
+            "reasoning": "The programme implements the National Action Program to Combat Desertification, and this category also covers UNCCD-related implementation in sustainable agriculture contexts.",
+            "name": "Implementation of relevant conventions",
+            "gbf": [
+              4,
+              5,
+              14
+            ]
+          },
+          {
+            "id": "8.02.04",
+            "score": 0.7,
+            "reasoning": "Its purpose includes protecting soil and land resources from degradation and reducing the spread of desertification, which aligns with removing drivers of site degradation.",
+            "name": "Removing/ Reducing drivers of degradation for specific site",
+            "gbf": [
+              2,
+              14
+            ]
+          },
+          {
+            "id": "9.08.07",
+            "score": 0.6,
+            "reasoning": "Desertification action can relate to sustainable rangelands, and this category also covers UNCCD implementation, but the line is not specifically about rangelands.",
+            "name": "Implementation of relevant conventions",
+            "gbf": [
+              4,
+              5,
+              14
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "8.02.09",
+        "score": 0.7,
+        "ranked": [
+          {
+            "id": "8.02.09",
+            "score": 0.7,
+            "reasoning": "The programme finances implementation of the National Action Program to Combat Desertification, i.e. UNCCD-related implementation.",
+            "name": "Implementation of relevant conventions, initiatives and alliances",
+            "gbf": [
+              2,
+              14
+            ]
+          },
+          {
+            "id": "9.02.09c",
+            "score": 0.5,
+            "reasoning": "It aims at protecting soil and land resources from degradation, matching soil conservation measures.",
+            "name": "c) Incentives and regulation that put in place measures for soil conservation and restoration and addressing (the causes of) soil biodiversity loss",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "9.08.07",
+            "score": 0.45,
+            "reasoning": "",
+            "name": "Implementation of relevant conventions",
+            "gbf": [
+              4,
+              5,
+              14
+            ]
+          },
+          {
+            "id": "9.02.13",
+            "score": 0.4,
+            "reasoning": "",
+            "name": "Implementation of relevant conventions",
+            "gbf": [
+              4,
+              5,
+              14
+            ]
+          },
+          {
+            "id": "8.02.04",
+            "score": 0.35,
+            "reasoning": "",
+            "name": "Removing/ Reducing drivers of degradation for specific site",
+            "gbf": [
+              2,
+              14
+            ]
+          }
+        ]
+      },
+      "type": "8.02.09",
+      "typeStatus": "models-agree",
+      "gbf": [
+        2,
+        10,
+        14
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "81707",
+      "description": "Name: Air pollution reduction\nKind: a purpose code of Mongolia's national budget (81707), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to reducing and preventing air pollution.\nWhat it pays for (2020-2021): Standard cost 100%\nWho spends it (2020): 2 spending units, among them Ministry of Health; Khu. The governor",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "6.02.05",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "6.02.05",
+            "score": 0.8,
+            "reasoning": "The review says this purpose code covers expenditures for reducing and preventing air pollution, which includes reducing climate-damaging air emissions.",
+            "name": "Incentives and regulation, to reduce emission of CO2 and similar climate-damaging gases",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.02",
+            "score": 0.7,
+            "reasoning": "The line is broadly for reducing and preventing air pollution, fitting general air pollution management measures when no more specific action is given.",
+            "name": "Air Pollution Management Plan, and Nationally Determined Contributions (NDCs)",
+            "gbf": [
+              7,
+              8,
+              14
+            ]
+          },
+          {
+            "id": "6.02.12",
+            "score": 0.3,
+            "reasoning": "Air pollution reduction can indirectly involve monitoring air quality, but the description does not state monitoring explicitly.",
+            "name": "Monitoring* of pollution levels and air quality",
+            "gbf": [
+              7,
+              14
+            ]
+          },
+          {
+            "id": "6.02.03",
+            "score": 0.3,
+            "reasoning": "Preventing air pollution may partly involve cleaner technologies or cleaner products, though the budget line gives no specific implementation detail.",
+            "name": "Incentives to prevent pollution through in-process modifications (cleaner technologies and/or use of cleaner products) for those modifications",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.04",
+            "score": 0.2,
+            "reasoning": "Reducing air pollution can include treatment of exhaust gases, but this is not specified in the description.",
+            "name": "Incentives and regulation for the treatment of exhaust gases and ventilation air",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "6.02.03",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "6.02.03",
+            "score": 0.5,
+            "reasoning": "The line is described as spending on reducing and preventing air pollution, which fits measures to prevent pollution at source through cleaner technologies or products.",
+            "name": "Incentives to prevent pollution through in-process modifications (cleaner technologies and/or use of cleaner products) for those modifications",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.11",
+            "score": 0.45,
+            "reasoning": "The stated purpose of reducing air pollution partly matches measures that clean the air, though the specific methods are not given.",
+            "name": "Clean air to reduce pollution",
+            "gbf": [
+              7,
+              8,
+              18
+            ]
+          },
+          {
+            "id": "6.02.12",
+            "score": 0.25,
+            "reasoning": "Monitoring air quality may be part of general air pollution reduction work, but this is not stated.",
+            "name": "Monitoring* of pollution levels and air quality",
+            "gbf": [
+              7,
+              14
+            ]
+          },
+          {
+            "id": "6.02.02",
+            "score": 0.2,
+            "reasoning": "Planning for air pollution reduction may be included, but this is not specified.",
+            "name": "Air Pollution Management Plan, and Nationally Determined Contributions (NDCs)",
+            "gbf": [
+              7,
+              8,
+              14
+            ]
+          },
+          {
+            "id": "6.02.07",
+            "score": 0.15,
+            "reasoning": "Reducing emissions may be included in general air pollution prevention, but this is not specified.",
+            "name": "Incentives and regulation to reduce sulphur and nitrogen emissions and ground level ozone*",
+            "gbf": [
+              7,
+              18
+            ]
+          }
+        ]
+      },
+      "type": "6.02.05",
+      "typeStatus": "models-differ",
+      "gbf": [
+        7,
+        8,
+        18
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "82212",
+      "description": "Name: Solid waste and environmental pollution removal and cleaning services\nKind: a purpose code of Mongolia's national budget (82212), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to environmental cleaning services, cleaning of public roads and areas, and waste removal.\nWhat it pays for (2020-2021): Office supplies and inventory 72%; Work, service payment, fee performed by others 25%; Subsidy to State owned enterprises (SOE) 1%\nWho spends it (2021): 173 spending units, among them CHD.AAT Organization; BZD.AAT Organization; KHUD.Non budgetary organisations; Songinokhairkhan district; SBD.AAT Organization; Bright. Convenient service department",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "6.03.05",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "6.03.05",
+            "score": 0.9,
+            "reasoning": "The review says this code covers environmental cleaning services, cleaning of public roads and areas, and waste removal, which fits collection and disposal of waste.",
+            "name": "Collection, treatment and disposal of household, commercial and industrial waste",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.01.07",
+            "score": 0.5,
+            "reasoning": "Environmental pollution removal and cleaning services indicate some spending on cleaning polluted public areas, beyond ordinary waste handling.",
+            "name": "Cleaning up of polluted soil, groundwater or surface water",
+            "gbf": [
+              7
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "6.03.05",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "6.03.05",
+            "score": 0.8,
+            "reasoning": "The line pays for waste removal and environmental cleaning services, mostly supplies and contracted services by district/local service units, matching collection, treatment and disposal of waste.",
+            "name": "Collection, treatment and disposal of household, commercial and industrial waste",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.01.07",
+            "score": 0.25,
+            "reasoning": "The description mentions environmental pollution removal and cleaning, which loosely relates to cleaning up polluted areas, but focuses on public roads and areas.",
+            "name": "Cleaning up of polluted soil, groundwater or surface water",
+            "gbf": [
+              7
+            ]
+          },
+          {
+            "id": "6.03.04",
+            "score": 0.1,
+            "reasoning": "Waste management services may include some recycling/handling infrastructure, but this is not stated.",
+            "name": "Infrastructure and sites for reusing or recycling waste",
+            "gbf": [
+              7,
+              18
+            ]
+          },
+          {
+            "id": "8.03.03",
+            "score": 0.1,
+            "reasoning": "Cleaning of public areas is loosely akin to landscape care and maintenance services.",
+            "name": "Landscape care and maintenance service activities",
+            "gbf": [
+              2
+            ]
+          },
+          {
+            "id": "6.04.08",
+            "score": 0.05,
+            "reasoning": "Removing waste before it enters watercourses is only an indirect link.",
+            "name": "Cleaning up beaches and coastal area",
+            "gbf": [
+              7
+            ]
+          }
+        ]
+      },
+      "type": "6.03.05",
+      "typeStatus": "models-agree",
+      "gbf": [
+        7
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "81708",
+      "description": "Name: Afforestation\nKind: a purpose code of Mongolia's national budget (81708), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to establishing plantation forests and forest funds, forest restoration and propagation, and conducting forest inventories in accordance with the Law on Afforestation. Exclusions: expenditures related to tree planting in urban streets, parks, and green spaces are not recorded under this category and are instead recorded under code 82207.",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "9.05.01",
+        "score": 0.9,
+        "ranked": [
+          {
+            "id": "9.05.01",
+            "score": 0.9,
+            "reasoning": "The line covers establishing plantation forests and forest restoration and propagation under the Law on Afforestation, which fits restoration and afforestation of forests.",
+            "name": "Restoration, Af- and reforestation*",
+            "gbf": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "2.04.05",
+            "score": 0.5,
+            "reasoning": "It also includes conducting forest inventories, which is collection and processing of biodiversity-related data.",
+            "name": "Collection, processing, hosting and storing of data related to biodiversity",
+            "gbf": [
+              1,
+              21
+            ]
+          },
+          {
+            "id": "8.02.01",
+            "score": 0.3,
+            "reasoning": "Forest inventories can partly support ecological site assessments for restoration planning.",
+            "name": "Ecological site assessments and evaluations",
+            "gbf": [
+              2,
+              14
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "9.05.01",
+        "score": 0.85,
+        "ranked": [
+          {
+            "id": "9.05.01",
+            "score": 0.85,
+            "reasoning": "The line covers establishing plantation forests, forest restoration and propagation under the Law on Afforestation, which matches restoration, af- and reforestation.",
+            "name": "Restoration, Af- and reforestation*",
+            "gbf": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "8.01.05",
+            "score": 0.5,
+            "reasoning": "Forest restoration and propagation includes reintroducing tree species and reforestation of degraded land.",
+            "name": "Reintroduction of animals and plant species or direct seeding",
+            "gbf": [
+              2,
+              4,
+              5
+            ]
+          },
+          {
+            "id": "2.04.07b",
+            "score": 0.25,
+            "reasoning": "",
+            "name": "b) Fundamental research and gap analysis related to measuring biodiversity change",
+            "gbf": [
+              20
+            ]
+          },
+          {
+            "id": "8.01.04",
+            "score": 0.2,
+            "reasoning": "",
+            "name": "Facilities to guarantee the supply of genetic resources",
+            "gbf": [
+              2
+            ]
+          },
+          {
+            "id": "9.02.04",
+            "score": 0.15,
+            "reasoning": "",
+            "name": "Seed processing (for propagation) and plant propagation by biodiversity friendly methods",
+            "gbf": [
+              10,
+              14
+            ]
+          }
+        ]
+      },
+      "type": "9.05.01",
+      "typeStatus": "models-agree",
+      "gbf": [
+        2,
+        3
+      ],
+      "status": "linked"
+    },
+    {
+      "code": "81703",
+      "description": "Name: Plant protection and restoration\nKind: a purpose code of Mongolia's national budget (81703), counted wherever it appears in programmes outside the environment function\nWhat it is for (Table 2 of the review's report): Includes expenditures related to the protection and restoration of natural vegetation.\nWhat it pays for (2020-2021): Purchase of other goods and services 100%\nWho spends it (2020): 1 spending units, among them Dd. Bayantumen Soum Development Fund",
+      "first": {
+        "model": "gpt-5.4",
+        "type": "8.02.04",
+        "score": 0.8,
+        "ranked": [
+          {
+            "id": "8.02.04",
+            "score": 0.8,
+            "reasoning": "The review says this code covers protection and restoration of natural vegetation, which fits actions removing or reducing drivers of degradation at specific sites.",
+            "name": "Removing/ Reducing drivers of degradation for specific site",
+            "gbf": [
+              2,
+              14
+            ]
+          },
+          {
+            "id": "9.05.01",
+            "score": 0.7,
+            "reasoning": "Restoration of natural vegetation can include reforestation or afforestation-type restoration of vegetated ecosystems, though the description is broader than forests alone.",
+            "name": "Restoration, Af- and reforestation*",
+            "gbf": [
+              2,
+              3
+            ]
+          },
+          {
+            "id": "8.02.03",
+            "score": 0.4,
+            "reasoning": "Protection and restoration of natural vegetation may partly involve area restoration planning, but the description does not explicitly mention plans.",
+            "name": "Restoration Plan for areas",
+            "gbf": [
+              2
+            ]
+          },
+          {
+            "id": "8.03.03",
+            "score": 0.4,
+            "reasoning": "Ongoing protection and restoration of vegetation can partly involve landscape care and maintenance activities, though this is not stated directly.",
+            "name": "Landscape care and maintenance service activities",
+            "gbf": [
+              2
+            ]
+          }
+        ]
+      },
+      "second": {
+        "model": "claude-opus-5-5",
+        "type": "8.01.05",
+        "score": 0.5,
+        "ranked": [
+          {
+            "id": "8.01.05",
+            "score": 0.5,
+            "reasoning": "The line covers restoration of natural vegetation, which matches replanting or seeding native plants, including for range- and grasslands.",
+            "name": "Reintroduction of animals and plant species or direct seeding",
+            "gbf": [
+              2,
+              4,
+              5
+            ]
+          },
+          {
+            "id": "9.05.08",
+            "score": 0.45,
+            "reasoning": "The 'plant protection' part of natural vegetation fits measures that control organisms damaging natural vegetation.",
+            "name": "Plant protection measures, including chemicalization and quarantine of plants",
+            "gbf": [
+              10
+            ]
+          },
+          {
+            "id": "9.08.05",
+            "score": 0.35,
+            "reasoning": "Protecting natural vegetation at soum level may serve to prevent rangeland degradation.",
+            "name": "Incentives and regulation aiming to prevent the degradation of rangelands",
+            "gbf": [
+              10,
+              14
+            ]
+          },
+          {
+            "id": "8.02.04",
+            "score": 0.3,
+            "reasoning": "Protecting vegetation may involve reducing site-specific drivers of degradation.",
+            "name": "Removing/ Reducing drivers of degradation for specific site",
+            "gbf": [
+              2,
+              14
+            ]
+          },
+          {
+            "id": "8.03.03",
+            "score": 0.2,
+            "reasoning": "Purchased goods and services could cover maintenance of restored vegetation.",
+            "name": "Landscape care and maintenance service activities",
+            "gbf": [
+              2
+            ]
+          }
+        ]
+      },
+      "type": "8.02.04",
+      "typeStatus": "models-differ",
+      "gbf": [
+        2
+      ],
+      "status": "linked"
+    }
+  ]
+}

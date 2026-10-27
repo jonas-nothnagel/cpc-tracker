@@ -1,0 +1,18 @@
+{
+  "_source": "World Bank, World Development Indicators, PA.NUS.FCRF 'Official exchange rate (LCU per US$, period average)', https://api.worldbank.org/v2/country/MNG/indicator/PA.NUS.FCRF (series last updated 2026-10-08, retrieved 2026-10-23). Used to show US$ beside an expenditure review's own currency where the review gives no rate of its own (Mongolia). Sri Lanka's review states its own annual rates and those are used instead; Panama's balboa is pegged to the US$ at par.",
+  "MNG": {
+    "currency": "MNT",
+    "perUsd": {
+      "2015": 1970.30916666666,
+      "2016": 2140.29086406116,
+      "2017": 2439.77720111244,
+      "2018": 2472.48405114234,
+      "2019": 2663.54139820162,
+      "2020": 2813.28983532639,
+      "2021": 2849.2886145414,
+      "2022": 3140.67788364809,
+      "2023": 3465.73653626198,
+      "2024": 3389.981520221
+    }
+  }
+}

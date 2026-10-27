@@ -132,13 +132,15 @@ export const COUNTRIES: CountryEntry[] = [
     // twelve documents (NDC 3.0, draft NBSAP, LDN, NAgP, NEnvP, NEneP, NWRP,
     // NLTP, NTP, NPWM, NWP, NPPPP). This list replaced the previous eight on
     // 18 Sep 2026; minerals (NMP) and fisheries (NFAP) are no longer included.
-    // No BTR / BER / NR7 data, so those sections auto-hide.
+    // Its Biodiversity Expenditure Review (2015-2024) is rebuilt from the
+    // review's own workbook and compared with the targets. No BTR / NR7 data,
+    // so those sections auto-hide.
     visible: true,
     has: {
       coherence: true,
       btr: { mitigation: false, adaptation: false },
       nr7: false,
-      ber: false,
+      ber: true,
     },
   },
   {

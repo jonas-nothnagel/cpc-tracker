@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNod
 import { useTranslations } from "next-intl";
 import {
   areaFocus,
-  areaHeadline,
   areaInks,
   areaPairs,
   lensAreas,
@@ -61,8 +60,7 @@ export interface AreaPairRef {
   side: AreaSide;
 }
 
-/** An area's name that points at its row: in the headline it opens its
- *  pair of areas, on the picture it picks the area. */
+/** An area's name on the picture: it points at its row and picks the area. */
 function AreaName({
   children,
   className = "brief-docname",
@@ -150,7 +148,7 @@ export function AreasView({
   const side: AreaSide = view === "targets" ? "apart" : view;
   // Every target of an open area, not only its first ones.
   const [allTargets, setAllTargets] = useState(false);
-  // The column the rows are sorted by: most aligned first, until the reader
+  // The column the rows are sorted by: most targets first, until the reader
   // picks another column or turns the order round.
   const [sort, setSort] = useState<AreaSort>(DEFAULT_AREA_SORT);
   // The area picked by its name on the picture.
@@ -162,9 +160,8 @@ export function AreasView({
   const [fullText, setFullText] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const cardTitle = useRef<HTMLParagraphElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
   // Where keyboard focus goes once a pick or "Back" has re-drawn the list.
-  const moveFocus = useRef<"card" | "headline" | "pair" | null>(null);
+  const moveFocus = useRef<"card" | "pair" | null>(null);
   // An opened pair of areas, or a picked target's card, to bring into view once it has drawn.
   const revealPair = useRef(false);
   const revealCard = useRef(false);
@@ -249,9 +246,9 @@ export function AreasView({
   );
 
   // A picked target's card comes into view. Keyboard focus follows a pick
-  // to the card or to the headline naming the picked area, and "Back" to
-  // the list (the buttons that were pressed are gone); the pointer's focus
-  // stays where it was, so no focus ring appears.
+  // to the card, or to the list the picked area re-draws, and "Back" to the
+  // list (the buttons that were pressed are gone); the pointer's focus stays
+  // where it was, so no focus ring appears.
   useEffect(() => {
     const want = moveFocus.current;
     moveFocus.current = null;
@@ -260,10 +257,6 @@ export function AreasView({
       cardTitle.current?.closest<HTMLElement>(".brief-av-card")?.scrollIntoView?.({ block: "nearest" });
     }
     if (want === "card") cardTitle.current?.focus({ preventScroll: true });
-    if (want === "headline") {
-      headlineRef.current?.focus({ preventScroll: true });
-      headlineRef.current?.scrollIntoView?.({ block: "nearest" });
-    }
     if (want === "pair") {
       const heads = root.current?.querySelectorAll<HTMLElement>(".brief-av-pair-head") ?? [];
       const open = root.current?.querySelector<HTMLElement>('[data-open="true"] .brief-av-pair-head');
@@ -313,7 +306,7 @@ export function AreasView({
     setPointedTarget(null);
     setFullText(false);
     setAllTargets(false);
-    if (!letGo && byKey) moveFocus.current = "headline";
+    if (!letGo && byKey) moveFocus.current = "pair";
   };
   // The targets view's list: an area's row opens its targets, and closes them.
   const toggleArea = (id: string) => {
@@ -364,80 +357,6 @@ export function AreasView({
     setPointedTarget(null);
     if (byKey) moveFocus.current = "pair";
   };
-
-  const head = areaHeadline(pairs);
-  const lead = pairs.top[0];
-  const nameLink = (chunks: ReactNode) =>
-    lead ? (
-      <AreaName
-        onPoint={(on) => setPointedRows(on ? rowsOf(lead) : [])}
-        onOpen={() => {
-          setOpen(lead.key);
-          revealPair.current = true;
-          setPicked(null);
-          setPointedTarget(null);
-        }}
-      >
-        {chunks}
-      </AreaName>
-    ) : (
-      chunks
-    );
-  const lensHeadline = () =>
-    head.kind === "none"
-      ? t("headlineNone", { side })
-      : t.rich(
-          head.kind === "within" ? "headlineWithin" : head.kind === "outside" ? "headlineOutside" : "headlineBetween",
-          {
-            pct: pct(head.share),
-            side,
-            areaA: nameOf(head.a),
-            areaB: head.kind === "between" ? nameOf(head.b) : "",
-            first: nameLink,
-            second: nameLink,
-          },
-        );
-  // A picked area's headline: the share of the side's target pairs that
-  // involve it, counted as its list and the rows count them.
-  const pickedHeadline = (id: string) => {
-    const count = listed.top.reduce((sum, p) => sum + p.count, listed.rest.count);
-    return count === 0
-      ? t("headlineAreaNone", { side, area: nameOf(id) })
-      : t("headlineArea", { pct: pct(count / pairs.total), side, area: nameOf(id) });
-  };
-  // The targets view's headline: the largest area's share of the targets placed,
-  // or the picked area's count.
-  const targetsHeadline = () => {
-    const picked = pickedArea ? area(pickedArea) : undefined;
-    if (picked) {
-      return t("headlineTargetsArea", { count: picked.targets.length, placed: areas.placed, area: picked.name });
-    }
-    // The lens's areas come most targets first (`lensAreas`).
-    const top = areas.areas[0];
-    if (!top || areas.placed === 0) return t("headlineTargetsNone");
-    return t.rich("headlineTargets", {
-      pct: pct(top.targets.length / areas.placed),
-      placed: areas.placed,
-      area: top.name,
-      // The largest area's name opens its targets.
-      first: (chunks) => (
-        <AreaName
-          onPoint={(on) => setPointedRows(on ? [top.id] : [])}
-          onOpen={(byKey) => {
-            setAreaPick(top.id);
-            setPicked(null);
-            setPointedTarget(null);
-            setAllTargets(false);
-            revealPair.current = true;
-            if (byKey) moveFocus.current = "headline";
-          }}
-        >
-          {chunks}
-        </AreaName>
-      ),
-    });
-  };
-  const headline = byTargets ? targetsHeadline() : pickedArea ? pickedHeadline(pickedArea) : lensHeadline();
 
   const card = (backLabel: string) => {
     if (!focusId) return null;
@@ -718,9 +637,8 @@ export function AreasView({
         />
       </div>
       <div className="brief-av-side">
-        <p className="brief-hub-kicker">{t("kicker")}</p>
-        <h2 className="brief-hub-headline" tabIndex={-1} ref={headlineRef}>
-          {headline}
+        <h2 className="brief-hub-headline" tabIndex={-1}>
+          {t("title")}
         </h2>
         <p className="brief-av-choice" role="group" aria-label={t("lensGroup")}>
           {source.lenses.map((l) => (
@@ -758,7 +676,8 @@ export function AreasView({
             {t("backAll")}
           </button>
         )}
-        {byTargets && (
+        {byTargets && areas.areas.length === 0 && <p className="brief-av-none">{t("noneTargets")}</p>}
+        {byTargets && areas.areas.length > 0 && (
           <ol className="brief-av-pairs" aria-label={t("areaList")}>
             {areas.areas.map((a) => {
               const isOpen = pickedArea === a.id;
@@ -817,6 +736,12 @@ export function AreasView({
               );
             })}
           </ol>
+        )}
+        {/* Nothing to list: said in place of the list. */}
+        {!byTargets && !focusId && listed.top.length === 0 && (
+          <p className="brief-av-none">
+            {pickedArea ? t("noneArea", { side, area: nameOf(pickedArea) }) : t("noneSide", { side })}
+          </p>
         )}
         {!byTargets && (restShown || outsideShown) && (
           <p className="brief-av-rest">

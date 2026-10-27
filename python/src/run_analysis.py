@@ -84,7 +84,9 @@ from .nr7_align import (
     assess_nr7_alignment,
 )
 from .budget_align import (
-    programs_to_pseudo_targets,
+    budget_items,
+    budget_meta,
+    drop_stale_translations,
     generate_budget_pairs,
     decompose_programs,
     assess_budget_alignment,
@@ -1040,17 +1042,14 @@ async def main() -> None:
             logger.info("-" * 40)
 
             ber = json.loads(ber_path.read_text())
-            raw_programs = ber.get("programs", [])
-            raw_expenditure = ber.get("expenditure", [])
-            budget_pseudo_targets = programs_to_pseudo_targets(
-                raw_programs, raw_expenditure,
-                currency=ber.get("currency", ""),
-                unit=ber.get("unit", ""),
-                period=ber.get("period"),
+            budget_pseudo_targets, budget_basis = budget_items(
+                derive_country_slug(args.targets_file) or "", ber
             )
-            logger.info(f"  {len(raw_programs)} raw programs -> {len(budget_pseudo_targets)} valid pseudo-targets")
+            logger.info(f"  {len(budget_pseudo_targets)} budget lines ({budget_basis or 'programmes'})")
 
-            if budget_pseudo_targets:
+            # A record's lines take their areas from step 2 of the BER plan
+            # (scripts/place_ber_lines.py: two models, then a person's check).
+            if budget_pseudo_targets and budget_basis != "ber-record":
                 # Ranked classification of BER programs against the active
                 # taxonomies (shared helper; see classify_active_taxonomies).
                 ber_cls = await classify_active_taxonomies(
@@ -1088,22 +1087,30 @@ async def main() -> None:
                     f"{len(ber_gga)} GGA + {len(ber_hr)} human rights)"
                 )
 
-                b_pairs = generate_budget_pairs(targets, budget_pseudo_targets)
+            b_pairs = generate_budget_pairs(targets, budget_pseudo_targets)
 
-                if b_pairs:
-                    budget_decomps = await decompose_programs(budget_pseudo_targets)
-                    all_decomps_budget = {**decompositions, **budget_decomps}
-                    budget_alignment_results = await assess_budget_alignment(
-                        b_pairs, all_decomps_budget, doc_type_labels
-                    )
+            if b_pairs:
+                budget_decomps = await decompose_programs(budget_pseudo_targets)
+                all_decomps_budget = {**decompositions, **budget_decomps}
+                budget_alignment_results = await assess_budget_alignment(
+                    b_pairs, all_decomps_budget, doc_type_labels
+                )
 
-                    out_path = OUTPUT_DIR / "budget_alignment.json"
-                    out_path.write_text(json.dumps(budget_alignment_results, indent=2))
-                    logger.info(f"Saved {len(budget_alignment_results)} budget alignment results")
+                out_path = OUTPUT_DIR / "budget_alignment.json"
+                out_path.write_text(json.dumps(budget_alignment_results, indent=2))
+                logger.info(f"Saved {len(budget_alignment_results)} budget alignment results")
+                # Its per-language overlays translate the earlier explanations.
+                drop_stale_translations(out_path)
 
-                    out_path = OUTPUT_DIR / "budget_pseudo_targets.json"
-                    out_path.write_text(json.dumps(budget_pseudo_targets, indent=2))
-                    logger.info(f"Saved {len(budget_pseudo_targets)} budget pseudo-targets")
+                out_path = OUTPUT_DIR / "budget_pseudo_targets.json"
+                out_path.write_text(json.dumps(budget_pseudo_targets, indent=2))
+                logger.info(f"Saved {len(budget_pseudo_targets)} budget pseudo-targets")
+
+                out_path = OUTPUT_DIR / "budget_alignment.meta.json"
+                out_path.write_text(json.dumps(
+                    budget_meta(budget_basis, config.LLM_MODEL, len(budget_pseudo_targets), len(targets), len(b_pairs)),
+                    indent=2,
+                ))
         else:
             logger.info("")
             logger.info("STEP 7: Skipped (no BER data)")

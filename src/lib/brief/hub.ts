@@ -57,7 +57,7 @@ const MARK_COUNT = 24;
 export const MARK_TEXT = 64;
 
 /** The pairs a side is made of: strong links for what works well, potential
- *  misalignments for where to look closer. */
+ *  misalignments for the areas of potential misalignment. */
 export function sideLevel(side: HubTone): AlignmentLevel {
   return side === "apart" ? "flagged" : "high";
 }

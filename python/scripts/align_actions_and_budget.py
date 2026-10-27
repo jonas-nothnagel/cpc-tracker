@@ -13,13 +13,20 @@ adaptation file brings (run_analysis STEP 2: the policy targets classified
 against its adaptation goals):
   - <output>/<country>/measure_pseudo_targets.json, measure_alignment.json
     (from <output>/<country>/btr_data.json and <data>/<country>-btr-adaptation.json)
-  - <output>/<country>/budget_pseudo_targets.json, budget_alignment.json
-    (from <data>/<country>-ber.json)
+  - <output>/<country>/budget_pseudo_targets.json, budget_alignment.json and
+    budget_alignment.meta.json (from <data>/<country>-ber.json): for a review
+    rebuilt from its workbook (`record`), every line with reviewed spending,
+    read without amounts, the meta marking the basis "ber-record"; the
+    earlier per-language overlays of budget_alignment.json are removed
   - the actions' and budget lines' classifications, replacing any earlier rows
     for the same ids in <output>/<country>/classifications.json, and the
-    targets' adaptation-goal classifications, replacing the earlier ones
+    targets' adaptation-goal classifications, replacing the earlier ones (a
+    record's lines take their areas from scripts/place_ber_lines.py instead)
   - the AI explanations in the agreed vocabulary (scripts/contract_wording.py)
   - one footprint ledger row for the live calls.
+Each target is read from the decomposition its coherence results were built
+from (<output>/<country>/decompositions.json), decomposed only where the file
+has none.
 <output>/<country> is the model's own directory with --model, as in run_analysis.
 
 A smoke run (--limit-targets / --limit-items) writes into --out-dir only and
@@ -43,16 +50,16 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src import config  # noqa: E402
-from src.config import CACHE_DIR, DATA_DIR, OUTPUT_DIR  # noqa: E402
 from src.align import decompose_targets  # noqa: E402
-from src.classify import rank_classification  # noqa: E402
 from src.budget_align import (  # noqa: E402
     assess_budget_alignment,
+    budget_items,
+    budget_meta,
     decompose_programs,
+    drop_stale_translations,
     generate_budget_pairs,
-    programs_to_pseudo_targets,
 )
+from src.classify import rank_classification  # noqa: E402
 from src.classify_globe import load_few_shot_examples  # noqa: E402
 from src.country_taxonomies import load_country_taxonomies  # noqa: E402
 from src.footprint import append_event, electricity_zone  # noqa: E402
@@ -72,6 +79,9 @@ from src.run_analysis import (  # noqa: E402
     derive_output_dir,
     load_input_data,
 )
+
+from src import config  # noqa: E402
+from src.config import CACHE_DIR, DATA_DIR, OUTPUT_DIR  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from contract_wording import agreed_wording  # noqa: E402
@@ -136,6 +146,20 @@ async def classify_adaptation_goals(targets: list[dict], adaptation_path: Path) 
 def write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2))
     logger.info(f"Saved {path}")
+
+
+async def target_decompositions(targets: list[dict], country_dir: Path) -> tuple[dict[str, str], int]:
+    """The decompositions the country's coherence results were built from
+    (<country_dir>/decompositions.json), so a target reads the same in every
+    comparison; a target the file lacks is decomposed (cached like every
+    call). Returns them and how many came from the file."""
+    path = country_dir / "decompositions.json"
+    stored = json.loads(path.read_text()) if path.exists() else {}
+    missing = [t for t in targets if t["id"] not in stored]
+    fresh = await decompose_targets(missing) if missing else {}
+    kept = {t["id"]: stored[t["id"]] for t in targets if t["id"] in stored}
+    logger.info(f"Target decompositions: {len(kept)} from {path}, {len(fresh)} decomposed")
+    return {**kept, **fresh}, len(kept)
 
 
 def in_agreed_wording(results: list[dict]) -> list[dict]:
@@ -226,7 +250,7 @@ async def main() -> None:
         country_taxonomies=country_taxonomies,
     )
 
-    decompositions = await decompose_targets(targets)
+    decompositions, from_file = await target_decompositions(targets, country_dir)
     new_classifications: list[dict] = []
     goal_classifications: list[dict] = []
 
@@ -284,25 +308,29 @@ async def main() -> None:
     # STEP 7: budget lines of the expenditure review against the targets.
     ber_path = DATA_DIR / derive_country_file(args.targets_file, "ber")
     if args.only != "actions" and ber_path.exists():
-        ber = json.loads(ber_path.read_text())
-        pseudo = programs_to_pseudo_targets(
-            ber.get("programs", []),
-            ber.get("expenditure", []),
-            currency=ber.get("currency", ""),
-            unit=ber.get("unit", ""),
-            period=ber.get("period"),
-        )
+        pseudo, basis = budget_items(country, json.loads(ber_path.read_text()))
         if limit is not None:
             pseudo = pseudo[:limit]
-        logger.info(f"{len(pseudo)} budget lines")
+        logger.info(f"{len(pseudo)} budget lines ({'the review record' if basis else 'programmes'})")
 
-        classes = await classify_active_taxonomies(pseudo, **taxonomies, cache_suffix="ber")
-        new_classifications += flat(classes)
+        if basis != "ber-record":
+            # A record's lines take their areas from step 2 of the BER plan
+            # (scripts/place_ber_lines.py: two models, then a person's check).
+            classes = await classify_active_taxonomies(pseudo, **taxonomies, cache_suffix="ber")
+            new_classifications += flat(classes)
         pairs = generate_budget_pairs(targets, pseudo)
         program_decomps = await decompose_programs(pseudo)
         results = await assess_budget_alignment(pairs, {**decompositions, **program_decomps}, doc_type_labels)
         write_json(out_dir / "budget_alignment.json", in_agreed_wording(results))
         write_json(out_dir / "budget_pseudo_targets.json", pseudo)
+        meta = budget_meta(basis, config.LLM_MODEL, len(pseudo), len(targets), len(pairs))
+        meta["targetDecompositions"] = f"{from_file} of {len(targets)} from decompositions.json"
+        blank = [t["id"] for t in targets if not str(t.get("text") or "").strip()]
+        if blank:
+            meta["targetsWithoutText"] = blank
+        write_json(out_dir / "budget_alignment.meta.json", meta)
+        if not smoke:
+            drop_stale_translations(out_dir / "budget_alignment.json")
 
     # The new rows replace any earlier ones for the same actions and lines,
     # and new adaptation-goal rows replace the targets' earlier ones.

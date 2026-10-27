@@ -25,7 +25,7 @@ export const SECTION_IDS: SectionId[] = [
 
 /** The standard brief: three A4 pages, the policy areas last; then, on screen
  *  where the country has them, its reviewed spending and its public
- *  contracts. The documents side by side are offered in the menu, not shown
+ *  contracts. Alignment by document is offered in the menu, not shown
  *  by default. */
 export const DEFAULT_SECTIONS: SectionId[] = [
   "overall",

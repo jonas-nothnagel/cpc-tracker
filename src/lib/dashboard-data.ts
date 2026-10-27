@@ -5,7 +5,8 @@
  * migrates/merges/scrubs it, and returns the exact object the dashboard
  * frontend consumes. Extracted from the `/api/dashboard` route so it can be
  * called server-side from the dashboard page (no client round trip) and from
- * the API route, and so country payloads can be cached + pre-gzipped.
+ * the API route, and so country payloads can be cached (gzipped once, on the
+ * route's first request).
  *
  * Addressing modes:
  *   - analysis (?analysisId=xxx) → python/analyses/{id}/   — never cached (may be mid-run)
@@ -36,6 +37,7 @@ import {
 } from "@/lib/unclassified-bucket";
 import type {
   AlignmentLevel,
+  AlignmentResult,
   BlindEvaluationReport,
   BlindPairSample,
   CountryTaxonomy,
@@ -439,6 +441,10 @@ export interface DashboardResponse {
   berData: unknown;
   budgetAlignment: unknown[] | null;
   budgetPseudoTargets: Record<string, unknown>[] | null;
+  /** "ber-record" where budget_alignment.json was built for the lines of the
+   *  review's rebuilt record (step 3 of the BER plan, budget_alignment.meta.json);
+   *  null for the earlier comparisons, which views of a rebuilt record hide. */
+  budgetAlignmentBasis: string | null;
   /** NR7 reported actions + their alignment (Level-3 biodiversity
    *  implementation). Separate keys like budget, NOT merged into `targets`:
    *  the frontend's reported-action test is `sourceDocument === "BTR"`, so a
@@ -487,10 +493,28 @@ function readLocalizedJson<T>(
   return readJson<T>(join(outputDir, name));
 }
 
+// Budget readings, parsed once per file and shared by the cached country
+// payloads of every locale: only a sparse rationale overlay differs by locale,
+// and nothing mutates the rows. Panama's step 3 holds about 97,000 readings,
+// about 70 MB once parsed, which each locale otherwise held again. Held for
+// the container's lifetime, like the payloads that share them; the landing
+// wheel's assembly keeps only its slice, so it does not share them.
+const budgetReadingsCache = new Map<string, AlignmentResult[] | null>();
+
+function readBudgetReadings(path: string, share: boolean): AlignmentResult[] | null {
+  const shared = share ? budgetReadingsCache.get(path) : undefined;
+  if (shared !== undefined) return shared;
+  const raw = readJson<Record<string, unknown>[]>(path);
+  const rows = raw ? migrateLegacyAlignmentRecords(raw) : null;
+  if (share) budgetReadingsCache.set(path, rows);
+  return rows;
+}
+
 export function assembleDashboardData(
   paths: DerivedPaths,
   kind: "country" | "analysis",
   locale?: string,
+  options: { shareBudgetReadings?: boolean } = {},
 ): AssembleResult {
   const { dataDir, outputDir, targetsFile, iso3, model } = paths;
   // Country-level model registry, surfaced in the payload so the frontend
@@ -782,12 +806,13 @@ export function assembleDashboardData(
   const budgetPseudoTargets = readJson<Record<string, unknown>[]>(
     join(outputDir, "budget_pseudo_targets.json")
   );
-  const budgetAlignmentRaw = readJson<Record<string, unknown>[]>(
-    join(outputDir, "budget_alignment.json")
+  const budgetAlignmentRaw = readBudgetReadings(
+    join(outputDir, "budget_alignment.json"),
+    options.shareBudgetReadings === true,
   );
   const budgetAlignment = budgetAlignmentRaw
     ? applyAlignmentTranslations(
-        migrateLegacyAlignmentRecords(budgetAlignmentRaw),
+        budgetAlignmentRaw,
         rationaleOverlay("budget_alignment.json"),
         locale,
       )
@@ -795,6 +820,8 @@ export function assembleDashboardData(
   const berData = readJson<unknown>(
     join(dataDir, deriveCountryFile(targetsFile, "ber"))
   );
+  const budgetAlignmentMeta = readJson<{ basis?: unknown }>(join(outputDir, "budget_alignment.meta.json"));
+  const budgetAlignmentBasis = typeof budgetAlignmentMeta?.basis === "string" ? budgetAlignmentMeta.basis : null;
 
   // Load environmental footprint snapshot if available
   const footprint = readJson<Record<string, unknown>>(
@@ -941,6 +968,7 @@ export function assembleDashboardData(
       berData: berData ?? null,
       budgetAlignment: budgetAlignment ?? null,
       budgetPseudoTargets: budgetPseudoTargets ?? null,
+      budgetAlignmentBasis,
       nr7Alignment: nr7Alignment ?? null,
       nr7PseudoTargets: nr7PseudoTargets ?? null,
       footprint: footprint ?? null,
@@ -1003,7 +1031,10 @@ export interface SerializedPayload {
   gzip: Uint8Array;
 }
 
-/** A cached country payload: the assembled data plus its serialized forms. */
+/** A cached country payload: the assembled data plus its gzip, built on first
+ *  read, and its JSON built on each read. Pages render from `data` alone; only
+ *  the API route sends the gzip or the JSON, so a page render never pays for
+ *  them. */
 export interface CountryPayload extends SerializedPayload {
   data: DashboardResponse;
 }
@@ -1011,6 +1042,21 @@ export interface CountryPayload extends SerializedPayload {
 function serializePayload(value: unknown): SerializedPayload {
   const json = JSON.stringify(value);
   return { json, gzip: gzipSync(json) };
+}
+
+function lazyPayload(data: DashboardResponse): CountryPayload {
+  let gzip: Uint8Array | undefined;
+  return {
+    data,
+    // Built for each client that cannot take the gzip, and not kept: the
+    // string is about as large as the data (Panama's, 90 million characters).
+    get json() {
+      return JSON.stringify(data);
+    },
+    get gzip() {
+      return (gzip ??= gzipSync(JSON.stringify(data)));
+    },
+  };
 }
 
 /**
@@ -1069,9 +1115,9 @@ export type CountryPayloadResult =
   | { kind: "error"; status: 400 | 404; error: string; missing?: string[] };
 
 /**
- * Resolve, assemble, serialize, and gzip a country's dashboard payload, caching
- * the result for the container's lifetime. Used by both the API route (serves
- * the gzip buffer) and the dashboard page (server-renders from `.data`).
+ * Resolve and assemble a country's dashboard payload, caching it for the
+ * container's lifetime. Used by both the API route (serves the gzip buffer,
+ * built on its first request) and the pages (server-render from `.data`).
  */
 export function getCountryDashboardPayload(
   country: string,
@@ -1083,12 +1129,12 @@ export function getCountryDashboardPayload(
   const cached = countryPayloadCache.get(resolved.key);
   if (cached) return { kind: "ok", payload: cached };
 
-  const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale);
+  const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale, { shareBudgetReadings: true });
   if (assembled.kind === "error") {
     return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
   }
 
-  const payload: CountryPayload = { data: assembled.data, ...serializePayload(assembled.data) };
+  const payload = lazyPayload(assembled.data);
   countryPayloadCache.set(resolved.key, payload);
   return { kind: "ok", payload };
 }

@@ -1,0 +1,11 @@
+{
+  "basis": "ber-record",
+  "promptVersion": 4,
+  "cacheNamespace": "budget_alignment_v4",
+  "model": "gpt-5.4",
+  "lines": 92,
+  "targets": 225,
+  "pairs": 20700,
+  "framing": "Context for this comparison: one side of this pair is a policy target from a national strategy or policy document. The other side is a line of the government budget that the country's Biodiversity Expenditure Review counted as spending relevant to biodiversity, described by what the budget and the review record about it, such as its name, programme, institution and what it pays for. Its amounts are not given: the size of a line has no bearing on the level. Apply the same scoring rubric to what the money of the line is spent on, set against the goals, actions, ecosystems and actors of the target. Running costs (wages, offices, administration) serve the purpose of the body or programme they keep running. A line spent on the very activities, ecosystems or actors the target names is High alignment; a line in the same broad area whose spending does not reach the target's specific goals is Low alignment; a line whose spending pays for activities the target seeks to reduce is Flagged for review, provided the friction meets the flagging gate above. Write the explanation in terms of what the line's spending goes to and how that relates to the target (for example \"the line's spending on protected-area staff\"), without the words \"fund\" or \"finance\", and without judging whether the amount is enough.",
+  "targetDecompositions": "225 of 225 from decompositions.json"
+}

@@ -1,0 +1,1 @@
+Raw NR7 Section III export for Panama from the CBD Online Reporting Tool (public API), fetched 2026-10-23 by scripts/build_ber_chain.py. It feeds python/output/<country>/ber_chain.json (national targets beside reviewed spending).

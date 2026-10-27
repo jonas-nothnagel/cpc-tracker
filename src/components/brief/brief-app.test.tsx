@@ -153,7 +153,7 @@ describe("BriefApp", () => {
   it("adds a page with the documents side by side, which the standard brief leaves out", () => {
     renderApp();
     const sections = screen.getByRole("group", { name: "In the brief" });
-    const documents = within(sections).getByRole("checkbox", { name: /Documents side by side/ }) as HTMLInputElement;
+    const documents = within(sections).getByRole("checkbox", { name: /Alignment by document/ }) as HTMLInputElement;
     expect(documents.checked).toBe(false);
     fireEvent.click(documents);
     expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
@@ -246,7 +246,7 @@ describe("BriefApp screen and print", () => {
     renderApp(briefFixture({ themes: true }));
     // Every stop on the page, the documents side by side included.
     fireEvent.click(
-      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Documents side by side/ }),
+      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Alignment by document/ }),
     );
     // The builder is the menu beside the page, visited last.
     const stops = TOUR_STEPS.brief
@@ -312,9 +312,9 @@ describe("BriefApp screen and print", () => {
     renderApp(briefFixture({ themes: true }));
     const sections = screen.getByRole("group", { name: "In the brief" });
     expect(document.querySelector('[data-step="documents"]')).toBeNull();
-    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Alignment by document/ }));
     expect(document.querySelector('[data-step="documents"]')).not.toBeNull();
-    fireEvent.click(within(sections).getByRole("checkbox", { name: /Documents side by side/ }));
+    fireEvent.click(within(sections).getByRole("checkbox", { name: /Alignment by document/ }));
     expect(document.querySelector('[data-step="documents"]')).toBeNull();
     for (const name of [
       /Overall coherence/,
@@ -357,7 +357,7 @@ describe("BriefApp screen and print", () => {
     const hub = screen.getByTestId("brief-hub");
     const areas = screen.getByTestId("brief-areas");
     expect(hub.compareDocumentPosition(areas) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toContain("targets in these policy areas are");
+    expect(within(areas).getByRole("heading", { level: 2 }).textContent).toBe("Targets and alignment by policy area");
   });
 
   it("chooses the policy areas in the component only, and prints them by the same lens", () => {
@@ -469,7 +469,7 @@ describe("BriefApp accessibility and provenance", () => {
   it("keeps an open drill-down off the printed page", () => {
     renderApp();
     fireEvent.click(
-      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Documents side by side/ }),
+      within(screen.getByRole("group", { name: "In the brief" })).getByRole("checkbox", { name: /Alignment by document/ }),
     );
     const flow = screen.getByTestId("brief-flow");
     // The documents step opens with its first document open.
@@ -504,7 +504,8 @@ describe("BriefApp public contracts", () => {
   };
   const CONTRACTS = { setup: contractsSetup({ file: contractsFixture(), source: WITH }), geo: GEO };
 
-  function renderWith(opts: { explore?: boolean } = {}) {
+  /** `local`: the page in the country's own language, in tugrik with a switch to US$. */
+  function renderWith(opts: { explore?: boolean; local?: boolean } = {}) {
     return render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
         <BriefApp
@@ -512,6 +513,7 @@ describe("BriefApp public contracts", () => {
           initialSelection={defaultSelection(WITH)}
           preparedOn="2026-09-23T10:00:00.000Z"
           contracts={CONTRACTS}
+          {...(opts.local ? { localCurrency: true, initialCurrency: "mnt" as const } : {})}
           explore={
             opts.explore ? { layers: null, groups: ["docs"], initialState: initialExploreState(), initialPair: null } : undefined
           }
@@ -549,8 +551,15 @@ describe("BriefApp public contracts", () => {
     expect(window.location.search).toContain("sections=");
   });
 
-  it("keeps the currency in the link while the brief changes", () => {
+  it("states the contracts in US$ alone on a page not in the country's language", () => {
     renderWith();
+    expect(within(section()!).getByRole("heading", { name: /^US\$71\.4 million in 40 public contracts/ })).toBeTruthy();
+    expect(within(section()!).queryByRole("group", { name: "Amounts in" })).toBeNull();
+    expect(section()!.textContent).not.toContain("₮");
+  });
+
+  it("keeps the currency in the link while the brief changes, on the country's own-language page", () => {
+    renderWith({ local: true });
     fireEvent.click(within(section()!).getByRole("button", { name: "US$" }));
     expect(within(section()!).getByRole("heading", { name: /^US\$71\.4 million in 40 public contracts/ })).toBeTruthy();
     fireEvent.click(screen.getByRole("checkbox", { name: /Document C/ }));
