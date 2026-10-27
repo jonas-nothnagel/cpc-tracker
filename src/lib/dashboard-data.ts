@@ -37,6 +37,7 @@ import {
 } from "@/lib/unclassified-bucket";
 import type {
   AlignmentLevel,
+  AlignmentResult,
   BlindEvaluationReport,
   BlindPairSample,
   CountryTaxonomy,
@@ -492,10 +493,28 @@ function readLocalizedJson<T>(
   return readJson<T>(join(outputDir, name));
 }
 
+// Budget readings, parsed once per file and shared by the cached country
+// payloads of every locale: only a sparse rationale overlay differs by locale,
+// and nothing mutates the rows. Panama's step 3 holds about 97,000 readings,
+// about 70 MB once parsed, which each locale otherwise held again. Held for
+// the container's lifetime, like the payloads that share them; the landing
+// wheel's assembly keeps only its slice, so it does not share them.
+const budgetReadingsCache = new Map<string, AlignmentResult[] | null>();
+
+function readBudgetReadings(path: string, share: boolean): AlignmentResult[] | null {
+  const shared = share ? budgetReadingsCache.get(path) : undefined;
+  if (shared !== undefined) return shared;
+  const raw = readJson<Record<string, unknown>[]>(path);
+  const rows = raw ? migrateLegacyAlignmentRecords(raw) : null;
+  if (share) budgetReadingsCache.set(path, rows);
+  return rows;
+}
+
 export function assembleDashboardData(
   paths: DerivedPaths,
   kind: "country" | "analysis",
   locale?: string,
+  options: { shareBudgetReadings?: boolean } = {},
 ): AssembleResult {
   const { dataDir, outputDir, targetsFile, iso3, model } = paths;
   // Country-level model registry, surfaced in the payload so the frontend
@@ -786,12 +805,13 @@ export function assembleDashboardData(
   const budgetPseudoTargets = readJson<Record<string, unknown>[]>(
     join(outputDir, "budget_pseudo_targets.json")
   );
-  const budgetAlignmentRaw = readJson<Record<string, unknown>[]>(
-    join(outputDir, "budget_alignment.json")
+  const budgetAlignmentRaw = readBudgetReadings(
+    join(outputDir, "budget_alignment.json"),
+    options.shareBudgetReadings === true,
   );
   const budgetAlignment = budgetAlignmentRaw
     ? applyAlignmentTranslations(
-        migrateLegacyAlignmentRecords(budgetAlignmentRaw),
+        budgetAlignmentRaw,
         rationaleOverlay("budget_alignment.json"),
         locale,
       )
@@ -1010,9 +1030,10 @@ export interface SerializedPayload {
   gzip: Uint8Array;
 }
 
-/** A cached country payload: the assembled data plus its serialized forms,
- *  built on first read. Pages render from `data` alone; only the API route
- *  sends the JSON or its gzip, so a page render never pays for them. */
+/** A cached country payload: the assembled data plus its gzip, built on first
+ *  read, and its JSON built on each read. Pages render from `data` alone; only
+ *  the API route sends the gzip or the JSON, so a page render never pays for
+ *  them. */
 export interface CountryPayload extends SerializedPayload {
   data: DashboardResponse;
 }
@@ -1023,15 +1044,16 @@ function serializePayload(value: unknown): SerializedPayload {
 }
 
 function lazyPayload(data: DashboardResponse): CountryPayload {
-  let serialized: SerializedPayload | undefined;
-  const serialize = () => (serialized ??= serializePayload(data));
+  let gzip: Uint8Array | undefined;
   return {
     data,
+    // Built for each client that cannot take the gzip, and not kept: the
+    // string is about as large as the data (Panama's, 90 million characters).
     get json() {
-      return serialize().json;
+      return JSON.stringify(data);
     },
     get gzip() {
-      return serialize().gzip;
+      return (gzip ??= gzipSync(JSON.stringify(data)));
     },
   };
 }
@@ -1106,7 +1128,7 @@ export function getCountryDashboardPayload(
   const cached = countryPayloadCache.get(resolved.key);
   if (cached) return { kind: "ok", payload: cached };
 
-  const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale);
+  const assembled = assembleDashboardData(resolved.paths, "country", resolved.locale, { shareBudgetReadings: true });
   if (assembled.kind === "error") {
     return { kind: "error", status: assembled.status, error: assembled.error, missing: assembled.missing };
   }

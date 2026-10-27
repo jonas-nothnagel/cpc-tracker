@@ -29,6 +29,20 @@ describe("Cached country payload (real files)", () => {
     expect(gunzipSync(gzip).toString("utf8")).toBe(json);
     expect(JSON.parse(json).targets).toHaveLength(first.payload.data.targets.length);
   });
+
+  it("parses a country's budget readings once for the payloads of every locale", () => {
+    const en = getCountryDashboardPayload("panama");
+    const mn = getCountryDashboardPayload("panama", "mn");
+    const es = getCountryDashboardPayload("panama", "es");
+    if (en.kind !== "ok" || mn.kind !== "ok" || es.kind !== "ok") throw new Error("panama payload");
+    const rows = en.payload.data.budgetAlignment as AlignmentResult[];
+    expect(rows.length).toBeGreaterThan(0);
+    // Mongolian has no rationale overlay of its own: the very same rows.
+    expect(mn.payload.data.budgetAlignment).toBe(rows);
+    // Spanish lays its translations over copies, never over the shared rows.
+    expect(es.payload.data.budgetAlignment).toHaveLength(rows.length);
+    expect(rows.some((r) => "descriptionTranslationPending" in r)).toBe(false);
+  });
 });
 
 describe("Panama dashboard payload (real files)", () => {
