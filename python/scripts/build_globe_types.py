@@ -42,7 +42,8 @@ TERMS = (
     "Copyright © 2024. All rights reserved. Reproduction for educational or other "
     "non-commercial purposes is authorized without prior written permission provided "
     "the source is fully acknowledged. Whether the open-source tool may carry this "
-    "table is open with BIOFIN (BER handover, 23 October 2026)."
+    "table was put to BIOFIN (BER handover, 23 October 2026); on 27 October 2026 "
+    "Jonas decided to proceed as if it may, pending BIOFIN's written reply."
 )
 
 

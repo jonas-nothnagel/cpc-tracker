@@ -1,6 +1,6 @@
 {
   "_source": "BIOFIN GLOBE 2024 taxonomy workbook (dev_data_scripts/biofin/2-8_taxonomy_globe.xlsx), the nine category sheets: every level-3 expenditure programme and lettered sub-item, name (column C), definition (D), examples (E) and GBF alignment (M) verbatim; GBF target names from its Matching sheet. Built by python/scripts/build_globe_types.py.",
-  "_terms": "BIOFIN, The Biodiversity Finance Initiative: GLOBE taxonomy workbook (2024). Copyright © 2024. All rights reserved. Reproduction for educational or other non-commercial purposes is authorized without prior written permission provided the source is fully acknowledged. Whether the open-source tool may carry this table is open with BIOFIN (BER handover, 23 October 2026).",
+  "_terms": "BIOFIN, The Biodiversity Finance Initiative: GLOBE taxonomy workbook (2024). Copyright © 2024. All rights reserved. Reproduction for educational or other non-commercial purposes is authorized without prior written permission provided the source is fully acknowledged. Whether the open-source tool may carry this table was put to BIOFIN (BER handover, 23 October 2026); on 27 October 2026 Jonas decided to proceed as if it may, pending BIOFIN's written reply.",
   "gbfTargets": {
     "1": "Spatial planning",
     "2": "Restoration",
