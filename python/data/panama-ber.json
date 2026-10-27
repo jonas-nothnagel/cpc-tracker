@@ -6555,228 +6555,323 @@
         }
       }
     ],
+    "institutions": [
+      {
+        "code": "0-10",
+        "name": "Ministerio de Desarrollo Agropecuario"
+      },
+      {
+        "code": "0-12",
+        "name": "Ministerio de Salud"
+      },
+      {
+        "code": "0-16",
+        "name": "Ministerio de Economía y Finanzas"
+      },
+      {
+        "code": "0-27",
+        "name": "Ministerio de Ambiente"
+      },
+      {
+        "code": "0-3",
+        "name": "Presidencia de la República"
+      },
+      {
+        "code": "0-49",
+        "name": "Defensoría del Pueblo"
+      },
+      {
+        "code": "0-5",
+        "name": "Ministerio de Relaciones Exteriores"
+      },
+      {
+        "code": "0-8",
+        "name": "Ministerio de Comercio e Industrias"
+      },
+      {
+        "code": "1-11",
+        "name": "Instituto Conmemorativo Gorgas de Estudios de la Salud"
+      },
+      {
+        "code": "1-25",
+        "name": "Instituto de Investigación Agropecuaria"
+      },
+      {
+        "code": "1-26",
+        "name": "Autoridad de los Recursos Acuáticos de Panamá"
+      },
+      {
+        "code": "1-45",
+        "name": "Autoridad de Turismo de Panamá"
+      },
+      {
+        "code": "1-7",
+        "name": "Autoridad Nacional de Administración de Tierras"
+      },
+      {
+        "code": "2-38",
+        "name": "Autoridad Aeronáutica Civil"
+      }
+    ],
     "programmes": [
       {
         "code": "0-10-0-2",
         "name": "Asistencia Técnica Agrícola",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Desarrollo Agropecuario"
+        "institution": "Ministerio de Desarrollo Agropecuario",
+        "institutionCode": "0-10"
       },
       {
         "code": "0-10-0-3",
         "name": "Asistencia Técnica Pecuaria",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Desarrollo Agropecuario"
+        "institution": "Ministerio de Desarrollo Agropecuario",
+        "institutionCode": "0-10"
       },
       {
         "code": "0-10-1-2",
         "name": "Programa de Desarrollo Tecnológico",
         "type": "INVERSION",
-        "institution": "Ministerio de Desarrollo Agropecuario"
+        "institution": "Ministerio de Desarrollo Agropecuario",
+        "institutionCode": "0-10"
       },
       {
         "code": "0-10-1-3",
         "name": "Sanidad Agropecuaria",
         "type": "INVERSION",
-        "institution": "Ministerio de Desarrollo Agropecuario"
+        "institution": "Ministerio de Desarrollo Agropecuario",
+        "institutionCode": "0-10"
       },
       {
         "code": "0-10-1-4",
         "name": "Desarrollo Rural Agropecuario",
         "type": "INVERSION",
-        "institution": "Ministerio de Desarrollo Agropecuario"
+        "institution": "Ministerio de Desarrollo Agropecuario",
+        "institutionCode": "0-10"
       },
       {
         "code": "0-10-1-5",
         "name": "Otros Proyectos de Inversión",
         "type": "INVERSION",
-        "institution": "Ministerio de Desarrollo Agropecuario"
+        "institution": "Ministerio de Desarrollo Agropecuario",
+        "institutionCode": "0-10"
       },
       {
         "code": "0-12-0-3",
         "name": "Transferencias Varias",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Salud"
+        "institution": "Ministerio de Salud",
+        "institutionCode": "0-12"
       },
       {
         "code": "0-12-1-2",
         "name": "Salud Ambiental",
         "type": "INVERSION",
-        "institution": "Ministerio de Salud"
+        "institution": "Ministerio de Salud",
+        "institutionCode": "0-12"
       },
       {
         "code": "0-16-0-4",
         "name": "Transferencias Varias",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Economía y Finanzas"
+        "institution": "Ministerio de Economía y Finanzas",
+        "institutionCode": "0-16"
       },
       {
         "code": "0-16-1-2",
         "name": "Fort Gest. Eco. y Admón. Finan.",
         "type": "INVERSION",
-        "institution": "Ministerio de Economía y Finanzas"
+        "institution": "Ministerio de Economía y Finanzas",
+        "institutionCode": "0-16"
       },
       {
         "code": "0-27-0-1",
         "name": "Dirección y Administración General",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-27-0-2",
         "name": "Áreas Protegidas y Vida Silvestre",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-27-0-3",
         "name": "Gestión Ambiental",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-27-0-4",
         "name": "Gestión Integrada de Cuencas Hidrog.",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-27-1-1",
         "name": "Investigación y Manejo de Rec. Naturales",
         "type": "INVERSION",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-27-1-2",
         "name": "Conservación y Desarrollo Sostenible",
         "type": "INVERSION",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-27-1-3",
         "name": "Fortalecimiento Institucional",
         "type": "INVERSION",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-27-1-5",
         "name": "CONADES",
         "type": "INVERSION",
-        "institution": "Ministerio de Ambiente"
+        "institution": "Ministerio de Ambiente",
+        "institutionCode": "0-27"
       },
       {
         "code": "0-3-0-7",
         "name": "Desarrollo Integral - Áreas Prioritarias",
         "type": "FUNCIONAMIENTO",
-        "institution": "Presidencia de la República"
+        "institution": "Presidencia de la República",
+        "institutionCode": "0-3"
       },
       {
         "code": "0-3-1-2",
         "name": "Fort. y Modernización Institucional",
         "type": "INVERSION",
-        "institution": "Presidencia de la República"
+        "institution": "Presidencia de la República",
+        "institutionCode": "0-3"
       },
       {
         "code": "0-3-1-5",
         "name": "Desarrollo Integral Áreas Prioritarias",
         "type": "INVERSION",
-        "institution": "Presidencia de la República"
+        "institution": "Presidencia de la República",
+        "institutionCode": "0-3"
       },
       {
         "code": "0-49-0-2",
         "name": "Protec. y Defensa de los Derechos Hum.",
         "type": "FUNCIONAMIENTO",
-        "institution": "Defensoría del Pueblo"
+        "institution": "Defensoría del Pueblo",
+        "institutionCode": "0-49"
       },
       {
         "code": "0-5-0-3",
         "name": "Transferencias Varias",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Relaciones Exteriores"
+        "institution": "Ministerio de Relaciones Exteriores",
+        "institutionCode": "0-5"
       },
       {
         "code": "0-8-0-7",
         "name": "Transferencias",
         "type": "FUNCIONAMIENTO",
-        "institution": "Ministerio de Comercio e Industrias"
+        "institution": "Ministerio de Comercio e Industrias",
+        "institutionCode": "0-8"
       },
       {
         "code": "1-11-1-1",
         "name": "Const. y Remodelac. de Instalaciones",
         "type": "INVERSION",
-        "institution": "Instituto Conmemorativo Gorgas de Estudios de la Salud"
+        "institution": "Instituto Conmemorativo Gorgas de Estudios de la Salud",
+        "institutionCode": "1-11"
       },
       {
         "code": "1-11-1-3",
         "name": "Investigación",
         "type": "INVERSION",
-        "institution": "Instituto Conmemorativo Gorgas de Estudios de la Salud"
+        "institution": "Instituto Conmemorativo Gorgas de Estudios de la Salud",
+        "institutionCode": "1-11"
       },
       {
         "code": "1-25-0-2",
         "name": "Investigaciones Agropecuarias",
         "type": "FUNCIONAMIENTO",
-        "institution": "Instituto de Investigación Agropecuaria"
+        "institution": "Instituto de Investigación Agropecuaria",
+        "institutionCode": "1-25"
       },
       {
         "code": "1-25-1-1",
         "name": "Investigación e Innovación Agropecuaria",
         "type": "INVERSION",
-        "institution": "Instituto de Investigación Agropecuaria"
+        "institution": "Instituto de Investigación Agropecuaria",
+        "institutionCode": "1-25"
       },
       {
         "code": "1-25-1-2",
         "name": "Apoyo Invest. e Innovación Agropecuaria",
         "type": "INVERSION",
-        "institution": "Instituto de Investigación Agropecuaria"
+        "institution": "Instituto de Investigación Agropecuaria",
+        "institutionCode": "1-25"
       },
       {
         "code": "1-25-1-6",
         "name": "Crédito de Contingencia",
         "type": "INVERSION",
-        "institution": "Instituto de Investigación Agropecuaria"
+        "institution": "Instituto de Investigación Agropecuaria",
+        "institutionCode": "1-25"
       },
       {
         "code": "1-26-0-1",
         "name": "Admón. de los Recursos Acuáticos",
         "type": "FUNCIONAMIENTO",
-        "institution": "Autoridad de los Recursos Acuáticos de Panamá"
+        "institution": "Autoridad de los Recursos Acuáticos de Panamá",
+        "institutionCode": "1-26"
       },
       {
         "code": "1-26-0-2",
         "name": "Desarr. y Conserv. Rec. Acuáticos",
         "type": "FUNCIONAMIENTO",
-        "institution": "Autoridad de los Recursos Acuáticos de Panamá"
+        "institution": "Autoridad de los Recursos Acuáticos de Panamá",
+        "institutionCode": "1-26"
       },
       {
         "code": "1-26-1-1",
         "name": "Invest. y Desar. Recursos Acuáticos",
         "type": "INVERSION",
-        "institution": "Autoridad de los Recursos Acuáticos de Panamá"
+        "institution": "Autoridad de los Recursos Acuáticos de Panamá",
+        "institutionCode": "1-26"
       },
       {
         "code": "1-45-1-1",
         "name": "Promoción Turística",
         "type": "INVERSION",
-        "institution": "Autoridad de Turismo de Panamá"
+        "institution": "Autoridad de Turismo de Panamá",
+        "institutionCode": "1-45"
       },
       {
         "code": "1-45-1-3",
         "name": "Integración de las Ciudades Voc. T.",
         "type": "INVERSION",
-        "institution": "Autoridad de Turismo de Panamá"
+        "institution": "Autoridad de Turismo de Panamá",
+        "institutionCode": "1-45"
       },
       {
         "code": "1-7-1-1",
         "name": "Programa Nal. de Titulación de Tierra",
         "type": "INVERSION",
-        "institution": "Autoridad Nacional de Administración de Tierras"
+        "institution": "Autoridad Nacional de Administración de Tierras",
+        "institutionCode": "1-7"
       },
       {
         "code": "2-38-1-2",
         "name": "Rehabil. y Mantenim. Aeroportuario",
         "type": "INVERSION",
-        "institution": "Autoridad Aeronáutica Civil"
+        "institution": "Autoridad Aeronáutica Civil",
+        "institutionCode": "2-38"
       }
     ],
     "lines": [

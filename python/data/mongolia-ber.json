@@ -792,6 +792,36 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 30.319649289
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 0.03
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 30.090690149
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 0.03
+            }
+          ]
         }
       },
       {
@@ -1145,6 +1175,24 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 10.205471251
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 10.454725964
+            }
+          ]
         }
       },
       {
@@ -1488,6 +1536,24 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 4.356818635
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 4.841143221
+            }
+          ]
         }
       },
       {
@@ -2023,6 +2089,270 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 3.456731738
+            },
+            {
+              "code": "050",
+              "name": "Umnugobi province",
+              "nameMn": "Өмнөговь аймаг",
+              "counted": 0.387545066
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 0.293370619
+            },
+            {
+              "code": "044",
+              "name": "Gobi-Altai province",
+              "nameMn": "Говь-Алтай аймаг",
+              "counted": 0.224971754
+            },
+            {
+              "code": "057",
+              "name": "Khentii province",
+              "nameMn": "Хэнтий аймаг",
+              "counted": 0.191268695
+            },
+            {
+              "code": "040",
+              "name": "Arkhangai province",
+              "nameMn": "Архангай аймаг",
+              "counted": 0.165415222
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 0.160633811
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.1565344
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.148164194
+            },
+            {
+              "code": "048",
+              "name": "Zavkhan province",
+              "nameMn": "Завхан аймаг",
+              "counted": 0.128089444
+            },
+            {
+              "code": "053",
+              "name": "Tuv province",
+              "nameMn": "Төв аймаг",
+              "counted": 0.126302806
+            },
+            {
+              "code": "060",
+              "name": "Orkhon province",
+              "nameMn": "Орхон аймаг",
+              "counted": 0.093761655
+            },
+            {
+              "code": "061",
+              "name": "Gobisumber province",
+              "nameMn": "Говьсүмбэр аймаг",
+              "counted": 0.092627634
+            },
+            {
+              "code": "049",
+              "name": "Uvurkhangai province",
+              "nameMn": "Өвөрхангай аймаг",
+              "counted": 0.067456
+            },
+            {
+              "code": "051",
+              "name": "Sukhbaatar province",
+              "nameMn": "Сүхбаатар аймаг",
+              "counted": 0.066592
+            },
+            {
+              "code": "042",
+              "name": "Bayankhongor province",
+              "nameMn": "Баянхонгор аймаг",
+              "counted": 0.06643119
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.059871674
+            },
+            {
+              "code": "046",
+              "name": "Dornod province",
+              "nameMn": "Дорнод аймаг",
+              "counted": 0.059099328
+            },
+            {
+              "code": "047",
+              "name": "Dundgobi province",
+              "nameMn": "Дундговь аймаг",
+              "counted": 0.053964729
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.052072075
+            },
+            {
+              "code": "058",
+              "name": "Darkhan-Uul province",
+              "nameMn": "Дархан-Уул аймаг",
+              "counted": 0.050424483
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 2.400766172
+            },
+            {
+              "code": "050",
+              "name": "Umnugobi province",
+              "nameMn": "Өмнөговь аймаг",
+              "counted": 0.442626043
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 0.306977407
+            },
+            {
+              "code": "057",
+              "name": "Khentii province",
+              "nameMn": "Хэнтий аймаг",
+              "counted": 0.215295474
+            },
+            {
+              "code": "044",
+              "name": "Gobi-Altai province",
+              "nameMn": "Говь-Алтай аймаг",
+              "counted": 0.177392615
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 0.177264175
+            },
+            {
+              "code": "040",
+              "name": "Arkhangai province",
+              "nameMn": "Архангай аймаг",
+              "counted": 0.174550374
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.1744638
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.144534762
+            },
+            {
+              "code": "053",
+              "name": "Tuv province",
+              "nameMn": "Төв аймаг",
+              "counted": 0.14201774
+            },
+            {
+              "code": "048",
+              "name": "Zavkhan province",
+              "nameMn": "Завхан аймаг",
+              "counted": 0.129282673
+            },
+            {
+              "code": "060",
+              "name": "Orkhon province",
+              "nameMn": "Орхон аймаг",
+              "counted": 0.088518109
+            },
+            {
+              "code": "061",
+              "name": "Gobisumber province",
+              "nameMn": "Говьсүмбэр аймаг",
+              "counted": 0.085232986
+            },
+            {
+              "code": "042",
+              "name": "Bayankhongor province",
+              "nameMn": "Баянхонгор аймаг",
+              "counted": 0.080927278
+            },
+            {
+              "code": "049",
+              "name": "Uvurkhangai province",
+              "nameMn": "Өвөрхангай аймаг",
+              "counted": 0.077419588
+            },
+            {
+              "code": "045",
+              "name": "Dornogobi province",
+              "nameMn": "Дорноговь аймаг",
+              "counted": 0.0715555
+            },
+            {
+              "code": "051",
+              "name": "Sukhbaatar province",
+              "nameMn": "Сүхбаатар аймаг",
+              "counted": 0.066592
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.06590064
+            },
+            {
+              "code": "046",
+              "name": "Dornod province",
+              "nameMn": "Дорнод аймаг",
+              "counted": 0.063928604
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.053568567
+            },
+            {
+              "code": "058",
+              "name": "Darkhan-Uul province",
+              "nameMn": "Дархан-Уул аймаг",
+              "counted": 0.051689874
+            },
+            {
+              "code": "047",
+              "name": "Dundgobi province",
+              "nameMn": "Дундговь аймаг",
+              "counted": 0.051610755
+            }
+          ]
         }
       },
       {
@@ -2598,6 +2928,192 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 5.627135679
+            },
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 4.988480617
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 4.595425916
+            },
+            {
+              "code": "053",
+              "name": "Tuv province",
+              "nameMn": "Төв аймаг",
+              "counted": 1.473737568
+            },
+            {
+              "code": "048",
+              "name": "Zavkhan province",
+              "nameMn": "Завхан аймаг",
+              "counted": 0.946188529
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.87733336
+            },
+            {
+              "code": "040",
+              "name": "Arkhangai province",
+              "nameMn": "Архангай аймаг",
+              "counted": 0.86464347
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.610191802
+            },
+            {
+              "code": "044",
+              "name": "Gobi-Altai province",
+              "nameMn": "Говь-Алтай аймаг",
+              "counted": 0.597637428
+            },
+            {
+              "code": "051",
+              "name": "Sukhbaatar province",
+              "nameMn": "Сүхбаатар аймаг",
+              "counted": 0.552018201
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.477197527
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.45430136
+            },
+            {
+              "code": "050",
+              "name": "Umnugobi province",
+              "nameMn": "Өмнөговь аймаг",
+              "counted": 0.452172012
+            },
+            {
+              "code": "061",
+              "name": "Gobisumber province",
+              "nameMn": "Говьсүмбэр аймаг",
+              "counted": 0.314587958
+            },
+            {
+              "code": "060",
+              "name": "Orkhon province",
+              "nameMn": "Орхон аймаг",
+              "counted": 0.210679499
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 5.87538107
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 4.137408336
+            },
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 3.724322714
+            },
+            {
+              "code": "053",
+              "name": "Tuv province",
+              "nameMn": "Төв аймаг",
+              "counted": 1.668342288
+            },
+            {
+              "code": "048",
+              "name": "Zavkhan province",
+              "nameMn": "Завхан аймаг",
+              "counted": 0.919688214
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.861995675
+            },
+            {
+              "code": "040",
+              "name": "Arkhangai province",
+              "nameMn": "Архангай аймаг",
+              "counted": 0.722540046
+            },
+            {
+              "code": "044",
+              "name": "Gobi-Altai province",
+              "nameMn": "Говь-Алтай аймаг",
+              "counted": 0.655651874
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.611511921
+            },
+            {
+              "code": "051",
+              "name": "Sukhbaatar province",
+              "nameMn": "Сүхбаатар аймаг",
+              "counted": 0.565305265
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.479312694
+            },
+            {
+              "code": "050",
+              "name": "Umnugobi province",
+              "nameMn": "Өмнөговь аймаг",
+              "counted": 0.46546935
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.451503526
+            },
+            {
+              "code": "061",
+              "name": "Gobisumber province",
+              "nameMn": "Говьсүмбэр аймаг",
+              "counted": 0.27653881
+            },
+            {
+              "code": "060",
+              "name": "Orkhon province",
+              "nameMn": "Орхон аймаг",
+              "counted": 0.225351751
+            }
+          ]
         }
       },
       {
@@ -2871,6 +3387,48 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 58.336234139
+            },
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 16.719822722
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.7
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 72.569629929
+            },
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 28.308754574
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.7
+            }
+          ]
         }
       },
       {
@@ -2981,6 +3539,24 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 0.141231161
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 0.00128
+            }
+          ]
         }
       },
       {
@@ -3204,6 +3780,48 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 0.335356847
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.06532965
+            },
+            {
+              "code": "046",
+              "name": "Dornod province",
+              "nameMn": "Дорнод аймаг",
+              "counted": 0.0346806
+            }
+          ],
+          "2021": [
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 0.311429145
+            },
+            {
+              "code": "046",
+              "name": "Dornod province",
+              "nameMn": "Дорнод аймаг",
+              "counted": 0.1175836
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.0742434
+            }
+          ]
         }
       },
       {
@@ -3361,6 +3979,24 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "051",
+              "name": "Sukhbaatar province",
+              "nameMn": "Сүхбаатар аймаг",
+              "counted": 0.5168315
+            }
+          ],
+          "2021": [
+            {
+              "code": "051",
+              "name": "Sukhbaatar province",
+              "nameMn": "Сүхбаатар аймаг",
+              "counted": 0.711661473
+            }
+          ]
         }
       },
       {
@@ -3422,7 +4058,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "71409",
@@ -3483,7 +4120,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "71413",
@@ -4016,6 +4654,174 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 3.600889977
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 1.198187321
+            },
+            {
+              "code": "057",
+              "name": "Khentii province",
+              "nameMn": "Хэнтий аймаг",
+              "counted": 1.001663872
+            },
+            {
+              "code": "042",
+              "name": "Bayankhongor province",
+              "nameMn": "Баянхонгор аймаг",
+              "counted": 0.879145939
+            },
+            {
+              "code": "045",
+              "name": "Dornogobi province",
+              "nameMn": "Дорноговь аймаг",
+              "counted": 0.613766298
+            },
+            {
+              "code": "049",
+              "name": "Uvurkhangai province",
+              "nameMn": "Өвөрхангай аймаг",
+              "counted": 0.606923738
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.596551506
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 0.524957282
+            },
+            {
+              "code": "058",
+              "name": "Darkhan-Uul province",
+              "nameMn": "Дархан-Уул аймаг",
+              "counted": 0.452506306
+            },
+            {
+              "code": "046",
+              "name": "Dornod province",
+              "nameMn": "Дорнод аймаг",
+              "counted": 0.425976676
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.4134089
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.404806418
+            },
+            {
+              "code": "047",
+              "name": "Dundgobi province",
+              "nameMn": "Дундговь аймаг",
+              "counted": 0.404776779
+            },
+            {
+              "code": "061",
+              "name": "Gobisumber province",
+              "nameMn": "Говьсүмбэр аймаг",
+              "counted": 0.00324177
+            }
+          ],
+          "2021": [
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 2.37125277
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 1.203239613
+            },
+            {
+              "code": "046",
+              "name": "Dornod province",
+              "nameMn": "Дорнод аймаг",
+              "counted": 1.184795946
+            },
+            {
+              "code": "057",
+              "name": "Khentii province",
+              "nameMn": "Хэнтий аймаг",
+              "counted": 0.956246779
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.945855213
+            },
+            {
+              "code": "049",
+              "name": "Uvurkhangai province",
+              "nameMn": "Өвөрхангай аймаг",
+              "counted": 0.798964255
+            },
+            {
+              "code": "042",
+              "name": "Bayankhongor province",
+              "nameMn": "Баянхонгор аймаг",
+              "counted": 0.727909367
+            },
+            {
+              "code": "045",
+              "name": "Dornogobi province",
+              "nameMn": "Дорноговь аймаг",
+              "counted": 0.679588623
+            },
+            {
+              "code": "058",
+              "name": "Darkhan-Uul province",
+              "nameMn": "Дархан-Уул аймаг",
+              "counted": 0.557219338
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 0.537660486
+            },
+            {
+              "code": "047",
+              "name": "Dundgobi province",
+              "nameMn": "Дундговь аймаг",
+              "counted": 0.394023605
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.308591329
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.196752981
+            }
+          ]
         }
       },
       {
@@ -4172,6 +4978,24 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 0.476152446
+            }
+          ],
+          "2021": [
+            {
+              "code": "013",
+              "name": "Minister for Nature and Tourism",
+              "nameMn": "Байгаль орчин, аялал жуулчлалын сайд",
+              "counted": 0.849423296
+            }
+          ]
         }
       },
       {
@@ -4282,6 +5106,22 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "020",
+              "name": "Minister of Health",
+              "nameMn": "Эрүүл мэндийн сайд",
+              "counted": 2.385
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.0097225
+            }
+          ]
         }
       },
       {
@@ -4745,6 +5585,240 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 39.34004051
+            },
+            {
+              "code": "050",
+              "name": "Umnugobi province",
+              "nameMn": "Өмнөговь аймаг",
+              "counted": 1.051037408
+            },
+            {
+              "code": "058",
+              "name": "Darkhan-Uul province",
+              "nameMn": "Дархан-Уул аймаг",
+              "counted": 0.805212396
+            },
+            {
+              "code": "042",
+              "name": "Bayankhongor province",
+              "nameMn": "Баянхонгор аймаг",
+              "counted": 0.685838891
+            },
+            {
+              "code": "057",
+              "name": "Khentii province",
+              "nameMn": "Хэнтий аймаг",
+              "counted": 0.469021824
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.4008699
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.3886841
+            },
+            {
+              "code": "061",
+              "name": "Gobisumber province",
+              "nameMn": "Говьсүмбэр аймаг",
+              "counted": 0.353673666
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 0.302367256
+            },
+            {
+              "code": "047",
+              "name": "Dundgobi province",
+              "nameMn": "Дундговь аймаг",
+              "counted": 0.180658021
+            },
+            {
+              "code": "049",
+              "name": "Uvurkhangai province",
+              "nameMn": "Өвөрхангай аймаг",
+              "counted": 0.163231287
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 0.151410183
+            },
+            {
+              "code": "048",
+              "name": "Zavkhan province",
+              "nameMn": "Завхан аймаг",
+              "counted": 0.131
+            },
+            {
+              "code": "053",
+              "name": "Tuv province",
+              "nameMn": "Төв аймаг",
+              "counted": 0.125918105
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.080531686
+            },
+            {
+              "code": "045",
+              "name": "Dornogobi province",
+              "nameMn": "Дорноговь аймаг",
+              "counted": 0.056838882
+            },
+            {
+              "code": "040",
+              "name": "Arkhangai province",
+              "nameMn": "Архангай аймаг",
+              "counted": 0.041264603
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.0028336
+            },
+            {
+              "code": "009",
+              "name": "Deputy Prime Minister of Mongolia",
+              "nameMn": "Монгол Улсын Шадар сайд",
+              "counted": 0.00096
+            }
+          ],
+          "2021": [
+            {
+              "code": "059",
+              "name": "Capital city",
+              "nameMn": "Нийслэл",
+              "counted": 37.170301646
+            },
+            {
+              "code": "042",
+              "name": "Bayankhongor province",
+              "nameMn": "Баянхонгор аймаг",
+              "counted": 0.817264989
+            },
+            {
+              "code": "056",
+              "name": "Khuvsgul province",
+              "nameMn": "Хөвсгөл аймаг",
+              "counted": 0.5986256
+            },
+            {
+              "code": "058",
+              "name": "Darkhan-Uul province",
+              "nameMn": "Дархан-Уул аймаг",
+              "counted": 0.561574542
+            },
+            {
+              "code": "057",
+              "name": "Khentii province",
+              "nameMn": "Хэнтий аймаг",
+              "counted": 0.511594418
+            },
+            {
+              "code": "052",
+              "name": "Selenge province",
+              "nameMn": "Сэлэнгэ аймаг",
+              "counted": 0.49240615
+            },
+            {
+              "code": "061",
+              "name": "Gobisumber province",
+              "nameMn": "Говьсүмбэр аймаг",
+              "counted": 0.41983206
+            },
+            {
+              "code": "054",
+              "name": "Uvs province",
+              "nameMn": "Увс аймаг",
+              "counted": 0.3816309
+            },
+            {
+              "code": "050",
+              "name": "Umnugobi province",
+              "nameMn": "Өмнөговь аймаг",
+              "counted": 0.3734356
+            },
+            {
+              "code": "047",
+              "name": "Dundgobi province",
+              "nameMn": "Дундговь аймаг",
+              "counted": 0.275242046
+            },
+            {
+              "code": "043",
+              "name": "Bulgan province",
+              "nameMn": "Булган аймаг",
+              "counted": 0.170460282
+            },
+            {
+              "code": "049",
+              "name": "Uvurkhangai province",
+              "nameMn": "Өвөрхангай аймаг",
+              "counted": 0.141683967
+            },
+            {
+              "code": "040",
+              "name": "Arkhangai province",
+              "nameMn": "Архангай аймаг",
+              "counted": 0.125
+            },
+            {
+              "code": "053",
+              "name": "Tuv province",
+              "nameMn": "Төв аймаг",
+              "counted": 0.122
+            },
+            {
+              "code": "055",
+              "name": "Khovd province",
+              "nameMn": "Ховд аймаг",
+              "counted": 0.0890831
+            },
+            {
+              "code": "048",
+              "name": "Zavkhan province",
+              "nameMn": "Завхан аймаг",
+              "counted": 0.08
+            },
+            {
+              "code": "045",
+              "name": "Dornogobi province",
+              "nameMn": "Дорноговь аймаг",
+              "counted": 0.051637358
+            },
+            {
+              "code": "041",
+              "name": "Bayan-Ulgii province",
+              "nameMn": "Баян-Өлгий аймаг",
+              "counted": 0.0025
+            },
+            {
+              "code": "009",
+              "name": "Deputy Prime Minister of Mongolia",
+              "nameMn": "Монгол Улсын Шадар сайд",
+              "counted": 0.00076
+            }
+          ]
         }
       },
       {
@@ -4828,7 +5902,8 @@
               }
             ]
           }
-        }
+        },
+        "holders": {}
       },
       {
         "code": "81709",
@@ -4890,7 +5965,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81702",
@@ -4952,7 +6028,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81705",
@@ -5014,7 +6091,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81703",
@@ -5103,6 +6181,16 @@
               }
             ]
           }
+        },
+        "holders": {
+          "2020": [
+            {
+              "code": "046",
+              "name": "Dornod province",
+              "nameMn": "Дорнод аймаг",
+              "counted": 0.005
+            }
+          ]
         }
       },
       {
@@ -5165,7 +6253,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81713",
@@ -5227,7 +6316,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81714",
@@ -5289,7 +6379,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81715",
@@ -5351,7 +6442,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81716",
@@ -5413,7 +6505,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81717",
@@ -5475,7 +6568,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81718",
@@ -5537,7 +6631,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       },
       {
         "code": "81719",
@@ -5599,7 +6694,8 @@
         },
         "relevance": [],
         "payments": [],
-        "bodies": {}
+        "bodies": {},
+        "holders": {}
       }
     ],
     "checks": [
@@ -7802,7 +8898,8 @@
       "Counted is the review's own rule: every line item of the 13 environment programmes at the attribution rate (BAR) of its purpose code, plus 15 environmental purpose codes in other programmes at 100%. Core operating costs count at 100%; capital works coded 80918 at 5%.",
       "All public spending is the State budget and the local budgets, each as executed (gross); transfers from the State budget to local budgets are not netted out.",
       "2024: the workbook's BAR sheet and the report's Table 11 give MNT 196.41 billion, MNT 19.73 billion less than its Program sheet and Table 9, because a helper column those totals filter on is blank in the 2024 sheet's first 130,690 rows. The record follows the Program sheet.",
-      "Line names and descriptions are the report's own (Tables 1 and 2); spending units are named as in the workbook, in English where its 2016-2021 sheet gives English."
+      "Line names and descriptions are the report's own (Tables 1 and 2); spending units are named as in the workbook, in English where its 2016-2021 sheet gives English.",
+      "Budget holders (ministers, the capital city, the provinces) are the 2016-2021 sheet's own (column Admin1, in its English and Mongolian, the leading code kept apart), for 2020 and 2021; in each year their amounts add up to the line's counted amount."
     ]
   }
 }

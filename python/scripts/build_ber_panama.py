@@ -339,7 +339,14 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
         total = sum(c["committed"] for c in shown.values())
         programmes.setdefault(
             (area, entity_code, type_code, prog),
-            {"code": programme_code, "name": programme_name, "type": budget_type, "institution": display[entity]},
+            {
+                "code": programme_code,
+                "name": programme_name,
+                "type": budget_type,
+                "institution": display[entity],
+                # The database's own institution code (area and entity).
+                "institutionCode": f"{area}-{entity_code}",
+            },
         )
         lines.append(
             {
@@ -416,6 +423,10 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
         "usd": {"source": "The balboa is pegged to the US$ at par."},
         "levels": [{"id": "all", "name": "Screened institutions"}],
         "years": years_out,
+        "institutions": [
+            {"code": code, "name": name}
+            for code, name in sorted({p["institutionCode"]: p["institution"] for p in programmes.values()}.items())
+        ],
         "programmes": sorted(programmes.values(), key=lambda p: p["code"]),
         "lines": lines,
         "checks": checks_json(checks),

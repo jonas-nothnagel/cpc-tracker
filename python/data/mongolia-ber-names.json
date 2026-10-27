@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "purpose": "Mongolian names and descriptions for Mongolia's BER budget lines in the brief. Display only: never read by the pipeline or placed in a prompt.",
-    "mn": "Names: the review's own Mongolian, from its workbook (BER_1112.xlsx: programmes on sheet Хөтөлбөр, purpose codes on sheet Зориулалт). Descriptions: the workbook's own Mongolian (Хөтөлбөр column M for 8 programmes, Зориулалт column O for the purpose codes); the workbook has none for 71407, 71401, 71402, 71409, 71410, which keep a machine translation by Claude (2026-10-15), marked mnDescriptionMachine."
+    "purpose": "Mongolian names and descriptions for Mongolia's BER budget lines and their budget holders in the brief. Display only: never read by the pipeline or placed in a prompt.",
+    "mn": "Names: the review's own Mongolian, from its workbook (BER_1112.xlsx: programmes on sheet Хөтөлбөр, purpose codes on sheet Зориулалт, budget holders on sheet 2016-2021, column Admin1_MN). Descriptions: the workbook's own Mongolian (Хөтөлбөр column M for 8 programmes, Зориулалт column O for the purpose codes); the workbook has none for 71407, 71401, 71402, 71409, 71410, which keep a machine translation by Claude (2026-10-15), marked mnDescriptionMachine."
   },
   "names": {
     "71408": {
@@ -120,6 +120,81 @@
     "81719": {
       "mn": "Ойг  нөхөн сэргээх",
       "mnDescription": "Ойжуулалтын тухай хуульд заасны дагуу таримал ой, тарьц суулгац бэлтгэх, үржүүлэх, ой нөхөн сэргээх, зэрэг ойн нөөцийг нэмэгдүүлэх нөхөн сэргээхэд чиглэсэн үйл ажиллагаанд хамаарах зардлыг энэ ангилалд бүртгэнэ."
+    },
+    "013": {
+      "mn": "Байгаль орчин, аялал жуулчлалын сайд"
+    },
+    "052": {
+      "mn": "Сэлэнгэ аймаг"
+    },
+    "050": {
+      "mn": "Өмнөговь аймаг"
+    },
+    "044": {
+      "mn": "Говь-Алтай аймаг"
+    },
+    "057": {
+      "mn": "Хэнтий аймаг"
+    },
+    "040": {
+      "mn": "Архангай аймаг"
+    },
+    "043": {
+      "mn": "Булган аймаг"
+    },
+    "056": {
+      "mn": "Хөвсгөл аймаг"
+    },
+    "054": {
+      "mn": "Увс аймаг"
+    },
+    "048": {
+      "mn": "Завхан аймаг"
+    },
+    "053": {
+      "mn": "Төв аймаг"
+    },
+    "060": {
+      "mn": "Орхон аймаг"
+    },
+    "061": {
+      "mn": "Говьсүмбэр аймаг"
+    },
+    "049": {
+      "mn": "Өвөрхангай аймаг"
+    },
+    "051": {
+      "mn": "Сүхбаатар аймаг"
+    },
+    "042": {
+      "mn": "Баянхонгор аймаг"
+    },
+    "041": {
+      "mn": "Баян-Өлгий аймаг"
+    },
+    "046": {
+      "mn": "Дорнод аймаг"
+    },
+    "047": {
+      "mn": "Дундговь аймаг"
+    },
+    "055": {
+      "mn": "Ховд аймаг"
+    },
+    "058": {
+      "mn": "Дархан-Уул аймаг"
+    },
+    "045": {
+      "mn": "Дорноговь аймаг"
+    },
+    "059": {
+      "mn": "Нийслэл"
+    },
+    "020": {
+      "mn": "Эрүүл мэндийн сайд"
+    },
+    "009": {
+      "mn": "Монгол Улсын Шадар сайд"
     }
   }
 }

@@ -22,6 +22,11 @@ Every line, every year 2016-2024, must equal the workbook's own figure on
 sheet Хөтөлбөр, and every year total its row 29 (report Table 9), or nothing
 is written.
 
+Each line also keeps who holds its budget in 2020 and 2021 (the 2016-2021
+sheet's Admin1 column, in its own English and Mongolian: ministers, the
+capital city, the provinces); in each year the holders' amounts must add up
+to the line's counted amount, or nothing is written.
+
 Run from python/ (about five minutes the first time; the extract is cached in
 python/tmp/ber/):
     .venv/bin/python scripts/build_ber_mongolia.py
@@ -83,6 +88,8 @@ COMPLETE_YEARS = [y for y in SHOWN_YEARS if SHEET_LEVELS[y] == ["central", "loca
 # Bodies kept per line and year for the drill-down; the rest are counted.
 BODIES_KEPT = 15
 PAYMENTS_KEPT = 6
+# The extract's own version, in its cache name: 2 adds the budget holders.
+EXTRACT_VERSION = 2
 
 BN = 1_000_000_000.0
 
@@ -251,6 +258,8 @@ class Item:
     rate: float  # the BAR rate the workbook applied (0 where its lookup found none)
     body: str = ""  # spending unit, in the sheet's own words
     body_en: str = ""
+    holder: str = ""  # who holds the budget (Admin1, 2016-2021 sheet), its English label
+    holder_mn: str = ""
     payment_en: str = ""  # economic classification, third level (2016-2021 sheet)
     payment_mn: str = ""
 
@@ -307,6 +316,8 @@ def read_2016_2021(wb: Workbook, rule: Rule, out: Extract) -> None:
                 rate=_rate(v.get("AA")),
                 body=excel_text(v.get("I")),
                 body_en=excel_text(v.get("H")),
+                holder=excel_text(v.get("D")),
+                holder_mn=excel_text(v.get("E")),
                 payment_en=excel_text(v.get("N")),
                 payment_mn=excel_text(v.get("O")),
             )
@@ -442,7 +453,7 @@ def read_2024(wb: Workbook, rule: Rule, out: Extract) -> None:
 def extract(path: Path, rule: Rule, wb: Workbook) -> Extract:
     stat = path.stat()
     CACHE.mkdir(parents=True, exist_ok=True)
-    cached = CACHE / f"mongolia-extract-{stat.st_size}-{int(stat.st_mtime)}-v{RECORD_VERSION}.pkl"
+    cached = CACHE / f"mongolia-extract-{stat.st_size}-{int(stat.st_mtime)}-v{RECORD_VERSION}-x{EXTRACT_VERSION}.pkl"
     if cached.exists():
         print(f"Line items from the cached extract {cached.name}")
         return pickle.loads(cached.read_bytes())
@@ -551,6 +562,8 @@ def build(workbook: Path, report: Path) -> dict[str, Any]:
     recomputed: dict[str, float] = defaultdict(float)
     cell: dict[tuple[str, str, str], dict[str, float]] = defaultdict(lambda: {"plan": 0.0, "actual": 0.0, "counted": 0.0})
     bodies: dict[tuple[str, str], dict[str, dict[str, Any]]] = defaultdict(dict)
+    holders: dict[tuple[str, str], dict[str, dict[str, Any]]] = defaultdict(dict)
+    holder_names: dict[str, set[tuple[str, str]]] = defaultdict(set)
     relevance: dict[str, dict[str, dict[str, float]]] = defaultdict(dict)
     payments: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
     for it in ex.items:
@@ -567,6 +580,14 @@ def build(workbook: Path, report: Path) -> dict[str, Any]:
             b["counted"] += it.counted
             b["actual"] += it.actual
         if it.year in COMPLETE_YEARS:
+            # Who holds the budget, by the code that opens its label ("013 ...").
+            code = code_of(it.holder)
+            if not code or code != code_of(it.holder_mn):
+                raise SystemExit(f"{it.year}, line {it.line}: a counted line item without one budget holder ({it.holder!r}, {it.holder_mn!r})")
+            name, name_mn = (re.sub(r"^\d+\s+", "", label).strip() for label in (it.holder, it.holder_mn))
+            holder_names[code].add((name, name_mn))
+            h = holders[(it.line, it.year)].setdefault(code, {"code": code, "name": name, "nameMn": name_mn, "counted": 0.0})
+            h["counted"] += it.counted
             r = relevance[it.line].setdefault(it.purpose, {"rate": it.rate, "actual": 0.0, "counted": 0.0})
             r["actual"] += it.actual
             r["counted"] += it.counted
@@ -629,6 +650,17 @@ def build(workbook: Path, report: Path) -> dict[str, Any]:
                 )
     require_reproduced(checks)
 
+    # The budget holders: one name per code, and in every line and year their
+    # amounts add up to the line's counted amount, to the tögrög.
+    for code, names in sorted(holder_names.items()):
+        if len(names) > 1:
+            raise SystemExit(f"Budget holder {code} has more than one name in {', '.join(COMPLETE_YEARS)}: {sorted(names)}")
+    for line in lines:
+        for year in COMPLETE_YEARS:
+            held = sum(h["counted"] for h in holders[(line, year)].values())
+            if abs(held - counted[(line, year)]) > 0.5:
+                raise SystemExit(f"{year}, line {line}: its budget holders add up to MNT {held:,.2f}, not its counted MNT {counted[(line, year)]:,.2f}")
+
     rates = usd_rates("MNG")
     years_out = []
     for year in SHOWN_YEARS:
@@ -684,6 +716,12 @@ def build(workbook: Path, report: Path) -> dict[str, Any]:
                         for b in found[:BODIES_KEPT]
                     ],
                 }
+        holder_years = {}
+        for year in COMPLETE_YEARS:
+            found = sorted(holders[(line, year)].values(), key=lambda h: (-h["counted"], h["code"]))
+            found = [h for h in found if abs(h["counted"]) > 0]
+            if found:
+                holder_years[year] = [{**h, "counted": amount(h["counted"] / BN)} for h in found]
         rel = []
         for purpose, r in sorted(relevance[line].items(), key=lambda kv: -kv[1]["actual"]):
             if abs(r["actual"]) < 1 and abs(r["counted"]) < 1:
@@ -717,6 +755,7 @@ def build(workbook: Path, report: Path) -> dict[str, Any]:
                 "relevance": rel,
                 "payments": pays,
                 "bodies": body_years,
+                "holders": holder_years,
             }
         )
 
@@ -759,6 +798,7 @@ def build(workbook: Path, report: Path) -> dict[str, Any]:
             "All public spending is the State budget and the local budgets, each as executed (gross); transfers from the State budget to local budgets are not netted out.",
             f"2024: the workbook's BAR sheet and the report's Table 11 give MNT {total_2024_bar_sheet} billion, MNT 19.73 billion less than its Program sheet and Table 9, because a helper column those totals filter on is blank in the 2024 sheet's first 130,690 rows. The record follows the Program sheet.",
             "Line names and descriptions are the report's own (Tables 1 and 2); spending units are named as in the workbook, in English where its 2016-2021 sheet gives English.",
+            "Budget holders (ministers, the capital city, the provinces) are the 2016-2021 sheet's own (column Admin1, in its English and Mongolian, the leading code kept apart), for 2020 and 2021; in each year their amounts add up to the line's counted amount.",
         ],
     }
     return {

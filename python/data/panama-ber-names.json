@@ -1,8 +1,20 @@
 {
   "_meta": {
-    "purpose": "Display names for Panama's BER budget lines (activities and their programmes) in the brief. Display only: never read by the pipeline or placed in a prompt.",
+    "purpose": "Display names for Panama's BER budget lines (activities, their programmes and institutions) in the brief. Display only: never read by the pipeline or placed in a prompt.",
     "es": "The review's own names (panama-ber.json, from BIOFIN's budget database) with their abbreviations written out by the list below, double spaces collapsed; no word added or changed. List agreed with Jonas on 2026-10-05.",
-    "en": "Translations of the written-out names (machine translation by gpt-5.4, 2026-10-23), shown flagged as translations, with the review's own name kept beside them.",
+    "en": "Translations of the written-out names (machine translation, by the runs listed below), shown flagged as translations, with the review's own name kept beside them.",
+    "runs": [
+      {
+        "date": "2026-10-23",
+        "model": "gpt-5.4",
+        "names": 295
+      },
+      {
+        "date": "2026-10-27",
+        "model": "gpt-5.4",
+        "names": 14
+      }
+    ],
     "abbreviations": {
       "Admón.": "Administración",
       "Rehabil.": "Rehabilitación",
@@ -89,6 +101,10 @@
     ]
   },
   "names": {
+    "0-10": {
+      "es": "Ministerio de Desarrollo Agropecuario",
+      "en": "Ministry of Agricultural Development"
+    },
     "0-10-0-2": {
       "es": "Asistencia Técnica Agrícola",
       "en": "Agricultural Technical Assistance"
@@ -201,6 +217,10 @@
       "es": "Fortalecimiento Gestion Amb. Pers. Tecn. y Serv. Especfico-Mida",
       "en": "Strengthening Environmental Management of Technical Personnel and Specific Services - MIDA"
     },
+    "0-12": {
+      "es": "Ministerio de Salud",
+      "en": "Ministry of Health"
+    },
     "0-12-0-3": {
       "es": "Transferencias Varias",
       "en": "Various Transfers"
@@ -217,6 +237,10 @@
       "es": "Fortalecimiento Vigilancia Salud Ambiental",
       "en": "Strengthening Environmental Health Surveillance"
     },
+    "0-16": {
+      "es": "Ministerio de Economía y Finanzas",
+      "en": "Ministry of Economy and Finance"
+    },
     "0-16-0-4": {
       "es": "Transferencias Varias",
       "en": "Various Transfers"
@@ -232,6 +256,10 @@
     "0-16-1-2-30-42": {
       "es": "Saneamiento Verificación y Limpieza Davis Colón",
       "en": "Sanitation Verification and Cleaning Davis Colón"
+    },
+    "0-27": {
+      "es": "Ministerio de Ambiente",
+      "en": "Ministry of Environment"
     },
     "0-27-0-1": {
       "es": "Dirección y Administración General",
@@ -777,6 +805,10 @@
       "es": "Capacitación Gestiòn de Residuos Sòlidos en 30 Comunidades",
       "en": "Training in Solid Waste Management in 30 Communities"
     },
+    "0-3": {
+      "es": "Presidencia de la República",
+      "en": "Office of the President of the Republic"
+    },
     "0-3-0-7": {
       "es": "Desarrollo Integral - Áreas Prioritarias",
       "en": "Comprehensive Development - Priority Areas"
@@ -829,6 +861,10 @@
       "es": "Desarrollo Sostenible de Colón",
       "en": "Sustainable Development of Colón"
     },
+    "0-49": {
+      "es": "Defensoría del Pueblo",
+      "en": "Ombudsman's Office"
+    },
     "0-49-0-2": {
       "es": "Protec. y Defensa de los Derechos Hum.",
       "en": "Protection and Defense of Human Rights"
@@ -836,6 +872,10 @@
     "0-49-0-2-2-3": {
       "es": "Asuntos Ambientales",
       "en": "Environmental Affairs"
+    },
+    "0-5": {
+      "es": "Ministerio de Relaciones Exteriores",
+      "en": "Ministry of Foreign Affairs"
     },
     "0-5-0-3": {
       "es": "Transferencias Varias",
@@ -849,6 +889,10 @@
       "es": "CIDES Centro de Desarrollo Sostenible",
       "en": "CIDES Sustainable Development Center"
     },
+    "0-8": {
+      "es": "Ministerio de Comercio e Industrias",
+      "en": "Ministry of Commerce and Industries"
+    },
     "0-8-0-7": {
       "es": "Transferencias",
       "en": "Transfers"
@@ -856,6 +900,10 @@
     "0-8-0-7-2-19": {
       "es": "Contrib. Protección y Obtención de Vegetales.",
       "en": "Contribution for the Protection and Obtaining of Plants"
+    },
+    "1-11": {
+      "es": "Instituto Conmemorativo Gorgas de Estudios de la Salud",
+      "en": "Gorgas Memorial Institute for Health Studies"
     },
     "1-11-1-1": {
       "es": "Construcción y Remodelación de Instalaciones",
@@ -1013,6 +1061,10 @@
       "es": "Estudio de la carga parasitaria de importancia médica",
       "en": "Study of the parasitic load of medical importance"
     },
+    "1-25": {
+      "es": "Instituto de Investigación Agropecuaria",
+      "en": "Agricultural Research Institute"
+    },
     "1-25-0-2": {
       "es": "Investigaciones Agropecuarias",
       "en": "Agricultural Research"
@@ -1060,6 +1112,10 @@
     "1-25-1-6-1-1": {
       "es": "Desarrollo Prevención. y Manejo de Plagas y Enfermedades",
       "en": "Development of Prevention and Management of Pests and Diseases"
+    },
+    "1-26": {
+      "es": "Autoridad de los Recursos Acuáticos de Panamá",
+      "en": "Panama Aquatic Resources Authority"
     },
     "1-26-0-1": {
       "es": "Administración de los Recursos Acuáticos",
@@ -1261,6 +1317,10 @@
       "es": "Desarrollo Toxonomía molecular de Macroalgas en Azuero",
       "en": "Development of Molecular Taxonomy of Macroalgae in Azuero"
     },
+    "1-45": {
+      "es": "Autoridad de Turismo de Panamá",
+      "en": "Panama Tourism Authority"
+    },
     "1-45-1-1": {
       "es": "Promoción Turística",
       "en": "Tourism Promotion"
@@ -1277,6 +1337,10 @@
       "es": "Construcción Movilidad Turistica Sustentable Boquete",
       "en": "Construction of Sustainable Tourist Mobility Boquete"
     },
+    "1-7": {
+      "es": "Autoridad Nacional de Administración de Tierras",
+      "en": "National Land Administration Authority"
+    },
     "1-7-1-1": {
       "es": "Programa Nacional de Titulación de Tierra",
       "en": "National Land Titling Program"
@@ -1284,6 +1348,10 @@
     "1-7-1-1-3-2": {
       "es": "Desarrollo y Actualización del Atlas Nacional",
       "en": "Development and Updating of the National Atlas"
+    },
+    "2-38": {
+      "es": "Autoridad Aeronáutica Civil",
+      "en": "Civil Aviation Authority"
     },
     "2-38-1-2": {
       "es": "Rehabilitación y Mantenimiento Aeroportuario",
