@@ -1,3 +1,4 @@
+import { firstParam, type LinkParams } from "./link";
 import type { BriefSource, LensId } from "./source";
 
 export type SectionId =
@@ -46,14 +47,8 @@ export interface BriefSelection {
   sections: SectionId[];
 }
 
-type Params = Record<string, string | string[] | undefined>;
-
-function first(value: string | string[] | undefined): string | undefined {
-  return Array.isArray(value) ? value[0] : value;
-}
-
 function list(value: string | string[] | undefined): string[] | undefined {
-  const raw = first(value);
+  const raw = firstParam(value);
   if (raw === undefined) return undefined;
   return raw
     .split(",")
@@ -91,7 +86,7 @@ export function defaultSelection(source: BriefSource): BriefSelection {
 
 /** Read a selection from URL search params; anything unknown or unusable
  *  falls back to the standard brief, so a hand-edited link never breaks. */
-export function parseSelection(params: Params, source: BriefSource): BriefSelection {
+export function parseSelection(params: LinkParams, source: BriefSource): BriefSelection {
   const fallback = defaultSelection(source);
 
   const wantedDocs = list(params.docs);
@@ -99,7 +94,7 @@ export function parseSelection(params: Params, source: BriefSource): BriefSelect
     ? source.documents.map((d) => d.id).filter((id) => wantedDocs.includes(id))
     : fallback.docs;
 
-  const wantedLens = first(params.lens);
+  const wantedLens = firstParam(params.lens);
   const lens =
     source.lenses.find((l) => l.id === wantedLens)?.id ?? fallback.lens;
 
@@ -117,6 +112,17 @@ export function parseSelection(params: Params, source: BriefSource): BriefSelect
     lens,
     sections: sections.length > 0 ? sections : fallback.sections,
   };
+}
+
+/** `next`, keeping `current`'s lists where they hold the same ids (and
+ *  `current` itself where nothing differs), so a selection read again from
+ *  the link recomputes only what it changes. */
+export function keepUnchanged(current: BriefSelection, next: BriefSelection): BriefSelection {
+  const docs = sameList(current.docs, next.docs) ? current.docs : next.docs;
+  const sections = sameList(current.sections, next.sections) ? current.sections : next.sections;
+  return docs === current.docs && sections === current.sections && next.lens === current.lens
+    ? current
+    : { docs, lens: next.lens, sections };
 }
 
 /** Query string for a shareable link; only what differs from the standard brief. */

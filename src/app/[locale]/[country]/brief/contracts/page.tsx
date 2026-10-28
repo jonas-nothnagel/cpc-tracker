@@ -1,26 +1,31 @@
-import { notFound, redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { cache } from "react";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { countryNameIn, getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
 import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
-import { briefInEnglish } from "@/lib/brief/language-gate";
+import { briefStaticParams } from "@/lib/brief/language-gate";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { ContractsPage } from "@/components/brief/contracts/contracts-page";
 
-// Pipeline output lives on the persistent volume and changes at runtime.
-export const dynamic = "force-dynamic";
+// Built once, when the site is deployed, like the brief (see its page); a
+// country without a baked contract record builds as not found.
+export const dynamicParams = false;
+
+export function generateStaticParams({ params }: { params: { locale: string } }) {
+  return briefStaticParams(params.locale);
+}
 
 interface Props {
   params: Promise<{ locale: string; country: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-async function load(props: Props) {
-  const { locale, country } = await props.params;
-  const entry = getCountry(country.toLowerCase());
+// The page and its title share one load.
+const load = cache((locale: string, country: string) => {
+  const entry = getCountry(country);
   if (!entry || !entry.visible) return null;
   const file = loadContracts(entry.id);
   if (!file) return null;
@@ -31,10 +36,11 @@ async function load(props: Props) {
   const labels = labelsIn(loadTargetLabels(entry.id), locale);
   const source = buildBriefSource({ countryId: entry.id, countryName: countryNameIn(entry, locale), data, locale, labels });
   return { locale, setup: contractsSetup({ file, source }) };
-}
+});
 
 export async function generateMetadata(props: Props) {
-  const loaded = await load(props);
+  const { locale, country } = await props.params;
+  const loaded = load(locale, country);
   if (!loaded) return {};
   const t = await getTranslations({ locale: loaded.locale, namespace: "brief.contracts" });
   const title = t("metaTitle", { country: loaded.setup.countryName });
@@ -44,26 +50,17 @@ export async function generateMetadata(props: Props) {
 /** Public contracts beside the targets: a page of its own for countries whose
  *  contract record has been baked (python/scripts/build_contracts_layer.py). */
 export default async function ContractsRoute(props: Props) {
-  // A brief is in English and its country's own language only.
   const { locale, country } = await props.params;
-  const entry = getCountry(country.toLowerCase());
-  const english = entry && briefInEnglish(entry, locale, "brief/contracts", await props.searchParams);
-  if (english) redirect(english);
-  const loaded = await load(props);
+  setRequestLocale(locale);
+  const loaded = load(locale, country);
   if (!loaded) notFound();
-  const { cur, contract } = await props.searchParams;
-  const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
-  // Only a contract the page lists opens (a link from the brief names one).
-  const opened = loaded.setup.file.contracts.some((c) => c.id === first(contract)) ? first(contract) : undefined;
   return (
     <ContractsPage
       setup={loaded.setup}
       geo={geoFor(loaded.setup.countryId, loaded.locale)}
       // Money in US$ on every page but the Mongolian one, which opens in
       // tugrik and may switch to US$ (a shared link keeps that choice, ?cur=usd).
-      initialCurrency={loaded.locale === "mn" ? (first(cur) === "usd" ? "usd" : "mnt") : "usd"}
       localCurrency={loaded.locale === "mn"}
-      initialContract={opened}
     />
   );
 }

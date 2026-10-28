@@ -1,4 +1,5 @@
 import type { BerNames } from "../ber-names";
+import { firstParam, type LinkParams } from "../link";
 import type { TargetLabels } from "../target-labels";
 import type { BriefSource } from "../source";
 import { focusKey } from "./focus";
@@ -8,24 +9,16 @@ import { parseExploreState, type ExploreGroup, type ExploreState } from "./state
 export interface ExploreSetup {
   layers: ExploreLayers | null;
   groups: ExploreGroup[];
-  initialState: ExploreState;
-  /** A comparison to open beside the centre, from a shared link. */
-  initialPair: { a: string; b: string } | null;
 }
-
-type Params = Record<string, string | string[] | undefined>;
 
 /**
  * Everything the explorer needs from the server: its finance and
- * implementation layers, the groupings on offer, and its part of the link
- * (what is in the centre, the grouping, the layers, an open comparison).
- * Anything a link names that is not in the selection is ignored.
+ * implementation layers, and the groupings on offer. The same for every
+ * reader; a link's part is read in the browser (`exploreFromLink`).
  */
 export function exploreSetup(args: {
   data: Record<string, unknown>;
   source: BriefSource;
-  docs: string[];
-  searchParams: Params;
   /** The page's language, for the budget lines' names and descriptions. */
   locale?: string;
   /** The country's display names for its budget lines, where it has them. */
@@ -34,21 +27,34 @@ export function exploreSetup(args: {
    *  not give, where it has them. */
   targetLabels?: TargetLabels | null;
 }): ExploreSetup {
-  const { data, source, docs, searchParams, locale, berNames, targetLabels } = args;
+  const { data, source, locale, berNames, targetLabels } = args;
   const layers = buildExploreLayers(data, source, { locale, names: berNames, labels: targetLabels });
   // Every lens the source holds; a lens seats only the targets in its areas
   // (the human rights lens few of them) and says so beside the choice.
   const groups: ExploreGroup[] = ["docs", ...source.lenses.map((l) => l.id)];
+  return { layers, groups };
+}
+
+/**
+ * The explorer's part of a link: what is in the centre, the grouping, the
+ * layers, and a comparison to open beside the centre. Anything the link
+ * names that is not in the selection is ignored.
+ */
+export function exploreFromLink(args: {
+  params: LinkParams;
+  source: BriefSource;
+  docs: string[];
+  setup: ExploreSetup;
+}): { state: ExploreState; pair: { a: string; b: string } | null } {
+  const { params, source, docs, setup } = args;
   const inScope = new Set(docs);
   const ids = new Set([
     ...source.commitments.filter((c) => inScope.has(c.doc)).map((c) => c.id),
     ...docs.map((id) => focusKey({ kind: "doc", id })),
     ...source.lenses.flatMap((l) => l.categories.map((c) => focusKey({ kind: "area", lens: l.id, id: c.id }))),
-    ...(layers ? layerIdsOf(layers) : []),
+    ...(setup.layers ? layerIdsOf(setup.layers) : []),
   ]);
-  const initialState = parseExploreState(searchParams, ids, groups);
-  const pair = searchParams.pair;
-  const [a, b] = String(Array.isArray(pair) ? pair[0] : (pair ?? "")).split("~");
-  const initialPair = initialState.focus && initialState.focus === a && ids.has(b) ? { a, b } : null;
-  return { layers, groups, initialState, initialPair };
+  const state = parseExploreState(params, ids, setup.groups);
+  const [a, b] = (firstParam(params.pair) ?? "").split("~");
+  return { state, pair: state.focus && state.focus === a && ids.has(b) ? { a, b } : null };
 }

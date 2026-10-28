@@ -134,6 +134,9 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
               href={`/${selected}/brief`}
               // A brief opens in the reader's language where its country offers it, else in English.
               locale={countryLocaleSwitch(getCountry(selected) ?? {}, locale)}
+              // Briefs are built at deploy and run to megabytes: fetched on
+              // the click, not for every country previewed here.
+              prefetch={false}
               className="mt-8 inline-flex items-center gap-2 text-body font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
             >
               {t("preview.readBrief", { name: selectedName })}

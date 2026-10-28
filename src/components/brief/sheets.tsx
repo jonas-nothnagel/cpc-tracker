@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useNumbers } from "./ink";
 import { briefDate } from "@/lib/brief/sheet";
@@ -24,6 +24,7 @@ export function Sheets({
 }: {
   pages: BriefPage[];
   countryName: string;
+  /** When the page was built; the footer dates it by the reader's day. */
   preparedOn: string;
   /** Off screen and out of the accessibility tree (still prints). */
   hidden?: boolean;
@@ -31,7 +32,6 @@ export function Sheets({
   renderSection: (id: SectionId) => ReactNode;
 }) {
   const t = useTranslations("brief.sheet");
-  const date = briefDate(preparedOn, useLocale());
   return (
     <div
       className="brief-sheets"
@@ -64,12 +64,34 @@ export function Sheets({
                 </section>
               ))}
             </div>
-            <footer className="brief-sheet-foot">{t("footer", { date })}</footer>
+            <SheetFooter builtOn={preparedOn} />
           </article>
         );
       })}
     </div>
   );
+}
+
+/** A sheet's footer, dated the build's day until the page has loaded, then
+ *  the reader's own: a country's brief is built once, when the site is
+ *  deployed, so its own date can be days old. Only the footer draws again,
+ *  not the sheet around it. */
+function SheetFooter({ builtOn }: { builtOn: string }) {
+  const t = useTranslations("brief.sheet");
+  const locale = useLocale();
+  const [day, setDay] = useState(builtOn.slice(0, 10));
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDay(readerDay(new Date()));
+  }, []);
+  return <footer className="brief-sheet-foot">{t("footer", { date: briefDate(day, locale) })}</footer>;
+}
+
+/** The reader's calendar day as `YYYY-MM-DD`, which `briefDate` reads as
+ *  that day (it formats in UTC). */
+function readerDay(now: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 }
 
 /** Page 1's opening: the country, the brief, and its scale in three

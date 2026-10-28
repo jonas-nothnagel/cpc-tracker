@@ -195,6 +195,21 @@ describe("proxy auth gate", () => {
   });
 });
 
+describe("proxy brief detour", () => {
+  it("sends a brief in a language its country does not offer to English, its link kept", async () => {
+    const res = await proxy(req("/es/mongolia/brief?docs=NDC%2CNBSAP&focus=NDC_1"));
+    expect(res.status).toBe(307);
+    const location = new URL(res.headers.get("location")!);
+    expect(location.pathname).toBe("/en/mongolia/brief");
+    expect(location.search).toBe("?docs=NDC%2CNBSAP&focus=NDC_1");
+  });
+
+  it("passes the briefs it builds on to locale routing", async () => {
+    expect((await proxy(req("/es/panama/brief?cur=usd"))).status).toBe(200);
+    expect((await proxy(req("/mongolia/brief/explore"))).status).toBe(200);
+  });
+});
+
 describe("isPublicFile", () => {
   it("covers every file under public/, so none falls through to locale routing", () => {
     // A public file whose extension is not on the list is rewritten to

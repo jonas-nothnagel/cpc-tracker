@@ -1,12 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { scopeOf, type Scope } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
+import { linkParams } from "@/lib/brief/link";
 import { paginate } from "@/lib/brief/sections";
 import {
   defaultSelection,
+  keepUnchanged,
+  parseSelection,
   selectionQuery,
   type BriefSelection,
   type SectionId,
@@ -15,11 +18,13 @@ import type { BriefSource } from "@/lib/brief/source";
 import type { ExploreSetup } from "@/lib/brief/explore/setup";
 import { focusKey } from "@/lib/brief/explore/focus";
 import type { SpendingSetup } from "@/lib/brief/spending";
-import { EXPLORE_PARAMS, exploreQuery, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
+import { EXPLORE_PARAMS } from "@/lib/brief/explore/state";
 import { AreasView } from "./areas/areas-view";
 import { ContractsSection, type BriefContracts } from "./contracts/contracts-section";
-import { CurrencyProvider, type Currency } from "./contracts/money";
+import { useLinkCurrency } from "./contracts/currency-switch";
+import { CurrencyProvider } from "./contracts/money";
 import { Explore } from "./explore/explore";
+import { useExploreLink } from "./explore/use-explore-link";
 import { Builder } from "./builder";
 import { Flow } from "./flow";
 import { Hero } from "./hero";
@@ -61,24 +66,22 @@ export function BriefApp({
   explore,
   contracts,
   spending,
-  initialCurrency = "usd",
   localCurrency = false,
 }: {
   source: BriefSource;
+  /** The brief the page opens with, before a shared link's choices apply. */
   initialSelection: BriefSelection;
   preparedOn: string;
-  /** The explorer's layers, groupings and link state, from the server. */
+  /** The explorer's layers and groupings, from the server. */
   explore?: ExploreSetup;
   /** The country's public contract record, where one is baked. */
   contracts?: BriefContracts;
   /** The country's reviewed spending, where its review states the public
    *  spending it is part of. */
   spending?: SpendingSetup;
-  /** The currency every amount on the page opens in: US$, or tugrik on the
-   *  Mongolian page (set by the route). */
-  initialCurrency?: Currency;
   /** The page is in the country's own language, the only page where its own
-   *  currency appears (by default, with a switch to US$). */
+   *  currency appears (by default, with a switch to US$); elsewhere every
+   *  amount is in US$. */
   localCurrency?: boolean;
 }) {
   const tl = useTranslations("briefing.lens");
@@ -87,7 +90,7 @@ export function BriefApp({
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
   const [mode, setMode] = useState<"read" | "preview">("read");
-  const [currency, setCurrency] = useState<Currency>(initialCurrency);
+  const [currency, setCurrency] = useLinkCurrency(localCurrency);
   // Where the reader was on the flowing page when the preview opened.
   const readScroll = useRef(0);
   const printRef = useRef<HTMLButtonElement>(null);
@@ -136,30 +139,27 @@ export function BriefApp({
     [source, scope, selection.lens],
   );
   const lensName = selection.lens ? lensNameOf(source.lenses, selection.lens, tl) : null;
-  const [exploreState, dispatchExplore] = useReducer(
-    exploreReducer,
-    explore?.initialState ?? initialExploreState(),
-  );
-  // The link carries the explorer's grouping and layers. A centre is read
-  // from a shared link once, but not written back, so a reload starts at rest.
-  const sharedFocus = useRef(exploreState.focus);
+  // The explorer, and a comparison a shared link opens beside its centre (the
+  // ring opens anew with it).
+  const {
+    state: exploreState,
+    dispatch: dispatchExplore,
+    follow: followExploreLink,
+    pair: linkedPair,
+  } = useExploreLink(source, explore);
+
+  // The page is built once for every reader, when the site is deployed: the
+  // choices a shared link carries apply once it has loaded (the currency's
+  // in useLinkCurrency).
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.delete("group");
-    params.delete("layers");
-    if (exploreState.focus !== sharedFocus.current) {
-      params.delete("focus");
-      params.delete("pair");
-    }
-    for (const [key, value] of new URLSearchParams(exploreQuery({ ...exploreState, focus: null }))) {
-      params.set(key, value);
-    }
-    const query = params.toString();
-    const url = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
-    window.history.replaceState(window.history.state, "", url);
-    // Only what the link carries.
+    const params = linkParams(window.location.search);
+    const linked = parseSelection(params, source);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (params.docs || params.lens || params.sections) setSelection((cur) => keepUnchanged(cur, linked));
+    followExploreLink(params, linked.docs);
+    // Once, as the page loads.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exploreState.focus, exploreState.group, exploreState.layers]);
+  }, []);
   // Say so whenever the commitments on the page are not the documents' own wording.
   const translation = scope.commitments.some((c) => c.translated === "machine")
     ? "machine"
@@ -322,13 +322,14 @@ export function BriefApp({
             {tx("title")}
           </h2>
           <Explore
+            key={linkedPair ? `${linkedPair.a}~${linkedPair.b}` : undefined}
             source={source}
             data={data}
             state={exploreState}
             dispatch={dispatchExplore}
             groups={explore.groups}
             layers={explore.layers}
-            initialPair={explore.initialPair}
+            initialPair={linkedPair}
           />
         </section>
       )}

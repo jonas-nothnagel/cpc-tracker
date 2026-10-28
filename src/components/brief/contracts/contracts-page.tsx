@@ -1,15 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { firstParam, linkParams } from "@/lib/brief/link";
 import { emptyFocus, type Focus } from "@/lib/brief/contracts/focus";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { CloserBlock } from "./closer-block";
-import { CurrencySwitch } from "./currency-switch";
+import { CurrencySwitch, useLinkCurrency } from "./currency-switch";
 import { FocusBar } from "./focus-bar";
-import { CurrencyProvider, type Currency } from "./money";
+import { CurrencyProvider } from "./money";
 import { Overview } from "./overview";
 import { ContractsPanels } from "./panels";
 import "../brief.css";
@@ -29,20 +30,13 @@ export type PanelState =
 export function ContractsPage({
   setup,
   geo,
-  initialCurrency = "usd",
   localCurrency = false,
-  initialContract,
 }: {
   setup: ContractsSetup;
   geo: GeoFile | null;
-  /** The currency the page opens in: US$, or tugrik on the Mongolian page. */
-  initialCurrency?: Currency;
   /** The page is in the country's own language: tugrik by default, with a
    *  switch to US$. Elsewhere amounts are in US$ alone. */
   localCurrency?: boolean;
-  /** From the link (?contract=id, e.g. from the brief's comparison): the
-   *  contract whose panel the page opens with. */
-  initialContract?: string;
 }) {
   const t = useTranslations("brief.contracts");
   // One focus for the whole page: every view answers it. A new lens lets the
@@ -50,11 +44,21 @@ export function ContractsPage({
   const [focus, setFocus] = useState<Focus>(() => emptyFocus((setup.lenses[0]?.id as LensKey) ?? "globe"));
   const onFocus = (patch: Partial<Focus>) =>
     setFocus((cur) => ({ ...cur, ...patch, ...(patch.lens && patch.lens !== cur.lens ? { area: null } : {}) }));
-  const [stack, setStack] = useState<PanelState[]>(() =>
-    initialContract ? [{ kind: "contract", id: initialContract }] : [],
-  );
-  const [currency, setCurrency] = useState<Currency>(initialCurrency);
+  const [stack, setStack] = useState<PanelState[]>([]);
+  const [currency, setCurrency] = useLinkCurrency(localCurrency);
   const rate = setup.file.source.usdRate;
+
+  // The page is built once for every reader, when the site is deployed: a
+  // shared link's contract (?contract=id, e.g. from the brief's comparison)
+  // opens once it has loaded, only where the page lists it (the currency's
+  // link is read in useLinkCurrency).
+  useEffect(() => {
+    const contract = firstParam(linkParams(window.location.search).contract);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (contract && setup.file.contracts.some((c) => c.id === contract)) setStack([{ kind: "contract", id: contract }]);
+    // Once, as the page loads.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const open = (p: PanelState) => setStack([p]);
   const placeNames = useMemo(() => Object.fromEntries((geo?.features ?? []).map((f) => [f.code, f.name])), [geo]);
 

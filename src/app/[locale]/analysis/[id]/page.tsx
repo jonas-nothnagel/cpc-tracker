@@ -42,23 +42,16 @@ export default async function AnalysisPage(props: Props) {
 
   const spending = spendingSetup(brief.data, brief.source) ?? undefined;
   const source = { ...brief.source, spending: spending !== undefined };
-  const selection = parseSelection(searchParams, source);
+  // Rendered for each request, so the page opens with the link's documents,
+  // policy area and sections; the explorer's part applies in the browser, as
+  // on a country's brief.
   return (
     <BriefApp
       source={source}
-      initialSelection={selection}
+      initialSelection={parseSelection(searchParams, source)}
       preparedOn={new Date().toISOString()}
-      explore={exploreSetup({
-        data: brief.data,
-        source,
-        docs: selection.docs,
-        searchParams,
-        locale,
-        berNames: null,
-        targetLabels: null,
-      })}
+      explore={exploreSetup({ data: brief.data, source, locale, berNames: null, targetLabels: null })}
       spending={spending}
-      initialCurrency="usd"
     />
   );
 }
