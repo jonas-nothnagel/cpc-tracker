@@ -2,16 +2,20 @@
 // on the printed sheet.
 
 /**
- * A date in Mongolian ("2026 оны 9-р сарын 23"), or its month alone ("2026
- * оны 9-р сар"), as CLDR writes it with the short month name (what Node and
- * Safari print). Spelled here rather than by Intl: browsers without Mongolian
- * date data, such as Chrome, write the date in their own interface language,
- * so the page the browser draws would differ from the one the server sent.
+ * A date in Mongolian ("2026 оны 9-р сарын 23"), its month alone ("2026 оны
+ * 9-р сар"), or either without the year ("9-р сарын 23", "9-р сар"), as CLDR
+ * writes it with the short month name (what Node and Safari print). Spelled
+ * here rather than by Intl: browsers without Mongolian date data, such as
+ * Chrome, write the date in their own interface language, so the page the
+ * browser draws would differ from the one the server sent.
  */
-export function mongolianDate(date: Date, { day = true }: { day?: boolean } = {}): string {
-  const year = date.getUTCFullYear();
+export function mongolianDate(
+  date: Date,
+  { day = true, year = true }: { day?: boolean; year?: boolean } = {},
+): string {
   const month = date.getUTCMonth() + 1;
-  return day ? `${year} оны ${month}-р сарын ${date.getUTCDate()}` : `${year} оны ${month}-р сар`;
+  const monthDay = day ? `${month}-р сарын ${date.getUTCDate()}` : `${month}-р сар`;
+  return year ? `${date.getUTCFullYear()} оны ${monthDay}` : monthDay;
 }
 
 /**

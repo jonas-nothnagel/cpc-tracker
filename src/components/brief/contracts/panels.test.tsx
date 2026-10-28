@@ -117,8 +117,9 @@ describe("a contract, in full", () => {
       vi.fn(async () => ({ ok: true, json: async () => RECORD })),
     );
     renderPanels([{ kind: "contract", id: "p1" }], vi.fn(), { locale: "mn" });
-    const dates = await screen.findByText(/2024 оны 4-р сарын 15/);
-    expect(dates.textContent).toContain("2024 оны 7-р сарын 1");
+    // A dash between the dates: an ending glued to the day ("-аас") is wrong
+    // for most days, which take "-ээс", "-нээс" and others.
+    expect(await screen.findByText("2024 оны 4-р сарын 15 – 2024 оны 7-р сарын 1")).toBeInTheDocument();
   });
 
   it("names only the targets in the brief's documents, each one the ring can take", async () => {

@@ -96,6 +96,9 @@ describe("ContractsPage", () => {
     // browsers without Mongolian date data, which write the month in their
     // own interface language instead.
     expect(document.body.textContent).toContain("2025 оны 12-р сар");
+    // "From the year" (оноос) fits every first year, where an ending glued to
+    // the number would not.
+    expect(document.body.textContent).toContain("2024 оноос 2025 оны 12-р сар хүртэл");
   });
 
   it("carries a policy area chosen in the overview to the focus line and to where to look closer", () => {

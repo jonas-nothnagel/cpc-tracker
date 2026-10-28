@@ -1,14 +1,18 @@
 "use client";
 
-import { useFormatter } from "next-intl";
+import { useFormatter, useLocale } from "next-intl";
 
+import { mongolianDate } from "@/lib/brief/sheet";
 import type { FootprintMetrics } from "@/lib/footprint/types";
 import { fractionDigits, scaleAmount, shareText, type AmountUnit } from "@/lib/footprint/units";
 
 /** Amounts, shares and dates for the footprint page, in the page's locale
- *  (never the machine's). Ledger timestamps are UTC, and so are the dates. */
+ *  (never the machine's). Ledger timestamps are UTC, and so are the dates.
+ *  Mongolian dates are spelled by `mongolianDate`: browsers without Mongolian
+ *  date data would write them in their own interface language. */
 export function useAmounts() {
   const format = useFormatter();
+  const mn = useLocale() === "mn";
   const number = (value: number, digits = 0) =>
     format.number(value, { maximumFractionDigits: digits });
   const amount = (
@@ -32,29 +36,37 @@ export function useAmounts() {
       ),
     /** "Jun 26, 2026" */
     day: (ts: string) =>
-      format.dateTime(new Date(ts), {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        timeZone: "UTC",
-      }),
+      mn
+        ? mongolianDate(new Date(ts))
+        : format.dateTime(new Date(ts), {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+            timeZone: "UTC",
+          }),
     /** "June 2026", from "YYYY-MM" */
     month: (month: string) =>
-      format.dateTime(new Date(`${month}-01T00:00:00Z`), {
-        month: "long",
-        year: "numeric",
-        timeZone: "UTC",
-      }),
+      mn
+        ? mongolianDate(new Date(`${month}-01T00:00:00Z`), { day: false })
+        : format.dateTime(new Date(`${month}-01T00:00:00Z`), {
+            month: "long",
+            year: "numeric",
+            timeZone: "UTC",
+          }),
     /** "Jun", for the start of a month in milliseconds */
     monthShort: (ms: number) =>
-      format.dateTime(new Date(ms), { month: "short", timeZone: "UTC" }),
+      mn
+        ? mongolianDate(new Date(ms), { day: false, year: false })
+        : format.dateTime(new Date(ms), { month: "short", timeZone: "UTC" }),
     /** "June 2" or "June 2, 2026", from "YYYY-MM-DD" */
     date: (day: string, withYear = true) =>
-      format.dateTime(new Date(`${day}T00:00:00Z`), {
-        day: "numeric",
-        month: "long",
-        ...(withYear ? { year: "numeric" as const } : {}),
-        timeZone: "UTC",
-      }),
+      mn
+        ? mongolianDate(new Date(`${day}T00:00:00Z`), { year: withYear })
+        : format.dateTime(new Date(`${day}T00:00:00Z`), {
+            day: "numeric",
+            month: "long",
+            ...(withYear ? { year: "numeric" as const } : {}),
+            timeZone: "UTC",
+          }),
   };
 }
