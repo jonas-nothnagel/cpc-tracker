@@ -487,6 +487,19 @@ describe("Explore: a dot opens what links it to the centre", () => {
     expect(card()).not.toContain("Solar parks");
   });
 
+  it("names every target a seat's card counts, those a lens leaves off the ring included", () => {
+    // By Biodiversity, C4-C6 have no area and so no seat; B6's count against
+    // Document C still includes them, and so do its names.
+    renderExplore({ focus: "doc:C", group: "globe" });
+    const ring = screen.getByRole("application");
+    fireEvent.keyDown(ring, { key: "Home" });
+    for (let k = 0; k < 18 && !/\bB6\b/.test(document.querySelector(".ex-tip .ex-tip-line")?.textContent ?? ""); k++) {
+      fireEvent.keyDown(ring, { key: "ArrowRight" });
+    }
+    expect(card()).toContain("With Document C: 6 potential misalignments");
+    expect(card()).toMatch(/Potential misalignment with: .*C1.*C2.*C3.* and 3 more/);
+  });
+
   it("keeps Enter for putting a seat in the centre at once", () => {
     renderExplore({ focus: "B6" });
     const ring = screen.getByRole("application");

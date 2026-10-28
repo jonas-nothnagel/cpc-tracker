@@ -75,7 +75,7 @@ export function RunningTotal({
 }) {
   const t = useTranslations("sustainability");
   const locale = useLocale();
-  const { text, day, monthShort, date } = useAmounts();
+  const { text, day, monthShort, date, spanDates } = useAmounts();
   const nameOf = usePurposeName();
   const box = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(720);
@@ -222,7 +222,10 @@ export function RunningTotal({
     m = Date.UTC(new Date(m).getUTCFullYear(), new Date(m).getUTCMonth() + 1, 1)
   ) {
     const px = x(Math.max(m, t0));
-    if (ticks.length === 0 || px - ticks[ticks.length - 1].x >= 40) {
+    // A month's name keeps clear of the one before it, which may run wider
+    // than "Jun" (Mongolian "10-р сар").
+    const prev = ticks.at(-1);
+    if (!prev || px - prev.x >= Math.max(40, prev.label.length * CHAR_WIDTH)) {
       ticks.push({ x: px, label: monthShort(m) });
     }
   }
@@ -256,7 +259,7 @@ export function RunningTotal({
 
   const dates = (first: string, last: string) => {
     const [a, b] = [first.slice(0, 10), last.slice(0, 10)];
-    return a === b ? date(b) : t("span", { from: date(a, a.slice(0, 4) !== b.slice(0, 4)), to: date(b) });
+    return a === b ? date(b) : t("span", spanDates(a, b));
   };
   const card = activeEvent?.on === "line" && active ? active : null;
   const cardMarker = card ? markers.find((m) => m.n === card.n) : null;

@@ -1677,7 +1677,7 @@
     },
     "title": "Байгаль орчны ул мөрийн хяналтын самбар",
     "back": "Буцах",
-    "span": "{from} - {to}",
+    "span": "{from} – {to}",
     "download": "Татах",
     "downloadCsv": "CSV",
     "downloadCsvTitle": "Бүрэн бүртгэл, хүснэгтээр",
@@ -1728,7 +1728,7 @@
     "overTime": "{resource} цаг хугацааны явцад",
     "events": "Үйл явдлууд",
     "timeline": {
-      "label": "Хуримтлагдсан дүн, {resource}: {from} - {to}, нийт {total}",
+      "label": "Хуримтлагдсан дүн, {resource}: {from} – {to}, нийт {total}",
       "step": "{name} +{amount}",
       "then": "Тухайн үеийн нийт дүн: {amount}",
       "more": "{count, plural, one {бас нэг} other {бас #}}"

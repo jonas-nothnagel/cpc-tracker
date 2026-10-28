@@ -33,3 +33,14 @@ line under a translated title came off the face on 23 October 2026 (Jonas:
 - en: Machine-translated from Mongolian
 - es: Traducido automáticamente del mongol
 - mn: Монгол хэлнээс машинаар орчуулсан
+
+**Dates the record gives out of order** (`start` and `end` on a contract's
+record). The panel gives the record's dates as a range, and the start date
+alone, under "Start date", where the record gives no end (57 of Mongolia's
+5,913 records) or an end before the start (159 of the 5,856 with both: 151
+in the start's calendar year or the one before, one twenty years earlier,
+2022 to 2002). The
+contract's year agrees with the start in 152 of those 159 and with the end in
+the other 7, where the panel shows a year and a start date that differ. The
+record's own page, one link away, keeps both dates; the Mongolian data stays
+as it is. Nothing on the face says an end was left out.
