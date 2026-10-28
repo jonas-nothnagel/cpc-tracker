@@ -4,10 +4,9 @@ import { derivePaths, type DerivedPaths } from "@/lib/dashboard-data";
 import { pairCount } from "@/lib/upload/documents";
 import { readJson } from "@/lib/upload/files";
 import { briefInEnglish } from "./language-gate";
+import type { LinkParams } from "./link";
 import { analysisPayload } from "./payload";
 import { buildBriefSource, type BriefSource } from "./source";
-
-type Params = Record<string, string | string[] | undefined>;
 
 /**
  * What an uploaded analysis's address shows: nothing for an unknown id; the
@@ -78,7 +77,7 @@ export function analysisFacts(id: string): AnalysisFacts | null {
 
 /** Where an upload's brief opened in a language the upload was not started
  *  in sends the reader: the same brief and choices in English, or null. */
-export function analysisInEnglish(id: string, languages: string[], locale: string, searchParams: Params): string | null {
+export function analysisInEnglish(id: string, languages: string[], locale: string, searchParams: LinkParams): string | null {
   const offered = languages.filter(
     (l): l is Exclude<Locale, "en"> => l !== "en" && (routing.locales as readonly string[]).includes(l),
   );

@@ -113,9 +113,11 @@ describe("BriefApp", () => {
     }
   });
 
+  // Midday UTC is the same calendar day for readers from UTC-11 to UTC+11,
+  // so these hold in the time zone the tests run in.
   it("dates the brief in UNDP style", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-09-23T18:00:00.000Z"));
+    vi.setSystemTime(new Date("2026-09-23T12:00:00.000Z"));
     try {
       renderApp();
       expect(screen.getAllByText(/Prepared on 23 September 2026 with the Policy Coherence Analyzer/).length).toBeGreaterThan(0);
@@ -126,7 +128,7 @@ describe("BriefApp", () => {
 
   it("dates a brief built on an earlier day by the day it is read", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-10-28T09:00:00.000Z"));
+    vi.setSystemTime(new Date("2026-10-28T12:00:00.000Z"));
     try {
       renderApp();
       expect(screen.getAllByText(/Prepared on 28 October 2026/).length).toBe(3);
@@ -587,7 +589,7 @@ describe("BriefApp public contracts", () => {
           initialSelection={defaultSelection(WITH)}
           preparedOn="2026-09-23T10:00:00.000Z"
           contracts={CONTRACTS}
-          {...(opts.local ? { localCurrency: true, initialCurrency: "mnt" as const } : {})}
+          {...(opts.local ? { localCurrency: true } : {})}
           explore={opts.explore ? { layers: null, groups: ["docs"] } : undefined}
         />
       </NextIntlClientProvider>,

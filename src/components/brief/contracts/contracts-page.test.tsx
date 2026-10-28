@@ -37,7 +37,7 @@ describe("ContractsPage", () => {
   it("opens the country's own-language page in tugrik, switching to US$ from one plain control and keeping the choice in the link", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} initialCurrency="mnt" localCurrency />
+        <ContractsPage setup={setupFixture()} geo={null} localCurrency />
       </NextIntlClientProvider>,
     );
     expect(screen.getByRole("heading", { name: "₮250 billion in 40 public contracts since 2024" })).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe("ContractsPage", () => {
     window.history.replaceState(null, "", "/mn/mongolia/brief/contracts?cur=usd");
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} initialCurrency="mnt" localCurrency />
+        <ContractsPage setup={setupFixture()} geo={null} localCurrency />
       </NextIntlClientProvider>,
     );
     expect(screen.getByRole("heading", { name: "US$71.4 million in 40 public contracts since 2024" })).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe("ContractsPage", () => {
   it("states the new figures in US$ too", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} initialCurrency="usd" />
+        <ContractsPage setup={setupFixture()} geo={null} />
       </NextIntlClientProvider>,
     );
     const purpose = document.querySelector<HTMLElement>('[data-step="purpose"]')!;

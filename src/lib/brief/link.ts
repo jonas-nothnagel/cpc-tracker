@@ -10,12 +10,14 @@
 export type LinkParams = Record<string, string | string[] | undefined>;
 
 export function linkParams(search: string): LinkParams {
-  const params: Record<string, string | string[]> = {};
+  // A map, so a name an object already has (`constructor`, `__proto__`) reads
+  // like any other.
+  const params = new Map<string, string | string[]>();
   for (const [key, value] of new URLSearchParams(search)) {
-    const had = params[key];
-    params[key] = had === undefined ? value : [...(Array.isArray(had) ? had : [had]), value];
+    const had = params.get(key);
+    params.set(key, had === undefined ? value : [...(Array.isArray(had) ? had : [had]), value]);
   }
-  return params;
+  return Object.fromEntries(params);
 }
 
 export function firstParam(value: string | string[] | undefined): string | undefined {

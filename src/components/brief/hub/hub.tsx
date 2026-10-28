@@ -149,13 +149,15 @@ export function Hub({
   // A rating chosen in the overall picture, brought forward on the map
   // until the reader moves on.
   const [mapTone, setMapTone] = useState<HubTone | null>(null);
-  // The document at the centre of the hub, and the row open in the list.
+  // The document at the centre of the hub, and the row open in the list: the
+  // first document's until the reader opens or closes one (undefined), so a
+  // shared link's documents, applied once the page has loaded, open theirs.
   const firstDoc = data.docs[0]?.doc.id ?? null;
   const [chosen, setChosen] = useState<string | null>(null);
-  const [open, setOpen] = useState<string | null>(firstDoc);
+  const [open, setOpen] = useState<string | null | undefined>(undefined);
   const inScope = (id: string | null) => id !== null && data.docs.some((d) => d.doc.id === id);
   const focus = inScope(chosen) ? chosen : firstDoc;
-  const openDoc = inScope(open) ? open : null;
+  const openDoc = open === undefined ? firstDoc : inScope(open) ? open : null;
 
   const root = useRef<HTMLDivElement>(null);
   const stepEl = (step: HubStep) => root.current?.querySelector<HTMLElement>(`[data-step="${step}"]`) ?? null;
@@ -317,7 +319,7 @@ export function Hub({
   const pick = (side: HubTone) => (id: string) =>
     setPicked((cur) => ({ ...cur, [side]: cur[side] === id ? null : id }));
   const toggleDoc = (id: string) => {
-    setOpen((cur) => (cur === id ? null : id));
+    setOpen(openDoc === id ? null : id);
     setChosen(id);
   };
 

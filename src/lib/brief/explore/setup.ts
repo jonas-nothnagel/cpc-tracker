@@ -1,5 +1,5 @@
 import type { BerNames } from "../ber-names";
-import type { LinkParams } from "../link";
+import { firstParam, type LinkParams } from "../link";
 import type { TargetLabels } from "../target-labels";
 import type { BriefSource } from "../source";
 import { focusKey } from "./focus";
@@ -55,7 +55,6 @@ export function exploreFromLink(args: {
     ...(setup.layers ? layerIdsOf(setup.layers) : []),
   ]);
   const state = parseExploreState(params, ids, setup.groups);
-  const pair = params.pair;
-  const [a, b] = String(Array.isArray(pair) ? pair[0] : (pair ?? "")).split("~");
+  const [a, b] = (firstParam(params.pair) ?? "").split("~");
   return { state, pair: state.focus && state.focus === a && ids.has(b) ? { a, b } : null };
 }

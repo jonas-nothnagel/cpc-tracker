@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { analysisBrief, analysisFacts, analysisInEnglish } from "@/lib/brief/analysis";
-import { defaultSelection } from "@/lib/brief/selection";
+import { parseSelection } from "@/lib/brief/selection";
 import { exploreSetup } from "@/lib/brief/explore/setup";
 import { spendingSetup } from "@/lib/brief/spending";
 import { BriefApp } from "@/components/brief/brief-app";
@@ -42,15 +42,16 @@ export default async function AnalysisPage(props: Props) {
 
   const spending = spendingSetup(brief.data, brief.source) ?? undefined;
   const source = { ...brief.source, spending: spending !== undefined };
-  // The link's choices apply in the browser, as on a country's brief.
+  // Rendered for each request, so the page opens with the link's documents,
+  // policy area and sections; the explorer's part applies in the browser, as
+  // on a country's brief.
   return (
     <BriefApp
       source={source}
-      initialSelection={defaultSelection(source)}
+      initialSelection={parseSelection(searchParams, source)}
       preparedOn={new Date().toISOString()}
       explore={exploreSetup({ data: brief.data, source, locale, berNames: null, targetLabels: null })}
       spending={spending}
-      initialCurrency="usd"
     />
   );
 }

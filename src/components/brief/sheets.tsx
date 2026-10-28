@@ -72,18 +72,26 @@ export function Sheets({
   );
 }
 
-/** A sheet's footer, dated the day the reader prints: a country's brief is
- *  built once, when the site is deployed, so its own date can be days old. */
+/** A sheet's footer, dated the build's day until the page has loaded, then
+ *  the reader's own: a country's brief is built once, when the site is
+ *  deployed, so its own date can be days old. Only the footer draws again,
+ *  not the sheet around it. */
 function SheetFooter({ builtOn }: { builtOn: string }) {
   const t = useTranslations("brief.sheet");
   const locale = useLocale();
-  const [day, setDay] = useState(builtOn);
+  const [day, setDay] = useState(builtOn.slice(0, 10));
   useEffect(() => {
-    const today = new Date().toISOString();
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (today.slice(0, 10) !== builtOn.slice(0, 10)) setDay(today);
-  }, [builtOn]);
+    setDay(readerDay(new Date()));
+  }, []);
   return <footer className="brief-sheet-foot">{t("footer", { date: briefDate(day, locale) })}</footer>;
+}
+
+/** The reader's calendar day as `YYYY-MM-DD`, which `briefDate` reads as
+ *  that day (it formats in UTC). */
+function readerDay(now: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 }
 
 /** Page 1's opening: the country, the brief, and its scale in three

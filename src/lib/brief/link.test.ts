@@ -11,6 +11,14 @@ describe("a page's link", () => {
     expect(linkParams("")).toEqual({});
   });
 
+  it("reads a name every object already has like any other", () => {
+    expect(Object.entries(linkParams("?constructor=x&toString=y&__proto__=z"))).toEqual([
+      ["constructor", "x"],
+      ["toString", "y"],
+      ["__proto__", "z"],
+    ]);
+  });
+
   it("takes the first value where one is wanted", () => {
     expect(firstParam(["usd", "mnt"])).toBe("usd");
     expect(firstParam("usd")).toBe("usd");

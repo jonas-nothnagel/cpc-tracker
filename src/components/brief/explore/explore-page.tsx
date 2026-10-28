@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { scopeOf } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
-import { firstParam, linkParams } from "@/lib/brief/link";
-import { defaultSelection, parseSelection } from "@/lib/brief/selection";
-import { exploreFromLink, type ExploreSetup } from "@/lib/brief/explore/setup";
-import { exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
+import { linkParams } from "@/lib/brief/link";
+import { defaultSelection, keepUnchanged, parseSelection } from "@/lib/brief/selection";
+import type { ExploreSetup } from "@/lib/brief/explore/setup";
 import type { BriefSource } from "@/lib/brief/source";
-import { CurrencyProvider, type Currency } from "../contracts/money";
+import { useLinkCurrency } from "../contracts/currency-switch";
+import { CurrencyProvider } from "../contracts/money";
 import { Explore } from "./explore";
 import { useExploreLink } from "./use-explore-link";
 import "../brief.css";
@@ -18,8 +18,9 @@ import "../brief.css";
  * The explorer on a page of its own, to share before the brief around it:
  * the same component the brief ends with, fed by the brief's source and its
  * document selection. The link carries the documents, the policy area, the
- * grouping and the layers; a centre is read from a shared link once, but
- * not written back, so a reload starts at rest.
+ * grouping and the layers. A centre and comparison a shared link names stay
+ * in it until the reader moves the centre; a centre the reader picks is never
+ * written, so after that a reload starts at rest.
  */
 export function ExplorePage({
   source,
@@ -38,24 +39,20 @@ export function ExplorePage({
 }) {
   const t = useTranslations("brief.explore");
   const [selection, setSelection] = useState(() => defaultSelection(source));
-  const [currency, setCurrency] = useState<Currency>(localCurrency ? "mnt" : "usd");
-  const [state, dispatch] = useReducer(exploreReducer, undefined, initialExploreState);
-  const followExploreLink = useExploreLink(state, dispatch);
-  const [linkedPair, setLinkedPair] = useState<{ a: string; b: string } | null>(null);
+  const [currency] = useLinkCurrency(localCurrency);
+  const { state, dispatch, follow, pair: linkedPair } = useExploreLink(source, setup);
   const scope = useMemo(() => scopeOf(source, selection.docs), [source, selection.docs]);
   const data = useMemo(() => buildBriefData(source, scope, selection.lens), [source, scope, selection.lens]);
 
   // The page is built once for every reader, when the site is deployed: the
-  // choices a shared link carries apply once it has loaded.
+  // choices a shared link carries apply once it has loaded (the currency's
+  // in useLinkCurrency).
   useEffect(() => {
     const params = linkParams(window.location.search);
     const linked = parseSelection(params, source);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (params.docs || params.lens) setSelection(linked);
-    if (localCurrency && firstParam(params.cur) === "usd") setCurrency("usd");
-    const { state: from, pair } = exploreFromLink({ params, source, docs: linked.docs, setup });
-    followExploreLink(from);
-    setLinkedPair(pair);
+    if (params.docs || params.lens) setSelection((cur) => keepUnchanged(cur, linked));
+    follow(params, linked.docs);
     // Once, as the page loads.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

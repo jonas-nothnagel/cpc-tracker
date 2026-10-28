@@ -1,3 +1,4 @@
+import { firstParam, type LinkParams } from "../link";
 import type { LensId } from "../source";
 import { LAYER_ORDER, type LayerId } from "./layers";
 
@@ -79,18 +80,12 @@ export function exploreReducer(state: ExploreState, action: ExploreAction): Expl
  *  its own. */
 export const EXPLORE_PARAMS = ["focus", "group", "layers", "pair"] as const;
 
-type Params = Record<string, string | string[] | undefined>;
-
-function first(value: string | string[] | undefined): string | undefined {
-  return Array.isArray(value) ? value[0] : value;
-}
-
 /** Read the state from a link; anything unknown falls back to the resting ring. */
-export function parseExploreState(params: Params, ids: Set<string>, groups: ExploreGroup[]): ExploreState {
+export function parseExploreState(params: LinkParams, ids: Set<string>, groups: ExploreGroup[]): ExploreState {
   const state = initialExploreState();
-  const focus = first(params.focus);
-  const group = first(params.group) as ExploreGroup | undefined;
-  const layers = (first(params.layers) ?? "").split(",");
+  const focus = firstParam(params.focus);
+  const group = firstParam(params.group) as ExploreGroup | undefined;
+  const layers = (firstParam(params.layers) ?? "").split(",");
   return {
     ...state,
     focus: focus && ids.has(focus) ? focus : null,

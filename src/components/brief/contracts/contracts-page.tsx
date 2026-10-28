@@ -8,9 +8,9 @@ import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { CloserBlock } from "./closer-block";
-import { CurrencySwitch } from "./currency-switch";
+import { CurrencySwitch, useLinkCurrency } from "./currency-switch";
 import { FocusBar } from "./focus-bar";
-import { CurrencyProvider, type Currency } from "./money";
+import { CurrencyProvider } from "./money";
 import { Overview } from "./overview";
 import { ContractsPanels } from "./panels";
 import "../brief.css";
@@ -30,13 +30,10 @@ export type PanelState =
 export function ContractsPage({
   setup,
   geo,
-  initialCurrency = "usd",
   localCurrency = false,
 }: {
   setup: ContractsSetup;
   geo: GeoFile | null;
-  /** The currency the page opens in: US$, or tugrik on the Mongolian page. */
-  initialCurrency?: Currency;
   /** The page is in the country's own language: tugrik by default, with a
    *  switch to US$. Elsewhere amounts are in US$ alone. */
   localCurrency?: boolean;
@@ -48,18 +45,16 @@ export function ContractsPage({
   const onFocus = (patch: Partial<Focus>) =>
     setFocus((cur) => ({ ...cur, ...patch, ...(patch.lens && patch.lens !== cur.lens ? { area: null } : {}) }));
   const [stack, setStack] = useState<PanelState[]>([]);
-  const [currency, setCurrency] = useState<Currency>(initialCurrency);
+  const [currency, setCurrency] = useLinkCurrency(localCurrency);
   const rate = setup.file.source.usdRate;
 
   // The page is built once for every reader, when the site is deployed: a
-  // shared link's currency (?cur=usd) and contract (?contract=id, e.g. from
-  // the brief's comparison) apply once it has loaded, a contract only where
-  // the page lists it.
+  // shared link's contract (?contract=id, e.g. from the brief's comparison)
+  // opens once it has loaded, only where the page lists it (the currency's
+  // link is read in useLinkCurrency).
   useEffect(() => {
-    const params = linkParams(window.location.search);
+    const contract = firstParam(linkParams(window.location.search).contract);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (localCurrency && firstParam(params.cur) === "usd") setCurrency("usd");
-    const contract = firstParam(params.contract);
     if (contract && setup.file.contracts.some((c) => c.id === contract)) setStack([{ kind: "contract", id: contract }]);
     // Once, as the page loads.
     // eslint-disable-next-line react-hooks/exhaustive-deps

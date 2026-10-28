@@ -1,26 +1,28 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { scopeOf, type Scope } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
-import { firstParam, linkParams } from "@/lib/brief/link";
+import { linkParams } from "@/lib/brief/link";
 import { paginate } from "@/lib/brief/sections";
 import {
   defaultSelection,
+  keepUnchanged,
   parseSelection,
   selectionQuery,
   type BriefSelection,
   type SectionId,
 } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
-import { exploreFromLink, type ExploreSetup } from "@/lib/brief/explore/setup";
+import type { ExploreSetup } from "@/lib/brief/explore/setup";
 import { focusKey } from "@/lib/brief/explore/focus";
 import type { SpendingSetup } from "@/lib/brief/spending";
-import { EXPLORE_PARAMS, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
+import { EXPLORE_PARAMS } from "@/lib/brief/explore/state";
 import { AreasView } from "./areas/areas-view";
 import { ContractsSection, type BriefContracts } from "./contracts/contracts-section";
-import { CurrencyProvider, type Currency } from "./contracts/money";
+import { useLinkCurrency } from "./contracts/currency-switch";
+import { CurrencyProvider } from "./contracts/money";
 import { Explore } from "./explore/explore";
 import { useExploreLink } from "./explore/use-explore-link";
 import { Builder } from "./builder";
@@ -64,7 +66,6 @@ export function BriefApp({
   explore,
   contracts,
   spending,
-  initialCurrency = "usd",
   localCurrency = false,
 }: {
   source: BriefSource;
@@ -78,11 +79,9 @@ export function BriefApp({
   /** The country's reviewed spending, where its review states the public
    *  spending it is part of. */
   spending?: SpendingSetup;
-  /** The currency every amount on the page opens in: US$, or tugrik on the
-   *  Mongolian page (set by the route). */
-  initialCurrency?: Currency;
   /** The page is in the country's own language, the only page where its own
-   *  currency appears (by default, with a switch to US$). */
+   *  currency appears (by default, with a switch to US$); elsewhere every
+   *  amount is in US$. */
   localCurrency?: boolean;
 }) {
   const tl = useTranslations("briefing.lens");
@@ -91,7 +90,7 @@ export function BriefApp({
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
   const [mode, setMode] = useState<"read" | "preview">("read");
-  const [currency, setCurrency] = useState<Currency>(initialCurrency);
+  const [currency, setCurrency] = useLinkCurrency(localCurrency);
   // Where the reader was on the flowing page when the preview opened.
   const readScroll = useRef(0);
   const printRef = useRef<HTMLButtonElement>(null);
@@ -140,24 +139,24 @@ export function BriefApp({
     [source, scope, selection.lens],
   );
   const lensName = selection.lens ? lensNameOf(source.lenses, selection.lens, tl) : null;
-  const [exploreState, dispatchExplore] = useReducer(exploreReducer, undefined, initialExploreState);
-  const followExploreLink = useExploreLink(exploreState, dispatchExplore);
-  // A comparison a shared link opens beside the centre: the ring opens anew
-  // with it.
-  const [linkedPair, setLinkedPair] = useState<{ a: string; b: string } | null>(null);
+  // The explorer, and a comparison a shared link opens beside its centre (the
+  // ring opens anew with it).
+  const {
+    state: exploreState,
+    dispatch: dispatchExplore,
+    follow: followExploreLink,
+    pair: linkedPair,
+  } = useExploreLink(source, explore);
 
   // The page is built once for every reader, when the site is deployed: the
-  // choices a shared link carries apply once it has loaded.
+  // choices a shared link carries apply once it has loaded (the currency's
+  // in useLinkCurrency).
   useEffect(() => {
     const params = linkParams(window.location.search);
     const linked = parseSelection(params, source);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (params.docs || params.lens || params.sections) setSelection(linked);
-    if (localCurrency && firstParam(params.cur) === "usd") setCurrency("usd");
-    if (!explore) return;
-    const { state, pair } = exploreFromLink({ params, source, docs: linked.docs, setup: explore });
-    followExploreLink(state);
-    setLinkedPair(pair);
+    if (params.docs || params.lens || params.sections) setSelection((cur) => keepUnchanged(cur, linked));
+    followExploreLink(params, linked.docs);
     // Once, as the page loads.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

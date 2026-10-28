@@ -1,19 +1,27 @@
 "use client";
 
-import { useEffect, useRef, type Dispatch } from "react";
-import { exploreQuery, type ExploreAction, type ExploreState } from "@/lib/brief/explore/state";
+import { useEffect, useReducer, useRef, useState } from "react";
+import type { LinkParams } from "@/lib/brief/link";
+import { exploreFromLink, type ExploreSetup } from "@/lib/brief/explore/setup";
+import { exploreQuery, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
+import type { BriefSource } from "@/lib/brief/source";
 
 /**
- * The explorer's part of the link. The link follows the explorer: its
- * grouping and layers always, a centre from a shared link until the reader
- * moves it, so a reload starts at rest. The function returned takes the
- * explorer to the state a shared link names, once the page has loaded.
+ * The explorer's state and its part of the link. The link follows the
+ * explorer's grouping and layers. A centre and comparison a shared link names
+ * stay in it until the reader moves the centre; a centre the reader picks is
+ * never written, so after that a reload starts at rest. `follow` takes the
+ * explorer to what a shared link names, once the page has loaded; `pair` is
+ * the comparison it opens beside the centre.
  */
-export function useExploreLink(state: ExploreState, dispatch: Dispatch<ExploreAction>) {
+export function useExploreLink(source: BriefSource, setup: ExploreSetup | undefined) {
+  const [state, dispatch] = useReducer(exploreReducer, undefined, initialExploreState);
+  const [pair, setPair] = useState<{ a: string; b: string } | null>(null);
   const shared = useRef<string | null>(null);
   const written = useRef<string | null>(null);
+  // What the link would carry for this state.
+  const key = exploreQuery(state);
   useEffect(() => {
-    const key = [state.focus, state.group, state.layers.join(",")].join("|");
     // The link stays as it came until the explorer first moves: the page
     // reads it once it has loaded, after this first look.
     if (written.current === null || written.current === key) {
@@ -34,12 +42,16 @@ export function useExploreLink(state: ExploreState, dispatch: Dispatch<ExploreAc
     window.history.replaceState(window.history.state, "", url);
     // Only what the link carries.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.focus, state.group, state.layers]);
+  }, [key]);
 
-  return (linked: ExploreState) => {
-    shared.current = linked.focus;
-    if (linked.group !== "docs") dispatch({ type: "group", group: linked.group });
-    for (const layer of linked.layers) dispatch({ type: "layer", layer, on: true });
-    if (linked.focus) dispatch({ type: "focus", id: linked.focus });
+  const follow = (params: LinkParams, docs: string[]) => {
+    if (!setup) return;
+    const linked = exploreFromLink({ params, source, docs, setup });
+    shared.current = linked.state.focus;
+    if (linked.state.group !== "docs") dispatch({ type: "group", group: linked.state.group });
+    for (const layer of linked.state.layers) dispatch({ type: "layer", layer, on: true });
+    if (linked.state.focus) dispatch({ type: "focus", id: linked.state.focus });
+    setPair(linked.pair);
   };
+  return { state, dispatch, follow, pair };
 }

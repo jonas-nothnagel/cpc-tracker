@@ -1,7 +1,25 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import { firstParam, linkParams } from "@/lib/brief/link";
 import type { Currency } from "./money";
+
+/**
+ * A page's currency: US$, or the country's own on its own-language page
+ * (`local`), which a shared link may switch to US$ (`?cur=usd`). The page is
+ * built once for every reader, so the link is read once it has loaded.
+ */
+export function useLinkCurrency(local: boolean) {
+  const [currency, setCurrency] = useState<Currency>(local ? "mnt" : "usd");
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (local && firstParam(linkParams(window.location.search).cur) === "usd") setCurrency("usd");
+    // Once, as the page loads.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return [currency, setCurrency] as const;
+}
 
 /** The reader's currency in the link (`?cur=usd` or `?cur=mnt`), named either
  *  way: the page opens in US$, or in tugrik on the Mongolian page. */

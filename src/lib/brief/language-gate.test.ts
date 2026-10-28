@@ -27,9 +27,11 @@ describe("the brief pages built at deploy", () => {
     expect(ids("es")).toEqual(["panama"]);
   });
 
-  it("stop the build for a language no country offers, rather than leave every brief address not found", () => {
+  it("give a language no country offers a placeholder, so every other brief is still built", () => {
     expect(briefStaticParams("es")).toEqual([{ country: "panama" }]);
-    expect(() => briefStaticParams("fr")).toThrow(/No country offers its brief in "fr"/);
+    const [placeholder] = briefStaticParams("fr");
+    expect(briefStaticParams("fr")).toHaveLength(1);
+    expect(getCountry(placeholder.country)).toBeUndefined();
   });
 
   it("send an address in a language the country does not offer to English, link and all", () => {
@@ -38,6 +40,11 @@ describe("the brief pages built at deploy", () => {
     );
     expect(briefDetour("/mn/panama/brief/explore", "?focus=NDC_1")).toBe("/en/panama/brief/explore?focus=NDC_1");
     expect(briefDetour("/es/mongolia/brief/contracts", "")).toBe("/en/mongolia/brief/contracts");
+    // The link exactly as it came, and any page under the brief.
+    expect(briefDetour("/es/mongolia/brief/explore", "?focus=A1&pair=A1~B1")).toBe(
+      "/en/mongolia/brief/explore?focus=A1&pair=A1~B1",
+    );
+    expect(briefDetour("/es/mongolia/brief/print", "")).toBe("/en/mongolia/brief/print");
   });
 
   it("send another spelling or an alias of a country to its own id", () => {

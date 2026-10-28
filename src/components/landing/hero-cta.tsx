@@ -171,6 +171,9 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
                     href={`/${c.id}/brief`}
                     // A brief opens in the reader's language where its country offers it, else in English.
                     locale={countryLocaleSwitch(getCountry(c.id) ?? {}, locale)}
+                    // Briefs are built at deploy and run to megabytes: fetched
+                    // on the click, not for every country the menu shows.
+                    prefetch={false}
                     onClick={() => setOpen(false)}
                     className="block rounded-md px-3 py-2.5 text-body font-medium text-[var(--undp-black)] transition-colors hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)] focus:outline-none"
                   >
