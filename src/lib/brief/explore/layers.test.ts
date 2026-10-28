@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { scopeOf } from "../compute";
 import { briefFixture } from "../test-fixture";
 import { parseTargetLabels } from "../target-labels";
-import { buildExploreLayers } from "./layers";
+import { LEVEL_CODES, MECHANISM_CODES } from "../source";
+import { buildExploreLayers, layerReadings } from "./layers";
 import { LAYER_DATA } from "./test-layers";
 import { activitiesPayload, levelsPayload } from "../spending-fixture";
 import { buildExploreModel, levelBetween, relationBetween } from "./model";
@@ -33,13 +34,31 @@ describe("buildExploreLayers", () => {
 
   it("links targets in scope to actions and budget lines, and drops the rest", () => {
     // A1~BTR_1, B2~BTR_1, C3~ADP_1, A2~BER, A3~BER; Z9 is not a known target.
-    expect(layers.links.map(([target, item]) => `${target}~${layers.items[item].id}`)).toEqual([
+    expect([...layerReadings(layers.links)].map(([target, item]) => `${target}~${layers.items[item].id}`)).toEqual([
       "A1~BTR_1",
       "B2~BTR_1",
       "C3~ADP_1",
       "A2~BER_71401",
       "A3~BER_71401",
     ]);
+  });
+
+  it("packs each item's readings into one row over the targets read", () => {
+    expect(layers.links.targets).toEqual(["A1", "A2", "A3", "B2", "C3"]);
+    expect(layers.links.rows).toHaveLength(layers.items.length);
+    for (const row of layers.links.rows) expect(row).toHaveLength(5);
+    // Every level and mechanism comes back as it went in.
+    const readings = [...layerReadings(layers.links)];
+    const rows = (DATA.alignment as Record<string, unknown>[]).concat((DATA.budgetAlignment as Record<string, unknown>[]) ?? []);
+    for (const [target, item, level, mechanism] of readings) {
+      const row = rows.find(
+        (r) =>
+          (r.targetAId === target && r.targetBId === layers.items[item].id) ||
+          (r.targetBId === target && r.targetAId === layers.items[item].id),
+      )!;
+      expect(LEVEL_CODES[level]).toBe(row.alignment);
+      expect(MECHANISM_CODES[mechanism]).toBe(row.mechanism ?? null);
+    }
   });
 
   it("marks no description as written with AI unless the review says so", () => {

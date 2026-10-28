@@ -1,7 +1,7 @@
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
 import type { Scope, ToneCounts } from "../compute";
 import { LEVEL_CODES, MECHANISM_CODES, type BriefCommitment, type BriefDocument, type BriefLens } from "../source";
-import type { ExploreLayers, LayerId, LayerItem } from "./layers";
+import { layerReadings, type ExploreLayers, type LayerId, type LayerItem } from "./layers";
 
 /**
  * The explorer's model: every target in scope, then (where the country has
@@ -102,7 +102,7 @@ export function buildExploreModel(scope: Scope, layers?: ExploreLayers | null): 
     set(a, b, LEVEL_CODES.indexOf(c.level) + 1, Math.max(0, MECHANISM_CODES.indexOf(c.mechanism ?? null)));
   }
   const offset = scope.commitments.length;
-  for (const [targetId, item, level, mechanism] of layers?.links ?? []) {
+  for (const [targetId, item, level, mechanism] of layers ? layerReadings(layers.links) : []) {
     const a = index.get(targetId);
     if (a === undefined || a >= offset) continue;
     set(a, offset + item, level + 1, mechanism);
