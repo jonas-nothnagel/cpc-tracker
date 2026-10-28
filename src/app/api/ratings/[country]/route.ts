@@ -15,11 +15,12 @@ import type { PairRating, PairRatingValue } from "@/types";
  * writes. Reads fold events → keep the latest per (country, pairKey) by
  * `ts`. Every change is a line in the ledger → full audit trail.
  *
- * Deploy: the ledger lives at the top of `python/output/`, so `start.sh`
- * preserves it by default (per-country resync only touches subdirectories).
- * A seed copy in the image is reconciled with the persistent-volume copy
- * via `python/scripts/merge_ledger.py` (same call shape as
- * `footprint-ledger.jsonl`) so live ratings survive image rebuilds.
+ * Deploy: the ledger lives on the persistent volume. `start.sh` reconciles
+ * the image's seed copy into the volume copy via
+ * `python/scripts/merge_ledger.py` (same call shape as
+ * `footprint-ledger.jsonl`), then links `python/output/ratings-ledger.jsonl`
+ * to it (VOLUME_ENTRIES), so live ratings survive image rebuilds. Nothing
+ * else under `python/output/` persists unless it is listed there.
  *
  * Deployment assumption: Azure App Service (persistent `/home` mount).
  * Serverless platforms (Vercel, AWS Lambda) have ephemeral filesystems
