@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Container entrypoint for App Service.
 #
-# Bridges the hardcoded `python/analyses/` and `python/output/` paths to
-# `/home/cpc/...` so per-analysis state and the LLM cache survive container
-# restarts via the App Service `/home` persistent mount.
+# Bridges the hardcoded `python/analyses/` path, and what the site writes
+# under `python/output/` while it runs (ledgers, feedback, analytics, the LLM
+# cache), to `/home/cpc/...` so they survive container restarts via the App
+# Service `/home` persistent mount. The countries' pipeline output is read
+# from the image itself.
 #
 # /home is provided by App Service when WEBSITES_ENABLE_APP_SERVICE_STORAGE=true.
 
@@ -73,7 +75,7 @@ if [ -d /app/python/output ] && [ ! -L /app/python/output ]; then
     # keeps live-recorded rows (chat + per-analysis runs) while bringing forward
     # rows committed since the volume was first seeded -- a plain copy-if-absent
     # only ever ran on the first deploy, so the host fell behind the image.
-    # Runs before the `rm -rf` below while /app/python/scripts still exists.
+    # Runs before the image's ledger is replaced by a link to this one below.
     if [ -f /app/python/output/footprint-ledger.jsonl ]; then
         if python3 /app/python/scripts/merge_ledger.py \
                /app/python/output/footprint-ledger.jsonl \
@@ -102,8 +104,26 @@ if [ -d /app/python/output ] && [ ! -L /app/python/output ]; then
                     "${PERSIST_ROOT}/output/ratings-ledger.jsonl" || true
         fi
     fi
-    rm -rf /app/python/output
+    # The app reads each country's pipeline output from the image itself: the
+    # same files its pages were built from at deploy, from local disk rather
+    # than the SMB share. Only what is written while the site runs lives on
+    # the persistent volume, linked in here: the footprint and ratings
+    # ledgers (merged above; the app and Python runs append to them),
+    # reviewers' feedback, usage analytics and the LLM cache. A Python run
+    # (CPC_OUTPUT_DIR=/home/cpc/output) still reads the country copies
+    # synced above.
+    for entry in footprint-ledger.jsonl ratings-ledger.jsonl feedback analytics .cache; do
+        case "${entry}" in
+            *.jsonl) touch "${PERSIST_ROOT}/output/${entry}" ;;
+            *) mkdir -p "${PERSIST_ROOT}/output/${entry}" ;;
+        esac
+        rm -rf "/app/python/output/${entry}"
+        ln -sfn "${PERSIST_ROOT}/output/${entry}" "/app/python/output/${entry}"
+    done
+else
+    # A container that already linked the whole folder (an older start.sh)
+    # keeps that link.
+    ln -sfn "${PERSIST_ROOT}/output" /app/python/output
 fi
-ln -sfn "${PERSIST_ROOT}/output" /app/python/output
 
 exec pnpm start
