@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DrawerHeader, DrawerShell } from "@/components/ui/drawer-shell";
 import { routing } from "@/i18n/routing";
 import { misalignedRows } from "@/lib/brief/contracts/misaligned";
 import type { Contract, ContractRecord, LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
+import { briefDate } from "@/lib/brief/sheet";
 import { targetLine } from "@/lib/brief/text";
 import { FirstSentence } from "../ai-text";
 import type { PanelState } from "./contracts-page";
@@ -51,7 +52,7 @@ function ContractPanel({
   const t = useTranslations("brief.contracts.panel");
   const tl = useTranslations("briefing.lens");
   const tm = useTranslations("labels.contradictionType");
-  const format = useFormatter();
+  const locale = useLocale();
   const m = useMoney();
   const { targets, docs, contracts } = useLookups(setup);
   const [state, setState] = useState<{
@@ -90,13 +91,6 @@ function ContractPanel({
     );
   }
 
-  const date = (iso: string) =>
-    format.dateTime(new Date(`${iso}T00:00:00Z`), {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    });
   const placeName = (code: string | null | undefined) =>
     !code ? t("noPlace") : code === "several" ? t("several") : (placeNames[code] ?? code);
   const areas = contract
@@ -139,8 +133,8 @@ function ContractPanel({
           {record.start && record.end && (
             <Fact label={t("dates")}>
               {t("datesRange", {
-                start: date(record.start),
-                end: date(record.end),
+                start: briefDate(record.start, locale),
+                end: briefDate(record.end, locale),
               })}
             </Fact>
           )}

@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useContext, type ReactNode } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { moneyParts, per100, toUsd } from "@/lib/brief/contracts/money";
+import { mongolianDate } from "@/lib/brief/sheet";
 
 /** The currency the page states amounts in: the record's own (tugrik) or
  *  US$ at the record's indicative rate. */
@@ -43,6 +44,7 @@ export function usePageCurrency(): Currency {
  *  locale and chosen currency. Amounts are always given in tugrik. */
 export function useMoney() {
   const format = useFormatter();
+  const locale = useLocale();
   const t = useTranslations("brief.contracts.money");
   const { currency, rate, local } = useContext(CurrencyContext);
   const usd = currency === "usd" && rate > 0;
@@ -76,7 +78,9 @@ export function useMoney() {
     },
     month: (ym: string) => {
       const [y, m] = ym.split("-").map(Number);
-      return format.dateTime(new Date(Date.UTC(y, (m || 1) - 1, 1)), { month: "long", year: "numeric", timeZone: "UTC" });
+      const date = new Date(Date.UTC(y, (m || 1) - 1, 1));
+      if (locale === "mn") return mongolianDate(date, { day: false });
+      return format.dateTime(date, { month: "long", year: "numeric", timeZone: "UTC" });
     },
   };
 }
