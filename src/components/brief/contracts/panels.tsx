@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { misalignedRows } from "@/lib/brief/contracts/misaligned";
 import type { Contract, ContractRecord, LensKey } from "@/lib/brief/contracts/model";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
+import { mongolianDate } from "@/lib/brief/sheet";
 import { targetLine } from "@/lib/brief/text";
 import { FirstSentence } from "../ai-text";
 import type { PanelState } from "./contracts-page";
@@ -52,6 +53,7 @@ function ContractPanel({
   const tl = useTranslations("briefing.lens");
   const tm = useTranslations("labels.contradictionType");
   const format = useFormatter();
+  const locale = useLocale();
   const m = useMoney();
   const { targets, docs, contracts } = useLookups(setup);
   const [state, setState] = useState<{
@@ -91,12 +93,14 @@ function ContractPanel({
   }
 
   const date = (iso: string) =>
-    format.dateTime(new Date(`${iso}T00:00:00Z`), {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    });
+    locale === "mn"
+      ? mongolianDate(new Date(`${iso}T00:00:00Z`))
+      : format.dateTime(new Date(`${iso}T00:00:00Z`), {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          timeZone: "UTC",
+        });
   const placeName = (code: string | null | undefined) =>
     !code ? t("noPlace") : code === "several" ? t("several") : (placeNames[code] ?? code);
   const areas = contract

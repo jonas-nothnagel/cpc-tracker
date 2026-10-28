@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
+import mn from "../../../../messages/mn.json";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
 import { ContractsPage } from "./contracts-page";
 
@@ -68,6 +69,17 @@ describe("ContractsPage", () => {
     );
     expect(screen.getByRole("heading", { name: "US$71.4 million in 40 public contracts since 2024" })).toBeInTheDocument();
   });
+  it("spells the record's month in Mongolian itself, so every browser draws what the server sent", () => {
+    render(
+      <NextIntlClientProvider locale="mn" messages={mn} timeZone="UTC">
+        <ContractsPage setup={setupFixture()} geo={null} initialCurrency="mnt" localCurrency />
+      </NextIntlClientProvider>,
+    );
+    // Intl's own spelling ("2025 оны арван хоёрдугаар сар") is missing from
+    // browsers without Mongolian date data, which write English instead.
+    expect(document.body.textContent).toContain("-аас 2025 оны 12-р сар хүртэл");
+  });
+
   it("carries a policy area chosen in the overview to the focus line and to where to look closer", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
