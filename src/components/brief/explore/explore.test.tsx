@@ -469,6 +469,24 @@ describe("Explore: a dot opens what links it to the centre", () => {
     expect(screen.queryByTestId("explore-pair")).toBeNull();
   });
 
+  it("names on a seat's card only what the ring shows across the centre's edge", () => {
+    // B2 may be pulled against by the reported action "Solar parks", whose
+    // layer is off: the card does not name it.
+    function Layered() {
+      const [state, dispatch] = useReducer(exploreReducer, { ...initialExploreState(), focus: "doc:B" });
+      const layers = buildExploreLayers(LAYER_DATA, SOURCE);
+      return <Explore source={SOURCE} data={DATA} state={state} dispatch={dispatch} groups={["docs"]} layers={layers} />;
+    }
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <Layered />
+      </NextIntlClientProvider>,
+    );
+    fireEvent.pointerMove(screen.getByRole("application"), dot("doc:B", "B2"));
+    expect(card()).toContain("B2");
+    expect(card()).not.toContain("Solar parks");
+  });
+
   it("keeps Enter for putting a seat in the centre at once", () => {
     renderExplore({ focus: "B6" });
     const ring = screen.getByRole("application");

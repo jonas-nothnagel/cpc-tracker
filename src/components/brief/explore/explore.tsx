@@ -581,10 +581,14 @@ export function Explore({
     ].filter(Boolean);
     return parts.length > 0 ? `${t("tipWith", { name: centreName() })} ${parts.join(", ")}` : t("sameDocument");
   };
-  /** Which targets across the centre's edge a seat may conflict with, by name. */
+  /** Which seats across the centre's edge a seat may conflict with, by name:
+   *  only those the ring shows, as its lines do (no reported action or budget
+   *  line while its layer is off). */
   const namesAcross = (i: number): string | null => {
     if (!group || single !== null) return null;
-    const apart = groupLinks(model, group, i, ["apart"]).map((l) => lineOf(model.items[l.id], 42));
+    const apart = groupLinks(model, group, i, ["apart"])
+      .filter((l) => placed.has(l.id))
+      .map((l) => lineOf(model.items[l.id], 42));
     if (apart.length === 0) return null;
     const shown = apart.slice(0, 3).join("; ");
     return apart.length > 3
