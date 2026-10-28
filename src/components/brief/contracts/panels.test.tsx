@@ -111,14 +111,31 @@ describe("a contract, in full", () => {
     expect(await screen.findByText("15 April 2024 to 1 July 2024")).toBeInTheDocument();
   });
 
+  it("gives the start date alone where the record's end comes before it, or is missing", async () => {
+    // 159 of 5,856 Mongolian records end before they start (e.g. 2022 to 2002).
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, json: async () => ({ ...RECORD, start: "2022-09-19", end: "2002-11-29" }) })),
+    );
+    renderPanels([{ kind: "contract", id: "p1" }]);
+    expect(await screen.findByText("19 September 2022")).toBeInTheDocument();
+    expect(screen.getByText("Start date")).toBeInTheDocument();
+    expect(document.body.textContent).not.toContain("2002");
+    cleanup();
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => ({ ...RECORD, end: undefined }) })));
+    renderPanels([{ kind: "contract", id: "p1" }]);
+    expect(await screen.findByText("15 April 2024")).toBeInTheDocument();
+  });
+
   it("spells the contract's dates in Mongolian itself on the Mongolian page, the same in every browser", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => ({ ok: true, json: async () => RECORD })),
     );
     renderPanels([{ kind: "contract", id: "p1" }], vi.fn(), { locale: "mn" });
-    const dates = await screen.findByText(/2024 оны 4-р сарын 15/);
-    expect(dates.textContent).toContain("2024 оны 7-р сарын 1");
+    // A dash between the dates: an ending glued to the day ("-аас") is wrong
+    // for most days, which take "-ээс", "-нээс" and others.
+    expect(await screen.findByText("2024 оны 4-р сарын 15 – 2024 оны 7-р сарын 1")).toBeInTheDocument();
   });
 
   it("names only the targets in the brief's documents, each one the ring can take", async () => {

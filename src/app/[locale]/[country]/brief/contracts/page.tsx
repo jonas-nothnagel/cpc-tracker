@@ -8,6 +8,7 @@ import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
 import { briefStaticParams } from "@/lib/brief/language-gate";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
+import { packSetup } from "@/lib/brief/contracts/pack";
 import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { ContractsPage } from "@/components/brief/contracts/contracts-page";
 
@@ -56,7 +57,8 @@ export default async function ContractsRoute(props: Props) {
   if (!loaded) notFound();
   return (
     <ContractsPage
-      setup={loaded.setup}
+      // The record travels as columns, a quarter lighter (lib/brief/contracts/pack.ts).
+      setup={packSetup(loaded.setup)}
       geo={geoFor(loaded.setup.countryId, loaded.locale)}
       // Money in US$ on every page but the Mongolian one, which opens in
       // tugrik and may switch to US$ (a shared link keeps that choice, ?cur=usd).

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import type { Focus } from "@/lib/brief/contracts/focus";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
+import { unpackSetup, type PackedContractsSetup } from "@/lib/brief/contracts/pack";
 import { scopeSetup, type ContractsSetup } from "@/lib/brief/contracts/setup";
 import type { LensId } from "@/lib/brief/source";
 import type { PanelState } from "./contracts-page";
@@ -18,7 +19,8 @@ import "./contracts.css";
 /** The country's public contract record and the outlines its map is drawn
  *  on, from the server. */
 export interface BriefContracts {
-  setup: ContractsSetup;
+  /** Packed by the page (lib/brief/contracts/pack.ts); unpacked once here. */
+  setup: ContractsSetup | PackedContractsSetup;
   geo: GeoFile | null;
 }
 
@@ -64,7 +66,8 @@ export function ContractsSection({
   onExplore?: (id: string) => void;
 }) {
   const t = useTranslations("brief.contracts");
-  const setup = useMemo(() => scopeSetup(contracts.setup, docs), [contracts.setup, docs]);
+  const full = useMemo(() => unpackSetup(contracts.setup), [contracts.setup]);
+  const setup = useMemo(() => scopeSetup(full, docs), [full, docs]);
   const lensKey = (setup.lenses.find((l) => l.id === lens)?.id ?? setup.lenses[0]?.id ?? "globe") as LensKey;
   const [own, setOwn] = useState<OwnFocus>({ area: null, doc: null, place: null });
   // A new lens, or a document leaving the brief, lets its part of the focus

@@ -11,6 +11,7 @@ import { loadBerNames } from "@/lib/brief/ber-names";
 import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
 import { loadContracts } from "@/lib/brief/contracts/load";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
+import { packSetup } from "@/lib/brief/contracts/pack";
 import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { spendingSetup } from "@/lib/brief/spending";
 import { loadBerAreas } from "@/lib/brief/ber-areas";
@@ -55,7 +56,8 @@ const load = cache((locale: string, country: string) => {
   const spending =
     spendingSetup(data, base, { areas: loadBerAreas(entry.id), names: loadBerNames(entry.id), locale }) ?? undefined;
   const source = { ...base, contracts: file !== null, spending: spending !== undefined };
-  const contracts = file ? { setup: contractsSetup({ file, source }), geo: geoFor(entry.id, locale) } : undefined;
+  // The record travels as columns, a quarter lighter (lib/brief/contracts/pack.ts).
+  const contracts = file ? { setup: packSetup(contractsSetup({ file, source })), geo: geoFor(entry.id, locale) } : undefined;
   return { locale, source, data, contracts, spending, targetLabels };
 });
 

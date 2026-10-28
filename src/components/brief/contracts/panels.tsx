@@ -103,6 +103,13 @@ function ContractPanel({
     : [];
   const value = contract?.value ?? 0;
   const twin = m.other(value);
+  // The record's dates as a range; with no end, or one the record gives
+  // before the start (see DISCLAIMERS.md), the start alone.
+  const start = record.start ? briefDate(record.start, locale) : null;
+  const end =
+    record.start && record.end && Date.parse(record.end) >= Date.parse(record.start)
+      ? briefDate(record.end, locale)
+      : null;
   // The targets the page holds: in the brief, those in its documents.
   const misaligned = record.misaligned.filter((x) => targets.has(x.target));
   const strong = record.strong.map((x) => x.target).filter((x) => targets.has(x));
@@ -130,14 +137,7 @@ function ContractPanel({
         </p>
         <dl className="ct-facts">
           {contract && <Fact label={t("year")}>{contract.year}</Fact>}
-          {record.start && record.end && (
-            <Fact label={t("dates")}>
-              {t("datesRange", {
-                start: briefDate(record.start, locale),
-                end: briefDate(record.end, locale),
-              })}
-            </Fact>
-          )}
+          {start && <Fact label={t(end ? "dates" : "startDate")}>{end ? t("datesRange", { start, end }) : start}</Fact>}
           {record.buyerEnglish && <Fact label={t("buyer")}>{record.buyerEnglish}</Fact>}
           <Fact label={t("type")}>{t(`types.${record.type}` as "types.other")}</Fact>
           <Fact label={t("stage")}>{t(`stages.${record.stage}` as "stages.other")}</Fact>

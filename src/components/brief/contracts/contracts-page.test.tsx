@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
 import mn from "../../../../messages/mn.json";
+import { packSetup } from "@/lib/brief/contracts/pack";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
 import { ContractsPage } from "./contracts-page";
 
@@ -23,11 +24,12 @@ afterEach(() => {
   window.history.replaceState(null, "", "/");
 });
 
+// The page gets the record packed, as the server sends it.
 describe("ContractsPage", () => {
   it("states every amount in US$ alone, with no tugrik anywhere, on a page not in the country's language", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} />
       </NextIntlClientProvider>,
     );
     expect(screen.getByRole("heading", { name: "US$71.4 million in 40 public contracts since 2024" })).toBeInTheDocument();
@@ -38,7 +40,7 @@ describe("ContractsPage", () => {
   it("opens the country's own-language page in tugrik, switching to US$ from one plain control and keeping the choice in the link", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} localCurrency />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} localCurrency />
       </NextIntlClientProvider>,
     );
     expect(screen.getByRole("heading", { name: "₮250 billion in 40 public contracts since 2024" })).toBeInTheDocument();
@@ -55,7 +57,7 @@ describe("ContractsPage", () => {
     window.history.replaceState(null, "", "/mongolia/brief/contracts?contract=p1");
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} />
       </NextIntlClientProvider>,
     );
     await waitFor(() => expect(vi.mocked(fetch)).toHaveBeenCalledWith(expect.stringContaining("contract=p1")));
@@ -67,7 +69,7 @@ describe("ContractsPage", () => {
     window.history.replaceState(null, "", "/mongolia/brief/contracts?contract=elsewhere");
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} />
       </NextIntlClientProvider>,
     );
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -79,7 +81,7 @@ describe("ContractsPage", () => {
     window.history.replaceState(null, "", "/mn/mongolia/brief/contracts?cur=usd");
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} localCurrency />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} localCurrency />
       </NextIntlClientProvider>,
     );
     expect(screen.getByRole("heading", { name: "US$71.4 million in 40 public contracts since 2024" })).toBeInTheDocument();
@@ -89,19 +91,22 @@ describe("ContractsPage", () => {
   it("spells the record's month in Mongolian itself, so every browser draws what the server sent", () => {
     render(
       <NextIntlClientProvider locale="mn" messages={mn} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} localCurrency />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} localCurrency />
       </NextIntlClientProvider>,
     );
     // Intl's own spelling ("2025 оны арван хоёрдугаар сар") is missing from
     // browsers without Mongolian date data, which write the month in their
     // own interface language instead.
     expect(document.body.textContent).toContain("2025 оны 12-р сар");
+    // "From the year" (оноос) fits every first year, where an ending glued to
+    // the number would not.
+    expect(document.body.textContent).toContain("2024 оноос 2025 оны 12-р сар хүртэл");
   });
 
   it("carries a policy area chosen in the overview to the focus line and to where to look closer", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} />
       </NextIntlClientProvider>,
     );
     const areas = document.querySelector<HTMLElement>('[data-step="areas"]')!;
@@ -116,7 +121,7 @@ describe("ContractsPage", () => {
   it("states the new figures in US$ too", () => {
     render(
       <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
-        <ContractsPage setup={setupFixture()} geo={null} />
+        <ContractsPage setup={packSetup(setupFixture())} geo={null} />
       </NextIntlClientProvider>,
     );
     const purpose = document.querySelector<HTMLElement>('[data-step="purpose"]')!;

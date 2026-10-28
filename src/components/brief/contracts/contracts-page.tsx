@@ -6,6 +6,7 @@ import { firstParam, linkParams } from "@/lib/brief/link";
 import { emptyFocus, type Focus } from "@/lib/brief/contracts/focus";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
+import { unpackSetup, type PackedContractsSetup } from "@/lib/brief/contracts/pack";
 import type { ContractsSetup } from "@/lib/brief/contracts/setup";
 import { CloserBlock } from "./closer-block";
 import { CurrencySwitch, useLinkCurrency } from "./currency-switch";
@@ -28,17 +29,19 @@ export type PanelState =
  * places), then the deep dives, with a contract or a target in a panel.
  */
 export function ContractsPage({
-  setup,
+  setup: given,
   geo,
   localCurrency = false,
 }: {
-  setup: ContractsSetup;
+  /** Packed by the page (lib/brief/contracts/pack.ts); unpacked once here. */
+  setup: ContractsSetup | PackedContractsSetup;
   geo: GeoFile | null;
   /** The page is in the country's own language: tugrik by default, with a
    *  switch to US$. Elsewhere amounts are in US$ alone. */
   localCurrency?: boolean;
 }) {
   const t = useTranslations("brief.contracts");
+  const setup = useMemo(() => unpackSetup(given), [given]);
   // One focus for the whole page: every view answers it. A new lens lets the
   // policy area go (its categories are the old lens's).
   const [focus, setFocus] = useState<Focus>(() => emptyFocus((setup.lenses[0]?.id as LensKey) ?? "globe"));

@@ -3342,6 +3342,7 @@
         "year": "Year",
         "dates": "Dates",
         "datesRange": "{start} to {end}",
+        "startDate": "Start date",
         "buyer": "Buyer",
         "type": "Type",
         "stage": "Stage",

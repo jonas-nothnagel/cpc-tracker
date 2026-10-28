@@ -216,15 +216,12 @@ function Monitor({ data }: { data: FootprintRollup }) {
 /** The days the record covers, under the title. */
 function Span({ events }: { events: LedgerEvent[] }) {
   const t = useTranslations("sustainability");
-  const { date } = useAmounts();
+  const { date, spanDates } = useAmounts();
   const span = recordedSpan(events);
   if (!span) return null;
-  const sameYear = span.from.slice(0, 4) === span.to.slice(0, 4);
   return (
     <p className="mt-2 text-sm text-[var(--undp-gray)]">
-      {span.from === span.to
-        ? date(span.to)
-        : t("span", { from: date(span.from, !sameYear), to: date(span.to) })}
+      {span.from === span.to ? date(span.to) : t("span", spanDates(span.from, span.to))}
     </p>
   );
 }

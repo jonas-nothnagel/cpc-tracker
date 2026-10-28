@@ -581,10 +581,15 @@ export function Explore({
     ].filter(Boolean);
     return parts.length > 0 ? `${t("tipWith", { name: centreName() })} ${parts.join(", ")}` : t("sameDocument");
   };
-  /** Which targets across the centre's edge a seat may conflict with, by name. */
+  /** Which seats across the centre's edge a seat may conflict with, by name:
+   *  every target, seated or not (a group in the centre reads against every
+   *  target, and the card's count includes them), and a reported action or
+   *  budget line only while its layer is on the ring. */
   const namesAcross = (i: number): string | null => {
     if (!group || single !== null) return null;
-    const apart = groupLinks(model, group, i, ["apart"]).map((l) => lineOf(model.items[l.id], 42));
+    const apart = groupLinks(model, group, i, ["apart"])
+      .filter((l) => model.items[l.id].kind === "target" || placed.has(l.id))
+      .map((l) => lineOf(model.items[l.id], 42));
     if (apart.length === 0) return null;
     const shown = apart.slice(0, 3).join("; ");
     return apart.length > 3
