@@ -14,7 +14,6 @@ globalThis.ResizeObserver ??= class {
   disconnect() {}
 } as never;
 import { defaultSelection } from "@/lib/brief/selection";
-import { initialExploreState } from "@/lib/brief/explore/state";
 import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
 import type { BriefSource } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
@@ -115,8 +114,26 @@ describe("BriefApp", () => {
   });
 
   it("dates the brief in UNDP style", () => {
-    renderApp();
-    expect(screen.getAllByText(/Prepared on 23 September 2026 with the Policy Coherence Analyzer/).length).toBeGreaterThan(0);
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-09-23T18:00:00.000Z"));
+    try {
+      renderApp();
+      expect(screen.getAllByText(/Prepared on 23 September 2026 with the Policy Coherence Analyzer/).length).toBeGreaterThan(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("dates a brief built on an earlier day by the day it is read", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-28T09:00:00.000Z"));
+    try {
+      renderApp();
+      expect(screen.getAllByText(/Prepared on 28 October 2026/).length).toBe(3);
+      expect(screen.queryByText(/23 September 2026/)).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("keeps method text and document lists off the title block", () => {
@@ -158,6 +175,63 @@ describe("BriefApp", () => {
     fireEvent.click(documents);
     expect(screen.getByText("Prints on 4 pages")).toBeTruthy();
     expect(window.location.search).toContain("documents");
+  });
+});
+
+describe("BriefApp from a shared link", () => {
+  // The page is built once for every reader: the server renders the
+  // standard brief, and the link's choices apply once the page has loaded.
+  function renderLinked(search: string) {
+    window.history.replaceState(null, "", `/testland/brief${search}`);
+    return render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <BriefApp
+          source={SOURCE}
+          initialSelection={defaultSelection(SOURCE)}
+          preparedOn="2026-09-23T10:00:00.000Z"
+          explore={{ layers: null, groups: ["docs"] }}
+        />
+      </NextIntlClientProvider>,
+    );
+  }
+  const figures = () =>
+    within(screen.getByTestId("brief-title"))
+      .getAllByTestId("brief-figure")
+      .map((f) => f.textContent);
+
+  it("opens with the documents and sections the link names", () => {
+    renderLinked("?docs=A%2CB&sections=overall%2Caligned");
+    expect(figures()).toEqual(["2 policy documents", "5 targets", "6 target pairs compared"]);
+    expect(screen.getByText("Prints on 1 page")).toBeTruthy();
+    expect(window.location.search).toBe("?docs=A%2CB&sections=overall%2Caligned");
+  });
+
+  it("puts the link's target in the ring's centre and keeps it in the link", () => {
+    renderLinked("?focus=A1");
+    const ring = document.getElementById("brief-explore") as HTMLElement;
+    expect(within(ring).getByText(/of the 4 targets it was compared with/)).toBeTruthy();
+    expect(new URLSearchParams(window.location.search).get("focus")).toBe("A1");
+  });
+
+  it("opens the comparison the link names beside its centre", async () => {
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
+    try {
+      renderLinked("?focus=A1&pair=A1~B1");
+      expect(await screen.findByTestId("explore-pair")).toBeTruthy();
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("focus")).toBe("A1");
+      expect(params.get("pair")).toBe("A1~B1");
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("ignores what the brief does not hold, and leaves a plain link as it came", () => {
+    renderLinked("?docs=Z&focus=nowhere");
+    expect(figures()).toEqual(["3 policy documents", "7 targets", "16 target pairs compared"]);
+    cleanup();
+    renderLinked("");
+    expect(window.location.search).toBe("");
   });
 });
 
@@ -225,7 +299,7 @@ describe("BriefApp screen and print", () => {
           source={SOURCE}
           initialSelection={defaultSelection(SOURCE)}
           preparedOn="2026-09-23T10:00:00.000Z"
-          explore={{ layers: null, groups: ["docs"], initialState: initialExploreState(), initialPair: null }}
+          explore={{ layers: null, groups: ["docs"] }}
         />
       </NextIntlClientProvider>,
     );
@@ -514,9 +588,7 @@ describe("BriefApp public contracts", () => {
           preparedOn="2026-09-23T10:00:00.000Z"
           contracts={CONTRACTS}
           {...(opts.local ? { localCurrency: true, initialCurrency: "mnt" as const } : {})}
-          explore={
-            opts.explore ? { layers: null, groups: ["docs"], initialState: initialExploreState(), initialPair: null } : undefined
-          }
+          explore={opts.explore ? { layers: null, groups: ["docs"] } : undefined}
         />
       </NextIntlClientProvider>,
     );
@@ -556,6 +628,13 @@ describe("BriefApp public contracts", () => {
     expect(within(section()!).getByRole("heading", { name: /^US\$71\.4 million in 40 public contracts/ })).toBeTruthy();
     expect(within(section()!).queryByRole("group", { name: "Amounts in" })).toBeNull();
     expect(section()!.textContent).not.toContain("₮");
+  });
+
+  it("opens the country's own-language page in US$ when the link asks for it", () => {
+    window.history.replaceState(null, "", "/mn/testland/brief?cur=usd");
+    renderWith({ local: true });
+    expect(within(section()!).getByRole("heading", { name: /^US\$71\.4 million in 40 public contracts/ })).toBeTruthy();
+    expect(within(section()!).getByRole("button", { name: "US$" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("keeps the currency in the link while the brief changes, on the country's own-language page", () => {

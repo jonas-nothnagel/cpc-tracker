@@ -4,22 +4,25 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "r
 import { useTranslations } from "next-intl";
 import { scopeOf, type Scope } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
+import { firstParam, linkParams } from "@/lib/brief/link";
 import { paginate } from "@/lib/brief/sections";
 import {
   defaultSelection,
+  parseSelection,
   selectionQuery,
   type BriefSelection,
   type SectionId,
 } from "@/lib/brief/selection";
 import type { BriefSource } from "@/lib/brief/source";
-import type { ExploreSetup } from "@/lib/brief/explore/setup";
+import { exploreFromLink, type ExploreSetup } from "@/lib/brief/explore/setup";
 import { focusKey } from "@/lib/brief/explore/focus";
 import type { SpendingSetup } from "@/lib/brief/spending";
-import { EXPLORE_PARAMS, exploreQuery, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
+import { EXPLORE_PARAMS, exploreReducer, initialExploreState } from "@/lib/brief/explore/state";
 import { AreasView } from "./areas/areas-view";
 import { ContractsSection, type BriefContracts } from "./contracts/contracts-section";
 import { CurrencyProvider, type Currency } from "./contracts/money";
 import { Explore } from "./explore/explore";
+import { useExploreLink } from "./explore/use-explore-link";
 import { Builder } from "./builder";
 import { Flow } from "./flow";
 import { Hero } from "./hero";
@@ -65,9 +68,10 @@ export function BriefApp({
   localCurrency = false,
 }: {
   source: BriefSource;
+  /** The brief the page opens with, before a shared link's choices apply. */
   initialSelection: BriefSelection;
   preparedOn: string;
-  /** The explorer's layers, groupings and link state, from the server. */
+  /** The explorer's layers and groupings, from the server. */
   explore?: ExploreSetup;
   /** The country's public contract record, where one is baked. */
   contracts?: BriefContracts;
@@ -136,30 +140,27 @@ export function BriefApp({
     [source, scope, selection.lens],
   );
   const lensName = selection.lens ? lensNameOf(source.lenses, selection.lens, tl) : null;
-  const [exploreState, dispatchExplore] = useReducer(
-    exploreReducer,
-    explore?.initialState ?? initialExploreState(),
-  );
-  // The link carries the explorer's grouping and layers. A centre is read
-  // from a shared link once, but not written back, so a reload starts at rest.
-  const sharedFocus = useRef(exploreState.focus);
+  const [exploreState, dispatchExplore] = useReducer(exploreReducer, undefined, initialExploreState);
+  const followExploreLink = useExploreLink(exploreState, dispatchExplore);
+  // A comparison a shared link opens beside the centre: the ring opens anew
+  // with it.
+  const [linkedPair, setLinkedPair] = useState<{ a: string; b: string } | null>(null);
+
+  // The page is built once for every reader, when the site is deployed: the
+  // choices a shared link carries apply once it has loaded.
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.delete("group");
-    params.delete("layers");
-    if (exploreState.focus !== sharedFocus.current) {
-      params.delete("focus");
-      params.delete("pair");
-    }
-    for (const [key, value] of new URLSearchParams(exploreQuery({ ...exploreState, focus: null }))) {
-      params.set(key, value);
-    }
-    const query = params.toString();
-    const url = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
-    window.history.replaceState(window.history.state, "", url);
-    // Only what the link carries.
+    const params = linkParams(window.location.search);
+    const linked = parseSelection(params, source);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (params.docs || params.lens || params.sections) setSelection(linked);
+    if (localCurrency && firstParam(params.cur) === "usd") setCurrency("usd");
+    if (!explore) return;
+    const { state, pair } = exploreFromLink({ params, source, docs: linked.docs, setup: explore });
+    followExploreLink(state);
+    setLinkedPair(pair);
+    // Once, as the page loads.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exploreState.focus, exploreState.group, exploreState.layers]);
+  }, []);
   // Say so whenever the commitments on the page are not the documents' own wording.
   const translation = scope.commitments.some((c) => c.translated === "machine")
     ? "machine"
@@ -322,13 +323,14 @@ export function BriefApp({
             {tx("title")}
           </h2>
           <Explore
+            key={linkedPair ? `${linkedPair.a}~${linkedPair.b}` : undefined}
             source={source}
             data={data}
             state={exploreState}
             dispatch={dispatchExplore}
             groups={explore.groups}
             layers={explore.layers}
-            initialPair={explore.initialPair}
+            initialPair={linkedPair}
           />
         </section>
       )}

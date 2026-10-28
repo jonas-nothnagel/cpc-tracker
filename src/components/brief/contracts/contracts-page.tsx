@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { firstParam, linkParams } from "@/lib/brief/link";
 import { emptyFocus, type Focus } from "@/lib/brief/contracts/focus";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
 import type { LensKey } from "@/lib/brief/contracts/model";
@@ -31,7 +32,6 @@ export function ContractsPage({
   geo,
   initialCurrency = "usd",
   localCurrency = false,
-  initialContract,
 }: {
   setup: ContractsSetup;
   geo: GeoFile | null;
@@ -40,9 +40,6 @@ export function ContractsPage({
   /** The page is in the country's own language: tugrik by default, with a
    *  switch to US$. Elsewhere amounts are in US$ alone. */
   localCurrency?: boolean;
-  /** From the link (?contract=id, e.g. from the brief's comparison): the
-   *  contract whose panel the page opens with. */
-  initialContract?: string;
 }) {
   const t = useTranslations("brief.contracts");
   // One focus for the whole page: every view answers it. A new lens lets the
@@ -50,11 +47,23 @@ export function ContractsPage({
   const [focus, setFocus] = useState<Focus>(() => emptyFocus((setup.lenses[0]?.id as LensKey) ?? "globe"));
   const onFocus = (patch: Partial<Focus>) =>
     setFocus((cur) => ({ ...cur, ...patch, ...(patch.lens && patch.lens !== cur.lens ? { area: null } : {}) }));
-  const [stack, setStack] = useState<PanelState[]>(() =>
-    initialContract ? [{ kind: "contract", id: initialContract }] : [],
-  );
+  const [stack, setStack] = useState<PanelState[]>([]);
   const [currency, setCurrency] = useState<Currency>(initialCurrency);
   const rate = setup.file.source.usdRate;
+
+  // The page is built once for every reader, when the site is deployed: a
+  // shared link's currency (?cur=usd) and contract (?contract=id, e.g. from
+  // the brief's comparison) apply once it has loaded, a contract only where
+  // the page lists it.
+  useEffect(() => {
+    const params = linkParams(window.location.search);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (localCurrency && firstParam(params.cur) === "usd") setCurrency("usd");
+    const contract = firstParam(params.contract);
+    if (contract && setup.file.contracts.some((c) => c.id === contract)) setStack([{ kind: "contract", id: contract }]);
+    // Once, as the page loads.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const open = (p: PanelState) => setStack([p]);
   const placeNames = useMemo(() => Object.fromEntries((geo?.features ?? []).map((f) => [f.code, f.name])), [geo]);
 

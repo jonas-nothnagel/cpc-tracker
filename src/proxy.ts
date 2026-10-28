@@ -2,6 +2,7 @@ import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 import { gateBypassed, hasValidAuth } from "./lib/auth/token";
+import { briefDetour } from "./lib/brief/language-gate";
 
 // Next 16 renamed `middleware.ts` to `proxy.ts`. This wraps the next-intl
 // locale middleware with a shared-token authentication gate that covers ONLY
@@ -127,6 +128,11 @@ export default async function proxy(req: NextRequest) {
   if (api || isAnalyticsPath(pathname) || isPublicFile(pathname)) {
     return NextResponse.next();
   }
+  // A country's brief pages are built once, at deploy, in the languages the
+  // country offers and under its own id: any other address goes there
+  // first, its link kept.
+  const detour = briefDetour(pathname, req.nextUrl.search);
+  if (detour) return NextResponse.redirect(new URL(detour, req.url));
   // Everything else goes through next-intl locale routing.
   return intlMiddleware(req);
 }

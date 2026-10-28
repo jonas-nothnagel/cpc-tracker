@@ -1,28 +1,30 @@
-import { notFound, redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { cache } from "react";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { countryNameIn, getCountry } from "@/config/countries";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
 import { buildBriefSource } from "@/lib/brief/source";
-import { briefInEnglish } from "@/lib/brief/language-gate";
-import { parseSelection } from "@/lib/brief/selection";
+import { briefStaticParams } from "@/lib/brief/language-gate";
 import { exploreSetup } from "@/lib/brief/explore/setup";
 import { loadBerNames } from "@/lib/brief/ber-names";
 import { labelsIn, loadTargetLabels } from "@/lib/brief/target-labels";
 import { loadContracts } from "@/lib/brief/contracts/load";
-import { CurrencyProvider } from "@/components/brief/contracts/money";
 import { ExplorePage } from "@/components/brief/explore/explore-page";
 
-// Pipeline output lives on the persistent volume and changes at runtime.
-export const dynamic = "force-dynamic";
+// Built once, when the site is deployed, like the brief (see its page).
+export const dynamicParams = false;
+
+export function generateStaticParams({ params }: { params: { locale: string } }) {
+  return briefStaticParams(params.locale);
+}
 
 interface Props {
   params: Promise<{ locale: string; country: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-async function load(props: Props) {
-  const { locale, country } = await props.params;
-  const entry = getCountry(country.toLowerCase());
+// The page and its title share one load.
+const load = cache((locale: string, country: string) => {
+  const entry = getCountry(country);
   if (!entry || !entry.visible) return null;
   const result = getCountryDashboardPayload(entry.id, locale, null);
   if (result.kind !== "ok") return null;
@@ -37,10 +39,11 @@ async function load(props: Props) {
     labels: labelsIn(targetLabels, locale),
   });
   return { locale, source, data, targetLabels };
-}
+});
 
 export async function generateMetadata(props: Props) {
-  const loaded = await load(props);
+  const { locale, country } = await props.params;
+  const loaded = load(locale, country);
   if (!loaded) return {};
   const t = await getTranslations({ locale: loaded.locale, namespace: "brief.explore" });
   const title = t("metaTitle", { country: loaded.source.countryName });
@@ -50,40 +53,25 @@ export async function generateMetadata(props: Props) {
 /** The brief's explorer on a page of its own, to share on its own; the same
  *  link parameters as in the brief (documents, centre, grouping, layers). */
 export default async function ExploreStandalonePage(props: Props) {
-  // A brief is in English and its country's own language only.
   const { locale, country } = await props.params;
-  const entry = getCountry(country.toLowerCase());
-  const english = entry && briefInEnglish(entry, locale, "brief/explore", await props.searchParams);
-  if (english) redirect(english);
-  const loaded = await load(props);
+  setRequestLocale(locale);
+  const loaded = load(locale, country);
   if (!loaded) notFound();
-  const searchParams = await props.searchParams;
-  const selection = parseSelection(searchParams, loaded.source);
-  const cur = Array.isArray(searchParams.cur) ? searchParams.cur[0] : searchParams.cur;
-  // Money as in the brief: US$ on every page but the Mongolian one, which
-  // opens in tugrik and keeps a shared link's US$ (?cur=usd). The contracts
-  // under a comparison convert at their record's indicative rate.
-  const local = loaded.locale === "mn";
   return (
-    <CurrencyProvider
-      currency={local && cur !== "usd" ? "mnt" : "usd"}
+    <ExplorePage
+      source={loaded.source}
+      setup={exploreSetup({
+        data: loaded.data,
+        source: loaded.source,
+        locale: loaded.locale,
+        berNames: loadBerNames(loaded.source.countryId),
+        targetLabels: loaded.targetLabels,
+      })}
+      // Money as in the brief: US$ on every page but the Mongolian one, which
+      // opens in tugrik and keeps a shared link's US$ (?cur=usd). The
+      // contracts under a comparison convert at their record's indicative rate.
+      localCurrency={loaded.locale === "mn"}
       rate={loadContracts(loaded.source.countryId)?.source.usdRate ?? 0}
-      local={local}
-    >
-      <ExplorePage
-        source={loaded.source}
-        docs={selection.docs}
-        lens={selection.lens}
-        setup={exploreSetup({
-          data: loaded.data,
-          source: loaded.source,
-          docs: selection.docs,
-          searchParams,
-          locale: loaded.locale,
-          berNames: loadBerNames(loaded.source.countryId),
-          targetLabels: loaded.targetLabels,
-        })}
-      />
-    </CurrencyProvider>
+    />
   );
 }
