@@ -1,7 +1,7 @@
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
 import type { Scope, ToneCounts } from "../compute";
 import { LEVEL_CODES, MECHANISM_CODES, type BriefCommitment, type BriefDocument, type BriefLens } from "../source";
-import type { ExploreLayers, LayerId, LayerItem } from "./layers";
+import { forEachReading, type ExploreLayers, type LayerId, type LayerItem } from "./layers";
 
 /**
  * The explorer's model: every target in scope, then (where the country has
@@ -102,10 +102,15 @@ export function buildExploreModel(scope: Scope, layers?: ExploreLayers | null): 
     set(a, b, LEVEL_CODES.indexOf(c.level) + 1, Math.max(0, MECHANISM_CODES.indexOf(c.mechanism ?? null)));
   }
   const offset = scope.commitments.length;
-  for (const [targetId, item, level, mechanism] of layers?.links ?? []) {
-    const a = index.get(targetId);
-    if (a === undefined || a >= offset) continue;
-    set(a, offset + item, level + 1, mechanism);
+  if (layers) {
+    // Each target column's seat, or -1 where the target is not in scope.
+    const seats = layers.links.targets.map((id) => {
+      const a = index.get(id);
+      return a === undefined || a >= offset ? -1 : a;
+    });
+    forEachReading(layers.links, (column, item, level, mechanism) => {
+      if (seats[column] >= 0) set(seats[column], offset + item, level + 1, mechanism);
+    });
   }
   return { items, targets: offset, index, levels, mechanisms };
 }

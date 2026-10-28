@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { scopeOf } from "../compute";
 import { briefFixture } from "../test-fixture";
 import { parseTargetLabels } from "../target-labels";
-import { buildExploreLayers } from "./layers";
+import { LEVEL_CODES, MECHANISM_CODES } from "../source";
+import { buildExploreLayers, layerReadings } from "./layers";
 import { LAYER_DATA } from "./test-layers";
 import { activitiesPayload, levelsPayload } from "../spending-fixture";
 import { buildExploreModel, levelBetween, relationBetween } from "./model";
@@ -33,13 +34,57 @@ describe("buildExploreLayers", () => {
 
   it("links targets in scope to actions and budget lines, and drops the rest", () => {
     // A1~BTR_1, B2~BTR_1, C3~ADP_1, A2~BER, A3~BER; Z9 is not a known target.
-    expect(layers.links.map(([target, item]) => `${target}~${layers.items[item].id}`)).toEqual([
+    expect(layerReadings(layers.links).map(([target, item]) => `${target}~${layers.items[item].id}`)).toEqual([
       "A1~BTR_1",
       "B2~BTR_1",
       "C3~ADP_1",
       "A2~BER_71401",
       "A3~BER_71401",
     ]);
+  });
+
+  it("packs each item's readings into one row over the targets read", () => {
+    expect(layers.links).toEqual({ targets: ["A1", "A2", "A3", "B2", "C3"], rows: ["A..S.", "....E", ".AQ.."] });
+    const read = layerReadings(layers.links).map(([target, item, level, mechanism]) => [
+      target,
+      layers.items[item].id,
+      LEVEL_CODES[level],
+      MECHANISM_CODES[mechanism],
+    ]);
+    expect(read).toEqual([
+      ["A1", "BTR_1", "high", null],
+      ["B2", "BTR_1", "flagged", "resource_competition"],
+      ["C3", "ADP_1", "medium", null],
+      ["A2", "BER_71401", "high", null],
+      ["A3", "BER_71401", "flagged", null],
+    ]);
+  });
+
+  it("brings every level and mechanism back as it went in", () => {
+    // One reading of each level and mechanism, each of its own pair.
+    const ids = SOURCE.commitments.map((c) => c.id);
+    const codes = LEVEL_CODES.flatMap((alignment) => MECHANISM_CODES.map((mechanism) => ({ alignment, mechanism })));
+    const alignment = codes.map(({ alignment, mechanism }, i) => ({
+      targetAId: ids[i % ids.length],
+      targetBId: i < ids.length ? "BTR_1" : "ADP_1",
+      alignment,
+      ...(mechanism ? { mechanism } : {}),
+    }));
+    const every = buildExploreLayers({ targets: DATA.targets, alignment }, SOURCE)!;
+    const read = layerReadings(every.links).map(
+      ([target, item, level, mechanism]) =>
+        `${target}~${every.items[item].id} ${LEVEL_CODES[level]} ${MECHANISM_CODES[mechanism]}`,
+    );
+    expect(read.sort()).toEqual(
+      alignment.map((r) => `${r.targetAId}~${r.targetBId} ${r.alignment} ${r.mechanism ?? null}`).sort(),
+    );
+  });
+
+  it("keeps the later of two readings of the same pair", () => {
+    const later = { targetAId: "BTR_1", targetBId: "A1", alignment: "flagged", mechanism: "goal_conflict" };
+    const twice = buildExploreLayers({ ...DATA, alignment: [...(DATA.alignment as unknown[]), later] }, SOURCE)!;
+    const a1 = layerReadings(twice.links).filter(([target, item]) => target === "A1" && twice.items[item].id === "BTR_1");
+    expect(a1).toEqual([["A1", 0, LEVEL_CODES.indexOf("flagged"), MECHANISM_CODES.indexOf("goal_conflict")]]);
   });
 
   it("marks no description as written with AI unless the review says so", () => {
