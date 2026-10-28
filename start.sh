@@ -14,10 +14,18 @@ shopt -s nullglob
 
 PERSIST_ROOT="${CPC_PERSIST_ROOT:-/home/cpc}"
 
+# What the site writes under python/output while it runs. These live only on
+# the persistent volume: the country re-sync never copies them from the
+# image, and python/output/<entry> is linked to the volume's copy below. A
+# new runtime writer under python/output must be added here, or it writes to
+# the container's own disk and is lost on restart. A folder deleted on the
+# volume while the site runs is only recreated at the next start.
+VOLUME_ENTRIES=(footprint-ledger.jsonl ratings-ledger.jsonl feedback analytics .cache)
+
 mkdir -p "${PERSIST_ROOT}/analyses" "${PERSIST_ROOT}/output"
 
-# Replace the in-image directories with symlinks to the persistent volume.
-# `ln -sfn` overwrites existing symlinks atomically.
+# Replace the in-image analyses directory with a symlink to the persistent
+# volume. `ln -sfn` overwrites existing symlinks atomically.
 rm -rf /app/python/analyses
 ln -sfn "${PERSIST_ROOT}/analyses" /app/python/analyses
 
@@ -31,10 +39,13 @@ sync_country() {
     local country
     country=$(basename "${src}")
     # Skip dotfile dirs (e.g. .cache; .dockerignore'd but cheap to defend)
-    # and the feedback/analytics ledgers, which live only on the persistent
-    # volume and must never be replaced from the image.
+    # and VOLUME_ENTRIES, which live only on the persistent volume and must
+    # never be replaced from the image.
     case "${country}" in
-        .*|feedback|analytics) return 0 ;;
+        .*) return 0 ;;
+    esac
+    case " ${VOLUME_ENTRIES[*]} " in
+        *" ${country} "*) return 0 ;;
     esac
     local target="${PERSIST_ROOT}/output/${country}"
     local staging="${target}.new"
@@ -48,26 +59,29 @@ sync_country() {
 }
 
 # On every fresh container start (deploy / scale-out / idle restart),
-# refresh the bundled demo countries from the image to the persistent
-# volume. Same model as a Vercel deploy: push to main → image rebuild →
-# fresh container picks up the new bundle automatically.
+# refresh the bundled countries from the image to the persistent volume.
+# The site reads them from the image, and so does the storyline synthesis
+# it runs in Python (its route points CPC_OUTPUT_DIR at the image). This
+# copy is what the fallback at the end links when an image has no
+# python/output; nothing else reads it now, and it can go once that holds.
 #
-# .cache (LLM cache; lives only on persistent) and per-analysis runs
-# (under /home/cpc/analyses) are not touched. Loop matches directories
-# only (`*/` glob); top-level files in the bundle are not propagated by
-# design.
+# VOLUME_ENTRIES (ledgers, feedback, analytics, the LLM cache) and
+# per-analysis runs (under /home/cpc/analyses) are not touched. Loop matches
+# directories only (`*/` glob); top-level files in the bundle are not
+# propagated by design.
 #
 # Failure handling: a single country's sync failure is logged but does
 # NOT abort container start (App Service `/home` is CIFS-mounted; SMB
 # can return EBUSY/EIO when an old container holds open file handles).
-# Stale demo data is preferable to a deploy loop.
+# A stale volume copy is preferable to a deploy loop.
 #
 # Side effect: any manual edits to /home/cpc/output/{country}/ via Kudu
-# are blown away on next deploy. The image bundle is the source of truth.
+# are blown away on next deploy and never reach the site. The image bundle
+# is the source of truth.
 if [ -d /app/python/output ] && [ ! -L /app/python/output ]; then
     for src in /app/python/output/*/; do
         if ! sync_country "${src}"; then
-            printf '[start.sh] WARN: failed to re-sync %s; falling back to persistent volume contents\n' "${src}" >&2
+            printf '[start.sh] WARN: failed to re-sync %s; the volume keeps its previous copy\n' "${src}" >&2
         fi
     done
     # Reconcile the committed footprint ledger (a top-level file the dir-only
@@ -109,20 +123,26 @@ if [ -d /app/python/output ] && [ ! -L /app/python/output ]; then
     # than the SMB share. Only what is written while the site runs lives on
     # the persistent volume, linked in here: the footprint and ratings
     # ledgers (merged above; the app and Python runs append to them),
-    # reviewers' feedback, usage analytics and the LLM cache. A Python run
-    # (CPC_OUTPUT_DIR=/home/cpc/output) still reads the country copies
-    # synced above.
-    for entry in footprint-ledger.jsonl ratings-ledger.jsonl feedback analytics .cache; do
+    # reviewers' feedback, usage analytics and the LLM cache.
+    for entry in "${VOLUME_ENTRIES[@]}"; do
+        # A ledger needs nothing here: the merge above wrote it, and the
+        # first append through its link creates it otherwise. A folder must
+        # exist for the writers' mkdir to pass through the link; failing to
+        # create it is logged, not fatal, like the re-sync above.
         case "${entry}" in
-            *.jsonl) touch "${PERSIST_ROOT}/output/${entry}" ;;
-            *) mkdir -p "${PERSIST_ROOT}/output/${entry}" ;;
+            *.jsonl) ;;
+            *) mkdir -p "${PERSIST_ROOT}/output/${entry}" ||
+                   printf '[start.sh] WARN: could not create %s on the persistent volume\n' "${entry}" >&2 ;;
         esac
         rm -rf "/app/python/output/${entry}"
         ln -sfn "${PERSIST_ROOT}/output/${entry}" "/app/python/output/${entry}"
     done
+    printf '[start.sh] country data read from the image; on the persistent volume: %s\n' "${VOLUME_ENTRIES[*]}"
 else
-    # A container that already linked the whole folder (an older start.sh)
-    # keeps that link.
+    # Only reached when the image has no python/output folder (a build of
+    # this repo always ships one): the whole folder then comes from the
+    # persistent volume, as before the site read country data from the image.
+    printf '[start.sh] WARN: no python/output folder in the image; linking the persistent volume copy\n' >&2
     ln -sfn "${PERSIST_ROOT}/output" /app/python/output
 fi
 

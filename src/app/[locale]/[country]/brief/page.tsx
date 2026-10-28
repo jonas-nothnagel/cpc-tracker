@@ -18,7 +18,7 @@ import { BriefApp } from "@/components/brief/brief-app";
 
 // Built once, when the site is deployed, for every country in each language
 // it offers: a country's pipeline output ships with the site and changes only
-// with a deploy (start.sh copies it to the persistent volume on every start).
+// with a deploy (the site reads it from the image; see start.sh).
 // The choices a link carries are applied in the browser (lib/brief/link.ts);
 // an address in another language or spelling is sent on first (proxy.ts).
 export const dynamicParams = false;

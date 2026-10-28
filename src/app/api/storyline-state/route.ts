@@ -75,7 +75,11 @@ function runSynthesis(
         "--hidden",
         hiddenKey,
       ],
-      { cwd: join(PROJECT_ROOT, "python"), env: { ...process.env } },
+      // The country's pipeline output as the site reads it, from the image:
+      // on Azure CPC_OUTPUT_DIR names the persistent volume's copy, which
+      // start.sh refreshes but which can lag (see start.sh). The LLM cache
+      // under it is linked to the volume.
+      { cwd: join(PROJECT_ROOT, "python"), env: { ...process.env, CPC_OUTPUT_DIR: join(PROJECT_ROOT, "python", "output") } },
     );
 
     let stdout = "";

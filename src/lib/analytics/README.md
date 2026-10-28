@@ -76,7 +76,7 @@ one-line, deletable statement.
    only by the analytics validator), remove `ANALYTICS_DASHBOARD_TOKEN` and
    `NEXT_PUBLIC_ANALYTICS_DISABLED` from `.env.example`, the
    `python/output/analytics` lines from `.gitignore` / `.dockerignore`, the
-   `analytics` token from the skip-case in `start.sh`, and the `analytics`
+   `analytics` entry from `VOLUME_ENTRIES` in `start.sh`, and the `analytics`
    token from the matcher regex in `src/proxy.ts`.
 
    Also inert if left: the `data-track="..."` attributes on wheel/matrix/

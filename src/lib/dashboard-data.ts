@@ -12,9 +12,9 @@
  *   - analysis (?analysisId=xxx) → python/analyses/{id}/   — never cached (may be mid-run)
  *   - country  (?country=<id>)  → python/data/ + python/output/{id}/ — cached for container lifetime
  *
- * The demo-country data only changes on deploy (start.sh re-syncs from the
- * image bundle at container start), so an in-memory cache keyed by country id
- * and held for the container's lifetime is correct.
+ * The demo-country data only changes on deploy (the site reads it from the
+ * image; see start.sh), so an in-memory cache keyed by country id and held
+ * for the container's lifetime is correct.
  */
 
 import { readFileSync, existsSync, readdirSync, statSync } from "fs";
