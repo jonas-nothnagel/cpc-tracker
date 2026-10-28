@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../../messages/en.json";
 import es from "../../../../messages/es.json";
+import mn from "../../../../messages/mn.json";
 import { setupFixture } from "@/lib/brief/contracts/test-fixture";
 import { scopeSetup, type ContractsSetup } from "@/lib/brief/contracts/setup";
 import type { ContractRecord } from "@/lib/brief/contracts/model";
@@ -38,11 +39,11 @@ const RECORD: ContractRecord = {
 function renderPanels(
   stack: PanelState[],
   onPush = vi.fn(),
-  opts: { onExplore?: (id: string) => void; locale?: "en" | "es"; setup?: ContractsSetup } = {},
+  opts: { onExplore?: (id: string) => void; locale?: "en" | "es" | "mn"; setup?: ContractsSetup } = {},
 ) {
   const locale = opts.locale ?? "en";
   render(
-    <NextIntlClientProvider locale={locale} messages={locale === "es" ? es : en} timeZone="UTC">
+    <NextIntlClientProvider locale={locale} messages={locale === "es" ? es : locale === "mn" ? mn : en} timeZone="UTC">
       <div data-brief>
         <ContractsPanels
           stack={stack}
@@ -99,6 +100,25 @@ describe("a contract, in full", () => {
     expect(screen.queryByText("Buyer")).toBeNull();
     expect(screen.queryByText(/Ховд аймгийн/)).toBeNull();
     expect(screen.queryByText(/Ойжуулалт/)).toBeNull();
+  });
+
+  it("dates the contract day first, as UNDP style asks", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, json: async () => RECORD })),
+    );
+    renderPanels([{ kind: "contract", id: "p1" }]);
+    expect(await screen.findByText("15 April 2024 to 1 July 2024")).toBeInTheDocument();
+  });
+
+  it("spells the contract's dates in Mongolian itself on the Mongolian page, the same in every browser", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, json: async () => RECORD })),
+    );
+    renderPanels([{ kind: "contract", id: "p1" }], vi.fn(), { locale: "mn" });
+    const dates = await screen.findByText(/2024 оны 4-р сарын 15/);
+    expect(dates.textContent).toContain("2024 оны 7-р сарын 1");
   });
 
   it("names only the targets in the brief's documents, each one the ring can take", async () => {
