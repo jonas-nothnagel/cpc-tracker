@@ -50,10 +50,11 @@ export interface LayerItem {
 /**
  * Every reading of the items against the targets, packed for the page (a
  * review rebuilt from its own workbook reads every budget line against every
- * target: 96,888 readings for Panama). `targets` names the targets read;
- * `rows` holds one string per item, one character per target in that order:
- * "." for no reading, else "A" + level code × 4 + mechanism code, codes as in
- * `BriefSource.comparisons`. Read them with `layerReadings`.
+ * target, so few cells are empty). `targets` names the targets read; `rows`
+ * holds one string per item, one character per target in that order: "." for
+ * no reading, else "A" + level code × the number of mechanism codes +
+ * mechanism code, codes as in `BriefSource.comparisons`. Read them with
+ * `forEachReading`, or list them with `layerReadings`.
  */
 export interface LayerLinks {
   targets: string[];
@@ -206,9 +207,9 @@ export function buildExploreLayers(
 
   const known = new Set(source.commitments.map((c) => c.id));
   const item = new Map(items.map((it, i) => [it.id, i]));
-  // [target id, item index, code] per reading; a later reading of the same
-  // pair replaces an earlier one.
-  const read: [string, number, number][] = [];
+  // [target id, item index, level code, mechanism code] per reading; a later
+  // reading of the same pair replaces an earlier one.
+  const read: [string, number, number, number][] = [];
   const addRows = (rows: Record<string, unknown>[] | undefined) => {
     for (const r of rows ?? []) {
       const a = String(r.targetAId);
@@ -219,7 +220,7 @@ export function buildExploreLayers(
       const level = LEVEL_CODES.indexOf(r.alignment as AlignmentLevel);
       if (level < 0) continue;
       const mechanism = Math.max(0, MECHANISM_CODES.indexOf((r.mechanism as AlignmentMechanism | undefined) ?? null));
-      read.push([target, other, level * MECHANISM_CODES.length + mechanism]);
+      read.push([target, other, level, mechanism]);
     }
   };
   addRows(data.alignment as Record<string, unknown>[]);
@@ -262,31 +263,51 @@ export function buildExploreLayers(
 }
 
 const NO_READING = ".";
+/** A reading's letter: "A" + level code × KINDS + mechanism code. */
 const FIRST_CODE = "A".charCodeAt(0);
+const KINDS = MECHANISM_CODES.length;
+/** How many letters a reading may take, from "A". */
+const LETTERS = LEVEL_CODES.length * KINDS;
 
 /** The readings as `LayerLinks`: the targets read, in the source's order,
  *  and a row per item. */
-function packLinks(read: [string, number, number][], source: BriefSource, count: number): LayerLinks {
+function packLinks(read: [string, number, number, number][], source: BriefSource, count: number): LayerLinks {
   const isRead = new Set(read.map(([target]) => target));
   const targets = source.commitments.map((c) => c.id).filter((id) => isRead.has(id));
   const column = new Map(targets.map((id, i) => [id, i]));
   const cells = Array.from({ length: count }, () => new Array<string>(targets.length).fill(NO_READING));
-  for (const [target, at, code] of read) cells[at][column.get(target)!] = String.fromCharCode(FIRST_CODE + code);
+  for (const [target, at, level, mechanism] of read) {
+    cells[at][column.get(target)!] = String.fromCharCode(FIRST_CODE + level * KINDS + mechanism);
+  }
   return { targets, rows: cells.map((row) => row.join("")) };
+}
+
+/** Calls `visit` with each reading in `links`: the column of its target in
+ *  `links.targets`, the item's index, and its level and mechanism codes, as
+ *  in `BriefSource.comparisons`. Nothing is allocated per reading. */
+export function forEachReading(
+  links: LayerLinks,
+  visit: (column: number, item: number, level: number, mechanism: number) => void,
+): void {
+  for (let item = 0; item < links.rows.length; item++) {
+    const row = links.rows[item];
+    for (let column = 0; column < row.length; column++) {
+      const code = row.charCodeAt(column) - FIRST_CODE;
+      // No reading: "." or any other character outside the letters.
+      if (code < 0 || code >= LETTERS) continue;
+      visit(column, item, Math.floor(code / KINDS), code % KINDS);
+    }
+  }
 }
 
 /** Each reading in `links`: [target id, item index, level code, mechanism
  *  code], codes as in `BriefSource.comparisons`. */
-export function* layerReadings(links: LayerLinks): Generator<[string, number, number, number]> {
-  const kinds = MECHANISM_CODES.length;
-  for (let at = 0; at < links.rows.length; at++) {
-    const row = links.rows[at];
-    for (let t = 0; t < row.length; t++) {
-      const code = row.charCodeAt(t) - FIRST_CODE;
-      if (code < 0) continue;
-      yield [links.targets[t], at, Math.floor(code / kinds), code % kinds];
-    }
-  }
+export function layerReadings(links: LayerLinks): [string, number, number, number][] {
+  const readings: [string, number, number, number][] = [];
+  forEachReading(links, (column, item, level, mechanism) => {
+    readings.push([links.targets[column], item, level, mechanism]);
+  });
+  return readings;
 }
 
 /** Every id and document a link may put in the centre from the layers:
