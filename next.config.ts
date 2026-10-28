@@ -41,6 +41,14 @@ const framedFileHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
 ];
 
+/** Pipeline output no page needs on Vercel (see outputFileTracingExcludes). */
+export const VERCEL_LEAVES_OUT = [
+  "python/output/mongolia/deepseek-v4-pro/**",
+  "python/output/mongolia/gpt-5-4-mini/**",
+  "python/output/mongolia/llama-4-maverick-17b-128e-instruct-fp8/**",
+  "python/output/eval/**",
+];
+
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
@@ -50,6 +58,12 @@ const nextConfig: NextConfig = {
     // 10 MB by default: documents of up to 50 MB need room above that.
     proxyClientMaxBodySize: "55mb",
   },
+  // Vercel's plan allows the app one server bundle of at most 250 MB, and
+  // every page that reads country data carries all of python/output. There,
+  // the model comparison's other runs and the extraction evaluation's stay
+  // out, so the comparison lists the main run only. Azure ships everything:
+  // its image copies the folder whole and does not use these traces.
+  outputFileTracingExcludes: process.env.VERCEL ? { "*": VERCEL_LEAVES_OUT } : {},
   // Pages show upload links only where Python can run (not on Vercel).
   env: {
     NEXT_PUBLIC_UPLOADS: process.env.VERCEL ? "0" : "1",
