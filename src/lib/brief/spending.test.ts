@@ -124,8 +124,8 @@ describe("spendingSetup from a rebuilt record", () => {
     const areas = parseBerAreas(
       {
         lines: [
-          { code: "71405", area: "g1", status: "models-agree", first: { ranked: [{ reasoning: "Protected areas." }] } },
-          { code: "82212", area: null, status: "models-differ", first: { ranked: [] } },
+          { code: "71405", area: "g1", status: "second-agrees", first: { ranked: [{ reasoning: "Protected areas." }] }, second: { ranked: [{ reasoning: "Ranger wages." }] } },
+          { code: "82212", area: null, status: "no-clear-area", first: { ranked: [] }, second: { ranked: [] } },
         ],
       },
       { globe: { "82212": { call: "change", area: "g2", by: "A reviewer", at: "2026-10-24" } } },
@@ -136,6 +136,17 @@ describe("spendingSetup from a rebuilt record", () => {
       ["71405", "g1", "ai"],
       ["82212", "g2", "checked"],
     ]);
+    // Claude Opus (the second reading) decides the area, so its reason is the one kept.
+    expect(setup.lines[0].reason).toBe("Ranger wages.");
+  });
+
+  it("keeps a line with no area at the mark as general spending, with no specific area", () => {
+    const areas = parseBerAreas(
+      { lines: [{ code: "82212", area: null, status: "no-clear-area", first: { ranked: [{ reasoning: "Green areas." }] }, second: { ranked: [] } }] },
+      null,
+      "globe",
+    )!;
+    expect(areas.lines["82212"]).toEqual({ area: null, status: "apart", apart: "no-clear-area", reason: "Green areas." });
   });
 
   it("falls back to the pipeline's own classification without step 2", () => {
@@ -181,6 +192,18 @@ describe("spendingSetup from a rebuilt record", () => {
     expect(setup.lines.map((l) => l.code)).toEqual(["P082"]);
     expect(setup.linesKind).toBe("projects");
     expect(setup.notes).toContain("projects");
+  });
+
+  it("carries the review team's own description and tag of a Panama line, in the page's language", () => {
+    const data = activities();
+    const flies = data.berData.record.lines[0] as Record<string, unknown>;
+    flies.reviewDescription = { en: "Infrastructure or equipment line.", es: "Línea de infraestructura o equipamiento." };
+    flies.tags = { "2016": "Indirecto", "2017": "Indirecto" };
+    const line = (locale: string, code: string) => spendingSetup(data, briefFixture(), { locale })!.lines.find((l) => l.code === code)!;
+    expect([line("en", "0-10-1-3-1-1").description, line("en", "0-10-1-3-1-1").reviewTag]).toEqual(["Infrastructure or equipment line.", "indirect"]);
+    expect(line("es", "0-10-1-3-1-1").description).toBe("Línea de infraestructura o equipamiento.");
+    // A line the review does not describe or tag carries neither.
+    expect([line("en", "0-27-0-2-1-1").description, line("en", "0-27-0-2-1-1").reviewTag]).toEqual([undefined, undefined]);
   });
 
   it("lists Panama's programmes, and the same money by the institution that runs each", () => {

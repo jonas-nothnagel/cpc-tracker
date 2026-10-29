@@ -144,7 +144,7 @@ python scripts/fetch_nr7_ort.py --country Mongolia --iso3 MNG --iso2 MN --target
 
 For a review rebuilt from its own workbook (`record`, built by `scripts/build_ber_{country}.py` with every published total reproduced), every line the review decided on that holds reviewed spending becomes a pseudo-target, described in the review's and the budget's own words without amounts (`ber_areas.describe_line`), and is aligned against each policy target on the same five-state scale with the budget framing (v4: no "fund" or "finance", running costs read with what they keep running). The target side reuses `decompositions.json`. The meta file records the framing and `"basis": "ber-record"`; the brief shows the comparisons only on that basis. Targets without text (Panama's ENR_46) are left out and listed under `targetsWithoutText` in the meta file. Country X's earlier file keeps its programmes, read without amounts.
 
-Two more steps place each line, outside `run_analysis`: its GLOBE area (`scripts/place_ber_lines.py`, two models, then a person's check in `scripts/ber_review_sheet.py`) and its BIOFIN expenditure type (`scripts/type_ber_lines.py`), whose GBF targets join the line to the national targets of the 7th National Report (`scripts/build_ber_chain.py` → `ber_chain.json`).
+Two more steps place each line, outside `run_analysis`: its GLOBE area (`scripts/place_ber_lines.py`: Claude Opus decides at 0.5, the pipeline's model gives a second opinion, then a person's check in `scripts/ber_review_sheet.py`) and its BIOFIN expenditure type (`scripts/type_ber_lines.py`), whose GBF targets join the line to the national targets of the 7th National Report (`scripts/build_ber_chain.py` → `ber_chain.json`).
 
 ---
 

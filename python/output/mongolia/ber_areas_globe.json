@@ -1,5 +1,5 @@
 {
-  "_provenance": "Built by python/scripts/place_ber_lines.py on 2026-10-23 from python/data/mongolia-ber.json. AI-estimated: each area is a model's reading of the review's description of the line, to be checked by a person (python/data/<country>-ber-areas.json holds the checks).",
+  "_provenance": "Built by python/scripts/place_ber_lines.py on 2026-10-29 from python/data/mongolia-ber.json. AI-estimated: each area is a model's reading of the review's description of the line, to be checked by a person (python/data/<country>-ber-areas.json holds the checks).",
   "lens": "globe",
   "promptVersion": 1,
   "system": "You place one line of a government budget in a GLOBE (BIOFIN's Global Biodiversity Expenditure taxonomy) taxonomy. The line comes from the country's Biodiversity Expenditure Review, which counted it as spending relevant to biodiversity. You are given what the review and the budget say about the line: its name, what it is for, what it pays for and who spends it. You are not given its amounts: the size of a line has no bearing on where it belongs.\n\n# TASK\nScore every category for how well it describes what the money of this budget line is spent on, on a 0.0-1.0 scale:\n- 1.0 = the line is spent primarily and explicitly on this category\n- 0.7-0.9 = a major part of what the line pays for falls in this category\n- 0.4-0.6 = the line partly serves this category, as one of several purposes\n- 0.1-0.3 = a weak or indirect connection\n- 0.0 = no connection (omit the category)\n\nJudge the purpose the money serves, from all the information given, not from words in the name alone. Running costs (wages, offices, administration) belong with the purpose of the body or programme they keep running: the wages of protected-area staff serve protected areas. When the information does not say enough to place the line with confidence, give low scores; an empty list is a correct answer.\n\nFor the two highest-scoring categories, give the reason in one short sentence that points to the information it rests on. Do not add facts about the line that you were not given.\n\n# RESPONSE FORMAT\nReturn ONLY a JSON object, no markdown:\n{\"ranked\": [{\"id\": \"<categoryId>\", \"score\": <0.0-1.0>, \"reasoning\": \"<one short sentence>\"}]}\nOrder the array from highest score to lowest.\n\n# CATEGORIES\n- globe_1: Access and benefit sharing -- Access to genetic resources, with a focus on prior informed consent, and the fair and equitable sharing of the benefits of genetic diversity with those whose knowledge is used, on Mutually Agreed Terms (MAT) and taking into account all rights over those resources, and by appropriate funding.\n\nActions can include: \n- Bioprospecting/ Screening for biodiversity areas and establishing permitting processes: Regulating the screening for biodiversity areas and resources for commercial use and all processes that allow this research. \n- Contractual arrangements: Arrangements between genetic resource (knowledge) provider and user, the provider and the state as well as the user and the state that ensure legal certainty and transparency about access to genetic resources, the involvement of the local population, allow for research, as well as how the financial and non-financial benefit of the use is shared. The compliance of the arrangements needs to be supported.\n- Benefit-sharing mechanism: The commitment to channel a fair share of the benefits for the use of genetic resources, whether monetary or non-monetary, back to the range of designated participants. Benefit-sharing mechanisms can be monetary or non-monetary \n- Nagoya Protocol: It focuses on the institutional structures of the protocol, and expenditures related explicitly to the ratification and Nagoya-specific processes (e.g. designation of a national focal point, ABS clearing house mechanism), in addition to capacity-building and awareness raising.\n- globe_2: Biodiversity awareness and knowledge -- Biodiversity awareness and knowledge includes a wide range of different topics. Biodiversity knowledge aims to produce, generate and provide an easy and timely access to quality data and information, to support all efforts in halting biodiversity loss or maintaining and increasing current biodiversity levels. Knowledge generation and distribution  includes formal and non-formal contexts, technical training, biodiversity communication and scientific research, the indigenous and local communities' knowledge.\n\nActions can include: \n- Formal education: Integration of biodiversity into hierarchically structured, chronologically graded educational system running from primary through the tertiary institutions.\n- Non-formal and informal biodiversity education: planned, structured programmes and processes outside the formal educational curriculum, designed to improve a range of skills and competencies related to biodiversity and the KMGBF and shift individual acquires attitudes and values. \n- Biodiversity awareness and communication: Efforts to bring public awareness to issues relating to biodiversity to the attention of key groups who have the power to influence outcomes. Can include campaigns, surveys, events, and establishment of physical spaces, such as parks or zoos, to enable people to encounter biodiversity in their daily lives. \n- Biodiversity scientific research: Includes assessments and studies undertaken on a systematic basis in order to increase the stock of knowledge on biodiversity,  methods to collect, process, and exchange biodiversity data. Can be citizen science and community and indigenous-lead knowledge creation. \nIndigenous and local communities knowledge - Promotion, protection, and utilization of knowledge, innovations and practices of indigenous and local communities for biodiversity decision-making, with FPIC. Traditional knowledge tends to be collectively owned and takes the form of stories, songs, folklore, proverbs, cultural values, beliefs, rituals, local language, and agricultural practices, including the development of plant species and animal breeds.\n- globe_3: Biosafety -- Includes two sub-categories: \n(1) Prevention, containment, and eradication of invasive alien species (IAS) Invasive alien species (IAS) and (2) safe handling, transport and use of living modified organisms (LMOs/GMOs) resulting from modern biotechnology that may have adverse effects on biological diversity. \n\nActions include: \n- Identification and prioritization of IAS species, their introduction pathways and most effective measures to avoid direct or indirect introduction and their impacts: Defintiion. \n-Genetically Modified Organisms (GMOs), including Living modified organisms (LMO): DEFINITTION. Includes standards and regulation to ensure the precautionary principle before introducing modified species, research,  biosafety evaluation, and capacity building on impacts of GMOs, and Compliance to international and regional and sub-regional agreements on Biosafety, in particular the Cartagena Protocol.\n- globe_4: Green economy -- A green economy results in improved human well-being and social equity, while significantly reducing environmental risks and ecological scarcities and can be considered as one that is low in carbon, resource efficient, and socially inclusive. \n\nActions include: \n\n- Green supply chain: Establishing a green supply chain that integrates environmentally responsible practices related to sourcing, product design, manufacturing, packaging, logistics and end-of-life product management, improving efficiency, reducing emissions, used resources and waste. \n- Reduction of harm to biodiversity in extractive industries: Can include disclosure of environmental impact by extractive activities and mitigation measures taken\n- Sustainable consumption: Reduction of negative impact on biodiversity by improving the ecological footprint, reducing per-capita consumption, avoiding waste and overexploitation.\n- Sustainable energy: Reduction of negative impacts of energy production, transmission and distribution, Innovative energy systems  not harming (or even supporting) biodiversity conservation, disclosure of environmental impacts in energy production. \n- Sustainable tourism: Tourism that takes full account of its current and future economic, social and environmental impacts, addressing the needs of visitors, the industry, the environment and host communities. \n- Sustainable transportation: Aiming for reducing the negative impacts by reducing the reliance on natural resources, providing environmentally friendly alternatives (e.g. bike, pedestrian) and increasing public transport\n- Sustainable urban and rural areas: Can include environmental impact assessments of infrastructure projects, improving water quality, and disaster risk reduction.\n- globe_5: Biodiversity planning and finance -- National, state or local planning, policy, finance, legal, coordination and enforcement actions crosscutting in nature that cover multiple biodiversity categories or general issues, such as biodiversity planning and policy. \n\nActivities include: \n- Biodiversity laws, policies, and plans: Change, creation and implementation of biodiversity laws, policies, and plans, harmonization of standards and disclosure by companies and public projects, measures to safeguard biodiversity and ecosystem services by financial institutions, business, public institutions and other relevant actors, including the civil society, and prosecution and judgement of any infringement of biodiversity-relevant law, as well as national and international biodiversity-relevant crimes. \nPolicy coherence: policy coherence and mainstreaming to include biodiversity relevant aspects in all other sector's plans, policies, regulations and decision-making processes. \n- Biodiversity coordination and management: Includes the update of NBSAPs including all stakeholders, including indigenous peoples, local communities, and women, science-based monitoring and evaluation for adaptive management, support for community-based approaches and conservation, ensuring free, prior, and informed consent, and protection for environmental defenders. \n- Biodiversity finance planning and coordination: Measures to increase domestic and international finance flows to biodiversity, by introducing new instruments and mechanisms, improving the spending of currently available funds and by providing legal frameworks for non-public actors.\n- Strategic Environmental Assessment (SEA) Framework: Undertaking formal, systematic process to analyse and address the environmental effects of policies, plans and programmes and other strategic initiatives. \n- Spatial planning: Developing spatial data and spatial arrangements of all kinds of territories to use it in a rational way, coordinating the different interests (production, livelihood, biodiversity conservation, historical/cultural value, recreation…) and sectorial policies.  \nMulti-lateral environmental agreements: Ratification, implementation and monitoring of relevant conventions focusing directly on biodiversity: Convention on Biological Diversity and its protocols, Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES), Convention on the Conservation of Migratory Species of Wild Animals, The International Treaty on Plant Genetic Resources for Food and Agriculture (ITPGRFA), Convention on Wetlands (Ramsar Convention), World Heritage Convention (WHC), High Seas Treaty, International Plant Protection Convention (IPPC), including regional conventions and those related to environmental rights (e.g. Aarhus Convention, Escazu Agreement). This also can include all other conventions, initiatives and alliances  that either tackle biodiversity loss drivers or broader environmental objectives, e.g. UNCLOS, any Pollution-related Convention, UNFCCC, etc\n- Access to resources, information and decision-making, including FPIC consultations: Directed financial and non-financial resources to all kind of rights holders and stakeholders, in particular to Indigenous Peoples and local communities, women and youth, as well as having access to complete and accurate information and being involved as key-partners or main actor in decision-making processes, including the right to free, prior, informed consent (FPIC).\n- globe_6: Pollution management -- Pollution is the introduction of harmful materials (i.e. pollutants) into the environment at a faster rate than can be dispersed, diluted, decomposed, recycled, or stored in some harmless form. It can be natural (e.g. Vulcan ashes) or human-made and in any form (solid, liquid, or gas, but also energy). Biodiversity benefits from its  management, consisting of pollution prevention at the source, reduction, reusing, recycling, treatment or disposal. \n\nActivities can include: \n-Protection and remediation of soil, groundwater and surface water: Measures and activities aimed at the prevention of pollutant infiltration, cleaning up of soils and water bodies and the protection of soil from erosion and other physical degradation as well as from salinisation. Monitoring, control of soil and groundwater pollution is included.\n-Protection of ambient air and climate: Activities aimed at the reduction of emissions into the ambient air or ambient concentrations of air pollutants as well as to measures and activities aimed at the control of emissions of greenhouse gases and gases that adversely affect the stratospheric ozone layer. Note: Ensure that the biodiversity intention is clearly stated - only CO2 reduction is not sufficient as biodiversity purpose\n-Waste management: Reduced/Avoided pollution by managing all kinds of waste, including wastewater. \n-Coastal and marine pollution debris management: Reduced/Avoided coastal and marine pollution debris with activities tackling land- and sea-based sources, focusing especially on plastic\n-Other pollution management measures: Other pollutant includes: noise, vibration, light, temperature, radiation, and, partially pharmaceutical, heavy metals, Persistent Organic Pollutants (POPs), Polychlorinated biphenyls (PCB)\n- globe_7: Protected areas and other conservation measures -- In situ and ex situ measures to protect and safeguard biodiversity at genetic, species and ecosystem levels. The effort can be area-based through protected areas, their expansion, connection or buffer zones; but also includes other conservation measures, e.g. focusing on specific species (in particular migratory species) or establishing other effective conservation measures.\n\nActivities can include: \n- Management and expansion of Protected Areas, including Indigenous and Communities Conserved Areas (ICCA):  Maintaining or establishing protected areas which are designated or regulated and managed to achieve specific conservation objectives. It includes all IUCN Categories (Ia-VI), as well as defined Indigenous and Community Conserved Areas (ICCA). The expansion of Protected Areas includes the analysis of potential areas, identifying the best management policy considering the local circumstances (ecological and social), securing land titles and legal designation of the area.\n- Management of areas outside of Protected Areas: All activities undertaken to manage, protect and develop areas outside of the Protected Area regime such as transboundary areas, biodiversity corridors, Key Biodiversity Areas (KBAs), landscapes and seascapes to achieve the long-term conservation of nature with associated ecosystem services and cultural values. It includes all action of public institution and ministries, as well as providing the framework and support for individuals, communities, non-public institutions and businesses, to maintain, enhance, and restore ecological flows, species movement, and dynamic processes across intact and fragmented environments outside of PA.\n- Other effective area-based conservation measures (OECM): Governance and management of areas outside of Protected Areas in ways that achieve positive and sustained long-term outcomes for the in situ conservation of biodiversity, with associated ecosystem functions and services and where applicable, cultural, spiritual, socio–economic, and other locally relevant values. The main difference between a protected area and an OECM is that PAs have a primary conservation objective, however it even remained declared as such when becoming ineffective, whereas an OECM delivers the effective in-situ conservation of biodiversity, regardless of its objectives.\n- Conservation of species - Related to the targeted protection of species, in particular wildlife and migratory species, within or outside of protected and conserved areas. That includes reducing threats such as overconsumption, trade and poaching; climate change; displacement; reduced habitats; Invasive Alien Species, but also conservation measures in- and ex-situ.\n- globe_8: Restoration -- Ecosystem restoration means assisting in the recovery of ecosystems that have been degraded or destroyed, as well as conserving the ecosystems that are still intact. It should result in a rehabilitation of the ecosystem functions and services. Restoration efforts are recognized to support the achievement of all Rio Conventions – Convention on Biological Diversity (CBD), United Nations Convention to Combat Desertification (UNCCD) and United Nations Framework Convention on Climate Change (UNFCCC), as well as the Sustainable Development Goals (SDGs).\n\nActivities can include: \n- Reintroduction and translocation of species: Capture, transport and release or introduction of species, habitats or other ecological material (such as soil) from one location to another to support habitat or species restoration. \n- Site redevelopment and engineering: Efforts to prevent ecosysten degradation and repair damage already caused, for example by removing drivers of degradation, clean up after chemical or physical damage, and resotration of river channels. \n- Site management - Ongoing management or maintenance of restoration sites after the restoration activity has been realized to ensure the continuity of the initiated trajectory or status quo. This could include setting managment planning, awareness raising on restoration,  and lanscape care and maintenance.\n- globe_9: Sustainable use -- Sustainable Use is the use of components of biological diversity in a way and at a rate that does not lead to the long-term decline of biological diversity, thereby maintaining its potential to meet the needs and aspirations of present and future generations. This category is distinguished from the green economy by its focus on ecosystem services, primarily production and the underlying support services. Activities are targeted towards improving biodiversity outcomes in coordination with other co-benefits related to natural resource use.\n\nActivities include: \n- Agrobiodiversity: Agricultural biodiversity, is also known as agrobiodiversity or the genetic resources for food and agriculture.  Inventory, surveys and statistics of genetic variety for food and other consumption can support agrobiodiversity, as well as on-farm consesrvation of species, development and maintence of seed banks, incentives and regulation to encourage the sustainable plantation/farming of local, traditional or conservation varieties of species, guidelines and policies that protect wild relatives of domestically used species, and implementation of the International Treaty on Plant Genetic Resources for Food and Agriculture (ITPGRFA).\n- Sustainable Agriculture (crops and livestock): Sustainable agriculture seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood) in the food production system. It can comprise a wide range of practices based on traditional and local knowledge or use innovative approaches including robots or Artificial Intelligence; from urban to rural farming as well as production other than food (e.g., fibre, biofuel).\n- Sustainable aquaculture:  The controlled cultivation or farming of fish, shellfish, and aquatic plants. The purpose is to create a source of aquatic-sourced food and commercial products in a way that will increase availability while reducing environmental harm and protecting various aquatic species. includes mariculture, but excludes open-pens. \n- Sustainable fisheries: The shift to sustainable fisheries (both lethal and non-lethal) includes measures to combat overfishing, ensuring habitat protection, and use of non-aggressive fishing devices. \n- Sustainable forestry: Sustainable forestry seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood). That means considering the needs of wildlife and its forest ecosystem with its abiotic components such as soil and water. Sustainable forestry therefore includes all kind of human intervention in forests that safeguard biodiversity.\n- Sustainable freshwater: Measures that reduces the overuse of freshwater resources (e.g. for drink water supply or agriculture), or other threats to the freshwater ecosystem as pollution (e.g. by industry or agriculture sector and habitated areas), climate change, invasive alien species and obstacles (especially dams), as well as tools that allow for better reporting and monitoring*. Indigenous people and local communities living close by the freshwater or traditionally using it should be included and considered when measurements are planned and implemented.\n- Sustainable marine and coastal management: Sustainable marine and coastal management seeks to combine environmental protection, production and related income as well as social equity (i.e. increased livelihood).\n- Sustainable rangelands: Sustainable rangeland management seeks to combine environmental protection (for wildlife, different habitats and watersheds), production and related income (especially by livestock, freshwater) as well as social equity (i.e. increased livelihood). That means considering the needs of wildlife and its related ecosystem (e.g. grassland, shrubland, wetland) with its abiotic components such as soil and water. Sustainable rangelands therefore include all kind of human intervention in rangelands that safeguard biodiversity, such as avoiding erosion and reduced risk of fire, while benefitting from the rangeland products and services within the ecological limits, while including Indigenous Peoples and local communities equitably.\n- Sustainable wildlife: Wildlife refers to captive or living in the wild organisms that have not been subject to breeding. All uses of wildlife, such as fishing, gathering, logging and terrestrial animal harvesting should be done within the ecological limits.",
@@ -7,10 +7,11 @@
     "first": "gpt-5.4",
     "second": "claude-opus-5-5 (effort high)"
   },
+  "rule": "The second model (Claude Opus) decides: a line takes its top area at the threshold, else no specific area. The first model is a second opinion.",
   "threshold": 0.5,
   "counts": {
-    "models-agree": 21,
-    "models-differ": 7
+    "second-agrees": 21,
+    "second-differs": 7
   },
   "lines": [
     {
@@ -76,7 +77,7 @@
         ]
       },
       "area": "globe_2",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71405",
@@ -116,7 +117,7 @@
         ]
       },
       "area": "globe_7",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71404",
@@ -171,7 +172,7 @@
         ]
       },
       "area": "globe_9",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71403",
@@ -231,7 +232,7 @@
         ]
       },
       "area": "globe_9",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71411",
@@ -286,7 +287,7 @@
         ]
       },
       "area": "globe_5",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71407",
@@ -336,7 +337,7 @@
         ]
       },
       "area": "globe_6",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71412",
@@ -395,8 +396,8 @@
           }
         ]
       },
-      "area": null,
-      "status": "models-differ"
+      "area": "globe_2",
+      "status": "second-differs"
     },
     {
       "code": "71406",
@@ -441,7 +442,7 @@
         ]
       },
       "area": "globe_6",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71401",
@@ -486,7 +487,7 @@
         ]
       },
       "area": "globe_6",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71402",
@@ -556,7 +557,7 @@
         ]
       },
       "area": "globe_7",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71409",
@@ -616,7 +617,7 @@
         ]
       },
       "area": "globe_7",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "71413",
@@ -720,8 +721,8 @@
           }
         ]
       },
-      "area": null,
-      "status": "models-differ"
+      "area": "globe_9",
+      "status": "second-differs"
     },
     {
       "code": "71410",
@@ -791,7 +792,7 @@
         ]
       },
       "area": "globe_8",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81707",
@@ -831,7 +832,7 @@
         ]
       },
       "area": "globe_6",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "82212",
@@ -871,7 +872,7 @@
         ]
       },
       "area": "globe_6",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81708",
@@ -926,7 +927,7 @@
         ]
       },
       "area": "globe_8",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81709",
@@ -985,8 +986,8 @@
           }
         ]
       },
-      "area": null,
-      "status": "models-differ"
+      "area": "globe_9",
+      "status": "second-differs"
     },
     {
       "code": "81702",
@@ -1040,8 +1041,8 @@
           }
         ]
       },
-      "area": null,
-      "status": "models-differ"
+      "area": "globe_9",
+      "status": "second-differs"
     },
     {
       "code": "81705",
@@ -1095,8 +1096,8 @@
           }
         ]
       },
-      "area": null,
-      "status": "models-differ"
+      "area": "globe_9",
+      "status": "second-differs"
     },
     {
       "code": "81703",
@@ -1146,7 +1147,7 @@
         ]
       },
       "area": "globe_8",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81710",
@@ -1191,7 +1192,7 @@
         ]
       },
       "area": "globe_2",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81713",
@@ -1231,7 +1232,7 @@
         ]
       },
       "area": "globe_6",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81714",
@@ -1276,7 +1277,7 @@
         ]
       },
       "area": "globe_6",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81715",
@@ -1335,8 +1336,8 @@
           }
         ]
       },
-      "area": null,
-      "status": "models-differ"
+      "area": "globe_9",
+      "status": "second-differs"
     },
     {
       "code": "81716",
@@ -1391,7 +1392,7 @@
         ]
       },
       "area": "globe_8",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81717",
@@ -1446,7 +1447,7 @@
         ]
       },
       "area": "globe_7",
-      "status": "models-agree"
+      "status": "second-agrees"
     },
     {
       "code": "81718",
@@ -1505,8 +1506,8 @@
           }
         ]
       },
-      "area": null,
-      "status": "models-differ"
+      "area": "globe_7",
+      "status": "second-differs"
     },
     {
       "code": "81719",
@@ -1556,7 +1557,7 @@
         ]
       },
       "area": "globe_8",
-      "status": "models-agree"
+      "status": "second-agrees"
     }
   ]
 }

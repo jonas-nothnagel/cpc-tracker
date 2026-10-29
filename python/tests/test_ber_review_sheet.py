@@ -9,7 +9,26 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from ber_review_sheet import kept, line_code  # noqa: E402
+from ber_review_sheet import kept, line_code, review_tags, sheet_order  # noqa: E402
+
+
+def test_lines_to_look_at_come_first_largest_money_first():
+    rows = [
+        ("second-agrees", 500.0, "a"),
+        ("no-clear-area", 29.0, "gorgas"),
+        ("second-differs", 111.6, "flies"),
+        ("no-reading", 1.0, "x"),
+        ("second-differs", 49.5, "animal-health"),
+    ]
+    ordered = [code for _, _, code in sorted(rows, key=lambda r: sheet_order(*r))]
+    assert ordered == ["flies", "animal-health", "gorgas", "x", "a"]
+
+
+def test_the_reviews_own_tags_show_as_the_review_records_them():
+    assert review_tags({"tags": ["Core", "PA"]}) == "Core; PA"
+    assert review_tags({"tags": {"2016": "Indirecto", "2017": "Indirecto"}}) == "Indirecto"
+    assert review_tags({"tags": {"2016": "Directo", "2017": "Indirecto"}}) == "Directo; Indirecto"
+    assert review_tags({}) == ""
 
 
 def test_a_code_the_spreadsheet_turned_into_a_number_reads_as_the_record_keys_it():

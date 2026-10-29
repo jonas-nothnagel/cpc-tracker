@@ -3,8 +3,9 @@
  * (step 2 of the BER plan), joined from two files:
  *
  *   - python/output/{country}/ber_areas_{lens}.json: two AI models' readings
- *     of each line, and the area the line takes until a person checks it
- *     (none where the models differ or no area reaches the relevance mark);
+ *     of each line, and the area the line takes until a person checks it:
+ *     Claude Opus's (the second reading) at the relevance mark, else none, a
+ *     line of general biodiversity spending with no specific area;
  *   - python/data/{country}-ber-areas.json: a person's calls, with who and
  *     when. Only these count as checked.
  *
@@ -20,9 +21,9 @@ export interface LineArea {
   /** The area the line counts under, or null while it is kept apart. */
   area: string | null;
   status: AreaStatus;
-  /** Why the line is kept apart, while it is. */
-  apart?: "models-differ" | "no-clear-area" | "none-fits";
-  /** The first model's reason for its top area. */
+  /** Why the line has no specific area, while it has none. */
+  apart?: "no-clear-area" | "no-reading" | "none-fits";
+  /** The deciding model's reason for its top area. */
   reason?: string;
   /** Who checked the line, and when. */
   checkedBy?: string;
@@ -38,7 +39,8 @@ interface Reading {
   code?: unknown;
   area?: unknown;
   status?: unknown;
-  first?: { ranked?: { reasoning?: unknown }[] };
+  first?: { ranked?: { reasoning?: unknown }[] } | null;
+  second?: { ranked?: { reasoning?: unknown }[] } | null;
 }
 
 interface Call {
@@ -48,7 +50,7 @@ interface Call {
   at?: unknown;
 }
 
-/** One status per line: a person's call wins; then the models' joint area. */
+/** One status per line: a person's call wins; then the area Claude Opus reads. */
 export function parseBerAreas(readings: unknown, calls: unknown, lens: string): BerAreas | null {
   const lines = (readings as { lines?: unknown } | null)?.lines;
   if (!Array.isArray(lines)) return null;
@@ -56,7 +58,9 @@ export function parseBerAreas(readings: unknown, calls: unknown, lens: string): 
   const out: BerAreas["lines"] = {};
   for (const raw of lines as Reading[]) {
     if (typeof raw?.code !== "string") continue;
-    const reason = raw.first?.ranked?.[0]?.reasoning;
+    // Claude Opus (the second reading) decides the area, so its reason is
+    // the one shown; the first model's stands in only where it has none.
+    const reason = raw.second?.ranked?.[0]?.reasoning ?? raw.first?.ranked?.[0]?.reasoning;
     const base = typeof reason === "string" && reason ? { reason } : {};
     const call = decided[raw.code];
     if (call && (call.call === "accept" || call.call === "change" || call.call === "none")) {
@@ -71,7 +75,7 @@ export function parseBerAreas(readings: unknown, calls: unknown, lens: string): 
     if (typeof raw.area === "string" && raw.area) {
       out[raw.code] = { area: raw.area, status: "ai", ...base };
     } else {
-      const apart = raw.status === "models-differ" ? "models-differ" : "no-clear-area";
+      const apart = raw.status === "no-reading" ? "no-reading" : "no-clear-area";
       out[raw.code] = { area: null, status: "apart", apart, ...base };
     }
   }

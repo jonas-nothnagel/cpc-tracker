@@ -6,13 +6,18 @@ the lens, with a reason for the top two:
 
   - the pipeline's model (LLM_MODEL, gpt-5.4 on Azure), through src/llm.py,
     cached like every pipeline call;
-  - a second model through the Anthropic API (Claude Opus 5.5), as a check on
-    the first, never as a vote: two models agreeing does not count as a person
-    having checked the line.
+  - Claude Opus 5.5 through the Anthropic API.
 
-A line takes an area only when the pipeline's model scores it at the tool's
-relevance mark (RELEVANCE_THRESHOLD, 0.5) and the second model's top area is
-the same. Otherwise the line is kept apart until a person decides.
+Claude Opus decides (the project lead's rule, 29 October 2026): a line takes
+Opus's top area when Opus scores it at the tool's relevance mark
+(RELEVANCE_THRESHOLD, 0.5). Below the mark the line has no specific area: it
+stays in the review's totals as general biodiversity spending. The pipeline's
+model is a second opinion: it never moves a line, but the lines it reads
+differently go first on the review sheet. Neither model's reading counts as a
+person having checked the line.
+
+The area is the only thing the models decide. Whether a line counts as
+biodiversity spending, and how much of it, is the review's own call.
 
 The description of a line comes from the review's own record and carries no
 amounts (they do not decide the area and could sway it). The prompt is
@@ -105,9 +110,14 @@ def _shares(items: Sequence[dict[str, Any]], key: str = "name", limit: int = 5) 
     return "; ".join(parts)
 
 
-def describe_line(country: str, record: dict[str, Any], line: dict[str, Any]) -> str:
+def describe_line(country: str, record: dict[str, Any], line: dict[str, Any], review_description: bool = False) -> str:
     """A budget line as the models see it: the review's and the budget's own
-    words, no amounts. Each country's review records different things."""
+    words, no amounts. Each country's review records different things.
+
+    review_description adds Panama's line description in the review team's own
+    words (BIOFIN Panama wrote one per line for this tool). It is off by
+    default, so the line-by-target comparisons and earlier readings keep their
+    prompts."""
     rows: list[tuple[str, str]] = [("Name", line["name"])]
     if country == "mongolia":
         if line["kind"] == "programme":
@@ -141,6 +151,8 @@ def describe_line(country: str, record: dict[str, Any], line: dict[str, Any]) ->
                 + " biodiversity spending",
             )
         )
+        if review_description and (line.get("reviewDescription") or {}).get("en"):
+            rows.append(("What it is for (the review team's description)", line["reviewDescription"]["en"]))
         rows.append(("Programme", f"{line['programmeName']}; subprogramme: {line['subprogramme']}"))
         rows.append(("Institution", line["institution"]))
         rows.append(("Budget", "investment" if line.get("budgetType", "").upper().startswith("INVERSI") else "operating"))
@@ -295,16 +307,24 @@ def reading(ranked: Sequence[dict[str, Any]], model: str) -> dict[str, Any]:
 
 
 def combine(first: dict[str, Any], second: dict[str, Any] | None) -> dict[str, Any]:
-    """The line's area and why: placed only when the pipeline's model reaches
-    the relevance mark and the second model's top area is the same."""
-    area = first["area"]
-    if not area or first["score"] < RELEVANCE_THRESHOLD:
+    """The line's area and why. Claude Opus (`second`) decides: the line takes
+    its top area at the relevance mark, else no specific area. The pipeline's
+    model (`first`) only says whether the second opinion agrees: the same area,
+    itself at the mark.
+
+    - second-agrees: Opus places the line and the pipeline's model reads it the same way;
+    - second-differs: Opus places the line; the pipeline's model reads another
+      area, or the same one below the mark;
+    - no-clear-area: Opus scores no area at the mark;
+    - no-reading: there is no Opus reading (not run, or the line was declined).
+    """
+    if second is None or second.get("declined"):
+        return {"area": None, "status": "no-reading"}
+    area = second["area"]
+    if not area or second["score"] < RELEVANCE_THRESHOLD:
         return {"area": None, "status": "no-clear-area"}
-    if second is None:
-        return {"area": area, "status": "one-model"}
-    if second["area"] != area:
-        return {"area": None, "status": "models-differ"}
-    return {"area": area, "status": "models-agree"}
+    agrees = first["area"] == area and first["score"] >= RELEVANCE_THRESHOLD
+    return {"area": area, "status": "second-agrees" if agrees else "second-differs"}
 
 
 def claude_ready() -> bool:
