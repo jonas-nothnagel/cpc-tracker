@@ -712,20 +712,36 @@ function AreaRow({
 
 function LineList({ lines, money, label }: { lines: SpendingLine[]; money: Money; label: string }) {
   const t = useTranslations("brief.spending.areas");
+  // A line the review describes opens to its own words: its tag and its description.
+  const [open, setOpen] = useState<string | null>(null);
   return (
     <>
       <ul className="sp-lines" aria-label={label}>
-        {byShownAmount(lines, money).slice(0, LINES_MAX).map((l) => (
-          <li key={l.id} className="sp-line">
-            <span className="sp-line-name">
-              <span title={l.original}>{l.name}</span>
-              <span className="sp-line-status" data-status={l.areaStatus}>
-                {l.areaStatus === "checked" ? t("checked") : l.areaStatus === "ai" ? t("aiSuggested") : t("apartWhy")}
-              </span>
-            </span>
-            <span className="sp-line-amount">{money.amount(l.total, l.totalUsd)}</span>
-          </li>
-        ))}
+        {byShownAmount(lines, money)
+          .slice(0, LINES_MAX)
+          .map((l) => {
+            const described = Boolean(l.description || l.reviewTag);
+            const isOpen = described && open === l.id;
+            return (
+              <li key={l.id} className="sp-line">
+                <span className="sp-line-name">
+                  {described ? (
+                    <button type="button" className="sp-line-toggle" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : l.id)}>
+                      <span title={l.original}>{l.name}</span>
+                    </button>
+                  ) : (
+                    <span title={l.original}>{l.name}</span>
+                  )}
+                  <span className="sp-line-status" data-status={l.areaStatus}>
+                    {l.areaStatus === "checked" ? t("checked") : l.areaStatus === "ai" ? t("aiSuggested") : t("apartWhy")}
+                  </span>
+                  {isOpen && l.reviewTag && <span className="sp-line-detail">{t(`reviewTag.${l.reviewTag}`)}</span>}
+                  {isOpen && l.description && <span className="sp-line-detail sp-quote">{t("reviewDescription", { text: l.description })}</span>}
+                </span>
+                <span className="sp-line-amount">{money.amount(l.total, l.totalUsd)}</span>
+              </li>
+            );
+          })}
       </ul>
       {lines.length > LINES_MAX && <p className="sp-open-line">{t("linesMore", { count: lines.length - LINES_MAX })}</p>}
     </>

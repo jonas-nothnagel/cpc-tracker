@@ -3,9 +3,11 @@ line's area, and each line's expenditure type of the official chain.
 
   build   python/output/<country>/ber_areas_<lens>.json (both models' readings)
           -> one workbook, a sheet per country: every line with its money, each
-          model's area and reason, and empty columns for the call. Lines the
-          models place differently come first, then the rest, largest money
-          first. Earlier calls (python/data/<country>-ber-areas.json) are
+          model's area and reason, and empty columns for the call. Claude Opus
+          decides a line's area, so it is model 1; GPT-5.4 is the second
+          opinion. The lines a person should look at first lead (the second
+          opinion differs, or no area is clear), largest money first; then the
+          rest. Earlier calls (python/data/<country>-ber-areas.json) are
           filled in. Where python/output/<country>/ber_types_globe.json
           exists, a "<Country> types" sheet does the same for the types.
   import  the filled workbook -> python/data/<country>-ber-areas.json (and
@@ -49,22 +51,45 @@ COLUMNS = [
     ("Reviewed spending", 16),
     ("US$ million", 12),
     ("Years", 10),
-    ("Model 1: area", 26),
+    ("Model 1 (Claude Opus): area", 26),
     ("Model 1: score", 9),
     ("Model 1: reason", 50),
-    ("Model 2: area", 26),
+    ("Model 2 (GPT-5.4): area", 26),
     ("Model 2: reason", 50),
-    ("The two models", 18),
+    ("The line's area", 22),
     ("Your call", 12),
     ("Area, if you change it", 26),
     ("Note", 30),
 ]
 STATUS_WORDS = {
-    "models-differ": "place it differently",
-    "no-clear-area": "find no clear area",
-    "models-agree": "agree",
-    "one-model": "one model only",
+    "second-differs": "Model 1's area; model 2 differs",
+    "no-clear-area": "No specific area",
+    "second-agrees": "Model 1's area; model 2 agrees",
+    "no-reading": "No reading by model 1",
 }
+# The lines a person should look at first: model 2 reads them differently, or
+# no area reaches the mark.
+TO_LOOK_AT = ("second-differs", "no-clear-area")
+# Rows where the line takes no area: model 1's area, shown for reference, is
+# below the mark (or missing), so an Accept there accepts no specific area.
+NO_AREA_WORDS = {STATUS_WORDS["no-clear-area"], STATUS_WORDS["no-reading"]}
+
+
+def review_tags(line: dict[str, Any]) -> str:
+    """The review's own tags on a line: Sri Lanka's list as it is, Panama's
+    Directo / Indirecto per year as the tags it carries."""
+    tags = line.get("tags")
+    if isinstance(tags, list):
+        return "; ".join(tags)
+    if isinstance(tags, dict):
+        return "; ".join(sorted(set(tags.values())))
+    return ""
+
+
+def sheet_order(status: str, money: float, code: str) -> tuple[int, float, str]:
+    """Rows a person should look at first, then the rest; each largest money first."""
+    rank = 0 if status in TO_LOOK_AT else 1 if status == "no-reading" else 2
+    return (rank, -money, code)
 
 
 def area_names(lens: str) -> dict[str, str]:
@@ -87,7 +112,7 @@ def money(record: dict[str, Any], line: dict[str, Any]) -> tuple[float, float, s
     return local, usd, span
 
 
-def build(lens: str, out: Path) -> None:
+def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), types: bool = True) -> None:
     names = area_names(lens)
     wb = Workbook()
     guide = wb.active
@@ -95,8 +120,10 @@ def build(lens: str, out: Path) -> None:
     for row in [
         ["One row per budget line of the expenditure review, a sheet per country."],
         ["Two AI models placed each line in a GLOBE area from the review's own description of it, without its amounts."],
-        ["Rows where the two models place the line differently, or find no clear area, come first; then the rest, largest money first."],
-        ["Your call: Accept (model 1's area), Change (pick the area in the next column) or None fits (the line stays apart)."],
+        ["Model 1 (Claude Opus) decides: a line takes its area at a score of 0.5 or more, else it is general biodiversity spending with no specific area. Model 2 (GPT-5.4) is a second opinion."],
+        ["The review's call that a line is biodiversity spending stands in every case: the question here is only which area it serves."],
+        ["Rows where model 2 reads the line differently, or no area is clear, come first, largest money first; then the rest."],
+        ["Your call: Accept (the line's area as shown: model 1's area, or no specific area where none is clear), Change (pick the area in the next column) or None fits (no specific area)."],
         ["Two models agreeing is not a check: only your call counts as checked. Leave a row empty to decide later."],
         ["Send the sheet back as it is; scripts/ber_review_sheet.py import reads the calls."],
     ]:
@@ -105,6 +132,8 @@ def build(lens: str, out: Path) -> None:
 
     area_list = list(names.values())
     for country, title in COUNTRIES.items():
+        if country not in countries:
+            continue
         path = OUTPUT_DIR / country / f"ber_areas_{lens}.json"
         if not path.exists():
             continue
@@ -117,8 +146,7 @@ def build(lens: str, out: Path) -> None:
             line = by_code[r["code"]]
             local, usd, span = money(record, line)
             rows.append((r, line, local, usd, span))
-        priority = {"models-differ": 0, "no-clear-area": 1, "one-model": 2, "models-agree": 3}
-        rows.sort(key=lambda x: (priority[x[0]["status"]], -x[2], x[0]["code"]))
+        rows.sort(key=lambda x: sheet_order(x[0]["status"], x[2], x[0]["code"]))
 
         ws = wb.create_sheet(title)
         ws.append([c for c, _ in COLUMNS])
@@ -131,28 +159,29 @@ def build(lens: str, out: Path) -> None:
         unit = f"{record['currency']} {record['unit']}"
         ws.cell(1, 5).value = f"Reviewed spending ({unit})"
         for r, line, local, usd, span in rows:
-            first, second = r["first"], r["second"] or {}
+            # Model 1 is Claude Opus (the second reading), which decides.
+            model1, model2 = r["second"] or {}, r["first"] or {}
             call = earlier.get(r["code"], {})
-            # An earlier Accept whose area model 1 no longer reads is filled
+            # An earlier Accept whose area the line no longer takes is filled
             # in as a Change to that area, so the row still says what was
             # decided and a re-import keeps it as it was.
             prefill = call.get("call")
-            if prefill == "accept" and call.get("area") != first["area"]:
+            if prefill == "accept" and call.get("area") != r["area"]:
                 prefill = "change" if call.get("area") else "none"
             ws.append(
                 [
                     r["code"],
                     line["name"],
                     line.get("institution") or line.get("ministry") or "",
-                    "; ".join(line.get("tags", [])) if isinstance(line.get("tags"), list) else "",
+                    review_tags(line),
                     round(local, 3),
                     round(usd, 2),
                     span,
-                    names.get(first["area"], "") if first["area"] else "",
-                    first["score"],
-                    (first["ranked"][0]["reasoning"] if first["ranked"] else ""),
-                    names.get(second.get("area"), "") if second.get("area") else "",
-                    (second["ranked"][0]["reasoning"] if second.get("ranked") else ""),
+                    names.get(model1.get("area"), "") if model1.get("area") else "",
+                    model1.get("score", ""),
+                    (model1["ranked"][0]["reasoning"] if model1.get("ranked") else ""),
+                    names.get(model2.get("area"), "") if model2.get("area") else "",
+                    (model2["ranked"][0]["reasoning"] if model2.get("ranked") else ""),
                     STATUS_WORDS[r["status"]],
                     next((k for k, v in CALLS.items() if v == prefill), ""),
                     names.get(call.get("area"), "") if prefill == "change" else "",
@@ -160,10 +189,11 @@ def build(lens: str, out: Path) -> None:
                 ]
             )
         shade = PatternFill("solid", fgColor="FFF5C7")
+        look_at = {STATUS_WORDS[s] for s in TO_LOOK_AT}
         for row in ws.iter_rows(min_row=2):
             for cell in row:
                 cell.alignment = Alignment(wrap_text=True, vertical="top")
-            if row[12].value in (STATUS_WORDS["models-differ"], STATUS_WORDS["no-clear-area"]):
+            if row[12].value in look_at:
                 row[12].fill = shade
         last = ws.max_row
         calls = DataValidation(type="list", formula1='"' + ",".join(CALLS) + '"', allow_blank=True)
@@ -172,7 +202,8 @@ def build(lens: str, out: Path) -> None:
         ws.add_data_validation(areas)
         calls.add(f"N2:N{last}")
         areas.add(f"O2:O{last}")
-    build_type_sheets(wb)
+    if types:
+        build_type_sheets(wb, countries)
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(out)
     print(f"Wrote {out}")
@@ -211,7 +242,7 @@ def type_sheet_title(title: str) -> str:
     return f"{title} types"
 
 
-def build_type_sheets(wb: Workbook) -> None:
+def build_type_sheets(wb: Workbook, countries: tuple[str, ...] = tuple(COUNTRIES)) -> None:
     """A sheet per country for the lines' expenditure types: rows whose two
     readings lead to no shared GBF target first, then those the models type
     differently, then the rest, largest money first."""
@@ -221,6 +252,8 @@ def build_type_sheets(wb: Workbook) -> None:
     guide.append(["A type leads to the GBF targets BIOFIN files it under; a line meets a national target of the 7th National Report through a GBF target both readings lead to."])
     guide.append(["Your call: Accept (model 1's type), Change (write the type code, e.g. 7.01.12) or None fits."])
     for country, title in COUNTRIES.items():
+        if country not in countries:
+            continue
         path = OUTPUT_DIR / country / "ber_types_globe.json"
         if not path.exists():
             continue
@@ -400,12 +433,13 @@ def import_calls(path: Path, lens: str, by: str) -> None:
                 raise SystemExit(f"{title}, line {code}: unknown call {call!r}")
             if kind == "change" and area not in by_name:
                 raise SystemExit(f"{title}, line {code}: Change needs an area from the list, found {area!r}")
-            # Accept takes the area the sheet showed the reviewer ("Model 1:
-            # area"), not whatever a later run of the models reads.
+            # Accept takes the area the sheet showed the reviewer ("Model 1
+            # (Claude Opus): area"), not whatever a later run of the models reads;
+            # on a row with no specific area it accepts just that.
             decided = None
             if kind == "change":
                 decided = by_name[area]
-            elif kind == "accept":
+            elif kind == "accept" and row[12] not in NO_AREA_WORDS:
                 decided = by_name.get(row[7])
             entry = {
                 "call": kind,
@@ -433,13 +467,15 @@ def main() -> None:
     b = sub.add_parser("build")
     b.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
     b.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    b.add_argument("--country", choices=[*COUNTRIES, "all"], default="all", help="One country's sheet only, e.g. to send to its review team")
+    b.add_argument("--areas-only", action="store_true", help="Leave out the expenditure-type sheets")
     i = sub.add_parser("import")
     i.add_argument("sheet", type=Path)
     i.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
     i.add_argument("--by", required=True, help="Who made the calls, as the brief should name them")
     args = parser.parse_args()
     if args.command == "build":
-        build(args.lens, args.out)
+        build(args.lens, args.out, tuple(COUNTRIES) if args.country == "all" else (args.country,), types=not args.areas_only)
     else:
         import_calls(args.sheet, args.lens, args.by)
 

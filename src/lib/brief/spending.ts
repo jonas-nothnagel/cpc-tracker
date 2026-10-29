@@ -112,8 +112,35 @@ export interface SpendingLine extends Shown {
   areaStatus: AreaStatus;
   /** The AI's reason for the area. */
   reason?: string;
+  /** The review team's own description of the line, in the page's language
+   *  (Panama: BIOFIN wrote one per line, in Spanish and English). */
+  description?: string;
+  /** The review's own tag: direct or indirect biodiversity spending (Panama). */
+  reviewTag?: "direct" | "indirect" | "both";
   /** Targets the AI reads as strongly matched by the line (high only). */
   matches: string[];
+}
+
+/** The review team's description of a line, Spanish on the Spanish page and
+ *  English on every other. */
+function reviewDescription(line: Json, locale: string): { description: string } | Record<string, never> {
+  const own = asRecord(line.reviewDescription);
+  const text = own ? (locale === "es" ? own.es : own.en) : undefined;
+  return typeof text === "string" && text ? { description: text } : {};
+}
+
+/** The review's tag over the years a line carries one: Panama's Directo or
+ *  Indirecto, kept per year in the record. */
+function reviewTag(line: Json): { reviewTag: "direct" | "indirect" | "both" } | Record<string, never> {
+  const tags = asRecord(line.tags);
+  if (!tags) return {};
+  const values = new Set(Object.values(tags));
+  const direct = values.has("Directo");
+  const indirect = values.has("Indirecto");
+  if (direct && indirect) return { reviewTag: "both" };
+  if (direct) return { reviewTag: "direct" };
+  if (indirect) return { reviewTag: "indirect" };
+  return {};
 }
 
 export interface SpendingSetup {
@@ -335,6 +362,8 @@ function fromRecord(
       area: reading ? reading.area : fallback,
       areaStatus: reading ? reading.status : fallback ? "ai" : "apart",
       ...(reading?.reason ? { reason: reading.reason } : {}),
+      ...reviewDescription(l, locale),
+      ...reviewTag(l),
       matches: [...(matches.get(`BER_${code}`) ?? [])],
     });
   }

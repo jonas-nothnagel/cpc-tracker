@@ -20,6 +20,13 @@ at which BIOFIN tagged them; each sits in its programme and institution. The
 series shown starts in 2016: the Ministry of Environment, created in 2015 out
 of ANAM, has no lines in 2015.
 
+Each line also carries BIOFIN's own description of it, in Spanish and English,
+from the published tables (sheet Desagregación_descrita), which BIOFIN Panama
+wrote for this tool. That sheet lists institutions, programmes, subprogrammes
+and activities in one column with no level marked, so a line is matched by its
+institution and name (describe() holds the rule), and the build stops if any
+line is left with no description or with two.
+
 Run from python/ (a few minutes the first time; the extract is cached in
 python/tmp/ber/):
     .venv/bin/python scripts/build_ber_panama.py
@@ -252,6 +259,89 @@ def read_tables(path: Path) -> tuple[dict[str, dict[str, float]], dict[str, dict
     return headline, institutions
 
 
+DESCRIPTIONS = "Desagregación_descrita"
+DESCRIPTION_HEADER = {
+    1: "Institución / Programa / Subprograma / Actividad",
+    12: "Descripción de la línea",
+    13: "Description of expenditure line",
+}
+# Amounts in BIOFIN's sheets are millions of balboas: one balboa.
+BALBOA = 1.0 / M
+
+
+@dataclass
+class DescribedRow:
+    """One row of BIOFIN's described breakdown: an institution, programme,
+    subprogramme or activity (the sheet does not say which)."""
+
+    institution: str  # norm()
+    name: str  # norm()
+    amounts: dict[str, float]  # year -> committed, millions of balboas
+    en: str
+    es: str
+
+
+def read_descriptions(path: Path) -> list[DescribedRow]:
+    """BIOFIN's description of each budget line, in Spanish and English."""
+    wb = openpyxl.load_workbook(path, data_only=True, read_only=True)
+    rows = list(wb[DESCRIPTIONS].iter_rows(values_only=True))
+    header = rows[1]
+    wrong = {i: header[i] for i, expected in DESCRIPTION_HEADER.items() if header[i] != expected}
+    if wrong:
+        raise SystemExit(f"Sheet {DESCRIPTIONS}'s header has changed: {wrong}")
+    year_columns = {str(int(h)): i for i, h in enumerate(header) if str(h).strip().isdigit()}
+    out = []
+    for r in rows[2:]:
+        if not r[1]:
+            continue
+        out.append(
+            DescribedRow(
+                institution=norm(text(r[0])),
+                name=norm(text(r[1])),
+                amounts={y: float(r[i] or 0) for y, i in year_columns.items()},
+                en=text(r[13]),
+                es=text(r[12]),
+            )
+        )
+    return out
+
+
+def describe(institutions: set[str], name: str, former: list[str], amounts: dict[str, float], rows: list[DescribedRow]) -> dict[str, str]:
+    """BIOFIN's description of one line, in English and Spanish.
+
+    The sheet's rows are matched, in this order, by: the line's institution
+    (as the database or BIOFIN's tables name it) and its current name; then its
+    former names; then a name the budget database cut short; then, where the
+    sheet files the row under another institution, the name with the line's
+    amounts to the balboa in every year shown. Rows that share a name always
+    share a text in the sheet; were they ever to differ, the row with the
+    line's amounts decides. A line left with no text, or with two, stops the
+    build.
+    """
+
+    def same_amounts(row: DescribedRow) -> bool:
+        return all(abs(row.amounts.get(y, 0.0) - amounts.get(y, 0.0)) < BALBOA for y in SHOWN_YEARS)
+
+    own = [r for r in rows if r.institution in institutions]
+    current = norm(name)
+    olds = {norm(n) for n in former}
+    candidates = (
+        [r for r in own if r.name == current]
+        or [r for r in own if r.name in olds]
+        or [r for r in own if r.name.startswith(current)]
+        or [r for r in rows if r.name == current and same_amounts(r)]
+    )
+    texts = {(r.en, r.es) for r in candidates}
+    if len(texts) > 1:
+        texts = {(r.en, r.es) for r in candidates if same_amounts(r)}
+    if len(texts) != 1:
+        raise SystemExit(f"{DESCRIPTIONS}: {len(texts)} descriptions for {name!r} ({sorted(institutions)})")
+    en, es = texts.pop()
+    if not en or not es:
+        raise SystemExit(f"{DESCRIPTIONS}: {name!r} has an empty description")
+    return {"en": en, "es": es}
+
+
 def shares(by_year: dict[tuple[str, str], float], total: float) -> list[dict[str, Any]]:
     """Each source's or object's share of the line's committed amount in the
     years shown, largest first; a negative correction is left out."""
@@ -290,6 +380,7 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
             pivot_by_entity, pivot_totals = read_pivot(wb)
         cached.write_bytes(pickle.dumps((ex, pivot_by_entity, pivot_totals)))
     headline, institutions = read_tables(tables)
+    described = read_descriptions(tables)
     print(f"Tags in sheet BD: {dict(ex.tags_seen)}")
 
     # Institution names as BIOFIN publishes them.
@@ -366,6 +457,13 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
                 **({"formerNames": aliases} if aliases else {}),
                 "description": "",
                 "source": f"{DATABASE}, sheet BD (desc_act)",
+                "reviewDescription": describe(
+                    {norm(n["entity"]) for n in names_years.values()} | {norm(display[entity])},
+                    name,
+                    aliases,
+                    {y: c["committed"] / M for y, c in shown.items()},
+                    described,
+                ),
                 "institution": display[entity],
                 "programme": programme_code,
                 "programmeName": programme_name,
@@ -457,6 +555,7 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
         "_provenance": (
             f"Built by python/scripts/build_ber_panama.py from BIOFIN Panama's budget database ({DATABASE}) and published tables ({TABLES}). "
             "Amounts follow the review's own rule; every published total is reproduced to the cent (record.checks). "
+            f"Each line's reviewDescription is BIOFIN's own, in English and Spanish ({TABLES}, sheet {DESCRIPTIONS}). "
             "No AI touched any figure, name or description."
         ),
         "programs": programs,
@@ -469,10 +568,15 @@ def build(database: Path, tables: Path) -> dict[str, Any]:
 
 
 def sharepoint_file(name: str) -> Path:
-    roots = glob.glob(os.path.expanduser("~/Library/CloudStorage/*/*AIFlagship*"))
-    if not roots:
+    # OneDrive has mounted the shared library both inside and directly under
+    # CloudStorage, and renames the folder when it remounts.
+    roots = glob.glob(os.path.expanduser("~/Library/CloudStorage/*/*AIFlagship*")) + glob.glob(
+        os.path.expanduser("~/Library/CloudStorage/*AIFlagship*")
+    )
+    found = [Path(root) / FOLDER / name for root in roots if (Path(root) / FOLDER / name).exists()]
+    if not found:
         raise SystemExit("The SharePoint folder is not mounted; pass --database and --tables")
-    return Path(roots[0]) / FOLDER / name
+    return found[0]
 
 
 def main() -> None:

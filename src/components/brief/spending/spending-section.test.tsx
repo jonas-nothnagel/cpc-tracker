@@ -19,8 +19,8 @@ const LEVELS = spendingSetup(levelsPayload(), SOURCE, {
   areas: parseBerAreas(
     {
       lines: [
-        { code: "71405", area: "g1", status: "models-agree", first: { ranked: [{ reasoning: "Protected areas." }] } },
-        { code: "82212", area: null, status: "models-differ", first: { ranked: [] } },
+        { code: "71405", area: "g1", status: "second-agrees", first: { ranked: [{ reasoning: "Protected areas." }] }, second: { ranked: [{ reasoning: "Ranger wages." }] } },
+        { code: "82212", area: null, status: "no-clear-area", first: { ranked: [] }, second: { ranked: [] } },
       ],
     },
     null,
@@ -268,16 +268,31 @@ describe("SpendingSection, a rebuilt record", () => {
     expect(screen.queryByText(/machine translation/i)).toBeNull();
   });
 
-  it("tags each line's area as AI-suggested and keeps an unplaced line apart, with no fine print", () => {
+  it("tags each line's area as AI-suggested and keeps a line with no specific area as general spending, with no fine print", () => {
     renderSection(LEVELS);
     fireEvent.click(screen.getByRole("button", { name: /^Protected areas/ }));
     expect(screen.getByText("AI-suggested, not yet reviewed")).toBeTruthy();
     // No matches until the comparisons are rebuilt for these lines.
     expect(screen.queryByText(/have a matching budget line/)).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: /^Not yet assigned to an area/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^General biodiversity spending, no specific area/ }));
     expect(within(screen.getByRole("list", { name: "Budget lines in this area" })).getByText("Solid waste removal")).toBeTruthy();
-    expect(screen.getByText("Not assigned, pending review")).toBeTruthy();
+    expect(screen.getByText("No specific area")).toBeTruthy();
     expect(screen.queryByText(/lines have an area/)).toBeNull();
+  });
+
+  it("opens a line the review describes to the review's own tag and words", () => {
+    const payload = levelsPayload();
+    const described = payload.berData.record.lines.find((l: { code: string }) => l.code === "71405") as Record<string, unknown>;
+    described.reviewDescription = { en: "Line linked to protected areas.", es: "Línea vinculada a áreas protegidas." };
+    described.tags = { "2020": "Directo", "2021": "Directo" };
+    const areas = parseBerAreas({ lines: [{ code: "71405", area: "g1", status: "second-agrees" }] }, null, "globe");
+    renderSection(spendingSetup(payload, SOURCE, { areas })!);
+    fireEvent.click(screen.getByRole("button", { name: /^Protected areas/ }));
+    const lines = screen.getByRole("list", { name: "Budget lines in this area" });
+    expect(screen.queryByText(/The review's description/)).toBeNull();
+    fireEvent.click(within(lines).getByRole("button", { expanded: false }));
+    expect(within(lines).getByText("Tagged by the review as direct biodiversity spending.")).toBeTruthy();
+    expect(within(lines).getByText("The review's description: Line linked to protected areas.")).toBeTruthy();
   });
 
   it("shows the areas' targets and spending as amounts on request, the bars still drawn by share", () => {

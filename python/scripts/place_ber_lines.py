@@ -2,19 +2,25 @@
 
 Step 2 of the BER plan, "Tag each line". Reads python/data/<country>-ber.json
 (step 1), describes each line from the review's own record (no amounts), asks
-the pipeline's model and a second model (Claude Opus 5.5, Anthropic API) to
-score every area, and writes python/output/<country>/ber_areas.json: both
-readings with their reasons, the prompt as sent, and the area each line takes
-until a person checks it. Lines the two models place differently, or that no
-area fits at the relevance mark, are kept apart.
+the pipeline's model and Claude Opus 5.5 (Anthropic API) to score every area,
+and writes python/output/<country>/ber_areas_<lens>.json: both readings with
+their reasons, the prompt as sent, and the area each line takes until a person
+checks it. Claude Opus decides: a line takes its top area at the relevance
+mark, else no specific area; the pipeline's model is the second opinion
+(src/ber_areas.py, combine()).
 
 The lines are those the review decided on: Mongolia's 28 programmes and
 purpose codes, Panama's budget activities, Sri Lanka's project lines.
 
-Run from python/ (CPC_CACHE_DIR shares the main checkout's warm cache):
+Run from python/ (CPC_CACHE_DIR shares the main checkout's warm cache; both
+models' answers are cached by prompt, so a re-run with unchanged lines makes
+no call):
     CPC_CACHE_DIR=<main checkout>/python/output/.cache \\
     .venv/bin/python scripts/place_ber_lines.py --country all
 A smoke run: --limit 3 --out-dir <dir> (the country's files stay as they are).
+A test on chosen lines: --codes CODE,CODE (or --codes @file, one per line)
+--out-dir <dir>. --review-descriptions adds Panama's line descriptions in the
+review team's own words to what the models read.
 """
 
 from __future__ import annotations
@@ -67,8 +73,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--lens", choices=sorted(LENSES), default="globe")
     parser.add_argument("--no-second", action="store_true", help="Skip the second model")
     parser.add_argument("--limit", type=int, help="Smoke run: the first N lines per country")
-    parser.add_argument("--out-dir", type=Path, help="Write here instead (required for a smoke run)")
+    parser.add_argument("--codes", help="Only these lines: CODE,CODE or @file with one code per line (needs --out-dir)")
+    parser.add_argument(
+        "--review-descriptions",
+        action="store_true",
+        help="Add the review team's description of each line (Panama) to what the models read",
+    )
+    parser.add_argument("--out-dir", type=Path, help="Write here instead (required for a smoke run or chosen lines)")
     return parser.parse_args()
+
+
+def chosen_codes(spec: str | None) -> set[str] | None:
+    if not spec:
+        return None
+    raw = Path(spec[1:]).read_text().split() if spec.startswith("@") else spec.split(",")
+    return {c.strip() for c in raw if c.strip()}
 
 
 def record_footprint(run_id: str, country: str | None, claude_usage: dict[str, int] | None) -> None:
@@ -115,9 +134,12 @@ async def run_country(country: str, lens: str, args: argparse.Namespace, categor
     payload = json.loads((DATA_DIR / f"{country}-ber.json").read_text())
     record = payload["record"]
     lines = area_lines(record)
+    codes = chosen_codes(args.codes)
+    if codes is not None:
+        lines = [l for l in lines if str(l["code"]) in codes]
     if args.limit is not None:
         lines = lines[: args.limit]
-    descriptions = {l["code"]: describe_line(country, record, l) for l in lines}
+    descriptions = {l["code"]: describe_line(country, record, l, review_description=args.review_descriptions) for l in lines}
     logger.info(f"{country}: {len(lines)} lines, lens {lens}")
 
     first = await place_with_pipeline_model(descriptions, categories, lens_name)
@@ -150,6 +172,7 @@ async def run_country(country: str, lens: str, args: argparse.Namespace, categor
         "promptVersion": PROMPT_VERSION,
         "system": system_prompt(lens_name, categories),
         "models": {"first": config.LLM_MODEL, "second": None if args.no_second else f"{CLAUDE_MODEL} (effort {CLAUDE_EFFORT})"},
+        "rule": "The second model (Claude Opus) decides: a line takes its top area at the threshold, else no specific area. The first model is a second opinion.",
         "threshold": RELEVANCE_THRESHOLD,
         "counts": counts,
         "lines": out_lines,
@@ -164,8 +187,10 @@ async def run_country(country: str, lens: str, args: argparse.Namespace, categor
 
 async def main() -> None:
     args = parse_args()
-    if args.limit is not None and not args.out_dir:
-        raise SystemExit("A smoke run needs --out-dir, so the country's files stay as they are.")
+    if (args.limit is not None or args.codes) and not args.out_dir:
+        raise SystemExit("A smoke run or a run on chosen lines needs --out-dir, so the country's files stay as they are.")
+    if args.no_second and not args.out_dir:
+        raise SystemExit("Without Claude Opus no line takes an area; --no-second needs --out-dir.")
     # No language directive: both models read the same system prompt, word for word.
     set_language(None)
     categories_key, lens_name = LENSES[args.lens]
@@ -177,7 +202,12 @@ async def main() -> None:
         for k, v in usage.items():
             total[k] = total.get(k, 0) + v
     logger.info(f"Second model: {total}")
-    run_id = f"ber-areas:{args.lens}:{args.country}{':smoke' if args.limit is not None else ''}"
+    run_id = (
+        f"ber-areas:{args.lens}:{args.country}"
+        + (":descriptions" if args.review_descriptions else "")
+        + (":test" if args.codes else "")
+        + (":smoke" if args.limit is not None else "")
+    )
     record_footprint(run_id, None if args.country == "all" else args.country, total)
 
 

@@ -3,8 +3,7 @@
 The section's visuals carry no fine print: no status counts, method notes or
 "how to read" sentences on the face (Jonas, 23 October 2026: "here people want
 to see and learn, not read fine print"). Short AI tags on rows and lines stay
-("AI-suggested", "Area checked by a person", "Kept apart until a person
-decides").
+("AI-suggested", "Area checked by a person", "No specific area").
 
 What the section knows but does not say is kept here, per part of the
 section, with the condition it applies to and its wording in the three
@@ -95,19 +94,31 @@ the review for 2015; from 2016 it is 42-64% of each year's reviewed spending.
 
 ## What it is for (areas)
 
-**Review status of the areas.** Each line's area is AI-suggested (two models,
-step 2) until a person accepts, changes or rejects it in the review sheet
-(python/scripts/ber_review_sheet.py); lines the models place differently, or
-that no area fits at 0.5, are kept apart. The row tags say this line by line
-("Area reviewed", "AI-suggested, not yet reviewed", "Not assigned, pending
-review"). A reviewer may change or reject an area, so the tags say "reviewed",
+**Review status of the areas.** Each line's area is AI-suggested (step 2)
+until a person accepts, changes or rejects it in the review sheet
+(python/scripts/ber_review_sheet.py). Claude Opus decides (Jonas, 29 October
+2026): a line takes Opus's area at a score of 0.5 or more; below it the line is
+general biodiversity spending with no specific area, still counted in every
+total (the review's call that it is biodiversity spending stands). GPT-5.4's
+reading is a second opinion that orders the review sheet. The row tags say this
+line by line ("Area reviewed", "AI-suggested, not yet reviewed", "No specific
+area"); the leftover row is named "General biodiversity spending, no specific
+area". A reviewer may change or reject an area, so the tags say "reviewed",
 never "confirmed" (copy.test.ts). The step-wide tag beside the title
 ("AI-suggested" / "Sugerido por IA" / "Хиймэл оюуны санал") came off on
 23 October 2026 (Jonas: "remove AI suggested"); the row tags carry it.
 
-- en: {checked, number} of {total, number} lines have an area checked by a person; the others are AI-suggested or kept apart.
-- es: {checked, number} de {total, number} líneas tienen un área revisada por una persona; las demás son sugerencias de la IA o están apartadas.
-- mn: {total, number} мөрөөс {checked, number}-ийн чиглэлийг хүн шалгасан; бусад нь хиймэл оюуны санал эсвэл тусад нь байна.
+- en: {checked, number} of {total, number} lines have an area checked by a person; the others are AI-suggested or have no specific area.
+- es: {checked, number} de {total, number} líneas tienen un área revisada por una persona; las demás son sugerencias de la IA o no tienen un área específica.
+- mn: {total, number} мөрөөс {checked, number}-ийн чиглэлийг хүн шалгасан; бусад нь хиймэл оюуны санал эсвэл тодорхой чиглэлгүй.
+
+**The review's own words on a Panama line.** An opened line in an area shows
+the review's tag (Directo / Indirecto, per year in the record) and BIOFIN
+Panama's description of the line, written for this tool in Spanish and English
+(Tablas_adicionales_desagregacion_descripciones, sheet Desagregación_descrita;
+python/scripts/build_ber_panama.py matches them to the lines). Most are short
+templates (26 English texts for 264 lines). No AI touches them; they show
+behind the line's name, not on the face.
 
 **Sri Lanka's areas come from its project lines** (note `projects`). The
 headline total is built from agency budgets (LKR 72.8 billion, 2015-2024) and

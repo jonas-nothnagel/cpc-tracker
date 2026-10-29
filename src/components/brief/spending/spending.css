@@ -586,6 +586,30 @@
   color: var(--brief-muted);
 }
 
+/* A line the review describes: its name opens to the review's own words. */
+[data-brief] .sp-line-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  text-underline-offset: 4px;
+}
+
+[data-brief] .sp-line-toggle:hover,
+[data-brief] .sp-line-toggle[aria-expanded="true"] {
+  text-decoration: underline;
+}
+
+[data-brief] .sp-line-detail {
+  display: block;
+  max-width: 40rem;
+  margin-top: var(--sp-1);
+  font-size: 0.8125rem;
+}
+
 [data-brief] .sp-line-amount {
   color: var(--brief-blue);
   font-variant-numeric: tabular-nums;
