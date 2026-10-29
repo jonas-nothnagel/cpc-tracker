@@ -70,6 +70,9 @@ STATUS_WORDS = {
 # The lines a person should look at first: model 2 reads them differently, or
 # no area reaches the mark.
 TO_LOOK_AT = ("second-differs", "no-clear-area")
+# Rows where the line takes no area: model 1's area, shown for reference, is
+# below the mark (or missing), so an Accept there accepts no specific area.
+NO_AREA_WORDS = {STATUS_WORDS["no-clear-area"], STATUS_WORDS["no-reading"]}
 
 
 def review_tags(line: dict[str, Any]) -> str:
@@ -120,7 +123,7 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
         ["Model 1 (Claude Opus) decides: a line takes its area at a score of 0.5 or more, else it is general biodiversity spending with no specific area. Model 2 (GPT-5.4) is a second opinion."],
         ["The review's call that a line is biodiversity spending stands in every case: the question here is only which area it serves."],
         ["Rows where model 2 reads the line differently, or no area is clear, come first, largest money first; then the rest."],
-        ["Your call: Accept (model 1's area), Change (pick the area in the next column) or None fits (no specific area)."],
+        ["Your call: Accept (the line's area as shown: model 1's area, or no specific area where none is clear), Change (pick the area in the next column) or None fits (no specific area)."],
         ["Two models agreeing is not a check: only your call counts as checked. Leave a row empty to decide later."],
         ["Send the sheet back as it is; scripts/ber_review_sheet.py import reads the calls."],
     ]:
@@ -159,11 +162,11 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
             # Model 1 is Claude Opus (the second reading), which decides.
             model1, model2 = r["second"] or {}, r["first"] or {}
             call = earlier.get(r["code"], {})
-            # An earlier Accept whose area model 1 no longer reads is filled
+            # An earlier Accept whose area the line no longer takes is filled
             # in as a Change to that area, so the row still says what was
             # decided and a re-import keeps it as it was.
             prefill = call.get("call")
-            if prefill == "accept" and call.get("area") != model1.get("area"):
+            if prefill == "accept" and call.get("area") != r["area"]:
                 prefill = "change" if call.get("area") else "none"
             ws.append(
                 [
@@ -186,10 +189,11 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
                 ]
             )
         shade = PatternFill("solid", fgColor="FFF5C7")
+        look_at = {STATUS_WORDS[s] for s in TO_LOOK_AT}
         for row in ws.iter_rows(min_row=2):
             for cell in row:
                 cell.alignment = Alignment(wrap_text=True, vertical="top")
-            if row[12].value in {STATUS_WORDS[s] for s in TO_LOOK_AT}:
+            if row[12].value in look_at:
                 row[12].fill = shade
         last = ws.max_row
         calls = DataValidation(type="list", formula1='"' + ",".join(CALLS) + '"', allow_blank=True)
@@ -430,11 +434,12 @@ def import_calls(path: Path, lens: str, by: str) -> None:
             if kind == "change" and area not in by_name:
                 raise SystemExit(f"{title}, line {code}: Change needs an area from the list, found {area!r}")
             # Accept takes the area the sheet showed the reviewer ("Model 1
-            # (Claude Opus): area"), not whatever a later run of the models reads.
+            # (Claude Opus): area"), not whatever a later run of the models reads;
+            # on a row with no specific area it accepts just that.
             decided = None
             if kind == "change":
                 decided = by_name[area]
-            elif kind == "accept":
+            elif kind == "accept" and row[12] not in NO_AREA_WORDS:
                 decided = by_name.get(row[7])
             entry = {
                 "call": kind,
