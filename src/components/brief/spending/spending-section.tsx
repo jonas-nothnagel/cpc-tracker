@@ -129,12 +129,12 @@ export function SpendingSection({
 // Money in the page's currency
 // ---------------------------------------------------------------------------
 
-type Money = ReturnType<typeof useMoney>;
+export type Money = ReturnType<typeof useMoney>;
 
 /** Amounts as the section states them: in US$, each year at its own rate, or
  *  in the review's own currency. A review in US$ (Panama's balboa, at par)
  *  has the one currency. */
-function useMoney(setup: SpendingSetup, currency: Currency) {
+export function useMoney(setup: SpendingSetup, currency: Currency) {
   const t = useTranslations("brief.spending");
   const format = useFormatter();
   const base = setup.unit === "billion" ? 1e9 : 1e6;

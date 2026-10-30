@@ -114,6 +114,9 @@ export interface BriefSource {
    *  it is part of: the brief then offers its reviewed spending (on screen
    *  only). */
   spending?: boolean;
+  /** Set where the country has published its 7th National Report: the brief
+   *  then offers its national biodiversity targets (on screen only). */
+  nr7?: boolean;
 }
 
 /** A document's name for running text: its full name without a trailing

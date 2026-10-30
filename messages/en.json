@@ -2860,7 +2860,8 @@
       "areas": "By policy area",
       "aligned": "Strongest alignments",
       "spending": "Reviewed spending",
-      "contracts": "Public contracts"
+      "contracts": "Public contracts",
+      "nr7": "National biodiversity targets"
     },
     "tone": {
       "reinforce": "aligned",
@@ -3618,6 +3619,63 @@
       "sortLeast": "{label}, least first",
       "fewTargets": "few targets",
       "rowShares": "{aligned} aligned, {partial} partially aligned, {apart} potential misalignment, of {total, number} target pairs"
+    },
+    "nr7": {
+      "title": "National biodiversity targets",
+      "source": "As rated in the 7th National Report to the Convention on Biological Diversity, published {date}",
+      "headline": "{country}'s own report rates {behind} of {total} national targets behind schedule.",
+      "headlineNone": "{country}'s own report rates none of its {total} national targets behind schedule.",
+      "col": {
+        "target": "National target",
+        "status": "Rating in the report",
+        "indicators": "Indicators",
+        "aligned": "Aligned",
+        "apart": "Potential misalignment",
+        "lines": "Budget lines",
+        "spend": "Reviewed spending",
+        "actions": "Reported actions"
+      },
+      "sortBy": "Sort by {column}",
+      "listLabel": "National targets as the report rates them",
+      "statusCount": "{count, plural, one {# target} other {# targets}}: {status}",
+      "none": "None",
+      "loading": "Reading the report's entry",
+      "failed": "The report's entry could not be read.",
+      "level": "Rating: {level}",
+      "gbf": "Filed under the Global Biodiversity Framework",
+      "words": {
+        "challenges": "Key challenges",
+        "progress": "Progress",
+        "actions": "Main actions",
+        "effectiveness": "Effectiveness of the actions"
+      },
+      "reportPart": "In the report",
+      "wordsTitle": "Narrative in the report",
+      "readMore": "Read more",
+      "readLess": "Show less",
+      "original": "Taken directly from the report",
+      "indicatorsTitle": "Indicators",
+      "noIndicators": "The report gives no indicator for this target.",
+      "showAllIndicators": "Show all {count}",
+      "noValue": "No value reported",
+      "shared": "Reported across several targets",
+      "latest": "{value} in {year}",
+      "change": "{first} in {from} to {last} in {to}",
+      "moreSeries": "and {count, plural, one {# more breakdown} other {# more breakdowns}}",
+      "answersTitle": "Questionnaire answers",
+      "answer": {
+        "yes": "Yes",
+        "partially": "Partially",
+        "under_development": "Under development",
+        "no": "No",
+        "other": "Other answers"
+      },
+      "showAnswers": "Show the questions",
+      "hideAnswers": "Hide the questions",
+      "matching": "Read by AI against the target",
+      "linesTitle": "Budget lines strongly matching",
+      "actionsTitle": "Reported actions strongly aligned",
+      "explore": "Explore this target"
     }
   }
 }

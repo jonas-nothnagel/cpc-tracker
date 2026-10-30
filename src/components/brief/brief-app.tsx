@@ -18,6 +18,7 @@ import type { BriefSource } from "@/lib/brief/source";
 import type { ExploreSetup } from "@/lib/brief/explore/setup";
 import { focusKey } from "@/lib/brief/explore/focus";
 import type { SpendingSetup } from "@/lib/brief/spending";
+import type { Nr7Setup } from "@/lib/brief/nr7";
 import { EXPLORE_PARAMS } from "@/lib/brief/explore/state";
 import { AreasView } from "./areas/areas-view";
 import { ContractsSection, type BriefContracts } from "./contracts/contracts-section";
@@ -35,6 +36,7 @@ import { clip } from "./ink";
 import { SectionView, type SectionHandlers } from "./section-view";
 import { Sheets, TitleBlock } from "./sheets";
 import { SpendingSection } from "./spending/spending-section";
+import { Nr7Section } from "./nr7/nr7-section";
 import "./brief.css";
 import "./print-page.css";
 
@@ -66,6 +68,7 @@ export function BriefApp({
   explore,
   contracts,
   spending,
+  nr7,
   localCurrency = false,
 }: {
   source: BriefSource;
@@ -79,6 +82,8 @@ export function BriefApp({
   /** The country's reviewed spending, where its review states the public
    *  spending it is part of. */
   spending?: SpendingSetup;
+  /** The country's national biodiversity targets as its report rates them. */
+  nr7?: Nr7Setup;
   /** The page is in the country's own language, the only page where its own
    *  currency appears (by default, with a switch to US$); elsewhere every
    *  amount is in US$. */
@@ -253,7 +258,8 @@ export function BriefApp({
               (id) =>
                 !OVERVIEW_SECTIONS.includes(id) &&
                 (id !== "contracts" || contracts !== undefined) &&
-                (id !== "spending" || spending !== undefined),
+                (id !== "spending" || spending !== undefined) &&
+                (id !== "nr7" || nr7 !== undefined),
             )}
             renderSection={(id) =>
               id === "spending" && spending ? (
@@ -264,6 +270,16 @@ export function BriefApp({
                   currency={currency}
                   onCurrency={localCurrency ? setCurrency : undefined}
                   onExploreArea={explore?.layers?.items.some((it) => it.layer === "budget") ? exploreArea : undefined}
+                />
+              ) : id === "nr7" && nr7 ? (
+                <Nr7Section
+                  setup={nr7}
+                  spending={spending}
+                  source={source}
+                  scope={scope}
+                  currency={currency}
+                  onExplore={explore ? exploreTarget : undefined}
+                  onOpenPair={(a, b) => setPanels([{ kind: "pair", a, b }])}
                 />
               ) : id === "contracts" && contracts ? (
                 <ContractsSection

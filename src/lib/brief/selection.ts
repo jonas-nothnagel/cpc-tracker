@@ -10,7 +10,8 @@ export type SectionId =
   | "documents"
   | "areas"
   | "spending"
-  | "contracts";
+  | "contracts"
+  | "nr7";
 
 export const SECTION_IDS: SectionId[] = [
   "overall",
@@ -22,11 +23,12 @@ export const SECTION_IDS: SectionId[] = [
   "areas",
   "spending",
   "contracts",
+  "nr7",
 ];
 
 /** The standard brief: three A4 pages, the policy areas last; then, on screen
- *  where the country has them, its reviewed spending and its public
- *  contracts. Alignment by document is offered in the menu, not shown
+ *  where the country has them, its reviewed spending, its public
+ *  contracts and its national biodiversity targets as it reports them. Alignment by document is offered in the menu, not shown
  *  by default. */
 export const DEFAULT_SECTIONS: SectionId[] = [
   "overall",
@@ -37,6 +39,7 @@ export const DEFAULT_SECTIONS: SectionId[] = [
   "areas",
   "spending",
   "contracts",
+  "nr7",
 ];
 
 export interface BriefSelection {
@@ -69,7 +72,8 @@ export function allowedSections(source: BriefSource): Set<SectionId> {
       (id) =>
         (id !== "areas" || source.lenses.length > 0) &&
         (id !== "spending" || source.spending === true) &&
-        (id !== "contracts" || source.contracts === true),
+        (id !== "contracts" || source.contracts === true) &&
+        (id !== "nr7" || source.nr7 === true),
     ),
   );
 }

@@ -587,7 +587,11 @@ describe("Explore with finance and implementation", () => {
     renderLayered({ focus: "A1" });
     expect(within(side()).queryByRole("heading", { name: "Reported actions" })).toBeNull();
     expect(within(side()).queryByRole("heading", { name: "Budget lines" })).toBeNull();
-    expect(within(side()).queryByText("Limited progress")).toBeNull();
+  });
+
+  it("states the country's own rating of a target without any layer on", () => {
+    renderLayered({ focus: "A1" });
+    expect(within(side()).getByText("Limited progress")).toBeInTheDocument();
   });
 
   it("shows a target's reported actions, budget lines and NR7 status beside the ring", () => {

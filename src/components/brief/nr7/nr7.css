@@ -1,0 +1,542 @@
+/* The national targets as the country's report rates them. A rating is the
+   country's own statement, not an alignment reading, so it stays in ink:
+   green and red belong to the alignment columns beside it, blue to money
+   (DESIGN.md). A rating never rests on colour: a mark and a word. Scoped to
+   [data-brief]. */
+
+[data-brief] .n7-brief {
+  display: grid;
+  gap: 1.5rem;
+}
+
+[data-brief] .n7-head {
+  display: grid;
+  gap: 0.25rem;
+}
+
+[data-brief] .n7-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+[data-brief] .n7-source {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .n7-lead .brief-hub-headline {
+  margin-bottom: 0.5rem;
+}
+
+/* ── The ratings at a glance ─────────────────────────────────────────── */
+
+[data-brief] .n7-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .n7-group {
+  display: grid;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .n7-group-name strong {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .n7-group-marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  max-width: 18rem;
+}
+
+[data-brief] .n7-mark {
+  display: inline-block;
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--brief-ink);
+}
+
+[data-brief] .n7-mark[data-status="on_track"] {
+  background: var(--brief-ink);
+}
+
+[data-brief] .n7-mark[data-status="limited"] {
+  background: linear-gradient(90deg, var(--brief-ink) 50%, transparent 50%);
+}
+
+[data-brief] .n7-mark[data-status="unknown"] {
+  border-style: dotted;
+  border-color: var(--brief-muted);
+}
+
+[data-brief] .n7-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  white-space: nowrap;
+}
+
+/* ── The table ───────────────────────────────────────────────────────── */
+
+[data-brief] .n7-table-wrap {
+  overflow-x: auto;
+}
+
+[data-brief] .n7-table {
+  width: 100%;
+  min-width: 52rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+[data-brief] .n7-table th {
+  padding: 0 0.75rem 0.5rem 0;
+  border-bottom: 1px solid var(--brief-hairline-strong);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--brief-muted);
+  text-align: left;
+  vertical-align: bottom;
+}
+
+[data-brief] .n7-table th[data-numeric] {
+  text-align: right;
+}
+
+[data-brief] .n7-sort {
+  all: unset;
+  cursor: pointer;
+  line-height: 1.25;
+}
+
+[data-brief] .n7-sort:hover,
+[data-brief] .n7-sort[data-active] {
+  color: var(--brief-ink);
+}
+
+[data-brief] .n7-sort:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .n7-sort-mark {
+  display: inline-block;
+  width: 0.875em;
+  text-align: center;
+}
+
+[data-brief] .n7-row {
+  cursor: pointer;
+}
+
+[data-brief] .n7-row > td {
+  padding: 0.625rem 0.75rem 0.625rem 0;
+  border-bottom: 1px solid var(--brief-hairline);
+  vertical-align: top;
+}
+
+[data-brief] .n7-row[data-open] > td {
+  border-bottom-color: transparent;
+}
+
+[data-brief] .n7-table td[data-numeric] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-brief] .n7-table td[data-tone="aligned"] {
+  color: var(--brief-green);
+}
+
+[data-brief] .n7-table td[data-tone="apart"] {
+  color: var(--brief-red);
+}
+
+[data-brief] .n7-table td[data-ink="blue"] {
+  color: var(--brief-blue);
+}
+
+[data-brief] .n7-target {
+  width: 40%;
+}
+
+[data-brief] .n7-target-button {
+  all: unset;
+  display: flex;
+  gap: 0.625rem;
+  cursor: pointer;
+  line-height: 1.35;
+}
+
+[data-brief] .n7-target-button:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .n7-number {
+  flex: none;
+  min-width: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--brief-muted);
+}
+
+[data-brief] .n7-row:hover .n7-label,
+[data-brief] .n7-row[data-open] .n7-label {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* A share goes to the target in the ring's centre. */
+[data-brief] .n7-share {
+  all: unset;
+  cursor: pointer;
+  text-underline-offset: 2px;
+}
+
+[data-brief] .n7-share:hover {
+  text-decoration: underline;
+}
+
+[data-brief] .n7-share:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+/* ── An open row ─────────────────────────────────────────────────────── */
+
+[data-brief] .n7-open-row > td {
+  padding: 0 0 1.5rem;
+  border-bottom: 1px solid var(--brief-hairline-strong);
+}
+
+[data-brief] .n7-open {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+  max-width: 72rem;
+}
+
+/* The target's wording, and the way to its place on the ring. */
+[data-brief] .n7-open-head {
+  display: grid;
+  justify-items: start;
+  gap: 0.25rem;
+}
+
+[data-brief] .n7-open-head .brief-av-link {
+  margin: 0;
+}
+
+[data-brief] .n7-open-text {
+  max-width: 48em;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+/* What the report says of the target, and what the AI reads against it. A part
+   stands as tall as the one beside it, so its contents keep to the top. */
+[data-brief] .n7-part {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+[data-brief] .n7-part-title {
+  justify-self: stretch;
+  margin: 0;
+  padding-bottom: 0.3125rem;
+  border-bottom: 1px solid var(--brief-hairline-strong);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .n7-open-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem 1.5rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .n7-open-line abbr {
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+[data-brief] .n7-open-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 2.5rem;
+  width: 100%;
+}
+
+[data-brief] .n7-subtitle {
+  margin: 0 0 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* The targets behind the two shares: kept quiet, under the rest of the column. */
+[data-brief] .n7-pairs {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 0.25rem;
+}
+
+[data-brief] .n7-disclose {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.125rem 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  text-underline-offset: 2px;
+}
+
+[data-brief] .n7-disclose:hover {
+  text-decoration: underline;
+}
+
+[data-brief] .n7-disclose:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .n7-disclose[aria-expanded="true"] .ex-chevron {
+  transform: rotate(45deg);
+}
+
+[data-brief] .n7-pairs-none {
+  margin: 0;
+  padding: 0.125rem 0 0.125rem calc(7px + 0.5rem);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+[data-brief] .n7-disclose[data-tone="aligned"],
+[data-brief] .n7-pairs-none[data-tone="aligned"] {
+  color: var(--brief-green);
+}
+
+[data-brief] .n7-disclose[data-tone="apart"],
+[data-brief] .n7-pairs-none[data-tone="apart"] {
+  color: var(--brief-red);
+}
+
+[data-brief] .n7-tag {
+  margin-left: 0.25rem;
+  font-weight: 400;
+  color: var(--brief-muted);
+}
+
+[data-brief] .n7-words,
+[data-brief] .n7-block {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  width: 100%;
+}
+
+[data-brief] .n7-words {
+  gap: 0.5rem;
+}
+
+[data-brief] .n7-words .brief-av-choice {
+  margin: 0;
+}
+
+[data-brief] .n7-words-text {
+  max-width: 48em;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+[data-brief] .n7-words-text[data-clamped] {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+[data-brief] .n7-words-links {
+  display: flex;
+  gap: 1rem;
+  margin: 0.25rem 0 0;
+}
+
+[data-brief] .n7-words-links:empty {
+  display: none;
+}
+
+/* Pressed: the text on the page is the report's own. */
+[data-brief] .n7-words-links [aria-pressed="true"] {
+  font-weight: 600;
+}
+
+[data-brief] .n7-indicators,
+[data-brief] .n7-listed,
+[data-brief] .n7-questions,
+[data-brief] .n7-answer-key {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-brief] .n7-indicator {
+  display: grid;
+  gap: 0.125rem;
+  padding: 0.4375rem 0;
+  border-top: 1px solid var(--brief-hairline);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+[data-brief] .n7-indicator .brief-av-link {
+  justify-self: start;
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .n7-indicator-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--brief-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-brief] .n7-indicator-note {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: var(--brief-muted);
+}
+
+[data-brief] .n7-answer-bar {
+  display: flex;
+  gap: 2px;
+  width: 100%;
+  max-width: 18rem;
+  height: 8px;
+  margin-bottom: 0.375rem;
+}
+
+[data-brief] [data-answer="yes"] {
+  background: var(--brief-ink);
+}
+
+[data-brief] [data-answer="partially"] {
+  background: color-mix(in srgb, var(--brief-ink) 60%, white);
+}
+
+[data-brief] [data-answer="under_development"] {
+  background: color-mix(in srgb, var(--brief-ink) 28%, white);
+}
+
+[data-brief] [data-answer="no"] {
+  background: var(--brief-none);
+  box-shadow: inset 0 0 0 1px var(--brief-hairline-strong);
+}
+
+[data-brief] .n7-answer-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.875rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+[data-brief] .n7-answer-swatch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 0.3125rem;
+}
+
+[data-brief] .n7-questions li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.375rem 0;
+  border-top: 1px solid var(--brief-hairline);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+[data-brief] .n7-questions strong {
+  flex: none;
+  max-width: 40%;
+  font-weight: 500;
+  text-align: right;
+}
+
+[data-brief] .n7-listed li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.3125rem 0;
+  border-top: 1px solid var(--brief-hairline);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+[data-brief] .n7-listed-open {
+  all: unset;
+  cursor: pointer;
+  text-underline-offset: 2px;
+}
+
+[data-brief] .n7-listed-open:hover {
+  text-decoration: underline;
+}
+
+[data-brief] .n7-listed-open:focus-visible {
+  outline: 2px solid var(--brief-blue);
+  outline-offset: 2px;
+}
+
+[data-brief] .n7-listed-doc {
+  color: var(--brief-muted);
+}
+
+[data-brief] .n7-listed-side {
+  flex: none;
+  color: var(--brief-blue);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 820px) {
+  [data-brief] .n7-open-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
