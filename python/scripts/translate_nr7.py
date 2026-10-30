@@ -10,7 +10,8 @@ page is in English; Mongolia's is in English and has a Mongolian page.
 Writes data/external/nr7_{iso3}.{locale}.json: the report's four narratives per
 national target, and the name and note of every indicator the page shows. Machine
 translation; the report's own wording stays in nr7_{iso3}.json and one click away
-on the page. A passage the model returns empty keeps the report's wording.
+on the page. A passage the model returns empty keeps the report's wording, and a
+passage that is only web addresses is not sent: it has nothing to translate.
 Nothing here reaches the pipeline: it is display text, never an LLM input.
 
 Every run appends its footprint to the ledger, cached calls included.
@@ -21,6 +22,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -47,12 +49,18 @@ NARRATIVES = {
 }
 
 
+def has_words(text: str) -> bool:
+    """False for a passage of web addresses alone. Asked to translate one, the
+    model replies with a request for the passage, which then reads as the report's."""
+    return re.search(r"[^\W\d_]", re.sub(r"https?://\S+", "", text)) is not None
+
+
 def passages(report: dict) -> list[tuple[tuple[str, str, str], str]]:
     """Each text to translate with where it goes: (section, id, key)."""
     out: list[tuple[tuple[str, str, str], str]] = []
     for item in report["progressItems"]:
         for field, key in NARRATIVES.items():
-            if item.get(field):
+            if item.get(field) and has_words(item[field]):
                 out.append((("targets", item["targetId"], key), item[field]))
     for indicator in report["indicators"]:
         shown = bool(indicator.get("comments")) or any(s.get("points") for s in indicator.get("series") or [])
@@ -72,7 +80,7 @@ def build_overlay(
 ) -> dict:
     overlay: dict = {"_meta": meta, "targets": {}, "indicators": {}}
     for ((section, ident, key), original), text in zip(wanted, translated):
-        overlay[section].setdefault(ident, {})[key] = " ".join(text.split(" ")).strip() or original
+        overlay[section].setdefault(ident, {})[key] = text.strip() or original
     return overlay
 
 

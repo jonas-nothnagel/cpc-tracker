@@ -628,9 +628,16 @@ def build_nr7_data(
 def national_target_map(national_rows: list[dict[str, str]]) -> dict[str, dict[str, Any]]:
     """The national-target export -> {NTnn: {heading, gbf: {T03: "GBF-T03. ..."}}}."""
     out: dict[str, dict[str, Any]] = {}
+    published: dict[str, datetime] = {}
     for row in national_rows:
         heading = _clean(row.get("National target title")) or ""
-        out[split_target(heading)[0]] = {
+        nt = split_target(heading)[0]
+        when = _published(row) or datetime.min
+        # The export sorts newest first: a target's latest revision wins.
+        if nt in published and when < published[nt]:
+            continue
+        published[nt] = when
+        out[nt] = {
             "heading": heading,
             "gbf": parse_gbf_targets(row.get("Degree of Alignment by target")),
         }
@@ -638,8 +645,16 @@ def national_target_map(national_rows: list[dict[str, str]]) -> dict[str, dict[s
 
 
 def gbf_to_national(national: dict[str, dict[str, Any]]) -> dict[str, str]:
-    """{T03: NT03}: which national target a GBF target is filed under."""
-    return {g["id"]: nt for nt, entry in sorted(national.items()) for g in entry["gbf"]}
+    """{T03: NT03}: which national target a GBF target is filed under. A GBF target
+    under two national targets cannot say which one a row belongs to, so it stops
+    the build rather than filing the row under either."""
+    out: dict[str, str] = {}
+    for nt, entry in sorted(national.items()):
+        for g in entry["gbf"]:
+            if g["id"] in out and out[g["id"]] != nt:
+                raise ValueError(f"{g['id']} sits under both {out[g['id']]} and {nt}; a row filed under it has no one home")
+            out[g["id"]] = nt
+    return out
 
 
 def _plain_start(text: Any) -> str:
@@ -665,8 +680,15 @@ def file_under_national_targets(
     advanced. Rows the export already names pass through."""
     by_start = {k["start"]: k for k in keys if k.get("start")}
     gbf_map = gbf_to_national(national)
-    grouped: dict[str, list[tuple[str | None, dict[str, str]]]] = {}
+    # The export repeats a row for every revision: the latest, before any merge.
+    latest: dict[str, dict[str, str]] = {}
     for row in section3_rows:
+        key = (row.get("Target") or "").strip() or _plain_start(row.get("Main Actions Summary"))
+        cur = latest.get(key)
+        if cur is None or (_published(row) or datetime.min) >= (_published(cur) or datetime.min):
+            latest[key] = row
+    grouped: dict[str, list[tuple[str | None, dict[str, str]]]] = {}
+    for row in latest.values():
         target = (row.get("Target") or "").strip()
         if target:
             nt = split_target(target)[0]

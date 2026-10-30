@@ -8,9 +8,10 @@ to be shown on demand (a hover, the How it works page, a printed note).
 
 - *The report, word for word:* the rating's wording, the GBF targets, the four
   passages, the indicators' names, breakdowns, values, years and units, and the
-  questionnaire's questions and answers. Passages match the export in Mongolia
-  (80 of 80), Panama (120 of 120, in Spanish) and Sri Lanka (44 of 64; the other
-  20 are several report rows joined under their GBF codes).
+  questionnaire's questions and answers (the tool's multiple-choice codes spelled
+  out word by word, "climateChange" as "Climate change"). Passages match the
+  export in Mongolia (80 of 80), Panama (120 of 120, in Spanish) and Sri Lanka (44
+  of 64; the other 20 are several report rows joined under their GBF codes).
 - *The target's name and wording:* the brief's target list. Mongolia's wording is
   the report's (20 of 20); Sri Lanka's is its NBSAP (15 of 16 at least 98% the
   same as the report); Panama's is its Nature Pledge, where the report has short
@@ -27,6 +28,15 @@ to be shown on demand (a hover, the How it works page, a printed note).
   the counts in a row, the spending total, the sparklines, "x in 2020 to y in
   2025", and "Reported across several targets" (an indicator on four targets or
   more).
+
+**Indicators the export leaves unfiled.** The CSV export names no target for 31 of
+Sri Lanka's 47 indicator rows and 108 of Panama's, so those indicators reach no row.
+15 of them carry values or a note (Sri Lanka 5, Panama 6, Mongolia 4). The report's
+own record does file indicators under each Section III row
+(`sectionIII[].indicatorData` from `api/v2013/documents`), and holds 11 of those 15;
+the section does not read it yet. So a dash in the Indicators column means none
+reached the row, never that the report has none, and the section states nothing
+about it. Sri Lanka's NT03, NT04, NT07 and NT10 show neither indicators nor answers.
 
 **The rating is the country's own.** It comes from Section III of the 7th
 National Report in the CBD Online Reporting Tool, word for word in the open row.
@@ -66,8 +76,9 @@ programmes, which bears on its urban green infrastructure target.
 
 **Machine translation.** Panama's report is in Spanish: its English page shows a
 machine translation with the report's wording one click away
-(`python/data/external/nr7_pan.en.json`). Mongolia's report is in English, which
-the Mongolian page shows until an overlay exists for it.
+(`python/data/external/nr7_pan.en.json`). Mongolia's report is in English: its
+Mongolian page does the same (`nr7_mng.mn.json`). A passage that is only web
+addresses is not translated.
 
 **No sentences on the data.** The section states neither the report's cross-checks
 (`detectSignals`, `nr7-self-report.ts`, still on the previous dashboard) nor which

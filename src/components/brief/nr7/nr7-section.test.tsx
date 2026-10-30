@@ -203,6 +203,35 @@ describe("Nr7Section", () => {
     expect(screen.getByText("Falta financiamiento.")).toBeTruthy();
   });
 
+  it("offers no original where a passage reads the same in both", async () => {
+    const same: Nr7Detail = { ...DETAIL, original: { challenges: DETAIL.words.challenges } };
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => same })));
+    renderSection();
+    fireEvent.click(screen.getAllByRole("button", { expanded: false })[0]);
+    await screen.findByText("Funding is short.");
+    expect(screen.queryByRole("button", { name: "Taken directly from the report" })).toBeNull();
+  });
+
+  it("states nothing about indicators where none reaches the row: the export can be blank where the report is not", async () => {
+    const empty: Nr7Detail = {
+      ...DETAIL,
+      indicators: [],
+      answers: { mix: { yes: 0, partially: 0, underDevelopment: 0, no: 0, other: 0 }, items: [] },
+    };
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => empty })));
+    renderSection();
+    fireEvent.click(screen.getAllByRole("button", { expanded: false })[0]);
+    await screen.findByText("Funding is short.");
+    expect(screen.queryByRole("heading", { name: "Indicators" })).toBeNull();
+    expect(screen.queryByText(/no indicator/i)).toBeNull();
+  });
+
+  it("marks a row without indicators with a dash, not a statement", () => {
+    renderSection();
+    const row = screen.getAllByRole("row").find((r) => r.textContent?.includes("Limited progress"));
+    expect(within(row as HTMLElement).getAllByRole("cell")[2].textContent).toBe("–");
+  });
+
   it("shows one passage of the report at a time", async () => {
     await openFirstRow();
     expect(screen.queryByText("Coverage grew.")).toBeNull();

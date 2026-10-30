@@ -68,10 +68,7 @@ export function Nr7Section({
   const [sort, setSort] = useState<Nr7Sort>(DEFAULT_NR7_SORT);
   const [open, setOpen] = useState<string | null>(null);
   const toggle = (id: string) => setOpen((cur) => (cur === id ? null : id));
-  const rows = useMemo(
-    () => sortNr7(reading.rows, sort, (r) => money.whole(r.spend, r.spendUsd)),
-    [reading.rows, sort, money],
-  );
+  const rows = sortNr7(reading.rows, sort, (r) => money.whole(r.spend, r.spendUsd));
   const total = reading.rows.length;
   const showActions = setup.rows.some((r) => r.actions !== null);
   const showLines = setup.rows.some((r) => r.lines !== null);
@@ -195,7 +192,7 @@ export function Nr7Section({
                     <td className="n7-status">
                       <StatusWord status={row.status} />
                     </td>
-                    <td data-numeric="true">{row.indicators > 0 ? row.indicators : t("none")}</td>
+                    <td data-numeric="true">{row.indicators > 0 ? row.indicators : "–"}</td>
                     <td data-numeric="true" data-tone="aligned">
                       {share(row, row.aligned)}
                     </td>
@@ -304,15 +301,12 @@ function RowDetail({
   const locale = useLocale();
   const { detail, failed } = useDetail(country, row.id, locale);
   const target = row.targetId;
-  const lines = useMemo(
-    () =>
-      target && spending
-        ? spending.lines
-            .filter((l) => l.matches.includes(target))
-            .sort((a, b) => money.whole(b.total, b.totalUsd) - money.whole(a.total, a.totalUsd))
-        : [],
-    [target, spending, money],
-  );
+  const lines =
+    target && spending
+      ? spending.lines
+          .filter((l) => l.matches.includes(target))
+          .sort((a, b) => money.whole(b.total, b.totalUsd) - money.whole(a.total, a.totalUsd))
+      : [];
   const pairs = useMemo(() => (target ? nr7Pairs(scope, target) : { apart: [], aligned: [] }), [scope, target]);
   const partners = (list: BriefCommitment[]) =>
     list.map((c) => ({
@@ -353,7 +347,7 @@ function RowDetail({
                   </span>
                 )}
               </p>
-              <Indicators indicators={detail.indicators} />
+              {detail.indicators.length > 0 && <Indicators indicators={detail.indicators} />}
               <Answers answers={detail.answers} />
             </>
           )}
@@ -408,7 +402,9 @@ function Words({ words, original }: { words: Nr7Detail["words"]; original: Nr7De
   const [own, setOwn] = useState(false);
   const part = picked ?? parts[0];
   if (!part) return null;
-  const report = original?.[part] ?? null;
+  // Only where the two differ: a list of web addresses reads the same in both.
+  const filed = original?.[part] ?? null;
+  const report = filed !== words[part] ? filed : null;
   const text = own && report ? report : (words[part] as string);
   const long = text.length > LONG_PASSAGE;
   return (
@@ -461,15 +457,11 @@ function Indicators({ indicators }: { indicators: Nr7DetailIndicator[] }) {
   return (
     <section className="n7-block">
       <h5 className="n7-subtitle">{t("indicatorsTitle")}</h5>
-      {indicators.length === 0 ? (
-        <p className="n7-open-line">{t("noIndicators")}</p>
-      ) : (
-        <ul className="n7-indicators">
-          {shown.map((i) => (
-            <IndicatorItem key={i.id} indicator={i} />
-          ))}
-        </ul>
-      )}
+      <ul className="n7-indicators">
+        {shown.map((i) => (
+          <IndicatorItem key={i.id} indicator={i} />
+        ))}
+      </ul>
       {indicators.length > lead.length && !all && (
         <button type="button" className="brief-av-link" onClick={() => setAll(true)}>
           {t("showAllIndicators", { count: indicators.length })}

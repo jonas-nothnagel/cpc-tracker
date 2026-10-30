@@ -71,6 +71,22 @@ function actionName(target: Record<string, unknown>): string {
   return label && !label.endsWith("...") ? label : clip(text, ACTION_NAME_LENGTH);
 }
 
+const TOOL_CODE = /^[a-z]+(?:[A-Z][a-z]*)*$/;
+
+/** The reporting tool files multiple-choice answers as its own codes,
+ *  "forTerrestrialPlanning; climateChange": spelled out word by word, nothing
+ *  added. A written answer stays as the country wrote it. */
+export function readableResponse(response: string): string {
+  const parts = response.split(";").map((p) => p.trim()).filter(Boolean);
+  if (parts.length === 0 || !parts.every((p) => TOOL_CODE.test(p))) return response;
+  return parts
+    .map((p) => {
+      const words = p.replace(/[A-Z]/g, (c) => ` ${c.toLowerCase()}`);
+      return words[0].toUpperCase() + words.slice(1);
+    })
+    .join("; ");
+}
+
 interface Overlay {
   targets?: Record<string, Partial<Nr7Detail["words"]>>;
   indicators?: Record<string, { name?: string; comments?: string }>;
@@ -165,7 +181,7 @@ export function nr7Detail(data: Record<string, unknown>, id: string, locale: str
       },
       items: [...row.scaleAnswers, ...row.otherAnswers].map((a) => ({
         question: a.questionTitle ?? a.indicatorTitle ?? a.questionNumber,
-        response: a.response,
+        response: readableResponse(a.response),
         value: a.responseValue ?? null,
       })),
     },

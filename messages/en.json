@@ -3655,7 +3655,6 @@
       "readLess": "Show less",
       "original": "Taken directly from the report",
       "indicatorsTitle": "Indicators",
-      "noIndicators": "The report gives no indicator for this target.",
       "showAllIndicators": "Show all {count}",
       "noValue": "No value reported",
       "shared": "Reported across several targets",

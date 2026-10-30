@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { scopeOf } from "./compute";
 import { briefFixture } from "./test-fixture";
 import { DEFAULT_NR7_SORT, nextNr7Sort, nr7Pairs, nr7Reading, nr7Setup, sortNr7, type Nr7ReadRow, type Nr7Setup } from "./nr7";
+import { readableResponse } from "./nr7-detail";
 import type { SpendingSetup } from "./spending";
 
 const item = (n: number, status: string, nbsap: string | null = null) => ({
@@ -173,3 +174,17 @@ describe("sorting", () => {
     expect(nextNr7Sort(DEFAULT_NR7_SORT, "status")).toEqual({ key: "status", dir: "asc" });
   });
 });
+
+describe("readableResponse", () => {
+  it("spells out the reporting tool's codes", () => {
+    expect(readableResponse("forTerrestrialPlanning; climateChange")).toBe("For terrestrial planning; Climate change");
+    expect(readableResponse("underDevelopment")).toBe("Under development");
+    expect(readableResponse("other")).toBe("Other");
+  });
+
+  it("leaves a written answer as the country wrote it", () => {
+    const written = "Local communities were engaged to a limited degree; see the plan.";
+    expect(readableResponse(written)).toBe(written);
+  });
+});
+

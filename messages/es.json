@@ -3655,7 +3655,6 @@
       "readLess": "Mostrar menos",
       "original": "Tomado directamente del informe",
       "indicatorsTitle": "Indicadores",
-      "noIndicators": "El informe no da ningún indicador para esta meta.",
       "showAllIndicators": "Mostrar los {count}",
       "noValue": "Sin valor reportado",
       "shared": "Reportado en varias metas",

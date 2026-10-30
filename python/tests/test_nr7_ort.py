@@ -359,3 +359,70 @@ def test_indicators_and_answers_filed_under_a_gbf_target_reach_the_national_targ
         gbf,
     )["answers"]
     assert answers[0]["targetId"] == "NT02"
+
+
+def test_national_target_map_keeps_the_latest_revision_in_either_order():
+    newer = {
+        "Published on": "21-May-2026 09:51",
+        "National target title": "National Target 1: Restore ecosystems",
+        "Degree of Alignment by target": "High - GBF-T02. Restoration",
+    }
+    older = {**newer, "Published on": "01-Jan-2026 09:51", "National target title": "National Target 1: Old wording"}
+    for rows in ([newer, older], [older, newer]):
+        assert national_target_map(rows)["NT01"]["heading"] == newer["National target title"]
+
+
+def test_gbf_target_under_two_national_targets_stops_the_build():
+    national = national_target_map(
+        [
+            {"National target title": "National Target 1: A", "Degree of Alignment by target": "High - GBF-T02. Restoration"},
+            {"National target title": "National Target 2: B", "Degree of Alignment by target": "High - GBF-T02. Restoration"},
+        ]
+    )
+    with pytest.raises(ValueError, match="T02"):
+        gbf_to_national(national)
+
+
+def test_a_revised_row_replaces_its_earlier_revision_before_the_merge():
+    national = national_target_map(
+        [{"National target title": "National Target 1: Restore", "Degree of Alignment by target": "High - GBF-T02. Restoration"}]
+    )
+    keys = [{"target": "GBF-TARGET-2", "start": "actionstaken"}]
+    row = {"Target": "", "Main Actions Summary": "Actions taken", "Progress Summary": "Newer", "Level of Progress": "On track to achieve target"}
+    newer = {**row, "Published on": "21-May-2026 09:51"}
+    older = {**row, "Published on": "01-Jan-2026 09:51", "Progress Summary": "Older", "Level of Progress": "No significant change"}
+    merged = file_under_national_targets([older, newer], keys, national)
+    assert len(merged) == 1
+    assert merged[0]["Progress Summary"] == "Newer"
+    assert map_level(merged[0]["Level of Progress"]) == "on_track"
+
+
+def test_a_passage_of_web_addresses_is_not_sent_for_translation():
+    from scripts.translate_nr7 import passages
+
+    report = {
+        "progressItems": [
+            {
+                "targetId": "NT01",
+                "progressSummary": "Se avanzó. https://example.org/a",
+                "actionEffectivenessSummary": "https://example.org/a.pdf https://doi.org/10.37387/ipc.v9i2.232 ",
+            }
+        ],
+        "indicators": [],
+    }
+    assert [where for where, _ in passages(report)] == [("targets", "NT01", "progress")]
+
+
+@pytest.mark.parametrize("iso3,locale", [("pan", "en"), ("mng", "mn")])
+def test_an_overlay_holds_what_the_script_sends_and_nothing_else(iso3, locale):
+    import json
+    from pathlib import Path
+
+    from scripts.translate_nr7 import passages
+
+    external = Path(__file__).resolve().parents[1] / "data" / "external"
+    report = json.loads((external / f"nr7_{iso3}.json").read_text())
+    overlay = json.loads((external / f"nr7_{iso3}.{locale}.json").read_text())
+    held = {(section, ident, key) for section in ("targets", "indicators") for ident, v in overlay[section].items() for key in v}
+    assert held == {where for where, _ in passages(report)}
+    assert not any("paste the" in text for v in overlay["targets"].values() for text in v.values())
