@@ -12,6 +12,7 @@ export const SECTION_UNITS: Record<SectionId, 0 | 1 | 2> = {
   areas: 2,
   spending: 0,
   contracts: 0,
+  nr7: 0,
 };
 
 /** Content height of one A4 sheet, in units. */

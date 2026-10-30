@@ -2860,7 +2860,8 @@
       "areas": "Por área de política",
       "aligned": "Alineaciones más fuertes",
       "spending": "Gasto revisado",
-      "contracts": "Contratos públicos"
+      "contracts": "Contratos públicos",
+      "nr7": "Metas nacionales de biodiversidad"
     },
     "tone": {
       "reinforce": "alineados",
@@ -3618,6 +3619,62 @@
       "sortLeast": "{label}, de menor a mayor",
       "fewTargets": "pocas metas",
       "rowShares": "{aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación, de {total, number} pares de metas"
+    },
+    "nr7": {
+      "title": "Metas nacionales de biodiversidad",
+      "source": "Según la calificación del Séptimo Informe Nacional al Convenio sobre la Diversidad Biológica, publicado el {date}",
+      "headline": "El propio informe de {country} califica {behind} de {total} metas nacionales con retraso.",
+      "headlineNone": "El propio informe de {country} no califica con retraso ninguna de sus {total} metas nacionales.",
+      "col": {
+        "target": "Meta nacional",
+        "status": "Calificación en el informe",
+        "indicators": "Indicadores",
+        "aligned": "Alineados",
+        "apart": "Posible desalineación",
+        "lines": "Líneas presupuestarias",
+        "spend": "Gasto revisado",
+        "actions": "Acciones reportadas"
+      },
+      "sortBy": "Ordenar por {column}",
+      "listLabel": "Metas nacionales según la calificación del informe",
+      "statusCount": "{count, plural, one {# meta} other {# metas}}: {status}",
+      "none": "Ninguna",
+      "loading": "Leyendo la entrada del informe",
+      "failed": "No se pudo leer la entrada del informe.",
+      "level": "Calificación: {level}",
+      "gbf": "Registrada en el Marco Mundial de Biodiversidad",
+      "words": {
+        "challenges": "Principales desafíos",
+        "progress": "Avances",
+        "actions": "Principales acciones",
+        "effectiveness": "Eficacia de las acciones"
+      },
+      "reportPart": "En el informe",
+      "wordsTitle": "Narrativa en el informe",
+      "readMore": "Leer más",
+      "readLess": "Mostrar menos",
+      "original": "Tomado directamente del informe",
+      "indicatorsTitle": "Indicadores",
+      "showAllIndicators": "Mostrar los {count}",
+      "noValue": "Sin valor reportado",
+      "shared": "Reportado en varias metas",
+      "latest": "{value} en {year}",
+      "change": "{first} en {from} a {last} en {to}",
+      "moreSeries": "y {count, plural, one {# desglose más} other {# desgloses más}}",
+      "answersTitle": "Respuestas al cuestionario",
+      "answer": {
+        "yes": "Sí",
+        "partially": "Parcialmente",
+        "under_development": "En desarrollo",
+        "no": "No",
+        "other": "Otras respuestas"
+      },
+      "showAnswers": "Mostrar las preguntas",
+      "hideAnswers": "Ocultar las preguntas",
+      "matching": "Lectura de IA frente a la meta",
+      "linesTitle": "Líneas presupuestarias con fuerte coincidencia",
+      "actionsTitle": "Acciones reportadas con fuerte alineación",
+      "explore": "Explorar esta meta"
     }
   }
 }

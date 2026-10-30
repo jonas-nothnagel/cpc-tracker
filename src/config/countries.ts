@@ -119,7 +119,7 @@ export const COUNTRIES: CountryEntry[] = [
     has: {
       coherence: true,
       btr: { mitigation: true, adaptation: false },
-      nr7: false,
+      nr7: true,
       ber: true,
     },
   },
@@ -133,13 +133,13 @@ export const COUNTRIES: CountryEntry[] = [
     // NLTP, NTP, NPWM, NWP, NPPPP). This list replaced the previous eight on
     // 18 Sep 2026; minerals (NMP) and fisheries (NFAP) are no longer included.
     // Its Biodiversity Expenditure Review (2015-2024) is rebuilt from the
-    // review's own workbook and compared with the targets. No BTR / NR7 data,
-    // so those sections auto-hide.
+    // review's own workbook and compared with the targets. Its 7th National
+    // Report comes from the CBD reporting tool. No BTR yet, so that part hides.
     visible: true,
     has: {
       coherence: true,
       btr: { mitigation: false, adaptation: false },
-      nr7: false,
+      nr7: true,
       ber: true,
     },
   },

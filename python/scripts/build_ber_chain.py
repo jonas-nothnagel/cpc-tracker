@@ -18,8 +18,8 @@ National targets:
     saved verbatim to python/data/external/nr7_ort/pan/section3.csv (--fetch
     refreshes it). Panama's corpus holds no NBSAP to match, so the national
     targets stand as the report words them.
-Sri Lanka waits: its export leaves the target and its GBF targets blank for
-21 of 22 national targets.
+Sri Lanka's chain is not built yet: its report files 21 of 22 rows under the
+GBF targets, which reach their national targets through nr7_lka.json.
 
 Writes python/output/<country>/ber_chain.json. Run from python/:
     .venv/bin/python scripts/build_ber_chain.py --country all [--fetch]

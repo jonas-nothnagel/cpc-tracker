@@ -42,6 +42,7 @@ from __future__ import annotations
 
 import csv
 import difflib
+import html
 import io
 import logging
 import re
@@ -121,6 +122,8 @@ ORT_SECTIONS: dict[str, dict[str, Any]] = {
 # value; the UI shows those verbatim under "other answers".
 RESPONSE_VALUES: dict[str, str] = {
     "yes": "yes",
+    # The tool's wording on some questions for the top of the same scale.
+    "fully": "yes",
     "partially": "partially",
     "under development": "under_development",
     "underdevelopment": "under_development",
@@ -145,7 +148,13 @@ LEVEL_TO_STATUS: dict[str, str] = {
     "not applicable": "unknown",
 }
 
-_TARGET_RE = re.compile(r"^\s*(NT\d{2})\.?\s*(.*)$", re.S)
+# National targets as countries head them in the report: "NT03. By 2030, ..."
+# (Mongolia), "Meta Nacional 13. ..." and "National Goal 1. ..." (Panama),
+# "National Target 1: ..." and "National Target 2 - ..." (Sri Lanka).
+_TARGET_RE = re.compile(
+    r"^\s*(?:NT|Meta Nacional\s+|National (?:Goal|Target)\s+)0*(\d{1,2})\s*(?:[.:\-–]\s*)?(.*)$",
+    re.S | re.I,
+)
 _WS = re.compile(r"\s+")
 
 
@@ -176,11 +185,12 @@ def map_level(raw: Any) -> str:
 
 
 def split_target(target: Any) -> tuple[str, str]:
-    """'NT03. By 2030, ...' -> ('NT03', 'By 2030, ...')."""
+    """'NT03. By 2030, ...' -> ('NT03', 'By 2030, ...'); every country's heading
+    lands on the same NTnn id, the number the country gave the target."""
     m = _TARGET_RE.match(str(target or ""))
     if not m:
-        raise ValueError(f"Target does not start with an NTnn id: {target!r}")
-    return m.group(1), _clean(m.group(2)) or ""
+        raise ValueError(f"Target does not start with a national target number: {target!r}")
+    return f"NT{int(m.group(1)):02d}", _clean(m.group(2)) or ""
 
 
 # One GBF global target as the ORT writes it: "GBF-T03. 30% of areas are
@@ -195,7 +205,8 @@ def parse_gbf_targets(raw: Any) -> list[dict[str, str]]:
     text = _clean(raw) or ""
     out: list[dict[str, str]] = []
     for part in text.split(";"):
-        part = part.strip()
+        # The national-target export leads each with its degree of alignment.
+        part = re.sub(r"^(?:high|medium|low|none)\s*-\s*", "", part.strip(), flags=re.I)
         if not part:
             continue
         m = _GBF_TARGET_RE.match(part)
@@ -239,7 +250,7 @@ def latest_per_target(rows: list[dict[str, str]]) -> list[dict[str, str]]:
         cur = best.get(target)
         if cur is None or (_published(row) or datetime.min) >= (_published(cur) or datetime.min):
             best[target] = row
-    return sorted(best.values(), key=lambda r: r["Target"])
+    return sorted(best.values(), key=lambda r: split_target(r["Target"])[0])
 
 
 def _norm_text(s: str) -> str:
@@ -267,19 +278,71 @@ def match_nbsap(
     return best_id, round(best_score, 3)
 
 
+# Words too common in target wording to say which target a title restates.
+_MATCH_STOP = {"para", "panamá", "panama", "habrá", "will", "have", "with", "that", "this", "from", "their"}
+# A title and its target share at least this share of the title's words.
+IN_ORDER_MIN_SCORE = 0.5
+
+
+def _match_words(text: Any) -> set[str]:
+    joined = re.sub(r"(?<=\d)[,.](?=\d)", "", str(text or "").lower())
+    return {
+        w[:6]
+        for w in re.findall(r"[^\W_]+", joined)
+        if (len(w) > 3 or w[0].isdigit()) and w not in _MATCH_STOP
+    }
+
+
+def match_in_order(
+    titles: list[tuple[str, str]],
+    corpus: list[dict[str, Any]],
+    min_score: float = IN_ORDER_MIN_SCORE,
+) -> dict[str, tuple[str | None, float]]:
+    """National targets that restate a corpus document in short titles (Panama's
+    30 against the Nature Pledge): text similarity cannot see them, so the shared
+    words decide, and both lists keep the document's order. The best alignment
+    that never goes back in either list; a pair under the minimum stays
+    unmatched rather than guessed."""
+    probes = [_match_words(t) for _, t in titles]
+    words = [_match_words(t.get("textOriginal")) | _match_words(t.get("text")) for t in corpus]
+    best = [[0.0] * (len(words) + 1) for _ in range(len(probes) + 1)]
+    for i, probe in enumerate(probes, 1):
+        for j, w in enumerate(words, 1):
+            pair = len(probe & w) / max(1, len(probe))
+            best[i][j] = max(best[i - 1][j - 1] + pair, best[i - 1][j], best[i][j - 1])
+    out: dict[str, tuple[str | None, float]] = {nt: (None, 0.0) for nt, _ in titles}
+    i, j = len(probes), len(words)
+    while i and j:
+        pair = len(probes[i - 1] & words[j - 1]) / max(1, len(probes[i - 1]))
+        if best[i][j] == best[i - 1][j - 1] + pair and pair > 0:
+            score = round(pair, 3)
+            out[titles[i - 1][0]] = (str(corpus[j - 1]["id"]) if pair >= min_score else None, score)
+            i, j = i - 1, j - 1
+        elif best[i][j] == best[i - 1][j]:
+            i -= 1
+        else:
+            j -= 1
+    return out
+
+
 def build_progress_items(
     rows: list[dict[str, str]],
     nbsap_targets: list[dict[str, Any]],
     threshold: float = 0.85,
+    match: str = "text",
 ) -> list[dict[str, Any]]:
     items: list[dict[str, Any]] = []
     used: dict[str, str] = {}
-    for row in latest_per_target(rows):
+    latest = latest_per_target(rows)
+    in_order = (
+        match_in_order([split_target(r.get("Target")) for r in latest], nbsap_targets) if match == "in-order" else {}
+    )
+    for row in latest:
         nt_id, target_text = split_target(row.get("Target"))
         main_actions = _clean(row.get("Main Actions Summary"))
         challenges = _clean(row.get("Key Challenges Summary"))
         effectiveness = _clean(row.get("Action Effectiveness Summary"))
-        nbsap_id, score = match_nbsap(target_text, nbsap_targets, threshold)
+        nbsap_id, score = in_order[nt_id] if in_order else match_nbsap(target_text, nbsap_targets, threshold)
         if nbsap_id and nbsap_id in used:
             logger.warning(
                 f"{nt_id} and {used[nbsap_id]} both match {nbsap_id}; keeping both, check the corpus"
@@ -353,10 +416,14 @@ def parse_value(raw: Any) -> float | None:
         return None
 
 
-def _target_id_of(row: dict[str, str]) -> str | None:
+def _target_id_of(row: dict[str, str], gbf_to_target: dict[str, str] | None = None) -> str | None:
     target = (row.get("Target") or "").strip()
     if not target:
         return None
+    gbf = _GBF_TARGET_RE.match(target)
+    if gbf:
+        # Filed under the GBF target itself (Sri Lanka): its national target.
+        return (gbf_to_target or {}).get(f"T{int(gbf.group(1)):02d}")
     try:
         return split_target(target)[0]
     except ValueError:
@@ -373,14 +440,16 @@ def _int_year(raw: Any) -> int | None:
         return None
 
 
-def build_questionnaire(binary_rows: list[dict[str, str]]) -> dict[str, Any]:
+def build_questionnaire(
+    binary_rows: list[dict[str, str]], gbf_to_target: dict[str, str] | None = None
+) -> dict[str, Any]:
     """The GBF binary-indicator questionnaire: one answer per (target,
     indicator, question), latest revision wins, wording verbatim from the
     export's Question column when the tool returned it."""
     best: dict[tuple[str, str, str], dict[str, str]] = {}
     for row in binary_rows:
         number = (row.get("Question Number") or "").strip()
-        target_id = _target_id_of(row)
+        target_id = _target_id_of(row, gbf_to_target)
         if not number or not target_id:
             continue
         key = (target_id, (row.get("Indicator Code") or "").strip(), number)
@@ -413,7 +482,9 @@ def _question_sort_key(number: str) -> tuple:
     return tuple((0, int(p)) if p.isdigit() else (1, p.lower()) for p in parts)
 
 
-def build_indicators(headline_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
+def build_indicators(
+    headline_rows: list[dict[str, str]], gbf_to_target: dict[str, str] | None = None
+) -> list[dict[str, Any]]:
     """Indicator series from the headline export.
 
     The export repeats every (indicator, disaggregation, year) point once per
@@ -436,7 +507,7 @@ def build_indicators(headline_rows: list[dict[str, str]]) -> list[dict[str, Any]
         code, name = split_indicator(title)
         target_ids: list[str] = []
         for row in rows:
-            tid = _target_id_of(row)
+            tid = _target_id_of(row, gbf_to_target)
             if tid and tid not in target_ids:
                 target_ids.append(tid)
         target_ids.sort()
@@ -517,8 +588,10 @@ def build_nr7_data(
     threshold: float = 0.85,
     headline_rows: list[dict[str, str]] | None = None,
     binary_rows: list[dict[str, str]] | None = None,
+    match: str = "text",
+    gbf_to_target: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    items = build_progress_items(section3_rows, nbsap_targets, threshold)
+    items = build_progress_items(section3_rows, nbsap_targets, threshold, match)
     published = sorted(p for p in (i["publishedOn"] for i in items) if p)
     latest = published[-1] if published else None
     fetched = (fetched_at or datetime.now(timezone.utc)).astimezone(timezone.utc)
@@ -542,9 +615,184 @@ def build_nr7_data(
         },
         "progressItems": items,
         # Always present so the client shape is stable; empty without the exports.
-        "questionnaire": build_questionnaire(binary_rows or []),
-        "indicators": build_indicators(headline_rows or []),
+        "questionnaire": build_questionnaire(binary_rows or [], gbf_to_target),
+        "indicators": build_indicators(headline_rows or [], gbf_to_target),
     }
+
+
+# ---------------------------------------------------------------------------
+# Reports filed under the GBF targets themselves
+# ---------------------------------------------------------------------------
+
+
+def national_target_map(national_rows: list[dict[str, str]]) -> dict[str, dict[str, Any]]:
+    """The national-target export -> {NTnn: {heading, gbf: {T03: "GBF-T03. ..."}}}."""
+    out: dict[str, dict[str, Any]] = {}
+    published: dict[str, datetime] = {}
+    for row in national_rows:
+        heading = _clean(row.get("National target title")) or ""
+        nt = split_target(heading)[0]
+        when = _published(row) or datetime.min
+        # The export sorts newest first: a target's latest revision wins.
+        if nt in published and when < published[nt]:
+            continue
+        published[nt] = when
+        out[nt] = {
+            "heading": heading,
+            "gbf": parse_gbf_targets(row.get("Degree of Alignment by target")),
+        }
+    return out
+
+
+def gbf_to_national(national: dict[str, dict[str, Any]]) -> dict[str, str]:
+    """{T03: NT03}: which national target a GBF target is filed under. A GBF target
+    under two national targets cannot say which one a row belongs to, so it stops
+    the build rather than filing the row under either."""
+    out: dict[str, str] = {}
+    for nt, entry in sorted(national.items()):
+        for g in entry["gbf"]:
+            if g["id"] in out and out[g["id"]] != nt:
+                raise ValueError(f"{g['id']} sits under both {out[g['id']]} and {nt}; a row filed under it has no one home")
+            out[g["id"]] = nt
+    return out
+
+
+def _plain_start(text: Any) -> str:
+    return re.sub(r"\W+", "", html.unescape(re.sub(r"<[^>]+>", " ", str(text or ""))).lower())[:60]
+
+
+# Least advanced first: a national target carries its least advanced row.
+_LEVEL_ORDER = ["no_progress", "limited", "on_track", "unknown"]
+_NARRATIVES = ("Main Actions Summary", "Progress Summary", "Key Challenges Summary", "Action Effectiveness Summary")
+
+
+def file_under_national_targets(
+    section3_rows: list[dict[str, str]],
+    keys: list[dict[str, Any]],
+    national: dict[str, dict[str, Any]],
+) -> list[dict[str, str]]:
+    """Sri Lanka filed Section III under the GBF targets themselves, which the
+    CSV export leaves blank: the report's own record says which target each row
+    is (`keys`, matched on the narrative's opening, never on position alone) and
+    the national-target export says which national target that GBF target
+    belongs to. One row per national target: the rows of a target that has
+    several keep their GBF code in the text, and its rating is the least
+    advanced. Rows the export already names pass through."""
+    by_start = {k["start"]: k for k in keys if k.get("start")}
+    gbf_map = gbf_to_national(national)
+    # The export repeats a row for every revision: the latest, before any merge.
+    latest: dict[str, dict[str, str]] = {}
+    for row in section3_rows:
+        key = (row.get("Target") or "").strip() or _plain_start(row.get("Main Actions Summary"))
+        cur = latest.get(key)
+        if cur is None or (_published(row) or datetime.min) >= (_published(cur) or datetime.min):
+            latest[key] = row
+    grouped: dict[str, list[tuple[str | None, dict[str, str]]]] = {}
+    for row in latest.values():
+        target = (row.get("Target") or "").strip()
+        if target:
+            nt = split_target(target)[0]
+            grouped.setdefault(nt, []).append((None, row))
+            continue
+        key = by_start.get(_plain_start(row.get("Main Actions Summary")))
+        if key is None:
+            raise ValueError(f"No report record for the row opening {_plain_start(row.get('Main Actions Summary'))!r}")
+        m = re.match(r"GBF-TARGET-(\d{1,2})$", str(key.get("target") or ""))
+        if not m:
+            raise ValueError(f"Unnamed row is not filed under a GBF target: {key.get('target')!r}")
+        gbf_id = f"T{int(m.group(1)):02d}"
+        if gbf_id not in gbf_map:
+            raise ValueError(f"No national target carries {gbf_id}")
+        grouped.setdefault(gbf_map[gbf_id], []).append((f"GBF-{gbf_id}", row))
+    out: list[dict[str, str]] = []
+    for nt, rows in sorted(grouped.items()):
+        entry = national[nt]
+        merged = dict(rows[0][1])
+        merged["Target"] = entry["heading"]
+        merged["GBF Targets"] = "; ".join(f'{g["code"]}. {g["title"]}' for g in entry["gbf"])
+        merged["Level of Progress"] = min(
+            (r.get("Level of Progress") or "" for _, r in rows),
+            key=lambda level: _LEVEL_ORDER.index(map_level(level)),
+        )
+        for field in _NARRATIVES:
+            parts = [(code, _clean(r.get(field))) for code, r in rows]
+            parts = [(code, text) for code, text in parts if text]
+            merged[field] = (
+                parts[0][1] if len(parts) == 1 else "\n\n".join(f"{code}: {text}" if code else text for code, text in parts)
+            ) if parts else ""
+        out.append(merged)
+    return out
+
+
+def fetch_national_targets_csv(iso2: str, timeout: int = 90) -> str:
+    """POST the ORT export of the country's national targets: heading and the
+    GBF targets it aligns them with. Public data, read-only."""
+    import requests  # noqa: PLC0415
+
+    payload = {
+        "query": {
+            "df": "text_EN_txt",
+            "fq": ["_state_s:public", "realm_ss:ort"],
+            "q": f"(schema_s : (nationalTarget7) AND government_s : ({iso2.lower()}))",
+            "sort": "updatedDate_dt desc",
+            "fl": _ORT_FL,
+            "wt": "json",
+            "start": 0,
+            "rows": 10000,
+        },
+        "fields": {
+            "publishedOn": "Published on",
+            "uniqueId": "Unique ID",
+            "globalTargetAndDegreeOfAlignment": "Degree of Alignment by target",
+            "title": "National target title",
+        },
+        "newRowForArrayValues": False,
+    }
+    resp = requests.post(
+        ORT_URL.replace("nationalReport7", "nationalTarget7"),
+        json=payload,
+        headers={"accept": "text/csv", "content-type": "application/json", "realm": "ORT"},
+        timeout=timeout,
+    )
+    resp.raise_for_status()
+    return resp.text
+
+
+def fetch_section3_keys(iso2: str, timeout: int = 90) -> list[dict[str, Any]]:
+    """From the report's own record: what each Section III row is filed under,
+    with the opening of its narrative to match it to the CSV row. Public data."""
+    import requests  # noqa: PLC0415
+
+    index = requests.get(
+        "https://api.cbd.int/api/v2013/index",
+        params={
+            "q": f"schema_s:nationalReport7 AND government_s:{iso2.lower()}",
+            "fl": "identifier_s",
+            "rows": 1,
+            "wt": "json",
+        },
+        timeout=timeout,
+    )
+    index.raise_for_status()
+    identifier = index.json()["response"]["docs"][0]["identifier_s"]
+    doc = requests.get(
+        f"https://api.cbd.int/api/v2013/documents/{identifier}",
+        headers={"accept": "application/json", "realm": "ORT"},
+        timeout=timeout,
+    )
+    doc.raise_for_status()
+    keys: list[dict[str, Any]] = []
+    for row in doc.json().get("sectionIII") or []:
+        text = row.get("mainActionsSummary")
+        text = text.get("en") if isinstance(text, dict) else text
+        keys.append(
+            {
+                "target": (row.get("target") or {}).get("identifier"),
+                "targetType": row.get("targetType"),
+                "start": _plain_start(text),
+            }
+        )
+    return keys
 
 
 def fetch_ort_csv(iso2: str, section: str, timeout: int = 90) -> str:

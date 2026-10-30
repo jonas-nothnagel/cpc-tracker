@@ -1040,7 +1040,7 @@ export function Explore({
     const openPartner = (id: string) => setPair((cur) => (cur?.b === id ? null : { a: singleItem.id, b: id }));
     const extra = (
       <>
-        {actionsOn && nr7 && (
+        {nr7 && (
           <p className="ex-nr7">
             {ti("selfAssessment")} <strong>{tn(nr7 === "on_track" ? "onTrack" : nr7 === "no_progress" ? "noProgress" : nr7)}</strong>
           </p>

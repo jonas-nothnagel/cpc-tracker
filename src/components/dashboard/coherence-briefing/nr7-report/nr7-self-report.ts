@@ -480,7 +480,9 @@ function buildTargetRows(
         status: item.progressStatus,
         levelOfProgress: item.levelOfProgress ?? null,
         nbsapTargetId: nbsapId,
-        nbsapNumber: nbsapId ? nbsapId.replace(/^NBSAP_/, "") : null,
+        // Only an NBSAP has a target number to name; Panama's report restates its
+        // Nature Pledge, whose ids carry no such number.
+        nbsapNumber: nbsapId?.startsWith("NBSAP_") ? nbsapId.replace(/^NBSAP_/, "") : null,
         answers: answerMix(own),
         scaleAnswers: scale,
         otherAnswers: other,

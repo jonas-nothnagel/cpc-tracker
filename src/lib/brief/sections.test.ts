@@ -13,6 +13,7 @@ describe("paginate", () => {
       "areas",
       "spending",
       "contracts",
+      "nr7",
     ]);
     expect(paginate(DEFAULT_SECTIONS)).toEqual([
       { title: true, sections: ["overall", "together"] },

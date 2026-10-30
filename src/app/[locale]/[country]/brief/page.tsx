@@ -15,6 +15,7 @@ import { packSetup } from "@/lib/brief/contracts/pack";
 import { geoFor } from "@/lib/brief/contracts/geo-data";
 import { spendingSetup } from "@/lib/brief/spending";
 import { loadBerAreas } from "@/lib/brief/ber-areas";
+import { nr7Setup } from "@/lib/brief/nr7";
 import { BriefApp } from "@/components/brief/brief-app";
 
 // Built once, when the site is deployed, for every country in each language
@@ -55,10 +56,11 @@ const load = cache((locale: string, country: string) => {
   // reviewed spending, with each line's area as AI-suggested or checked.
   const spending =
     spendingSetup(data, base, { areas: loadBerAreas(entry.id), names: loadBerNames(entry.id), locale }) ?? undefined;
-  const source = { ...base, contracts: file !== null, spending: spending !== undefined };
+  const nr7 = nr7Setup(data, spending) ?? undefined;
+  const source = { ...base, contracts: file !== null, spending: spending !== undefined, nr7: nr7 !== undefined };
   // The record travels as columns, a quarter lighter (lib/brief/contracts/pack.ts).
   const contracts = file ? { setup: packSetup(contractsSetup({ file, source })), geo: geoFor(entry.id, locale) } : undefined;
-  return { locale, source, data, contracts, spending, targetLabels };
+  return { locale, source, data, contracts, spending, nr7, targetLabels };
 });
 
 export async function generateMetadata(props: Props) {
@@ -89,6 +91,7 @@ export default async function BriefPage(props: Props) {
       })}
       contracts={loaded.contracts}
       spending={loaded.spending}
+      nr7={loaded.nr7}
       // Money in US$ on every page but the Mongolian one, which opens in
       // tugrik and may switch to US$ (a shared link keeps that choice, ?cur=usd).
       localCurrency={loaded.locale === "mn"}
