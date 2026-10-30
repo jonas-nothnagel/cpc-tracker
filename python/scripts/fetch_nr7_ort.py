@@ -37,7 +37,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.nr7_ort import (  # noqa: E402
     ORT_SECTIONS,
     build_nr7_data,
+    fetch_national_targets_csv,
     fetch_ort_csv,
+    fetch_section3_keys,
+    file_under_national_targets,
+    gbf_to_national,
+    national_target_map,
     latest_per_target,
     parse_ort_csv,
 )
@@ -60,6 +65,13 @@ def main() -> int:
     )
     ap.add_argument("--nbsap-doc", default="NBSAP", help="sourceDocument id of the NBSAP targets")
     ap.add_argument("--match-threshold", type=float, default=0.85)
+    ap.add_argument(
+        "--match",
+        choices=["text", "in-order"],
+        default="text",
+        help="text: national targets restate the corpus wording (the default). in-order: short "
+        "titles in the document's order, matched on shared words (Panama against the Nature Pledge)",
+    )
     ap.add_argument("--output", default=None, help="Default: data/external/nr7_{iso3}.json")
     ap.add_argument("--no-raw", action="store_true", help="Skip saving the raw CSV exports")
     ap.add_argument(
@@ -105,12 +117,28 @@ def main() -> int:
             (raw_dir / "README.md").write_text(
                 f"Raw NR7 exports for {args.country} from the CBD Online Reporting Tool "
                 f"(public API), fetched {fetched_at.date().isoformat()} by "
-                f"scripts/fetch_nr7_ort.py. All three feed nr7_{iso3}.json: section3.csv "
-                "(national targets), headline.csv (indicator series) and binary.csv "
-                "(GBF questionnaire, with the tool's own question wording).\n"
+                f"scripts/fetch_nr7_ort.py. All feed nr7_{iso3}.json: section3.csv "
+                "(national targets), headline.csv (indicator series), binary.csv "
+                "(GBF questionnaire, with the tool's own question wording) and, where the "
+                "report files rows under the GBF targets themselves, national_targets.csv "
+                "and section3_keys.json (what each row is filed under, from the report's "
+                "own record).\n"
             )
 
     rows = parse_ort_csv(csv_by_section["section3"])
+    gbf_to_target = None
+    if any(not (r.get("Target") or "").strip() for r in rows):
+        keys_path, national_path = raw_dir / "section3_keys.json", raw_dir / "national_targets.csv"
+        if args.from_raw:
+            keys, national_csv = json.loads(keys_path.read_text()), national_path.read_text()
+        else:
+            keys, national_csv = fetch_section3_keys(args.iso2), fetch_national_targets_csv(args.iso2)
+            if not args.no_raw:
+                keys_path.write_text(json.dumps(keys, indent=1, ensure_ascii=False) + "\n")
+                national_path.write_text(national_csv)
+        national = national_target_map(parse_ort_csv(national_csv))
+        rows = file_under_national_targets(rows, keys, national)
+        gbf_to_target = gbf_to_national(national)
     headline_rows = parse_ort_csv(csv_by_section["headline"]) if "headline" in csv_by_section else None
     binary_rows = parse_ort_csv(csv_by_section["binary"]) if "binary" in csv_by_section else None
     data = build_nr7_data(
@@ -122,6 +150,8 @@ def main() -> int:
         threshold=args.match_threshold,
         headline_rows=headline_rows,
         binary_rows=binary_rows,
+        match=args.match,
+        gbf_to_target=gbf_to_target,
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")

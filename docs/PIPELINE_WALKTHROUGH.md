@@ -133,6 +133,9 @@ Section III (national targets with their four narratives, the six-level progress
 
 ```bash
 python scripts/fetch_nr7_ort.py --country Mongolia --iso3 MNG --iso2 MN --targets-file mongolia-targets.json
+python scripts/fetch_nr7_ort.py --country Panama --iso3 PAN --iso2 PA --targets-file panama-targets.json --nbsap-doc NP --match in-order
+python scripts/fetch_nr7_ort.py --country "Sri Lanka" --iso3 LKA --iso2 LK --targets-file sri-lanka-targets.json
+python scripts/translate_nr7.py --iso3 PAN --source Spanish --target English --locale en
 ```
 
 ---
