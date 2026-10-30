@@ -472,6 +472,31 @@ describe("BriefApp screen and print", () => {
   });
 });
 
+describe("BriefApp customize panel", () => {
+  const desk = () => document.querySelector(".brief-desk");
+
+  it("hides behind its arrow and comes back", () => {
+    renderApp();
+    expect(desk()?.getAttribute("data-builder")).toBe("open");
+    const hide = screen.getByRole("button", { name: "Hide customization options" });
+    expect(hide.getAttribute("aria-expanded")).toBe("true");
+    fireEvent.click(hide);
+    expect(desk()?.getAttribute("data-builder")).toBe("hidden");
+    const show = screen.getByRole("button", { name: "Show customization options" });
+    expect(show.getAttribute("aria-expanded")).toBe("false");
+    fireEvent.click(show);
+    expect(desk()?.getAttribute("data-builder")).toBe("open");
+  });
+
+  it("comes back when the reader asks to customize the brief from the top of the page", () => {
+    renderApp();
+    fireEvent.click(screen.getByRole("button", { name: "Hide customization options" }));
+    fireEvent.click(screen.getByRole("button", { name: "Customize the brief" }));
+    expect(desk()?.getAttribute("data-builder")).toBe("open");
+    expect(document.activeElement?.id).toBe("brief-builder-title");
+  });
+});
+
 describe("BriefApp walkthrough", () => {
   it("links the methodology page instead of explaining the method on the page", () => {
     renderApp();

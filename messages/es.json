@@ -2834,6 +2834,8 @@
       "copyLink": "Copiar el enlace a esta nota",
       "copied": "Enlace copiado",
       "reset": "Volver a la nota estándar",
+      "hide": "Ocultar las opciones de personalización",
+      "show": "Mostrar las opciones de personalización",
       "tour": "Cómo leer esta nota",
       "method": "Cómo funciona el análisis"
     },

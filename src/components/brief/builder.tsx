@@ -15,12 +15,15 @@ import type { BriefSource } from "@/lib/brief/source";
  * The brief's controls: which documents, which sections in which order. The
  * policy-area lens is chosen where it shows, in the policy-area component.
  * Every change re-lays the sheets at once; the page count is the feedback.
- * Screen only.
+ * The arrow hides them for a wider page, on screens wide enough to hold them
+ * beside the page. Screen only.
  */
 export function Builder({
   source,
   selection,
   pageCount,
+  open,
+  onToggle,
   onChange,
   onReset,
   onPrint,
@@ -28,6 +31,8 @@ export function Builder({
   source: BriefSource;
   selection: BriefSelection;
   pageCount: number;
+  open: boolean;
+  onToggle: () => void;
   onChange: (next: BriefSelection) => void;
   onReset: () => void;
   onPrint: () => void;
@@ -83,29 +88,18 @@ export function Builder({
   };
 
   return (
-    <aside
-      className="brief-builder"
-      data-screen-only
-      data-tour="brief-builder"
-      aria-labelledby="brief-builder-title"
-    >
-      <h2 id="brief-builder-title" className="brief-builder-title" tabIndex={-1}>
-        {t("title")}
-      </h2>
-      <p className="brief-builder-help">
-        <button
-          type="button"
-          className="brief-button-quiet"
-          onClick={(e) => tour.start(TOUR_STEPS.brief, e.currentTarget.closest("[data-brief]"))}
-        >
-          {t("tour")}
-        </button>
-        {!standalone && (
-          <a className="brief-button-quiet" href={methodologyHref}>
-            {t("method")}
-          </a>
-        )}
-      </p>
+    <div className="brief-builder-slot" data-screen-only>
+      <button
+        type="button"
+        className="brief-builder-toggle"
+        aria-expanded={open}
+        aria-controls="brief-builder"
+        aria-label={open ? t("hide") : t("show")}
+        title={open ? t("hide") : t("show")}
+        onClick={onToggle}
+      >
+        <span aria-hidden="true">{open ? "←" : "→"}</span>
+      </button>
       {tour.active && (
         <TourOverlay
           tourId="brief"
@@ -117,96 +111,120 @@ export function Builder({
           scrollBlock="center"
         />
       )}
+      <aside
+        id="brief-builder"
+        className="brief-builder"
+        data-tour="brief-builder"
+        aria-labelledby="brief-builder-title"
+      >
+        <h2 id="brief-builder-title" className="brief-builder-title" tabIndex={-1}>
+          {t("title")}
+        </h2>
+        <p className="brief-builder-help">
+          <button
+            type="button"
+            className="brief-button-quiet"
+            onClick={(e) => tour.start(TOUR_STEPS.brief, e.currentTarget.closest("[data-brief]"))}
+          >
+            {t("tour")}
+          </button>
+          {!standalone && (
+            <a className="brief-button-quiet" href={methodologyHref}>
+              {t("method")}
+            </a>
+          )}
+        </p>
 
-      <fieldset className="brief-builder-group">
-        <legend>{t("documents")}</legend>
-        {source.documents.map((d) => {
-          const checked = selectedDocs.has(d.id);
-          return (
-            <label key={d.id} className="brief-check" title={d.full}>
-              <input
-                type="checkbox"
-                checked={checked}
-                disabled={checked && atMinimum}
-                onChange={() => toggleDoc(d.id)}
-              />
-              <span className="brief-check-swatch" style={{ background: d.color }} aria-hidden="true" />
-              <span className="brief-check-text">
-                <span className="brief-check-name">{d.name}</span>
-                <span className="brief-check-meta">{t("commitments", { count: d.count })}</span>
-              </span>
-            </label>
-          );
-        })}
-        {atMinimum && <p className="brief-builder-hint">{t("minDocuments")}</p>}
-      </fieldset>
-
-      <fieldset className="brief-builder-group">
-        <legend>{t("sections")}</legend>
-        <ol className="brief-section-list">
-          {selection.sections.map((id, index) => (
-            <li key={id} className="brief-section-row">
-              <label className="brief-check">
-                <input type="checkbox" checked onChange={() => toggleSection(id)} />
+        <fieldset className="brief-builder-group">
+          <legend>{t("documents")}</legend>
+          {source.documents.map((d) => {
+            const checked = selectedDocs.has(d.id);
+            return (
+              <label key={d.id} className="brief-check" title={d.full}>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  disabled={checked && atMinimum}
+                  onChange={() => toggleDoc(d.id)}
+                />
+                <span className="brief-check-swatch" style={{ background: d.color }} aria-hidden="true" />
                 <span className="brief-check-text">
-                  <span className="brief-check-name">{ts(id)}</span>
-                  <span className="brief-check-meta">{t("size", { units: String(SECTION_UNITS[id]) })}</span>
+                  <span className="brief-check-name">{d.name}</span>
+                  <span className="brief-check-meta">{t("commitments", { count: d.count })}</span>
                 </span>
               </label>
-              <span className="brief-section-move">
-                <button
-                  type="button"
-                  aria-label={t("moveUp", { section: ts(id) })}
-                  disabled={index === 0}
-                  onClick={() => move(index, -1)}
-                >
-                  <span aria-hidden="true">↑</span>
-                </button>
-                <button
-                  type="button"
-                  aria-label={t("moveDown", { section: ts(id) })}
-                  disabled={index === selection.sections.length - 1}
-                  onClick={() => move(index, 1)}
-                >
-                  <span aria-hidden="true">↓</span>
-                </button>
-              </span>
-            </li>
-          ))}
-        </ol>
-        {unselected.length > 0 && (
-          <ul className="brief-section-list brief-section-list-off">
-            {unselected.map((id) => (
+            );
+          })}
+          {atMinimum && <p className="brief-builder-hint">{t("minDocuments")}</p>}
+        </fieldset>
+
+        <fieldset className="brief-builder-group">
+          <legend>{t("sections")}</legend>
+          <ol className="brief-section-list">
+            {selection.sections.map((id, index) => (
               <li key={id} className="brief-section-row">
                 <label className="brief-check">
-                  <input type="checkbox" checked={false} onChange={() => toggleSection(id)} />
+                  <input type="checkbox" checked onChange={() => toggleSection(id)} />
                   <span className="brief-check-text">
                     <span className="brief-check-name">{ts(id)}</span>
-                    <span className="brief-check-meta">
-                      {t("size", { units: String(SECTION_UNITS[id]) })}
-                    </span>
+                    <span className="brief-check-meta">{t("size", { units: String(SECTION_UNITS[id]) })}</span>
                   </span>
                 </label>
+                <span className="brief-section-move">
+                  <button
+                    type="button"
+                    aria-label={t("moveUp", { section: ts(id) })}
+                    disabled={index === 0}
+                    onClick={() => move(index, -1)}
+                  >
+                    <span aria-hidden="true">↑</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={t("moveDown", { section: ts(id) })}
+                    disabled={index === selection.sections.length - 1}
+                    onClick={() => move(index, 1)}
+                  >
+                    <span aria-hidden="true">↓</span>
+                  </button>
+                </span>
               </li>
             ))}
-          </ul>
-        )}
-      </fieldset>
+          </ol>
+          {unselected.length > 0 && (
+            <ul className="brief-section-list brief-section-list-off">
+              {unselected.map((id) => (
+                <li key={id} className="brief-section-row">
+                  <label className="brief-check">
+                    <input type="checkbox" checked={false} onChange={() => toggleSection(id)} />
+                    <span className="brief-check-text">
+                      <span className="brief-check-name">{ts(id)}</span>
+                      <span className="brief-check-meta">
+                        {t("size", { units: String(SECTION_UNITS[id]) })}
+                      </span>
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          )}
+        </fieldset>
 
-      <div className="brief-builder-foot">
-        <p className="brief-builder-pages" aria-live="polite">
-          {t("pages", { count: pageCount })}
-        </p>
-        <button type="button" className="brief-button-primary" onClick={onPrint}>
-          {t("print")}
-        </button>
-        <button type="button" className="brief-button-quiet" onClick={copyLink}>
-          {copied ? t("copied") : t("copyLink")}
-        </button>
-        <button type="button" className="brief-button-quiet" onClick={onReset}>
-          {t("reset")}
-        </button>
-      </div>
-    </aside>
+        <div className="brief-builder-foot">
+          <p className="brief-builder-pages" aria-live="polite">
+            {t("pages", { count: pageCount })}
+          </p>
+          <button type="button" className="brief-button-primary" onClick={onPrint}>
+            {t("print")}
+          </button>
+          <button type="button" className="brief-button-quiet" onClick={copyLink}>
+            {copied ? t("copied") : t("copyLink")}
+          </button>
+          <button type="button" className="brief-button-quiet" onClick={onReset}>
+            {t("reset")}
+          </button>
+        </div>
+      </aside>
+    </div>
   );
 }

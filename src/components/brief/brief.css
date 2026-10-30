@@ -357,6 +357,35 @@
   min-width: 0;
 }
 
+[data-brief] .brief-builder-slot {
+  position: sticky;
+  top: 1.5rem;
+}
+
+/* In the gutter beside the builder, where it stays put as the builder scrolls. */
+[data-brief] .brief-builder-toggle {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 0.5rem);
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--brief-hairline-strong);
+  border-radius: 4px;
+  padding: 0;
+  background: #fff;
+  color: var(--brief-ink);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+[data-brief] .brief-builder-toggle:hover {
+  border-color: var(--brief-blue);
+  background: var(--brief-blue);
+  color: #fff;
+}
+
 [data-brief] .brief-builder {
   position: sticky;
   top: 1.5rem;
@@ -2757,9 +2786,38 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  [data-brief] .brief-builder-slot,
   [data-brief] .brief-builder {
     position: static;
     max-height: none;
+  }
+
+  /* Stacked above the page, the builder takes no width to give back. */
+  [data-brief] .brief-builder-toggle {
+    display: none;
+  }
+}
+
+/* ── Wide screens: the builder hidden, the page takes its width ───── */
+
+@media screen and (min-width: 1181px) {
+  [data-brief] .brief-desk[data-builder="hidden"] {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    column-gap: 1rem;
+    padding-left: 1rem;
+  }
+
+  [data-brief] .brief-desk[data-builder="hidden"] .brief-builder {
+    display: none;
+  }
+
+  [data-brief] .brief-desk[data-builder="hidden"] .brief-builder-toggle {
+    left: 0;
+  }
+
+  /* As wide as the explorer's own limit. */
+  [data-brief] .brief-desk[data-builder="hidden"] .brief-flow {
+    max-width: 96rem;
   }
 }
 

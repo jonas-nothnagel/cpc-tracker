@@ -2834,6 +2834,8 @@
       "copyLink": "Copy link to this brief",
       "copied": "Link copied",
       "reset": "Back to the standard brief",
+      "hide": "Hide customization options",
+      "show": "Show customization options",
       "tour": "How to read this brief",
       "method": "How the analysis works"
     },

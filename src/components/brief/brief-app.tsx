@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { useTranslations } from "next-intl";
 import { scopeOf, type Scope } from "@/lib/brief/compute";
 import { buildBriefData } from "@/lib/brief/data";
@@ -95,6 +96,7 @@ export function BriefApp({
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
   const [mode, setMode] = useState<"read" | "preview">("read");
+  const [builderOpen, setBuilderOpen] = useState(true);
   const [currency, setCurrency] = useLinkCurrency(localCurrency);
   // Where the reader was on the flowing page when the preview opened.
   const readScroll = useRef(0);
@@ -200,6 +202,8 @@ export function BriefApp({
   const readBrief = () =>
     document.getElementById("brief-main")?.scrollIntoView({ behavior: "smooth", block: "start" });
   const customize = () => {
+    // A hidden builder has to be back on the page before the reader can go to it.
+    flushSync(() => setBuilderOpen(true));
     const title = document.getElementById("brief-builder-title");
     title?.scrollIntoView({ behavior: "smooth", block: "start" });
     title?.focus({ preventScroll: true });
@@ -219,11 +223,13 @@ export function BriefApp({
         onRead={readBrief}
         onCustomize={customize}
       />
-      <div className="brief-desk" data-mode={mode}>
+      <div className="brief-desk" data-mode={mode} data-builder={builderOpen ? "open" : "hidden"}>
         <Builder
           source={source}
           selection={selection}
           pageCount={pages.length}
+          open={builderOpen}
+          onToggle={() => setBuilderOpen((o) => !o)}
           onChange={update}
           onReset={() => update(defaultSelection(source))}
           onPrint={() => (preview ? window.print() : openPreview())}
