@@ -9,6 +9,7 @@ import { HeroCta } from "@/components/landing/hero-cta";
 import { HeroPaper } from "@/components/landing/hero-paper";
 import { InsideAnalysis } from "@/components/landing/inside-analysis";
 import { landingDriftLines } from "@/lib/landing/drift";
+import { countryOverview } from "@/lib/brief/country-overview";
 
 export default async function Home({
   params,
@@ -19,6 +20,9 @@ export default async function Home({
   setRequestLocale(locale);
   const t = await getTranslations("landing");
   const countries = listVisibleCountries().map((c) => ({ id: c.id, name: c.name }));
+  // The preview's figures are read here, when the page is built, so opening
+  // the landing never sends the server off to assemble a country's data.
+  const overviews = Object.fromEntries(countries.map((c) => [c.id, countryOverview(c.id)]));
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -39,7 +43,7 @@ export default async function Home({
       </HeroPaper>
 
       {/* A country's brief, previewed: its finding, figures and dot field */}
-      <InsideAnalysis countries={countries} />
+      <InsideAnalysis countries={countries} overviews={overviews} />
 
       {/* How it works: on Surface Light with a hairline so it reads as its
           own band after the white wheel section (One Ground rule: white page,

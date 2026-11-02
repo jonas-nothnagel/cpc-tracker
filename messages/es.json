@@ -44,6 +44,7 @@
       "pilotCountriesHeader": "Países piloto",
       "comingSoonTag": "Pronto"
     },
+    "loadingBrief": "Cargando la nota de {name}…",
     "inside": {
       "aiTag": "Análisis asistido por IA, para validación por personas expertas nacionales.",
       "preview": {

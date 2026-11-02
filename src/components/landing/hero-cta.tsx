@@ -17,6 +17,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { countryLocaleSwitch, getCountry } from "@/config/countries";
 import { Link } from "@/i18n/navigation";
 import { uploadsAvailable } from "@/lib/upload/available";
+import { SlowBriefStatus } from "./slow-brief-status";
 
 interface HeroCtaProps {
   /** Live pilot countries — each links to its brief. */
@@ -174,10 +175,15 @@ export function HeroCta({ countries, comingSoon }: HeroCtaProps) {
                     // Briefs are built at deploy and run to megabytes: fetched
                     // on the click, not for every country the menu shows.
                     prefetch={false}
-                    onClick={() => setOpen(false)}
+                    // The menu stays open until the brief replaces the page, so
+                    // a slow open shows its status under the country chosen.
                     className="block rounded-md px-3 py-2.5 text-body font-medium text-[var(--undp-black)] transition-colors hover:bg-[var(--undp-light)] focus:bg-[var(--undp-light)] focus:outline-none"
                   >
                     {c.name}
+                    <SlowBriefStatus
+                      name={c.name}
+                      className="block pt-0.5 text-caption font-normal text-[var(--undp-gray)]"
+                    />
                   </Link>
                 </li>
               ))}

@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
+import type { BriefOverview } from "@/lib/brief/overview";
 import { InsideAnalysis } from "./inside-analysis";
 
 // next-intl's createNavigation imports next/navigation in a way vitest cannot
@@ -23,7 +24,7 @@ const COUNTRIES = [
 
 // Shares checked by hand: Panama 3,216 / 3,613 = 89%, 108 / 3,613 = 3%;
 // Mongolia 8,846 / 13,404 = 66%, 671 / 13,404 = 5%.
-const OVERVIEWS: Record<string, unknown> = {
+const OVERVIEWS: Record<string, BriefOverview | null> = {
   mongolia: {
     documents: 8,
     targets: 178,
@@ -38,20 +39,7 @@ const OVERVIEWS: Record<string, unknown> = {
   },
 };
 
-let failing = new Set<string>();
-
 beforeEach(() => {
-  failing = new Set();
-  vi.stubGlobal(
-    "fetch",
-    vi.fn(async (url: string) => {
-      const id = new URL(url, "http://localhost").searchParams.get("country") ?? "";
-      if (failing.has(id)) return { ok: false, status: 500, json: async () => ({}) };
-      return { ok: true, status: 200, json: async () => OVERVIEWS[id] };
-    }),
-  );
-  // No idle prefetch: each country loads when it is chosen.
-  vi.stubGlobal("requestIdleCallback", () => 1);
   // The random first pick lands on Panama (index 1 of 2).
   vi.spyOn(Math, "random").mockReturnValue(0.6);
 });
@@ -59,13 +47,12 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
-  vi.unstubAllGlobals();
 });
 
-function renderSection(locale: "en" | "es" = "en") {
+function renderSection(locale: "en" | "es" = "en", overviews = OVERVIEWS) {
   return render(
     <NextIntlClientProvider locale={locale} messages={locale === "es" ? es : en} timeZone="UTC">
-      <InsideAnalysis countries={COUNTRIES} />
+      <InsideAnalysis countries={COUNTRIES} overviews={overviews} />
     </NextIntlClientProvider>,
   );
 }
@@ -124,9 +111,17 @@ describe("InsideAnalysis", () => {
     await waitFor(() => expect(shares()).toEqual(["89%", "8%", "3%", "<1%"]));
   });
 
-  it("says when a country's preview is unavailable, and still links to its brief", async () => {
-    failing.add("panama");
+  it("asks the server for nothing: the figures arrive with the page", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
     renderSection();
+    await screen.findByRole("heading", { name: /^Across Panama's policies/ });
+    fireEvent.click(screen.getByRole("button", { name: "Mongolia" }));
+    await screen.findByRole("heading", { name: /^Across Mongolia's policies/ });
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("says when a country's preview is unavailable, and still links to its brief", async () => {
+    renderSection("en", { ...OVERVIEWS, panama: null });
     expect(await screen.findByText("Preview not available for Panama right now.")).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /^Across/ })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Read the Panama brief/ })).toHaveAttribute(
