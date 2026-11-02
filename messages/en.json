@@ -44,6 +44,7 @@
       "pilotCountriesHeader": "Pilot countries",
       "comingSoonTag": "Soon"
     },
+    "loadingBrief": "Loading the {name} brief…",
     "inside": {
       "aiTag": "AI-assisted analysis for validation by national experts.",
       "preview": {

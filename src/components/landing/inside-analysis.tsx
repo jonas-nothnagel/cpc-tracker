@@ -7,24 +7,25 @@
  * selected-country state.
  *
  * It reuses the brief's own headline, figures and dot field, and the brief's
- * own counts (`/api/brief/overview`), so the landing and the brief always
+ * own counts (`countryOverview`, read when the landing is built from the
+ * payload the brief is built from), so the landing and the brief always
  * read the same. Country-agnostic: every visible country is an equal choice
  * and the starting country is picked at random on mount, so the landing never
  * structurally favours one. One country at a time: shares depend on each
- * country's documents, so they are not set side by side. Sits below the fold,
- * so it fetches client-side through `useBriefOverview` (cached and
- * prefetched; see that hook). If a country's figures are unavailable, the
- * section says so and still links to the brief.
+ * country's documents, so they are not set side by side. The figures arrive
+ * with the page, so opening the landing asks the server for nothing. If a
+ * country's figures are unavailable, the section says so and still links to
+ * the brief.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { countryLocaleSwitch, getCountry } from "@/config/countries";
 import { Link } from "@/i18n/navigation";
 import { DotField } from "@/components/brief/dot-field";
 import { useNumbers } from "@/components/brief/ink";
 import type { BriefOverview } from "@/lib/brief/overview";
-import { useBriefOverview } from "./use-brief-overview";
+import { SlowBriefStatus } from "./slow-brief-status";
 import "@/components/brief/brief.css";
 import "./landing.css";
 
@@ -65,7 +66,14 @@ function Finding({ country, data }: { country: string; data: BriefOverview }) {
   );
 }
 
-export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
+export function InsideAnalysis({
+  countries,
+  overviews,
+}: {
+  countries: PreviewCountry[];
+  /** Each country's brief figures by id; null where its data could not be read. */
+  overviews: Record<string, BriefOverview | null>;
+}) {
   const t = useTranslations("landing.inside");
   const locale = useLocale();
   const [selected, setSelected] = useState<string | null>(null);
@@ -79,8 +87,8 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
     setSelected(pick);
   }, [countries]);
 
-  const countryIds = useMemo(() => countries.map((c) => c.id), [countries]);
-  const { data, failed } = useBriefOverview({ countries: countryIds, selected });
+  const data = selected ? (overviews[selected] ?? null) : null;
+  const failed = selected !== null && !data;
   const selectedName = countries.find((c) => c.id === selected)?.name;
 
   return (
@@ -137,10 +145,14 @@ export function InsideAnalysis({ countries }: { countries: PreviewCountry[] }) {
               // Briefs are built at deploy and run to megabytes: fetched on
               // the click, not for every country previewed here.
               prefetch={false}
-              className="mt-8 inline-flex items-center gap-2 text-body font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
+              className="mt-8 inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-body font-medium text-[var(--undp-blue)] transition-colors hover:text-[var(--undp-blue-dark)]"
             >
               {t("preview.readBrief", { name: selectedName })}
               <span aria-hidden="true">&rarr;</span>
+              <SlowBriefStatus
+                name={selectedName}
+                className="basis-full text-caption font-normal text-[var(--undp-gray)]"
+              />
             </Link>
           ) : null}
 
