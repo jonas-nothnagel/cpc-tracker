@@ -96,7 +96,7 @@ export function BriefApp({
   const [selection, setSelection] = useState(initialSelection);
   const [panels, setPanels] = useState<PanelState[]>([]);
   const [mode, setMode] = useState<"read" | "preview">("read");
-  const [builderOpen, setBuilderOpen] = useState(true);
+  const [builderOpen, setBuilderOpen] = useState(false);
   const [currency, setCurrency] = useLinkCurrency(localCurrency);
   // Where the reader was on the flowing page when the preview opened.
   const readScroll = useRef(0);
