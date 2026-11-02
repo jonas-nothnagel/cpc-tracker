@@ -11,6 +11,8 @@ const config = [
       "python/**",
       "old_scripts/**",
       "dev_data_scripts/**",
+      // Local agent tooling and worktree checkouts, not tracked in git.
+      ".claude/**",
     ],
   },
   {

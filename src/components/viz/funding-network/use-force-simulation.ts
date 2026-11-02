@@ -1,3 +1,6 @@
+// d3-force positions nodes by writing x/y/vx/vy onto the objects it is given;
+// that mutation is how the library works, not a render-time side effect.
+/* eslint-disable react-hooks/immutability */
 import { useEffect, useRef, useState } from "react";
 import {
   forceSimulation,

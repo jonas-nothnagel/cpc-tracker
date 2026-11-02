@@ -1846,6 +1846,8 @@ function RatingControls({
     const next: PairRating = {
       rating: value,
       note: noteDraft,
+      // Runs on click, not during render, so the timestamp is the moment of rating.
+      // eslint-disable-next-line react-hooks/purity
       ts: Date.now(),
     };
     onChange(pairKey, next);
