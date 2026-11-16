@@ -1,6 +1,8 @@
-# CPC Analyzer
+# PACE
 
-Nature-Climate Policy Coherence Progress Analysis Tool
+Policy Alignment and Coherence Explorer: a nature-climate policy coherence tool by UNDP.
+
+The repository, package and Azure resource names keep the earlier `cpc-tracker` slug; the product name is PACE.
 
 Interactive web application for UNDP country offices that visualizes policy coherence and implementation progress across climate, biodiversity, and related sectoral policies.
 

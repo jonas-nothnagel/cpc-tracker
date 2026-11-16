@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cómo funciona el análisis | Analizador de Coherencia de Políticas</title>
+<title>Cómo funciona el análisis | PACE</title>
 <style>
   /* Self-hosted typefaces, shared with the app (same files, same URLs → shared
      browser cache). Relative paths so the file also opens standalone. */
@@ -295,9 +295,9 @@
 
 <div class="topbar">
   <div class="brand">
-    <a href="/es" target="_top" aria-label="Volver al inicio del Analizador de Coherencia de Políticas"><img src="/undp-logo.png" alt="UNDP"></a>
+    <a href="/es" target="_top" aria-label="Volver al inicio de PACE"><img src="/undp-logo.png" alt="UNDP"></a>
     <div class="div"></div>
-    <div class="ttl"><b>Analizador de Coherencia de Políticas</b> <span>· Cómo funciona el análisis</span></div>
+    <div class="ttl"><b title="Explorador de Alineación y Coherencia de Políticas">PACE</b> <span>· Cómo funciona el análisis</span></div>
   </div>
   <div class="topbar-right">
     <span class="mt-note">Traducción automática</span>
@@ -511,12 +511,12 @@
     </div>
 
     <div class="pstep" data-i="11">
-      <h2 class="p-title serif">Comparar los programas presupuestarios con las metas</h2>
-      <p class="p-say">Los mismos pasos comparan los programas de una <strong>Revisión del Gasto en Biodiversidad (BER)</strong> con las metas y muestran qué metas tienen un programa correspondiente en el gasto revisado.</p>
-      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Nivel 2, finanzas. Los programas de la BER se convierten en pseudometas y pasan por los mismos pasos de clasificación, descomposición y calificación. El gasto correspondiente de una meta suma los programas cuyas descripciones se alinean con ella: un volumen relativo, no una medida de suficiencia del financiamiento. Un programa cuenta para cada meta con la que se alinea, por lo que las cifras por meta se solapan, mientras que los totales por documento cuentan cada programa una vez. Una BER solo abarca los programas que revisa, una parte del gasto nacional; identifica el gasto, y cada vínculo con una meta procede de la comparación de descripciones hecha por la IA. Disponible para Mongolia y Panamá.</p><div class="specs"><span>Nivel 2 · finanzas</span><span>mismos pasos</span><span>Mongolia · Panamá</span></div></div>
+      <h2 class="p-title serif">Comparar las líneas presupuestarias con las metas</h2>
+      <p class="p-say">Los mismos pasos comparan las líneas presupuestarias de una <strong>Revisión del Gasto en Biodiversidad (BER)</strong> con las metas y muestran qué metas tienen una línea presupuestaria correspondiente en el gasto revisado.</p>
+      <div class="p-note p-tech"><p class="nl">Detalles técnicos</p><p class="tx">Nivel 2, finanzas. Primero, cada revisión se reconstruye a partir de su propio libro de trabajo, reproduciendo cada total publicado. Sus líneas se describen con las propias palabras de la revisión y del presupuesto, sin montos; Claude Opus ubica cada una en un área GLOBE, con la lectura de un segundo modelo de IA al lado, para que una persona la verifique. Una línea sin un área clara permanece en los totales como gasto general en biodiversidad. Luego, cada línea con gasto revisado se descompone y se califica frente a cada meta de política; la explicación indica a qué se destina el gasto, nunca si el monto es suficiente. Una línea cuenta para cada meta con la que coincide, por lo que las cifras por meta se solapan. Una BER solo abarca el gasto que revisa; cada vínculo con una meta procede de la comparación hecha por la IA. Disponible para Mongolia, Panamá y Sri Lanka.</p><div class="specs"><span>Nivel 2 · finanzas</span><span>mismos pasos</span><span>Mongolia · Panamá · Sri Lanka</span></div></div>
       <div class="p-note p-deep"><p class="nl">La reutilización</p>
         <div class="prompt">
-          <div class="prow"><span class="role code">Mismo flujo</span><div class="ptext">programa de la BER → <em>pseudometa</em> → clasificar → el Agente 1 descompone → el Agente 2 califica frente a cada meta de política.</div></div>
+          <div class="prow"><span class="role code">Mismo flujo</span><div class="ptext">línea presupuestaria de la BER → <em>pseudometa</em> → el Agente 1 descompone → el Agente 2 califica frente a cada meta de política.</div></div>
         </div>
       </div>
     </div>

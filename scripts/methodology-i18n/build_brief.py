@@ -27,16 +27,16 @@ CYRILLIC_FACES = '''  @font-face { font-family: "Source Serif 4"; font-style: no
 FONT_ANCHOR = '''    src: url("fonts/source-sans-3-latin-wght-normal.woff2") format("woff2");
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 '''
-HEAD_EN = 'Policy Coherence Analyzer · How the analysis works'
-HEAD_ES = 'Analizador de Coherencia de Políticas · Cómo funciona el análisis'
-HEAD_MN = 'Бодлогын уялдаа шинжлэгч · Шинжилгээ хэрхэн хийгддэг вэ'
+HEAD_EN = 'PACE · How the analysis works'
+HEAD_ES = 'PACE · Cómo funciona el análisis'
+HEAD_MN = 'PACE · Шинжилгээ хэрхэн хийгддэг вэ'
 FOOT_EN = 'Methodology as of October 2026. AI-assisted analysis for validation by national experts.'
 FOOT_ES = 'Metodología a octubre de 2026. Análisis asistido por IA, para validación por personas expertas nacionales. Traducción automática del original en inglés.'
 FOOT_MN = '2026 оны 10-р сарын байдлаарх аргачлал. Хиймэл оюуны тусламжтай шинжилгээ, үндэсний шинжээчдийн хяналтад зориулав. Англи эхээс машин орчуулсан.'
 
 T = [
  ('<html lang="en">', '<html lang="es">', '<html lang="mn">'),
- ('<title>How the analysis works | Policy Coherence Analyzer</title>', '<title>Cómo funciona el análisis | Analizador de Coherencia de Políticas</title>', '<title>Шинжилгээ хэрхэн хийгддэг вэ | Бодлогын уялдаа шинжлэгч</title>'),
+ ('<title>How the analysis works | PACE</title>', '<title>Cómo funciona el análisis | PACE</title>', '<title>Шинжилгээ хэрхэн хийгддэг вэ | PACE</title>'),
  (FONT_ANCHOR, FONT_ANCHOR, FONT_ANCHOR + CYRILLIC_FACES),
  ('  .lenses dt { font-weight: 600; }\n', '  .lenses dt { font-weight: 600; }\n', '  .lenses dt { font-weight: 600; }\n  .lenses { grid-template-columns: 56mm minmax(0, 1fr); }\n'),
  ('  .ai .note + p { margin-top: 1px; }\n',
@@ -165,7 +165,7 @@ T = [
  ('<p><b>Traceable.</b> The AI reads only the policy text it is given; every target keeps its source page.</p>', '<p><b>Trazable.</b> La IA solo lee el texto de política que recibe; cada meta conserva su página de origen.</p>', '<p><b>Мөрдөх боломжтой.</b> Хиймэл оюун зөвхөн өгсөн текстийг уншина; зорилт бүр эх хуудастай.</p>'),
  ('<p><b>Data sovereignty and model selection.</b> A country chooses the AI model, and so where its data is processed.</p>', '<p><b>Soberanía de datos y elección de modelo.</b> Un país elige el modelo de IA y, con ello, dónde se procesan sus datos.</p>', '<p><b>Өгөгдлийн бүрэн эрх.</b> Улс орон загвараа сонгож, өгөгдлөө хаана боловсруулахаа шийднэ.</p>'),
  ('<p><b>Frugal AI.</b> The carbon, energy, water and mineral footprint of every analysis is measured and published.</p>', '<p><b>IA frugal.</b> Se mide y publica la huella de carbono, energía, agua y minerales de cada análisis.</p>', '<p><b>Хэмнэлттэй хиймэл оюун.</b> Шинжилгээ бүрийн байгаль орчны ул мөрийг хэмжиж нийтэлдэг.</p>'),
- ('<p class="after">The Analyzer is being built as an open-source Digital Public Good that governments can run themselves.</p>', '<p class="after">El Analizador se desarrolla como un Bien Público Digital de código abierto que los gobiernos pueden operar por su cuenta.</p>', '<p class="after">Засгийн газар өөрөө ажиллуулах нээлттэй эхийн Дижитал нийтийн бараа болгон хөгжүүлж байна.</p>'),
+ ('<p class="after">PACE, the Policy Alignment and Coherence Explorer, is being built as an open-source Digital Public Good that governments can run themselves.</p>', '<p class="after">PACE, el Explorador de Alineación y Coherencia de Políticas, se desarrolla como un Bien Público Digital de código abierto que los gobiernos pueden operar por su cuenta.</p>', '<p class="after">PACE-ийг (Бодлогын нийцэл, уялдааны судлагч) засгийн газар өөрөө ажиллуулах нээлттэй эхийн Дижитал нийтийн бараа болгон хөгжүүлж байна.</p>'),
 ]
 
 def build(src, col):

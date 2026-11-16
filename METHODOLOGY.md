@@ -1,6 +1,6 @@
 # Methodology: Nature-Climate Policy Coherence Analysis
 
-> How the CPC Analyzer analyzes alignment between national policy targets.
+> How PACE (Policy Alignment and Coherence Explorer) analyzes alignment between national policy targets.
 
 *Based on the methodology developed through UNDP's Nature-Climate Policy Coherence initiative, with enhancements for the automated web-based tool.*
 
