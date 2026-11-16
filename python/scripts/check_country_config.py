@@ -16,6 +16,8 @@ Checks per country:
   5. excludedDocTypes ⊆ documentTypes
   6. financingLayout is a known value ("grid" | "dotmap") and "grid" has
      budget-alignment data behind it (else the slide silently falls back)
+  7. publishedOn is `YYYY` or `YYYY-MM` and restates what the entry's own
+     free-text `published` says (never a guessed date)
 
 Reserved tokens (BTR, BER, BTR_ADP, OTHER) are exempt: they are
 pipeline-generated or fallback labels in src/lib/utils.ts.
@@ -30,6 +32,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -44,6 +47,43 @@ OUTPUT_DIR = REPO_ROOT / "python" / "output"
 #   BTR_ADP - synthetic visualisation key in src/lib/utils.ts:163
 #   OTHER   - fallback label in src/lib/utils.ts:164
 RESERVED_DOC_TOKENS = {"BTR", "BER", "BTR_ADP", "OTHER"}
+
+
+# `publishedOn`: a year, or a year and a month. Display only (the brief's
+# year views place a document under the year it came out); no prompt reads it.
+PUBLISHED_ON = re.compile(r"^(\d{4})(?:-(0[1-9]|1[0-2]))?$")
+# A period ("2025-2029") says what a document covers, not when it came out.
+PERIOD = re.compile(r"\d{4}\s*[-\u2013]\s*\d{4}")
+MONTHS = (
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december",
+)
+
+
+def published_on_problem(entry: dict) -> str | None:
+    """Why an entry's `publishedOn` does not hold, or None when it does.
+
+    The date is entered by hand from the free-text `published` beside it, so
+    it must be well formed and name a year (and month) that text states.
+    """
+    value = entry.get("publishedOn")
+    if value is None:
+        return None
+    match = PUBLISHED_ON.match(value) if isinstance(value, str) else None
+    if match is None:
+        return f"{value!r} is not YYYY or YYYY-MM"
+    published = entry.get("published")
+    if not isinstance(published, str) or not published.strip():
+        return f"{value!r} has no `published` text to rest on"
+    stated = PERIOD.sub(" ", published)
+    if not re.search(r"\d{4}", stated):
+        return f"{value!r} rests on a period alone ({published!r}), which states no date"
+    year, month = match.group(1), match.group(2)
+    if not re.search(rf"(?<!\d){year}(?!\d)", stated):
+        return f"year {year} is not a date `published` states ({published!r})"
+    if month is not None and MONTHS[int(month) - 1] not in published.lower():
+        return f"month {month} ({MONTHS[int(month) - 1].title()}) is not in `published` ({published!r})"
+    return None
 
 
 def load_json(path: Path) -> object | None:
@@ -231,6 +271,25 @@ def check_country(config_path: Path) -> tuple[bool, list[str]]:
             out.append(f"  excludedDocTypes: OK ({len(excluded)} entries)")
     else:
         out.append("  excludedDocTypes: skipped (none declared)")
+
+    # 7. publishedOn: well formed, and stated by the entry's own `published`
+    dated = 0
+    date_problems: list[str] = []
+    for entry in config.get("documentTypes", []):
+        if not isinstance(entry, dict) or "publishedOn" not in entry:
+            continue
+        dated += 1
+        problem = published_on_problem(entry)
+        if problem:
+            date_problems.append(f"    DRIFT: {entry.get('id', '?')}: publishedOn {problem}")
+    if date_problems:
+        out.append("  publishedOn:")
+        out.extend(date_problems)
+        drift = True
+    elif dated:
+        out.append(f"  publishedOn: OK ({dated} dated)")
+    else:
+        out.append("  publishedOn: skipped (none declared)")
 
     if not target_files:
         out.append("  note: no target data files were found for this country")

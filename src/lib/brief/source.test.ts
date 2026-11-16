@@ -215,6 +215,34 @@ describe("buildBriefSource", () => {
     ]);
   });
 
+  it("carries when each document came out, only where its config states a date the brief can read", () => {
+    const dated = buildBriefSource({
+      countryId: "mongolia",
+      countryName: "Mongolia",
+      data: {
+        ...DATA,
+        countryConfig: {
+          ...CONFIG,
+          documentTypes: CONFIG.documentTypes.map((d) =>
+            d.id === "NDC"
+              ? { ...d, published: "September 2025", publishedOn: "2025-09" }
+              : d.id === "NBSAP"
+                ? { ...d, published: "2025-2029", publishedOn: "2025-2029" }
+                : d,
+          ),
+        },
+      },
+      locale: "en",
+    });
+    expect(dated.documents.map((d) => [d.id, d.publishedOn])).toEqual([
+      ["NDC", "2025-09"],
+      ["NBSAP", undefined],
+      ["FSS", undefined],
+      ["LDNR", undefined],
+    ]);
+    expect("publishedOn" in dated.documents[1]).toBe(false);
+  });
+
   it("names each document on the map by its code over its plain name, shortened by the shared rules", () => {
     const named = buildBriefSource({
       countryId: "mongolia",

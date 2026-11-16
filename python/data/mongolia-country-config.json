@@ -44,6 +44,7 @@
       "docTier": 1,
       "docKind": "Long-term national development vision",
       "published": "May 2020",
+      "publishedOn": "2020-05",
       "author": "State Great Hural (Parliament of Mongolia)",
       "url": "https://cabinet.gov.mn/wp-content/uploads/2050_VISION_LONG-TERM-DEVELOPMENT-POLICY.pdf",
       "objective": "By 2050 Mongolia shall become a leading Asian country in terms of its social development, economic growth and its citizens' quality of life."
@@ -65,6 +66,7 @@
       "docTier": 2,
       "docKind": "Nationally Determined Contribution (UNFCCC / Paris Agreement)",
       "published": "September 2025",
+      "publishedOn": "2025-09",
       "author": "Government of Mongolia",
       "url": "https://unfccc.int/sites/default/files/2025-09/Mongolia%20NDC3_0%20under%20UNFCCC_PA%20FINAL.pdf",
       "objective": "By implementing unconditional measures under national and sectoral development policies and plans, total GHG emissions (excluding LULUCF) could be reduced by 23.0% by 2030 and 30.3% by 2035 compared to the Business as Usual (BAU) scenario."
@@ -87,6 +89,7 @@
       "docTier": 3,
       "docKind": "Government resolution: national targets for implementing the Paris Agreement",
       "published": "September 2025",
+      "publishedOn": "2025-09",
       "author": "Government of Mongolia",
       "url": "https://legalinfo.mn/mn/detail?lawId=17433351257372&showType=1"
     },
@@ -107,6 +110,7 @@
       "docTier": 3,
       "docKind": "National Biodiversity Strategy and Action Plan (CBD)",
       "published": "February 2026",
+      "publishedOn": "2026-02",
       "author": "Government of Mongolia (Ministry of Environment and Climate Change)",
       "url": "https://ort.cbd.int/national-targets?recordTypes=nationalTarget7&countries=mn"
     },
@@ -127,6 +131,7 @@
       "docTier": 3,
       "docKind": "National Adaptation Plan (UNFCCC)",
       "published": "March 2025",
+      "publishedOn": "2025-03",
       "author": "Ministry of Environment and Climate Change (Government of Mongolia)",
       "url": "https://unfccc.int/sites/default/files/resource/NAP_Mongolia_2025.pdf"
     },
@@ -158,6 +163,7 @@
       "docTier": 3,
       "docKind": "Parliament resolution / sectoral measures (food and agriculture)",
       "published": "June 2022",
+      "publishedOn": "2022-06",
       "author": "State Great Hural (Parliament of Mongolia)",
       "url": "https://legalinfo.mn/mn/detail?lawId=16530824651591"
     },
@@ -179,6 +185,7 @@
       "docTier": 2,
       "docKind": "UNCCD Land Degradation Neutrality country report",
       "published": "September 2018",
+      "publishedOn": "2018-09",
       "author": "National Committee on Combating Desertification (NCCD), Ministry of Environment and Tourism (Mongolia)",
       "url": "https://www.unccd.int/sites/default/files/ldn_targets/2019-08/Mongolia%20LDN%20TSP%20Country%20Report.pdf"
     },
@@ -208,6 +215,7 @@
       "color": "#7c3aed",
       "docKind": "First Biennial Transparency Report (UNFCCC Enhanced Transparency Framework)",
       "published": "December 2025",
+      "publishedOn": "2025-12",
       "author": "Government of Mongolia (Ministry of Environment and Climate Change)",
       "url": "https://unfccc.int/sites/default/files/resource/Mongolia%20FBT%20Report%20Dec%2031%202025.pdf"
     },

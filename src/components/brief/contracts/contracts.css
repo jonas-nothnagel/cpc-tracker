@@ -192,6 +192,30 @@
   color: var(--brief-muted);
 }
 
+/* The documents under the years: each code in its year's column, a title
+   for the row and a grey line for those without a date. A code names its
+   document and date on pointing. */
+[data-brief] .ct-label[data-kind="docs"] {
+  display: flex;
+  gap: 0 0.6rem;
+  pointer-events: auto;
+}
+
+[data-brief] .ct-label[data-kind="docs"][data-align="end"] {
+  transform: translate(-100%, -100%);
+}
+
+[data-brief] .ct-docs-quiet,
+[data-brief] .ct-doc small {
+  font-size: inherit;
+  color: var(--brief-muted);
+}
+
+[data-brief] .ct-docs-quiet {
+  display: flex;
+  gap: 0 0.6rem;
+}
+
 [data-brief] .ct-label-button {
   pointer-events: auto;
   padding: 0 0.15rem;

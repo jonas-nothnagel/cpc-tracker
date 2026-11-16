@@ -21,6 +21,17 @@ carries its twin in the other currency. Neither shows elsewhere. Their wording:
 - twin, es: Unos {other}.
 - twin, mn: Ойролцоогоор {other}.
 
+## The years
+
+**The documents under the years** (added 16 November 2026). Each document
+stands under the year it came out, as on the reviewed-spending chart: the
+date, what it rests on and what the row does not say are in
+../spending/DISCLAIMERS.md ("Spending by year"). Here a contract counts in
+the year the record files it under, so a document from within a year stands
+beside contracts signed both before and after it; the first and last years
+hold part of a year only (the record starts in 2018 and was read in February
+2026).
+
 ## A contract's panel
 
 **Machine-translated titles** (`english` on a contract's record,

@@ -96,6 +96,76 @@ describe("the steps", () => {
   });
 });
 
+describe("the documents under the years", () => {
+  // Widths of each year's names, as the page measures them: two came out in 2024, one in 2025.
+  const yearDocs = { columns: [[30, 44], [40]], before: false, after: false, undated: false };
+  const docs = (l: FieldLayout, slot?: string) => l.labels.filter((x) => x.kind === "docs" && (slot === undefined || x.values.slot === slot));
+  const yearLabel = (l: FieldLayout, year: number) => l.labels.find((x) => x.kind === "year" && x.values.year === year)!;
+
+  it("draws no line for them where the page gives none", () => {
+    for (const stage of [{ kind: "record" }, { kind: "purpose", key: "" }] as Stage[]) expect(docs(lay(stage))).toEqual([]);
+  });
+
+  it("names each document under the year it came out, one line each, below a title for the row", () => {
+    for (const stage of [{ kind: "record" }, { kind: "purpose", key: "" }] as Stage[]) {
+      const l = lay(stage, { yearDocs });
+      const title = docs(l, "title");
+      expect(title).toHaveLength(1);
+      expect(title[0].align).toBe("start");
+      const names = docs(l, "year");
+      expect(names.map((x) => [x.values.year, x.values.index])).toEqual([
+        [2024, 0],
+        [2024, 1],
+        [2025, 0],
+      ]);
+      // Under its year's label, in its year's column.
+      for (const n of names) {
+        const year = yearLabel(l, Number(n.values.year));
+        expect(n.x).toBeCloseTo(year.x);
+        expect(n.y).toBeGreaterThan(title[0].y);
+        expect(title[0].y).toBeGreaterThan(year.y);
+      }
+      // A year's second name on its own line.
+      expect(names[1].y).toBeGreaterThan(names[0].y);
+      expect(names[2].y).toBeCloseTo(names[0].y);
+      expect(Math.max(...names.map((n) => n.y))).toBeLessThanOrEqual(box.h);
+    }
+  });
+
+  it("makes room for them below the years: the squares end above the year labels", () => {
+    const plain = lay({ kind: "record" });
+    const l = lay({ kind: "record" }, { yearDocs });
+    const lowest = (x: FieldLayout) => Math.max(...x.squares.map((q) => q.y));
+    expect(lowest(l)).toBeLessThan(lowest(plain));
+    expect(lowest(l)).toBeLessThan(yearLabel(l, 2024).y);
+    for (const q of l.squares) expect(q.y).toBeGreaterThanOrEqual(0);
+  });
+
+  it("names those from before and after the charted years at the two ends of the axis, those without a date on a last line", () => {
+    const l = lay({ kind: "record" }, { yearDocs: { ...yearDocs, before: true, after: true, undated: true } });
+    const [before] = docs(l, "before");
+    const [after] = docs(l, "after");
+    const [undated] = docs(l, "undated");
+    expect([before.x, before.align]).toEqual([0, "start"]);
+    expect([after.x, after.align]).toEqual([box.w, "end"]);
+    expect(before.y).toBeCloseTo(after.y);
+    expect(before.y).toBeGreaterThan(Math.max(...docs(l, "year").map((x) => x.y)));
+    expect(undated.y).toBeGreaterThan(before.y);
+    expect(undated.y).toBeLessThanOrEqual(box.h);
+  });
+
+  it("keeps a name inside the field, and two years' names clear of each other", () => {
+    // Narrow columns: a wide name under the first year, another under the next.
+    const narrow = { w: 90, h: 400 };
+    const l = layoutField(model, file, { kind: "record" }, narrow, { yearDocs: { columns: [[70], [70]], before: false, after: false, undated: false } });
+    const [a, b] = docs(l, "year");
+    expect(a.x - 35).toBeGreaterThanOrEqual(0);
+    expect(b.x + 35).toBeLessThanOrEqual(narrow.w);
+    // The same line would overlap them: the second steps down a line.
+    expect(b.y).toBeGreaterThan(a.y);
+  });
+});
+
 describe("the map", () => {
   it("gathers the money mainly for nature or climate by place, the capital and the unnamed in the band below", () => {
     const l = lay({ kind: "places", layer: "money", key: "" });

@@ -7,7 +7,9 @@ import { parseBerAreas } from "@/lib/brief/ber-areas";
 import { parseBerNames } from "@/lib/brief/ber-names-shared";
 import { spendingSetup, type SpendingSetup } from "@/lib/brief/spending";
 import { activitiesPayload, holdersPayload, legacyPayload, levelsPayload, sameNamePayload } from "@/lib/brief/spending-fixture";
+import type { BriefSource } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
+import mn from "../../../../messages/mn.json";
 import { SpendingSection } from "./spending-section";
 
 const SOURCE = briefFixture();
@@ -37,13 +39,29 @@ function renderSection(
     docs = ["A", "B", "C"],
     currency = "usd",
     onCurrency = () => {},
-  }: { onExploreArea?: (id: string) => void; docs?: string[]; currency?: Currency; onCurrency?: (c: Currency) => void } = {},
+    source = SOURCE,
+    locale = "en",
+    messages = en,
+  }: {
+    onExploreArea?: (id: string) => void;
+    docs?: string[];
+    currency?: Currency;
+    onCurrency?: (c: Currency) => void;
+    source?: BriefSource;
+    locale?: string;
+    messages?: typeof en;
+  } = {},
 ) {
   return render(
-    <NextIntlClientProvider locale="en" messages={en}>
-      <SpendingSection setup={setup} source={SOURCE} docs={docs} currency={currency} onCurrency={onCurrency} onExploreArea={onExploreArea} />
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <SpendingSection setup={setup} source={source} docs={docs} currency={currency} onCurrency={onCurrency} onExploreArea={onExploreArea} />
     </NextIntlClientProvider>,
   );
+}
+
+/** The fixture's documents with the dates their configs would state. */
+function dated(dates: Record<string, string>): BriefSource {
+  return { ...SOURCE, documents: SOURCE.documents.map((d) => (dates[d.id] ? { ...d, publishedOn: dates[d.id] } : d)) };
 }
 
 describe("SpendingSection, Country X's illustrative file", () => {
@@ -307,5 +325,69 @@ describe("SpendingSection, a rebuilt record", () => {
     expect(row().textContent).toContain("₮7 billion");
     expect(widths()).toEqual(before);
     expect(container.querySelector(".sp-areas")?.getAttribute("data-mode")).toBe("amount");
+  });
+});
+
+describe("SpendingSection, the documents under the years", () => {
+  // The rebuilt record charts 2020, 2021 and 2022.
+  const cells = (container: HTMLElement) => [...container.querySelectorAll(".sp-plot .sp-docs")].map((n) => n.textContent);
+
+  it("names each document under the year it came out, below a title for the row", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2020-05", B: "2022", C: "2020-01" }) });
+    expect(container.querySelector(".sp-plot .sp-docs-title")?.textContent).toBe("Documents by year published");
+    // Two came out in 2020, the earlier first; none in 2021.
+    expect(cells(container)).toEqual(["CA", "", "B"]);
+    expect(container.querySelector(".sp-plot .sp-docs-undated")).toBeNull();
+    expect(container.querySelectorAll(".sp-year-end")).toHaveLength(0);
+  });
+
+  it("names a document's full name and date on pointing, the month where its config states one", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2020-05", B: "2022" }), docs: ["A", "B"] });
+    expect([...container.querySelectorAll<HTMLElement>(".sp-plot .sp-doc")].map((n) => n.title)).toEqual(["Document A, May 2020", "Document B, 2022"]);
+  });
+
+  it("names a document from before or after the charted years at that end of the axis, with its year", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2016", B: "2021-03", C: "2025-11" }) });
+    expect(cells(container)).toEqual(["A 2016", "", "B", "", "C 2025"]);
+    // The two ends hold no bar: a column of their own, before and after the years.
+    const columns = [...container.querySelectorAll(".sp-plot > .sp-year")];
+    expect(columns).toHaveLength(5);
+    expect([columns[0], columns[4]].every((c) => c.classList.contains("sp-year-end") && c.childElementCount === 0)).toBe(true);
+    expect(container.querySelector(".sp-plot")?.hasAttribute("data-lead")).toBe(true);
+    expect(container.querySelector(".sp-plot")?.hasAttribute("data-trail")).toBe(true);
+  });
+
+  it("keeps the documents without a date on one grey line, never under a year", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2021" }) });
+    expect(cells(container)).toEqual(["", "A", ""]);
+    expect(container.querySelector(".sp-plot .sp-docs-undated")?.textContent).toBe("Date not in the data: B, C");
+  });
+
+  it("marks only the documents in the brief", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2021", B: "2020" }), docs: ["A"] });
+    expect(cells(container)).toEqual(["", "A", ""]);
+    expect(container.querySelector(".sp-plot .sp-docs-undated")).toBeNull();
+  });
+
+  it("draws no row where no document in the brief states a date", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2021" }), docs: ["B", "C"] });
+    expect(container.querySelector(".sp-docs-title")).toBeNull();
+    expect(container.querySelector(".sp-docs-undated")).toBeNull();
+    expect(container.querySelectorAll(".sp-plot > *")).toHaveLength(3);
+  });
+
+  it("says the same as a list, for a reader who does not see the plot and for a narrow screen", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2021-03", B: "2016" }) });
+    const text = container.querySelector(".sp-docs-text")!;
+    // Outside the plot, which is drawn for the eye only.
+    expect(text.closest("[aria-hidden]")).toBeNull();
+    expect(text.querySelector(".sp-docs-title")?.textContent).toBe("Documents by year published");
+    expect([...text.querySelectorAll("li")].map((li) => li.textContent)).toEqual(["2016 B", "2021 A"]);
+    expect(text.querySelector(".sp-docs-undated")?.textContent).toBe("Date not in the data: C");
+  });
+
+  it("writes a Mongolian date itself, never by the browser's calendar", () => {
+    const { container } = renderSection(LEVELS, { source: dated({ A: "2020-05" }), locale: "mn", messages: mn as unknown as typeof en });
+    expect(container.querySelector<HTMLElement>(".sp-plot .sp-doc")?.title).toBe("Document A, 2020 оны 5-р сар");
   });
 });

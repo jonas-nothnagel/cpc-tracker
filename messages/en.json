@@ -3679,6 +3679,11 @@
       "linesTitle": "Budget lines strongly matching",
       "actionsTitle": "Reported actions strongly aligned",
       "explore": "Explore this target"
+    },
+    "docDates": {
+      "title": "Documents by year published",
+      "undated": "Date not in the data: {list}",
+      "hover": "{name}, {date}"
     }
   }
 }
