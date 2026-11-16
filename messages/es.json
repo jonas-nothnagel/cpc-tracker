@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Analizador de Coherencia de Políticas",
+    "appName": "PACE · Explorador de Alineación y Coherencia de Políticas",
     "close": "Cerrar",
     "back": "Atrás",
     "backAria": "Volver",
@@ -24,7 +24,7 @@
     }
   },
   "header": {
-    "brand": "Analizador de Coherencia de Políticas",
+    "brand": "PACE · Explorador de Alineación y Coherencia de Políticas",
     "nav": {
       "home": "Inicio",
       "uploadData": "Cargar datos",
@@ -37,8 +37,8 @@
   "landing": {
     "hero": {
       "eyebrow": "Iniciativa Sprint de IA del PNUD",
-      "title": "Analizador de Coherencia de Políticas de Naturaleza y Clima",
-      "subtitle": "Dónde las políticas nacionales de clima, biodiversidad y uso de la tierra se alinean, y dónde hay posible desalineación.",
+      "title": "PACE: Explorador de Alineación y Coherencia de Políticas",
+      "subtitle": "El progreso no depende solo de la rapidez con que avanza un país, sino de la coherencia con que avanzan juntas sus prioridades: dónde se alinean las políticas de clima, biodiversidad y uso de la tierra, y dónde hay posible desalineación.",
       "analyseCta": "Analizar documentos de política",
       "exploreMenu": "Explorar un país piloto",
       "pilotCountriesHeader": "Países piloto",
@@ -95,7 +95,7 @@
       "backToHome": "Volver al inicio"
     },
     "footer": {
-      "text": "Programa de las Naciones Unidas para el Desarrollo · CPC Analyzer"
+      "text": "Programa de las Naciones Unidas para el Desarrollo · PACE"
     },
     "modelSelector": {
       "attribution": "Resultados generados por IA con",
@@ -1439,7 +1439,7 @@
     }
   },
   "upload": {
-    "metaTitle": "Nuevo análisis · Analizador de Coherencia de Políticas",
+    "metaTitle": "Nuevo análisis · PACE",
     "hero": {
       "title": "Nuevo análisis"
     },
@@ -2151,26 +2151,26 @@
   },
   "metadata": {
     "root": {
-      "title": "CPC Analyzer | Análisis de Coherencia de Políticas",
+      "title": "PACE | Explorador de Alineación y Coherencia de Políticas",
       "description": "Herramienta asistida por IA para evaluar la coherencia entre políticas de naturaleza y clima y rastrear el progreso de implementación."
     },
     "dashboard": {
-      "title": "Panel | CPC Analyzer",
-      "countryTitle": "Panel de {name} | CPC Analyzer",
-      "analysisTitle": "Análisis {id} | CPC Analyzer"
+      "title": "Panel | PACE",
+      "countryTitle": "Panel de {name} | PACE",
+      "analysisTitle": "Análisis {id} | PACE"
     },
     "prototypes": {
-      "title": "Prototipos | CPC Analyzer",
-      "countryTitle": "Prototipos de {name} | CPC Analyzer",
-      "analysisTitle": "Prototipos · Análisis {id} | CPC Analyzer"
+      "title": "Prototipos | PACE",
+      "countryTitle": "Prototipos de {name} | PACE",
+      "analysisTitle": "Prototipos · Análisis {id} | PACE"
     },
     "sustainability": {
-      "title": "Panel de huella ambiental | CPC Analyzer",
-      "description": "Huella ambiental estimada de la computación de IA detrás del CPC Analyzer, para reporte de transparencia."
+      "title": "Panel de huella ambiental | PACE",
+      "description": "Huella ambiental estimada de la computación de IA detrás de PACE, el Explorador de Alineación y Coherencia de Políticas, para reporte de transparencia."
     },
     "methodology": {
-      "title": "Cómo funciona | CPC Analyzer",
-      "description": "Cómo el Analizador de Coherencia de Políticas Naturaleza-Clima convierte los documentos de política nacional en información transparente y trazable para apoyar la toma de decisiones."
+      "title": "Cómo funciona | PACE",
+      "description": "Cómo PACE, el Explorador de Alineación y Coherencia de Políticas, convierte los documentos de política nacional en información transparente y trazable para apoyar la toma de decisiones."
     }
   },
   "viz": {
@@ -2843,7 +2843,7 @@
     "sheet": {
       "running": "{country} · Nota de coherencia de políticas",
       "page": "Página {page, number} de {total, number}",
-      "footer": "Preparada el {date} con el Policy Coherence Analyzer. Análisis asistido por IA, para validación por personas expertas nacionales.",
+      "footer": "Preparada el {date} con PACE (Explorador de Alineación y Coherencia de Políticas). Análisis asistido por IA, para validación por personas expertas nacionales.",
       "title": "Nota de coherencia de políticas",
       "lensScope": "Áreas de política: {lens}",
       "translatedMachine": "Los textos de las metas en esta página son traducciones automáticas.",

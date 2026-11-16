@@ -1,4 +1,4 @@
-# CPC Analyzer - Project Guidelines
+# PACE - Project Guidelines
 
 > Nature-Climate Policy Coherence Progress Analysis Tool for UNDP
 

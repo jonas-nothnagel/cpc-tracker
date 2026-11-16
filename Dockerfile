@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 #
-# CPC Analyzer — single image serving Next.js + spawning the Python pipeline.
+# PACE (Policy Alignment and Coherence Explorer): single image serving Next.js + spawning the Python pipeline.
 # Targets Azure App Service for Containers (Linux).
 #
 # Two stages:

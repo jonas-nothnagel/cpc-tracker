@@ -11,9 +11,9 @@ export async function generateMetadata({ params }: ExploreRouteProps) {
   const { locale, country } = await params;
   const lower = country.toLowerCase();
   const entry = isValidCountryId(lower) ? getCountry(lower) : undefined;
-  if (!entry?.visible) return { title: "CPC Analyzer" };
+  if (!entry?.visible) return { title: "PACE" };
   const t = await getTranslations({ locale, namespace: "header.nav" });
-  return { title: `${entry.name} | ${t("explore")} | CPC Analyzer` };
+  return { title: `${entry.name} | ${t("explore")} | PACE` };
 }
 
 export default async function ExploreRoute({ params }: ExploreRouteProps) {

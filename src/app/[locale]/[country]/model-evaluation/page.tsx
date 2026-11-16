@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps) {
   const entry = isValidCountryId(country.toLowerCase())
     ? getCountry(country.toLowerCase())
     : undefined;
-  if (!entry?.visible) return { title: "CPC Analyzer" };
-  return { title: `${entry.name} model evaluation | CPC Analyzer` };
+  if (!entry?.visible) return { title: "PACE" };
+  return { title: `${entry.name} model evaluation | PACE` };
 }
 
 export default async function ModelEvaluationPage({ params }: PageProps) {

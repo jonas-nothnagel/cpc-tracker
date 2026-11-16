@@ -159,7 +159,7 @@ afterEach(() => {
 describe("SustainabilityClient", () => {
   it("carries the UNDP logo with the tool's name, leading home", () => {
     renderPage();
-    const home = screen.getByRole("link", { name: "UNDP Policy Coherence Analyzer" });
+    const home = screen.getByRole("link", { name: "UNDP PACE · Policy Alignment and Coherence Explorer" });
     expect(home.getAttribute("href")).toBe("/");
     expect(home.querySelector("img")?.getAttribute("src")).toBe("/undp-logo.png");
   });

@@ -1,5 +1,5 @@
 ---
-name: Policy Coherence Analyzer
+name: PACE (Policy Alignment and Coherence Explorer)
 description: A serious public institution's guided atlas of nature-climate policy coherence — navigable evidence, quietly beautiful, uncluttered with depth on request.
 colors:
   primary: "#0468b1"
@@ -81,7 +81,7 @@ components:
     size: "20px"
 ---
 
-# Design System: Policy Coherence Analyzer
+# Design System: PACE (Policy Alignment and Coherence Explorer)
 
 ## 1. Overview
 

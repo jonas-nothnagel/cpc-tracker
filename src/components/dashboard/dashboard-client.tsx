@@ -781,7 +781,7 @@ export function DashboardClient({
               </p>
             </div>
           )}
-          <div>United Nations Development Programme · CPC Analyzer</div>
+          <div>United Nations Development Programme · PACE</div>
         </div>
       </footer>
     </div>

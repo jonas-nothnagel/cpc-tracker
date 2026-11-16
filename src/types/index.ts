@@ -1,5 +1,5 @@
 /**
- * Core data types for the CPC Analyzer.
+ * Core data types for PACE (Policy Alignment and Coherence Explorer).
  *
  * These types model the entities described in the Mongolia Target
  * Alignment Assessment methodology, generalised for any country.

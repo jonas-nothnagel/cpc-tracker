@@ -105,7 +105,7 @@ describe("BriefApp", () => {
 
   it("carries UNDP's logo quietly: on the landing with the tool's name, and on every printed page", () => {
     renderApp();
-    const brand = screen.getByRole("link", { name: "UNDP Policy Coherence Analyzer" });
+    const brand = screen.getByRole("link", { name: "UNDP PACE · Policy Alignment and Coherence Explorer" });
     expect(brand.getAttribute("href")).toBe("/");
     expect(within(brand).getByRole("img", { name: "UNDP" }).getAttribute("src")).toBe("/undp-logo.png");
     for (const sheet of screen.getAllByTestId("brief-sheet")) {
@@ -120,7 +120,7 @@ describe("BriefApp", () => {
     vi.setSystemTime(new Date("2026-09-23T12:00:00.000Z"));
     try {
       renderApp();
-      expect(screen.getAllByText(/Prepared on 23 September 2026 with the Policy Coherence Analyzer/).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/Prepared on 23 September 2026 with PACE \(Policy Alignment and Coherence Explorer\)/).length).toBeGreaterThan(0);
     } finally {
       vi.useRealTimers();
     }

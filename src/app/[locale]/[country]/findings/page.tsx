@@ -27,7 +27,7 @@ interface Props {
 export async function generateMetadata(props: Props) {
   const { locale } = await props.params;
   const t = await getTranslations({ locale, namespace: "finding" });
-  return { title: `${t("index.title")} | CPC Analyzer` };
+  return { title: `${t("index.title")} | PACE` };
 }
 
 export default async function FindingsIndexPage(props: Props) {

@@ -120,8 +120,8 @@ export async function generateMetadata({ params }: PageProps) {
   const entry = isValidCountryId(country.toLowerCase())
     ? getCountry(country.toLowerCase())
     : undefined;
-  if (!entry?.visible) return { title: "CPC Analyzer" };
-  return { title: `${entry.name} model comparison | CPC Analyzer` };
+  if (!entry?.visible) return { title: "PACE" };
+  return { title: `${entry.name} model comparison | PACE` };
 }
 
 export default async function ModelComparisonPage({ params }: PageProps) {
