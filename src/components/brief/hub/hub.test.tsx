@@ -342,6 +342,23 @@ describe("Hub", () => {
     expect(stage()).toBe(`map:apart:target:${DATA.commitments[1].commitment.id}`);
   });
 
+  it("opens its targets on how few of all the targets carry most of the potential misalignments", () => {
+    const concentrated = {
+      ...DATA,
+      concentration: { ...DATA.concentration, total: 15, share: 0.8, top: ["B6", "C4"], concentrated: true },
+    };
+    renderHub({}, concentrated);
+    const title = within(step("apart")).getByTestId("hub-apart-title");
+    expect(title.tagName).toBe("H3");
+    expect(title.textContent).toBe(
+      `80% of the 15 potential misalignments involve 2 of the ${DATA.scope.commitments.length} targets.`,
+    );
+    cleanup();
+    // Spread over many targets, the list keeps its plain title.
+    renderHub({}, { ...DATA, concentration: { ...concentrated.concentration, concentrated: false } });
+    expect(within(step("apart")).getByTestId("hub-apart-title").textContent).toBe("Targets to review first");
+  });
+
   it("a pointed block's card names its two documents apart, each in its colour, then their figures", () => {
     withField(() => {
       const colours = ["#111111", "#222222", "#333333"];

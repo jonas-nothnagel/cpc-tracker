@@ -10,12 +10,33 @@ import { SectionFrame } from "./frame";
 const aligned = (c: ToneCounts) => (c.total > 0 ? c.reinforce / c.total : 0);
 
 /** One result bar: potential misalignment from the left, alignment from the
- *  right, so position tells the two apart without colour. */
-export function ResultBar({ name, counts, few }: { name?: string; counts: ToneCounts; few?: boolean }) {
+ *  right, so position tells the two apart without colour. Its two shares
+ *  stand at its ends, unless the caller names them in words below it
+ *  (`ends={false}`). */
+export function ResultBar({
+  name,
+  counts,
+  few,
+  ends = true,
+}: {
+  name?: string;
+  counts: ToneCounts;
+  few?: boolean;
+  ends?: boolean;
+}) {
   const t = useTranslations("brief.documents");
   const { pct } = useNumbers();
   const share = (v: number) => (counts.total > 0 ? v / counts.total : 0);
   const basis = (v: number) => ({ flexBasis: `${(share(v) * 100).toFixed(2)}%` });
+  const bar = (
+    <span className="brief-pair-bar" aria-hidden={ends ? undefined : "true"}>
+      {counts.apart > 0 && <span className="brief-seg brief-seg-apart" style={basis(counts.apart)} />}
+      {counts.partial > 0 && <span className="brief-seg brief-seg-partial" style={basis(counts.partial)} />}
+      {counts.none > 0 && <span className="brief-seg brief-seg-none" style={basis(counts.none)} />}
+      {counts.reinforce > 0 && <span className="brief-seg brief-seg-reinforce" style={basis(counts.reinforce)} />}
+    </span>
+  );
+  if (!ends) return bar;
   return (
     <>
       {name !== undefined && (
@@ -26,14 +47,7 @@ export function ResultBar({ name, counts, few }: { name?: string; counts: ToneCo
       )}
       <span className="brief-pair-bar-row" aria-hidden="true">
         <span className="brief-pair-value">{pct(share(counts.apart))}</span>
-        <span className="brief-pair-bar">
-          {counts.apart > 0 && <span className="brief-seg brief-seg-apart" style={basis(counts.apart)} />}
-          {counts.partial > 0 && <span className="brief-seg brief-seg-partial" style={basis(counts.partial)} />}
-          {counts.none > 0 && <span className="brief-seg brief-seg-none" style={basis(counts.none)} />}
-          {counts.reinforce > 0 && (
-            <span className="brief-seg brief-seg-reinforce" style={basis(counts.reinforce)} />
-          )}
-        </span>
+        {bar}
         <span className="brief-pair-value brief-pair-value-end">{pct(share(counts.reinforce))}</span>
       </span>
     </>

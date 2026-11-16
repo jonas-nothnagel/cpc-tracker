@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import en from "../../../messages/en.json";
 import { buildBriefData } from "@/lib/brief/data";
@@ -44,7 +44,7 @@ describe("BriefPanels", () => {
 
   it("lists a pair of documents' potential misalignments through the busiest commitment first", () => {
     const { onPush } = renderPanels([{ kind: "docPair", a: "B", b: "C" }]);
-    expect(screen.getByText("9 potential misalignments. Most frequent targets first.")).toBeTruthy();
+    expect(screen.getByText("9 potential misalignments, most frequent targets first")).toBeTruthy();
     expect(screen.getAllByTestId("brief-strand-row")).toHaveLength(5);
     fireEvent.click(screen.getByRole("button", { name: "Show all 9" }));
     const rows = screen.getAllByTestId("brief-strand-row");
@@ -123,6 +123,74 @@ describe("BriefPanels", () => {
         name: "Document A and Document B: 67% aligned, 17% potential misalignment, from 36 target pairs",
       }),
     ).toBeTruthy();
+  });
+
+  it("names a pair of documents' result bar in place: its unit above, each side's share under its own end", () => {
+    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
+    const bar = screen.getByRole("img", { name: /^Document A and Document B:/ });
+    expect(bar.querySelector(".brief-panel-result-unit")?.textContent).toBe("36 target pairs");
+    const ends = [...bar.querySelectorAll(".brief-panel-result-key > span")].map((s) => s.textContent);
+    expect(ends[0]).toBe("17% potential misalignment");
+    expect(ends[ends.length - 1]).toBe("67% aligned");
+  });
+
+  it("sets the AI reading apart as one block, its starting point and caveat inside it, the evidence outside", () => {
+    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
+    const block = document.querySelector<HTMLElement>(".brief-panel-ai")!;
+    expect(within(block).getByText("A and B on land")).toBeTruthy();
+    expect(
+      within(block).getByRole("heading", {
+        name: /^AI-suggested starting point\s+For expert review, not a recommendation$/,
+      }),
+    ).toBeTruthy();
+    expect(within(block).getByText("Joint land-use screening could help.")).toBeTruthy();
+    expect(
+      within(block).getByText("AI-generated synthesis. Treat as a prompt to review, not a settled finding."),
+    ).toBeTruthy();
+    expect(within(block).queryAllByTestId("brief-aligned-pair-row")).toEqual([]);
+    expect(block.compareDocumentPosition(screen.getAllByTestId("brief-aligned-pair-row")[0])).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+  });
+
+  it("joins a row's two targets with the rating's line, never a stripe at its edge", () => {
+    renderPanels([{ kind: "docPair", a: "B", b: "C" }]);
+    const row = screen.getAllByTestId("brief-strand-row")[0];
+    const line = row.querySelector(".brief-panel-link-apart")!;
+    const [left, right] = within(row).getAllByTestId("brief-docpair-cell");
+    expect(left.compareDocumentPosition(line) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(line.compareDocumentPosition(right) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(document.querySelector(".brief-panel-mark")).toBeNull();
+  });
+
+  it("names a target's document above its title", () => {
+    renderPanels([{ kind: "commitment", id: "B6" }]);
+    const title = screen.getByRole("heading", { level: 2, name: "6 Commitment B6" });
+    expect(title.previousElementSibling?.textContent).toBe("Document B");
+  });
+
+  it("asks for feedback in one quiet line, the thumbs as plain glyphs, its anonymity beside them", async () => {
+    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
+    const group = await screen.findByRole("group", { name: "Feedback on this AI-generated assessment" });
+    expect(within(group).getByText("Was this assessment useful?")).not.toHaveClass("uppercase");
+    expect(within(group).getByText("Anonymous, seen only by the project team")).toBeTruthy();
+    expect(within(group).getByRole("button", { name: "Mark as useful" })).not.toHaveClass("rounded-full");
+    expect(screen.queryByText("Feedback is anonymous and goes only to the project team.")).toBeNull();
+  });
+
+  it("says a comparison is loading only once the wait is noticeable", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
+      renderPanels([{ kind: "pair", a: "B6", b: "C4" }]);
+      expect(screen.queryByText("Loading the comparison…")).toBeNull();
+      await act(async () => {
+        vi.advanceTimersByTime(2000);
+      });
+      expect(screen.getByText("Loading the comparison…")).toBeTruthy();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("sets the two documents apart, and lays their target pairs out in one column each", () => {

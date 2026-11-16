@@ -702,7 +702,19 @@ export function Hub({
                 {concentration.total === 0 && <p className="brief-hub-none">{tb("commitments.headlineEmpty")}</p>}
                 {keeps("commitments") && hasApart && (
                   <>
-                    <h3 className="brief-hub-sub">{ts("commitments")}</h3>
+                    {/* Where few targets carry most of the potential
+                        misalignments, the list opens on that figure: it is
+                        why these targets come first. */}
+                    <h3 className="brief-hub-sub" data-testid="hub-apart-title">
+                      {concentration.concentrated
+                        ? tb("commitments.headlineConcentrated", {
+                            pct: pct(concentration.share),
+                            total: concentration.total,
+                            top: concentration.top.length,
+                            targets: data.scope.commitments.length,
+                          })
+                        : ts("commitments")}
+                    </h3>
                     <ReviewList
                       data={data}
                       limit={reviewLimit}

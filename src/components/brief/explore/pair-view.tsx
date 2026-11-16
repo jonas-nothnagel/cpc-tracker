@@ -130,6 +130,7 @@ export function PairView({
           <p className="brief-panel-caveat">{td("aiRationaleDisclaimer")}</p>
           <FeedbackControl
             variant="bar"
+            look="brief"
             countryId={countryId}
             surface="target_pair_rationale"
             anchorIds={[pair.targetAId, pair.targetBId]}

@@ -20,7 +20,12 @@ export function CommitmentsSection({
     c.total === 0
       ? t("headlineEmpty")
       : c.concentrated
-        ? t("headlineConcentrated", { pct: pct(c.share), total: c.total, top: c.top.length })
+        ? t("headlineConcentrated", {
+            pct: pct(c.share),
+            total: c.total,
+            top: c.top.length,
+            targets: data.scope.commitments.length,
+          })
         : t("headlineSpread", { contested: c.contested });
   return (
     <SectionFrame id="commitments" headline={headline}>
