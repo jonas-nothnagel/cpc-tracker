@@ -116,22 +116,15 @@ describe("BriefPanels", () => {
     expect(screen.getByText("Theme names were identified across all documents.")).toBeTruthy();
   });
 
-  it("opens a pair of documents on the brief's result bar", () => {
+  it("opens a pair of documents on the brief's result bar, read out by its words", () => {
     renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
-    expect(
-      screen.getByRole("img", {
-        name: "Document A and Document B: 67% aligned, 17% potential misalignment, from 36 target pairs",
-      }),
-    ).toBeTruthy();
-  });
-
-  it("names a pair of documents' result bar in place: its unit above, each side's share under its own end", () => {
-    renderPanels([{ kind: "docPair", a: "A", b: "B" }]);
-    const bar = screen.getByRole("img", { name: /^Document A and Document B:/ });
-    expect(bar.querySelector(".brief-panel-result-unit")?.textContent).toBe("36 target pairs");
-    const ends = [...bar.querySelectorAll(".brief-panel-result-key > span")].map((s) => s.textContent);
-    expect(ends[0]).toBe("17% potential misalignment");
-    expect(ends[ends.length - 1]).toBe("67% aligned");
+    const bar = screen.getByTestId("brief-panel-result");
+    expect(within(bar).getByText("36 target pairs")).toBeTruthy();
+    const shares = within(bar).getAllByRole("listitem").map((li) => li.textContent);
+    expect(shares[0]).toBe("17% potential misalignment");
+    expect(shares[shares.length - 1]).toBe("67% aligned");
+    // The bar itself is for the eye only.
+    expect(bar.querySelector(".brief-pair-bar")).toHaveAttribute("aria-hidden", "true");
   });
 
   it("sets the AI reading apart as one block, its starting point and caveat inside it, the evidence outside", () => {
@@ -218,13 +211,13 @@ describe("BriefPanels", () => {
     expect(screen.queryByRole("group", { name: "Feedback on this AI-generated assessment" })).toBeNull();
   });
 
-  it("opens a target on its own result bar", () => {
+  it("opens a target on its own result bar, which says what it counts", () => {
     renderPanels([{ kind: "commitment", id: "B6" }]);
-    expect(
-      screen.getByRole("img", {
-        name: "6 Commitment B6: 33% aligned, 58% potential misalignment, from 12 target pairs",
-      }),
-    ).toBeTruthy();
+    const bar = screen.getByTestId("brief-panel-result");
+    expect(within(bar).getByText("12 target pairs with the other documents")).toBeTruthy();
+    const shares = within(bar).getAllByRole("listitem").map((li) => li.textContent);
+    expect(shares[0]).toBe("58% potential misalignment");
+    expect(shares[shares.length - 1]).toBe("33% aligned");
   });
 
   it("shows a theme's size, its example and feedback on its AI summary", async () => {

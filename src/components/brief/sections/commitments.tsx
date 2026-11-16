@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import type { BriefData } from "@/lib/brief/data";
+import { namesConcentration } from "@/lib/brief/hub";
 import { RankList } from "../rank-list";
 import { useNumbers } from "../ink";
 import { SectionFrame } from "./frame";
@@ -14,19 +15,24 @@ export function CommitmentsSection({
   onOpenCommitment?: (id: string) => void;
 }) {
   const t = useTranslations("brief.commitments");
+  const ts = useTranslations("brief.sections");
   const { pct } = useNumbers();
   const c = data.concentration;
+  // The figure only while the rows below show every target it counts;
+  // concentrated in more targets than that, the section keeps its title.
   const headline =
     c.total === 0
       ? t("headlineEmpty")
-      : c.concentrated
+      : namesConcentration(c)
         ? t("headlineConcentrated", {
             pct: pct(c.share),
             total: c.total,
             top: c.top.length,
             targets: data.scope.commitments.length,
           })
-        : t("headlineSpread", { contested: c.contested });
+        : c.concentrated
+          ? ts("commitments")
+          : t("headlineSpread", { contested: c.contested });
   return (
     <SectionFrame id="commitments" headline={headline}>
       <ReviewList

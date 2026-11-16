@@ -213,7 +213,7 @@ Refined and restrained: quiet chrome, generous whitespace, standard affordances 
 - **Header:** what the panel belongs to in one grey line (a document, the kind of theme), the serif title, at most one grey line of figures. The header stays sticky, so nothing else goes in it.
 - **Result bar:** its unit above it ("36 target pairs"), each side's share named under its own end ("17% potential misalignment" left, "67% aligned" right), never a sentence repeating the bar.
 - **AI reading:** one Surface Light block (rounded 8px, no border) holding everything the AI wrote for the panel: a small grey label with its tag ("AI summary · High confidence"), the reading, the hedged starting point below a hairline with its caveat as the heading's tag, and one caveat line. Figures, verbatim target texts and lists stay outside it, so evidence and interpretation never mix.
-- **Rows:** two targets in a row are joined by the rating's line between them (solid green aligned, dashed red potential misalignment), as in a comparison; a partner's row starts with that line. Never a coloured stripe at a row's edge. Money is a small UNDP Blue square.
+- **Rows:** two targets in a row are joined by the rating's line between them (solid green aligned, dashed red potential misalignment), as in a comparison; a partner's row starts with that line. Never a coloured stripe at a row's edge (see Don'ts). Money is a small UNDP Blue square. The contracts page's panels and Explore's lists still carry the older edge stripe; they follow this when next reworked.
 - **Feedback:** one quiet line at the foot: the question in sentence case, the two thumbs as plain glyphs in their colours (no circles), the anonymity note beside them.
 
 ### Info Affordance (signature)

@@ -1036,11 +1036,13 @@
   height: 0;
 }
 
-[data-brief] .brief-example-link-reinforce {
+[data-brief] .brief-example-link-reinforce,
+[data-brief] .brief-panel-link-reinforce {
   border-top: 2px solid var(--brief-green);
 }
 
-[data-brief] .brief-example-link-apart {
+[data-brief] .brief-example-link-apart,
+[data-brief] .brief-panel-link-apart {
   border-top: 2px dashed var(--brief-red);
 }
 
@@ -2464,11 +2466,6 @@
   /* In the rows' text size, so 0.7em is the middle of their first line. */
   font-size: 0.875rem;
   margin-top: calc(0.7em - 1px);
-  border-top: 2px solid var(--brief-green);
-}
-
-[data-brief] .brief-panel-link-apart {
-  border-top: 2px dashed var(--brief-red);
 }
 
 /* Rows of one target each, partners of the panel's target: the line comes
@@ -2502,6 +2499,8 @@
   justify-content: space-between;
   gap: 0.15rem 1rem;
   margin: 0.45rem 0 0;
+  padding: 0;
+  list-style: none;
   font-size: 0.8125rem;
   line-height: 1.4;
   color: var(--brief-muted);

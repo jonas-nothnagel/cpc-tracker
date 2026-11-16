@@ -357,6 +357,12 @@ describe("Hub", () => {
     // Spread over many targets, the list keeps its plain title.
     renderHub({}, { ...DATA, concentration: { ...concentrated.concentration, concentrated: false } });
     expect(within(step("apart")).getByTestId("hub-apart-title").textContent).toBe("Targets to review first");
+    cleanup();
+    // So it does when the figure would count more targets than the list (and
+    // the map) can show.
+    const nine = Array.from({ length: 9 }, (_, i) => `T${i}`);
+    renderHub({}, { ...DATA, concentration: { ...concentrated.concentration, top: nine } });
+    expect(within(step("apart")).getByTestId("hub-apart-title").textContent).toBe("Targets to review first");
   });
 
   it("a pointed block's card names its two documents apart, each in its colour, then their figures", () => {

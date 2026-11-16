@@ -64,35 +64,26 @@ function PanelTitle({ context, title, sub }: { context?: ReactNode; title: React
 
 /** Target pairs by rating as the brief's result bar, named in place: its
  *  unit above it, each side's share in words under its own end (potential
- *  misalignment from the left, alignment from the right). */
-function PanelResult({ label, unit, counts }: { label: string; unit: string; counts: ToneCounts }) {
-  const t = useTranslations("brief.documents");
+ *  misalignment from the left, alignment from the right). The words are what
+ *  a screen reader reads; the bar itself is for the eye. */
+function PanelResult({ unit, counts }: { unit: string; counts: ToneCounts }) {
   const tt = useTranslations("brief.tone");
   const { pct } = useNumbers();
   const share = (v: number) => pct(counts.total > 0 ? v / counts.total : 0);
   const part = (tone: "apart" | "partial" | "reinforce") => (
-    <span>
+    <li key={tone}>
       <span className="brief-panel-result-n">{share(counts[tone])}</span> {tt(tone)}
-    </span>
+    </li>
   );
   return (
-    <div
-      className="brief-panel-result"
-      role="img"
-      aria-label={t("docRow", {
-        doc: label,
-        aligned: share(counts.reinforce),
-        apart: share(counts.apart),
-        total: counts.total,
-      })}
-    >
+    <div className="brief-panel-result" data-testid="brief-panel-result">
       <p className="brief-panel-result-unit">{unit}</p>
       <ResultBar counts={counts} ends={false} />
-      <p className="brief-panel-result-key">
+      <ul className="brief-panel-result-key">
         {part("apart")}
         {counts.partial > 0 && part("partial")}
         {part("reinforce")}
-      </p>
+      </ul>
     </div>
   );
 }
@@ -148,7 +139,7 @@ function PairPanel({
   // Mounted once per comparison (keyed by the caller), so it starts loading.
   useEffect(() => {
     let alive = true;
-    const timer = setTimeout(() => alive && setSlow(true), SLOW_MS);
+    const timer = setTimeout(() => setSlow(true), SLOW_MS);
     fetch(`/api/brief/pair?${query}`)
       .then((res) => (res.ok ? (res.json() as Promise<FoundPair>) : Promise.reject(new Error())))
       .then((found) => alive && setState({ status: "ok", found }))
@@ -166,11 +157,10 @@ function PairPanel({
           <PanelTitle title={t("pairDialog")} />
         </DrawerHeader>
         <div className="brief-panel-body">
-          {(state.status === "error" || slow) && (
-            <p className="brief-panel-caveat" role="status">
-              {state.status === "error" ? t("error") : t("loading")}
-            </p>
-          )}
+          {/* Mounted from the start, so a screen reader announces the text when it appears. */}
+          <p className="brief-panel-caveat" role="status">
+            {state.status === "error" ? t("error") : slow ? t("loading") : null}
+          </p>
         </div>
       </>
     );
@@ -389,7 +379,7 @@ function DocPairPanel({
       </DrawerHeader>
       <div className="brief-panel-body">
         {stat && (
-          <PanelResult label={title} unit={th("centerPairs", { count: stat.counts.total })} counts={stat.counts} />
+          <PanelResult unit={th("centerPairs", { count: stat.counts.total })} counts={stat.counts} />
         )}
         {note && (
           <section className="brief-panel-ai">
@@ -517,11 +507,7 @@ function CommitmentPanel({
           <p className="brief-panel-quote-text">{commitment.text}</p>
         )}
         {counts.total > 0 && (
-          <PanelResult
-            label={commitment.label}
-            unit={te("targetFigures", { pairs: counts.total })}
-            counts={counts}
-          />
+          <PanelResult unit={te("targetFigures", { pairs: counts.total })} counts={counts} />
         )}
         <section>
           <h3 className="brief-panel-h">{t("worksAgainst", { count: partners.apart.length })}</h3>
