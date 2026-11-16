@@ -1,6 +1,6 @@
 import { getDocPairKey, getStorylineDocPairKeys } from "@/lib/coherence-briefing";
 import type { AlignmentLevel, AlignmentMechanism } from "@/types";
-import { toneOf, type Tone } from "./compute";
+import { toneOf, type Concentration, type Tone } from "./compute";
 import { MAX_THEMES, type BriefData } from "./data";
 import { COLUMN_LABEL, DOT_ORDER, layoutGroups } from "./dot-layout";
 import { targetLine } from "./text";
@@ -62,11 +62,17 @@ export function sideLevel(side: HubTone): AlignmentLevel {
   return side === "apart" ? "flagged" : "high";
 }
 
+/** Whether a side's concentration is few enough targets to state in its
+ *  headline: then the map names each of them and the list shows them all. */
+export function namesConcentration(c: Concentration): boolean {
+  return c.concentrated && c.top.length > 0 && c.top.length <= NAMED_MAX;
+}
+
 /** The targets a side names on the map: its headline's, when they are few
  *  enough to name; otherwise the first of the side's list. */
 export function namedTargets(data: BriefData, side: HubTone): string[] {
   const c = side === "apart" ? data.concentration : data.strongConcentration;
-  if (c.concentrated && c.top.length > 0 && c.top.length <= NAMED_MAX) return c.top;
+  if (namesConcentration(c)) return c.top;
   const list =
     side === "apart" ? data.commitments.map((r) => r.commitment.id) : data.strongest.map((r) => r.commitment.id);
   return list.slice(0, HUB_TOP);

@@ -865,6 +865,7 @@ export function Explore({
             pct: pct(concentration.share),
             total: concentration.total,
             top: concentration.top.length,
+            targets: data.scope.commitments.length,
           })
         : tc("headlineSpread", { contested: concentration.contested });
 

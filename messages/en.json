@@ -704,6 +704,7 @@
           "send": "Send",
           "cancel": "Cancel",
           "anonNote": "Feedback is anonymous and goes only to the project team.",
+          "anonShort": "Anonymous, seen only by the project team",
           "error": "The feedback could not be saved. Please try again later."
         },
         "rationaleTranslationPending": "This explanation has not been translated yet, so it is shown in English."
@@ -2908,7 +2909,7 @@
       "otherTip": "{count, plural, one {# target pair} other {# target pairs}} outside the recurring themes"
     },
     "commitments": {
-      "headlineConcentrated": "Of the {total, number} potential misalignments, {pct} involve {top, plural, one {one target} other {# targets}}.",
+      "headlineConcentrated": "{pct} of the {total, number} potential misalignments involve {top, plural, one {one} other {#}} of the {targets, number} targets.",
       "headlineSpread": "Potential misalignment is spread across {contested, plural, one {# target} other {# targets}}.",
       "headlineEmpty": "No target shows potential misalignment.",
       "partner": "{count, number} with {doc}"
@@ -2937,7 +2938,7 @@
       "pairDialog": "Two targets compared",
       "docPairDialog": "{docA} and {docB}",
       "docPairCounts": "{total, number} target pairs: {aligned} aligned, {partial} partially aligned, {apart} potential misalignment",
-      "docPairLead": "{count, plural, =0 {No potential misalignment between these two documents.} one {# potential misalignment. Most frequent targets first.} other {# potential misalignments. Most frequent targets first.}}",
+      "docPairLead": "{count, plural, =0 {No potential misalignment between these two documents.} one {# potential misalignment} other {# potential misalignments, most frequent targets first}}",
       "commitmentDialog": "Target: {label}",
       "worksAgainst": "{count, plural, =0 {No potential misalignment in this selection} one {Potential misalignment with # target} other {Potential misalignment with # targets}}",
       "worksWith": "{count, plural, =0 {Aligned with no target in this selection} one {Aligned with # target} other {Aligned with # targets}}",
@@ -2952,7 +2953,7 @@
       },
       "themeSummary": "AI summary",
       "pathwayTitle": "AI-suggested starting point",
-      "pathwayCaveat": "For expert review, not a recommendation.",
+      "pathwayTag": "For expert review, not a recommendation",
       "themeDocs": "Documents involved, by share of the theme's target pairs",
       "aiReading": "AI summary",
       "whereAlign": "Where they align",

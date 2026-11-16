@@ -184,7 +184,8 @@ describe("brief sections", () => {
     wrap(<CommitmentsSection data={DATA} />);
     expect(
       screen.getByRole("heading", {
-        name: "Of the 15 potential misalignments, 80% involve 2 targets.",
+        // The share, the count and how few of all the targets carry it.
+        name: "80% of the 15 potential misalignments involve 2 of the 18 targets.",
       }),
     ).toBeTruthy();
     const rows = screen.getAllByTestId("brief-commitment-row");

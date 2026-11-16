@@ -53,7 +53,9 @@ function Quote({ c, docName, lines }: { c: BriefCommitment; docName: string; lin
   return (
     <blockquote className="brief-quote" title={c.text}>
       <p className="brief-quote-source">
-        <span>{docName}</span>
+        <span className="brief-quote-doc" title={docName}>
+          {docName}
+        </span>
         <span className="brief-quote-label">{c.label}</span>
       </p>
       <p className="brief-quote-text" style={{ WebkitLineClamp: lines }}>

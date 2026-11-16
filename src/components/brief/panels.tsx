@@ -11,7 +11,7 @@ import type { FoundPair } from "@/lib/brief/pair";
 import type { BriefCommitment, BriefDocument, BriefSource, LensId } from "@/lib/brief/source";
 import { slugifyAnchorId } from "@/lib/feedback/anchor";
 import { strandsByPathway } from "@/lib/pulse/strands";
-import { AiHeading, AiText, confidenceLabel, Explanation, FirstSentence, type DocNames } from "./ai-text";
+import { AiHeading, AiText, confidenceLabel, Explanation, FirstSentence, HeadingTag, type DocNames } from "./ai-text";
 import { Comparison, type ComparisonSide } from "./comparison";
 import { BothContracts } from "./both-contracts";
 import { briefQuery, type BriefOrigin } from "@/lib/brief/origin";
@@ -31,6 +31,8 @@ export type PanelState =
 const LIST_PREVIEW = 12;
 /** Target-pair lists in a document pair show this many before "Show all". */
 const PAIR_PREVIEW = 5;
+/** A comparison that takes longer than this to load says so. */
+const SLOW_MS = 2000;
 
 function keyOf(p: PanelState): string {
   switch (p.kind) {
@@ -47,37 +49,66 @@ function keyOf(p: PanelState): string {
   }
 }
 
-/** The panel's title: the finding in serif, and one plain line under it. */
-function PanelTitle({ title, sub, children }: { title: ReactNode; sub?: ReactNode; children?: ReactNode }) {
+/** Every panel opens the same way: what it belongs to in a plain grey line
+ *  (a document, the kind of theme), its title in serif, and one plain line
+ *  of figures under it. */
+function PanelTitle({ context, title, sub }: { context?: ReactNode; title: ReactNode; sub?: ReactNode }) {
   return (
     <>
+      {context && <p className="brief-panel-context">{context}</p>}
       <h2 className="brief-panel-title">{title}</h2>
       {sub && <p className="brief-panel-sub">{sub}</p>}
-      {children}
     </>
   );
 }
 
-/** Target pairs by rating as the brief's result bar: potential
- *  misalignment from the left, alignment from the right. */
-function ResultStrip({ label, counts }: { label: string; counts: ToneCounts }) {
-  const t = useTranslations("brief.documents");
+/** Target pairs by rating as the brief's result bar, named in place: its
+ *  unit above it, each side's share in words under its own end (potential
+ *  misalignment from the left, alignment from the right). The words are what
+ *  a screen reader reads; the bar itself is for the eye. */
+function PanelResult({ unit, counts }: { unit: string; counts: ToneCounts }) {
+  const tt = useTranslations("brief.tone");
   const { pct } = useNumbers();
   const share = (v: number) => pct(counts.total > 0 ? v / counts.total : 0);
+  const part = (tone: "apart" | "partial" | "reinforce") => (
+    <li key={tone}>
+      <span className="brief-panel-result-n">{share(counts[tone])}</span> {tt(tone)}
+    </li>
+  );
   return (
-    <div
-      className="brief-panel-result"
-      role="img"
-      aria-label={t("docRow", {
-        doc: label,
-        aligned: share(counts.reinforce),
-        apart: share(counts.apart),
-        total: counts.total,
-      })}
-    >
-      <ResultBar counts={counts} />
+    <div className="brief-panel-result" data-testid="brief-panel-result">
+      <p className="brief-panel-result-unit">{unit}</p>
+      <ResultBar counts={counts} ends={false} />
+      <ul className="brief-panel-result-key">
+        {part("apart")}
+        {counts.partial > 0 && part("partial")}
+        {part("reinforce")}
+      </ul>
     </div>
   );
+}
+
+/** The AI's hedged starting point inside its reading: its own heading, with
+ *  the caveat beside it. */
+function Pathway({ text, docs }: { text: string; docs: DocNames }) {
+  const t = useTranslations("brief.panel");
+  return (
+    <div className="brief-panel-pathway">
+      <h4 className="brief-panel-note-label">
+        <HeadingTag label={t("pathwayTitle")} tag={t("pathwayTag")} />
+      </h4>
+      <p className="brief-panel-text">
+        <AiText text={text} docs={docs} />
+      </p>
+    </div>
+  );
+}
+
+/** The line that joins two targets in a row, in the rating's ink: solid
+ *  green aligned, dashed red potential misalignment (the dash carries the
+ *  difference without colour), as between the two texts of a comparison. */
+function PairLine({ tone }: { tone: "reinforce" | "apart" }) {
+  return <span className={`brief-panel-link brief-panel-link-${tone}`} aria-hidden="true" />;
 }
 
 function PairPanel({
@@ -102,16 +133,20 @@ function PairPanel({
   const [state, setState] = useState<{ status: "loading" | "error" | "ok"; found?: FoundPair }>({
     status: "loading",
   });
+  // The loading line only once the wait is noticeable, never on every click.
+  const [slow, setSlow] = useState(false);
   const query = briefQuery(origin, { a, b, locale }).toString();
   // Mounted once per comparison (keyed by the caller), so it starts loading.
   useEffect(() => {
     let alive = true;
+    const timer = setTimeout(() => setSlow(true), SLOW_MS);
     fetch(`/api/brief/pair?${query}`)
       .then((res) => (res.ok ? (res.json() as Promise<FoundPair>) : Promise.reject(new Error())))
       .then((found) => alive && setState({ status: "ok", found }))
       .catch(() => alive && setState({ status: "error" }));
     return () => {
       alive = false;
+      clearTimeout(timer);
     };
   }, [query]);
 
@@ -122,7 +157,10 @@ function PairPanel({
           <PanelTitle title={t("pairDialog")} />
         </DrawerHeader>
         <div className="brief-panel-body">
-          <p className="brief-panel-caveat">{state.status === "error" ? t("error") : t("loading")}</p>
+          {/* Mounted from the start, so a screen reader announces the text when it appears. */}
+          <p className="brief-panel-caveat" role="status">
+            {state.status === "error" ? t("error") : slow ? t("loading") : null}
+          </p>
         </div>
       </>
     );
@@ -157,7 +195,7 @@ function PairPanel({
       <div className="brief-panel-body">
         <Comparison first={sideOf(commitmentOf(targetA))} second={sideOf(commitmentOf(targetB))} tone={toneOf(pair.alignment)} />
         {pair.description && (
-          <Explanation text={pair.description} docs={docs} confidence={pair.confidence}>
+          <Explanation text={pair.description} docs={docs} confidence={pair.confidence} className="brief-panel-ai">
             {resources && <p className="brief-panel-meta">{resources}</p>}
             {pair.descriptionTranslationPending && (
               <p className="brief-panel-caveat">{tp("rationaleTranslationPending")}</p>
@@ -170,6 +208,7 @@ function PairPanel({
       {pair.description && (
         <FeedbackControl
           variant="bar"
+          look="brief"
           countryId={countryId}
           surface="target_pair_rationale"
           anchorIds={[pair.targetAId, pair.targetBId]}
@@ -215,8 +254,8 @@ function DocMark({ doc }: { doc: BriefDocument }) {
 
 /**
  * Target pairs between two documents as a table: the first document's
- * target on the left, the second's on the right, under their names, each
- * row marked with the rating's ink (solid green, dashed red).
+ * target on the left, the second's on the right, under their names, the two
+ * joined by the rating's line (solid green, dashed red).
  */
 function PairRows({
   rows,
@@ -240,8 +279,8 @@ function PairRows({
   return (
     <>
       <p className="brief-panel-cols" data-testid="brief-docpair-cols" aria-hidden="true">
-        <span />
         <DocMark doc={docs[0]} />
+        <span />
         <DocMark doc={docs[1]} />
       </p>
       <ol className="brief-panel-rows brief-panel-pairrows">
@@ -250,11 +289,11 @@ function PairRows({
           return (
             <li key={r.key} className="brief-panel-row" data-testid={testId}>
               <button type="button" onClick={() => onOpen(r.a.id, r.b.id)}>
-                <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
                 <span className="brief-panel-cell" data-testid="brief-docpair-cell">
                   <span className="brief-sr-only">{docs[0].name}: </span>
                   {commitmentLine(left)}
                 </span>
+                <PairLine tone={tone} />
                 <span className="brief-panel-cell" data-testid="brief-docpair-cell">
                   <span className="brief-sr-only">{docs[1].name}: </span>
                   {commitmentLine(right)}
@@ -275,10 +314,10 @@ function PairRows({
 }
 
 /**
- * A pair of documents: the result bar, the pipeline's AI reading (first
- * sentences, the rest on request), a hedged starting point, then the
- * strongest aligned pairs and the potential misalignments, most frequent
- * targets first.
+ * A pair of documents: the result bar, the pipeline's AI reading as one
+ * block (first sentences, the rest on request, the hedged starting point and
+ * the caveat), then the strongest aligned pairs and the potential
+ * misalignments, most frequent targets first.
  */
 function DocPairPanel({
   data,
@@ -294,10 +333,10 @@ function DocPairPanel({
   onOpenPair: (aId: string, bId: string) => void;
 }) {
   const t = useTranslations("brief.panel");
+  const th = useTranslations("brief.hub");
   const tm = useTranslations("labels.contradictionType");
   const tc = useTranslations("labels.confidence");
   const td = useTranslations("briefing.drawer.pair");
-  const { pct } = useNumbers();
   const stat = findDocPair(data.pairs, a, b);
   const note =
     (source.pairNotes ?? []).find((n) => (n.a === a && n.b === b) || (n.a === b && n.b === a)) ?? null;
@@ -337,37 +376,21 @@ function DocPairPanel({
             title
           )}
         </h2>
-        {stat && <ResultStrip label={title} counts={stat.counts} />}
-        {stat && (
-          <p className="brief-panel-sub">
-            {t("docPairCounts", {
-              total: stat.counts.total,
-              aligned: pct(stat.counts.total > 0 ? stat.counts.reinforce / stat.counts.total : 0),
-              partial: pct(stat.counts.total > 0 ? stat.counts.partial / stat.counts.total : 0),
-              apart: pct(stat.counts.total > 0 ? stat.counts.apart / stat.counts.total : 0),
-            })}
-          </p>
-        )}
       </DrawerHeader>
       <div className="brief-panel-body">
+        {stat && (
+          <PanelResult unit={th("centerPairs", { count: stat.counts.total })} counts={stat.counts} />
+        )}
         {note && (
-          <section>
+          <section className="brief-panel-ai">
             <AiHeading label={t("aiReading")} confidence={confidenceLabel(tc, note.confidence)} />
             <p className="brief-panel-lead">
               <AiText text={note.title} docs={source.documents} />
             </p>
             <NoteLine label={t("whereAlign")} text={note.align} docs={source.documents} />
             <NoteLine label={t("whereDiverge")} text={note.diverge} docs={source.documents} />
+            {note.hint && <Pathway text={note.hint} docs={source.documents} />}
             <p className="brief-panel-caveat">{td("aiDisclaimer")}</p>
-          </section>
-        )}
-        {note?.hint && (
-          <section>
-            <h3 className="brief-panel-h">{t("pathwayTitle")}</h3>
-            <p className="brief-panel-text">
-              <AiText text={note.hint} docs={source.documents} />
-            </p>
-            <p className="brief-panel-caveat">{t("pathwayCaveat")}</p>
           </section>
         )}
         <section>
@@ -405,6 +428,7 @@ function DocPairPanel({
       {note && (
         <FeedbackControl
           variant="bar"
+          look="brief"
           countryId={source.countryId}
           surface="doc_pair_synthesis"
           anchorIds={[note.a, note.b]}
@@ -432,11 +456,11 @@ function CommitmentList({
   const shown = all ? items : items.slice(0, LIST_PREVIEW);
   return (
     <>
-      <ul className="brief-panel-rows">
+      <ul className="brief-panel-rows brief-panel-linkrows">
         {shown.map((p) => (
           <li key={p.id} className="brief-panel-row">
             <button type="button" onClick={() => onOpen(p.id)}>
-              <span className={`brief-panel-mark brief-panel-mark-${tone}`} aria-hidden="true" />
+              <PairLine tone={tone} />
               <span className="brief-panel-row-line">
                 <span className="brief-panel-row-doc">{docName(p.doc)} · </span>
                 {commitmentLine(p)}
@@ -464,6 +488,7 @@ function CommitmentPanel({
   onOpenPair: (aId: string, bId: string) => void;
 }) {
   const t = useTranslations("brief.panel");
+  const te = useTranslations("brief.explore");
   const commitment = data.scope.commitments.find((c) => c.id === id);
   const partners = useMemo(() => partnersOf(data.scope, id), [data.scope, id]);
   const counts = useMemo(
@@ -475,11 +500,15 @@ function CommitmentPanel({
   return (
     <>
       <DrawerHeader>
-        <PanelTitle title={commitment.label} sub={docName(commitment.doc)} />
+        <PanelTitle context={docName(commitment.doc)} title={commitment.label} />
       </DrawerHeader>
       <div className="brief-panel-body">
-        <p className="brief-panel-quote-text">{commitment.text}</p>
-        {counts.total > 0 && <ResultStrip label={commitment.label} counts={counts} />}
+        {commitment.text.trim() !== commitment.label.trim() && (
+          <p className="brief-panel-quote-text">{commitment.text}</p>
+        )}
+        {counts.total > 0 && (
+          <PanelResult unit={te("targetFigures", { pairs: counts.total })} counts={counts} />
+        )}
         <section>
           <h3 className="brief-panel-h">{t("worksAgainst", { count: partners.apart.length })}</h3>
           <CommitmentList
@@ -540,36 +569,24 @@ function ThemePanel({
     <>
       <DrawerHeader>
         <PanelTitle
+          context={t(`themeKind.${type}`)}
           title={name}
-          sub={
-            <>
-              <span className="brief-panel-sub-line">{tt(`count.${tone}`, { count: row.count })}</span>
-              <span className="brief-panel-sub-line">{t(`themeKind.${type}`)}</span>
-            </>
-          }
+          sub={tt(`count.${tone}`, { count: row.count })}
         />
       </DrawerHeader>
       <div className="brief-panel-body">
-        <section>
+        <section className="brief-panel-ai">
           <AiHeading label={t("themeSummary")} confidence={confidenceLabel(tc, row.storyline.confidence)} />
           <p className="brief-panel-text">
             <AiText text={row.storyline.description} docs={docNames} />
           </p>
           {resources && <p className="brief-panel-meta">{resources}</p>}
           {!section.exact && <p className="brief-panel-caveat">{tt("notExact")}</p>}
+          {row.storyline.pathway && <Pathway text={row.storyline.pathway} docs={docNames} />}
           <p className="brief-panel-caveat">{td("aiDisclaimer")}</p>
         </section>
         {row.example && (
           <ExamplePairView example={row.example} tone={tone} docs={data.scope.docs} onOpenPair={onOpenPair} />
-        )}
-        {row.storyline.pathway && (
-          <section>
-            <h3 className="brief-panel-h">{t("pathwayTitle")}</h3>
-            <p className="brief-panel-text">
-              <AiText text={row.storyline.pathway} docs={docNames} />
-            </p>
-            <p className="brief-panel-caveat">{t("pathwayCaveat")}</p>
-          </section>
         )}
         <section>
           <h3 className="brief-panel-h">{t("themeDocs")}</h3>
@@ -591,6 +608,7 @@ function ThemePanel({
       {anchor && (
         <FeedbackControl
           variant="bar"
+          look="brief"
           countryId={countryId}
           surface="corpus_storyline"
           anchorIds={[anchor]}
@@ -666,8 +684,8 @@ function AreaPairPanel({
             return (
               <li key={`${c.a.id}__${c.b.id}`} className="brief-panel-row" data-testid="brief-areapair-row">
                 <button type="button" onClick={() => onOpenPair(c.a.id, c.b.id)}>
-                  <span className={`brief-panel-mark brief-panel-mark-${side}`} aria-hidden="true" />
                   {cell(left)}
+                  <PairLine tone={side} />
                   {cell(right)}
                 </button>
               </li>

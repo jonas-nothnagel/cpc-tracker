@@ -1036,11 +1036,13 @@
   height: 0;
 }
 
-[data-brief] .brief-example-link-reinforce {
+[data-brief] .brief-example-link-reinforce,
+[data-brief] .brief-panel-link-reinforce {
   border-top: 2px solid var(--brief-green);
 }
 
-[data-brief] .brief-example-link-apart {
+[data-brief] .brief-example-link-apart,
+[data-brief] .brief-panel-link-apart {
   border-top: 2px dashed var(--brief-red);
 }
 
@@ -2343,6 +2345,15 @@
 
 /* ── Panels: the drill-downs in the brief's type and inks ─────────── */
 
+/* What the panel belongs to (a document, the kind of theme), above its title. */
+[data-brief] .brief-panel-context {
+  margin: 0 0 0.3rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--brief-muted);
+}
+
 [data-brief] .brief-panel-title {
   margin: 0;
   font-family: var(--font-display);
@@ -2357,10 +2368,6 @@
   margin: 0.3rem 0 0;
   font-size: 0.875rem;
   color: var(--brief-muted);
-}
-
-[data-brief] .brief-panel-sub-line {
-  display: block;
 }
 
 [data-brief] .brief-sr-only {
@@ -2408,18 +2415,33 @@
   height: 0.55rem;
 }
 
-/* Target pairs as a two-column table under the two names. */
+/* Target pairs as a two-column table under the two names, the first
+   document's target on the left, the second's on the right, joined by the
+   rating's line between them. */
+[data-brief] .brief-panel-cols,
+[data-brief] .brief-panel-pairrows .brief-panel-row > button {
+  grid-template-columns: minmax(0, 1fr) 1.5rem minmax(0, 1fr);
+  column-gap: 0.6rem;
+}
+
 [data-brief] .brief-panel-cols {
   display: grid;
-  grid-template-columns: 3px minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 0.75rem;
-  margin: 0.6rem 0 0;
-  padding: 0 0.35rem 0.35rem 0;
+  margin: 0;
+  padding: 0 0 0.45rem;
 }
 
 [data-brief] .brief-panel-pairrows .brief-panel-row > button {
-  grid-template-columns: 3px minmax(0, 1fr) minmax(0, 1fr);
   row-gap: 0.2rem;
+}
+
+/* Rows with no mark at their edge: the text stays in line with the titles
+   above it, and the hover tint reaches a little past it on both sides. */
+[data-brief] .brief-panel-pairrows .brief-panel-row > button,
+[data-brief] .brief-panel-linkrows .brief-panel-row > button {
+  width: calc(100% + 1rem);
+  margin: 0 -0.5rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: 6px;
 }
 
 [data-brief] .brief-panel-cell {
@@ -2433,11 +2455,24 @@
 }
 
 [data-brief] .brief-panel-pairrows .brief-panel-row-type {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
 }
 
-[data-brief] .brief-panel-pairrows button:has(.brief-panel-row-type) .brief-panel-mark {
-  grid-row: 1 / span 2;
+/* The line that joins two targets: solid green where they are aligned,
+   dashed red where they may pull apart, level with the first line of text. */
+[data-brief] .brief-panel-link {
+  align-self: start;
+  height: 0;
+  /* In the rows' text size, so 0.7em is the middle of their first line. */
+  font-size: 0.875rem;
+  margin-top: calc(0.7em - 1px);
+}
+
+/* Rows of one target each, partners of the panel's target: the line comes
+   first, as if drawn from that target to each of them. */
+[data-brief] .brief-panel-linkrows .brief-panel-row > button {
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  column-gap: 0.6rem;
 }
 
 [data-brief] .brief-panel-conf,
@@ -2446,50 +2481,102 @@
   color: var(--brief-muted);
 }
 
-[data-brief] .brief-panel-result {
-  margin-top: 0.8rem;
-}
-
-[data-brief] .brief-panel-result .brief-pair-value {
+/* Target pairs by rating: the unit above the bar, each side's share named
+   under its own end. */
+[data-brief] .brief-panel-result-unit {
+  margin: 0 0 0.45rem;
   font-size: 0.875rem;
+  font-weight: 600;
 }
 
 [data-brief] .brief-panel-result .brief-pair-bar {
   height: 14px;
 }
 
+[data-brief] .brief-panel-result-key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.15rem 1rem;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-result-n {
+  font-weight: 600;
+  color: var(--brief-ink);
+  font-variant-numeric: tabular-nums;
+}
+
 [data-brief] .brief-panel-body {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
-  padding: 1.25rem 1.5rem 2.25rem;
+  gap: 2rem;
+  padding: 1.5rem 1.5rem 2.5rem;
   font-size: 0.9375rem;
   line-height: 1.55;
   color: var(--brief-ink);
 }
 
+/* A section's title in the panel: what the list or figure below it shows. */
 [data-brief] .brief-panel-h {
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.6rem;
   font-size: 0.9375rem;
   font-weight: 600;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+/* The AI's reading of what the panel shows, as one block on the desk's grey,
+   set apart from the evidence around it (the figures, the target texts, the
+   lists): one output, with one confidence and one caveat. */
+[data-brief] .brief-panel-ai {
+  padding: 1.1rem 1.25rem 1.15rem;
+  border-radius: 8px;
+  background: var(--brief-desk);
+}
+
+/* Its label ("AI summary · High confidence"): small and grey, a tag rather
+   than a title, so the reading itself leads. */
+[data-brief] .brief-panel-ai > .brief-panel-h {
+  margin-bottom: 0.55rem;
+  font-size: 0.8125rem;
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-panel-ai .brief-panel-caveat {
+  margin-top: 0.9rem;
 }
 
 [data-brief] .brief-panel-lead {
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.9rem;
   font-family: var(--font-display);
   font-size: 1.1875rem;
   line-height: 1.35;
+  text-wrap: pretty;
 }
 
 [data-brief] .brief-panel-note + .brief-panel-note {
-  margin-top: 0.75rem;
+  margin-top: 0.8rem;
 }
 
 [data-brief] .brief-panel-note-label {
-  margin: 0;
+  margin: 0 0 0.1rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--brief-muted);
+  line-height: 1.4;
+  color: var(--brief-ink);
+}
+
+/* The hedged starting point closes the reading, below a hairline. */
+[data-brief] .brief-panel-pathway {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--brief-hairline-strong);
 }
 
 [data-brief] .brief-panel-text {
@@ -2654,7 +2741,7 @@
 /* A row that opens another page (contracts serving both targets). */
 [data-brief] .brief-panel-row > a {
   display: grid;
-  grid-template-columns: 3px minmax(0, 1fr);
+  grid-template-columns: 0.5rem minmax(0, 1fr);
   column-gap: 0.75rem;
   padding: 0.6rem 0.35rem 0.6rem 0;
   color: inherit;
@@ -2670,7 +2757,15 @@
   text-decoration-color: rgba(35, 46, 61, 0.35);
 }
 
-[data-brief] .brief-panel-mark-money {
+/* Money: a small UNDP blue square level with the row's first line, as the
+   contracts page marks it. */
+[data-brief] .brief-panel-money {
+  align-self: start;
+  width: 0.5rem;
+  height: 0.5rem;
+  /* Centred on the first line of the row's 0.875rem text. */
+  font-size: 0.875rem;
+  margin-top: calc(0.7em - 0.25rem);
   background: #0468b1;
 }
 
@@ -2736,23 +2831,64 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* The theme's example, at reading size. */
+/* The theme's example, at reading size: titled like the panel's other
+   sections, each target named in full (two lines at most) over its text, the
+   two names joined by the rating's line. */
 [data-brief] .brief-panel-body .brief-example {
   margin: 0;
 }
 
-[data-brief] .brief-panel-body .brief-example-caption,
+[data-brief] .brief-panel-body .brief-example-caption {
+  display: block;
+  margin: 0 0 0.6rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--brief-ink);
+}
+
+[data-brief] .brief-panel-body .brief-example-pair {
+  grid-template-columns: minmax(0, 1fr) 1.5rem minmax(0, 1fr);
+  column-gap: 0.6rem;
+}
+
 [data-brief] .brief-panel-body .brief-quote-source {
+  margin: 0 0 0.4rem;
   font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+/* One line for the document, so the joining line stays level with the
+   names; its full name is in the tooltip and the panel's header. */
+[data-brief] .brief-panel-body .brief-quote-doc {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[data-brief] .brief-panel-body .brief-quote-label {
+  display: -webkit-box;
+  margin-top: 0.1rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 [data-brief] .brief-panel-body .brief-quote-text {
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 0.9375rem;
+  line-height: 1.55;
 }
 
+/* Level with the middle of the names' first line: the document's line
+   (0.8125rem x 1.35), the gap above the name, half the name's line. */
 [data-brief] .brief-panel-body .brief-example-link {
-  margin-top: 50px;
+  margin: calc(0.8125rem * 1.35 + 0.1rem + 0.875rem * 0.675 - 1px) 0 0;
+}
+
+[data-brief] .brief-panel-body .brief-example-actions {
+  margin-top: 0.75rem;
 }
 
 [data-brief] .brief-panel-body .brief-example-actions .brief-button-quiet {

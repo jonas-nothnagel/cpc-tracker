@@ -86,6 +86,7 @@ export function FeedbackControl({
   contentText,
   context,
   variant = "inline",
+  look = "dashboard",
 }: {
   /** Canonical country slug; the control hides when absent (uploaded runs). */
   countryId?: string;
@@ -103,8 +104,17 @@ export function FeedbackControl({
    * chrome-free; the host owns spacing.
    */
   variant?: "inline" | "bar";
+  /**
+   * "brief" sets the control in the brief's type: one quiet line in sentence
+   * case, the two thumbs as plain glyphs in their colours (no circles, as the
+   * brief's controls carry no containers), and the anonymity note beside
+   * them. "dashboard" keeps the previous dashboard's look.
+   */
+  look?: "dashboard" | "brief";
 }) {
   const t = useTranslations("briefing.drawer.pair.feedback");
+  const brief = look === "brief";
+  const cls = LOOKS[look];
   const locale = useLocale();
 
   const [hash, setHash] = useState<string | null>(null);
@@ -230,7 +240,7 @@ export function FeedbackControl({
     <div
       className={
         variant === "bar"
-          ? "sticky bottom-0 z-10 border-t border-gray-200 px-6 py-3"
+          ? cls.bar
           : undefined
       }
       // Opaque bg so scrolled content disappears beneath the sticky bar.
@@ -239,13 +249,14 @@ export function FeedbackControl({
       <div
         role="group"
         aria-label={t("groupAria")}
-        className="flex items-center gap-3 flex-wrap"
+        className={cls.group}
       >
-        <p className="text-[11px] uppercase tracking-wider text-[var(--undp-gray)]">
+        <p className={cls.prompt}>
           {t("prompt")}
         </p>
         <ThumbButton
           direction="up"
+          plain={brief}
           active={vote === "up"}
           disabled={busy}
           label={t("upAria")}
@@ -253,15 +264,21 @@ export function FeedbackControl({
         />
         <ThumbButton
           direction="down"
+          plain={brief}
           active={vote === "down"}
           disabled={busy}
           label={t("downAria")}
           onClick={() => handleVote("down")}
         />
+        {brief && (
+          <p className="ml-auto pl-3 text-caption text-[var(--undp-gray)]">
+            {t("anonShort")}
+          </p>
+        )}
       </div>
 
       {voteLine && (
-        <p className="mt-1.5 text-[11px] text-[var(--undp-gray)]">
+        <p className={cls.voteLine}>
           {voteLine} {t("retractHint")}
           {!editing && (
             <>
@@ -282,13 +299,13 @@ export function FeedbackControl({
       )}
 
       {vote && !editing && comment && (
-        <p className="mt-1.5 text-[12px] text-[var(--undp-black)] leading-snug border-l-2 border-gray-300 pl-2">
+        <p className={cls.comment}>
           {comment}
         </p>
       )}
 
       {vote && editing && (
-        <div className="mt-2">
+        <div className={cls.editor}>
           <label htmlFor={`feedback-note-${anchorKey}`} className="sr-only">
             {t("noteLabel")}
           </label>
@@ -299,14 +316,14 @@ export function FeedbackControl({
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             placeholder={t("notePlaceholder")}
-            className="w-full text-[12px] text-[var(--undp-black)] leading-snug border border-gray-300 rounded px-2 py-1.5 bg-white focus:outline-none focus:border-[var(--undp-gray)]"
+            className={cls.textarea}
           />
           <div className="mt-1 flex items-center gap-3">
             <button
               type="button"
               disabled={busy}
               onClick={handleNoteSend}
-              className="text-[11px] underline text-[var(--undp-black)] hover:text-[var(--undp-gray)] disabled:opacity-50"
+              className={cls.send}
             >
               {t("send")}
             </button>
@@ -317,7 +334,7 @@ export function FeedbackControl({
                 setEditing(false);
                 setDraft("");
               }}
-              className="text-[11px] underline text-[var(--undp-gray)] hover:text-[var(--undp-black)] disabled:opacity-50"
+              className={cls.cancel}
             >
               {t("cancel")}
             </button>
@@ -325,17 +342,51 @@ export function FeedbackControl({
         </div>
       )}
 
-      <p className="mt-1.5 text-[11px] text-[var(--undp-gray)]">
-        {t("anonNote")}
-      </p>
+      {!brief && (
+        <p className="mt-1.5 text-[11px] text-[var(--undp-gray)]">
+          {t("anonNote")}
+        </p>
+      )}
       {failed && (
-        <p role="status" className="mt-1 text-[11px] text-[#d12800]">
+        <p role="status" className={cls.error}>
           {t("error")}
         </p>
       )}
     </div>
   );
 }
+
+/** Each look's classes, element by element. */
+const LOOKS = {
+  dashboard: {
+    bar: "sticky bottom-0 z-10 border-t border-gray-200 px-6 py-3",
+    group: "flex items-center gap-3 flex-wrap",
+    prompt: "text-[11px] uppercase tracking-wider text-[var(--undp-gray)]",
+    voteLine: "mt-1.5 text-[11px] text-[var(--undp-gray)]",
+    comment: "mt-1.5 text-[12px] text-[var(--undp-black)] leading-snug border-l-2 border-gray-300 pl-2",
+    editor: "mt-2",
+    textarea:
+      "w-full text-[12px] text-[var(--undp-black)] leading-snug border border-gray-300 rounded px-2 py-1.5 bg-white focus:outline-none focus:border-[var(--undp-gray)]",
+    send: "text-[11px] underline text-[var(--undp-black)] hover:text-[var(--undp-gray)] disabled:opacity-50",
+    cancel: "text-[11px] underline text-[var(--undp-gray)] hover:text-[var(--undp-black)] disabled:opacity-50",
+    error: "mt-1 text-[11px] text-[#d12800]",
+  },
+  brief: {
+    bar: "sticky bottom-0 z-10 border-t border-line px-6 py-2",
+    group: "flex items-center gap-x-1 gap-y-0.5 flex-wrap",
+    prompt: "mr-1.5 text-data text-[var(--undp-gray)]",
+    voteLine: "mt-0.5 mb-1 text-caption text-[var(--undp-gray)]",
+    comment: "mb-1 text-caption text-[var(--undp-black)] leading-snug",
+    editor: "mt-1 mb-1.5",
+    // outline-solid: in Tailwind v4, focus:outline-none sets the outline
+    // style to none and outline-2 alone would inherit it (no visible ring).
+    textarea:
+      "w-full text-data text-[var(--undp-black)] leading-snug border border-line rounded-md px-2.5 py-2 bg-white placeholder:text-[var(--undp-gray)] focus:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[var(--undp-blue)]",
+    send: "text-data underline underline-offset-4 text-[var(--undp-black)] hover:text-[var(--undp-gray)] disabled:opacity-50",
+    cancel: "text-data underline underline-offset-4 text-[var(--undp-gray)] hover:text-[var(--undp-black)] disabled:opacity-50",
+    error: "mb-1 text-caption text-[#d12800]",
+  },
+} as const;
 
 const THUMB_COLORS = {
   up: "#196127",
@@ -344,12 +395,15 @@ const THUMB_COLORS = {
 
 function ThumbButton({
   direction,
+  plain = false,
   active,
   disabled,
   label,
   onClick,
 }: {
   direction: "up" | "down";
+  /** The brief's look: the glyph alone in its colour, filled when chosen. */
+  plain?: boolean;
   active: boolean;
   disabled: boolean;
   label: string;
@@ -357,8 +411,24 @@ function ThumbButton({
 }) {
   // Polarity-coloured circular buttons (green up / terracotta down) so the
   // feedback affordance is visible at a glance; user testing showed the
-  // gray inline thumbs were being missed.
+  // gray inline thumbs were being missed. The brief keeps the colours (they
+  // are what made the thumbs findable) and drops the circles.
   const color = THUMB_COLORS[direction];
+  if (plain) {
+    return (
+      <button
+        type="button"
+        aria-pressed={active}
+        aria-label={label}
+        disabled={disabled}
+        onClick={onClick}
+        className="inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-[#f2f3f5] disabled:opacity-50"
+        style={{ color }}
+      >
+        <ThumbGlyph direction={direction} active={active} size={17} />
+      </button>
+    );
+  }
   return (
     <button
       type="button"
@@ -381,21 +451,36 @@ function ThumbButton({
         e.currentTarget.style.borderColor = active ? color : `${color}66`;
       }}
     >
-      <svg
-        width="15"
-        height="15"
-        viewBox="0 0 24 24"
-        fill={active ? "currentColor" : "none"}
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-        style={direction === "down" ? { transform: "rotate(180deg)" } : undefined}
-      >
-        <path d="M7 10v12" />
-        <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
-      </svg>
+      <ThumbGlyph direction={direction} active={active} size={15} />
     </button>
+  );
+}
+
+/** A thumb, up or down, outlined at rest and filled when chosen. */
+function ThumbGlyph({
+  direction,
+  active,
+  size,
+}: {
+  direction: "up" | "down";
+  active: boolean;
+  size: number;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={active ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={direction === "down" ? { transform: "rotate(180deg)" } : undefined}
+    >
+      <path d="M7 10v12" />
+      <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+    </svg>
   );
 }

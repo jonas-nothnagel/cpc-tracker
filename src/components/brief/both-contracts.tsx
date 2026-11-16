@@ -12,7 +12,8 @@ const PREVIEW = 5;
 /**
  * Under a potential misalignment's comparison: the public contracts that
  * already serve both targets, largest first, each opening in the contracts
- * page's panel. Money marks are UNDP blue, as on the contracts page.
+ * page's panel. Money is marked with a small UNDP blue square, as on the
+ * contracts page.
  */
 export function BothContracts({ both, countryId }: { both: ServingBoth; countryId: string }) {
   const t = useTranslations("brief.panel");
@@ -34,7 +35,7 @@ export function BothContracts({ both, countryId }: { both: ServingBoth; countryI
         {shown.map((c) => (
           <li key={c.id} className="brief-panel-row">
             <a href={`${base}?contract=${encodeURIComponent(c.id)}`}>
-              <span className="brief-panel-mark brief-panel-mark-money" aria-hidden="true" />
+              <span className="brief-panel-money" aria-hidden="true" />
               <span className="brief-panel-row-main">
                 <span className="brief-panel-row-line">{c.title}</span>
                 <span className="brief-panel-row-type">{t("bothItem", { value: m.amount(c.value), year: String(c.year) })}</span>

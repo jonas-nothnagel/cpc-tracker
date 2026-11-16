@@ -704,6 +704,7 @@
           "send": "Enviar",
           "cancel": "Cancelar",
           "anonNote": "Los comentarios son anónimos y solo los ve el equipo del proyecto.",
+          "anonShort": "Anónimo, solo lo ve el equipo del proyecto",
           "error": "No se pudo guardar el comentario. Inténtelo de nuevo más tarde."
         },
         "rationaleTranslationPending": "Esta explicación aún no ha sido traducida, por lo que se muestra en inglés."
@@ -2908,7 +2909,7 @@
       "otherTip": "{count, plural, one {# par de metas} other {# pares de metas}} fuera de los temas recurrentes"
     },
     "commitments": {
-      "headlineConcentrated": "De las {total, number} posibles desalineaciones, el {pct} involucra {top, plural, one {una meta} other {# metas}}.",
+      "headlineConcentrated": "El {pct} de las {total, number} posibles desalineaciones involucra {top, plural, one {una} other {#}} de las {targets, number} metas.",
       "headlineSpread": "La posible desalineación se reparte entre {contested, plural, one {# meta} other {# metas}}.",
       "headlineEmpty": "Ninguna meta muestra una posible desalineación.",
       "partner": "{count, number} con {doc}"
@@ -2937,7 +2938,7 @@
       "pairDialog": "Dos metas comparadas",
       "docPairDialog": "{docA} y {docB}",
       "docPairCounts": "{total, number} pares de metas: {aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación",
-      "docPairLead": "{count, plural, =0 {Ninguna posible desalineación entre estos dos documentos.} one {# posible desalineación. Primero, las metas más frecuentes.} other {# posibles desalineaciones. Primero, las metas más frecuentes.}}",
+      "docPairLead": "{count, plural, =0 {Ninguna posible desalineación entre estos dos documentos.} one {# posible desalineación} other {# posibles desalineaciones, primero las metas más frecuentes}}",
       "commitmentDialog": "Meta: {label}",
       "worksAgainst": "{count, plural, =0 {Ninguna posible desalineación en esta selección} one {Posible desalineación con # meta} other {Posible desalineación con # metas}}",
       "worksWith": "{count, plural, =0 {Alineada con ninguna meta en esta selección} one {Alineada con # meta} other {Alineada con # metas}}",
@@ -2952,7 +2953,7 @@
       },
       "themeSummary": "Resumen de la IA",
       "pathwayTitle": "Punto de partida sugerido por la IA",
-      "pathwayCaveat": "Para revisión experta; no es una recomendación.",
+      "pathwayTag": "Para revisión experta, no es una recomendación",
       "themeDocs": "Documentos implicados, según su parte de los pares de metas del tema",
       "aiReading": "Resumen de la IA",
       "whereAlign": "Dónde se alinean",

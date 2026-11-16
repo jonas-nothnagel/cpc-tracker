@@ -32,6 +32,26 @@ export function confidenceLabel(
   return value === "high" || value === "medium" || value === "low" ? tc(value) : null;
 }
 
+/** A heading's label with a short qualifier beside it ("High confidence",
+ *  "For expert review, not a recommendation"). The dot is for the eye; a
+ *  screen reader hears the two apart. */
+export function HeadingTag({ label, tag }: { label: string; tag: string | null }) {
+  return (
+    <>
+      {label}
+      {tag && (
+        <>
+          {" "}
+          <span className="brief-panel-sep" aria-hidden="true">
+            ·
+          </span>{" "}
+          <span className="brief-panel-conf">{tag}</span>
+        </>
+      )}
+    </>
+  );
+}
+
 /** An AI section's heading, with the AI's confidence beside it. */
 export function AiHeading({
   label,
@@ -44,15 +64,7 @@ export function AiHeading({
 }) {
   return (
     <Tag className="brief-panel-h">
-      {label}
-      {confidence && (
-        <>
-          <span className="brief-panel-sep" aria-hidden="true">
-            {" · "}
-          </span>
-          <span className="brief-panel-conf">{confidence}</span>
-        </>
-      )}
+      <HeadingTag label={label} tag={confidence} />
     </Tag>
   );
 }
@@ -87,18 +99,21 @@ export function Explanation({
   docs,
   confidence,
   heading = "h3",
+  className,
   children,
 }: {
   text: string;
   docs?: DocNames;
   confidence?: string | null;
   heading?: "h3" | "h4";
+  /** Extra classes, e.g. the panels' AI block. */
+  className?: string;
   children?: ReactNode;
 }) {
   const t = useTranslations("brief.panel");
   const tc = useTranslations("labels.confidence");
   return (
-    <section className="brief-cmp-ai">
+    <section className={className ? `brief-cmp-ai ${className}` : "brief-cmp-ai"}>
       <AiHeading label={t("aiExplanation")} confidence={confidenceLabel(tc, confidence)} as={heading} />
       <FirstSentence text={text} docs={docs} />
       {children}
