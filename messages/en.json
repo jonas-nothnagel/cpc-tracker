@@ -62,11 +62,11 @@
       },
       "step2": {
         "title": "Automated analysis",
-        "body": "AI classifies each target by policy area and compares it with every target in the other documents to identify areas of alignment and potential misalignment."
+        "body": "AI classifies each target by thematic area and compares it with every target in the other documents to identify areas of alignment and potential misalignment."
       },
       "step3": {
         "title": "Read the brief",
-        "body": "Each country's brief shows where targets are aligned and where they show potential misalignment, by document and by policy area. It can be printed or explored target by target."
+        "body": "Each country's brief shows where targets are aligned and where they show potential misalignment, by document and by thematic area. It can be printed or explored target by target."
       }
     },
     "abbr": {
@@ -184,8 +184,8 @@
       "gga": "Climate adaptation",
       "adaptation": "Climate adaptation",
       "lossDamage": "Loss and damage",
-      "own": "Own policy areas",
-      "ownTooltip": "Policy areas provided with these documents.",
+      "own": "Own thematic areas",
+      "ownTooltip": "Thematic areas provided with these documents.",
       "hr": "Human rights",
       "ggaTooltip": "Global Goal on Adaptation: the seven thematic targets of the UAE Framework for Global Climate Resilience (UNFCCC decision 2/CMA.5)",
       "hrTooltip": "Nine human rights themes from UNDP guidance for this tool, building on UN Environment Management Group guidance on integrating human rights in national biodiversity planning. Shows which themes the reviewed documents engage. Draft under expert review."
@@ -517,8 +517,8 @@
             "body": "The same dots, one block for each pair of documents: each row is a document named at the left, each column a document named under the map, and each dot sits where its two targets meet. Pointing at a block names its two documents and gives its figures; selecting a block opens that pair of documents, and selecting a name puts that document at the centre further down."
           },
           "areas": {
-            "title": "By policy area",
-            "body": "Each row is one policy area of the chosen lens, with a dot for each of its targets. Its bar holds all of the area's target pairs: potential misalignment from the left, alignment from the right. The column names above the rows sort them, most first, then least first. Beside it, each policy area with its number of targets; opening one, or selecting its name on the left, lists its targets. The two other choices list the pairs of policy areas that hold the most potential misalignments or strong alignments; opening one keeps only the targets taking part, and selecting a target shows its partners in every row."
+            "title": "By thematic area",
+            "body": "Each row is one thematic area of the chosen lens, with a dot for each of its targets. Its bar holds all of the area's target pairs: potential misalignment from the left, alignment from the right. The column names above the rows sort them, most first, then least first. Beside it, each thematic area with its number of targets; opening one, or selecting its name on the left, lists its targets. The two other choices list the pairs of thematic areas that hold the most potential misalignments or strong alignments; opening one keeps only the targets taking part, and selecting a target shows its partners in every row."
           }
         }
       },
@@ -526,11 +526,11 @@
         "steps": {
           "ring": {
             "title": "Every target on one ring",
-            "body": "Each dot is one target of the selected documents, set in the arc of its document. Group by sets the arcs by policy area instead, with the targets that fall in one. Pointing at a dot names the target; selecting it puts it at the centre. While a target is at the centre, a first selection opens the comparison of the two and a second puts the dot at the centre."
+            "body": "Each dot is one target of the selected documents, set in the arc of its document. Group by sets the arcs by thematic area instead, with the targets that fall in one. Pointing at a dot names the target; selecting it puts it at the centre. While a target is at the centre, a first selection opens the comparison of the two and a second puts the dot at the centre."
           },
           "centre": {
             "title": "The centre",
-            "body": "At rest the centre holds every target pair between the dots on the ring and how it reads. With a target at the centre, every other dot takes the colour of how it reads against it: green aligned, grey partially aligned, red potential misalignment, sorted within each document. Selecting the name of a document or policy area puts all its targets at the centre. A dot then turns red where its potential misalignments with those targets stand out: at least two, and at least twice as frequent as across the centre as a whole. Another document's name opens the two side by side; empty space or All targets returns to every target."
+            "body": "At rest the centre holds every target pair between the dots on the ring and how it reads. With a target at the centre, every other dot takes the colour of how it reads against it: green aligned, grey partially aligned, red potential misalignment, sorted within each document. Selecting the name of a document or thematic area puts all its targets at the centre. A dot then turns red where its potential misalignments with those targets stand out: at least two, and at least twice as frequent as across the centre as a whole. Another document's name opens the two side by side; empty space or All targets returns to every target."
           },
           "lines": {
             "title": "Lines",
@@ -1458,7 +1458,7 @@
     "steps": {
       "documents": "Policy documents",
       "targets": "Targets",
-      "areas": "Policy areas",
+      "areas": "Thematic areas",
       "start": "Start"
     },
     "documents": {
@@ -1514,13 +1514,13 @@
       "add": "Add a target",
       "addButton": "Add",
       "over": "{count, plural, one {Remove # target to start.} other {Remove # targets to start.}}",
-      "continue": "Continue to the policy areas"
+      "continue": "Continue to the thematic areas"
     },
     "areas": {
-      "title": "Policy areas",
+      "title": "Thematic areas",
       "included": "Included in every analysis",
       "count": "{count, plural, one {# area} other {# areas}}",
-      "add": "Add own policy areas",
+      "add": "Add own thematic areas",
       "name": "Name",
       "namePlaceholder": "National priorities",
       "source": "Source",
@@ -1534,9 +1534,9 @@
       "pasteLabel": "Two columns: name and description",
       "pasteAdd": "Add these areas",
       "removeArea": "Remove",
-      "remove": "Remove own policy areas",
+      "remove": "Remove own thematic areas",
       "problems": {
-        "name": "The policy areas need a name.",
+        "name": "The thematic areas need a name.",
         "source": "The source holds at most 300 characters.",
         "count": "Between 1 and 30 areas are needed.",
         "areaName": "Each area needs a name.",
@@ -1557,7 +1557,7 @@
         "country": "A country name is needed.",
         "documents": "Targets from at least 2 documents are needed.",
         "reading": "Some documents are still being read.",
-        "ownLens": "The own policy areas need attention.",
+        "ownLens": "The own thematic areas need attention.",
         "unread": "Some documents are not read yet."
       },
       "start": "Start the analysis",
@@ -2846,7 +2846,7 @@
       "page": "Page {page, number} of {total, number}",
       "footer": "Prepared on {date} with PACE (Policy Alignment and Coherence Explorer). AI-assisted analysis for validation by national experts.",
       "title": "Policy coherence brief",
-      "lensScope": "Policy areas: {lens}",
+      "lensScope": "Thematic areas: {lens}",
       "translatedMachine": "Target texts on this page are machine translations.",
       "translatedSource": "Target texts on this page are translations of the original documents.",
       "figures": {
@@ -2861,7 +2861,7 @@
       "apart": "Potential misalignment",
       "commitments": "Targets to review first",
       "documents": "Alignment by document",
-      "areas": "By policy area",
+      "areas": "By thematic area",
       "aligned": "Strongest alignments",
       "spending": "Reviewed spending",
       "contracts": "Public contracts",
@@ -2925,11 +2925,11 @@
     },
     "areas": {
       "headline": "{area} shows the highest share of potential misalignment: {pct}.",
-      "headlineEmpty": "Too few rated target pairs in any policy area to compare.",
+      "headlineEmpty": "Too few rated target pairs in any thematic area to compare.",
       "commitmentsCount": "{count, plural, one {# target} other {# targets}}",
       "tooFew": "too few target pairs",
       "row": "{area}: {pct} potential misalignment across {comparisons, number} target pairs",
-      "headlineNone": "No rated policy area shows potential misalignment."
+      "headlineNone": "No rated thematic area shows potential misalignment."
     },
     "panel": {
       "back": "Back",
@@ -3080,10 +3080,10 @@
       "lines": "Lines",
       "inCentre": "In the centre",
       "kindDoc": "Document",
-      "kindArea": "Policy area · {lens}",
+      "kindArea": "Thematic area · {lens}",
       "groupFigures": "{targets, plural, one {# target} other {# targets}}, {pairs, plural, one {# target pair} other {# target pairs}} with the other documents",
       "withDocs": "With the other documents",
-      "withAreas": "With the other policy areas",
+      "withAreas": "With the other thematic areas",
       "browseDocs": "Documents",
       "targetsCount": "{count, plural, one {# target} other {# targets}}",
       "tipWith": "With {name}:",
@@ -3159,7 +3159,7 @@
       "linesCount": "{count, plural, one {# budget line} other {# budget lines}}",
       "actionsCount": "{count, plural, one {# reported action} other {# reported actions}}",
       "withDocsCoverage": "By document",
-      "withAreasCoverage": "By policy area",
+      "withAreasCoverage": "By thematic area",
       "gapBudget": "Without a matching budget line ({count, number})",
       "gapActions": "Without a strongly aligned reported action ({count, number})",
       "rankedBudget": "Budget lines matching the most targets",
@@ -3197,7 +3197,7 @@
         "record": "All public contracts",
         "purpose": "Contracts for nature and climate",
         "places": "Contracts by location",
-        "areas": "Contracts by policy area"
+        "areas": "Contracts by thematic area"
       },
       "record": {
         "headline": "{value} in {count} public contracts since {year}",
@@ -3211,7 +3211,7 @@
         "second": "{sign}{per100} more for work where nature or climate is a side benefit.",
         "tag": "AI reading of each contract's title",
         "focusLine": "{name}: {first} in {firstYear}, {last} in {lastYear}.",
-        "byArea": "By policy area"
+        "byArea": "By thematic area"
       },
       "set": {
         "all": "All {count} contracts · {value}",
@@ -3220,15 +3220,15 @@
         "of": "of {value}"
       },
       "areas": {
-        "lens": "Policy areas",
+        "lens": "Thematic areas",
         "headline": "{area} holds {tshare} of {targets} and {mshare} of the money contracted mainly for nature or climate{place}",
         "headlineTop": "{area} draws {mshare} of the money contracted mainly for nature or climate{place}, with {tshare} of {targets}",
-        "headlineEmpty": "No money contracted mainly for nature or climate falls in these policy areas",
+        "headlineEmpty": "No money contracted mainly for nature or climate falls in these thematic areas",
         "second": "{area} draws {mshare}, with {tshare} of the targets.",
         "targetsAll": "the targets",
         "targetsOf": "the {doc} targets",
         "inPlace": " in {place}",
-        "none": "No policy area",
+        "none": "No thematic area",
         "headMoney": "Mainly for nature or climate",
         "headTargets": "Targets",
         "headTargetsOf": "Targets of {doc}",
@@ -3236,7 +3236,7 @@
         "tableRed": "potentially misaligned tenders",
         "tableGreen": "a strongly matching contract",
         "of": "{green} of {total}",
-        "back": "All policy areas",
+        "back": "All thematic areas",
         "facts": "{value} in {count, plural, one {# contract} other {# contracts}} mainly for nature or climate · {targets, plural, one {# target} other {# targets}}",
         "synergy": "{share} of its contracts with a strong match serve 3 or more documents at once (all areas: {base})",
         "rowsHead": "{count, plural, one {# target} other {# targets}}",
@@ -3257,8 +3257,8 @@
         "switch": "Money shown",
         "switchMoney": "Mainly for nature or climate",
         "switchAll": "All contracts",
-        "area": "Policy area",
-        "areaAll": "All policy areas",
+        "area": "Thematic area",
+        "areaAll": "All thematic areas",
         "doc": "Document",
         "docAll": "All",
         "noPlace": "No single place named",
@@ -3280,8 +3280,8 @@
           "doc": "{doc} targets",
           "area": "{area} targets",
           "both": "{doc} targets in {area}",
-          "noArea": "targets with no policy area",
-          "bothNoArea": "{doc} targets with no policy area"
+          "noArea": "targets with no thematic area",
+          "bothNoArea": "{doc} targets with no thematic area"
         },
         "headlineMatch": "{count, plural, one {# tender strongly matches} other {# tenders strongly match}} {what}; {pctNone} name no single place, {pctTop} are in {top}",
         "headlineMatchOver": "{place} holds {share} of the {count, plural, one {# tender} other {# tenders}} strongly matching {what}, against {base} of all strongly matching tenders",
@@ -3296,7 +3296,7 @@
         "facts": "{all} in {count, plural, one {# contract} other {# contracts}} · {green} in {greenCount, plural, one {# contract} other {# contracts}} mainly for nature or climate, {sign}{per100} of every {sign}100",
         "factsFocus": "{all} in {count, plural, one {# contract} other {# contracts}} · {green} in {greenCount, plural, one {# contract} other {# contracts}} mainly for nature or climate {focus}",
         "factsTenders": "{count, plural, one {# tender} other {# tenders}} {kind, select, mis {potentially misaligned with} other {strongly matching}} {what} · {value}",
-        "byArea": "By policy area ({lens})",
+        "byArea": "By thematic area ({lens})",
         "matched": "Its contracts strongly match {count, plural, one {# target} other {# targets}}",
         "seeContracts": "See its {count, plural, one {# contract} other {# contracts}}",
         "listTitle": "Contracts in {place}",
@@ -3381,7 +3381,7 @@
           "significant": "Nature or climate as a side benefit",
           "none": "Not for nature or climate"
         },
-        "areas": "Policy areas",
+        "areas": "Thematic areas",
         "confidence": {
           "high": "High confidence",
           "medium": "Medium confidence",
@@ -3427,7 +3427,7 @@
         "area": "for {area}",
         "doc": "strongly matching {doc} targets",
         "place": "in {place}",
-        "noArea": "with no policy area",
+        "noArea": "with no thematic area",
         "note": "Focus: {parts}"
       },
       "closer": {
@@ -3584,15 +3584,15 @@
       "currency": "Amounts in"
     },
     "areaView": {
-      "title": "Targets and alignment by policy area",
-      "noneTargets": "No targets fall in these policy areas.",
-      "noneSide": "No target pairs in these policy areas {side, select, apart {show potential misalignment} other {are strongly aligned}}.",
+      "title": "Targets and alignment by thematic area",
+      "noneTargets": "No targets fall in these thematic areas.",
+      "noneSide": "No target pairs in these thematic areas {side, select, apart {show potential misalignment} other {are strongly aligned}}.",
       "noneArea": "No {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",
-      "lensGroup": "Policy areas",
+      "lensGroup": "Thematic areas",
       "sideGroup": "Targets or target pairs",
       "viewTargets": "Targets",
       "areaShareTargets": "{pct} of the targets",
-      "areaList": "Policy areas and their targets",
+      "areaList": "Thematic areas and their targets",
       "showAllTargets": "Show all {count, number} targets",
       "showFewerTargets": "Show fewer",
       "sideApart": "Potential misalignment",
@@ -3614,7 +3614,7 @@
       "partnersOutside": "{count, number} outside these areas",
       "tip": "{side, select, apart {potential misalignment with} other {strongly aligned with}} {count, plural, one {# target} other {# targets}}",
       "panelSub": "{count, number} of {pairs, number} target pairs {side, select, apart {show potential misalignment} other {are strongly aligned}}",
-      "panelDialog": "Target pairs between policy areas",
+      "panelDialog": "Target pairs between thematic areas",
       "targets": "{count, plural, one {# target} other {# targets}}",
       "outsidePairs": "{side, select, apart {{count, plural, one {# potential misalignment falls} other {# potential misalignments fall}}} other {{count, plural, one {# strong alignment falls} other {# strong alignments fall}}}} between targets outside these areas.",
       "partnersElsewhere": "{count, number} elsewhere",

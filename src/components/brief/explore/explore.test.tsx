@@ -223,7 +223,7 @@ describe("Explore", () => {
       .getAllByTestId("explore-browse-row")
       .find((row) => row.textContent?.includes("Agriculture"))!;
     fireEvent.click(within(agriculture).getByRole("button", { name: /^Agriculture/ }));
-    expect(within(side()).getByText("Policy area · Biodiversity")).toBeInTheDocument();
+    expect(within(side()).getByText("Thematic area · Biodiversity")).toBeInTheDocument();
     expect(within(side()).getByRole("heading", { name: "Agriculture" })).toBeInTheDocument();
   });
 

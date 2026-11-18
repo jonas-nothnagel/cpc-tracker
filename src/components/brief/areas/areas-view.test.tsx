@@ -75,7 +75,7 @@ const row = (id: string) => document.querySelector(`[data-row="${id}"]`) as HTML
 const openSecond = () => fireEvent.click(within(pairRows()[1]).getByRole("button", { expanded: false }));
 /** An area's name on the picture, which picks the area. */
 const areaName = (id: string, name: string) => within(row(id)).getByRole("button", { name });
-const TITLE = "Targets and alignment by policy area";
+const TITLE = "Targets and alignment by thematic area";
 const title = () => screen.getByRole("heading", { level: 2 }).textContent;
 /** The way back from a picked area to all pairs of areas. */
 const backAll = () => screen.queryByRole("button", { name: "Back to All pairs of areas" });
@@ -238,7 +238,7 @@ describe("AreasView", () => {
   it("says so where the list would stand when no target pair in these areas is on the side", () => {
     renderPairs({ data: buildBriefData(SOURCE, scopeOf(SOURCE, ["A", "C"]), "globe") });
     expect(title()).toBe(TITLE);
-    expect(screen.getByText("No target pairs in these policy areas show potential misalignment.")).toBeTruthy();
+    expect(screen.getByText("No target pairs in these thematic areas show potential misalignment.")).toBeTruthy();
     expect(screen.queryAllByTestId("brief-area-pair")).toHaveLength(0);
     expect(document.querySelector(".brief-av-rest")).toBeNull();
   });
@@ -266,7 +266,7 @@ describe("AreasView", () => {
 
   it("reads each row to screen readers with its number of targets", () => {
     renderPairs();
-    const list = screen.getByRole("list", { name: "Policy areas" });
+    const list = screen.getByRole("list", { name: "Thematic areas" });
     expect(within(list).getAllByRole("listitem")[0].textContent).toContain("3 targets");
   });
 

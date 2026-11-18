@@ -83,9 +83,19 @@ describe("checkAnalyzeBody", () => {
     });
   });
 
-  it("refuses an own lens without a name or without areas", () => {
-    expect(checkAnalyzeBody(body({ ownLens: { name: " ", areas: [area("Water")] } }))).toMatchObject({ code: "ownLens" });
-    expect(checkAnalyzeBody(body({ ownLens: lens([]) }))).toMatchObject({ code: "ownLens" });
+  it("refuses an own lens without a name or without areas, saying so in the app's words", () => {
+    expect(checkAnalyzeBody(body({ ownLens: { name: " ", areas: [area("Water")] } }))).toMatchObject({
+      code: "ownLens",
+      error: expect.stringMatching(/^The thematic areas need a name of at most \d+ characters\.$/),
+    });
+    expect(checkAnalyzeBody(body({ ownLens: lens([]) }))).toMatchObject({
+      code: "ownLens",
+      error: expect.stringMatching(/^Between 1 and \d+ thematic areas are needed\.$/),
+    });
+    expect(checkAnalyzeBody(body({ ownLens: lens([area(" ")]) }))).toMatchObject({
+      code: "ownLens",
+      error: expect.stringMatching(/^Each thematic area needs a name of at most \d+ characters\.$/),
+    });
   });
 
   it("accepts 75 + 75 targets from two documents", () => {

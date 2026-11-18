@@ -271,7 +271,7 @@ describe("brief sections", () => {
     };
     wrap(<AreasSection data={calm} lensName="Biodiversity" />);
     expect(
-      screen.getByRole("heading", { name: "No rated policy area shows potential misalignment." }),
+      screen.getByRole("heading", { name: "No rated thematic area shows potential misalignment." }),
     ).toBeTruthy();
   });
 });

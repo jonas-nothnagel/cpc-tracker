@@ -80,7 +80,7 @@ describe("UploadPage", () => {
     expect(steps.map((b) => [b.textContent, (b as HTMLButtonElement).disabled])).toEqual([
       ["1Policy documents", false],
       ["2Targets", true],
-      ["3Policy areas", true],
+      ["3Thematic areas", true],
       ["4Start", true],
     ]);
     expect(screen.getByText("PDF, Word, text or spreadsheet files, up to 50 MB each.")).toBeInTheDocument();
