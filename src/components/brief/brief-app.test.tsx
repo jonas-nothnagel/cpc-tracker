@@ -17,6 +17,9 @@ import { defaultSelection } from "@/lib/brief/selection";
 import { TOUR_STEPS } from "@/components/dashboard/coherence-briefing/tour/steps";
 import type { BriefSource } from "@/lib/brief/source";
 import { briefFixture } from "@/lib/brief/test-fixture";
+import { parseBerAreas } from "@/lib/brief/ber-areas";
+import { spendingSetup } from "@/lib/brief/spending";
+import { levelsPayload } from "@/lib/brief/spending-fixture";
 import { contractsSetup } from "@/lib/brief/contracts/setup";
 import { contractsFixture } from "@/lib/brief/contracts/test-fixture";
 import type { GeoFile } from "@/lib/brief/contracts/geo";
@@ -455,6 +458,32 @@ describe("BriefApp screen and print", () => {
     expect(within(areas).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
     expect(window.location.search).toContain("lens=ipcc");
     expect(sheets().querySelector('[data-section="areas"]')?.textContent).toContain("Thematic areas: Climate mitigation");
+  });
+
+  it("reads the reviewed spending's areas in the brief's lens, and a lens chosen there is the brief's", () => {
+    const base = briefFixture();
+    const source = {
+      ...base,
+      spending: true,
+      lenses: [
+        ...base.lenses,
+        { id: "ipcc" as const, taxonomyType: "sector", categories: [{ id: "s1", name: "Energy" }], primary: { A1: "s1" } },
+      ],
+    };
+    const placed = (lens: string, area: string) => parseBerAreas({ lines: [{ code: "71405", area, status: "second-agrees" }] }, null, lens);
+    const spending = spendingSetup(levelsPayload(), source, { areas: { globe: placed("globe", "g1"), ipcc: placed("sector", "s1") } })!;
+    render(
+      <NextIntlClientProvider locale="en" messages={en} timeZone="UTC">
+        <BriefApp source={source} initialSelection={defaultSelection(source)} preparedOn="2026-09-23T10:00:00.000Z" spending={spending} />
+      </NextIntlClientProvider>,
+    );
+    const section = screen.getByTestId("brief-spending");
+    fireEvent.click(within(section).getByRole("button", { name: "Climate mitigation" }));
+    expect(window.location.search).toContain("lens=ipcc");
+    expect(within(section).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
+    // The thematic areas follow the same lens.
+    const areas = screen.getByTestId("brief-areas");
+    expect(within(areas).getByRole("button", { name: "Climate mitigation" }).getAttribute("aria-pressed")).toBe("true");
   });
 
   it("opens a pair of policy areas' target pairs in a panel", () => {

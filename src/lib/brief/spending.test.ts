@@ -9,7 +9,7 @@ import {
   levelsPayload as mongoliaLike,
   sameNamePayload as sameName,
 } from "./spending-fixture";
-import { itemOpens, percentLabel, spendingAreas, spendingRecord, spendingSetup, type SpendingItem } from "./spending";
+import { itemOpens, percentLabel, spendingAreas, spendingLens, spendingRecord, spendingSetup, type SpendingItem } from "./spending";
 
 describe("spendingSetup from Country X's file", () => {
   it("keeps the lines with spending, their area and their strong matches", () => {
@@ -131,7 +131,7 @@ describe("spendingSetup from a rebuilt record", () => {
       { globe: { "82212": { call: "change", area: "g2", by: "A reviewer", at: "2026-10-24" } } },
       "globe",
     );
-    const setup = spendingSetup(mongoliaLike(), briefFixture(), { areas })!;
+    const setup = spendingSetup(mongoliaLike(), briefFixture(), { areas: { globe: areas } })!;
     expect(setup.lines.map((l) => [l.code, l.area, l.areaStatus])).toEqual([
       ["71405", "g1", "ai"],
       ["82212", "g2", "checked"],
@@ -411,5 +411,87 @@ describe("percentLabel", () => {
     expect(percentLabel(0.613)).toBe("61%");
     expect(percentLabel(0.004)).toBe("<1%");
     expect(percentLabel(0)).toBe("0%");
+  });
+});
+
+describe("the areas in a climate lens", () => {
+  /** The fixture with a climate mitigation lens beside Biodiversity. */
+  function withMitigation() {
+    const base = briefFixture();
+    const ipcc = {
+      id: "ipcc" as const,
+      taxonomyType: "sector",
+      categories: [
+        { id: "s1", name: "Energy" },
+        { id: "s2", name: "Agriculture, forestry and other land use" },
+      ],
+      primary: { A1: "s1", A2: "s1", B4: "s2", B5: "s2", B6: "s2", C1: "s2" } as Record<string, string>,
+    };
+    return { ...base, lenses: [...base.lenses, ipcc] };
+  }
+  const placed = (lens: string, lines: [string, string | null][]) =>
+    parseBerAreas({ lines: lines.map(([code, area]) => ({ code, area, status: area ? "second-agrees" : "no-clear-area" })) }, null, lens);
+
+  it("places each line in every lens the brief offers that it is placed in, Biodiversity first", () => {
+    const setup = spendingSetup(mongoliaLike(), withMitigation(), {
+      areas: {
+        globe: placed("globe", [["71405", "g1"], ["82212", null]]),
+        ipcc: placed("sector", [["71405", "s2"], ["82212", "s1"]]),
+        // The brief offers no climate adaptation lens here: its placements stay out.
+        gga: placed("gga", [["71405", "gga_water"]]),
+      },
+    })!;
+    expect(setup.lenses).toEqual(["globe", "ipcc"]);
+    // A line's own area stays its biodiversity area.
+    expect(setup.lines.map((l) => [l.code, l.area])).toEqual([
+      ["71405", "g1"],
+      ["82212", null],
+    ]);
+  });
+
+  it("reads the areas, their targets and their money in the lens shown", () => {
+    const source = withMitigation();
+    const setup = spendingSetup(mongoliaLike(), source, {
+      areas: { globe: placed("globe", [["71405", "g1"], ["82212", "g2"]]), ipcc: placed("sector", [["71405", "s2"], ["82212", null]]) },
+    })!;
+    const reading = spendingAreas(setup, source, ["A", "B", "C"], "ipcc");
+    // Agriculture, forestry and other land use: B4-B6 and C1, and 71405's 7 of the 10.
+    expect(reading.areas.map((a) => [a.id, a.targets.length, a.spend])).toEqual([
+      ["s2", 4, 7],
+      ["s1", 2, 0],
+    ]);
+    expect(reading.areas[0].lines.map((l) => [l.code, l.area, l.areaStatus])).toEqual([["71405", "s2", "ai"]]);
+    expect(reading.apart.lines.map((l) => [l.code, l.area, l.areaStatus])).toEqual([["82212", null, "apart"]]);
+    expect(reading.apart.spendShare).toBeCloseTo(3 / 10);
+    // Biodiversity reads as it did.
+    expect(spendingAreas(setup, source, ["A", "B", "C"]).areas.map((a) => [a.id, a.spend])).toEqual([
+      ["g1", 7],
+      ["g2", 3],
+      ["g5", 0],
+    ]);
+  });
+
+  it("counts a line placed in an area its lens does not list as kept apart, so no money is lost", () => {
+    const source = withMitigation();
+    const setup = spendingSetup(mongoliaLike(), source, {
+      areas: { globe: placed("globe", [["71405", "g1"], ["82212", null]]), ipcc: placed("sector", [["71405", "s9"], ["82212", "s1"]]) },
+    })!;
+    const reading = spendingAreas(setup, source, ["A", "B", "C"], "ipcc");
+    expect(reading.apart.lines.map((l) => l.code)).toEqual(["71405"]);
+    expect(reading.areas.reduce((s, a) => s + a.spend, 0) + reading.apart.spend).toBe(10);
+  });
+
+  it("shows the brief's lens where the lines are placed in it, else Biodiversity", () => {
+    const source = withMitigation();
+    const setup = spendingSetup(mongoliaLike(), source, { areas: { ipcc: placed("sector", [["71405", "s2"]]) } })!;
+    expect(spendingLens(setup, "ipcc")).toBe("ipcc");
+    expect(spendingLens(setup, "hr")).toBe("globe");
+    expect(spendingLens(setup, null)).toBe("globe");
+    // Read in a lens the lines are not placed in, the areas are Biodiversity's.
+    expect(spendingAreas(setup, source, ["A", "B", "C"], "hr").areas.map((a) => a.id)).toEqual(["g5", "g2", "g1"]);
+  });
+
+  it("keeps Country X's illustrative file to Biodiversity", () => {
+    expect(spendingSetup(legacy(), withMitigation())!.lenses).toEqual(["globe"]);
   });
 });

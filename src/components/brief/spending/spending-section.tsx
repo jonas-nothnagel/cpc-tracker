@@ -5,11 +5,12 @@ import { useFormatter, useTranslations } from "next-intl";
 import { keepCurrencyInLink } from "@/components/brief/contracts/currency-switch";
 import type { Currency } from "@/components/brief/contracts/money";
 import { moneyParts, per100 } from "@/lib/brief/contracts/money";
-import type { BriefSource } from "@/lib/brief/source";
+import type { BriefSource, LensId } from "@/lib/brief/source";
 import {
   itemOpens,
   percentLabel,
   spendingAreas,
+  spendingLens,
   spendingRecord,
   type BudgetType,
   type SeriesId,
@@ -19,6 +20,7 @@ import {
   type SpendingRecord,
   type SpendingSetup,
 } from "@/lib/brief/spending";
+import { lensNameOf, lensTooltip } from "../lens-tooltip";
 import { SectionHead } from "../section-head";
 import "./spending.css";
 
@@ -34,8 +36,9 @@ const ITEMS_MAX = 6;
  * columns: the record (a hundred squares and its two figures beside each
  * year's spending, the parts the review keeps apart within it); then what the
  * money is for (each area's share of the spending beside its share of the
- * targets), beside a sentence on how few areas hold half of the targets and
- * the review's own lines. Amounts are in US$ (each year at its own rate) or in
+ * targets, in the brief's lens where the lines are placed in it, else in
+ * Biodiversity), beside a sentence on how few areas hold half of the targets
+ * and the review's own lines. Amounts are in US$ (each year at its own rate) or in
  * the review's own currency, as the page's currency says. Money is UNDP blue;
  * green and red stay with alignment. What the section knows but does not say
  * on its face is kept in ./DISCLAIMERS.md.
@@ -44,6 +47,8 @@ export function SpendingSection({
   setup,
   source,
   docs,
+  lens = null,
+  onLens,
   currency = "usd",
   onCurrency,
   onExploreArea,
@@ -52,19 +57,36 @@ export function SpendingSection({
   source: BriefSource;
   /** The brief's documents: the targets are read from these. */
   docs: string[];
+  /** The brief's lens: the areas are read in it where the lines are placed
+   *  in it, else in Biodiversity. */
+  lens?: LensId | null;
+  onLens?: (next: LensId) => void;
   /** The page's currency: US$, or the review's own ("mnt" names it). */
   currency?: Currency;
   onCurrency?: (next: Currency) => void;
-  /** Puts a biodiversity area in the centre of the ring, budget lines on. */
-  onExploreArea?: (areaId: string) => void;
+  /** Puts an area of the lens shown in the centre of the ring, budget lines on. */
+  onExploreArea?: (areaId: string, lens: LensId) => void;
 }) {
   const t = useTranslations("brief.spending");
+  const tl = useTranslations("briefing.lens");
   const money = useMoney(setup, currency);
   const record = useMemo(() => spendingRecord(setup), [setup]);
-  const reading = useMemo(() => spendingAreas(setup, source, docs), [setup, source, docs]);
-  // The area row open in the table: the sentence beside it follows it.
-  const [openArea, setOpenArea] = useState<string | null>(null);
+  const shownLens = spendingLens(setup, lens);
+  const reading = useMemo(() => spendingAreas(setup, source, docs, shownLens), [setup, source, docs, shownLens]);
+  // The area row open in the table, in the lens it was opened in: the
+  // sentence beside it follows it, and another lens closes it.
+  const [openIn, setOpenIn] = useState<{ lens: LensId; id: string } | null>(null);
+  const openArea = openIn?.lens === shownLens ? openIn.id : null;
+  const setOpenArea = (id: string | null) => setOpenIn(id === null ? null : { lens: shownLens, id });
   const opened = reading.areas.find((a) => a.id === openArea);
+  // The lenses the lines are placed in, offered where there is a choice.
+  const lensChoice =
+    onLens && setup.lenses.length > 1
+      ? setup.lenses.map((id) => {
+          const known = source.lenses.find((l) => l.id === id);
+          return { id, name: lensNameOf(source.lenses, id, tl), tooltip: known ? lensTooltip(known, tl) : undefined };
+        })
+      : null;
   const areasSentence = opened
     ? t("areas.insightArea", {
         area: opened.name,
@@ -140,9 +162,13 @@ export function SpendingSection({
           setup={setup}
           reading={reading}
           money={money}
+          lensName={lensNameOf(source.lenses, shownLens, tl)}
+          lenses={lensChoice}
+          shownLens={shownLens}
+          onLens={onLens}
           open={openArea}
           onOpen={setOpenArea}
-          onExploreArea={onExploreArea}
+          onExploreArea={onExploreArea ? (id) => onExploreArea(id, shownLens) : undefined}
         />
         <div className="sp-pair-side">
           {areasSentence && (
@@ -609,6 +635,10 @@ function AreasStep({
   setup,
   reading,
   money,
+  lensName,
+  lenses,
+  shownLens,
+  onLens,
   open,
   onOpen,
   onExploreArea,
@@ -616,6 +646,12 @@ function AreasStep({
   setup: SpendingSetup;
   reading: ReturnType<typeof spendingAreas>;
   money: Money;
+  /** The lens the areas are read in, naming the area column. */
+  lensName: string;
+  /** The lenses the lines are placed in, where there is a choice. */
+  lenses: { id: LensId; name: string; tooltip?: string }[] | null;
+  shownLens: LensId;
+  onLens?: (next: LensId) => void;
   /** The row open: an area's id, "apart", or none. The section's sentence follows it. */
   open: string | null;
   onOpen: (next: string | null) => void;
@@ -643,8 +679,17 @@ function AreasStep({
           </button>
         </div>
       </div>
+      {lenses && onLens && (
+        <p className="brief-av-choice" role="group" aria-label={t("lensGroup")}>
+          {lenses.map((l) => (
+            <button key={l.id} type="button" aria-pressed={l.id === shownLens} title={l.tooltip} onClick={() => onLens(l.id)}>
+              {l.name}
+            </button>
+          ))}
+        </p>
+      )}
       <div className="sp-row sp-row-head" aria-hidden="true">
-        <span>{t("colArea")}</span>
+        <span>{lensName}</span>
         <span>{mode === "amount" ? t("colTargetsCount") : t("colTargets")}</span>
         <span>{mode === "amount" ? t("colSpendAmount") : t("colSpend")}</span>
       </div>

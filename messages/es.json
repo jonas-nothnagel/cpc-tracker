@@ -3548,15 +3548,14 @@
         "showFewer": "Mostrar solo las mayores"
       },
       "areas": {
-        "title": "Metas y gasto revisado por área de biodiversidad",
-        "insight": "{count, plural, one {# de las {of, number} áreas de biodiversidad concentra} other {# de las {of, number} áreas de biodiversidad concentran}} {targets} de las metas y {spend} del gasto revisado.",
+        "title": "Metas y gasto revisado por área temática",
+        "insight": "{count, plural, one {# de las {of, number} áreas temáticas concentra} other {# de las {of, number} áreas temáticas concentran}} {targets} de las metas y {spend} del gasto revisado.",
         "insightArea": "{area} concentra {spend} del gasto revisado y {targets} de las metas.",
-        "colArea": "Área de biodiversidad",
         "colTargets": "Parte de las metas",
         "colSpend": "Parte del gasto revisado",
         "colTargetsCount": "Metas",
         "colSpendAmount": "Gasto revisado",
-        "listLabel": "Áreas de biodiversidad, su parte de las metas y del gasto revisado",
+        "listLabel": "Áreas temáticas, su parte de las metas y del gasto revisado",
         "rowLabel": "Metas: {targets}; gasto revisado: {spend}",
         "noSpend": "Ninguno",
         "apartRow": "Gasto general en biodiversidad, sin área específica",
@@ -3580,6 +3579,7 @@
         },
         "linesMore": "{count, plural, one {y # línea más} other {y # líneas más}}",
         "switch": "Mostrar proporciones o montos",
+        "lensGroup": "Áreas temáticas",
         "shares": "Proporción",
         "amounts": "Monto",
         "targetsCount": "{count, plural, =0 {Ninguna meta} one {# meta} other {# metas}}"

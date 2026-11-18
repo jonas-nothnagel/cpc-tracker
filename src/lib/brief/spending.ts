@@ -5,7 +5,7 @@ import { shownName, type BerNames } from "./ber-names-shared";
 import { areaLines, countedIn, shownCurrency } from "./ber-record";
 import { MIN_AREA_COMPARISONS, scopeOf, type ToneCounts } from "./compute";
 import { insightHalf } from "./insight";
-import type { BriefSource } from "./source";
+import type { BriefSource, LensId } from "./source";
 
 /** A name as the page shows it: in the page's language where the names file
  *  gives one, a machine translation flagged, the review's own kept beside. */
@@ -33,9 +33,11 @@ interface Shown {
  * Every amount is the review's own (python/data/{country}-ber.json, built by
  * the adapters of step 1), in the review's currency, with its US$ twin at each
  * year's exchange rate where the review is not in US$; the page shows one of
- * the two. Areas come from step 2 (python/output/{country}/ber_areas_globe.json,
- * with a person's calls in python/data). Country X's illustrative file predates
- * the record and is read the earlier way.
+ * the two. Areas come from step 2 (python/output/{country}/ber_areas_<lens>.json,
+ * with a person's calls in python/data): in Biodiversity, and in the climate
+ * lenses where the brief offers them and the lines are placed in them.
+ * Country X's illustrative file predates the record and is read the earlier
+ * way, in Biodiversity only.
  */
 
 /** A part of the reviewed spending the review keeps apart. */
@@ -98,6 +100,12 @@ export interface SpendingItem extends Shown {
   partsCount?: number;
 }
 
+/** A line's area in one lens, or null while kept apart there. */
+export interface LinePlacement {
+  area: string | null;
+  status: AreaStatus;
+}
+
 export interface SpendingLine extends Shown {
   /** The pipeline's id, `BER_<code>`. */
   id: string;
@@ -113,6 +121,8 @@ export interface SpendingLine extends Shown {
   areaStatus: AreaStatus;
   /** The AI's reason for the area. */
   reason?: string;
+  /** The line's area in each climate lens it is placed in, by the brief's lens id. */
+  inLens?: Partial<Record<LensId, LinePlacement>>;
   /** The review team's own description of the line, in the page's language
    *  (Panama: BIOFIN wrote one per line, in Spanish and English). */
   description?: string;
@@ -172,6 +182,9 @@ export interface SpendingSetup {
   notes: ("levels" | "panama2015" | "atPar" | "projects")[];
   /** The biodiversity areas, in the taxonomy's order. */
   areas: { id: string; name: string }[];
+  /** The lenses the lines are placed in, Biodiversity first, then the
+   *  climate lenses the brief offers, in its menu's order. */
+  lenses: LensId[];
 }
 
 type Json = Record<string, unknown>;
@@ -200,8 +213,9 @@ const LEVEL_SERIES: Record<string, SeriesId> = { central: "central", local: "loc
 const BUDGET_TYPES: Record<string, BudgetType> = { INVERSION: "investment", FUNCIONAMIENTO: "operating" };
 
 export interface SpendingOptions {
-  /** Each line's area from step 2, with a person's calls. */
-  areas?: BerAreas | null;
+  /** Each line's area from step 2, with a person's calls, by the brief's
+   *  lens id: Biodiversity's ("globe"), and the climate lenses'. */
+  areas?: Partial<Record<LensId, BerAreas | null>>;
   /** Display names in the page's language. */
   names?: BerNames | null;
   locale?: string;
@@ -222,8 +236,14 @@ export function spendingSetup(data: Json, source: BriefSource, options: Spending
     if (!shown || shown.name === own) return { name: own };
     return { name: shown.name, ...(shown.machine ? { translated: true as const } : {}), ...(!shown.own ? { original: own } : {}) };
   };
+  // The climate lenses the brief offers and the lines are placed in, in the
+  // brief's menu order.
+  const further = source.lenses
+    .map((l) => l.id)
+    .filter((id) => id !== "globe" && options.areas?.[id])
+    .map((id) => [id, options.areas![id]!] as const);
   return record
-    ? fromRecord(record, globe.categories, options.areas ?? null, data, source, show, options.locale ?? "en")
+    ? fromRecord(record, globe.categories, options.areas?.globe ?? null, further, data, source, show, options.locale ?? "en")
     : fromLegacy(ber, data, source, globe.categories);
 }
 
@@ -251,6 +271,7 @@ function fromRecord(
   record: Json,
   categories: { id: string; name: string }[],
   areas: BerAreas | null,
+  further: readonly (readonly [LensId, BerAreas])[],
   data: Json,
   source: BriefSource,
   show: (code: string, own: string) => Shown,
@@ -372,6 +393,11 @@ function fromRecord(
     for (const y of years) byYear[y.year] = asRecord(asRecord(l.amounts)?.[y.year]) ? counted(l, y.year) : null;
     const reading = areas?.lines[code];
     const fallback = areas ? null : (primary.get(`BER_${code}`) ?? null);
+    const inLens: Partial<Record<LensId, LinePlacement>> = {};
+    for (const [lens, placed] of further) {
+      const one = placed.lines[code];
+      if (one) inLens[lens] = { area: one.area, status: one.status };
+    }
     spendingLines.push({
       id: `BER_${code}`,
       code,
@@ -382,6 +408,7 @@ function fromRecord(
       area: reading ? reading.area : fallback,
       areaStatus: reading ? reading.status : fallback ? "ai" : "apart",
       ...(reading?.reason ? { reason: reading.reason } : {}),
+      ...(further.length ? { inLens } : {}),
       ...reviewDescription(l, locale),
       ...reviewTag(l),
       matches: [...(matches.get(`BER_${code}`) ?? [])],
@@ -407,6 +434,7 @@ function fromRecord(
     showMatches,
     notes,
     areas: categories,
+    lenses: ["globe", ...further.map(([lens]) => lens)],
   };
 }
 
@@ -681,6 +709,7 @@ function fromLegacy(ber: Json, data: Json, source: BriefSource, categories: { id
     showMatches: true,
     notes: [],
     areas: categories,
+    lenses: ["globe"],
   };
 }
 
@@ -787,27 +816,48 @@ function usdOf(lines: SpendingLine[]): number | null {
   return lines.some((l) => l.totalUsd === null) ? null : lines.reduce((s, l) => s + (l.totalUsd ?? 0), 0);
 }
 
+/** The lens the section shows: the brief's, where the lines are placed in
+ *  it, else Biodiversity. */
+export function spendingLens(setup: SpendingSetup, wanted: LensId | null): LensId {
+  return wanted && setup.lenses.includes(wanted) ? wanted : "globe";
+}
+
+/** The lines as placed in a lens: a line the lens does not place, or places
+ *  in an area it does not list, is kept apart there. */
+function linesIn(setup: SpendingSetup, lens: LensId, listed: ReadonlySet<string>): SpendingLine[] {
+  return setup.lines.map((l) => {
+    const placed = lens === "globe" ? { area: l.area, status: l.areaStatus } : l.inLens?.[lens];
+    const area = placed && placed.area !== null && listed.has(placed.area) ? placed.area : null;
+    const areaStatus = placed && area !== null ? placed.status : "apart";
+    return area === l.area && areaStatus === l.areaStatus ? l : { ...l, area, areaStatus };
+  });
+}
+
 /**
- * Every biodiversity area with its share of the targets beside its share of
- * the reviewed spending, and the coherence of its targets, the targets read
- * from the brief's documents. Areas with neither targets nor spending stay
- * out; the rest come with the most targets first, then the most spending.
- * Lines not placed in an area are counted apart.
+ * Every area of the lens shown (Biodiversity's unless the lines are placed in
+ * the brief's lens) with its share of the targets beside its share of the
+ * reviewed spending, and the coherence of its targets, the targets read from
+ * the brief's documents. Areas with neither targets nor spending stay out; the
+ * rest come with the most targets first, then the most spending. Lines not
+ * placed in an area are counted apart.
  */
-export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: readonly string[]): SpendingAreas {
-  const globe = source.lenses.find((l) => l.id === "globe");
+export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: readonly string[], wanted: LensId | null = "globe"): SpendingAreas {
+  const shown = spendingLens(setup, wanted);
+  const lens = source.lenses.find((l) => l.id === shown);
+  const categories = shown === "globe" ? setup.areas : (lens?.categories ?? []);
+  const lines = linesIn(setup, shown, new Set(categories.map((c) => c.id)));
   const scope = scopeOf(source, [...docs]);
   const ids = scope.commitments.map((c) => c.id);
   const total = ids.length;
-  const tones = areaTones(lensAreas(source, scope, "globe"), scope);
-  const reviewed = setup.lines.reduce((s, l) => s + l.total, 0);
-  const matchedAll = new Set(setup.lines.flatMap((l) => l.matches));
+  const tones = areaTones(lensAreas(source, scope, shown), scope);
+  const reviewed = lines.reduce((s, l) => s + l.total, 0);
+  const matchedAll = new Set(lines.flatMap((l) => l.matches));
   const byTotal = (x: SpendingLine, y: SpendingLine) => y.total - x.total || x.code.localeCompare(y.code);
-  const areas = setup.areas
+  const areas = categories
     .map((a) => {
-      const targets = ids.filter((id) => globe?.primary[id] === a.id);
-      const lines = setup.lines.filter((l) => l.area === a.id).sort(byTotal);
-      const spend = lines.reduce((s, l) => s + l.total, 0);
+      const targets = ids.filter((id) => lens?.primary[id] === a.id);
+      const inArea = lines.filter((l) => l.area === a.id).sort(byTotal);
+      const spend = inArea.reduce((s, l) => s + l.total, 0);
       const counts = tones.get(a.id) ?? { reinforce: 0, partial: 0, apart: 0, none: 0, total: 0 };
       return {
         id: a.id,
@@ -815,16 +865,16 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
         targets,
         targetShare: total > 0 ? targets.length / total : 0,
         spend,
-        spendUsd: lines.length ? usdOf(lines) : setup.currency === "US$" ? null : 0,
+        spendUsd: inArea.length ? usdOf(inArea) : setup.currency === "US$" ? null : 0,
         spendShare: reviewed > 0 ? spend / reviewed : 0,
-        lines,
+        lines: inArea,
         matched: targets.filter((id) => matchedAll.has(id)),
         coherence: { ...counts, rated: counts.total >= MIN_AREA_COMPARISONS },
       };
     })
     .filter((a) => a.targets.length > 0 || a.spend > 0)
     .sort((x, y) => y.targets.length - x.targets.length || y.spend - x.spend || x.name.localeCompare(y.name));
-  const apartLines = setup.lines.filter((l) => l.area === null).sort(byTotal);
+  const apartLines = lines.filter((l) => l.area === null).sort(byTotal);
   const apartSpend = apartLines.reduce((s, l) => s + l.total, 0);
   // The areas come most targets first (ties: more spending first), so the
   // fewest holding half are the table's first rows.

@@ -3548,15 +3548,14 @@
         "showFewer": "Show the largest only"
       },
       "areas": {
-        "title": "Targets and reviewed spending by biodiversity area",
-        "insight": "{count, plural, one {# of the {of, number} biodiversity areas holds} other {# of the {of, number} biodiversity areas hold}} {targets} of the targets and {spend} of the reviewed spending.",
+        "title": "Targets and reviewed spending by thematic area",
+        "insight": "{count, plural, one {# of the {of, number} thematic areas holds} other {# of the {of, number} thematic areas hold}} {targets} of the targets and {spend} of the reviewed spending.",
         "insightArea": "{area} holds {spend} of the reviewed spending and {targets} of the targets.",
-        "colArea": "Biodiversity area",
         "colTargets": "Share of the targets",
         "colSpend": "Share of the reviewed spending",
         "colTargetsCount": "Targets",
         "colSpendAmount": "Reviewed spending",
-        "listLabel": "Biodiversity areas, their share of the targets and of the reviewed spending",
+        "listLabel": "Thematic areas, their share of the targets and of the reviewed spending",
         "rowLabel": "Targets: {targets}; reviewed spending: {spend}",
         "noSpend": "None",
         "apartRow": "General biodiversity spending, no specific area",
@@ -3580,6 +3579,7 @@
         },
         "linesMore": "{count, plural, one {and # more line} other {and # more lines}}",
         "switch": "Show shares or amounts",
+        "lensGroup": "Thematic areas",
         "shares": "Share",
         "amounts": "Amount",
         "targetsCount": "{count, plural, =0 {No target} one {# target} other {# targets}}"

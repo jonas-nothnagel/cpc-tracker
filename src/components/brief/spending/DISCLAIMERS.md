@@ -130,6 +130,26 @@ never "confirmed" (copy.test.ts). The step-wide tag beside the title
 - es: {checked, number} de {total, number} líneas tienen un área revisada por una persona; las demás son sugerencias de la IA o no tienen un área específica.
 - mn: {total, number} мөрөөс {checked, number}-ийн чиглэлийг хүн шалгасан; бусад нь хиймэл оюуны санал эсвэл тодорхой чиглэлгүй.
 
+**The climate lenses** (since 18 November 2026). The lines are placed in
+climate mitigation (the IPCC sectors; Mongolia, Panama, Sri Lanka) and climate
+adaptation (the GGA in Mongolia and Panama; Sri Lanka's own adaptation sectors
+there) by the rule above, and every placement is AI-suggested until a person
+checks it (one review sheet per lens). The section reads the areas in the
+brief's lens where the lines are placed in it, else in Biodiversity; the
+choice of lens shows only where they are placed in more than one, and it moves
+the brief's lens with it, as in the thematic areas. The review counts
+biodiversity spending only: under a climate lens an area without a line has no
+reviewed biodiversity spending, which says nothing of its climate spending, and
+a line with no specific area is still biodiversity spending, counted in every
+total under the same leftover row. Money left with no specific area in the run
+of 18 November 2026: climate mitigation 14% in Mongolia (and the project-defined
+catch-all "Other / Cross-cutting" a further 53%), 62% in Panama, 29% in Sri
+Lanka; climate adaptation 61% in Mongolia, 23% in Panama, 1% in Sri Lanka.
+
+- en: Under a climate lens, an area without a budget line has no reviewed biodiversity spending; its climate spending is not in the review.
+- es: Con una perspectiva climática, un área sin línea presupuestaria no tiene gasto revisado en biodiversidad; su gasto climático no está en la revisión.
+- mn: Уур амьсгалын харагдацаар төсвийн мөргүй чиглэлд хянасан биологийн олон янз байдлын зарцуулалт байхгүй гэсэн үг; түүний уур амьсгалын зарцуулалт тоймд ороогүй.
+
 **The review's own words on a Panama line.** An opened line in an area shows
 the review's tag (Directo / Indirecto, per year in the record) and BIOFIN
 Panama's description of the line, written for this tool in Spanish and English

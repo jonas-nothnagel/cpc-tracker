@@ -5,6 +5,7 @@ import en from "../../../../messages/en.json";
 import type { Currency } from "@/components/brief/contracts/money";
 import { parseBerAreas } from "@/lib/brief/ber-areas";
 import { parseBerNames } from "@/lib/brief/ber-names-shared";
+import type { BriefSource, LensId } from "@/lib/brief/source";
 import { spendingSetup, type SpendingSetup } from "@/lib/brief/spending";
 import { activitiesPayload, holdersPayload, legacyPayload, levelsPayload, sameNamePayload } from "@/lib/brief/spending-fixture";
 import { briefFixture } from "@/lib/brief/test-fixture";
@@ -16,16 +17,42 @@ const LEGACY = spendingSetup(legacyPayload(), SOURCE)!;
 /** A rebuilt record in tugrik billion: two budget levels, 2022 holds the
  *  local budgets only; ₮2,000 per US$ in 2020, ₮2,500 in 2021. */
 const LEVELS = spendingSetup(levelsPayload(), SOURCE, {
-  areas: parseBerAreas(
+  areas: {
+    globe: parseBerAreas(
+      {
+        lines: [
+          { code: "71405", area: "g1", status: "second-agrees", first: { ranked: [{ reasoning: "Protected areas." }] }, second: { ranked: [{ reasoning: "Ranger wages." }] } },
+          { code: "82212", area: null, status: "no-clear-area", first: { ranked: [] }, second: { ranked: [] } },
+        ],
+      },
+      null,
+      "globe",
+    ),
+  },
+})!;
+/** The fixture with a climate mitigation lens beside Biodiversity. */
+const CLIMATE = {
+  ...SOURCE,
+  lenses: [
+    ...SOURCE.lenses,
     {
-      lines: [
-        { code: "71405", area: "g1", status: "second-agrees", first: { ranked: [{ reasoning: "Protected areas." }] }, second: { ranked: [{ reasoning: "Ranger wages." }] } },
-        { code: "82212", area: null, status: "no-clear-area", first: { ranked: [] }, second: { ranked: [] } },
+      id: "ipcc" as const,
+      taxonomyType: "sector",
+      categories: [
+        { id: "s1", name: "Energy" },
+        { id: "s2", name: "Agriculture, forestry and other land use" },
       ],
+      primary: { A1: "s1", A2: "s1", B4: "s2", B5: "s2", B6: "s2", C1: "s2" } as Record<string, string>,
     },
-    null,
-    "globe",
-  ),
+  ],
+};
+/** The rebuilt record placed in both lenses: 71405 (7 of the 10) in
+ *  Protected areas and in land use; 82212 in no specific area of either. */
+const BOTH = spendingSetup(levelsPayload(), CLIMATE, {
+  areas: {
+    globe: parseBerAreas({ lines: [{ code: "71405", area: "g1", status: "second-agrees" }, { code: "82212", area: null, status: "no-clear-area" }] }, null, "globe"),
+    ipcc: parseBerAreas({ lines: [{ code: "71405", area: "s2", status: "second-agrees" }, { code: "82212", area: null, status: "no-clear-area" }] }, null, "sector"),
+  },
 })!;
 
 afterEach(cleanup);
@@ -38,17 +65,30 @@ function renderSection(
     currency = "usd",
     onCurrency = () => {},
     source = SOURCE,
+    lens = null,
+    onLens,
   }: {
-    onExploreArea?: (id: string) => void;
+    onExploreArea?: (id: string, lens: LensId) => void;
     docs?: string[];
     currency?: Currency;
     onCurrency?: (c: Currency) => void;
-    source?: typeof SOURCE;
+    source?: BriefSource;
+    lens?: LensId | null;
+    onLens?: (next: LensId) => void;
   } = {},
 ) {
   return render(
     <NextIntlClientProvider locale="en" messages={en}>
-      <SpendingSection setup={setup} source={source} docs={docs} currency={currency} onCurrency={onCurrency} onExploreArea={onExploreArea} />
+      <SpendingSection
+        setup={setup}
+        source={source}
+        docs={docs}
+        lens={lens}
+        onLens={onLens}
+        currency={currency}
+        onCurrency={onCurrency}
+        onExploreArea={onExploreArea}
+      />
     </NextIntlClientProvider>,
   );
 }
@@ -102,7 +142,7 @@ describe("SpendingSection, in two components", () => {
   it("sets the areas beside their sentence and the review's lines, apart from the record", () => {
     const { container } = renderSection(LEGACY);
     const [left, right] = [...container.querySelector(".sp-pair")!.children] as HTMLElement[];
-    expect(within(left).getByRole("heading", { level: 3, name: "Targets and reviewed spending by biodiversity area" })).toBeTruthy();
+    expect(within(left).getByRole("heading", { level: 3, name: "Targets and reviewed spending by thematic area" })).toBeTruthy();
     expect(within(right).getByRole("heading", { level: 3, name: /^Reviewed spending by/ })).toBeTruthy();
     // One serif title and serif sentences: the two sub-titles name their pictures in the sans.
     expect(container.querySelectorAll("h3.brief-hub-headline")).toHaveLength(0);
@@ -115,12 +155,12 @@ describe("SpendingSection, in two components", () => {
     const source = { ...SOURCE, lenses: [{ ...SOURCE.lenses[0], primary }, ...SOURCE.lenses.slice(1)] };
     const { container } = renderSection(spendingSetup(legacyPayload(), source)!, { source });
     const sentence = () => container.querySelector(".sp-pair-side > .brief-hub-headline")?.textContent ?? null;
-    expect(sentence()).toBe("2 of the 3 biodiversity areas hold 56% of the targets and 100% of the reviewed spending.");
-    const row = () => within(screen.getByRole("list", { name: /Biodiversity areas/ })).getByRole("button", { name: /^Protected areas/ });
+    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the targets and 100% of the reviewed spending.");
+    const row = () => within(screen.getByRole("list", { name: /Thematic areas/ })).getByRole("button", { name: /^Protected areas/ });
     fireEvent.click(row());
     expect(sentence()).toBe("Protected areas holds 30% of the reviewed spending and 11% of the targets.");
     fireEvent.click(row());
-    expect(sentence()).toBe("2 of the 3 biodiversity areas hold 56% of the targets and 100% of the reviewed spending.");
+    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the targets and 100% of the reviewed spending.");
   });
 
   it("lists six of the review's lines, the rest on request", () => {
@@ -177,8 +217,8 @@ describe("SpendingSection, Country X's illustrative file", () => {
 
   it("titles the areas by what they show, with no tag on the title, each area's two shares on its row", () => {
     renderSection(LEGACY);
-    expect(screen.getByRole("heading", { level: 3, name: "Targets and reviewed spending by biodiversity area" })).toBeTruthy();
-    const rows = within(screen.getByRole("list", { name: /Biodiversity areas/ })).getAllByRole("button");
+    expect(screen.getByRole("heading", { level: 3, name: "Targets and reviewed spending by thematic area" })).toBeTruthy();
+    const rows = within(screen.getByRole("list", { name: /Thematic areas/ })).getAllByRole("button");
     expect(rows.map((r) => r.textContent?.split(/\d/)[0])).toEqual(["Agriculture", "Protected areas", "Water"]);
     expect(rows[0].textContent).toContain("17%");
     expect(rows[0].textContent).toContain("70%");
@@ -192,7 +232,7 @@ describe("SpendingSection, Country X's illustrative file", () => {
     expect(within(screen.getByRole("list", { name: "Budget lines in this area" })).getByText("Protected area security")).toBeTruthy();
     expect(screen.getByText(/3 targets in this area\. 2 of the 3 have a matching budget line\./)).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Explore this area with its budget lines" }));
-    expect(onExploreArea).toHaveBeenCalledWith("g1");
+    expect(onExploreArea).toHaveBeenCalledWith("g1", "globe");
   });
 
   it("offers the ring only for an area with targets in the brief's documents", () => {
@@ -398,7 +438,7 @@ describe("SpendingSection, a rebuilt record", () => {
     described.reviewDescription = { en: "Line linked to protected areas.", es: "Línea vinculada a áreas protegidas." };
     described.tags = { "2020": "Directo", "2021": "Directo" };
     const areas = parseBerAreas({ lines: [{ code: "71405", area: "g1", status: "second-agrees" }] }, null, "globe");
-    renderSection(spendingSetup(payload, SOURCE, { areas })!);
+    renderSection(spendingSetup(payload, SOURCE, { areas: { globe: areas } })!);
     fireEvent.click(screen.getByRole("button", { name: /^Protected areas/ }));
     const lines = screen.getByRole("list", { name: "Budget lines in this area" });
     expect(screen.queryByText(/The review's description/)).toBeNull();
@@ -409,7 +449,7 @@ describe("SpendingSection, a rebuilt record", () => {
 
   it("shows the areas' targets and spending as amounts on request, the bars still drawn by share", () => {
     const { container } = renderSection(LEVELS, { currency: "mnt" });
-    const row = () => within(screen.getByRole("list", { name: /Biodiversity areas/ })).getByRole("button", { name: /^Protected areas/ });
+    const row = () => within(screen.getByRole("list", { name: /Thematic areas/ })).getByRole("button", { name: /^Protected areas/ });
     const widths = () => [...row().querySelectorAll(".sp-bar-line > span")].map((s) => (s as HTMLElement).style.width);
     const before = widths();
     expect(row().textContent).toContain("17%");
@@ -419,5 +459,64 @@ describe("SpendingSection, a rebuilt record", () => {
     expect(row().textContent).toContain("₮7 billion");
     expect(widths()).toEqual(before);
     expect(container.querySelector(".sp-areas")?.getAttribute("data-mode")).toBe("amount");
+  });
+});
+
+describe("SpendingSection, in the climate lenses", () => {
+  const lensChoice = () => screen.queryByRole("group", { name: "Thematic areas" });
+  const pressed = () =>
+    within(lensChoice()!)
+      .getAllByRole("button")
+      .map((b) => [b.textContent, b.getAttribute("aria-pressed")]);
+  const rowNames = () =>
+    within(screen.getByRole("list", { name: /Thematic areas/ }))
+      .getAllByRole("button")
+      .map((r) => r.querySelector(".sp-area-name")?.textContent);
+
+  it("offers the lenses its lines are placed in, the brief's lens pressed, and hands a choice to the brief", () => {
+    const onLens = vi.fn();
+    renderSection(BOTH, { source: CLIMATE, lens: "ipcc", onLens });
+    expect(pressed()).toEqual([
+      ["Biodiversity", "false"],
+      ["Climate mitigation", "true"],
+    ]);
+    fireEvent.click(within(lensChoice()!).getByRole("button", { name: "Biodiversity" }));
+    expect(onLens).toHaveBeenCalledWith("globe");
+  });
+
+  it("reads the areas in the lens shown, the area column named after it", () => {
+    const { container } = renderSection(BOTH, { source: CLIMATE, lens: "ipcc", onLens: () => {} });
+    expect(rowNames()).toEqual(["Agriculture, forestry and other land use", "Energy", "General biodiversity spending, no specific area"]);
+    expect(container.querySelector(".sp-row-head")?.firstElementChild?.textContent).toBe("Climate mitigation");
+    expect(container.querySelector(".sp-pair-side > .brief-hub-headline")).toBeNull();
+  });
+
+  it("falls back to Biodiversity where the brief's lens has no placements", () => {
+    const { container } = renderSection(BOTH, { source: CLIMATE, lens: "hr", onLens: () => {} });
+    expect(pressed()).toEqual([
+      ["Biodiversity", "true"],
+      ["Climate mitigation", "false"],
+    ]);
+    expect(rowNames()[0]).toBe("Protected areas");
+    expect(container.querySelector(".sp-row-head")?.firstElementChild?.textContent).toBe("Biodiversity");
+  });
+
+  it("offers no choice where the lines are placed in Biodiversity only", () => {
+    renderSection(LEVELS, { onLens: () => {} });
+    expect(lensChoice()).toBeNull();
+  });
+
+  it("hands the ring an area in the lens shown, and closes an open area when the lens changes", () => {
+    const onExploreArea = vi.fn();
+    const { rerender } = renderSection(BOTH, { source: CLIMATE, lens: "ipcc", onLens: () => {}, onExploreArea });
+    fireEvent.click(screen.getByRole("button", { name: /^Agriculture, forestry and other land use/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Explore this area with its budget lines" }));
+    expect(onExploreArea).toHaveBeenCalledWith("s2", "ipcc");
+    rerender(
+      <NextIntlClientProvider locale="en" messages={en}>
+        <SpendingSection setup={BOTH} source={CLIMATE} docs={["A", "B", "C"]} lens="globe" onLens={() => {}} onExploreArea={onExploreArea} />
+      </NextIntlClientProvider>,
+    );
+    expect(screen.queryByRole("list", { name: "Budget lines in this area" })).toBeNull();
   });
 });

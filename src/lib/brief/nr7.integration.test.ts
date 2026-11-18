@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getCountryDashboardPayload } from "@/lib/dashboard-data";
-import { loadBerAreas } from "./ber-areas";
+import { loadBerAreasByLens } from "./ber-areas";
 import { loadBerNames } from "./ber-names";
 import { scopeOf } from "./compute";
 import { buildExploreModel } from "./explore/model";
@@ -24,7 +24,7 @@ function load(id: string, name: string) {
   if (result.kind !== "ok") throw new Error(`${id}: ${result.error}`);
   const data = result.payload.data as unknown as Record<string, unknown>;
   const source = buildBriefSource({ countryId: id, countryName: name, data, locale: "en" });
-  const spending = spendingSetup(data, source, { areas: loadBerAreas(id), names: loadBerNames(id), locale: "en" });
+  const spending = spendingSetup(data, source, { areas: loadBerAreasByLens(id), names: loadBerNames(id), locale: "en" });
   return { data, source, setup: nr7Setup(data, spending)! };
 }
 
