@@ -4,7 +4,7 @@ import type { BerAreas, AreaStatus } from "./ber-areas";
 import { shownName, type BerNames } from "./ber-names-shared";
 import { areaLines, countedIn, shownCurrency } from "./ber-record";
 import { MIN_AREA_COMPARISONS, scopeOf, type ToneCounts } from "./compute";
-import { concentrationOf } from "./insight";
+import { insightHalf } from "./insight";
 import type { BriefSource } from "./source";
 
 /** A name as the page shows it: in the page's language where the names file
@@ -828,7 +828,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
   const apartSpend = apartLines.reduce((s, l) => s + l.total, 0);
   // The areas come most targets first (ties: more spending first), so the
   // fewest holding half are the table's first rows.
-  const half = concentrationOf(
+  const half = insightHalf(
     areas.map((a) => a.targets.length),
     total,
   );

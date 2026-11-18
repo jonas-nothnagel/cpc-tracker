@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { INSIGHT_MIN_UNITS, concentrationOf, fewestToHalf } from "./insight";
+import { INSIGHT_MIN_UNITS, insightHalf, fewestToHalf } from "./insight";
 
 describe("fewestToHalf", () => {
   it("takes the fewest units, largest first, that together hold at least half", () => {
@@ -24,18 +24,18 @@ describe("fewestToHalf", () => {
   });
 });
 
-describe("concentrationOf", () => {
+describe("insightHalf", () => {
   it("reads the units largest first, whatever order they come in", () => {
-    expect(concentrationOf([1, 5, 3, 1], 10)).toEqual({ units: 1, count: 5 });
+    expect(insightHalf([1, 5, 3, 1], 10)).toEqual({ units: 1, count: 5 });
   });
 
   it("says nothing with fewer than three units, or fewer than three things counted", () => {
-    expect(concentrationOf([6, 4], 10)).toBeNull();
-    expect(concentrationOf([1, 1, 0], 2)).toBeNull();
+    expect(insightHalf([6, 4], 10)).toBeNull();
+    expect(insightHalf([1, 1, 0], 2)).toBeNull();
   });
 
   it("says nothing when it takes every unit to reach half: then none stands out", () => {
-    expect(concentrationOf([3, 3, 3], 18)).toBeNull();
-    expect(concentrationOf([3, 3, 3, 0], 18)).toBeNull();
+    expect(insightHalf([3, 3, 3], 18)).toBeNull();
+    expect(insightHalf([3, 3, 3, 0], 18)).toBeNull();
   });
 });

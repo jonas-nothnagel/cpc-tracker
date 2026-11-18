@@ -1,6 +1,6 @@
 import type { Scope, ScopedComparison } from "./compute";
 import { sideLevel, type HubTone } from "./hub";
-import { INSIGHT_MIN_UNITS, concentrationOf } from "./insight";
+import { INSIGHT_MIN_UNITS, insightHalf } from "./insight";
 import type { BriefSource, LensId } from "./source";
 
 /**
@@ -118,7 +118,7 @@ export interface AreaPairs {
   groups: number;
   /** The fewest pairs of areas, most first, that hold at least half of the
    *  side's target pairs (of `total`), and how many they hold; null where a
-   *  sentence would say nothing (`concentrationOf`). */
+   *  sentence would say nothing (`insightHalf`). */
   half: { groups: number; count: number } | null;
 }
 
@@ -196,7 +196,7 @@ export function areaPairs(lens: LensAreas, scope: Scope, side: AreaSide, area: s
   const top = area === null ? held.slice(0, TOP_AREA_PAIRS) : held;
   const shown = new Set(top.map((g) => g.key));
   const others = ranked.filter((g) => !shown.has(g.key));
-  const half = concentrationOf(
+  const half = insightHalf(
     ranked.map((g) => g.count),
     total,
   );
@@ -224,7 +224,7 @@ export type TargetsHeadline =
   | { kind: "one"; share: number; area: string; placed: number };
 
 export function targetsHeadline(lens: LensAreas): TargetsHeadline {
-  const half = concentrationOf(
+  const half = insightHalf(
     lens.areas.map((a) => a.targets.length),
     lens.placed,
   );

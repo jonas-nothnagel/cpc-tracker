@@ -27,7 +27,7 @@ export function fewestToHalf(counts: readonly number[], of: number): { units: nu
 /** How few units hold half of what is counted, for a sentence: null with
  *  fewer than INSIGHT_MIN_UNITS units or things counted, when the units never
  *  reach half, or when it takes every unit holding any (none stands out). */
-export function concentrationOf(counts: readonly number[], of: number): { units: number; count: number } | null {
+export function insightHalf(counts: readonly number[], of: number): { units: number; count: number } | null {
   if (counts.length < INSIGHT_MIN_UNITS || of < INSIGHT_MIN_UNITS) return null;
   const sorted = [...counts].sort((x, y) => y - x);
   const half = fewestToHalf(sorted, of);
