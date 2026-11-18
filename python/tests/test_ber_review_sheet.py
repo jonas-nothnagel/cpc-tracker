@@ -72,3 +72,15 @@ def test_types_are_compared_as_areas_are():
     assert kept(alice, same) is alice
     changed = {"call": "change", "type": "7.01.16", "by": "Bob", "at": "2026-10-27"}
     assert kept(alice, changed) is changed
+
+
+def test_area_names_follow_the_lens_and_the_country():
+    from ber_review_sheet import area_names, default_out
+
+    assert area_names("globe", "panama")["globe_1"] == "Access and benefit sharing"
+    assert area_names("sector", "sri-lanka")["sector_energy"] == "Energy"
+    assert area_names("gga", "mongolia")["gga_water"] == "Water"
+    assert area_names("adaptation", "sri-lanka")["lk_livestock"] == "Livestock"
+    # One workbook per lens.
+    assert default_out("globe").name == "BER review sheet - GLOBE.xlsx"
+    assert default_out("sector").name == "BER review sheet - climate mitigation.xlsx"

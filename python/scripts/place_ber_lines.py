@@ -36,7 +36,9 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from src import config  # noqa: E402
 from src.ber_areas import (  # noqa: E402
+    BER_LENSES,
     CLAUDE_EFFORT,
     CLAUDE_MODEL,
     PROMPT_VERSION,
@@ -44,33 +46,33 @@ from src.ber_areas import (  # noqa: E402
     claude_ready,
     combine,
     describe_line,
+    lens_categories,
     place_with_claude,
     place_with_pipeline_model,
     reading,
     system_prompt,
 )
 from src.classify import RELEVANCE_THRESHOLD  # noqa: E402
+from src.config import DATA_DIR, OUTPUT_DIR  # noqa: E402
 from src.footprint import append_event, electricity_zone  # noqa: E402
 from src.footprint.tracker import get_footprint_tracker  # noqa: E402
 from src.llm import set_language  # noqa: E402
-
-from src import config  # noqa: E402
-from src.config import DATA_DIR, OUTPUT_DIR  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s", datefmt="%H:%M:%S")
 logger = logging.getLogger("place_ber_lines")
 
 COUNTRIES = ("mongolia", "panama", "sri-lanka")
-LENSES = {
-    # lens id -> (categories.json key, the name the prompt uses)
-    "globe": ("globe_categories", "GLOBE (BIOFIN's Global Biodiversity Expenditure taxonomy)"),
-}
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--country", choices=[*COUNTRIES, "all"], default="all")
-    parser.add_argument("--lens", choices=sorted(LENSES), default="globe")
+    parser.add_argument(
+        "--lens",
+        choices=sorted(BER_LENSES),
+        default="globe",
+        help="A lens and the countries it serves (src/ber_areas.py, BER_LENSES)",
+    )
     parser.add_argument("--no-second", action="store_true", help="Skip the second model")
     parser.add_argument("--limit", type=int, help="Smoke run: the first N lines per country")
     parser.add_argument("--codes", help="Only these lines: CODE,CODE or @file with one code per line (needs --out-dir)")
@@ -193,12 +195,17 @@ async def main() -> None:
         raise SystemExit("Without Claude Opus no line takes an area; --no-second needs --out-dir.")
     # No language directive: both models read the same system prompt, word for word.
     set_language(None)
-    categories_key, lens_name = LENSES[args.lens]
-    categories = json.loads((DATA_DIR / "categories.json").read_text())[categories_key]
-    countries = COUNTRIES if args.country == "all" else (args.country,)
+    spec = BER_LENSES[args.lens]
+    # "all": the countries the lens serves (Sri Lanka's own adaptation lens
+    # replaces the GGA there).
+    countries = spec["countries"] if args.country == "all" else (args.country,)
+    if any(c not in spec["countries"] for c in countries):
+        serves = ", ".join(spec["countries"])
+        raise SystemExit(f"The {args.lens} lens serves {serves}, not {args.country}.")
     total: dict[str, int] = {}
     for country in countries:
-        usage = await run_country(country, args.lens, args, categories, lens_name)
+        categories = lens_categories(args.lens, country)
+        usage = await run_country(country, args.lens, args, categories, spec["name"])
         for k, v in usage.items():
             total[k] = total.get(k, 0) + v
     logger.info(f"Second model: {total}")

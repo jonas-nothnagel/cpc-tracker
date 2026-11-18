@@ -36,11 +36,17 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from src.ber_areas import BER_LENSES, lens_categories  # noqa: E402
 from src.config import DATA_DIR, OUTPUT_DIR  # noqa: E402
 
 COUNTRIES = {"mongolia": "Mongolia", "panama": "Panama", "sri-lanka": "Sri Lanka"}
-LENS_KEYS = {"globe": "globe_categories"}
-DEFAULT_OUT = Path(__file__).resolve().parent.parent / "tmp" / "ber" / "BER review sheet - GLOBE.xlsx"
+# A lens as the sheet names it to the review team: one workbook per lens.
+SHEET_LENS = {
+    "globe": "GLOBE",
+    "sector": "climate mitigation",
+    "gga": "climate adaptation (GGA)",
+    "adaptation": "climate adaptation (Sri Lanka)",
+}
 CALLS = {"Accept": "accept", "Change": "change", "None fits": "none"}
 
 COLUMNS = [
@@ -92,9 +98,12 @@ def sheet_order(status: str, money: float, code: str) -> tuple[int, float, str]:
     return (rank, -money, code)
 
 
-def area_names(lens: str) -> dict[str, str]:
-    categories = json.loads((DATA_DIR / "categories.json").read_text())[LENS_KEYS[lens]]
-    return {c["id"]: c["name"] for c in categories}
+def area_names(lens: str, country: str) -> dict[str, str]:
+    return {c["id"]: c["name"] for c in lens_categories(lens, country)}
+
+
+def default_out(lens: str) -> Path:
+    return Path(__file__).resolve().parent.parent / "tmp" / "ber" / f"BER review sheet - {SHEET_LENS[lens]}.xlsx"
 
 
 def money(record: dict[str, Any], line: dict[str, Any]) -> tuple[float, float, str]:
@@ -113,13 +122,12 @@ def money(record: dict[str, Any], line: dict[str, Any]) -> tuple[float, float, s
 
 
 def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), types: bool = True) -> None:
-    names = area_names(lens)
     wb = Workbook()
     guide = wb.active
     guide.title = "How to use"
     for row in [
         ["One row per budget line of the expenditure review, a sheet per country."],
-        ["Two AI models placed each line in a GLOBE area from the review's own description of it, without its amounts."],
+        [f"Two AI models placed each line in an area of the {SHEET_LENS[lens]} lens from the review's own description of it, without its amounts."],
         ["Model 1 (Claude Opus) decides: a line takes its area at a score of 0.5 or more, else it is general biodiversity spending with no specific area. Model 2 (GPT-5.4) is a second opinion."],
         ["The review's call that a line is biodiversity spending stands in every case: the question here is only which area it serves."],
         ["Rows where model 2 reads the line differently, or no area is clear, come first, largest money first; then the rest."],
@@ -130,13 +138,14 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
         guide.append(row)
     guide.column_dimensions["A"].width = 120
 
-    area_list = list(names.values())
     for country, title in COUNTRIES.items():
-        if country not in countries:
+        if country not in countries or country not in BER_LENSES[lens]["countries"]:
             continue
         path = OUTPUT_DIR / country / f"ber_areas_{lens}.json"
         if not path.exists():
             continue
+        names = area_names(lens, country)
+        area_list = list(names.values())
         readings = json.loads(path.read_text())
         record = json.loads((DATA_DIR / f"{country}-ber.json").read_text())["record"]
         by_code = {l["code"]: l for l in record["lines"]}
@@ -202,7 +211,8 @@ def build(lens: str, out: Path, countries: tuple[str, ...] = tuple(COUNTRIES), t
         ws.add_data_validation(areas)
         calls.add(f"N2:N{last}")
         areas.add(f"O2:O{last}")
-    if types:
+    # The expenditure types belong to GLOBE (the official chain).
+    if types and lens == "globe":
         build_type_sheets(wb, countries)
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(out)
@@ -412,12 +422,12 @@ def load_calls(country: str, lens: str) -> dict[str, dict[str, Any]]:
 
 
 def import_calls(path: Path, lens: str, by: str) -> None:
-    names = area_names(lens)
-    by_name = {v: k for k, v in names.items()}
     wb = load_workbook(path, data_only=True)
     for country, title in COUNTRIES.items():
-        if title not in wb.sheetnames:
+        if title not in wb.sheetnames or country not in BER_LENSES[lens]["countries"]:
             continue
+        names = area_names(lens, country)
+        by_name = {v: k for k, v in names.items()}
         ws = wb[title]
         target = calls_path(country)
         stored = json.loads(target.read_text()) if target.exists() else {}
@@ -465,17 +475,18 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
     b = sub.add_parser("build")
-    b.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
-    b.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    b.add_argument("--lens", default="globe", choices=sorted(BER_LENSES))
+    b.add_argument("--out", type=Path, help="Default: tmp/ber/BER review sheet - <lens>.xlsx")
     b.add_argument("--country", choices=[*COUNTRIES, "all"], default="all", help="One country's sheet only, e.g. to send to its review team")
     b.add_argument("--areas-only", action="store_true", help="Leave out the expenditure-type sheets")
     i = sub.add_parser("import")
     i.add_argument("sheet", type=Path)
-    i.add_argument("--lens", default="globe", choices=sorted(LENS_KEYS))
+    i.add_argument("--lens", default="globe", choices=sorted(BER_LENSES))
     i.add_argument("--by", required=True, help="Who made the calls, as the brief should name them")
     args = parser.parse_args()
     if args.command == "build":
-        build(args.lens, args.out, tuple(COUNTRIES) if args.country == "all" else (args.country,), types=not args.areas_only)
+        out = args.out or default_out(args.lens)
+        build(args.lens, out, tuple(COUNTRIES) if args.country == "all" else (args.country,), types=not args.areas_only)
     else:
         import_calls(args.sheet, args.lens, args.by)
 
