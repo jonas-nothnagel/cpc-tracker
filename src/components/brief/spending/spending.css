@@ -30,39 +30,14 @@
   margin-top: var(--sp-12);
 }
 
-[data-brief] .sp-brief > .sp-head + * {
+[data-brief] .sp-brief > .brief-sec-head + * {
   margin-top: var(--sp-6);
 }
 
-/* ── The section's head: title, source, currency ──────────────────── */
-
-[data-brief] .sp-head {
-  display: grid;
-  gap: var(--sp-1);
-  justify-items: start;
-}
-
-[data-brief] .sp-title {
-  margin: 0;
-  font-family: var(--font-display);
-  /* The brief's own section-title step (.brief-sec-headline). */
-  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-[data-brief] .sp-source {
-  margin: 0;
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
+/* ── The section's head (SectionHead): its source, then the currency ── */
 
 [data-brief] .sp-note-inline::before {
   content: " · ";
-}
-
-[data-brief] .sp-head > .sp-switch {
-  margin-top: var(--sp-2);
 }
 
 /* Plain text choices, the chosen one underlined: currency, amount or share. */

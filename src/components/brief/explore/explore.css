@@ -633,12 +633,9 @@
   display: none;
 }
 
-[data-brief] .brief-explore-title {
-  margin: 0 0 1.25rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
-  font-weight: 500;
-  line-height: 1.2;
+/* Its title takes the brief's section-title step (.brief-sec-title). */
+[data-brief] .brief-explore > .brief-sec-title {
+  margin-bottom: 1.25rem;
 }
 
 /* ── Lines: which readings the ring draws ───────────────────────── */

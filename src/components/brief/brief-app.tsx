@@ -340,7 +340,7 @@ export function BriefApp({
           hidden={preview}
           aria-labelledby="brief-explore-title"
         >
-          <h2 id="brief-explore-title" className="brief-explore-title" tabIndex={-1}>
+          <h2 id="brief-explore-title" className="brief-sec-title" tabIndex={-1}>
             {tx("title")}
           </h2>
           <Explore

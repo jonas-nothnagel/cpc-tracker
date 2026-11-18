@@ -21,6 +21,7 @@ import type { Nr7Detail, Nr7DetailIndicator, Nr7DetailSeries } from "@/lib/brief
 import type { BriefCommitment, BriefSource } from "@/lib/brief/source";
 import type { SpendingSetup } from "@/lib/brief/spending";
 import { commitmentLine } from "../ink";
+import { SectionHead } from "../section-head";
 import { useMoney, type Money } from "../spending/spending-section";
 import type { Currency } from "../contracts/money";
 import "./nr7.css";
@@ -131,23 +132,21 @@ export function Nr7Section({
 
   return (
     <div className="n7-brief">
-      <header className="n7-head">
-        <h2 className="n7-title">{t("title")}</h2>
-        {published && <p className="n7-source">{t("source", { date: published })}</p>}
-      </header>
-
-      <div className="n7-lead">
-        <h3 className="brief-hub-headline">
-          {reading.behind > 0
+      <SectionHead
+        title={t("title")}
+        source={published ? t("source", { date: published }) : undefined}
+        insight={
+          reading.behind > 0
             ? t("headline", { country: source.countryName, behind: reading.behind, total })
-            : t("headlineNone", { country: source.countryName, total })}
-        </h3>
+            : t("headlineNone", { country: source.countryName, total })
+        }
+      >
         <ul className="n7-strip">
           {NR7_STATUS_ORDER.filter((s) => reading.byStatus[s] > 0).map((status) => (
             <StatusGroup key={status} status={status} count={reading.byStatus[status]} />
           ))}
         </ul>
-      </div>
+      </SectionHead>
 
       <div className="n7-table-wrap">
         <table className="n7-table" aria-label={t("listLabel")}>

@@ -18,6 +18,7 @@ import {
   type SpendingRecord,
   type SpendingSetup,
 } from "@/lib/brief/spending";
+import { SectionHead } from "../section-head";
 import "./spending.css";
 
 /** Squares in the record's field: one per unit of every hundred. */
@@ -72,51 +73,48 @@ export function SpendingSection({
 
   return (
     <div className="sp-brief" data-testid="brief-spending">
-      <header className="sp-head">
-        <h2 id="brief-spending-title" className="sp-title" tabIndex={-1}>
-          {t("title")}
-        </h2>
-        <p className="sp-source">
-          {t("source", { years: shown })}
-          {setup.illustrative && <span className="sp-note-inline">{t("illustrative")}</span>}
-        </p>
-        {money.local && onCurrency && (
-          <div className="sp-switch" role="group" aria-label={t("currency")}>
-            <span className="sp-switch-label">{t("currency")}</span>
-            {(["usd", "mnt"] as const).map((c) => (
-              <button key={c} type="button" className="sp-option" aria-pressed={currency === c} onClick={() => choose(c)}>
-                {c === "usd" ? "US$" : money.localSign.trim()}
-              </button>
-            ))}
-          </div>
-        )}
-      </header>
+      <SectionHead
+        title={t("title")}
+        titleId="brief-spending-title"
+        source={
+          <>
+            {t("source", { years: shown })}
+            {setup.illustrative && <span className="sp-note-inline">{t("illustrative")}</span>}
+          </>
+        }
+        controls={
+          money.local && onCurrency ? (
+            <div className="sp-switch" role="group" aria-label={t("currency")}>
+              <span className="sp-switch-label">{t("currency")}</span>
+              {(["usd", "mnt"] as const).map((c) => (
+                <button key={c} type="button" className="sp-option" aria-pressed={currency === c} onClick={() => choose(c)}>
+                  {c === "usd" ? "US$" : money.localSign.trim()}
+                </button>
+              ))}
+            </div>
+          ) : undefined
+        }
+        insight={t("record.headline", { sign: money.sign, every: money.n(every), scope, years: complete })}
+      />
 
-      <section className="sp-step" aria-labelledby="sp-record-headline">
-        <div className="sp-step-head">
-          <h3 id="sp-record-headline" className="brief-hub-headline">
-            {t("record.headline", { sign: money.sign, every: money.n(every), scope, years: complete })}
-          </h3>
+      <div className="sp-record">
+        <div className="sp-record-side">
+          <Field filled={every} label={t("fieldLabel", { sign: money.sign, every: money.n(every), scope })} />
+          <dl className="sp-figures">
+            <div>
+              <dt>{t("record.reviewed", { years: complete })}</dt>
+              <dd className="sp-figure" data-ink="blue">
+                {money.amount(record.reviewed, record.reviewedUsd)}
+              </dd>
+            </div>
+            <div>
+              <dt>{t("record.public", { scope, years: complete })}</dt>
+              <dd className="sp-figure">{money.amount(record.public, record.publicUsd)}</dd>
+            </div>
+          </dl>
         </div>
-        <div className="sp-record">
-          <div className="sp-record-side">
-            <Field filled={every} label={t("fieldLabel", { sign: money.sign, every: money.n(every), scope })} />
-            <dl className="sp-figures">
-              <div>
-                <dt>{t("record.reviewed", { years: complete })}</dt>
-                <dd className="sp-figure" data-ink="blue">
-                  {money.amount(record.reviewed, record.reviewedUsd)}
-                </dd>
-              </div>
-              <div>
-                <dt>{t("record.public", { scope, years: complete })}</dt>
-                <dd className="sp-figure">{money.amount(record.public, record.publicUsd)}</dd>
-              </div>
-            </dl>
-          </div>
-          <YearChart setup={setup} record={record} money={money} scope={scope} />
-        </div>
-      </section>
+        <YearChart setup={setup} record={record} money={money} scope={scope} />
+      </div>
 
       <AreasStep setup={setup} reading={reading} money={money} onExploreArea={onExploreArea} />
 

@@ -1266,14 +1266,6 @@
   margin: 0 0 0.75rem;
 }
 
-[data-brief] .ct-brief-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
 [data-brief] .ct-brief-head .ct-currency {
   margin-top: 0.6rem;
 }

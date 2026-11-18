@@ -9,30 +9,7 @@
   gap: 1.5rem;
 }
 
-[data-brief] .n7-head {
-  display: grid;
-  gap: 0.25rem;
-}
-
-[data-brief] .n7-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.1vw, 1.875rem);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-[data-brief] .n7-source {
-  margin: 0;
-  font-size: 0.8125rem;
-  color: var(--brief-muted);
-}
-
-[data-brief] .n7-lead .brief-hub-headline {
-  margin-bottom: 0.5rem;
-}
-
-/* ── The ratings at a glance ─────────────────────────────────────────── */
+/* ── The ratings at a glance, under the head's sentence ─────────────── */
 
 [data-brief] .n7-strip {
   display: flex;

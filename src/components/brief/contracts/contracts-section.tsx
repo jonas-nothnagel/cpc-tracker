@@ -123,7 +123,7 @@ export function ContractsSection({
   return (
     <div className="ct-brief" data-testid="brief-contracts">
       <header className="ct-brief-head">
-        <h2 id="brief-contracts-title" className="ct-brief-title" tabIndex={-1}>
+        <h2 id="brief-contracts-title" className="brief-sec-title" tabIndex={-1}>
           {t("title")}
         </h2>
         {onCurrency && <CurrencySwitch currency={currency} rate={setup.file.source.usdRate} onChange={onCurrency} />}

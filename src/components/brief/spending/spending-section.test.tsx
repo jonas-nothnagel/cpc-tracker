@@ -47,11 +47,14 @@ function renderSection(
 }
 
 describe("SpendingSection, Country X's illustrative file", () => {
-  it("states the record out of all public spending, in every hundred", () => {
+  it("states the record out of all public spending, in every hundred, beside the section's title", () => {
     renderSection(LEGACY);
-    expect(
-      screen.getByRole("heading", { name: "US$3.3 of every US$100 of public spending in 2020–2021 was reviewed biodiversity spending." }),
-    ).toBeTruthy();
+    const title = screen.getByRole("heading", { level: 2, name: "Reviewed biodiversity spending" });
+    const sentence = screen.getByText("US$3.3 of every US$100 of public spending in 2020–2021 was reviewed biodiversity spending.");
+    // A sentence beside the title, not a second heading.
+    expect(sentence.tagName).toBe("P");
+    expect(sentence.closest(".brief-sec-head-side")).toBeTruthy();
+    expect(title.closest(".brief-sec-head")).toBe(sentence.closest(".brief-sec-head"));
     expect(screen.getByText("US$10 million")).toBeTruthy();
     expect(screen.getByText("US$300 million")).toBeTruthy();
     expect(screen.getByText(/Illustrative figures/)).toBeTruthy();
@@ -93,9 +96,7 @@ describe("SpendingSection, a rebuilt record", () => {
   it("states money in US$ by default, each year at its own rate", () => {
     renderSection(LEVELS);
     expect(
-      screen.getByRole("heading", {
-        name: "US$3.3 of every US$100 of State and local budget spending in 2020–2021 was reviewed biodiversity spending.",
-      }),
+      screen.getByText("US$3.3 of every US$100 of State and local budget spending in 2020–2021 was reviewed biodiversity spending."),
     ).toBeTruthy();
     // ₮4 bn at ₮2,000 and ₮6 bn at ₮2,500 per US$; public ₮150 bn each year.
     expect(screen.getByText("US$4.4 million")).toBeTruthy();
@@ -113,11 +114,9 @@ describe("SpendingSection, a rebuilt record", () => {
     expect(new URLSearchParams(window.location.search).get("cur")).toBe("mnt");
     unmount();
     renderSection(LEVELS, { currency: "mnt" });
-    expect(
-      screen.getByRole("heading", {
-        name: "₮3.3 of every ₮100 of State and local budget spending in 2020–2021 was reviewed biodiversity spending.",
-      }),
-    ).toBeTruthy();
+    expect(screen.getByText("₮3.3 of every ₮100 of State and local budget spending in 2020–2021 was reviewed biodiversity spending.")).toBeTruthy();
+    // The currency choice stands under the title.
+    expect(screen.getByRole("group", { name: "Amounts in" }).closest(".brief-sec-head-main")).toBeTruthy();
     expect(screen.getByText("₮10 billion")).toBeTruthy();
   });
 
