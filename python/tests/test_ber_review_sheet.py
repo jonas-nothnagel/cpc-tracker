@@ -4,8 +4,11 @@ keeps it as it was."""
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
@@ -84,3 +87,68 @@ def test_area_names_follow_the_lens_and_the_country():
     # One workbook per lens.
     assert default_out("globe").name == "BER review sheet - GLOBE.xlsx"
     assert default_out("sector").name == "BER review sheet - climate mitigation.xlsx"
+
+
+# ---------------------------------------------------------------------------
+# One workbook per lens: a sheet's calls go to the lens it was built for
+# ---------------------------------------------------------------------------
+
+
+def _filled_sheet(path: Path, model1_area: str, call: str = "Accept") -> None:
+    """A Mongolia sheet with one called row, as a reviewer sends it back."""
+    import ber_review_sheet as sheet
+    from openpyxl import Workbook
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Mongolia"
+    ws.append([c for c, _ in sheet.COLUMNS])
+    agrees = sheet.STATUS_WORDS["second-agrees"]
+    shown = ["71405", "Security of protected areas", "", "", 10.45, 4.1, "2020-2021"]
+    ws.append([*shown, model1_area, 0.9, "r", model1_area, "r", agrees, call, "", ""])
+    wb.save(path)
+
+
+def test_a_workbook_is_imported_under_the_lens_it_was_built_for():
+    from ber_review_sheet import mark_lens, sheet_lens
+    from openpyxl import Workbook
+
+    built = Workbook()
+    mark_lens(built, "sector")
+    assert sheet_lens(built, None) == "sector"
+    assert sheet_lens(built, "sector") == "sector"
+    with pytest.raises(SystemExit):
+        sheet_lens(built, "globe")
+    # A workbook built before its lens was recorded: GLOBE's, as then.
+    earlier = Workbook()
+    assert sheet_lens(earlier, None) == "globe"
+    assert sheet_lens(earlier, "gga") == "gga"
+
+
+def test_a_sheet_of_another_lens_stops_the_import_before_anything_is_written(tmp_path, monkeypatch):
+    import ber_review_sheet as sheet
+
+    monkeypatch.setattr(sheet, "calls_path", lambda country: tmp_path / f"{country}-ber-areas.json")
+    monkeypatch.setattr(sheet, "import_type_calls", lambda wb, by: None)
+    path = tmp_path / "sheet.xlsx"
+    # A climate mitigation sheet read as GLOBE's: its areas are not GLOBE's.
+    _filled_sheet(path, "Land use, land-use change and forestry (LULUCF)", call="None fits")
+    with pytest.raises(SystemExit):
+        sheet.import_calls(path, "globe", "A reviewer")
+    assert not (tmp_path / "mongolia-ber-areas.json").exists()
+
+
+def test_a_sheet_of_the_lens_named_imports_its_calls_under_that_lens(tmp_path, monkeypatch):
+    import ber_review_sheet as sheet
+
+    monkeypatch.setattr(sheet, "calls_path", lambda country: tmp_path / f"{country}-ber-areas.json")
+    monkeypatch.setattr(sheet, "import_type_calls", lambda wb, by: None)
+    path = tmp_path / "sheet.xlsx"
+    lulucf = sheet.area_names("sector", "mongolia")
+    name = next(v for v in lulucf.values() if "LULUCF" in v)
+    _filled_sheet(path, name)
+    sheet.import_calls(path, "sector", "A reviewer")
+    stored = json.loads((tmp_path / "mongolia-ber-areas.json").read_text())
+    assert list(stored) == ["_provenance", "sector"]
+    assert stored["sector"]["71405"]["call"] == "accept"
+    assert stored["sector"]["71405"]["area"] == next(k for k, v in lulucf.items() if v == name)
