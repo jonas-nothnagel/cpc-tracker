@@ -2865,7 +2865,7 @@
       "aligned": "Strongest alignments",
       "spending": "Reviewed spending",
       "contracts": "Public contracts",
-      "nr7": "National biodiversity targets"
+      "nr7": "Implementation"
     },
     "tone": {
       "reinforce": "aligned",
@@ -3064,6 +3064,7 @@
       "finding": "Aligned with {aligned, number} of the {total, number} targets it was compared with.",
       "findingApart": "Potential misalignment with {apart, number}.",
       "findingNone": "Not compared with any target in the other documents.",
+      "rating": "7th National Report: <word></word>",
       "apartList": "Potential misalignment ({count, number})",
       "strongList": "Strong alignments ({count, number})",
       "back": "Back",
@@ -3635,7 +3636,7 @@
       "rowShares": "{aligned} aligned, {partial} partially aligned, {apart} potential misalignment, of {total, number} target pairs"
     },
     "nr7": {
-      "title": "National biodiversity targets",
+      "title": "Implementation of the national biodiversity targets",
       "source": "As rated in the 7th National Report to the Convention on Biological Diversity, published {date}",
       "headline": "{country}'s own report rates {behind} of {total} national targets behind schedule.",
       "headlineNone": "{country}'s own report rates none of its {total} national targets behind schedule.",

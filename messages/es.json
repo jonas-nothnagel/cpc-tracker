@@ -2865,7 +2865,7 @@
       "aligned": "Alineaciones más fuertes",
       "spending": "Gasto revisado",
       "contracts": "Contratos públicos",
-      "nr7": "Metas nacionales de biodiversidad"
+      "nr7": "Implementación"
     },
     "tone": {
       "reinforce": "alineados",
@@ -3064,6 +3064,7 @@
       "finding": "Alineada con {aligned, number} de las {total, number} metas con las que se comparó.",
       "findingApart": "Posible desalineación con {apart, number}.",
       "findingNone": "No se comparó con ninguna meta de los demás documentos.",
+      "rating": "Séptimo Informe Nacional: <word></word>",
       "apartList": "Posible desalineación ({count, number})",
       "strongList": "Alineaciones fuertes ({count, number})",
       "back": "Volver",
@@ -3635,7 +3636,7 @@
       "rowShares": "{aligned} alineados, {partial} parcialmente alineados, {apart} posible desalineación, de {total, number} pares de metas"
     },
     "nr7": {
-      "title": "Metas nacionales de biodiversidad",
+      "title": "Implementación de las metas nacionales de biodiversidad",
       "source": "Según la calificación del Séptimo Informe Nacional al Convenio sobre la Diversidad Biológica, publicado el {date}",
       "headline": "El propio informe de {country} califica {behind} de {total} metas nacionales con retraso.",
       "headlineNone": "El propio informe de {country} no califica con retraso ninguna de sus {total} metas nacionales.",

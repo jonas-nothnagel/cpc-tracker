@@ -39,33 +39,8 @@
   max-width: 18rem;
 }
 
-[data-brief] .n7-mark {
-  display: inline-block;
-  flex: none;
-  width: 11px;
-  height: 11px;
-  border: 1.5px solid var(--brief-ink);
-}
-
-[data-brief] .n7-mark[data-status="on_track"] {
-  background: var(--brief-ink);
-}
-
-[data-brief] .n7-mark[data-status="limited"] {
-  background: linear-gradient(90deg, var(--brief-ink) 50%, transparent 50%);
-}
-
-[data-brief] .n7-mark[data-status="unknown"] {
-  border-style: dotted;
-  border-color: var(--brief-muted);
-}
-
-[data-brief] .n7-word {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4375rem;
-  white-space: nowrap;
-}
+/* A rating's mark and word (.n7-mark, .n7-word) are drawn in brief.css: the
+   explorer tags a target with them too (RatingTag). */
 
 /* ── The table ───────────────────────────────────────────────────────── */
 

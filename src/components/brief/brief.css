@@ -1374,6 +1374,48 @@
   }
 }
 
+/* A target's rating in its country's 7th National Report (RatingWord): a
+   mark and a word. A rating is the country's own statement, not an alignment
+   reading, so it stays in ink: green and red belong to alignment, blue to
+   money (DESIGN.md). Never colour alone. */
+[data-brief] .n7-mark {
+  display: inline-block;
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--brief-ink);
+}
+
+[data-brief] .n7-mark[data-status="on_track"] {
+  background: var(--brief-ink);
+}
+
+[data-brief] .n7-mark[data-status="limited"] {
+  background: linear-gradient(90deg, var(--brief-ink) 50%, transparent 50%);
+}
+
+[data-brief] .n7-mark[data-status="unknown"] {
+  border-style: dotted;
+  border-color: var(--brief-muted);
+}
+
+[data-brief] .n7-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  white-space: nowrap;
+}
+
+/* The rating where the explorer shows a target (RatingTag): the report's
+   name in grey, the rating in ink. */
+[data-brief] .brief-rating-tag {
+  color: var(--brief-muted);
+}
+
+[data-brief] .brief-rating-tag .n7-word {
+  color: var(--brief-ink);
+}
+
 [data-brief] .brief-flow .brief-sec {
   height: auto;
 }

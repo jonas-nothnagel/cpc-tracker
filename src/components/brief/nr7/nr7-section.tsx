@@ -22,6 +22,7 @@ import type { BriefCommitment, BriefSource } from "@/lib/brief/source";
 import type { SpendingSetup } from "@/lib/brief/spending";
 import { commitmentLine } from "../ink";
 import { SectionHead } from "../section-head";
+import { RATING_KEY, RatingWord } from "../rating-tag";
 import { useMoney, type Money } from "../spending/spending-section";
 import type { Currency } from "../contracts/money";
 import "./nr7.css";
@@ -32,13 +33,6 @@ import "./nr7.css";
  *  the target, with the targets behind its two shares collapsed, then the report's
  *  words. The shares and a link take the target to the ring's centre. What the
  *  section knows but does not say is in DISCLAIMERS.md. */
-
-const STATUS_LABEL: Record<Nr7RowStatus, "onTrack" | "limited" | "noProgress" | "unknown"> = {
-  on_track: "onTrack",
-  limited: "limited",
-  no_progress: "noProgress",
-  unknown: "unknown",
-};
 
 /** Amounts need a review to name their currency; a country without one shows none. */
 const NO_REVIEW = { unit: "million", currency: "US$" } as SpendingSetup;
@@ -189,7 +183,7 @@ export function Nr7Section({
                       </button>
                     </td>
                     <td className="n7-status">
-                      <StatusWord status={row.status} />
+                      <RatingWord status={row.status} />
                     </td>
                     <td data-numeric="true">{row.indicators > 0 ? row.indicators : "–"}</td>
                     <td data-numeric="true" data-tone="aligned">
@@ -231,23 +225,13 @@ export function Nr7Section({
   );
 }
 
-function StatusWord({ status }: { status: Nr7RowStatus }) {
-  const tl = useTranslations("labels.nr7");
-  return (
-    <span className="n7-word">
-      <span className="n7-mark" data-status={status} aria-hidden="true" />
-      {tl(STATUS_LABEL[status])}
-    </span>
-  );
-}
-
 function StatusGroup({ status, count }: { status: Nr7RowStatus; count: number }) {
   const t = useTranslations("brief.nr7");
   const tl = useTranslations("labels.nr7");
   return (
-    <li className="n7-group" aria-label={t("statusCount", { count, status: tl(STATUS_LABEL[status]) })}>
+    <li className="n7-group" aria-label={t("statusCount", { count, status: tl(RATING_KEY[status]) })}>
       <span className="n7-group-name" aria-hidden="true">
-        <strong>{count}</strong> {tl(STATUS_LABEL[status])}
+        <strong>{count}</strong> {tl(RATING_KEY[status])}
       </span>
       <span className="n7-group-marks" aria-hidden="true">
         {Array.from({ length: count }, (_, i) => (

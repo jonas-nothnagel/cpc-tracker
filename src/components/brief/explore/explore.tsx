@@ -69,6 +69,7 @@ import {
   type SeatPairs,
 } from "./side";
 import { lensName, lensNameOf, lensTooltip } from "../lens-tooltip";
+import { RatingTag } from "../rating-tag";
 import { briefQuery } from "@/lib/brief/origin";
 import "./explore.css";
 
@@ -249,8 +250,6 @@ export function Explore({
   const tr = useTranslations("brief.panel.rating");
   const tm = useTranslations("labels.contradictionType");
   const tf = useTranslations("brief.sheet.figures");
-  const tn = useTranslations("labels.nr7");
-  const ti = useTranslations("briefing.implementation.nr7");
   const locale = useLocale();
   const tour = useTour();
   const { n, pct } = useNumbers();
@@ -624,6 +623,8 @@ export function Explore({
     if (c.kind === "budget" && c.spend && layers?.budget) return t("spend", budgetMoney(layers.budget, spendOf(c)));
     return null;
   };
+  /** A target's rating in its country's 7th National Report, where it has one. */
+  const ratingOf = (id: string) => layers?.nr7?.[id];
   /** What a seat's first selection opens beside the ring: its comparison
    *  with the seat in the centre, or its target pairs with the document or
    *  area there. Nothing at rest, for the centre's own seats, for seats never
@@ -648,7 +649,9 @@ export function Explore({
         ? relationText(i)
         : groupText(i);
     const reading = single !== null && i !== single ? readingOf(c.id) : undefined;
-    const facts = factsOf(c);
+    // A target's facts line is its rating, where the national report gives one.
+    const rated = c.kind === "target" ? ratingOf(c.id) : undefined;
+    const facts = rated ? <RatingTag status={rated} /> : factsOf(c);
     // What selecting the seat does next: open what links it to the centre,
     // then put it in the centre.
     const opens = seatOpens(i);
@@ -781,12 +784,18 @@ export function Explore({
   ) : activeKind === "target" && singleItem ? (
     (() => {
       const titled = singleItem.label.length >= TITLE_LABEL;
+      const rating = ratingOf(singleItem.id);
       return (
         <div className="ex-centre-card">
           <p className="ex-centre-doc">
             <OriginDot />
             {docName(singleItem.doc)}
           </p>
+          {rating && (
+            <p className="ex-centre-rating">
+              <RatingTag status={rating} />
+            </p>
+          )}
           {titled && <p className="ex-centre-label">{clip(singleItem.label, 90)}</p>}
           <p className="ex-centre-text">{titled ? clip(singleItem.text, 200) : commitmentLine(singleItem, 200)}</p>
           {counts.total > 0 && (
@@ -1034,18 +1043,13 @@ export function Explore({
       model.items.filter((c) => c.doc === singleItem.doc),
       singleItem.id,
     );
-    const nr7 = layers?.nr7?.[singleItem.id];
+    const nr7 = ratingOf(singleItem.id);
     const actionsStrong = partnersOf("strong", ["action"]);
     const actionsApart = partnersOf("apart", ["action"]);
     const budget = partnersOf("strong", ["budget"]);
     const openPartner = (id: string) => setPair((cur) => (cur?.b === id ? null : { a: singleItem.id, b: id }));
     const extra = (
       <>
-        {nr7 && (
-          <p className="ex-nr7">
-            {ti("selfAssessment")} <strong>{tn(nr7 === "on_track" ? "onTrack" : nr7 === "no_progress" ? "noProgress" : nr7)}</strong>
-          </p>
-        )}
         {actionsOn && (
           <LayerSection
             title={t("sectionActions")}
@@ -1086,6 +1090,7 @@ export function Explore({
       <TargetColumn
         item={singleItem}
         docName={docName}
+        rating={nr7 && <RatingTag status={nr7} />}
         finding={
           group.total === 0 ? (
             t("findingNone")

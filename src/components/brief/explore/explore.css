@@ -209,6 +209,11 @@
   color: var(--brief-muted);
 }
 
+[data-brief] .ex-centre-rating {
+  margin: -0.15rem 0 0.4rem;
+  font-size: 0.8125rem;
+}
+
 [data-brief] .ex-centre-text {
   display: -webkit-box;
   overflow: hidden;
@@ -322,6 +327,13 @@
   margin: 0 0 0.25rem;
   font-size: 0.875rem;
   color: var(--brief-muted);
+}
+
+/* Under the document's name: the target's rating in its country's own
+   report (RatingTag), the report's name in grey, the rating in ink. */
+[data-brief] .ex-focus-rating {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
 }
 
 [data-brief] .ex-focus-title {
@@ -1093,11 +1105,6 @@
 
 [data-brief] .ex-caveat {
   margin-top: 0.4rem;
-}
-
-[data-brief] .ex-nr7 {
-  margin: 0.75rem 0 0;
-  font-size: 0.875rem;
 }
 
 [data-brief] .ex-layer-section {

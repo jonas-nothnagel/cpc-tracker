@@ -628,6 +628,13 @@ describe("BriefApp public contracts", () => {
     expect(screen.getByText("Prints on 3 pages")).toBeTruthy();
   });
 
+  it("names the national report's section Implementation in the menu", () => {
+    renderApp({ ...SOURCE, nr7: true });
+    const menu = screen.getByRole("group", { name: "In the brief" });
+    expect(within(menu).getByRole("checkbox", { name: /^Implementation/ })).toBeTruthy();
+    expect(within(menu).queryByRole("checkbox", { name: /National biodiversity targets/ })).toBeNull();
+  });
+
   it("never offers them where the country has no contract record", () => {
     renderApp();
     expect(within(screen.getByRole("group", { name: "In the brief" })).queryByRole("checkbox", { name: /Public contracts/ })).toBeNull();

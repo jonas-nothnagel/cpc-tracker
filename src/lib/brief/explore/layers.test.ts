@@ -95,8 +95,15 @@ describe("buildExploreLayers", () => {
     expect(layers.nr7).toEqual({ A1: "limited", A2: "unknown" });
   });
 
-  it("is absent for a country without reported actions or budget lines", () => {
+  it("is absent for a country without reported actions, budget lines or national report", () => {
     expect(buildExploreLayers({ targets: [], alignment: [] }, SOURCE)).toBeNull();
+  });
+
+  it("carries the national report's ratings without any reported action or budget line", () => {
+    const rated = buildExploreLayers({ targets: [], alignment: [], nr7Data: DATA.nr7Data }, SOURCE)!;
+    expect(rated.items).toEqual([]);
+    expect(rated.nr7).toEqual({ A1: "limited", A2: "unknown" });
+    expect(rated.links).toEqual({ targets: [], rows: [] });
   });
 });
 

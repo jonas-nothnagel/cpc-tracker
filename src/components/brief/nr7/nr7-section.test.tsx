@@ -84,7 +84,9 @@ describe("Nr7Section", () => {
     const sentence = screen.getByText(/rates 1 of 2 national targets behind schedule/);
     // The title is the section's one heading; the sentence and the ratings stand beside it.
     expect(sentence.tagName).toBe("P");
-    expect(screen.getAllByRole("heading").map((h) => h.textContent)).toEqual([en.brief.nr7.title]);
+    expect(screen.getAllByRole("heading").map((h) => h.textContent)).toEqual([
+      "Implementation of the national biodiversity targets",
+    ]);
     const side = container.querySelector(".brief-sec-head-side")!;
     expect(side.firstElementChild).toBe(sentence);
     expect(side.querySelector(".n7-strip")).toBeTruthy();
