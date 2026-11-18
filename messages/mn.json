@@ -3018,7 +3018,7 @@
     "aligned": {
       "headlineEmpty": "Энэ сонголтод өөр зорилттой хүчтэй уялдаатай зорилт алга.",
       "row": "{count, plural, one {# хүчтэй уялдаа} other {# хүчтэй уялдаа}}",
-      "headlineConcentrated": "{total, number} хүчтэй уялдааны {pct} нь {top, plural, one {нэг зорилттой} other {# зорилттой}} холбоотой.",
+      "headlineConcentrated": "{total, number} хүчтэй уялдааны {pct} нь нийт {targets, number} зорилтоос {top, plural, one {нэг зорилттой} other {# зорилттой}} холбоотой.",
       "headlineSpread": "Хүчтэй уялдаа {contested, plural, one {# зорилтод} other {# зорилтод}} тархсан байна.",
       "partner": "{doc}-тэй {count, number}"
     },
@@ -3548,6 +3548,8 @@
       },
       "areas": {
         "title": "Зорилт ба хянасан зарцуулалт, биологийн олон янз байдлын чиглэлээр",
+        "insight": "Нийт {of, number} биологийн олон янз байдлын чиглэлээс {count, number} чиглэл нь зорилтуудын {targets}, хянасан зарцуулалтын {spend}-ийг эзэлж байна.",
+        "insightArea": "{area} нь хянасан зарцуулалтын {spend}, зорилтуудын {targets}-ийг эзэлж байна.",
         "colArea": "Биологийн олон янз байдлын чиглэл",
         "colTargets": "Зорилтуудын эзлэх хувь",
         "colSpend": "Хянасан зарцуулалтын эзлэх хувь",
@@ -3585,6 +3587,14 @@
     },
     "areaView": {
       "title": "Зорилт ба уялдаа, сэдэвчилсэн чиглэлээр",
+      "headlineTargetsTop": "{placed, number} зорилтын {pct} нь нийт {of, number} сэдэвчилсэн чиглэлээс {areas, number} чиглэлд хамаарна.",
+      "headlineTargets": "{placed, number} зорилтын {pct} нь <first>{area}</first>-ийн зорилт.",
+      "headlineAreaDocs": "{area}-ийн {count, number} зорилт нийт {of, number} баримт бичгээс {docs, number} баримт бичигт хамаарна.",
+      "headlinePairsTop": "{total, number} {side, select, apart {болзошгүй үл нийцлийн} other {хүчтэй уялдааны}} {pct} нь нийт {of, number} сэдэвчилсэн чиглэлийн хосоос {groups, number} хосод ногдож байна.",
+      "headlineBetween": "{total, number} {side, select, apart {болзошгүй үл нийцлийн} other {хүчтэй уялдааны}} {pct} нь <first>{areaA}</first>-ийн зорилтууд ба <second>{areaB}</second>-ийн зорилтуудын хооронд байна.",
+      "headlineWithin": "{total, number} {side, select, apart {болзошгүй үл нийцлийн} other {хүчтэй уялдааны}} {pct} нь <first>{areaA}</first>-ийн зорилтуудын дотор байна.",
+      "headlineOutside": "{total, number} {side, select, apart {болзошгүй үл нийцлийн} other {хүчтэй уялдааны}} {pct} нь <first>{areaA}</first>-ийн зорилтууд ба эдгээр чиглэлээс гадуурх зорилтуудын хооронд байна.",
+      "headlineArea": "{total, number} {side, select, apart {болзошгүй үл нийцлийн} other {хүчтэй уялдааны}} {pct} нь {area}-ийн зорилтуудтай холбоотой.",
       "noneTargets": "Эдгээр сэдэвчилсэн чиглэлд зорилт алга.",
       "noneSide": "Эдгээр сэдэвчилсэн чиглэлд {side, select, apart {болзошгүй үл нийцэлтэй} other {хүчтэй уялдаатай}} зорилтын хос алга.",
       "noneArea": "{area}-ийн зорилтуудтай холбоотой {side, select, apart {болзошгүй үл нийцэл} other {хүчтэй уялдаа}} алга.",

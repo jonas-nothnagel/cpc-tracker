@@ -350,6 +350,26 @@ describe("spendingAreas", () => {
     expect(two.coherence.rated).toBe(false);
   });
 
+  it("says how few areas, most targets first, hold half of the targets, with their share of the spending", () => {
+    const base = briefFixture();
+    // Agriculture (g2) holds 8 of the 18 targets: with Protected areas' 2 it reaches half.
+    const primary: Record<string, string> = { B3: "g1", B4: "g1", C1: "g5", C2: "g5" };
+    for (const id of ["A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2"]) primary[id] = "g2";
+    const source = { ...base, lenses: [{ ...base.lenses[0], primary }] };
+    const half = spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B", "C"]).half!;
+    expect([half.areas, half.of]).toEqual([2, 3]);
+    expect(half.targetShare).toBeCloseTo(10 / 18);
+    // Agriculture's 7 and Protected areas' 3 of the 10 reviewed.
+    expect(half.spendShare).toBeCloseTo(1);
+  });
+
+  it("says nothing when it takes every area to reach half, or with fewer than three", () => {
+    const source = briefFixture();
+    // Three areas of 3 targets each: all three hold 9 of the 18.
+    expect(spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B", "C"]).half).toBeNull();
+    expect(spendingAreas(spendingSetup(legacy(), source)!, source, ["A", "B"]).half).toBeNull();
+  });
+
   it("counts the lines not yet placed apart, with their share", () => {
     const source = briefFixture();
     const reading = spendingAreas(spendingSetup(mongoliaLike(), source)!, source, ["A", "B", "C"]);

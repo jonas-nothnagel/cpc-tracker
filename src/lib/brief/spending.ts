@@ -4,6 +4,7 @@ import type { BerAreas, AreaStatus } from "./ber-areas";
 import { shownName, type BerNames } from "./ber-names-shared";
 import { areaLines, countedIn, shownCurrency } from "./ber-record";
 import { MIN_AREA_COMPARISONS, scopeOf, type ToneCounts } from "./compute";
+import { concentrationOf } from "./insight";
 import type { BriefSource } from "./source";
 
 /** A name as the page shows it: in the page's language where the names file
@@ -756,6 +757,10 @@ export interface SpendingAreas {
   areas: SpendingArea[];
   /** The lines kept apart: not yet placed in any area. */
   apart: { spend: number; spendUsd: number | null; spendShare: number; lines: SpendingLine[] };
+  /** How few areas, the table's first rows, hold at least half of the targets
+   *  in the brief's documents, with their share of the targets and of the
+   *  reviewed spending; null where a sentence would say nothing. */
+  half: { areas: number; of: number; targetShare: number; spendShare: number } | null;
 }
 
 /** The US$ twin of a set of lines' spending; null where amounts are in US$. */
@@ -802,6 +807,13 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
     .sort((x, y) => y.targets.length - x.targets.length || y.spend - x.spend || x.name.localeCompare(y.name));
   const apartLines = setup.lines.filter((l) => l.area === null).sort(byTotal);
   const apartSpend = apartLines.reduce((s, l) => s + l.total, 0);
+  // The areas come most targets first (ties: more spending first), so the
+  // fewest holding half are the table's first rows.
+  const half = concentrationOf(
+    areas.map((a) => a.targets.length),
+    total,
+  );
+  const lead = half ? areas.slice(0, half.units) : [];
   return {
     areas,
     apart: {
@@ -809,6 +821,12 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
       spendUsd: apartLines.length ? usdOf(apartLines) : setup.currency === "US$" ? null : 0,
       spendShare: reviewed > 0 ? apartSpend / reviewed : 0,
       lines: apartLines,
+    },
+    half: half && {
+      areas: half.units,
+      of: areas.length,
+      targetShare: half.count / total,
+      spendShare: lead.reduce((s, a) => s + a.spendShare, 0),
     },
   };
 }

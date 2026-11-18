@@ -3018,7 +3018,7 @@
     "aligned": {
       "headlineEmpty": "No target is strongly aligned with another in this selection.",
       "row": "{count, plural, one {# strong alignment} other {# strong alignments}}",
-      "headlineConcentrated": "Of the {total, number} strong alignments, {pct} involve {top, plural, one {one target} other {# targets}}.",
+      "headlineConcentrated": "{pct} of the {total, number} strong alignments involve {top, plural, one {one} other {#}} of the {targets, number} targets.",
       "headlineSpread": "Strong alignments are spread across {contested, plural, one {# target} other {# targets}}.",
       "partner": "{count, number} with {doc}"
     },
@@ -3548,6 +3548,8 @@
       },
       "areas": {
         "title": "Targets and reviewed spending by biodiversity area",
+        "insight": "{count, plural, one {# of the {of, number} biodiversity areas holds} other {# of the {of, number} biodiversity areas hold}} {targets} of the targets and {spend} of the reviewed spending.",
+        "insightArea": "{area} holds {spend} of the reviewed spending and {targets} of the targets.",
         "colArea": "Biodiversity area",
         "colTargets": "Share of the targets",
         "colSpend": "Share of the reviewed spending",
@@ -3585,6 +3587,14 @@
     },
     "areaView": {
       "title": "Targets and alignment by thematic area",
+      "headlineTargetsTop": "{pct} of the {placed, number} targets fall in {areas, number} of the {of, number} thematic areas.",
+      "headlineTargets": "{pct} of the {placed, number} targets are <first>{area}</first> targets.",
+      "headlineAreaDocs": "{count, plural, one {The # {area} target comes} other {The # {area} targets come}} from {docs, number} of the {of, number} documents.",
+      "headlinePairsTop": "{pct} of the {total, number} {side, select, apart {potential misalignments} other {strong alignments}} fall between {groups, number} of the {of, number} pairs of thematic areas.",
+      "headlineBetween": "{pct} of the {total, number} {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and <second>{areaB}</second> targets.",
+      "headlineWithin": "{pct} of the {total, number} {side, select, apart {potential misalignments} other {strong alignments}} sit within <first>{areaA}</first> targets.",
+      "headlineOutside": "{pct} of the {total, number} {side, select, apart {potential misalignments} other {strong alignments}} sit between <first>{areaA}</first> targets and targets outside these areas.",
+      "headlineArea": "{pct} of the {total, number} {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",
       "noneTargets": "No targets fall in these thematic areas.",
       "noneSide": "No target pairs in these thematic areas {side, select, apart {show potential misalignment} other {are strongly aligned}}.",
       "noneArea": "No {side, select, apart {potential misalignments} other {strong alignments}} involve {area} targets.",

@@ -3273,13 +3273,18 @@
   }
 }
 
-/* The component: the picture beside its headline, choices and list. The
-   list side stays in view beside a tall picture. */
+/* The component, on the overview's column split: the title above the
+   picture; beside them the sentence, the choices and the list. The list side
+   stays in view beside a tall picture. */
 [data-brief] .brief-av {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
   gap: clamp(1.5rem, 3.2vw, 3.5rem);
   align-items: start;
+}
+
+[data-brief] .brief-av-picture > .brief-sec-title {
+  margin-bottom: 1.25rem;
 }
 
 /* The list side stays in view beside a taller picture and is never taller

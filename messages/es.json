@@ -3018,7 +3018,7 @@
     "aligned": {
       "headlineEmpty": "Ninguna meta está fuertemente alineada con otra en esta selección.",
       "row": "{count, plural, one {# alineación fuerte} other {# alineaciones fuertes}}",
-      "headlineConcentrated": "De las {total, number} alineaciones fuertes, el {pct} involucra {top, plural, one {una meta} other {# metas}}.",
+      "headlineConcentrated": "El {pct} de las {total, number} alineaciones fuertes involucra {top, plural, one {una} other {#}} de las {targets, number} metas.",
       "headlineSpread": "Las alineaciones fuertes se reparten entre {contested, plural, one {# meta} other {# metas}}.",
       "partner": "{count, number} con {doc}"
     },
@@ -3548,6 +3548,8 @@
       },
       "areas": {
         "title": "Metas y gasto revisado por área de biodiversidad",
+        "insight": "{count, plural, one {# de las {of, number} áreas de biodiversidad concentra} other {# de las {of, number} áreas de biodiversidad concentran}} {targets} de las metas y {spend} del gasto revisado.",
+        "insightArea": "{area} concentra {spend} del gasto revisado y {targets} de las metas.",
         "colArea": "Área de biodiversidad",
         "colTargets": "Parte de las metas",
         "colSpend": "Parte del gasto revisado",
@@ -3585,6 +3587,14 @@
     },
     "areaView": {
       "title": "Metas y alineación por área temática",
+      "headlineTargetsTop": "El {pct} de las {placed, number} metas se encuentra en {areas, number} de las {of, number} áreas temáticas.",
+      "headlineTargets": "El {pct} de las {placed, number} metas son metas de <first>{area}</first>.",
+      "headlineAreaDocs": "{count, plural, one {La # meta de {area} proviene} other {Las # metas de {area} provienen}} de {docs, number} de los {of, number} documentos.",
+      "headlinePairsTop": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre {groups, number} de los {of, number} pares de áreas temáticas.",
+      "headlineBetween": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas de <second>{areaB}</second>.",
+      "headlineWithin": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa dentro de las metas de <first>{areaA}</first>.",
+      "headlineOutside": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} se sitúa entre metas de <first>{areaA}</first> y metas fuera de estas áreas.",
+      "headlineArea": "El {pct} de las {total, number} {side, select, apart {posibles desalineaciones} other {alineaciones fuertes}} involucra metas de {area}.",
       "noneTargets": "Ninguna meta se encuentra en estas áreas temáticas.",
       "noneSide": "Ningún par de metas de estas áreas temáticas {side, select, apart {muestra una posible desalineación} other {está fuertemente alineado}}.",
       "noneArea": "Ninguna {side, select, apart {posible desalineación} other {alineación fuerte}} involucra metas de {area}.",
