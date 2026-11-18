@@ -7,6 +7,7 @@ import type { Currency } from "@/components/brief/contracts/money";
 import { moneyParts, per100 } from "@/lib/brief/contracts/money";
 import type { BriefSource } from "@/lib/brief/source";
 import {
+  itemOpens,
   percentLabel,
   spendingAreas,
   spendingRecord,
@@ -25,18 +26,19 @@ import "./spending.css";
 const FIELD = 100;
 /** Budget lines listed under an opened area, and review lines before "show all". */
 const LINES_MAX = 8;
-const ITEMS_MAX = 8;
+const ITEMS_MAX = 6;
 
 /**
  * Reviewed public biodiversity spending in the brief, as the country's
- * expenditure review records it, in three steps that read as one: how much of
- * all public spending it is, year by year (each year's total first, the parts
- * the review keeps apart within it); the review's own lines; and what the
- * money is for, each area's share of the spending beside its share of the
- * targets. Amounts are in US$ (each year at its own rate) or in the review's
- * own currency, as the page's currency says. Money is UNDP blue; green and red
- * stay with alignment. What the section knows but does not say on its face is
- * kept in ./DISCLAIMERS.md.
+ * expenditure review records it, in two components on the page's two
+ * columns: the record (a hundred squares and its two figures beside each
+ * year's spending, the parts the review keeps apart within it); then what the
+ * money is for (each area's share of the spending beside its share of the
+ * targets), beside a sentence on how few areas hold half of the targets and
+ * the review's own lines. Amounts are in US$ (each year at its own rate) or in
+ * the review's own currency, as the page's currency says. Money is UNDP blue;
+ * green and red stay with alignment. What the section knows but does not say
+ * on its face is kept in ./DISCLAIMERS.md.
  */
 export function SpendingSection({
   setup,
@@ -60,6 +62,23 @@ export function SpendingSection({
   const money = useMoney(setup, currency);
   const record = useMemo(() => spendingRecord(setup), [setup]);
   const reading = useMemo(() => spendingAreas(setup, source, docs), [setup, source, docs]);
+  // The area row open in the table: the sentence beside it follows it.
+  const [openArea, setOpenArea] = useState<string | null>(null);
+  const opened = reading.areas.find((a) => a.id === openArea);
+  const areasSentence = opened
+    ? t("areas.insightArea", {
+        area: opened.name,
+        spend: percentLabel(opened.spendShare),
+        targets: percentLabel(opened.targetShare),
+      })
+    : reading.half
+      ? t("areas.insight", {
+          count: reading.half.areas,
+          of: reading.half.of,
+          targets: percentLabel(reading.half.targetShare),
+          spend: percentLabel(reading.half.spendShare),
+        })
+      : null;
 
   const span = (years: string[]) => (years.length > 1 ? `${years[0]}–${years[years.length - 1]}` : (years[0] ?? ""));
   const shown = span(setup.years.map((y) => y.year));
@@ -116,9 +135,24 @@ export function SpendingSection({
         <YearChart setup={setup} record={record} money={money} scope={scope} />
       </div>
 
-      <AreasStep setup={setup} reading={reading} money={money} onExploreArea={onExploreArea} />
-
-      <ItemsStep setup={setup} money={money} years={complete} />
+      <div className="sp-pair">
+        <AreasStep
+          setup={setup}
+          reading={reading}
+          money={money}
+          open={openArea}
+          onOpen={setOpenArea}
+          onExploreArea={onExploreArea}
+        />
+        <div className="sp-pair-side">
+          {areasSentence && (
+            <p className="brief-hub-headline" aria-live="polite">
+              {areasSentence}
+            </p>
+          )}
+          <ItemsStep setup={setup} money={money} years={complete} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -392,9 +426,9 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
     setAll(false);
   };
   return (
-    <section className="sp-step" aria-labelledby="sp-items-title">
+    <section className="sp-step sp-step-items" aria-labelledby="sp-items-title">
       <div className="sp-step-head">
-        <h3 id="sp-items-title" className="brief-hub-headline">
+        <h3 id="sp-items-title" className="sp-chart-title">
           {t("title", { unit: institutions ? "both" : unit, years })}
         </h3>
         {institutions && (
@@ -409,24 +443,41 @@ function ItemsStep({ setup, money, years }: { setup: SpendingSetup; money: Money
       </div>
       <ol className="sp-items" aria-label={t("listLabel", { unit })}>
         {shown.map((item) => {
-          const isOpen = open === item.code;
+          // A row opens only where the review says more about it; else it is plain.
+          const opens = itemOpens(item);
+          const isOpen = opens && open === item.code;
           const panel = `sp-item-${item.code}`;
+          const content = (
+            <>
+              <span className="sp-item-name" title={item.original}>
+                {withBudget(item, t)}
+                {itemSub(item, t) && <span className="sp-item-sub">{itemSub(item, t)}</span>}
+              </span>
+              <span className="sp-cell" aria-hidden="true">
+                <span className="sp-bar-line" data-ink="spend">
+                  <span style={{ width: `${max > 0 ? Math.min(100, (money.whole(item.total, item.totalUsd) / max) * 100) : 0}%` }} />
+                </span>
+                <span className="sp-pct" data-ink="spend">
+                  {money.amount(item.total, item.totalUsd)}
+                </span>
+              </span>
+            </>
+          );
           return (
             <li key={item.code} className="sp-item" data-open={isOpen ? "true" : undefined}>
-              <button type="button" className="sp-row sp-item-row" aria-expanded={isOpen} aria-controls={panel} onClick={() => setOpen(isOpen ? null : item.code)}>
-                <span className="sp-item-name" title={item.original}>
-                  {withBudget(item, t)}
-                  {itemSub(item, t) && <span className="sp-item-sub">{itemSub(item, t)}</span>}
-                </span>
-                <span className="sp-cell" aria-hidden="true">
-                  <span className="sp-bar-line" data-ink="spend">
-                    <span style={{ width: `${max > 0 ? Math.min(100, (money.whole(item.total, item.totalUsd) / max) * 100) : 0}%` }} />
-                  </span>
-                  <span className="sp-pct" data-ink="spend">
-                    {money.amount(item.total, item.totalUsd)}
-                  </span>
-                </span>
-              </button>
+              {opens ? (
+                <button
+                  type="button"
+                  className="sp-row sp-item-row"
+                  aria-expanded={isOpen}
+                  aria-controls={panel}
+                  onClick={() => setOpen(isOpen ? null : item.code)}
+                >
+                  {content}
+                </button>
+              ) : (
+                <div className="sp-row sp-item-row">{content}</div>
+              )}
               {isOpen && (
                 <div className="sp-open" id={panel}>
                   <ItemDetail item={item} money={money} />
@@ -558,15 +609,20 @@ function AreasStep({
   setup,
   reading,
   money,
+  open,
+  onOpen,
   onExploreArea,
 }: {
   setup: SpendingSetup;
   reading: ReturnType<typeof spendingAreas>;
   money: Money;
+  /** The row open: an area's id, "apart", or none. The section's sentence follows it. */
+  open: string | null;
+  onOpen: (next: string | null) => void;
   onExploreArea?: (areaId: string) => void;
 }) {
   const t = useTranslations("brief.spending.areas");
-  const [open, setOpen] = useState<string | null>(null);
+  const setOpen = (toggle: (cur: string | null) => string | null) => onOpen(toggle(open));
   // Shares by default; amounts on request, the bars still drawn by share so
   // both columns stay on one scale.
   const [mode, setMode] = useState<"share" | "amount">("share");
@@ -575,7 +631,7 @@ function AreasStep({
   return (
     <section className="sp-step sp-step-areas" aria-labelledby="sp-areas-title">
       <div className="sp-step-head">
-        <h3 id="sp-areas-title" className="brief-hub-headline">
+        <h3 id="sp-areas-title" className="sp-chart-title">
           {t("title")}
         </h3>
         <div className="sp-switch" role="group" aria-label={t("switch")}>

@@ -3493,8 +3493,8 @@
         "series": {
           "central": "State budget",
           "local": "Local budgets",
-          "core": "Core agencies, counted in full",
-          "other": "Other agencies, counted in part",
+          "core": "Agencies counted in full",
+          "other": "Agencies counted in part",
           "all": "Reviewed spending"
         },
         "notInData": "not in the data",
@@ -3502,8 +3502,8 @@
         "held": {
           "central": "the State budget",
           "local": "the local budgets",
-          "core": "the core agencies",
-          "other": "the other agencies",
+          "core": "the agencies counted in full",
+          "other": "the agencies counted in part",
           "all": "one part"
         },
         "bar": "{series}, {year}",

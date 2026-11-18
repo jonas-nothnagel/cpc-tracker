@@ -185,6 +185,16 @@ function num(value: unknown): number | null {
 }
 
 const GROUP_SERIES: Record<string, SeriesId> = { CBA: "core", DBU: "core", OASBE: "other", OAMBE: "other" };
+
+/** Whether an agency is counted in full (Sri Lanka): every rate the review
+ *  applies to it is 100%, whatever its group (Sri Lanka Customs' biodiversity
+ *  division, of the other groups, at 100%); with no rate stated, by its
+ *  group. The rows and the year chart read it the same way. */
+function countedInFull(line: Json): boolean {
+  const cells = Object.values(asRecord(line.amounts) ?? {}).map((c) => asRecord(asRecord(c)?.all));
+  const rates = cells.map((c) => num(c?.rate)).filter((r): r is number => r !== null);
+  return rates.length ? rates.every((r) => r >= 1) : GROUP_SERIES[String(line.group)] === "core";
+}
 const LEVEL_SERIES: Record<string, SeriesId> = { central: "central", local: "local", all: "all" };
 /** Panama's budget types, as its database writes them. */
 const BUDGET_TYPES: Record<string, BudgetType> = { INVERSION: "investment", FUNCIONAMIENTO: "operating" };
@@ -269,6 +279,17 @@ function fromRecord(
         const s = GROUP_SERIES[group];
         if (s) reviewed[s] = (reviewed[s] ?? 0) + (num(value) ?? 0);
       }
+      // An agency its rates count otherwise than its group moves to the part
+      // its row names: the year's total stays the review's.
+      for (const l of lines) {
+        const from = l.kind === "institution" ? GROUP_SERIES[String(l.group)] : undefined;
+        if (!from) continue;
+        const to: SeriesId = countedInFull(l) ? "core" : "other";
+        const value = countedIn(l, String(y.year));
+        if (to === from || !value) continue;
+        reviewed[from] = (reviewed[from] ?? 0) - value;
+        reviewed[to] = (reviewed[to] ?? 0) + value;
+      }
       pub.all = num(asRecord(y.public)?.all);
     } else {
       for (const s of series) {
@@ -318,14 +339,12 @@ function fromRecord(
         const cells = Object.values(asRecord(l.amounts) ?? {}).map((c) => asRecord(asRecord(c)?.all));
         const rates = [...new Set(cells.map((c) => num(c?.rate)).filter((r): r is number => r !== null))];
         // "Counted in full" or "in part" by the rates the review applies, not
-        // by its group: an agency of the other groups may be counted in full
-        // (Sri Lanka Customs' biodiversity division, at 100%).
-        const inFull = rates.length ? rates.every((r) => r >= 1) : GROUP_SERIES[String(l.group)] === "core";
+        // by its group (countedInFull).
         return {
           code: String(l.code),
           ...show(String(l.code), String(l.name)),
           kind: "institution" as const,
-          sub: inFull ? "core" : "other",
+          sub: countedInFull(l) ? "core" : "other",
           total,
           totalUsd: usd,
           ...(rates.length === 1 && rates[0] < 1 ? { rate: rates[0] } : {}),
@@ -829,6 +848,20 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
       spendShare: lead.reduce((s, a) => s + a.spendShare, 0),
     },
   };
+}
+
+/** Whether a row of the review's lines opens: only where the review says more
+ *  about it (a rate, its reason, its rates, who spends it, what it pays for,
+ *  its parts). */
+export function itemOpens(item: SpendingItem): boolean {
+  return (
+    item.rate !== undefined ||
+    Boolean(item.rationale) ||
+    (item.rates?.length ?? 0) > 0 ||
+    (item.bodies?.names.length ?? 0) > 0 ||
+    (item.pays?.length ?? 0) > 0 ||
+    (item.parts?.length ?? 0) > 0
+  );
 }
 
 /** A share as a whole percentage for labels: "<1%" for a small one above zero. */

@@ -9,7 +9,7 @@ import {
   levelsPayload as mongoliaLike,
   sameNamePayload as sameName,
 } from "./spending-fixture";
-import { percentLabel, spendingAreas, spendingRecord, spendingSetup } from "./spending";
+import { itemOpens, percentLabel, spendingAreas, spendingRecord, spendingSetup, type SpendingItem } from "./spending";
 
 describe("spendingSetup from Country X's file", () => {
   it("keeps the lines with spending, their area and their strong matches", () => {
@@ -180,7 +180,11 @@ describe("spendingSetup from a rebuilt record", () => {
     };
     const setup = spendingSetup(data, briefFixture())!;
     expect(setup.series).toEqual(["core", "other"]);
-    expect(setup.years[0].reviewed).toEqual({ core: 7, other: 3 });
+    // The chart splits by the rows' rule: Sri Lanka Customs, of the other
+    // groups but counted at 100%, stands with the agencies counted in full.
+    // The year's total stays the review's.
+    expect(setup.years[0].reviewed).toEqual({ core: 8, other: 2 });
+    expect(Object.values(setup.years[0].reviewed).reduce((s, v) => s! + (v ?? 0), 0)).toBe(10);
     expect(setup.scope).toBe("government");
     // "Counted in full" or "in part" by the rate applied, not by the group.
     expect(setup.items.map((i) => [i.code, i.sub, i.rate, i.rationale])).toEqual([
@@ -188,6 +192,8 @@ describe("spendingSetup from a rebuilt record", () => {
       ["CEA", "other", 0.5, "Main agency for EIAs."],
       ["SLC", "core", undefined, undefined],
     ]);
+    // A row opens only where the review says more: CEA's rate and reason.
+    expect(setup.items.map((i) => itemOpens(i))).toEqual([false, true, false]);
     // The areas are read from the project lines, a second view of the same money.
     expect(setup.lines.map((l) => l.code)).toEqual(["P082"]);
     expect(setup.linesKind).toBe("projects");
@@ -378,6 +384,25 @@ describe("spendingAreas", () => {
     expect(reading.apart.spendUsd).toBeCloseTo(1e9 / 2000 + 2e9 / 2500);
     // The area of 71405 (g5 from the pipeline's classification) in US$ too.
     expect(reading.areas.find((a) => a.id === "g5")?.spendUsd).toBeCloseTo(3e9 / 2000 + 4e9 / 2500);
+  });
+});
+
+describe("itemOpens", () => {
+  it("opens a row with something behind it, never a bare one", () => {
+    const bare: SpendingItem = { code: "P1", name: "Protected area security", kind: "line", total: 3, totalUsd: null };
+    expect(itemOpens(bare)).toBe(false);
+    expect(itemOpens({ ...bare, parts: [] })).toBe(false);
+    expect(itemOpens({ ...bare, bodies: { year: "2021", count: 0, names: [] } })).toBe(false);
+    expect(itemOpens({ ...bare, parts: [{ name: "An activity", amount: 1 }] })).toBe(true);
+    expect(itemOpens({ ...bare, pays: [{ name: "Wages", share: 0.6 }] })).toBe(true);
+    expect(itemOpens({ ...bare, rate: 0.5 })).toBe(true);
+    expect(itemOpens({ ...bare, rationale: "Its biodiversity division." })).toBe(true);
+    expect(
+      itemOpens({ ...bare, rates: [{ code: "1", name: "Other", rate: 0.05, spent: 2, counted: 0.1, spentUsd: null, countedUsd: null }] }),
+    ).toBe(true);
+    expect(
+      itemOpens({ ...bare, bodies: { year: "2021", count: 1, names: [{ name: "An administration", amount: 1, amountUsd: null }] } }),
+    ).toBe(true);
   });
 });
 

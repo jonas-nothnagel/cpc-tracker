@@ -3493,8 +3493,8 @@
         "series": {
           "central": "Presupuesto del Estado",
           "local": "Presupuestos locales",
-          "core": "Instituciones principales, contadas por completo",
-          "other": "Otras instituciones, contadas en parte",
+          "core": "Instituciones contadas por completo",
+          "other": "Instituciones contadas en parte",
           "all": "Gasto revisado"
         },
         "notInData": "no está en los datos",
@@ -3502,8 +3502,8 @@
         "held": {
           "central": "el presupuesto del Estado",
           "local": "los presupuestos locales",
-          "core": "las instituciones principales",
-          "other": "las otras instituciones",
+          "core": "las instituciones contadas por completo",
+          "other": "las instituciones contadas en parte",
           "all": "una parte"
         },
         "bar": "{series}, {year}",

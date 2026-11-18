@@ -37,14 +37,127 @@ function renderSection(
     docs = ["A", "B", "C"],
     currency = "usd",
     onCurrency = () => {},
-  }: { onExploreArea?: (id: string) => void; docs?: string[]; currency?: Currency; onCurrency?: (c: Currency) => void } = {},
+    source = SOURCE,
+  }: {
+    onExploreArea?: (id: string) => void;
+    docs?: string[];
+    currency?: Currency;
+    onCurrency?: (c: Currency) => void;
+    source?: typeof SOURCE;
+  } = {},
 ) {
   return render(
     <NextIntlClientProvider locale="en" messages={en}>
-      <SpendingSection setup={setup} source={SOURCE} docs={docs} currency={currency} onCurrency={onCurrency} onExploreArea={onExploreArea} />
+      <SpendingSection setup={setup} source={source} docs={docs} currency={currency} onCurrency={onCurrency} onExploreArea={onExploreArea} />
     </NextIntlClientProvider>,
   );
 }
+
+/** A Sri Lanka-like record of eight agencies in LKR million, the review's
+ *  reason given for two; Sri Lanka Customs is of the other groups but
+ *  counted at 100%. */
+function agencies() {
+  const rows = [
+    { code: "FD", group: "CBA", name: "Forest Department", rate: 1, counted: 80 },
+    { code: "DWC", group: "CBA", name: "Department of Wildlife Conservation", rate: 1, counted: 70 },
+    { code: "CEA", group: "OASBE", name: "Central Environment Authority", rate: 0.5, counted: 60, rationale: "Main agency for EIAs." },
+    { code: "SLC", group: "OASBE", name: "Sri Lanka Customs", rate: 1, counted: 50, rationale: "Its biodiversity division." },
+    { code: "A5", group: "CBA", name: "Agency five", rate: 1, counted: 40 },
+    { code: "A6", group: "CBA", name: "Agency six", rate: 1, counted: 30 },
+    { code: "A7", group: "DBU", name: "Agency seven", rate: 1, counted: 20 },
+    { code: "A8", group: "DBU", name: "Agency eight", rate: 1, counted: 10 },
+  ];
+  return {
+    berData: {
+      record: {
+        currency: "LKR",
+        unit: "million",
+        levels: [{ id: "all", name: "Central government" }],
+        groups: [{ id: "CBA" }, { id: "DBU" }, { id: "OASBE" }, { id: "OAMBE" }],
+        years: [
+          {
+            year: "2015",
+            levels: ["all"],
+            complete: true,
+            reviewed: { all: 360 },
+            byGroup: { CBA: 220, DBU: 30, OASBE: 110, OAMBE: 0 },
+            public: { all: 10000 },
+            usdRate: 100,
+          },
+        ],
+        lines: rows.map((r) => ({
+          code: r.code,
+          kind: "institution",
+          group: r.group,
+          name: r.name,
+          ...(r.rationale ? { rationale: r.rationale } : {}),
+          amounts: { "2015": { all: { gross: r.counted / r.rate, rate: r.rate, counted: r.counted } } },
+        })),
+      },
+    },
+  };
+}
+
+describe("SpendingSection, in two components", () => {
+  it("sets the areas beside their sentence and the review's lines, apart from the record", () => {
+    const { container } = renderSection(LEGACY);
+    const [left, right] = [...container.querySelector(".sp-pair")!.children] as HTMLElement[];
+    expect(within(left).getByRole("heading", { level: 3, name: "Targets and reviewed spending by biodiversity area" })).toBeTruthy();
+    expect(within(right).getByRole("heading", { level: 3, name: /^Reviewed spending by/ })).toBeTruthy();
+    // One serif title and serif sentences: the two sub-titles name their pictures in the sans.
+    expect(container.querySelectorAll("h3.brief-hub-headline")).toHaveLength(0);
+  });
+
+  it("states how few areas hold half of the targets, and an opened area's own shares", () => {
+    // Agriculture (g2) holds 8 of the 18 targets; Protected areas (g1) 2 and 30% of the spending.
+    const primary: Record<string, string> = { B3: "g1", B4: "g1", C1: "g5", C2: "g5" };
+    for (const id of ["A1", "A2", "A3", "A4", "A5", "A6", "B1", "B2"]) primary[id] = "g2";
+    const source = { ...SOURCE, lenses: [{ ...SOURCE.lenses[0], primary }, ...SOURCE.lenses.slice(1)] };
+    const { container } = renderSection(spendingSetup(legacyPayload(), source)!, { source });
+    const sentence = () => container.querySelector(".sp-pair-side > .brief-hub-headline")?.textContent ?? null;
+    expect(sentence()).toBe("2 of the 3 biodiversity areas hold 56% of the targets and 100% of the reviewed spending.");
+    const row = () => within(screen.getByRole("list", { name: /Biodiversity areas/ })).getByRole("button", { name: /^Protected areas/ });
+    fireEvent.click(row());
+    expect(sentence()).toBe("Protected areas holds 30% of the reviewed spending and 11% of the targets.");
+    fireEvent.click(row());
+    expect(sentence()).toBe("2 of the 3 biodiversity areas hold 56% of the targets and 100% of the reviewed spending.");
+  });
+
+  it("lists six of the review's lines, the rest on request", () => {
+    renderSection(spendingSetup(agencies(), SOURCE)!);
+    const list = screen.getByRole("list", { name: "Institutions in the review, largest first" });
+    expect(within(list).getAllByRole("listitem")).toHaveLength(6);
+    fireEvent.click(screen.getByRole("button", { name: "Show all 8 institutions" }));
+    expect(within(list).getAllByRole("listitem")).toHaveLength(8);
+  });
+
+  it("opens a row only where the review says more about it", () => {
+    renderSection(spendingSetup(agencies(), SOURCE)!);
+    const list = screen.getByRole("list", { name: "Institutions in the review, largest first" });
+    // The two agencies the review gives a reason for open; the others are plain rows.
+    expect(within(list).getAllByRole("button").map((b) => b.querySelector(".sp-item-name")?.firstChild?.textContent)).toEqual([
+      "Central Environment Authority",
+      "Sri Lanka Customs",
+    ]);
+    const plain = within(list).getByText("Forest Department").closest(".sp-row")!;
+    expect(plain.tagName).toBe("DIV");
+    expect(plain.hasAttribute("aria-expanded")).toBe(false);
+    fireEvent.click(within(list).getByRole("button", { name: /Sri Lanka Customs/ }));
+    expect(screen.getByText("The review's reason: Its biodiversity division.")).toBeTruthy();
+  });
+
+  it("splits the years as the rows name the agencies, counted in full or in part", () => {
+    const { container } = renderSection(spendingSetup(agencies(), SOURCE)!);
+    expect([...container.querySelectorAll(".sp-legend li")].map((li) => li.textContent)).toEqual([
+      "Agencies counted in full",
+      "Agencies counted in part",
+    ]);
+    // Sri Lanka Customs' 50 stands with the agencies counted in full: 300 and 60 of the year's 360.
+    const rows = within(screen.getByRole("table")).getAllByRole("row");
+    expect(rows[1].textContent).toContain("US$3 million");
+    expect(rows[1].textContent).toContain("US$600,000");
+  });
+});
 
 describe("SpendingSection, Country X's illustrative file", () => {
   it("states the record out of all public spending, in every hundred, beside the section's title", () => {
@@ -186,7 +299,7 @@ describe("SpendingSection, a rebuilt record", () => {
     const setup = spendingSetup({ berData: { record } }, SOURCE)!;
     const rows = () =>
       within(screen.getByRole("list", { name: "Institutions in the review, largest first" }))
-        .getAllByRole("button")
+        .getAllByRole("listitem")
         .map((b) => b.textContent ?? "");
     renderSection(setup);
     // US$1 million (LKR 100 million at 100) above US$0.5 million (150 at 300).

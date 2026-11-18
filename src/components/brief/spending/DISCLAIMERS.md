@@ -68,6 +68,14 @@ names now come twice, once in each budget. Where an institution runs two
 programmes of one name, the list adds the budget to the name ("investment
 budget", "operating budget"; the database's INVERSION and FUNCIONAMIENTO).
 
+**A row of the review's lines opens only where the review says more about
+it** (since 18 November 2026; `itemOpens` in src/lib/brief/spending.ts): a
+rate other than 100%, the review's reason, its rates, who spends it, what it
+pays for, or its parts. Every other row is plain, with no pointer and nothing
+to expand: in Sri Lanka 9 of the 10 agencies counted in full (Sri Lanka
+Customs keeps its row, for the review's reason), and every line of Country X.
+The list shows its 6 largest rows, the rest on request.
+
 **Mongolia's budget holders** (the institution view of its list) are named as
 the review's workbook names them (sheet 2016-2021, column Admin1, its leading
 code kept apart): its own English on the English page, its own Mongolian on
@@ -83,6 +91,16 @@ only, 2023 the State budget only. A year total is given for 2020 and 2021
 only; a missing part is said in place ("not in the data"), never drawn as
 zero. The adapter's own notes are in the record (`record.notes` in
 python/data/mongolia-ber.json).
+
+**Sri Lanka's two parts follow the rows' rule** (since 18 November 2026). An
+agency is counted in full when every rate the review applies to it is 100%,
+whatever its group; with no rate stated, by its group (CBA and DBU in full,
+OASBE and OAMBE in part, `GROUP_SERIES`). The year chart used to
+split by the review's group alone, so Sri Lanka Customs' biodiversity
+division (group OASBE, 100% in every year) stood under the agencies counted
+in part while its row said "Counted in full". Each year's total is the
+review's; only the split between the two parts moves
+(`countedInFull` in src/lib/brief/spending.ts).
 
 **Panama starts in 2016** (note `panama2015`; decided 23 October 2026). The
 Ministry of Environment, created in 2015 out of ANAM, has no budget lines in
