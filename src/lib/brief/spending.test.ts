@@ -330,6 +330,8 @@ describe("spendingAreas", () => {
       ["g5", 3, 0],
     ]);
     expect(reading.areas[0].targetShare).toBeCloseTo(3 / 18);
+    // The shares' denominator: every target in the brief's documents.
+    expect(reading.total).toBe(18);
     expect(reading.areas[0].spendShare).toBeCloseTo(0.7);
     expect(reading.areas[1].matched).toEqual(["A1", "A2"]);
     expect(reading.apart.lines).toEqual([]);

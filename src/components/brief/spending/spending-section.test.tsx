@@ -155,12 +155,12 @@ describe("SpendingSection, in two components", () => {
     const source = { ...SOURCE, lenses: [{ ...SOURCE.lenses[0], primary }, ...SOURCE.lenses.slice(1)] };
     const { container } = renderSection(spendingSetup(legacyPayload(), source)!, { source });
     const sentence = () => container.querySelector(".sp-pair-side > .brief-hub-headline")?.textContent ?? null;
-    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the targets and 100% of the reviewed spending.");
+    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the 18 targets and 100% of the reviewed biodiversity spending.");
     const row = () => within(screen.getByRole("list", { name: /Thematic areas/ })).getByRole("button", { name: /^Protected areas/ });
     fireEvent.click(row());
-    expect(sentence()).toBe("Protected areas holds 30% of the reviewed spending and 11% of the targets.");
+    expect(sentence()).toBe("Protected areas holds 30% of the reviewed biodiversity spending and 11% of the 18 targets.");
     fireEvent.click(row());
-    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the targets and 100% of the reviewed spending.");
+    expect(sentence()).toBe("2 of the 3 thematic areas hold 56% of the 18 targets and 100% of the reviewed biodiversity spending.");
   });
 
   it("lists six of the review's lines, the rest on request", () => {
@@ -499,6 +499,17 @@ describe("SpendingSection, in the climate lenses", () => {
     ]);
     expect(rowNames()[0]).toBe("Protected areas");
     expect(container.querySelector(".sp-row-head")?.firstElementChild?.textContent).toBe("Biodiversity");
+  });
+
+  it("names the money as reviewed biodiversity spending under a climate lens, an area without a line too", () => {
+    const { container } = renderSection(BOTH, { source: CLIMATE, lens: "ipcc", onLens: () => {} });
+    const head = [...container.querySelector(".sp-row-head")!.children].map((c) => c.textContent);
+    expect(head).toEqual(["Climate mitigation", "Share of the targets", "Share of the reviewed biodiversity spending"]);
+    fireEvent.click(screen.getByRole("button", { name: /^Energy/ }));
+    expect(screen.getByText("No reviewed biodiversity spending in this area.")).toBeTruthy();
+    expect(container.querySelector(".sp-pair-side > .brief-hub-headline")?.textContent).toBe(
+      "Energy holds 0% of the reviewed biodiversity spending and 11% of the 18 targets.",
+    );
   });
 
   it("offers no choice where the lines are placed in Biodiversity only", () => {

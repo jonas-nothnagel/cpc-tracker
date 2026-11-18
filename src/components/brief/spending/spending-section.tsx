@@ -92,12 +92,14 @@ export function SpendingSection({
         area: opened.name,
         spend: percentLabel(opened.spendShare),
         targets: percentLabel(opened.targetShare),
+        total: reading.total,
       })
     : reading.half
       ? t("areas.insight", {
           count: reading.half.areas,
           of: reading.half.of,
           targets: percentLabel(reading.half.targetShare),
+          total: reading.total,
           spend: percentLabel(reading.half.spendShare),
         })
       : null;

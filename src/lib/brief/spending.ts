@@ -803,6 +803,9 @@ export interface SpendingArea {
 
 export interface SpendingAreas {
   areas: SpendingArea[];
+  /** The targets in the brief's documents: the denominator of every share
+   *  of the targets, stated in the sentences. */
+  total: number;
   /** The lines kept apart: not yet placed in any area. */
   apart: { spend: number; spendUsd: number | null; spendShare: number; lines: SpendingLine[] };
   /** How few areas, the table's first rows, hold at least half of the targets
@@ -885,6 +888,7 @@ export function spendingAreas(setup: SpendingSetup, source: BriefSource, docs: r
   const lead = half ? areas.slice(0, half.units) : [];
   return {
     areas,
+    total,
     apart: {
       spend: apartSpend,
       spendUsd: apartLines.length ? usdOf(apartLines) : setup.currency === "US$" ? null : 0,
